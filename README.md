@@ -23,6 +23,7 @@ Toimintoja:
 ## Dokumentaatio
 
 [Käyttäjätarinat](documentation/userstories.md)
+[Tietokantakaavion luonnos](documentation/tietokantakaavio_luonnos.png)
 
 ## Heroku
 
