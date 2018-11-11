@@ -17,3 +17,7 @@ Toimintoja:
     Uuden tuotteen ehdottaminen / ehdotuksen hyväksyminen
     Käyttäjätunnuksen luominen
     Käyttäjätietojen muutos ja tilin poisto
+
+# Heroku
+
+Linkki herokuun: [Herkkupankki](https://herkkupankki.herokuapp.com/)
