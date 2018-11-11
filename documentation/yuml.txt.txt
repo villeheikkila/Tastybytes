@@ -1,0 +1,3 @@
+Lähdekoodi yuml.me sivulle.
+
+[Käyttäjä|(pk) id:Integer; Käyttäjätunnus:String; Salasana:String], [Tuote|(pk) id:Integer; Valmistaja:String; Nimi:String], [Arvostelu|(pk) id:Integer; Arvosana:Integer; Kommentti:String; (fk) käyttäjä_id: Käyttäjä], [TuoteArvostelu|(fk) arvostelu_id: Arvostelu; (fk) tuote_id: Tuote], [Käyttäjä]1-*[Arvostelu], [Tuote]1-*[TuoteArvostelu], [TuoteArvostelu]*-1[Arvostelu]
