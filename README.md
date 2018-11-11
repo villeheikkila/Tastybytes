@@ -18,6 +18,11 @@ Toimintoja:
     Käyttäjätunnuksen luominen
     Käyttäjätietojen muutos ja tilin poisto
 
+# Dokumentaatio
+
+[Käyttäjätarinat](documentation/userstories.md)
+
 # Heroku
 
 Linkki herokuun: [Herkkupankki](https://herkkupankki.herokuapp.com/)
+
