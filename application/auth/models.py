@@ -11,7 +11,8 @@ class User(Base):
     password = db.Column(db.String(144), nullable=False)
 
     products = db.relationship("Product", backref='account', lazy=True)
-  
+    reviews = db.relationship("Review", backref='account', lazy=True)
+
     def __init__(self, name):
         self.name = name
 
@@ -31,12 +32,12 @@ class User(Base):
         return ["ADMIN"]
 
     @staticmethod
-    def find_users_with_no_products(done=0):
+    def find_users_with_no_products(public=0):
         stmt = text("SELECT Account.id, Account.name FROM Account"
                      " LEFT JOIN Product ON Product.account_id = Account.id"
-                     " WHERE (Product.done IS null OR Product.done = :done)"
+                     " WHERE (Product.public IS null OR Product.public = :public)"
                      " GROUP BY Account.id"
-                     " HAVING COUNT(Product.id) = 0").params(done=done)
+                     " HAVING COUNT(Product.id) = 0").params(public=public)
         res = db.engine.execute(stmt)
 
         response = []

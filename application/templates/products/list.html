@@ -12,10 +12,10 @@
     <tr>
       <td>{{ product.name }}</td>
       <td>{{ product.producer }}</td>
-      <td>{{ product.done }}</td>
+      <td>{{ product.public }}</td>
       <td>
-	<form method="POST" action="{{ url_for('products_set_done', product_id=product.id) }}">
-    <input type="submit" value="Change status!"/>
+	<form method="POST" action="{{ url_for('products_set_public', product_id=product.id) }}">
+    <input type="submit" value="Tee julkiseksi"/>
   </form>
   <form method="POST" action="{{ url_for('products_remove', product_id=product.id) }}">
       <input type="submit" value="Poista"/>

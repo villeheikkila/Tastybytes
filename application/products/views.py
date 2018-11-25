@@ -18,13 +18,13 @@ def products_form():
 
 @app.route("/products/<product_id>/", methods=["POST"])
 @login_required(role="ANY")
-def products_set_done(product_id):
+def products_set_public(product_id):
 
     t = Product.query.get(product_id)
     if t.account_id != current_user.id:
          return login_manager.unauthorized
 
-    t.done = True
+    t.public = True
     db.session().commit()
     print("moi")
   
@@ -53,7 +53,7 @@ def products_create():
 
   
     t = Product(form.name.data, form.producer.data)
-    t.done = form.done.data
+    t.public = form.public.data
     t.account_id = current_user.id
   
     db.session().add(t)

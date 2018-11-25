@@ -4,7 +4,7 @@ from wtforms import BooleanField, StringField, validators
 class ProductForm(FlaskForm):
     name = StringField("Tuotteet nimi:", [validators.Length(min=2)])
     producer = StringField("Valmistaja:", [validators.Length(min=2)])
-    done = BooleanField("Done")
+    public = BooleanField("Julkinen")
   
     class Meta:
         csrf = False

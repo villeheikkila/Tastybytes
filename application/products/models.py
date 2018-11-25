@@ -6,14 +6,14 @@ class Product(Base):
 
     name = db.Column(db.String(144), nullable=False)
     producer = db.Column(db.String(144), nullable=False)
-    done = db.Column(db.Boolean, nullable=False)
+    public = db.Column(db.Boolean, nullable=False)
 
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
 
     def __init__(self, name, producer):
         self.name = name
         self.producer = producer
-        self.done = False
+        self.public = False
 
     @staticmethod
     def removeProduct(id):

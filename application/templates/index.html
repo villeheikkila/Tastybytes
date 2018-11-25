@@ -5,13 +5,13 @@
   Tervetuloa herkkuPankkiin!
 </p>
 
-{% if needs_tasks is defined %}
+{% if noProducts is defined %}
 <p>
-  The following users need work:
+  Seuraavat käyttäjät eivät ole vielä lisänneet tuotteita tietokantaan!
 </p>
 
 <ul>
-  {% for user in needs_tasks %}
+  {% for user in noProducts %}
   <li>
     {{user.id}} {{user.name}}
   </li>
