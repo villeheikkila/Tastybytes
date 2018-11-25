@@ -39,7 +39,7 @@ def tasks_create():
         return render_template("tasks/new.html", form = form)
 
   
-    t = Task(form.name.data)
+    t = Task(form.name.data, form.producer.data)
     t.done = form.done.data
     t.account_id = current_user.id
   
