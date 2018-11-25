@@ -26,6 +26,20 @@ def products_set_done(product_id):
 
     t.done = True
     db.session().commit()
+    print("moi")
+  
+    return redirect(url_for("products_index"))
+
+@app.route("/products/<product_id>/", methods=["POST"])
+@login_required(role="ANY")
+def products_remove(product_id):
+
+    t = Product.removeProduct
+    if t.account_id != current_user.id:
+         return login_manager.unauthorized
+    
+    
+    db.session().commit()
   
     return redirect(url_for("products_index"))
   

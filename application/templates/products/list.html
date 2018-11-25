@@ -15,10 +15,14 @@
       <td>{{ product.done }}</td>
       <td>
 	<form method="POST" action="{{ url_for('products_set_done', product_id=product.id) }}">
-	  <input type="submit" value="Change status!"/>
-	</form>
+    <input type="submit" value="Change status!"/>
+  </form>
+  <form method="POST" action="{{ url_for('products_remove', product_id=product.id) }}">
+      <input type="submit" value="Poista"/>
+  </form>
       </td>
     </tr>
+
     {% endfor %}
   </table>
 {% endblock %}

@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<form method="POST" action="{{ url_for('reviews_create') }}">
+  <table>
+    <tr>
+<td>
+  {{ form.score.label }}
+</td>
+<td>
+  {{ form.score }}
+</td>
+<td>
+  <ul>
+    {% for error in form.score.errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+  </ul>
+</td>
+    </tr>
+    <tr>
+<td>
+  {{ form.comment.label }}
+</td>
+<td>
+  {{ form.comment }}
+</td>
+</tr>
+<tr>
+<td>
+</td>
+    </tr>
+    <tr>
+<td colspan="3">
+  <input type="submit" value="Lisää arvostelu"/>
+</td>
+    </tr>
+</form>
+{% endblock %}

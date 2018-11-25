@@ -1,5 +1,6 @@
 from application import db
 from application.models import Base
+from sqlalchemy.sql import text
 
 class Product(Base):
 
@@ -13,3 +14,9 @@ class Product(Base):
         self.name = name
         self.producer = producer
         self.done = False
+
+    @staticmethod
+    def removeProduct(id):
+        print("poistetaan: " + id)
+        stmt = text("DELETE * FROM Products WHERE (Product.id = :id)").params(id=id)
+        db.engine.execute(stmt)

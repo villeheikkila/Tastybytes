@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <table>
+    <tr>
+      <th>Arvosana</th>
+      <th>Kommentti</th>
+      <th></th>
+    </tr>
+    {% for review in reviews %}
+    <tr>
+      <td>{{ review.score }}</td>
+      <td>{{ review.comment }}</td>
+    </tr>
+
+    {% endfor %}
+  </table>
+{% endblock %}

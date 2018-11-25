@@ -65,6 +65,9 @@ from application import views
 from application.products import models
 from application.products import views
 
+from application.reviews import models
+from application.reviews import views
+
 from application.auth import models
 from application.auth import views
 
