@@ -1,7 +1,23 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <p>
-    Hello world!
-  </p>
+<p>
+  Hello world!
+</p>
+
+{% if needs_tasks is defined %}
+<p>
+  The following users need work:
+</p>
+
+<ul>
+  {% for user in needs_tasks %}
+  <li>
+    {{user.id}} {{user.name}}
+  </li>
+  {% endfor %}
+</ul>
+
+{% endif %}
+
 {% endblock %}
