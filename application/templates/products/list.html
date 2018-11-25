@@ -8,13 +8,13 @@
       <th>Maistettu</th>
       <th></th>
     </tr>
-    {% for task in tasks %}
+    {% for product in products %}
     <tr>
-      <td>{{ task.name }}</td>
-      <td>{{ task.producer }}</td>
-      <td>{{ task.done }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.producer }}</td>
+      <td>{{ product.done }}</td>
       <td>
-	<form method="POST" action="{{ url_for('tasks_set_done', task_id=task.id) }}">
+	<form method="POST" action="{{ url_for('products_set_done', product_id=product.id) }}">
 	  <input type="submit" value="Change status!"/>
 	</form>
       </td>

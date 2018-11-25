@@ -11,7 +11,7 @@ class User(Base):
     username = db.Column(db.String(144), nullable=False)
     password = db.Column(db.String(144), nullable=False)
 
-    tasks = db.relationship("Task", backref='account', lazy=True)
+    products = db.relationship("Product", backref='account', lazy=True)
   
     def __init__(self, name):
         self.name = name
@@ -32,12 +32,12 @@ class User(Base):
         return ["ADMIN"]
 
     @staticmethod
-    def find_users_with_no_tasks(done=0):
+    def find_users_with_no_products(done=0):
         stmt = text("SELECT Account.id, Account.name FROM Account"
-                     " LEFT JOIN Task ON Task.account_id = Account.id"
-                     " WHERE (Task.done IS null OR Task.done = :done)"
+                     " LEFT JOIN Product ON Product.account_id = Account.id"
+                     " WHERE (Product.done IS null OR Product.done = :done)"
                      " GROUP BY Account.id"
-                     " HAVING COUNT(Task.id) = 0").params(done=done)
+                     " HAVING COUNT(Product.id) = 0").params(done=done)
         res = db.engine.execute(stmt)
 
         response = []
