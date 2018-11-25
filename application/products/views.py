@@ -26,19 +26,19 @@ def products_set_public(product_id):
 
     t.public = True
     db.session().commit()
-    print("moi")
-  
+
     return redirect(url_for("products_index"))
 
+## This doesn't work.
 @app.route("/products/<product_id>/", methods=["POST"])
 @login_required(role="ANY")
-def products_remove(product_id):
+def product_remove(product_id):
 
-    t = Product.removeProduct
+    t = Product.query.get(product_id)
     if t.account_id != current_user.id:
          return login_manager.unauthorized
-    
-    
+
+    Product.remove_product(product_id)
     db.session().commit()
   
     return redirect(url_for("products_index"))
@@ -50,7 +50,6 @@ def products_create():
   
     if not form.validate():
         return render_template("products/new.html", form = form)
-
   
     t = Product(form.name.data, form.producer.data)
     t.public = form.public.data

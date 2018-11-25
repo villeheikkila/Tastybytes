@@ -11,10 +11,8 @@ if os.environ.get("HEROKU"):
 else:
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"    
     app.config["SQLALCHEMY_ECHO"] = True
-
-    
+   
 db = SQLAlchemy(app)
-
 
 # login functionality
 from os import urandom
@@ -26,7 +24,6 @@ login_manager.setup_app(app)
 
 login_manager.login_view = "auth_login"
 login_manager.login_message = "Please login to use this functionality."
-
 
 # roles in login_required
 from functools import wraps
@@ -71,14 +68,12 @@ from application.reviews import views
 from application.auth import models
 from application.auth import views
 
-
 # login functionality, part 2
 from application.auth.models import User
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-
 
 # database creation
 try: 

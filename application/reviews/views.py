@@ -9,7 +9,6 @@ from application.reviews.forms import ReviewForm
 def reviews_index():
     return render_template("reviews/list.html", reviews = Review.query.all())
 
-  
 @app.route("/reviews/new/")
 @login_required(role="ANY")
 def reviews_form():

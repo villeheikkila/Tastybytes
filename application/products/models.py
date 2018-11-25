@@ -16,7 +16,7 @@ class Product(Base):
         self.public = False
 
     @staticmethod
-    def removeProduct(id):
+    def remove_product(id):
         print("poistetaan: " + id)
-        stmt = text("DELETE * FROM Products WHERE (Product.id = :id)").params(id=id)
+        stmt = text("DELETE FROM product WHERE (Product.id = :id)").params(id=id)
         db.engine.execute(stmt)
