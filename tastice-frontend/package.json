@@ -4,7 +4,7 @@
   "description": "Application for keeping track of things you have recently tasted. It mimics the functionality and interface of the popular tasting apps such as Untapped and Vivino. Unlike the previously mentioned apps however, it'll support arbitrary types of foods and drinks such as sodas, coffees and anything you can imagine.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
   },
   "repository": {
     "type": "git",
