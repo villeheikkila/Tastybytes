@@ -11,10 +11,23 @@
     "url": "git+https://github.com/villeheikkila/tastice.git"
   },
   "keywords": [],
-  "author": "Ville Heikkilä <tehomail@gmail.com>",
+  "author": "Ville Heikkilä",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/villeheikkila/tastice/issues"
   },
-  "homepage": "https://github.com/villeheikkila/tastice#readme"
+  "homepage": "https://github.com/villeheikkila/tastice#readme",
+  "devDependencies": {
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.4",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.2",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
 }
