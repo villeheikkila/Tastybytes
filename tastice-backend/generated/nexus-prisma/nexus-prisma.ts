@@ -20,11 +20,17 @@ export interface NexusPrismaTypes {
       PageInfo: PageInfoObject
       UserEdge: UserEdgeObject
       AggregateUser: AggregateUserObject
+      Product: ProductObject
+      ProductConnection: ProductConnectionObject
+      ProductEdge: ProductEdgeObject
+      AggregateProduct: AggregateProductObject
       Mutation: MutationObject
       BatchPayload: BatchPayloadObject
       Subscription: SubscriptionObject
       UserSubscriptionPayload: UserSubscriptionPayloadObject
       UserPreviousValues: UserPreviousValuesObject
+      ProductSubscriptionPayload: ProductSubscriptionPayloadObject
+      ProductPreviousValues: ProductPreviousValuesObject
     }
     fieldsDetails: {
       Query: QueryFieldDetails
@@ -33,25 +39,38 @@ export interface NexusPrismaTypes {
       PageInfo: PageInfoFieldDetails
       UserEdge: UserEdgeFieldDetails
       AggregateUser: AggregateUserFieldDetails
+      Product: ProductFieldDetails
+      ProductConnection: ProductConnectionFieldDetails
+      ProductEdge: ProductEdgeFieldDetails
+      AggregateProduct: AggregateProductFieldDetails
       Mutation: MutationFieldDetails
       BatchPayload: BatchPayloadFieldDetails
       Subscription: SubscriptionFieldDetails
       UserSubscriptionPayload: UserSubscriptionPayloadFieldDetails
       UserPreviousValues: UserPreviousValuesFieldDetails
+      ProductSubscriptionPayload: ProductSubscriptionPayloadFieldDetails
+      ProductPreviousValues: ProductPreviousValuesFieldDetails
     }
   }
   inputTypes: {
     fields: {
       UserWhereUniqueInput: UserWhereUniqueInputInputObject
       UserWhereInput: UserWhereInputInputObject
+      ProductWhereUniqueInput: ProductWhereUniqueInputInputObject
+      ProductWhereInput: ProductWhereInputInputObject
       UserCreateInput: UserCreateInputInputObject
       UserUpdateInput: UserUpdateInputInputObject
       UserUpdateManyMutationInput: UserUpdateManyMutationInputInputObject
+      ProductCreateInput: ProductCreateInputInputObject
+      ProductUpdateInput: ProductUpdateInputInputObject
+      ProductUpdateManyMutationInput: ProductUpdateManyMutationInputInputObject
       UserSubscriptionWhereInput: UserSubscriptionWhereInputInputObject
+      ProductSubscriptionWhereInput: ProductSubscriptionWhereInputInputObject
     }
   }
   enumTypes: {
     UserOrderByInput: UserOrderByInputValues,
+    ProductOrderByInput: ProductOrderByInputValues,
     MutationType: MutationTypeValues,
   }
 }
@@ -63,11 +82,17 @@ type QueryObject =
   | { name: 'user', args?: QueryUserArgs[] | false, alias?: string  } 
   | { name: 'users', args?: QueryUsersArgs[] | false, alias?: string  } 
   | { name: 'usersConnection', args?: QueryUsersConnectionArgs[] | false, alias?: string  } 
+  | { name: 'product', args?: QueryProductArgs[] | false, alias?: string  } 
+  | { name: 'products', args?: QueryProductsArgs[] | false, alias?: string  } 
+  | { name: 'productsConnection', args?: QueryProductsConnectionArgs[] | false, alias?: string  } 
 
 type QueryFields =
   | 'user'
   | 'users'
   | 'usersConnection'
+  | 'product'
+  | 'products'
+  | 'productsConnection'
 
 
 type QueryUserArgs =
@@ -81,6 +106,24 @@ type QueryUsersArgs =
   | 'first'
   | 'last'
 type QueryUsersConnectionArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+type QueryProductArgs =
+  | 'where'
+type QueryProductsArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+type QueryProductsConnectionArgs =
   | 'where'
   | 'orderBy'
   | 'skip'
@@ -129,6 +172,45 @@ export interface QueryFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.UserConnection> | prisma.UserConnection
+  }
+  product: {
+    type: 'Product'
+    args: Record<QueryProductArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where: ProductWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Product | null> | prisma.Product | null
+  }
+  products: {
+    type: 'Product'
+    args: Record<QueryProductsArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where?: ProductWhereInput | null, orderBy?: prisma.ProductOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Product[]> | prisma.Product[]
+  }
+  productsConnection: {
+    type: 'ProductConnection'
+    args: Record<QueryProductsConnectionArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where?: ProductWhereInput | null, orderBy?: prisma.ProductOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.ProductConnection> | prisma.ProductConnection
   }
 }
   
@@ -358,6 +440,186 @@ export interface AggregateUserFieldDetails {
 }
   
 
+// Types for Product
+
+type ProductObject =
+  | ProductFields
+  | { name: 'id', args?: [] | false, alias?: string  } 
+  | { name: 'name', args?: [] | false, alias?: string  } 
+  | { name: 'producer', args?: [] | false, alias?: string  } 
+  | { name: 'type', args?: [] | false, alias?: string  } 
+
+type ProductFields =
+  | 'id'
+  | 'name'
+  | 'producer'
+  | 'type'
+
+
+
+  
+
+export interface ProductFieldDetails {
+  id: {
+    type: 'ID'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  name: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  producer: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  type: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
+// Types for ProductConnection
+
+type ProductConnectionObject =
+  | ProductConnectionFields
+  | { name: 'pageInfo', args?: [] | false, alias?: string  } 
+  | { name: 'edges', args?: [] | false, alias?: string  } 
+  | { name: 'aggregate', args?: [] | false, alias?: string  } 
+
+type ProductConnectionFields =
+  | 'pageInfo'
+  | 'edges'
+  | 'aggregate'
+
+
+
+  
+
+export interface ProductConnectionFieldDetails {
+  pageInfo: {
+    type: 'PageInfo'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"ProductConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.PageInfo> | prisma.PageInfo
+  }
+  edges: {
+    type: 'ProductEdge'
+    args: {}
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"ProductConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.ProductEdge[]> | prisma.ProductEdge[]
+  }
+  aggregate: {
+    type: 'AggregateProduct'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"ProductConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.AggregateProduct> | prisma.AggregateProduct
+  }
+}
+  
+
+// Types for ProductEdge
+
+type ProductEdgeObject =
+  | ProductEdgeFields
+  | { name: 'node', args?: [] | false, alias?: string  } 
+  | { name: 'cursor', args?: [] | false, alias?: string  } 
+
+type ProductEdgeFields =
+  | 'node'
+  | 'cursor'
+
+
+
+  
+
+export interface ProductEdgeFieldDetails {
+  node: {
+    type: 'Product'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"ProductEdge">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Product> | prisma.Product
+  }
+  cursor: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
+// Types for AggregateProduct
+
+type AggregateProductObject =
+  | AggregateProductFields
+  | { name: 'count', args?: [] | false, alias?: string  } 
+
+type AggregateProductFields =
+  | 'count'
+
+
+
+  
+
+export interface AggregateProductFieldDetails {
+  count: {
+    type: 'Int'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
 // Types for Mutation
 
 type MutationObject =
@@ -368,6 +630,12 @@ type MutationObject =
   | { name: 'upsertUser', args?: MutationUpsertUserArgs[] | false, alias?: string  } 
   | { name: 'deleteUser', args?: MutationDeleteUserArgs[] | false, alias?: string  } 
   | { name: 'deleteManyUsers', args?: MutationDeleteManyUsersArgs[] | false, alias?: string  } 
+  | { name: 'createProduct', args?: MutationCreateProductArgs[] | false, alias?: string  } 
+  | { name: 'updateProduct', args?: MutationUpdateProductArgs[] | false, alias?: string  } 
+  | { name: 'updateManyProducts', args?: MutationUpdateManyProductsArgs[] | false, alias?: string  } 
+  | { name: 'upsertProduct', args?: MutationUpsertProductArgs[] | false, alias?: string  } 
+  | { name: 'deleteProduct', args?: MutationDeleteProductArgs[] | false, alias?: string  } 
+  | { name: 'deleteManyProducts', args?: MutationDeleteManyProductsArgs[] | false, alias?: string  } 
 
 type MutationFields =
   | 'createUser'
@@ -376,6 +644,12 @@ type MutationFields =
   | 'upsertUser'
   | 'deleteUser'
   | 'deleteManyUsers'
+  | 'createProduct'
+  | 'updateProduct'
+  | 'updateManyProducts'
+  | 'upsertProduct'
+  | 'deleteProduct'
+  | 'deleteManyProducts'
 
 
 type MutationCreateUserArgs =
@@ -393,6 +667,22 @@ type MutationUpsertUserArgs =
 type MutationDeleteUserArgs =
   | 'where'
 type MutationDeleteManyUsersArgs =
+  | 'where'
+type MutationCreateProductArgs =
+  | 'data'
+type MutationUpdateProductArgs =
+  | 'data'
+  | 'where'
+type MutationUpdateManyProductsArgs =
+  | 'data'
+  | 'where'
+type MutationUpsertProductArgs =
+  | 'where'
+  | 'create'
+  | 'update'
+type MutationDeleteProductArgs =
+  | 'where'
+type MutationDeleteManyProductsArgs =
   | 'where'
   
 
@@ -475,6 +765,84 @@ export interface MutationFieldDetails {
       info?: GraphQLResolveInfo
     ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
   }
+  createProduct: {
+    type: 'Product'
+    args: Record<MutationCreateProductArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: ProductCreateInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Product> | prisma.Product
+  }
+  updateProduct: {
+    type: 'Product'
+    args: Record<MutationUpdateProductArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: ProductUpdateInput, where: ProductWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Product | null> | prisma.Product | null
+  }
+  updateManyProducts: {
+    type: 'BatchPayload'
+    args: Record<MutationUpdateManyProductsArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: ProductUpdateManyMutationInput, where?: ProductWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
+  }
+  upsertProduct: {
+    type: 'Product'
+    args: Record<MutationUpsertProductArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where: ProductWhereUniqueInput, create: ProductCreateInput, update: ProductUpdateInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Product> | prisma.Product
+  }
+  deleteProduct: {
+    type: 'Product'
+    args: Record<MutationDeleteProductArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where: ProductWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Product | null> | prisma.Product | null
+  }
+  deleteManyProducts: {
+    type: 'BatchPayload'
+    args: Record<MutationDeleteManyProductsArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where?: ProductWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
+  }
 }
   
 
@@ -508,12 +876,16 @@ export interface BatchPayloadFieldDetails {
 type SubscriptionObject =
   | SubscriptionFields
   | { name: 'user', args?: SubscriptionUserArgs[] | false, alias?: string  } 
+  | { name: 'product', args?: SubscriptionProductArgs[] | false, alias?: string  } 
 
 type SubscriptionFields =
   | 'user'
+  | 'product'
 
 
 type SubscriptionUserArgs =
+  | 'where'
+type SubscriptionProductArgs =
   | 'where'
   
 
@@ -530,6 +902,19 @@ export interface SubscriptionFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.UserSubscriptionPayload | null> | prisma.UserSubscriptionPayload | null
+  }
+  product: {
+    type: 'ProductSubscriptionPayload'
+    args: Record<SubscriptionProductArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Subscription">,
+      args: { where?: ProductSubscriptionWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.ProductSubscriptionPayload | null> | prisma.ProductSubscriptionPayload | null
   }
 }
   
@@ -649,6 +1034,131 @@ export interface UserPreviousValuesFieldDetails {
 }
   
 
+// Types for ProductSubscriptionPayload
+
+type ProductSubscriptionPayloadObject =
+  | ProductSubscriptionPayloadFields
+  | { name: 'mutation', args?: [] | false, alias?: string  } 
+  | { name: 'node', args?: [] | false, alias?: string  } 
+  | { name: 'updatedFields', args?: [] | false, alias?: string  } 
+  | { name: 'previousValues', args?: [] | false, alias?: string  } 
+
+type ProductSubscriptionPayloadFields =
+  | 'mutation'
+  | 'node'
+  | 'updatedFields'
+  | 'previousValues'
+
+
+
+  
+
+export interface ProductSubscriptionPayloadFieldDetails {
+  mutation: {
+    type: 'MutationType'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"ProductSubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.MutationType> | prisma.MutationType
+  }
+  node: {
+    type: 'Product'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"ProductSubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Product | null> | prisma.Product | null
+  }
+  updatedFields: {
+    type: 'String'
+    args: {}
+    description: string
+    list: true
+    nullable: false
+    resolve: undefined
+  }
+  previousValues: {
+    type: 'ProductPreviousValues'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"ProductSubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.ProductPreviousValues | null> | prisma.ProductPreviousValues | null
+  }
+}
+  
+
+// Types for ProductPreviousValues
+
+type ProductPreviousValuesObject =
+  | ProductPreviousValuesFields
+  | { name: 'id', args?: [] | false, alias?: string  } 
+  | { name: 'name', args?: [] | false, alias?: string  } 
+  | { name: 'producer', args?: [] | false, alias?: string  } 
+  | { name: 'type', args?: [] | false, alias?: string  } 
+
+type ProductPreviousValuesFields =
+  | 'id'
+  | 'name'
+  | 'producer'
+  | 'type'
+
+
+
+  
+
+export interface ProductPreviousValuesFieldDetails {
+  id: {
+    type: 'ID'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  name: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  producer: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  type: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
 
 export interface UserWhereUniqueInput {
   id?: string | null
@@ -754,6 +1264,136 @@ export type UserWhereInputInputObject =
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
   
+export interface ProductWhereUniqueInput {
+  id?: string | null
+}
+export type ProductWhereUniqueInputInputObject =
+  | Extract<keyof ProductWhereUniqueInput, string>
+  | { name: 'id', alias?: string  } 
+  
+export interface ProductWhereInput {
+  id?: string | null
+  id_not?: string | null
+  id_in?: string[]
+  id_not_in?: string[]
+  id_lt?: string | null
+  id_lte?: string | null
+  id_gt?: string | null
+  id_gte?: string | null
+  id_contains?: string | null
+  id_not_contains?: string | null
+  id_starts_with?: string | null
+  id_not_starts_with?: string | null
+  id_ends_with?: string | null
+  id_not_ends_with?: string | null
+  name?: string | null
+  name_not?: string | null
+  name_in?: string[]
+  name_not_in?: string[]
+  name_lt?: string | null
+  name_lte?: string | null
+  name_gt?: string | null
+  name_gte?: string | null
+  name_contains?: string | null
+  name_not_contains?: string | null
+  name_starts_with?: string | null
+  name_not_starts_with?: string | null
+  name_ends_with?: string | null
+  name_not_ends_with?: string | null
+  producer?: string | null
+  producer_not?: string | null
+  producer_in?: string[]
+  producer_not_in?: string[]
+  producer_lt?: string | null
+  producer_lte?: string | null
+  producer_gt?: string | null
+  producer_gte?: string | null
+  producer_contains?: string | null
+  producer_not_contains?: string | null
+  producer_starts_with?: string | null
+  producer_not_starts_with?: string | null
+  producer_ends_with?: string | null
+  producer_not_ends_with?: string | null
+  type?: string | null
+  type_not?: string | null
+  type_in?: string[]
+  type_not_in?: string[]
+  type_lt?: string | null
+  type_lte?: string | null
+  type_gt?: string | null
+  type_gte?: string | null
+  type_contains?: string | null
+  type_not_contains?: string | null
+  type_starts_with?: string | null
+  type_not_starts_with?: string | null
+  type_ends_with?: string | null
+  type_not_ends_with?: string | null
+  AND?: ProductWhereInput[]
+  OR?: ProductWhereInput[]
+  NOT?: ProductWhereInput[]
+}
+export type ProductWhereInputInputObject =
+  | Extract<keyof ProductWhereInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'id_not', alias?: string  } 
+  | { name: 'id_in', alias?: string  } 
+  | { name: 'id_not_in', alias?: string  } 
+  | { name: 'id_lt', alias?: string  } 
+  | { name: 'id_lte', alias?: string  } 
+  | { name: 'id_gt', alias?: string  } 
+  | { name: 'id_gte', alias?: string  } 
+  | { name: 'id_contains', alias?: string  } 
+  | { name: 'id_not_contains', alias?: string  } 
+  | { name: 'id_starts_with', alias?: string  } 
+  | { name: 'id_not_starts_with', alias?: string  } 
+  | { name: 'id_ends_with', alias?: string  } 
+  | { name: 'id_not_ends_with', alias?: string  } 
+  | { name: 'name', alias?: string  } 
+  | { name: 'name_not', alias?: string  } 
+  | { name: 'name_in', alias?: string  } 
+  | { name: 'name_not_in', alias?: string  } 
+  | { name: 'name_lt', alias?: string  } 
+  | { name: 'name_lte', alias?: string  } 
+  | { name: 'name_gt', alias?: string  } 
+  | { name: 'name_gte', alias?: string  } 
+  | { name: 'name_contains', alias?: string  } 
+  | { name: 'name_not_contains', alias?: string  } 
+  | { name: 'name_starts_with', alias?: string  } 
+  | { name: 'name_not_starts_with', alias?: string  } 
+  | { name: 'name_ends_with', alias?: string  } 
+  | { name: 'name_not_ends_with', alias?: string  } 
+  | { name: 'producer', alias?: string  } 
+  | { name: 'producer_not', alias?: string  } 
+  | { name: 'producer_in', alias?: string  } 
+  | { name: 'producer_not_in', alias?: string  } 
+  | { name: 'producer_lt', alias?: string  } 
+  | { name: 'producer_lte', alias?: string  } 
+  | { name: 'producer_gt', alias?: string  } 
+  | { name: 'producer_gte', alias?: string  } 
+  | { name: 'producer_contains', alias?: string  } 
+  | { name: 'producer_not_contains', alias?: string  } 
+  | { name: 'producer_starts_with', alias?: string  } 
+  | { name: 'producer_not_starts_with', alias?: string  } 
+  | { name: 'producer_ends_with', alias?: string  } 
+  | { name: 'producer_not_ends_with', alias?: string  } 
+  | { name: 'type', alias?: string  } 
+  | { name: 'type_not', alias?: string  } 
+  | { name: 'type_in', alias?: string  } 
+  | { name: 'type_not_in', alias?: string  } 
+  | { name: 'type_lt', alias?: string  } 
+  | { name: 'type_lte', alias?: string  } 
+  | { name: 'type_gt', alias?: string  } 
+  | { name: 'type_gte', alias?: string  } 
+  | { name: 'type_contains', alias?: string  } 
+  | { name: 'type_not_contains', alias?: string  } 
+  | { name: 'type_starts_with', alias?: string  } 
+  | { name: 'type_not_starts_with', alias?: string  } 
+  | { name: 'type_ends_with', alias?: string  } 
+  | { name: 'type_not_ends_with', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
+  
 export interface UserCreateInput {
   id?: string | null
   email?: string | null
@@ -783,6 +1423,41 @@ export type UserUpdateManyMutationInputInputObject =
   | { name: 'email', alias?: string  } 
   | { name: 'name', alias?: string  } 
   
+export interface ProductCreateInput {
+  id?: string | null
+  name?: string
+  producer?: string
+  type?: string
+}
+export type ProductCreateInputInputObject =
+  | Extract<keyof ProductCreateInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'name', alias?: string  } 
+  | { name: 'producer', alias?: string  } 
+  | { name: 'type', alias?: string  } 
+  
+export interface ProductUpdateInput {
+  name?: string | null
+  producer?: string | null
+  type?: string | null
+}
+export type ProductUpdateInputInputObject =
+  | Extract<keyof ProductUpdateInput, string>
+  | { name: 'name', alias?: string  } 
+  | { name: 'producer', alias?: string  } 
+  | { name: 'type', alias?: string  } 
+  
+export interface ProductUpdateManyMutationInput {
+  name?: string | null
+  producer?: string | null
+  type?: string | null
+}
+export type ProductUpdateManyMutationInputInputObject =
+  | Extract<keyof ProductUpdateManyMutationInput, string>
+  | { name: 'name', alias?: string  } 
+  | { name: 'producer', alias?: string  } 
+  | { name: 'type', alias?: string  } 
+  
 export interface UserSubscriptionWhereInput {
   mutation_in?: prisma.MutationType[]
   updatedFields_contains?: string | null
@@ -804,6 +1479,27 @@ export type UserSubscriptionWhereInputInputObject =
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
   
+export interface ProductSubscriptionWhereInput {
+  mutation_in?: prisma.MutationType[]
+  updatedFields_contains?: string | null
+  updatedFields_contains_every?: string[]
+  updatedFields_contains_some?: string[]
+  node?: ProductWhereInput | null
+  AND?: ProductSubscriptionWhereInput[]
+  OR?: ProductSubscriptionWhereInput[]
+  NOT?: ProductSubscriptionWhereInput[]
+}
+export type ProductSubscriptionWhereInputInputObject =
+  | Extract<keyof ProductSubscriptionWhereInput, string>
+  | { name: 'mutation_in', alias?: string  } 
+  | { name: 'updatedFields_contains', alias?: string  } 
+  | { name: 'updatedFields_contains_every', alias?: string  } 
+  | { name: 'updatedFields_contains_some', alias?: string  } 
+  | { name: 'node', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
+  
 
 export type UserOrderByInputValues =
   | 'id_ASC'
@@ -812,6 +1508,20 @@ export type UserOrderByInputValues =
   | 'email_DESC'
   | 'name_ASC'
   | 'name_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC'
+  
+export type ProductOrderByInputValues =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'name_ASC'
+  | 'name_DESC'
+  | 'producer_ASC'
+  | 'producer_DESC'
+  | 'type_ASC'
+  | 'type_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'

@@ -3,3 +3,11 @@ type User {
   email: String @unique
   name: String!
   }
+
+type Product {
+  id: ID! @id
+  name: String!
+  producer: String!
+  type: String!
+  }
+

@@ -1,14 +1,10 @@
 import * as React from "react";
+import { IUser } from '../../types'
 
-export interface IUser {
-    name: string,
-    email: string
-}
-
-const User: React.FC<IUser> = ({ name, email }) => {
+const User: React.FC<IUser> = ({ name, email, id }) => {
     return (
         <div>
-            <p>name: {name} email: {email} </p>
+            <p>name: {name} email: {email} id: {id} </p>
         </div>
     )
 }
