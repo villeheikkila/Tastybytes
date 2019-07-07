@@ -1,10 +1,10 @@
 import * as React from "react";
-import { User } from './components/User'
-import { Product } from "./components/Product"
+
+
+import { UserList } from './components/UserList'
+import { ProductList } from './components/ProductList'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
-import { IUser } from './types'
-import { IProduct } from './types'
 import { AddProduct } from './components/AddProduct'
 
 const ALL_USERS = gql`
@@ -32,29 +32,6 @@ const App = () => {
     const usersQuery = useQuery(ALL_USERS)
     const productsQuery = useQuery(ALL_PRODUCTS)
 
-    const { data, error, loading } = useQuery(ALL_USERS);
-    if (loading) {
-        return <div>Loading...</div>;
-    };
-    if (error) {
-        return <div>Error! {error.message}</div>;
-    };
-
-    if (data) {
-        data.users.forEach((user: { name: string; email: string; id: string }) => console.log("data", user.name, user.email, user.id))
-
-    }
-    console.log('usersQuery: ', usersQuery);
-    console.log('productsQuery: ', productsQuery);
-
-    if (usersQuery.data.users !== undefined) {
-        usersQuery.data.users.forEach((user: { name: string; email: string; id: string }) => console.log("hei", user.name, user.email, user.id))
-    }
-
-    if (productsQuery.data.products !== undefined) {
-        productsQuery.data.products.forEach((product: { name: string; producer: string; id: string }) => console.log("hei", product.name, product.producer, product.id))
-    }
-
     if (usersQuery.data.users === undefined || productsQuery.data.products === undefined) {
         return (
             <div><p>Loading...</p></div>
@@ -64,14 +41,8 @@ const App = () => {
     return (
         <div>
             <AddProduct />
-            <ul key="list">
-                {usersQuery.data.users.map((user: IUser) =>
-                    <li key={user.id}><User key={user.name} name={user.name} email={user.email} id={user.id} /></li>
-                )}
-                {productsQuery.data.products.map((product: IProduct) =>
-                    <li key={product.id}><Product key={product.name} name={product.name} producer={product.producer} type={product.type} id={product.id} /></li>
-                )}
-            </ul>
+            <UserList users={usersQuery.data.users} />
+            <ProductList products={productsQuery.data.products} />
         </div>
     )
 }

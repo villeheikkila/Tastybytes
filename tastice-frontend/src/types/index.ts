@@ -10,3 +10,11 @@ export interface IUser {
     email: string,
     id: string
 }
+
+export interface IUserList {
+    users: IUser[]
+}
+
+export interface IProductList {
+    products: IProduct[]
+}
