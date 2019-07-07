@@ -1,11 +1,13 @@
 import * as React from "react";
-
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import { UserList } from './components/UserList'
 import { ProductList } from './components/ProductList'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { AddProduct } from './components/AddProduct'
+import { Index } from './components/Index'
+import { Navbar } from './components/Navbar'
 
 const ALL_USERS = gql`
 {
@@ -40,9 +42,13 @@ const App = () => {
 
     return (
         <div>
-            <AddProduct />
-            <UserList users={usersQuery.data.users} />
-            <ProductList products={productsQuery.data.products} />
+            <Router>
+                <Navbar />
+                <Route exact path="/" render={() => <Index />} />
+                <Route exact path="/products" render={() => <ProductList products={productsQuery.data.products} />} />
+                <Route exact path="/users" render={() => <UserList users={usersQuery.data.users} />} />
+                <Route exact path="/addproduct" render={() => <AddProduct />} />
+            </Router>
         </div>
     )
 }
