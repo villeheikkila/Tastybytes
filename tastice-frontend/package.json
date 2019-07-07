@@ -1,47 +1,39 @@
 {
-  "name": "tastice",
-  "version": "1.0.0",
-  "description": "Application for keeping track of things you have recently tasted. It mimics the functionality and interface of the popular tasting apps such as Untapped and Vivino. Unlike the previously mentioned apps however, it'll support arbitrary types of foods and drinks such as sodas, coffees and anything you can imagine.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/villeheikkila/tastice.git"
-  },
-  "keywords": [],
-  "author": "Ville Heikkilä",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/villeheikkila/tastice/issues"
-  },
-  "homepage": "https://github.com/villeheikkila/tastice#readme",
-  "devDependencies": {
-    "@types/react": "^16.8.23",
-    "@types/react-dom": "^16.8.4",
-    "apollo-cache-inmemory": "^1.6.2",
-    "apollo-client": "^2.6.3",
-    "apollo-link": "^1.2.12",
-    "apollo-link-error": "^1.1.11",
-    "graphql": "^14.4.2",
-    "source-map-loader": "^0.2.4",
-    "ts-loader": "^6.0.4",
-    "typescript": "^3.5.2",
-    "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.5"
-  },
+  "name": "tastice-frontend",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@types/react-redux": "^7.1.1",
+    "@apollo/react-hooks": "0.1.0-beta.10",
+    "@types/jest": "24.0.15",
+    "@types/node": "12.0.12",
+    "@types/react": "16.8.23",
+    "@types/react-dom": "16.8.4",
     "apollo-boost": "^0.4.3",
-    "apollo-link-http-common": "^0.2.14",
-    "graphql-tag": "^2.10.1",
+    "graphql": "^14.4.2",
     "react": "^16.8.6",
-    "react-apollo": "^3.0.0-beta.2",
     "react-dom": "^16.8.6",
-    "react-redux": "^7.1.0",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "react-scripts": "3.0.1",
+    "typescript": "3.5.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

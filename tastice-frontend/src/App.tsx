@@ -1,13 +1,10 @@
 import * as React from "react";
 import User from './components/User'
 import Product from "./components/Product"
-import { useApolloClient, useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
-import { string } from "prop-types"
 import { IUser } from './types'
 import { IProduct } from './types'
-import { useEffect } from "react";
-import { initializeUsers } from './store/users/userAction'
 
 const ALL_USERS = gql`
 {
@@ -35,11 +32,6 @@ const App = () => {
     console.log('usersQuery: ', usersQuery);
     const productsQuery = useQuery(ALL_PRODUCTS)
     console.log('productsQuery: ', productsQuery);
-
-    useEffect(() => {
-        initializeUsers()
-    }, [])
-
 
     if (usersQuery.data.users !== undefined) {
         usersQuery.data.users.forEach((user: { name: string; email: string; id: string }) => console.log("hei", user.name, user.email, user.id))
