@@ -7,6 +7,7 @@ import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { AddProduct } from './components/AddProduct'
 import { Index } from './components/Index'
+import { LogIn } from './components/LogIn'
 import { Navbar } from './components/Navbar'
 
 const ALL_USERS = gql`
@@ -44,6 +45,7 @@ const App = () => {
         <div>
             <Router>
                 <Navbar />
+                <Route exact path="/login" render={() => <LogIn />} />
                 <Route exact path="/" render={() => <Index />} />
                 <Route exact path="/products" render={() => <ProductList products={productsQuery.data.products} />} />
                 <Route exact path="/users" render={() => <UserList users={usersQuery.data.users} />} />
