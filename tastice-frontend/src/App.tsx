@@ -1,10 +1,11 @@
 import * as React from "react";
-import User from './components/User'
-import Product from "./components/Product"
+import { User } from './components/User'
+import { Product } from "./components/Product"
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 import { IUser } from './types'
 import { IProduct } from './types'
+import { AddProduct } from './components/AddProduct'
 
 const ALL_USERS = gql`
 {
@@ -29,8 +30,21 @@ const ALL_PRODUCTS = gql`
 
 const App = () => {
     const usersQuery = useQuery(ALL_USERS)
-    console.log('usersQuery: ', usersQuery);
     const productsQuery = useQuery(ALL_PRODUCTS)
+
+    const { data, error, loading } = useQuery(ALL_USERS);
+    if (loading) {
+        return <div>Loading...</div>;
+    };
+    if (error) {
+        return <div>Error! {error.message}</div>;
+    };
+
+    if (data) {
+        data.users.forEach((user: { name: string; email: string; id: string }) => console.log("data", user.name, user.email, user.id))
+
+    }
+    console.log('usersQuery: ', usersQuery);
     console.log('productsQuery: ', productsQuery);
 
     if (usersQuery.data.users !== undefined) {
@@ -49,6 +63,7 @@ const App = () => {
 
     return (
         <div>
+            <AddProduct />
             <ul key="list">
                 {usersQuery.data.users.map((user: IUser) =>
                     <li key={user.id}><User key={user.name} name={user.name} email={user.email} id={user.id} /></li>
