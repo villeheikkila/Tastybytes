@@ -4,7 +4,7 @@ Application for keeping track of things you have recently tasted. It mimics the 
 
 ## Technology Stack
 
-The application will be written using React, Redux and TypeScript in the frontend and Node.js and TypeScript in the backend. GraphQL will be used for communication between the application and the server. Prisma will be used to generate the GraphQL APIs and SQL queries. PostgreSQL will be used as the database.
+The application will be written using React, Redux and TypeScript in the frontend and Node.js and TypeScript in the backend. GraphQL will be used for communication between the application and the server. Prisma will be used to manage a PostgreSQL database. 
 
 ## Features for Minimum Viable Product
 

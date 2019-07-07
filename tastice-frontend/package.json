@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,11 @@
   "devDependencies": {
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
+    "apollo-cache-inmemory": "^1.6.2",
+    "apollo-client": "^2.6.3",
+    "apollo-link": "^1.2.12",
+    "apollo-link-error": "^1.1.11",
+    "graphql": "^14.4.2",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^6.0.4",
     "typescript": "^3.5.2",
@@ -27,7 +33,11 @@
     "webpack-cli": "^3.3.5"
   },
   "dependencies": {
+    "apollo-boost": "^0.4.3",
+    "apollo-link-http-common": "^0.2.14",
+    "graphql-tag": "^2.10.1",
     "react": "^16.8.6",
+    "react-apollo": "^3.0.0-beta.2",
     "react-dom": "^16.8.6"
   }
 }
