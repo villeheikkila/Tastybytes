@@ -16,7 +16,7 @@ export const AddProduct = () => {
     })
 
 
-    const submit = async (event: React.FormEvent<HTMLFormElement>
+    const handleAddProduct = async (event: React.FormEvent<HTMLFormElement>
     ): Promise<void> => {
 
         event.preventDefault()
@@ -36,7 +36,7 @@ export const AddProduct = () => {
 
     return (
         <div>
-            <form onSubmit={submit}>
+            <form onSubmit={handleAddProduct}>
                 <div>
                     <p>Name</p>
                     <input

@@ -10,3 +10,14 @@ export const DELETE_PRODUCT = gql`
     }
   }
 `
+
+export const UPDATE_PRODUCT = gql`
+    mutation updateProduct($id: ID!, $name: String!, $producer: String!, $type: String!) {
+        updateProduct(id: $id, name: $name, producer: $producer, type: $type)  {
+            name
+            producer
+            type
+            id
+        }
+  }
+`

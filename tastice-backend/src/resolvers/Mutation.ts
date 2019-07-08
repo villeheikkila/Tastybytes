@@ -65,6 +65,27 @@ export const Mutation = mutationType({
             },
         })
 
+        t.field('updateProduct', {
+            type: 'Product',
+            args: {
+                id: idArg(),
+                name: stringArg(),
+                producer: stringArg(),
+                type: stringArg()
+            },
+            resolve: async (_, args) => {
+                return await prisma.updateProduct({
+                    where: { id: args.id },
+                    data: {
+                        name: args.name,
+                        producer: args.producer,
+                        type: args.type
+                    }
+                })
+            },
+        })
+
+
         t.field('deleteProduct', {
             type: 'Product',
             nullable: true,

@@ -57,6 +57,7 @@ export interface NexusGenFieldTypes {
     deleteUser: NexusGenRootTypes['User'] | null; // User
     login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     signup: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
+    updateProduct: NexusGenRootTypes['Product'] | null; // Product
   }
   Product: { // field return type
     id: string; // ID!
@@ -97,6 +98,12 @@ export interface NexusGenArgTypes {
       email?: string | null; // String
       name?: string | null; // String
       password?: string | null; // String
+    }
+    updateProduct: { // args
+      id?: string | null; // ID
+      name?: string | null; // String
+      producer?: string | null; // String
+      type?: string | null; // String
     }
   }
 }

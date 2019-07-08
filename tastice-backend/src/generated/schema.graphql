@@ -13,6 +13,7 @@ type Mutation {
   deleteUser(id: ID): User
   login(email: String, password: String): AuthPayload
   signup(email: String, name: String, password: String): AuthPayload
+  updateProduct(id: ID, name: String, producer: String, type: String): Product
 }
 
 type Product {

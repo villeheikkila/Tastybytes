@@ -6,7 +6,7 @@ export const LogIn: React.FC<ILogIn> = ({ login, setToken }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const submit = async (event: React.FormEvent<HTMLFormElement>
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>
     ): Promise<void> => {
         event.preventDefault()
 
@@ -28,7 +28,7 @@ export const LogIn: React.FC<ILogIn> = ({ login, setToken }) => {
 
     return (
         <div>
-            <form onSubmit={submit}>
+            <form onSubmit={handleLogin}>
                 <div>
                     <p>Email</p>
                     <input

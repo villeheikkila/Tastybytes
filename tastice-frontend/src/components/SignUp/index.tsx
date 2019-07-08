@@ -15,7 +15,7 @@ export const SignUp = () => {
         onError: handleError
     })
 
-    const submit = async (event: React.FormEvent<HTMLFormElement>
+    const handleSignUp = async (event: React.FormEvent<HTMLFormElement>
     ): Promise<void> => {
         event.preventDefault()
 
@@ -36,7 +36,7 @@ export const SignUp = () => {
 
     return (
         <div>
-            <form onSubmit={submit}>
+            <form onSubmit={handleSignUp}>
                 <div>
                     <p>Name</p>
                     <input
