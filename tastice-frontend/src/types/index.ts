@@ -18,3 +18,12 @@ export interface IUserList {
 export interface IProductList {
     products: IProduct[]
 }
+
+export interface ILogIn {
+    login: any,
+    setToken: any
+}
+
+export interface INavbar {
+    logout: any
+}

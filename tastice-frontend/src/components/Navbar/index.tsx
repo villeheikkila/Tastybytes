@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { INavbar } from '../../types'
 
-export const Navbar = () => {
+export const Navbar: React.FC<INavbar> = ({ logout }) => {
     return (
         <div>
             <nav>
@@ -18,6 +19,7 @@ export const Navbar = () => {
                     <li>
                         <Link to="/products/">Add Products</Link>
                     </li>
+                    <button onClick={logout}>Log out</button>
                 </ul>
             </nav>
         </div>

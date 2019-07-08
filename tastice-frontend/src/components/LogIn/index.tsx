@@ -1,13 +1,28 @@
 import React, { useState } from "react";
+import { ILogIn } from '../../types'
 
-export const LogIn = () => {
+export const LogIn: React.FC<ILogIn> = ({ login, setToken }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     const submit = async (event: React.FormEvent<HTMLFormElement>
     ): Promise<void> => {
-
         event.preventDefault()
+        console.log('password: ', password);
+        console.log('email: ', email);
+        const result = await login({
+            variables: { email, password }
+
+        })
+
+        if (result) {
+            const token = result.data.login.token
+            console.log('token: ', token);
+            setToken(token)
+            localStorage.setItem('token', token)
+        }
+
+        console.log('result: ', result);
 
         setEmail("")
         setPassword("")
@@ -30,7 +45,7 @@ export const LogIn = () => {
                         onChange={({ target }) => setPassword(target.value)}
                     />
                 </div>
-                <button type='submit'>Add product!</button>
+                <button type='submit'>Log In!</button>
             </form>
         </div>
     )
