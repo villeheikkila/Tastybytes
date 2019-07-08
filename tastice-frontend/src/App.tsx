@@ -1,48 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {ALL_USERS, ALL_PRODUCTS, LOGIN } from './queries'
 
 import { UserList } from './components/UserList'
 import { ProductList } from './components/ProductList'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import { gql } from 'apollo-boost'
 import { AddProduct } from './components/AddProduct'
 import { Index } from './components/Index'
 import { LogIn } from './components/LogIn'
 import { Navbar } from './components/Navbar'
 
-const ALL_USERS = gql`
-{
-  users  {
-    name
-    id
-    email
-  }
-}
-`
 
-const ALL_PRODUCTS = gql`
-{
-  products  {
-    name
-    producer
-    type
-    id
-  }
-}
-`
-
-const LOGIN = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password)  {
-        token
-        user {
-            email
-            name
-            id
-        }
-    }
-  }
-`
 
 const App = () => {
     const [token, setToken] = useState(null)

@@ -8,16 +8,13 @@ export const LogIn: React.FC<ILogIn> = ({ login, setToken }) => {
     const submit = async (event: React.FormEvent<HTMLFormElement>
     ): Promise<void> => {
         event.preventDefault()
-        console.log('password: ', password);
-        console.log('email: ', email);
+
         const result = await login({
             variables: { email, password }
-
         })
 
         if (result) {
             const token = result.data.login.token
-            console.log('token: ', token);
             setToken(token)
             localStorage.setItem('token', token)
         }
