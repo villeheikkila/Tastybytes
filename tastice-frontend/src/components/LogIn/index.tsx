@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ILogIn } from '../../types'
+import { Link } from "react-router-dom";
 
 export const LogIn: React.FC<ILogIn> = ({ login, setToken }) => {
     const [email, setEmail] = useState('')
@@ -43,6 +44,7 @@ export const LogIn: React.FC<ILogIn> = ({ login, setToken }) => {
                     />
                 </div>
                 <button type='submit'>Log In!</button>
+                <Link to="/signup" >Sign up!</Link>
             </form>
         </div>
     )
