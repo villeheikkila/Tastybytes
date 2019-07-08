@@ -5,6 +5,9 @@ export interface IProduct {
     id: string
 }
 
+export interface IProductProps {
+    product: IProduct
+}
 export interface IUser {
     name: string,
     email: string,

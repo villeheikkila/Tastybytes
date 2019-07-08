@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { IProduct } from '../../types'
+import { IProductProps } from '../../types'
 import { DELETE_PRODUCT, UPDATE_PRODUCT } from './queries'
 import { useMutation } from '@apollo/react-hooks'
 
-export const Product: React.FC<IProduct> = ({ name, producer, type, id }) => {
+export const Product: React.FC<IProductProps> = ({ product }) => {
     const [updatedName, setUpdatedName] = useState('')
     const [updatedProducer, setUpdatedProducer] = useState('')
     const [updatedType, setUpdatedType] = useState('')
@@ -20,11 +20,17 @@ export const Product: React.FC<IProduct> = ({ name, producer, type, id }) => {
         onError: handleError
     })
 
+
+    if (product === undefined) {
+        return null
+    }
+
+
     const handleDeleteProduct = async () => {
-        console.log('id:', id, "id");
+        console.log('id:', product.id, "id");
 
         const result = await deleteProduct({
-            variables: { id }
+            variables: { id: product.id }
         })
 
         if (result) {
@@ -41,10 +47,10 @@ export const Product: React.FC<IProduct> = ({ name, producer, type, id }) => {
         console.log('updatedType: ', updatedType);
         console.log('updatedProducer: ', updatedProducer);
         console.log('updatedName: ', updatedName);
-        console.log('id: ', id);
+        console.log('id: ', product.id);
 
         const result = await updateProduct({
-            variables: { id, name: updatedName, producer: updatedProducer, type: updatedType }
+            variables: { id: product.id, name: updatedName, producer: updatedProducer, type: updatedType }
         })
 
         if (result) {
@@ -58,7 +64,7 @@ export const Product: React.FC<IProduct> = ({ name, producer, type, id }) => {
 
     return (
         <div>
-            <p>name: {name} producer: {producer} type: {type} </p>
+            <p>name: {product.name} producer: {product.producer} type: {product.type} </p>
             <button onClick={handleDeleteProduct}>Delete</button>
             <form onSubmit={handleUpdateProduct}>
                 <div>

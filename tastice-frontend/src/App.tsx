@@ -10,6 +10,8 @@ import { Index } from './components/Index'
 import { LogIn } from './components/LogIn'
 import { SignUp } from './components/SignUp'
 import { Navbar } from './components/Navbar'
+import { Product } from './components/Product'
+import { IProduct } from './types'
 
 const App = () => {
     const [token, setToken] = useState(null)
@@ -55,6 +57,7 @@ const App = () => {
         )
     }
 
+    const productById = (id: string) => productsQuery.data.products.find((product: IProduct) => product.id === id)
 
     return (
         <div>
@@ -64,6 +67,7 @@ const App = () => {
                 <Route exact path="/products" render={() => <ProductList products={productsQuery.data.products} />} />
                 <Route exact path="/users" render={() => <UserList users={usersQuery.data.users} />} />
                 <Route exact path="/addproduct" render={() => <AddProduct />} />
+                <Route exact path="/products/:id" render={({ match }) => <Product product={productById(match.params.id)} />} />
             </Router>
         </div>
     )
