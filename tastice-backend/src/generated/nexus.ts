@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as types from "../src/types"
+import * as types from "../types"
 
 
 
@@ -35,7 +35,6 @@ export interface NexusGenRootTypes {
     email?: string | null; // String
     id: string; // ID!
     name: string; // String!
-    password?: string | null; // String
   }
   String: string;
   Int: number;
@@ -54,6 +53,8 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     addProduct: NexusGenRootTypes['Product'] | null; // Product
+    deleteProduct: NexusGenRootTypes['Product'] | null; // Product
+    deleteUser: NexusGenRootTypes['User'] | null; // User
     login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     signup: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
   }
@@ -65,12 +66,13 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     me: NexusGenRootTypes['User'] | null; // User
+    products: NexusGenRootTypes['Product'][] | null; // [Product!]
+    users: NexusGenRootTypes['User'][] | null; // [User!]
   }
   User: { // field return type
     email: string | null; // String
     id: string; // ID!
     name: string; // String!
-    password: string | null; // String
   }
 }
 
@@ -80,6 +82,12 @@ export interface NexusGenArgTypes {
       name?: string | null; // String
       producer?: string | null; // String
       type?: string | null; // String
+    }
+    deleteProduct: { // args
+      id?: string | null; // ID
+    }
+    deleteUser: { // args
+      id?: string | null; // ID
     }
     login: { // args
       email?: string | null; // String

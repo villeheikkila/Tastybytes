@@ -9,7 +9,7 @@ export default {
     Product: ['id']
   },
   embeddedTypes: [],
-  clientPath: 'generated/prisma-client',
+  clientPath: 'src/generated/prisma-client',
   schema: {
   "__schema": {
     "queryType": {

@@ -2,8 +2,8 @@ endpoint: http://localhost:4466
 datamodel: datamodel.prisma
 generate:
   - generator: typescript-client
-    output: ./generated/prisma-client/
+    output: ./src/generated/prisma-client/
 hooks:
   post-deploy:
     - prisma generate
-    - nexus-prisma-generate --client ./generated/prisma-client --output ./generated/nexus-prisma
+    - npx nexus-prisma-generate --client ./src/generated/prisma-client --output ./src/generated/nexus-prisma

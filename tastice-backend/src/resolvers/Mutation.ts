@@ -2,7 +2,7 @@ import { stringArg, idArg, mutationType } from 'nexus'
 import { hash, compare } from 'bcrypt'
 require('dotenv').config()
 import { sign } from 'jsonwebtoken'
-import { prisma } from '../../generated/prisma-client'
+import { prisma } from '../generated/prisma-client'
 
 
 export const Mutation = mutationType({
@@ -44,7 +44,7 @@ export const Mutation = mutationType({
                     throw new Error('Invalid password')
                 }
                 return {
-                    token: sign({ userId: user.id }, APP_SECRET),
+                    token: sign({ userId: user.id }, process.env.SECRET),
                     user,
                 }
             },
@@ -63,6 +63,28 @@ export const Mutation = mutationType({
                     producer: args.name,
                     type: args.type
                 })
+            },
+        })
+
+        t.field('deleteProduct', {
+            type: 'Product',
+            nullable: true,
+            args: {
+                id: idArg(),
+            },
+            resolve: (parent, { id }, ctx) => {
+                return ctx.prisma.deleteProduct({ id })
+            },
+        })
+
+        t.field('deleteUser', {
+            type: 'User',
+            nullable: true,
+            args: {
+                id: idArg(),
+            },
+            resolve: (parent, { id }, ctx) => {
+                return ctx.prisma.deleteUser({ id })
             },
         })
     }

@@ -1,5 +1,5 @@
-import { prisma } from '../generated/prisma-client'
-import datamodelInfo from '../generated/nexus-prisma'
+import { prisma } from './generated/prisma-client'
+import datamodelInfo from './generated/nexus-prisma'
 import * as path from 'path'
 import { makePrismaSchema } from 'nexus-prisma'
 import { GraphQLServer } from 'graphql-yoga'
@@ -16,8 +16,8 @@ const schema = makePrismaSchema({
     },
 
     outputs: {
-        schema: path.join(__dirname, '../generated/schema.graphql'),
-        typegen: path.join(__dirname, '../generated/nexus.ts'),
+        schema: path.join(__dirname, './generated/schema.graphql'),
+        typegen: path.join(__dirname, './generated/nexus.ts'),
     },
 
     nonNullDefaults: {

@@ -1,7 +1,7 @@
 
 import { getUserId } from '../utils'
 import { stringArg, idArg, queryType } from 'nexus'
-import { prisma } from '../../generated/prisma-client'
+import { prisma } from '../generated/prisma-client'
 
 export const Query = queryType({
     definition(t) {
@@ -13,7 +13,21 @@ export const Query = queryType({
             },
         })
 
+        t.list.field('users', {
+            type: 'User',
+            resolve: (parent, args, ctx) => {
+                return ctx.prisma.users()
+            },
+        })
+
+
+        t.list.field('products', {
+            type: 'Product',
+            resolve: (parent, args, ctx) => {
+                return ctx.prisma.products()
+            },
+        })
+
 
     }
-
 })
