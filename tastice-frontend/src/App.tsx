@@ -31,6 +31,16 @@ const ALL_PRODUCTS = gql`
 }
 `
 
+const LOGIN = gql`
+  mutation login($email: String!, $password: String!) {
+    login(email: $username, password: $password)  {
+      email
+      name
+      admin
+    }
+  }
+`
+
 const App = () => {
     const usersQuery = useQuery(ALL_USERS)
     const productsQuery = useQuery(ALL_PRODUCTS)

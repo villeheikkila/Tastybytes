@@ -1,20 +1,14 @@
 import { prisma } from '../generated/prisma-client'
 import datamodelInfo from '../generated/nexus-prisma'
 import * as path from 'path'
-import { stringArg, idArg } from 'nexus'
-import { prismaObjectType, makePrismaSchema } from 'nexus-prisma'
+import { makePrismaSchema } from 'nexus-prisma'
 import { GraphQLServer } from 'graphql-yoga'
+import { permissions } from './permissions'
+import * as allTypes from './resolvers'
 
-
-const Mutation = prismaObjectType({
-    name: 'Mutation',
-    definition(t) {
-        t.prismaFields(['createUser', 'createProduct'])
-    },
-})
 
 const schema = makePrismaSchema({
-    types: [Mutation],
+    types: allTypes,
 
     prisma: {
         datamodelInfo,
@@ -22,13 +16,36 @@ const schema = makePrismaSchema({
     },
 
     outputs: {
-        schema: path.join(__dirname, './generated/schema.graphql'),
-        typegen: path.join(__dirname, './generated/nexus.ts'),
+        schema: path.join(__dirname, '../generated/schema.graphql'),
+        typegen: path.join(__dirname, '../generated/nexus.ts'),
+    },
+
+    nonNullDefaults: {
+        input: false,
+        output: false,
+    },
+
+    typegenAutoConfig: {
+        sources: [
+            {
+                source: path.join(__dirname, './types.ts'),
+                alias: 'types',
+            },
+        ],
+        contextType: 'types.Context',
     },
 })
 
 const server = new GraphQLServer({
     schema,
-    context: { prisma },
+    middlewares: [permissions],
+    context: request => {
+        return {
+            ...request,
+            prisma,
+        }
+    },
 })
+
+
 server.start(() => console.log('Server is running on http://localhost:4000'))
