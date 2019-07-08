@@ -11,8 +11,6 @@ import { LogIn } from './components/LogIn'
 import { SignUp } from './components/SignUp'
 import { Navbar } from './components/Navbar'
 
-
-
 const App = () => {
     const [token, setToken] = useState(null)
     const usersQuery = useQuery(ALL_USERS)
@@ -28,6 +26,7 @@ const App = () => {
     const handleError = (error: any) => {
         console.log('error: ', error);
     }
+
     const [login] = useMutation(LOGIN, {
         onError: handleError
     })

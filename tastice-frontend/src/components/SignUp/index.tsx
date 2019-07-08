@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SIGN_UP } from '../SignUp/queries'
+import { SIGN_UP } from './queries'
 import { useMutation } from '@apollo/react-hooks'
 
 export const SignUp = () => {

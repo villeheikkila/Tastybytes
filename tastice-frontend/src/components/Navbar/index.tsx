@@ -14,10 +14,10 @@ export const Navbar: React.FC<INavbar> = ({ logout }) => {
                         <Link to="/addproduct/">Add Product</Link>
                     </li>
                     <li>
-                        <Link to="/users/">Add User</Link>
+                        <Link to="/users/">Users</Link>
                     </li>
                     <li>
-                        <Link to="/products/">Add Products</Link>
+                        <Link to="/products/">Products</Link>
                     </li>
                     <button onClick={logout}>Log out</button>
                 </ul>
