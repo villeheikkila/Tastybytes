@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import {ALL_USERS, ALL_PRODUCTS, LOGIN } from './queries'
+import { ALL_USERS, ALL_PRODUCTS, LOGIN } from './queries'
 
 import { UserList } from './components/UserList'
 import { ProductList } from './components/ProductList'
@@ -8,6 +8,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { AddProduct } from './components/AddProduct'
 import { Index } from './components/Index'
 import { LogIn } from './components/LogIn'
+import { SignUp } from './components/SignUp'
 import { Navbar } from './components/Navbar'
 
 
@@ -40,7 +41,12 @@ const App = () => {
 
     if (!token) {
         return (
-            <LogIn login={login} setToken={setToken} />
+            <div>
+                <Router>
+                    <Route exact path="/" render={() => <LogIn login={login} setToken={setToken} />} />
+                    <Route exact path="/signup" render={() => <SignUp />} />
+                </Router>
+            </div>
         )
     }
 
