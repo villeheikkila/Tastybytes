@@ -1,17 +1,14 @@
 import { verify } from 'jsonwebtoken'
-import { Context } from './types'
+import { Context, Token } from '../types'
+require('dotenv').config()
 
-export const APP_SECRET = 'appsecret321'
-
-interface Token {
-    userId: string
-}
+export const SECRET: string = process.env.SECRET
 
 export function getUserId(context: Context) {
     const Authorization = context.request.get('Authorization')
     if (Authorization) {
         const token = Authorization.replace('Bearer ', '')
-        const verifiedToken = verify(token, APP_SECRET) as Token
+        const verifiedToken = verify(token, SECRET) as Token
         return verifiedToken && verifiedToken.userId
     }
 }
