@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const Navbar: React.FC<INavbar> = ({ logout }) => {
+export const Navbar: React.FC<INavbar> = ({ setToken }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -144,6 +144,11 @@ export const Navbar: React.FC<INavbar> = ({ logout }) => {
     mobileMoreAnchorEl,
     setMobileMoreAnchorEl
   ] = React.useState<null | HTMLElement>(null);
+
+  const logout = async () => {
+    setToken(null);
+    localStorage.clear();
+  };
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);

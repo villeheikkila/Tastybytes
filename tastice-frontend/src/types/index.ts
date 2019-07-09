@@ -23,12 +23,11 @@ export interface IProductList {
 }
 
 export interface ILogIn {
-  login: any;
   setToken: any;
 }
 
 export interface INavbar {
-  logout: any;
+  setToken: any;
 }
 
 export interface IUserObject {

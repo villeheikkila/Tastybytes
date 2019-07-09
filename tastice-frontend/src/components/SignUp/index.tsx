@@ -13,11 +13,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles(theme => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white
-    }
-  },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
@@ -41,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const SignUp: React.FC<ILogIn> = ({ login, setToken }) => {
+export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
   const [firstName, setLastName] = useState("");
   const [lastName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -78,7 +73,7 @@ export const SignUp: React.FC<ILogIn> = ({ login, setToken }) => {
       <div className={classes.paper}>
         <img
           className={classes.image}
-          src="https://fontmeme.com/permalink/190704/0daa2ab57e001e0aa2002608810c7a69.png"
+          src="https://fontmeme.com/permalink/190709/2864eb8c1c66dd28b0eb795fc422ff02.png"
           alt="logo"
         />
 

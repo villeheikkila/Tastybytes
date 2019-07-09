@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { ALL_USERS, ALL_PRODUCTS, LOGIN } from "./queries";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { UserList } from "./components/UserList";
 import { ProductList } from "./components/ProductList";
-import { useQuery, useMutation } from "@apollo/react-hooks";
 import { AddProduct } from "./components/AddProduct";
 import { Index } from "./components/Index";
 import { LogIn } from "./components/LogIn";
@@ -13,21 +12,24 @@ import { Navbar } from "./components/Navbar";
 import { Product } from "./components/Product";
 import { Profile } from "./components/Profile";
 import { IProduct } from "./types";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { ALL_PRODUCTS } from "./queries";
 
+import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import blue from "@material-ui/core/colors/blue";
+import pink from "@material-ui/core/colors/pink";
 
 const theme = createMuiTheme({
   palette: {
-    type: "dark"
+    type: "dark",
+    primary: blue,
+    secondary: pink
   }
 });
 
 const App = () => {
   const [token, setToken] = useState(null);
-  const usersQuery = useQuery(ALL_USERS);
   const productsQuery = useQuery(ALL_PRODUCTS);
 
   useEffect(() => {
@@ -37,61 +39,37 @@ const App = () => {
     }
   });
 
-  const handleError = (error: any) => {
-    console.log("error: ", error);
-  };
-
-  const [login] = useMutation(LOGIN, {
-    onError: handleError
-  });
-
-  const logout = async (
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    event.preventDefault();
-    setToken(null);
-    localStorage.clear();
-  };
+  const productById = (id: string) =>
+    productsQuery.data.products.find((product: IProduct) => product.id === id);
 
   if (!token) {
     return (
       <div>
-        <Router>
-          <Route
-            exact
-            path="/"
-            render={() => <LogIn login={login} setToken={setToken} />}
-          />
-          <Route
-            exact
-            path="/signup"
-            render={() => <SignUp login={login} setToken={setToken} />}
-          />
-        </Router>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <Route
+              exact
+              path="/"
+              render={() => <LogIn setToken={setToken} />}
+            />
+            <Route
+              exact
+              path="/signup"
+              render={() => <SignUp setToken={setToken} />}
+            />
+          </Router>
+        </ThemeProvider>
       </div>
     );
   }
-
-  if (
-    usersQuery.data.users === undefined ||
-    productsQuery.data.products === undefined
-  ) {
-    return (
-      <div>
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
-  const productById = (id: string) =>
-    productsQuery.data.products.find((product: IProduct) => product.id === id);
 
   return (
     <div>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
-          <Navbar logout={logout} />
+          <Navbar setToken={setToken} />
           <div style={{ padding: 70 }}>
             <Route exact path="/" render={() => <Index />} />
             <Route
@@ -101,11 +79,7 @@ const App = () => {
                 <ProductList products={productsQuery.data.products} />
               )}
             />
-            <Route
-              exact
-              path="/users"
-              render={() => <UserList users={usersQuery.data.users} />}
-            />
+            <Route exact path="/users" render={() => <UserList />} />
             <Route exact path="/addproduct" render={() => <AddProduct />} />
             <Route
               exact

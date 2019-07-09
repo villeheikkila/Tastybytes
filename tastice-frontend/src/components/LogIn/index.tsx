@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ILogIn } from "../../types";
 import { Link } from "react-router-dom";
+import { LOGIN } from "./queries";
+import { useMutation } from "@apollo/react-hooks";
 
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -10,23 +12,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles(theme => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white
-    }
-  },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
-  },
   form: {
-    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1)
   },
   submit: {
@@ -40,10 +32,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const LogIn: React.FC<ILogIn> = ({ login, setToken }) => {
+export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const classes = useStyles();
+
+  const handleError = (error: any) => {
+    console.log("error: ", error);
+  };
+
+  const [login] = useMutation(LOGIN, {
+    onError: handleError
+  });
 
   const handleLogin = async (
     event: React.FormEvent<HTMLFormElement>
@@ -53,8 +53,6 @@ export const LogIn: React.FC<ILogIn> = ({ login, setToken }) => {
     const result = await login({
       variables: { email, password }
     });
-
-    console.log("result: ", result.data.login.user);
 
     if (result) {
       const token = result.data.login.token;
@@ -69,7 +67,7 @@ export const LogIn: React.FC<ILogIn> = ({ login, setToken }) => {
       <div className={classes.paper}>
         <img
           className={classes.image}
-          src="https://fontmeme.com/permalink/190704/0daa2ab57e001e0aa2002608810c7a69.png"
+          src="https://fontmeme.com/permalink/190709/2864eb8c1c66dd28b0eb795fc422ff02.png"
           alt="logo"
         />
 
