@@ -145,38 +145,30 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
     setMobileMoreAnchorEl
   ] = React.useState<null | HTMLElement>(null);
 
-  const logout = async () => {
-    setToken(null);
+  const logout = () => {
     localStorage.clear();
+    setToken(null);
   };
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  function handleProfileMenuOpen(event: React.MouseEvent<HTMLElement>) {
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
-  }
 
-  function handleMobileMenuClose() {
-    setMobileMoreAnchorEl(null);
-  }
+  const handleMobileMenuClose = () => setMobileMoreAnchorEl(null);
 
-  function handleMenuClose() {
+  const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
-  }
+  };
 
-  function handleMobileMenuOpen(event: React.MouseEvent<HTMLElement>) {
+  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) =>
     setMobileMoreAnchorEl(event.currentTarget);
-  }
 
-  function handleDrawerOpen() {
-    setOpen(true);
-  }
+  const handleDrawerOpen = () => setOpen(true);
 
-  function handleDrawerClose() {
-    setOpen(false);
-  }
+  const handleDrawerClose = () => setOpen(false);
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
