@@ -11,7 +11,19 @@ import { LogIn } from "./components/LogIn";
 import { SignUp } from "./components/SignUp";
 import { Navbar } from "./components/Navbar";
 import { Product } from "./components/Product";
+import { Profile } from "./components/Profile";
 import { IProduct } from "./types";
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+
+const theme = createMuiTheme({
+  palette: {
+    type: "dark"
+  }
+});
 
 const App = () => {
   const [token, setToken] = useState(null);
@@ -76,28 +88,44 @@ const App = () => {
 
   return (
     <div>
-      <Router>
-        <Navbar logout={logout} />
-        <Route exact path="/" render={() => <Index />} />
-        <Route
-          exact
-          path="/products"
-          render={() => <ProductList products={productsQuery.data.products} />}
-        />
-        <Route
-          exact
-          path="/users"
-          render={() => <UserList users={usersQuery.data.users} />}
-        />
-        <Route exact path="/addproduct" render={() => <AddProduct />} />
-        <Route
-          exact
-          path="/products/:id"
-          render={({ match }) => (
-            <Product product={productById(match.params.id)} />
-          )}
-        />
-      </Router>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router>
+          <Navbar logout={logout} />
+          <div style={{ padding: 70 }}>
+            <Route exact path="/" render={() => <Index />} />
+            <Route
+              exact
+              path="/products"
+              render={() => (
+                <ProductList products={productsQuery.data.products} />
+              )}
+            />
+            <Route
+              exact
+              path="/users"
+              render={() => <UserList users={usersQuery.data.users} />}
+            />
+            <Route exact path="/addproduct" render={() => <AddProduct />} />
+            <Route
+              exact
+              path="/profile"
+              render={() => (
+                <Profile
+                  user={{ name: "Moi", email: "Hei@google.com", id: "id" }}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/products/:id"
+              render={({ match }) => (
+                <Product product={productById(match.params.id)} />
+              )}
+            />
+          </div>
+        </Router>
+      </ThemeProvider>
     </div>
   );
 };

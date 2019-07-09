@@ -184,7 +184,9 @@ export const Navbar: React.FC<INavbar> = ({ logout }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>
+        Profile
+      </MenuItem>
       <MenuItem onClick={logout}>Logout</MenuItem>
     </Menu>
   );
@@ -208,7 +210,7 @@ export const Navbar: React.FC<INavbar> = ({ logout }) => {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem component={Link} to="/profile">
         <IconButton
           aria-label="Account of current user"
           aria-controls="primary-search-account-menu"
@@ -225,7 +227,7 @@ export const Navbar: React.FC<INavbar> = ({ logout }) => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="absolute" color="default">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -256,7 +258,7 @@ export const Navbar: React.FC<INavbar> = ({ logout }) => {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="Show 17 new notifications" color="inherit">
+            <IconButton aria-label="Show new notifications" color="inherit">
               <Badge badgeContent={0} color="secondary">
                 <NotificationsIcon />
               </Badge>

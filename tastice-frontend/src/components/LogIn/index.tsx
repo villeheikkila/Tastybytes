@@ -54,6 +54,8 @@ export const LogIn: React.FC<ILogIn> = ({ login, setToken }) => {
       variables: { email, password }
     });
 
+    console.log("result: ", result.data.login.user);
+
     if (result) {
       const token = result.data.login.token;
       setToken(token);
