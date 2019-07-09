@@ -3,7 +3,7 @@ import { ILogIn } from "../../types";
 import { Link } from "react-router-dom";
 import { LOGIN } from "./queries";
 import { useMutation } from "@apollo/react-hooks";
-
+import { Notifications } from "../Notification";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -38,7 +38,7 @@ export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
   const classes = useStyles();
 
   const handleError = (error: any) => {
-    console.log("error: ", error);
+    console.log("error:", error.message);
   };
 
   const [login] = useMutation(LOGIN, {

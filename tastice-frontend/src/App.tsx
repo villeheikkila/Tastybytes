@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { UserList } from "./components/UserList";
 import { ProductList } from "./components/ProductList";
 import { AddProduct } from "./components/AddProduct";
 import { Index } from "./components/Index";
+import { Notifications } from "./components/Notification";
 import { LogIn } from "./components/LogIn";
 import { SignUp } from "./components/SignUp";
 import { Navbar } from "./components/Navbar";
