@@ -12,7 +12,6 @@ import Button from "@material-ui/core/Button";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
-      marginTop: 30,
       padding: theme.spacing(3, 2),
       display: "flex",
       flexDirection: "column",

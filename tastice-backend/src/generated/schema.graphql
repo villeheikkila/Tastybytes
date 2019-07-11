@@ -17,11 +17,31 @@ type Mutation {
   updateUser(email: String, firstName: String, id: ID, lastName: String): User
 }
 
+enum MutationType {
+  CREATED
+  DELETED
+  UPDATED
+}
+
 type Product {
   id: ID!
   name: String!
   producer: String
   type: String
+}
+
+type ProductPreviousValues {
+  id: ID!
+  name: String!
+  producer: String
+  type: String
+}
+
+type ProductSubscriptionPayload {
+  mutation: MutationType!
+  node: Product
+  previousValues: ProductPreviousValues
+  updatedFields: [String!]
 }
 
 type Query {
@@ -30,9 +50,29 @@ type Query {
   users: [User!]
 }
 
+type Subscription {
+  product: ProductSubscriptionPayload
+  user: UserSubscriptionPayload
+}
+
 type User {
   email: String
   firstName: String!
   id: ID!
   lastName: String!
+}
+
+type UserPreviousValues {
+  email: String
+  firstName: String!
+  id: ID!
+  lastName: String!
+  password: String!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  previousValues: UserPreviousValues
+  updatedFields: [String!]
 }

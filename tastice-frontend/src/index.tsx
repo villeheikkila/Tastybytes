@@ -4,13 +4,22 @@ import { ApolloClient, InMemoryCache, HttpLink } from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { createHttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
+import { split } from "apollo-link";
+import { WebSocketLink } from "apollo-link-ws";
+import { getMainDefinition } from "apollo-utilities";
+
 import App from "./App";
 
 const SERVER_URL: string =
   process.env.REACT_APP_SERVER_URL || "http://localhost:4000/";
 
 const httpLink = createHttpLink({
-  uri: `${SERVER_URL}`
+  uri: `http://${SERVER_URL}`
+});
+
+const wsLink = new WebSocketLink({
+  uri: `ws://${SERVER_URL}`,
+  options: { reconnect: true }
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -23,8 +32,17 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const link = split(
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query);
+    return kind === "OperationDefinition" && operation === "subscription";
+  },
+  wsLink,
+  authLink.concat(httpLink)
+);
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link,
   cache: new InMemoryCache()
 });
 

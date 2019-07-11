@@ -16,6 +16,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  MutationType: "CREATED" | "DELETED" | "UPDATED"
 }
 
 export interface NexusGenRootTypes {
@@ -30,12 +31,38 @@ export interface NexusGenRootTypes {
     producer?: string | null; // String
     type?: string | null; // String
   }
+  ProductPreviousValues: { // root type
+    id: string; // ID!
+    name: string; // String!
+    producer?: string | null; // String
+    type?: string | null; // String
+  }
+  ProductSubscriptionPayload: { // root type
+    mutation: NexusGenEnums['MutationType']; // MutationType!
+    node?: NexusGenRootTypes['Product'] | null; // Product
+    previousValues?: NexusGenRootTypes['ProductPreviousValues'] | null; // ProductPreviousValues
+    updatedFields?: string[] | null; // [String!]
+  }
   Query: {};
+  Subscription: {};
   User: { // root type
     email?: string | null; // String
     firstName: string; // String!
     id: string; // ID!
     lastName: string; // String!
+  }
+  UserPreviousValues: { // root type
+    email?: string | null; // String
+    firstName: string; // String!
+    id: string; // ID!
+    lastName: string; // String!
+    password: string; // String!
+  }
+  UserSubscriptionPayload: { // root type
+    mutation: NexusGenEnums['MutationType']; // MutationType!
+    node?: NexusGenRootTypes['User'] | null; // User
+    previousValues?: NexusGenRootTypes['UserPreviousValues'] | null; // UserPreviousValues
+    updatedFields?: string[] | null; // [String!]
   }
   String: string;
   Int: number;
@@ -45,6 +72,7 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  MutationType: NexusGenEnums['MutationType'];
 }
 
 export interface NexusGenFieldTypes {
@@ -67,16 +95,45 @@ export interface NexusGenFieldTypes {
     producer: string | null; // String
     type: string | null; // String
   }
+  ProductPreviousValues: { // field return type
+    id: string; // ID!
+    name: string; // String!
+    producer: string | null; // String
+    type: string | null; // String
+  }
+  ProductSubscriptionPayload: { // field return type
+    mutation: NexusGenEnums['MutationType']; // MutationType!
+    node: NexusGenRootTypes['Product'] | null; // Product
+    previousValues: NexusGenRootTypes['ProductPreviousValues'] | null; // ProductPreviousValues
+    updatedFields: string[] | null; // [String!]
+  }
   Query: { // field return type
     me: NexusGenRootTypes['User'] | null; // User
     products: NexusGenRootTypes['Product'][] | null; // [Product!]
     users: NexusGenRootTypes['User'][] | null; // [User!]
+  }
+  Subscription: { // field return type
+    product: NexusGenRootTypes['ProductSubscriptionPayload'] | null; // ProductSubscriptionPayload
+    user: NexusGenRootTypes['UserSubscriptionPayload'] | null; // UserSubscriptionPayload
   }
   User: { // field return type
     email: string | null; // String
     firstName: string; // String!
     id: string; // ID!
     lastName: string; // String!
+  }
+  UserPreviousValues: { // field return type
+    email: string | null; // String
+    firstName: string; // String!
+    id: string; // ID!
+    lastName: string; // String!
+    password: string; // String!
+  }
+  UserSubscriptionPayload: { // field return type
+    mutation: NexusGenEnums['MutationType']; // MutationType!
+    node: NexusGenRootTypes['User'] | null; // User
+    previousValues: NexusGenRootTypes['UserPreviousValues'] | null; // UserPreviousValues
+    updatedFields: string[] | null; // [String!]
   }
 }
 
@@ -123,11 +180,11 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthPayload" | "Mutation" | "Product" | "Query" | "User";
+export type NexusGenObjectNames = "AuthPayload" | "Mutation" | "Product" | "ProductPreviousValues" | "ProductSubscriptionPayload" | "Query" | "Subscription" | "User" | "UserPreviousValues" | "UserSubscriptionPayload";
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = "MutationType";
 
 export type NexusGenInterfaceNames = never;
 
