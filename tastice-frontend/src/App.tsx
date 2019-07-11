@@ -71,7 +71,7 @@ const App = () => {
         <CssBaseline />
         <Router>
           <Navbar setToken={setToken} />
-          <div style={{ padding: 70 }}>
+          <div style={{ padding: 100 }}>
             <Route exact path="/" render={() => <Index />} />
             <Route
               exact
