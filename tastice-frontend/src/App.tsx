@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-import { useQuery, useMutation } from "@apollo/react-hooks";
 
 import { UserList } from "./components/UserList";
 import { ProductList } from "./components/ProductList";
@@ -10,9 +9,7 @@ import { Notifications } from "./components/Notification";
 import { LogIn } from "./components/LogIn";
 import { SignUp } from "./components/SignUp";
 import { Navbar } from "./components/Navbar";
-import { Product } from "./components/Product";
 import { Profile } from "./components/Profile";
-import { IProduct } from "./types";
 import { ALL_PRODUCTS } from "./queries";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -31,7 +28,6 @@ const theme = createMuiTheme({
 
 const App = () => {
   const [token, setToken] = useState(null);
-  const productsQuery = useQuery(ALL_PRODUCTS);
 
   useEffect(() => {
     const token: any = localStorage.getItem("token");
@@ -39,9 +35,6 @@ const App = () => {
       setToken(token);
     }
   });
-
-  const productById = (id: string) =>
-    productsQuery.data.products.find((product: IProduct) => product.id === id);
 
   if (!token) {
     return (
@@ -73,23 +66,10 @@ const App = () => {
           <Navbar setToken={setToken} />
           <div style={{ padding: 100 }}>
             <Route exact path="/" render={() => <Index />} />
-            <Route
-              exact
-              path="/products"
-              render={() => (
-                <ProductList products={productsQuery.data.products} />
-              )}
-            />
+            <Route exact path="/products" render={() => <ProductList />} />
             <Route exact path="/users" render={() => <UserList />} />
             <Route exact path="/addproduct" render={() => <AddProduct />} />
             <Route exact path="/profile" render={() => <Profile />} />
-            <Route
-              exact
-              path="/products/:id"
-              render={({ match }) => (
-                <Product product={productById(match.params.id)} />
-              )}
-            />
           </div>
         </Router>
       </ThemeProvider>

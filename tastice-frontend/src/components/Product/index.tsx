@@ -3,11 +3,16 @@ import { IProductProps } from "../../types";
 import { DELETE_PRODUCT, UPDATE_PRODUCT } from "./queries";
 import { useMutation } from "@apollo/react-hooks";
 
-export const Product: React.FC<IProductProps> = ({ product }) => {
+export const Product = () => {
   const [updatedName, setUpdatedName] = useState("");
   const [updatedProducer, setUpdatedProducer] = useState("");
   const [updatedType, setUpdatedType] = useState("");
-
+  const product = {
+    id: "asdd",
+    name: "asddadsd",
+    producer: "dsadasd",
+    type: "asdasdas"
+  };
   const handleError = (error: any) => {
     console.log("error: ", error);
   };
