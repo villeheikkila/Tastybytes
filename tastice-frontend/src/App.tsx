@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { UserList } from "./components/UserList";
 import { ProductList } from "./components/ProductList";
@@ -10,13 +10,13 @@ import { LogIn } from "./components/LogIn";
 import { SignUp } from "./components/SignUp";
 import { Navbar } from "./components/Navbar";
 import { Profile } from "./components/Profile";
-import { ALL_PRODUCTS } from "./queries";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import blue from "@material-ui/core/colors/blue";
 import pink from "@material-ui/core/colors/pink";
+import Fade from "@material-ui/core/Fade";
 
 const theme = createMuiTheme({
   palette: {
@@ -42,16 +42,19 @@ const App = () => {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Router>
-            <Route
-              exact
-              path="/"
-              render={() => <LogIn setToken={setToken} />}
-            />
-            <Route
-              exact
-              path="/signup"
-              render={() => <SignUp setToken={setToken} />}
-            />
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={() => <LogIn setToken={setToken} />}
+              />
+              <Route
+                exact
+                path="/signup"
+                render={() => <SignUp setToken={setToken} />}
+              />
+              <Route render={() => <LogIn setToken={setToken} />} />
+            </Switch>
           </Router>
         </ThemeProvider>
       </div>
@@ -65,11 +68,14 @@ const App = () => {
         <Router>
           <Navbar setToken={setToken} />
           <div style={{ padding: 100 }}>
-            <Route exact path="/" render={() => <Index />} />
-            <Route exact path="/products" render={() => <ProductList />} />
-            <Route exact path="/users" render={() => <UserList />} />
-            <Route exact path="/addproduct" render={() => <AddProduct />} />
-            <Route exact path="/profile" render={() => <Profile />} />
+            <Switch>
+              <Route exact path="/" render={() => <Index />} />
+              <Route exact path="/products" render={() => <ProductList />} />
+              <Route exact path="/users" render={() => <UserList />} />
+              <Route exact path="/addproduct" render={() => <AddProduct />} />
+              <Route exact path="/profile" render={() => <Profile />} />
+              <Route render={() => <Index />} />
+            </Switch>
           </div>
         </Router>
       </ThemeProvider>
