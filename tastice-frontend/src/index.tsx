@@ -6,8 +6,11 @@ import { createHttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
 import App from "./App";
 
+const SERVER_URL: string =
+  process.env.REACT_APP_SERVER_URL || "http://localhost:4000/";
+
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000"
+  uri: `${SERVER_URL}`
 });
 
 const authLink = setContext((_, { headers }) => {

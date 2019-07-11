@@ -4,36 +4,33 @@ Application for keeping track of things you have recently tasted. It mimics the 
 
 ## Technology Stack
 
-The application will be written using React, Redux and TypeScript in the frontend and Node.js and TypeScript in the backend. GraphQL will be used for communication between the application and the server. Prisma will be used to manage a PostgreSQL database. 
+The application will be written using React, Apollo, Material-UI and TypeScript in the frontend and Node.js, Prisma and TypeScript in the backend. GraphQL will be used for communication between the frontend and the server. Data will be stored on a PostgreSQL database.
 
 ## Features for Minimum Viable Product
 
-* Authentication with Google/Facebook
-    * Fetching of avatar, name, emails etc.
-* Adding products
-    * Name, manufacturer, photo etc.
-* Tasting check-ins
-    * Rating, tasting notes etc.
-* Account management
+- Authentication with Google/Facebook
+  - Fetching of avatar, name, emails etc.
+- Adding products
+  - Name, manufacturer, photo etc.
+- Tasting check-ins
+  - Rating, tasting notes etc.
+- Account management
 
 ## Further features
 
-* Social features
-    * Friends list
-    * Importing Facebook friends
-    * Activity feed
-    * Tagging friends to check-ins
-* Statistics
-* Importing and exporting of data
-* Progressive Web App features
-    * Notifications
-    * Installable
-    * Responsive
-* Extensive check-in information
-    * Check-in location
-    * Purchase location
-    * Locations from Foursquare
-* Barcode Scanner
-    
-
-
+- Social features
+  - Friends list
+  - Importing Facebook friends
+  - Activity feed
+  - Tagging friends to check-ins
+- Statistics
+- Importing and exporting of data
+- Progressive Web App features
+  - Notifications
+  - Installable
+  - Responsive
+- Extensive check-in information
+  - Check-in location
+  - Purchase location
+  - Locations from Foursquare
+- Barcode Scanner

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev --no-notify --respawn --transpileOnly ./src"
+    "start": "dotenv-load ts-node-dev --no-notify --respawn --transpileOnly ./src"
   },
   "keywords": [],
   "author": "Ville Heikkilä <tehomail@gmail.com>",
@@ -21,6 +21,7 @@
     "bcrypt": "^3.0.6",
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.0.0",
+    "dotenv-load": "^2.0.0",
     "graphql": "^14.4.2",
     "graphql-shield": "^6.0.2",
     "graphql-yoga": "^1.18.0",
