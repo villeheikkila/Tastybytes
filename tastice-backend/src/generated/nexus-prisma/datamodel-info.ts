@@ -555,7 +555,23 @@ export default {
             "deprecationReason": null
           },
           {
-            "name": "name",
+            "name": "firstName",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "lastName",
             "description": null,
             "args": [],
             "type": {
@@ -575,9 +591,13 @@ export default {
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -907,7 +927,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name",
+            "name": "firstName",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -917,7 +937,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_not",
+            "name": "firstName_not",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -927,7 +947,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_in",
+            "name": "firstName_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -945,7 +965,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_not_in",
+            "name": "firstName_not_in",
             "description": null,
             "type": {
               "kind": "LIST",
@@ -963,7 +983,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_lt",
+            "name": "firstName_lt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -973,7 +993,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_lte",
+            "name": "firstName_lte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -983,7 +1003,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_gt",
+            "name": "firstName_gt",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -993,7 +1013,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_gte",
+            "name": "firstName_gte",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1003,7 +1023,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_contains",
+            "name": "firstName_contains",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1013,7 +1033,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_not_contains",
+            "name": "firstName_not_contains",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1023,7 +1043,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_starts_with",
+            "name": "firstName_starts_with",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1033,7 +1053,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_not_starts_with",
+            "name": "firstName_not_starts_with",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1043,7 +1063,7 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_ends_with",
+            "name": "firstName_ends_with",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1053,7 +1073,163 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name_not_ends_with",
+            "name": "firstName_not_ends_with",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_not",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_in",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_not_in",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_lt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_lte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_gt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_gte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_contains",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_not_contains",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_starts_with",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_not_starts_with",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_ends_with",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName_not_ends_with",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1310,13 +1486,25 @@ export default {
             "deprecationReason": null
           },
           {
-            "name": "name_ASC",
+            "name": "firstName_ASC",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "name_DESC",
+            "name": "firstName_DESC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "lastName_ASC",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "lastName_DESC",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -3090,7 +3278,21 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name",
+            "name": "firstName",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -3107,9 +3309,13 @@ export default {
             "name": "password",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "defaultValue": null
           }
@@ -3135,7 +3341,17 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name",
+            "name": "firstName",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -3176,7 +3392,17 @@ export default {
             "defaultValue": null
           },
           {
-            "name": "name",
+            "name": "firstName",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "lastName",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -3704,7 +3930,23 @@ export default {
             "deprecationReason": null
           },
           {
-            "name": "name",
+            "name": "firstName",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "lastName",
             "description": null,
             "args": [],
             "type": {
@@ -3724,9 +3966,13 @@ export default {
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null

@@ -221,13 +221,15 @@ type UserObject =
   | UserFields
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'email', args?: [] | false, alias?: string  } 
-  | { name: 'name', args?: [] | false, alias?: string  } 
+  | { name: 'firstName', args?: [] | false, alias?: string  } 
+  | { name: 'lastName', args?: [] | false, alias?: string  } 
   | { name: 'password', args?: [] | false, alias?: string  } 
 
 type UserFields =
   | 'id'
   | 'email'
-  | 'name'
+  | 'firstName'
+  | 'lastName'
   | 'password'
 
 
@@ -251,7 +253,15 @@ export interface UserFieldDetails {
     nullable: true
     resolve: undefined
   }
-  name: {
+  firstName: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  lastName: {
     type: 'String'
     args: {}
     description: string
@@ -264,7 +274,7 @@ export interface UserFieldDetails {
     args: {}
     description: string
     list: undefined
-    nullable: true
+    nullable: false
     resolve: undefined
   }
 }
@@ -1005,13 +1015,15 @@ type UserPreviousValuesObject =
   | UserPreviousValuesFields
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'email', args?: [] | false, alias?: string  } 
-  | { name: 'name', args?: [] | false, alias?: string  } 
+  | { name: 'firstName', args?: [] | false, alias?: string  } 
+  | { name: 'lastName', args?: [] | false, alias?: string  } 
   | { name: 'password', args?: [] | false, alias?: string  } 
 
 type UserPreviousValuesFields =
   | 'id'
   | 'email'
-  | 'name'
+  | 'firstName'
+  | 'lastName'
   | 'password'
 
 
@@ -1035,7 +1047,15 @@ export interface UserPreviousValuesFieldDetails {
     nullable: true
     resolve: undefined
   }
-  name: {
+  firstName: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  lastName: {
     type: 'String'
     args: {}
     description: string
@@ -1048,7 +1068,7 @@ export interface UserPreviousValuesFieldDetails {
     args: {}
     description: string
     list: undefined
-    nullable: true
+    nullable: false
     resolve: undefined
   }
 }
@@ -1218,20 +1238,34 @@ export interface UserWhereInput {
   email_not_starts_with?: string | null
   email_ends_with?: string | null
   email_not_ends_with?: string | null
-  name?: string | null
-  name_not?: string | null
-  name_in?: string[]
-  name_not_in?: string[]
-  name_lt?: string | null
-  name_lte?: string | null
-  name_gt?: string | null
-  name_gte?: string | null
-  name_contains?: string | null
-  name_not_contains?: string | null
-  name_starts_with?: string | null
-  name_not_starts_with?: string | null
-  name_ends_with?: string | null
-  name_not_ends_with?: string | null
+  firstName?: string | null
+  firstName_not?: string | null
+  firstName_in?: string[]
+  firstName_not_in?: string[]
+  firstName_lt?: string | null
+  firstName_lte?: string | null
+  firstName_gt?: string | null
+  firstName_gte?: string | null
+  firstName_contains?: string | null
+  firstName_not_contains?: string | null
+  firstName_starts_with?: string | null
+  firstName_not_starts_with?: string | null
+  firstName_ends_with?: string | null
+  firstName_not_ends_with?: string | null
+  lastName?: string | null
+  lastName_not?: string | null
+  lastName_in?: string[]
+  lastName_not_in?: string[]
+  lastName_lt?: string | null
+  lastName_lte?: string | null
+  lastName_gt?: string | null
+  lastName_gte?: string | null
+  lastName_contains?: string | null
+  lastName_not_contains?: string | null
+  lastName_starts_with?: string | null
+  lastName_not_starts_with?: string | null
+  lastName_ends_with?: string | null
+  lastName_not_ends_with?: string | null
   password?: string | null
   password_not?: string | null
   password_in?: string[]
@@ -1280,20 +1314,34 @@ export type UserWhereInputInputObject =
   | { name: 'email_not_starts_with', alias?: string  } 
   | { name: 'email_ends_with', alias?: string  } 
   | { name: 'email_not_ends_with', alias?: string  } 
-  | { name: 'name', alias?: string  } 
-  | { name: 'name_not', alias?: string  } 
-  | { name: 'name_in', alias?: string  } 
-  | { name: 'name_not_in', alias?: string  } 
-  | { name: 'name_lt', alias?: string  } 
-  | { name: 'name_lte', alias?: string  } 
-  | { name: 'name_gt', alias?: string  } 
-  | { name: 'name_gte', alias?: string  } 
-  | { name: 'name_contains', alias?: string  } 
-  | { name: 'name_not_contains', alias?: string  } 
-  | { name: 'name_starts_with', alias?: string  } 
-  | { name: 'name_not_starts_with', alias?: string  } 
-  | { name: 'name_ends_with', alias?: string  } 
-  | { name: 'name_not_ends_with', alias?: string  } 
+  | { name: 'firstName', alias?: string  } 
+  | { name: 'firstName_not', alias?: string  } 
+  | { name: 'firstName_in', alias?: string  } 
+  | { name: 'firstName_not_in', alias?: string  } 
+  | { name: 'firstName_lt', alias?: string  } 
+  | { name: 'firstName_lte', alias?: string  } 
+  | { name: 'firstName_gt', alias?: string  } 
+  | { name: 'firstName_gte', alias?: string  } 
+  | { name: 'firstName_contains', alias?: string  } 
+  | { name: 'firstName_not_contains', alias?: string  } 
+  | { name: 'firstName_starts_with', alias?: string  } 
+  | { name: 'firstName_not_starts_with', alias?: string  } 
+  | { name: 'firstName_ends_with', alias?: string  } 
+  | { name: 'firstName_not_ends_with', alias?: string  } 
+  | { name: 'lastName', alias?: string  } 
+  | { name: 'lastName_not', alias?: string  } 
+  | { name: 'lastName_in', alias?: string  } 
+  | { name: 'lastName_not_in', alias?: string  } 
+  | { name: 'lastName_lt', alias?: string  } 
+  | { name: 'lastName_lte', alias?: string  } 
+  | { name: 'lastName_gt', alias?: string  } 
+  | { name: 'lastName_gte', alias?: string  } 
+  | { name: 'lastName_contains', alias?: string  } 
+  | { name: 'lastName_not_contains', alias?: string  } 
+  | { name: 'lastName_starts_with', alias?: string  } 
+  | { name: 'lastName_not_starts_with', alias?: string  } 
+  | { name: 'lastName_ends_with', alias?: string  } 
+  | { name: 'lastName_not_ends_with', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'password_not', alias?: string  } 
   | { name: 'password_in', alias?: string  } 
@@ -1445,36 +1493,42 @@ export type ProductWhereInputInputObject =
 export interface UserCreateInput {
   id?: string | null
   email?: string | null
-  name?: string
-  password?: string | null
+  firstName?: string
+  lastName?: string
+  password?: string
 }
 export type UserCreateInputInputObject =
   | Extract<keyof UserCreateInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'email', alias?: string  } 
-  | { name: 'name', alias?: string  } 
+  | { name: 'firstName', alias?: string  } 
+  | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   
 export interface UserUpdateInput {
   email?: string | null
-  name?: string | null
+  firstName?: string | null
+  lastName?: string | null
   password?: string | null
 }
 export type UserUpdateInputInputObject =
   | Extract<keyof UserUpdateInput, string>
   | { name: 'email', alias?: string  } 
-  | { name: 'name', alias?: string  } 
+  | { name: 'firstName', alias?: string  } 
+  | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   
 export interface UserUpdateManyMutationInput {
   email?: string | null
-  name?: string | null
+  firstName?: string | null
+  lastName?: string | null
   password?: string | null
 }
 export type UserUpdateManyMutationInputInputObject =
   | Extract<keyof UserUpdateManyMutationInput, string>
   | { name: 'email', alias?: string  } 
-  | { name: 'name', alias?: string  } 
+  | { name: 'firstName', alias?: string  } 
+  | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   
 export interface ProductCreateInput {
@@ -1560,8 +1614,10 @@ export type UserOrderByInputValues =
   | 'id_DESC'
   | 'email_ASC'
   | 'email_DESC'
-  | 'name_ASC'
-  | 'name_DESC'
+  | 'firstName_ASC'
+  | 'firstName_DESC'
+  | 'lastName_ASC'
+  | 'lastName_DESC'
   | 'password_ASC'
   | 'password_DESC'
   | 'createdAt_ASC'

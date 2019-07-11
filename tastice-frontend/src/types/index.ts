@@ -9,7 +9,8 @@ export interface IProductProps {
   product: IProduct;
 }
 export interface IUser {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   id: string;
 }

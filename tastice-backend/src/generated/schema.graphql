@@ -12,8 +12,9 @@ type Mutation {
   deleteProduct(id: ID): Product
   deleteUser(id: ID): User
   login(email: String, password: String): AuthPayload
-  signup(email: String, name: String, password: String): AuthPayload
+  signup(email: String, firstName: String, lastName: String, password: String): AuthPayload
   updateProduct(id: ID, name: String, producer: String, type: String): Product
+  updateUser(email: String, firstName: String, id: ID, lastName: String): User
 }
 
 type Product {
@@ -31,6 +32,7 @@ type Query {
 
 type User {
   email: String
+  firstName: String!
   id: ID!
-  name: String!
+  lastName: String!
 }

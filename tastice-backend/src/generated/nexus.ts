@@ -33,8 +33,9 @@ export interface NexusGenRootTypes {
   Query: {};
   User: { // root type
     email?: string | null; // String
+    firstName: string; // String!
     id: string; // ID!
-    name: string; // String!
+    lastName: string; // String!
   }
   String: string;
   Int: number;
@@ -58,6 +59,7 @@ export interface NexusGenFieldTypes {
     login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     signup: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     updateProduct: NexusGenRootTypes['Product'] | null; // Product
+    updateUser: NexusGenRootTypes['User'] | null; // User
   }
   Product: { // field return type
     id: string; // ID!
@@ -72,8 +74,9 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     email: string | null; // String
+    firstName: string; // String!
     id: string; // ID!
-    name: string; // String!
+    lastName: string; // String!
   }
 }
 
@@ -96,7 +99,8 @@ export interface NexusGenArgTypes {
     }
     signup: { // args
       email?: string | null; // String
-      name?: string | null; // String
+      firstName?: string | null; // String
+      lastName?: string | null; // String
       password?: string | null; // String
     }
     updateProduct: { // args
@@ -104,6 +108,12 @@ export interface NexusGenArgTypes {
       name?: string | null; // String
       producer?: string | null; // String
       type?: string | null; // String
+    }
+    updateUser: { // args
+      email?: string | null; // String
+      firstName?: string | null; // String
+      id?: string | null; // ID
+      lastName?: string | null; // String
     }
   }
 }

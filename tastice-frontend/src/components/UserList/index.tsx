@@ -1,6 +1,5 @@
 import * as React from "react";
 import { User } from "../User";
-import { IUserList } from "../../types";
 import { IUser } from "../../types";
 import { ALL_USERS } from "./queries";
 import { useQuery } from "@apollo/react-hooks";
@@ -18,8 +17,9 @@ export const UserList = () => {
         {users.map((user: IUser) => (
           <li key={user.id}>
             <User
-              key={user.name}
-              name={user.name}
+              key={user.firstName}
+              firstName={user.firstName}
+              lastName={user.lastName}
               email={user.email}
               id={user.id}
             />

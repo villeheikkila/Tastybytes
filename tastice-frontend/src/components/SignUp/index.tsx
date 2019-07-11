@@ -55,9 +55,11 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
+    console.log("firstName: ", firstName);
+    console.log("lastName: ", lastName);
 
     const result = await signup({
-      variables: { name: firstName, email, password }
+      variables: { firstName, lastName, email, password }
     });
 
     if (result) {

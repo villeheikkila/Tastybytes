@@ -82,15 +82,7 @@ const App = () => {
             />
             <Route exact path="/users" render={() => <UserList />} />
             <Route exact path="/addproduct" render={() => <AddProduct />} />
-            <Route
-              exact
-              path="/profile"
-              render={() => (
-                <Profile
-                  user={{ name: "Moi", email: "Hei@google.com", id: "id" }}
-                />
-              )}
-            />
+            <Route exact path="/profile" render={() => <Profile />} />
             <Route
               exact
               path="/products/:id"
