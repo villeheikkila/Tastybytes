@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SIGN_UP } from "./queries";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { Link } from "react-router-dom";
 import { ILogIn } from "../../types";
 
@@ -11,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-
+import { notificationHandler, errorHandler } from "../../utils";
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -43,20 +43,14 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
   const [password, setPassword] = useState("");
   const classes = useStyles();
 
-  const handleError = (error: any) => {
-    console.log("error: ", error);
-  };
-
   const [signup] = useMutation(SIGN_UP, {
-    onError: handleError
+    onError: errorHandler
   });
 
   const handleSignUp = async (
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
-    console.log("firstName: ", firstName);
-    console.log("lastName: ", lastName);
 
     const result = await signup({
       variables: { firstName, lastName, email, password }

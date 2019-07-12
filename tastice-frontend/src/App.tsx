@@ -17,12 +17,6 @@ import { ThemeProvider } from "@material-ui/styles";
 import blue from "@material-ui/core/colors/blue";
 import pink from "@material-ui/core/colors/pink";
 import Fade from "@material-ui/core/Fade";
-import {
-  useQuery,
-  useMutation,
-  useSubscription,
-  useApolloClient
-} from "@apollo/react-hooks";
 
 const theme = createMuiTheme({
   palette: {
@@ -48,6 +42,7 @@ const App = () => {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Router>
+            <Notifications />
             <Switch>
               <Route
                 exact
@@ -73,6 +68,7 @@ const App = () => {
         <CssBaseline />
         <Router>
           <Navbar setToken={setToken} />
+          <Notifications />
           <div style={{ padding: 100 }}>
             <Fade timeout={300}>
               <Switch>

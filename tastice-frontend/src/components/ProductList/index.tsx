@@ -1,23 +1,20 @@
 import React from "react";
 import { ALL_PRODUCTS, UPDATE_PRODUCT, DELETE_PRODUCT } from "./queries";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation, useApolloClient } from "@apollo/react-hooks";
 import MaterialTable from "material-table";
+import { notificationHandler, errorHandler } from "../../utils";
 
 export const ProductList = () => {
   const productsQuery = useQuery(ALL_PRODUCTS);
   const products = productsQuery.data.products;
 
-  const handleError = (error: any) => {
-    console.log("error: ", error);
-  };
-
   const [deleteProduct] = useMutation(DELETE_PRODUCT, {
-    onError: handleError,
+    onError: errorHandler,
     refetchQueries: [{ query: ALL_PRODUCTS }]
   });
 
   const [updateProduct] = useMutation(UPDATE_PRODUCT, {
-    onError: handleError,
+    onError: errorHandler,
     refetchQueries: [{ query: ALL_PRODUCTS }]
   });
 
@@ -29,8 +26,14 @@ export const ProductList = () => {
     const result = await deleteProduct({
       variables: { id }
     });
+
     if (result) {
-      console.log("result: ", result);
+      notificationHandler({
+        message: `Product ${
+          result.data.deleteProduct.name
+        } succesfully deleted`,
+        variant: "success"
+      });
     }
   };
 

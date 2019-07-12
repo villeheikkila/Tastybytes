@@ -1,24 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { ALL_USERS } from "./queries";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { DELETE_USER, UPDATE_USER } from "../Profile/queries";
 import MaterialTable from "material-table";
+import { notificationHandler, errorHandler } from "../../utils";
 
 export const UserList = () => {
   const usersQuery = useQuery(ALL_USERS);
   const users = usersQuery.data.users;
 
-  const handleError = (error: any) => {
-    console.log("error: ", error);
-  };
-
   const [deleteUser] = useMutation(DELETE_USER, {
-    onError: handleError,
+    onError: errorHandler,
     refetchQueries: [{ query: ALL_USERS }]
   });
 
   const [updateUser] = useMutation(UPDATE_USER, {
-    onError: handleError,
+    onError: errorHandler,
     refetchQueries: [{ query: ALL_USERS }]
   });
 
@@ -31,7 +28,12 @@ export const UserList = () => {
       variables: { id }
     });
     if (result) {
-      console.log("result: ", result);
+      notificationHandler({
+        message: `User '${
+          result.data.deleteUser.firstName
+        }' succesfully deleted`,
+        variant: "success"
+      });
     }
   };
 

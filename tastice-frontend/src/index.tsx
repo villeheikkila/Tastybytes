@@ -7,7 +7,6 @@ import { setContext } from "apollo-link-context";
 import { split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
-
 import App from "./App";
 
 const SERVER_URL: string =
@@ -41,7 +40,7 @@ const link = split(
   authLink.concat(httpLink)
 );
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   link,
   cache: new InMemoryCache()
 });

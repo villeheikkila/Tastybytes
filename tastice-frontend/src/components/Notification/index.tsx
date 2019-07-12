@@ -1,24 +1,34 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import { NotificationContentWrapper } from "./NotificationContentWrapper";
-import { INotification } from "../../types";
+import { NOTIFICATION } from "./queries";
+import { gql } from "apollo-boost";
+import { useQuery } from "@apollo/react-hooks";
 
-export const Notifications: React.FC<INotification> = ({
-  message,
-  variant
-}) => {
-  const [open, setOpen] = React.useState(true);
-  const [notification, setNotification] = useState({
-    message: message,
-    variant: variant
-  });
+const USER_ADDED = gql`
+  subscription {
+    user {
+      node {
+        lastName
+        firstName
+        email
+      }
+    }
+  }
+`;
 
-  useEffect(() => setOpen(true));
-  console.log("notification: ", notification);
+export const Notifications = () => {
+  const [open, setOpen] = useState(true);
+  const notification = useQuery(NOTIFICATION);
+  useEffect(() => setOpen(true), [notification]);
 
-  if (notification.message === "") {
+  if (
+    notification.data === undefined ||
+    notification.data.notification === "clear"
+  ) {
     return null;
   }
+  console.log("open: ", open);
 
   const handleCloseNotification = (event?: SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -35,13 +45,12 @@ export const Notifications: React.FC<INotification> = ({
         horizontal: "center"
       }}
       open={open}
-      autoHideDuration={1000}
       onClose={handleCloseNotification}
     >
       <NotificationContentWrapper
         onClose={handleCloseNotification}
-        variant={notification.variant}
-        message={notification.message}
+        variant={"error"}
+        message={notification.data.notification}
       />
     </Snackbar>
   );

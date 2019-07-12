@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useMutation } from "@apollo/react-hooks";
+
 import { ILogIn } from "../../types";
 import { Link } from "react-router-dom";
 import { LOGIN } from "./queries";
-import { useMutation } from "@apollo/react-hooks";
-import { Notifications } from "../Notification";
+import { errorHandler } from "../../utils";
+
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -37,12 +39,8 @@ export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
   const [password, setPassword] = useState("");
   const classes = useStyles();
 
-  const handleError = (error: any) => {
-    console.log("error:", error.message);
-  };
-
   const [login] = useMutation(LOGIN, {
-    onError: handleError
+    onError: errorHandler
   });
 
   const handleLogin = async (

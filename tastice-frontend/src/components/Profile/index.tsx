@@ -8,6 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { notificationHandler, errorHandler } from "../../utils";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,15 +53,11 @@ export const Profile = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleError = (error: any) => {
-    console.log("error: ", error);
-  };
-
   const [deleteUser] = useMutation(DELETE_USER, {
-    onError: handleError
+    onError: errorHandler
   });
   const [updateUser] = useMutation(UPDATE_USER, {
-    onError: handleError
+    onError: errorHandler
   });
   const classes = useStyles();
 
@@ -90,7 +87,7 @@ export const Profile = () => {
   };
 
   const handleDeleteUser = async () => {
-    const result = await deleteUser({
+    await deleteUser({
       variables: { id: user.id }
     });
   };
