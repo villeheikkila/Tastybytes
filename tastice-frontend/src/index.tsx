@@ -1,6 +1,6 @@
 import React from "react";
 import * as ReactDOM from "react-dom";
-import { ApolloClient, InMemoryCache, HttpLink, NormalizedCacheObject } from "apollo-boost";
+import { ApolloClient, InMemoryCache, NormalizedCacheObject } from "apollo-boost";
 import { persistCache } from "apollo-cache-persist";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { createHttpLink } from "apollo-link-http";
@@ -55,7 +55,7 @@ export const client = new ApolloClient({
   cache
 });
 
-// Default theme to dark
+// Use dark theme by default
 client.writeData({
   data: {
     theme: false

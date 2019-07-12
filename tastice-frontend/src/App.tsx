@@ -2,6 +2,13 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useQuery } from "@apollo/react-hooks";
 
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import blue from "@material-ui/core/colors/blue";
+import pink from "@material-ui/core/colors/pink";
+import Fade from "@material-ui/core/Fade";
+
 import { UserList } from "./components/UserList";
 import { ProductList } from "./components/ProductList";
 import { AddProduct } from "./components/AddProduct";
@@ -12,12 +19,6 @@ import { SignUp } from "./components/SignUp";
 import { Navbar } from "./components/Navbar";
 import { Profile } from "./components/Profile";
 import { THEME } from "./queries";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import blue from "@material-ui/core/colors/blue";
-import pink from "@material-ui/core/colors/pink";
-import Fade from "@material-ui/core/Fade";
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -38,6 +39,7 @@ const App = () => {
   const [token, setToken] = useState(null);
   const themeSwitcher = useQuery(THEME);
   const theme = themeSwitcher.data.theme ? 1 : 0;
+  const themes: any = [darkTheme, whiteTheme];
 
   useEffect(() => {
     const token: any = localStorage.getItem("token");
@@ -45,8 +47,6 @@ const App = () => {
       setToken(token);
     }
   });
-
-  const themes: any = [darkTheme, whiteTheme];
 
   return (
     <div>
@@ -82,7 +82,6 @@ const App = () => {
               </Switch>
             </Fade>
           </div>)}
-
         </Router>
       </ThemeProvider>
     </div>
