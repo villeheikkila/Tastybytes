@@ -1,6 +1,7 @@
 import React from "react";
 import * as ReactDOM from "react-dom";
-import { ApolloClient, InMemoryCache, HttpLink } from "apollo-boost";
+import { ApolloClient, InMemoryCache, HttpLink, NormalizedCacheObject } from "apollo-boost";
+import { persistCache } from "apollo-cache-persist";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { createHttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
@@ -8,6 +9,7 @@ import { split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
 import App from "./App";
+import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 
 const SERVER_URL: string =
   process.env.REACT_APP_SERVER_URL || "http://localhost:4000/";
@@ -19,6 +21,14 @@ const httpLink = createHttpLink({
 const wsLink = new WebSocketLink({
   uri: `ws://${SERVER_URL}`,
   options: { reconnect: true }
+});
+
+const cache = new InMemoryCache();
+
+persistCache({
+  cache,
+  storage: window.localStorage as PersistentStorage<PersistedData<NormalizedCacheObject>
+  >
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -42,7 +52,7 @@ const link = split(
 
 export const client = new ApolloClient({
   link,
-  cache: new InMemoryCache()
+  cache
 });
 
 // Default theme to dark

@@ -40,6 +40,7 @@ export const errorHandler = (error: any) => {
 };
 
 export const themeSwitcher = (value: boolean) => {
+  localStorage.setItem("theme", `${value}`);
   client.writeData({
     data: {
       theme: value

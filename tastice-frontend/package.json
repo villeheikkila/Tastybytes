@@ -12,6 +12,7 @@
     "@types/react-dom": "16.8.4",
     "@types/react-router-dom": "^4.3.4",
     "apollo-boost": "^0.4.3",
+    "apollo-cache-persist": "^0.1.1",
     "apollo-link-context": "^1.0.18",
     "apollo-link-ws": "^1.0.18",
     "clsx": "^1.0.4",
