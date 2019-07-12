@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import { useQuery } from "@apollo/react-hooks";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,6 +8,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import blue from "@material-ui/core/colors/blue";
 import pink from "@material-ui/core/colors/pink";
 import Fade from "@material-ui/core/Fade";
+import history from './utils/history';
 
 import { UserList } from "./components/UserList";
 import { ProductList } from "./components/ProductList";
@@ -52,10 +53,9 @@ const App = () => {
     <div>
       <ThemeProvider theme={themes[theme]}>
         <CssBaseline />
-        <Router>
+        <Router history={history}>
           <Notifications />
-          {!token ? (<Router>
-            <Notifications />
+          {!token ? (
             <Switch>
               <Route
                 exact
@@ -69,7 +69,7 @@ const App = () => {
               />
               <Route render={() => <LogIn setToken={setToken} />} />
             </Switch>
-          </Router>) : (<div style={{ padding: 100 }}>
+          ) : (<div style={{ padding: 100 }}>
             <Navbar setToken={setToken} />
             <Fade timeout={300}>
               <Switch>
@@ -77,7 +77,7 @@ const App = () => {
                 <Route exact path="/products" render={() => <ProductList />} />
                 <Route exact path="/users" render={() => <UserList />} />
                 <Route exact path="/addproduct" render={() => <AddProduct />} />
-                <Route exact path="/profile" render={() => <Profile />} />
+                <Route exact path="/profile" render={() => <Profile setToken={setToken} />} />
                 <Route render={() => <Index />} />
               </Switch>
             </Fade>

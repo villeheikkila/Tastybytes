@@ -9,6 +9,8 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { errorHandler } from "../../utils";
+import history from '../../utils/history';
+import { Token } from '../../types'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,14 +49,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const Profile = () => {
+export const Profile: React.FC<Token> = ({ setToken }) => {
   const me = useQuery(ME);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
 
   const [deleteUser] = useMutation(DELETE_USER, {
-    onError: errorHandler
+    onError: ((error) => console.log(error))
   });
   const [updateUser] = useMutation(UPDATE_USER, {
     onError: errorHandler
@@ -66,6 +68,7 @@ export const Profile = () => {
   }
 
   const user = me.data.me;
+  console.log('user: ', user);
 
   const handleUpdateUser = async (
     event: React.FormEvent<HTMLFormElement>
@@ -90,6 +93,9 @@ export const Profile = () => {
     await deleteUser({
       variables: { id: user.id }
     });
+    localStorage.clear();
+    setToken(null)
+    history.push('/');
   };
 
   return (
