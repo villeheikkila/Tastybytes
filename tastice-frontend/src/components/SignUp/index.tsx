@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { SIGN_UP } from "./queries";
-import { useMutation, useApolloClient } from "@apollo/react-hooks";
+import { SIGN_UP } from "../../queries";
+import { useMutation } from "@apollo/react-hooks";
 import { Link } from "react-router-dom";
 import { ILogIn } from "../../types";
 
@@ -11,7 +11,8 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { notificationHandler, errorHandler } from "../../utils";
+import { errorHandler } from "../../utils";
+
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),

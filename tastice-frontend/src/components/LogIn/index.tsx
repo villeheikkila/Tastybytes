@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/react-hooks";
 
 import { ILogIn } from "../../types";
 import { Link } from "react-router-dom";
-import { LOGIN } from "./queries";
+import { LOGIN } from "../../queries";
 import { errorHandler } from "../../utils";
 
 import Button from "@material-ui/core/Button";

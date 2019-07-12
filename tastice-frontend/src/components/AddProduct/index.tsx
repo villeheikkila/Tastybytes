@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ADD_PRODUCT } from "./queries";
+import { ADD_PRODUCT } from "../../queries";
 import { useMutation } from "@apollo/react-hooks";
 import { notificationHandler, errorHandler } from "../../utils";
 

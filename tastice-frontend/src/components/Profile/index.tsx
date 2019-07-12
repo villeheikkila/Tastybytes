@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { ME, DELETE_USER, UPDATE_USER } from "./queries";
+import { ME, DELETE_USER, UPDATE_USER } from "../../queries";
 
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -8,7 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { notificationHandler, errorHandler } from "../../utils";
+import { errorHandler } from "../../utils";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -1,7 +1,7 @@
 import React from "react";
-import { ALL_USERS } from "./queries";
+import { ALL_USERS } from "../../queries";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { DELETE_USER, UPDATE_USER } from "../Profile/queries";
+import { DELETE_USER, UPDATE_USER } from "../../queries";
 import MaterialTable from "material-table";
 import { notificationHandler, errorHandler } from "../../utils";
 

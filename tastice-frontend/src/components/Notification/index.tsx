@@ -1,21 +1,8 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import { NotificationContentWrapper } from "./NotificationContentWrapper";
-import { NOTIFICATION } from "./queries";
-import { gql } from "apollo-boost";
+import { NOTIFICATION } from "../../queries";
 import { useQuery } from "@apollo/react-hooks";
-
-const USER_ADDED = gql`
-  subscription {
-    user {
-      node {
-        lastName
-        firstName
-        email
-      }
-    }
-  }
-`;
 
 export const Notifications = () => {
   const [open, setOpen] = useState(true);
