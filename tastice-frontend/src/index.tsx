@@ -45,6 +45,13 @@ export const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
+// Default theme to dark
+client.writeData({
+  data: {
+    theme: false
+  }
+});
+
 const render = () => {
   ReactDOM.render(
     <ApolloProvider client={client}>

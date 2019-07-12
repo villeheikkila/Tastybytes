@@ -27,4 +27,22 @@ export const errorHandler = (error: any) => {
       variant: "error"
     }
   });
+  setTimeout(
+    () =>
+      client.writeData({
+        data: {
+          notification: "clear",
+          variant: "success"
+        }
+      }),
+    2500
+  );
+};
+
+export const themeSwitcher = (value: boolean) => {
+  client.writeData({
+    data: {
+      theme: value
+    }
+  });
 };

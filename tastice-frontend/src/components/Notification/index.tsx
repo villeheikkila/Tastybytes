@@ -28,7 +28,6 @@ export const Notifications = () => {
   ) {
     return null;
   }
-  console.log("open: ", open);
 
   const handleCloseNotification = (event?: SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {

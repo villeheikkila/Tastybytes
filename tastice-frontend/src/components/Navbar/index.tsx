@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { INavbar } from "../../types";
 import clsx from "clsx";
-
+import { themeSwitcher } from "../../utils";
 import {
   fade,
   makeStyles,
@@ -32,6 +32,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
+import Switch from "@material-ui/core/Switch";
 
 const drawerWidth = 240;
 
@@ -145,9 +146,16 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
     setMobileMoreAnchorEl
   ] = React.useState<null | HTMLElement>(null);
 
+  const [state, setState] = React.useState(false);
+
   const logout = () => {
     localStorage.clear();
     setToken(null);
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    themeSwitcher(event.target.checked);
+    setState(event.target.checked);
   };
 
   const isMenuOpen = Boolean(anchorEl);
@@ -181,6 +189,14 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      <MenuItem>
+        <Switch
+          checked={state}
+          onChange={handleChange}
+          value="checkedA"
+          inputProps={{ "aria-label": "secondary checkbox" }}
+        />
+      </MenuItem>
       <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>
         Profile
       </MenuItem>
