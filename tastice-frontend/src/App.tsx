@@ -36,13 +36,13 @@ const whiteTheme = createMuiTheme({
 });
 
 const App = () => {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState();
   const themeSwitcher = useQuery(THEME);
   const theme = themeSwitcher.data.theme ? 1 : 0;
-  const themes: any = [darkTheme, whiteTheme];
+  const themes = [darkTheme, whiteTheme];
 
   useEffect(() => {
-    const token: any = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (token) {
       setToken(token);
     }

@@ -24,11 +24,11 @@ export interface IProductList {
 }
 
 export interface ILogIn {
-  setToken: any;
+  setToken: string;
 }
 
 export interface INavbar {
-  setToken: any;
+  setToken: string;
 }
 
 export interface IUserObject {
