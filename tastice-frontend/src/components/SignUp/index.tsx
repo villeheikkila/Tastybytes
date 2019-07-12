@@ -3,6 +3,7 @@ import { SIGN_UP } from "../../queries";
 import { useMutation } from "@apollo/react-hooks";
 import { Link } from "react-router-dom";
 import { ILogIn } from "../../types";
+import history from '../../utils/history';
 
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { errorHandler } from "../../utils";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -38,8 +40,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
-  const [firstName, setLastName] = useState("");
-  const [lastName, setFirstName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const classes = useStyles();
@@ -48,9 +50,7 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
     onError: errorHandler
   });
 
-  const handleSignUp = async (
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
+  const handleSignUp = async (event: any) => {
     event.preventDefault();
 
     const result = await signup({
@@ -63,6 +63,16 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
       localStorage.setItem("token", token);
     }
   };
+
+  const handlePushToLogin = () => history.push("/")
+
+  const handlePasswordChange = (event: any) => setPassword(event.target.value)
+
+  const handleEmailChange = (event: any) => setEmail(event.target.value)
+
+  const handleLastNameChange = (event: any) => setLastName(event.target.value);
+
+  const handleFirstNameChange = (event: any) => setFirstName(event.target.value)
 
   return (
     <Container component="main" maxWidth="xs">
@@ -77,11 +87,13 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-
-        <form className={classes.form} onSubmit={handleSignUp} noValidate>
+        <ValidatorForm
+          onSubmit={handleSignUp}
+          onError={(errors: any) => console.log(errors)}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextValidator
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
@@ -90,12 +102,15 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
                 id="firstName"
                 label="First Name"
                 autoFocus
-                onChange={({ target }) => setFirstName(target.value)}
+                validators={['required', 'minStringLength: 3', 'maxStringLength: 12']}
+                errorMessages={['This field is required', 'The name is too short', 'The name is too long']}
+                value={firstName}
+                onChange={handleFirstNameChange}
               />
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextValidator
                 variant="outlined"
                 required
                 fullWidth
@@ -103,12 +118,15 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
-                onChange={({ target }) => setLastName(target.value)}
+                validators={['required', 'minStringLength: 3', 'maxStringLength: 12']}
+                errorMessages={['This field is required', 'The name is too short', 'The name is too long']}
+                value={lastName}
+                onChange={handleLastNameChange}
               />
             </Grid>
 
             <Grid item xs={12}>
-              <TextField
+              <TextValidator
                 variant="outlined"
                 required
                 fullWidth
@@ -116,21 +134,28 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                onChange={({ target }) => setEmail(target.value)}
+                validators={['required', 'isEmail']}
+                errorMessages={['This field is required', 'The entered email is not valid']}
+                value={email}
+                onChange={handleEmailChange}
               />
             </Grid>
 
             <Grid item xs={12}>
-              <TextField
+              <TextValidator
                 variant="outlined"
                 required
+
                 fullWidth
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={({ target }) => setPassword(target.value)}
+                validators={['required', 'minStringLength: 3', 'maxStringLength: 100']}
+                errorMessages={['This field is required', 'The entered password is too short', 'The entered password is too long']}
+                value={password}
+                onChange={handlePasswordChange}
               />
             </Grid>
           </Grid>
@@ -151,10 +176,11 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
             variant="contained"
             color="secondary"
             className={classes.signin}
+            onClick={handlePushToLogin}
           >
-            <Link to="/">Already have an account? Sign In</Link>
+            Already have an account? Sign In!
           </Button>
-        </form>
+        </ValidatorForm>
       </div>
     </Container>
   );

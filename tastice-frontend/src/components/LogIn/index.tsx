@@ -5,7 +5,7 @@ import { ILogIn } from "../../types";
 import { Link } from "react-router-dom";
 import { LOGIN } from "../../queries";
 import { errorHandler } from "../../utils";
-
+import history from "../../utils/history"
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -58,6 +58,8 @@ export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
       localStorage.setItem("token", token);
     }
   };
+
+  const handlePushToSignUp = () => history.push("/signup")
 
   return (
     <Container component="main" maxWidth="xs">
@@ -116,8 +118,9 @@ export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
             variant="contained"
             color="secondary"
             className={classes.signup}
+            onClick={handlePushToSignUp}
           >
-            <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
+            "Don't have an account? Sign Up"
           </Button>
         </form>
       </div>
