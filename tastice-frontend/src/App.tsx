@@ -48,12 +48,13 @@ const App = () => {
 
   const themes: any = [darkTheme, whiteTheme];
 
-  if (!token) {
-    return (
-      <div>
-        <ThemeProvider theme={themes[theme]}>
-          <CssBaseline />
-          <Router>
+  return (
+    <div>
+      <ThemeProvider theme={themes[theme]}>
+        <CssBaseline />
+        <Router>
+          <Notifications />
+          {!token ? (<Router>
             <Notifications />
             <Switch>
               <Route
@@ -68,20 +69,8 @@ const App = () => {
               />
               <Route render={() => <LogIn setToken={setToken} />} />
             </Switch>
-          </Router>
-        </ThemeProvider>
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <ThemeProvider theme={themes[theme]}>
-        <CssBaseline />
-        <Router>
-          <Navbar setToken={setToken} />
-          <Notifications />
-          <div style={{ padding: 100 }}>
+          </Router>) : (<div style={{ padding: 100 }}>
+            <Navbar setToken={setToken} />
             <Fade timeout={300}>
               <Switch>
                 <Route exact path="/" render={() => <Index />} />
@@ -92,7 +81,8 @@ const App = () => {
                 <Route render={() => <Index />} />
               </Switch>
             </Fade>
-          </div>
+          </div>)}
+
         </Router>
       </ThemeProvider>
     </div>
