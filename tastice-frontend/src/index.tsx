@@ -12,7 +12,7 @@ import App from "./App";
 import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 
 const SERVER_URL: string =
-  process.env.REACT_APP_SERVER_URL || "http://localhost:4000/";
+  process.env.REACT_APP_SERVER_URL || "localhost:4000/";
 
 const httpLink = createHttpLink({
   uri: `http://${SERVER_URL}`
