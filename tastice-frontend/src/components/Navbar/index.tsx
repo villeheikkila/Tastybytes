@@ -363,6 +363,19 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
 
           <ListItem
             button
+            key="Products View"
+            component={Link}
+            to="/productsview"
+            onClick={handleDrawerClose}
+          >
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Products View" />
+          </ListItem>
+
+          <ListItem
+            button
             key="Users"
             component={Link}
             to="/users"
@@ -371,6 +384,7 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
+
             <ListItemText primary="Users" />
           </ListItem>
         </List>

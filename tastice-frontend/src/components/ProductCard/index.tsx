@@ -14,10 +14,12 @@ import lipton from '../../images/lipton.jpg'
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import { IProduct } from '../../types'
 
 const useStyles = makeStyles(theme => ({
   card: {
-    maxWidth: 450,
+    maxWidth: 500,
+    margin: `${theme.spacing(3)}px auto`,
   },
   media: {
     height: 0,
@@ -28,29 +30,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const ProductCard = () => {
+export const ProductCard: React.FC<IProduct> = ({ id, name, producer, type, subType, dateAdded, imgURL, firstName, lastName }) => {
   const classes = useStyles();
-
-  const user = {
-    firstName: "Ville",
-    lastName: "Heikkilä"
-  }
-  const product = {
-    id: "asdd",
-    name: "Lipton Green Tea",
-    producer: "Nestle",
-    type: "Virvoitusjuoma",
-    subType: "Jäätee",
-    date: "March 23, 2019",
-    imageURL: "https://pixel.nymag.com/imgs/daily/vulture/2018/11/02/02-avatar-2.w700.h467.jpg"
-  };
 
   return (
     <div>
       <Card className={classes.card}>
         <CardHeader
           avatar={
-            <Avatar aria-label="Product" src="https://pixel.nymag.com/imgs/daily/vulture/2018/11/02/02-avatar-2.w700.h467.jpg"
+            <Avatar aria-label="Product" src={imgURL}
               className={classes.avatar}>
               R
           </Avatar>
@@ -60,27 +48,27 @@ export const ProductCard = () => {
               <MoreVertIcon />
             </IconButton>
           }
-          title={`Added by ${user.firstName} ${user.lastName}`}
-          subheader={product.date}
+          title={`Added by ${firstName} ${lastName}`}
+          subheader={dateAdded}
         />
         <CardMedia
           className={classes.media}
           image={lipton}
-          title="Paella dish"
+          title={name}
         />
         <CardContent>
           <Typography variant="h4" color="textSecondary" component="p">
-            {product.name}
+            {name}
           </Typography>
           <Typography variant="h5" color="textSecondary" component="p">
-            {product.producer}
+            {producer}
           </Typography>
           <Typography variant="h5" color="textSecondary" component="p">
-            {product.type} {product.subType}
+            {type} {subType}
           </Typography>
         </CardContent>
         <Grid item xs={12}>
-          <ButtonGroup fullWidth aria-label="Product Actions">
+          <ButtonGroup fullWidth aria-label="Check-in!">
             <Button>Check-in!</Button>
           </ButtonGroup>
         </Grid>

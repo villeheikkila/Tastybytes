@@ -1,8 +1,13 @@
 export interface IProduct {
+  id: string;
   name: string;
   producer: string;
   type: string;
-  id: string;
+  subType: string;
+  dateAdded: string;
+  imgURL: string;
+  firstName: string,
+  lastName: string
 }
 
 export interface IProductProps {
