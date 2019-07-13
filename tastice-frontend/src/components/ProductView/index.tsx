@@ -3,17 +3,37 @@ import { ProductCard } from "../ProductCard"
 import { IProduct } from "../../types";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import history from "../../utils/history"
 
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
         overflow: 'hidden',
         padding: theme.spacing(0, 0),
+        alignContent: "center"
+    },
+    margin: {
+        margin: theme.spacing(1),
+    },
+    fab: {
+        margin: 0,
+        top: 'auto',
+        left: 20,
+        bottom: 20,
+        right: 'auto',
+        position: 'fixed',
+
     }
 }));
 
 export const ProductView = () => {
     const classes = useStyles();
+
+    const handleAdd = () => {
+        history.push("/addproduct")
+    }
 
     const products: IProduct[] = [{
         id: "asdd",
@@ -56,6 +76,9 @@ export const ProductView = () => {
                     {products.map((product: IProduct) => ProductCard(product))}
                 </Grid>
             </Grid>
+            <Fab color="secondary" aria-label="Add" className={classes.fab} onClick={handleAdd}>
+                <AddIcon />
+            </Fab>
         </div>
     )
 }

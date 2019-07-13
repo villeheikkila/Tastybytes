@@ -70,7 +70,7 @@ const App = () => {
               />
               <Route render={() => <LogIn setToken={setToken} />} />
             </Switch>
-          ) : (<div style={{ padding: 100 }}>
+          ) : (<div style={{ paddingTop: 100 }}>
             <Navbar setToken={setToken} />
             <Fade timeout={300}>
               <Switch>
@@ -86,7 +86,7 @@ const App = () => {
           </div>)}
         </Router>
       </ThemeProvider>
-    </div>
+    </div >
   );
 };
 

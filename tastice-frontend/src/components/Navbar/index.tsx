@@ -240,7 +240,7 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="absolute" color="default">
+      <AppBar position="fixed" color="default">
         <Toolbar>
           <IconButton
             color="inherit"
