@@ -31,7 +31,7 @@ export const UserList = () => {
       notificationHandler({
         message: `User '${
           result.data.deleteUser.firstName
-        }' succesfully deleted`,
+          }' succesfully deleted`,
         variant: "success"
       });
     }

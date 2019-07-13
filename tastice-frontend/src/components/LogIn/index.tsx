@@ -54,6 +54,7 @@ export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
 
     if (result) {
       const token: string = result.data.login.token;
+      console.log('login: ', result.data.login);
       setToken(token);
       localStorage.setItem("token", token);
     }

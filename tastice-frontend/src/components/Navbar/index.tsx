@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { INavbar } from "../../types";
 import clsx from "clsx";
@@ -146,7 +146,7 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
     setMobileMoreAnchorEl
   ] = React.useState<null | HTMLElement>(null);
 
-  const [state, setState] = React.useState(false);
+  const [state, setState] = useState(false);
 
   const logout = () => {
     localStorage.clear();
@@ -315,8 +315,8 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (
-              <ChevronRightIcon />
-            )}
+                <ChevronRightIcon />
+              )}
           </IconButton>
         </div>
         <Divider />

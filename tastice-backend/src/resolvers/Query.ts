@@ -19,14 +19,12 @@ export const Query = queryType({
             },
         })
 
-
         t.list.field('products', {
             type: 'Product',
             resolve: (parent, args, ctx) => {
                 return ctx.prisma.products()
             },
         })
-
 
     }
 })

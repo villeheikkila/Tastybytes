@@ -224,6 +224,7 @@ type UserObject =
   | { name: 'firstName', args?: [] | false, alias?: string  } 
   | { name: 'lastName', args?: [] | false, alias?: string  } 
   | { name: 'password', args?: [] | false, alias?: string  } 
+  | { name: 'admin', args?: [] | false, alias?: string  } 
 
 type UserFields =
   | 'id'
@@ -231,6 +232,7 @@ type UserFields =
   | 'firstName'
   | 'lastName'
   | 'password'
+  | 'admin'
 
 
 
@@ -271,6 +273,14 @@ export interface UserFieldDetails {
   }
   password: {
     type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  admin: {
+    type: 'Boolean'
     args: {}
     description: string
     list: undefined
@@ -1018,6 +1028,7 @@ type UserPreviousValuesObject =
   | { name: 'firstName', args?: [] | false, alias?: string  } 
   | { name: 'lastName', args?: [] | false, alias?: string  } 
   | { name: 'password', args?: [] | false, alias?: string  } 
+  | { name: 'admin', args?: [] | false, alias?: string  } 
 
 type UserPreviousValuesFields =
   | 'id'
@@ -1025,6 +1036,7 @@ type UserPreviousValuesFields =
   | 'firstName'
   | 'lastName'
   | 'password'
+  | 'admin'
 
 
 
@@ -1065,6 +1077,14 @@ export interface UserPreviousValuesFieldDetails {
   }
   password: {
     type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  admin: {
+    type: 'Boolean'
     args: {}
     description: string
     list: undefined
@@ -1280,6 +1300,8 @@ export interface UserWhereInput {
   password_not_starts_with?: string | null
   password_ends_with?: string | null
   password_not_ends_with?: string | null
+  admin?: boolean | null
+  admin_not?: boolean | null
   AND?: UserWhereInput[]
   OR?: UserWhereInput[]
   NOT?: UserWhereInput[]
@@ -1356,6 +1378,8 @@ export type UserWhereInputInputObject =
   | { name: 'password_not_starts_with', alias?: string  } 
   | { name: 'password_ends_with', alias?: string  } 
   | { name: 'password_not_ends_with', alias?: string  } 
+  | { name: 'admin', alias?: string  } 
+  | { name: 'admin_not', alias?: string  } 
   | { name: 'AND', alias?: string  } 
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
@@ -1496,6 +1520,7 @@ export interface UserCreateInput {
   firstName?: string
   lastName?: string
   password?: string
+  admin?: boolean
 }
 export type UserCreateInputInputObject =
   | Extract<keyof UserCreateInput, string>
@@ -1504,12 +1529,14 @@ export type UserCreateInputInputObject =
   | { name: 'firstName', alias?: string  } 
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
+  | { name: 'admin', alias?: string  } 
   
 export interface UserUpdateInput {
   email?: string | null
   firstName?: string | null
   lastName?: string | null
   password?: string | null
+  admin?: boolean | null
 }
 export type UserUpdateInputInputObject =
   | Extract<keyof UserUpdateInput, string>
@@ -1517,12 +1544,14 @@ export type UserUpdateInputInputObject =
   | { name: 'firstName', alias?: string  } 
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
+  | { name: 'admin', alias?: string  } 
   
 export interface UserUpdateManyMutationInput {
   email?: string | null
   firstName?: string | null
   lastName?: string | null
   password?: string | null
+  admin?: boolean | null
 }
 export type UserUpdateManyMutationInputInputObject =
   | Extract<keyof UserUpdateManyMutationInput, string>
@@ -1530,6 +1559,7 @@ export type UserUpdateManyMutationInputInputObject =
   | { name: 'firstName', alias?: string  } 
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
+  | { name: 'admin', alias?: string  } 
   
 export interface ProductCreateInput {
   id?: string | null
@@ -1620,6 +1650,8 @@ export type UserOrderByInputValues =
   | 'lastName_DESC'
   | 'password_ASC'
   | 'password_DESC'
+  | 'admin_ASC'
+  | 'admin_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'

@@ -4,6 +4,7 @@ type User {
   firstName: String!
   lastName: String!
   password: String!
+  admin: Boolean!
   }
 
 type Product {

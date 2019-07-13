@@ -56,6 +56,7 @@ type Subscription {
 }
 
 type User {
+  admin: Boolean!
   email: String
   firstName: String!
   id: ID!
@@ -63,6 +64,7 @@ type User {
 }
 
 type UserPreviousValues {
+  admin: Boolean!
   email: String
   firstName: String!
   id: ID!

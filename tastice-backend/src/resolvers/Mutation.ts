@@ -24,7 +24,8 @@ export const Mutation = mutationType({
           firstName,
           lastName,
           email,
-          password: hashedPassword
+          password: hashedPassword,
+          admin: false
         });
         return {
           token: sign({ userId: user.id }, SECRET),

@@ -46,12 +46,14 @@ export interface NexusGenRootTypes {
   Query: {};
   Subscription: {};
   User: { // root type
+    admin: boolean; // Boolean!
     email?: string | null; // String
     firstName: string; // String!
     id: string; // ID!
     lastName: string; // String!
   }
   UserPreviousValues: { // root type
+    admin: boolean; // Boolean!
     email?: string | null; // String
     firstName: string; // String!
     id: string; // ID!
@@ -117,12 +119,14 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['UserSubscriptionPayload'] | null; // UserSubscriptionPayload
   }
   User: { // field return type
+    admin: boolean; // Boolean!
     email: string | null; // String
     firstName: string; // String!
     id: string; // ID!
     lastName: string; // String!
   }
   UserPreviousValues: { // field return type
+    admin: boolean; // Boolean!
     email: string | null; // String
     firstName: string; // String!
     id: string; // ID!

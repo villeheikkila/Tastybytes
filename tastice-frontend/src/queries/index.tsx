@@ -30,6 +30,7 @@ export const ALL_USERS = gql`
       lastName
       id
       email
+      admin
     }
   }
 `;
@@ -65,6 +66,7 @@ export const ME = gql`
       firstName
       lastName
       email
+      admin
     }
   }
 `;

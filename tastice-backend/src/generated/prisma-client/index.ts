@@ -160,7 +160,9 @@ export type UserOrderByInput =
   | "lastName_ASC"
   | "lastName_DESC"
   | "password_ASC"
-  | "password_DESC";
+  | "password_DESC"
+  | "admin_ASC"
+  | "admin_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -170,6 +172,7 @@ export interface UserCreateInput {
   firstName: String;
   lastName: String;
   password: String;
+  admin: Boolean;
 }
 
 export type ProductWhereUniqueInput = AtLeastOne<{
@@ -326,6 +329,8 @@ export interface UserWhereInput {
   password_not_starts_with?: Maybe<String>;
   password_ends_with?: Maybe<String>;
   password_not_ends_with?: Maybe<String>;
+  admin?: Maybe<Boolean>;
+  admin_not?: Maybe<Boolean>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
@@ -348,6 +353,7 @@ export interface UserUpdateManyMutationInput {
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
   password?: Maybe<String>;
+  admin?: Maybe<Boolean>;
 }
 
 export interface ProductUpdateManyMutationInput {
@@ -372,6 +378,7 @@ export interface UserUpdateInput {
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
   password?: Maybe<String>;
+  admin?: Maybe<Boolean>;
 }
 
 export interface NodeNode {
@@ -424,6 +431,7 @@ export interface UserPreviousValues {
   firstName: String;
   lastName: String;
   password: String;
+  admin: Boolean;
 }
 
 export interface UserPreviousValuesPromise
@@ -434,6 +442,7 @@ export interface UserPreviousValuesPromise
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
   password: () => Promise<String>;
+  admin: () => Promise<Boolean>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -444,6 +453,7 @@ export interface UserPreviousValuesSubscription
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
+  admin: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface ProductConnection {
@@ -561,6 +571,7 @@ export interface User {
   firstName: String;
   lastName: String;
   password: String;
+  admin: Boolean;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
@@ -569,6 +580,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
   password: () => Promise<String>;
+  admin: () => Promise<Boolean>;
 }
 
 export interface UserSubscription
@@ -579,6 +591,7 @@ export interface UserSubscription
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
+  admin: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface UserNullablePromise
@@ -589,6 +602,7 @@ export interface UserNullablePromise
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
   password: () => Promise<String>;
+  admin: () => Promise<Boolean>;
 }
 
 export interface AggregateUser {
