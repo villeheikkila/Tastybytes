@@ -13,7 +13,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import 'typeface-leckerli-one'
+import "typeface-leckerli-one";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
@@ -24,7 +24,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import Switch from "@material-ui/core/Switch";
-import history from "../../utils/history"
+import history from "../../utils/history";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -89,10 +89,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     textLink: {
       paddingRight: 15,
-      fontFamily: 'Leckerli One'
+      fontFamily: "Leckerli One"
     },
     logo: {
-      fontFamily: 'Leckerli One'
+      fontFamily: "Leckerli One"
     }
   })
 );
@@ -119,60 +119,61 @@ export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   return (
     <div className={classes.grow}>
       <AppBar position="fixed" color="default">
         <Toolbar>
           <div className={classes.sectionDesktop}>
-
             <ButtonBase
               focusRipple
               className={classes.textLink}
-              key="profile"
-              component={Link} to="/"
+              key="Tastice"
+              component={Link}
+              to="/"
             >
-              <Typography variant="h5" noWrap className={classes.logo}
-              >
+              <Typography variant="h5" noWrap className={classes.logo}>
                 Tastice
-            </Typography>
+              </Typography>
             </ButtonBase>
 
             <ButtonBase
               focusRipple
               className={classes.textLink}
-              key="profile"
-              component={Link} to="/activity"
+              key="Activity"
+              component={Link}
+              to="/activity"
             >
               <Typography variant="h6" noWrap>
                 Activity
-            </Typography>
+              </Typography>
             </ButtonBase>
 
             <ButtonBase
               focusRipple
               className={classes.textLink}
-              key="profile"
-              component={Link} to="/discover"
+              key="Discover"
+              component={Link}
+              to="/discover"
             >
               <Typography variant="h6" noWrap>
                 Discover
-            </Typography>
+              </Typography>
             </ButtonBase>
 
             <ButtonBase
               focusRipple
               className={classes.textLink}
-              key="profile"
-              component={Link} to="/profile"
+              key="Profile"
+              component={Link}
+              to="/profile"
             >
               <Typography variant="h6" noWrap>
                 Profile
-            </Typography>
+              </Typography>
             </ButtonBase>
           </div>
-
 
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -240,9 +241,9 @@ export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
         </MenuItem>
         <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>
           Profile
-      </MenuItem>
+        </MenuItem>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
-    </div >
+    </div>
   );
 };

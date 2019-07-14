@@ -1,9 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 
 export const ActivityView = () => {
-    return (
-        <div>
-            Activity!!
-        </div>
-    )
+  return <div>Activity!!</div>;
 };

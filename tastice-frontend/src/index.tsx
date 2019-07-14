@@ -1,6 +1,10 @@
 import React from "react";
 import * as ReactDOM from "react-dom";
-import { ApolloClient, InMemoryCache, NormalizedCacheObject } from "apollo-boost";
+import {
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject
+} from "apollo-boost";
 import { persistCache } from "apollo-cache-persist";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { createHttpLink } from "apollo-link-http";
@@ -25,9 +29,10 @@ const wsLink = new WebSocketLink({
 
 const cache = new InMemoryCache();
 
-export const persistor = persistCache({
+persistCache({
   cache,
-  storage: window.localStorage as PersistentStorage<PersistedData<NormalizedCacheObject>
+  storage: window.localStorage as PersistentStorage<
+    PersistedData<NormalizedCacheObject>
   >
 });
 

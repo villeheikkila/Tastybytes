@@ -8,9 +8,9 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { errorHandler } from "../../utils";
-import history from '../../utils/history';
-import { Token } from '../../types'
+import { notificationHandler, errorHandler } from "../../utils";
+import history from "../../utils/history";
+import { Token } from "../../types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,7 +56,7 @@ export const Profile: React.FC<Token> = ({ setToken }) => {
   const [email, setEmail] = useState("");
 
   const [deleteUser] = useMutation(DELETE_USER, {
-    onError: ((error) => console.log(error))
+    onError: error => console.log(error)
   });
   const [updateUser] = useMutation(UPDATE_USER, {
     onError: errorHandler
@@ -68,7 +68,6 @@ export const Profile: React.FC<Token> = ({ setToken }) => {
   }
 
   const user = me.data.me;
-  console.log('user: ', user);
 
   const handleUpdateUser = async (
     event: React.FormEvent<HTMLFormElement>
@@ -85,7 +84,12 @@ export const Profile: React.FC<Token> = ({ setToken }) => {
     });
 
     if (result) {
-      console.log("result: ", result);
+      notificationHandler({
+        message: `User '${
+          result.data.updateUser.firstName
+        }' succesfully updated`,
+        variant: "success"
+      });
     }
   };
 
@@ -94,8 +98,8 @@ export const Profile: React.FC<Token> = ({ setToken }) => {
       variables: { id: user.id }
     });
     localStorage.clear();
-    setToken(null)
-    history.push('/');
+    setToken(null);
+    history.push("/");
   };
 
   return (

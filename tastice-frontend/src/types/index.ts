@@ -6,8 +6,12 @@ export interface IProduct {
   subType: string;
   dateAdded: string;
   imgURL: string;
-  firstName: string,
-  lastName: string
+  firstName: string;
+  lastName: string;
+}
+
+export interface IProductObject {
+  product: IProduct;
 }
 
 export interface IProductProps {

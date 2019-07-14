@@ -1,9 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 
 export const MobileMenu = () => {
-    return (
-        <div>
-            This will become a proper settings menu
-        </div>
-    )
+  return <div>This will become a proper settings menu</div>;
 };

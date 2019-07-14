@@ -1,4 +1,4 @@
-import { client, persistor } from "../index";
+import { client } from "../index";
 import { INotification } from "../types";
 
 export const notificationHandler = (notification: INotification) => {
@@ -48,5 +48,4 @@ export const themeSwitcher = (value: boolean) => {
   });
 };
 
-export const logout = () => {
-}
+export const logout = () => {};

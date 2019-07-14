@@ -21,6 +21,7 @@ const variantIcon = {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
+    paddingTop: 50,
     width: 600
   },
   success: {

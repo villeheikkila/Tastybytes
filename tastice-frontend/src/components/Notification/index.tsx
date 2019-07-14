@@ -35,7 +35,7 @@ export const Notifications = () => {
     >
       <NotificationContentWrapper
         onClose={handleCloseNotification}
-        variant={"error"}
+        variant={"success"}
         message={notification.data.notification}
       />
     </Snackbar>
