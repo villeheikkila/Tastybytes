@@ -28,8 +28,8 @@ export const BottomBar = () => {
             showLabels
             className={classes.root}
         >
-            <BottomNavigationAction label="Activity" icon={<ViewListIcon />} component={Link} to="/" />
-            <BottomNavigationAction label="Discovery" icon={<Explore />} component={Link} to="/productsview" />
+            <BottomNavigationAction label="Activity" icon={<ViewListIcon />} component={Link} to="/activity" />
+            <BottomNavigationAction label="Discover" icon={<Explore />} component={Link} to="/discover" />
             <BottomNavigationAction label="Profile" icon={<Face />} component={Link} to="/profile" />
         </BottomNavigation>
     );

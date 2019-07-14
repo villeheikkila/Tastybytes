@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-export const MobileMenu = () => {
+export const ActivityView = () => {
     return (
         <div>
-            This will become a proper settings menu
+            Activity!!
         </div>
     )
 };

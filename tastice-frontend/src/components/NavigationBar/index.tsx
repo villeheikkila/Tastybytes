@@ -12,6 +12,8 @@ import {
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import 'typeface-leckerli-one'
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
@@ -85,10 +87,17 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: "flex"
     },
+    textLink: {
+      paddingRight: 15,
+      fontFamily: 'Leckerli One'
+    },
+    logo: {
+      fontFamily: 'Leckerli One'
+    }
   })
 );
 
-export const Navbar: React.FC<INavbar> = ({ setToken }) => {
+export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [state, setState] = useState(false);
@@ -116,8 +125,54 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
     <div className={classes.grow}>
       <AppBar position="fixed" color="default">
         <Toolbar>
-          <Typography variant="h6" noWrap>
-          </Typography>
+          <div className={classes.sectionDesktop}>
+
+            <ButtonBase
+              focusRipple
+              className={classes.textLink}
+              key="profile"
+              component={Link} to="/"
+            >
+              <Typography variant="h5" noWrap className={classes.logo}
+              >
+                Tastice
+            </Typography>
+            </ButtonBase>
+
+            <ButtonBase
+              focusRipple
+              className={classes.textLink}
+              key="profile"
+              component={Link} to="/activity"
+            >
+              <Typography variant="h6" noWrap>
+                Activity
+            </Typography>
+            </ButtonBase>
+
+            <ButtonBase
+              focusRipple
+              className={classes.textLink}
+              key="profile"
+              component={Link} to="/discover"
+            >
+              <Typography variant="h6" noWrap>
+                Discover
+            </Typography>
+            </ButtonBase>
+
+            <ButtonBase
+              focusRipple
+              className={classes.textLink}
+              key="profile"
+              component={Link} to="/profile"
+            >
+              <Typography variant="h6" noWrap>
+                Profile
+            </Typography>
+            </ButtonBase>
+          </div>
+
 
           <div className={classes.search}>
             <div className={classes.searchIcon}>

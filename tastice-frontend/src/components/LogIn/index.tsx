@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
+import 'typeface-leckerli-one'
 
 import { ILogIn } from "../../types";
 import { LOGIN } from "../../queries";
@@ -29,6 +30,10 @@ const useStyles = makeStyles(theme => ({
   },
   image: {
     marginBottom: theme.spacing(2)
+  },
+  logo: {
+    paddingRight: 15,
+    fontFamily: 'Leckerli One'
   }
 }));
 
@@ -63,11 +68,11 @@ export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
-        <img
-          className={classes.image}
-          src="https://fontmeme.com/permalink/190709/2864eb8c1c66dd28b0eb795fc422ff02.png"
-          alt="logo"
-        />
+
+        <Typography variant="h1" noWrap className={classes.logo}
+        >
+          Tastice
+        </Typography>
 
         <Typography component="h1" variant="h5">
           Sign in

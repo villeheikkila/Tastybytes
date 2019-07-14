@@ -3,10 +3,9 @@ import { SIGN_UP } from "../../queries";
 import { useMutation } from "@apollo/react-hooks";
 import { ILogIn } from "../../types";
 import history from '../../utils/history';
+import 'typeface-leckerli-one'
 
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,6 +34,10 @@ const useStyles = makeStyles(theme => ({
   },
   signin: {
     margin: theme.spacing(0, 0, 0)
+  },
+  logo: {
+    paddingRight: 15,
+    fontFamily: 'Leckerli One'
   }
 }));
 
@@ -75,13 +78,11 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
-        <img
-          className={classes.image}
-          src="https://fontmeme.com/permalink/190709/2864eb8c1c66dd28b0eb795fc422ff02.png"
-          alt="logo"
-        />
+        <Typography variant="h1" noWrap className={classes.logo}
+        >
+          Tastice
+      </Typography>
 
         <Typography component="h1" variant="h5">
           Sign up
@@ -181,6 +182,6 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
           </Button>
         </ValidatorForm>
       </div>
-    </Container>
+    </Container >
   );
 };

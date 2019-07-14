@@ -8,9 +8,10 @@ import { ThemeProvider } from "@material-ui/styles";
 import blue from "@material-ui/core/colors/blue";
 import pink from "@material-ui/core/colors/pink";
 import Fade from "@material-ui/core/Fade";
+import Box from "@material-ui/core/Box";
 import history from './utils/history';
 import { BottomBar } from './components/BottomBar'
-
+import 'typeface-leckerli-one'
 
 import { UserList } from "./components/UserList";
 import { ProductList } from "./components/ProductList";
@@ -20,11 +21,11 @@ import { Notifications } from "./components/Notification";
 import { MobileMenu } from "./components/MobileMenu";
 import { LogIn } from "./components/LogIn";
 import { SignUp } from "./components/SignUp";
-import { Navbar } from "./components/Navbar";
+import { NavigationBar } from "./components/NavigationBar";
 import { ProductView } from "./components/ProductView";
 import { Profile } from "./components/Profile";
 import { THEME } from "./queries";
-
+import { ActivityView } from "./components/ActivityView"
 const darkTheme = createMuiTheme({
   palette: {
     type: "dark",
@@ -73,22 +74,27 @@ const App = () => {
               />
               <Route render={() => <LogIn setToken={setToken} />} />
             </Switch>
-          ) : (<div style={{ paddingTop: 100 }}>
-            <Navbar setToken={setToken} />
-            <Fade timeout={300}>
-              <Switch>
-                <Route exact path="/" render={() => <Index />} />
-                <Route exact path="/products" render={() => <ProductList />} />
-                <Route exact path="/productsview" render={() => <ProductView />} />
-                <Route exact path="/users" render={() => <UserList />} />
-                <Route exact path="/addproduct" render={() => <AddProduct />} />
-                <Route exact path="/menu" render={() => <MobileMenu />} />
-                <Route exact path="/profile" render={() => <Profile setToken={setToken} />} />
-                <Route render={() => <Index />} />
-              </Switch>
-            </Fade>
-            <BottomBar />
-          </div>)}
+          ) : (
+              <div style={{ paddingTop: 100 }}>
+                <NavigationBar setToken={setToken} />
+                <Fade timeout={300}>
+                  <Switch>
+                    <Route exact path="/" render={() => <Index />} />
+                    <Route exact path="/products" render={() => <ProductList />} />
+                    <Route exact path="/discover" render={() => <ProductView />} />
+                    <Route exact path="/users" render={() => <UserList />} />
+                    <Route exact path="/activity" render={() => <ActivityView />} />
+                    <Route exact path="/addproduct" render={() => <AddProduct />} />
+                    <Route exact path="/menu" render={() => <MobileMenu />} />
+                    <Route exact path="/profile" render={() => <Profile setToken={setToken} />} />
+                    <Route render={() => <Index />} />
+                  </Switch>
+                </Fade>
+                <Box display={{ xs: 'block', md: 'none' }}>
+                  <BottomBar />
+                </Box>
+              </div>
+            )}
         </Router>
       </ThemeProvider>
     </div >

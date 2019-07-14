@@ -12,6 +12,7 @@
     "@types/react-dom": "16.8.4",
     "@types/react-material-ui-form-validator": "^2.0.2",
     "@types/react-router-dom": "^4.3.4",
+    "@types/react-select": "^3.0.0",
     "apollo-boost": "^0.4.3",
     "apollo-cache-persist": "^0.1.1",
     "apollo-link-context": "^1.0.18",
@@ -27,7 +28,9 @@
     "react-material-ui-form-validator": "^2.0.9",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "react-select": "^3.0.4",
     "subscriptions-transport-ws": "^0.9.16",
+    "typeface-leckerli-one": "0.0.72",
     "typescript": "3.5.2"
   },
   "scripts": {
