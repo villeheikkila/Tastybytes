@@ -101,20 +101,6 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: "flex"
     },
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0
-    },
-    drawerPaper: {
-      width: drawerWidth
-    },
-    drawerHeader: {
-      display: "flex",
-      alignItems: "center",
-      padding: "0 8px",
-      ...theme.mixins.toolbar,
-      justifyContent: "flex-end"
-    },
     content: {
       flexGrow: 1,
       padding: theme.spacing(3),
@@ -174,10 +160,6 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) =>
     setMobileMoreAnchorEl(event.currentTarget);
-
-  const handleDrawerOpen = () => setOpen(true);
-
-  const handleDrawerClose = () => setOpen(false);
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -243,16 +225,6 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
     <div className={classes.grow}>
       <AppBar position="fixed" color="default">
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-
           <Typography variant="h6" noWrap>
           </Typography>
 
@@ -300,95 +272,6 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
           </div>
         </Toolbar>
       </AppBar>
-
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={open}
-        classes={{
-          paper: classes.drawerPaper
-        }}
-      >
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-                <ChevronRightIcon />
-              )}
-          </IconButton>
-        </div>
-        <Divider />
-
-        <List>
-          <ListItem
-            button
-            key="Index"
-            component={Link}
-            to="/"
-            onClick={handleDrawerClose}
-          >
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Index" />
-          </ListItem>
-
-          <ListItem
-            button
-            key="Products"
-            component={Link}
-            to="/products"
-            onClick={handleDrawerClose}
-          >
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Products" />
-          </ListItem>
-
-          <ListItem
-            button
-            key="Add Products"
-            component={Link}
-            to="/addproduct"
-            onClick={handleDrawerClose}
-          >
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Add Products" />
-          </ListItem>
-
-          <ListItem
-            button
-            key="Products View"
-            component={Link}
-            to="/productsview"
-            onClick={handleDrawerClose}
-          >
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Products View" />
-          </ListItem>
-
-          <ListItem
-            button
-            key="Users"
-            component={Link}
-            to="/users"
-            onClick={handleDrawerClose}
-          >
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-
-            <ListItemText primary="Users" />
-          </ListItem>
-        </List>
-      </Drawer>
 
       {renderMobileMenu}
       {renderMenu}

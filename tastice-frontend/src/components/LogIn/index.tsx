@@ -118,7 +118,7 @@ export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
             className={classes.signup}
             onClick={handlePushToSignUp}
           >
-            "Don't have an account? Sign Up"
+            Don't have an account? Sign Up
           </Button>
         </form>
       </div>
