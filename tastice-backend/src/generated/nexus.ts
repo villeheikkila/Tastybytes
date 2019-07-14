@@ -111,7 +111,9 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     me: NexusGenRootTypes['User'] | null; // User
+    product: NexusGenRootTypes['Product'][] | null; // [Product!]
     products: NexusGenRootTypes['Product'][] | null; // [Product!]
+    user: NexusGenRootTypes['User'][] | null; // [User!]
     users: NexusGenRootTypes['User'][] | null; // [User!]
   }
   Subscription: { // field return type
@@ -175,6 +177,14 @@ export interface NexusGenArgTypes {
       firstName?: string | null; // String
       id?: string | null; // ID
       lastName?: string | null; // String
+    }
+  }
+  Query: {
+    product: { // args
+      id?: string | null; // ID
+    }
+    user: { // args
+      id?: string | null; // ID
     }
   }
 }

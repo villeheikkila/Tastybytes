@@ -7,8 +7,9 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import DoneOutline from "@material-ui/icons/DoneOutline";
 import lipton from "../../images/lipton.jpg";
+import { Link } from "react-router-dom";
 
-import { IProductObject } from "../../types";
+import { IProductCard } from "../../types";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -26,10 +27,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const ProductCard: React.FC<IProductObject> = ({ product }) => {
+export const ProductCard: React.FC<IProductCard> = ({ product, show }) => {
   const classes = useStyles();
-  const { name, producer, category, subCategory } = product;
-
+  const { id, name, producer, category, subCategory } = product;
   return (
     <Card className={classes.card}>
       <Avatar alt="Image" src={lipton} className={classes.picture} />
@@ -44,9 +44,17 @@ export const ProductCard: React.FC<IProductObject> = ({ product }) => {
           {category} {subCategory}
         </Typography>
       </CardContent>
-      <IconButton aria-label="CheckIn" className={classes.checkin}>
-        <DoneOutline color="primary" fontSize="large" />
-      </IconButton>
+
+      {show && (
+        <IconButton
+          aria-label="CheckIn"
+          className={classes.checkin}
+          component={Link}
+          to={`/product/${id}`}
+        >
+          <DoneOutline color="primary" fontSize="large" />
+        </IconButton>
+      )}
     </Card>
   );
 };

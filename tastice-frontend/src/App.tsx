@@ -26,6 +26,7 @@ import { ProductView } from "./components/ProductView";
 import { Profile } from "./components/Profile";
 import { THEME } from "./queries";
 import { ActivityView } from "./components/ActivityView";
+import { CreateCheckIn } from "./components/CreatCheckIn";
 const darkTheme = createMuiTheme({
   palette: {
     type: "dark",
@@ -53,6 +54,8 @@ const App = () => {
       setToken(token);
     }
   }, [token]);
+
+  console.log("token: ", token);
 
   return (
     <div>
@@ -110,6 +113,13 @@ const App = () => {
                     exact
                     path="/profile"
                     render={() => <Profile setToken={setToken} />}
+                  />
+                  <Route
+                    exact
+                    path="/product/:id"
+                    render={({ match }) => (
+                      <CreateCheckIn id={match.params.id} />
+                    )}
                   />
                   <Route render={() => <Index />} />
                 </Switch>

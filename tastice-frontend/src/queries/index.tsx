@@ -141,6 +141,17 @@ export const ALL_PRODUCTS = gql`
   }
 `;
 
+export const PRODUCT = gql`
+  query product($id: ID!) {
+    product(id: $id) {
+      name
+      producer
+      type
+      id
+    }
+  }
+`;
+
 export const LOGIN = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {

@@ -46,7 +46,7 @@ export const ProductView = () => {
       <Grid container justify="center" spacing={10}>
         <Grid item xs={12}>
           {products.map((product: IProduct) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} show={true} />
           ))}
         </Grid>
       </Grid>

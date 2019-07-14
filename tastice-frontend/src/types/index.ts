@@ -10,6 +10,10 @@ export interface IProductObject {
   product: IProduct;
 }
 
+export interface IProductCard {
+  product: IProduct;
+  show: boolean;
+}
 export interface IProductProps {
   product: IProduct;
 }

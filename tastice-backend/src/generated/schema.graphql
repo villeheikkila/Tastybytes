@@ -46,7 +46,9 @@ type ProductSubscriptionPayload {
 
 type Query {
   me: User
+  product(id: ID): [Product!]
   products: [Product!]
+  user(id: ID): [User!]
   users: [User!]
 }
 
