@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { INavbar } from "../../types";
 import clsx from "clsx";
 import { themeSwitcher } from "../../utils";
+
 import {
   fade,
   makeStyles,
@@ -253,7 +254,6 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
           </IconButton>
 
           <Typography variant="h6" noWrap>
-            Tastice
           </Typography>
 
           <div className={classes.search}>

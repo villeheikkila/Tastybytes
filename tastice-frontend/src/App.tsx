@@ -9,6 +9,8 @@ import blue from "@material-ui/core/colors/blue";
 import pink from "@material-ui/core/colors/pink";
 import Fade from "@material-ui/core/Fade";
 import history from './utils/history';
+import { BottomBar } from './components/BottomBar'
+
 
 import { UserList } from "./components/UserList";
 import { ProductList } from "./components/ProductList";
@@ -83,6 +85,7 @@ const App = () => {
                 <Route render={() => <Index />} />
               </Switch>
             </Fade>
+            <BottomBar />
           </div>)}
         </Router>
       </ThemeProvider>
