@@ -1,68 +1,52 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import { red } from "@material-ui/core/colors";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import DoneOutline from "@material-ui/icons/DoneOutline";
 import lipton from "../../images/lipton.jpg";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
+
 import { IProductObject } from "../../types";
 
 const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: 600,
-    margin: `${theme.spacing(3)}px auto`
+    margin: `${theme.spacing(1)}px auto`,
+    display: "flex"
   },
-  media: {
-    height: 0,
-    paddingTop: "56.25%"
+  picture: {
+    margin: 10,
+    width: 100,
+    height: 100
+  },
+  checkin: {
+    left: 100
   }
 }));
 
 export const ProductCard: React.FC<IProductObject> = ({ product }) => {
   const classes = useStyles();
-  const {
-    name,
-    producer,
-    type,
-    subType,
-    dateAdded,
-    imgURL,
-    firstName,
-    lastName
-  } = product;
+  const { name, producer, category, subCategory } = product;
 
-  const category = type;
-  const subCategory = subType;
   return (
-    <div>
-      <Card className={classes.card}>
-        <CardMedia className={classes.media} image={lipton} title={name} />
-        <CardContent>
-          <Typography variant="h5" color="textSecondary" component="p">
-            {name}
-          </Typography>
-          <Typography variant="h6" color="textSecondary" component="p">
-            {producer}
-          </Typography>
-          <Typography variant="h6" color="textSecondary" component="p">
-            {category} {subCategory}
-          </Typography>
-        </CardContent>
-        <Grid item xs={12}>
-          <ButtonGroup fullWidth aria-label="Check-in!">
-            <Button>Check-in!</Button>
-            <Button>Edit</Button>
-          </ButtonGroup>
-        </Grid>
-      </Card>
-    </div>
+    <Card className={classes.card}>
+      <Avatar alt="Image" src={lipton} className={classes.picture} />
+      <CardContent>
+        <Typography variant="h5" color="textSecondary" component="p">
+          {name}
+        </Typography>
+        <Typography variant="h6" color="textSecondary" component="p">
+          {producer}
+        </Typography>
+        <Typography variant="h6" color="textSecondary" component="p">
+          {category} {subCategory}
+        </Typography>
+      </CardContent>
+      <IconButton aria-label="CheckIn" className={classes.checkin}>
+        <DoneOutline color="primary" fontSize="large" />
+      </IconButton>
+    </Card>
   );
 };

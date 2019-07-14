@@ -6,6 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import history from "../../utils/history";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import { ALL_PRODUCTS } from "../../queries";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,49 +30,16 @@ const useStyles = makeStyles(theme => ({
 
 export const ProductView = () => {
   const classes = useStyles();
+  const productsQuery = useQuery(ALL_PRODUCTS);
+  const products = productsQuery.data.products;
+
+  if (products === undefined) {
+    return null;
+  }
 
   const handleAdd = () => {
     history.push("/addproduct");
   };
-
-  const products: IProduct[] = [
-    {
-      id: "asdd",
-      name: "Lipton Green Tea",
-      producer: "Nestle",
-      type: "Virvoitusjuoma",
-      subType: "Jäätee",
-      dateAdded: "March 23, 2019",
-      imgURL:
-        "https://pixel.nymag.com/imgs/daily/vulture/2018/11/02/02-avatar-2.w700.h467.jpg",
-      firstName: "Ville",
-      lastName: "Heikkilä"
-    },
-    {
-      id: "asdxxxd",
-      name: "Lipton Green Tea",
-      producer: "Nestle",
-      type: "Virvoitusjuoma",
-      subType: "Jäätee",
-      dateAdded: "March 23, 2019",
-      imgURL:
-        "https://pixel.nymag.com/imgs/daily/vulture/2018/11/02/02-avatar-2.w700.h467.jpg",
-      firstName: "Ville",
-      lastName: "Heikkilä"
-    },
-    {
-      id: "asdddd",
-      name: "Lipton Green Tea",
-      producer: "Nestle",
-      type: "Virvoitusjuoma",
-      subType: "Jäätee",
-      dateAdded: "March 23, 2019",
-      imgURL:
-        "https://pixel.nymag.com/imgs/daily/vulture/2018/11/02/02-avatar-2.w700.h467.jpg",
-      firstName: "Ville",
-      lastName: "Heikkilä"
-    }
-  ];
 
   return (
     <div className={classes.root}>

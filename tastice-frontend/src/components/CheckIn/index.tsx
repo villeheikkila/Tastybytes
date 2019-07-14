@@ -31,16 +31,7 @@ const useStyles = makeStyles(theme => ({
 
 export const CheckIn: React.FC<IProductObject> = ({ product }) => {
   const classes = useStyles();
-  const {
-    name,
-    producer,
-    type,
-    subType,
-    dateAdded,
-    imgURL,
-    firstName,
-    lastName
-  } = product;
+  const { name, producer, category, subCategory } = product;
 
   return (
     <div>
@@ -49,7 +40,7 @@ export const CheckIn: React.FC<IProductObject> = ({ product }) => {
           avatar={
             <Avatar
               aria-label="Product"
-              src={imgURL}
+              src={"sadasd"}
               className={classes.avatar}
             >
               R
@@ -60,8 +51,8 @@ export const CheckIn: React.FC<IProductObject> = ({ product }) => {
               <MoreVertIcon />
             </IconButton>
           }
-          title={`Added by ${firstName} ${lastName}`}
-          subheader={dateAdded}
+          title={"Added by ${firstName} ${lastName}"}
+          subheader="asdasdas"
         />
         <CardMedia className={classes.media} image={lipton} title={name} />
         <CardContent>
@@ -72,7 +63,7 @@ export const CheckIn: React.FC<IProductObject> = ({ product }) => {
             {producer}
           </Typography>
           <Typography variant="h5" color="textSecondary" component="p">
-            {type} {subType}
+            {category} {subCategory}
           </Typography>
         </CardContent>
         <Grid item xs={12}>
