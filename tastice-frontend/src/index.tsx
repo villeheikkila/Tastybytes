@@ -57,7 +57,8 @@ const link = split(
 
 export const client = new ApolloClient({
   link,
-  cache
+  cache,
+  resolvers: {}
 });
 
 // Use dark theme by default

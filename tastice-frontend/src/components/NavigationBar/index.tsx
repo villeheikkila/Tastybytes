@@ -100,16 +100,18 @@ const useStyles = makeStyles((theme: Theme) =>
 export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [state, setState] = useState(false);
+  const [colorScheme, setColorScheme] = useState(false);
 
   const logout = () => {
     localStorage.clear();
     setToken(null);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleColorSchemeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     themeSwitcher(event.target.checked);
-    setState(event.target.checked);
+    setColorScheme(event.target.checked);
   };
 
   const isMenuOpen = Boolean(anchorEl);
@@ -125,19 +127,18 @@ export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
     <div className={classes.grow}>
       <AppBar position="fixed" color="default">
         <Toolbar>
+          <ButtonBase
+            focusRipple
+            className={classes.textLink}
+            key="Tastice"
+            component={Link}
+            to="/"
+          >
+            <Typography variant="h5" noWrap className={classes.logo}>
+              Tastice
+            </Typography>
+          </ButtonBase>
           <div className={classes.sectionDesktop}>
-            <ButtonBase
-              focusRipple
-              className={classes.textLink}
-              key="Tastice"
-              component={Link}
-              to="/"
-            >
-              <Typography variant="h5" noWrap className={classes.logo}>
-                Tastice
-              </Typography>
-            </ButtonBase>
-
             <ButtonBase
               focusRipple
               className={classes.textLink}
@@ -233,9 +234,9 @@ export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
       >
         <MenuItem>
           <Switch
-            checked={state}
-            onChange={handleChange}
-            value="checkedA"
+            checked={colorScheme}
+            onChange={handleColorSchemeChange}
+            value="color scheme"
             inputProps={{ "aria-label": "secondary checkbox" }}
           />
         </MenuItem>

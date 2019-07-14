@@ -17,16 +17,19 @@ import { IProductObject } from "../../types";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    maxWidth: 600,
+    maxWidth: 500,
     margin: `${theme.spacing(3)}px auto`
   },
   media: {
     height: 0,
     paddingTop: "56.25%"
+  },
+  avatar: {
+    backgroundColor: red[500]
   }
 }));
 
-export const ProductCard: React.FC<IProductObject> = ({ product }) => {
+export const CheckIn: React.FC<IProductObject> = ({ product }) => {
   const classes = useStyles();
   const {
     name,
@@ -39,27 +42,42 @@ export const ProductCard: React.FC<IProductObject> = ({ product }) => {
     lastName
   } = product;
 
-  const category = type;
-  const subCategory = subType;
   return (
     <div>
       <Card className={classes.card}>
+        <CardHeader
+          avatar={
+            <Avatar
+              aria-label="Product"
+              src={imgURL}
+              className={classes.avatar}
+            >
+              R
+            </Avatar>
+          }
+          action={
+            <IconButton aria-label="Settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title={`Added by ${firstName} ${lastName}`}
+          subheader={dateAdded}
+        />
         <CardMedia className={classes.media} image={lipton} title={name} />
         <CardContent>
-          <Typography variant="h5" color="textSecondary" component="p">
+          <Typography variant="h4" color="textSecondary" component="p">
             {name}
           </Typography>
-          <Typography variant="h6" color="textSecondary" component="p">
+          <Typography variant="h5" color="textSecondary" component="p">
             {producer}
           </Typography>
-          <Typography variant="h6" color="textSecondary" component="p">
-            {category} {subCategory}
+          <Typography variant="h5" color="textSecondary" component="p">
+            {type} {subType}
           </Typography>
         </CardContent>
         <Grid item xs={12}>
           <ButtonGroup fullWidth aria-label="Check-in!">
             <Button>Check-in!</Button>
-            <Button>Edit</Button>
           </ButtonGroup>
         </Grid>
       </Card>

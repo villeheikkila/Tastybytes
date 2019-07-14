@@ -47,7 +47,7 @@ export const ProductView = () => {
       lastName: "Heikkilä"
     },
     {
-      id: "asdd",
+      id: "asdxxxd",
       name: "Lipton Green Tea",
       producer: "Nestle",
       type: "Virvoitusjuoma",
@@ -59,7 +59,7 @@ export const ProductView = () => {
       lastName: "Heikkilä"
     },
     {
-      id: "asdd",
+      id: "asdddd",
       name: "Lipton Green Tea",
       producer: "Nestle",
       type: "Virvoitusjuoma",
@@ -77,7 +77,7 @@ export const ProductView = () => {
       <Grid container justify="center" spacing={10}>
         <Grid item xs={12}>
           {products.map((product: IProduct) => (
-            <ProductCard product={product} />
+            <ProductCard key={product.id} product={product} />
           ))}
         </Grid>
       </Grid>

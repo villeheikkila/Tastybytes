@@ -54,7 +54,6 @@ const App = () => {
     }
   }, [token]);
 
-  console.log("RENDER");
   return (
     <div>
       <ThemeProvider theme={themes[theme]}>
@@ -76,7 +75,7 @@ const App = () => {
               <Route render={() => <LogIn setToken={setToken} />} />
             </Switch>
           ) : (
-            <div style={{ paddingTop: 100 }}>
+            <div style={{ paddingTop: 70 }}>
               <NavigationBar setToken={setToken} />
               <Fade timeout={300}>
                 <Switch>
@@ -102,7 +101,11 @@ const App = () => {
                     path="/addproduct"
                     render={() => <AddProduct />}
                   />
-                  <Route exact path="/menu" render={() => <MobileMenu />} />
+                  <Route
+                    exact
+                    path="/menu"
+                    render={() => <MobileMenu setToken={setToken} />}
+                  />
                   <Route
                     exact
                     path="/profile"
