@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
-import 'typeface-leckerli-one'
+import "typeface-leckerli-one";
 
 import { ILogIn } from "../../types";
 import { LOGIN } from "../../queries";
 import { errorHandler } from "../../utils";
-import history from "../../utils/history"
+import history from "../../utils/history";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -28,12 +28,13 @@ const useStyles = makeStyles(theme => ({
   signup: {
     margin: theme.spacing(0, 0, 0)
   },
-  image: {
-    marginBottom: theme.spacing(2)
-  },
   logo: {
     paddingRight: 15,
-    fontFamily: 'Leckerli One'
+    paddingBottom: 15,
+    fontFamily: "Leckerli One"
+  },
+  title: {
+    paddingBottom: 5
   }
 }));
 
@@ -57,24 +58,21 @@ export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
 
     if (result) {
       const token: string = result.data.login.token;
-      console.log('login: ', result.data.login);
       setToken(token);
       localStorage.setItem("token", token);
     }
   };
 
-  const handlePushToSignUp = () => history.push("/signup")
+  const handlePushToSignUp = () => history.push("/signup");
 
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
-
-        <Typography variant="h1" noWrap className={classes.logo}
-        >
+        <Typography variant="h1" noWrap className={classes.logo}>
           Tastice
         </Typography>
 
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" className={classes.title}>
           Sign in
         </Typography>
 

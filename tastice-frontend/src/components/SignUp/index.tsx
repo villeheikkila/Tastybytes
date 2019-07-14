@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { SIGN_UP } from "../../queries";
 import { useMutation } from "@apollo/react-hooks";
 import { ILogIn } from "../../types";
-import history from '../../utils/history';
-import 'typeface-leckerli-one'
+import history from "../../utils/history";
+import "typeface-leckerli-one";
 
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -20,24 +20,19 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     alignItems: "center"
   },
-  img: {
-    marginTop: theme.spacing(300)
-  },
-  form: {
-    marginTop: theme.spacing(3)
-  },
   submit: {
     margin: theme.spacing(3, 0, 2)
-  },
-  image: {
-    marginBottom: theme.spacing(2)
   },
   signin: {
     margin: theme.spacing(0, 0, 0)
   },
   logo: {
     paddingRight: 15,
-    fontFamily: 'Leckerli One'
+    paddingBottom: 15,
+    fontFamily: "Leckerli One"
+  },
+  title: {
+    paddingBottom: 25
   }
 }));
 
@@ -66,25 +61,25 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
     }
   };
 
-  const handlePushToLogin = () => history.push("/")
+  const handlePushToLogin = () => history.push("/");
 
-  const handlePasswordChange = (event: any) => setPassword(event.target.value)
+  const handlePasswordChange = (event: any) => setPassword(event.target.value);
 
-  const handleEmailChange = (event: any) => setEmail(event.target.value)
+  const handleEmailChange = (event: any) => setEmail(event.target.value);
 
   const handleLastNameChange = (event: any) => setLastName(event.target.value);
 
-  const handleFirstNameChange = (event: any) => setFirstName(event.target.value)
+  const handleFirstNameChange = (event: any) =>
+    setFirstName(event.target.value);
 
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
-        <Typography variant="h1" noWrap className={classes.logo}
-        >
+        <Typography variant="h1" noWrap className={classes.logo}>
           Tastice
-      </Typography>
+        </Typography>
 
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" className={classes.title}>
           Sign up
         </Typography>
         <ValidatorForm
@@ -102,8 +97,16 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
                 id="firstName"
                 label="First Name"
                 autoFocus
-                validators={['required', 'minStringLength: 3', 'maxStringLength: 12']}
-                errorMessages={['This field is required', 'The name is too short', 'The name is too long']}
+                validators={[
+                  "required",
+                  "minStringLength: 3",
+                  "maxStringLength: 12"
+                ]}
+                errorMessages={[
+                  "This field is required",
+                  "The name is too short",
+                  "The name is too long"
+                ]}
                 value={firstName}
                 onChange={handleFirstNameChange}
               />
@@ -118,8 +121,16 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
-                validators={['required', 'minStringLength: 3', 'maxStringLength: 12']}
-                errorMessages={['This field is required', 'The name is too short', 'The name is too long']}
+                validators={[
+                  "required",
+                  "minStringLength: 3",
+                  "maxStringLength: 12"
+                ]}
+                errorMessages={[
+                  "This field is required",
+                  "The name is too short",
+                  "The name is too long"
+                ]}
                 value={lastName}
                 onChange={handleLastNameChange}
               />
@@ -134,8 +145,11 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                validators={['required', 'isEmail']}
-                errorMessages={['This field is required', 'The entered email is not valid']}
+                validators={["required", "isEmail"]}
+                errorMessages={[
+                  "This field is required",
+                  "The entered email is not valid"
+                ]}
                 value={email}
                 onChange={handleEmailChange}
               />
@@ -145,15 +159,22 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
               <TextValidator
                 variant="outlined"
                 required
-
                 fullWidth
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                validators={['required', 'minStringLength: 3', 'maxStringLength: 100']}
-                errorMessages={['This field is required', 'The entered password is too short', 'The entered password is too long']}
+                validators={[
+                  "required",
+                  "minStringLength: 3",
+                  "maxStringLength: 100"
+                ]}
+                errorMessages={[
+                  "This field is required",
+                  "The entered password is too short",
+                  "The entered password is too long"
+                ]}
                 value={password}
                 onChange={handlePasswordChange}
               />
@@ -182,6 +203,6 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
           </Button>
         </ValidatorForm>
       </div>
-    </Container >
+    </Container>
   );
 };
