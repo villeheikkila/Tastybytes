@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { SIGN_UP } from "../../queries";
 import { useMutation } from "@apollo/react-hooks";
-import { Link } from "react-router-dom";
 import { ILogIn } from "../../types";
 import history from '../../utils/history';
 

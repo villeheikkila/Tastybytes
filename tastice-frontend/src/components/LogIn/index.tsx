@@ -6,7 +6,6 @@ import { LOGIN } from "../../queries";
 import { errorHandler } from "../../utils";
 import history from "../../utils/history"
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -63,7 +62,6 @@ export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <div className={classes.paper}>
         <img
           className={classes.image}

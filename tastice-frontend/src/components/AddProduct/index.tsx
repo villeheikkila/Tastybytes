@@ -5,41 +5,87 @@ import { notificationHandler, errorHandler } from "../../utils";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Button from '@material-ui/core/Button';
-import ReactSelectMaterialUi from "react-select-material-ui";
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import { MaterialSelect } from "./MaterialSelect"
+import { OptionType } from '../../types'
+import Container from "@material-ui/core/Container";
+
+const companies: OptionType[] = [
+  { label: 'Coca Cola Co' },
+  { label: 'Pepsi Co' },
+  { label: 'Hartwall' },
+  { label: 'Olvi' },
+  { label: 'Fentimans' },
+].map(suggestion => ({
+  value: suggestion.label,
+  label: suggestion.label,
+}));
+
+
+const categories: OptionType[] = [
+  { label: 'Soda' },
+  { label: 'Coffee' },
+  { label: 'Noodles' },
+  { label: 'Pizza' },
+  { label: 'Juice' },
+].map(suggestion => ({
+  value: suggestion.label,
+  label: suggestion.label,
+}));
+
+const subCategories: OptionType[] = [
+  { label: 'Tea' },
+  { label: 'Mead' },
+  { label: 'Energy Drink' },
+  { label: 'Sports drink' },
+  { label: 'Sparkling Water' },
+].map(suggestion => ({
+  value: suggestion.label,
+  label: suggestion.label,
+}));
 
 const useStyles = makeStyles(theme => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
   root: {
     padding: theme.spacing(3, 2),
+
   },
   button: {
     margin: theme.spacing(1),
-  },
+  }
 }));
-
-const options: string[] = ["Pepsi Co", "Coca Cola Company", "Olvi", "Europe"];
-
 
 export const AddProduct = () => {
   const classes = useStyles();
   const [name, setName] = useState("");
   const [producer, setProducer] = useState("");
-  const [type, setType] = useState("");
+  const [category, setCategory] = useState()
+  const [subCategory, setSubCategory] = useState()
   const [addProduct] = useMutation(ADD_PRODUCT, {
     onError: errorHandler
   });
 
-  const handleChange = (value: any) => {
-    console.log(value);
-  }
+  const handleNameChange = (event: any) => setName(event.target.value)
+
+  const handleProducerChange = (value: any) => setProducer(value);
+
+  const handleCategoryChange = (value: any) => setCategory(value)
+
+  const handleSubCategoryChange = (value: any) => setSubCategory(value)
 
   const handleAddProduct = async (
     event: any) => {
     event.preventDefault();
 
     const result = await addProduct({
-      variables: { name, producer, type }
+      variables: { name, producer, type: category }
     });
 
     if (result) {
@@ -49,70 +95,46 @@ export const AddProduct = () => {
       });
     }
 
-    setName("");
-    setProducer("");
-    setType("");
   };
 
-  const handleNameChange = (event: any) => setName(event.target.value)
-
-  const handleProducerChange = (event: any) => setProducer(event.target.value);
-
-  const handleTypeChange = (event: any) => setType(event.target.value)
-
   return (
-    <div>
-      <Paper className={classes.root}>
-        <ValidatorForm
-          onSubmit={handleAddProduct}
-          onError={(errors: any) => console.log(errors)}
-        >
-          <TextValidator
-            variant="outlined"
-            required
-            fullWidth
-            id="Name"
-            label="Name"
-            name="Name"
-            validators={['required', 'minStringLength: 3', 'maxStringLength: 12']}
-            errorMessages={['This field is required', 'The name is too short', 'The name is too long']}
-            value={name}
-            onChange={handleNameChange}
-          />
+    <Container maxWidth="sm">
+      <Paper className={classes.paper}>
+        <Typography component="h1" variant="h5">
+          Add a new product!
+        </Typography>
+        <form onSubmit={handleAddProduct}>
+          <Grid container alignContent={"center"} alignItems={"center"} spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                id="Name"
+                label="Name"
+                name="Name"
+                style={{ margin: 8 }}
+                placeholder="Placeholder"
+                fullWidth
+                margin="normal"
+                value={name}
+                onChange={handleNameChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
 
-          <TextValidator
-            variant="outlined"
-            required
-            fullWidth
-            id="Producer"
-            label="Producer"
-            name="Producer"
-            validators={['required', 'minStringLength: 3', 'maxStringLength: 12']}
-            errorMessages={['This field is required', 'The name is too short', 'The name is too long']}
-            value={producer}
-            onChange={handleProducerChange}
-          />
+              <MaterialSelect isCreatable={true} isMulti={false} suggestions={companies} label={"Producer"} placeholder={"Select a company"} onChange={handleProducerChange} value={producer} />
+              <MaterialSelect isCreatable={false} isMulti={false} suggestions={categories} label={"Category"} placeholder={"Select a category"} onChange={handleCategoryChange} value={category} />
+              <MaterialSelect isCreatable={true} isMulti={true} suggestions={subCategories} label={"Subcategory"} placeholder={"Select a subcategory"} onChange={handleSubCategoryChange} value={subCategory} />
+            </Grid>
+            <Grid item xs={12}>
 
-          <TextValidator
-            variant="outlined"
-            required
-            fullWidth
-            id="Type"
-            label="Type"
-            name="Type"
-            validators={['required', 'minStringLength: 3', 'maxStringLength: 12']}
-            errorMessages={['This field is required', 'The name is too short', 'The name is too long']}
-            value={type}
-            onChange={handleTypeChange}
-          />
-
-          <ReactSelectMaterialUi style={{ width: 100 }} value="Europe" options={options} onChange={handleChange} />
-
-          <Button type="submit" variant="contained" color="secondary" className={classes.button}>
-            Add Product!
+              <Button type="submit" variant="contained" color="secondary" className={classes.button}>
+                Add Product!
           </Button>
-        </ValidatorForm>
+            </Grid>
+
+          </Grid>
+
+        </form>
       </Paper>
-    </div>
+    </Container >
   );
 };

@@ -59,3 +59,8 @@ export interface INotification {
 export interface INotificationObject {
   notification: INotification;
 }
+
+export interface OptionType {
+  label: string;
+  value: string;
+}
