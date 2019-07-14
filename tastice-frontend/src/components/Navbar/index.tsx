@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { INavbar } from "../../types";
-import clsx from "clsx";
 import { themeSwitcher } from "../../utils";
 
 import {
   fade,
   makeStyles,
-  useTheme,
   Theme,
   createStyles
 } from "@material-ui/core/styles";
@@ -19,31 +17,17 @@ import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import Drawer from "@material-ui/core/Drawer";
-import Divider from "@material-ui/core/Divider";
-import List from "@material-ui/core/List";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import Switch from "@material-ui/core/Switch";
-
-const drawerWidth = 240;
+import history from "../../utils/history"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     grow: {
       flexGrow: 1
-    },
-    menuButton: {
-      marginRight: theme.spacing(2)
     },
     title: {
       display: "none",
@@ -101,38 +85,12 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: "flex"
     },
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
-      }),
-      marginLeft: -drawerWidth
-    },
-    contentShift: {
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen
-      }),
-      marginLeft: 0
-    },
-    hide: {
-      display: "none"
-    }
   })
 );
 
 export const Navbar: React.FC<INavbar> = ({ setToken }) => {
   const classes = useStyles();
-  const theme = useTheme();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [open, setOpen] = React.useState(false);
-  const [
-    mobileMoreAnchorEl,
-    setMobileMoreAnchorEl
-  ] = React.useState<null | HTMLElement>(null);
-
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [state, setState] = useState(false);
 
   const logout = () => {
@@ -146,80 +104,13 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
   };
 
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
 
-  const handleMobileMenuClose = () => setMobileMoreAnchorEl(null);
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) =>
-    setMobileMoreAnchorEl(event.currentTarget);
-
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem>
-        <Switch
-          checked={state}
-          onChange={handleChange}
-          value="checkedA"
-          inputProps={{ "aria-label": "secondary checkbox" }}
-        />
-      </MenuItem>
-      <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>
-        Profile
-      </MenuItem>
-      <MenuItem onClick={logout}>Logout</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="Show notifications" color="inherit">
-          <Badge badgeContent={0} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem component={Link} to="/profile">
-        <IconButton
-          aria-label="Account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-      <MenuItem onClick={logout}>Logout</MenuItem>
-    </Menu>
-  );
+  }
 
   return (
     <div className={classes.grow}>
@@ -241,6 +132,7 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
               inputProps={{ "aria-label": "Search" }}
             />
           </div>
+
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="Show new notifications" color="inherit">
@@ -251,7 +143,7 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
             <IconButton
               edge="end"
               aria-label="Account of current user"
-              aria-controls={menuId}
+              aria-controls="primary-search-account-menu"
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
@@ -259,12 +151,13 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
               <AccountCircle />
             </IconButton>
           </div>
+
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="Show more"
-              aria-controls={mobileMenuId}
+              aria-controls="Mobile Menu"
               aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
+              onClick={() => history.push("/menu")}
               color="inherit"
             >
               <MoreIcon />
@@ -273,8 +166,28 @@ export const Navbar: React.FC<INavbar> = ({ setToken }) => {
         </Toolbar>
       </AppBar>
 
-      {renderMobileMenu}
-      {renderMenu}
-    </div>
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id="primary-search-account-menu"
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+      >
+        <MenuItem>
+          <Switch
+            checked={state}
+            onChange={handleChange}
+            value="checkedA"
+            inputProps={{ "aria-label": "secondary checkbox" }}
+          />
+        </MenuItem>
+        <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>
+          Profile
+      </MenuItem>
+        <MenuItem onClick={logout}>Logout</MenuItem>
+      </Menu>
+    </div >
   );
 };

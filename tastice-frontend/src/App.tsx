@@ -17,6 +17,7 @@ import { ProductList } from "./components/ProductList";
 import { AddProduct } from "./components/AddProduct";
 import { Index } from "./components/Index";
 import { Notifications } from "./components/Notification";
+import { MobileMenu } from "./components/MobileMenu";
 import { LogIn } from "./components/LogIn";
 import { SignUp } from "./components/SignUp";
 import { Navbar } from "./components/Navbar";
@@ -81,6 +82,7 @@ const App = () => {
                 <Route exact path="/productsview" render={() => <ProductView />} />
                 <Route exact path="/users" render={() => <UserList />} />
                 <Route exact path="/addproduct" render={() => <AddProduct />} />
+                <Route exact path="/menu" render={() => <MobileMenu />} />
                 <Route exact path="/profile" render={() => <Profile setToken={setToken} />} />
                 <Route render={() => <Index />} />
               </Switch>
