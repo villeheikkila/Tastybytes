@@ -27,6 +27,7 @@ import { Account } from "./components/Account";
 import { THEME } from "./queries";
 import { ActivityView } from "./components/ActivityView";
 import { CreateCheckIn } from "./components/CreatCheckIn";
+import { MyProfile } from "./components/MyProfile";
 const darkTheme = createMuiTheme({
   palette: {
     type: "dark",
@@ -111,9 +112,10 @@ const App = () => {
                   />
                   <Route
                     exact
-                    path="/profile"
+                    path="/account"
                     render={() => <Account setToken={setToken} />}
                   />
+                  <Route exact path="/myprofile" render={() => <MyProfile />} />
                   <Route
                     exact
                     path="/product/:id"

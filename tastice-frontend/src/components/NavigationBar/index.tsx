@@ -16,6 +16,9 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import "typeface-leckerli-one";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
+import ExitToApp from "@material-ui/icons/ExitToApp";
+import BrightnessHigh from "@material-ui/icons/BrightnessHigh";
+import BrightnessLow from "@material-ui/icons/BrightnessLow";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -93,6 +96,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     logo: {
       fontFamily: "Leckerli One"
+    },
+    badge: {
+      marginRight: 15
     }
   })
 );
@@ -166,12 +172,12 @@ export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
             <ButtonBase
               focusRipple
               className={classes.textLink}
-              key="Profile"
+              key="My Profile"
               component={Link}
-              to="/profile"
+              to="/myprofile"
             >
               <Typography variant="h6" noWrap>
-                Profile
+                My Profile
               </Typography>
             </ButtonBase>
           </div>
@@ -233,6 +239,15 @@ export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
         onClose={handleMenuClose}
       >
         <MenuItem>
+          {colorScheme ? (
+            <Badge badgeContent={0} color="secondary" className={classes.badge}>
+              <BrightnessLow />
+            </Badge>
+          ) : (
+            <Badge badgeContent={0} color="secondary" className={classes.badge}>
+              <BrightnessHigh />
+            </Badge>
+          )}
           <Switch
             checked={colorScheme}
             onChange={handleColorSchemeChange}
@@ -240,10 +255,18 @@ export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
             inputProps={{ "aria-label": "secondary checkbox" }}
           />
         </MenuItem>
-        <MenuItem component={Link} to="/profile" onClick={handleMenuClose}>
-          Profile
+        <MenuItem component={Link} to="/account" onClick={handleMenuClose}>
+          <Badge badgeContent={0} color="secondary" className={classes.badge}>
+            <AccountCircle />
+          </Badge>
+          Account
         </MenuItem>
-        <MenuItem onClick={logout}>Logout</MenuItem>
+        <MenuItem onClick={logout}>
+          <Badge badgeContent={0} color="secondary" className={classes.badge}>
+            <ExitToApp />
+          </Badge>
+          Logout
+        </MenuItem>
       </Menu>
     </div>
   );

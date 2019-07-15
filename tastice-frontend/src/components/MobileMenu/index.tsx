@@ -49,7 +49,7 @@ export const MobileMenu: React.FC<Token> = ({ setToken }) => {
         className={classes.root}
         aria-label="Mobile Settings"
       >
-        <ListItem button component={Link} to="/profile">
+        <ListItem button component={Link} to="/account">
           <ListItemText primary="Account" />
         </ListItem>
         <Divider />
