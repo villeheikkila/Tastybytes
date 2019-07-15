@@ -22,6 +22,7 @@
     "graphql": "^14.4.2",
     "install": "^0.13.0",
     "material-table": "^1.40.1",
+    "material-ui-rating": "^4.1.1",
     "npm": "^6.10.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
