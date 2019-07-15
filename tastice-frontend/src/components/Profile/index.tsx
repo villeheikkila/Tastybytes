@@ -15,16 +15,14 @@ import { Token } from "../../types";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
+      marginTop: 30,
+      maxWidth: 700,
       padding: theme.spacing(3, 2),
+      margin: `${theme.spacing(1)}px auto`,
       display: "flex",
       flexDirection: "column",
-      alignItems: "center"
-    },
-    paperi: {
-      padding: theme.spacing(3, 2),
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "center"
+      alignItems: "center",
+      alignContent: "center"
     },
     Avatar: {
       marginLeft: 30,
@@ -42,7 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(1),
       width: 200
     },
-    form: {},
     button: {
       marginTop: 30
     }
@@ -69,11 +66,7 @@ export const Profile: React.FC<Token> = ({ setToken }) => {
 
   const user = me.data.me;
 
-  const handleUpdateUser = async (
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    event.preventDefault();
-
+  const handleUpdateUser = async (event: any) => {
     const result = await updateUser({
       variables: {
         id: user.id,
@@ -108,49 +101,47 @@ export const Profile: React.FC<Token> = ({ setToken }) => {
         <Typography variant="h5" component="h3">
           {user.name}
         </Typography>
-        <div className={classes.paperi}>
-          <Typography variant="h5">Checkins: 10</Typography>
-          <Avatar
-            alt="Avatar"
-            src="https://pixel.nymag.com/imgs/daily/vulture/2018/11/02/02-avatar-2.w700.h467.jpg"
-            className={classes.Avatar}
-          />
-          <Typography variant="h5">Tastes: 15</Typography>
-        </div>
-        <form className={classes.form} onSubmit={handleUpdateUser} noValidate>
-          <TextField
-            label="First Name"
-            id="margin-normal"
-            defaultValue={user.firstName}
-            className={classes.textField}
-            onChange={({ target }) => setFirstName(target.value)}
-            margin="normal"
-          />
-          <TextField
-            label="Last Name"
-            id="margin-normal"
-            defaultValue={user.lastName}
-            className={classes.textField}
-            onChange={({ target }) => setLastName(target.value)}
-            margin="normal"
-          />
-          <TextField
-            label="Email"
-            id="margin-normal"
-            defaultValue={user.email}
-            className={classes.textField}
-            onChange={({ target }) => setEmail(target.value)}
-            margin="normal"
-          />
-          <Button
-            type="submit"
-            variant="outlined"
-            color="primary"
-            className={classes.button}
-          >
-            Save changes
-          </Button>
-        </form>
+
+        <Avatar
+          alt="Avatar"
+          src="https://pixel.nymag.com/imgs/daily/vulture/2018/11/02/02-avatar-2.w700.h467.jpg"
+          className={classes.Avatar}
+        />
+        <Typography variant="h5">Checkins: 10</Typography>
+
+        <TextField
+          label="First Name"
+          id="margin-normal"
+          defaultValue={user.firstName}
+          className={classes.textField}
+          onChange={({ target }) => setFirstName(target.value)}
+          margin="normal"
+        />
+        <TextField
+          label="Last Name"
+          id="margin-normal"
+          defaultValue={user.lastName}
+          className={classes.textField}
+          onChange={({ target }) => setLastName(target.value)}
+          margin="normal"
+        />
+        <TextField
+          label="Email"
+          id="margin-normal"
+          defaultValue={user.email}
+          className={classes.textField}
+          onChange={({ target }) => setEmail(target.value)}
+          margin="normal"
+        />
+        <Button
+          type="submit"
+          variant="outlined"
+          color="primary"
+          className={classes.button}
+          onClick={handleUpdateUser}
+        >
+          Save changes
+        </Button>
 
         <Button
           variant="outlined"

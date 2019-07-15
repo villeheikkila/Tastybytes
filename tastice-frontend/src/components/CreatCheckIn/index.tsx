@@ -38,9 +38,12 @@ export const CreateCheckIn: React.FC<any> = id => {
   const [comment, setComment] = useState();
   console.log("comment: ", comment);
 
-  if (productsQuery.data === undefined) {
+  if (productsQuery.data === undefined || productsQuery.data.lenght === 0) {
     return null;
   }
+  console.log("productsQuery: ", productsQuery);
+  console.log("length", productsQuery.data.leng);
+
   const product = productsQuery.data.product[0];
 
   const producta = {

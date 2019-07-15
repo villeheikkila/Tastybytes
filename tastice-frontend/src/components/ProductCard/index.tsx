@@ -13,7 +13,7 @@ import { IProductCard } from "../../types";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    maxWidth: 600,
+    maxWidth: 700,
     margin: `${theme.spacing(1)}px auto`,
     display: "flex"
   },
@@ -22,9 +22,7 @@ const useStyles = makeStyles(theme => ({
     width: 100,
     height: 100
   },
-  checkin: {
-    left: 100
-  }
+  checkin: {}
 }));
 
 export const ProductCard: React.FC<IProductCard> = ({ product, show }) => {

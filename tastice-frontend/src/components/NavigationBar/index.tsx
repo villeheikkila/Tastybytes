@@ -134,7 +134,7 @@ export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
             component={Link}
             to="/"
           >
-            <Typography variant="h5" noWrap className={classes.logo}>
+            <Typography variant="h4" noWrap className={classes.logo}>
               Tastice
             </Typography>
           </ButtonBase>

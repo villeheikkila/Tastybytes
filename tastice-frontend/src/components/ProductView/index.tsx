@@ -13,11 +13,10 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     overflow: "hidden",
-    padding: theme.spacing(0, 0),
+    maxWidth: 700,
+    padding: theme.spacing(3, 2),
+    margin: `${theme.spacing(1)}px auto`,
     alignContent: "center"
-  },
-  margin: {
-    margin: theme.spacing(1)
   },
   fab: {
     margin: 0,
