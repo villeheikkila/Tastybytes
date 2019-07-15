@@ -23,7 +23,7 @@ import { LogIn } from "./components/LogIn";
 import { SignUp } from "./components/SignUp";
 import { NavigationBar } from "./components/NavigationBar";
 import { ProductView } from "./components/ProductView";
-import { Profile } from "./components/Profile";
+import { Account } from "./components/Account";
 import { THEME } from "./queries";
 import { ActivityView } from "./components/ActivityView";
 import { CreateCheckIn } from "./components/CreatCheckIn";
@@ -112,7 +112,7 @@ const App = () => {
                   <Route
                     exact
                     path="/profile"
-                    render={() => <Profile setToken={setToken} />}
+                    render={() => <Account setToken={setToken} />}
                   />
                   <Route
                     exact
