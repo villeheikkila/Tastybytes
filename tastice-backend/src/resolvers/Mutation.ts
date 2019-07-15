@@ -1,4 +1,4 @@
-import { stringArg, idArg, mutationType } from "nexus";
+import { stringArg, idArg, intArg, mutationType } from "nexus";
 import { hash, compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { prisma } from "../generated/prisma-client";
@@ -131,6 +131,35 @@ export const Mutation = mutationType({
       },
       resolve: (parent, { id }, ctx) => {
         return ctx.prisma.deleteUser({ id });
+      }
+    });
+
+    t.field("deleteCheckin", {
+      type: "Checkin",
+      nullable: true,
+      args: {
+        id: idArg()
+      },
+      resolve: (parent, { id }, ctx) => {
+        return ctx.prisma.deleteCheckin({ id });
+      }
+    });
+
+    t.field("createCheckin", {
+      type: "Checkin",
+      args: {
+        authorId: idArg({ nullable: true }),
+        productId: idArg({ nullable: true }),
+        rating: intArg(),
+        comment: stringArg()
+      },
+      resolve: (_, { authorId, productId, rating, comment }, ctx) => {
+        return ctx.prisma.createCheckin({
+          rating,
+          comment,
+          product: { connect: { id: productId } },
+          author: { connect: { id: authorId } }
+        });
       }
     });
   }

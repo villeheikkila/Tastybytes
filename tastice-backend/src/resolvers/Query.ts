@@ -26,6 +26,13 @@ export const Query = queryType({
       }
     });
 
+    t.list.field("checkins", {
+      type: "Checkin",
+      resolve: (parent, args, ctx) => {
+        return ctx.prisma.checkins();
+      }
+    });
+
     t.list.field("user", {
       type: "User",
       args: {
@@ -33,6 +40,16 @@ export const Query = queryType({
       },
       resolve: (_, args, ctx) => {
         return ctx.prisma.users({ where: { id: args.id } });
+      }
+    });
+
+    t.list.field("checkin", {
+      type: "Checkin",
+      args: {
+        id: idArg()
+      },
+      resolve: (_, args, ctx) => {
+        return ctx.prisma.checkins({ where: { id: args.id } });
       }
     });
 

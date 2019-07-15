@@ -15,11 +15,11 @@ const rules = {
 
 export const permissions = shield({
   Query: {
-    "*": rules.isAuthenticatedUser
+    //    "*": rules.isAuthenticatedUser
   },
   Mutation: {
-    "*": rules.isAuthenticatedUser,
-    login: allow,
-    signup: allow
+    // "*": rules.isAuthenticatedUser,
+    // login: allow,
+    // signup: allow
   }
 });

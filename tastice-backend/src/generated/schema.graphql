@@ -7,8 +7,95 @@ type AuthPayload {
   user: User
 }
 
+type Checkin {
+  author: User!
+  comment: String!
+  createdAt: DateTime!
+  id: ID!
+  product: Product!
+  rating: Int!
+  updatedAt: DateTime!
+}
+
+enum CheckinOrderByInput {
+  comment_ASC
+  comment_DESC
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  rating_ASC
+  rating_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+input CheckinWhereInput {
+  AND: [CheckinWhereInput!]
+  author: UserWhereInput
+  comment: String
+  comment_contains: String
+  comment_ends_with: String
+  comment_gt: String
+  comment_gte: String
+  comment_in: [String!]
+  comment_lt: String
+  comment_lte: String
+  comment_not: String
+  comment_not_contains: String
+  comment_not_ends_with: String
+  comment_not_in: [String!]
+  comment_not_starts_with: String
+  comment_starts_with: String
+  createdAt: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_not: DateTime
+  createdAt_not_in: [DateTime!]
+  id: ID
+  id_contains: ID
+  id_ends_with: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_contains: ID
+  id_not_ends_with: ID
+  id_not_in: [ID!]
+  id_not_starts_with: ID
+  id_starts_with: ID
+  NOT: [CheckinWhereInput!]
+  OR: [CheckinWhereInput!]
+  product: ProductWhereInput
+  rating: Int
+  rating_gt: Int
+  rating_gte: Int
+  rating_in: [Int!]
+  rating_lt: Int
+  rating_lte: Int
+  rating_not: Int
+  rating_not_in: [Int!]
+  updatedAt: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_not: DateTime
+  updatedAt_not_in: [DateTime!]
+}
+
+scalar DateTime
+
 type Mutation {
   addProduct(name: String, producer: String, type: String): Product
+  createCheckin(authorId: ID, comment: String, productId: ID, rating: Int): Checkin
+  deleteCheckin(id: ID): Checkin
   deleteProduct(id: ID): Product
   deleteUser(id: ID): User
   login(email: String, password: String): AuthPayload
@@ -44,7 +131,71 @@ type ProductSubscriptionPayload {
   updatedFields: [String!]
 }
 
+input ProductWhereInput {
+  AND: [ProductWhereInput!]
+  id: ID
+  id_contains: ID
+  id_ends_with: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_contains: ID
+  id_not_ends_with: ID
+  id_not_in: [ID!]
+  id_not_starts_with: ID
+  id_starts_with: ID
+  name: String
+  name_contains: String
+  name_ends_with: String
+  name_gt: String
+  name_gte: String
+  name_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_not: String
+  name_not_contains: String
+  name_not_ends_with: String
+  name_not_in: [String!]
+  name_not_starts_with: String
+  name_starts_with: String
+  NOT: [ProductWhereInput!]
+  OR: [ProductWhereInput!]
+  producer: String
+  producer_contains: String
+  producer_ends_with: String
+  producer_gt: String
+  producer_gte: String
+  producer_in: [String!]
+  producer_lt: String
+  producer_lte: String
+  producer_not: String
+  producer_not_contains: String
+  producer_not_ends_with: String
+  producer_not_in: [String!]
+  producer_not_starts_with: String
+  producer_starts_with: String
+  type: String
+  type_contains: String
+  type_ends_with: String
+  type_gt: String
+  type_gte: String
+  type_in: [String!]
+  type_lt: String
+  type_lte: String
+  type_not: String
+  type_not_contains: String
+  type_not_ends_with: String
+  type_not_in: [String!]
+  type_not_starts_with: String
+  type_starts_with: String
+}
+
 type Query {
+  checkin(id: ID): [Checkin!]
+  checkins: [Checkin!]
   me: User
   product(id: ID): [Product!]
   products: [Product!]
@@ -59,6 +210,7 @@ type Subscription {
 
 type User {
   admin: Boolean!
+  checkins(after: String, before: String, first: Int, last: Int, orderBy: CheckinOrderByInput, skip: Int, where: CheckinWhereInput): [Checkin!]
   email: String
   firstName: String!
   id: ID!
@@ -79,4 +231,88 @@ type UserSubscriptionPayload {
   node: User
   previousValues: UserPreviousValues
   updatedFields: [String!]
+}
+
+input UserWhereInput {
+  admin: Boolean
+  admin_not: Boolean
+  AND: [UserWhereInput!]
+  checkins_every: CheckinWhereInput
+  checkins_none: CheckinWhereInput
+  checkins_some: CheckinWhereInput
+  email: String
+  email_contains: String
+  email_ends_with: String
+  email_gt: String
+  email_gte: String
+  email_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_not: String
+  email_not_contains: String
+  email_not_ends_with: String
+  email_not_in: [String!]
+  email_not_starts_with: String
+  email_starts_with: String
+  firstName: String
+  firstName_contains: String
+  firstName_ends_with: String
+  firstName_gt: String
+  firstName_gte: String
+  firstName_in: [String!]
+  firstName_lt: String
+  firstName_lte: String
+  firstName_not: String
+  firstName_not_contains: String
+  firstName_not_ends_with: String
+  firstName_not_in: [String!]
+  firstName_not_starts_with: String
+  firstName_starts_with: String
+  friends_every: UserWhereInput
+  friends_none: UserWhereInput
+  friends_some: UserWhereInput
+  id: ID
+  id_contains: ID
+  id_ends_with: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_contains: ID
+  id_not_ends_with: ID
+  id_not_in: [ID!]
+  id_not_starts_with: ID
+  id_starts_with: ID
+  lastName: String
+  lastName_contains: String
+  lastName_ends_with: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_not: String
+  lastName_not_contains: String
+  lastName_not_ends_with: String
+  lastName_not_in: [String!]
+  lastName_not_starts_with: String
+  lastName_starts_with: String
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  password: String
+  password_contains: String
+  password_ends_with: String
+  password_gt: String
+  password_gte: String
+  password_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_not: String
+  password_not_contains: String
+  password_not_ends_with: String
+  password_not_in: [String!]
+  password_not_starts_with: String
+  password_starts_with: String
 }

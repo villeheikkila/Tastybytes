@@ -1,5 +1,6 @@
 import { Query } from "./Query";
 import { User } from "./User";
+import { Checkin } from "./Checkin";
 import { Product } from "./Product";
 import { Mutation } from "./Mutation";
 import { AuthPayload } from "./AuthPayload";
@@ -10,6 +11,7 @@ export const resolvers = {
   User,
   Mutation,
   Product,
+  Checkin,
   AuthPayload,
   ProductSubscription,
   UserSubscription

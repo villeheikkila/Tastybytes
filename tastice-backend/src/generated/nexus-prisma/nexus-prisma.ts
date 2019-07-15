@@ -16,14 +16,18 @@ export interface NexusPrismaTypes {
     fields: {
       Query: QueryObject
       User: UserObject
+      Checkin: CheckinObject
+      Product: ProductObject
       UserConnection: UserConnectionObject
       PageInfo: PageInfoObject
       UserEdge: UserEdgeObject
       AggregateUser: AggregateUserObject
-      Product: ProductObject
       ProductConnection: ProductConnectionObject
       ProductEdge: ProductEdgeObject
       AggregateProduct: AggregateProductObject
+      CheckinConnection: CheckinConnectionObject
+      CheckinEdge: CheckinEdgeObject
+      AggregateCheckin: AggregateCheckinObject
       Mutation: MutationObject
       BatchPayload: BatchPayloadObject
       Subscription: SubscriptionObject
@@ -31,18 +35,24 @@ export interface NexusPrismaTypes {
       UserPreviousValues: UserPreviousValuesObject
       ProductSubscriptionPayload: ProductSubscriptionPayloadObject
       ProductPreviousValues: ProductPreviousValuesObject
+      CheckinSubscriptionPayload: CheckinSubscriptionPayloadObject
+      CheckinPreviousValues: CheckinPreviousValuesObject
     }
     fieldsDetails: {
       Query: QueryFieldDetails
       User: UserFieldDetails
+      Checkin: CheckinFieldDetails
+      Product: ProductFieldDetails
       UserConnection: UserConnectionFieldDetails
       PageInfo: PageInfoFieldDetails
       UserEdge: UserEdgeFieldDetails
       AggregateUser: AggregateUserFieldDetails
-      Product: ProductFieldDetails
       ProductConnection: ProductConnectionFieldDetails
       ProductEdge: ProductEdgeFieldDetails
       AggregateProduct: AggregateProductFieldDetails
+      CheckinConnection: CheckinConnectionFieldDetails
+      CheckinEdge: CheckinEdgeFieldDetails
+      AggregateCheckin: AggregateCheckinFieldDetails
       Mutation: MutationFieldDetails
       BatchPayload: BatchPayloadFieldDetails
       Subscription: SubscriptionFieldDetails
@@ -50,25 +60,60 @@ export interface NexusPrismaTypes {
       UserPreviousValues: UserPreviousValuesFieldDetails
       ProductSubscriptionPayload: ProductSubscriptionPayloadFieldDetails
       ProductPreviousValues: ProductPreviousValuesFieldDetails
+      CheckinSubscriptionPayload: CheckinSubscriptionPayloadFieldDetails
+      CheckinPreviousValues: CheckinPreviousValuesFieldDetails
     }
   }
   inputTypes: {
     fields: {
       UserWhereUniqueInput: UserWhereUniqueInputInputObject
+      CheckinWhereInput: CheckinWhereInputInputObject
       UserWhereInput: UserWhereInputInputObject
-      ProductWhereUniqueInput: ProductWhereUniqueInputInputObject
       ProductWhereInput: ProductWhereInputInputObject
+      ProductWhereUniqueInput: ProductWhereUniqueInputInputObject
+      CheckinWhereUniqueInput: CheckinWhereUniqueInputInputObject
       UserCreateInput: UserCreateInputInputObject
-      UserUpdateInput: UserUpdateInputInputObject
-      UserUpdateManyMutationInput: UserUpdateManyMutationInputInputObject
+      CheckinCreateManyWithoutAuthorInput: CheckinCreateManyWithoutAuthorInputInputObject
+      CheckinCreateWithoutAuthorInput: CheckinCreateWithoutAuthorInputInputObject
+      ProductCreateOneInput: ProductCreateOneInputInputObject
       ProductCreateInput: ProductCreateInputInputObject
+      UserCreateManyInput: UserCreateManyInputInputObject
+      UserUpdateInput: UserUpdateInputInputObject
+      CheckinUpdateManyWithoutAuthorInput: CheckinUpdateManyWithoutAuthorInputInputObject
+      CheckinUpdateWithWhereUniqueWithoutAuthorInput: CheckinUpdateWithWhereUniqueWithoutAuthorInputInputObject
+      CheckinUpdateWithoutAuthorDataInput: CheckinUpdateWithoutAuthorDataInputInputObject
+      ProductUpdateOneRequiredInput: ProductUpdateOneRequiredInputInputObject
+      ProductUpdateDataInput: ProductUpdateDataInputInputObject
+      ProductUpsertNestedInput: ProductUpsertNestedInputInputObject
+      CheckinUpsertWithWhereUniqueWithoutAuthorInput: CheckinUpsertWithWhereUniqueWithoutAuthorInputInputObject
+      CheckinScalarWhereInput: CheckinScalarWhereInputInputObject
+      CheckinUpdateManyWithWhereNestedInput: CheckinUpdateManyWithWhereNestedInputInputObject
+      CheckinUpdateManyDataInput: CheckinUpdateManyDataInputInputObject
+      UserUpdateManyInput: UserUpdateManyInputInputObject
+      UserUpdateWithWhereUniqueNestedInput: UserUpdateWithWhereUniqueNestedInputInputObject
+      UserUpdateDataInput: UserUpdateDataInputInputObject
+      UserUpsertWithWhereUniqueNestedInput: UserUpsertWithWhereUniqueNestedInputInputObject
+      UserScalarWhereInput: UserScalarWhereInputInputObject
+      UserUpdateManyWithWhereNestedInput: UserUpdateManyWithWhereNestedInputInputObject
+      UserUpdateManyDataInput: UserUpdateManyDataInputInputObject
+      UserUpdateManyMutationInput: UserUpdateManyMutationInputInputObject
       ProductUpdateInput: ProductUpdateInputInputObject
       ProductUpdateManyMutationInput: ProductUpdateManyMutationInputInputObject
+      CheckinCreateInput: CheckinCreateInputInputObject
+      UserCreateOneWithoutCheckinsInput: UserCreateOneWithoutCheckinsInputInputObject
+      UserCreateWithoutCheckinsInput: UserCreateWithoutCheckinsInputInputObject
+      CheckinUpdateInput: CheckinUpdateInputInputObject
+      UserUpdateOneRequiredWithoutCheckinsInput: UserUpdateOneRequiredWithoutCheckinsInputInputObject
+      UserUpdateWithoutCheckinsDataInput: UserUpdateWithoutCheckinsDataInputInputObject
+      UserUpsertWithoutCheckinsInput: UserUpsertWithoutCheckinsInputInputObject
+      CheckinUpdateManyMutationInput: CheckinUpdateManyMutationInputInputObject
       UserSubscriptionWhereInput: UserSubscriptionWhereInputInputObject
       ProductSubscriptionWhereInput: ProductSubscriptionWhereInputInputObject
+      CheckinSubscriptionWhereInput: CheckinSubscriptionWhereInputInputObject
     }
   }
   enumTypes: {
+    CheckinOrderByInput: CheckinOrderByInputValues,
     UserOrderByInput: UserOrderByInputValues,
     ProductOrderByInput: ProductOrderByInputValues,
     MutationType: MutationTypeValues,
@@ -85,6 +130,9 @@ type QueryObject =
   | { name: 'product', args?: QueryProductArgs[] | false, alias?: string  } 
   | { name: 'products', args?: QueryProductsArgs[] | false, alias?: string  } 
   | { name: 'productsConnection', args?: QueryProductsConnectionArgs[] | false, alias?: string  } 
+  | { name: 'checkin', args?: QueryCheckinArgs[] | false, alias?: string  } 
+  | { name: 'checkins', args?: QueryCheckinsArgs[] | false, alias?: string  } 
+  | { name: 'checkinsConnection', args?: QueryCheckinsConnectionArgs[] | false, alias?: string  } 
 
 type QueryFields =
   | 'user'
@@ -93,6 +141,9 @@ type QueryFields =
   | 'product'
   | 'products'
   | 'productsConnection'
+  | 'checkin'
+  | 'checkins'
+  | 'checkinsConnection'
 
 
 type QueryUserArgs =
@@ -124,6 +175,24 @@ type QueryProductsArgs =
   | 'first'
   | 'last'
 type QueryProductsConnectionArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+type QueryCheckinArgs =
+  | 'where'
+type QueryCheckinsArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+type QueryCheckinsConnectionArgs =
   | 'where'
   | 'orderBy'
   | 'skip'
@@ -212,6 +281,45 @@ export interface QueryFieldDetails {
       info?: GraphQLResolveInfo
     ) => Promise<prisma.ProductConnection> | prisma.ProductConnection
   }
+  checkin: {
+    type: 'Checkin'
+    args: Record<QueryCheckinArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where: CheckinWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Checkin | null> | prisma.Checkin | null
+  }
+  checkins: {
+    type: 'Checkin'
+    args: Record<QueryCheckinsArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where?: CheckinWhereInput | null, orderBy?: prisma.CheckinOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Checkin[]> | prisma.Checkin[]
+  }
+  checkinsConnection: {
+    type: 'CheckinConnection'
+    args: Record<QueryCheckinsConnectionArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where?: CheckinWhereInput | null, orderBy?: prisma.CheckinOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.CheckinConnection> | prisma.CheckinConnection
+  }
 }
   
 
@@ -225,6 +333,8 @@ type UserObject =
   | { name: 'lastName', args?: [] | false, alias?: string  } 
   | { name: 'password', args?: [] | false, alias?: string  } 
   | { name: 'admin', args?: [] | false, alias?: string  } 
+  | { name: 'checkins', args?: UserCheckinsArgs[] | false, alias?: string  } 
+  | { name: 'friends', args?: UserFriendsArgs[] | false, alias?: string  } 
 
 type UserFields =
   | 'id'
@@ -233,9 +343,26 @@ type UserFields =
   | 'lastName'
   | 'password'
   | 'admin'
+  | 'checkins'
+  | 'friends'
 
 
-
+type UserCheckinsArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+type UserFriendsArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
   
 
 export interface UserFieldDetails {
@@ -285,6 +412,182 @@ export interface UserFieldDetails {
     description: string
     list: undefined
     nullable: false
+    resolve: undefined
+  }
+  checkins: {
+    type: 'Checkin'
+    args: Record<UserCheckinsArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"User">,
+      args: { where?: CheckinWhereInput | null, orderBy?: prisma.CheckinOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Checkin[]> | prisma.Checkin[]
+  }
+  friends: {
+    type: 'User'
+    args: Record<UserFriendsArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"User">,
+      args: { where?: UserWhereInput | null, orderBy?: prisma.UserOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.User[]> | prisma.User[]
+  }
+}
+  
+
+// Types for Checkin
+
+type CheckinObject =
+  | CheckinFields
+  | { name: 'id', args?: [] | false, alias?: string  } 
+  | { name: 'rating', args?: [] | false, alias?: string  } 
+  | { name: 'comment', args?: [] | false, alias?: string  } 
+  | { name: 'author', args?: [] | false, alias?: string  } 
+  | { name: 'product', args?: [] | false, alias?: string  } 
+  | { name: 'createdAt', args?: [] | false, alias?: string  } 
+  | { name: 'updatedAt', args?: [] | false, alias?: string  } 
+
+type CheckinFields =
+  | 'id'
+  | 'rating'
+  | 'comment'
+  | 'author'
+  | 'product'
+  | 'createdAt'
+  | 'updatedAt'
+
+
+
+  
+
+export interface CheckinFieldDetails {
+  id: {
+    type: 'ID'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  rating: {
+    type: 'Int'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  comment: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  author: {
+    type: 'User'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Checkin">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.User> | prisma.User
+  }
+  product: {
+    type: 'Product'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Checkin">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Product> | prisma.Product
+  }
+  createdAt: {
+    type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  updatedAt: {
+    type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
+// Types for Product
+
+type ProductObject =
+  | ProductFields
+  | { name: 'id', args?: [] | false, alias?: string  } 
+  | { name: 'name', args?: [] | false, alias?: string  } 
+  | { name: 'producer', args?: [] | false, alias?: string  } 
+  | { name: 'type', args?: [] | false, alias?: string  } 
+
+type ProductFields =
+  | 'id'
+  | 'name'
+  | 'producer'
+  | 'type'
+
+
+
+  
+
+export interface ProductFieldDetails {
+  id: {
+    type: 'ID'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  name: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  producer: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: undefined
+  }
+  type: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
     resolve: undefined
   }
 }
@@ -470,61 +773,6 @@ export interface AggregateUserFieldDetails {
 }
   
 
-// Types for Product
-
-type ProductObject =
-  | ProductFields
-  | { name: 'id', args?: [] | false, alias?: string  } 
-  | { name: 'name', args?: [] | false, alias?: string  } 
-  | { name: 'producer', args?: [] | false, alias?: string  } 
-  | { name: 'type', args?: [] | false, alias?: string  } 
-
-type ProductFields =
-  | 'id'
-  | 'name'
-  | 'producer'
-  | 'type'
-
-
-
-  
-
-export interface ProductFieldDetails {
-  id: {
-    type: 'ID'
-    args: {}
-    description: string
-    list: undefined
-    nullable: false
-    resolve: undefined
-  }
-  name: {
-    type: 'String'
-    args: {}
-    description: string
-    list: undefined
-    nullable: false
-    resolve: undefined
-  }
-  producer: {
-    type: 'String'
-    args: {}
-    description: string
-    list: undefined
-    nullable: true
-    resolve: undefined
-  }
-  type: {
-    type: 'String'
-    args: {}
-    description: string
-    list: undefined
-    nullable: true
-    resolve: undefined
-  }
-}
-  
-
 // Types for ProductConnection
 
 type ProductConnectionObject =
@@ -650,6 +898,131 @@ export interface AggregateProductFieldDetails {
 }
   
 
+// Types for CheckinConnection
+
+type CheckinConnectionObject =
+  | CheckinConnectionFields
+  | { name: 'pageInfo', args?: [] | false, alias?: string  } 
+  | { name: 'edges', args?: [] | false, alias?: string  } 
+  | { name: 'aggregate', args?: [] | false, alias?: string  } 
+
+type CheckinConnectionFields =
+  | 'pageInfo'
+  | 'edges'
+  | 'aggregate'
+
+
+
+  
+
+export interface CheckinConnectionFieldDetails {
+  pageInfo: {
+    type: 'PageInfo'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"CheckinConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.PageInfo> | prisma.PageInfo
+  }
+  edges: {
+    type: 'CheckinEdge'
+    args: {}
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"CheckinConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.CheckinEdge[]> | prisma.CheckinEdge[]
+  }
+  aggregate: {
+    type: 'AggregateCheckin'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"CheckinConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.AggregateCheckin> | prisma.AggregateCheckin
+  }
+}
+  
+
+// Types for CheckinEdge
+
+type CheckinEdgeObject =
+  | CheckinEdgeFields
+  | { name: 'node', args?: [] | false, alias?: string  } 
+  | { name: 'cursor', args?: [] | false, alias?: string  } 
+
+type CheckinEdgeFields =
+  | 'node'
+  | 'cursor'
+
+
+
+  
+
+export interface CheckinEdgeFieldDetails {
+  node: {
+    type: 'Checkin'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"CheckinEdge">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Checkin> | prisma.Checkin
+  }
+  cursor: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
+// Types for AggregateCheckin
+
+type AggregateCheckinObject =
+  | AggregateCheckinFields
+  | { name: 'count', args?: [] | false, alias?: string  } 
+
+type AggregateCheckinFields =
+  | 'count'
+
+
+
+  
+
+export interface AggregateCheckinFieldDetails {
+  count: {
+    type: 'Int'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
 // Types for Mutation
 
 type MutationObject =
@@ -666,6 +1039,12 @@ type MutationObject =
   | { name: 'upsertProduct', args?: MutationUpsertProductArgs[] | false, alias?: string  } 
   | { name: 'deleteProduct', args?: MutationDeleteProductArgs[] | false, alias?: string  } 
   | { name: 'deleteManyProducts', args?: MutationDeleteManyProductsArgs[] | false, alias?: string  } 
+  | { name: 'createCheckin', args?: MutationCreateCheckinArgs[] | false, alias?: string  } 
+  | { name: 'updateCheckin', args?: MutationUpdateCheckinArgs[] | false, alias?: string  } 
+  | { name: 'updateManyCheckins', args?: MutationUpdateManyCheckinsArgs[] | false, alias?: string  } 
+  | { name: 'upsertCheckin', args?: MutationUpsertCheckinArgs[] | false, alias?: string  } 
+  | { name: 'deleteCheckin', args?: MutationDeleteCheckinArgs[] | false, alias?: string  } 
+  | { name: 'deleteManyCheckins', args?: MutationDeleteManyCheckinsArgs[] | false, alias?: string  } 
 
 type MutationFields =
   | 'createUser'
@@ -680,6 +1059,12 @@ type MutationFields =
   | 'upsertProduct'
   | 'deleteProduct'
   | 'deleteManyProducts'
+  | 'createCheckin'
+  | 'updateCheckin'
+  | 'updateManyCheckins'
+  | 'upsertCheckin'
+  | 'deleteCheckin'
+  | 'deleteManyCheckins'
 
 
 type MutationCreateUserArgs =
@@ -713,6 +1098,22 @@ type MutationUpsertProductArgs =
 type MutationDeleteProductArgs =
   | 'where'
 type MutationDeleteManyProductsArgs =
+  | 'where'
+type MutationCreateCheckinArgs =
+  | 'data'
+type MutationUpdateCheckinArgs =
+  | 'data'
+  | 'where'
+type MutationUpdateManyCheckinsArgs =
+  | 'data'
+  | 'where'
+type MutationUpsertCheckinArgs =
+  | 'where'
+  | 'create'
+  | 'update'
+type MutationDeleteCheckinArgs =
+  | 'where'
+type MutationDeleteManyCheckinsArgs =
   | 'where'
   
 
@@ -873,6 +1274,84 @@ export interface MutationFieldDetails {
       info?: GraphQLResolveInfo
     ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
   }
+  createCheckin: {
+    type: 'Checkin'
+    args: Record<MutationCreateCheckinArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: CheckinCreateInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Checkin> | prisma.Checkin
+  }
+  updateCheckin: {
+    type: 'Checkin'
+    args: Record<MutationUpdateCheckinArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: CheckinUpdateInput, where: CheckinWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Checkin | null> | prisma.Checkin | null
+  }
+  updateManyCheckins: {
+    type: 'BatchPayload'
+    args: Record<MutationUpdateManyCheckinsArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: CheckinUpdateManyMutationInput, where?: CheckinWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
+  }
+  upsertCheckin: {
+    type: 'Checkin'
+    args: Record<MutationUpsertCheckinArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where: CheckinWhereUniqueInput, create: CheckinCreateInput, update: CheckinUpdateInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Checkin> | prisma.Checkin
+  }
+  deleteCheckin: {
+    type: 'Checkin'
+    args: Record<MutationDeleteCheckinArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where: CheckinWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Checkin | null> | prisma.Checkin | null
+  }
+  deleteManyCheckins: {
+    type: 'BatchPayload'
+    args: Record<MutationDeleteManyCheckinsArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where?: CheckinWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
+  }
 }
   
 
@@ -907,15 +1386,19 @@ type SubscriptionObject =
   | SubscriptionFields
   | { name: 'user', args?: SubscriptionUserArgs[] | false, alias?: string  } 
   | { name: 'product', args?: SubscriptionProductArgs[] | false, alias?: string  } 
+  | { name: 'checkin', args?: SubscriptionCheckinArgs[] | false, alias?: string  } 
 
 type SubscriptionFields =
   | 'user'
   | 'product'
+  | 'checkin'
 
 
 type SubscriptionUserArgs =
   | 'where'
 type SubscriptionProductArgs =
+  | 'where'
+type SubscriptionCheckinArgs =
   | 'where'
   
 
@@ -945,6 +1428,19 @@ export interface SubscriptionFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.ProductSubscriptionPayload | null> | prisma.ProductSubscriptionPayload | null
+  }
+  checkin: {
+    type: 'CheckinSubscriptionPayload'
+    args: Record<SubscriptionCheckinArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Subscription">,
+      args: { where?: CheckinSubscriptionWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.CheckinSubscriptionPayload | null> | prisma.CheckinSubscriptionPayload | null
   }
 }
   
@@ -1219,6 +1715,141 @@ export interface ProductPreviousValuesFieldDetails {
 }
   
 
+// Types for CheckinSubscriptionPayload
+
+type CheckinSubscriptionPayloadObject =
+  | CheckinSubscriptionPayloadFields
+  | { name: 'mutation', args?: [] | false, alias?: string  } 
+  | { name: 'node', args?: [] | false, alias?: string  } 
+  | { name: 'updatedFields', args?: [] | false, alias?: string  } 
+  | { name: 'previousValues', args?: [] | false, alias?: string  } 
+
+type CheckinSubscriptionPayloadFields =
+  | 'mutation'
+  | 'node'
+  | 'updatedFields'
+  | 'previousValues'
+
+
+
+  
+
+export interface CheckinSubscriptionPayloadFieldDetails {
+  mutation: {
+    type: 'MutationType'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"CheckinSubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.MutationType> | prisma.MutationType
+  }
+  node: {
+    type: 'Checkin'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"CheckinSubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Checkin | null> | prisma.Checkin | null
+  }
+  updatedFields: {
+    type: 'String'
+    args: {}
+    description: string
+    list: true
+    nullable: false
+    resolve: undefined
+  }
+  previousValues: {
+    type: 'CheckinPreviousValues'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"CheckinSubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.CheckinPreviousValues | null> | prisma.CheckinPreviousValues | null
+  }
+}
+  
+
+// Types for CheckinPreviousValues
+
+type CheckinPreviousValuesObject =
+  | CheckinPreviousValuesFields
+  | { name: 'id', args?: [] | false, alias?: string  } 
+  | { name: 'rating', args?: [] | false, alias?: string  } 
+  | { name: 'comment', args?: [] | false, alias?: string  } 
+  | { name: 'createdAt', args?: [] | false, alias?: string  } 
+  | { name: 'updatedAt', args?: [] | false, alias?: string  } 
+
+type CheckinPreviousValuesFields =
+  | 'id'
+  | 'rating'
+  | 'comment'
+  | 'createdAt'
+  | 'updatedAt'
+
+
+
+  
+
+export interface CheckinPreviousValuesFieldDetails {
+  id: {
+    type: 'ID'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  rating: {
+    type: 'Int'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  comment: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  createdAt: {
+    type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  updatedAt: {
+    type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
 
 export interface UserWhereUniqueInput {
   id?: string | null
@@ -1228,6 +1859,125 @@ export type UserWhereUniqueInputInputObject =
   | Extract<keyof UserWhereUniqueInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'email', alias?: string  } 
+  
+export interface CheckinWhereInput {
+  id?: string | null
+  id_not?: string | null
+  id_in?: string[]
+  id_not_in?: string[]
+  id_lt?: string | null
+  id_lte?: string | null
+  id_gt?: string | null
+  id_gte?: string | null
+  id_contains?: string | null
+  id_not_contains?: string | null
+  id_starts_with?: string | null
+  id_not_starts_with?: string | null
+  id_ends_with?: string | null
+  id_not_ends_with?: string | null
+  rating?: number | null
+  rating_not?: number | null
+  rating_in?: number[]
+  rating_not_in?: number[]
+  rating_lt?: number | null
+  rating_lte?: number | null
+  rating_gt?: number | null
+  rating_gte?: number | null
+  comment?: string | null
+  comment_not?: string | null
+  comment_in?: string[]
+  comment_not_in?: string[]
+  comment_lt?: string | null
+  comment_lte?: string | null
+  comment_gt?: string | null
+  comment_gte?: string | null
+  comment_contains?: string | null
+  comment_not_contains?: string | null
+  comment_starts_with?: string | null
+  comment_not_starts_with?: string | null
+  comment_ends_with?: string | null
+  comment_not_ends_with?: string | null
+  author?: UserWhereInput | null
+  product?: ProductWhereInput | null
+  createdAt?: string | null
+  createdAt_not?: string | null
+  createdAt_in?: string[]
+  createdAt_not_in?: string[]
+  createdAt_lt?: string | null
+  createdAt_lte?: string | null
+  createdAt_gt?: string | null
+  createdAt_gte?: string | null
+  updatedAt?: string | null
+  updatedAt_not?: string | null
+  updatedAt_in?: string[]
+  updatedAt_not_in?: string[]
+  updatedAt_lt?: string | null
+  updatedAt_lte?: string | null
+  updatedAt_gt?: string | null
+  updatedAt_gte?: string | null
+  AND?: CheckinWhereInput[]
+  OR?: CheckinWhereInput[]
+  NOT?: CheckinWhereInput[]
+}
+export type CheckinWhereInputInputObject =
+  | Extract<keyof CheckinWhereInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'id_not', alias?: string  } 
+  | { name: 'id_in', alias?: string  } 
+  | { name: 'id_not_in', alias?: string  } 
+  | { name: 'id_lt', alias?: string  } 
+  | { name: 'id_lte', alias?: string  } 
+  | { name: 'id_gt', alias?: string  } 
+  | { name: 'id_gte', alias?: string  } 
+  | { name: 'id_contains', alias?: string  } 
+  | { name: 'id_not_contains', alias?: string  } 
+  | { name: 'id_starts_with', alias?: string  } 
+  | { name: 'id_not_starts_with', alias?: string  } 
+  | { name: 'id_ends_with', alias?: string  } 
+  | { name: 'id_not_ends_with', alias?: string  } 
+  | { name: 'rating', alias?: string  } 
+  | { name: 'rating_not', alias?: string  } 
+  | { name: 'rating_in', alias?: string  } 
+  | { name: 'rating_not_in', alias?: string  } 
+  | { name: 'rating_lt', alias?: string  } 
+  | { name: 'rating_lte', alias?: string  } 
+  | { name: 'rating_gt', alias?: string  } 
+  | { name: 'rating_gte', alias?: string  } 
+  | { name: 'comment', alias?: string  } 
+  | { name: 'comment_not', alias?: string  } 
+  | { name: 'comment_in', alias?: string  } 
+  | { name: 'comment_not_in', alias?: string  } 
+  | { name: 'comment_lt', alias?: string  } 
+  | { name: 'comment_lte', alias?: string  } 
+  | { name: 'comment_gt', alias?: string  } 
+  | { name: 'comment_gte', alias?: string  } 
+  | { name: 'comment_contains', alias?: string  } 
+  | { name: 'comment_not_contains', alias?: string  } 
+  | { name: 'comment_starts_with', alias?: string  } 
+  | { name: 'comment_not_starts_with', alias?: string  } 
+  | { name: 'comment_ends_with', alias?: string  } 
+  | { name: 'comment_not_ends_with', alias?: string  } 
+  | { name: 'author', alias?: string  } 
+  | { name: 'product', alias?: string  } 
+  | { name: 'createdAt', alias?: string  } 
+  | { name: 'createdAt_not', alias?: string  } 
+  | { name: 'createdAt_in', alias?: string  } 
+  | { name: 'createdAt_not_in', alias?: string  } 
+  | { name: 'createdAt_lt', alias?: string  } 
+  | { name: 'createdAt_lte', alias?: string  } 
+  | { name: 'createdAt_gt', alias?: string  } 
+  | { name: 'createdAt_gte', alias?: string  } 
+  | { name: 'updatedAt', alias?: string  } 
+  | { name: 'updatedAt_not', alias?: string  } 
+  | { name: 'updatedAt_in', alias?: string  } 
+  | { name: 'updatedAt_not_in', alias?: string  } 
+  | { name: 'updatedAt_lt', alias?: string  } 
+  | { name: 'updatedAt_lte', alias?: string  } 
+  | { name: 'updatedAt_gt', alias?: string  } 
+  | { name: 'updatedAt_gte', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
   
 export interface UserWhereInput {
   id?: string | null
@@ -1302,6 +2052,12 @@ export interface UserWhereInput {
   password_not_ends_with?: string | null
   admin?: boolean | null
   admin_not?: boolean | null
+  checkins_every?: CheckinWhereInput | null
+  checkins_some?: CheckinWhereInput | null
+  checkins_none?: CheckinWhereInput | null
+  friends_every?: UserWhereInput | null
+  friends_some?: UserWhereInput | null
+  friends_none?: UserWhereInput | null
   AND?: UserWhereInput[]
   OR?: UserWhereInput[]
   NOT?: UserWhereInput[]
@@ -1380,16 +2136,15 @@ export type UserWhereInputInputObject =
   | { name: 'password_not_ends_with', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'admin_not', alias?: string  } 
+  | { name: 'checkins_every', alias?: string  } 
+  | { name: 'checkins_some', alias?: string  } 
+  | { name: 'checkins_none', alias?: string  } 
+  | { name: 'friends_every', alias?: string  } 
+  | { name: 'friends_some', alias?: string  } 
+  | { name: 'friends_none', alias?: string  } 
   | { name: 'AND', alias?: string  } 
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
-  
-export interface ProductWhereUniqueInput {
-  id?: string | null
-}
-export type ProductWhereUniqueInputInputObject =
-  | Extract<keyof ProductWhereUniqueInput, string>
-  | { name: 'id', alias?: string  } 
   
 export interface ProductWhereInput {
   id?: string | null
@@ -1514,6 +2269,20 @@ export type ProductWhereInputInputObject =
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
   
+export interface ProductWhereUniqueInput {
+  id?: string | null
+}
+export type ProductWhereUniqueInputInputObject =
+  | Extract<keyof ProductWhereUniqueInput, string>
+  | { name: 'id', alias?: string  } 
+  
+export interface CheckinWhereUniqueInput {
+  id?: string | null
+}
+export type CheckinWhereUniqueInputInputObject =
+  | Extract<keyof CheckinWhereUniqueInput, string>
+  | { name: 'id', alias?: string  } 
+  
 export interface UserCreateInput {
   id?: string | null
   email?: string | null
@@ -1521,6 +2290,8 @@ export interface UserCreateInput {
   lastName?: string
   password?: string
   admin?: boolean
+  checkins?: CheckinCreateManyWithoutAuthorInput | null
+  friends?: UserCreateManyInput | null
 }
 export type UserCreateInputInputObject =
   | Extract<keyof UserCreateInput, string>
@@ -1530,6 +2301,61 @@ export type UserCreateInputInputObject =
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
+  | { name: 'checkins', alias?: string  } 
+  | { name: 'friends', alias?: string  } 
+  
+export interface CheckinCreateManyWithoutAuthorInput {
+  create?: CheckinCreateWithoutAuthorInput[]
+  connect?: CheckinWhereUniqueInput[]
+}
+export type CheckinCreateManyWithoutAuthorInputInputObject =
+  | Extract<keyof CheckinCreateManyWithoutAuthorInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  
+export interface CheckinCreateWithoutAuthorInput {
+  id?: string | null
+  rating?: number
+  comment?: string
+  product?: ProductCreateOneInput
+}
+export type CheckinCreateWithoutAuthorInputInputObject =
+  | Extract<keyof CheckinCreateWithoutAuthorInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'rating', alias?: string  } 
+  | { name: 'comment', alias?: string  } 
+  | { name: 'product', alias?: string  } 
+  
+export interface ProductCreateOneInput {
+  create?: ProductCreateInput | null
+  connect?: ProductWhereUniqueInput | null
+}
+export type ProductCreateOneInputInputObject =
+  | Extract<keyof ProductCreateOneInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  
+export interface ProductCreateInput {
+  id?: string | null
+  name?: string
+  producer?: string | null
+  type?: string | null
+}
+export type ProductCreateInputInputObject =
+  | Extract<keyof ProductCreateInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'name', alias?: string  } 
+  | { name: 'producer', alias?: string  } 
+  | { name: 'type', alias?: string  } 
+  
+export interface UserCreateManyInput {
+  create?: UserCreateInput[]
+  connect?: UserWhereUniqueInput[]
+}
+export type UserCreateManyInputInputObject =
+  | Extract<keyof UserCreateManyInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
   
 export interface UserUpdateInput {
   email?: string | null
@@ -1537,9 +2363,474 @@ export interface UserUpdateInput {
   lastName?: string | null
   password?: string | null
   admin?: boolean | null
+  checkins?: CheckinUpdateManyWithoutAuthorInput | null
+  friends?: UserUpdateManyInput | null
 }
 export type UserUpdateInputInputObject =
   | Extract<keyof UserUpdateInput, string>
+  | { name: 'email', alias?: string  } 
+  | { name: 'firstName', alias?: string  } 
+  | { name: 'lastName', alias?: string  } 
+  | { name: 'password', alias?: string  } 
+  | { name: 'admin', alias?: string  } 
+  | { name: 'checkins', alias?: string  } 
+  | { name: 'friends', alias?: string  } 
+  
+export interface CheckinUpdateManyWithoutAuthorInput {
+  create?: CheckinCreateWithoutAuthorInput[]
+  delete?: CheckinWhereUniqueInput[]
+  connect?: CheckinWhereUniqueInput[]
+  set?: CheckinWhereUniqueInput[]
+  disconnect?: CheckinWhereUniqueInput[]
+  update?: CheckinUpdateWithWhereUniqueWithoutAuthorInput[]
+  upsert?: CheckinUpsertWithWhereUniqueWithoutAuthorInput[]
+  deleteMany?: CheckinScalarWhereInput[]
+  updateMany?: CheckinUpdateManyWithWhereNestedInput[]
+}
+export type CheckinUpdateManyWithoutAuthorInputInputObject =
+  | Extract<keyof CheckinUpdateManyWithoutAuthorInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'delete', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  | { name: 'set', alias?: string  } 
+  | { name: 'disconnect', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'upsert', alias?: string  } 
+  | { name: 'deleteMany', alias?: string  } 
+  | { name: 'updateMany', alias?: string  } 
+  
+export interface CheckinUpdateWithWhereUniqueWithoutAuthorInput {
+  where?: CheckinWhereUniqueInput
+  data?: CheckinUpdateWithoutAuthorDataInput
+}
+export type CheckinUpdateWithWhereUniqueWithoutAuthorInputInputObject =
+  | Extract<keyof CheckinUpdateWithWhereUniqueWithoutAuthorInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'data', alias?: string  } 
+  
+export interface CheckinUpdateWithoutAuthorDataInput {
+  rating?: number | null
+  comment?: string | null
+  product?: ProductUpdateOneRequiredInput | null
+}
+export type CheckinUpdateWithoutAuthorDataInputInputObject =
+  | Extract<keyof CheckinUpdateWithoutAuthorDataInput, string>
+  | { name: 'rating', alias?: string  } 
+  | { name: 'comment', alias?: string  } 
+  | { name: 'product', alias?: string  } 
+  
+export interface ProductUpdateOneRequiredInput {
+  create?: ProductCreateInput | null
+  update?: ProductUpdateDataInput | null
+  upsert?: ProductUpsertNestedInput | null
+  connect?: ProductWhereUniqueInput | null
+}
+export type ProductUpdateOneRequiredInputInputObject =
+  | Extract<keyof ProductUpdateOneRequiredInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'upsert', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  
+export interface ProductUpdateDataInput {
+  name?: string | null
+  producer?: string | null
+  type?: string | null
+}
+export type ProductUpdateDataInputInputObject =
+  | Extract<keyof ProductUpdateDataInput, string>
+  | { name: 'name', alias?: string  } 
+  | { name: 'producer', alias?: string  } 
+  | { name: 'type', alias?: string  } 
+  
+export interface ProductUpsertNestedInput {
+  update?: ProductUpdateDataInput
+  create?: ProductCreateInput
+}
+export type ProductUpsertNestedInputInputObject =
+  | Extract<keyof ProductUpsertNestedInput, string>
+  | { name: 'update', alias?: string  } 
+  | { name: 'create', alias?: string  } 
+  
+export interface CheckinUpsertWithWhereUniqueWithoutAuthorInput {
+  where?: CheckinWhereUniqueInput
+  update?: CheckinUpdateWithoutAuthorDataInput
+  create?: CheckinCreateWithoutAuthorInput
+}
+export type CheckinUpsertWithWhereUniqueWithoutAuthorInputInputObject =
+  | Extract<keyof CheckinUpsertWithWhereUniqueWithoutAuthorInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'create', alias?: string  } 
+  
+export interface CheckinScalarWhereInput {
+  id?: string | null
+  id_not?: string | null
+  id_in?: string[]
+  id_not_in?: string[]
+  id_lt?: string | null
+  id_lte?: string | null
+  id_gt?: string | null
+  id_gte?: string | null
+  id_contains?: string | null
+  id_not_contains?: string | null
+  id_starts_with?: string | null
+  id_not_starts_with?: string | null
+  id_ends_with?: string | null
+  id_not_ends_with?: string | null
+  rating?: number | null
+  rating_not?: number | null
+  rating_in?: number[]
+  rating_not_in?: number[]
+  rating_lt?: number | null
+  rating_lte?: number | null
+  rating_gt?: number | null
+  rating_gte?: number | null
+  comment?: string | null
+  comment_not?: string | null
+  comment_in?: string[]
+  comment_not_in?: string[]
+  comment_lt?: string | null
+  comment_lte?: string | null
+  comment_gt?: string | null
+  comment_gte?: string | null
+  comment_contains?: string | null
+  comment_not_contains?: string | null
+  comment_starts_with?: string | null
+  comment_not_starts_with?: string | null
+  comment_ends_with?: string | null
+  comment_not_ends_with?: string | null
+  createdAt?: string | null
+  createdAt_not?: string | null
+  createdAt_in?: string[]
+  createdAt_not_in?: string[]
+  createdAt_lt?: string | null
+  createdAt_lte?: string | null
+  createdAt_gt?: string | null
+  createdAt_gte?: string | null
+  updatedAt?: string | null
+  updatedAt_not?: string | null
+  updatedAt_in?: string[]
+  updatedAt_not_in?: string[]
+  updatedAt_lt?: string | null
+  updatedAt_lte?: string | null
+  updatedAt_gt?: string | null
+  updatedAt_gte?: string | null
+  AND?: CheckinScalarWhereInput[]
+  OR?: CheckinScalarWhereInput[]
+  NOT?: CheckinScalarWhereInput[]
+}
+export type CheckinScalarWhereInputInputObject =
+  | Extract<keyof CheckinScalarWhereInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'id_not', alias?: string  } 
+  | { name: 'id_in', alias?: string  } 
+  | { name: 'id_not_in', alias?: string  } 
+  | { name: 'id_lt', alias?: string  } 
+  | { name: 'id_lte', alias?: string  } 
+  | { name: 'id_gt', alias?: string  } 
+  | { name: 'id_gte', alias?: string  } 
+  | { name: 'id_contains', alias?: string  } 
+  | { name: 'id_not_contains', alias?: string  } 
+  | { name: 'id_starts_with', alias?: string  } 
+  | { name: 'id_not_starts_with', alias?: string  } 
+  | { name: 'id_ends_with', alias?: string  } 
+  | { name: 'id_not_ends_with', alias?: string  } 
+  | { name: 'rating', alias?: string  } 
+  | { name: 'rating_not', alias?: string  } 
+  | { name: 'rating_in', alias?: string  } 
+  | { name: 'rating_not_in', alias?: string  } 
+  | { name: 'rating_lt', alias?: string  } 
+  | { name: 'rating_lte', alias?: string  } 
+  | { name: 'rating_gt', alias?: string  } 
+  | { name: 'rating_gte', alias?: string  } 
+  | { name: 'comment', alias?: string  } 
+  | { name: 'comment_not', alias?: string  } 
+  | { name: 'comment_in', alias?: string  } 
+  | { name: 'comment_not_in', alias?: string  } 
+  | { name: 'comment_lt', alias?: string  } 
+  | { name: 'comment_lte', alias?: string  } 
+  | { name: 'comment_gt', alias?: string  } 
+  | { name: 'comment_gte', alias?: string  } 
+  | { name: 'comment_contains', alias?: string  } 
+  | { name: 'comment_not_contains', alias?: string  } 
+  | { name: 'comment_starts_with', alias?: string  } 
+  | { name: 'comment_not_starts_with', alias?: string  } 
+  | { name: 'comment_ends_with', alias?: string  } 
+  | { name: 'comment_not_ends_with', alias?: string  } 
+  | { name: 'createdAt', alias?: string  } 
+  | { name: 'createdAt_not', alias?: string  } 
+  | { name: 'createdAt_in', alias?: string  } 
+  | { name: 'createdAt_not_in', alias?: string  } 
+  | { name: 'createdAt_lt', alias?: string  } 
+  | { name: 'createdAt_lte', alias?: string  } 
+  | { name: 'createdAt_gt', alias?: string  } 
+  | { name: 'createdAt_gte', alias?: string  } 
+  | { name: 'updatedAt', alias?: string  } 
+  | { name: 'updatedAt_not', alias?: string  } 
+  | { name: 'updatedAt_in', alias?: string  } 
+  | { name: 'updatedAt_not_in', alias?: string  } 
+  | { name: 'updatedAt_lt', alias?: string  } 
+  | { name: 'updatedAt_lte', alias?: string  } 
+  | { name: 'updatedAt_gt', alias?: string  } 
+  | { name: 'updatedAt_gte', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
+  
+export interface CheckinUpdateManyWithWhereNestedInput {
+  where?: CheckinScalarWhereInput
+  data?: CheckinUpdateManyDataInput
+}
+export type CheckinUpdateManyWithWhereNestedInputInputObject =
+  | Extract<keyof CheckinUpdateManyWithWhereNestedInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'data', alias?: string  } 
+  
+export interface CheckinUpdateManyDataInput {
+  rating?: number | null
+  comment?: string | null
+}
+export type CheckinUpdateManyDataInputInputObject =
+  | Extract<keyof CheckinUpdateManyDataInput, string>
+  | { name: 'rating', alias?: string  } 
+  | { name: 'comment', alias?: string  } 
+  
+export interface UserUpdateManyInput {
+  create?: UserCreateInput[]
+  update?: UserUpdateWithWhereUniqueNestedInput[]
+  upsert?: UserUpsertWithWhereUniqueNestedInput[]
+  delete?: UserWhereUniqueInput[]
+  connect?: UserWhereUniqueInput[]
+  set?: UserWhereUniqueInput[]
+  disconnect?: UserWhereUniqueInput[]
+  deleteMany?: UserScalarWhereInput[]
+  updateMany?: UserUpdateManyWithWhereNestedInput[]
+}
+export type UserUpdateManyInputInputObject =
+  | Extract<keyof UserUpdateManyInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'upsert', alias?: string  } 
+  | { name: 'delete', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  | { name: 'set', alias?: string  } 
+  | { name: 'disconnect', alias?: string  } 
+  | { name: 'deleteMany', alias?: string  } 
+  | { name: 'updateMany', alias?: string  } 
+  
+export interface UserUpdateWithWhereUniqueNestedInput {
+  where?: UserWhereUniqueInput
+  data?: UserUpdateDataInput
+}
+export type UserUpdateWithWhereUniqueNestedInputInputObject =
+  | Extract<keyof UserUpdateWithWhereUniqueNestedInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'data', alias?: string  } 
+  
+export interface UserUpdateDataInput {
+  email?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  password?: string | null
+  admin?: boolean | null
+  checkins?: CheckinUpdateManyWithoutAuthorInput | null
+  friends?: UserUpdateManyInput | null
+}
+export type UserUpdateDataInputInputObject =
+  | Extract<keyof UserUpdateDataInput, string>
+  | { name: 'email', alias?: string  } 
+  | { name: 'firstName', alias?: string  } 
+  | { name: 'lastName', alias?: string  } 
+  | { name: 'password', alias?: string  } 
+  | { name: 'admin', alias?: string  } 
+  | { name: 'checkins', alias?: string  } 
+  | { name: 'friends', alias?: string  } 
+  
+export interface UserUpsertWithWhereUniqueNestedInput {
+  where?: UserWhereUniqueInput
+  update?: UserUpdateDataInput
+  create?: UserCreateInput
+}
+export type UserUpsertWithWhereUniqueNestedInputInputObject =
+  | Extract<keyof UserUpsertWithWhereUniqueNestedInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'create', alias?: string  } 
+  
+export interface UserScalarWhereInput {
+  id?: string | null
+  id_not?: string | null
+  id_in?: string[]
+  id_not_in?: string[]
+  id_lt?: string | null
+  id_lte?: string | null
+  id_gt?: string | null
+  id_gte?: string | null
+  id_contains?: string | null
+  id_not_contains?: string | null
+  id_starts_with?: string | null
+  id_not_starts_with?: string | null
+  id_ends_with?: string | null
+  id_not_ends_with?: string | null
+  email?: string | null
+  email_not?: string | null
+  email_in?: string[]
+  email_not_in?: string[]
+  email_lt?: string | null
+  email_lte?: string | null
+  email_gt?: string | null
+  email_gte?: string | null
+  email_contains?: string | null
+  email_not_contains?: string | null
+  email_starts_with?: string | null
+  email_not_starts_with?: string | null
+  email_ends_with?: string | null
+  email_not_ends_with?: string | null
+  firstName?: string | null
+  firstName_not?: string | null
+  firstName_in?: string[]
+  firstName_not_in?: string[]
+  firstName_lt?: string | null
+  firstName_lte?: string | null
+  firstName_gt?: string | null
+  firstName_gte?: string | null
+  firstName_contains?: string | null
+  firstName_not_contains?: string | null
+  firstName_starts_with?: string | null
+  firstName_not_starts_with?: string | null
+  firstName_ends_with?: string | null
+  firstName_not_ends_with?: string | null
+  lastName?: string | null
+  lastName_not?: string | null
+  lastName_in?: string[]
+  lastName_not_in?: string[]
+  lastName_lt?: string | null
+  lastName_lte?: string | null
+  lastName_gt?: string | null
+  lastName_gte?: string | null
+  lastName_contains?: string | null
+  lastName_not_contains?: string | null
+  lastName_starts_with?: string | null
+  lastName_not_starts_with?: string | null
+  lastName_ends_with?: string | null
+  lastName_not_ends_with?: string | null
+  password?: string | null
+  password_not?: string | null
+  password_in?: string[]
+  password_not_in?: string[]
+  password_lt?: string | null
+  password_lte?: string | null
+  password_gt?: string | null
+  password_gte?: string | null
+  password_contains?: string | null
+  password_not_contains?: string | null
+  password_starts_with?: string | null
+  password_not_starts_with?: string | null
+  password_ends_with?: string | null
+  password_not_ends_with?: string | null
+  admin?: boolean | null
+  admin_not?: boolean | null
+  AND?: UserScalarWhereInput[]
+  OR?: UserScalarWhereInput[]
+  NOT?: UserScalarWhereInput[]
+}
+export type UserScalarWhereInputInputObject =
+  | Extract<keyof UserScalarWhereInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'id_not', alias?: string  } 
+  | { name: 'id_in', alias?: string  } 
+  | { name: 'id_not_in', alias?: string  } 
+  | { name: 'id_lt', alias?: string  } 
+  | { name: 'id_lte', alias?: string  } 
+  | { name: 'id_gt', alias?: string  } 
+  | { name: 'id_gte', alias?: string  } 
+  | { name: 'id_contains', alias?: string  } 
+  | { name: 'id_not_contains', alias?: string  } 
+  | { name: 'id_starts_with', alias?: string  } 
+  | { name: 'id_not_starts_with', alias?: string  } 
+  | { name: 'id_ends_with', alias?: string  } 
+  | { name: 'id_not_ends_with', alias?: string  } 
+  | { name: 'email', alias?: string  } 
+  | { name: 'email_not', alias?: string  } 
+  | { name: 'email_in', alias?: string  } 
+  | { name: 'email_not_in', alias?: string  } 
+  | { name: 'email_lt', alias?: string  } 
+  | { name: 'email_lte', alias?: string  } 
+  | { name: 'email_gt', alias?: string  } 
+  | { name: 'email_gte', alias?: string  } 
+  | { name: 'email_contains', alias?: string  } 
+  | { name: 'email_not_contains', alias?: string  } 
+  | { name: 'email_starts_with', alias?: string  } 
+  | { name: 'email_not_starts_with', alias?: string  } 
+  | { name: 'email_ends_with', alias?: string  } 
+  | { name: 'email_not_ends_with', alias?: string  } 
+  | { name: 'firstName', alias?: string  } 
+  | { name: 'firstName_not', alias?: string  } 
+  | { name: 'firstName_in', alias?: string  } 
+  | { name: 'firstName_not_in', alias?: string  } 
+  | { name: 'firstName_lt', alias?: string  } 
+  | { name: 'firstName_lte', alias?: string  } 
+  | { name: 'firstName_gt', alias?: string  } 
+  | { name: 'firstName_gte', alias?: string  } 
+  | { name: 'firstName_contains', alias?: string  } 
+  | { name: 'firstName_not_contains', alias?: string  } 
+  | { name: 'firstName_starts_with', alias?: string  } 
+  | { name: 'firstName_not_starts_with', alias?: string  } 
+  | { name: 'firstName_ends_with', alias?: string  } 
+  | { name: 'firstName_not_ends_with', alias?: string  } 
+  | { name: 'lastName', alias?: string  } 
+  | { name: 'lastName_not', alias?: string  } 
+  | { name: 'lastName_in', alias?: string  } 
+  | { name: 'lastName_not_in', alias?: string  } 
+  | { name: 'lastName_lt', alias?: string  } 
+  | { name: 'lastName_lte', alias?: string  } 
+  | { name: 'lastName_gt', alias?: string  } 
+  | { name: 'lastName_gte', alias?: string  } 
+  | { name: 'lastName_contains', alias?: string  } 
+  | { name: 'lastName_not_contains', alias?: string  } 
+  | { name: 'lastName_starts_with', alias?: string  } 
+  | { name: 'lastName_not_starts_with', alias?: string  } 
+  | { name: 'lastName_ends_with', alias?: string  } 
+  | { name: 'lastName_not_ends_with', alias?: string  } 
+  | { name: 'password', alias?: string  } 
+  | { name: 'password_not', alias?: string  } 
+  | { name: 'password_in', alias?: string  } 
+  | { name: 'password_not_in', alias?: string  } 
+  | { name: 'password_lt', alias?: string  } 
+  | { name: 'password_lte', alias?: string  } 
+  | { name: 'password_gt', alias?: string  } 
+  | { name: 'password_gte', alias?: string  } 
+  | { name: 'password_contains', alias?: string  } 
+  | { name: 'password_not_contains', alias?: string  } 
+  | { name: 'password_starts_with', alias?: string  } 
+  | { name: 'password_not_starts_with', alias?: string  } 
+  | { name: 'password_ends_with', alias?: string  } 
+  | { name: 'password_not_ends_with', alias?: string  } 
+  | { name: 'admin', alias?: string  } 
+  | { name: 'admin_not', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
+  
+export interface UserUpdateManyWithWhereNestedInput {
+  where?: UserScalarWhereInput
+  data?: UserUpdateManyDataInput
+}
+export type UserUpdateManyWithWhereNestedInputInputObject =
+  | Extract<keyof UserUpdateManyWithWhereNestedInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'data', alias?: string  } 
+  
+export interface UserUpdateManyDataInput {
+  email?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  password?: string | null
+  admin?: boolean | null
+}
+export type UserUpdateManyDataInputInputObject =
+  | Extract<keyof UserUpdateManyDataInput, string>
   | { name: 'email', alias?: string  } 
   | { name: 'firstName', alias?: string  } 
   | { name: 'lastName', alias?: string  } 
@@ -1560,19 +2851,6 @@ export type UserUpdateManyMutationInputInputObject =
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
-  
-export interface ProductCreateInput {
-  id?: string | null
-  name?: string
-  producer?: string | null
-  type?: string | null
-}
-export type ProductCreateInputInputObject =
-  | Extract<keyof ProductCreateInput, string>
-  | { name: 'id', alias?: string  } 
-  | { name: 'name', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
-  | { name: 'type', alias?: string  } 
   
 export interface ProductUpdateInput {
   name?: string | null
@@ -1595,6 +2873,110 @@ export type ProductUpdateManyMutationInputInputObject =
   | { name: 'name', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'type', alias?: string  } 
+  
+export interface CheckinCreateInput {
+  id?: string | null
+  rating?: number
+  comment?: string
+  author?: UserCreateOneWithoutCheckinsInput
+  product?: ProductCreateOneInput
+}
+export type CheckinCreateInputInputObject =
+  | Extract<keyof CheckinCreateInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'rating', alias?: string  } 
+  | { name: 'comment', alias?: string  } 
+  | { name: 'author', alias?: string  } 
+  | { name: 'product', alias?: string  } 
+  
+export interface UserCreateOneWithoutCheckinsInput {
+  create?: UserCreateWithoutCheckinsInput | null
+  connect?: UserWhereUniqueInput | null
+}
+export type UserCreateOneWithoutCheckinsInputInputObject =
+  | Extract<keyof UserCreateOneWithoutCheckinsInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  
+export interface UserCreateWithoutCheckinsInput {
+  id?: string | null
+  email?: string | null
+  firstName?: string
+  lastName?: string
+  password?: string
+  admin?: boolean
+  friends?: UserCreateManyInput | null
+}
+export type UserCreateWithoutCheckinsInputInputObject =
+  | Extract<keyof UserCreateWithoutCheckinsInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'email', alias?: string  } 
+  | { name: 'firstName', alias?: string  } 
+  | { name: 'lastName', alias?: string  } 
+  | { name: 'password', alias?: string  } 
+  | { name: 'admin', alias?: string  } 
+  | { name: 'friends', alias?: string  } 
+  
+export interface CheckinUpdateInput {
+  rating?: number | null
+  comment?: string | null
+  author?: UserUpdateOneRequiredWithoutCheckinsInput | null
+  product?: ProductUpdateOneRequiredInput | null
+}
+export type CheckinUpdateInputInputObject =
+  | Extract<keyof CheckinUpdateInput, string>
+  | { name: 'rating', alias?: string  } 
+  | { name: 'comment', alias?: string  } 
+  | { name: 'author', alias?: string  } 
+  | { name: 'product', alias?: string  } 
+  
+export interface UserUpdateOneRequiredWithoutCheckinsInput {
+  create?: UserCreateWithoutCheckinsInput | null
+  update?: UserUpdateWithoutCheckinsDataInput | null
+  upsert?: UserUpsertWithoutCheckinsInput | null
+  connect?: UserWhereUniqueInput | null
+}
+export type UserUpdateOneRequiredWithoutCheckinsInputInputObject =
+  | Extract<keyof UserUpdateOneRequiredWithoutCheckinsInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'upsert', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  
+export interface UserUpdateWithoutCheckinsDataInput {
+  email?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  password?: string | null
+  admin?: boolean | null
+  friends?: UserUpdateManyInput | null
+}
+export type UserUpdateWithoutCheckinsDataInputInputObject =
+  | Extract<keyof UserUpdateWithoutCheckinsDataInput, string>
+  | { name: 'email', alias?: string  } 
+  | { name: 'firstName', alias?: string  } 
+  | { name: 'lastName', alias?: string  } 
+  | { name: 'password', alias?: string  } 
+  | { name: 'admin', alias?: string  } 
+  | { name: 'friends', alias?: string  } 
+  
+export interface UserUpsertWithoutCheckinsInput {
+  update?: UserUpdateWithoutCheckinsDataInput
+  create?: UserCreateWithoutCheckinsInput
+}
+export type UserUpsertWithoutCheckinsInputInputObject =
+  | Extract<keyof UserUpsertWithoutCheckinsInput, string>
+  | { name: 'update', alias?: string  } 
+  | { name: 'create', alias?: string  } 
+  
+export interface CheckinUpdateManyMutationInput {
+  rating?: number | null
+  comment?: string | null
+}
+export type CheckinUpdateManyMutationInputInputObject =
+  | Extract<keyof CheckinUpdateManyMutationInput, string>
+  | { name: 'rating', alias?: string  } 
+  | { name: 'comment', alias?: string  } 
   
 export interface UserSubscriptionWhereInput {
   mutation_in?: prisma.MutationType[]
@@ -1638,7 +3020,40 @@ export type ProductSubscriptionWhereInputInputObject =
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
   
+export interface CheckinSubscriptionWhereInput {
+  mutation_in?: prisma.MutationType[]
+  updatedFields_contains?: string | null
+  updatedFields_contains_every?: string[]
+  updatedFields_contains_some?: string[]
+  node?: CheckinWhereInput | null
+  AND?: CheckinSubscriptionWhereInput[]
+  OR?: CheckinSubscriptionWhereInput[]
+  NOT?: CheckinSubscriptionWhereInput[]
+}
+export type CheckinSubscriptionWhereInputInputObject =
+  | Extract<keyof CheckinSubscriptionWhereInput, string>
+  | { name: 'mutation_in', alias?: string  } 
+  | { name: 'updatedFields_contains', alias?: string  } 
+  | { name: 'updatedFields_contains_every', alias?: string  } 
+  | { name: 'updatedFields_contains_some', alias?: string  } 
+  | { name: 'node', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
+  
 
+export type CheckinOrderByInputValues =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'rating_ASC'
+  | 'rating_DESC'
+  | 'comment_ASC'
+  | 'comment_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC'
+  
 export type UserOrderByInputValues =
   | 'id_ASC'
   | 'id_DESC'

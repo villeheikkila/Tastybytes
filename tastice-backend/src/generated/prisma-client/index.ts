@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  checkin: (where?: CheckinWhereInput) => Promise<boolean>;
   product: (where?: ProductWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -39,6 +40,25 @@ export interface Prisma {
    * Queries
    */
 
+  checkin: (where: CheckinWhereUniqueInput) => CheckinNullablePromise;
+  checkins: (args?: {
+    where?: CheckinWhereInput;
+    orderBy?: CheckinOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Checkin>;
+  checkinsConnection: (args?: {
+    where?: CheckinWhereInput;
+    orderBy?: CheckinOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => CheckinConnectionPromise;
   product: (where: ProductWhereUniqueInput) => ProductNullablePromise;
   products: (args?: {
     where?: ProductWhereInput;
@@ -83,6 +103,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createCheckin: (data: CheckinCreateInput) => CheckinPromise;
+  updateCheckin: (args: {
+    data: CheckinUpdateInput;
+    where: CheckinWhereUniqueInput;
+  }) => CheckinPromise;
+  updateManyCheckins: (args: {
+    data: CheckinUpdateManyMutationInput;
+    where?: CheckinWhereInput;
+  }) => BatchPayloadPromise;
+  upsertCheckin: (args: {
+    where: CheckinWhereUniqueInput;
+    create: CheckinCreateInput;
+    update: CheckinUpdateInput;
+  }) => CheckinPromise;
+  deleteCheckin: (where: CheckinWhereUniqueInput) => CheckinPromise;
+  deleteManyCheckins: (where?: CheckinWhereInput) => BatchPayloadPromise;
   createProduct: (data: ProductCreateInput) => ProductPromise;
   updateProduct: (args: {
     data: ProductUpdateInput;
@@ -124,6 +160,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  checkin: (
+    where?: CheckinSubscriptionWhereInput
+  ) => CheckinSubscriptionPayloadSubscription;
   product: (
     where?: ProductSubscriptionWhereInput
   ) => ProductSubscriptionPayloadSubscription;
@@ -140,15 +179,17 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type ProductOrderByInput =
+export type CheckinOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "producer_ASC"
-  | "producer_DESC"
-  | "type_ASC"
-  | "type_DESC";
+  | "rating_ASC"
+  | "rating_DESC"
+  | "comment_ASC"
+  | "comment_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -164,13 +205,23 @@ export type UserOrderByInput =
   | "admin_ASC"
   | "admin_DESC";
 
+export type ProductOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "producer_ASC"
+  | "producer_DESC"
+  | "type_ASC"
+  | "type_DESC";
+
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type ProductWhereUniqueInput = AtLeastOne<{
+export type CheckinWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface ProductWhereInput {
+export interface CheckinWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -185,57 +236,50 @@ export interface ProductWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  producer?: Maybe<String>;
-  producer_not?: Maybe<String>;
-  producer_in?: Maybe<String[] | String>;
-  producer_not_in?: Maybe<String[] | String>;
-  producer_lt?: Maybe<String>;
-  producer_lte?: Maybe<String>;
-  producer_gt?: Maybe<String>;
-  producer_gte?: Maybe<String>;
-  producer_contains?: Maybe<String>;
-  producer_not_contains?: Maybe<String>;
-  producer_starts_with?: Maybe<String>;
-  producer_not_starts_with?: Maybe<String>;
-  producer_ends_with?: Maybe<String>;
-  producer_not_ends_with?: Maybe<String>;
-  type?: Maybe<String>;
-  type_not?: Maybe<String>;
-  type_in?: Maybe<String[] | String>;
-  type_not_in?: Maybe<String[] | String>;
-  type_lt?: Maybe<String>;
-  type_lte?: Maybe<String>;
-  type_gt?: Maybe<String>;
-  type_gte?: Maybe<String>;
-  type_contains?: Maybe<String>;
-  type_not_contains?: Maybe<String>;
-  type_starts_with?: Maybe<String>;
-  type_not_starts_with?: Maybe<String>;
-  type_ends_with?: Maybe<String>;
-  type_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ProductWhereInput[] | ProductWhereInput>;
-  OR?: Maybe<ProductWhereInput[] | ProductWhereInput>;
-  NOT?: Maybe<ProductWhereInput[] | ProductWhereInput>;
+  rating?: Maybe<Int>;
+  rating_not?: Maybe<Int>;
+  rating_in?: Maybe<Int[] | Int>;
+  rating_not_in?: Maybe<Int[] | Int>;
+  rating_lt?: Maybe<Int>;
+  rating_lte?: Maybe<Int>;
+  rating_gt?: Maybe<Int>;
+  rating_gte?: Maybe<Int>;
+  comment?: Maybe<String>;
+  comment_not?: Maybe<String>;
+  comment_in?: Maybe<String[] | String>;
+  comment_not_in?: Maybe<String[] | String>;
+  comment_lt?: Maybe<String>;
+  comment_lte?: Maybe<String>;
+  comment_gt?: Maybe<String>;
+  comment_gte?: Maybe<String>;
+  comment_contains?: Maybe<String>;
+  comment_not_contains?: Maybe<String>;
+  comment_starts_with?: Maybe<String>;
+  comment_not_starts_with?: Maybe<String>;
+  comment_ends_with?: Maybe<String>;
+  comment_not_ends_with?: Maybe<String>;
+  author?: Maybe<UserWhereInput>;
+  product?: Maybe<ProductWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<CheckinWhereInput[] | CheckinWhereInput>;
+  OR?: Maybe<CheckinWhereInput[] | CheckinWhereInput>;
+  NOT?: Maybe<CheckinWhereInput[] | CheckinWhereInput>;
 }
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  email?: Maybe<String>;
-}>;
 
 export interface UserWhereInput {
   id?: Maybe<ID_Input>;
@@ -310,9 +354,144 @@ export interface UserWhereInput {
   password_not_ends_with?: Maybe<String>;
   admin?: Maybe<Boolean>;
   admin_not?: Maybe<Boolean>;
+  checkins_every?: Maybe<CheckinWhereInput>;
+  checkins_some?: Maybe<CheckinWhereInput>;
+  checkins_none?: Maybe<CheckinWhereInput>;
+  friends_every?: Maybe<UserWhereInput>;
+  friends_some?: Maybe<UserWhereInput>;
+  friends_none?: Maybe<UserWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
+
+export interface ProductWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  producer?: Maybe<String>;
+  producer_not?: Maybe<String>;
+  producer_in?: Maybe<String[] | String>;
+  producer_not_in?: Maybe<String[] | String>;
+  producer_lt?: Maybe<String>;
+  producer_lte?: Maybe<String>;
+  producer_gt?: Maybe<String>;
+  producer_gte?: Maybe<String>;
+  producer_contains?: Maybe<String>;
+  producer_not_contains?: Maybe<String>;
+  producer_starts_with?: Maybe<String>;
+  producer_not_starts_with?: Maybe<String>;
+  producer_ends_with?: Maybe<String>;
+  producer_not_ends_with?: Maybe<String>;
+  type?: Maybe<String>;
+  type_not?: Maybe<String>;
+  type_in?: Maybe<String[] | String>;
+  type_not_in?: Maybe<String[] | String>;
+  type_lt?: Maybe<String>;
+  type_lte?: Maybe<String>;
+  type_gt?: Maybe<String>;
+  type_gte?: Maybe<String>;
+  type_contains?: Maybe<String>;
+  type_not_contains?: Maybe<String>;
+  type_starts_with?: Maybe<String>;
+  type_not_starts_with?: Maybe<String>;
+  type_ends_with?: Maybe<String>;
+  type_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ProductWhereInput[] | ProductWhereInput>;
+  OR?: Maybe<ProductWhereInput[] | ProductWhereInput>;
+  NOT?: Maybe<ProductWhereInput[] | ProductWhereInput>;
+}
+
+export type ProductWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+}>;
+
+export interface CheckinCreateInput {
+  id?: Maybe<ID_Input>;
+  rating: Int;
+  comment: String;
+  author: UserCreateOneWithoutCheckinsInput;
+  product: ProductCreateOneInput;
+}
+
+export interface UserCreateOneWithoutCheckinsInput {
+  create?: Maybe<UserCreateWithoutCheckinsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutCheckinsInput {
+  id?: Maybe<ID_Input>;
+  email?: Maybe<String>;
+  firstName: String;
+  lastName: String;
+  password: String;
+  admin: Boolean;
+  friends?: Maybe<UserCreateManyInput>;
+}
+
+export interface UserCreateManyInput {
+  create?: Maybe<UserCreateInput[] | UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  email?: Maybe<String>;
+  firstName: String;
+  lastName: String;
+  password: String;
+  admin: Boolean;
+  checkins?: Maybe<CheckinCreateManyWithoutAuthorInput>;
+  friends?: Maybe<UserCreateManyInput>;
+}
+
+export interface CheckinCreateManyWithoutAuthorInput {
+  create?: Maybe<
+    CheckinCreateWithoutAuthorInput[] | CheckinCreateWithoutAuthorInput
+  >;
+  connect?: Maybe<CheckinWhereUniqueInput[] | CheckinWhereUniqueInput>;
+}
+
+export interface CheckinCreateWithoutAuthorInput {
+  id?: Maybe<ID_Input>;
+  rating: Int;
+  comment: String;
+  product: ProductCreateOneInput;
+}
+
+export interface ProductCreateOneInput {
+  create?: Maybe<ProductCreateInput>;
+  connect?: Maybe<ProductWhereUniqueInput>;
 }
 
 export interface ProductCreateInput {
@@ -320,6 +499,297 @@ export interface ProductCreateInput {
   name: String;
   producer?: Maybe<String>;
   type?: Maybe<String>;
+}
+
+export interface CheckinUpdateInput {
+  rating?: Maybe<Int>;
+  comment?: Maybe<String>;
+  author?: Maybe<UserUpdateOneRequiredWithoutCheckinsInput>;
+  product?: Maybe<ProductUpdateOneRequiredInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutCheckinsInput {
+  create?: Maybe<UserCreateWithoutCheckinsInput>;
+  update?: Maybe<UserUpdateWithoutCheckinsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutCheckinsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutCheckinsDataInput {
+  email?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  password?: Maybe<String>;
+  admin?: Maybe<Boolean>;
+  friends?: Maybe<UserUpdateManyInput>;
+}
+
+export interface UserUpdateManyInput {
+  create?: Maybe<UserCreateInput[] | UserCreateInput>;
+  update?: Maybe<
+    | UserUpdateWithWhereUniqueNestedInput[]
+    | UserUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | UserUpsertWithWhereUniqueNestedInput[]
+    | UserUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  updateMany?: Maybe<
+    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserUpdateWithWhereUniqueNestedInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateDataInput;
+}
+
+export interface UserUpdateDataInput {
+  email?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  password?: Maybe<String>;
+  admin?: Maybe<Boolean>;
+  checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
+  friends?: Maybe<UserUpdateManyInput>;
+}
+
+export interface CheckinUpdateManyWithoutAuthorInput {
+  create?: Maybe<
+    CheckinCreateWithoutAuthorInput[] | CheckinCreateWithoutAuthorInput
+  >;
+  delete?: Maybe<CheckinWhereUniqueInput[] | CheckinWhereUniqueInput>;
+  connect?: Maybe<CheckinWhereUniqueInput[] | CheckinWhereUniqueInput>;
+  set?: Maybe<CheckinWhereUniqueInput[] | CheckinWhereUniqueInput>;
+  disconnect?: Maybe<CheckinWhereUniqueInput[] | CheckinWhereUniqueInput>;
+  update?: Maybe<
+    | CheckinUpdateWithWhereUniqueWithoutAuthorInput[]
+    | CheckinUpdateWithWhereUniqueWithoutAuthorInput
+  >;
+  upsert?: Maybe<
+    | CheckinUpsertWithWhereUniqueWithoutAuthorInput[]
+    | CheckinUpsertWithWhereUniqueWithoutAuthorInput
+  >;
+  deleteMany?: Maybe<CheckinScalarWhereInput[] | CheckinScalarWhereInput>;
+  updateMany?: Maybe<
+    | CheckinUpdateManyWithWhereNestedInput[]
+    | CheckinUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface CheckinUpdateWithWhereUniqueWithoutAuthorInput {
+  where: CheckinWhereUniqueInput;
+  data: CheckinUpdateWithoutAuthorDataInput;
+}
+
+export interface CheckinUpdateWithoutAuthorDataInput {
+  rating?: Maybe<Int>;
+  comment?: Maybe<String>;
+  product?: Maybe<ProductUpdateOneRequiredInput>;
+}
+
+export interface ProductUpdateOneRequiredInput {
+  create?: Maybe<ProductCreateInput>;
+  update?: Maybe<ProductUpdateDataInput>;
+  upsert?: Maybe<ProductUpsertNestedInput>;
+  connect?: Maybe<ProductWhereUniqueInput>;
+}
+
+export interface ProductUpdateDataInput {
+  name?: Maybe<String>;
+  producer?: Maybe<String>;
+  type?: Maybe<String>;
+}
+
+export interface ProductUpsertNestedInput {
+  update: ProductUpdateDataInput;
+  create: ProductCreateInput;
+}
+
+export interface CheckinUpsertWithWhereUniqueWithoutAuthorInput {
+  where: CheckinWhereUniqueInput;
+  update: CheckinUpdateWithoutAuthorDataInput;
+  create: CheckinCreateWithoutAuthorInput;
+}
+
+export interface CheckinScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  rating?: Maybe<Int>;
+  rating_not?: Maybe<Int>;
+  rating_in?: Maybe<Int[] | Int>;
+  rating_not_in?: Maybe<Int[] | Int>;
+  rating_lt?: Maybe<Int>;
+  rating_lte?: Maybe<Int>;
+  rating_gt?: Maybe<Int>;
+  rating_gte?: Maybe<Int>;
+  comment?: Maybe<String>;
+  comment_not?: Maybe<String>;
+  comment_in?: Maybe<String[] | String>;
+  comment_not_in?: Maybe<String[] | String>;
+  comment_lt?: Maybe<String>;
+  comment_lte?: Maybe<String>;
+  comment_gt?: Maybe<String>;
+  comment_gte?: Maybe<String>;
+  comment_contains?: Maybe<String>;
+  comment_not_contains?: Maybe<String>;
+  comment_starts_with?: Maybe<String>;
+  comment_not_starts_with?: Maybe<String>;
+  comment_ends_with?: Maybe<String>;
+  comment_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<CheckinScalarWhereInput[] | CheckinScalarWhereInput>;
+  OR?: Maybe<CheckinScalarWhereInput[] | CheckinScalarWhereInput>;
+  NOT?: Maybe<CheckinScalarWhereInput[] | CheckinScalarWhereInput>;
+}
+
+export interface CheckinUpdateManyWithWhereNestedInput {
+  where: CheckinScalarWhereInput;
+  data: CheckinUpdateManyDataInput;
+}
+
+export interface CheckinUpdateManyDataInput {
+  rating?: Maybe<Int>;
+  comment?: Maybe<String>;
+}
+
+export interface UserUpsertWithWhereUniqueNestedInput {
+  where: UserWhereUniqueInput;
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface UserScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  firstName?: Maybe<String>;
+  firstName_not?: Maybe<String>;
+  firstName_in?: Maybe<String[] | String>;
+  firstName_not_in?: Maybe<String[] | String>;
+  firstName_lt?: Maybe<String>;
+  firstName_lte?: Maybe<String>;
+  firstName_gt?: Maybe<String>;
+  firstName_gte?: Maybe<String>;
+  firstName_contains?: Maybe<String>;
+  firstName_not_contains?: Maybe<String>;
+  firstName_starts_with?: Maybe<String>;
+  firstName_not_starts_with?: Maybe<String>;
+  firstName_ends_with?: Maybe<String>;
+  firstName_not_ends_with?: Maybe<String>;
+  lastName?: Maybe<String>;
+  lastName_not?: Maybe<String>;
+  lastName_in?: Maybe<String[] | String>;
+  lastName_not_in?: Maybe<String[] | String>;
+  lastName_lt?: Maybe<String>;
+  lastName_lte?: Maybe<String>;
+  lastName_gt?: Maybe<String>;
+  lastName_gte?: Maybe<String>;
+  lastName_contains?: Maybe<String>;
+  lastName_not_contains?: Maybe<String>;
+  lastName_starts_with?: Maybe<String>;
+  lastName_not_starts_with?: Maybe<String>;
+  lastName_ends_with?: Maybe<String>;
+  lastName_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
+  admin?: Maybe<Boolean>;
+  admin_not?: Maybe<Boolean>;
+  AND?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  OR?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+}
+
+export interface UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput;
+  data: UserUpdateManyDataInput;
+}
+
+export interface UserUpdateManyDataInput {
+  email?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  password?: Maybe<String>;
+  admin?: Maybe<Boolean>;
+}
+
+export interface UserUpsertWithoutCheckinsInput {
+  update: UserUpdateWithoutCheckinsDataInput;
+  create: UserCreateWithoutCheckinsInput;
+}
+
+export interface CheckinUpdateManyMutationInput {
+  rating?: Maybe<Int>;
+  comment?: Maybe<String>;
 }
 
 export interface ProductUpdateInput {
@@ -334,21 +804,14 @@ export interface ProductUpdateManyMutationInput {
   type?: Maybe<String>;
 }
 
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  email?: Maybe<String>;
-  firstName: String;
-  lastName: String;
-  password: String;
-  admin: Boolean;
-}
-
 export interface UserUpdateInput {
   email?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
+  checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
+  friends?: Maybe<UserUpdateManyInput>;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -357,6 +820,17 @@ export interface UserUpdateManyMutationInput {
   lastName?: Maybe<String>;
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
+}
+
+export interface CheckinSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<CheckinWhereInput>;
+  AND?: Maybe<CheckinSubscriptionWhereInput[] | CheckinSubscriptionWhereInput>;
+  OR?: Maybe<CheckinSubscriptionWhereInput[] | CheckinSubscriptionWhereInput>;
+  NOT?: Maybe<CheckinSubscriptionWhereInput[] | CheckinSubscriptionWhereInput>;
 }
 
 export interface ProductSubscriptionWhereInput {
@@ -383,6 +857,142 @@ export interface UserSubscriptionWhereInput {
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface Checkin {
+  id: ID_Output;
+  rating: Int;
+  comment: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface CheckinPromise extends Promise<Checkin>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  rating: () => Promise<Int>;
+  comment: () => Promise<String>;
+  author: <T = UserPromise>() => T;
+  product: <T = ProductPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CheckinSubscription
+  extends Promise<AsyncIterator<Checkin>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  rating: () => Promise<AsyncIterator<Int>>;
+  comment: () => Promise<AsyncIterator<String>>;
+  author: <T = UserSubscription>() => T;
+  product: <T = ProductSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface CheckinNullablePromise
+  extends Promise<Checkin | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  rating: () => Promise<Int>;
+  comment: () => Promise<String>;
+  author: <T = UserPromise>() => T;
+  product: <T = ProductPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface User {
+  id: ID_Output;
+  email?: String;
+  firstName: String;
+  lastName: String;
+  password: String;
+  admin: Boolean;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  password: () => Promise<String>;
+  admin: () => Promise<Boolean>;
+  checkins: <T = FragmentableArray<Checkin>>(args?: {
+    where?: CheckinWhereInput;
+    orderBy?: CheckinOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  friends: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  admin: () => Promise<AsyncIterator<Boolean>>;
+  checkins: <T = Promise<AsyncIterator<CheckinSubscription>>>(args?: {
+    where?: CheckinWhereInput;
+    orderBy?: CheckinOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  friends: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  password: () => Promise<String>;
+  admin: () => Promise<Boolean>;
+  checkins: <T = FragmentableArray<Checkin>>(args?: {
+    where?: CheckinWhereInput;
+    orderBy?: CheckinOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  friends: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface Product {
@@ -417,25 +1027,25 @@ export interface ProductNullablePromise
   type: () => Promise<String>;
 }
 
-export interface ProductConnection {
+export interface CheckinConnection {
   pageInfo: PageInfo;
-  edges: ProductEdge[];
+  edges: CheckinEdge[];
 }
 
-export interface ProductConnectionPromise
-  extends Promise<ProductConnection>,
+export interface CheckinConnectionPromise
+  extends Promise<CheckinConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ProductEdge>>() => T;
-  aggregate: <T = AggregateProductPromise>() => T;
+  edges: <T = FragmentableArray<CheckinEdge>>() => T;
+  aggregate: <T = AggregateCheckinPromise>() => T;
 }
 
-export interface ProductConnectionSubscription
-  extends Promise<AsyncIterator<ProductConnection>>,
+export interface CheckinConnectionSubscription
+  extends Promise<AsyncIterator<CheckinConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ProductEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateProductSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CheckinEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCheckinSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -459,6 +1069,60 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CheckinEdge {
+  node: Checkin;
+  cursor: String;
+}
+
+export interface CheckinEdgePromise extends Promise<CheckinEdge>, Fragmentable {
+  node: <T = CheckinPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CheckinEdgeSubscription
+  extends Promise<AsyncIterator<CheckinEdge>>,
+    Fragmentable {
+  node: <T = CheckinSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateCheckin {
+  count: Int;
+}
+
+export interface AggregateCheckinPromise
+  extends Promise<AggregateCheckin>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCheckinSubscription
+  extends Promise<AsyncIterator<AggregateCheckin>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ProductConnection {
+  pageInfo: PageInfo;
+  edges: ProductEdge[];
+}
+
+export interface ProductConnectionPromise
+  extends Promise<ProductConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ProductEdge>>() => T;
+  aggregate: <T = AggregateProductPromise>() => T;
+}
+
+export interface ProductConnectionSubscription
+  extends Promise<AsyncIterator<ProductConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ProductEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateProductSubscription>() => T;
 }
 
 export interface ProductEdge {
@@ -492,46 +1156,6 @@ export interface AggregateProductSubscription
   extends Promise<AsyncIterator<AggregateProduct>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface User {
-  id: ID_Output;
-  email?: String;
-  firstName: String;
-  lastName: String;
-  password: String;
-  admin: Boolean;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  password: () => Promise<String>;
-  admin: () => Promise<Boolean>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  firstName: () => Promise<AsyncIterator<String>>;
-  lastName: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  admin: () => Promise<AsyncIterator<Boolean>>;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  password: () => Promise<String>;
-  admin: () => Promise<Boolean>;
 }
 
 export interface UserConnection {
@@ -602,6 +1226,59 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface CheckinSubscriptionPayload {
+  mutation: MutationType;
+  node: Checkin;
+  updatedFields: String[];
+  previousValues: CheckinPreviousValues;
+}
+
+export interface CheckinSubscriptionPayloadPromise
+  extends Promise<CheckinSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CheckinPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CheckinPreviousValuesPromise>() => T;
+}
+
+export interface CheckinSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CheckinSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CheckinSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CheckinPreviousValuesSubscription>() => T;
+}
+
+export interface CheckinPreviousValues {
+  id: ID_Output;
+  rating: Int;
+  comment: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface CheckinPreviousValuesPromise
+  extends Promise<CheckinPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  rating: () => Promise<Int>;
+  comment: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CheckinPreviousValuesSubscription
+  extends Promise<AsyncIterator<CheckinPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  rating: () => Promise<AsyncIterator<Int>>;
+  comment: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface ProductSubscriptionPayload {
@@ -717,19 +1394,29 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number;
 
 /*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+/*
+DateTime scalar input type, allowing Date
+*/
+export type DateTimeInput = Date | string;
+
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
 
 export type Long = string;
 
@@ -744,6 +1431,10 @@ export const models: Model[] = [
   },
   {
     name: "Product",
+    embedded: false
+  },
+  {
+    name: "Checkin",
     embedded: false
   }
 ];

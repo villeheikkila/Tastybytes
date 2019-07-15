@@ -5,6 +5,8 @@ type User {
   lastName: String!
   password: String!
   admin: Boolean!
+  checkins: [Checkin!]!
+  friends: [User!]!
   }
 
 type Product {
@@ -14,3 +16,12 @@ type Product {
   type: String
   }
 
+type Checkin {
+    id: ID! @id
+    rating: Int!
+    comment: String!
+    author: User!
+    product: Product!
+    createdAt: DateTime! @createdAt
+    updatedAt: DateTime! @updatedAt
+}
