@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import history from "../../utils/history";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import { ALL_PRODUCTS } from "../../queries";
 
 const useStyles = makeStyles(theme => ({

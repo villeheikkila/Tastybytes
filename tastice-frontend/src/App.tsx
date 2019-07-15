@@ -56,8 +56,6 @@ const App = () => {
     }
   }, [token]);
 
-  console.log("token: ", token);
-
   return (
     <div>
       <ThemeProvider theme={themes[theme]}>

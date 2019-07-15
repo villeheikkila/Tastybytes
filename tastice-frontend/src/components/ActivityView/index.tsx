@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
 export const ActivityView = () => {
   const classes = useStyles();
   const checkins = useQuery(ALL_CHECKINS);
-  console.log("checkins: ", checkins);
 
   if (checkins === undefined || checkins.data.checkins === undefined) {
     return null;
@@ -36,7 +35,7 @@ export const ActivityView = () => {
       <Grid container justify="center" spacing={10}>
         <Grid item xs={12}>
           {checkins.data.checkins.map((checkin: any) => (
-            <CheckInCard checkin={checkin} />
+            <CheckInCard key={checkin.createdAt} checkin={checkin} />
           ))}
         </Grid>
       </Grid>

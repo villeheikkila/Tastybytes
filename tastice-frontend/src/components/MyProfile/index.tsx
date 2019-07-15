@@ -1,17 +1,11 @@
-import React, { useState } from "react";
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import { ME, DELETE_USER, UPDATE_USER } from "../../queries";
+import React from "react";
+import { useQuery } from "@apollo/react-hooks";
+import { ME } from "../../queries";
 
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import { notificationHandler, errorHandler } from "../../utils";
-import history from "../../utils/history";
-import { Token } from "../../types";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -73,7 +67,6 @@ export const MyProfile = () => {
           Checkins in total: 15
         </Typography>
       </Paper>
-      
     </div>
   );
 };
