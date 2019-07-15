@@ -73,6 +73,7 @@ export const MyProfile = () => {
           Checkins in total: 15
         </Typography>
       </Paper>
+      
     </div>
   );
 };

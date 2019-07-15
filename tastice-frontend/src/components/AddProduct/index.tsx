@@ -10,8 +10,6 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { MaterialSelect } from "./MaterialSelect";
 import { OptionType } from "../../types";
-import Container from "@material-ui/core/Container";
-import { fullWhite } from "material-ui/styles/colors";
 
 const companies: OptionType[] = [
   { label: "Coca Cola Co" },

@@ -26,7 +26,7 @@ import { ProductView } from "./components/ProductView";
 import { Account } from "./components/Account";
 import { THEME } from "./queries";
 import { ActivityView } from "./components/ActivityView";
-import { CreateCheckIn } from "./components/CreatCheckIn";
+import { CreateCheckIn } from "./components/CreateCheckIn";
 import { MyProfile } from "./components/MyProfile";
 const darkTheme = createMuiTheme({
   palette: {

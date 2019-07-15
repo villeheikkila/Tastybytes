@@ -23,6 +23,25 @@ export const ADD_PRODUCT = gql`
   }
 `;
 
+export const ALL_CHECKINS = gql`
+  {
+    checkins {
+      rating
+      comment
+      author {
+        firstName
+        lastName
+      }
+      product {
+        id
+        name
+        producer
+        type
+      }
+      createdAt
+    }
+  }
+`;
 export const CREATE_CHECKIN = gql`
   mutation createCheckin(
     $authorId: ID!
