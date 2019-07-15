@@ -23,6 +23,26 @@ export const ADD_PRODUCT = gql`
   }
 `;
 
+export const CREATE_CHECKIN = gql`
+  mutation createCheckin(
+    $authorId: ID!
+    $productId: ID!
+    $comment: String!
+    $rating: Int!
+  ) {
+    createCheckin(
+      authorId: $authorId
+      productId: $productId
+      comment: $comment
+      rating: $rating
+    ) {
+      product {
+        name
+      }
+    }
+  }
+`;
+
 export const ALL_USERS = gql`
   {
     users {

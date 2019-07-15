@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { PRODUCT } from "../../queries";
+import { PRODUCT, CREATE_CHECKIN, ME } from "../../queries";
 import { ProductCard } from "../ProductCard";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -8,6 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Rating from "material-ui-rating";
 import Button from "@material-ui/core/Button";
+import { notificationHandler, errorHandler } from "../../utils";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,9 +35,12 @@ export const CreateCheckIn: React.FC<any> = id => {
     variables: { id: id.id }
   });
   const [rating, setRating] = useState();
-  console.log("rating: ", rating);
   const [comment, setComment] = useState();
-  console.log("comment: ", comment);
+  const me = useQuery(ME);
+
+  const [createCheckin] = useMutation(CREATE_CHECKIN, {
+    onError: errorHandler
+  });
 
   if (
     productsQuery.data === undefined ||
@@ -44,10 +48,8 @@ export const CreateCheckIn: React.FC<any> = id => {
   ) {
     return null;
   }
-  console.log("productsQuery: ", productsQuery);
-  console.log("length", productsQuery.data.leng);
-
   const product = productsQuery.data.product[0];
+  const user = me.data.me;
 
   const producta = {
     id,
@@ -57,8 +59,24 @@ export const CreateCheckIn: React.FC<any> = id => {
     subCategory: product.type
   };
 
-  const handeCheckIn = () => {
-    console.log("moi");
+  const handeCheckIn = async () => {
+    const result = await createCheckin({
+      variables: {
+        authorId: user.id,
+        productId: product.id,
+        comment: comment,
+        rating
+      }
+    });
+
+    if (result) {
+      notificationHandler({
+        message: `Checkin for '${
+          result.data.createCheckin.product.name
+        }' succesfully added`,
+        variant: "success"
+      });
+    }
   };
 
   return (
