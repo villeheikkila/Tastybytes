@@ -11,6 +11,7 @@ import TextField from "@material-ui/core/TextField";
 import { MaterialSelect } from "./MaterialSelect";
 import { OptionType } from "../../types";
 import Container from "@material-ui/core/Container";
+import { fullWhite } from "material-ui/styles/colors";
 
 const companies: OptionType[] = [
   { label: "Coca Cola Co" },
@@ -47,16 +48,21 @@ const subCategories: OptionType[] = [
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    padding: theme.spacing(3, 2),
+    maxWidth: 700,
+    margin: `${theme.spacing(1)}px auto`,
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  root: {
-    padding: theme.spacing(3, 2)
+    flexDirection: "column"
   },
   button: {
     margin: theme.spacing(1)
+  },
+  root: {
+    paddingTop: 30
+  },
+  textField: {
+    marginTop: 15,
+    width: "100%"
   }
 }));
 
@@ -99,31 +105,29 @@ export const AddProduct = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <div className={classes.root}>
       <Paper className={classes.paper}>
         <Typography component="h1" variant="h5">
           Add a new product!
         </Typography>
+
         <form onSubmit={handleAddProduct}>
+          <TextField
+            id="Name"
+            label="Name"
+            name="Name"
+            placeholder="Name of the product"
+            value={name}
+            onChange={handleNameChange}
+            className={classes.textField}
+          />
           <Grid
             container
             alignContent={"center"}
             alignItems={"center"}
             spacing={2}
           >
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="Name"
-                label="Name"
-                name="Name"
-                style={{ margin: 8 }}
-                placeholder="Placeholder"
-                fullWidth
-                margin="normal"
-                value={name}
-                onChange={handleNameChange}
-              />
-            </Grid>
+            <Grid item xs={12} sm={6} />
             <Grid item xs={12}>
               <MaterialSelect
                 isCreatable={true}
@@ -148,7 +152,7 @@ export const AddProduct = () => {
                 isMulti={true}
                 suggestions={subCategories}
                 label={"Subcategory"}
-                placeholder={"Select a subcategory"}
+                placeholder={"Select a subcategory or a create a new one"}
                 onChange={handleSubCategoryChange}
                 value={subCategory}
               />
@@ -166,6 +170,6 @@ export const AddProduct = () => {
           </Grid>
         </form>
       </Paper>
-    </Container>
+    </div>
   );
 };
