@@ -28,6 +28,8 @@ import { THEME } from "./queries";
 import { ActivityView } from "./components/ActivityView";
 import { CreateCheckIn } from "./components/CreateCheckIn";
 import { MyProfile } from "./components/MyProfile";
+import { Profile } from "./components/Profile";
+
 const darkTheme = createMuiTheme({
   palette: {
     type: "dark",
@@ -120,6 +122,11 @@ const App = () => {
                     render={({ match }) => (
                       <CreateCheckIn id={match.params.id} />
                     )}
+                  />
+                  <Route
+                    exact
+                    path="/user/:id"
+                    render={({ match }) => <Profile id={match.params.id} />}
                   />
                   <Route render={() => <Index />} />
                 </Switch>

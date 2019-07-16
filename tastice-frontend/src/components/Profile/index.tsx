@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
-import { ME } from "../../queries";
+import { USER } from "../../queries";
 
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -8,7 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { ALL_CHECKINS } from "../../queries";
 import Grid from "@material-ui/core/Grid";
-import { CheckInCard } from "../CheckInCard";
+import { DetailedCheckInCard } from "../DetailedCheckInCard";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,26 +45,30 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const MyProfile = () => {
-  const me = useQuery(ME);
+export const Profile: React.FC<any> = id => {
   const classes = useStyles();
-  const checkins = useQuery(ALL_CHECKINS);
+  const user = useQuery(USER, {
+    variables: { id: id.id }
+  });
 
-  if (
-    me.data.me === undefined ||
-    checkins === undefined ||
-    checkins.data.checkins === undefined
-  ) {
+  console.log("user: ", user);
+
+  if (user.data.user === undefined) {
     return null;
   }
 
-  const user = me.data.me;
+  const userObject = {
+    firstName: user.data.user[0].firstName,
+    lastName: user.data.user[0].lastName,
+    checkins: user.data.user[0].checkins
+  };
+  console.log("userObject: ", userObject);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <Typography variant="h4" component="h3" className={classes.textField}>
-          {user.firstName} {user.lastName}
+          {userObject.firstName} {userObject.lastName}
         </Typography>
         <Avatar
           alt="Avatar"
@@ -80,8 +84,8 @@ export const MyProfile = () => {
       </Typography>
       <Grid container justify="center" spacing={10}>
         <Grid item xs={12}>
-          {checkins.data.checkins.map((checkin: any) => (
-            <CheckInCard key={checkin.createdAt} checkin={checkin} />
+          {userObject.checkins.map((checkin: any) => (
+            <DetailedCheckInCard key={checkin.createdAt} checkin={checkin} />
           ))}
         </Grid>
       </Grid>

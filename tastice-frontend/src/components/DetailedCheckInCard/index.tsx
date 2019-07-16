@@ -42,51 +42,20 @@ const months: any = {
   11: "December"
 };
 
-export const CheckInCard: React.FC<any> = ({ checkin }) => {
+export const DetailedCheckInCard: React.FC<any> = ({ checkin }) => {
   const classes = useStyles();
 
   const checkinObject = {
-    authorFirstName: checkin.author.firstName,
-    authorLastName: checkin.author.lastName,
-    authorId: checkin.author.id,
-    comment: checkin.comment,
     rating: checkin.rating,
     name: checkin.product.name,
     id: checkin.product.id,
     producer: checkin.product.producer,
-    type: checkin.product.type,
-    date: new Date(checkin.createdAt)
+    type: checkin.product.type
   };
 
   return (
     <div>
       <Card className={classes.card}>
-        <CardHeader
-          avatar={
-            <Avatar aria-label="Product" src={""} className={classes.avatar}>
-              R
-            </Avatar>
-          }
-          action={
-            <IconButton aria-label="Settings">
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={
-            <Typography variant="h6" color="textSecondary" component="p">
-              <Link
-                component={RouterLink}
-                to={`/user/${checkinObject.authorId}`}
-              >
-                {checkinObject.name}
-              </Link>
-            </Typography>
-          }
-          subheader={`${checkinObject.date.getDate()} ${
-            months[checkinObject.date.getMonth()]
-          }, ${checkinObject.date.getFullYear()}
-          `}
-        />
         <CardMedia
           className={classes.media}
           image={lipton}

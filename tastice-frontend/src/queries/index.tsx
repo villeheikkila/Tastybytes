@@ -29,6 +29,7 @@ export const ALL_CHECKINS = gql`
       rating
       comment
       author {
+        id
         firstName
         lastName
       }
@@ -42,6 +43,7 @@ export const ALL_CHECKINS = gql`
     }
   }
 `;
+
 export const CREATE_CHECKIN = gql`
   mutation createCheckin(
     $authorId: ID!
@@ -70,6 +72,26 @@ export const ALL_USERS = gql`
       id
       email
       admin
+    }
+  }
+`;
+
+export const USER = gql`
+  query user($id: ID!) {
+    user(id: $id) {
+      id
+      firstName
+      lastName
+      checkins {
+        rating
+        comment
+        product {
+          id
+          name
+          producer
+          type
+        }
+      }
     }
   }
 `;
