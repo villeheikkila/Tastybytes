@@ -12,10 +12,12 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import lipton from "../../images/lipton.jpg";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
+import Rating from "material-ui-rating";
+import { ProductCard } from "../ProductCard";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    maxWidth: 500,
+    maxWidth: 700,
     margin: `${theme.spacing(3)}px auto`
   },
   media: {
@@ -24,6 +26,8 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     backgroundColor: blue[500]
+  },
+  content: {
   }
 }));
 
@@ -58,12 +62,20 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
     date: new Date(checkin.createdAt)
   };
 
+  const productObject = {
+    name: checkin.product.name,
+    id: checkin.product.id,
+    producer: checkin.product.producer,
+    category: checkin.product.type,
+    subCategory: "moi"
+  }
+
   return (
     <div>
       <Card className={classes.card}>
         <CardHeader
           avatar={
-            <Avatar aria-label="Product" src={""} className={classes.avatar}>
+            <Avatar aria-label="Author" src={""} className={classes.avatar}>
               R
             </Avatar>
           }
@@ -78,31 +90,24 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
                 component={RouterLink}
                 to={`/user/${checkinObject.authorId}`}
               >
-                {checkinObject.name}
+                {checkinObject.authorFirstName} {checkinObject.authorLastName}
               </Link>
             </Typography>
           }
           subheader={`${checkinObject.date.getDate()} ${
             months[checkinObject.date.getMonth()]
-          }, ${checkinObject.date.getFullYear()}
+            }, ${checkinObject.date.getFullYear()}
           `}
         />
-        <CardMedia
-          className={classes.media}
-          image={lipton}
-          title={checkinObject.name}
-        />
-        <CardContent>
-          <Typography variant="h4" color="textSecondary" component="p">
-            <Link component={RouterLink} to={`/product/${checkinObject.id}`}>
-              {checkinObject.name}
-            </Link>
+        <ProductCard product={productObject} show={false} />
+        <CardContent className={classes.content}>
+          <Typography variant="h6" color="textSecondary" component="p">
+            Rating
+            <Rating value={checkinObject.rating} max={5} />
           </Typography>
-          <Typography variant="h5" color="textSecondary" component="p">
-            {checkinObject.producer}
-          </Typography>
-          <Typography variant="h5" color="textSecondary" component="p">
-            {checkinObject.type}
+          <Typography variant="h6" color="textSecondary" component="p">
+            Comment:{" "}
+            {checkinObject.comment}
           </Typography>
         </CardContent>
       </Card>

@@ -85,12 +85,18 @@ export const USER = gql`
       checkins {
         rating
         comment
+        author {
+          id
+          firstName
+          lastName
+        }
         product {
           id
           name
           producer
           type
         }
+        createdAt
       }
     }
   }

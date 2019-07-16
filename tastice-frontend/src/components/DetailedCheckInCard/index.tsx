@@ -12,6 +12,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import lipton from "../../images/lipton.jpg";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
+import Rating from "material-ui-rating";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -47,6 +48,7 @@ export const DetailedCheckInCard: React.FC<any> = ({ checkin }) => {
 
   const checkinObject = {
     rating: checkin.rating,
+    comment: checkin.comment,
     name: checkin.product.name,
     id: checkin.product.id,
     producer: checkin.product.producer,
@@ -72,6 +74,10 @@ export const DetailedCheckInCard: React.FC<any> = ({ checkin }) => {
           </Typography>
           <Typography variant="h5" color="textSecondary" component="p">
             {checkinObject.type}
+          </Typography>
+          <Rating value={checkinObject.rating} max={5} />
+          <Typography variant="h6" color="textSecondary" component="p">
+            {checkinObject.comment}
           </Typography>
         </CardContent>
       </Card>

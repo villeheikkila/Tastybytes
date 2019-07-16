@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import { ALL_CHECKINS } from "../../queries";
 import Grid from "@material-ui/core/Grid";
 import { CheckInCard } from "../CheckInCard";
+import Rating from "material-ui-rating";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,7 +81,7 @@ export const MyProfile = () => {
       </Typography>
       <Grid container justify="center" spacing={10}>
         <Grid item xs={12}>
-          {checkins.data.checkins.map((checkin: any) => (
+          {user.checkins.map((checkin: any) => (
             <CheckInCard key={checkin.createdAt} checkin={checkin} />
           ))}
         </Grid>

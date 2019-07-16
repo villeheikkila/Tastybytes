@@ -6,9 +6,8 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import { ALL_CHECKINS } from "../../queries";
 import Grid from "@material-ui/core/Grid";
-import { DetailedCheckInCard } from "../DetailedCheckInCard";
+import { CheckInCard } from "../CheckInCard";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,8 +37,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     form: { padding: theme.spacing(3, 0) },
     root: {
-      display: "flex",
-      flexDirection: "column",
       alignItems: "center"
     }
   })
@@ -79,13 +76,18 @@ export const Profile: React.FC<any> = id => {
           Checkins in total: 15
         </Typography>
       </Paper>
-      <Typography variant="h4" component="h3" className={classes.textField}>
-        Activity
+
+      <Paper className={classes.paper}>
+        <Typography variant="h4" component="h4" className={classes.textField}>
+          Activity
       </Typography>
+      </Paper>
+
+
       <Grid container justify="center" spacing={10}>
         <Grid item xs={12}>
           {userObject.checkins.map((checkin: any) => (
-            <DetailedCheckInCard key={checkin.createdAt} checkin={checkin} />
+            <CheckInCard key={checkin.createdAt} checkin={checkin} />
           ))}
         </Grid>
       </Grid>

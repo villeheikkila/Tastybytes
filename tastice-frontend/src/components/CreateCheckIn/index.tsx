@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { PRODUCT, CREATE_CHECKIN, ME } from "../../queries";
+import { PRODUCT, CREATE_CHECKIN, ALL_CHECKINS, ME } from "../../queries";
 import { ProductCard } from "../ProductCard";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -39,7 +39,8 @@ export const CreateCheckIn: React.FC<any> = id => {
   const me = useQuery(ME);
 
   const [createCheckin] = useMutation(CREATE_CHECKIN, {
-    onError: errorHandler
+    onError: errorHandler,
+    refetchQueries: [{ query: ALL_CHECKINS }]
   });
 
   if (
@@ -73,7 +74,7 @@ export const CreateCheckIn: React.FC<any> = id => {
       notificationHandler({
         message: `Checkin for '${
           result.data.createCheckin.product.name
-        }' succesfully added`,
+          }' succesfully added`,
         variant: "success"
       });
     }
