@@ -11,7 +11,7 @@ import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
 import { IProductCard } from "../../types";
 import CardActionArea from '@material-ui/core/CardActionArea';
-import history from "../../utils/history";
+import useReactRouter from 'use-react-router';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -40,7 +40,10 @@ const useStyles = makeStyles(theme => ({
 
 export const ProductCard: React.FC<IProductCard> = ({ product }) => {
   const classes = useStyles();
+  const { history } = useReactRouter();
+
   const { id, name, producer, category, subCategory } = product;
+  
   return (
     <Card className={classes.card}>
       <CardActionArea onClick={() => history.push(`/product/${id}`)} className={classes.actionArea} >

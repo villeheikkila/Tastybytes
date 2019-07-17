@@ -5,12 +5,12 @@ import "typeface-leckerli-one";
 import { ILogIn } from "../../types";
 import { LOGIN } from "../../queries";
 import { errorHandler } from "../../utils";
-import history from "../../utils/history";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import useReactRouter from 'use-react-router';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
 export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { history } = useReactRouter();
   const classes = useStyles();
 
   const [login] = useMutation(LOGIN, {

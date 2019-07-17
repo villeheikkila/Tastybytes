@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { INavbar } from "../../types";
 import { themeSwitcher } from "../../utils";
+import useReactRouter from 'use-react-router';
+
 
 import {
   fade,
@@ -27,7 +29,6 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import Switch from "@material-ui/core/Switch";
-import history from "../../utils/history";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -107,6 +108,7 @@ export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [colorScheme, setColorScheme] = useState(false);
+  const { history } = useReactRouter();
 
   const logout = () => {
     localStorage.clear();

@@ -18,22 +18,22 @@ const useStyles = makeStyles({
 
 export const BottomBar = () => {
     const classes = useStyles();
-    const [value, setValue] = useState(4);
-    console.log('value: ', value);
+    const [highlight, setHighlight] = useState(3);
     const { location } = useReactRouter();
 
-    if (location.pathname === "/activity" && value !== 0) { setValue(0) }
-    else if (location.pathname === "/discover" && value !== 1) { setValue(1) }
-    else if (location.pathname === "/myprofile" && value !== 2) { setValue(2) }
-    else if (location.pathname !== "/discover" && location.pathname !== "/activity" && location.pathname !== "/myprofile" && value !== 3) {
-        setValue(3)
+    if (location.pathname === "/activity" && highlight !== 0) { setHighlight(0) }
+    else if (location.pathname === "/discover" && highlight !== 1) { setHighlight(1) }
+    else if (location.pathname === "/myprofile" && highlight !== 2) { setHighlight(2) }
+    else if (location.pathname !== "/discover" && location.pathname !== "/activity" && location.pathname !== "/myprofile" && highlight !== 3) {
+        setHighlight(3)
     }
 
     return (
         <BottomNavigation
-            value={value}
-            onChange={(event, newValue) => {
-                setValue(newValue);
+            value={highlight}
+
+            onChange={(event, newHighlight) => {
+                setHighlight(newHighlight);
             }}
 
             showLabels

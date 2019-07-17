@@ -9,9 +9,9 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { notificationHandler, errorHandler } from "../../utils";
-import history from "../../utils/history";
 import { Token } from "../../types";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import useReactRouter from 'use-react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,6 +55,7 @@ export const Account: React.FC<Token> = ({ setToken }) => {
   const [lastName, setLastName] = useState();
   console.log('lastName: ', lastName);
   const [email, setEmail] = useState();
+  const { history } = useReactRouter();
 
   const [deleteUser] = useMutation(DELETE_USER, {
     onError: error => console.log(error)

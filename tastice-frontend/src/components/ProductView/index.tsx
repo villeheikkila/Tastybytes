@@ -5,9 +5,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-import history from "../../utils/history";
 import { useQuery } from "@apollo/react-hooks";
 import { ALL_PRODUCTS } from "../../queries";
+import useReactRouter from 'use-react-router';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,6 +30,7 @@ export const ProductView = () => {
   const classes = useStyles();
   const productsQuery = useQuery(ALL_PRODUCTS);
   const products = productsQuery.data.products;
+  const { history } = useReactRouter();
 
   if (products === undefined) {
     return null;

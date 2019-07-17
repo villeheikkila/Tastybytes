@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { SIGN_UP } from "../../queries";
 import { useMutation } from "@apollo/react-hooks";
 import { ILogIn } from "../../types";
-import history from "../../utils/history";
 import "typeface-leckerli-one";
 
 import Button from "@material-ui/core/Button";
@@ -12,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { errorHandler } from "../../utils";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import useReactRouter from 'use-react-router';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -41,6 +41,7 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { history } = useReactRouter();
   const classes = useStyles();
 
   const [signup] = useMutation(SIGN_UP, {
