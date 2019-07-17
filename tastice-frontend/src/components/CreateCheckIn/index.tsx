@@ -52,8 +52,8 @@ export const CreateCheckIn: React.FC<any> = id => {
   const product = productsQuery.data.product[0];
   const user = me.data.me;
 
-  const producta = {
-    id,
+  const productObject = {
+    id: product.id,
     name: product.name,
     producer: product.producer,
     category: product.type,
@@ -82,7 +82,7 @@ export const CreateCheckIn: React.FC<any> = id => {
 
   return (
     <div>
-      <ProductCard product={producta} show={false} />
+      <ProductCard product={productObject} />
 
       <Paper className={classes.paper}>
         <Typography variant="h5" component="h3">

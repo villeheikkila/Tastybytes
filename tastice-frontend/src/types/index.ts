@@ -12,7 +12,6 @@ export interface IProductObject {
 
 export interface IProductCard {
   product: IProduct;
-  show: boolean;
 }
 export interface IProductProps {
   product: IProduct;

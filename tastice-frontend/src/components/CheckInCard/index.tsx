@@ -9,7 +9,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { blue } from "@material-ui/core/colors";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import lipton from "../../images/lipton.jpg";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
 import Rating from "material-ui-rating";
@@ -99,7 +98,7 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
             }, ${checkinObject.date.getFullYear()}
           `}
         />
-        <ProductCard product={productObject} show={false} />
+        <ProductCard product={productObject} />
         <CardContent className={classes.content}>
           <Typography variant="h6" color="textSecondary" component="p">
             Rating
