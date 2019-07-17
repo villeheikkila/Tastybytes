@@ -32,7 +32,8 @@
     "react-select": "^3.0.4",
     "subscriptions-transport-ws": "^0.9.16",
     "typeface-leckerli-one": "0.0.72",
-    "typescript": "3.5.2"
+    "typescript": "3.5.2",
+    "use-react-router": "^1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",

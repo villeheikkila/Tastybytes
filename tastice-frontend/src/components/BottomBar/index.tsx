@@ -6,6 +6,7 @@ import Explore from '@material-ui/icons/Explore';
 import Face from '@material-ui/icons/Face';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import { Link } from "react-router-dom";
+import useReactRouter from 'use-react-router';
 
 const useStyles = makeStyles({
     root: {
@@ -17,7 +18,16 @@ const useStyles = makeStyles({
 
 export const BottomBar = () => {
     const classes = useStyles();
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState(4);
+    console.log('value: ', value);
+    const { location } = useReactRouter();
+
+    if (location.pathname === "/activity" && value !== 0) { setValue(0) }
+    else if (location.pathname === "/discover" && value !== 1) { setValue(1) }
+    else if (location.pathname === "/myprofile" && value !== 2) { setValue(2) }
+    else if (location.pathname !== "/discover" && location.pathname !== "/activity" && location.pathname !== "/myprofile" && value !== 3) {
+        setValue(3)
+    }
 
     return (
         <BottomNavigation
@@ -25,6 +35,7 @@ export const BottomBar = () => {
             onChange={(event, newValue) => {
                 setValue(newValue);
             }}
+
             showLabels
             className={classes.root}
         >
