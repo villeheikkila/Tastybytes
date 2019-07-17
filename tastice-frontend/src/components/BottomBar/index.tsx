@@ -41,7 +41,7 @@ export const BottomBar = () => {
         >
             <BottomNavigationAction label="Activity" icon={<ViewListIcon />} component={Link} to="/activity" />
             <BottomNavigationAction label="Discover" icon={<Explore />} component={Link} to="/discover" />
-            <BottomNavigationAction label="Profile" icon={<Face />} component={Link} to="/profile" />
+            <BottomNavigationAction label="Profile" icon={<Face />} component={Link} to="/myprofile" />
         </BottomNavigation>
     );
 }
