@@ -12,6 +12,7 @@ import { notificationHandler, errorHandler } from "../../utils";
 import { Token } from "../../types";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import useReactRouter from 'use-react-router';
+import { ConfirmationDialog } from '../ConfirmationDialog'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,11 +52,10 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Account: React.FC<Token> = ({ setToken }) => {
   const me = useQuery(ME);
   const [firstName, setFirstName] = useState();
-  console.log('firstName: ', firstName);
   const [lastName, setLastName] = useState();
-  console.log('lastName: ', lastName);
   const [email, setEmail] = useState();
   const { history } = useReactRouter();
+  const [value, setValue] = useState();
 
   const [deleteUser] = useMutation(DELETE_USER, {
     onError: error => console.log(error)
@@ -110,6 +110,7 @@ export const Account: React.FC<Token> = ({ setToken }) => {
 
   return (
     <div>
+
       <Paper className={classes.paper}>
         <Typography variant="h4" component="h3" className={classes.textField}>
           Account Settings
@@ -192,7 +193,6 @@ export const Account: React.FC<Token> = ({ setToken }) => {
             >
               Save changes
             </Button>
-
             <Button
               variant="outlined"
               color="secondary"

@@ -67,3 +67,13 @@ export interface OptionType {
   label: string;
   value: string;
 }
+
+export interface IConfirmationDialog {
+  content: string,
+  title: string,
+  description: string,
+  declineButton: string,
+  acceptButton: string
+  value: boolean,
+  setValue: any
+}
