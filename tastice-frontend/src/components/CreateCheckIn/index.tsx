@@ -40,7 +40,7 @@ export const CreateCheckIn: React.FC<any> = id => {
 
   const [createCheckin] = useMutation(CREATE_CHECKIN, {
     onError: errorHandler,
-    refetchQueries: [{ query: ALL_CHECKINS }]
+    refetchQueries: [{ query: ALL_CHECKINS }, { query: ME }]
   });
 
   if (

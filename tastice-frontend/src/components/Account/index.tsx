@@ -51,7 +51,9 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Account: React.FC<Token> = ({ setToken }) => {
   const me = useQuery(ME);
   const [firstName, setFirstName] = useState();
+  console.log('firstName: ', firstName);
   const [lastName, setLastName] = useState();
+  console.log('lastName: ', lastName);
   const [email, setEmail] = useState();
 
   const [deleteUser] = useMutation(DELETE_USER, {
@@ -69,6 +71,7 @@ export const Account: React.FC<Token> = ({ setToken }) => {
   const user = me.data.me;
 
   const handleUpdateUser = async (event: any) => {
+
     const result = await updateUser({
       variables: {
         id: user.id,
@@ -82,7 +85,7 @@ export const Account: React.FC<Token> = ({ setToken }) => {
       notificationHandler({
         message: `User '${
           result.data.updateUser.firstName
-        }' succesfully updated`,
+          }' succesfully updated`,
         variant: "success"
       });
     }
@@ -133,14 +136,8 @@ export const Account: React.FC<Token> = ({ setToken }) => {
                 label="First Name"
                 autoFocus
                 validators={[
-                  "required",
-                  "minStringLength: 3",
-                  "maxStringLength: 12"
                 ]}
                 errorMessages={[
-                  "This field is required",
-                  "The name is too short",
-                  "The name is too long"
                 ]}
                 value={firstName}
                 defaultValue={user.firstName}
@@ -157,14 +154,8 @@ export const Account: React.FC<Token> = ({ setToken }) => {
                 name="lastName"
                 autoComplete="lname"
                 validators={[
-                  "required",
-                  "minStringLength: 3",
-                  "maxStringLength: 12"
                 ]}
                 errorMessages={[
-                  "This field is required",
-                  "The name is too short",
-                  "The name is too long"
                 ]}
                 value={lastName}
                 defaultValue={user.lastName}
@@ -181,9 +172,8 @@ export const Account: React.FC<Token> = ({ setToken }) => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                validators={["required", "isEmail"]}
+                validators={["isEmail"]}
                 errorMessages={[
-                  "This field is required",
                   "The entered email is not valid"
                 ]}
                 value={email}

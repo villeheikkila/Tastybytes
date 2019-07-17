@@ -134,6 +134,22 @@ export const ME = gql`
       lastName
       email
       admin
+      checkins {
+        rating
+        comment
+        author {
+          id
+          firstName
+          lastName
+        }
+        product {
+          id
+          name
+          producer
+          type
+        }
+        createdAt
+      }
     }
   }
 `;
