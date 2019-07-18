@@ -62,13 +62,13 @@ export const ProductCard: React.FC<IProductCard> = ({ product }) => {
               {producer}
             </Typography>
             <Typography variant="h6" color="textSecondary" component="p">
-              Category:{" "}
+              {category[0] && <>Category: </>}
               {category.map((e: any) => (
                 <>{e.name} </>
               ))}
             </Typography>
             <Typography variant="h6" color="textSecondary" component="p">
-              Style:{" "}
+              {subCategory[0] && <>Style: </>}
               {subCategory.map((e: any) => (
                 <>{e.name} </>
               ))}
