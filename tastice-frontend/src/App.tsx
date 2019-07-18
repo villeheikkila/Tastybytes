@@ -24,7 +24,7 @@ import { ProductView } from "./components/ProductView";
 import { Account } from "./components/Account";
 import { THEME } from "./queries";
 import { ActivityView } from "./components/ActivityView";
-import { CreateCheckIn } from "./components/CreateCheckIn";
+import { ProductPage } from "./components/ProductPage";
 import { MyProfile } from "./components/MyProfile";
 import { Profile } from "./components/Profile";
 
@@ -60,7 +60,7 @@ const App = () => {
     <div>
       <ThemeProvider theme={themes[theme]}>
         <CssBaseline />
-        <Router >
+        <Router>
           <Notifications />
           {!token ? (
             <Switch>
@@ -77,63 +77,61 @@ const App = () => {
               <Route render={() => <LogIn setToken={setToken} />} />
             </Switch>
           ) : (
-              <div style={{ paddingTop: 70 }}>
-                <NavigationBar setToken={setToken} />
-                <Fade timeout={300}>
-                  <Switch>
-                    <Route exact path="/" render={() => <Index />} />
-                    <Route
-                      exact
-                      path="/products"
-                      render={() => <ProductList />}
-                    />
-                    <Route
-                      exact
-                      path="/discover"
-                      render={() => <ProductView />}
-                    />
-                    <Route exact path="/users" render={() => <UserList />} />
-                    <Route
-                      exact
-                      path="/activity"
-                      render={() => <ActivityView />}
-                    />
-                    <Route
-                      exact
-                      path="/addproduct"
-                      render={() => <AddProduct />}
-                    />
-                    <Route
-                      exact
-                      path="/menu"
-                      render={() => <MobileMenu setToken={setToken} />}
-                    />
-                    <Route
-                      exact
-                      path="/account"
-                      render={() => <Account setToken={setToken} />}
-                    />
-                    <Route exact path="/myprofile" render={() => <MyProfile />} />
-                    <Route
-                      exact
-                      path="/product/:id"
-                      render={({ match }) => (
-                        <CreateCheckIn id={match.params.id} />
-                      )}
-                    />
-                    <Route
-                      exact
-                      path="/user/:id"
-                      render={({ match }) => <Profile id={match.params.id} />}
-                    />
-                    <Route render={() => <Index />} />
-                  </Switch>
-                </Fade>
-                <Box display={{ xs: "block", md: "none" }}>
-                  <BottomBar />
-                </Box>
-              </div>
-            )}
+            <div style={{ paddingTop: 70 }}>
+              <NavigationBar setToken={setToken} />
+              <Fade timeout={300}>
+                <Switch>
+                  <Route exact path="/" render={() => <Index />} />
+                  <Route
+                    exact
+                    path="/products"
+                    render={() => <ProductList />}
+                  />
+                  <Route
+                    exact
+                    path="/discover"
+                    render={() => <ProductView />}
+                  />
+                  <Route exact path="/users" render={() => <UserList />} />
+                  <Route
+                    exact
+                    path="/activity"
+                    render={() => <ActivityView />}
+                  />
+                  <Route
+                    exact
+                    path="/addproduct"
+                    render={() => <AddProduct />}
+                  />
+                  <Route
+                    exact
+                    path="/menu"
+                    render={() => <MobileMenu setToken={setToken} />}
+                  />
+                  <Route
+                    exact
+                    path="/account"
+                    render={() => <Account setToken={setToken} />}
+                  />
+                  <Route exact path="/myprofile" render={() => <MyProfile />} />
+                  <Route
+                    exact
+                    path="/product/:id"
+                    render={({ match }) => <ProductPage id={match.params.id} />}
+                  />
+                  <Route
+                    exact
+                    path="/user/:id"
+                    render={({ match }) => <Profile id={match.params.id} />}
+                  />
+                  <Route render={() => <Index />} />
+                </Switch>
+              </Fade>
+              <Box display={{ xs: "block", md: "none" }}>
+                <BottomBar />
+              </Box>
+            </div>
+          )}
         </Router>
       </ThemeProvider>
     </div>

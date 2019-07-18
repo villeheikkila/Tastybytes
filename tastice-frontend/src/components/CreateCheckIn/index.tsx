@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import { PRODUCT, CREATE_CHECKIN, ALL_CHECKINS, ME } from "../../queries";
-import { ProductCard } from "../ProductCard";
+import { useMutation } from "@apollo/react-hooks";
+import { CREATE_CHECKIN, ALL_CHECKINS, ME } from "../../queries";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
@@ -9,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Rating from "material-ui-rating";
 import Button from "@material-ui/core/Button";
 import { notificationHandler, errorHandler } from "../../utils";
+import { ICreateCheckIn } from "../../types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,43 +29,24 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const CreateCheckIn: React.FC<any> = id => {
+export const CreateCheckIn: React.FC<ICreateCheckIn> = ({
+  authorId,
+  productId
+}) => {
   const classes = useStyles();
-  const productsQuery = useQuery(PRODUCT, {
-    variables: { id: id.id }
-  });
   const [rating, setRating] = useState();
   const [comment, setComment] = useState();
-  const me = useQuery(ME);
-
   const [createCheckin] = useMutation(CREATE_CHECKIN, {
     onError: errorHandler,
     refetchQueries: [{ query: ALL_CHECKINS }, { query: ME }]
   });
 
-  if (
-    productsQuery.data === undefined ||
-    productsQuery.data.product === undefined
-  ) {
-    return null;
-  }
-  const product = productsQuery.data.product[0];
-  const user = me.data.me;
-
-  const productObject = {
-    id: product.id,
-    name: product.name,
-    producer: product.producer,
-    category: product.type,
-    subCategory: product.type
-  };
-
   const handeCheckIn = async () => {
     const result = await createCheckin({
       variables: {
-        authorId: user.id,
-        productId: product.id,
-        comment: comment,
+        authorId: authorId,
+        productId: productId,
+        comment,
         rating
       }
     });
@@ -74,7 +55,7 @@ export const CreateCheckIn: React.FC<any> = id => {
       notificationHandler({
         message: `Checkin for '${
           result.data.createCheckin.product.name
-          }' succesfully added`,
+        }' succesfully added`,
         variant: "success"
       });
     }
@@ -82,8 +63,6 @@ export const CreateCheckIn: React.FC<any> = id => {
 
   return (
     <div>
-      <ProductCard product={productObject} />
-
       <Paper className={classes.paper}>
         <Typography variant="h5" component="h3">
           How did you like it?

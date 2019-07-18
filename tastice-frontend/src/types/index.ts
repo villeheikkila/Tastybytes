@@ -69,11 +69,16 @@ export interface OptionType {
 }
 
 export interface IConfirmationDialog {
-  content: string,
-  title: string,
-  description: string,
-  declineButton: string,
-  acceptButton: string
-  value: boolean,
-  setValue: any
+  content: string;
+  title: string;
+  description: string;
+  declineButton: string;
+  acceptButton: string;
+  value: boolean;
+  setValue: any;
+}
+
+export interface ICreateCheckIn {
+  authorId: string;
+  productId: string;
 }

@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { MaterialSelect } from "./MaterialSelect";
 import { OptionType } from "../../types";
+import useReactRouter from "use-react-router";
 
 const companies: OptionType[] = [
   { label: "Coca Cola Co" },
@@ -70,6 +71,7 @@ export const AddProduct = () => {
   const [producer, setProducer] = useState();
   const [category, setCategory] = useState();
   const [subCategory, setSubCategory] = useState();
+  const { history } = useReactRouter();
   const [addProduct] = useMutation(ADD_PRODUCT, {
     onError: errorHandler,
     refetchQueries: [{ query: ALL_PRODUCTS }]
@@ -99,6 +101,7 @@ export const AddProduct = () => {
         message: `Product ${result.data.addProduct.name} succesfully added`,
         variant: "success"
       });
+      history.push(`/product/${result.data.addProduct.id}`);
     }
   };
 
