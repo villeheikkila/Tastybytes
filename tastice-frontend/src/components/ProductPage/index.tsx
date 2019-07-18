@@ -31,13 +31,14 @@ export const ProductPage: React.FC<any> = id => {
 
   const dividerText =
     product.checkins.length === 0 ? "No Recent Activity" : "Recent Activity";
+    
   return (
     <>
       <ProductCard product={productObject} />
       <CreateCheckIn authorId={me.data.me.id} productId={product.id} />
       <Divider text={dividerText} />
 
-      {product.checkins.map((checkin: any) => (
+      {product.checkins.reverse().map((checkin: any) => (
         <CheckInCard key={checkin.createdAt} checkin={checkin} />
       ))}
     </>

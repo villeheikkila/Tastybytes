@@ -26,7 +26,7 @@ import { THEME } from "./queries";
 import { ActivityView } from "./components/ActivityView";
 import { ProductPage } from "./components/ProductPage";
 import { MyProfile } from "./components/MyProfile";
-import { Profile } from "./components/Profile";
+import { ProfilePage } from "./components/ProfilePage";
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -122,7 +122,7 @@ const App = () => {
                   <Route
                     exact
                     path="/user/:id"
-                    render={({ match }) => <Profile id={match.params.id} />}
+                    render={({ match }) => <ProfilePage id={match.params.id} />}
                   />
                   <Route render={() => <Index />} />
                 </Switch>

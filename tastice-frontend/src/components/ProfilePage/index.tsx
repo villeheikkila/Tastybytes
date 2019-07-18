@@ -1,27 +1,26 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { USER } from "../../queries";
-
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 import { CheckInCard } from "../CheckInCard";
+import { Divider } from "../Divider";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       marginTop: 30,
       maxWidth: 700,
-      padding: theme.spacing(3, 2),
+      padding: theme.spacing(1, 1),
       margin: `${theme.spacing(1)}px auto`,
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       alignContent: "center"
     },
-    Avatar: {
+    avatar: {
       marginLeft: 30,
       marginRight: 30,
       marginTop: 15,
@@ -35,20 +34,17 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       marginTop: 30
     },
-    form: { padding: theme.spacing(3, 0) },
     root: {
       alignItems: "center"
     }
   })
 );
 
-export const Profile: React.FC<any> = id => {
+export const ProfilePage: React.FC<any> = id => {
   const classes = useStyles();
   const user = useQuery(USER, {
     variables: { id: id.id }
   });
-
-  console.log("user: ", user);
 
   if (user.data.user === undefined) {
     return null;
@@ -59,7 +55,9 @@ export const Profile: React.FC<any> = id => {
     lastName: user.data.user[0].lastName,
     checkins: user.data.user[0].checkins
   };
-  console.log("userObject: ", userObject);
+
+  const dividerText =
+    userObject.checkins.length === 0 ? "No Recent Activity" : "Recent Activity";
 
   return (
     <div className={classes.root}>
@@ -70,27 +68,18 @@ export const Profile: React.FC<any> = id => {
         <Avatar
           alt="Avatar"
           src="https://pixel.nymag.com/imgs/daily/vulture/2018/11/02/02-avatar-2.w700.h467.jpg"
-          className={classes.Avatar}
+          className={classes.avatar}
         />
         <Typography variant="h4" component="h3" className={classes.textField}>
           Checkins in total: 15
         </Typography>
       </Paper>
 
-      <Paper className={classes.paper}>
-        <Typography variant="h4" component="h4" className={classes.textField}>
-          Activity
-      </Typography>
-      </Paper>
+      <Divider text={dividerText} />
 
-
-      <Grid container justify="center" spacing={10}>
-        <Grid item xs={12}>
-          {userObject.checkins.map((checkin: any) => (
-            <CheckInCard key={checkin.createdAt} checkin={checkin} />
-          ))}
-        </Grid>
-      </Grid>
+      {userObject.checkins.reverse().map((checkin: any) => (
+        <CheckInCard key={checkin.createdAt} checkin={checkin} />
+      ))}
     </div>
   );
 };

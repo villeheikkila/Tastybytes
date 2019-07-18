@@ -38,7 +38,11 @@ export const CreateCheckIn: React.FC<ICreateCheckIn> = ({
   const [comment, setComment] = useState();
   const [createCheckin] = useMutation(CREATE_CHECKIN, {
     onError: errorHandler,
-    refetchQueries: [{ query: ALL_CHECKINS }, { query: ME }, { query: PRODUCT }]
+    refetchQueries: [
+      { query: ALL_CHECKINS },
+      { query: ME },
+      { query: PRODUCT, variables: { id: productId } }
+    ]
   });
 
   const handeCheckIn = async () => {
