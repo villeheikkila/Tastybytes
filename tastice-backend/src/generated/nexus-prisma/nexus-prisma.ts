@@ -342,6 +342,8 @@ type UserObject =
   | { name: 'admin', args?: [] | false, alias?: string  } 
   | { name: 'checkins', args?: UserCheckinsArgs[] | false, alias?: string  } 
   | { name: 'friends', args?: UserFriendsArgs[] | false, alias?: string  } 
+  | { name: 'createdAt', args?: [] | false, alias?: string  } 
+  | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
 type UserFields =
   | 'id'
@@ -352,6 +354,8 @@ type UserFields =
   | 'admin'
   | 'checkins'
   | 'friends'
+  | 'createdAt'
+  | 'updatedAt'
 
 
 type UserCheckinsArgs =
@@ -446,6 +450,22 @@ export interface UserFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.User[]> | prisma.User[]
+  }
+  createdAt: {
+    type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  updatedAt: {
+    type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
   }
 }
   
@@ -554,6 +574,8 @@ type ProductObject =
   | { name: 'producer', args?: [] | false, alias?: string  } 
   | { name: 'type', args?: [] | false, alias?: string  } 
   | { name: 'checkins', args?: ProductCheckinsArgs[] | false, alias?: string  } 
+  | { name: 'createdAt', args?: [] | false, alias?: string  } 
+  | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
 type ProductFields =
   | 'id'
@@ -561,6 +583,8 @@ type ProductFields =
   | 'producer'
   | 'type'
   | 'checkins'
+  | 'createdAt'
+  | 'updatedAt'
 
 
 type ProductCheckinsArgs =
@@ -618,6 +642,22 @@ export interface ProductFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.Checkin[]> | prisma.Checkin[]
+  }
+  createdAt: {
+    type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  updatedAt: {
+    type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
   }
 }
   
@@ -1554,6 +1594,8 @@ type UserPreviousValuesObject =
   | { name: 'lastName', args?: [] | false, alias?: string  } 
   | { name: 'password', args?: [] | false, alias?: string  } 
   | { name: 'admin', args?: [] | false, alias?: string  } 
+  | { name: 'createdAt', args?: [] | false, alias?: string  } 
+  | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
 type UserPreviousValuesFields =
   | 'id'
@@ -1562,6 +1604,8 @@ type UserPreviousValuesFields =
   | 'lastName'
   | 'password'
   | 'admin'
+  | 'createdAt'
+  | 'updatedAt'
 
 
 
@@ -1610,6 +1654,22 @@ export interface UserPreviousValuesFieldDetails {
   }
   admin: {
     type: 'Boolean'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  createdAt: {
+    type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  updatedAt: {
+    type: 'DateTime'
     args: {}
     description: string
     list: undefined
@@ -1697,12 +1757,16 @@ type ProductPreviousValuesObject =
   | { name: 'name', args?: [] | false, alias?: string  } 
   | { name: 'producer', args?: [] | false, alias?: string  } 
   | { name: 'type', args?: [] | false, alias?: string  } 
+  | { name: 'createdAt', args?: [] | false, alias?: string  } 
+  | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
 type ProductPreviousValuesFields =
   | 'id'
   | 'name'
   | 'producer'
   | 'type'
+  | 'createdAt'
+  | 'updatedAt'
 
 
 
@@ -1739,6 +1803,22 @@ export interface ProductPreviousValuesFieldDetails {
     description: string
     list: undefined
     nullable: true
+    resolve: undefined
+  }
+  createdAt: {
+    type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  updatedAt: {
+    type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
     resolve: undefined
   }
 }
@@ -2087,6 +2167,22 @@ export interface UserWhereInput {
   friends_every?: UserWhereInput | null
   friends_some?: UserWhereInput | null
   friends_none?: UserWhereInput | null
+  createdAt?: string | null
+  createdAt_not?: string | null
+  createdAt_in?: string[]
+  createdAt_not_in?: string[]
+  createdAt_lt?: string | null
+  createdAt_lte?: string | null
+  createdAt_gt?: string | null
+  createdAt_gte?: string | null
+  updatedAt?: string | null
+  updatedAt_not?: string | null
+  updatedAt_in?: string[]
+  updatedAt_not_in?: string[]
+  updatedAt_lt?: string | null
+  updatedAt_lte?: string | null
+  updatedAt_gt?: string | null
+  updatedAt_gte?: string | null
   AND?: UserWhereInput[]
   OR?: UserWhereInput[]
   NOT?: UserWhereInput[]
@@ -2171,6 +2267,22 @@ export type UserWhereInputInputObject =
   | { name: 'friends_every', alias?: string  } 
   | { name: 'friends_some', alias?: string  } 
   | { name: 'friends_none', alias?: string  } 
+  | { name: 'createdAt', alias?: string  } 
+  | { name: 'createdAt_not', alias?: string  } 
+  | { name: 'createdAt_in', alias?: string  } 
+  | { name: 'createdAt_not_in', alias?: string  } 
+  | { name: 'createdAt_lt', alias?: string  } 
+  | { name: 'createdAt_lte', alias?: string  } 
+  | { name: 'createdAt_gt', alias?: string  } 
+  | { name: 'createdAt_gte', alias?: string  } 
+  | { name: 'updatedAt', alias?: string  } 
+  | { name: 'updatedAt_not', alias?: string  } 
+  | { name: 'updatedAt_in', alias?: string  } 
+  | { name: 'updatedAt_not_in', alias?: string  } 
+  | { name: 'updatedAt_lt', alias?: string  } 
+  | { name: 'updatedAt_lte', alias?: string  } 
+  | { name: 'updatedAt_gt', alias?: string  } 
+  | { name: 'updatedAt_gte', alias?: string  } 
   | { name: 'AND', alias?: string  } 
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
@@ -2235,6 +2347,22 @@ export interface ProductWhereInput {
   checkins_every?: CheckinWhereInput | null
   checkins_some?: CheckinWhereInput | null
   checkins_none?: CheckinWhereInput | null
+  createdAt?: string | null
+  createdAt_not?: string | null
+  createdAt_in?: string[]
+  createdAt_not_in?: string[]
+  createdAt_lt?: string | null
+  createdAt_lte?: string | null
+  createdAt_gt?: string | null
+  createdAt_gte?: string | null
+  updatedAt?: string | null
+  updatedAt_not?: string | null
+  updatedAt_in?: string[]
+  updatedAt_not_in?: string[]
+  updatedAt_lt?: string | null
+  updatedAt_lte?: string | null
+  updatedAt_gt?: string | null
+  updatedAt_gte?: string | null
   AND?: ProductWhereInput[]
   OR?: ProductWhereInput[]
   NOT?: ProductWhereInput[]
@@ -2300,6 +2428,22 @@ export type ProductWhereInputInputObject =
   | { name: 'checkins_every', alias?: string  } 
   | { name: 'checkins_some', alias?: string  } 
   | { name: 'checkins_none', alias?: string  } 
+  | { name: 'createdAt', alias?: string  } 
+  | { name: 'createdAt_not', alias?: string  } 
+  | { name: 'createdAt_in', alias?: string  } 
+  | { name: 'createdAt_not_in', alias?: string  } 
+  | { name: 'createdAt_lt', alias?: string  } 
+  | { name: 'createdAt_lte', alias?: string  } 
+  | { name: 'createdAt_gt', alias?: string  } 
+  | { name: 'createdAt_gte', alias?: string  } 
+  | { name: 'updatedAt', alias?: string  } 
+  | { name: 'updatedAt_not', alias?: string  } 
+  | { name: 'updatedAt_in', alias?: string  } 
+  | { name: 'updatedAt_not_in', alias?: string  } 
+  | { name: 'updatedAt_lt', alias?: string  } 
+  | { name: 'updatedAt_lte', alias?: string  } 
+  | { name: 'updatedAt_gt', alias?: string  } 
+  | { name: 'updatedAt_gte', alias?: string  } 
   | { name: 'AND', alias?: string  } 
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
@@ -2766,6 +2910,22 @@ export interface UserScalarWhereInput {
   password_not_ends_with?: string | null
   admin?: boolean | null
   admin_not?: boolean | null
+  createdAt?: string | null
+  createdAt_not?: string | null
+  createdAt_in?: string[]
+  createdAt_not_in?: string[]
+  createdAt_lt?: string | null
+  createdAt_lte?: string | null
+  createdAt_gt?: string | null
+  createdAt_gte?: string | null
+  updatedAt?: string | null
+  updatedAt_not?: string | null
+  updatedAt_in?: string[]
+  updatedAt_not_in?: string[]
+  updatedAt_lt?: string | null
+  updatedAt_lte?: string | null
+  updatedAt_gt?: string | null
+  updatedAt_gte?: string | null
   AND?: UserScalarWhereInput[]
   OR?: UserScalarWhereInput[]
   NOT?: UserScalarWhereInput[]
@@ -2844,6 +3004,22 @@ export type UserScalarWhereInputInputObject =
   | { name: 'password_not_ends_with', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'admin_not', alias?: string  } 
+  | { name: 'createdAt', alias?: string  } 
+  | { name: 'createdAt_not', alias?: string  } 
+  | { name: 'createdAt_in', alias?: string  } 
+  | { name: 'createdAt_not_in', alias?: string  } 
+  | { name: 'createdAt_lt', alias?: string  } 
+  | { name: 'createdAt_lte', alias?: string  } 
+  | { name: 'createdAt_gt', alias?: string  } 
+  | { name: 'createdAt_gte', alias?: string  } 
+  | { name: 'updatedAt', alias?: string  } 
+  | { name: 'updatedAt_not', alias?: string  } 
+  | { name: 'updatedAt_in', alias?: string  } 
+  | { name: 'updatedAt_not_in', alias?: string  } 
+  | { name: 'updatedAt_lt', alias?: string  } 
+  | { name: 'updatedAt_lte', alias?: string  } 
+  | { name: 'updatedAt_gt', alias?: string  } 
+  | { name: 'updatedAt_gte', alias?: string  } 
   | { name: 'AND', alias?: string  } 
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 

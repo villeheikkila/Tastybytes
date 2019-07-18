@@ -15,21 +15,21 @@ export const Query = queryType({
     t.list.field("users", {
       type: "User",
       resolve: (parent, args, ctx) => {
-        return ctx.prisma.users();
+        return ctx.prisma.users({ orderBy: "createdAt_DESC" });
       }
     });
 
     t.list.field("products", {
       type: "Product",
       resolve: (parent, args, ctx) => {
-        return ctx.prisma.products();
+        return ctx.prisma.products({ orderBy: "createdAt_DESC" });
       }
     });
 
     t.list.field("checkins", {
       type: "Checkin",
       resolve: (parent, args, ctx) => {
-        return ctx.prisma.checkins();
+        return ctx.prisma.checkins({ orderBy: "createdAt_DESC" });
       }
     });
 
@@ -49,7 +49,9 @@ export const Query = queryType({
         id: idArg()
       },
       resolve: (_, args, ctx) => {
-        return ctx.prisma.checkins({ where: { id: args.id } });
+        return ctx.prisma.checkins({
+          where: { id: args.id }
+        });
       }
     });
 
@@ -59,7 +61,10 @@ export const Query = queryType({
         id: idArg()
       },
       resolve: (_, args, ctx) => {
-        return ctx.prisma.products({ where: { id: args.id } });
+        return ctx.prisma.products({
+          where: { id: args.id },
+          orderBy: "createdAt_DESC"
+        });
       }
     });
   }

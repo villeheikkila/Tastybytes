@@ -77,6 +77,14 @@ export interface NexusGenInputs {
     checkins_every?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     checkins_none?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     checkins_some?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
+    createdAt?: any | null; // DateTime
+    createdAt_gt?: any | null; // DateTime
+    createdAt_gte?: any | null; // DateTime
+    createdAt_in?: any[] | null; // [DateTime!]
+    createdAt_lt?: any | null; // DateTime
+    createdAt_lte?: any | null; // DateTime
+    createdAt_not?: any | null; // DateTime
+    createdAt_not_in?: any[] | null; // [DateTime!]
     id?: string | null; // ID
     id_contains?: string | null; // ID
     id_ends_with?: string | null; // ID
@@ -135,6 +143,14 @@ export interface NexusGenInputs {
     type_not_in?: string[] | null; // [String!]
     type_not_starts_with?: string | null; // String
     type_starts_with?: string | null; // String
+    updatedAt?: any | null; // DateTime
+    updatedAt_gt?: any | null; // DateTime
+    updatedAt_gte?: any | null; // DateTime
+    updatedAt_in?: any[] | null; // [DateTime!]
+    updatedAt_lt?: any | null; // DateTime
+    updatedAt_lte?: any | null; // DateTime
+    updatedAt_not?: any | null; // DateTime
+    updatedAt_not_in?: any[] | null; // [DateTime!]
   }
   UserWhereInput: { // input type
     admin?: boolean | null; // Boolean
@@ -143,6 +159,14 @@ export interface NexusGenInputs {
     checkins_every?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     checkins_none?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     checkins_some?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
+    createdAt?: any | null; // DateTime
+    createdAt_gt?: any | null; // DateTime
+    createdAt_gte?: any | null; // DateTime
+    createdAt_in?: any[] | null; // [DateTime!]
+    createdAt_lt?: any | null; // DateTime
+    createdAt_lte?: any | null; // DateTime
+    createdAt_not?: any | null; // DateTime
+    createdAt_not_in?: any[] | null; // [DateTime!]
     email?: string | null; // String
     email_contains?: string | null; // String
     email_ends_with?: string | null; // String
@@ -218,6 +242,14 @@ export interface NexusGenInputs {
     password_not_in?: string[] | null; // [String!]
     password_not_starts_with?: string | null; // String
     password_starts_with?: string | null; // String
+    updatedAt?: any | null; // DateTime
+    updatedAt_gt?: any | null; // DateTime
+    updatedAt_gte?: any | null; // DateTime
+    updatedAt_in?: any[] | null; // [DateTime!]
+    updatedAt_lt?: any | null; // DateTime
+    updatedAt_lte?: any | null; // DateTime
+    updatedAt_not?: any | null; // DateTime
+    updatedAt_not_in?: any[] | null; // [DateTime!]
   }
 }
 
@@ -240,16 +272,20 @@ export interface NexusGenRootTypes {
   }
   Mutation: {};
   Product: { // root type
+    createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
     producer?: string | null; // String
     type?: string | null; // String
+    updatedAt: any; // DateTime!
   }
   ProductPreviousValues: { // root type
+    createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
     producer?: string | null; // String
     type?: string | null; // String
+    updatedAt: any; // DateTime!
   }
   ProductSubscriptionPayload: { // root type
     mutation: NexusGenEnums['MutationType']; // MutationType!
@@ -268,11 +304,13 @@ export interface NexusGenRootTypes {
   }
   UserPreviousValues: { // root type
     admin: boolean; // Boolean!
+    createdAt: any; // DateTime!
     email?: string | null; // String
     firstName: string; // String!
     id: string; // ID!
     lastName: string; // String!
     password: string; // String!
+    updatedAt: any; // DateTime!
   }
   UserSubscriptionPayload: { // root type
     mutation: NexusGenEnums['MutationType']; // MutationType!
@@ -323,16 +361,20 @@ export interface NexusGenFieldTypes {
   }
   Product: { // field return type
     checkins: NexusGenRootTypes['Checkin'][] | null; // [Checkin!]
+    createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
     producer: string | null; // String
     type: string | null; // String
+    updatedAt: any; // DateTime!
   }
   ProductPreviousValues: { // field return type
+    createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
     producer: string | null; // String
     type: string | null; // String
+    updatedAt: any; // DateTime!
   }
   ProductSubscriptionPayload: { // field return type
     mutation: NexusGenEnums['MutationType']; // MutationType!
@@ -363,11 +405,13 @@ export interface NexusGenFieldTypes {
   }
   UserPreviousValues: { // field return type
     admin: boolean; // Boolean!
+    createdAt: any; // DateTime!
     email: string | null; // String
     firstName: string; // String!
     id: string; // ID!
     lastName: string; // String!
     password: string; // String!
+    updatedAt: any; // DateTime!
   }
   UserSubscriptionPayload: { // field return type
     mutation: NexusGenEnums['MutationType']; // MutationType!

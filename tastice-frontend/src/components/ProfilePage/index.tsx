@@ -77,7 +77,7 @@ export const ProfilePage: React.FC<any> = id => {
 
       <Divider text={dividerText} />
 
-      {userObject.checkins.reverse().map((checkin: any) => (
+      {userObject.checkins.map((checkin: any) => (
         <CheckInCard key={checkin.createdAt} checkin={checkin} />
       ))}
     </div>

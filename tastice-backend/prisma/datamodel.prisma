@@ -7,6 +7,8 @@ type User {
   admin: Boolean!
   checkins: [Checkin!]!
   friends: [User!]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   }
 
 type Product {
@@ -15,6 +17,8 @@ type Product {
   producer: String
   type: String
   checkins: [Checkin!]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   }
 
 type Checkin {

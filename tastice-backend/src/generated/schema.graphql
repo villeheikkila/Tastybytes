@@ -112,17 +112,21 @@ enum MutationType {
 
 type Product {
   checkins(after: String, before: String, first: Int, last: Int, orderBy: CheckinOrderByInput, skip: Int, where: CheckinWhereInput): [Checkin!]
+  createdAt: DateTime!
   id: ID!
   name: String!
   producer: String
   type: String
+  updatedAt: DateTime!
 }
 
 type ProductPreviousValues {
+  createdAt: DateTime!
   id: ID!
   name: String!
   producer: String
   type: String
+  updatedAt: DateTime!
 }
 
 type ProductSubscriptionPayload {
@@ -137,6 +141,14 @@ input ProductWhereInput {
   checkins_every: CheckinWhereInput
   checkins_none: CheckinWhereInput
   checkins_some: CheckinWhereInput
+  createdAt: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_not: DateTime
+  createdAt_not_in: [DateTime!]
   id: ID
   id_contains: ID
   id_ends_with: ID
@@ -195,6 +207,14 @@ input ProductWhereInput {
   type_not_in: [String!]
   type_not_starts_with: String
   type_starts_with: String
+  updatedAt: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_not: DateTime
+  updatedAt_not_in: [DateTime!]
 }
 
 type Query {
@@ -223,11 +243,13 @@ type User {
 
 type UserPreviousValues {
   admin: Boolean!
+  createdAt: DateTime!
   email: String
   firstName: String!
   id: ID!
   lastName: String!
   password: String!
+  updatedAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -244,6 +266,14 @@ input UserWhereInput {
   checkins_every: CheckinWhereInput
   checkins_none: CheckinWhereInput
   checkins_some: CheckinWhereInput
+  createdAt: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_not: DateTime
+  createdAt_not_in: [DateTime!]
   email: String
   email_contains: String
   email_ends_with: String
@@ -319,4 +349,12 @@ input UserWhereInput {
   password_not_in: [String!]
   password_not_starts_with: String
   password_starts_with: String
+  updatedAt: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_not: DateTime
+  updatedAt_not_in: [DateTime!]
 }

@@ -360,6 +360,8 @@ type Product {
   producer: String
   type: String
   checkins(where: CheckinWhereInput, orderBy: CheckinOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Checkin!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type ProductConnection {
@@ -402,6 +404,10 @@ enum ProductOrderByInput {
   producer_DESC
   type_ASC
   type_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type ProductPreviousValues {
@@ -409,6 +415,8 @@ type ProductPreviousValues {
   name: String!
   producer: String
   type: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type ProductSubscriptionPayload {
@@ -520,6 +528,22 @@ input ProductWhereInput {
   checkins_every: CheckinWhereInput
   checkins_some: CheckinWhereInput
   checkins_none: CheckinWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [ProductWhereInput!]
   OR: [ProductWhereInput!]
   NOT: [ProductWhereInput!]
@@ -557,6 +581,8 @@ type User {
   admin: Boolean!
   checkins(where: CheckinWhereInput, orderBy: CheckinOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Checkin!]
   friends(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserConnection {
@@ -614,6 +640,10 @@ enum UserOrderByInput {
   password_DESC
   admin_ASC
   admin_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
@@ -623,6 +653,8 @@ type UserPreviousValues {
   lastName: String!
   password: String!
   admin: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input UserScalarWhereInput {
@@ -698,6 +730,22 @@ input UserScalarWhereInput {
   password_not_ends_with: String
   admin: Boolean
   admin_not: Boolean
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
   NOT: [UserScalarWhereInput!]
@@ -885,6 +933,22 @@ input UserWhereInput {
   friends_every: UserWhereInput
   friends_some: UserWhereInput
   friends_none: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
