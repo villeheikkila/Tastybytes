@@ -231,6 +231,23 @@ export const PRODUCT = gql`
       producer
       type
       id
+      checkins {
+        id
+        rating
+        comment
+        author {
+          id
+          firstName
+          lastName
+        }
+        product {
+          id
+          name
+          producer
+          type
+        }
+        createdAt
+      }
     }
   }
 `;

@@ -14,6 +14,7 @@ type Product {
   name: String!
   producer: String
   type: String
+  checkins: [Checkin!]!
   }
 
 type Checkin {

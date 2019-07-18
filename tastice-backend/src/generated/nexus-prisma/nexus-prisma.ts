@@ -75,16 +75,16 @@ export interface NexusPrismaTypes {
       UserCreateInput: UserCreateInputInputObject
       CheckinCreateManyWithoutAuthorInput: CheckinCreateManyWithoutAuthorInputInputObject
       CheckinCreateWithoutAuthorInput: CheckinCreateWithoutAuthorInputInputObject
-      ProductCreateOneInput: ProductCreateOneInputInputObject
-      ProductCreateInput: ProductCreateInputInputObject
+      ProductCreateOneWithoutCheckinsInput: ProductCreateOneWithoutCheckinsInputInputObject
+      ProductCreateWithoutCheckinsInput: ProductCreateWithoutCheckinsInputInputObject
       UserCreateManyInput: UserCreateManyInputInputObject
       UserUpdateInput: UserUpdateInputInputObject
       CheckinUpdateManyWithoutAuthorInput: CheckinUpdateManyWithoutAuthorInputInputObject
       CheckinUpdateWithWhereUniqueWithoutAuthorInput: CheckinUpdateWithWhereUniqueWithoutAuthorInputInputObject
       CheckinUpdateWithoutAuthorDataInput: CheckinUpdateWithoutAuthorDataInputInputObject
-      ProductUpdateOneRequiredInput: ProductUpdateOneRequiredInputInputObject
-      ProductUpdateDataInput: ProductUpdateDataInputInputObject
-      ProductUpsertNestedInput: ProductUpsertNestedInputInputObject
+      ProductUpdateOneRequiredWithoutCheckinsInput: ProductUpdateOneRequiredWithoutCheckinsInputInputObject
+      ProductUpdateWithoutCheckinsDataInput: ProductUpdateWithoutCheckinsDataInputInputObject
+      ProductUpsertWithoutCheckinsInput: ProductUpsertWithoutCheckinsInputInputObject
       CheckinUpsertWithWhereUniqueWithoutAuthorInput: CheckinUpsertWithWhereUniqueWithoutAuthorInputInputObject
       CheckinScalarWhereInput: CheckinScalarWhereInputInputObject
       CheckinUpdateManyWithWhereNestedInput: CheckinUpdateManyWithWhereNestedInputInputObject
@@ -97,15 +97,22 @@ export interface NexusPrismaTypes {
       UserUpdateManyWithWhereNestedInput: UserUpdateManyWithWhereNestedInputInputObject
       UserUpdateManyDataInput: UserUpdateManyDataInputInputObject
       UserUpdateManyMutationInput: UserUpdateManyMutationInputInputObject
-      ProductUpdateInput: ProductUpdateInputInputObject
-      ProductUpdateManyMutationInput: ProductUpdateManyMutationInputInputObject
-      CheckinCreateInput: CheckinCreateInputInputObject
+      ProductCreateInput: ProductCreateInputInputObject
+      CheckinCreateManyWithoutProductInput: CheckinCreateManyWithoutProductInputInputObject
+      CheckinCreateWithoutProductInput: CheckinCreateWithoutProductInputInputObject
       UserCreateOneWithoutCheckinsInput: UserCreateOneWithoutCheckinsInputInputObject
       UserCreateWithoutCheckinsInput: UserCreateWithoutCheckinsInputInputObject
-      CheckinUpdateInput: CheckinUpdateInputInputObject
+      ProductUpdateInput: ProductUpdateInputInputObject
+      CheckinUpdateManyWithoutProductInput: CheckinUpdateManyWithoutProductInputInputObject
+      CheckinUpdateWithWhereUniqueWithoutProductInput: CheckinUpdateWithWhereUniqueWithoutProductInputInputObject
+      CheckinUpdateWithoutProductDataInput: CheckinUpdateWithoutProductDataInputInputObject
       UserUpdateOneRequiredWithoutCheckinsInput: UserUpdateOneRequiredWithoutCheckinsInputInputObject
       UserUpdateWithoutCheckinsDataInput: UserUpdateWithoutCheckinsDataInputInputObject
       UserUpsertWithoutCheckinsInput: UserUpsertWithoutCheckinsInputInputObject
+      CheckinUpsertWithWhereUniqueWithoutProductInput: CheckinUpsertWithWhereUniqueWithoutProductInputInputObject
+      ProductUpdateManyMutationInput: ProductUpdateManyMutationInputInputObject
+      CheckinCreateInput: CheckinCreateInputInputObject
+      CheckinUpdateInput: CheckinUpdateInputInputObject
       CheckinUpdateManyMutationInput: CheckinUpdateManyMutationInputInputObject
       UserSubscriptionWhereInput: UserSubscriptionWhereInputInputObject
       ProductSubscriptionWhereInput: ProductSubscriptionWhereInputInputObject
@@ -546,15 +553,24 @@ type ProductObject =
   | { name: 'name', args?: [] | false, alias?: string  } 
   | { name: 'producer', args?: [] | false, alias?: string  } 
   | { name: 'type', args?: [] | false, alias?: string  } 
+  | { name: 'checkins', args?: ProductCheckinsArgs[] | false, alias?: string  } 
 
 type ProductFields =
   | 'id'
   | 'name'
   | 'producer'
   | 'type'
+  | 'checkins'
 
 
-
+type ProductCheckinsArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
   
 
 export interface ProductFieldDetails {
@@ -589,6 +605,19 @@ export interface ProductFieldDetails {
     list: undefined
     nullable: true
     resolve: undefined
+  }
+  checkins: {
+    type: 'Checkin'
+    args: Record<ProductCheckinsArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Product">,
+      args: { where?: CheckinWhereInput | null, orderBy?: prisma.CheckinOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Checkin[]> | prisma.Checkin[]
   }
 }
   
@@ -2203,6 +2232,9 @@ export interface ProductWhereInput {
   type_not_starts_with?: string | null
   type_ends_with?: string | null
   type_not_ends_with?: string | null
+  checkins_every?: CheckinWhereInput | null
+  checkins_some?: CheckinWhereInput | null
+  checkins_none?: CheckinWhereInput | null
   AND?: ProductWhereInput[]
   OR?: ProductWhereInput[]
   NOT?: ProductWhereInput[]
@@ -2265,6 +2297,9 @@ export type ProductWhereInputInputObject =
   | { name: 'type_not_starts_with', alias?: string  } 
   | { name: 'type_ends_with', alias?: string  } 
   | { name: 'type_not_ends_with', alias?: string  } 
+  | { name: 'checkins_every', alias?: string  } 
+  | { name: 'checkins_some', alias?: string  } 
+  | { name: 'checkins_none', alias?: string  } 
   | { name: 'AND', alias?: string  } 
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
@@ -2317,7 +2352,7 @@ export interface CheckinCreateWithoutAuthorInput {
   id?: string | null
   rating?: number
   comment?: string
-  product?: ProductCreateOneInput
+  product?: ProductCreateOneWithoutCheckinsInput
 }
 export type CheckinCreateWithoutAuthorInputInputObject =
   | Extract<keyof CheckinCreateWithoutAuthorInput, string>
@@ -2326,23 +2361,23 @@ export type CheckinCreateWithoutAuthorInputInputObject =
   | { name: 'comment', alias?: string  } 
   | { name: 'product', alias?: string  } 
   
-export interface ProductCreateOneInput {
-  create?: ProductCreateInput | null
+export interface ProductCreateOneWithoutCheckinsInput {
+  create?: ProductCreateWithoutCheckinsInput | null
   connect?: ProductWhereUniqueInput | null
 }
-export type ProductCreateOneInputInputObject =
-  | Extract<keyof ProductCreateOneInput, string>
+export type ProductCreateOneWithoutCheckinsInputInputObject =
+  | Extract<keyof ProductCreateOneWithoutCheckinsInput, string>
   | { name: 'create', alias?: string  } 
   | { name: 'connect', alias?: string  } 
   
-export interface ProductCreateInput {
+export interface ProductCreateWithoutCheckinsInput {
   id?: string | null
   name?: string
   producer?: string | null
   type?: string | null
 }
-export type ProductCreateInputInputObject =
-  | Extract<keyof ProductCreateInput, string>
+export type ProductCreateWithoutCheckinsInputInputObject =
+  | Extract<keyof ProductCreateWithoutCheckinsInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'producer', alias?: string  } 
@@ -2411,7 +2446,7 @@ export type CheckinUpdateWithWhereUniqueWithoutAuthorInputInputObject =
 export interface CheckinUpdateWithoutAuthorDataInput {
   rating?: number | null
   comment?: string | null
-  product?: ProductUpdateOneRequiredInput | null
+  product?: ProductUpdateOneRequiredWithoutCheckinsInput | null
 }
 export type CheckinUpdateWithoutAuthorDataInputInputObject =
   | Extract<keyof CheckinUpdateWithoutAuthorDataInput, string>
@@ -2419,36 +2454,36 @@ export type CheckinUpdateWithoutAuthorDataInputInputObject =
   | { name: 'comment', alias?: string  } 
   | { name: 'product', alias?: string  } 
   
-export interface ProductUpdateOneRequiredInput {
-  create?: ProductCreateInput | null
-  update?: ProductUpdateDataInput | null
-  upsert?: ProductUpsertNestedInput | null
+export interface ProductUpdateOneRequiredWithoutCheckinsInput {
+  create?: ProductCreateWithoutCheckinsInput | null
+  update?: ProductUpdateWithoutCheckinsDataInput | null
+  upsert?: ProductUpsertWithoutCheckinsInput | null
   connect?: ProductWhereUniqueInput | null
 }
-export type ProductUpdateOneRequiredInputInputObject =
-  | Extract<keyof ProductUpdateOneRequiredInput, string>
+export type ProductUpdateOneRequiredWithoutCheckinsInputInputObject =
+  | Extract<keyof ProductUpdateOneRequiredWithoutCheckinsInput, string>
   | { name: 'create', alias?: string  } 
   | { name: 'update', alias?: string  } 
   | { name: 'upsert', alias?: string  } 
   | { name: 'connect', alias?: string  } 
   
-export interface ProductUpdateDataInput {
+export interface ProductUpdateWithoutCheckinsDataInput {
   name?: string | null
   producer?: string | null
   type?: string | null
 }
-export type ProductUpdateDataInputInputObject =
-  | Extract<keyof ProductUpdateDataInput, string>
+export type ProductUpdateWithoutCheckinsDataInputInputObject =
+  | Extract<keyof ProductUpdateWithoutCheckinsDataInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'type', alias?: string  } 
   
-export interface ProductUpsertNestedInput {
-  update?: ProductUpdateDataInput
-  create?: ProductCreateInput
+export interface ProductUpsertWithoutCheckinsInput {
+  update?: ProductUpdateWithoutCheckinsDataInput
+  create?: ProductCreateWithoutCheckinsInput
 }
-export type ProductUpsertNestedInputInputObject =
-  | Extract<keyof ProductUpsertNestedInput, string>
+export type ProductUpsertWithoutCheckinsInputInputObject =
+  | Extract<keyof ProductUpsertWithoutCheckinsInput, string>
   | { name: 'update', alias?: string  } 
   | { name: 'create', alias?: string  } 
   
@@ -2852,42 +2887,42 @@ export type UserUpdateManyMutationInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   
-export interface ProductUpdateInput {
-  name?: string | null
+export interface ProductCreateInput {
+  id?: string | null
+  name?: string
   producer?: string | null
   type?: string | null
+  checkins?: CheckinCreateManyWithoutProductInput | null
 }
-export type ProductUpdateInputInputObject =
-  | Extract<keyof ProductUpdateInput, string>
+export type ProductCreateInputInputObject =
+  | Extract<keyof ProductCreateInput, string>
+  | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'type', alias?: string  } 
+  | { name: 'checkins', alias?: string  } 
   
-export interface ProductUpdateManyMutationInput {
-  name?: string | null
-  producer?: string | null
-  type?: string | null
+export interface CheckinCreateManyWithoutProductInput {
+  create?: CheckinCreateWithoutProductInput[]
+  connect?: CheckinWhereUniqueInput[]
 }
-export type ProductUpdateManyMutationInputInputObject =
-  | Extract<keyof ProductUpdateManyMutationInput, string>
-  | { name: 'name', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
-  | { name: 'type', alias?: string  } 
+export type CheckinCreateManyWithoutProductInputInputObject =
+  | Extract<keyof CheckinCreateManyWithoutProductInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
   
-export interface CheckinCreateInput {
+export interface CheckinCreateWithoutProductInput {
   id?: string | null
   rating?: number
   comment?: string
   author?: UserCreateOneWithoutCheckinsInput
-  product?: ProductCreateOneInput
 }
-export type CheckinCreateInputInputObject =
-  | Extract<keyof CheckinCreateInput, string>
+export type CheckinCreateWithoutProductInputInputObject =
+  | Extract<keyof CheckinCreateWithoutProductInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'rating', alias?: string  } 
   | { name: 'comment', alias?: string  } 
   | { name: 'author', alias?: string  } 
-  | { name: 'product', alias?: string  } 
   
 export interface UserCreateOneWithoutCheckinsInput {
   create?: UserCreateWithoutCheckinsInput | null
@@ -2917,18 +2952,61 @@ export type UserCreateWithoutCheckinsInputInputObject =
   | { name: 'admin', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   
-export interface CheckinUpdateInput {
+export interface ProductUpdateInput {
+  name?: string | null
+  producer?: string | null
+  type?: string | null
+  checkins?: CheckinUpdateManyWithoutProductInput | null
+}
+export type ProductUpdateInputInputObject =
+  | Extract<keyof ProductUpdateInput, string>
+  | { name: 'name', alias?: string  } 
+  | { name: 'producer', alias?: string  } 
+  | { name: 'type', alias?: string  } 
+  | { name: 'checkins', alias?: string  } 
+  
+export interface CheckinUpdateManyWithoutProductInput {
+  create?: CheckinCreateWithoutProductInput[]
+  delete?: CheckinWhereUniqueInput[]
+  connect?: CheckinWhereUniqueInput[]
+  set?: CheckinWhereUniqueInput[]
+  disconnect?: CheckinWhereUniqueInput[]
+  update?: CheckinUpdateWithWhereUniqueWithoutProductInput[]
+  upsert?: CheckinUpsertWithWhereUniqueWithoutProductInput[]
+  deleteMany?: CheckinScalarWhereInput[]
+  updateMany?: CheckinUpdateManyWithWhereNestedInput[]
+}
+export type CheckinUpdateManyWithoutProductInputInputObject =
+  | Extract<keyof CheckinUpdateManyWithoutProductInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'delete', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  | { name: 'set', alias?: string  } 
+  | { name: 'disconnect', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'upsert', alias?: string  } 
+  | { name: 'deleteMany', alias?: string  } 
+  | { name: 'updateMany', alias?: string  } 
+  
+export interface CheckinUpdateWithWhereUniqueWithoutProductInput {
+  where?: CheckinWhereUniqueInput
+  data?: CheckinUpdateWithoutProductDataInput
+}
+export type CheckinUpdateWithWhereUniqueWithoutProductInputInputObject =
+  | Extract<keyof CheckinUpdateWithWhereUniqueWithoutProductInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'data', alias?: string  } 
+  
+export interface CheckinUpdateWithoutProductDataInput {
   rating?: number | null
   comment?: string | null
   author?: UserUpdateOneRequiredWithoutCheckinsInput | null
-  product?: ProductUpdateOneRequiredInput | null
 }
-export type CheckinUpdateInputInputObject =
-  | Extract<keyof CheckinUpdateInput, string>
+export type CheckinUpdateWithoutProductDataInputInputObject =
+  | Extract<keyof CheckinUpdateWithoutProductDataInput, string>
   | { name: 'rating', alias?: string  } 
   | { name: 'comment', alias?: string  } 
   | { name: 'author', alias?: string  } 
-  | { name: 'product', alias?: string  } 
   
 export interface UserUpdateOneRequiredWithoutCheckinsInput {
   create?: UserCreateWithoutCheckinsInput | null
@@ -2968,6 +3046,56 @@ export type UserUpsertWithoutCheckinsInputInputObject =
   | Extract<keyof UserUpsertWithoutCheckinsInput, string>
   | { name: 'update', alias?: string  } 
   | { name: 'create', alias?: string  } 
+  
+export interface CheckinUpsertWithWhereUniqueWithoutProductInput {
+  where?: CheckinWhereUniqueInput
+  update?: CheckinUpdateWithoutProductDataInput
+  create?: CheckinCreateWithoutProductInput
+}
+export type CheckinUpsertWithWhereUniqueWithoutProductInputInputObject =
+  | Extract<keyof CheckinUpsertWithWhereUniqueWithoutProductInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'create', alias?: string  } 
+  
+export interface ProductUpdateManyMutationInput {
+  name?: string | null
+  producer?: string | null
+  type?: string | null
+}
+export type ProductUpdateManyMutationInputInputObject =
+  | Extract<keyof ProductUpdateManyMutationInput, string>
+  | { name: 'name', alias?: string  } 
+  | { name: 'producer', alias?: string  } 
+  | { name: 'type', alias?: string  } 
+  
+export interface CheckinCreateInput {
+  id?: string | null
+  rating?: number
+  comment?: string
+  author?: UserCreateOneWithoutCheckinsInput
+  product?: ProductCreateOneWithoutCheckinsInput
+}
+export type CheckinCreateInputInputObject =
+  | Extract<keyof CheckinCreateInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'rating', alias?: string  } 
+  | { name: 'comment', alias?: string  } 
+  | { name: 'author', alias?: string  } 
+  | { name: 'product', alias?: string  } 
+  
+export interface CheckinUpdateInput {
+  rating?: number | null
+  comment?: string | null
+  author?: UserUpdateOneRequiredWithoutCheckinsInput | null
+  product?: ProductUpdateOneRequiredWithoutCheckinsInput | null
+}
+export type CheckinUpdateInputInputObject =
+  | Extract<keyof CheckinUpdateInput, string>
+  | { name: 'rating', alias?: string  } 
+  | { name: 'comment', alias?: string  } 
+  | { name: 'author', alias?: string  } 
+  | { name: 'product', alias?: string  } 
   
 export interface CheckinUpdateManyMutationInput {
   rating?: number | null

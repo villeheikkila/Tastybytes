@@ -111,6 +111,7 @@ enum MutationType {
 }
 
 type Product {
+  checkins(after: String, before: String, first: Int, last: Int, orderBy: CheckinOrderByInput, skip: Int, where: CheckinWhereInput): [Checkin!]
   id: ID!
   name: String!
   producer: String
@@ -133,6 +134,9 @@ type ProductSubscriptionPayload {
 
 input ProductWhereInput {
   AND: [ProductWhereInput!]
+  checkins_every: CheckinWhereInput
+  checkins_none: CheckinWhereInput
+  checkins_some: CheckinWhereInput
   id: ID
   id_contains: ID
   id_ends_with: ID

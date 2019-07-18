@@ -74,6 +74,9 @@ export interface NexusGenInputs {
   }
   ProductWhereInput: { // input type
     AND?: NexusGenInputs['ProductWhereInput'][] | null; // [ProductWhereInput!]
+    checkins_every?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
+    checkins_none?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
+    checkins_some?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     id?: string | null; // ID
     id_contains?: string | null; // ID
     id_ends_with?: string | null; // ID
@@ -319,6 +322,7 @@ export interface NexusGenFieldTypes {
     updateUser: NexusGenRootTypes['User'] | null; // User
   }
   Product: { // field return type
+    checkins: NexusGenRootTypes['Checkin'][] | null; // [Checkin!]
     id: string; // ID!
     name: string; // String!
     producer: string | null; // String
@@ -416,6 +420,17 @@ export interface NexusGenArgTypes {
       firstName?: string | null; // String
       id?: string | null; // ID
       lastName?: string | null; // String
+    }
+  }
+  Product: {
+    checkins: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+      orderBy?: NexusGenEnums['CheckinOrderByInput'] | null; // CheckinOrderByInput
+      skip?: number | null; // Int
+      where?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     }
   }
   Query: {

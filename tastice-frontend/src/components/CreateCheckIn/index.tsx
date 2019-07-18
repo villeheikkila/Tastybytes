@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
-import { CREATE_CHECKIN, ALL_CHECKINS, ME } from "../../queries";
+import { CREATE_CHECKIN, ALL_CHECKINS, ME, PRODUCT } from "../../queries";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
@@ -38,7 +38,7 @@ export const CreateCheckIn: React.FC<ICreateCheckIn> = ({
   const [comment, setComment] = useState();
   const [createCheckin] = useMutation(CREATE_CHECKIN, {
     onError: errorHandler,
-    refetchQueries: [{ query: ALL_CHECKINS }, { query: ME }]
+    refetchQueries: [{ query: ALL_CHECKINS }, { query: ME }, { query: PRODUCT }]
   });
 
   const handeCheckIn = async () => {

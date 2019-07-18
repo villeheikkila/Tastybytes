@@ -17,7 +17,7 @@ import { ProductCard } from "../ProductCard";
 const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: 700,
-    margin: `${theme.spacing(3)}px auto`
+    margin: `${theme.spacing(1)}px auto`
   },
   media: {
     height: 0,
@@ -26,8 +26,7 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     backgroundColor: blue[500]
   },
-  content: {
-  }
+  content: {}
 }));
 
 const months: any = {
@@ -67,7 +66,7 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
     producer: checkin.product.producer,
     category: checkin.product.type,
     subCategory: "moi"
-  }
+  };
 
   return (
     <div>
@@ -95,18 +94,17 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
           }
           subheader={`${checkinObject.date.getDate()} ${
             months[checkinObject.date.getMonth()]
-            }, ${checkinObject.date.getFullYear()}
+          }, ${checkinObject.date.getFullYear()}
           `}
         />
         <ProductCard product={productObject} />
         <CardContent className={classes.content}>
           <Typography variant="h6" color="textSecondary" component="p">
             Rating
-            <Rating value={checkinObject.rating} max={5} />
           </Typography>
+          <Rating value={checkinObject.rating} max={5} />
           <Typography variant="h6" color="textSecondary" component="p">
-            Comment:{" "}
-            {checkinObject.comment}
+            Comment: {checkinObject.comment}
           </Typography>
         </CardContent>
       </Card>
