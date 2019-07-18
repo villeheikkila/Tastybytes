@@ -36,11 +36,11 @@ type Checkin {
 type Category {
   id: ID! @id
   name: String!
-  subCategory: [subCategory]
+  subCategory: [SubCategory]
   products: [Product]
 }
 
-type subCategory {
+type SubCategory {
     id: ID! @id
     category: Category!
     name: String!

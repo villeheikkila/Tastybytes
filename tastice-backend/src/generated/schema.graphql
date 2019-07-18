@@ -11,7 +11,7 @@ type Category {
   id: ID!
   name: String!
   products(after: String, before: String, first: Int, last: Int, orderBy: ProductOrderByInput, skip: Int, where: ProductWhereInput): [Product!]
-  subCategory(after: String, before: String, first: Int, last: Int, orderBy: subCategoryOrderByInput, skip: Int, where: subCategoryWhereInput): [subCategory!]
+  subCategory(after: String, before: String, first: Int, last: Int, orderBy: SubCategoryOrderByInput, skip: Int, where: SubCategoryWhereInput): [SubCategory!]
 }
 
 enum CategoryOrderByInput {
@@ -60,9 +60,9 @@ input CategoryWhereInput {
   products_every: ProductWhereInput
   products_none: ProductWhereInput
   products_some: ProductWhereInput
-  subCategory_every: subCategoryWhereInput
-  subCategory_none: subCategoryWhereInput
-  subCategory_some: subCategoryWhereInput
+  subCategory_every: SubCategoryWhereInput
+  subCategory_none: SubCategoryWhereInput
+  subCategory_some: SubCategoryWhereInput
 }
 
 type Checkin {
@@ -152,13 +152,15 @@ scalar DateTime
 
 type Mutation {
   addProduct(name: String, producer: String, type: String): Product
+  createCategory(name: String): Category
   createCheckin(authorId: ID, comment: String, productId: ID, rating: Int): Checkin
+  createSubCategory(categoryId: ID, name: String): SubCategory
   deleteCheckin(id: ID): Checkin
   deleteProduct(id: ID): Product
   deleteUser(id: ID): User
   login(email: String, password: String): AuthPayload
   signup(email: String, firstName: String, lastName: String, password: String): AuthPayload
-  updateProduct(id: ID, name: String, producer: String, type: String): Product
+  updateProduct(categoryId: ID, id: ID, name: String, producer: String, subCategoryId: ID, type: String): Product
   updateUser(email: String, firstName: String, id: ID, lastName: String): User
 }
 
@@ -295,23 +297,25 @@ input ProductWhereInput {
 }
 
 type Query {
+  categories: [Category!]
   checkin(id: ID): [Checkin!]
   checkins: [Checkin!]
   me: User
   product(id: ID): [Product!]
   products: [Product!]
+  subCategories: [SubCategory!]
   user(id: ID): [User!]
   users: [User!]
 }
 
-type subCategory {
+type SubCategory {
   category: Category!
   id: ID!
   name: String!
   products(after: String, before: String, first: Int, last: Int, orderBy: ProductOrderByInput, skip: Int, where: ProductWhereInput): [Product!]
 }
 
-enum subCategoryOrderByInput {
+enum SubCategoryOrderByInput {
   createdAt_ASC
   createdAt_DESC
   id_ASC
@@ -322,8 +326,8 @@ enum subCategoryOrderByInput {
   updatedAt_DESC
 }
 
-input subCategoryWhereInput {
-  AND: [subCategoryWhereInput!]
+input SubCategoryWhereInput {
+  AND: [SubCategoryWhereInput!]
   category: CategoryWhereInput
   id: ID
   id_contains: ID
@@ -353,8 +357,8 @@ input subCategoryWhereInput {
   name_not_in: [String!]
   name_not_starts_with: String
   name_starts_with: String
-  NOT: [subCategoryWhereInput!]
-  OR: [subCategoryWhereInput!]
+  NOT: [SubCategoryWhereInput!]
+  OR: [SubCategoryWhereInput!]
   products_every: ProductWhereInput
   products_none: ProductWhereInput
   products_some: ProductWhereInput

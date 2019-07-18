@@ -19,7 +19,7 @@ export interface NexusPrismaTypes {
       Checkin: CheckinObject
       Product: ProductObject
       Category: CategoryObject
-      subCategory: subCategoryObject
+      SubCategory: SubCategoryObject
       UserConnection: UserConnectionObject
       PageInfo: PageInfoObject
       UserEdge: UserEdgeObject
@@ -33,9 +33,9 @@ export interface NexusPrismaTypes {
       CategoryConnection: CategoryConnectionObject
       CategoryEdge: CategoryEdgeObject
       AggregateCategory: AggregateCategoryObject
-      subCategoryConnection: subCategoryConnectionObject
-      subCategoryEdge: subCategoryEdgeObject
-      AggregatesubCategory: AggregatesubCategoryObject
+      SubCategoryConnection: SubCategoryConnectionObject
+      SubCategoryEdge: SubCategoryEdgeObject
+      AggregateSubCategory: AggregateSubCategoryObject
       Mutation: MutationObject
       BatchPayload: BatchPayloadObject
       Subscription: SubscriptionObject
@@ -47,8 +47,8 @@ export interface NexusPrismaTypes {
       CheckinPreviousValues: CheckinPreviousValuesObject
       CategorySubscriptionPayload: CategorySubscriptionPayloadObject
       CategoryPreviousValues: CategoryPreviousValuesObject
-      subCategorySubscriptionPayload: subCategorySubscriptionPayloadObject
-      subCategoryPreviousValues: subCategoryPreviousValuesObject
+      SubCategorySubscriptionPayload: SubCategorySubscriptionPayloadObject
+      SubCategoryPreviousValues: SubCategoryPreviousValuesObject
     }
     fieldsDetails: {
       Query: QueryFieldDetails
@@ -56,7 +56,7 @@ export interface NexusPrismaTypes {
       Checkin: CheckinFieldDetails
       Product: ProductFieldDetails
       Category: CategoryFieldDetails
-      subCategory: subCategoryFieldDetails
+      SubCategory: SubCategoryFieldDetails
       UserConnection: UserConnectionFieldDetails
       PageInfo: PageInfoFieldDetails
       UserEdge: UserEdgeFieldDetails
@@ -70,9 +70,9 @@ export interface NexusPrismaTypes {
       CategoryConnection: CategoryConnectionFieldDetails
       CategoryEdge: CategoryEdgeFieldDetails
       AggregateCategory: AggregateCategoryFieldDetails
-      subCategoryConnection: subCategoryConnectionFieldDetails
-      subCategoryEdge: subCategoryEdgeFieldDetails
-      AggregatesubCategory: AggregatesubCategoryFieldDetails
+      SubCategoryConnection: SubCategoryConnectionFieldDetails
+      SubCategoryEdge: SubCategoryEdgeFieldDetails
+      AggregateSubCategory: AggregateSubCategoryFieldDetails
       Mutation: MutationFieldDetails
       BatchPayload: BatchPayloadFieldDetails
       Subscription: SubscriptionFieldDetails
@@ -84,8 +84,8 @@ export interface NexusPrismaTypes {
       CheckinPreviousValues: CheckinPreviousValuesFieldDetails
       CategorySubscriptionPayload: CategorySubscriptionPayloadFieldDetails
       CategoryPreviousValues: CategoryPreviousValuesFieldDetails
-      subCategorySubscriptionPayload: subCategorySubscriptionPayloadFieldDetails
-      subCategoryPreviousValues: subCategoryPreviousValuesFieldDetails
+      SubCategorySubscriptionPayload: SubCategorySubscriptionPayloadFieldDetails
+      SubCategoryPreviousValues: SubCategoryPreviousValuesFieldDetails
     }
   }
   inputTypes: {
@@ -95,11 +95,11 @@ export interface NexusPrismaTypes {
       UserWhereInput: UserWhereInputInputObject
       ProductWhereInput: ProductWhereInputInputObject
       CategoryWhereInput: CategoryWhereInputInputObject
-      subCategoryWhereInput: subCategoryWhereInputInputObject
+      SubCategoryWhereInput: SubCategoryWhereInputInputObject
       ProductWhereUniqueInput: ProductWhereUniqueInputInputObject
       CheckinWhereUniqueInput: CheckinWhereUniqueInputInputObject
       CategoryWhereUniqueInput: CategoryWhereUniqueInputInputObject
-      subCategoryWhereUniqueInput: subCategoryWhereUniqueInputInputObject
+      SubCategoryWhereUniqueInput: SubCategoryWhereUniqueInputInputObject
       UserCreateInput: UserCreateInputInputObject
       CheckinCreateManyWithoutAuthorInput: CheckinCreateManyWithoutAuthorInputInputObject
       CheckinCreateWithoutAuthorInput: CheckinCreateWithoutAuthorInputInputObject
@@ -107,8 +107,8 @@ export interface NexusPrismaTypes {
       ProductCreateWithoutCheckinsInput: ProductCreateWithoutCheckinsInputInputObject
       CategoryCreateManyWithoutProductsInput: CategoryCreateManyWithoutProductsInputInputObject
       CategoryCreateWithoutProductsInput: CategoryCreateWithoutProductsInputInputObject
-      subCategoryCreateManyWithoutCategoryInput: subCategoryCreateManyWithoutCategoryInputInputObject
-      subCategoryCreateWithoutCategoryInput: subCategoryCreateWithoutCategoryInputInputObject
+      SubCategoryCreateManyWithoutCategoryInput: SubCategoryCreateManyWithoutCategoryInputInputObject
+      SubCategoryCreateWithoutCategoryInput: SubCategoryCreateWithoutCategoryInputInputObject
       ProductCreateManyInput: ProductCreateManyInputInputObject
       ProductCreateInput: ProductCreateInputInputObject
       CheckinCreateManyWithoutProductInput: CheckinCreateManyWithoutProductInputInputObject
@@ -125,9 +125,9 @@ export interface NexusPrismaTypes {
       CategoryUpdateManyWithoutProductsInput: CategoryUpdateManyWithoutProductsInputInputObject
       CategoryUpdateWithWhereUniqueWithoutProductsInput: CategoryUpdateWithWhereUniqueWithoutProductsInputInputObject
       CategoryUpdateWithoutProductsDataInput: CategoryUpdateWithoutProductsDataInputInputObject
-      subCategoryUpdateManyWithoutCategoryInput: subCategoryUpdateManyWithoutCategoryInputInputObject
-      subCategoryUpdateWithWhereUniqueWithoutCategoryInput: subCategoryUpdateWithWhereUniqueWithoutCategoryInputInputObject
-      subCategoryUpdateWithoutCategoryDataInput: subCategoryUpdateWithoutCategoryDataInputInputObject
+      SubCategoryUpdateManyWithoutCategoryInput: SubCategoryUpdateManyWithoutCategoryInputInputObject
+      SubCategoryUpdateWithWhereUniqueWithoutCategoryInput: SubCategoryUpdateWithWhereUniqueWithoutCategoryInputInputObject
+      SubCategoryUpdateWithoutCategoryDataInput: SubCategoryUpdateWithoutCategoryDataInputInputObject
       ProductUpdateManyInput: ProductUpdateManyInputInputObject
       ProductUpdateWithWhereUniqueNestedInput: ProductUpdateWithWhereUniqueNestedInputInputObject
       ProductUpdateDataInput: ProductUpdateDataInputInputObject
@@ -152,10 +152,10 @@ export interface NexusPrismaTypes {
       ProductScalarWhereInput: ProductScalarWhereInputInputObject
       ProductUpdateManyWithWhereNestedInput: ProductUpdateManyWithWhereNestedInputInputObject
       ProductUpdateManyDataInput: ProductUpdateManyDataInputInputObject
-      subCategoryUpsertWithWhereUniqueWithoutCategoryInput: subCategoryUpsertWithWhereUniqueWithoutCategoryInputInputObject
-      subCategoryScalarWhereInput: subCategoryScalarWhereInputInputObject
-      subCategoryUpdateManyWithWhereNestedInput: subCategoryUpdateManyWithWhereNestedInputInputObject
-      subCategoryUpdateManyDataInput: subCategoryUpdateManyDataInputInputObject
+      SubCategoryUpsertWithWhereUniqueWithoutCategoryInput: SubCategoryUpsertWithWhereUniqueWithoutCategoryInputInputObject
+      SubCategoryScalarWhereInput: SubCategoryScalarWhereInputInputObject
+      SubCategoryUpdateManyWithWhereNestedInput: SubCategoryUpdateManyWithWhereNestedInputInputObject
+      SubCategoryUpdateManyDataInput: SubCategoryUpdateManyDataInputInputObject
       CategoryUpsertWithWhereUniqueWithoutProductsInput: CategoryUpsertWithWhereUniqueWithoutProductsInputInputObject
       CategoryScalarWhereInput: CategoryScalarWhereInputInputObject
       CategoryUpdateManyWithWhereNestedInput: CategoryUpdateManyWithWhereNestedInputInputObject
@@ -177,25 +177,25 @@ export interface NexusPrismaTypes {
       ProductUpdateWithoutCategoryDataInput: ProductUpdateWithoutCategoryDataInputInputObject
       ProductUpsertWithWhereUniqueWithoutCategoryInput: ProductUpsertWithWhereUniqueWithoutCategoryInputInputObject
       CategoryUpdateManyMutationInput: CategoryUpdateManyMutationInputInputObject
-      subCategoryCreateInput: subCategoryCreateInputInputObject
+      SubCategoryCreateInput: SubCategoryCreateInputInputObject
       CategoryCreateOneWithoutSubCategoryInput: CategoryCreateOneWithoutSubCategoryInputInputObject
       CategoryCreateWithoutSubCategoryInput: CategoryCreateWithoutSubCategoryInputInputObject
-      subCategoryUpdateInput: subCategoryUpdateInputInputObject
+      SubCategoryUpdateInput: SubCategoryUpdateInputInputObject
       CategoryUpdateOneRequiredWithoutSubCategoryInput: CategoryUpdateOneRequiredWithoutSubCategoryInputInputObject
       CategoryUpdateWithoutSubCategoryDataInput: CategoryUpdateWithoutSubCategoryDataInputInputObject
       CategoryUpsertWithoutSubCategoryInput: CategoryUpsertWithoutSubCategoryInputInputObject
-      subCategoryUpdateManyMutationInput: subCategoryUpdateManyMutationInputInputObject
+      SubCategoryUpdateManyMutationInput: SubCategoryUpdateManyMutationInputInputObject
       UserSubscriptionWhereInput: UserSubscriptionWhereInputInputObject
       ProductSubscriptionWhereInput: ProductSubscriptionWhereInputInputObject
       CheckinSubscriptionWhereInput: CheckinSubscriptionWhereInputInputObject
       CategorySubscriptionWhereInput: CategorySubscriptionWhereInputInputObject
-      subCategorySubscriptionWhereInput: subCategorySubscriptionWhereInputInputObject
+      SubCategorySubscriptionWhereInput: SubCategorySubscriptionWhereInputInputObject
     }
   }
   enumTypes: {
     CheckinOrderByInput: CheckinOrderByInputValues,
     CategoryOrderByInput: CategoryOrderByInputValues,
-    subCategoryOrderByInput: subCategoryOrderByInputValues,
+    SubCategoryOrderByInput: SubCategoryOrderByInputValues,
     ProductOrderByInput: ProductOrderByInputValues,
     UserOrderByInput: UserOrderByInputValues,
     MutationType: MutationTypeValues,
@@ -490,43 +490,43 @@ export interface QueryFieldDetails {
     ) => Promise<prisma.CategoryConnection> | prisma.CategoryConnection
   }
   subCategory: {
-    type: 'subCategory'
+    type: 'SubCategory'
     args: Record<QuerySubCategoryArgs, core.NexusArgDef<string>>
     description: string
     list: undefined
     nullable: true
     resolve: (
       root: core.RootValue<"Query">,
-      args: { where: subCategoryWhereUniqueInput }  ,
+      args: { where: SubCategoryWhereUniqueInput }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategory | null> | prisma.subCategory | null
+    ) => Promise<prisma.SubCategory | null> | prisma.SubCategory | null
   }
   subCategories: {
-    type: 'subCategory'
+    type: 'SubCategory'
     args: Record<QuerySubCategoriesArgs, core.NexusArgDef<string>>
     description: string
     list: true
     nullable: false
     resolve: (
       root: core.RootValue<"Query">,
-      args: { where?: subCategoryWhereInput | null, orderBy?: prisma.subCategoryOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      args: { where?: SubCategoryWhereInput | null, orderBy?: prisma.SubCategoryOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategory[]> | prisma.subCategory[]
+    ) => Promise<prisma.SubCategory[]> | prisma.SubCategory[]
   }
   subCategoriesConnection: {
-    type: 'subCategoryConnection'
+    type: 'SubCategoryConnection'
     args: Record<QuerySubCategoriesConnectionArgs, core.NexusArgDef<string>>
     description: string
     list: undefined
     nullable: false
     resolve: (
       root: core.RootValue<"Query">,
-      args: { where?: subCategoryWhereInput | null, orderBy?: prisma.subCategoryOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      args: { where?: SubCategoryWhereInput | null, orderBy?: prisma.SubCategoryOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategoryConnection> | prisma.subCategoryConnection
+    ) => Promise<prisma.SubCategoryConnection> | prisma.SubCategoryConnection
   }
 }
   
@@ -938,17 +938,17 @@ export interface CategoryFieldDetails {
     resolve: undefined
   }
   subCategory: {
-    type: 'subCategory'
+    type: 'SubCategory'
     args: Record<CategorySubCategoryArgs, core.NexusArgDef<string>>
     description: string
     list: true
     nullable: false
     resolve: (
       root: core.RootValue<"Category">,
-      args: { where?: subCategoryWhereInput | null, orderBy?: prisma.subCategoryOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      args: { where?: SubCategoryWhereInput | null, orderBy?: prisma.SubCategoryOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategory[]> | prisma.subCategory[]
+    ) => Promise<prisma.SubCategory[]> | prisma.SubCategory[]
   }
   products: {
     type: 'Product'
@@ -966,23 +966,23 @@ export interface CategoryFieldDetails {
 }
   
 
-// Types for subCategory
+// Types for SubCategory
 
-type subCategoryObject =
-  | subCategoryFields
+type SubCategoryObject =
+  | SubCategoryFields
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'category', args?: [] | false, alias?: string  } 
   | { name: 'name', args?: [] | false, alias?: string  } 
-  | { name: 'products', args?: subCategoryProductsArgs[] | false, alias?: string  } 
+  | { name: 'products', args?: SubCategoryProductsArgs[] | false, alias?: string  } 
 
-type subCategoryFields =
+type SubCategoryFields =
   | 'id'
   | 'category'
   | 'name'
   | 'products'
 
 
-type subCategoryProductsArgs =
+type SubCategoryProductsArgs =
   | 'where'
   | 'orderBy'
   | 'skip'
@@ -992,7 +992,7 @@ type subCategoryProductsArgs =
   | 'last'
   
 
-export interface subCategoryFieldDetails {
+export interface SubCategoryFieldDetails {
   id: {
     type: 'ID'
     args: {}
@@ -1008,7 +1008,7 @@ export interface subCategoryFieldDetails {
     list: undefined
     nullable: false
     resolve: (
-      root: core.RootValue<"subCategory">,
+      root: core.RootValue<"SubCategory">,
       args: {  }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
@@ -1024,12 +1024,12 @@ export interface subCategoryFieldDetails {
   }
   products: {
     type: 'Product'
-    args: Record<subCategoryProductsArgs, core.NexusArgDef<string>>
+    args: Record<SubCategoryProductsArgs, core.NexusArgDef<string>>
     description: string
     list: true
     nullable: false
     resolve: (
-      root: core.RootValue<"subCategory">,
+      root: core.RootValue<"SubCategory">,
       args: { where?: ProductWhereInput | null, orderBy?: prisma.ProductOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
@@ -1593,15 +1593,15 @@ export interface AggregateCategoryFieldDetails {
 }
   
 
-// Types for subCategoryConnection
+// Types for SubCategoryConnection
 
-type subCategoryConnectionObject =
-  | subCategoryConnectionFields
+type SubCategoryConnectionObject =
+  | SubCategoryConnectionFields
   | { name: 'pageInfo', args?: [] | false, alias?: string  } 
   | { name: 'edges', args?: [] | false, alias?: string  } 
   | { name: 'aggregate', args?: [] | false, alias?: string  } 
 
-type subCategoryConnectionFields =
+type SubCategoryConnectionFields =
   | 'pageInfo'
   | 'edges'
   | 'aggregate'
@@ -1610,7 +1610,7 @@ type subCategoryConnectionFields =
 
   
 
-export interface subCategoryConnectionFieldDetails {
+export interface SubCategoryConnectionFieldDetails {
   pageInfo: {
     type: 'PageInfo'
     args: {}
@@ -1618,49 +1618,49 @@ export interface subCategoryConnectionFieldDetails {
     list: undefined
     nullable: false
     resolve: (
-      root: core.RootValue<"subCategoryConnection">,
+      root: core.RootValue<"SubCategoryConnection">,
       args: {  }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.PageInfo> | prisma.PageInfo
   }
   edges: {
-    type: 'subCategoryEdge'
+    type: 'SubCategoryEdge'
     args: {}
     description: string
     list: true
     nullable: false
     resolve: (
-      root: core.RootValue<"subCategoryConnection">,
+      root: core.RootValue<"SubCategoryConnection">,
       args: {  }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategoryEdge[]> | prisma.subCategoryEdge[]
+    ) => Promise<prisma.SubCategoryEdge[]> | prisma.SubCategoryEdge[]
   }
   aggregate: {
-    type: 'AggregatesubCategory'
+    type: 'AggregateSubCategory'
     args: {}
     description: string
     list: undefined
     nullable: false
     resolve: (
-      root: core.RootValue<"subCategoryConnection">,
+      root: core.RootValue<"SubCategoryConnection">,
       args: {  }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.AggregatesubCategory> | prisma.AggregatesubCategory
+    ) => Promise<prisma.AggregateSubCategory> | prisma.AggregateSubCategory
   }
 }
   
 
-// Types for subCategoryEdge
+// Types for SubCategoryEdge
 
-type subCategoryEdgeObject =
-  | subCategoryEdgeFields
+type SubCategoryEdgeObject =
+  | SubCategoryEdgeFields
   | { name: 'node', args?: [] | false, alias?: string  } 
   | { name: 'cursor', args?: [] | false, alias?: string  } 
 
-type subCategoryEdgeFields =
+type SubCategoryEdgeFields =
   | 'node'
   | 'cursor'
 
@@ -1668,19 +1668,19 @@ type subCategoryEdgeFields =
 
   
 
-export interface subCategoryEdgeFieldDetails {
+export interface SubCategoryEdgeFieldDetails {
   node: {
-    type: 'subCategory'
+    type: 'SubCategory'
     args: {}
     description: string
     list: undefined
     nullable: false
     resolve: (
-      root: core.RootValue<"subCategoryEdge">,
+      root: core.RootValue<"SubCategoryEdge">,
       args: {  }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategory> | prisma.subCategory
+    ) => Promise<prisma.SubCategory> | prisma.SubCategory
   }
   cursor: {
     type: 'String'
@@ -1693,20 +1693,20 @@ export interface subCategoryEdgeFieldDetails {
 }
   
 
-// Types for AggregatesubCategory
+// Types for AggregateSubCategory
 
-type AggregatesubCategoryObject =
-  | AggregatesubCategoryFields
+type AggregateSubCategoryObject =
+  | AggregateSubCategoryFields
   | { name: 'count', args?: [] | false, alias?: string  } 
 
-type AggregatesubCategoryFields =
+type AggregateSubCategoryFields =
   | 'count'
 
 
 
   
 
-export interface AggregatesubCategoryFieldDetails {
+export interface AggregateSubCategoryFieldDetails {
   count: {
     type: 'Int'
     args: {}
@@ -1746,12 +1746,12 @@ type MutationObject =
   | { name: 'upsertCategory', args?: MutationUpsertCategoryArgs[] | false, alias?: string  } 
   | { name: 'deleteCategory', args?: MutationDeleteCategoryArgs[] | false, alias?: string  } 
   | { name: 'deleteManyCategories', args?: MutationDeleteManyCategoriesArgs[] | false, alias?: string  } 
-  | { name: 'createsubCategory', args?: MutationCreatesubCategoryArgs[] | false, alias?: string  } 
-  | { name: 'updatesubCategory', args?: MutationUpdatesubCategoryArgs[] | false, alias?: string  } 
-  | { name: 'updateManysubCategories', args?: MutationUpdateManysubCategoriesArgs[] | false, alias?: string  } 
-  | { name: 'upsertsubCategory', args?: MutationUpsertsubCategoryArgs[] | false, alias?: string  } 
-  | { name: 'deletesubCategory', args?: MutationDeletesubCategoryArgs[] | false, alias?: string  } 
-  | { name: 'deleteManysubCategories', args?: MutationDeleteManysubCategoriesArgs[] | false, alias?: string  } 
+  | { name: 'createSubCategory', args?: MutationCreateSubCategoryArgs[] | false, alias?: string  } 
+  | { name: 'updateSubCategory', args?: MutationUpdateSubCategoryArgs[] | false, alias?: string  } 
+  | { name: 'updateManySubCategories', args?: MutationUpdateManySubCategoriesArgs[] | false, alias?: string  } 
+  | { name: 'upsertSubCategory', args?: MutationUpsertSubCategoryArgs[] | false, alias?: string  } 
+  | { name: 'deleteSubCategory', args?: MutationDeleteSubCategoryArgs[] | false, alias?: string  } 
+  | { name: 'deleteManySubCategories', args?: MutationDeleteManySubCategoriesArgs[] | false, alias?: string  } 
 
 type MutationFields =
   | 'createUser'
@@ -1778,12 +1778,12 @@ type MutationFields =
   | 'upsertCategory'
   | 'deleteCategory'
   | 'deleteManyCategories'
-  | 'createsubCategory'
-  | 'updatesubCategory'
-  | 'updateManysubCategories'
-  | 'upsertsubCategory'
-  | 'deletesubCategory'
-  | 'deleteManysubCategories'
+  | 'createSubCategory'
+  | 'updateSubCategory'
+  | 'updateManySubCategories'
+  | 'upsertSubCategory'
+  | 'deleteSubCategory'
+  | 'deleteManySubCategories'
 
 
 type MutationCreateUserArgs =
@@ -1850,21 +1850,21 @@ type MutationDeleteCategoryArgs =
   | 'where'
 type MutationDeleteManyCategoriesArgs =
   | 'where'
-type MutationCreatesubCategoryArgs =
+type MutationCreateSubCategoryArgs =
   | 'data'
-type MutationUpdatesubCategoryArgs =
-  | 'data'
-  | 'where'
-type MutationUpdateManysubCategoriesArgs =
+type MutationUpdateSubCategoryArgs =
   | 'data'
   | 'where'
-type MutationUpsertsubCategoryArgs =
+type MutationUpdateManySubCategoriesArgs =
+  | 'data'
+  | 'where'
+type MutationUpsertSubCategoryArgs =
   | 'where'
   | 'create'
   | 'update'
-type MutationDeletesubCategoryArgs =
+type MutationDeleteSubCategoryArgs =
   | 'where'
-type MutationDeleteManysubCategoriesArgs =
+type MutationDeleteManySubCategoriesArgs =
   | 'where'
   
 
@@ -2181,80 +2181,80 @@ export interface MutationFieldDetails {
       info?: GraphQLResolveInfo
     ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
   }
-  createsubCategory: {
-    type: 'subCategory'
-    args: Record<MutationCreatesubCategoryArgs, core.NexusArgDef<string>>
+  createSubCategory: {
+    type: 'SubCategory'
+    args: Record<MutationCreateSubCategoryArgs, core.NexusArgDef<string>>
     description: string
     list: undefined
     nullable: false
     resolve: (
       root: core.RootValue<"Mutation">,
-      args: { data: subCategoryCreateInput }  ,
+      args: { data: SubCategoryCreateInput }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategory> | prisma.subCategory
+    ) => Promise<prisma.SubCategory> | prisma.SubCategory
   }
-  updatesubCategory: {
-    type: 'subCategory'
-    args: Record<MutationUpdatesubCategoryArgs, core.NexusArgDef<string>>
+  updateSubCategory: {
+    type: 'SubCategory'
+    args: Record<MutationUpdateSubCategoryArgs, core.NexusArgDef<string>>
     description: string
     list: undefined
     nullable: true
     resolve: (
       root: core.RootValue<"Mutation">,
-      args: { data: subCategoryUpdateInput, where: subCategoryWhereUniqueInput }  ,
+      args: { data: SubCategoryUpdateInput, where: SubCategoryWhereUniqueInput }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategory | null> | prisma.subCategory | null
+    ) => Promise<prisma.SubCategory | null> | prisma.SubCategory | null
   }
-  updateManysubCategories: {
+  updateManySubCategories: {
     type: 'BatchPayload'
-    args: Record<MutationUpdateManysubCategoriesArgs, core.NexusArgDef<string>>
+    args: Record<MutationUpdateManySubCategoriesArgs, core.NexusArgDef<string>>
     description: string
     list: undefined
     nullable: false
     resolve: (
       root: core.RootValue<"Mutation">,
-      args: { data: subCategoryUpdateManyMutationInput, where?: subCategoryWhereInput | null }  ,
+      args: { data: SubCategoryUpdateManyMutationInput, where?: SubCategoryWhereInput | null }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
   }
-  upsertsubCategory: {
-    type: 'subCategory'
-    args: Record<MutationUpsertsubCategoryArgs, core.NexusArgDef<string>>
+  upsertSubCategory: {
+    type: 'SubCategory'
+    args: Record<MutationUpsertSubCategoryArgs, core.NexusArgDef<string>>
     description: string
     list: undefined
     nullable: false
     resolve: (
       root: core.RootValue<"Mutation">,
-      args: { where: subCategoryWhereUniqueInput, create: subCategoryCreateInput, update: subCategoryUpdateInput }  ,
+      args: { where: SubCategoryWhereUniqueInput, create: SubCategoryCreateInput, update: SubCategoryUpdateInput }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategory> | prisma.subCategory
+    ) => Promise<prisma.SubCategory> | prisma.SubCategory
   }
-  deletesubCategory: {
-    type: 'subCategory'
-    args: Record<MutationDeletesubCategoryArgs, core.NexusArgDef<string>>
+  deleteSubCategory: {
+    type: 'SubCategory'
+    args: Record<MutationDeleteSubCategoryArgs, core.NexusArgDef<string>>
     description: string
     list: undefined
     nullable: true
     resolve: (
       root: core.RootValue<"Mutation">,
-      args: { where: subCategoryWhereUniqueInput }  ,
+      args: { where: SubCategoryWhereUniqueInput }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategory | null> | prisma.subCategory | null
+    ) => Promise<prisma.SubCategory | null> | prisma.SubCategory | null
   }
-  deleteManysubCategories: {
+  deleteManySubCategories: {
     type: 'BatchPayload'
-    args: Record<MutationDeleteManysubCategoriesArgs, core.NexusArgDef<string>>
+    args: Record<MutationDeleteManySubCategoriesArgs, core.NexusArgDef<string>>
     description: string
     list: undefined
     nullable: false
     resolve: (
       root: core.RootValue<"Mutation">,
-      args: { where?: subCategoryWhereInput | null }  ,
+      args: { where?: SubCategoryWhereInput | null }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
@@ -2371,17 +2371,17 @@ export interface SubscriptionFieldDetails {
     ) => Promise<prisma.CategorySubscriptionPayload | null> | prisma.CategorySubscriptionPayload | null
   }
   subCategory: {
-    type: 'subCategorySubscriptionPayload'
+    type: 'SubCategorySubscriptionPayload'
     args: Record<SubscriptionSubCategoryArgs, core.NexusArgDef<string>>
     description: string
     list: undefined
     nullable: true
     resolve: (
       root: core.RootValue<"Subscription">,
-      args: { where?: subCategorySubscriptionWhereInput | null }  ,
+      args: { where?: SubCategorySubscriptionWhereInput | null }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategorySubscriptionPayload | null> | prisma.subCategorySubscriptionPayload | null
+    ) => Promise<prisma.SubCategorySubscriptionPayload | null> | prisma.SubCategorySubscriptionPayload | null
   }
 }
   
@@ -2936,16 +2936,16 @@ export interface CategoryPreviousValuesFieldDetails {
 }
   
 
-// Types for subCategorySubscriptionPayload
+// Types for SubCategorySubscriptionPayload
 
-type subCategorySubscriptionPayloadObject =
-  | subCategorySubscriptionPayloadFields
+type SubCategorySubscriptionPayloadObject =
+  | SubCategorySubscriptionPayloadFields
   | { name: 'mutation', args?: [] | false, alias?: string  } 
   | { name: 'node', args?: [] | false, alias?: string  } 
   | { name: 'updatedFields', args?: [] | false, alias?: string  } 
   | { name: 'previousValues', args?: [] | false, alias?: string  } 
 
-type subCategorySubscriptionPayloadFields =
+type SubCategorySubscriptionPayloadFields =
   | 'mutation'
   | 'node'
   | 'updatedFields'
@@ -2955,7 +2955,7 @@ type subCategorySubscriptionPayloadFields =
 
   
 
-export interface subCategorySubscriptionPayloadFieldDetails {
+export interface SubCategorySubscriptionPayloadFieldDetails {
   mutation: {
     type: 'MutationType'
     args: {}
@@ -2963,24 +2963,24 @@ export interface subCategorySubscriptionPayloadFieldDetails {
     list: undefined
     nullable: false
     resolve: (
-      root: core.RootValue<"subCategorySubscriptionPayload">,
+      root: core.RootValue<"SubCategorySubscriptionPayload">,
       args: {  }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.MutationType> | prisma.MutationType
   }
   node: {
-    type: 'subCategory'
+    type: 'SubCategory'
     args: {}
     description: string
     list: undefined
     nullable: true
     resolve: (
-      root: core.RootValue<"subCategorySubscriptionPayload">,
+      root: core.RootValue<"SubCategorySubscriptionPayload">,
       args: {  }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategory | null> | prisma.subCategory | null
+    ) => Promise<prisma.SubCategory | null> | prisma.SubCategory | null
   }
   updatedFields: {
     type: 'String'
@@ -2991,29 +2991,29 @@ export interface subCategorySubscriptionPayloadFieldDetails {
     resolve: undefined
   }
   previousValues: {
-    type: 'subCategoryPreviousValues'
+    type: 'SubCategoryPreviousValues'
     args: {}
     description: string
     list: undefined
     nullable: true
     resolve: (
-      root: core.RootValue<"subCategorySubscriptionPayload">,
+      root: core.RootValue<"SubCategorySubscriptionPayload">,
       args: {  }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.subCategoryPreviousValues | null> | prisma.subCategoryPreviousValues | null
+    ) => Promise<prisma.SubCategoryPreviousValues | null> | prisma.SubCategoryPreviousValues | null
   }
 }
   
 
-// Types for subCategoryPreviousValues
+// Types for SubCategoryPreviousValues
 
-type subCategoryPreviousValuesObject =
-  | subCategoryPreviousValuesFields
+type SubCategoryPreviousValuesObject =
+  | SubCategoryPreviousValuesFields
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'name', args?: [] | false, alias?: string  } 
 
-type subCategoryPreviousValuesFields =
+type SubCategoryPreviousValuesFields =
   | 'id'
   | 'name'
 
@@ -3021,7 +3021,7 @@ type subCategoryPreviousValuesFields =
 
   
 
-export interface subCategoryPreviousValuesFieldDetails {
+export interface SubCategoryPreviousValuesFieldDetails {
   id: {
     type: 'ID'
     args: {}
@@ -3565,9 +3565,9 @@ export interface CategoryWhereInput {
   name_not_starts_with?: string | null
   name_ends_with?: string | null
   name_not_ends_with?: string | null
-  subCategory_every?: subCategoryWhereInput | null
-  subCategory_some?: subCategoryWhereInput | null
-  subCategory_none?: subCategoryWhereInput | null
+  subCategory_every?: SubCategoryWhereInput | null
+  subCategory_some?: SubCategoryWhereInput | null
+  subCategory_none?: SubCategoryWhereInput | null
   products_every?: ProductWhereInput | null
   products_some?: ProductWhereInput | null
   products_none?: ProductWhereInput | null
@@ -3615,7 +3615,7 @@ export type CategoryWhereInputInputObject =
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
   
-export interface subCategoryWhereInput {
+export interface SubCategoryWhereInput {
   id?: string | null
   id_not?: string | null
   id_in?: string[]
@@ -3648,12 +3648,12 @@ export interface subCategoryWhereInput {
   products_every?: ProductWhereInput | null
   products_some?: ProductWhereInput | null
   products_none?: ProductWhereInput | null
-  AND?: subCategoryWhereInput[]
-  OR?: subCategoryWhereInput[]
-  NOT?: subCategoryWhereInput[]
+  AND?: SubCategoryWhereInput[]
+  OR?: SubCategoryWhereInput[]
+  NOT?: SubCategoryWhereInput[]
 }
-export type subCategoryWhereInputInputObject =
-  | Extract<keyof subCategoryWhereInput, string>
+export type SubCategoryWhereInputInputObject =
+  | Extract<keyof SubCategoryWhereInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'id_not', alias?: string  } 
   | { name: 'id_in', alias?: string  } 
@@ -3711,11 +3711,11 @@ export type CategoryWhereUniqueInputInputObject =
   | Extract<keyof CategoryWhereUniqueInput, string>
   | { name: 'id', alias?: string  } 
   
-export interface subCategoryWhereUniqueInput {
+export interface SubCategoryWhereUniqueInput {
   id?: string | null
 }
-export type subCategoryWhereUniqueInputInputObject =
-  | Extract<keyof subCategoryWhereUniqueInput, string>
+export type SubCategoryWhereUniqueInputInputObject =
+  | Extract<keyof SubCategoryWhereUniqueInput, string>
   | { name: 'id', alias?: string  } 
   
 export interface UserCreateInput {
@@ -3797,7 +3797,7 @@ export type CategoryCreateManyWithoutProductsInputInputObject =
 export interface CategoryCreateWithoutProductsInput {
   id?: string | null
   name?: string
-  subCategory?: subCategoryCreateManyWithoutCategoryInput | null
+  subCategory?: SubCategoryCreateManyWithoutCategoryInput | null
 }
 export type CategoryCreateWithoutProductsInputInputObject =
   | Extract<keyof CategoryCreateWithoutProductsInput, string>
@@ -3805,22 +3805,22 @@ export type CategoryCreateWithoutProductsInputInputObject =
   | { name: 'name', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
-export interface subCategoryCreateManyWithoutCategoryInput {
-  create?: subCategoryCreateWithoutCategoryInput[]
-  connect?: subCategoryWhereUniqueInput[]
+export interface SubCategoryCreateManyWithoutCategoryInput {
+  create?: SubCategoryCreateWithoutCategoryInput[]
+  connect?: SubCategoryWhereUniqueInput[]
 }
-export type subCategoryCreateManyWithoutCategoryInputInputObject =
-  | Extract<keyof subCategoryCreateManyWithoutCategoryInput, string>
+export type SubCategoryCreateManyWithoutCategoryInputInputObject =
+  | Extract<keyof SubCategoryCreateManyWithoutCategoryInput, string>
   | { name: 'create', alias?: string  } 
   | { name: 'connect', alias?: string  } 
   
-export interface subCategoryCreateWithoutCategoryInput {
+export interface SubCategoryCreateWithoutCategoryInput {
   id?: string | null
   name?: string
   products?: ProductCreateManyInput | null
 }
-export type subCategoryCreateWithoutCategoryInputInputObject =
-  | Extract<keyof subCategoryCreateWithoutCategoryInput, string>
+export type SubCategoryCreateWithoutCategoryInputInputObject =
+  | Extract<keyof SubCategoryCreateWithoutCategoryInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'products', alias?: string  } 
@@ -4032,26 +4032,26 @@ export type CategoryUpdateWithWhereUniqueWithoutProductsInputInputObject =
   
 export interface CategoryUpdateWithoutProductsDataInput {
   name?: string | null
-  subCategory?: subCategoryUpdateManyWithoutCategoryInput | null
+  subCategory?: SubCategoryUpdateManyWithoutCategoryInput | null
 }
 export type CategoryUpdateWithoutProductsDataInputInputObject =
   | Extract<keyof CategoryUpdateWithoutProductsDataInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
-export interface subCategoryUpdateManyWithoutCategoryInput {
-  create?: subCategoryCreateWithoutCategoryInput[]
-  delete?: subCategoryWhereUniqueInput[]
-  connect?: subCategoryWhereUniqueInput[]
-  set?: subCategoryWhereUniqueInput[]
-  disconnect?: subCategoryWhereUniqueInput[]
-  update?: subCategoryUpdateWithWhereUniqueWithoutCategoryInput[]
-  upsert?: subCategoryUpsertWithWhereUniqueWithoutCategoryInput[]
-  deleteMany?: subCategoryScalarWhereInput[]
-  updateMany?: subCategoryUpdateManyWithWhereNestedInput[]
+export interface SubCategoryUpdateManyWithoutCategoryInput {
+  create?: SubCategoryCreateWithoutCategoryInput[]
+  delete?: SubCategoryWhereUniqueInput[]
+  connect?: SubCategoryWhereUniqueInput[]
+  set?: SubCategoryWhereUniqueInput[]
+  disconnect?: SubCategoryWhereUniqueInput[]
+  update?: SubCategoryUpdateWithWhereUniqueWithoutCategoryInput[]
+  upsert?: SubCategoryUpsertWithWhereUniqueWithoutCategoryInput[]
+  deleteMany?: SubCategoryScalarWhereInput[]
+  updateMany?: SubCategoryUpdateManyWithWhereNestedInput[]
 }
-export type subCategoryUpdateManyWithoutCategoryInputInputObject =
-  | Extract<keyof subCategoryUpdateManyWithoutCategoryInput, string>
+export type SubCategoryUpdateManyWithoutCategoryInputInputObject =
+  | Extract<keyof SubCategoryUpdateManyWithoutCategoryInput, string>
   | { name: 'create', alias?: string  } 
   | { name: 'delete', alias?: string  } 
   | { name: 'connect', alias?: string  } 
@@ -4062,21 +4062,21 @@ export type subCategoryUpdateManyWithoutCategoryInputInputObject =
   | { name: 'deleteMany', alias?: string  } 
   | { name: 'updateMany', alias?: string  } 
   
-export interface subCategoryUpdateWithWhereUniqueWithoutCategoryInput {
-  where?: subCategoryWhereUniqueInput
-  data?: subCategoryUpdateWithoutCategoryDataInput
+export interface SubCategoryUpdateWithWhereUniqueWithoutCategoryInput {
+  where?: SubCategoryWhereUniqueInput
+  data?: SubCategoryUpdateWithoutCategoryDataInput
 }
-export type subCategoryUpdateWithWhereUniqueWithoutCategoryInputInputObject =
-  | Extract<keyof subCategoryUpdateWithWhereUniqueWithoutCategoryInput, string>
+export type SubCategoryUpdateWithWhereUniqueWithoutCategoryInputInputObject =
+  | Extract<keyof SubCategoryUpdateWithWhereUniqueWithoutCategoryInput, string>
   | { name: 'where', alias?: string  } 
   | { name: 'data', alias?: string  } 
   
-export interface subCategoryUpdateWithoutCategoryDataInput {
+export interface SubCategoryUpdateWithoutCategoryDataInput {
   name?: string | null
   products?: ProductUpdateManyInput | null
 }
-export type subCategoryUpdateWithoutCategoryDataInputInputObject =
-  | Extract<keyof subCategoryUpdateWithoutCategoryDataInput, string>
+export type SubCategoryUpdateWithoutCategoryDataInputInputObject =
+  | Extract<keyof SubCategoryUpdateWithoutCategoryDataInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'products', alias?: string  } 
   
@@ -4812,18 +4812,18 @@ export type ProductUpdateManyDataInputInputObject =
   | { name: 'producer', alias?: string  } 
   | { name: 'type', alias?: string  } 
   
-export interface subCategoryUpsertWithWhereUniqueWithoutCategoryInput {
-  where?: subCategoryWhereUniqueInput
-  update?: subCategoryUpdateWithoutCategoryDataInput
-  create?: subCategoryCreateWithoutCategoryInput
+export interface SubCategoryUpsertWithWhereUniqueWithoutCategoryInput {
+  where?: SubCategoryWhereUniqueInput
+  update?: SubCategoryUpdateWithoutCategoryDataInput
+  create?: SubCategoryCreateWithoutCategoryInput
 }
-export type subCategoryUpsertWithWhereUniqueWithoutCategoryInputInputObject =
-  | Extract<keyof subCategoryUpsertWithWhereUniqueWithoutCategoryInput, string>
+export type SubCategoryUpsertWithWhereUniqueWithoutCategoryInputInputObject =
+  | Extract<keyof SubCategoryUpsertWithWhereUniqueWithoutCategoryInput, string>
   | { name: 'where', alias?: string  } 
   | { name: 'update', alias?: string  } 
   | { name: 'create', alias?: string  } 
   
-export interface subCategoryScalarWhereInput {
+export interface SubCategoryScalarWhereInput {
   id?: string | null
   id_not?: string | null
   id_in?: string[]
@@ -4852,12 +4852,12 @@ export interface subCategoryScalarWhereInput {
   name_not_starts_with?: string | null
   name_ends_with?: string | null
   name_not_ends_with?: string | null
-  AND?: subCategoryScalarWhereInput[]
-  OR?: subCategoryScalarWhereInput[]
-  NOT?: subCategoryScalarWhereInput[]
+  AND?: SubCategoryScalarWhereInput[]
+  OR?: SubCategoryScalarWhereInput[]
+  NOT?: SubCategoryScalarWhereInput[]
 }
-export type subCategoryScalarWhereInputInputObject =
-  | Extract<keyof subCategoryScalarWhereInput, string>
+export type SubCategoryScalarWhereInputInputObject =
+  | Extract<keyof SubCategoryScalarWhereInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'id_not', alias?: string  } 
   | { name: 'id_in', alias?: string  } 
@@ -4890,20 +4890,20 @@ export type subCategoryScalarWhereInputInputObject =
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
   
-export interface subCategoryUpdateManyWithWhereNestedInput {
-  where?: subCategoryScalarWhereInput
-  data?: subCategoryUpdateManyDataInput
+export interface SubCategoryUpdateManyWithWhereNestedInput {
+  where?: SubCategoryScalarWhereInput
+  data?: SubCategoryUpdateManyDataInput
 }
-export type subCategoryUpdateManyWithWhereNestedInputInputObject =
-  | Extract<keyof subCategoryUpdateManyWithWhereNestedInput, string>
+export type SubCategoryUpdateManyWithWhereNestedInputInputObject =
+  | Extract<keyof SubCategoryUpdateManyWithWhereNestedInput, string>
   | { name: 'where', alias?: string  } 
   | { name: 'data', alias?: string  } 
   
-export interface subCategoryUpdateManyDataInput {
+export interface SubCategoryUpdateManyDataInput {
   name?: string | null
 }
-export type subCategoryUpdateManyDataInputInputObject =
-  | Extract<keyof subCategoryUpdateManyDataInput, string>
+export type SubCategoryUpdateManyDataInputInputObject =
+  | Extract<keyof SubCategoryUpdateManyDataInput, string>
   | { name: 'name', alias?: string  } 
   
 export interface CategoryUpsertWithWhereUniqueWithoutProductsInput {
@@ -5101,7 +5101,7 @@ export type CheckinUpdateManyMutationInputInputObject =
 export interface CategoryCreateInput {
   id?: string | null
   name?: string
-  subCategory?: subCategoryCreateManyWithoutCategoryInput | null
+  subCategory?: SubCategoryCreateManyWithoutCategoryInput | null
   products?: ProductCreateManyWithoutCategoryInput | null
 }
 export type CategoryCreateInputInputObject =
@@ -5137,7 +5137,7 @@ export type ProductCreateWithoutCategoryInputInputObject =
   
 export interface CategoryUpdateInput {
   name?: string | null
-  subCategory?: subCategoryUpdateManyWithoutCategoryInput | null
+  subCategory?: SubCategoryUpdateManyWithoutCategoryInput | null
   products?: ProductUpdateManyWithoutCategoryInput | null
 }
 export type CategoryUpdateInputInputObject =
@@ -5209,14 +5209,14 @@ export type CategoryUpdateManyMutationInputInputObject =
   | Extract<keyof CategoryUpdateManyMutationInput, string>
   | { name: 'name', alias?: string  } 
   
-export interface subCategoryCreateInput {
+export interface SubCategoryCreateInput {
   id?: string | null
   category?: CategoryCreateOneWithoutSubCategoryInput
   name?: string
   products?: ProductCreateManyInput | null
 }
-export type subCategoryCreateInputInputObject =
-  | Extract<keyof subCategoryCreateInput, string>
+export type SubCategoryCreateInputInputObject =
+  | Extract<keyof SubCategoryCreateInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'name', alias?: string  } 
@@ -5242,13 +5242,13 @@ export type CategoryCreateWithoutSubCategoryInputInputObject =
   | { name: 'name', alias?: string  } 
   | { name: 'products', alias?: string  } 
   
-export interface subCategoryUpdateInput {
+export interface SubCategoryUpdateInput {
   category?: CategoryUpdateOneRequiredWithoutSubCategoryInput | null
   name?: string | null
   products?: ProductUpdateManyInput | null
 }
-export type subCategoryUpdateInputInputObject =
-  | Extract<keyof subCategoryUpdateInput, string>
+export type SubCategoryUpdateInputInputObject =
+  | Extract<keyof SubCategoryUpdateInput, string>
   | { name: 'category', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'products', alias?: string  } 
@@ -5284,11 +5284,11 @@ export type CategoryUpsertWithoutSubCategoryInputInputObject =
   | { name: 'update', alias?: string  } 
   | { name: 'create', alias?: string  } 
   
-export interface subCategoryUpdateManyMutationInput {
+export interface SubCategoryUpdateManyMutationInput {
   name?: string | null
 }
-export type subCategoryUpdateManyMutationInputInputObject =
-  | Extract<keyof subCategoryUpdateManyMutationInput, string>
+export type SubCategoryUpdateManyMutationInputInputObject =
+  | Extract<keyof SubCategoryUpdateManyMutationInput, string>
   | { name: 'name', alias?: string  } 
   
 export interface UserSubscriptionWhereInput {
@@ -5375,18 +5375,18 @@ export type CategorySubscriptionWhereInputInputObject =
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
   
-export interface subCategorySubscriptionWhereInput {
+export interface SubCategorySubscriptionWhereInput {
   mutation_in?: prisma.MutationType[]
   updatedFields_contains?: string | null
   updatedFields_contains_every?: string[]
   updatedFields_contains_some?: string[]
-  node?: subCategoryWhereInput | null
-  AND?: subCategorySubscriptionWhereInput[]
-  OR?: subCategorySubscriptionWhereInput[]
-  NOT?: subCategorySubscriptionWhereInput[]
+  node?: SubCategoryWhereInput | null
+  AND?: SubCategorySubscriptionWhereInput[]
+  OR?: SubCategorySubscriptionWhereInput[]
+  NOT?: SubCategorySubscriptionWhereInput[]
 }
-export type subCategorySubscriptionWhereInputInputObject =
-  | Extract<keyof subCategorySubscriptionWhereInput, string>
+export type SubCategorySubscriptionWhereInputInputObject =
+  | Extract<keyof SubCategorySubscriptionWhereInput, string>
   | { name: 'mutation_in', alias?: string  } 
   | { name: 'updatedFields_contains', alias?: string  } 
   | { name: 'updatedFields_contains_every', alias?: string  } 
@@ -5419,7 +5419,7 @@ export type CategoryOrderByInputValues =
   | 'updatedAt_ASC'
   | 'updatedAt_DESC'
   
-export type subCategoryOrderByInputValues =
+export type SubCategoryOrderByInputValues =
   | 'id_ASC'
   | 'id_DESC'
   | 'name_ASC'

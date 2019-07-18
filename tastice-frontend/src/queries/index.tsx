@@ -44,6 +44,19 @@ export const ALL_CHECKINS = gql`
   }
 `;
 
+export const ALL_CATEGORIES = gql`
+  {
+    categories {
+      name
+      id
+      subCategory {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const CREATE_CHECKIN = gql`
   mutation createCheckin(
     $authorId: ID!

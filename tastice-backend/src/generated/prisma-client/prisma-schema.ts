@@ -14,7 +14,7 @@ type AggregateProduct {
   count: Int!
 }
 
-type AggregatesubCategory {
+type AggregateSubCategory {
   count: Int!
 }
 
@@ -29,7 +29,7 @@ type BatchPayload {
 type Category {
   id: ID!
   name: String!
-  subCategory(where: subCategoryWhereInput, orderBy: subCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [subCategory!]
+  subCategory(where: SubCategoryWhereInput, orderBy: SubCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SubCategory!]
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
 }
 
@@ -42,7 +42,7 @@ type CategoryConnection {
 input CategoryCreateInput {
   id: ID
   name: String!
-  subCategory: subCategoryCreateManyWithoutCategoryInput
+  subCategory: SubCategoryCreateManyWithoutCategoryInput
   products: ProductCreateManyWithoutCategoryInput
 }
 
@@ -59,7 +59,7 @@ input CategoryCreateOneWithoutSubCategoryInput {
 input CategoryCreateWithoutProductsInput {
   id: ID
   name: String!
-  subCategory: subCategoryCreateManyWithoutCategoryInput
+  subCategory: SubCategoryCreateManyWithoutCategoryInput
 }
 
 input CategoryCreateWithoutSubCategoryInput {
@@ -139,7 +139,7 @@ input CategorySubscriptionWhereInput {
 
 input CategoryUpdateInput {
   name: String
-  subCategory: subCategoryUpdateManyWithoutCategoryInput
+  subCategory: SubCategoryUpdateManyWithoutCategoryInput
   products: ProductUpdateManyWithoutCategoryInput
 }
 
@@ -177,7 +177,7 @@ input CategoryUpdateOneRequiredWithoutSubCategoryInput {
 
 input CategoryUpdateWithoutProductsDataInput {
   name: String
-  subCategory: subCategoryUpdateManyWithoutCategoryInput
+  subCategory: SubCategoryUpdateManyWithoutCategoryInput
 }
 
 input CategoryUpdateWithoutSubCategoryDataInput {
@@ -230,9 +230,9 @@ input CategoryWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  subCategory_every: subCategoryWhereInput
-  subCategory_some: subCategoryWhereInput
-  subCategory_none: subCategoryWhereInput
+  subCategory_every: SubCategoryWhereInput
+  subCategory_some: SubCategoryWhereInput
+  subCategory_none: SubCategoryWhereInput
   products_every: ProductWhereInput
   products_some: ProductWhereInput
   products_none: ProductWhereInput
@@ -562,18 +562,18 @@ type Mutation {
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
+  createSubCategory(data: SubCategoryCreateInput!): SubCategory!
+  updateSubCategory(data: SubCategoryUpdateInput!, where: SubCategoryWhereUniqueInput!): SubCategory
+  updateManySubCategories(data: SubCategoryUpdateManyMutationInput!, where: SubCategoryWhereInput): BatchPayload!
+  upsertSubCategory(where: SubCategoryWhereUniqueInput!, create: SubCategoryCreateInput!, update: SubCategoryUpdateInput!): SubCategory!
+  deleteSubCategory(where: SubCategoryWhereUniqueInput!): SubCategory
+  deleteManySubCategories(where: SubCategoryWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User
   deleteManyUsers(where: UserWhereInput): BatchPayload!
-  createsubCategory(data: subCategoryCreateInput!): subCategory!
-  updatesubCategory(data: subCategoryUpdateInput!, where: subCategoryWhereUniqueInput!): subCategory
-  updateManysubCategories(data: subCategoryUpdateManyMutationInput!, where: subCategoryWhereInput): BatchPayload!
-  upsertsubCategory(where: subCategoryWhereUniqueInput!, create: subCategoryCreateInput!, update: subCategoryUpdateInput!): subCategory!
-  deletesubCategory(where: subCategoryWhereUniqueInput!): subCategory
-  deleteManysubCategories(where: subCategoryWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -978,64 +978,64 @@ type Query {
   product(where: ProductWhereUniqueInput!): Product
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
+  subCategory(where: SubCategoryWhereUniqueInput!): SubCategory
+  subCategories(where: SubCategoryWhereInput, orderBy: SubCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SubCategory]!
+  subCategoriesConnection(where: SubCategoryWhereInput, orderBy: SubCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SubCategoryConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  subCategory(where: subCategoryWhereUniqueInput!): subCategory
-  subCategories(where: subCategoryWhereInput, orderBy: subCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [subCategory]!
-  subCategoriesConnection(where: subCategoryWhereInput, orderBy: subCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): subCategoryConnection!
   node(id: ID!): Node
 }
 
-type subCategory {
+type SubCategory {
   id: ID!
   category: Category!
   name: String!
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
 }
 
-type subCategoryConnection {
+type SubCategoryConnection {
   pageInfo: PageInfo!
-  edges: [subCategoryEdge]!
-  aggregate: AggregatesubCategory!
+  edges: [SubCategoryEdge]!
+  aggregate: AggregateSubCategory!
 }
 
-input subCategoryCreateInput {
+input SubCategoryCreateInput {
   id: ID
   category: CategoryCreateOneWithoutSubCategoryInput!
   name: String!
   products: ProductCreateManyInput
 }
 
-input subCategoryCreateManyWithoutCategoryInput {
-  create: [subCategoryCreateWithoutCategoryInput!]
-  connect: [subCategoryWhereUniqueInput!]
+input SubCategoryCreateManyWithoutCategoryInput {
+  create: [SubCategoryCreateWithoutCategoryInput!]
+  connect: [SubCategoryWhereUniqueInput!]
 }
 
-input subCategoryCreateWithoutCategoryInput {
+input SubCategoryCreateWithoutCategoryInput {
   id: ID
   name: String!
   products: ProductCreateManyInput
 }
 
-type subCategoryEdge {
-  node: subCategory!
+type SubCategoryEdge {
+  node: SubCategory!
   cursor: String!
 }
 
-enum subCategoryOrderByInput {
+enum SubCategoryOrderByInput {
   id_ASC
   id_DESC
   name_ASC
   name_DESC
 }
 
-type subCategoryPreviousValues {
+type SubCategoryPreviousValues {
   id: ID!
   name: String!
 }
 
-input subCategoryScalarWhereInput {
+input SubCategoryScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -1064,77 +1064,77 @@ input subCategoryScalarWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  AND: [subCategoryScalarWhereInput!]
-  OR: [subCategoryScalarWhereInput!]
-  NOT: [subCategoryScalarWhereInput!]
+  AND: [SubCategoryScalarWhereInput!]
+  OR: [SubCategoryScalarWhereInput!]
+  NOT: [SubCategoryScalarWhereInput!]
 }
 
-type subCategorySubscriptionPayload {
+type SubCategorySubscriptionPayload {
   mutation: MutationType!
-  node: subCategory
+  node: SubCategory
   updatedFields: [String!]
-  previousValues: subCategoryPreviousValues
+  previousValues: SubCategoryPreviousValues
 }
 
-input subCategorySubscriptionWhereInput {
+input SubCategorySubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: subCategoryWhereInput
-  AND: [subCategorySubscriptionWhereInput!]
-  OR: [subCategorySubscriptionWhereInput!]
-  NOT: [subCategorySubscriptionWhereInput!]
+  node: SubCategoryWhereInput
+  AND: [SubCategorySubscriptionWhereInput!]
+  OR: [SubCategorySubscriptionWhereInput!]
+  NOT: [SubCategorySubscriptionWhereInput!]
 }
 
-input subCategoryUpdateInput {
+input SubCategoryUpdateInput {
   category: CategoryUpdateOneRequiredWithoutSubCategoryInput
   name: String
   products: ProductUpdateManyInput
 }
 
-input subCategoryUpdateManyDataInput {
+input SubCategoryUpdateManyDataInput {
   name: String
 }
 
-input subCategoryUpdateManyMutationInput {
+input SubCategoryUpdateManyMutationInput {
   name: String
 }
 
-input subCategoryUpdateManyWithoutCategoryInput {
-  create: [subCategoryCreateWithoutCategoryInput!]
-  delete: [subCategoryWhereUniqueInput!]
-  connect: [subCategoryWhereUniqueInput!]
-  set: [subCategoryWhereUniqueInput!]
-  disconnect: [subCategoryWhereUniqueInput!]
-  update: [subCategoryUpdateWithWhereUniqueWithoutCategoryInput!]
-  upsert: [subCategoryUpsertWithWhereUniqueWithoutCategoryInput!]
-  deleteMany: [subCategoryScalarWhereInput!]
-  updateMany: [subCategoryUpdateManyWithWhereNestedInput!]
+input SubCategoryUpdateManyWithoutCategoryInput {
+  create: [SubCategoryCreateWithoutCategoryInput!]
+  delete: [SubCategoryWhereUniqueInput!]
+  connect: [SubCategoryWhereUniqueInput!]
+  set: [SubCategoryWhereUniqueInput!]
+  disconnect: [SubCategoryWhereUniqueInput!]
+  update: [SubCategoryUpdateWithWhereUniqueWithoutCategoryInput!]
+  upsert: [SubCategoryUpsertWithWhereUniqueWithoutCategoryInput!]
+  deleteMany: [SubCategoryScalarWhereInput!]
+  updateMany: [SubCategoryUpdateManyWithWhereNestedInput!]
 }
 
-input subCategoryUpdateManyWithWhereNestedInput {
-  where: subCategoryScalarWhereInput!
-  data: subCategoryUpdateManyDataInput!
+input SubCategoryUpdateManyWithWhereNestedInput {
+  where: SubCategoryScalarWhereInput!
+  data: SubCategoryUpdateManyDataInput!
 }
 
-input subCategoryUpdateWithoutCategoryDataInput {
+input SubCategoryUpdateWithoutCategoryDataInput {
   name: String
   products: ProductUpdateManyInput
 }
 
-input subCategoryUpdateWithWhereUniqueWithoutCategoryInput {
-  where: subCategoryWhereUniqueInput!
-  data: subCategoryUpdateWithoutCategoryDataInput!
+input SubCategoryUpdateWithWhereUniqueWithoutCategoryInput {
+  where: SubCategoryWhereUniqueInput!
+  data: SubCategoryUpdateWithoutCategoryDataInput!
 }
 
-input subCategoryUpsertWithWhereUniqueWithoutCategoryInput {
-  where: subCategoryWhereUniqueInput!
-  update: subCategoryUpdateWithoutCategoryDataInput!
-  create: subCategoryCreateWithoutCategoryInput!
+input SubCategoryUpsertWithWhereUniqueWithoutCategoryInput {
+  where: SubCategoryWhereUniqueInput!
+  update: SubCategoryUpdateWithoutCategoryDataInput!
+  create: SubCategoryCreateWithoutCategoryInput!
 }
 
-input subCategoryWhereInput {
+input SubCategoryWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -1167,12 +1167,12 @@ input subCategoryWhereInput {
   products_every: ProductWhereInput
   products_some: ProductWhereInput
   products_none: ProductWhereInput
-  AND: [subCategoryWhereInput!]
-  OR: [subCategoryWhereInput!]
-  NOT: [subCategoryWhereInput!]
+  AND: [SubCategoryWhereInput!]
+  OR: [SubCategoryWhereInput!]
+  NOT: [SubCategoryWhereInput!]
 }
 
-input subCategoryWhereUniqueInput {
+input SubCategoryWhereUniqueInput {
   id: ID
 }
 
@@ -1180,8 +1180,8 @@ type Subscription {
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   checkin(where: CheckinSubscriptionWhereInput): CheckinSubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
+  subCategory(where: SubCategorySubscriptionWhereInput): SubCategorySubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-  subCategory(where: subCategorySubscriptionWhereInput): subCategorySubscriptionPayload
 }
 
 type User {

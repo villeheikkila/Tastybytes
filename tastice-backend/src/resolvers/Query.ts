@@ -26,6 +26,20 @@ export const Query = queryType({
       }
     });
 
+    t.list.field("categories", {
+      type: "Category",
+      resolve: (parent, args, ctx) => {
+        return ctx.prisma.categories();
+      }
+    });
+
+    t.list.field("subCategories", {
+      type: "SubCategory",
+      resolve: (parent, args, ctx) => {
+        return ctx.prisma.subCategories();
+      }
+    });
+
     t.list.field("checkins", {
       type: "Checkin",
       resolve: (parent, args, ctx) => {

@@ -19,8 +19,8 @@ export interface Exists {
   category: (where?: CategoryWhereInput) => Promise<boolean>;
   checkin: (where?: CheckinWhereInput) => Promise<boolean>;
   product: (where?: ProductWhereInput) => Promise<boolean>;
+  subCategory: (where?: SubCategoryWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
-  subCategory: (where?: subCategoryWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -99,6 +99,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => ProductConnectionPromise;
+  subCategory: (
+    where: SubCategoryWhereUniqueInput
+  ) => SubCategoryNullablePromise;
+  subCategories: (args?: {
+    where?: SubCategoryWhereInput;
+    orderBy?: SubCategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<SubCategory>;
+  subCategoriesConnection: (args?: {
+    where?: SubCategoryWhereInput;
+    orderBy?: SubCategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => SubCategoryConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -118,27 +139,6 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => UserConnectionPromise;
-  subCategory: (
-    where: subCategoryWhereUniqueInput
-  ) => subCategoryNullablePromise;
-  subCategories: (args?: {
-    where?: subCategoryWhereInput;
-    orderBy?: subCategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => FragmentableArray<subCategory>;
-  subCategoriesConnection: (args?: {
-    where?: subCategoryWhereInput;
-    orderBy?: subCategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => subCategoryConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
@@ -193,6 +193,24 @@ export interface Prisma {
   }) => ProductPromise;
   deleteProduct: (where: ProductWhereUniqueInput) => ProductPromise;
   deleteManyProducts: (where?: ProductWhereInput) => BatchPayloadPromise;
+  createSubCategory: (data: SubCategoryCreateInput) => SubCategoryPromise;
+  updateSubCategory: (args: {
+    data: SubCategoryUpdateInput;
+    where: SubCategoryWhereUniqueInput;
+  }) => SubCategoryPromise;
+  updateManySubCategories: (args: {
+    data: SubCategoryUpdateManyMutationInput;
+    where?: SubCategoryWhereInput;
+  }) => BatchPayloadPromise;
+  upsertSubCategory: (args: {
+    where: SubCategoryWhereUniqueInput;
+    create: SubCategoryCreateInput;
+    update: SubCategoryUpdateInput;
+  }) => SubCategoryPromise;
+  deleteSubCategory: (where: SubCategoryWhereUniqueInput) => SubCategoryPromise;
+  deleteManySubCategories: (
+    where?: SubCategoryWhereInput
+  ) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -209,24 +227,6 @@ export interface Prisma {
   }) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
-  createsubCategory: (data: subCategoryCreateInput) => subCategoryPromise;
-  updatesubCategory: (args: {
-    data: subCategoryUpdateInput;
-    where: subCategoryWhereUniqueInput;
-  }) => subCategoryPromise;
-  updateManysubCategories: (args: {
-    data: subCategoryUpdateManyMutationInput;
-    where?: subCategoryWhereInput;
-  }) => BatchPayloadPromise;
-  upsertsubCategory: (args: {
-    where: subCategoryWhereUniqueInput;
-    create: subCategoryCreateInput;
-    update: subCategoryUpdateInput;
-  }) => subCategoryPromise;
-  deletesubCategory: (where: subCategoryWhereUniqueInput) => subCategoryPromise;
-  deleteManysubCategories: (
-    where?: subCategoryWhereInput
-  ) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -245,12 +245,12 @@ export interface Subscription {
   product: (
     where?: ProductSubscriptionWhereInput
   ) => ProductSubscriptionPayloadSubscription;
+  subCategory: (
+    where?: SubCategorySubscriptionWhereInput
+  ) => SubCategorySubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
-  subCategory: (
-    where?: subCategorySubscriptionWhereInput
-  ) => subCategorySubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -261,7 +261,7 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type subCategoryOrderByInput =
+export type SubCategoryOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
@@ -323,7 +323,7 @@ export type CategoryWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface subCategoryWhereInput {
+export interface SubCategoryWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -356,9 +356,9 @@ export interface subCategoryWhereInput {
   products_every?: Maybe<ProductWhereInput>;
   products_some?: Maybe<ProductWhereInput>;
   products_none?: Maybe<ProductWhereInput>;
-  AND?: Maybe<subCategoryWhereInput[] | subCategoryWhereInput>;
-  OR?: Maybe<subCategoryWhereInput[] | subCategoryWhereInput>;
-  NOT?: Maybe<subCategoryWhereInput[] | subCategoryWhereInput>;
+  AND?: Maybe<SubCategoryWhereInput[] | SubCategoryWhereInput>;
+  OR?: Maybe<SubCategoryWhereInput[] | SubCategoryWhereInput>;
+  NOT?: Maybe<SubCategoryWhereInput[] | SubCategoryWhereInput>;
 }
 
 export interface CategoryWhereInput {
@@ -390,9 +390,9 @@ export interface CategoryWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
-  subCategory_every?: Maybe<subCategoryWhereInput>;
-  subCategory_some?: Maybe<subCategoryWhereInput>;
-  subCategory_none?: Maybe<subCategoryWhereInput>;
+  subCategory_every?: Maybe<SubCategoryWhereInput>;
+  subCategory_some?: Maybe<SubCategoryWhereInput>;
+  subCategory_none?: Maybe<SubCategoryWhereInput>;
   products_every?: Maybe<ProductWhereInput>;
   products_some?: Maybe<ProductWhereInput>;
   products_none?: Maybe<ProductWhereInput>;
@@ -653,31 +653,31 @@ export type ProductWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
+export type SubCategoryWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   email?: Maybe<String>;
 }>;
 
-export type subCategoryWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
 export interface CategoryCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
-  subCategory?: Maybe<subCategoryCreateManyWithoutCategoryInput>;
+  subCategory?: Maybe<SubCategoryCreateManyWithoutCategoryInput>;
   products?: Maybe<ProductCreateManyWithoutCategoryInput>;
 }
 
-export interface subCategoryCreateManyWithoutCategoryInput {
+export interface SubCategoryCreateManyWithoutCategoryInput {
   create?: Maybe<
-    | subCategoryCreateWithoutCategoryInput[]
-    | subCategoryCreateWithoutCategoryInput
+    | SubCategoryCreateWithoutCategoryInput[]
+    | SubCategoryCreateWithoutCategoryInput
   >;
-  connect?: Maybe<subCategoryWhereUniqueInput[] | subCategoryWhereUniqueInput>;
+  connect?: Maybe<SubCategoryWhereUniqueInput[] | SubCategoryWhereUniqueInput>;
 }
 
-export interface subCategoryCreateWithoutCategoryInput {
+export interface SubCategoryCreateWithoutCategoryInput {
   id?: Maybe<ID_Input>;
   name: String;
   products?: Maybe<ProductCreateManyInput>;
@@ -779,7 +779,7 @@ export interface CategoryCreateManyWithoutProductsInput {
 export interface CategoryCreateWithoutProductsInput {
   id?: Maybe<ID_Input>;
   name: String;
-  subCategory?: Maybe<subCategoryCreateManyWithoutCategoryInput>;
+  subCategory?: Maybe<SubCategoryCreateManyWithoutCategoryInput>;
 }
 
 export interface ProductCreateManyWithoutCategoryInput {
@@ -799,44 +799,44 @@ export interface ProductCreateWithoutCategoryInput {
 
 export interface CategoryUpdateInput {
   name?: Maybe<String>;
-  subCategory?: Maybe<subCategoryUpdateManyWithoutCategoryInput>;
+  subCategory?: Maybe<SubCategoryUpdateManyWithoutCategoryInput>;
   products?: Maybe<ProductUpdateManyWithoutCategoryInput>;
 }
 
-export interface subCategoryUpdateManyWithoutCategoryInput {
+export interface SubCategoryUpdateManyWithoutCategoryInput {
   create?: Maybe<
-    | subCategoryCreateWithoutCategoryInput[]
-    | subCategoryCreateWithoutCategoryInput
+    | SubCategoryCreateWithoutCategoryInput[]
+    | SubCategoryCreateWithoutCategoryInput
   >;
-  delete?: Maybe<subCategoryWhereUniqueInput[] | subCategoryWhereUniqueInput>;
-  connect?: Maybe<subCategoryWhereUniqueInput[] | subCategoryWhereUniqueInput>;
-  set?: Maybe<subCategoryWhereUniqueInput[] | subCategoryWhereUniqueInput>;
+  delete?: Maybe<SubCategoryWhereUniqueInput[] | SubCategoryWhereUniqueInput>;
+  connect?: Maybe<SubCategoryWhereUniqueInput[] | SubCategoryWhereUniqueInput>;
+  set?: Maybe<SubCategoryWhereUniqueInput[] | SubCategoryWhereUniqueInput>;
   disconnect?: Maybe<
-    subCategoryWhereUniqueInput[] | subCategoryWhereUniqueInput
+    SubCategoryWhereUniqueInput[] | SubCategoryWhereUniqueInput
   >;
   update?: Maybe<
-    | subCategoryUpdateWithWhereUniqueWithoutCategoryInput[]
-    | subCategoryUpdateWithWhereUniqueWithoutCategoryInput
+    | SubCategoryUpdateWithWhereUniqueWithoutCategoryInput[]
+    | SubCategoryUpdateWithWhereUniqueWithoutCategoryInput
   >;
   upsert?: Maybe<
-    | subCategoryUpsertWithWhereUniqueWithoutCategoryInput[]
-    | subCategoryUpsertWithWhereUniqueWithoutCategoryInput
+    | SubCategoryUpsertWithWhereUniqueWithoutCategoryInput[]
+    | SubCategoryUpsertWithWhereUniqueWithoutCategoryInput
   >;
   deleteMany?: Maybe<
-    subCategoryScalarWhereInput[] | subCategoryScalarWhereInput
+    SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput
   >;
   updateMany?: Maybe<
-    | subCategoryUpdateManyWithWhereNestedInput[]
-    | subCategoryUpdateManyWithWhereNestedInput
+    | SubCategoryUpdateManyWithWhereNestedInput[]
+    | SubCategoryUpdateManyWithWhereNestedInput
   >;
 }
 
-export interface subCategoryUpdateWithWhereUniqueWithoutCategoryInput {
-  where: subCategoryWhereUniqueInput;
-  data: subCategoryUpdateWithoutCategoryDataInput;
+export interface SubCategoryUpdateWithWhereUniqueWithoutCategoryInput {
+  where: SubCategoryWhereUniqueInput;
+  data: SubCategoryUpdateWithoutCategoryDataInput;
 }
 
-export interface subCategoryUpdateWithoutCategoryDataInput {
+export interface SubCategoryUpdateWithoutCategoryDataInput {
   name?: Maybe<String>;
   products?: Maybe<ProductUpdateManyInput>;
 }
@@ -1038,7 +1038,7 @@ export interface CategoryUpdateWithWhereUniqueWithoutProductsInput {
 
 export interface CategoryUpdateWithoutProductsDataInput {
   name?: Maybe<String>;
-  subCategory?: Maybe<subCategoryUpdateManyWithoutCategoryInput>;
+  subCategory?: Maybe<SubCategoryUpdateManyWithoutCategoryInput>;
 }
 
 export interface CategoryUpsertWithWhereUniqueWithoutProductsInput {
@@ -1388,13 +1388,13 @@ export interface ProductUpdateManyDataInput {
   type?: Maybe<String>;
 }
 
-export interface subCategoryUpsertWithWhereUniqueWithoutCategoryInput {
-  where: subCategoryWhereUniqueInput;
-  update: subCategoryUpdateWithoutCategoryDataInput;
-  create: subCategoryCreateWithoutCategoryInput;
+export interface SubCategoryUpsertWithWhereUniqueWithoutCategoryInput {
+  where: SubCategoryWhereUniqueInput;
+  update: SubCategoryUpdateWithoutCategoryDataInput;
+  create: SubCategoryCreateWithoutCategoryInput;
 }
 
-export interface subCategoryScalarWhereInput {
+export interface SubCategoryScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -1423,17 +1423,17 @@ export interface subCategoryScalarWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<subCategoryScalarWhereInput[] | subCategoryScalarWhereInput>;
-  OR?: Maybe<subCategoryScalarWhereInput[] | subCategoryScalarWhereInput>;
-  NOT?: Maybe<subCategoryScalarWhereInput[] | subCategoryScalarWhereInput>;
+  AND?: Maybe<SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput>;
+  OR?: Maybe<SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput>;
+  NOT?: Maybe<SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput>;
 }
 
-export interface subCategoryUpdateManyWithWhereNestedInput {
-  where: subCategoryScalarWhereInput;
-  data: subCategoryUpdateManyDataInput;
+export interface SubCategoryUpdateManyWithWhereNestedInput {
+  where: SubCategoryScalarWhereInput;
+  data: SubCategoryUpdateManyDataInput;
 }
 
-export interface subCategoryUpdateManyDataInput {
+export interface SubCategoryUpdateManyDataInput {
   name?: Maybe<String>;
 }
 
@@ -1516,25 +1516,7 @@ export interface ProductUpdateManyMutationInput {
   type?: Maybe<String>;
 }
 
-export interface UserUpdateInput {
-  email?: Maybe<String>;
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  password?: Maybe<String>;
-  admin?: Maybe<Boolean>;
-  checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
-  friends?: Maybe<UserUpdateManyInput>;
-}
-
-export interface UserUpdateManyMutationInput {
-  email?: Maybe<String>;
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  password?: Maybe<String>;
-  admin?: Maybe<Boolean>;
-}
-
-export interface subCategoryCreateInput {
+export interface SubCategoryCreateInput {
   id?: Maybe<ID_Input>;
   category: CategoryCreateOneWithoutSubCategoryInput;
   name: String;
@@ -1552,7 +1534,7 @@ export interface CategoryCreateWithoutSubCategoryInput {
   products?: Maybe<ProductCreateManyWithoutCategoryInput>;
 }
 
-export interface subCategoryUpdateInput {
+export interface SubCategoryUpdateInput {
   category?: Maybe<CategoryUpdateOneRequiredWithoutSubCategoryInput>;
   name?: Maybe<String>;
   products?: Maybe<ProductUpdateManyInput>;
@@ -1575,8 +1557,26 @@ export interface CategoryUpsertWithoutSubCategoryInput {
   create: CategoryCreateWithoutSubCategoryInput;
 }
 
-export interface subCategoryUpdateManyMutationInput {
+export interface SubCategoryUpdateManyMutationInput {
   name?: Maybe<String>;
+}
+
+export interface UserUpdateInput {
+  email?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  password?: Maybe<String>;
+  admin?: Maybe<Boolean>;
+  checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
+  friends?: Maybe<UserUpdateManyInput>;
+}
+
+export interface UserUpdateManyMutationInput {
+  email?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  password?: Maybe<String>;
+  admin?: Maybe<Boolean>;
 }
 
 export interface CategorySubscriptionWhereInput {
@@ -1616,6 +1616,23 @@ export interface ProductSubscriptionWhereInput {
   NOT?: Maybe<ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput>;
 }
 
+export interface SubCategorySubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SubCategoryWhereInput>;
+  AND?: Maybe<
+    SubCategorySubscriptionWhereInput[] | SubCategorySubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    SubCategorySubscriptionWhereInput[] | SubCategorySubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    SubCategorySubscriptionWhereInput[] | SubCategorySubscriptionWhereInput
+  >;
+}
+
 export interface UserSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -1625,23 +1642,6 @@ export interface UserSubscriptionWhereInput {
   AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
   OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
   NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-}
-
-export interface subCategorySubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<subCategoryWhereInput>;
-  AND?: Maybe<
-    subCategorySubscriptionWhereInput[] | subCategorySubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    subCategorySubscriptionWhereInput[] | subCategorySubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    subCategorySubscriptionWhereInput[] | subCategorySubscriptionWhereInput
-  >;
 }
 
 export interface NodeNode {
@@ -1656,9 +1656,9 @@ export interface Category {
 export interface CategoryPromise extends Promise<Category>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  subCategory: <T = FragmentableArray<subCategory>>(args?: {
-    where?: subCategoryWhereInput;
-    orderBy?: subCategoryOrderByInput;
+  subCategory: <T = FragmentableArray<SubCategory>>(args?: {
+    where?: SubCategoryWhereInput;
+    orderBy?: SubCategoryOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1681,9 +1681,9 @@ export interface CategorySubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
-  subCategory: <T = Promise<AsyncIterator<subCategorySubscription>>>(args?: {
-    where?: subCategoryWhereInput;
-    orderBy?: subCategoryOrderByInput;
+  subCategory: <T = Promise<AsyncIterator<SubCategorySubscription>>>(args?: {
+    where?: SubCategoryWhereInput;
+    orderBy?: SubCategoryOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1706,9 +1706,9 @@ export interface CategoryNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  subCategory: <T = FragmentableArray<subCategory>>(args?: {
-    where?: subCategoryWhereInput;
-    orderBy?: subCategoryOrderByInput;
+  subCategory: <T = FragmentableArray<SubCategory>>(args?: {
+    where?: SubCategoryWhereInput;
+    orderBy?: SubCategoryOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1726,12 +1726,12 @@ export interface CategoryNullablePromise
   }) => T;
 }
 
-export interface subCategory {
+export interface SubCategory {
   id: ID_Output;
   name: String;
 }
 
-export interface subCategoryPromise extends Promise<subCategory>, Fragmentable {
+export interface SubCategoryPromise extends Promise<SubCategory>, Fragmentable {
   id: () => Promise<ID_Output>;
   category: <T = CategoryPromise>() => T;
   name: () => Promise<String>;
@@ -1746,8 +1746,8 @@ export interface subCategoryPromise extends Promise<subCategory>, Fragmentable {
   }) => T;
 }
 
-export interface subCategorySubscription
-  extends Promise<AsyncIterator<subCategory>>,
+export interface SubCategorySubscription
+  extends Promise<AsyncIterator<SubCategory>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   category: <T = CategorySubscription>() => T;
@@ -1763,8 +1763,8 @@ export interface subCategorySubscription
   }) => T;
 }
 
-export interface subCategoryNullablePromise
-  extends Promise<subCategory | null>,
+export interface SubCategoryNullablePromise
+  extends Promise<SubCategory | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   category: <T = CategoryPromise>() => T;
@@ -2205,6 +2205,62 @@ export interface AggregateProductSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface SubCategoryConnection {
+  pageInfo: PageInfo;
+  edges: SubCategoryEdge[];
+}
+
+export interface SubCategoryConnectionPromise
+  extends Promise<SubCategoryConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SubCategoryEdge>>() => T;
+  aggregate: <T = AggregateSubCategoryPromise>() => T;
+}
+
+export interface SubCategoryConnectionSubscription
+  extends Promise<AsyncIterator<SubCategoryConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SubCategoryEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSubCategorySubscription>() => T;
+}
+
+export interface SubCategoryEdge {
+  node: SubCategory;
+  cursor: String;
+}
+
+export interface SubCategoryEdgePromise
+  extends Promise<SubCategoryEdge>,
+    Fragmentable {
+  node: <T = SubCategoryPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface SubCategoryEdgeSubscription
+  extends Promise<AsyncIterator<SubCategoryEdge>>,
+    Fragmentable {
+  node: <T = SubCategorySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateSubCategory {
+  count: Int;
+}
+
+export interface AggregateSubCategoryPromise
+  extends Promise<AggregateSubCategory>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSubCategorySubscription
+  extends Promise<AsyncIterator<AggregateSubCategory>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface UserConnection {
   pageInfo: PageInfo;
   edges: UserEdge[];
@@ -2255,62 +2311,6 @@ export interface AggregateUserPromise
 
 export interface AggregateUserSubscription
   extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface subCategoryConnection {
-  pageInfo: PageInfo;
-  edges: subCategoryEdge[];
-}
-
-export interface subCategoryConnectionPromise
-  extends Promise<subCategoryConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<subCategoryEdge>>() => T;
-  aggregate: <T = AggregatesubCategoryPromise>() => T;
-}
-
-export interface subCategoryConnectionSubscription
-  extends Promise<AsyncIterator<subCategoryConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<subCategoryEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatesubCategorySubscription>() => T;
-}
-
-export interface subCategoryEdge {
-  node: subCategory;
-  cursor: String;
-}
-
-export interface subCategoryEdgePromise
-  extends Promise<subCategoryEdge>,
-    Fragmentable {
-  node: <T = subCategoryPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface subCategoryEdgeSubscription
-  extends Promise<AsyncIterator<subCategoryEdge>>,
-    Fragmentable {
-  node: <T = subCategorySubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregatesubCategory {
-  count: Int;
-}
-
-export interface AggregatesubCategoryPromise
-  extends Promise<AggregatesubCategory>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregatesubCategorySubscription
-  extends Promise<AsyncIterator<AggregatesubCategory>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -2484,6 +2484,50 @@ export interface ProductPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface SubCategorySubscriptionPayload {
+  mutation: MutationType;
+  node: SubCategory;
+  updatedFields: String[];
+  previousValues: SubCategoryPreviousValues;
+}
+
+export interface SubCategorySubscriptionPayloadPromise
+  extends Promise<SubCategorySubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SubCategoryPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SubCategoryPreviousValuesPromise>() => T;
+}
+
+export interface SubCategorySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SubCategorySubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SubCategorySubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SubCategoryPreviousValuesSubscription>() => T;
+}
+
+export interface SubCategoryPreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface SubCategoryPreviousValuesPromise
+  extends Promise<SubCategoryPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface SubCategoryPreviousValuesSubscription
+  extends Promise<AsyncIterator<SubCategoryPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -2546,50 +2590,6 @@ export interface UserPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface subCategorySubscriptionPayload {
-  mutation: MutationType;
-  node: subCategory;
-  updatedFields: String[];
-  previousValues: subCategoryPreviousValues;
-}
-
-export interface subCategorySubscriptionPayloadPromise
-  extends Promise<subCategorySubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = subCategoryPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = subCategoryPreviousValuesPromise>() => T;
-}
-
-export interface subCategorySubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<subCategorySubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = subCategorySubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = subCategoryPreviousValuesSubscription>() => T;
-}
-
-export interface subCategoryPreviousValues {
-  id: ID_Output;
-  name: String;
-}
-
-export interface subCategoryPreviousValuesPromise
-  extends Promise<subCategoryPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface subCategoryPreviousValuesSubscription
-  extends Promise<AsyncIterator<subCategoryPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
@@ -2645,7 +2645,7 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "subCategory",
+    name: "SubCategory",
     embedded: false
   }
 ];

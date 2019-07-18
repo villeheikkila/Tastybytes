@@ -9,7 +9,7 @@ export default {
     Product: ['id'],
     Checkin: ['id'],
     Category: ['id'],
-    subCategory: ['id']
+    SubCategory: ['id']
   },
   embeddedTypes: [],
   clientPath: 'src/generated/prisma-client',
@@ -862,7 +862,7 @@ export default {
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "subCategoryWhereUniqueInput",
+                    "name": "SubCategoryWhereUniqueInput",
                     "ofType": null
                   }
                 },
@@ -871,7 +871,7 @@ export default {
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "subCategory",
+              "name": "SubCategory",
               "ofType": null
             },
             "isDeprecated": false,
@@ -886,7 +886,7 @@ export default {
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereInput",
+                  "name": "SubCategoryWhereInput",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -896,7 +896,7 @@ export default {
                 "description": null,
                 "type": {
                   "kind": "ENUM",
-                  "name": "subCategoryOrderByInput",
+                  "name": "SubCategoryOrderByInput",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -960,7 +960,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "subCategory",
+                  "name": "SubCategory",
                   "ofType": null
                 }
               }
@@ -977,7 +977,7 @@ export default {
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereInput",
+                  "name": "SubCategoryWhereInput",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -987,7 +987,7 @@ export default {
                 "description": null,
                 "type": {
                   "kind": "ENUM",
-                  "name": "subCategoryOrderByInput",
+                  "name": "SubCategoryOrderByInput",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -1048,7 +1048,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "subCategoryConnection",
+                "name": "SubCategoryConnection",
                 "ofType": null
               }
             },
@@ -4552,7 +4552,7 @@ export default {
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "subCategoryWhereInput",
+              "name": "SubCategoryWhereInput",
               "ofType": null
             },
             "defaultValue": null
@@ -4562,7 +4562,7 @@ export default {
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "subCategoryWhereInput",
+              "name": "SubCategoryWhereInput",
               "ofType": null
             },
             "defaultValue": null
@@ -4572,7 +4572,7 @@ export default {
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "subCategoryWhereInput",
+              "name": "SubCategoryWhereInput",
               "ofType": null
             },
             "defaultValue": null
@@ -4668,7 +4668,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryWhereInput",
+        "name": "SubCategoryWhereInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -5035,7 +5035,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereInput",
+                  "name": "SubCategoryWhereInput",
                   "ofType": null
                 }
               }
@@ -5053,7 +5053,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereInput",
+                  "name": "SubCategoryWhereInput",
                   "ofType": null
                 }
               }
@@ -5071,7 +5071,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereInput",
+                  "name": "SubCategoryWhereInput",
                   "ofType": null
                 }
               }
@@ -5663,7 +5663,7 @@ export default {
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereInput",
+                  "name": "SubCategoryWhereInput",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -5673,7 +5673,7 @@ export default {
                 "description": null,
                 "type": {
                   "kind": "ENUM",
-                  "name": "subCategoryOrderByInput",
+                  "name": "SubCategoryOrderByInput",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -5737,7 +5737,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "subCategory",
+                  "name": "SubCategory",
                   "ofType": null
                 }
               }
@@ -5844,7 +5844,7 @@ export default {
       },
       {
         "kind": "ENUM",
-        "name": "subCategoryOrderByInput",
+        "name": "SubCategoryOrderByInput",
         "description": null,
         "fields": null,
         "inputFields": null,
@@ -5903,7 +5903,7 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "subCategory",
+        "name": "SubCategory",
         "description": null,
         "fields": [
           {
@@ -6905,7 +6905,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryWhereUniqueInput",
+        "name": "SubCategoryWhereUniqueInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -6926,7 +6926,7 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "subCategoryConnection",
+        "name": "SubCategoryConnection",
         "description": null,
         "fields": [
           {
@@ -6957,7 +6957,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "subCategoryEdge",
+                  "name": "SubCategoryEdge",
                   "ofType": null
                 }
               }
@@ -6974,7 +6974,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "AggregatesubCategory",
+                "name": "AggregateSubCategory",
                 "ofType": null
               }
             },
@@ -6989,7 +6989,7 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "subCategoryEdge",
+        "name": "SubCategoryEdge",
         "description": null,
         "fields": [
           {
@@ -7001,7 +7001,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "subCategory",
+                "name": "SubCategory",
                 "ofType": null
               }
             },
@@ -7032,7 +7032,7 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "AggregatesubCategory",
+        "name": "AggregateSubCategory",
         "description": null,
         "fields": [
           {
@@ -7994,7 +7994,7 @@ export default {
             "deprecationReason": null
           },
           {
-            "name": "createsubCategory",
+            "name": "createSubCategory",
             "description": null,
             "args": [
               {
@@ -8005,7 +8005,7 @@ export default {
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "subCategoryCreateInput",
+                    "name": "SubCategoryCreateInput",
                     "ofType": null
                   }
                 },
@@ -8017,7 +8017,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "subCategory",
+                "name": "SubCategory",
                 "ofType": null
               }
             },
@@ -8025,7 +8025,7 @@ export default {
             "deprecationReason": null
           },
           {
-            "name": "updatesubCategory",
+            "name": "updateSubCategory",
             "description": null,
             "args": [
               {
@@ -8036,7 +8036,7 @@ export default {
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "subCategoryUpdateInput",
+                    "name": "SubCategoryUpdateInput",
                     "ofType": null
                   }
                 },
@@ -8050,7 +8050,7 @@ export default {
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "subCategoryWhereUniqueInput",
+                    "name": "SubCategoryWhereUniqueInput",
                     "ofType": null
                   }
                 },
@@ -8059,14 +8059,14 @@ export default {
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "subCategory",
+              "name": "SubCategory",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "updateManysubCategories",
+            "name": "updateManySubCategories",
             "description": null,
             "args": [
               {
@@ -8077,7 +8077,7 @@ export default {
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "subCategoryUpdateManyMutationInput",
+                    "name": "SubCategoryUpdateManyMutationInput",
                     "ofType": null
                   }
                 },
@@ -8088,7 +8088,7 @@ export default {
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereInput",
+                  "name": "SubCategoryWhereInput",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -8107,7 +8107,7 @@ export default {
             "deprecationReason": null
           },
           {
-            "name": "upsertsubCategory",
+            "name": "upsertSubCategory",
             "description": null,
             "args": [
               {
@@ -8118,7 +8118,7 @@ export default {
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "subCategoryWhereUniqueInput",
+                    "name": "SubCategoryWhereUniqueInput",
                     "ofType": null
                   }
                 },
@@ -8132,7 +8132,7 @@ export default {
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "subCategoryCreateInput",
+                    "name": "SubCategoryCreateInput",
                     "ofType": null
                   }
                 },
@@ -8146,7 +8146,7 @@ export default {
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "subCategoryUpdateInput",
+                    "name": "SubCategoryUpdateInput",
                     "ofType": null
                   }
                 },
@@ -8158,7 +8158,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "subCategory",
+                "name": "SubCategory",
                 "ofType": null
               }
             },
@@ -8166,7 +8166,7 @@ export default {
             "deprecationReason": null
           },
           {
-            "name": "deletesubCategory",
+            "name": "deleteSubCategory",
             "description": null,
             "args": [
               {
@@ -8177,7 +8177,7 @@ export default {
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "subCategoryWhereUniqueInput",
+                    "name": "SubCategoryWhereUniqueInput",
                     "ofType": null
                   }
                 },
@@ -8186,14 +8186,14 @@ export default {
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "subCategory",
+              "name": "SubCategory",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "deleteManysubCategories",
+            "name": "deleteManySubCategories",
             "description": null,
             "args": [
               {
@@ -8201,7 +8201,7 @@ export default {
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereInput",
+                  "name": "SubCategoryWhereInput",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -8620,7 +8620,7 @@ export default {
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "subCategoryCreateManyWithoutCategoryInput",
+              "name": "SubCategoryCreateManyWithoutCategoryInput",
               "ofType": null
             },
             "defaultValue": null
@@ -8632,7 +8632,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryCreateManyWithoutCategoryInput",
+        "name": "SubCategoryCreateManyWithoutCategoryInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -8647,7 +8647,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryCreateWithoutCategoryInput",
+                  "name": "SubCategoryCreateWithoutCategoryInput",
                   "ofType": null
                 }
               }
@@ -8665,7 +8665,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereUniqueInput",
+                  "name": "SubCategoryWhereUniqueInput",
                   "ofType": null
                 }
               }
@@ -8679,7 +8679,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryCreateWithoutCategoryInput",
+        "name": "SubCategoryCreateWithoutCategoryInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -9798,7 +9798,7 @@ export default {
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "subCategoryUpdateManyWithoutCategoryInput",
+              "name": "SubCategoryUpdateManyWithoutCategoryInput",
               "ofType": null
             },
             "defaultValue": null
@@ -9810,7 +9810,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryUpdateManyWithoutCategoryInput",
+        "name": "SubCategoryUpdateManyWithoutCategoryInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -9825,7 +9825,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryCreateWithoutCategoryInput",
+                  "name": "SubCategoryCreateWithoutCategoryInput",
                   "ofType": null
                 }
               }
@@ -9843,7 +9843,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereUniqueInput",
+                  "name": "SubCategoryWhereUniqueInput",
                   "ofType": null
                 }
               }
@@ -9861,7 +9861,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereUniqueInput",
+                  "name": "SubCategoryWhereUniqueInput",
                   "ofType": null
                 }
               }
@@ -9879,7 +9879,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereUniqueInput",
+                  "name": "SubCategoryWhereUniqueInput",
                   "ofType": null
                 }
               }
@@ -9897,7 +9897,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryWhereUniqueInput",
+                  "name": "SubCategoryWhereUniqueInput",
                   "ofType": null
                 }
               }
@@ -9915,7 +9915,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryUpdateWithWhereUniqueWithoutCategoryInput",
+                  "name": "SubCategoryUpdateWithWhereUniqueWithoutCategoryInput",
                   "ofType": null
                 }
               }
@@ -9933,7 +9933,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryUpsertWithWhereUniqueWithoutCategoryInput",
+                  "name": "SubCategoryUpsertWithWhereUniqueWithoutCategoryInput",
                   "ofType": null
                 }
               }
@@ -9951,7 +9951,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryScalarWhereInput",
+                  "name": "SubCategoryScalarWhereInput",
                   "ofType": null
                 }
               }
@@ -9969,7 +9969,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryUpdateManyWithWhereNestedInput",
+                  "name": "SubCategoryUpdateManyWithWhereNestedInput",
                   "ofType": null
                 }
               }
@@ -9983,7 +9983,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryUpdateWithWhereUniqueWithoutCategoryInput",
+        "name": "SubCategoryUpdateWithWhereUniqueWithoutCategoryInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -9995,7 +9995,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "subCategoryWhereUniqueInput",
+                "name": "SubCategoryWhereUniqueInput",
                 "ofType": null
               }
             },
@@ -10009,7 +10009,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "subCategoryUpdateWithoutCategoryDataInput",
+                "name": "SubCategoryUpdateWithoutCategoryDataInput",
                 "ofType": null
               }
             },
@@ -10022,7 +10022,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryUpdateWithoutCategoryDataInput",
+        "name": "SubCategoryUpdateWithoutCategoryDataInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -14045,7 +14045,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryUpsertWithWhereUniqueWithoutCategoryInput",
+        "name": "SubCategoryUpsertWithWhereUniqueWithoutCategoryInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -14057,7 +14057,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "subCategoryWhereUniqueInput",
+                "name": "SubCategoryWhereUniqueInput",
                 "ofType": null
               }
             },
@@ -14071,7 +14071,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "subCategoryUpdateWithoutCategoryDataInput",
+                "name": "SubCategoryUpdateWithoutCategoryDataInput",
                 "ofType": null
               }
             },
@@ -14085,7 +14085,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "subCategoryCreateWithoutCategoryInput",
+                "name": "SubCategoryCreateWithoutCategoryInput",
                 "ofType": null
               }
             },
@@ -14098,7 +14098,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryScalarWhereInput",
+        "name": "SubCategoryScalarWhereInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -14425,7 +14425,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryScalarWhereInput",
+                  "name": "SubCategoryScalarWhereInput",
                   "ofType": null
                 }
               }
@@ -14443,7 +14443,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryScalarWhereInput",
+                  "name": "SubCategoryScalarWhereInput",
                   "ofType": null
                 }
               }
@@ -14461,7 +14461,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategoryScalarWhereInput",
+                  "name": "SubCategoryScalarWhereInput",
                   "ofType": null
                 }
               }
@@ -14475,7 +14475,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryUpdateManyWithWhereNestedInput",
+        "name": "SubCategoryUpdateManyWithWhereNestedInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -14487,7 +14487,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "subCategoryScalarWhereInput",
+                "name": "SubCategoryScalarWhereInput",
                 "ofType": null
               }
             },
@@ -14501,7 +14501,7 @@ export default {
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "subCategoryUpdateManyDataInput",
+                "name": "SubCategoryUpdateManyDataInput",
                 "ofType": null
               }
             },
@@ -14514,7 +14514,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryUpdateManyDataInput",
+        "name": "SubCategoryUpdateManyDataInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -15509,7 +15509,7 @@ export default {
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "subCategoryCreateManyWithoutCategoryInput",
+              "name": "SubCategoryCreateManyWithoutCategoryInput",
               "ofType": null
             },
             "defaultValue": null
@@ -15662,7 +15662,7 @@ export default {
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "subCategoryUpdateManyWithoutCategoryInput",
+              "name": "SubCategoryUpdateManyWithoutCategoryInput",
               "ofType": null
             },
             "defaultValue": null
@@ -16021,7 +16021,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryCreateInput",
+        "name": "SubCategoryCreateInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -16156,7 +16156,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryUpdateInput",
+        "name": "SubCategoryUpdateInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -16318,7 +16318,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategoryUpdateManyMutationInput",
+        "name": "SubCategoryUpdateManyMutationInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -16443,7 +16443,7 @@ export default {
                 "description": null,
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategorySubscriptionWhereInput",
+                  "name": "SubCategorySubscriptionWhereInput",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -16451,7 +16451,7 @@ export default {
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "subCategorySubscriptionPayload",
+              "name": "SubCategorySubscriptionPayload",
               "ofType": null
             },
             "isDeprecated": false,
@@ -17702,7 +17702,7 @@ export default {
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "subCategorySubscriptionWhereInput",
+        "name": "SubCategorySubscriptionWhereInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -17775,7 +17775,7 @@ export default {
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "subCategoryWhereInput",
+              "name": "SubCategoryWhereInput",
               "ofType": null
             },
             "defaultValue": null
@@ -17791,7 +17791,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategorySubscriptionWhereInput",
+                  "name": "SubCategorySubscriptionWhereInput",
                   "ofType": null
                 }
               }
@@ -17809,7 +17809,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategorySubscriptionWhereInput",
+                  "name": "SubCategorySubscriptionWhereInput",
                   "ofType": null
                 }
               }
@@ -17827,7 +17827,7 @@ export default {
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "subCategorySubscriptionWhereInput",
+                  "name": "SubCategorySubscriptionWhereInput",
                   "ofType": null
                 }
               }
@@ -17841,7 +17841,7 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "subCategorySubscriptionPayload",
+        "name": "SubCategorySubscriptionPayload",
         "description": null,
         "fields": [
           {
@@ -17866,7 +17866,7 @@ export default {
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "subCategory",
+              "name": "SubCategory",
               "ofType": null
             },
             "isDeprecated": false,
@@ -17898,7 +17898,7 @@ export default {
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "subCategoryPreviousValues",
+              "name": "SubCategoryPreviousValues",
               "ofType": null
             },
             "isDeprecated": false,
@@ -17912,7 +17912,7 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "subCategoryPreviousValues",
+        "name": "SubCategoryPreviousValues",
         "description": null,
         "fields": [
           {

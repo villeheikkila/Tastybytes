@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { ADD_PRODUCT, ALL_PRODUCTS } from "../../queries";
-import { useMutation } from "@apollo/react-hooks";
+import { ADD_PRODUCT, ALL_PRODUCTS, ALL_CATEGORIES } from "../../queries";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import { notificationHandler, errorHandler } from "../../utils";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -23,27 +23,27 @@ const companies: OptionType[] = [
   label: suggestion.label
 }));
 
-const categories: OptionType[] = [
-  { label: "Soda" },
-  { label: "Coffee" },
-  { label: "Noodles" },
-  { label: "Pizza" },
-  { label: "Juice" }
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label
-}));
+// const categories: OptionType[] = [
+//   { label: "Soda" },
+//   { label: "Coffee" },
+//   { label: "Noodles" },
+//   { label: "Pizza" },
+//   { label: "Juice" }
+// ].map(suggestion => ({
+//   value: suggestion.label,
+//   label: suggestion.label
+// }));
 
-const subCategories: OptionType[] = [
-  { label: "Tea" },
-  { label: "Mead" },
-  { label: "Energy Drink" },
-  { label: "Sports drink" },
-  { label: "Sparkling Water" }
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label
-}));
+// const subCategories: OptionType[] = [
+//   { label: "Tea" },
+//   { label: "Mead" },
+//   { label: "Energy Drink" },
+//   { label: "Sports drink" },
+//   { label: "Sparkling Water" }
+// ].map(suggestion => ({
+//   value: suggestion.label,
+//   label: suggestion.label
+// }));
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -70,14 +70,20 @@ export const AddProduct = () => {
   const [name, setName] = useState("");
   const [producer, setProducer] = useState();
   const [category, setCategory] = useState();
+  console.log("category: ", category);
   const [subCategory, setSubCategory] = useState();
   const { history } = useReactRouter();
+  const categories = useQuery(ALL_CATEGORIES);
   const [addProduct] = useMutation(ADD_PRODUCT, {
     onError: errorHandler,
     refetchQueries: [{ query: ALL_PRODUCTS }]
   });
 
-  if (addProduct === null) {
+  if (
+    addProduct === null ||
+    categories === null ||
+    categories.data.categories === undefined
+  ) {
     return null;
   }
 
@@ -104,6 +110,28 @@ export const AddProduct = () => {
       history.push(`/product/${result.data.addProduct.id}`);
     }
   };
+
+  const categorySuggestions = categories.data.categories.map(
+    (suggestion: any) => ({
+      value: suggestion.name,
+      label: suggestion.name,
+      id: suggestion.id
+    })
+  );
+
+  const selected = category && category.value;
+
+  const subCategoriesSelected = categories.data.categories.filter(
+    (x: any) => x.name === selected
+  );
+
+  const subCategoriesSuggestions =
+    subCategoriesSelected.length > 0 &&
+    subCategoriesSelected[0].subCategory.map((suggestion: any) => ({
+      value: suggestion.name,
+      label: suggestion.name,
+      id: suggestion.id
+    }));
 
   return (
     <div className={classes.root}>
@@ -142,7 +170,7 @@ export const AddProduct = () => {
               <MaterialSelect
                 isCreatable={false}
                 isMulti={false}
-                suggestions={categories}
+                suggestions={categorySuggestions}
                 label={"Category"}
                 placeholder={"Select a category"}
                 onChange={handleCategoryChange}
@@ -151,7 +179,7 @@ export const AddProduct = () => {
               <MaterialSelect
                 isCreatable={true}
                 isMulti={true}
-                suggestions={subCategories}
+                suggestions={subCategoriesSuggestions}
                 label={"Subcategory"}
                 placeholder={"Select a subcategory or a create a new one"}
                 onChange={handleSubCategoryChange}

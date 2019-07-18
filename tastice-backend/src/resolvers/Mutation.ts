@@ -78,7 +78,9 @@ export const Mutation = mutationType({
         id: idArg(),
         name: stringArg(),
         producer: stringArg(),
-        type: stringArg()
+        type: stringArg(),
+        categoryId: idArg({ nullable: true }),
+        subCategoryId: idArg({ nullable: true })
       },
       resolve: async (_, args) => {
         return await prisma.updateProduct({
@@ -86,7 +88,9 @@ export const Mutation = mutationType({
           data: {
             name: args.name,
             producer: args.producer,
-            type: args.type
+            type: args.type,
+            category: { connect: { id: args.categoryId } },
+            subCategory: { connect: { id: args.subCategoryId } }
           }
         });
       }
@@ -159,6 +163,32 @@ export const Mutation = mutationType({
           comment,
           product: { connect: { id: productId } },
           author: { connect: { id: authorId } }
+        });
+      }
+    });
+
+    t.field("createCategory", {
+      type: "Category",
+      args: {
+        name: stringArg()
+      },
+      resolve: (_, { name }, ctx) => {
+        return ctx.prisma.createCategory({
+          name
+        });
+      }
+    });
+
+    t.field("createSubCategory", {
+      type: "SubCategory",
+      args: {
+        name: stringArg(),
+        categoryId: idArg({ nullable: true })
+      },
+      resolve: (_, { name, categoryId }, ctx) => {
+        return ctx.prisma.createSubCategory({
+          name,
+          category: { connect: { id: categoryId } }
         });
       }
     });
