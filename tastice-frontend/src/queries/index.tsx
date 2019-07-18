@@ -13,12 +13,25 @@ export const NOTIFICATION = gql`
 `;
 
 export const ADD_PRODUCT = gql`
-  mutation addProduct($name: String!, $producer: String!, $type: String!) {
-    addProduct(name: $name, producer: $producer, type: $type) {
+  mutation addProduct(
+    $name: String!
+    $producer: String!
+    $type: String!
+    $categoryId: ID!
+  ) {
+    addProduct(
+      name: $name
+      producer: $producer
+      type: $type
+      categoryId: $categoryId
+    ) {
       name
       producer
       type
       id
+      category {
+        name
+      }
     }
   }
 `;

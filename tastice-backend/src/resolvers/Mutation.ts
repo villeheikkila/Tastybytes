@@ -61,13 +61,15 @@ export const Mutation = mutationType({
       args: {
         name: stringArg(),
         producer: stringArg(),
-        type: stringArg()
+        type: stringArg(),
+        categoryId: idArg({ nullable: true })
       },
       resolve: async (_, args) => {
         return await prisma.createProduct({
           name: args.name,
           producer: args.name,
-          type: args.type
+          type: args.type,
+          category: { connect: { id: args.categoryId } }
         });
       }
     });
@@ -89,8 +91,8 @@ export const Mutation = mutationType({
             name: args.name,
             producer: args.producer,
             type: args.type,
-            category: { connect: { id: args.categoryId } },
-            subCategory: { connect: { id: args.subCategoryId } }
+            category: { connect: { id: args.categoryId } }
+            // subCategory: { connect: { id: args.subCategoryId } }
           }
         });
       }

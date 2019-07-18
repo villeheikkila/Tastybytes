@@ -70,7 +70,6 @@ export const AddProduct = () => {
   const [name, setName] = useState("");
   const [producer, setProducer] = useState();
   const [category, setCategory] = useState();
-  console.log("category: ", category);
   const [subCategory, setSubCategory] = useState();
   const { history } = useReactRouter();
   const categories = useQuery(ALL_CATEGORIES);
@@ -97,9 +96,15 @@ export const AddProduct = () => {
 
   const handleAddProduct = async (event: any) => {
     event.preventDefault();
+    console.log("categorfffy", category.id);
 
     const result = await addProduct({
-      variables: { name, producer: producer.value, type: category.value }
+      variables: {
+        name,
+        producer: producer.value,
+        type: category.value,
+        categoryId: category.id
+      }
     });
 
     if (result) {

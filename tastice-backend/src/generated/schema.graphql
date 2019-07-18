@@ -151,7 +151,7 @@ input CheckinWhereInput {
 scalar DateTime
 
 type Mutation {
-  addProduct(name: String, producer: String, type: String): Product
+  addProduct(categoryId: ID, name: String, producer: String, type: String): Product
   createCategory(name: String): Category
   createCheckin(authorId: ID, comment: String, productId: ID, rating: Int): Checkin
   createSubCategory(categoryId: ID, name: String): SubCategory

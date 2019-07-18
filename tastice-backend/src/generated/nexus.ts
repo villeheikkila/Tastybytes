@@ -556,6 +556,7 @@ export interface NexusGenArgTypes {
   }
   Mutation: {
     addProduct: { // args
+      categoryId?: string | null; // ID
       name?: string | null; // String
       producer?: string | null; // String
       type?: string | null; // String
