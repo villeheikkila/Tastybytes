@@ -2,11 +2,19 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateCheckin {
+export const typeDefs = /* GraphQL */ `type AggregateCategory {
+  count: Int!
+}
+
+type AggregateCheckin {
   count: Int!
 }
 
 type AggregateProduct {
+  count: Int!
+}
+
+type AggregatesubCategory {
   count: Int!
 }
 
@@ -16,6 +24,225 @@ type AggregateUser {
 
 type BatchPayload {
   count: Long!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  subCategory(where: subCategoryWhereInput, orderBy: subCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [subCategory!]
+  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
+}
+
+type CategoryConnection {
+  pageInfo: PageInfo!
+  edges: [CategoryEdge]!
+  aggregate: AggregateCategory!
+}
+
+input CategoryCreateInput {
+  id: ID
+  name: String!
+  subCategory: subCategoryCreateManyWithoutCategoryInput
+  products: ProductCreateManyWithoutCategoryInput
+}
+
+input CategoryCreateManyWithoutProductsInput {
+  create: [CategoryCreateWithoutProductsInput!]
+  connect: [CategoryWhereUniqueInput!]
+}
+
+input CategoryCreateOneWithoutSubCategoryInput {
+  create: CategoryCreateWithoutSubCategoryInput
+  connect: CategoryWhereUniqueInput
+}
+
+input CategoryCreateWithoutProductsInput {
+  id: ID
+  name: String!
+  subCategory: subCategoryCreateManyWithoutCategoryInput
+}
+
+input CategoryCreateWithoutSubCategoryInput {
+  id: ID
+  name: String!
+  products: ProductCreateManyWithoutCategoryInput
+}
+
+type CategoryEdge {
+  node: Category!
+  cursor: String!
+}
+
+enum CategoryOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type CategoryPreviousValues {
+  id: ID!
+  name: String!
+}
+
+input CategoryScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [CategoryScalarWhereInput!]
+  OR: [CategoryScalarWhereInput!]
+  NOT: [CategoryScalarWhereInput!]
+}
+
+type CategorySubscriptionPayload {
+  mutation: MutationType!
+  node: Category
+  updatedFields: [String!]
+  previousValues: CategoryPreviousValues
+}
+
+input CategorySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CategoryWhereInput
+  AND: [CategorySubscriptionWhereInput!]
+  OR: [CategorySubscriptionWhereInput!]
+  NOT: [CategorySubscriptionWhereInput!]
+}
+
+input CategoryUpdateInput {
+  name: String
+  subCategory: subCategoryUpdateManyWithoutCategoryInput
+  products: ProductUpdateManyWithoutCategoryInput
+}
+
+input CategoryUpdateManyDataInput {
+  name: String
+}
+
+input CategoryUpdateManyMutationInput {
+  name: String
+}
+
+input CategoryUpdateManyWithoutProductsInput {
+  create: [CategoryCreateWithoutProductsInput!]
+  delete: [CategoryWhereUniqueInput!]
+  connect: [CategoryWhereUniqueInput!]
+  set: [CategoryWhereUniqueInput!]
+  disconnect: [CategoryWhereUniqueInput!]
+  update: [CategoryUpdateWithWhereUniqueWithoutProductsInput!]
+  upsert: [CategoryUpsertWithWhereUniqueWithoutProductsInput!]
+  deleteMany: [CategoryScalarWhereInput!]
+  updateMany: [CategoryUpdateManyWithWhereNestedInput!]
+}
+
+input CategoryUpdateManyWithWhereNestedInput {
+  where: CategoryScalarWhereInput!
+  data: CategoryUpdateManyDataInput!
+}
+
+input CategoryUpdateOneRequiredWithoutSubCategoryInput {
+  create: CategoryCreateWithoutSubCategoryInput
+  update: CategoryUpdateWithoutSubCategoryDataInput
+  upsert: CategoryUpsertWithoutSubCategoryInput
+  connect: CategoryWhereUniqueInput
+}
+
+input CategoryUpdateWithoutProductsDataInput {
+  name: String
+  subCategory: subCategoryUpdateManyWithoutCategoryInput
+}
+
+input CategoryUpdateWithoutSubCategoryDataInput {
+  name: String
+  products: ProductUpdateManyWithoutCategoryInput
+}
+
+input CategoryUpdateWithWhereUniqueWithoutProductsInput {
+  where: CategoryWhereUniqueInput!
+  data: CategoryUpdateWithoutProductsDataInput!
+}
+
+input CategoryUpsertWithoutSubCategoryInput {
+  update: CategoryUpdateWithoutSubCategoryDataInput!
+  create: CategoryCreateWithoutSubCategoryInput!
+}
+
+input CategoryUpsertWithWhereUniqueWithoutProductsInput {
+  where: CategoryWhereUniqueInput!
+  update: CategoryUpdateWithoutProductsDataInput!
+  create: CategoryCreateWithoutProductsInput!
+}
+
+input CategoryWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  subCategory_every: subCategoryWhereInput
+  subCategory_some: subCategoryWhereInput
+  subCategory_none: subCategoryWhereInput
+  products_every: ProductWhereInput
+  products_some: ProductWhereInput
+  products_none: ProductWhereInput
+  AND: [CategoryWhereInput!]
+  OR: [CategoryWhereInput!]
+  NOT: [CategoryWhereInput!]
+}
+
+input CategoryWhereUniqueInput {
+  id: ID
 }
 
 type Checkin {
@@ -317,6 +544,12 @@ scalar DateTime
 scalar Long
 
 type Mutation {
+  createCategory(data: CategoryCreateInput!): Category!
+  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
+  upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
+  deleteCategory(where: CategoryWhereUniqueInput!): Category
+  deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   createCheckin(data: CheckinCreateInput!): Checkin!
   updateCheckin(data: CheckinUpdateInput!, where: CheckinWhereUniqueInput!): Checkin
   updateManyCheckins(data: CheckinUpdateManyMutationInput!, where: CheckinWhereInput): BatchPayload!
@@ -335,6 +568,12 @@ type Mutation {
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  createsubCategory(data: subCategoryCreateInput!): subCategory!
+  updatesubCategory(data: subCategoryUpdateInput!, where: subCategoryWhereUniqueInput!): subCategory
+  updateManysubCategories(data: subCategoryUpdateManyMutationInput!, where: subCategoryWhereInput): BatchPayload!
+  upsertsubCategory(where: subCategoryWhereUniqueInput!, create: subCategoryCreateInput!, update: subCategoryUpdateInput!): subCategory!
+  deletesubCategory(where: subCategoryWhereUniqueInput!): subCategory
+  deleteManysubCategories(where: subCategoryWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -360,6 +599,7 @@ type Product {
   producer: String
   type: String
   checkins(where: CheckinWhereInput, orderBy: CheckinOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Checkin!]
+  category(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -376,6 +616,17 @@ input ProductCreateInput {
   producer: String
   type: String
   checkins: CheckinCreateManyWithoutProductInput
+  category: CategoryCreateManyWithoutProductsInput
+}
+
+input ProductCreateManyInput {
+  create: [ProductCreateInput!]
+  connect: [ProductWhereUniqueInput!]
+}
+
+input ProductCreateManyWithoutCategoryInput {
+  create: [ProductCreateWithoutCategoryInput!]
+  connect: [ProductWhereUniqueInput!]
 }
 
 input ProductCreateOneWithoutCheckinsInput {
@@ -383,11 +634,20 @@ input ProductCreateOneWithoutCheckinsInput {
   connect: ProductWhereUniqueInput
 }
 
+input ProductCreateWithoutCategoryInput {
+  id: ID
+  name: String!
+  producer: String
+  type: String
+  checkins: CheckinCreateManyWithoutProductInput
+}
+
 input ProductCreateWithoutCheckinsInput {
   id: ID
   name: String!
   producer: String
   type: String
+  category: CategoryCreateManyWithoutProductsInput
 }
 
 type ProductEdge {
@@ -419,6 +679,84 @@ type ProductPreviousValues {
   updatedAt: DateTime!
 }
 
+input ProductScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  producer: String
+  producer_not: String
+  producer_in: [String!]
+  producer_not_in: [String!]
+  producer_lt: String
+  producer_lte: String
+  producer_gt: String
+  producer_gte: String
+  producer_contains: String
+  producer_not_contains: String
+  producer_starts_with: String
+  producer_not_starts_with: String
+  producer_ends_with: String
+  producer_not_ends_with: String
+  type: String
+  type_not: String
+  type_in: [String!]
+  type_not_in: [String!]
+  type_lt: String
+  type_lte: String
+  type_gt: String
+  type_gte: String
+  type_contains: String
+  type_not_contains: String
+  type_starts_with: String
+  type_not_starts_with: String
+  type_ends_with: String
+  type_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [ProductScalarWhereInput!]
+  OR: [ProductScalarWhereInput!]
+  NOT: [ProductScalarWhereInput!]
+}
+
 type ProductSubscriptionPayload {
   mutation: MutationType!
   node: Product
@@ -437,17 +775,61 @@ input ProductSubscriptionWhereInput {
   NOT: [ProductSubscriptionWhereInput!]
 }
 
+input ProductUpdateDataInput {
+  name: String
+  producer: String
+  type: String
+  checkins: CheckinUpdateManyWithoutProductInput
+  category: CategoryUpdateManyWithoutProductsInput
+}
+
 input ProductUpdateInput {
   name: String
   producer: String
   type: String
   checkins: CheckinUpdateManyWithoutProductInput
+  category: CategoryUpdateManyWithoutProductsInput
+}
+
+input ProductUpdateManyDataInput {
+  name: String
+  producer: String
+  type: String
+}
+
+input ProductUpdateManyInput {
+  create: [ProductCreateInput!]
+  update: [ProductUpdateWithWhereUniqueNestedInput!]
+  upsert: [ProductUpsertWithWhereUniqueNestedInput!]
+  delete: [ProductWhereUniqueInput!]
+  connect: [ProductWhereUniqueInput!]
+  set: [ProductWhereUniqueInput!]
+  disconnect: [ProductWhereUniqueInput!]
+  deleteMany: [ProductScalarWhereInput!]
+  updateMany: [ProductUpdateManyWithWhereNestedInput!]
 }
 
 input ProductUpdateManyMutationInput {
   name: String
   producer: String
   type: String
+}
+
+input ProductUpdateManyWithoutCategoryInput {
+  create: [ProductCreateWithoutCategoryInput!]
+  delete: [ProductWhereUniqueInput!]
+  connect: [ProductWhereUniqueInput!]
+  set: [ProductWhereUniqueInput!]
+  disconnect: [ProductWhereUniqueInput!]
+  update: [ProductUpdateWithWhereUniqueWithoutCategoryInput!]
+  upsert: [ProductUpsertWithWhereUniqueWithoutCategoryInput!]
+  deleteMany: [ProductScalarWhereInput!]
+  updateMany: [ProductUpdateManyWithWhereNestedInput!]
+}
+
+input ProductUpdateManyWithWhereNestedInput {
+  where: ProductScalarWhereInput!
+  data: ProductUpdateManyDataInput!
 }
 
 input ProductUpdateOneRequiredWithoutCheckinsInput {
@@ -457,15 +839,45 @@ input ProductUpdateOneRequiredWithoutCheckinsInput {
   connect: ProductWhereUniqueInput
 }
 
+input ProductUpdateWithoutCategoryDataInput {
+  name: String
+  producer: String
+  type: String
+  checkins: CheckinUpdateManyWithoutProductInput
+}
+
 input ProductUpdateWithoutCheckinsDataInput {
   name: String
   producer: String
   type: String
+  category: CategoryUpdateManyWithoutProductsInput
+}
+
+input ProductUpdateWithWhereUniqueNestedInput {
+  where: ProductWhereUniqueInput!
+  data: ProductUpdateDataInput!
+}
+
+input ProductUpdateWithWhereUniqueWithoutCategoryInput {
+  where: ProductWhereUniqueInput!
+  data: ProductUpdateWithoutCategoryDataInput!
 }
 
 input ProductUpsertWithoutCheckinsInput {
   update: ProductUpdateWithoutCheckinsDataInput!
   create: ProductCreateWithoutCheckinsInput!
+}
+
+input ProductUpsertWithWhereUniqueNestedInput {
+  where: ProductWhereUniqueInput!
+  update: ProductUpdateDataInput!
+  create: ProductCreateInput!
+}
+
+input ProductUpsertWithWhereUniqueWithoutCategoryInput {
+  where: ProductWhereUniqueInput!
+  update: ProductUpdateWithoutCategoryDataInput!
+  create: ProductCreateWithoutCategoryInput!
 }
 
 input ProductWhereInput {
@@ -528,6 +940,9 @@ input ProductWhereInput {
   checkins_every: CheckinWhereInput
   checkins_some: CheckinWhereInput
   checkins_none: CheckinWhereInput
+  category_every: CategoryWhereInput
+  category_some: CategoryWhereInput
+  category_none: CategoryWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -554,6 +969,9 @@ input ProductWhereUniqueInput {
 }
 
 type Query {
+  category(where: CategoryWhereUniqueInput!): Category
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
+  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   checkin(where: CheckinWhereUniqueInput!): Checkin
   checkins(where: CheckinWhereInput, orderBy: CheckinOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Checkin]!
   checkinsConnection(where: CheckinWhereInput, orderBy: CheckinOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CheckinConnection!
@@ -563,13 +981,207 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  subCategory(where: subCategoryWhereUniqueInput!): subCategory
+  subCategories(where: subCategoryWhereInput, orderBy: subCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [subCategory]!
+  subCategoriesConnection(where: subCategoryWhereInput, orderBy: subCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): subCategoryConnection!
   node(id: ID!): Node
 }
 
+type subCategory {
+  id: ID!
+  category: Category!
+  name: String!
+  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
+}
+
+type subCategoryConnection {
+  pageInfo: PageInfo!
+  edges: [subCategoryEdge]!
+  aggregate: AggregatesubCategory!
+}
+
+input subCategoryCreateInput {
+  id: ID
+  category: CategoryCreateOneWithoutSubCategoryInput!
+  name: String!
+  products: ProductCreateManyInput
+}
+
+input subCategoryCreateManyWithoutCategoryInput {
+  create: [subCategoryCreateWithoutCategoryInput!]
+  connect: [subCategoryWhereUniqueInput!]
+}
+
+input subCategoryCreateWithoutCategoryInput {
+  id: ID
+  name: String!
+  products: ProductCreateManyInput
+}
+
+type subCategoryEdge {
+  node: subCategory!
+  cursor: String!
+}
+
+enum subCategoryOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type subCategoryPreviousValues {
+  id: ID!
+  name: String!
+}
+
+input subCategoryScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [subCategoryScalarWhereInput!]
+  OR: [subCategoryScalarWhereInput!]
+  NOT: [subCategoryScalarWhereInput!]
+}
+
+type subCategorySubscriptionPayload {
+  mutation: MutationType!
+  node: subCategory
+  updatedFields: [String!]
+  previousValues: subCategoryPreviousValues
+}
+
+input subCategorySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: subCategoryWhereInput
+  AND: [subCategorySubscriptionWhereInput!]
+  OR: [subCategorySubscriptionWhereInput!]
+  NOT: [subCategorySubscriptionWhereInput!]
+}
+
+input subCategoryUpdateInput {
+  category: CategoryUpdateOneRequiredWithoutSubCategoryInput
+  name: String
+  products: ProductUpdateManyInput
+}
+
+input subCategoryUpdateManyDataInput {
+  name: String
+}
+
+input subCategoryUpdateManyMutationInput {
+  name: String
+}
+
+input subCategoryUpdateManyWithoutCategoryInput {
+  create: [subCategoryCreateWithoutCategoryInput!]
+  delete: [subCategoryWhereUniqueInput!]
+  connect: [subCategoryWhereUniqueInput!]
+  set: [subCategoryWhereUniqueInput!]
+  disconnect: [subCategoryWhereUniqueInput!]
+  update: [subCategoryUpdateWithWhereUniqueWithoutCategoryInput!]
+  upsert: [subCategoryUpsertWithWhereUniqueWithoutCategoryInput!]
+  deleteMany: [subCategoryScalarWhereInput!]
+  updateMany: [subCategoryUpdateManyWithWhereNestedInput!]
+}
+
+input subCategoryUpdateManyWithWhereNestedInput {
+  where: subCategoryScalarWhereInput!
+  data: subCategoryUpdateManyDataInput!
+}
+
+input subCategoryUpdateWithoutCategoryDataInput {
+  name: String
+  products: ProductUpdateManyInput
+}
+
+input subCategoryUpdateWithWhereUniqueWithoutCategoryInput {
+  where: subCategoryWhereUniqueInput!
+  data: subCategoryUpdateWithoutCategoryDataInput!
+}
+
+input subCategoryUpsertWithWhereUniqueWithoutCategoryInput {
+  where: subCategoryWhereUniqueInput!
+  update: subCategoryUpdateWithoutCategoryDataInput!
+  create: subCategoryCreateWithoutCategoryInput!
+}
+
+input subCategoryWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  category: CategoryWhereInput
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  products_every: ProductWhereInput
+  products_some: ProductWhereInput
+  products_none: ProductWhereInput
+  AND: [subCategoryWhereInput!]
+  OR: [subCategoryWhereInput!]
+  NOT: [subCategoryWhereInput!]
+}
+
+input subCategoryWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
+  category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   checkin(where: CheckinSubscriptionWhereInput): CheckinSubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  subCategory(where: subCategorySubscriptionWhereInput): subCategorySubscriptionPayload
 }
 
 type User {
