@@ -23,28 +23,6 @@ const companies: OptionType[] = [
   label: suggestion.label
 }));
 
-// const categories: OptionType[] = [
-//   { label: "Soda" },
-//   { label: "Coffee" },
-//   { label: "Noodles" },
-//   { label: "Pizza" },
-//   { label: "Juice" }
-// ].map(suggestion => ({
-//   value: suggestion.label,
-//   label: suggestion.label
-// }));
-
-// const subCategories: OptionType[] = [
-//   { label: "Tea" },
-//   { label: "Mead" },
-//   { label: "Energy Drink" },
-//   { label: "Sports drink" },
-//   { label: "Sparkling Water" }
-// ].map(suggestion => ({
-//   value: suggestion.label,
-//   label: suggestion.label
-// }));
-
 const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(3, 2),
@@ -96,14 +74,17 @@ export const AddProduct = () => {
 
   const handleAddProduct = async (event: any) => {
     event.preventDefault();
-    console.log("categorfffy", category.id);
+
+    const subCategoryArray = subCategory.map((e: any) => {
+      return e.value;
+    });
 
     const result = await addProduct({
       variables: {
         name,
         producer: producer.value,
-        type: category.value,
-        categoryId: category.id
+        categoryId: category.id,
+        subCategories: subCategoryArray
       }
     });
 

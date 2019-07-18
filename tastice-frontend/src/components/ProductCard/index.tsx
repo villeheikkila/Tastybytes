@@ -10,19 +10,18 @@ import lipton from "../../images/lipton.jpg";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
 import { IProductCard } from "../../types";
-import CardActionArea from '@material-ui/core/CardActionArea';
-import useReactRouter from 'use-react-router';
+import CardActionArea from "@material-ui/core/CardActionArea";
+import useReactRouter from "use-react-router";
 
 const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: 700,
     margin: `${theme.spacing(1)}px auto`,
-    display: 'flex',
-
+    display: "flex"
   },
   actionArea: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     justifyContent: "left"
   },
   picture: {
@@ -31,10 +30,10 @@ const useStyles = makeStyles(theme => ({
     height: 100
   },
   details: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   }
 }));
 
@@ -43,18 +42,19 @@ export const ProductCard: React.FC<IProductCard> = ({ product }) => {
   const { history } = useReactRouter();
 
   const { id, name, producer, category, subCategory } = product;
-  
+  console.log("subCategory: ", subCategory);
+
   return (
     <Card className={classes.card}>
-      <CardActionArea onClick={() => history.push(`/product/${id}`)} className={classes.actionArea} >
+      <CardActionArea
+        onClick={() => history.push(`/product/${id}`)}
+        className={classes.actionArea}
+      >
         <Avatar alt="Image" src={lipton} className={classes.picture} />
         <div className={classes.details}>
-          <CardContent >
+          <CardContent>
             <Typography variant="h5" color="textSecondary" component="p">
-              <Link
-                component={RouterLink}
-                to={`/product/${id}`}
-              >
+              <Link component={RouterLink} to={`/product/${id}`}>
                 {name}
               </Link>
             </Typography>
@@ -62,11 +62,20 @@ export const ProductCard: React.FC<IProductCard> = ({ product }) => {
               {producer}
             </Typography>
             <Typography variant="h6" color="textSecondary" component="p">
-              {category} {subCategory}
+              Category:{" "}
+              {category.map((e: any) => (
+                <>{e.name} </>
+              ))}
+            </Typography>
+            <Typography variant="h6" color="textSecondary" component="p">
+              Style:{" "}
+              {subCategory.map((e: any) => (
+                <>{e.name} </>
+              ))}
             </Typography>
           </CardContent>
         </div>
       </CardActionArea>
-    </Card >
+    </Card>
   );
 };

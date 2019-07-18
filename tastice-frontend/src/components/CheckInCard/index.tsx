@@ -56,7 +56,6 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
     name: checkin.product.name,
     id: checkin.product.id,
     producer: checkin.product.producer,
-    type: checkin.product.type,
     date: new Date(checkin.createdAt)
   };
 
@@ -64,8 +63,8 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
     name: checkin.product.name,
     id: checkin.product.id,
     producer: checkin.product.producer,
-    category: checkin.product.type,
-    subCategory: "moi"
+    category: checkin.product.category,
+    subCategory: checkin.product.subCategory
   };
 
   return (

@@ -16,20 +16,22 @@ export const ADD_PRODUCT = gql`
   mutation addProduct(
     $name: String!
     $producer: String!
-    $type: String!
     $categoryId: ID!
+    $subCategories: [String!]
   ) {
     addProduct(
       name: $name
       producer: $producer
-      type: $type
       categoryId: $categoryId
+      subCategories: $subCategories
     ) {
       name
       producer
-      type
       id
       category {
+        name
+      }
+      subCategory {
         name
       }
     }
@@ -50,7 +52,12 @@ export const ALL_CHECKINS = gql`
         id
         name
         producer
-        type
+        category {
+          name
+        }
+        subCategory {
+          name
+        }
       }
       createdAt
     }
@@ -90,6 +97,15 @@ export const CREATE_CHECKIN = gql`
   }
 `;
 
+export const CREATE_SUBCATEGORY = gql`
+  mutation createSubCategory($categoryId: ID!, $name: String!) {
+    createSubCategory(categoryId: $categoryId, name: $name) {
+      id
+      name
+    }
+  }
+`;
+
 export const ALL_USERS = gql`
   {
     users {
@@ -120,7 +136,12 @@ export const USER = gql`
           id
           name
           producer
-          type
+          category {
+            name
+          }
+          subCategory {
+            name
+          }
         }
         createdAt
       }
@@ -172,7 +193,12 @@ export const ME = gql`
           id
           name
           producer
-          type
+          category {
+            name
+          }
+          subCategory {
+            name
+          }
         }
         createdAt
       }
@@ -218,22 +244,15 @@ export const DELETE_PRODUCT = gql`
       name
       id
       producer
-      type
     }
   }
 `;
 
 export const UPDATE_PRODUCT = gql`
-  mutation updateProduct(
-    $id: ID!
-    $name: String!
-    $producer: String!
-    $type: String!
-  ) {
-    updateProduct(id: $id, name: $name, producer: $producer, type: $type) {
+  mutation updateProduct($id: ID!, $name: String!, $producer: String!) {
+    updateProduct(id: $id, name: $name, producer: $producer) {
       name
       producer
-      type
       id
     }
   }
@@ -244,8 +263,13 @@ export const ALL_PRODUCTS = gql`
     products {
       name
       producer
-      type
       id
+      category {
+        name
+      }
+      subCategory {
+        name
+      }
     }
   }
 `;
@@ -253,10 +277,15 @@ export const ALL_PRODUCTS = gql`
 export const PRODUCT = gql`
   query product($id: ID!) {
     product(id: $id) {
+      id
       name
       producer
-      type
-      id
+      category {
+        name
+      }
+      subCategory {
+        name
+      }
       checkins {
         id
         rating
@@ -270,7 +299,12 @@ export const PRODUCT = gql`
           id
           name
           producer
-          type
+          category {
+            name
+          }
+          subCategory {
+            name
+          }
         }
         createdAt
       }

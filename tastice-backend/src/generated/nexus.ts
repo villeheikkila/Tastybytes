@@ -171,20 +171,9 @@ export interface NexusGenInputs {
     producer_not_in?: string[] | null; // [String!]
     producer_not_starts_with?: string | null; // String
     producer_starts_with?: string | null; // String
-    type?: string | null; // String
-    type_contains?: string | null; // String
-    type_ends_with?: string | null; // String
-    type_gt?: string | null; // String
-    type_gte?: string | null; // String
-    type_in?: string[] | null; // [String!]
-    type_lt?: string | null; // String
-    type_lte?: string | null; // String
-    type_not?: string | null; // String
-    type_not_contains?: string | null; // String
-    type_not_ends_with?: string | null; // String
-    type_not_in?: string[] | null; // [String!]
-    type_not_starts_with?: string | null; // String
-    type_starts_with?: string | null; // String
+    subCategory_every?: NexusGenInputs['SubCategoryWhereInput'] | null; // SubCategoryWhereInput
+    subCategory_none?: NexusGenInputs['SubCategoryWhereInput'] | null; // SubCategoryWhereInput
+    subCategory_some?: NexusGenInputs['SubCategoryWhereInput'] | null; // SubCategoryWhereInput
     updatedAt?: any | null; // DateTime
     updatedAt_gt?: any | null; // DateTime
     updatedAt_gte?: any | null; // DateTime
@@ -336,7 +325,7 @@ export interface NexusGenEnums {
   CategoryOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   CheckinOrderByInput: "comment_ASC" | "comment_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "rating_ASC" | "rating_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   MutationType: "CREATED" | "DELETED" | "UPDATED"
-  ProductOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "producer_ASC" | "producer_DESC" | "type_ASC" | "type_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
+  ProductOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "producer_ASC" | "producer_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   SubCategoryOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
 }
 
@@ -362,7 +351,6 @@ export interface NexusGenRootTypes {
     id: string; // ID!
     name: string; // String!
     producer?: string | null; // String
-    type?: string | null; // String
     updatedAt: any; // DateTime!
   }
   ProductPreviousValues: { // root type
@@ -370,7 +358,6 @@ export interface NexusGenRootTypes {
     id: string; // ID!
     name: string; // String!
     producer?: string | null; // String
-    type?: string | null; // String
     updatedAt: any; // DateTime!
   }
   ProductSubscriptionPayload: { // root type
@@ -454,6 +441,7 @@ export interface NexusGenFieldTypes {
     createCategory: NexusGenRootTypes['Category'] | null; // Category
     createCheckin: NexusGenRootTypes['Checkin'] | null; // Checkin
     createSubCategory: NexusGenRootTypes['SubCategory'] | null; // SubCategory
+    deleteCategory: NexusGenRootTypes['Category'] | null; // Category
     deleteCheckin: NexusGenRootTypes['Checkin'] | null; // Checkin
     deleteProduct: NexusGenRootTypes['Product'] | null; // Product
     deleteUser: NexusGenRootTypes['User'] | null; // User
@@ -469,7 +457,7 @@ export interface NexusGenFieldTypes {
     id: string; // ID!
     name: string; // String!
     producer: string | null; // String
-    type: string | null; // String
+    subCategory: NexusGenRootTypes['SubCategory'][] | null; // [SubCategory!]
     updatedAt: any; // DateTime!
   }
   ProductPreviousValues: { // field return type
@@ -477,7 +465,6 @@ export interface NexusGenFieldTypes {
     id: string; // ID!
     name: string; // String!
     producer: string | null; // String
-    type: string | null; // String
     updatedAt: any; // DateTime!
   }
   ProductSubscriptionPayload: { // field return type
@@ -559,7 +546,7 @@ export interface NexusGenArgTypes {
       categoryId?: string | null; // ID
       name?: string | null; // String
       producer?: string | null; // String
-      type?: string | null; // String
+      subCategories?: string[] | null; // [String!]
     }
     createCategory: { // args
       name?: string | null; // String
@@ -573,6 +560,9 @@ export interface NexusGenArgTypes {
     createSubCategory: { // args
       categoryId?: string | null; // ID
       name?: string | null; // String
+    }
+    deleteCategory: { // args
+      id?: string | null; // ID
     }
     deleteCheckin: { // args
       id?: string | null; // ID
@@ -599,7 +589,6 @@ export interface NexusGenArgTypes {
       name?: string | null; // String
       producer?: string | null; // String
       subCategoryId?: string | null; // ID
-      type?: string | null; // String
     }
     updateUser: { // args
       email?: string | null; // String
@@ -626,6 +615,15 @@ export interface NexusGenArgTypes {
       orderBy?: NexusGenEnums['CheckinOrderByInput'] | null; // CheckinOrderByInput
       skip?: number | null; // Int
       where?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
+    }
+    subCategory: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+      orderBy?: NexusGenEnums['SubCategoryOrderByInput'] | null; // SubCategoryOrderByInput
+      skip?: number | null; // Int
+      where?: NexusGenInputs['SubCategoryWhereInput'] | null; // SubCategoryWhereInput
     }
   }
   Query: {

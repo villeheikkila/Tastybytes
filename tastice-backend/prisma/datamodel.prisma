@@ -15,9 +15,9 @@ type Product {
   id: ID! @id
   name: String!
   producer: String
-  type: String
   checkins: [Checkin!]!
   category: [Category]
+  subCategory: [SubCategory]
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   }
@@ -35,14 +35,14 @@ type Checkin {
 
 type Category {
   id: ID! @id
-  name: String!
+  name: String! @unique
   subCategory: [SubCategory]
   products: [Product]
 }
 
 type SubCategory {
     id: ID! @id
-    category: Category!
-    name: String!
+    category: Category! 
+    name: String! @unique
     products: [Product]
 }

@@ -20,13 +20,14 @@ export const ProductPage: React.FC<any> = id => {
   }
 
   const product = productsQuery.data.product[0];
+  console.log("product: ", product);
 
   const productObject = {
     id: product.id,
     name: product.name,
     producer: product.producer,
-    category: product.type,
-    subCategory: product.type
+    category: product.category,
+    subCategory: product.subCategory
   };
 
   const dividerText =

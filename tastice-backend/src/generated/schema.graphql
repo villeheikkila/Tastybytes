@@ -151,16 +151,17 @@ input CheckinWhereInput {
 scalar DateTime
 
 type Mutation {
-  addProduct(categoryId: ID, name: String, producer: String, type: String): Product
+  addProduct(categoryId: ID, name: String, producer: String, subCategories: [String!]): Product
   createCategory(name: String): Category
   createCheckin(authorId: ID, comment: String, productId: ID, rating: Int): Checkin
   createSubCategory(categoryId: ID, name: String): SubCategory
+  deleteCategory(id: ID): Category
   deleteCheckin(id: ID): Checkin
   deleteProduct(id: ID): Product
   deleteUser(id: ID): User
   login(email: String, password: String): AuthPayload
   signup(email: String, firstName: String, lastName: String, password: String): AuthPayload
-  updateProduct(categoryId: ID, id: ID, name: String, producer: String, subCategoryId: ID, type: String): Product
+  updateProduct(categoryId: ID, id: ID, name: String, producer: String, subCategoryId: ID): Product
   updateUser(email: String, firstName: String, id: ID, lastName: String): User
 }
 
@@ -177,7 +178,7 @@ type Product {
   id: ID!
   name: String!
   producer: String
-  type: String
+  subCategory(after: String, before: String, first: Int, last: Int, orderBy: SubCategoryOrderByInput, skip: Int, where: SubCategoryWhereInput): [SubCategory!]
   updatedAt: DateTime!
 }
 
@@ -190,8 +191,6 @@ enum ProductOrderByInput {
   name_DESC
   producer_ASC
   producer_DESC
-  type_ASC
-  type_DESC
   updatedAt_ASC
   updatedAt_DESC
 }
@@ -201,7 +200,6 @@ type ProductPreviousValues {
   id: ID!
   name: String!
   producer: String
-  type: String
   updatedAt: DateTime!
 }
 
@@ -272,20 +270,9 @@ input ProductWhereInput {
   producer_not_in: [String!]
   producer_not_starts_with: String
   producer_starts_with: String
-  type: String
-  type_contains: String
-  type_ends_with: String
-  type_gt: String
-  type_gte: String
-  type_in: [String!]
-  type_lt: String
-  type_lte: String
-  type_not: String
-  type_not_contains: String
-  type_not_ends_with: String
-  type_not_in: [String!]
-  type_not_starts_with: String
-  type_starts_with: String
+  subCategory_every: SubCategoryWhereInput
+  subCategory_none: SubCategoryWhereInput
+  subCategory_some: SubCategoryWhereInput
   updatedAt: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime

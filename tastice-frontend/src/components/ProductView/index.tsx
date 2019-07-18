@@ -7,7 +7,7 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { useQuery } from "@apollo/react-hooks";
 import { ALL_PRODUCTS } from "../../queries";
-import useReactRouter from 'use-react-router';
+import useReactRouter from "use-react-router";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,6 +30,7 @@ export const ProductView = () => {
   const classes = useStyles();
   const productsQuery = useQuery(ALL_PRODUCTS);
   const products = productsQuery.data.products;
+  console.log("products: ", products);
   const { history } = useReactRouter();
 
   if (products === undefined) {

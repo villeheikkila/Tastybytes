@@ -7,7 +7,11 @@ import { notificationHandler, errorHandler } from "../../utils";
 export const ProductList = () => {
   const productsQuery = useQuery(ALL_PRODUCTS);
   const products = productsQuery.data.products;
-
+  const productsObject = products.map((e: any) => ({
+    name: products.name,
+    producer: products.producer,
+    id: products.id
+  }));
   const [deleteProduct] = useMutation(DELETE_PRODUCT, {
     onError: errorHandler,
     refetchQueries: [{ query: ALL_PRODUCTS }]
@@ -58,10 +62,9 @@ export const ProductList = () => {
       columns={[
         { title: "Name", field: "name" },
         { title: "Producer", field: "producer" },
-        { title: "Type", field: "type" },
         { title: "ID", field: "id" }
       ]}
-      data={products}
+      data={productsObject}
       editable={{
         onRowUpdate: (updatedProduct, oldProduct) =>
           new Promise(resolve => {

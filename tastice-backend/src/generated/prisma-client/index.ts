@@ -274,8 +274,6 @@ export type ProductOrderByInput =
   | "name_DESC"
   | "producer_ASC"
   | "producer_DESC"
-  | "type_ASC"
-  | "type_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -321,6 +319,7 @@ export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type CategoryWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  name?: Maybe<String>;
 }>;
 
 export interface SubCategoryWhereInput {
@@ -444,26 +443,15 @@ export interface ProductWhereInput {
   producer_not_starts_with?: Maybe<String>;
   producer_ends_with?: Maybe<String>;
   producer_not_ends_with?: Maybe<String>;
-  type?: Maybe<String>;
-  type_not?: Maybe<String>;
-  type_in?: Maybe<String[] | String>;
-  type_not_in?: Maybe<String[] | String>;
-  type_lt?: Maybe<String>;
-  type_lte?: Maybe<String>;
-  type_gt?: Maybe<String>;
-  type_gte?: Maybe<String>;
-  type_contains?: Maybe<String>;
-  type_not_contains?: Maybe<String>;
-  type_starts_with?: Maybe<String>;
-  type_not_starts_with?: Maybe<String>;
-  type_ends_with?: Maybe<String>;
-  type_not_ends_with?: Maybe<String>;
   checkins_every?: Maybe<CheckinWhereInput>;
   checkins_some?: Maybe<CheckinWhereInput>;
   checkins_none?: Maybe<CheckinWhereInput>;
   category_every?: Maybe<CategoryWhereInput>;
   category_some?: Maybe<CategoryWhereInput>;
   category_none?: Maybe<CategoryWhereInput>;
+  subCategory_every?: Maybe<SubCategoryWhereInput>;
+  subCategory_some?: Maybe<SubCategoryWhereInput>;
+  subCategory_none?: Maybe<SubCategoryWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -655,6 +643,7 @@ export type ProductWhereUniqueInput = AtLeastOne<{
 
 export type SubCategoryWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  name?: Maybe<String>;
 }>;
 
 export type UserWhereUniqueInput = AtLeastOne<{
@@ -680,19 +669,21 @@ export interface SubCategoryCreateManyWithoutCategoryInput {
 export interface SubCategoryCreateWithoutCategoryInput {
   id?: Maybe<ID_Input>;
   name: String;
-  products?: Maybe<ProductCreateManyInput>;
+  products?: Maybe<ProductCreateManyWithoutSubCategoryInput>;
 }
 
-export interface ProductCreateManyInput {
-  create?: Maybe<ProductCreateInput[] | ProductCreateInput>;
+export interface ProductCreateManyWithoutSubCategoryInput {
+  create?: Maybe<
+    | ProductCreateWithoutSubCategoryInput[]
+    | ProductCreateWithoutSubCategoryInput
+  >;
   connect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
 }
 
-export interface ProductCreateInput {
+export interface ProductCreateWithoutSubCategoryInput {
   id?: Maybe<ID_Input>;
   name: String;
   producer?: Maybe<String>;
-  type?: Maybe<String>;
   checkins?: Maybe<CheckinCreateManyWithoutProductInput>;
   category?: Maybe<CategoryCreateManyWithoutProductsInput>;
 }
@@ -765,8 +756,8 @@ export interface ProductCreateWithoutCheckinsInput {
   id?: Maybe<ID_Input>;
   name: String;
   producer?: Maybe<String>;
-  type?: Maybe<String>;
   category?: Maybe<CategoryCreateManyWithoutProductsInput>;
+  subCategory?: Maybe<SubCategoryCreateManyWithoutProductsInput>;
 }
 
 export interface CategoryCreateManyWithoutProductsInput {
@@ -782,6 +773,31 @@ export interface CategoryCreateWithoutProductsInput {
   subCategory?: Maybe<SubCategoryCreateManyWithoutCategoryInput>;
 }
 
+export interface SubCategoryCreateManyWithoutProductsInput {
+  create?: Maybe<
+    | SubCategoryCreateWithoutProductsInput[]
+    | SubCategoryCreateWithoutProductsInput
+  >;
+  connect?: Maybe<SubCategoryWhereUniqueInput[] | SubCategoryWhereUniqueInput>;
+}
+
+export interface SubCategoryCreateWithoutProductsInput {
+  id?: Maybe<ID_Input>;
+  category: CategoryCreateOneWithoutSubCategoryInput;
+  name: String;
+}
+
+export interface CategoryCreateOneWithoutSubCategoryInput {
+  create?: Maybe<CategoryCreateWithoutSubCategoryInput>;
+  connect?: Maybe<CategoryWhereUniqueInput>;
+}
+
+export interface CategoryCreateWithoutSubCategoryInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  products?: Maybe<ProductCreateManyWithoutCategoryInput>;
+}
+
 export interface ProductCreateManyWithoutCategoryInput {
   create?: Maybe<
     ProductCreateWithoutCategoryInput[] | ProductCreateWithoutCategoryInput
@@ -793,8 +809,8 @@ export interface ProductCreateWithoutCategoryInput {
   id?: Maybe<ID_Input>;
   name: String;
   producer?: Maybe<String>;
-  type?: Maybe<String>;
   checkins?: Maybe<CheckinCreateManyWithoutProductInput>;
+  subCategory?: Maybe<SubCategoryCreateManyWithoutProductsInput>;
 }
 
 export interface CategoryUpdateInput {
@@ -838,23 +854,26 @@ export interface SubCategoryUpdateWithWhereUniqueWithoutCategoryInput {
 
 export interface SubCategoryUpdateWithoutCategoryDataInput {
   name?: Maybe<String>;
-  products?: Maybe<ProductUpdateManyInput>;
+  products?: Maybe<ProductUpdateManyWithoutSubCategoryInput>;
 }
 
-export interface ProductUpdateManyInput {
-  create?: Maybe<ProductCreateInput[] | ProductCreateInput>;
-  update?: Maybe<
-    | ProductUpdateWithWhereUniqueNestedInput[]
-    | ProductUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | ProductUpsertWithWhereUniqueNestedInput[]
-    | ProductUpsertWithWhereUniqueNestedInput
+export interface ProductUpdateManyWithoutSubCategoryInput {
+  create?: Maybe<
+    | ProductCreateWithoutSubCategoryInput[]
+    | ProductCreateWithoutSubCategoryInput
   >;
   delete?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
   connect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
   set?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
   disconnect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
+  update?: Maybe<
+    | ProductUpdateWithWhereUniqueWithoutSubCategoryInput[]
+    | ProductUpdateWithWhereUniqueWithoutSubCategoryInput
+  >;
+  upsert?: Maybe<
+    | ProductUpsertWithWhereUniqueWithoutSubCategoryInput[]
+    | ProductUpsertWithWhereUniqueWithoutSubCategoryInput
+  >;
   deleteMany?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
   updateMany?: Maybe<
     | ProductUpdateManyWithWhereNestedInput[]
@@ -862,15 +881,14 @@ export interface ProductUpdateManyInput {
   >;
 }
 
-export interface ProductUpdateWithWhereUniqueNestedInput {
+export interface ProductUpdateWithWhereUniqueWithoutSubCategoryInput {
   where: ProductWhereUniqueInput;
-  data: ProductUpdateDataInput;
+  data: ProductUpdateWithoutSubCategoryDataInput;
 }
 
-export interface ProductUpdateDataInput {
+export interface ProductUpdateWithoutSubCategoryDataInput {
   name?: Maybe<String>;
   producer?: Maybe<String>;
-  type?: Maybe<String>;
   checkins?: Maybe<CheckinUpdateManyWithoutProductInput>;
   category?: Maybe<CategoryUpdateManyWithoutProductsInput>;
 }
@@ -1004,8 +1022,8 @@ export interface ProductUpdateOneRequiredWithoutCheckinsInput {
 export interface ProductUpdateWithoutCheckinsDataInput {
   name?: Maybe<String>;
   producer?: Maybe<String>;
-  type?: Maybe<String>;
   category?: Maybe<CategoryUpdateManyWithoutProductsInput>;
+  subCategory?: Maybe<SubCategoryUpdateManyWithoutProductsInput>;
 }
 
 export interface CategoryUpdateManyWithoutProductsInput {
@@ -1087,6 +1105,225 @@ export interface CategoryUpdateManyWithWhereNestedInput {
 }
 
 export interface CategoryUpdateManyDataInput {
+  name?: Maybe<String>;
+}
+
+export interface SubCategoryUpdateManyWithoutProductsInput {
+  create?: Maybe<
+    | SubCategoryCreateWithoutProductsInput[]
+    | SubCategoryCreateWithoutProductsInput
+  >;
+  delete?: Maybe<SubCategoryWhereUniqueInput[] | SubCategoryWhereUniqueInput>;
+  connect?: Maybe<SubCategoryWhereUniqueInput[] | SubCategoryWhereUniqueInput>;
+  set?: Maybe<SubCategoryWhereUniqueInput[] | SubCategoryWhereUniqueInput>;
+  disconnect?: Maybe<
+    SubCategoryWhereUniqueInput[] | SubCategoryWhereUniqueInput
+  >;
+  update?: Maybe<
+    | SubCategoryUpdateWithWhereUniqueWithoutProductsInput[]
+    | SubCategoryUpdateWithWhereUniqueWithoutProductsInput
+  >;
+  upsert?: Maybe<
+    | SubCategoryUpsertWithWhereUniqueWithoutProductsInput[]
+    | SubCategoryUpsertWithWhereUniqueWithoutProductsInput
+  >;
+  deleteMany?: Maybe<
+    SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | SubCategoryUpdateManyWithWhereNestedInput[]
+    | SubCategoryUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface SubCategoryUpdateWithWhereUniqueWithoutProductsInput {
+  where: SubCategoryWhereUniqueInput;
+  data: SubCategoryUpdateWithoutProductsDataInput;
+}
+
+export interface SubCategoryUpdateWithoutProductsDataInput {
+  category?: Maybe<CategoryUpdateOneRequiredWithoutSubCategoryInput>;
+  name?: Maybe<String>;
+}
+
+export interface CategoryUpdateOneRequiredWithoutSubCategoryInput {
+  create?: Maybe<CategoryCreateWithoutSubCategoryInput>;
+  update?: Maybe<CategoryUpdateWithoutSubCategoryDataInput>;
+  upsert?: Maybe<CategoryUpsertWithoutSubCategoryInput>;
+  connect?: Maybe<CategoryWhereUniqueInput>;
+}
+
+export interface CategoryUpdateWithoutSubCategoryDataInput {
+  name?: Maybe<String>;
+  products?: Maybe<ProductUpdateManyWithoutCategoryInput>;
+}
+
+export interface ProductUpdateManyWithoutCategoryInput {
+  create?: Maybe<
+    ProductCreateWithoutCategoryInput[] | ProductCreateWithoutCategoryInput
+  >;
+  delete?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
+  connect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
+  set?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
+  disconnect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
+  update?: Maybe<
+    | ProductUpdateWithWhereUniqueWithoutCategoryInput[]
+    | ProductUpdateWithWhereUniqueWithoutCategoryInput
+  >;
+  upsert?: Maybe<
+    | ProductUpsertWithWhereUniqueWithoutCategoryInput[]
+    | ProductUpsertWithWhereUniqueWithoutCategoryInput
+  >;
+  deleteMany?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
+  updateMany?: Maybe<
+    | ProductUpdateManyWithWhereNestedInput[]
+    | ProductUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ProductUpdateWithWhereUniqueWithoutCategoryInput {
+  where: ProductWhereUniqueInput;
+  data: ProductUpdateWithoutCategoryDataInput;
+}
+
+export interface ProductUpdateWithoutCategoryDataInput {
+  name?: Maybe<String>;
+  producer?: Maybe<String>;
+  checkins?: Maybe<CheckinUpdateManyWithoutProductInput>;
+  subCategory?: Maybe<SubCategoryUpdateManyWithoutProductsInput>;
+}
+
+export interface ProductUpsertWithWhereUniqueWithoutCategoryInput {
+  where: ProductWhereUniqueInput;
+  update: ProductUpdateWithoutCategoryDataInput;
+  create: ProductCreateWithoutCategoryInput;
+}
+
+export interface ProductScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  producer?: Maybe<String>;
+  producer_not?: Maybe<String>;
+  producer_in?: Maybe<String[] | String>;
+  producer_not_in?: Maybe<String[] | String>;
+  producer_lt?: Maybe<String>;
+  producer_lte?: Maybe<String>;
+  producer_gt?: Maybe<String>;
+  producer_gte?: Maybe<String>;
+  producer_contains?: Maybe<String>;
+  producer_not_contains?: Maybe<String>;
+  producer_starts_with?: Maybe<String>;
+  producer_not_starts_with?: Maybe<String>;
+  producer_ends_with?: Maybe<String>;
+  producer_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
+  OR?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
+  NOT?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
+}
+
+export interface ProductUpdateManyWithWhereNestedInput {
+  where: ProductScalarWhereInput;
+  data: ProductUpdateManyDataInput;
+}
+
+export interface ProductUpdateManyDataInput {
+  name?: Maybe<String>;
+  producer?: Maybe<String>;
+}
+
+export interface CategoryUpsertWithoutSubCategoryInput {
+  update: CategoryUpdateWithoutSubCategoryDataInput;
+  create: CategoryCreateWithoutSubCategoryInput;
+}
+
+export interface SubCategoryUpsertWithWhereUniqueWithoutProductsInput {
+  where: SubCategoryWhereUniqueInput;
+  update: SubCategoryUpdateWithoutProductsDataInput;
+  create: SubCategoryCreateWithoutProductsInput;
+}
+
+export interface SubCategoryScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  AND?: Maybe<SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput>;
+  OR?: Maybe<SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput>;
+  NOT?: Maybe<SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput>;
+}
+
+export interface SubCategoryUpdateManyWithWhereNestedInput {
+  where: SubCategoryScalarWhereInput;
+  data: SubCategoryUpdateManyDataInput;
+}
+
+export interface SubCategoryUpdateManyDataInput {
   name?: Maybe<String>;
 }
 
@@ -1293,189 +1530,16 @@ export interface CheckinUpsertWithWhereUniqueWithoutProductInput {
   create: CheckinCreateWithoutProductInput;
 }
 
-export interface ProductUpsertWithWhereUniqueNestedInput {
+export interface ProductUpsertWithWhereUniqueWithoutSubCategoryInput {
   where: ProductWhereUniqueInput;
-  update: ProductUpdateDataInput;
-  create: ProductCreateInput;
-}
-
-export interface ProductScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  producer?: Maybe<String>;
-  producer_not?: Maybe<String>;
-  producer_in?: Maybe<String[] | String>;
-  producer_not_in?: Maybe<String[] | String>;
-  producer_lt?: Maybe<String>;
-  producer_lte?: Maybe<String>;
-  producer_gt?: Maybe<String>;
-  producer_gte?: Maybe<String>;
-  producer_contains?: Maybe<String>;
-  producer_not_contains?: Maybe<String>;
-  producer_starts_with?: Maybe<String>;
-  producer_not_starts_with?: Maybe<String>;
-  producer_ends_with?: Maybe<String>;
-  producer_not_ends_with?: Maybe<String>;
-  type?: Maybe<String>;
-  type_not?: Maybe<String>;
-  type_in?: Maybe<String[] | String>;
-  type_not_in?: Maybe<String[] | String>;
-  type_lt?: Maybe<String>;
-  type_lte?: Maybe<String>;
-  type_gt?: Maybe<String>;
-  type_gte?: Maybe<String>;
-  type_contains?: Maybe<String>;
-  type_not_contains?: Maybe<String>;
-  type_starts_with?: Maybe<String>;
-  type_not_starts_with?: Maybe<String>;
-  type_ends_with?: Maybe<String>;
-  type_not_ends_with?: Maybe<String>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
-  OR?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
-  NOT?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
-}
-
-export interface ProductUpdateManyWithWhereNestedInput {
-  where: ProductScalarWhereInput;
-  data: ProductUpdateManyDataInput;
-}
-
-export interface ProductUpdateManyDataInput {
-  name?: Maybe<String>;
-  producer?: Maybe<String>;
-  type?: Maybe<String>;
+  update: ProductUpdateWithoutSubCategoryDataInput;
+  create: ProductCreateWithoutSubCategoryInput;
 }
 
 export interface SubCategoryUpsertWithWhereUniqueWithoutCategoryInput {
   where: SubCategoryWhereUniqueInput;
   update: SubCategoryUpdateWithoutCategoryDataInput;
   create: SubCategoryCreateWithoutCategoryInput;
-}
-
-export interface SubCategoryScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput>;
-  OR?: Maybe<SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput>;
-  NOT?: Maybe<SubCategoryScalarWhereInput[] | SubCategoryScalarWhereInput>;
-}
-
-export interface SubCategoryUpdateManyWithWhereNestedInput {
-  where: SubCategoryScalarWhereInput;
-  data: SubCategoryUpdateManyDataInput;
-}
-
-export interface SubCategoryUpdateManyDataInput {
-  name?: Maybe<String>;
-}
-
-export interface ProductUpdateManyWithoutCategoryInput {
-  create?: Maybe<
-    ProductCreateWithoutCategoryInput[] | ProductCreateWithoutCategoryInput
-  >;
-  delete?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
-  connect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
-  set?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
-  disconnect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
-  update?: Maybe<
-    | ProductUpdateWithWhereUniqueWithoutCategoryInput[]
-    | ProductUpdateWithWhereUniqueWithoutCategoryInput
-  >;
-  upsert?: Maybe<
-    | ProductUpsertWithWhereUniqueWithoutCategoryInput[]
-    | ProductUpsertWithWhereUniqueWithoutCategoryInput
-  >;
-  deleteMany?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
-  updateMany?: Maybe<
-    | ProductUpdateManyWithWhereNestedInput[]
-    | ProductUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface ProductUpdateWithWhereUniqueWithoutCategoryInput {
-  where: ProductWhereUniqueInput;
-  data: ProductUpdateWithoutCategoryDataInput;
-}
-
-export interface ProductUpdateWithoutCategoryDataInput {
-  name?: Maybe<String>;
-  producer?: Maybe<String>;
-  type?: Maybe<String>;
-  checkins?: Maybe<CheckinUpdateManyWithoutProductInput>;
-}
-
-export interface ProductUpsertWithWhereUniqueWithoutCategoryInput {
-  where: ProductWhereUniqueInput;
-  update: ProductUpdateWithoutCategoryDataInput;
-  create: ProductCreateWithoutCategoryInput;
 }
 
 export interface CategoryUpdateManyMutationInput {
@@ -1502,59 +1566,39 @@ export interface CheckinUpdateManyMutationInput {
   comment?: Maybe<String>;
 }
 
+export interface ProductCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  producer?: Maybe<String>;
+  checkins?: Maybe<CheckinCreateManyWithoutProductInput>;
+  category?: Maybe<CategoryCreateManyWithoutProductsInput>;
+  subCategory?: Maybe<SubCategoryCreateManyWithoutProductsInput>;
+}
+
 export interface ProductUpdateInput {
   name?: Maybe<String>;
   producer?: Maybe<String>;
-  type?: Maybe<String>;
   checkins?: Maybe<CheckinUpdateManyWithoutProductInput>;
   category?: Maybe<CategoryUpdateManyWithoutProductsInput>;
+  subCategory?: Maybe<SubCategoryUpdateManyWithoutProductsInput>;
 }
 
 export interface ProductUpdateManyMutationInput {
   name?: Maybe<String>;
   producer?: Maybe<String>;
-  type?: Maybe<String>;
 }
 
 export interface SubCategoryCreateInput {
   id?: Maybe<ID_Input>;
   category: CategoryCreateOneWithoutSubCategoryInput;
   name: String;
-  products?: Maybe<ProductCreateManyInput>;
-}
-
-export interface CategoryCreateOneWithoutSubCategoryInput {
-  create?: Maybe<CategoryCreateWithoutSubCategoryInput>;
-  connect?: Maybe<CategoryWhereUniqueInput>;
-}
-
-export interface CategoryCreateWithoutSubCategoryInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  products?: Maybe<ProductCreateManyWithoutCategoryInput>;
+  products?: Maybe<ProductCreateManyWithoutSubCategoryInput>;
 }
 
 export interface SubCategoryUpdateInput {
   category?: Maybe<CategoryUpdateOneRequiredWithoutSubCategoryInput>;
   name?: Maybe<String>;
-  products?: Maybe<ProductUpdateManyInput>;
-}
-
-export interface CategoryUpdateOneRequiredWithoutSubCategoryInput {
-  create?: Maybe<CategoryCreateWithoutSubCategoryInput>;
-  update?: Maybe<CategoryUpdateWithoutSubCategoryDataInput>;
-  upsert?: Maybe<CategoryUpsertWithoutSubCategoryInput>;
-  connect?: Maybe<CategoryWhereUniqueInput>;
-}
-
-export interface CategoryUpdateWithoutSubCategoryDataInput {
-  name?: Maybe<String>;
-  products?: Maybe<ProductUpdateManyWithoutCategoryInput>;
-}
-
-export interface CategoryUpsertWithoutSubCategoryInput {
-  update: CategoryUpdateWithoutSubCategoryDataInput;
-  create: CategoryCreateWithoutSubCategoryInput;
+  products?: Maybe<ProductUpdateManyWithoutSubCategoryInput>;
 }
 
 export interface SubCategoryUpdateManyMutationInput {
@@ -1784,7 +1828,6 @@ export interface Product {
   id: ID_Output;
   name: String;
   producer?: String;
-  type?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -1793,7 +1836,6 @@ export interface ProductPromise extends Promise<Product>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   producer: () => Promise<String>;
-  type: () => Promise<String>;
   checkins: <T = FragmentableArray<Checkin>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -1812,6 +1854,15 @@ export interface ProductPromise extends Promise<Product>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  subCategory: <T = FragmentableArray<SubCategory>>(args?: {
+    where?: SubCategoryWhereInput;
+    orderBy?: SubCategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -1822,7 +1873,6 @@ export interface ProductSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   producer: () => Promise<AsyncIterator<String>>;
-  type: () => Promise<AsyncIterator<String>>;
   checkins: <T = Promise<AsyncIterator<CheckinSubscription>>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -1841,6 +1891,15 @@ export interface ProductSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  subCategory: <T = Promise<AsyncIterator<SubCategorySubscription>>>(args?: {
+    where?: SubCategoryWhereInput;
+    orderBy?: SubCategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -1851,7 +1910,6 @@ export interface ProductNullablePromise
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   producer: () => Promise<String>;
-  type: () => Promise<String>;
   checkins: <T = FragmentableArray<Checkin>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -1864,6 +1922,15 @@ export interface ProductNullablePromise
   category: <T = FragmentableArray<Category>>(args?: {
     where?: CategoryWhereInput;
     orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  subCategory: <T = FragmentableArray<SubCategory>>(args?: {
+    where?: SubCategoryWhereInput;
+    orderBy?: SubCategoryOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -2457,7 +2524,6 @@ export interface ProductPreviousValues {
   id: ID_Output;
   name: String;
   producer?: String;
-  type?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -2468,7 +2534,6 @@ export interface ProductPreviousValuesPromise
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   producer: () => Promise<String>;
-  type: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2479,7 +2544,6 @@ export interface ProductPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   producer: () => Promise<AsyncIterator<String>>;
-  type: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }

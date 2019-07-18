@@ -2,8 +2,8 @@ export interface IProduct {
   id: string;
   name: string;
   producer: string;
-  category: string;
-  subCategory: string;
+  category: any;
+  subCategory: any;
 }
 
 export interface IProductObject {
