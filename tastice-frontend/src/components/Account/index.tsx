@@ -13,6 +13,7 @@ import { Token } from "../../types";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import useReactRouter from "use-react-router";
 import { ConfirmationDialog } from "../ConfirmationDialog";
+import { client } from "../../index";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -96,6 +97,7 @@ export const Account: React.FC<Token> = ({ setToken }) => {
     await deleteUser({
       variables: { id: user.id }
     });
+    await client.clearStore();
     localStorage.clear();
     setToken(null);
     history.push("/");

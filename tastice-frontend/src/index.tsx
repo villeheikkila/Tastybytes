@@ -29,7 +29,7 @@ const wsLink = new WebSocketLink({
 
 const cache = new InMemoryCache();
 
-persistCache({
+export const persistor = persistCache({
   cache,
   storage: window.localStorage as PersistentStorage<
     PersistedData<NormalizedCacheObject>
