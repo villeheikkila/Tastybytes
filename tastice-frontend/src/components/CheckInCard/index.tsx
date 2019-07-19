@@ -103,7 +103,7 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
           </Typography>
           <Rating value={checkinObject.rating} max={5} />
           <Typography variant="h6" color="textSecondary" component="p">
-            Comment: {checkinObject.comment}
+            {checkinObject.comment && <>Comment: {checkinObject.comment}</>}
           </Typography>
         </CardContent>
       </Card>
