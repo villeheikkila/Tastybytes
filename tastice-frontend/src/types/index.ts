@@ -74,8 +74,9 @@ export interface IConfirmationDialog {
   description: string;
   declineButton: string;
   acceptButton: string;
-  value: boolean;
-  setValue: any;
+  visible: boolean;
+  setVisible: any;
+  onAccept: any;
 }
 
 export interface ICreateCheckIn {

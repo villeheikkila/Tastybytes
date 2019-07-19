@@ -11,8 +11,8 @@ import Button from "@material-ui/core/Button";
 import { notificationHandler, errorHandler } from "../../utils";
 import { Token } from "../../types";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import useReactRouter from 'use-react-router';
-import { ConfirmationDialog } from '../ConfirmationDialog'
+import useReactRouter from "use-react-router";
+import { ConfirmationDialog } from "../ConfirmationDialog";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,7 +55,7 @@ export const Account: React.FC<Token> = ({ setToken }) => {
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
   const { history } = useReactRouter();
-  const [value, setValue] = useState();
+  const [visible, setVisible] = useState(false);
 
   const [deleteUser] = useMutation(DELETE_USER, {
     onError: error => console.log(error)
@@ -72,7 +72,6 @@ export const Account: React.FC<Token> = ({ setToken }) => {
   const user = me.data.me;
 
   const handleUpdateUser = async (event: any) => {
-
     const result = await updateUser({
       variables: {
         id: user.id,
@@ -86,13 +85,14 @@ export const Account: React.FC<Token> = ({ setToken }) => {
       notificationHandler({
         message: `User '${
           result.data.updateUser.firstName
-          }' succesfully updated`,
+        }' succesfully updated`,
         variant: "success"
       });
     }
   };
 
   const handleDeleteUser = async () => {
+    setVisible(false);
     await deleteUser({
       variables: { id: user.id }
     });
@@ -110,7 +110,6 @@ export const Account: React.FC<Token> = ({ setToken }) => {
 
   return (
     <div>
-
       <Paper className={classes.paper}>
         <Typography variant="h4" component="h3" className={classes.textField}>
           Account Settings
@@ -137,10 +136,8 @@ export const Account: React.FC<Token> = ({ setToken }) => {
                 id="firstName"
                 label="First Name"
                 autoFocus
-                validators={[
-                ]}
-                errorMessages={[
-                ]}
+                validators={[]}
+                errorMessages={[]}
                 value={firstName}
                 defaultValue={user.firstName}
                 onChange={handleFirstNameChange}
@@ -155,10 +152,8 @@ export const Account: React.FC<Token> = ({ setToken }) => {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
-                validators={[
-                ]}
-                errorMessages={[
-                ]}
+                validators={[]}
+                errorMessages={[]}
                 value={lastName}
                 defaultValue={user.lastName}
                 onChange={handleLastNameChange}
@@ -175,9 +170,7 @@ export const Account: React.FC<Token> = ({ setToken }) => {
                 name="email"
                 autoComplete="email"
                 validators={["isEmail"]}
-                errorMessages={[
-                  "The entered email is not valid"
-                ]}
+                errorMessages={["The entered email is not valid"]}
                 value={email}
                 defaultValue={user.email}
                 onChange={handleEmailChange}
@@ -197,10 +190,20 @@ export const Account: React.FC<Token> = ({ setToken }) => {
               variant="outlined"
               color="secondary"
               className={classes.button}
-              onClick={handleDeleteUser}
+              onClick={() => setVisible(true)}
             >
               Delete User
             </Button>
+            <ConfirmationDialog
+              visible={visible}
+              setVisible={setVisible}
+              description={"hei"}
+              title={"Warning!"}
+              content={"Are you sure you want to remove your account?"}
+              onAccept={handleDeleteUser}
+              declineButton={"Cancel"}
+              acceptButton={"Yes"}
+            />
           </Grid>
         </ValidatorForm>
       </Paper>
