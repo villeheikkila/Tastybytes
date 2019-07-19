@@ -69,6 +69,25 @@ export const Query = queryType({
       }
     });
 
+    t.list.field("company", {
+      type: "Company",
+      args: {
+        id: idArg()
+      },
+      resolve: (_, args, ctx) => {
+        return ctx.prisma.companies({
+          where: { id: args.id }
+        });
+      }
+    });
+
+    t.list.field("companies", {
+      type: "Company",
+      resolve: (parent, args, ctx) => {
+        return ctx.prisma.companies();
+      }
+    });
+
     t.list.field("product", {
       type: "Product",
       args: {

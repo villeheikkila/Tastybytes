@@ -18,6 +18,7 @@ export interface NexusPrismaTypes {
       User: UserObject
       Checkin: CheckinObject
       Product: ProductObject
+      Company: CompanyObject
       Category: CategoryObject
       SubCategory: SubCategoryObject
       UserConnection: UserConnectionObject
@@ -30,6 +31,9 @@ export interface NexusPrismaTypes {
       CheckinConnection: CheckinConnectionObject
       CheckinEdge: CheckinEdgeObject
       AggregateCheckin: AggregateCheckinObject
+      CompanyConnection: CompanyConnectionObject
+      CompanyEdge: CompanyEdgeObject
+      AggregateCompany: AggregateCompanyObject
       CategoryConnection: CategoryConnectionObject
       CategoryEdge: CategoryEdgeObject
       AggregateCategory: AggregateCategoryObject
@@ -45,6 +49,8 @@ export interface NexusPrismaTypes {
       ProductPreviousValues: ProductPreviousValuesObject
       CheckinSubscriptionPayload: CheckinSubscriptionPayloadObject
       CheckinPreviousValues: CheckinPreviousValuesObject
+      CompanySubscriptionPayload: CompanySubscriptionPayloadObject
+      CompanyPreviousValues: CompanyPreviousValuesObject
       CategorySubscriptionPayload: CategorySubscriptionPayloadObject
       CategoryPreviousValues: CategoryPreviousValuesObject
       SubCategorySubscriptionPayload: SubCategorySubscriptionPayloadObject
@@ -55,6 +61,7 @@ export interface NexusPrismaTypes {
       User: UserFieldDetails
       Checkin: CheckinFieldDetails
       Product: ProductFieldDetails
+      Company: CompanyFieldDetails
       Category: CategoryFieldDetails
       SubCategory: SubCategoryFieldDetails
       UserConnection: UserConnectionFieldDetails
@@ -67,6 +74,9 @@ export interface NexusPrismaTypes {
       CheckinConnection: CheckinConnectionFieldDetails
       CheckinEdge: CheckinEdgeFieldDetails
       AggregateCheckin: AggregateCheckinFieldDetails
+      CompanyConnection: CompanyConnectionFieldDetails
+      CompanyEdge: CompanyEdgeFieldDetails
+      AggregateCompany: AggregateCompanyFieldDetails
       CategoryConnection: CategoryConnectionFieldDetails
       CategoryEdge: CategoryEdgeFieldDetails
       AggregateCategory: AggregateCategoryFieldDetails
@@ -82,6 +92,8 @@ export interface NexusPrismaTypes {
       ProductPreviousValues: ProductPreviousValuesFieldDetails
       CheckinSubscriptionPayload: CheckinSubscriptionPayloadFieldDetails
       CheckinPreviousValues: CheckinPreviousValuesFieldDetails
+      CompanySubscriptionPayload: CompanySubscriptionPayloadFieldDetails
+      CompanyPreviousValues: CompanyPreviousValuesFieldDetails
       CategorySubscriptionPayload: CategorySubscriptionPayloadFieldDetails
       CategoryPreviousValues: CategoryPreviousValuesFieldDetails
       SubCategorySubscriptionPayload: SubCategorySubscriptionPayloadFieldDetails
@@ -94,10 +106,12 @@ export interface NexusPrismaTypes {
       CheckinWhereInput: CheckinWhereInputInputObject
       UserWhereInput: UserWhereInputInputObject
       ProductWhereInput: ProductWhereInputInputObject
+      CompanyWhereInput: CompanyWhereInputInputObject
       CategoryWhereInput: CategoryWhereInputInputObject
       SubCategoryWhereInput: SubCategoryWhereInputInputObject
       ProductWhereUniqueInput: ProductWhereUniqueInputInputObject
       CheckinWhereUniqueInput: CheckinWhereUniqueInputInputObject
+      CompanyWhereUniqueInput: CompanyWhereUniqueInputInputObject
       CategoryWhereUniqueInput: CategoryWhereUniqueInputInputObject
       SubCategoryWhereUniqueInput: SubCategoryWhereUniqueInputInputObject
       UserCreateInput: UserCreateInputInputObject
@@ -105,6 +119,8 @@ export interface NexusPrismaTypes {
       CheckinCreateWithoutAuthorInput: CheckinCreateWithoutAuthorInputInputObject
       ProductCreateOneWithoutCheckinsInput: ProductCreateOneWithoutCheckinsInputInputObject
       ProductCreateWithoutCheckinsInput: ProductCreateWithoutCheckinsInputInputObject
+      CompanyCreateManyWithoutProductsInput: CompanyCreateManyWithoutProductsInputInputObject
+      CompanyCreateWithoutProductsInput: CompanyCreateWithoutProductsInputInputObject
       CategoryCreateManyWithoutProductsInput: CategoryCreateManyWithoutProductsInputInputObject
       CategoryCreateWithoutProductsInput: CategoryCreateWithoutProductsInputInputObject
       SubCategoryCreateManyWithoutCategoryInput: SubCategoryCreateManyWithoutCategoryInputInputObject
@@ -128,6 +144,13 @@ export interface NexusPrismaTypes {
       CheckinUpdateWithoutAuthorDataInput: CheckinUpdateWithoutAuthorDataInputInputObject
       ProductUpdateOneRequiredWithoutCheckinsInput: ProductUpdateOneRequiredWithoutCheckinsInputInputObject
       ProductUpdateWithoutCheckinsDataInput: ProductUpdateWithoutCheckinsDataInputInputObject
+      CompanyUpdateManyWithoutProductsInput: CompanyUpdateManyWithoutProductsInputInputObject
+      CompanyUpdateWithWhereUniqueWithoutProductsInput: CompanyUpdateWithWhereUniqueWithoutProductsInputInputObject
+      CompanyUpdateWithoutProductsDataInput: CompanyUpdateWithoutProductsDataInputInputObject
+      CompanyUpsertWithWhereUniqueWithoutProductsInput: CompanyUpsertWithWhereUniqueWithoutProductsInputInputObject
+      CompanyScalarWhereInput: CompanyScalarWhereInputInputObject
+      CompanyUpdateManyWithWhereNestedInput: CompanyUpdateManyWithWhereNestedInputInputObject
+      CompanyUpdateManyDataInput: CompanyUpdateManyDataInputInputObject
       CategoryUpdateManyWithoutProductsInput: CategoryUpdateManyWithoutProductsInputInputObject
       CategoryUpdateWithWhereUniqueWithoutProductsInput: CategoryUpdateWithWhereUniqueWithoutProductsInputInputObject
       CategoryUpdateWithoutProductsDataInput: CategoryUpdateWithoutProductsDataInputInputObject
@@ -186,6 +209,15 @@ export interface NexusPrismaTypes {
       CheckinCreateInput: CheckinCreateInputInputObject
       CheckinUpdateInput: CheckinUpdateInputInputObject
       CheckinUpdateManyMutationInput: CheckinUpdateManyMutationInputInputObject
+      CompanyCreateInput: CompanyCreateInputInputObject
+      ProductCreateManyWithoutCompanyInput: ProductCreateManyWithoutCompanyInputInputObject
+      ProductCreateWithoutCompanyInput: ProductCreateWithoutCompanyInputInputObject
+      CompanyUpdateInput: CompanyUpdateInputInputObject
+      ProductUpdateManyWithoutCompanyInput: ProductUpdateManyWithoutCompanyInputInputObject
+      ProductUpdateWithWhereUniqueWithoutCompanyInput: ProductUpdateWithWhereUniqueWithoutCompanyInputInputObject
+      ProductUpdateWithoutCompanyDataInput: ProductUpdateWithoutCompanyDataInputInputObject
+      ProductUpsertWithWhereUniqueWithoutCompanyInput: ProductUpsertWithWhereUniqueWithoutCompanyInputInputObject
+      CompanyUpdateManyMutationInput: CompanyUpdateManyMutationInputInputObject
       CategoryCreateInput: CategoryCreateInputInputObject
       CategoryUpdateInput: CategoryUpdateInputInputObject
       CategoryUpdateManyMutationInput: CategoryUpdateManyMutationInputInputObject
@@ -195,15 +227,17 @@ export interface NexusPrismaTypes {
       UserSubscriptionWhereInput: UserSubscriptionWhereInputInputObject
       ProductSubscriptionWhereInput: ProductSubscriptionWhereInputInputObject
       CheckinSubscriptionWhereInput: CheckinSubscriptionWhereInputInputObject
+      CompanySubscriptionWhereInput: CompanySubscriptionWhereInputInputObject
       CategorySubscriptionWhereInput: CategorySubscriptionWhereInputInputObject
       SubCategorySubscriptionWhereInput: SubCategorySubscriptionWhereInputInputObject
     }
   }
   enumTypes: {
     CheckinOrderByInput: CheckinOrderByInputValues,
+    CompanyOrderByInput: CompanyOrderByInputValues,
+    ProductOrderByInput: ProductOrderByInputValues,
     CategoryOrderByInput: CategoryOrderByInputValues,
     SubCategoryOrderByInput: SubCategoryOrderByInputValues,
-    ProductOrderByInput: ProductOrderByInputValues,
     UserOrderByInput: UserOrderByInputValues,
     MutationType: MutationTypeValues,
   }
@@ -222,6 +256,9 @@ type QueryObject =
   | { name: 'checkin', args?: QueryCheckinArgs[] | false, alias?: string  } 
   | { name: 'checkins', args?: QueryCheckinsArgs[] | false, alias?: string  } 
   | { name: 'checkinsConnection', args?: QueryCheckinsConnectionArgs[] | false, alias?: string  } 
+  | { name: 'company', args?: QueryCompanyArgs[] | false, alias?: string  } 
+  | { name: 'companies', args?: QueryCompaniesArgs[] | false, alias?: string  } 
+  | { name: 'companiesConnection', args?: QueryCompaniesConnectionArgs[] | false, alias?: string  } 
   | { name: 'category', args?: QueryCategoryArgs[] | false, alias?: string  } 
   | { name: 'categories', args?: QueryCategoriesArgs[] | false, alias?: string  } 
   | { name: 'categoriesConnection', args?: QueryCategoriesConnectionArgs[] | false, alias?: string  } 
@@ -239,6 +276,9 @@ type QueryFields =
   | 'checkin'
   | 'checkins'
   | 'checkinsConnection'
+  | 'company'
+  | 'companies'
+  | 'companiesConnection'
   | 'category'
   | 'categories'
   | 'categoriesConnection'
@@ -294,6 +334,24 @@ type QueryCheckinsArgs =
   | 'first'
   | 'last'
 type QueryCheckinsConnectionArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+type QueryCompanyArgs =
+  | 'where'
+type QueryCompaniesArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+type QueryCompaniesConnectionArgs =
   | 'where'
   | 'orderBy'
   | 'skip'
@@ -456,6 +514,45 @@ export interface QueryFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.CheckinConnection> | prisma.CheckinConnection
+  }
+  company: {
+    type: 'Company'
+    args: Record<QueryCompanyArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where: CompanyWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Company | null> | prisma.Company | null
+  }
+  companies: {
+    type: 'Company'
+    args: Record<QueryCompaniesArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where?: CompanyWhereInput | null, orderBy?: prisma.CompanyOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Company[]> | prisma.Company[]
+  }
+  companiesConnection: {
+    type: 'CompanyConnection'
+    args: Record<QueryCompaniesConnectionArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where?: CompanyWhereInput | null, orderBy?: prisma.CompanyOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.CompanyConnection> | prisma.CompanyConnection
   }
   category: {
     type: 'Category'
@@ -779,6 +876,7 @@ type ProductObject =
   | ProductFields
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'name', args?: [] | false, alias?: string  } 
+  | { name: 'company', args?: ProductCompanyArgs[] | false, alias?: string  } 
   | { name: 'producer', args?: [] | false, alias?: string  } 
   | { name: 'checkins', args?: ProductCheckinsArgs[] | false, alias?: string  } 
   | { name: 'category', args?: ProductCategoryArgs[] | false, alias?: string  } 
@@ -789,6 +887,7 @@ type ProductObject =
 type ProductFields =
   | 'id'
   | 'name'
+  | 'company'
   | 'producer'
   | 'checkins'
   | 'category'
@@ -797,6 +896,14 @@ type ProductFields =
   | 'updatedAt'
 
 
+type ProductCompanyArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
 type ProductCheckinsArgs =
   | 'where'
   | 'orderBy'
@@ -839,6 +946,19 @@ export interface ProductFieldDetails {
     list: undefined
     nullable: false
     resolve: undefined
+  }
+  company: {
+    type: 'Company'
+    args: Record<ProductCompanyArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Product">,
+      args: { where?: CompanyWhereInput | null, orderBy?: prisma.CompanyOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Company[]> | prisma.Company[]
   }
   producer: {
     type: 'String'
@@ -902,6 +1022,63 @@ export interface ProductFieldDetails {
     list: undefined
     nullable: false
     resolve: undefined
+  }
+}
+  
+
+// Types for Company
+
+type CompanyObject =
+  | CompanyFields
+  | { name: 'id', args?: [] | false, alias?: string  } 
+  | { name: 'name', args?: [] | false, alias?: string  } 
+  | { name: 'products', args?: CompanyProductsArgs[] | false, alias?: string  } 
+
+type CompanyFields =
+  | 'id'
+  | 'name'
+  | 'products'
+
+
+type CompanyProductsArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+  
+
+export interface CompanyFieldDetails {
+  id: {
+    type: 'ID'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  name: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  products: {
+    type: 'Product'
+    args: Record<CompanyProductsArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Company">,
+      args: { where?: ProductWhereInput | null, orderBy?: prisma.ProductOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Product[]> | prisma.Product[]
   }
 }
   
@@ -1488,6 +1665,131 @@ export interface AggregateCheckinFieldDetails {
 }
   
 
+// Types for CompanyConnection
+
+type CompanyConnectionObject =
+  | CompanyConnectionFields
+  | { name: 'pageInfo', args?: [] | false, alias?: string  } 
+  | { name: 'edges', args?: [] | false, alias?: string  } 
+  | { name: 'aggregate', args?: [] | false, alias?: string  } 
+
+type CompanyConnectionFields =
+  | 'pageInfo'
+  | 'edges'
+  | 'aggregate'
+
+
+
+  
+
+export interface CompanyConnectionFieldDetails {
+  pageInfo: {
+    type: 'PageInfo'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"CompanyConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.PageInfo> | prisma.PageInfo
+  }
+  edges: {
+    type: 'CompanyEdge'
+    args: {}
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"CompanyConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.CompanyEdge[]> | prisma.CompanyEdge[]
+  }
+  aggregate: {
+    type: 'AggregateCompany'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"CompanyConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.AggregateCompany> | prisma.AggregateCompany
+  }
+}
+  
+
+// Types for CompanyEdge
+
+type CompanyEdgeObject =
+  | CompanyEdgeFields
+  | { name: 'node', args?: [] | false, alias?: string  } 
+  | { name: 'cursor', args?: [] | false, alias?: string  } 
+
+type CompanyEdgeFields =
+  | 'node'
+  | 'cursor'
+
+
+
+  
+
+export interface CompanyEdgeFieldDetails {
+  node: {
+    type: 'Company'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"CompanyEdge">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Company> | prisma.Company
+  }
+  cursor: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
+// Types for AggregateCompany
+
+type AggregateCompanyObject =
+  | AggregateCompanyFields
+  | { name: 'count', args?: [] | false, alias?: string  } 
+
+type AggregateCompanyFields =
+  | 'count'
+
+
+
+  
+
+export interface AggregateCompanyFieldDetails {
+  count: {
+    type: 'Int'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
 // Types for CategoryConnection
 
 type CategoryConnectionObject =
@@ -1760,6 +2062,12 @@ type MutationObject =
   | { name: 'upsertCheckin', args?: MutationUpsertCheckinArgs[] | false, alias?: string  } 
   | { name: 'deleteCheckin', args?: MutationDeleteCheckinArgs[] | false, alias?: string  } 
   | { name: 'deleteManyCheckins', args?: MutationDeleteManyCheckinsArgs[] | false, alias?: string  } 
+  | { name: 'createCompany', args?: MutationCreateCompanyArgs[] | false, alias?: string  } 
+  | { name: 'updateCompany', args?: MutationUpdateCompanyArgs[] | false, alias?: string  } 
+  | { name: 'updateManyCompanies', args?: MutationUpdateManyCompaniesArgs[] | false, alias?: string  } 
+  | { name: 'upsertCompany', args?: MutationUpsertCompanyArgs[] | false, alias?: string  } 
+  | { name: 'deleteCompany', args?: MutationDeleteCompanyArgs[] | false, alias?: string  } 
+  | { name: 'deleteManyCompanies', args?: MutationDeleteManyCompaniesArgs[] | false, alias?: string  } 
   | { name: 'createCategory', args?: MutationCreateCategoryArgs[] | false, alias?: string  } 
   | { name: 'updateCategory', args?: MutationUpdateCategoryArgs[] | false, alias?: string  } 
   | { name: 'updateManyCategories', args?: MutationUpdateManyCategoriesArgs[] | false, alias?: string  } 
@@ -1792,6 +2100,12 @@ type MutationFields =
   | 'upsertCheckin'
   | 'deleteCheckin'
   | 'deleteManyCheckins'
+  | 'createCompany'
+  | 'updateCompany'
+  | 'updateManyCompanies'
+  | 'upsertCompany'
+  | 'deleteCompany'
+  | 'deleteManyCompanies'
   | 'createCategory'
   | 'updateCategory'
   | 'updateManyCategories'
@@ -1853,6 +2167,22 @@ type MutationUpsertCheckinArgs =
 type MutationDeleteCheckinArgs =
   | 'where'
 type MutationDeleteManyCheckinsArgs =
+  | 'where'
+type MutationCreateCompanyArgs =
+  | 'data'
+type MutationUpdateCompanyArgs =
+  | 'data'
+  | 'where'
+type MutationUpdateManyCompaniesArgs =
+  | 'data'
+  | 'where'
+type MutationUpsertCompanyArgs =
+  | 'where'
+  | 'create'
+  | 'update'
+type MutationDeleteCompanyArgs =
+  | 'where'
+type MutationDeleteManyCompaniesArgs =
   | 'where'
 type MutationCreateCategoryArgs =
   | 'data'
@@ -2123,6 +2453,84 @@ export interface MutationFieldDetails {
       info?: GraphQLResolveInfo
     ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
   }
+  createCompany: {
+    type: 'Company'
+    args: Record<MutationCreateCompanyArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: CompanyCreateInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Company> | prisma.Company
+  }
+  updateCompany: {
+    type: 'Company'
+    args: Record<MutationUpdateCompanyArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: CompanyUpdateInput, where: CompanyWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Company | null> | prisma.Company | null
+  }
+  updateManyCompanies: {
+    type: 'BatchPayload'
+    args: Record<MutationUpdateManyCompaniesArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: CompanyUpdateManyMutationInput, where?: CompanyWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
+  }
+  upsertCompany: {
+    type: 'Company'
+    args: Record<MutationUpsertCompanyArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where: CompanyWhereUniqueInput, create: CompanyCreateInput, update: CompanyUpdateInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Company> | prisma.Company
+  }
+  deleteCompany: {
+    type: 'Company'
+    args: Record<MutationDeleteCompanyArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where: CompanyWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Company | null> | prisma.Company | null
+  }
+  deleteManyCompanies: {
+    type: 'BatchPayload'
+    args: Record<MutationDeleteManyCompaniesArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where?: CompanyWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
+  }
   createCategory: {
     type: 'Category'
     args: Record<MutationCreateCategoryArgs, core.NexusArgDef<string>>
@@ -2314,6 +2722,7 @@ type SubscriptionObject =
   | { name: 'user', args?: SubscriptionUserArgs[] | false, alias?: string  } 
   | { name: 'product', args?: SubscriptionProductArgs[] | false, alias?: string  } 
   | { name: 'checkin', args?: SubscriptionCheckinArgs[] | false, alias?: string  } 
+  | { name: 'company', args?: SubscriptionCompanyArgs[] | false, alias?: string  } 
   | { name: 'category', args?: SubscriptionCategoryArgs[] | false, alias?: string  } 
   | { name: 'subCategory', args?: SubscriptionSubCategoryArgs[] | false, alias?: string  } 
 
@@ -2321,6 +2730,7 @@ type SubscriptionFields =
   | 'user'
   | 'product'
   | 'checkin'
+  | 'company'
   | 'category'
   | 'subCategory'
 
@@ -2330,6 +2740,8 @@ type SubscriptionUserArgs =
 type SubscriptionProductArgs =
   | 'where'
 type SubscriptionCheckinArgs =
+  | 'where'
+type SubscriptionCompanyArgs =
   | 'where'
 type SubscriptionCategoryArgs =
   | 'where'
@@ -2376,6 +2788,19 @@ export interface SubscriptionFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.CheckinSubscriptionPayload | null> | prisma.CheckinSubscriptionPayload | null
+  }
+  company: {
+    type: 'CompanySubscriptionPayload'
+    args: Record<SubscriptionCompanyArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Subscription">,
+      args: { where?: CompanySubscriptionWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.CompanySubscriptionPayload | null> | prisma.CompanySubscriptionPayload | null
   }
   category: {
     type: 'CategorySubscriptionPayload'
@@ -2832,6 +3257,111 @@ export interface CheckinPreviousValuesFieldDetails {
   }
   updatedAt: {
     type: 'DateTime'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
+// Types for CompanySubscriptionPayload
+
+type CompanySubscriptionPayloadObject =
+  | CompanySubscriptionPayloadFields
+  | { name: 'mutation', args?: [] | false, alias?: string  } 
+  | { name: 'node', args?: [] | false, alias?: string  } 
+  | { name: 'updatedFields', args?: [] | false, alias?: string  } 
+  | { name: 'previousValues', args?: [] | false, alias?: string  } 
+
+type CompanySubscriptionPayloadFields =
+  | 'mutation'
+  | 'node'
+  | 'updatedFields'
+  | 'previousValues'
+
+
+
+  
+
+export interface CompanySubscriptionPayloadFieldDetails {
+  mutation: {
+    type: 'MutationType'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"CompanySubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.MutationType> | prisma.MutationType
+  }
+  node: {
+    type: 'Company'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"CompanySubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.Company | null> | prisma.Company | null
+  }
+  updatedFields: {
+    type: 'String'
+    args: {}
+    description: string
+    list: true
+    nullable: false
+    resolve: undefined
+  }
+  previousValues: {
+    type: 'CompanyPreviousValues'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"CompanySubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.CompanyPreviousValues | null> | prisma.CompanyPreviousValues | null
+  }
+}
+  
+
+// Types for CompanyPreviousValues
+
+type CompanyPreviousValuesObject =
+  | CompanyPreviousValuesFields
+  | { name: 'id', args?: [] | false, alias?: string  } 
+  | { name: 'name', args?: [] | false, alias?: string  } 
+
+type CompanyPreviousValuesFields =
+  | 'id'
+  | 'name'
+
+
+
+  
+
+export interface CompanyPreviousValuesFieldDetails {
+  id: {
+    type: 'ID'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  name: {
+    type: 'String'
     args: {}
     description: string
     list: undefined
@@ -3408,6 +3938,9 @@ export interface ProductWhereInput {
   name_not_starts_with?: string | null
   name_ends_with?: string | null
   name_not_ends_with?: string | null
+  company_every?: CompanyWhereInput | null
+  company_some?: CompanyWhereInput | null
+  company_none?: CompanyWhereInput | null
   producer?: string | null
   producer_not?: string | null
   producer_in?: string[]
@@ -3481,6 +4014,9 @@ export type ProductWhereInputInputObject =
   | { name: 'name_not_starts_with', alias?: string  } 
   | { name: 'name_ends_with', alias?: string  } 
   | { name: 'name_not_ends_with', alias?: string  } 
+  | { name: 'company_every', alias?: string  } 
+  | { name: 'company_some', alias?: string  } 
+  | { name: 'company_none', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'producer_not', alias?: string  } 
   | { name: 'producer_in', alias?: string  } 
@@ -3520,6 +4056,79 @@ export type ProductWhereInputInputObject =
   | { name: 'updatedAt_lte', alias?: string  } 
   | { name: 'updatedAt_gt', alias?: string  } 
   | { name: 'updatedAt_gte', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
+  
+export interface CompanyWhereInput {
+  id?: string | null
+  id_not?: string | null
+  id_in?: string[]
+  id_not_in?: string[]
+  id_lt?: string | null
+  id_lte?: string | null
+  id_gt?: string | null
+  id_gte?: string | null
+  id_contains?: string | null
+  id_not_contains?: string | null
+  id_starts_with?: string | null
+  id_not_starts_with?: string | null
+  id_ends_with?: string | null
+  id_not_ends_with?: string | null
+  name?: string | null
+  name_not?: string | null
+  name_in?: string[]
+  name_not_in?: string[]
+  name_lt?: string | null
+  name_lte?: string | null
+  name_gt?: string | null
+  name_gte?: string | null
+  name_contains?: string | null
+  name_not_contains?: string | null
+  name_starts_with?: string | null
+  name_not_starts_with?: string | null
+  name_ends_with?: string | null
+  name_not_ends_with?: string | null
+  products_every?: ProductWhereInput | null
+  products_some?: ProductWhereInput | null
+  products_none?: ProductWhereInput | null
+  AND?: CompanyWhereInput[]
+  OR?: CompanyWhereInput[]
+  NOT?: CompanyWhereInput[]
+}
+export type CompanyWhereInputInputObject =
+  | Extract<keyof CompanyWhereInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'id_not', alias?: string  } 
+  | { name: 'id_in', alias?: string  } 
+  | { name: 'id_not_in', alias?: string  } 
+  | { name: 'id_lt', alias?: string  } 
+  | { name: 'id_lte', alias?: string  } 
+  | { name: 'id_gt', alias?: string  } 
+  | { name: 'id_gte', alias?: string  } 
+  | { name: 'id_contains', alias?: string  } 
+  | { name: 'id_not_contains', alias?: string  } 
+  | { name: 'id_starts_with', alias?: string  } 
+  | { name: 'id_not_starts_with', alias?: string  } 
+  | { name: 'id_ends_with', alias?: string  } 
+  | { name: 'id_not_ends_with', alias?: string  } 
+  | { name: 'name', alias?: string  } 
+  | { name: 'name_not', alias?: string  } 
+  | { name: 'name_in', alias?: string  } 
+  | { name: 'name_not_in', alias?: string  } 
+  | { name: 'name_lt', alias?: string  } 
+  | { name: 'name_lte', alias?: string  } 
+  | { name: 'name_gt', alias?: string  } 
+  | { name: 'name_gte', alias?: string  } 
+  | { name: 'name_contains', alias?: string  } 
+  | { name: 'name_not_contains', alias?: string  } 
+  | { name: 'name_starts_with', alias?: string  } 
+  | { name: 'name_not_starts_with', alias?: string  } 
+  | { name: 'name_ends_with', alias?: string  } 
+  | { name: 'name_not_ends_with', alias?: string  } 
+  | { name: 'products_every', alias?: string  } 
+  | { name: 'products_some', alias?: string  } 
+  | { name: 'products_none', alias?: string  } 
   | { name: 'AND', alias?: string  } 
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
@@ -3692,6 +4301,15 @@ export type CheckinWhereUniqueInputInputObject =
   | Extract<keyof CheckinWhereUniqueInput, string>
   | { name: 'id', alias?: string  } 
   
+export interface CompanyWhereUniqueInput {
+  id?: string | null
+  name?: string | null
+}
+export type CompanyWhereUniqueInputInputObject =
+  | Extract<keyof CompanyWhereUniqueInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'name', alias?: string  } 
+  
 export interface CategoryWhereUniqueInput {
   id?: string | null
   name?: string | null
@@ -3765,6 +4383,7 @@ export type ProductCreateOneWithoutCheckinsInputInputObject =
 export interface ProductCreateWithoutCheckinsInput {
   id?: string | null
   name?: string
+  company?: CompanyCreateManyWithoutProductsInput | null
   producer?: string | null
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
@@ -3773,9 +4392,28 @@ export type ProductCreateWithoutCheckinsInputInputObject =
   | Extract<keyof ProductCreateWithoutCheckinsInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
+  | { name: 'company', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
+  
+export interface CompanyCreateManyWithoutProductsInput {
+  create?: CompanyCreateWithoutProductsInput[]
+  connect?: CompanyWhereUniqueInput[]
+}
+export type CompanyCreateManyWithoutProductsInputInputObject =
+  | Extract<keyof CompanyCreateManyWithoutProductsInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  
+export interface CompanyCreateWithoutProductsInput {
+  id?: string | null
+  name?: string
+}
+export type CompanyCreateWithoutProductsInputInputObject =
+  | Extract<keyof CompanyCreateWithoutProductsInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'name', alias?: string  } 
   
 export interface CategoryCreateManyWithoutProductsInput {
   create?: CategoryCreateWithoutProductsInput[]
@@ -3829,6 +4467,7 @@ export type ProductCreateManyWithoutSubCategoryInputInputObject =
 export interface ProductCreateWithoutSubCategoryInput {
   id?: string | null
   name?: string
+  company?: CompanyCreateManyWithoutProductsInput | null
   producer?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
@@ -3837,6 +4476,7 @@ export type ProductCreateWithoutSubCategoryInputInputObject =
   | Extract<keyof ProductCreateWithoutSubCategoryInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
+  | { name: 'company', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
@@ -3952,6 +4592,7 @@ export type ProductCreateManyWithoutCategoryInputInputObject =
 export interface ProductCreateWithoutCategoryInput {
   id?: string | null
   name?: string
+  company?: CompanyCreateManyWithoutProductsInput | null
   producer?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
@@ -3960,6 +4601,7 @@ export type ProductCreateWithoutCategoryInputInputObject =
   | Extract<keyof ProductCreateWithoutCategoryInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
+  | { name: 'company', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
@@ -4041,6 +4683,7 @@ export type ProductUpdateOneRequiredWithoutCheckinsInputInputObject =
   
 export interface ProductUpdateWithoutCheckinsDataInput {
   name?: string | null
+  company?: CompanyUpdateManyWithoutProductsInput | null
   producer?: string | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
@@ -4048,9 +4691,143 @@ export interface ProductUpdateWithoutCheckinsDataInput {
 export type ProductUpdateWithoutCheckinsDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutCheckinsDataInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'company', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
+  
+export interface CompanyUpdateManyWithoutProductsInput {
+  create?: CompanyCreateWithoutProductsInput[]
+  delete?: CompanyWhereUniqueInput[]
+  connect?: CompanyWhereUniqueInput[]
+  set?: CompanyWhereUniqueInput[]
+  disconnect?: CompanyWhereUniqueInput[]
+  update?: CompanyUpdateWithWhereUniqueWithoutProductsInput[]
+  upsert?: CompanyUpsertWithWhereUniqueWithoutProductsInput[]
+  deleteMany?: CompanyScalarWhereInput[]
+  updateMany?: CompanyUpdateManyWithWhereNestedInput[]
+}
+export type CompanyUpdateManyWithoutProductsInputInputObject =
+  | Extract<keyof CompanyUpdateManyWithoutProductsInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'delete', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  | { name: 'set', alias?: string  } 
+  | { name: 'disconnect', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'upsert', alias?: string  } 
+  | { name: 'deleteMany', alias?: string  } 
+  | { name: 'updateMany', alias?: string  } 
+  
+export interface CompanyUpdateWithWhereUniqueWithoutProductsInput {
+  where?: CompanyWhereUniqueInput
+  data?: CompanyUpdateWithoutProductsDataInput
+}
+export type CompanyUpdateWithWhereUniqueWithoutProductsInputInputObject =
+  | Extract<keyof CompanyUpdateWithWhereUniqueWithoutProductsInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'data', alias?: string  } 
+  
+export interface CompanyUpdateWithoutProductsDataInput {
+  name?: string | null
+}
+export type CompanyUpdateWithoutProductsDataInputInputObject =
+  | Extract<keyof CompanyUpdateWithoutProductsDataInput, string>
+  | { name: 'name', alias?: string  } 
+  
+export interface CompanyUpsertWithWhereUniqueWithoutProductsInput {
+  where?: CompanyWhereUniqueInput
+  update?: CompanyUpdateWithoutProductsDataInput
+  create?: CompanyCreateWithoutProductsInput
+}
+export type CompanyUpsertWithWhereUniqueWithoutProductsInputInputObject =
+  | Extract<keyof CompanyUpsertWithWhereUniqueWithoutProductsInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'create', alias?: string  } 
+  
+export interface CompanyScalarWhereInput {
+  id?: string | null
+  id_not?: string | null
+  id_in?: string[]
+  id_not_in?: string[]
+  id_lt?: string | null
+  id_lte?: string | null
+  id_gt?: string | null
+  id_gte?: string | null
+  id_contains?: string | null
+  id_not_contains?: string | null
+  id_starts_with?: string | null
+  id_not_starts_with?: string | null
+  id_ends_with?: string | null
+  id_not_ends_with?: string | null
+  name?: string | null
+  name_not?: string | null
+  name_in?: string[]
+  name_not_in?: string[]
+  name_lt?: string | null
+  name_lte?: string | null
+  name_gt?: string | null
+  name_gte?: string | null
+  name_contains?: string | null
+  name_not_contains?: string | null
+  name_starts_with?: string | null
+  name_not_starts_with?: string | null
+  name_ends_with?: string | null
+  name_not_ends_with?: string | null
+  AND?: CompanyScalarWhereInput[]
+  OR?: CompanyScalarWhereInput[]
+  NOT?: CompanyScalarWhereInput[]
+}
+export type CompanyScalarWhereInputInputObject =
+  | Extract<keyof CompanyScalarWhereInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'id_not', alias?: string  } 
+  | { name: 'id_in', alias?: string  } 
+  | { name: 'id_not_in', alias?: string  } 
+  | { name: 'id_lt', alias?: string  } 
+  | { name: 'id_lte', alias?: string  } 
+  | { name: 'id_gt', alias?: string  } 
+  | { name: 'id_gte', alias?: string  } 
+  | { name: 'id_contains', alias?: string  } 
+  | { name: 'id_not_contains', alias?: string  } 
+  | { name: 'id_starts_with', alias?: string  } 
+  | { name: 'id_not_starts_with', alias?: string  } 
+  | { name: 'id_ends_with', alias?: string  } 
+  | { name: 'id_not_ends_with', alias?: string  } 
+  | { name: 'name', alias?: string  } 
+  | { name: 'name_not', alias?: string  } 
+  | { name: 'name_in', alias?: string  } 
+  | { name: 'name_not_in', alias?: string  } 
+  | { name: 'name_lt', alias?: string  } 
+  | { name: 'name_lte', alias?: string  } 
+  | { name: 'name_gt', alias?: string  } 
+  | { name: 'name_gte', alias?: string  } 
+  | { name: 'name_contains', alias?: string  } 
+  | { name: 'name_not_contains', alias?: string  } 
+  | { name: 'name_starts_with', alias?: string  } 
+  | { name: 'name_not_starts_with', alias?: string  } 
+  | { name: 'name_ends_with', alias?: string  } 
+  | { name: 'name_not_ends_with', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
+  
+export interface CompanyUpdateManyWithWhereNestedInput {
+  where?: CompanyScalarWhereInput
+  data?: CompanyUpdateManyDataInput
+}
+export type CompanyUpdateManyWithWhereNestedInputInputObject =
+  | Extract<keyof CompanyUpdateManyWithWhereNestedInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'data', alias?: string  } 
+  
+export interface CompanyUpdateManyDataInput {
+  name?: string | null
+}
+export type CompanyUpdateManyDataInputInputObject =
+  | Extract<keyof CompanyUpdateManyDataInput, string>
+  | { name: 'name', alias?: string  } 
   
 export interface CategoryUpdateManyWithoutProductsInput {
   create?: CategoryCreateWithoutProductsInput[]
@@ -4168,6 +4945,7 @@ export type ProductUpdateWithWhereUniqueWithoutSubCategoryInputInputObject =
   
 export interface ProductUpdateWithoutSubCategoryDataInput {
   name?: string | null
+  company?: CompanyUpdateManyWithoutProductsInput | null
   producer?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
@@ -4175,6 +4953,7 @@ export interface ProductUpdateWithoutSubCategoryDataInput {
 export type ProductUpdateWithoutSubCategoryDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutSubCategoryDataInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'company', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
@@ -5119,6 +5898,7 @@ export type ProductUpdateWithWhereUniqueWithoutCategoryInputInputObject =
   
 export interface ProductUpdateWithoutCategoryDataInput {
   name?: string | null
+  company?: CompanyUpdateManyWithoutProductsInput | null
   producer?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
@@ -5126,6 +5906,7 @@ export interface ProductUpdateWithoutCategoryDataInput {
 export type ProductUpdateWithoutCategoryDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutCategoryDataInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'company', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
@@ -5199,6 +5980,7 @@ export type UserUpdateManyMutationInputInputObject =
 export interface ProductCreateInput {
   id?: string | null
   name?: string
+  company?: CompanyCreateManyWithoutProductsInput | null
   producer?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
@@ -5208,6 +5990,7 @@ export type ProductCreateInputInputObject =
   | Extract<keyof ProductCreateInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
+  | { name: 'company', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
@@ -5215,6 +5998,7 @@ export type ProductCreateInputInputObject =
   
 export interface ProductUpdateInput {
   name?: string | null
+  company?: CompanyUpdateManyWithoutProductsInput | null
   producer?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
@@ -5223,6 +6007,7 @@ export interface ProductUpdateInput {
 export type ProductUpdateInputInputObject =
   | Extract<keyof ProductUpdateInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'company', alias?: string  } 
   | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
@@ -5273,6 +6058,117 @@ export type CheckinUpdateManyMutationInputInputObject =
   | Extract<keyof CheckinUpdateManyMutationInput, string>
   | { name: 'rating', alias?: string  } 
   | { name: 'comment', alias?: string  } 
+  
+export interface CompanyCreateInput {
+  id?: string | null
+  name?: string
+  products?: ProductCreateManyWithoutCompanyInput | null
+}
+export type CompanyCreateInputInputObject =
+  | Extract<keyof CompanyCreateInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'name', alias?: string  } 
+  | { name: 'products', alias?: string  } 
+  
+export interface ProductCreateManyWithoutCompanyInput {
+  create?: ProductCreateWithoutCompanyInput[]
+  connect?: ProductWhereUniqueInput[]
+}
+export type ProductCreateManyWithoutCompanyInputInputObject =
+  | Extract<keyof ProductCreateManyWithoutCompanyInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  
+export interface ProductCreateWithoutCompanyInput {
+  id?: string | null
+  name?: string
+  producer?: string | null
+  checkins?: CheckinCreateManyWithoutProductInput | null
+  category?: CategoryCreateManyWithoutProductsInput | null
+  subCategory?: SubCategoryCreateManyWithoutProductsInput | null
+}
+export type ProductCreateWithoutCompanyInputInputObject =
+  | Extract<keyof ProductCreateWithoutCompanyInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'name', alias?: string  } 
+  | { name: 'producer', alias?: string  } 
+  | { name: 'checkins', alias?: string  } 
+  | { name: 'category', alias?: string  } 
+  | { name: 'subCategory', alias?: string  } 
+  
+export interface CompanyUpdateInput {
+  name?: string | null
+  products?: ProductUpdateManyWithoutCompanyInput | null
+}
+export type CompanyUpdateInputInputObject =
+  | Extract<keyof CompanyUpdateInput, string>
+  | { name: 'name', alias?: string  } 
+  | { name: 'products', alias?: string  } 
+  
+export interface ProductUpdateManyWithoutCompanyInput {
+  create?: ProductCreateWithoutCompanyInput[]
+  delete?: ProductWhereUniqueInput[]
+  connect?: ProductWhereUniqueInput[]
+  set?: ProductWhereUniqueInput[]
+  disconnect?: ProductWhereUniqueInput[]
+  update?: ProductUpdateWithWhereUniqueWithoutCompanyInput[]
+  upsert?: ProductUpsertWithWhereUniqueWithoutCompanyInput[]
+  deleteMany?: ProductScalarWhereInput[]
+  updateMany?: ProductUpdateManyWithWhereNestedInput[]
+}
+export type ProductUpdateManyWithoutCompanyInputInputObject =
+  | Extract<keyof ProductUpdateManyWithoutCompanyInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'delete', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  | { name: 'set', alias?: string  } 
+  | { name: 'disconnect', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'upsert', alias?: string  } 
+  | { name: 'deleteMany', alias?: string  } 
+  | { name: 'updateMany', alias?: string  } 
+  
+export interface ProductUpdateWithWhereUniqueWithoutCompanyInput {
+  where?: ProductWhereUniqueInput
+  data?: ProductUpdateWithoutCompanyDataInput
+}
+export type ProductUpdateWithWhereUniqueWithoutCompanyInputInputObject =
+  | Extract<keyof ProductUpdateWithWhereUniqueWithoutCompanyInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'data', alias?: string  } 
+  
+export interface ProductUpdateWithoutCompanyDataInput {
+  name?: string | null
+  producer?: string | null
+  checkins?: CheckinUpdateManyWithoutProductInput | null
+  category?: CategoryUpdateManyWithoutProductsInput | null
+  subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
+}
+export type ProductUpdateWithoutCompanyDataInputInputObject =
+  | Extract<keyof ProductUpdateWithoutCompanyDataInput, string>
+  | { name: 'name', alias?: string  } 
+  | { name: 'producer', alias?: string  } 
+  | { name: 'checkins', alias?: string  } 
+  | { name: 'category', alias?: string  } 
+  | { name: 'subCategory', alias?: string  } 
+  
+export interface ProductUpsertWithWhereUniqueWithoutCompanyInput {
+  where?: ProductWhereUniqueInput
+  update?: ProductUpdateWithoutCompanyDataInput
+  create?: ProductCreateWithoutCompanyInput
+}
+export type ProductUpsertWithWhereUniqueWithoutCompanyInputInputObject =
+  | Extract<keyof ProductUpsertWithWhereUniqueWithoutCompanyInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'create', alias?: string  } 
+  
+export interface CompanyUpdateManyMutationInput {
+  name?: string | null
+}
+export type CompanyUpdateManyMutationInputInputObject =
+  | Extract<keyof CompanyUpdateManyMutationInput, string>
+  | { name: 'name', alias?: string  } 
   
 export interface CategoryCreateInput {
   id?: string | null
@@ -5399,6 +6295,27 @@ export type CheckinSubscriptionWhereInputInputObject =
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
   
+export interface CompanySubscriptionWhereInput {
+  mutation_in?: prisma.MutationType[]
+  updatedFields_contains?: string | null
+  updatedFields_contains_every?: string[]
+  updatedFields_contains_some?: string[]
+  node?: CompanyWhereInput | null
+  AND?: CompanySubscriptionWhereInput[]
+  OR?: CompanySubscriptionWhereInput[]
+  NOT?: CompanySubscriptionWhereInput[]
+}
+export type CompanySubscriptionWhereInputInputObject =
+  | Extract<keyof CompanySubscriptionWhereInput, string>
+  | { name: 'mutation_in', alias?: string  } 
+  | { name: 'updatedFields_contains', alias?: string  } 
+  | { name: 'updatedFields_contains_every', alias?: string  } 
+  | { name: 'updatedFields_contains_some', alias?: string  } 
+  | { name: 'node', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
+  
 export interface CategorySubscriptionWhereInput {
   mutation_in?: prisma.MutationType[]
   updatedFields_contains?: string | null
@@ -5454,17 +6371,7 @@ export type CheckinOrderByInputValues =
   | 'updatedAt_ASC'
   | 'updatedAt_DESC'
   
-export type CategoryOrderByInputValues =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'name_ASC'
-  | 'name_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC'
-  
-export type SubCategoryOrderByInputValues =
+export type CompanyOrderByInputValues =
   | 'id_ASC'
   | 'id_DESC'
   | 'name_ASC'
@@ -5481,6 +6388,26 @@ export type ProductOrderByInputValues =
   | 'name_DESC'
   | 'producer_ASC'
   | 'producer_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC'
+  
+export type CategoryOrderByInputValues =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'name_ASC'
+  | 'name_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC'
+  
+export type SubCategoryOrderByInputValues =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'name_ASC'
+  | 'name_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'

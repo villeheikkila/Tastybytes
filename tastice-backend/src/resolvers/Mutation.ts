@@ -214,6 +214,18 @@ export const Mutation = mutationType({
       }
     });
 
+    t.field("createCompany", {
+      type: "Company",
+      args: {
+        name: stringArg()
+      },
+      resolve: (_, { name }, ctx) => {
+        return ctx.prisma.createCompany({
+          name
+        });
+      }
+    });
+
     t.field("createSubCategory", {
       type: "SubCategory",
       args: {
