@@ -77,6 +77,15 @@ export const ALL_CATEGORIES = gql`
   }
 `;
 
+export const ALL_COMPANIES = gql`
+  {
+    companies {
+      name
+      id
+    }
+  }
+`;
+
 export const CREATE_CHECKIN = gql`
   mutation createCheckin(
     $authorId: ID!

@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { ADD_PRODUCT, ALL_PRODUCTS, ALL_CATEGORIES } from "../../queries";
+import {
+  ADD_PRODUCT,
+  ALL_PRODUCTS,
+  ALL_CATEGORIES,
+  ALL_COMPANIES
+} from "../../queries";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { notificationHandler, errorHandler } from "../../utils";
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,17 +16,6 @@ import TextField from "@material-ui/core/TextField";
 import { MaterialSelect } from "../MaterialSelect";
 import { OptionType } from "../../types";
 import useReactRouter from "use-react-router";
-
-const companies: OptionType[] = [
-  { label: "Coca Cola Co" },
-  { label: "Pepsi Co" },
-  { label: "Hartwall" },
-  { label: "Olvi" },
-  { label: "Fentimans" }
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label
-}));
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -51,6 +45,8 @@ export const AddProduct = () => {
   const [subCategory, setSubCategory] = useState();
   const { history } = useReactRouter();
   const categories = useQuery(ALL_CATEGORIES);
+  const companies = useQuery(ALL_COMPANIES);
+
   const [addProduct] = useMutation(ADD_PRODUCT, {
     onError: errorHandler,
     refetchQueries: [{ query: ALL_PRODUCTS }]
@@ -105,6 +101,14 @@ export const AddProduct = () => {
     })
   );
 
+  const companySuggestions = companies.data.companies.map(
+    (suggestion: any) => ({
+      value: suggestion.name,
+      label: suggestion.name,
+      id: suggestion.id
+    })
+  );
+
   const selected = category && category.value;
 
   const subCategoriesSelected = categories.data.categories.filter(
@@ -147,7 +151,7 @@ export const AddProduct = () => {
               <MaterialSelect
                 isCreatable={true}
                 isMulti={false}
-                suggestions={companies}
+                suggestions={companySuggestions}
                 label={"Producer"}
                 placeholder={"Select a company"}
                 onChange={handleProducerChange}
