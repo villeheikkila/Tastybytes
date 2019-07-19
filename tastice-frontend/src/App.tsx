@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import { useQuery } from "@apollo/react-hooks";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -25,7 +30,6 @@ import { Account } from "./components/Account";
 import { THEME } from "./queries";
 import { ActivityView } from "./components/ActivityView";
 import { ProductPage } from "./components/ProductPage";
-import { MyProfile } from "./components/MyProfile";
 import { ProfilePage } from "./components/ProfilePage";
 
 const darkTheme = createMuiTheme({
@@ -45,14 +49,17 @@ const whiteTheme = createMuiTheme({
 
 const App = () => {
   const [token, setToken] = useState();
+  const [userId, setUserId] = useState();
   const themeSwitcher = useQuery(THEME);
   const theme = themeSwitcher.data.theme ? 1 : 0;
   const themes = [darkTheme, whiteTheme];
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
     if (token) {
       setToken(token);
+      setUserId(userId);
     }
   }, [token]);
 
@@ -113,7 +120,7 @@ const App = () => {
                     path="/account"
                     render={() => <Account setToken={setToken} />}
                   />
-                  <Route exact path="/myprofile" render={() => <MyProfile />} />
+                  <Redirect from="/profile" to={`/user/${userId}`} />
                   <Route
                     exact
                     path="/product/:id"

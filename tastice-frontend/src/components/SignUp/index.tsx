@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { errorHandler } from "../../utils";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import useReactRouter from 'use-react-router';
+import useReactRouter from "use-react-router";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -56,9 +56,11 @@ export const SignUp: React.FC<ILogIn> = ({ setToken }) => {
     });
 
     if (result) {
-      const token = result.data.signup.token;
+      const token: string = result.data.signup.token;
+      const userId: string = result.data.signup.user.id;
       setToken(token);
       localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
     }
   };
 

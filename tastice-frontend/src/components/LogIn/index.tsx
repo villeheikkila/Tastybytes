@@ -10,7 +10,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import useReactRouter from 'use-react-router';
+import useReactRouter from "use-react-router";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -59,8 +59,10 @@ export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
 
     if (result) {
       const token: string = result.data.login.token;
+      const userId: string = result.data.login.user.id;
       setToken(token);
       localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
     }
   };
 

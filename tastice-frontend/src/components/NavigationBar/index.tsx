@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { INavbar } from "../../types";
 import { themeSwitcher } from "../../utils";
-import useReactRouter from 'use-react-router';
-
+import useReactRouter from "use-react-router";
 
 import {
   fade,
@@ -176,7 +175,7 @@ export const NavigationBar: React.FC<INavbar> = ({ setToken }) => {
               className={classes.textLink}
               key="My Profile"
               component={Link}
-              to="/myprofile"
+              to="/profile"
             >
               <Typography variant="h6" noWrap>
                 My Profile
