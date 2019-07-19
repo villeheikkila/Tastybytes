@@ -37,10 +37,6 @@ export const ProductView = () => {
     return null;
   }
 
-  const handleAdd = () => {
-    history.push("/addproduct");
-  };
-
   return (
     <div className={classes.root}>
       <Grid container justify="center" spacing={10}>
@@ -54,7 +50,7 @@ export const ProductView = () => {
         color="secondary"
         aria-label="Add"
         className={classes.fab}
-        onClick={handleAdd}
+        onClick={() => history.push("/addproduct")}
       >
         <AddIcon />
       </Fab>

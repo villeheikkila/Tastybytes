@@ -54,21 +54,44 @@ export const ProductCard: React.FC<IProductCard> = ({ product }) => {
                 {name}
               </Link>
             </Typography>
-            <Typography variant="h6" color="textSecondary" component="p">
+
+            <Typography variant="h6" color="textPrimary" component="p">
               {producer}
             </Typography>
-            <Typography variant="h6" color="textSecondary" component="p">
-              {category[0] && <>Category: </>}
-              {category.map((e: any) => (
-                <>{e.name} </>
-              ))}
-            </Typography>
-            <Typography variant="h6" color="textSecondary" component="p">
-              {subCategory[0] && <>Style: </>}
-              {subCategory.map((e: any) => (
-                <>{e.name} </>
-              ))}
-            </Typography>
+
+            {category[0] && (
+              <Typography variant="body1" color="textPrimary" component="p">
+                Category:
+              </Typography>
+            )}
+
+            {category.map((e: any) => (
+              <Typography
+                key={e.name}
+                variant="body1"
+                color="textPrimary"
+                component="p"
+              >
+                {e.name}
+              </Typography>
+            ))}
+
+            {subCategory[0] && (
+              <Typography variant="body1" color="textPrimary" component="p">
+                Style:
+              </Typography>
+            )}
+
+            {subCategory.map((e: any) => (
+              <Typography
+                key={e.name}
+                variant="body1"
+                color="textPrimary"
+                component="p"
+              >
+                {e.name}
+              </Typography>
+            ))}
           </CardContent>
         </div>
       </CardActionArea>

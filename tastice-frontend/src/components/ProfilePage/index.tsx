@@ -71,7 +71,7 @@ export const ProfilePage: React.FC<any> = id => {
           className={classes.avatar}
         />
         <Typography variant="h4" component="h3" className={classes.textField}>
-          Checkins in total: 15
+          Checkins in total: {userObject.checkins.length}
         </Typography>
       </Paper>
 

@@ -72,7 +72,7 @@ export const MyProfile = () => {
           className={classes.Avatar}
         />
         <Typography variant="h4" component="h3" className={classes.textField}>
-          Checkins in total: 15
+          Checkins in total: {user.checkins.length}
         </Typography>
       </Paper>
       <Typography variant="h4" component="h3" className={classes.textField}>

@@ -20,7 +20,6 @@ export const ProductPage: React.FC<any> = id => {
   }
 
   const product = productsQuery.data.product[0];
-  console.log("product: ", product);
 
   const productObject = {
     id: product.id,
