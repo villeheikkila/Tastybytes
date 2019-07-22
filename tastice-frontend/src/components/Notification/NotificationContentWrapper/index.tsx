@@ -6,11 +6,15 @@ import ErrorIcon from "@material-ui/icons/Error";
 import InfoIcon from "@material-ui/icons/Info";
 import CloseIcon from "@material-ui/icons/Close";
 import { amber, green } from "@material-ui/core/colors";
-import IconButton from "@material-ui/core/IconButton";
-import SnackbarContent from "@material-ui/core/SnackbarContent";
 import WarningIcon from "@material-ui/icons/Warning";
-import { makeStyles, Theme } from "@material-ui/core/styles";
 import { INotificationContentWrapper } from "../../../types";
+
+import {
+  IconButton,
+  Theme,
+  makeStyles,
+  SnackbarContent
+} from "@material-ui/core";
 
 const variantIcon = {
   success: CheckCircleIcon,

@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
-import "typeface-leckerli-one";
-
+import useReactRouter from "use-react-router";
 import { ILogIn } from "../../types";
 import { LOGIN } from "../../queries";
 import { errorHandler } from "../../utils";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import useReactRouter from "use-react-router";
+import "typeface-leckerli-one";
+
+import {
+  makeStyles,
+  Container,
+  Button,
+  TextField,
+  Typography
+} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   paper: {

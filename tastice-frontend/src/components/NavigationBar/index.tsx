@@ -3,31 +3,34 @@ import { Link } from "react-router-dom";
 import { INavbar } from "../../types";
 import { themeSwitcher } from "../../utils";
 import useReactRouter from "use-react-router";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import SearchIcon from "@material-ui/icons/Search";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import { fade } from "@material-ui/core/styles";
+import "typeface-leckerli-one";
 
 import {
-  fade,
   makeStyles,
+  AppBar,
+  Toolbar,
+  ButtonBase,
+  InputBase,
+  Switch,
+  Menu,
+  Badge,
+  MenuItem,
+  IconButton,
+  Typography,
   Theme,
   createStyles
-} from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import "typeface-leckerli-one";
-import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
-import ExitToApp from "@material-ui/icons/ExitToApp";
-import BrightnessHigh from "@material-ui/icons/BrightnessHigh";
-import BrightnessLow from "@material-ui/icons/BrightnessLow";
-import Badge from "@material-ui/core/Badge";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import Switch from "@material-ui/core/Switch";
+} from "@material-ui/core";
+
+import {
+  ExitToApp,
+  BrightnessLow,
+  BrightnessHigh,
+  AccountCircle
+} from "@material-ui/icons/";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

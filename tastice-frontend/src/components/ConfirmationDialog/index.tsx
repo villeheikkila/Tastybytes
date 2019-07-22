@@ -1,12 +1,14 @@
 import React from "react";
 import { IConfirmationDialog } from "../../types";
 
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
+  Button,
+  DialogActions
+} from "@material-ui/core";
 
 export const ConfirmationDialog: React.FC<IConfirmationDialog> = ({
   content,

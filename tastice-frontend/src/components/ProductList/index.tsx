@@ -1,8 +1,8 @@
 import React from "react";
 import { ALL_PRODUCTS, UPDATE_PRODUCT, DELETE_PRODUCT } from "../../queries";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import MaterialTable from "material-table";
 import { notificationHandler, errorHandler } from "../../utils";
+import MaterialTable from "material-table";
 
 export const ProductList = () => {
   const productsQuery = useQuery(ALL_PRODUCTS);

@@ -1,17 +1,21 @@
 import React, { useState } from "react";
-import { SIGN_UP } from "../../queries";
+import useReactRouter from "use-react-router";
 import { useMutation } from "@apollo/react-hooks";
+
+import { SIGN_UP } from "../../queries";
 import { ILogIn } from "../../types";
 import "typeface-leckerli-one";
 
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 import { errorHandler } from "../../utils";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import useReactRouter from "use-react-router";
+
+import {
+  Grid,
+  Button,
+  Typography,
+  Container,
+  makeStyles
+} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   paper: {

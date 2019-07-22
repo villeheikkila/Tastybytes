@@ -1,8 +1,8 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
-import Snackbar from "@material-ui/core/Snackbar";
 import { NotificationContentWrapper } from "./NotificationContentWrapper";
 import { NOTIFICATION } from "../../queries";
 import { useQuery } from "@apollo/react-hooks";
+import { Snackbar } from "@material-ui/core";
 
 export const Notifications = () => {
   const [open, setOpen] = useState(true);

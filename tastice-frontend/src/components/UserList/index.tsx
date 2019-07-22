@@ -2,8 +2,8 @@ import React from "react";
 import { ALL_USERS } from "../../queries";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { DELETE_USER, UPDATE_USER } from "../../queries";
-import MaterialTable from "material-table";
 import { notificationHandler, errorHandler } from "../../utils";
+import MaterialTable from "material-table";
 
 export const UserList = () => {
   const usersQuery = useQuery(ALL_USERS);
@@ -31,7 +31,7 @@ export const UserList = () => {
       notificationHandler({
         message: `User '${
           result.data.deleteUser.firstName
-          }' succesfully deleted`,
+        }' succesfully deleted`,
         variant: "success"
       });
     }

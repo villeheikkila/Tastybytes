@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useQuery } from "@apollo/react-hooks";
+import { THEME } from "./queries";
+import { ThemeProvider } from "@material-ui/styles";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   Redirect
 } from "react-router-dom";
-import { useQuery } from "@apollo/react-hooks";
 
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import blue from "@material-ui/core/colors/blue";
-import pink from "@material-ui/core/colors/pink";
-import Fade from "@material-ui/core/Fade";
-import Box from "@material-ui/core/Box";
 import { BottomBar } from "./components/BottomBar";
-import "typeface-leckerli-one";
 import { UserList } from "./components/UserList";
 import { ProductList } from "./components/ProductList";
 import { AddProduct } from "./components/AddProduct";
@@ -27,10 +21,12 @@ import { SignUp } from "./components/SignUp";
 import { NavigationBar } from "./components/NavigationBar";
 import { ProductView } from "./components/ProductView";
 import { Account } from "./components/Account";
-import { THEME } from "./queries";
 import { ActivityView } from "./components/ActivityView";
 import { ProductPage } from "./components/ProductPage";
 import { ProfilePage } from "./components/ProfilePage";
+
+import { Box, createMuiTheme, Fade, CssBaseline } from "@material-ui/core";
+import { blue, pink } from "@material-ui/core/colors";
 
 const darkTheme = createMuiTheme({
   palette: {

@@ -2,19 +2,21 @@ import React, { CSSProperties, HTMLAttributes } from "react";
 import clsx from "clsx";
 import CreatableSelect from "react-select/creatable";
 import Select from "react-select";
+import { BaseTextFieldProps } from "@material-ui/core/TextField";
+import CancelIcon from "@material-ui/icons/Cancel";
+import { emphasize } from "@material-ui/core/styles";
+
 import {
   createStyles,
-  emphasize,
+  Theme,
   makeStyles,
+  Paper,
+  MenuItem,
+  Chip,
   useTheme,
-  Theme
-} from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import TextField, { BaseTextFieldProps } from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import Chip from "@material-ui/core/Chip";
-import MenuItem from "@material-ui/core/MenuItem";
-import CancelIcon from "@material-ui/icons/Cancel";
+  TextField,
+  Typography
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

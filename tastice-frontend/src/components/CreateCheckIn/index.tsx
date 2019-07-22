@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
-import { CREATE_CHECKIN, ALL_CHECKINS, ME, PRODUCT } from "../../queries";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
 import Rating from "material-ui-rating";
-import Button from "@material-ui/core/Button";
 import { notificationHandler, errorHandler } from "../../utils";
+import { CREATE_CHECKIN, ALL_CHECKINS, ME, PRODUCT } from "../../queries";
 import { ICreateCheckIn } from "../../types";
+
+import {
+  makeStyles,
+  createStyles,
+  Theme,
+  Paper,
+  Button,
+  TextField,
+  Typography
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

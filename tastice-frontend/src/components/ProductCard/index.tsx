@@ -1,15 +1,18 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
-import lipton from "../../images/lipton.jpg";
-import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
-import { IProductCard } from "../../types";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import useReactRouter from "use-react-router";
+import { IProductCard } from "../../types";
+import lipton from "../../images/lipton.jpg";
+
+import {
+  Card,
+  Link,
+  Avatar,
+  Typography,
+  CardContent,
+  CardActionArea,
+  makeStyles
+} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   card: {

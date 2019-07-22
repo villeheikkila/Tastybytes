@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
 import { Link } from "react-router-dom";
 import { themeSwitcher } from "../../utils";
 import { Token } from "../../types";
-import Switch from "@material-ui/core/Switch";
-import Typography from "@material-ui/core/Typography";
+
+import {
+  createStyles,
+  Theme,
+  makeStyles,
+  ListItemText,
+  Divider,
+  Typography,
+  Switch,
+  List,
+  ListItem
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

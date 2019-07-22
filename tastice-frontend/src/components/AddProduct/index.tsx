@@ -1,21 +1,25 @@
 import React, { useState } from "react";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import useReactRouter from "use-react-router";
+
+import { notificationHandler, errorHandler } from "../../utils";
+import { MaterialSelect } from "../MaterialSelect";
+
 import {
   ADD_PRODUCT,
   ALL_PRODUCTS,
   ALL_CATEGORIES,
   ALL_COMPANIES
 } from "../../queries";
-import { useMutation, useQuery } from "@apollo/react-hooks";
-import { notificationHandler, errorHandler } from "../../utils";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import { MaterialSelect } from "../MaterialSelect";
-import { OptionType } from "../../types";
-import useReactRouter from "use-react-router";
+
+import {
+  Paper,
+  Typography,
+  Grid,
+  Button,
+  TextField,
+  makeStyles
+} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   paper: {

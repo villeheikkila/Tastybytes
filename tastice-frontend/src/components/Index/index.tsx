@@ -1,9 +1,9 @@
-import * as React from "react";
+import React from "react";
 
 export const Index = () => {
-    return (
-        <>
-            <h1>Welcome to Tastice</h1>
-        </>
-    )
-}
+  return (
+    <>
+      <h1>Welcome to Tastice</h1>
+    </>
+  );
+};
