@@ -1,86 +1,93 @@
-import React from "react";
-import { ALL_PRODUCTS, UPDATE_PRODUCT, DELETE_PRODUCT } from "../../queries";
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import { notificationHandler, errorHandler } from "../../utils";
-import MaterialTable from "material-table";
+import React from 'react';
+import { ALL_PRODUCTS, UPDATE_PRODUCT, DELETE_PRODUCT } from '../../queries';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import { notificationHandler, errorHandler } from '../../utils';
+import MaterialTable from 'material-table';
 
 export const ProductList = () => {
-  const productsQuery = useQuery(ALL_PRODUCTS);
-  const products = productsQuery.data.products;
-  const productsObject = products.map((e: any) => ({
-    name: products.name,
-    producer: products.producer,
-    id: products.id
-  }));
-  const [deleteProduct] = useMutation(DELETE_PRODUCT, {
-    onError: errorHandler,
-    refetchQueries: [{ query: ALL_PRODUCTS }]
-  });
+    const productsQuery = useQuery(ALL_PRODUCTS);
+    const products = productsQuery.data.products;
 
-  const [updateProduct] = useMutation(UPDATE_PRODUCT, {
-    onError: errorHandler,
-    refetchQueries: [{ query: ALL_PRODUCTS }]
-  });
-
-  if (productsQuery.data.products === undefined) {
-    return null;
-  }
-
-  const handleDeleteProduct = async (id: any) => {
-    const result = await deleteProduct({
-      variables: { id }
+    const [deleteProduct] = useMutation(DELETE_PRODUCT, {
+        onError: errorHandler,
+        refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
-    if (result) {
-      notificationHandler({
-        message: `Product ${
-          result.data.deleteProduct.name
-        } succesfully deleted`,
-        variant: "success"
-      });
-    }
-  };
+    const [updateProduct] = useMutation(UPDATE_PRODUCT, {
+        onError: errorHandler,
+        refetchQueries: [{ query: ALL_PRODUCTS }],
+    });
 
-  const handleUpdateProduct = async (product: any) => {
-    const result = await updateProduct({
-      variables: {
-        id: product.id,
+    if (productsQuery.data.products === undefined) {
+        return null;
+    }
+
+    const productsObject = products.map((product: any) => ({
         name: product.name,
         producer: product.producer,
-        type: product.type
-      }
-    });
+        id: product.id,
+    }));
 
-    if (result) {
-      console.log("result: ", result);
+    if (productsQuery.data.products === undefined) {
+        return null;
     }
-  };
 
-  return (
-    <MaterialTable
-      title="List of all products"
-      columns={[
-        { title: "Name", field: "name" },
-        { title: "Producer", field: "producer" },
-        { title: "ID", field: "id" }
-      ]}
-      data={productsObject}
-      editable={{
-        onRowUpdate: (updatedProduct, oldProduct) =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              handleUpdateProduct(updatedProduct);
-            }, 600);
-          }),
-        onRowDelete: oldProduct =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              handleDeleteProduct(oldProduct.id);
-            }, 100);
-          })
-      }}
-    />
-  );
+    const handleDeleteProduct = async (id: any) => {
+        const result = await deleteProduct({
+            variables: { id },
+        });
+
+        if (result) {
+            notificationHandler({
+                message: `Product ${result.data.deleteProduct.name} succesfully deleted`,
+                variant: 'success',
+            });
+        }
+    };
+
+    const handleUpdateProduct = async (product: any) => {
+        const result = await updateProduct({
+            variables: {
+                id: product.id,
+                name: product.name,
+                producer: product.producer,
+                type: product.type,
+            },
+        });
+
+        if (result) {
+            notificationHandler({
+                message: `Product ${result.data.updateProduct.name} succesfully updated`,
+                variant: 'success',
+            });
+        }
+    };
+
+    return (
+        <MaterialTable
+            title="List of all products"
+            columns={[
+                { title: 'Name', field: 'name' },
+                { title: 'Producer', field: 'producer' },
+                { title: 'ID', field: 'id' },
+            ]}
+            data={productsObject}
+            editable={{
+                onRowUpdate: (updatedProduct, oldProduct) =>
+                    new Promise(resolve => {
+                        setTimeout(() => {
+                            resolve();
+                            handleUpdateProduct(updatedProduct);
+                        }, 600);
+                    }),
+                onRowDelete: oldProduct =>
+                    new Promise(resolve => {
+                        setTimeout(() => {
+                            resolve();
+                            handleDeleteProduct(oldProduct.id);
+                        }, 100);
+                    }),
+            }}
+        />
+    );
 };

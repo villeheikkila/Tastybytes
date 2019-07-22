@@ -1,135 +1,121 @@
-import React, { useState } from "react";
-import { useMutation } from "@apollo/react-hooks";
-import useReactRouter from "use-react-router";
-import { ILogIn } from "../../types";
-import { LOGIN } from "../../queries";
-import { errorHandler } from "../../utils";
-import "typeface-leckerli-one";
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/react-hooks';
+import useReactRouter from 'use-react-router';
+import { Token } from '../../types';
+import { LOGIN } from '../../queries';
+import { errorHandler } from '../../utils';
+import 'typeface-leckerli-one';
 
-import {
-  makeStyles,
-  Container,
-  Button,
-  TextField,
-  Typography
-} from "@material-ui/core";
+import { makeStyles, Container, Button, TextField, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  form: {
-    marginTop: theme.spacing(1)
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  },
-  signup: {
-    margin: theme.spacing(0, 0, 0)
-  },
-  logo: {
-    paddingRight: 15,
-    paddingBottom: 15,
-    fontFamily: "Leckerli One"
-  },
-  title: {
-    paddingBottom: 5
-  }
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    form: {
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+    signup: {
+        margin: theme.spacing(0, 0, 0),
+    },
+    logo: {
+        paddingRight: 15,
+        paddingBottom: 15,
+        fontFamily: 'Leckerli One',
+    },
+    title: {
+        paddingBottom: 5,
+    },
 }));
 
-export const LogIn: React.FC<ILogIn> = ({ setToken }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { history } = useReactRouter();
-  const classes = useStyles();
+export const LogIn: React.FC<Token> = ({ setToken }) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { history } = useReactRouter();
+    const classes = useStyles();
 
-  const [login] = useMutation(LOGIN, {
-    onError: errorHandler
-  });
-
-  const handleLogin = async (
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    event.preventDefault();
-
-    const result = await login({
-      variables: { email, password }
+    const [login] = useMutation(LOGIN, {
+        onError: errorHandler,
     });
 
-    if (result) {
-      const token: string = result.data.login.token;
-      const userId: string = result.data.login.user.id;
-      setToken(token);
-      localStorage.setItem("token", token);
-      localStorage.setItem("userId", userId);
-    }
-  };
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+        event.preventDefault();
 
-  const handlePushToSignUp = () => history.push("/signup");
+        const result = await login({
+            variables: { email, password },
+        });
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
-        <Typography variant="h1" noWrap className={classes.logo}>
-          Tastice
-        </Typography>
+        if (result) {
+            const token: string = result.data.login.token;
+            const userId: string = result.data.login.user.id;
+            setToken(token);
+            localStorage.setItem('token', token);
+            localStorage.setItem('userId', userId);
+        }
+    };
 
-        <Typography component="h1" variant="h5" className={classes.title}>
-          Sign in
-        </Typography>
+    const handlePushToSignUp = () => history.push('/signup');
 
-        <form className={classes.form} onSubmit={handleLogin} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={({ target }) => setEmail(target.value)}
-          />
+    return (
+        <Container component="main" maxWidth="xs">
+            <div className={classes.paper}>
+                <Typography variant="h1" noWrap className={classes.logo}>
+                    Tastice
+                </Typography>
 
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
+                <Typography component="h1" variant="h5" className={classes.title}>
+                    Sign in
+                </Typography>
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
+                <form className={classes.form} onSubmit={handleLogin} noValidate>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        onChange={({ target }) => setEmail(target.value)}
+                    />
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="secondary"
-            className={classes.signup}
-            onClick={handlePushToSignUp}
-          >
-            Don't have an account? Sign Up
-          </Button>
-        </form>
-      </div>
-    </Container>
-  );
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        onChange={({ target }) => setPassword(target.value)}
+                    />
+
+                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                        Sign In
+                    </Button>
+
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="secondary"
+                        className={classes.signup}
+                        onClick={handlePushToSignUp}
+                    >
+                        {"Don't have an account? Sign Up"}
+                    </Button>
+                </form>
+            </div>
+        </Container>
+    );
 };

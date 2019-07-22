@@ -1,49 +1,49 @@
-import { client } from "../index";
-import { INotification } from "../types";
+import { client } from '../index';
+import { Notification } from '../types';
 
-export const notificationHandler = (notification: INotification) => {
-  client.writeData({
-    data: {
-      notification: notification.message,
-      variant: notification.variant
-    }
-  });
-  setTimeout(
-    () =>
-      client.writeData({
+export const notificationHandler = (notification: Notification) => {
+    client.writeData({
         data: {
-          notification: "clear",
-          variant: "success"
-        }
-      }),
-    2500
-  );
+            notification: notification.message,
+            variant: notification.variant,
+        },
+    });
+    setTimeout(
+        () =>
+            client.writeData({
+                data: {
+                    notification: 'clear',
+                    variant: 'success',
+                },
+            }),
+        2500,
+    );
 };
 
 export const errorHandler = (error: any) => {
-  client.writeData({
-    data: {
-      notification: error.message,
-      variant: "error"
-    }
-  });
-  setTimeout(
-    () =>
-      client.writeData({
+    client.writeData({
         data: {
-          notification: "clear",
-          variant: "success"
-        }
-      }),
-    2500
-  );
+            notification: error.message,
+            variant: 'error',
+        },
+    });
+    setTimeout(
+        () =>
+            client.writeData({
+                data: {
+                    notification: 'clear',
+                    variant: 'success',
+                },
+            }),
+        2500,
+    );
 };
 
 export const themeSwitcher = (value: boolean) => {
-  localStorage.setItem("theme", `${value}`);
-  client.writeData({
-    data: {
-      theme: value
-    }
-  });
+    localStorage.setItem('theme', `${value}`);
+    client.writeData({
+        data: {
+            theme: value,
+        },
+    });
 };

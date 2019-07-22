@@ -1,1 +1,1 @@
-declare module "material-ui-rating";
+declare module 'material-ui-rating';

@@ -1,85 +1,71 @@
-export interface IProduct {
-  id: string;
-  name: string;
-  producer: string;
-  category: any;
-  subCategory: any;
+export interface Product {
+    id: string;
+    name: string;
+    producer: string;
+    category: any;
+    subCategory: any;
 }
 
-export interface IProductObject {
-  product: IProduct;
+export interface ProductObject {
+    product: Product;
 }
 
-export interface IProductCard {
-  product: IProduct;
-}
-export interface IProductProps {
-  product: IProduct;
-}
-export interface IUser {
-  firstName: string;
-  lastName: string;
-  email: string;
-  id: string;
+export interface User {
+    firstName: string;
+    lastName: string;
+    email: string;
+    id: string;
 }
 
-export interface IUserList {
-  users: IUser[];
+export interface UserList {
+    users: User[];
 }
 
-export interface IProductList {
-  products: IProduct[];
-}
-
-export interface ILogIn {
-  setToken: any;
+export interface ProductList {
+    products: Product[];
 }
 
 export interface Token {
-  setToken: any;
+    setToken: any;
 }
 
-export interface INavbar {
-  setToken: any;
+export interface UserObject {
+    user: User | null;
 }
 
-export interface IUserObject {
-  user: IUser | null;
+export interface NotificationProps {
+    className?: string;
+    message?: string;
+    onClose?: () => void;
+    variant: 'success' | 'warning' | 'error' | 'info';
 }
 
-export interface INotificationContentWrapper {
-  className?: string;
-  message?: string;
-  onClose?: () => void;
-  variant: "success" | "warning" | "error" | "info";
+export interface Notification {
+    message: string;
+    variant: any;
 }
 
-export interface INotification {
-  message: string;
-  variant: any;
-}
-
-export interface INotificationObject {
-  notification: INotification;
+export interface NotificationObject {
+    notification: Notification;
 }
 
 export interface OptionType {
-  label: string;
-  value: string;
+    label: string;
+    value: string;
 }
 
-export interface IConfirmationDialog {
-  content: string;
-  title: string;
-  description: string;
-  declineButton: string;
-  acceptButton: string;
-  visible: boolean;
-  setVisible: any;
-  onAccept: any;
+export interface ConfirmationDialogProps {
+    content: string;
+    title: string;
+    description: string;
+    declineButton: string;
+    acceptButton: string;
+    visible: boolean;
+    setVisible: any;
+    onAccept: any;
 }
 
-export interface ICreateCheckIn {
-  authorId: string;
-  productId: string;
+export interface CreateCheckInProps {
+    authorId: string;
+    productId: string;
 }
