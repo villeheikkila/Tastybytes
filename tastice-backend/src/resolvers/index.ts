@@ -1,13 +1,15 @@
 import { Query } from "./Query";
-import { User } from "./User";
-import { Checkin } from "./Checkin";
-import { Company } from "./Company";
-import { Product } from "./Product";
-import { Category } from "./Category";
-import { SubCategory } from "./SubCategory";
 import { Mutation } from "./Mutation";
-import { AuthPayload } from "./AuthPayload";
 import { ProductSubscription, UserSubscription } from "./Subscription";
+import {
+  SubCategory,
+  Checkin,
+  Company,
+  Product,
+  Category,
+  AuthPayload,
+  User
+} from "./Types";
 
 export const resolvers = {
   Query,
@@ -19,5 +21,6 @@ export const resolvers = {
   ProductSubscription,
   UserSubscription,
   Category,
+  Company,
   SubCategory
 };

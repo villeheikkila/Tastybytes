@@ -47,5 +47,3 @@ export const themeSwitcher = (value: boolean) => {
     }
   });
 };
-
-export const logout = () => {};

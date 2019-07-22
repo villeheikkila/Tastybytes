@@ -1,9 +1,8 @@
 import { stringArg, idArg, intArg, mutationType } from "nexus";
 import { hash, compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
-import { prisma } from "../generated/prisma-client";
-import { SECRET } from "../utils";
-import { boolean } from "yup";
+import { prisma } from "../../generated/prisma-client";
+import { SECRET } from "../../utils";
 
 export const Mutation = mutationType({
   definition(t) {

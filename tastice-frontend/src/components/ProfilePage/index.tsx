@@ -1,7 +1,6 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { USER } from "../../queries";
-
 import { CheckInCard } from "../CheckInCard";
 import { Divider } from "../Divider";
 
