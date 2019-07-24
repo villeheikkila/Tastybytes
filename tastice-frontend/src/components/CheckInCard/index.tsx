@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
 import Rating from 'material-ui-rating';
 import { blue } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ProductCard } from '../ProductCard';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { DELETE_CHECKIN, ALL_CHECKINS } from '../../queries';
+import { errorHandler } from '../../utils';
+import { ConfirmationDialog } from '../ConfirmationDialog';
 
 import {
     Link,
@@ -51,7 +55,12 @@ const months: any = {
 
 export const CheckInCard: React.FC<any> = ({ checkin }) => {
     const classes = useStyles();
+    const [visible, setVisible] = useState();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
+    const [deleteCheckin] = useMutation(DELETE_CHECKIN, {
+        onError: errorHandler,
+        refetchQueries: [{ query: ALL_CHECKINS }],
+    });
 
     const checkinObject = {
         authorFirstName: checkin.author.firstName,
@@ -61,6 +70,7 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
         rating: checkin.rating,
         name: checkin.product.name,
         id: checkin.product.id,
+        checkinId: checkin.id,
         producer: checkin.product.producer,
         date: new Date(checkin.createdAt),
     };
@@ -71,6 +81,13 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
         producer: checkin.product.producer,
         category: checkin.product.category,
         subCategory: checkin.product.subCategory,
+    };
+
+    const handleDeleteCheckin = async () => {
+        const response = await deleteCheckin({
+            variables: { id: checkinObject.checkinId },
+        });
+        console.log('response: ', response);
     };
 
     return (
@@ -114,8 +131,26 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
             <Menu {...bindMenu(menuState)}>
                 <MenuItem onClick={menuState.close}>View Check-in</MenuItem>
                 <MenuItem onClick={menuState.close}>Edit Check-in</MenuItem>
-                <MenuItem onClick={menuState.close}>Remove Check-in</MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        setVisible(true);
+                        menuState.close();
+                    }}
+                >
+                    Remove Check-in
+                </MenuItem>
             </Menu>
+
+            <ConfirmationDialog
+                visible={visible}
+                setVisible={setVisible}
+                description={'HEEII'}
+                title={'Warning!'}
+                content={`Are you sure you want to remove checkin for '${productObject.name}'`}
+                onAccept={handleDeleteCheckin}
+                declineButton={'Cancel'}
+                acceptButton={'Yes'}
+            />
         </div>
     );
 };

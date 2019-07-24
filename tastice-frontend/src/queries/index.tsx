@@ -31,6 +31,7 @@ export const ADD_PRODUCT = gql`
 export const ALL_CHECKINS = gql`
     {
         checkins {
+            id
             rating
             comment
             author {
@@ -203,6 +204,14 @@ export const DELETE_USER = gql`
             firstName
             lastName
             email
+        }
+    }
+`;
+
+export const DELETE_CHECKIN = gql`
+    mutation deleteCheckin($id: ID!) {
+        deleteCheckin(id: $id) {
+            id
         }
     }
 `;
