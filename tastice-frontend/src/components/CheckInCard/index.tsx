@@ -1,11 +1,23 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
 import Rating from 'material-ui-rating';
 import { blue } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ProductCard } from '../ProductCard';
 
-import { Link, Typography, IconButton, Avatar, CardContent, CardHeader, Card, makeStyles } from '@material-ui/core';
+import {
+    Link,
+    Typography,
+    IconButton,
+    Avatar,
+    CardContent,
+    CardHeader,
+    Card,
+    makeStyles,
+    Menu,
+    MenuItem,
+} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -39,6 +51,7 @@ const months: any = {
 
 export const CheckInCard: React.FC<any> = ({ checkin }) => {
     const classes = useStyles();
+    const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
 
     const checkinObject = {
         authorFirstName: checkin.author.firstName,
@@ -70,7 +83,7 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
                         </Avatar>
                     }
                     action={
-                        <IconButton aria-label="Settings">
+                        <IconButton aria-label="Settings" {...bindTrigger(menuState)}>
                             <MoreVertIcon />
                         </IconButton>
                     }
@@ -97,6 +110,12 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
                     </Typography>
                 </CardContent>
             </Card>
+
+            <Menu {...bindMenu(menuState)}>
+                <MenuItem onClick={menuState.close}>View Check-in</MenuItem>
+                <MenuItem onClick={menuState.close}>Edit Check-in</MenuItem>
+                <MenuItem onClick={menuState.close}>Remove Check-in</MenuItem>
+            </Menu>
         </div>
     );
 };
