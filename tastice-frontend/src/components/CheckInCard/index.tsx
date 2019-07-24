@@ -12,18 +12,7 @@ import { errorHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { CheckInContent } from '../CheckInContent';
 
-import {
-    Link,
-    Typography,
-    IconButton,
-    Avatar,
-    CardContent,
-    CardHeader,
-    Card,
-    makeStyles,
-    Menu,
-    MenuItem,
-} from '@material-ui/core';
+import { Link, Typography, IconButton, Avatar, CardHeader, Card, makeStyles, Menu, MenuItem } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -31,13 +20,11 @@ const useStyles = makeStyles(theme => ({
         margin: `${theme.spacing(1)}px auto`,
     },
     media: {
-        height: 0,
         paddingTop: '56.25%',
     },
     avatar: {
         backgroundColor: blue[500],
     },
-    content: {},
 }));
 
 const months: any = {
@@ -130,7 +117,6 @@ export const CheckInCard: React.FC<any> = ({ checkin, showProduct }) => {
             </Card>
 
             <Menu {...bindMenu(menuState)}>
-                <MenuItem onClick={menuState.close}>View Check-in</MenuItem>
                 <MenuItem
                     onClick={() => {
                         setOpenEdit(true);

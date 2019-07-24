@@ -4,7 +4,7 @@ import useReactRouter from 'use-react-router';
 import { ProductObject } from '../../types';
 import lipton from '../../images/lipton.jpg';
 
-import { Card, Link, Avatar, Typography, CardContent, CardActionArea, makeStyles } from '@material-ui/core';
+import { Card, Link, Avatar, Typography, CardContent, CardActionArea, makeStyles, Chip } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -22,11 +22,17 @@ const useStyles = makeStyles(theme => ({
         width: 100,
         height: 100,
     },
-    details: {
+    content: {
         display: 'flex',
         flexDirection: 'column',
-        paddingLeft: theme.spacing(1),
-        paddingBottom: theme.spacing(1),
+        justifyContent: 'left',
+    },
+    chips: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    chip: {
+        margin: theme.spacing(0.3),
     },
 }));
 
@@ -39,43 +45,26 @@ export const ProductCard: React.FC<ProductObject> = ({ product }) => {
         <Card className={classes.card}>
             <CardActionArea onClick={() => history.push(`/product/${id}`)} className={classes.actionArea}>
                 <Avatar alt="Image" src={lipton} className={classes.picture} />
-                <div className={classes.details}>
-                    <CardContent>
-                        <Typography variant="h5" color="textSecondary" component="p">
-                            <Link component={RouterLink} to={`/product/${id}`}>
-                                {name}
-                            </Link>
-                        </Typography>
+                <CardContent className={classes.content}>
+                    <Typography variant="h4" color="textSecondary" component="h4">
+                        <Link component={RouterLink} to={`/product/${id}`}>
+                            {name}
+                        </Link>
+                    </Typography>
 
-                        <Typography variant="h6" color="textPrimary" component="p">
-                            {producer}
-                        </Typography>
+                    <Typography variant="h5" color="textPrimary" component="h5">
+                        {producer}
+                    </Typography>
 
-                        {category[0] && (
-                            <Typography variant="body1" color="textPrimary" component="p">
-                                Category:
-                            </Typography>
-                        )}
-
-                        {category.map((e: any) => (
-                            <Typography key={e.name} variant="body1" color="textPrimary" component="p">
-                                {e.name}
-                            </Typography>
-                        ))}
-
-                        {subCategory[0] && (
-                            <Typography variant="body1" color="textPrimary" component="p">
-                                Style:
-                            </Typography>
-                        )}
-
+                    {category.map((e: any) => (
+                        <Chip label={e.name} className={classes.chip} color="inherit" />
+                    ))}
+                    <div className={classes.chips}>
                         {subCategory.map((e: any) => (
-                            <Typography key={e.name} variant="body1" color="textPrimary" component="p">
-                                {e.name}
-                            </Typography>
+                            <Chip variant="outlined" size="small" label={e.name} className={classes.chip} />
                         ))}
-                    </CardContent>
-                </div>
+                    </div>
+                </CardContent>
             </CardActionArea>
         </Card>
     );
