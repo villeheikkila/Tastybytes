@@ -7,7 +7,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ProductCard } from '../ProductCard';
 import { EditCheckIn } from '../EditCheckIn';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { DELETE_CHECKIN, ALL_CHECKINS } from '../../queries';
+import { DELETE_CHECKIN, ALL_CHECKINS, PRODUCT } from '../../queries';
 import { errorHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { CheckInContent } from '../CheckInContent';
@@ -47,10 +47,6 @@ export const CheckInCard: React.FC<any> = ({ checkin, showProduct }) => {
     const [visible, setVisible] = useState();
     const [openEdit, setOpenEdit] = useState();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
-    const [deleteCheckin] = useMutation(DELETE_CHECKIN, {
-        onError: errorHandler,
-        refetchQueries: [{ query: ALL_CHECKINS }],
-    });
 
     const checkinObject = {
         authorFirstName: checkin.author.firstName,
@@ -73,7 +69,13 @@ export const CheckInCard: React.FC<any> = ({ checkin, showProduct }) => {
         subCategory: checkin.product.subCategory,
     };
 
+    const [deleteCheckin] = useMutation(DELETE_CHECKIN, {
+        onError: errorHandler,
+        refetchQueries: [{ query: PRODUCT, variables: { id: checkinObject.id } }],
+    });
+
     const handleDeleteCheckin = async () => {
+        setVisible(false);
         const response = await deleteCheckin({
             variables: { id: checkinObject.checkinId },
         });
