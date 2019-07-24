@@ -87,6 +87,11 @@ const App = () => {
                                     />
                                     <Route
                                         exact
+                                        path="/product/:id/edit"
+                                        render={({ match }) => <ProductPage id={match.params.id} />}
+                                    />
+                                    <Route
+                                        exact
                                         path="/user/:id"
                                         render={({ match }) => <ProfilePage id={match.params.id} />}
                                     />

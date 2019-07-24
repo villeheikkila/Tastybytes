@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
-import Rating from 'material-ui-rating';
 import { blue } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ProductCard } from '../ProductCard';
 import { EditCheckIn } from '../EditCheckIn';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { DELETE_CHECKIN, ALL_CHECKINS, PRODUCT } from '../../queries';
+import { DELETE_CHECKIN, PRODUCT } from '../../queries';
 import { errorHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { CheckInContent } from '../CheckInContent';
@@ -109,7 +108,7 @@ export const CheckInCard: React.FC<any> = ({ checkin, showProduct }) => {
           `}
                 />
 
-                {showProduct && <ProductCard product={productObject} />}
+                {showProduct && <ProductCard product={productObject} showMenu={false} />}
 
                 {openEdit ? (
                     <EditCheckIn id={checkinObject.checkinId} setOpenEdit={setOpenEdit} product={productObject.name} />

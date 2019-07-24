@@ -8,6 +8,7 @@ export interface Product {
 
 export interface ProductObject {
     product: Product;
+    showMenu: boolean;
 }
 
 export interface User {

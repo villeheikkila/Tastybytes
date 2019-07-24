@@ -6,7 +6,7 @@ import { ALL_PRODUCTS } from '../../queries';
 import useReactRouter from 'use-react-router';
 
 import AddIcon from '@material-ui/icons/Add';
-import { Grid, Fab, makeStyles } from '@material-ui/core';
+import { Grid, Fab, makeStyles, Card } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
         maxWidth: 700,
         margin: `${theme.spacing(1)}px auto`,
         alignContent: 'center',
+    },
+    card: {
+        margin: `${theme.spacing(1)}px auto`,
     },
     fab: {
         margin: 0,
@@ -40,7 +43,9 @@ export const ProductView = () => {
             <Grid container justify="center" spacing={10}>
                 <Grid item xs={12}>
                     {products.map((product: Product) => (
-                        <ProductCard key={product.id} product={product} />
+                        <Card className={classes.card}>
+                            <ProductCard key={product.id} product={product} showMenu={false} />
+                        </Card>
                     ))}
                 </Grid>
             </Grid>

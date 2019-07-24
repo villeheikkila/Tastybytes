@@ -5,9 +5,18 @@ import { ProductCard } from '../ProductCard';
 import { Divider } from '../Divider';
 import { CheckInCard } from '../CheckInCard';
 import { CreateCheckIn } from '../CreateCheckIn';
+import { makeStyles, Card } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+    card: {
+        maxWidth: 700,
+        margin: `${theme.spacing(1)}px auto`,
+    },
+}));
 
 export const ProductPage: React.FC<any> = id => {
     const me = useQuery(ME);
+    const classes = useStyles();
     const productsQuery = useQuery(PRODUCT, {
         variables: { id: id.id },
     });
@@ -30,7 +39,9 @@ export const ProductPage: React.FC<any> = id => {
 
     return (
         <>
-            <ProductCard product={productObject} />
+            <Card className={classes.card}>
+                <ProductCard product={productObject} showMenu={true} />
+            </Card>
             <CreateCheckIn authorId={me.data.me.id} productId={product.id} />
             <Divider text={dividerText} />
 
