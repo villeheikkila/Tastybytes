@@ -5,6 +5,7 @@ import Rating from 'material-ui-rating';
 import { blue } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ProductCard } from '../ProductCard';
+import { EditCheckIn } from '../EditCheckIn';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { DELETE_CHECKIN, ALL_CHECKINS } from '../../queries';
 import { errorHandler } from '../../utils';
@@ -56,6 +57,7 @@ const months: any = {
 export const CheckInCard: React.FC<any> = ({ checkin }) => {
     const classes = useStyles();
     const [visible, setVisible] = useState();
+    const [openEdit, setOpenEdit] = useState();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
     const [deleteCheckin] = useMutation(DELETE_CHECKIN, {
         onError: errorHandler,
@@ -117,20 +119,31 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
           `}
                 />
                 <ProductCard product={productObject} />
-                <CardContent className={classes.content}>
-                    <Typography variant="h6" color="textSecondary" component="p">
-                        Rating
-                    </Typography>
-                    <Rating value={checkinObject.rating} max={5} />
-                    <Typography variant="h6" color="textSecondary" component="p">
-                        {checkinObject.comment && <>Comment: {checkinObject.comment}</>}
-                    </Typography>
-                </CardContent>
+                {!openEdit && (
+                    <CardContent className={classes.content}>
+                        <Typography variant="h6" color="textSecondary" component="p">
+                            Rating
+                        </Typography>
+                        <Rating value={checkinObject.rating} max={5} />
+                        <Typography variant="h6" color="textSecondary" component="p">
+                            {checkinObject.comment && <>Comment: {checkinObject.comment}</>}
+                        </Typography>
+                    </CardContent>
+                )}
+
+                {openEdit && <EditCheckIn id={checkinObject.checkinId} setOpenEdit={setOpenEdit} />}
             </Card>
 
             <Menu {...bindMenu(menuState)}>
                 <MenuItem onClick={menuState.close}>View Check-in</MenuItem>
-                <MenuItem onClick={menuState.close}>Edit Check-in</MenuItem>
+                <MenuItem
+                    onClick={() => {
+                        setOpenEdit(true);
+                        menuState.close();
+                    }}
+                >
+                    Edit Check-in
+                </MenuItem>
                 <MenuItem
                     onClick={() => {
                         setVisible(true);
