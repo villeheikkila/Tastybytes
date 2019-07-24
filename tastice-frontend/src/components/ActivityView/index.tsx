@@ -34,7 +34,7 @@ export const ActivityView = () => {
             <Grid container justify="center" spacing={10}>
                 <Grid item xs={12}>
                     {checkins.data.checkins.map((checkin: any) => (
-                        <CheckInCard key={checkin.createdAt} checkin={checkin} />
+                        <CheckInCard key={checkin.createdAt} showProduct={true} checkin={checkin} />
                     ))}
                 </Grid>
             </Grid>

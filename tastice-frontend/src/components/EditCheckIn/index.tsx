@@ -3,13 +3,12 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import Rating from 'material-ui-rating';
 import { notificationHandler, errorHandler } from '../../utils';
 import { CHECKIN } from '../../queries';
-import { CreateCheckInProps } from '../../types';
 
-import { makeStyles, createStyles, Theme, Paper, Button, TextField, Typography } from '@material-ui/core';
+import { makeStyles, createStyles, Theme, Button, TextField, Typography, CardContent } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        paper: {
+        card: {
             padding: theme.spacing(3, 2),
             maxWidth: 700,
             display: 'flex',
@@ -54,28 +53,27 @@ export const EditCheckIn: React.FC<CheckInProps> = ({ id, setOpenEdit }) => {
     }
 
     return (
-        <div>
-            <Paper className={classes.paper}>
-                <Typography variant="h5" component="h3">
-                    Edit Previous Checkin
-                </Typography>
-                <TextField
-                    id="outlined-multiline-static"
-                    label="Comments"
-                    multiline
-                    rows="4"
-                    className={classes.textField}
-                    value={comment}
-                    margin="normal"
-                    variant="outlined"
-                    onChange={(event: any) => setComment(event.target.value)}
-                />
-                <Typography component="p">Rating</Typography>
-                <Rating value={rating} max={5} onChange={(i: any) => setRating(i)} />
-                <Button variant="contained" color="primary" className={classes.button} onClick={handleEditCheckInEdit}>
-                    Check-in!
-                </Button>
-            </Paper>
-        </div>
+        <CardContent className={classes.card}>
+            <Typography variant="h5" component="h3">
+                Edit Previous Checkin
+            </Typography>
+            <TextField
+                id="outlined-multiline-static"
+                label="Comments"
+                multiline
+                rows="4"
+                defaultValue={checkinQuery.data.checkin[0].comment}
+                className={classes.textField}
+                value={comment}
+                margin="normal"
+                variant="outlined"
+                onChange={(event: any) => setComment(event.target.value)}
+            />
+            <Typography component="p">Rating</Typography>
+            <Rating value={rating} max={5} onChange={(i: any) => setRating(i)} />
+            <Button variant="contained" color="primary" className={classes.button} onClick={handleEditCheckInEdit}>
+                Check-in!
+            </Button>
+        </CardContent>
     );
 };

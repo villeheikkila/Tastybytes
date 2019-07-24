@@ -10,6 +10,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { DELETE_CHECKIN, ALL_CHECKINS } from '../../queries';
 import { errorHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
+import { CheckInContent } from '../CheckInContent';
 
 import {
     Link,
@@ -54,7 +55,7 @@ const months: any = {
     11: 'December',
 };
 
-export const CheckInCard: React.FC<any> = ({ checkin }) => {
+export const CheckInCard: React.FC<any> = ({ checkin, showProduct }) => {
     const classes = useStyles();
     const [visible, setVisible] = useState();
     const [openEdit, setOpenEdit] = useState();
@@ -118,20 +119,14 @@ export const CheckInCard: React.FC<any> = ({ checkin }) => {
                     }, ${checkinObject.date.getFullYear()}
           `}
                 />
-                <ProductCard product={productObject} />
-                {!openEdit && (
-                    <CardContent className={classes.content}>
-                        <Typography variant="h6" color="textSecondary" component="p">
-                            Rating
-                        </Typography>
-                        <Rating value={checkinObject.rating} max={5} />
-                        <Typography variant="h6" color="textSecondary" component="p">
-                            {checkinObject.comment && <>Comment: {checkinObject.comment}</>}
-                        </Typography>
-                    </CardContent>
-                )}
 
-                {openEdit && <EditCheckIn id={checkinObject.checkinId} setOpenEdit={setOpenEdit} />}
+                {showProduct && <ProductCard product={productObject} />}
+
+                {openEdit ? (
+                    <EditCheckIn id={checkinObject.checkinId} setOpenEdit={setOpenEdit} />
+                ) : (
+                    <CheckInContent rating={checkinObject.rating} comment={checkinObject.comment} />
+                )}
             </Card>
 
             <Menu {...bindMenu(menuState)}>
