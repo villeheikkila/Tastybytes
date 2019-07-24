@@ -139,6 +139,24 @@ export const Mutation = mutationType({
       }
     });
 
+    t.field("updateCheckin", {
+      type: "Checkin",
+      args: {
+        id: idArg(),
+        rating: intArg(),
+        comment: stringArg()
+      },
+      resolve: async (_, { id, rating, comment }) => {
+        return await prisma.updateCheckin({
+          where: { id },
+          data: {
+            rating,
+            comment
+          }
+        });
+      }
+    });
+
     t.field("deleteProduct", {
       type: "Product",
       nullable: true,

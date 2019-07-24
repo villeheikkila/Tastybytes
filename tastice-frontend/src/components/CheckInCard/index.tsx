@@ -112,7 +112,7 @@ export const CheckInCard: React.FC<any> = ({ checkin, showProduct }) => {
                 {showProduct && <ProductCard product={productObject} />}
 
                 {openEdit ? (
-                    <EditCheckIn id={checkinObject.checkinId} setOpenEdit={setOpenEdit} />
+                    <EditCheckIn id={checkinObject.checkinId} setOpenEdit={setOpenEdit} product={productObject.name} />
                 ) : (
                     <CheckInContent rating={checkinObject.rating} comment={checkinObject.comment} />
                 )}

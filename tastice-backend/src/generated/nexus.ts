@@ -499,6 +499,7 @@ export interface NexusGenFieldTypes {
     deleteUser: NexusGenRootTypes['User'] | null; // User
     login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     signup: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
+    updateCheckin: NexusGenRootTypes['Checkin'] | null; // Checkin
     updateProduct: NexusGenRootTypes['Product'] | null; // Product
     updateUser: NexusGenRootTypes['User'] | null; // User
   }
@@ -651,6 +652,11 @@ export interface NexusGenArgTypes {
       firstName?: string | null; // String
       lastName?: string | null; // String
       password?: string | null; // String
+    }
+    updateCheckin: { // args
+      comment?: string | null; // String
+      id?: string | null; // ID
+      rating?: number | null; // Int
     }
     updateProduct: { // args
       categoryId?: string | null; // ID

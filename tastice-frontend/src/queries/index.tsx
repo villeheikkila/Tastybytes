@@ -207,6 +207,16 @@ export const UPDATE_USER = gql`
     }
 `;
 
+export const UPDATE_CHECKIN = gql`
+    mutation updateCheckin($id: ID!, $rating: Int!, $comment: String!) {
+        updateCheckin(id: $id, rating: $rating, comment: $comment) {
+            id
+            rating
+            comment
+        }
+    }
+`;
+
 export const DELETE_USER = gql`
     mutation deleteUser($id: ID!) {
         deleteUser(id: $id) {

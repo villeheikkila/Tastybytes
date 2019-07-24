@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import Rating from 'material-ui-rating';
 import { notificationHandler, errorHandler } from '../../utils';
-import { CHECKIN } from '../../queries';
+import { CHECKIN, UPDATE_CHECKIN, ALL_PRODUCTS } from '../../queries';
 
 import { makeStyles, createStyles, Theme, Button, TextField, Typography, CardContent } from '@material-ui/core';
 
@@ -26,15 +26,20 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface CheckInProps {
     id: string;
+    product: string;
     setOpenEdit: any;
 }
 
-export const EditCheckIn: React.FC<CheckInProps> = ({ id, setOpenEdit }) => {
+export const EditCheckIn: React.FC<CheckInProps> = ({ id, setOpenEdit, product }) => {
     const classes = useStyles();
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
     const checkinQuery = useQuery(CHECKIN, {
         variables: { id },
+    });
+    const [updateCheckin] = useMutation(UPDATE_CHECKIN, {
+        onError: errorHandler,
+        refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
     useEffect(() => {
@@ -44,8 +49,21 @@ export const EditCheckIn: React.FC<CheckInProps> = ({ id, setOpenEdit }) => {
         }
     }, []);
 
-    const handleEditCheckInEdit = () => {
+    const handleEditCheckInEdit = async () => {
         setOpenEdit(false);
+        const result = await updateCheckin({
+            variables: {
+                id,
+                rating,
+                comment,
+            },
+        });
+        if (result) {
+            notificationHandler({
+                message: `Checkin for product '${product}' succesfully updated`,
+                variant: 'success',
+            });
+        }
     };
 
     if (checkinQuery.data.checkin === undefined) {
