@@ -5,7 +5,7 @@ type User {
   lastName: String!
   password: String!
   admin: Boolean!
-  checkins: [Checkin!]!
+  checkins: [Checkin!]! @relation(name: "CheckInAuthor", onDelete: CASCADE)
   friends: [User!]!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -16,9 +16,9 @@ type Product {
   name: String!
   company: [Company!]!
   producer: String
-  checkins: [Checkin!]!
-  category: [Category]
-  subCategory: [SubCategory]
+  checkins: [Checkin!]! @relation(name: "CheckInProduct", onDelete: CASCADE)
+  category: [Category] 
+  subCategory: [SubCategory] 
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   }
@@ -27,8 +27,8 @@ type Checkin {
     id: ID! @id
     rating: Int!
     comment: String!
-    author: User!
-    product: Product!
+    author: User! @relation(name: "CheckInAuthor", onDelete: SET_NULL)
+    product: Product! @relation(name: "CheckInProduct", onDelete: SET_NULL)
     createdAt: DateTime! @createdAt
     updatedAt: DateTime! @updatedAt
 }
@@ -43,13 +43,13 @@ type Company {
 type Category {
   id: ID! @id
   name: String! @unique
-  subCategory: [SubCategory]
-  products: [Product]
+  subCategory: [SubCategory] 
+  products: [Product] 
 }
 
 type SubCategory {
     id: ID! @id
-    category: Category! 
+    category: Category!  
     name: String! @unique
     products: [Product]
 }

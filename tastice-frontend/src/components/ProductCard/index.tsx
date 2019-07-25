@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
 import { Link as RouterLink } from 'react-router-dom';
 import useReactRouter from 'use-react-router';
 import { ProductObject } from '../../types';
 import lipton from '../../images/lipton.jpg';
-
+import { DELETE_PRODUCT, ALL_PRODUCTS } from '../../queries';
+import { useMutation } from '@apollo/react-hooks';
+import { errorHandler, notificationHandler } from '../../utils';
+import { ConfirmationDialog } from '../ConfirmationDialog';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+
 import {
     Card,
     Link,
@@ -40,9 +44,30 @@ const useStyles = makeStyles(theme => ({
 
 export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
     const classes = useStyles();
+    const [visible, setVisible] = useState();
     const { history } = useReactRouter();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
+    const [deleteProduct] = useMutation(DELETE_PRODUCT, {
+        onError: errorHandler,
+        refetchQueries: [{ query: ALL_PRODUCTS }],
+    });
+
     const { id, name, producer, category, subCategory } = product;
+
+    const handleDeleteProduct = async () => {
+        setVisible(false);
+        const result = await deleteProduct({
+            variables: { id: product.id },
+        });
+
+        if (result) {
+            notificationHandler({
+                message: `Product ${result.data.deleteProduct.name} succesfully deleted`,
+                variant: 'success',
+            });
+            history.push(`/activity`);
+        }
+    };
 
     const menu = (
         <div>
@@ -57,11 +82,23 @@ export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
                 <MenuItem
                     onClick={() => {
                         menuState.close();
+                        setVisible(true);
                     }}
                 >
                     Remove Product
                 </MenuItem>
             </Menu>
+
+            <ConfirmationDialog
+                visible={visible}
+                setVisible={setVisible}
+                description={'HEEII'}
+                title={'Warning!'}
+                content={`Are you sure you want to remove ${product.name}`}
+                onAccept={handleDeleteProduct}
+                declineButton={'Cancel'}
+                acceptButton={'Yes'}
+            />
         </div>
     );
 
@@ -97,41 +134,11 @@ export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
                             <IconButton aria-label="Settings" {...bindTrigger(menuState)}>
                                 <MoreVertIcon />
                             </IconButton>
+                            {menu}
                         </Grid>
                     )}
                 </Grid>
             </Grid>
-            {menu}
         </CardActionArea>
     );
 };
-
-{
-    /* <CardActionArea onClick={() => history.push(`/product/${id}`)} className={classes.actionArea}>
-<Avatar alt="Image" src={lipton} className={classes.picture} />
-<CardContent className={classes.content}>
-    <Typography variant="h4" color="textSecondary" component="h4">
-        <Link component={RouterLink} to={`/product/${id}`}>
-            {name}
-        </Link>
-    </Typography>
-
-    <Typography variant="h5" color="textPrimary" component="h5">
-        {producer}
-    </Typography>
-
-    {category.map((e: any) => (
-        <Chip label={e.name} className={classes.chip} color="inherit" />
-    ))}
-    <div className={classes.chips}>
-        {subCategory.map((e: any) => (
-            <Chip variant="outlined" size="small" label={e.name} className={classes.chip} />
-        ))}
-    </div>
-</CardContent>
-<IconButton aria-label="Settings" {...bindTrigger(menuState)}>
-    <MoreVertIcon />
-</IconButton>
-</CardActionArea>
-{menu} */
-}

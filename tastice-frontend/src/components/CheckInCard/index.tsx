@@ -7,7 +7,7 @@ import { ProductCard } from '../ProductCard';
 import { EditCheckIn } from '../EditCheckIn';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { DELETE_CHECKIN, PRODUCT } from '../../queries';
-import { errorHandler } from '../../utils';
+import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { CheckInContent } from '../CheckInContent';
 
@@ -75,10 +75,16 @@ export const CheckInCard: React.FC<any> = ({ checkin, showProduct }) => {
 
     const handleDeleteCheckin = async () => {
         setVisible(false);
-        const response = await deleteCheckin({
+        const result = await deleteCheckin({
             variables: { id: checkinObject.checkinId },
         });
-        console.log('response: ', response);
+        if (result) {
+            console.log('result: ', result);
+            notificationHandler({
+                message: `Checkin succesfully deleted`,
+                variant: 'success',
+            });
+        }
     };
 
     return (

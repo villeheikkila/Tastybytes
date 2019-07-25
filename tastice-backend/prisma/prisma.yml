@@ -3,9 +3,9 @@ secret: ${env:PRISMA_SECRET}
 datamodel: datamodel.prisma
 
 generate:
-  - generator: typescript-client
-    output: ../src/generated/prisma-client/
+    - generator: typescript-client
+      output: ../src/generated/prisma-client/
 hooks:
-  post-deploy:
-    - prisma generate
-    - npx nexus-prisma-generate --client ./src/generated/prisma-client --output ./src/generated/nexus-prisma
+    post-deploy:
+        - prisma generate
+        - npx nexus-prisma-generate --client ./src/generated/prisma-client --output ./src/generated/nexus-prisma
