@@ -663,7 +663,7 @@ export interface NexusGenArgTypes {
       id?: string | null; // ID
       name?: string | null; // String
       producer?: string | null; // String
-      subCategoryId?: string | null; // ID
+      subCategories?: string[] | null; // [String!]
     }
     updateUser: { // args
       email?: string | null; // String

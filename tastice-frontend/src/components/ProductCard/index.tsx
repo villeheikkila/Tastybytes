@@ -9,6 +9,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { UpdateProduct } from '../UpdateProduct';
 
 import {
     Card,
@@ -45,6 +46,7 @@ const useStyles = makeStyles(theme => ({
 export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
     const classes = useStyles();
     const [visible, setVisible] = useState();
+    const [showEditProduct, setShowEditProduct] = useState();
     const { history } = useReactRouter();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
     const [deleteProduct] = useMutation(DELETE_PRODUCT, {
@@ -75,6 +77,7 @@ export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
                 <MenuItem
                     onClick={() => {
                         menuState.close();
+                        setShowEditProduct(true);
                     }}
                 >
                     Edit Product
@@ -103,42 +106,45 @@ export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
     );
 
     return (
-        <CardActionArea onClick={() => history.push(`/product/${id}`)} className={classes.actionArea}>
-            <Grid container spacing={3} direction="row">
-                <Grid item>
-                    <Avatar alt="Image" src={lipton} className={classes.picture} />
-                </Grid>
-                <Grid item xs container>
-                    <Grid item xs container direction="column">
-                        <Grid item>
-                            <Typography gutterBottom variant="h4">
-                                <Link component={RouterLink} to={`/product/${id}`}>
-                                    {name}
-                                </Link>
-                            </Typography>
-                            <Typography variant="h5" gutterBottom>
-                                {producer}
-                            </Typography>
-                            {category.map((e: any) => (
-                                <Chip label={e.name} className={classes.chip} color="inherit" />
-                            ))}
+        <div>
+            <CardActionArea onClick={() => history.push(`/product/${id}`)} className={classes.actionArea}>
+                <Grid container spacing={3} direction="row">
+                    <Grid item>
+                        <Avatar alt="Image" src={lipton} className={classes.picture} />
+                    </Grid>
+                    <Grid item xs container>
+                        <Grid item xs container direction="column">
                             <Grid item>
-                                {subCategory.map((e: any) => (
-                                    <Chip variant="outlined" size="small" label={e.name} className={classes.chip} />
+                                <Typography gutterBottom variant="h4">
+                                    <Link component={RouterLink} to={`/product/${id}`}>
+                                        {name}
+                                    </Link>
+                                </Typography>
+                                <Typography variant="h5" gutterBottom>
+                                    {producer}
+                                </Typography>
+                                {category.map((e: any) => (
+                                    <Chip label={e.name} className={classes.chip} color="inherit" />
                                 ))}
+                                <Grid item>
+                                    {subCategory.map((e: any) => (
+                                        <Chip variant="outlined" size="small" label={e.name} className={classes.chip} />
+                                    ))}
+                                </Grid>
                             </Grid>
                         </Grid>
+                        {showMenu && (
+                            <Grid>
+                                <IconButton aria-label="Settings" {...bindTrigger(menuState)}>
+                                    <MoreVertIcon />
+                                </IconButton>
+                                {menu}
+                            </Grid>
+                        )}
                     </Grid>
-                    {showMenu && (
-                        <Grid>
-                            <IconButton aria-label="Settings" {...bindTrigger(menuState)}>
-                                <MoreVertIcon />
-                            </IconButton>
-                            {menu}
-                        </Grid>
-                    )}
                 </Grid>
-            </Grid>
-        </CardActionArea>
+            </CardActionArea>
+            {showEditProduct && <UpdateProduct product={product} />}
+        </div>
     );
 };

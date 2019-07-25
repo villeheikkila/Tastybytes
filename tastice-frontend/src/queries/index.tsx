@@ -247,10 +247,15 @@ export const DELETE_PRODUCT = gql`
 `;
 
 export const UPDATE_PRODUCT = gql`
-    mutation updateProduct($id: ID!, $name: String!, $producer: String!) {
-        updateProduct(id: $id, name: $name, producer: $producer) {
+    mutation updateProduct($id: ID!, $name: String!, $producer: String!, $categoryId: ID!, $subCategories: [String!]) {
+        updateProduct(
+            id: $id
+            name: $name
+            producer: $producer
+            categoryId: $categoryId
+            subCategories: $subCategories
+        ) {
             name
-            producer
             id
         }
     }

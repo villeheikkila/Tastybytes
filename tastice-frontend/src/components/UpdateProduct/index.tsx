@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import useReactRouter from 'use-react-router';
 
 import { notificationHandler, errorHandler } from '../../utils';
 import { MaterialSelect } from '../MaterialSelect';
 
-import { ADD_PRODUCT, ALL_PRODUCTS, ALL_CATEGORIES, ALL_COMPANIES } from '../../queries';
+import { ADD_PRODUCT, ALL_PRODUCTS, ALL_CATEGORIES, ALL_COMPANIES, UPDATE_PRODUCT } from '../../queries';
 
 import { Paper, Typography, Grid, Button, TextField, makeStyles } from '@material-ui/core';
 
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const UpdateProduct = () => {
+export const UpdateProduct: React.FC<any> = ({ product }) => {
     const classes = useStyles();
     const [name, setName] = useState('');
     const [producer, setProducer] = useState();
@@ -39,12 +39,19 @@ export const UpdateProduct = () => {
     const categories = useQuery(ALL_CATEGORIES);
     const companies = useQuery(ALL_COMPANIES);
 
-    const [addProduct] = useMutation(ADD_PRODUCT, {
+    const [updateProduct] = useMutation(UPDATE_PRODUCT, {
         onError: errorHandler,
         refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
-    if (addProduct === null || categories === null || categories.data.categories === undefined) {
+    useEffect(() => {
+        setName(product.name);
+        setProducer(product.producer);
+        setCategory(product.category[0].name);
+        setSubCategory(product.subCategory[0].name);
+    }, []);
+
+    if (categories === null || categories.data.categories === undefined) {
         return null;
     }
 
@@ -63,8 +70,9 @@ export const UpdateProduct = () => {
             return e.value;
         });
 
-        const result = await addProduct({
+        const result = await updateProduct({
             variables: {
+                id: product.id,
                 name,
                 producer: producer.value,
                 categoryId: category.id,
@@ -73,8 +81,9 @@ export const UpdateProduct = () => {
         });
 
         if (result) {
+            console.log('result: ', result);
             notificationHandler({
-                message: `Product ${result.data.addProduct.name} succesfully added`,
+                message: `Product ${result.data.addProduct.name} succesfully edit`,
                 variant: 'success',
             });
             history.push(`/product/${result.data.addProduct.id}`);
@@ -109,7 +118,7 @@ export const UpdateProduct = () => {
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <Typography component="h1" variant="h5">
-                    Add a new product!
+                    Edit Product
                 </Typography>
 
                 <form onSubmit={handleAddProduct}>
@@ -155,7 +164,7 @@ export const UpdateProduct = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <Button type="submit" variant="contained" color="secondary" className={classes.button}>
-                                Add Product!
+                                Update Product!
                             </Button>
                         </Grid>
                     </Grid>

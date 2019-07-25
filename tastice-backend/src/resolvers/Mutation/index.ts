@@ -100,16 +100,39 @@ export const Mutation = mutationType({
                 name: stringArg(),
                 producer: stringArg(),
                 categoryId: idArg({ nullable: true }),
-                subCategoryId: idArg({ nullable: true }),
+                subCategories: stringArg({ list: true }),
             },
             resolve: async (_, args) => {
+                const subCategories: any = [];
+
+                for (let i = 0; i < args.subCategories.length; i++) {
+                    const subCategoryExists = await prisma.$exists.subCategory({
+                        name: args.subCategories[i],
+                    });
+
+                    if (!subCategoryExists) {
+                        const res = await prisma.createSubCategory({
+                            category: { connect: { id: args.categoryId } },
+                            name: args.subCategories[i],
+                        });
+
+                        subCategories.push({ id: res.id });
+                    } else {
+                        const res = await prisma.subCategories({
+                            where: { name: args.subCategories[i] },
+                        });
+
+                        subCategories.push({ id: res[0].id });
+                    }
+                }
+
                 return await prisma.updateProduct({
                     where: { id: args.id },
                     data: {
                         name: args.name,
                         producer: args.producer,
                         category: { connect: { id: args.categoryId } },
-                        subCategory: { connect: { id: args.subCategoryId } },
+                        subCategory: { connect: subCategories },
                     },
                 });
             },

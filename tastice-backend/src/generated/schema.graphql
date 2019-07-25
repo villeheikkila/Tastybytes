@@ -217,7 +217,7 @@ type Mutation {
   login(email: String, password: String): AuthPayload
   signup(email: String, firstName: String, lastName: String, password: String): AuthPayload
   updateCheckin(comment: String, id: ID, rating: Int): Checkin
-  updateProduct(categoryId: ID, id: ID, name: String, producer: String, subCategoryId: ID): Product
+  updateProduct(categoryId: ID, id: ID, name: String, producer: String, subCategories: [String!]): Product
   updateUser(email: String, firstName: String, id: ID, lastName: String): User
 }
 
