@@ -44,6 +44,8 @@ export const ProfilePage: React.FC<any> = id => {
         variables: { id: id.id },
     });
 
+    console.log('user: ', user);
+
     if (user.data.user === undefined) {
         return null;
     }
@@ -75,7 +77,7 @@ export const ProfilePage: React.FC<any> = id => {
             <Divider text={dividerText} />
 
             {userObject.checkins.map((checkin: any) => (
-                <CheckInCard key={checkin.createdAt} checkin={checkin} />
+                <CheckInCard key={checkin.createdAt} checkin={checkin} showProduct={true} />
             ))}
         </div>
     );

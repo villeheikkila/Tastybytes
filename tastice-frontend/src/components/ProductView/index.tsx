@@ -2,11 +2,12 @@ import React from 'react';
 import { ProductCard } from '../ProductCard';
 import { Product } from '../../types';
 import { useQuery } from '@apollo/react-hooks';
-import { ALL_PRODUCTS } from '../../queries';
+import { SEARCH_PRODUCTS, FILTER } from '../../queries';
 import useReactRouter from 'use-react-router';
 
 import AddIcon from '@material-ui/icons/Add';
 import { Grid, Fab, makeStyles, Card } from '@material-ui/core';
+import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -30,20 +31,28 @@ const useStyles = makeStyles(theme => ({
 
 export const ProductView = () => {
     const classes = useStyles();
-    const productsQuery = useQuery(ALL_PRODUCTS);
-    const products = productsQuery.data.products;
+    const filter = useQuery(FILTER);
+    const searchProductsQuery = useQuery(SEARCH_PRODUCTS, {
+        variables: { name: filter.data.filter },
+        onError: errorHandler,
+    });
+
+    const products = searchProductsQuery.data.searchProducts;
+
     const { history } = useReactRouter();
 
     if (products === undefined) {
         return null;
     }
 
+    console.log('products: ', products);
+
     return (
         <div className={classes.root}>
             <Grid container justify="center" spacing={10}>
                 <Grid item xs={12}>
                     {products.map((product: Product) => (
-                        <Card className={classes.card}>
+                        <Card key={product.id} className={classes.card}>
                             <ProductCard key={product.id} product={product} showMenu={false} />
                         </Card>
                     ))}

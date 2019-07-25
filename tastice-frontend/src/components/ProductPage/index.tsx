@@ -30,7 +30,7 @@ export const ProductPage: React.FC<any> = id => {
     const productObject = {
         id: product.id,
         name: product.name,
-        company: product.company.name,
+        company: product.company,
         category: product.category,
         subCategory: product.subCategory,
     };

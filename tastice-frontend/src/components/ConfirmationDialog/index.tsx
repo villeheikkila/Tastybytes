@@ -16,7 +16,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     return (
         <div>
             <Dialog
-                open={visible}
+                open={visible || false}
                 onClose={() => setVisible(false)}
                 aria-labelledby={title}
                 aria-describedby={description}

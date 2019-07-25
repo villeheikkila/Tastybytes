@@ -39,6 +39,14 @@ export const errorHandler = (error: any) => {
     );
 };
 
+export const filterChanger = (filter: any) => {
+    client.writeData({
+        data: {
+            filter,
+        },
+    });
+};
+
 export const themeSwitcher = (value: boolean) => {
     localStorage.setItem('theme', `${value}`);
     client.writeData({

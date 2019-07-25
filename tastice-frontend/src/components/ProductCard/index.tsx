@@ -12,11 +12,9 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { UpdateProduct } from '../UpdateProduct';
 
 import {
-    Card,
     Link,
     Avatar,
     Typography,
-    CardContent,
     CardActionArea,
     makeStyles,
     Chip,
@@ -45,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 
 export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
     const classes = useStyles();
-    const [visible, setVisible] = useState();
+    const [visible, setVisible] = useState(false);
     const [showEditProduct, setShowEditProduct] = useState();
     const { history } = useReactRouter();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
@@ -55,7 +53,6 @@ export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
     });
 
     const { id, name, company, category, subCategory } = product;
-    console.log('company: ', company);
 
     const handleDeleteProduct = async () => {
         setVisible(false);
@@ -122,14 +119,21 @@ export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
                                     </Link>
                                 </Typography>
                                 <Typography variant="h5" gutterBottom>
-                                    {'placeholder'}
+                                    {company[0].name}
                                 </Typography>
                                 {category.map((e: any) => (
-                                    <Chip label={e.name} className={classes.chip} color="inherit" />
+                                    <Chip label={e.name} key={e.name} className={classes.chip} color="default" />
                                 ))}
                                 <Grid item>
                                     {subCategory.map((e: any) => (
-                                        <Chip variant="outlined" size="small" label={e.name} className={classes.chip} />
+                                        <Chip
+                                            variant="outlined"
+                                            size="small"
+                                            color="default"
+                                            label={e.name}
+                                            key={e.name}
+                                            className={classes.chip}
+                                        />
                                     ))}
                                 </Grid>
                             </Grid>

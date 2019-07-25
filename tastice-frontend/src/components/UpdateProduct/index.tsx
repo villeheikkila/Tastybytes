@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import useReactRouter from 'use-react-router';
-
 import { notificationHandler, errorHandler } from '../../utils';
 import { MaterialSelect } from '../MaterialSelect';
-
-import { ADD_PRODUCT, ALL_PRODUCTS, ALL_CATEGORIES, ALL_COMPANIES, UPDATE_PRODUCT } from '../../queries';
-
-import { Paper, Typography, Grid, Button, TextField, makeStyles, CardContent } from '@material-ui/core';
+import { ALL_PRODUCTS, ALL_CATEGORIES, ALL_COMPANIES, UPDATE_PRODUCT } from '../../queries';
+import { Typography, Grid, Button, TextField, makeStyles, CardContent } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-    paper: {
+    card: {
         padding: theme.spacing(3, 2),
         maxWidth: 700,
         margin: `${theme.spacing(1)}px auto`,
@@ -35,7 +31,6 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
     const [company, setCompany] = useState();
     const [category, setCategory] = useState();
     const [subCategory, setSubCategory] = useState();
-    const { history } = useReactRouter();
     const categories = useQuery(ALL_CATEGORIES);
     const companies = useQuery(ALL_COMPANIES);
 
@@ -49,7 +44,7 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
         setCompany(product.company);
         setCategory(product.category[0].name);
         setSubCategory(product.subCategory[0].name);
-    }, []);
+    }, [product.name, product.company, product.category, product.subCategory]);
 
     if (categories === null || categories.data.categories === undefined) {
         return null;
@@ -81,7 +76,6 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
         });
 
         if (result) {
-            console.log('result: ', result);
             notificationHandler({
                 message: `Product ${result.data.addProduct.name} succesfully updated`,
                 variant: 'success',
@@ -115,7 +109,7 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
 
     return (
         <div className={classes.root}>
-            <CardContent className={classes.paper}>
+            <CardContent className={classes.card}>
                 <Typography component="h1" variant="h5">
                     Edit Product
                 </Typography>

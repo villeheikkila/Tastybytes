@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Token } from '../../types';
-import { themeSwitcher } from '../../utils';
+import { themeSwitcher, filterChanger } from '../../utils';
 import useReactRouter from 'use-react-router';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
@@ -104,6 +104,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const NavigationBar: React.FC<Token> = ({ setToken }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [filter, setFilter] = useState('');
     const [colorScheme, setColorScheme] = useState(false);
     const { history } = useReactRouter();
 
@@ -111,6 +112,8 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
         localStorage.clear();
         setToken(null);
     };
+
+    filterChanger(filter);
 
     const handleColorSchemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         themeSwitcher(event.target.checked);
@@ -120,6 +123,8 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
     const isMenuOpen = Boolean(anchorEl);
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
+
+    const handleSearchChange = (event: any) => setFilter(event.target.value);
 
     const handleMenuClose = () => {
         setAnchorEl(null);
@@ -182,6 +187,8 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
                             }}
+                            value={filter}
+                            onChange={handleSearchChange}
                             inputProps={{ 'aria-label': 'Search' }}
                         />
                     </div>

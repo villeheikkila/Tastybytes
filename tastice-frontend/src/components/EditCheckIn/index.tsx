@@ -47,7 +47,7 @@ export const EditCheckIn: React.FC<CheckInProps> = ({ id, setOpenEdit, product }
             setComment(checkinQuery.data.checkin[0].comment);
             setRating(checkinQuery.data.checkin[0].rating);
         }
-    }, []);
+    }, [checkinQuery.data.checkin]);
 
     const handleEditCheckInEdit = async () => {
         setOpenEdit(false);

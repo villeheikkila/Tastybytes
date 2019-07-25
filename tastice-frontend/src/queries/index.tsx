@@ -12,6 +12,12 @@ export const NOTIFICATION = gql`
     }
 `;
 
+export const FILTER = gql`
+    {
+        filter @client
+    }
+`;
+
 export const ALL_CHECKINS = gql`
     {
         checkins {
@@ -286,6 +292,48 @@ export const ALL_PRODUCTS = gql`
 export const PRODUCT = gql`
     query product($id: ID!) {
         product(id: $id) {
+            id
+            name
+            company {
+                name
+            }
+            category {
+                name
+            }
+            subCategory {
+                name
+            }
+            checkins {
+                id
+                rating
+                comment
+                author {
+                    id
+                    firstName
+                    lastName
+                }
+                product {
+                    id
+                    name
+                    company {
+                        name
+                    }
+                    category {
+                        name
+                    }
+                    subCategory {
+                        name
+                    }
+                }
+                createdAt
+            }
+        }
+    }
+`;
+
+export const SEARCH_PRODUCTS = gql`
+    query searchProducts($name: String!) {
+        searchProducts(name: $name) {
             id
             name
             company {

@@ -1,6 +1,6 @@
 import { getUserId } from '../../utils';
 import { queryType } from 'nexus';
-import { idArg } from 'nexus';
+import { idArg, stringArg } from 'nexus';
 
 export const Query = queryType({
     definition(t) {
@@ -93,9 +93,23 @@ export const Query = queryType({
             args: {
                 id: idArg(),
             },
-            resolve: (_, args, ctx) => {
+            resolve: (_, { id }, ctx) => {
                 return ctx.prisma.products({
-                    where: { id: args.id },
+                    where: { id },
+                    orderBy: 'createdAt_DESC',
+                });
+            },
+        });
+
+        t.list.field('searchProducts', {
+            type: 'Product',
+            args: {
+                name: stringArg(),
+            },
+            resolve: (_, args, ctx) => {
+                console.log('args: ', args);
+                return ctx.prisma.products({
+                    where: { name_starts_with: args.name },
                     orderBy: 'createdAt_DESC',
                 });
             },
