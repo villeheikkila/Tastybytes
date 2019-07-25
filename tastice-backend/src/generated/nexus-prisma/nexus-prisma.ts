@@ -877,7 +877,6 @@ type ProductObject =
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'name', args?: [] | false, alias?: string  } 
   | { name: 'company', args?: ProductCompanyArgs[] | false, alias?: string  } 
-  | { name: 'producer', args?: [] | false, alias?: string  } 
   | { name: 'checkins', args?: ProductCheckinsArgs[] | false, alias?: string  } 
   | { name: 'category', args?: ProductCategoryArgs[] | false, alias?: string  } 
   | { name: 'subCategory', args?: ProductSubCategoryArgs[] | false, alias?: string  } 
@@ -888,7 +887,6 @@ type ProductFields =
   | 'id'
   | 'name'
   | 'company'
-  | 'producer'
   | 'checkins'
   | 'category'
   | 'subCategory'
@@ -959,14 +957,6 @@ export interface ProductFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.Company[]> | prisma.Company[]
-  }
-  producer: {
-    type: 'String'
-    args: {}
-    description: string
-    list: undefined
-    nullable: true
-    resolve: undefined
   }
   checkins: {
     type: 'Checkin'
@@ -3072,14 +3062,12 @@ type ProductPreviousValuesObject =
   | ProductPreviousValuesFields
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'name', args?: [] | false, alias?: string  } 
-  | { name: 'producer', args?: [] | false, alias?: string  } 
   | { name: 'createdAt', args?: [] | false, alias?: string  } 
   | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
 type ProductPreviousValuesFields =
   | 'id'
   | 'name'
-  | 'producer'
   | 'createdAt'
   | 'updatedAt'
 
@@ -3102,14 +3090,6 @@ export interface ProductPreviousValuesFieldDetails {
     description: string
     list: undefined
     nullable: false
-    resolve: undefined
-  }
-  producer: {
-    type: 'String'
-    args: {}
-    description: string
-    list: undefined
-    nullable: true
     resolve: undefined
   }
   createdAt: {
@@ -3941,20 +3921,6 @@ export interface ProductWhereInput {
   company_every?: CompanyWhereInput | null
   company_some?: CompanyWhereInput | null
   company_none?: CompanyWhereInput | null
-  producer?: string | null
-  producer_not?: string | null
-  producer_in?: string[]
-  producer_not_in?: string[]
-  producer_lt?: string | null
-  producer_lte?: string | null
-  producer_gt?: string | null
-  producer_gte?: string | null
-  producer_contains?: string | null
-  producer_not_contains?: string | null
-  producer_starts_with?: string | null
-  producer_not_starts_with?: string | null
-  producer_ends_with?: string | null
-  producer_not_ends_with?: string | null
   checkins_every?: CheckinWhereInput | null
   checkins_some?: CheckinWhereInput | null
   checkins_none?: CheckinWhereInput | null
@@ -4017,20 +3983,6 @@ export type ProductWhereInputInputObject =
   | { name: 'company_every', alias?: string  } 
   | { name: 'company_some', alias?: string  } 
   | { name: 'company_none', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
-  | { name: 'producer_not', alias?: string  } 
-  | { name: 'producer_in', alias?: string  } 
-  | { name: 'producer_not_in', alias?: string  } 
-  | { name: 'producer_lt', alias?: string  } 
-  | { name: 'producer_lte', alias?: string  } 
-  | { name: 'producer_gt', alias?: string  } 
-  | { name: 'producer_gte', alias?: string  } 
-  | { name: 'producer_contains', alias?: string  } 
-  | { name: 'producer_not_contains', alias?: string  } 
-  | { name: 'producer_starts_with', alias?: string  } 
-  | { name: 'producer_not_starts_with', alias?: string  } 
-  | { name: 'producer_ends_with', alias?: string  } 
-  | { name: 'producer_not_ends_with', alias?: string  } 
   | { name: 'checkins_every', alias?: string  } 
   | { name: 'checkins_some', alias?: string  } 
   | { name: 'checkins_none', alias?: string  } 
@@ -4384,7 +4336,6 @@ export interface ProductCreateWithoutCheckinsInput {
   id?: string | null
   name?: string
   company?: CompanyCreateManyWithoutProductsInput | null
-  producer?: string | null
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
 }
@@ -4393,7 +4344,6 @@ export type ProductCreateWithoutCheckinsInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
@@ -4468,7 +4418,6 @@ export interface ProductCreateWithoutSubCategoryInput {
   id?: string | null
   name?: string
   company?: CompanyCreateManyWithoutProductsInput | null
-  producer?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
 }
@@ -4477,7 +4426,6 @@ export type ProductCreateWithoutSubCategoryInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   
@@ -4593,7 +4541,6 @@ export interface ProductCreateWithoutCategoryInput {
   id?: string | null
   name?: string
   company?: CompanyCreateManyWithoutProductsInput | null
-  producer?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
 }
@@ -4602,7 +4549,6 @@ export type ProductCreateWithoutCategoryInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
@@ -4684,7 +4630,6 @@ export type ProductUpdateOneRequiredWithoutCheckinsInputInputObject =
 export interface ProductUpdateWithoutCheckinsDataInput {
   name?: string | null
   company?: CompanyUpdateManyWithoutProductsInput | null
-  producer?: string | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
 }
@@ -4692,7 +4637,6 @@ export type ProductUpdateWithoutCheckinsDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutCheckinsDataInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
@@ -4946,7 +4890,6 @@ export type ProductUpdateWithWhereUniqueWithoutSubCategoryInputInputObject =
 export interface ProductUpdateWithoutSubCategoryDataInput {
   name?: string | null
   company?: CompanyUpdateManyWithoutProductsInput | null
-  producer?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
 }
@@ -4954,7 +4897,6 @@ export type ProductUpdateWithoutSubCategoryDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutSubCategoryDataInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   
@@ -5497,20 +5439,6 @@ export interface ProductScalarWhereInput {
   name_not_starts_with?: string | null
   name_ends_with?: string | null
   name_not_ends_with?: string | null
-  producer?: string | null
-  producer_not?: string | null
-  producer_in?: string[]
-  producer_not_in?: string[]
-  producer_lt?: string | null
-  producer_lte?: string | null
-  producer_gt?: string | null
-  producer_gte?: string | null
-  producer_contains?: string | null
-  producer_not_contains?: string | null
-  producer_starts_with?: string | null
-  producer_not_starts_with?: string | null
-  producer_ends_with?: string | null
-  producer_not_ends_with?: string | null
   createdAt?: string | null
   createdAt_not?: string | null
   createdAt_in?: string[]
@@ -5561,20 +5489,6 @@ export type ProductScalarWhereInputInputObject =
   | { name: 'name_not_starts_with', alias?: string  } 
   | { name: 'name_ends_with', alias?: string  } 
   | { name: 'name_not_ends_with', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
-  | { name: 'producer_not', alias?: string  } 
-  | { name: 'producer_in', alias?: string  } 
-  | { name: 'producer_not_in', alias?: string  } 
-  | { name: 'producer_lt', alias?: string  } 
-  | { name: 'producer_lte', alias?: string  } 
-  | { name: 'producer_gt', alias?: string  } 
-  | { name: 'producer_gte', alias?: string  } 
-  | { name: 'producer_contains', alias?: string  } 
-  | { name: 'producer_not_contains', alias?: string  } 
-  | { name: 'producer_starts_with', alias?: string  } 
-  | { name: 'producer_not_starts_with', alias?: string  } 
-  | { name: 'producer_ends_with', alias?: string  } 
-  | { name: 'producer_not_ends_with', alias?: string  } 
   | { name: 'createdAt', alias?: string  } 
   | { name: 'createdAt_not', alias?: string  } 
   | { name: 'createdAt_in', alias?: string  } 
@@ -5606,12 +5520,10 @@ export type ProductUpdateManyWithWhereNestedInputInputObject =
   
 export interface ProductUpdateManyDataInput {
   name?: string | null
-  producer?: string | null
 }
 export type ProductUpdateManyDataInputInputObject =
   | Extract<keyof ProductUpdateManyDataInput, string>
   | { name: 'name', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   
 export interface SubCategoryUpsertWithWhereUniqueWithoutCategoryInput {
   where?: SubCategoryWhereUniqueInput
@@ -5899,7 +5811,6 @@ export type ProductUpdateWithWhereUniqueWithoutCategoryInputInputObject =
 export interface ProductUpdateWithoutCategoryDataInput {
   name?: string | null
   company?: CompanyUpdateManyWithoutProductsInput | null
-  producer?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
 }
@@ -5907,7 +5818,6 @@ export type ProductUpdateWithoutCategoryDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutCategoryDataInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
@@ -5981,7 +5891,6 @@ export interface ProductCreateInput {
   id?: string | null
   name?: string
   company?: CompanyCreateManyWithoutProductsInput | null
-  producer?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
@@ -5991,7 +5900,6 @@ export type ProductCreateInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
@@ -5999,7 +5907,6 @@ export type ProductCreateInputInputObject =
 export interface ProductUpdateInput {
   name?: string | null
   company?: CompanyUpdateManyWithoutProductsInput | null
-  producer?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
@@ -6008,19 +5915,16 @@ export type ProductUpdateInputInputObject =
   | Extract<keyof ProductUpdateInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
 export interface ProductUpdateManyMutationInput {
   name?: string | null
-  producer?: string | null
 }
 export type ProductUpdateManyMutationInputInputObject =
   | Extract<keyof ProductUpdateManyMutationInput, string>
   | { name: 'name', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   
 export interface CheckinCreateInput {
   id?: string | null
@@ -6082,7 +5986,6 @@ export type ProductCreateManyWithoutCompanyInputInputObject =
 export interface ProductCreateWithoutCompanyInput {
   id?: string | null
   name?: string
-  producer?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
@@ -6091,7 +5994,6 @@ export type ProductCreateWithoutCompanyInputInputObject =
   | Extract<keyof ProductCreateWithoutCompanyInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
@@ -6139,7 +6041,6 @@ export type ProductUpdateWithWhereUniqueWithoutCompanyInputInputObject =
   
 export interface ProductUpdateWithoutCompanyDataInput {
   name?: string | null
-  producer?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
@@ -6147,7 +6048,6 @@ export interface ProductUpdateWithoutCompanyDataInput {
 export type ProductUpdateWithoutCompanyDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutCompanyDataInput, string>
   | { name: 'name', alias?: string  } 
-  | { name: 'producer', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
@@ -6386,8 +6286,6 @@ export type ProductOrderByInputValues =
   | 'id_DESC'
   | 'name_ASC'
   | 'name_DESC'
-  | 'producer_ASC'
-  | 'producer_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'

@@ -196,20 +196,6 @@ export interface NexusGenInputs {
     name_starts_with?: string | null; // String
     NOT?: NexusGenInputs['ProductWhereInput'][] | null; // [ProductWhereInput!]
     OR?: NexusGenInputs['ProductWhereInput'][] | null; // [ProductWhereInput!]
-    producer?: string | null; // String
-    producer_contains?: string | null; // String
-    producer_ends_with?: string | null; // String
-    producer_gt?: string | null; // String
-    producer_gte?: string | null; // String
-    producer_in?: string[] | null; // [String!]
-    producer_lt?: string | null; // String
-    producer_lte?: string | null; // String
-    producer_not?: string | null; // String
-    producer_not_contains?: string | null; // String
-    producer_not_ends_with?: string | null; // String
-    producer_not_in?: string[] | null; // [String!]
-    producer_not_starts_with?: string | null; // String
-    producer_starts_with?: string | null; // String
     subCategory_every?: NexusGenInputs['SubCategoryWhereInput'] | null; // SubCategoryWhereInput
     subCategory_none?: NexusGenInputs['SubCategoryWhereInput'] | null; // SubCategoryWhereInput
     subCategory_some?: NexusGenInputs['SubCategoryWhereInput'] | null; // SubCategoryWhereInput
@@ -365,7 +351,7 @@ export interface NexusGenEnums {
   CheckinOrderByInput: "comment_ASC" | "comment_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "rating_ASC" | "rating_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   CompanyOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   MutationType: "CREATED" | "DELETED" | "UPDATED"
-  ProductOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "producer_ASC" | "producer_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
+  ProductOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   SubCategoryOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
 }
 
@@ -394,14 +380,12 @@ export interface NexusGenRootTypes {
     createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
-    producer?: string | null; // String
     updatedAt: any; // DateTime!
   }
   ProductPreviousValues: { // root type
     createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
-    producer?: string | null; // String
     updatedAt: any; // DateTime!
   }
   ProductSubscriptionPayload: { // root type
@@ -510,7 +494,6 @@ export interface NexusGenFieldTypes {
     createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
-    producer: string | null; // String
     subCategory: NexusGenRootTypes['SubCategory'][] | null; // [SubCategory!]
     updatedAt: any; // DateTime!
   }
@@ -518,7 +501,6 @@ export interface NexusGenFieldTypes {
     createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
-    producer: string | null; // String
     updatedAt: any; // DateTime!
   }
   ProductSubscriptionPayload: { // field return type

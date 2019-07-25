@@ -234,7 +234,6 @@ type Product {
   createdAt: DateTime!
   id: ID!
   name: String!
-  producer: String
   subCategory(after: String, before: String, first: Int, last: Int, orderBy: SubCategoryOrderByInput, skip: Int, where: SubCategoryWhereInput): [SubCategory!]
   updatedAt: DateTime!
 }
@@ -246,8 +245,6 @@ enum ProductOrderByInput {
   id_DESC
   name_ASC
   name_DESC
-  producer_ASC
-  producer_DESC
   updatedAt_ASC
   updatedAt_DESC
 }
@@ -256,7 +253,6 @@ type ProductPreviousValues {
   createdAt: DateTime!
   id: ID!
   name: String!
-  producer: String
   updatedAt: DateTime!
 }
 
@@ -316,20 +312,6 @@ input ProductWhereInput {
   name_starts_with: String
   NOT: [ProductWhereInput!]
   OR: [ProductWhereInput!]
-  producer: String
-  producer_contains: String
-  producer_ends_with: String
-  producer_gt: String
-  producer_gte: String
-  producer_in: [String!]
-  producer_lt: String
-  producer_lte: String
-  producer_not: String
-  producer_not_contains: String
-  producer_not_ends_with: String
-  producer_not_in: [String!]
-  producer_not_starts_with: String
-  producer_starts_with: String
   subCategory_every: SubCategoryWhereInput
   subCategory_none: SubCategoryWhereInput
   subCategory_some: SubCategoryWhereInput
