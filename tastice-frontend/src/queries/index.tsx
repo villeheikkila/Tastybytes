@@ -12,22 +12,6 @@ export const NOTIFICATION = gql`
     }
 `;
 
-export const ADD_PRODUCT = gql`
-    mutation addProduct($name: String!, $producer: String!, $categoryId: ID!, $subCategories: [String!]) {
-        addProduct(name: $name, producer: $producer, categoryId: $categoryId, subCategories: $subCategories) {
-            name
-            producer
-            id
-            category {
-                name
-            }
-            subCategory {
-                name
-            }
-        }
-    }
-`;
-
 export const ALL_CHECKINS = gql`
     {
         checkins {
@@ -42,7 +26,9 @@ export const ALL_CHECKINS = gql`
             product {
                 id
                 name
-                producer
+                company {
+                    name
+                }
                 category {
                     name
                 }
@@ -125,7 +111,9 @@ export const USER = gql`
                 product {
                     id
                     name
-                    producer
+                    company {
+                        name
+                    }
                     category {
                         name
                     }
@@ -182,7 +170,9 @@ export const ME = gql`
                 product {
                     id
                     name
-                    producer
+                    company {
+                        name
+                    }
                     category {
                         name
                     }
@@ -241,20 +231,34 @@ export const DELETE_PRODUCT = gql`
         deleteProduct(id: $id) {
             name
             id
-            producer
+            company {
+                name
+            }
+        }
+    }
+`;
+
+export const ADD_PRODUCT = gql`
+    mutation addProduct($name: String!, $company: String!, $categoryId: ID!, $subCategories: [String!]) {
+        addProduct(name: $name, company: $company, categoryId: $categoryId, subCategories: $subCategories) {
+            name
+            company {
+                name
+            }
+            id
+            category {
+                name
+            }
+            subCategory {
+                name
+            }
         }
     }
 `;
 
 export const UPDATE_PRODUCT = gql`
-    mutation updateProduct($id: ID!, $name: String!, $producer: String!, $categoryId: ID!, $subCategories: [String!]) {
-        updateProduct(
-            id: $id
-            name: $name
-            producer: $producer
-            categoryId: $categoryId
-            subCategories: $subCategories
-        ) {
+    mutation updateProduct($id: ID!, $name: String!, $company: String!, $categoryId: ID!, $subCategories: [String!]) {
+        updateProduct(id: $id, name: $name, company: $company, categoryId: $categoryId, subCategories: $subCategories) {
             name
             id
         }
@@ -265,7 +269,9 @@ export const ALL_PRODUCTS = gql`
     {
         products {
             name
-            producer
+            company {
+                name
+            }
             id
             category {
                 name
@@ -282,7 +288,9 @@ export const PRODUCT = gql`
         product(id: $id) {
             id
             name
-            producer
+            company {
+                name
+            }
             category {
                 name
             }
@@ -301,7 +309,9 @@ export const PRODUCT = gql`
                 product {
                     id
                     name
-                    producer
+                    company {
+                        name
+                    }
                     category {
                         name
                     }

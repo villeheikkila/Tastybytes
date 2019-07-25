@@ -611,8 +611,8 @@ export interface NexusGenArgTypes {
   Mutation: {
     addProduct: { // args
       categoryId?: string | null; // ID
+      company?: string | null; // String
       name?: string | null; // String
-      producer?: string | null; // String
       subCategories?: string[] | null; // [String!]
     }
     createCategory: { // args
@@ -660,9 +660,9 @@ export interface NexusGenArgTypes {
     }
     updateProduct: { // args
       categoryId?: string | null; // ID
+      company?: string | null; // String
       id?: string | null; // ID
       name?: string | null; // String
-      producer?: string | null; // String
       subCategories?: string[] | null; // [String!]
     }
     updateUser: { // args

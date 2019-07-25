@@ -53,17 +53,17 @@ export const CheckInCard: React.FC<any> = ({ checkin, showProduct }) => {
         authorId: checkin.author.id,
         comment: checkin.comment,
         rating: checkin.rating,
-        name: checkin.product.name,
+        name: checkin.product,
         id: checkin.product.id,
         checkinId: checkin.id,
-        producer: checkin.product.producer,
+        company: checkin.product.company.name,
         date: new Date(checkin.createdAt),
     };
 
     const productObject = {
         name: checkin.product.name,
         id: checkin.product.id,
-        producer: checkin.product.producer,
+        company: checkin.product.company,
         category: checkin.product.category,
         subCategory: checkin.product.subCategory,
     };

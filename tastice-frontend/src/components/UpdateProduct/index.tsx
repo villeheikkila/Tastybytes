@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 export const UpdateProduct: React.FC<any> = ({ product }) => {
     const classes = useStyles();
     const [name, setName] = useState('');
-    const [producer, setProducer] = useState();
+    const [company, setCompany] = useState();
     const [category, setCategory] = useState();
     const [subCategory, setSubCategory] = useState();
     const { history } = useReactRouter();
@@ -46,7 +46,7 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
 
     useEffect(() => {
         setName(product.name);
-        setProducer(product.producer);
+        setCompany(product.company);
         setCategory(product.category[0].name);
         setSubCategory(product.subCategory[0].name);
     }, []);
@@ -57,7 +57,7 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
 
     const handleNameChange = (event: any) => setName(event.target.value);
 
-    const handleProducerChange = (value: any) => setProducer(value);
+    const handleCompanyChange = (value: any) => setCompany(value);
 
     const handleCategoryChange = (value: any) => setCategory(value);
 
@@ -74,7 +74,7 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
             variables: {
                 id: product.id,
                 name,
-                producer: producer.value,
+                company: company.value,
                 categoryId: category.id,
                 subCategories: subCategoryArray,
             },
@@ -83,10 +83,9 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
         if (result) {
             console.log('result: ', result);
             notificationHandler({
-                message: `Product ${result.data.addProduct.name} succesfully edit`,
+                message: `Product ${result.data.addProduct.name} succesfully edited`,
                 variant: 'success',
             });
-            history.push(`/product/${result.data.addProduct.id}`);
         }
     };
 
@@ -138,10 +137,10 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
                                 isCreatable={true}
                                 isMulti={false}
                                 suggestions={companySuggestions}
-                                label={'Producer'}
+                                label={'Company'}
                                 placeholder={'Select a company'}
-                                onChange={handleProducerChange}
-                                value={producer}
+                                onChange={handleCompanyChange}
+                                value={company}
                             />
                             <MaterialSelect
                                 isCreatable={false}

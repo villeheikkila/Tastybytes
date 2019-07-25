@@ -1,8 +1,9 @@
-import { stringArg, idArg, intArg, mutationType } from 'nexus';
+import { stringArg, idArg, intArg, mutationType, arg } from 'nexus';
 import { hash, compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { prisma } from '../../generated/prisma-client';
 import { SECRET } from '../../utils';
+import { createIfNewCompany, createIfNewSubCategories } from './utils';
 
 export const Mutation = mutationType({
     definition(t) {
@@ -56,37 +57,17 @@ export const Mutation = mutationType({
             type: 'Product',
             args: {
                 name: stringArg(),
-                producer: stringArg(),
+                company: stringArg(),
                 categoryId: idArg({ nullable: true }),
                 subCategories: stringArg({ list: true }),
             },
             resolve: async (_, args) => {
-                const subCategories: any = [];
-
-                for (let i = 0; i < args.subCategories.length; i++) {
-                    const subCategoryExists = await prisma.$exists.subCategory({
-                        name: args.subCategories[i],
-                    });
-
-                    if (!subCategoryExists) {
-                        const res = await prisma.createSubCategory({
-                            category: { connect: { id: args.categoryId } },
-                            name: args.subCategories[i],
-                        });
-
-                        subCategories.push({ id: res.id });
-                    } else {
-                        const res = await prisma.subCategories({
-                            where: { name: args.subCategories[i] },
-                        });
-
-                        subCategories.push({ id: res[0].id });
-                    }
-                }
+                const subCategories = await createIfNewSubCategories(args.subCategories, args.categoryId);
+                const companyId = await createIfNewCompany(args.company);
 
                 return await prisma.createProduct({
                     name: args.name,
-                    producer: args.name,
+                    company: { connect: { id: companyId } },
                     category: { connect: { id: args.categoryId } },
                     subCategory: { connect: subCategories },
                 });
@@ -98,39 +79,19 @@ export const Mutation = mutationType({
             args: {
                 id: idArg(),
                 name: stringArg(),
-                producer: stringArg(),
+                company: stringArg(),
                 categoryId: idArg({ nullable: true }),
                 subCategories: stringArg({ list: true }),
             },
             resolve: async (_, args) => {
-                const subCategories: any = [];
-
-                for (let i = 0; i < args.subCategories.length; i++) {
-                    const subCategoryExists = await prisma.$exists.subCategory({
-                        name: args.subCategories[i],
-                    });
-
-                    if (!subCategoryExists) {
-                        const res = await prisma.createSubCategory({
-                            category: { connect: { id: args.categoryId } },
-                            name: args.subCategories[i],
-                        });
-
-                        subCategories.push({ id: res.id });
-                    } else {
-                        const res = await prisma.subCategories({
-                            where: { name: args.subCategories[i] },
-                        });
-
-                        subCategories.push({ id: res[0].id });
-                    }
-                }
+                const subCategories = await createIfNewSubCategories(args.subCategories, args.categoryId);
+                const companyId = await createIfNewCompany(args.company);
 
                 return await prisma.updateProduct({
                     where: { id: args.id },
                     data: {
                         name: args.name,
-                        producer: args.producer,
+                        company: { connect: { id: companyId } },
                         category: { connect: { id: args.categoryId } },
                         subCategory: { connect: subCategories },
                     },

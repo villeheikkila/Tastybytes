@@ -54,7 +54,8 @@ export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
         refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
-    const { id, name, producer, category, subCategory } = product;
+    const { id, name, company, category, subCategory } = product;
+    console.log('company: ', company);
 
     const handleDeleteProduct = async () => {
         setVisible(false);
@@ -121,7 +122,7 @@ export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
                                     </Link>
                                 </Typography>
                                 <Typography variant="h5" gutterBottom>
-                                    {producer}
+                                    {'placeholder'}
                                 </Typography>
                                 {category.map((e: any) => (
                                     <Chip label={e.name} className={classes.chip} color="inherit" />

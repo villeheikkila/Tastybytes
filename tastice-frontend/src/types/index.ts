@@ -1,7 +1,7 @@
 export interface Product {
     id: string;
     name: string;
-    producer: string;
+    company: any;
     category: any;
     subCategory: any;
 }

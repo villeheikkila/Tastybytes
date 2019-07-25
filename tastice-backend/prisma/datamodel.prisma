@@ -15,7 +15,6 @@ type Product {
   id: ID! @id
   name: String!
   company: [Company!]!
-  producer: String
   checkins: [Checkin!]! @relation(name: "CheckInProduct", onDelete: CASCADE)
   category: [Category] 
   subCategory: [SubCategory] 

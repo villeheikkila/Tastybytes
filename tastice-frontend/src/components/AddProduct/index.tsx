@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 export const AddProduct = () => {
     const classes = useStyles();
     const [name, setName] = useState('');
-    const [producer, setProducer] = useState();
+    const [company, setCompany] = useState();
     const [category, setCategory] = useState();
     const [subCategory, setSubCategory] = useState();
     const { history } = useReactRouter();
@@ -50,7 +50,7 @@ export const AddProduct = () => {
 
     const handleNameChange = (event: any) => setName(event.target.value);
 
-    const handleProducerChange = (value: any) => setProducer(value);
+    const handleCompanyChange = (value: any) => setCompany(value);
 
     const handleCategoryChange = (value: any) => setCategory(value);
 
@@ -66,7 +66,7 @@ export const AddProduct = () => {
         const result = await addProduct({
             variables: {
                 name,
-                producer: producer.value,
+                company: company.value,
                 categoryId: category.id,
                 subCategories: subCategoryArray,
             },
@@ -129,10 +129,10 @@ export const AddProduct = () => {
                                 isCreatable={true}
                                 isMulti={false}
                                 suggestions={companySuggestions}
-                                label={'Producer'}
+                                label={'Company'}
                                 placeholder={'Select a company'}
-                                onChange={handleProducerChange}
-                                value={producer}
+                                onChange={handleCompanyChange}
+                                value={company}
                             />
                             <MaterialSelect
                                 isCreatable={false}
