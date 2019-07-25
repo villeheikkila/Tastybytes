@@ -7,7 +7,7 @@ import { MaterialSelect } from '../MaterialSelect';
 
 import { ADD_PRODUCT, ALL_PRODUCTS, ALL_CATEGORIES, ALL_COMPANIES, UPDATE_PRODUCT } from '../../queries';
 
-import { Paper, Typography, Grid, Button, TextField, makeStyles } from '@material-ui/core';
+import { Paper, Typography, Grid, Button, TextField, makeStyles, CardContent } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -83,7 +83,7 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
         if (result) {
             console.log('result: ', result);
             notificationHandler({
-                message: `Product ${result.data.addProduct.name} succesfully edited`,
+                message: `Product ${result.data.addProduct.name} succesfully updated`,
                 variant: 'success',
             });
         }
@@ -115,7 +115,7 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
 
     return (
         <div className={classes.root}>
-            <Paper className={classes.paper}>
+            <CardContent className={classes.paper}>
                 <Typography component="h1" variant="h5">
                     Edit Product
                 </Typography>
@@ -168,7 +168,7 @@ export const UpdateProduct: React.FC<any> = ({ product }) => {
                         </Grid>
                     </Grid>
                 </form>
-            </Paper>
+            </CardContent>
         </div>
     );
 };
