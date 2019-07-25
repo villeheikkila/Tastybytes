@@ -45,8 +45,6 @@ export const ProductView = () => {
         return null;
     }
 
-    console.log('products: ', products);
-
     return (
         <div className={classes.root}>
             <Grid container justify="center" spacing={10}>

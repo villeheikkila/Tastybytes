@@ -334,6 +334,7 @@ type Query {
   me: User
   product(id: ID): [Product!]
   products: [Product!]
+  searchCheckins(name: String): [Checkin!]
   searchProducts(name: String): [Product!]
   subCategories: [SubCategory!]
   user(id: ID): [User!]

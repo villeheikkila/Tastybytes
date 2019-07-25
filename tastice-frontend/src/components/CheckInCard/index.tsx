@@ -47,6 +47,8 @@ export const CheckInCard: React.FC<any> = ({ checkin, showProduct }) => {
     const [openEdit, setOpenEdit] = useState();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
 
+    console.log('checkisadasdn: ', checkin);
+
     const checkinObject = {
         authorFirstName: checkin.author.firstName,
         authorLastName: checkin.author.lastName,

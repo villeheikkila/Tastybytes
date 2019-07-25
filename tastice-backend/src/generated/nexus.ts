@@ -518,6 +518,7 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User'] | null; // User
     product: NexusGenRootTypes['Product'][] | null; // [Product!]
     products: NexusGenRootTypes['Product'][] | null; // [Product!]
+    searchCheckins: NexusGenRootTypes['Checkin'][] | null; // [Checkin!]
     searchProducts: NexusGenRootTypes['Product'][] | null; // [Product!]
     subCategories: NexusGenRootTypes['SubCategory'][] | null; // [SubCategory!]
     user: NexusGenRootTypes['User'][] | null; // [User!]
@@ -702,6 +703,9 @@ export interface NexusGenArgTypes {
     }
     product: { // args
       id?: string | null; // ID
+    }
+    searchCheckins: { // args
+      name?: string | null; // String
     }
     searchProducts: { // args
       name?: string | null; // String

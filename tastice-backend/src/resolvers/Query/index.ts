@@ -114,5 +114,19 @@ export const Query = queryType({
                 });
             },
         });
+
+        t.list.field('searchCheckins', {
+            type: 'Checkin',
+            args: {
+                name: stringArg(),
+            },
+            resolve: (_, args, ctx) => {
+                console.log('args: ', args);
+                return ctx.prisma.checkins({
+                    where: { product: { name_contains: args.name } },
+                    orderBy: 'createdAt_DESC',
+                });
+            },
+        });
     },
 });

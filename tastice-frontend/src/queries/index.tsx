@@ -373,6 +373,35 @@ export const SEARCH_PRODUCTS = gql`
     }
 `;
 
+export const SEARCH_CHECKINS = gql`
+    query searchCheckins($name: String!) {
+        searchCheckins(name: $name) {
+            id
+            rating
+            comment
+            author {
+                id
+                firstName
+                lastName
+            }
+            product {
+                id
+                name
+                company {
+                    name
+                }
+                category {
+                    name
+                }
+                subCategory {
+                    name
+                }
+            }
+            createdAt
+        }
+    }
+`;
+
 export const LOGIN = gql`
     mutation login($email: String!, $password: String!) {
         login(email: $email, password: $password) {
