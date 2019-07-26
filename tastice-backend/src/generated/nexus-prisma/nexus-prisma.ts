@@ -21,6 +21,7 @@ export interface NexusPrismaTypes {
       Company: CompanyObject
       Category: CategoryObject
       SubCategory: SubCategoryObject
+      FriendRequest: FriendRequestObject
       UserConnection: UserConnectionObject
       PageInfo: PageInfoObject
       UserEdge: UserEdgeObject
@@ -40,6 +41,9 @@ export interface NexusPrismaTypes {
       SubCategoryConnection: SubCategoryConnectionObject
       SubCategoryEdge: SubCategoryEdgeObject
       AggregateSubCategory: AggregateSubCategoryObject
+      FriendRequestConnection: FriendRequestConnectionObject
+      FriendRequestEdge: FriendRequestEdgeObject
+      AggregateFriendRequest: AggregateFriendRequestObject
       Mutation: MutationObject
       BatchPayload: BatchPayloadObject
       Subscription: SubscriptionObject
@@ -55,6 +59,8 @@ export interface NexusPrismaTypes {
       CategoryPreviousValues: CategoryPreviousValuesObject
       SubCategorySubscriptionPayload: SubCategorySubscriptionPayloadObject
       SubCategoryPreviousValues: SubCategoryPreviousValuesObject
+      FriendRequestSubscriptionPayload: FriendRequestSubscriptionPayloadObject
+      FriendRequestPreviousValues: FriendRequestPreviousValuesObject
     }
     fieldsDetails: {
       Query: QueryFieldDetails
@@ -64,6 +70,7 @@ export interface NexusPrismaTypes {
       Company: CompanyFieldDetails
       Category: CategoryFieldDetails
       SubCategory: SubCategoryFieldDetails
+      FriendRequest: FriendRequestFieldDetails
       UserConnection: UserConnectionFieldDetails
       PageInfo: PageInfoFieldDetails
       UserEdge: UserEdgeFieldDetails
@@ -83,6 +90,9 @@ export interface NexusPrismaTypes {
       SubCategoryConnection: SubCategoryConnectionFieldDetails
       SubCategoryEdge: SubCategoryEdgeFieldDetails
       AggregateSubCategory: AggregateSubCategoryFieldDetails
+      FriendRequestConnection: FriendRequestConnectionFieldDetails
+      FriendRequestEdge: FriendRequestEdgeFieldDetails
+      AggregateFriendRequest: AggregateFriendRequestFieldDetails
       Mutation: MutationFieldDetails
       BatchPayload: BatchPayloadFieldDetails
       Subscription: SubscriptionFieldDetails
@@ -98,6 +108,8 @@ export interface NexusPrismaTypes {
       CategoryPreviousValues: CategoryPreviousValuesFieldDetails
       SubCategorySubscriptionPayload: SubCategorySubscriptionPayloadFieldDetails
       SubCategoryPreviousValues: SubCategoryPreviousValuesFieldDetails
+      FriendRequestSubscriptionPayload: FriendRequestSubscriptionPayloadFieldDetails
+      FriendRequestPreviousValues: FriendRequestPreviousValuesFieldDetails
     }
   }
   inputTypes: {
@@ -105,6 +117,7 @@ export interface NexusPrismaTypes {
       UserWhereUniqueInput: UserWhereUniqueInputInputObject
       CheckinWhereInput: CheckinWhereInputInputObject
       UserWhereInput: UserWhereInputInputObject
+      FriendRequestWhereInput: FriendRequestWhereInputInputObject
       ProductWhereInput: ProductWhereInputInputObject
       CompanyWhereInput: CompanyWhereInputInputObject
       CategoryWhereInput: CategoryWhereInputInputObject
@@ -114,6 +127,7 @@ export interface NexusPrismaTypes {
       CompanyWhereUniqueInput: CompanyWhereUniqueInputInputObject
       CategoryWhereUniqueInput: CategoryWhereUniqueInputInputObject
       SubCategoryWhereUniqueInput: SubCategoryWhereUniqueInputInputObject
+      FriendRequestWhereUniqueInput: FriendRequestWhereUniqueInputInputObject
       UserCreateInput: UserCreateInputInputObject
       CheckinCreateManyWithoutAuthorInput: CheckinCreateManyWithoutAuthorInputInputObject
       CheckinCreateWithoutAuthorInput: CheckinCreateWithoutAuthorInputInputObject
@@ -132,6 +146,8 @@ export interface NexusPrismaTypes {
       UserCreateOneWithoutCheckinsInput: UserCreateOneWithoutCheckinsInputInputObject
       UserCreateWithoutCheckinsInput: UserCreateWithoutCheckinsInputInputObject
       UserCreateManyInput: UserCreateManyInputInputObject
+      FriendRequestCreateManyWithoutReceiverInput: FriendRequestCreateManyWithoutReceiverInputInputObject
+      FriendRequestCreateWithoutReceiverInput: FriendRequestCreateWithoutReceiverInputInputObject
       SubCategoryCreateManyWithoutProductsInput: SubCategoryCreateManyWithoutProductsInputInputObject
       SubCategoryCreateWithoutProductsInput: SubCategoryCreateWithoutProductsInputInputObject
       CategoryCreateOneWithoutSubCategoryInput: CategoryCreateOneWithoutSubCategoryInputInputObject
@@ -168,6 +184,13 @@ export interface NexusPrismaTypes {
       UserUpdateManyInput: UserUpdateManyInputInputObject
       UserUpdateWithWhereUniqueNestedInput: UserUpdateWithWhereUniqueNestedInputInputObject
       UserUpdateDataInput: UserUpdateDataInputInputObject
+      FriendRequestUpdateManyWithoutReceiverInput: FriendRequestUpdateManyWithoutReceiverInputInputObject
+      FriendRequestUpdateWithWhereUniqueWithoutReceiverInput: FriendRequestUpdateWithWhereUniqueWithoutReceiverInputInputObject
+      FriendRequestUpdateWithoutReceiverDataInput: FriendRequestUpdateWithoutReceiverDataInputInputObject
+      FriendRequestUpsertWithWhereUniqueWithoutReceiverInput: FriendRequestUpsertWithWhereUniqueWithoutReceiverInputInputObject
+      FriendRequestScalarWhereInput: FriendRequestScalarWhereInputInputObject
+      FriendRequestUpdateManyWithWhereNestedInput: FriendRequestUpdateManyWithWhereNestedInputInputObject
+      FriendRequestUpdateManyDataInput: FriendRequestUpdateManyDataInputInputObject
       UserUpsertWithWhereUniqueNestedInput: UserUpsertWithWhereUniqueNestedInputInputObject
       UserScalarWhereInput: UserScalarWhereInputInputObject
       UserUpdateManyWithWhereNestedInput: UserUpdateManyWithWhereNestedInputInputObject
@@ -224,12 +247,22 @@ export interface NexusPrismaTypes {
       SubCategoryCreateInput: SubCategoryCreateInputInputObject
       SubCategoryUpdateInput: SubCategoryUpdateInputInputObject
       SubCategoryUpdateManyMutationInput: SubCategoryUpdateManyMutationInputInputObject
+      FriendRequestCreateInput: FriendRequestCreateInputInputObject
+      UserCreateManyWithoutFriendRequestInput: UserCreateManyWithoutFriendRequestInputInputObject
+      UserCreateWithoutFriendRequestInput: UserCreateWithoutFriendRequestInputInputObject
+      FriendRequestUpdateInput: FriendRequestUpdateInputInputObject
+      UserUpdateManyWithoutFriendRequestInput: UserUpdateManyWithoutFriendRequestInputInputObject
+      UserUpdateWithWhereUniqueWithoutFriendRequestInput: UserUpdateWithWhereUniqueWithoutFriendRequestInputInputObject
+      UserUpdateWithoutFriendRequestDataInput: UserUpdateWithoutFriendRequestDataInputInputObject
+      UserUpsertWithWhereUniqueWithoutFriendRequestInput: UserUpsertWithWhereUniqueWithoutFriendRequestInputInputObject
+      FriendRequestUpdateManyMutationInput: FriendRequestUpdateManyMutationInputInputObject
       UserSubscriptionWhereInput: UserSubscriptionWhereInputInputObject
       ProductSubscriptionWhereInput: ProductSubscriptionWhereInputInputObject
       CheckinSubscriptionWhereInput: CheckinSubscriptionWhereInputInputObject
       CompanySubscriptionWhereInput: CompanySubscriptionWhereInputInputObject
       CategorySubscriptionWhereInput: CategorySubscriptionWhereInputInputObject
       SubCategorySubscriptionWhereInput: SubCategorySubscriptionWhereInputInputObject
+      FriendRequestSubscriptionWhereInput: FriendRequestSubscriptionWhereInputInputObject
     }
   }
   enumTypes: {
@@ -239,6 +272,7 @@ export interface NexusPrismaTypes {
     CategoryOrderByInput: CategoryOrderByInputValues,
     SubCategoryOrderByInput: SubCategoryOrderByInputValues,
     UserOrderByInput: UserOrderByInputValues,
+    FriendRequestOrderByInput: FriendRequestOrderByInputValues,
     MutationType: MutationTypeValues,
   }
 }
@@ -265,6 +299,9 @@ type QueryObject =
   | { name: 'subCategory', args?: QuerySubCategoryArgs[] | false, alias?: string  } 
   | { name: 'subCategories', args?: QuerySubCategoriesArgs[] | false, alias?: string  } 
   | { name: 'subCategoriesConnection', args?: QuerySubCategoriesConnectionArgs[] | false, alias?: string  } 
+  | { name: 'friendRequest', args?: QueryFriendRequestArgs[] | false, alias?: string  } 
+  | { name: 'friendRequests', args?: QueryFriendRequestsArgs[] | false, alias?: string  } 
+  | { name: 'friendRequestsConnection', args?: QueryFriendRequestsConnectionArgs[] | false, alias?: string  } 
 
 type QueryFields =
   | 'user'
@@ -285,6 +322,9 @@ type QueryFields =
   | 'subCategory'
   | 'subCategories'
   | 'subCategoriesConnection'
+  | 'friendRequest'
+  | 'friendRequests'
+  | 'friendRequestsConnection'
 
 
 type QueryUserArgs =
@@ -388,6 +428,24 @@ type QuerySubCategoriesArgs =
   | 'first'
   | 'last'
 type QuerySubCategoriesConnectionArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+type QueryFriendRequestArgs =
+  | 'where'
+type QueryFriendRequestsArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+type QueryFriendRequestsConnectionArgs =
   | 'where'
   | 'orderBy'
   | 'skip'
@@ -632,6 +690,45 @@ export interface QueryFieldDetails {
       info?: GraphQLResolveInfo
     ) => Promise<prisma.SubCategoryConnection> | prisma.SubCategoryConnection
   }
+  friendRequest: {
+    type: 'FriendRequest'
+    args: Record<QueryFriendRequestArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where: FriendRequestWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequest | null> | prisma.FriendRequest | null
+  }
+  friendRequests: {
+    type: 'FriendRequest'
+    args: Record<QueryFriendRequestsArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where?: FriendRequestWhereInput | null, orderBy?: prisma.FriendRequestOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequest[]> | prisma.FriendRequest[]
+  }
+  friendRequestsConnection: {
+    type: 'FriendRequestConnection'
+    args: Record<QueryFriendRequestsConnectionArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Query">,
+      args: { where?: FriendRequestWhereInput | null, orderBy?: prisma.FriendRequestOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequestConnection> | prisma.FriendRequestConnection
+  }
 }
   
 
@@ -647,6 +744,7 @@ type UserObject =
   | { name: 'admin', args?: [] | false, alias?: string  } 
   | { name: 'checkins', args?: UserCheckinsArgs[] | false, alias?: string  } 
   | { name: 'friends', args?: UserFriendsArgs[] | false, alias?: string  } 
+  | { name: 'friendRequest', args?: UserFriendRequestArgs[] | false, alias?: string  } 
   | { name: 'createdAt', args?: [] | false, alias?: string  } 
   | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
@@ -659,6 +757,7 @@ type UserFields =
   | 'admin'
   | 'checkins'
   | 'friends'
+  | 'friendRequest'
   | 'createdAt'
   | 'updatedAt'
 
@@ -672,6 +771,14 @@ type UserCheckinsArgs =
   | 'first'
   | 'last'
 type UserFriendsArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+type UserFriendRequestArgs =
   | 'where'
   | 'orderBy'
   | 'skip'
@@ -755,6 +862,19 @@ export interface UserFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.User[]> | prisma.User[]
+  }
+  friendRequest: {
+    type: 'FriendRequest'
+    args: Record<UserFriendRequestArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"User">,
+      args: { where?: FriendRequestWhereInput | null, orderBy?: prisma.FriendRequestOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequest[]> | prisma.FriendRequest[]
   }
   createdAt: {
     type: 'DateTime'
@@ -1221,6 +1341,86 @@ export interface SubCategoryFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.Product[]> | prisma.Product[]
+  }
+}
+  
+
+// Types for FriendRequest
+
+type FriendRequestObject =
+  | FriendRequestFields
+  | { name: 'id', args?: [] | false, alias?: string  } 
+  | { name: 'sender', args?: FriendRequestSenderArgs[] | false, alias?: string  } 
+  | { name: 'receiver', args?: FriendRequestReceiverArgs[] | false, alias?: string  } 
+  | { name: 'message', args?: [] | false, alias?: string  } 
+
+type FriendRequestFields =
+  | 'id'
+  | 'sender'
+  | 'receiver'
+  | 'message'
+
+
+type FriendRequestSenderArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+type FriendRequestReceiverArgs =
+  | 'where'
+  | 'orderBy'
+  | 'skip'
+  | 'after'
+  | 'before'
+  | 'first'
+  | 'last'
+  
+
+export interface FriendRequestFieldDetails {
+  id: {
+    type: 'ID'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  sender: {
+    type: 'User'
+    args: Record<FriendRequestSenderArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"FriendRequest">,
+      args: { where?: UserWhereInput | null, orderBy?: prisma.UserOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.User[]> | prisma.User[]
+  }
+  receiver: {
+    type: 'User'
+    args: Record<FriendRequestReceiverArgs, core.NexusArgDef<string>>
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"FriendRequest">,
+      args: { where?: UserWhereInput | null, orderBy?: prisma.UserOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.User[]> | prisma.User[]
+  }
+  message: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
   }
 }
   
@@ -2030,6 +2230,131 @@ export interface AggregateSubCategoryFieldDetails {
 }
   
 
+// Types for FriendRequestConnection
+
+type FriendRequestConnectionObject =
+  | FriendRequestConnectionFields
+  | { name: 'pageInfo', args?: [] | false, alias?: string  } 
+  | { name: 'edges', args?: [] | false, alias?: string  } 
+  | { name: 'aggregate', args?: [] | false, alias?: string  } 
+
+type FriendRequestConnectionFields =
+  | 'pageInfo'
+  | 'edges'
+  | 'aggregate'
+
+
+
+  
+
+export interface FriendRequestConnectionFieldDetails {
+  pageInfo: {
+    type: 'PageInfo'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"FriendRequestConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.PageInfo> | prisma.PageInfo
+  }
+  edges: {
+    type: 'FriendRequestEdge'
+    args: {}
+    description: string
+    list: true
+    nullable: false
+    resolve: (
+      root: core.RootValue<"FriendRequestConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequestEdge[]> | prisma.FriendRequestEdge[]
+  }
+  aggregate: {
+    type: 'AggregateFriendRequest'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"FriendRequestConnection">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.AggregateFriendRequest> | prisma.AggregateFriendRequest
+  }
+}
+  
+
+// Types for FriendRequestEdge
+
+type FriendRequestEdgeObject =
+  | FriendRequestEdgeFields
+  | { name: 'node', args?: [] | false, alias?: string  } 
+  | { name: 'cursor', args?: [] | false, alias?: string  } 
+
+type FriendRequestEdgeFields =
+  | 'node'
+  | 'cursor'
+
+
+
+  
+
+export interface FriendRequestEdgeFieldDetails {
+  node: {
+    type: 'FriendRequest'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"FriendRequestEdge">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequest> | prisma.FriendRequest
+  }
+  cursor: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
+// Types for AggregateFriendRequest
+
+type AggregateFriendRequestObject =
+  | AggregateFriendRequestFields
+  | { name: 'count', args?: [] | false, alias?: string  } 
+
+type AggregateFriendRequestFields =
+  | 'count'
+
+
+
+  
+
+export interface AggregateFriendRequestFieldDetails {
+  count: {
+    type: 'Int'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
 // Types for Mutation
 
 type MutationObject =
@@ -2070,6 +2395,12 @@ type MutationObject =
   | { name: 'upsertSubCategory', args?: MutationUpsertSubCategoryArgs[] | false, alias?: string  } 
   | { name: 'deleteSubCategory', args?: MutationDeleteSubCategoryArgs[] | false, alias?: string  } 
   | { name: 'deleteManySubCategories', args?: MutationDeleteManySubCategoriesArgs[] | false, alias?: string  } 
+  | { name: 'createFriendRequest', args?: MutationCreateFriendRequestArgs[] | false, alias?: string  } 
+  | { name: 'updateFriendRequest', args?: MutationUpdateFriendRequestArgs[] | false, alias?: string  } 
+  | { name: 'updateManyFriendRequests', args?: MutationUpdateManyFriendRequestsArgs[] | false, alias?: string  } 
+  | { name: 'upsertFriendRequest', args?: MutationUpsertFriendRequestArgs[] | false, alias?: string  } 
+  | { name: 'deleteFriendRequest', args?: MutationDeleteFriendRequestArgs[] | false, alias?: string  } 
+  | { name: 'deleteManyFriendRequests', args?: MutationDeleteManyFriendRequestsArgs[] | false, alias?: string  } 
 
 type MutationFields =
   | 'createUser'
@@ -2108,6 +2439,12 @@ type MutationFields =
   | 'upsertSubCategory'
   | 'deleteSubCategory'
   | 'deleteManySubCategories'
+  | 'createFriendRequest'
+  | 'updateFriendRequest'
+  | 'updateManyFriendRequests'
+  | 'upsertFriendRequest'
+  | 'deleteFriendRequest'
+  | 'deleteManyFriendRequests'
 
 
 type MutationCreateUserArgs =
@@ -2205,6 +2542,22 @@ type MutationUpsertSubCategoryArgs =
 type MutationDeleteSubCategoryArgs =
   | 'where'
 type MutationDeleteManySubCategoriesArgs =
+  | 'where'
+type MutationCreateFriendRequestArgs =
+  | 'data'
+type MutationUpdateFriendRequestArgs =
+  | 'data'
+  | 'where'
+type MutationUpdateManyFriendRequestsArgs =
+  | 'data'
+  | 'where'
+type MutationUpsertFriendRequestArgs =
+  | 'where'
+  | 'create'
+  | 'update'
+type MutationDeleteFriendRequestArgs =
+  | 'where'
+type MutationDeleteManyFriendRequestsArgs =
   | 'where'
   
 
@@ -2677,6 +3030,84 @@ export interface MutationFieldDetails {
       info?: GraphQLResolveInfo
     ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
   }
+  createFriendRequest: {
+    type: 'FriendRequest'
+    args: Record<MutationCreateFriendRequestArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: FriendRequestCreateInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequest> | prisma.FriendRequest
+  }
+  updateFriendRequest: {
+    type: 'FriendRequest'
+    args: Record<MutationUpdateFriendRequestArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: FriendRequestUpdateInput, where: FriendRequestWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequest | null> | prisma.FriendRequest | null
+  }
+  updateManyFriendRequests: {
+    type: 'BatchPayload'
+    args: Record<MutationUpdateManyFriendRequestsArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { data: FriendRequestUpdateManyMutationInput, where?: FriendRequestWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
+  }
+  upsertFriendRequest: {
+    type: 'FriendRequest'
+    args: Record<MutationUpsertFriendRequestArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where: FriendRequestWhereUniqueInput, create: FriendRequestCreateInput, update: FriendRequestUpdateInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequest> | prisma.FriendRequest
+  }
+  deleteFriendRequest: {
+    type: 'FriendRequest'
+    args: Record<MutationDeleteFriendRequestArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where: FriendRequestWhereUniqueInput }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequest | null> | prisma.FriendRequest | null
+  }
+  deleteManyFriendRequests: {
+    type: 'BatchPayload'
+    args: Record<MutationDeleteManyFriendRequestsArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"Mutation">,
+      args: { where?: FriendRequestWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.BatchPayload> | prisma.BatchPayload
+  }
 }
   
 
@@ -2715,6 +3146,7 @@ type SubscriptionObject =
   | { name: 'company', args?: SubscriptionCompanyArgs[] | false, alias?: string  } 
   | { name: 'category', args?: SubscriptionCategoryArgs[] | false, alias?: string  } 
   | { name: 'subCategory', args?: SubscriptionSubCategoryArgs[] | false, alias?: string  } 
+  | { name: 'friendRequest', args?: SubscriptionFriendRequestArgs[] | false, alias?: string  } 
 
 type SubscriptionFields =
   | 'user'
@@ -2723,6 +3155,7 @@ type SubscriptionFields =
   | 'company'
   | 'category'
   | 'subCategory'
+  | 'friendRequest'
 
 
 type SubscriptionUserArgs =
@@ -2736,6 +3169,8 @@ type SubscriptionCompanyArgs =
 type SubscriptionCategoryArgs =
   | 'where'
 type SubscriptionSubCategoryArgs =
+  | 'where'
+type SubscriptionFriendRequestArgs =
   | 'where'
   
 
@@ -2817,6 +3252,19 @@ export interface SubscriptionFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.SubCategorySubscriptionPayload | null> | prisma.SubCategorySubscriptionPayload | null
+  }
+  friendRequest: {
+    type: 'FriendRequestSubscriptionPayload'
+    args: Record<SubscriptionFriendRequestArgs, core.NexusArgDef<string>>
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"Subscription">,
+      args: { where?: FriendRequestSubscriptionWhereInput | null }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequestSubscriptionPayload | null> | prisma.FriendRequestSubscriptionPayload | null
   }
 }
   
@@ -3561,6 +4009,111 @@ export interface SubCategoryPreviousValuesFieldDetails {
 }
   
 
+// Types for FriendRequestSubscriptionPayload
+
+type FriendRequestSubscriptionPayloadObject =
+  | FriendRequestSubscriptionPayloadFields
+  | { name: 'mutation', args?: [] | false, alias?: string  } 
+  | { name: 'node', args?: [] | false, alias?: string  } 
+  | { name: 'updatedFields', args?: [] | false, alias?: string  } 
+  | { name: 'previousValues', args?: [] | false, alias?: string  } 
+
+type FriendRequestSubscriptionPayloadFields =
+  | 'mutation'
+  | 'node'
+  | 'updatedFields'
+  | 'previousValues'
+
+
+
+  
+
+export interface FriendRequestSubscriptionPayloadFieldDetails {
+  mutation: {
+    type: 'MutationType'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: (
+      root: core.RootValue<"FriendRequestSubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.MutationType> | prisma.MutationType
+  }
+  node: {
+    type: 'FriendRequest'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"FriendRequestSubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequest | null> | prisma.FriendRequest | null
+  }
+  updatedFields: {
+    type: 'String'
+    args: {}
+    description: string
+    list: true
+    nullable: false
+    resolve: undefined
+  }
+  previousValues: {
+    type: 'FriendRequestPreviousValues'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: (
+      root: core.RootValue<"FriendRequestSubscriptionPayload">,
+      args: {  }  ,
+      context: core.GetGen<"context">,
+      info?: GraphQLResolveInfo
+    ) => Promise<prisma.FriendRequestPreviousValues | null> | prisma.FriendRequestPreviousValues | null
+  }
+}
+  
+
+// Types for FriendRequestPreviousValues
+
+type FriendRequestPreviousValuesObject =
+  | FriendRequestPreviousValuesFields
+  | { name: 'id', args?: [] | false, alias?: string  } 
+  | { name: 'message', args?: [] | false, alias?: string  } 
+
+type FriendRequestPreviousValuesFields =
+  | 'id'
+  | 'message'
+
+
+
+  
+
+export interface FriendRequestPreviousValuesFieldDetails {
+  id: {
+    type: 'ID'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+  message: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: false
+    resolve: undefined
+  }
+}
+  
+
 
 export interface UserWhereUniqueInput {
   id?: string | null
@@ -3769,6 +4322,9 @@ export interface UserWhereInput {
   friends_every?: UserWhereInput | null
   friends_some?: UserWhereInput | null
   friends_none?: UserWhereInput | null
+  friendRequest_every?: FriendRequestWhereInput | null
+  friendRequest_some?: FriendRequestWhereInput | null
+  friendRequest_none?: FriendRequestWhereInput | null
   createdAt?: string | null
   createdAt_not?: string | null
   createdAt_in?: string[]
@@ -3869,6 +4425,9 @@ export type UserWhereInputInputObject =
   | { name: 'friends_every', alias?: string  } 
   | { name: 'friends_some', alias?: string  } 
   | { name: 'friends_none', alias?: string  } 
+  | { name: 'friendRequest_every', alias?: string  } 
+  | { name: 'friendRequest_some', alias?: string  } 
+  | { name: 'friendRequest_none', alias?: string  } 
   | { name: 'createdAt', alias?: string  } 
   | { name: 'createdAt_not', alias?: string  } 
   | { name: 'createdAt_in', alias?: string  } 
@@ -3885,6 +4444,85 @@ export type UserWhereInputInputObject =
   | { name: 'updatedAt_lte', alias?: string  } 
   | { name: 'updatedAt_gt', alias?: string  } 
   | { name: 'updatedAt_gte', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
+  
+export interface FriendRequestWhereInput {
+  id?: string | null
+  id_not?: string | null
+  id_in?: string[]
+  id_not_in?: string[]
+  id_lt?: string | null
+  id_lte?: string | null
+  id_gt?: string | null
+  id_gte?: string | null
+  id_contains?: string | null
+  id_not_contains?: string | null
+  id_starts_with?: string | null
+  id_not_starts_with?: string | null
+  id_ends_with?: string | null
+  id_not_ends_with?: string | null
+  sender_every?: UserWhereInput | null
+  sender_some?: UserWhereInput | null
+  sender_none?: UserWhereInput | null
+  receiver_every?: UserWhereInput | null
+  receiver_some?: UserWhereInput | null
+  receiver_none?: UserWhereInput | null
+  message?: string | null
+  message_not?: string | null
+  message_in?: string[]
+  message_not_in?: string[]
+  message_lt?: string | null
+  message_lte?: string | null
+  message_gt?: string | null
+  message_gte?: string | null
+  message_contains?: string | null
+  message_not_contains?: string | null
+  message_starts_with?: string | null
+  message_not_starts_with?: string | null
+  message_ends_with?: string | null
+  message_not_ends_with?: string | null
+  AND?: FriendRequestWhereInput[]
+  OR?: FriendRequestWhereInput[]
+  NOT?: FriendRequestWhereInput[]
+}
+export type FriendRequestWhereInputInputObject =
+  | Extract<keyof FriendRequestWhereInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'id_not', alias?: string  } 
+  | { name: 'id_in', alias?: string  } 
+  | { name: 'id_not_in', alias?: string  } 
+  | { name: 'id_lt', alias?: string  } 
+  | { name: 'id_lte', alias?: string  } 
+  | { name: 'id_gt', alias?: string  } 
+  | { name: 'id_gte', alias?: string  } 
+  | { name: 'id_contains', alias?: string  } 
+  | { name: 'id_not_contains', alias?: string  } 
+  | { name: 'id_starts_with', alias?: string  } 
+  | { name: 'id_not_starts_with', alias?: string  } 
+  | { name: 'id_ends_with', alias?: string  } 
+  | { name: 'id_not_ends_with', alias?: string  } 
+  | { name: 'sender_every', alias?: string  } 
+  | { name: 'sender_some', alias?: string  } 
+  | { name: 'sender_none', alias?: string  } 
+  | { name: 'receiver_every', alias?: string  } 
+  | { name: 'receiver_some', alias?: string  } 
+  | { name: 'receiver_none', alias?: string  } 
+  | { name: 'message', alias?: string  } 
+  | { name: 'message_not', alias?: string  } 
+  | { name: 'message_in', alias?: string  } 
+  | { name: 'message_not_in', alias?: string  } 
+  | { name: 'message_lt', alias?: string  } 
+  | { name: 'message_lte', alias?: string  } 
+  | { name: 'message_gt', alias?: string  } 
+  | { name: 'message_gte', alias?: string  } 
+  | { name: 'message_contains', alias?: string  } 
+  | { name: 'message_not_contains', alias?: string  } 
+  | { name: 'message_starts_with', alias?: string  } 
+  | { name: 'message_not_starts_with', alias?: string  } 
+  | { name: 'message_ends_with', alias?: string  } 
+  | { name: 'message_not_ends_with', alias?: string  } 
   | { name: 'AND', alias?: string  } 
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
@@ -4280,6 +4918,13 @@ export type SubCategoryWhereUniqueInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   
+export interface FriendRequestWhereUniqueInput {
+  id?: string | null
+}
+export type FriendRequestWhereUniqueInputInputObject =
+  | Extract<keyof FriendRequestWhereUniqueInput, string>
+  | { name: 'id', alias?: string  } 
+  
 export interface UserCreateInput {
   id?: string | null
   email?: string | null
@@ -4289,6 +4934,7 @@ export interface UserCreateInput {
   admin?: boolean
   checkins?: CheckinCreateManyWithoutAuthorInput | null
   friends?: UserCreateManyInput | null
+  friendRequest?: FriendRequestCreateManyWithoutReceiverInput | null
 }
 export type UserCreateInputInputObject =
   | Extract<keyof UserCreateInput, string>
@@ -4300,6 +4946,7 @@ export type UserCreateInputInputObject =
   | { name: 'admin', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
+  | { name: 'friendRequest', alias?: string  } 
   
 export interface CheckinCreateManyWithoutAuthorInput {
   create?: CheckinCreateWithoutAuthorInput[]
@@ -4468,6 +5115,7 @@ export interface UserCreateWithoutCheckinsInput {
   password?: string
   admin?: boolean
   friends?: UserCreateManyInput | null
+  friendRequest?: FriendRequestCreateManyWithoutReceiverInput | null
 }
 export type UserCreateWithoutCheckinsInputInputObject =
   | Extract<keyof UserCreateWithoutCheckinsInput, string>
@@ -4478,6 +5126,7 @@ export type UserCreateWithoutCheckinsInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'friends', alias?: string  } 
+  | { name: 'friendRequest', alias?: string  } 
   
 export interface UserCreateManyInput {
   create?: UserCreateInput[]
@@ -4487,6 +5136,26 @@ export type UserCreateManyInputInputObject =
   | Extract<keyof UserCreateManyInput, string>
   | { name: 'create', alias?: string  } 
   | { name: 'connect', alias?: string  } 
+  
+export interface FriendRequestCreateManyWithoutReceiverInput {
+  create?: FriendRequestCreateWithoutReceiverInput[]
+  connect?: FriendRequestWhereUniqueInput[]
+}
+export type FriendRequestCreateManyWithoutReceiverInputInputObject =
+  | Extract<keyof FriendRequestCreateManyWithoutReceiverInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  
+export interface FriendRequestCreateWithoutReceiverInput {
+  id?: string | null
+  sender?: UserCreateManyInput | null
+  message?: string
+}
+export type FriendRequestCreateWithoutReceiverInputInputObject =
+  | Extract<keyof FriendRequestCreateWithoutReceiverInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'sender', alias?: string  } 
+  | { name: 'message', alias?: string  } 
   
 export interface SubCategoryCreateManyWithoutProductsInput {
   create?: SubCategoryCreateWithoutProductsInput[]
@@ -4560,6 +5229,7 @@ export interface UserUpdateInput {
   admin?: boolean | null
   checkins?: CheckinUpdateManyWithoutAuthorInput | null
   friends?: UserUpdateManyInput | null
+  friendRequest?: FriendRequestUpdateManyWithoutReceiverInput | null
 }
 export type UserUpdateInputInputObject =
   | Extract<keyof UserUpdateInput, string>
@@ -4570,6 +5240,7 @@ export type UserUpdateInputInputObject =
   | { name: 'admin', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
+  | { name: 'friendRequest', alias?: string  } 
   
 export interface CheckinUpdateManyWithoutAuthorInput {
   create?: CheckinCreateWithoutAuthorInput[]
@@ -4963,6 +5634,7 @@ export interface UserUpdateWithoutCheckinsDataInput {
   password?: string | null
   admin?: boolean | null
   friends?: UserUpdateManyInput | null
+  friendRequest?: FriendRequestUpdateManyWithoutReceiverInput | null
 }
 export type UserUpdateWithoutCheckinsDataInputInputObject =
   | Extract<keyof UserUpdateWithoutCheckinsDataInput, string>
@@ -4972,6 +5644,7 @@ export type UserUpdateWithoutCheckinsDataInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'friends', alias?: string  } 
+  | { name: 'friendRequest', alias?: string  } 
   
 export interface UserUpdateManyInput {
   create?: UserCreateInput[]
@@ -5013,6 +5686,7 @@ export interface UserUpdateDataInput {
   admin?: boolean | null
   checkins?: CheckinUpdateManyWithoutAuthorInput | null
   friends?: UserUpdateManyInput | null
+  friendRequest?: FriendRequestUpdateManyWithoutReceiverInput | null
 }
 export type UserUpdateDataInputInputObject =
   | Extract<keyof UserUpdateDataInput, string>
@@ -5023,6 +5697,142 @@ export type UserUpdateDataInputInputObject =
   | { name: 'admin', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
+  | { name: 'friendRequest', alias?: string  } 
+  
+export interface FriendRequestUpdateManyWithoutReceiverInput {
+  create?: FriendRequestCreateWithoutReceiverInput[]
+  delete?: FriendRequestWhereUniqueInput[]
+  connect?: FriendRequestWhereUniqueInput[]
+  set?: FriendRequestWhereUniqueInput[]
+  disconnect?: FriendRequestWhereUniqueInput[]
+  update?: FriendRequestUpdateWithWhereUniqueWithoutReceiverInput[]
+  upsert?: FriendRequestUpsertWithWhereUniqueWithoutReceiverInput[]
+  deleteMany?: FriendRequestScalarWhereInput[]
+  updateMany?: FriendRequestUpdateManyWithWhereNestedInput[]
+}
+export type FriendRequestUpdateManyWithoutReceiverInputInputObject =
+  | Extract<keyof FriendRequestUpdateManyWithoutReceiverInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'delete', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  | { name: 'set', alias?: string  } 
+  | { name: 'disconnect', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'upsert', alias?: string  } 
+  | { name: 'deleteMany', alias?: string  } 
+  | { name: 'updateMany', alias?: string  } 
+  
+export interface FriendRequestUpdateWithWhereUniqueWithoutReceiverInput {
+  where?: FriendRequestWhereUniqueInput
+  data?: FriendRequestUpdateWithoutReceiverDataInput
+}
+export type FriendRequestUpdateWithWhereUniqueWithoutReceiverInputInputObject =
+  | Extract<keyof FriendRequestUpdateWithWhereUniqueWithoutReceiverInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'data', alias?: string  } 
+  
+export interface FriendRequestUpdateWithoutReceiverDataInput {
+  sender?: UserUpdateManyInput | null
+  message?: string | null
+}
+export type FriendRequestUpdateWithoutReceiverDataInputInputObject =
+  | Extract<keyof FriendRequestUpdateWithoutReceiverDataInput, string>
+  | { name: 'sender', alias?: string  } 
+  | { name: 'message', alias?: string  } 
+  
+export interface FriendRequestUpsertWithWhereUniqueWithoutReceiverInput {
+  where?: FriendRequestWhereUniqueInput
+  update?: FriendRequestUpdateWithoutReceiverDataInput
+  create?: FriendRequestCreateWithoutReceiverInput
+}
+export type FriendRequestUpsertWithWhereUniqueWithoutReceiverInputInputObject =
+  | Extract<keyof FriendRequestUpsertWithWhereUniqueWithoutReceiverInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'create', alias?: string  } 
+  
+export interface FriendRequestScalarWhereInput {
+  id?: string | null
+  id_not?: string | null
+  id_in?: string[]
+  id_not_in?: string[]
+  id_lt?: string | null
+  id_lte?: string | null
+  id_gt?: string | null
+  id_gte?: string | null
+  id_contains?: string | null
+  id_not_contains?: string | null
+  id_starts_with?: string | null
+  id_not_starts_with?: string | null
+  id_ends_with?: string | null
+  id_not_ends_with?: string | null
+  message?: string | null
+  message_not?: string | null
+  message_in?: string[]
+  message_not_in?: string[]
+  message_lt?: string | null
+  message_lte?: string | null
+  message_gt?: string | null
+  message_gte?: string | null
+  message_contains?: string | null
+  message_not_contains?: string | null
+  message_starts_with?: string | null
+  message_not_starts_with?: string | null
+  message_ends_with?: string | null
+  message_not_ends_with?: string | null
+  AND?: FriendRequestScalarWhereInput[]
+  OR?: FriendRequestScalarWhereInput[]
+  NOT?: FriendRequestScalarWhereInput[]
+}
+export type FriendRequestScalarWhereInputInputObject =
+  | Extract<keyof FriendRequestScalarWhereInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'id_not', alias?: string  } 
+  | { name: 'id_in', alias?: string  } 
+  | { name: 'id_not_in', alias?: string  } 
+  | { name: 'id_lt', alias?: string  } 
+  | { name: 'id_lte', alias?: string  } 
+  | { name: 'id_gt', alias?: string  } 
+  | { name: 'id_gte', alias?: string  } 
+  | { name: 'id_contains', alias?: string  } 
+  | { name: 'id_not_contains', alias?: string  } 
+  | { name: 'id_starts_with', alias?: string  } 
+  | { name: 'id_not_starts_with', alias?: string  } 
+  | { name: 'id_ends_with', alias?: string  } 
+  | { name: 'id_not_ends_with', alias?: string  } 
+  | { name: 'message', alias?: string  } 
+  | { name: 'message_not', alias?: string  } 
+  | { name: 'message_in', alias?: string  } 
+  | { name: 'message_not_in', alias?: string  } 
+  | { name: 'message_lt', alias?: string  } 
+  | { name: 'message_lte', alias?: string  } 
+  | { name: 'message_gt', alias?: string  } 
+  | { name: 'message_gte', alias?: string  } 
+  | { name: 'message_contains', alias?: string  } 
+  | { name: 'message_not_contains', alias?: string  } 
+  | { name: 'message_starts_with', alias?: string  } 
+  | { name: 'message_not_starts_with', alias?: string  } 
+  | { name: 'message_ends_with', alias?: string  } 
+  | { name: 'message_not_ends_with', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
+  
+export interface FriendRequestUpdateManyWithWhereNestedInput {
+  where?: FriendRequestScalarWhereInput
+  data?: FriendRequestUpdateManyDataInput
+}
+export type FriendRequestUpdateManyWithWhereNestedInputInputObject =
+  | Extract<keyof FriendRequestUpdateManyWithWhereNestedInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'data', alias?: string  } 
+  
+export interface FriendRequestUpdateManyDataInput {
+  message?: string | null
+}
+export type FriendRequestUpdateManyDataInputInputObject =
+  | Extract<keyof FriendRequestUpdateManyDataInput, string>
+  | { name: 'message', alias?: string  } 
   
 export interface UserUpsertWithWhereUniqueNestedInput {
   where?: UserWhereUniqueInput
@@ -6132,6 +6942,129 @@ export type SubCategoryUpdateManyMutationInputInputObject =
   | Extract<keyof SubCategoryUpdateManyMutationInput, string>
   | { name: 'name', alias?: string  } 
   
+export interface FriendRequestCreateInput {
+  id?: string | null
+  sender?: UserCreateManyInput | null
+  receiver?: UserCreateManyWithoutFriendRequestInput | null
+  message?: string
+}
+export type FriendRequestCreateInputInputObject =
+  | Extract<keyof FriendRequestCreateInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'sender', alias?: string  } 
+  | { name: 'receiver', alias?: string  } 
+  | { name: 'message', alias?: string  } 
+  
+export interface UserCreateManyWithoutFriendRequestInput {
+  create?: UserCreateWithoutFriendRequestInput[]
+  connect?: UserWhereUniqueInput[]
+}
+export type UserCreateManyWithoutFriendRequestInputInputObject =
+  | Extract<keyof UserCreateManyWithoutFriendRequestInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  
+export interface UserCreateWithoutFriendRequestInput {
+  id?: string | null
+  email?: string | null
+  firstName?: string
+  lastName?: string
+  password?: string
+  admin?: boolean
+  checkins?: CheckinCreateManyWithoutAuthorInput | null
+  friends?: UserCreateManyInput | null
+}
+export type UserCreateWithoutFriendRequestInputInputObject =
+  | Extract<keyof UserCreateWithoutFriendRequestInput, string>
+  | { name: 'id', alias?: string  } 
+  | { name: 'email', alias?: string  } 
+  | { name: 'firstName', alias?: string  } 
+  | { name: 'lastName', alias?: string  } 
+  | { name: 'password', alias?: string  } 
+  | { name: 'admin', alias?: string  } 
+  | { name: 'checkins', alias?: string  } 
+  | { name: 'friends', alias?: string  } 
+  
+export interface FriendRequestUpdateInput {
+  sender?: UserUpdateManyInput | null
+  receiver?: UserUpdateManyWithoutFriendRequestInput | null
+  message?: string | null
+}
+export type FriendRequestUpdateInputInputObject =
+  | Extract<keyof FriendRequestUpdateInput, string>
+  | { name: 'sender', alias?: string  } 
+  | { name: 'receiver', alias?: string  } 
+  | { name: 'message', alias?: string  } 
+  
+export interface UserUpdateManyWithoutFriendRequestInput {
+  create?: UserCreateWithoutFriendRequestInput[]
+  delete?: UserWhereUniqueInput[]
+  connect?: UserWhereUniqueInput[]
+  set?: UserWhereUniqueInput[]
+  disconnect?: UserWhereUniqueInput[]
+  update?: UserUpdateWithWhereUniqueWithoutFriendRequestInput[]
+  upsert?: UserUpsertWithWhereUniqueWithoutFriendRequestInput[]
+  deleteMany?: UserScalarWhereInput[]
+  updateMany?: UserUpdateManyWithWhereNestedInput[]
+}
+export type UserUpdateManyWithoutFriendRequestInputInputObject =
+  | Extract<keyof UserUpdateManyWithoutFriendRequestInput, string>
+  | { name: 'create', alias?: string  } 
+  | { name: 'delete', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
+  | { name: 'set', alias?: string  } 
+  | { name: 'disconnect', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'upsert', alias?: string  } 
+  | { name: 'deleteMany', alias?: string  } 
+  | { name: 'updateMany', alias?: string  } 
+  
+export interface UserUpdateWithWhereUniqueWithoutFriendRequestInput {
+  where?: UserWhereUniqueInput
+  data?: UserUpdateWithoutFriendRequestDataInput
+}
+export type UserUpdateWithWhereUniqueWithoutFriendRequestInputInputObject =
+  | Extract<keyof UserUpdateWithWhereUniqueWithoutFriendRequestInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'data', alias?: string  } 
+  
+export interface UserUpdateWithoutFriendRequestDataInput {
+  email?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  password?: string | null
+  admin?: boolean | null
+  checkins?: CheckinUpdateManyWithoutAuthorInput | null
+  friends?: UserUpdateManyInput | null
+}
+export type UserUpdateWithoutFriendRequestDataInputInputObject =
+  | Extract<keyof UserUpdateWithoutFriendRequestDataInput, string>
+  | { name: 'email', alias?: string  } 
+  | { name: 'firstName', alias?: string  } 
+  | { name: 'lastName', alias?: string  } 
+  | { name: 'password', alias?: string  } 
+  | { name: 'admin', alias?: string  } 
+  | { name: 'checkins', alias?: string  } 
+  | { name: 'friends', alias?: string  } 
+  
+export interface UserUpsertWithWhereUniqueWithoutFriendRequestInput {
+  where?: UserWhereUniqueInput
+  update?: UserUpdateWithoutFriendRequestDataInput
+  create?: UserCreateWithoutFriendRequestInput
+}
+export type UserUpsertWithWhereUniqueWithoutFriendRequestInputInputObject =
+  | Extract<keyof UserUpsertWithWhereUniqueWithoutFriendRequestInput, string>
+  | { name: 'where', alias?: string  } 
+  | { name: 'update', alias?: string  } 
+  | { name: 'create', alias?: string  } 
+  
+export interface FriendRequestUpdateManyMutationInput {
+  message?: string | null
+}
+export type FriendRequestUpdateManyMutationInputInputObject =
+  | Extract<keyof FriendRequestUpdateManyMutationInput, string>
+  | { name: 'message', alias?: string  } 
+  
 export interface UserSubscriptionWhereInput {
   mutation_in?: prisma.MutationType[]
   updatedFields_contains?: string | null
@@ -6258,6 +7191,27 @@ export type SubCategorySubscriptionWhereInputInputObject =
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
   
+export interface FriendRequestSubscriptionWhereInput {
+  mutation_in?: prisma.MutationType[]
+  updatedFields_contains?: string | null
+  updatedFields_contains_every?: string[]
+  updatedFields_contains_some?: string[]
+  node?: FriendRequestWhereInput | null
+  AND?: FriendRequestSubscriptionWhereInput[]
+  OR?: FriendRequestSubscriptionWhereInput[]
+  NOT?: FriendRequestSubscriptionWhereInput[]
+}
+export type FriendRequestSubscriptionWhereInputInputObject =
+  | Extract<keyof FriendRequestSubscriptionWhereInput, string>
+  | { name: 'mutation_in', alias?: string  } 
+  | { name: 'updatedFields_contains', alias?: string  } 
+  | { name: 'updatedFields_contains_every', alias?: string  } 
+  | { name: 'updatedFields_contains_some', alias?: string  } 
+  | { name: 'node', alias?: string  } 
+  | { name: 'AND', alias?: string  } 
+  | { name: 'OR', alias?: string  } 
+  | { name: 'NOT', alias?: string  } 
+  
 
 export type CheckinOrderByInputValues =
   | 'id_ASC'
@@ -6324,6 +7278,16 @@ export type UserOrderByInputValues =
   | 'password_DESC'
   | 'admin_ASC'
   | 'admin_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC'
+  
+export type FriendRequestOrderByInputValues =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'message_ASC'
+  | 'message_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'

@@ -119,6 +119,22 @@ export const Mutation = mutationType({
             },
         });
 
+        t.field('addFriend', {
+            type: 'User',
+            args: {
+                id: idArg(),
+                friendId: idArg(),
+            },
+            resolve: async (_, { id, friendId }) => {
+                return await prisma.updateUser({
+                    where: { id },
+                    data: {
+                        friends: { connect: { id: friendId } },
+                    },
+                });
+            },
+        });
+
         t.field('updateCheckin', {
             type: 'Checkin',
             args: {
@@ -181,6 +197,17 @@ export const Mutation = mutationType({
             },
         });
 
+        t.field('deleteFriendRequest', {
+            type: 'FriendRequest',
+            nullable: true,
+            args: {
+                id: idArg(),
+            },
+            resolve: (parent, { id }, ctx) => {
+                return ctx.prisma.deleteFriendRequest({ id });
+            },
+        });
+
         t.field('createCheckin', {
             type: 'Checkin',
             args: {
@@ -195,6 +222,22 @@ export const Mutation = mutationType({
                     comment,
                     product: { connect: { id: productId } },
                     author: { connect: { id: authorId } },
+                });
+            },
+        });
+
+        t.field('createFriendRequest', {
+            type: 'FriendRequest',
+            args: {
+                receiverId: idArg({ nullable: true }),
+                senderId: idArg({ nullable: true }),
+                message: stringArg(),
+            },
+            resolve: (_, { receiverId, senderId, message }, ctx) => {
+                return ctx.prisma.createFriendRequest({
+                    receiver: { connect: { id: receiverId } },
+                    sender: { connect: { id: senderId } },
+                    message,
                 });
             },
         });

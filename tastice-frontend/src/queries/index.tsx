@@ -79,6 +79,35 @@ export const CREATE_CHECKIN = gql`
     }
 `;
 
+export const CREATE_FRIENDREQUEST = gql`
+    mutation createFriendRequest($senderId: ID!, $receiverId: ID!, $message: String!) {
+        createFriendRequest(senderId: $senderId, receiverId: $receiverId, message: $message) {
+            receiver {
+                id
+                firstName
+                lastName
+            }
+            sender {
+                id
+                firstName
+                lastName
+            }
+        }
+    }
+`;
+
+export const ADD_FRIEND = gql`
+    mutation addFriend($id: ID!, $friendId: ID!) {
+        addFriend(id: $id, friendId: $friendId) {
+            friends {
+                id
+                firstName
+                lastName
+            }
+        }
+    }
+`;
+
 export const CREATE_SUBCATEGORY = gql`
     mutation createSubCategory($categoryId: ID!, $name: String!) {
         createSubCategory(categoryId: $categoryId, name: $name) {
@@ -250,6 +279,14 @@ export const DELETE_PRODUCT = gql`
             company {
                 name
             }
+        }
+    }
+`;
+
+export const DELETE_FRIENDREQUEST = gql`
+    mutation deleteFriendRequest($id: ID!) {
+        deleteFriendRequest(id: $id) {
+            id
         }
     }
 `;

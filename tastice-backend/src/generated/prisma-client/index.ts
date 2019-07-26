@@ -19,6 +19,7 @@ export interface Exists {
   category: (where?: CategoryWhereInput) => Promise<boolean>;
   checkin: (where?: CheckinWhereInput) => Promise<boolean>;
   company: (where?: CompanyWhereInput) => Promise<boolean>;
+  friendRequest: (where?: FriendRequestWhereInput) => Promise<boolean>;
   product: (where?: ProductWhereInput) => Promise<boolean>;
   subCategory: (where?: SubCategoryWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
@@ -100,6 +101,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => CompanyConnectionPromise;
+  friendRequest: (
+    where: FriendRequestWhereUniqueInput
+  ) => FriendRequestNullablePromise;
+  friendRequests: (args?: {
+    where?: FriendRequestWhereInput;
+    orderBy?: FriendRequestOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<FriendRequest>;
+  friendRequestsConnection: (args?: {
+    where?: FriendRequestWhereInput;
+    orderBy?: FriendRequestOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FriendRequestConnectionPromise;
   product: (where: ProductWhereUniqueInput) => ProductNullablePromise;
   products: (args?: {
     where?: ProductWhereInput;
@@ -213,6 +235,26 @@ export interface Prisma {
   }) => CompanyPromise;
   deleteCompany: (where: CompanyWhereUniqueInput) => CompanyPromise;
   deleteManyCompanies: (where?: CompanyWhereInput) => BatchPayloadPromise;
+  createFriendRequest: (data: FriendRequestCreateInput) => FriendRequestPromise;
+  updateFriendRequest: (args: {
+    data: FriendRequestUpdateInput;
+    where: FriendRequestWhereUniqueInput;
+  }) => FriendRequestPromise;
+  updateManyFriendRequests: (args: {
+    data: FriendRequestUpdateManyMutationInput;
+    where?: FriendRequestWhereInput;
+  }) => BatchPayloadPromise;
+  upsertFriendRequest: (args: {
+    where: FriendRequestWhereUniqueInput;
+    create: FriendRequestCreateInput;
+    update: FriendRequestUpdateInput;
+  }) => FriendRequestPromise;
+  deleteFriendRequest: (
+    where: FriendRequestWhereUniqueInput
+  ) => FriendRequestPromise;
+  deleteManyFriendRequests: (
+    where?: FriendRequestWhereInput
+  ) => BatchPayloadPromise;
   createProduct: (data: ProductCreateInput) => ProductPromise;
   updateProduct: (args: {
     data: ProductUpdateInput;
@@ -281,6 +323,9 @@ export interface Subscription {
   company: (
     where?: CompanySubscriptionWhereInput
   ) => CompanySubscriptionPayloadSubscription;
+  friendRequest: (
+    where?: FriendRequestSubscriptionWhereInput
+  ) => FriendRequestSubscriptionPayloadSubscription;
   product: (
     where?: ProductSubscriptionWhereInput
   ) => ProductSubscriptionPayloadSubscription;
@@ -351,6 +396,12 @@ export type UserOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
+
+export type FriendRequestOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "message_ASC"
+  | "message_DESC";
 
 export type CategoryOrderByInput =
   | "id_ASC"
@@ -681,6 +732,9 @@ export interface UserWhereInput {
   friends_every?: Maybe<UserWhereInput>;
   friends_some?: Maybe<UserWhereInput>;
   friends_none?: Maybe<UserWhereInput>;
+  friendRequest_every?: Maybe<FriendRequestWhereInput>;
+  friendRequest_some?: Maybe<FriendRequestWhereInput>;
+  friendRequest_none?: Maybe<FriendRequestWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -702,6 +756,46 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
+export interface FriendRequestWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  sender_every?: Maybe<UserWhereInput>;
+  sender_some?: Maybe<UserWhereInput>;
+  sender_none?: Maybe<UserWhereInput>;
+  receiver_every?: Maybe<UserWhereInput>;
+  receiver_some?: Maybe<UserWhereInput>;
+  receiver_none?: Maybe<UserWhereInput>;
+  message?: Maybe<String>;
+  message_not?: Maybe<String>;
+  message_in?: Maybe<String[] | String>;
+  message_not_in?: Maybe<String[] | String>;
+  message_lt?: Maybe<String>;
+  message_lte?: Maybe<String>;
+  message_gt?: Maybe<String>;
+  message_gte?: Maybe<String>;
+  message_contains?: Maybe<String>;
+  message_not_contains?: Maybe<String>;
+  message_starts_with?: Maybe<String>;
+  message_not_starts_with?: Maybe<String>;
+  message_ends_with?: Maybe<String>;
+  message_not_ends_with?: Maybe<String>;
+  AND?: Maybe<FriendRequestWhereInput[] | FriendRequestWhereInput>;
+  OR?: Maybe<FriendRequestWhereInput[] | FriendRequestWhereInput>;
+  NOT?: Maybe<FriendRequestWhereInput[] | FriendRequestWhereInput>;
+}
+
 export type CheckinWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
@@ -709,6 +803,10 @@ export type CheckinWhereUniqueInput = AtLeastOne<{
 export type CompanyWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   name?: Maybe<String>;
+}>;
+
+export type FriendRequestWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
 }>;
 
 export type ProductWhereUniqueInput = AtLeastOne<{
@@ -801,6 +899,7 @@ export interface UserCreateWithoutCheckinsInput {
   password: String;
   admin: Boolean;
   friends?: Maybe<UserCreateManyInput>;
+  friendRequest?: Maybe<FriendRequestCreateManyWithoutReceiverInput>;
 }
 
 export interface UserCreateManyInput {
@@ -817,6 +916,7 @@ export interface UserCreateInput {
   admin: Boolean;
   checkins?: Maybe<CheckinCreateManyWithoutAuthorInput>;
   friends?: Maybe<UserCreateManyInput>;
+  friendRequest?: Maybe<FriendRequestCreateManyWithoutReceiverInput>;
 }
 
 export interface CheckinCreateManyWithoutAuthorInput {
@@ -897,6 +997,22 @@ export interface ProductCreateWithoutCategoryInput {
   company?: Maybe<CompanyCreateManyWithoutProductsInput>;
   checkins?: Maybe<CheckinCreateManyWithoutProductInput>;
   subCategory?: Maybe<SubCategoryCreateManyWithoutProductsInput>;
+}
+
+export interface FriendRequestCreateManyWithoutReceiverInput {
+  create?: Maybe<
+    | FriendRequestCreateWithoutReceiverInput[]
+    | FriendRequestCreateWithoutReceiverInput
+  >;
+  connect?: Maybe<
+    FriendRequestWhereUniqueInput[] | FriendRequestWhereUniqueInput
+  >;
+}
+
+export interface FriendRequestCreateWithoutReceiverInput {
+  id?: Maybe<ID_Input>;
+  sender?: Maybe<UserCreateManyInput>;
+  message: String;
 }
 
 export interface CategoryUpdateInput {
@@ -1108,6 +1224,7 @@ export interface UserUpdateWithoutCheckinsDataInput {
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
   friends?: Maybe<UserUpdateManyInput>;
+  friendRequest?: Maybe<FriendRequestUpdateManyWithoutReceiverInput>;
 }
 
 export interface UserUpdateManyInput {
@@ -1143,6 +1260,7 @@ export interface UserUpdateDataInput {
   admin?: Maybe<Boolean>;
   checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
   friends?: Maybe<UserUpdateManyInput>;
+  friendRequest?: Maybe<FriendRequestUpdateManyWithoutReceiverInput>;
 }
 
 export interface CheckinUpdateManyWithoutAuthorInput {
@@ -1558,6 +1676,97 @@ export interface CheckinUpdateManyDataInput {
   comment?: Maybe<String>;
 }
 
+export interface FriendRequestUpdateManyWithoutReceiverInput {
+  create?: Maybe<
+    | FriendRequestCreateWithoutReceiverInput[]
+    | FriendRequestCreateWithoutReceiverInput
+  >;
+  delete?: Maybe<
+    FriendRequestWhereUniqueInput[] | FriendRequestWhereUniqueInput
+  >;
+  connect?: Maybe<
+    FriendRequestWhereUniqueInput[] | FriendRequestWhereUniqueInput
+  >;
+  set?: Maybe<FriendRequestWhereUniqueInput[] | FriendRequestWhereUniqueInput>;
+  disconnect?: Maybe<
+    FriendRequestWhereUniqueInput[] | FriendRequestWhereUniqueInput
+  >;
+  update?: Maybe<
+    | FriendRequestUpdateWithWhereUniqueWithoutReceiverInput[]
+    | FriendRequestUpdateWithWhereUniqueWithoutReceiverInput
+  >;
+  upsert?: Maybe<
+    | FriendRequestUpsertWithWhereUniqueWithoutReceiverInput[]
+    | FriendRequestUpsertWithWhereUniqueWithoutReceiverInput
+  >;
+  deleteMany?: Maybe<
+    FriendRequestScalarWhereInput[] | FriendRequestScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | FriendRequestUpdateManyWithWhereNestedInput[]
+    | FriendRequestUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface FriendRequestUpdateWithWhereUniqueWithoutReceiverInput {
+  where: FriendRequestWhereUniqueInput;
+  data: FriendRequestUpdateWithoutReceiverDataInput;
+}
+
+export interface FriendRequestUpdateWithoutReceiverDataInput {
+  sender?: Maybe<UserUpdateManyInput>;
+  message?: Maybe<String>;
+}
+
+export interface FriendRequestUpsertWithWhereUniqueWithoutReceiverInput {
+  where: FriendRequestWhereUniqueInput;
+  update: FriendRequestUpdateWithoutReceiverDataInput;
+  create: FriendRequestCreateWithoutReceiverInput;
+}
+
+export interface FriendRequestScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  message?: Maybe<String>;
+  message_not?: Maybe<String>;
+  message_in?: Maybe<String[] | String>;
+  message_not_in?: Maybe<String[] | String>;
+  message_lt?: Maybe<String>;
+  message_lte?: Maybe<String>;
+  message_gt?: Maybe<String>;
+  message_gte?: Maybe<String>;
+  message_contains?: Maybe<String>;
+  message_not_contains?: Maybe<String>;
+  message_starts_with?: Maybe<String>;
+  message_not_starts_with?: Maybe<String>;
+  message_ends_with?: Maybe<String>;
+  message_not_ends_with?: Maybe<String>;
+  AND?: Maybe<FriendRequestScalarWhereInput[] | FriendRequestScalarWhereInput>;
+  OR?: Maybe<FriendRequestScalarWhereInput[] | FriendRequestScalarWhereInput>;
+  NOT?: Maybe<FriendRequestScalarWhereInput[] | FriendRequestScalarWhereInput>;
+}
+
+export interface FriendRequestUpdateManyWithWhereNestedInput {
+  where: FriendRequestScalarWhereInput;
+  data: FriendRequestUpdateManyDataInput;
+}
+
+export interface FriendRequestUpdateManyDataInput {
+  message?: Maybe<String>;
+}
+
 export interface UserUpsertWithWhereUniqueNestedInput {
   where: UserWhereUniqueInput;
   update: UserUpdateDataInput;
@@ -1789,6 +1998,84 @@ export interface CompanyUpdateManyMutationInput {
   name?: Maybe<String>;
 }
 
+export interface FriendRequestCreateInput {
+  id?: Maybe<ID_Input>;
+  sender?: Maybe<UserCreateManyInput>;
+  receiver?: Maybe<UserCreateManyWithoutFriendRequestInput>;
+  message: String;
+}
+
+export interface UserCreateManyWithoutFriendRequestInput {
+  create?: Maybe<
+    UserCreateWithoutFriendRequestInput[] | UserCreateWithoutFriendRequestInput
+  >;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutFriendRequestInput {
+  id?: Maybe<ID_Input>;
+  email?: Maybe<String>;
+  firstName: String;
+  lastName: String;
+  password: String;
+  admin: Boolean;
+  checkins?: Maybe<CheckinCreateManyWithoutAuthorInput>;
+  friends?: Maybe<UserCreateManyInput>;
+}
+
+export interface FriendRequestUpdateInput {
+  sender?: Maybe<UserUpdateManyInput>;
+  receiver?: Maybe<UserUpdateManyWithoutFriendRequestInput>;
+  message?: Maybe<String>;
+}
+
+export interface UserUpdateManyWithoutFriendRequestInput {
+  create?: Maybe<
+    UserCreateWithoutFriendRequestInput[] | UserCreateWithoutFriendRequestInput
+  >;
+  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  update?: Maybe<
+    | UserUpdateWithWhereUniqueWithoutFriendRequestInput[]
+    | UserUpdateWithWhereUniqueWithoutFriendRequestInput
+  >;
+  upsert?: Maybe<
+    | UserUpsertWithWhereUniqueWithoutFriendRequestInput[]
+    | UserUpsertWithWhereUniqueWithoutFriendRequestInput
+  >;
+  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  updateMany?: Maybe<
+    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserUpdateWithWhereUniqueWithoutFriendRequestInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutFriendRequestDataInput;
+}
+
+export interface UserUpdateWithoutFriendRequestDataInput {
+  email?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  password?: Maybe<String>;
+  admin?: Maybe<Boolean>;
+  checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
+  friends?: Maybe<UserUpdateManyInput>;
+}
+
+export interface UserUpsertWithWhereUniqueWithoutFriendRequestInput {
+  where: UserWhereUniqueInput;
+  update: UserUpdateWithoutFriendRequestDataInput;
+  create: UserCreateWithoutFriendRequestInput;
+}
+
+export interface FriendRequestUpdateManyMutationInput {
+  message?: Maybe<String>;
+}
+
 export interface ProductCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
@@ -1835,6 +2122,7 @@ export interface UserUpdateInput {
   admin?: Maybe<Boolean>;
   checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
   friends?: Maybe<UserUpdateManyInput>;
+  friendRequest?: Maybe<FriendRequestUpdateManyWithoutReceiverInput>;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -1880,6 +2168,23 @@ export interface CompanySubscriptionWhereInput {
   AND?: Maybe<CompanySubscriptionWhereInput[] | CompanySubscriptionWhereInput>;
   OR?: Maybe<CompanySubscriptionWhereInput[] | CompanySubscriptionWhereInput>;
   NOT?: Maybe<CompanySubscriptionWhereInput[] | CompanySubscriptionWhereInput>;
+}
+
+export interface FriendRequestSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<FriendRequestWhereInput>;
+  AND?: Maybe<
+    FriendRequestSubscriptionWhereInput[] | FriendRequestSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    FriendRequestSubscriptionWhereInput[] | FriendRequestSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    FriendRequestSubscriptionWhereInput[] | FriendRequestSubscriptionWhereInput
+  >;
 }
 
 export interface ProductSubscriptionWhereInput {
@@ -2326,6 +2631,15 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  friendRequest: <T = FragmentableArray<FriendRequest>>(args?: {
+    where?: FriendRequestWhereInput;
+    orderBy?: FriendRequestOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2351,6 +2665,17 @@ export interface UserSubscription
   friends: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
     where?: UserWhereInput;
     orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  friendRequest: <
+    T = Promise<AsyncIterator<FriendRequestSubscription>>
+  >(args?: {
+    where?: FriendRequestWhereInput;
+    orderBy?: FriendRequestOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -2388,8 +2713,97 @@ export interface UserNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  friendRequest: <T = FragmentableArray<FriendRequest>>(args?: {
+    where?: FriendRequestWhereInput;
+    orderBy?: FriendRequestOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface FriendRequest {
+  id: ID_Output;
+  message: String;
+}
+
+export interface FriendRequestPromise
+  extends Promise<FriendRequest>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  sender: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  receiver: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  message: () => Promise<String>;
+}
+
+export interface FriendRequestSubscription
+  extends Promise<AsyncIterator<FriendRequest>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  sender: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  receiver: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  message: () => Promise<AsyncIterator<String>>;
+}
+
+export interface FriendRequestNullablePromise
+  extends Promise<FriendRequest | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  sender: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  receiver: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  message: () => Promise<String>;
 }
 
 export interface CategoryConnection {
@@ -2575,6 +2989,62 @@ export interface AggregateCompanyPromise
 
 export interface AggregateCompanySubscription
   extends Promise<AsyncIterator<AggregateCompany>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface FriendRequestConnection {
+  pageInfo: PageInfo;
+  edges: FriendRequestEdge[];
+}
+
+export interface FriendRequestConnectionPromise
+  extends Promise<FriendRequestConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<FriendRequestEdge>>() => T;
+  aggregate: <T = AggregateFriendRequestPromise>() => T;
+}
+
+export interface FriendRequestConnectionSubscription
+  extends Promise<AsyncIterator<FriendRequestConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<FriendRequestEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateFriendRequestSubscription>() => T;
+}
+
+export interface FriendRequestEdge {
+  node: FriendRequest;
+  cursor: String;
+}
+
+export interface FriendRequestEdgePromise
+  extends Promise<FriendRequestEdge>,
+    Fragmentable {
+  node: <T = FriendRequestPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface FriendRequestEdgeSubscription
+  extends Promise<AsyncIterator<FriendRequestEdge>>,
+    Fragmentable {
+  node: <T = FriendRequestSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateFriendRequest {
+  count: Int;
+}
+
+export interface AggregateFriendRequestPromise
+  extends Promise<AggregateFriendRequest>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateFriendRequestSubscription
+  extends Promise<AsyncIterator<AggregateFriendRequest>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -2900,6 +3370,50 @@ export interface CompanyPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
+export interface FriendRequestSubscriptionPayload {
+  mutation: MutationType;
+  node: FriendRequest;
+  updatedFields: String[];
+  previousValues: FriendRequestPreviousValues;
+}
+
+export interface FriendRequestSubscriptionPayloadPromise
+  extends Promise<FriendRequestSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = FriendRequestPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = FriendRequestPreviousValuesPromise>() => T;
+}
+
+export interface FriendRequestSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<FriendRequestSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = FriendRequestSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = FriendRequestPreviousValuesSubscription>() => T;
+}
+
+export interface FriendRequestPreviousValues {
+  id: ID_Output;
+  message: String;
+}
+
+export interface FriendRequestPreviousValuesPromise
+  extends Promise<FriendRequestPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  message: () => Promise<String>;
+}
+
+export interface FriendRequestPreviousValuesSubscription
+  extends Promise<AsyncIterator<FriendRequestPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  message: () => Promise<AsyncIterator<String>>;
+}
+
 export interface ProductSubscriptionPayload {
   mutation: MutationType;
   node: Product;
@@ -3116,6 +3630,10 @@ export const models: Model[] = [
   },
   {
     name: "SubCategory",
+    embedded: false
+  },
+  {
+    name: "FriendRequest",
     embedded: false
   }
 ];

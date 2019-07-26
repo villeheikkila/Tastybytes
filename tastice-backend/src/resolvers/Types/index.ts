@@ -11,7 +11,7 @@ export const SubCategory = prismaObjectType({
 export const User = prismaObjectType({
     name: 'User',
     definition(t) {
-        t.prismaFields(['id', 'firstName', 'lastName', 'email', 'admin', 'checkins']);
+        t.prismaFields(['id', 'firstName', 'lastName', 'email', 'admin', 'checkins', 'friends']);
     },
 });
 
@@ -46,6 +46,13 @@ export const AuthPayload = objectType({
 
 export const Checkin = prismaObjectType({
     name: 'Checkin',
+    definition(t) {
+        t.prismaFields(['*']);
+    },
+});
+
+export const FriendRequest = prismaObjectType({
+    name: 'FriendRequest',
     definition(t) {
         t.prismaFields(['*']);
     },

@@ -204,14 +204,64 @@ input CompanyWhereInput {
 
 scalar DateTime
 
+type FriendRequest {
+  id: ID!
+  message: String!
+  receiver(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): [User!]
+  sender(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): [User!]
+}
+
+input FriendRequestWhereInput {
+  AND: [FriendRequestWhereInput!]
+  id: ID
+  id_contains: ID
+  id_ends_with: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_contains: ID
+  id_not_ends_with: ID
+  id_not_in: [ID!]
+  id_not_starts_with: ID
+  id_starts_with: ID
+  message: String
+  message_contains: String
+  message_ends_with: String
+  message_gt: String
+  message_gte: String
+  message_in: [String!]
+  message_lt: String
+  message_lte: String
+  message_not: String
+  message_not_contains: String
+  message_not_ends_with: String
+  message_not_in: [String!]
+  message_not_starts_with: String
+  message_starts_with: String
+  NOT: [FriendRequestWhereInput!]
+  OR: [FriendRequestWhereInput!]
+  receiver_every: UserWhereInput
+  receiver_none: UserWhereInput
+  receiver_some: UserWhereInput
+  sender_every: UserWhereInput
+  sender_none: UserWhereInput
+  sender_some: UserWhereInput
+}
+
 type Mutation {
+  addFriend(friendId: ID, id: ID): User
   addProduct(categoryId: ID, company: String, name: String, subCategories: [String!]): Product
   createCategory(name: String): Category
   createCheckin(authorId: ID, comment: String, productId: ID, rating: Int): Checkin
   createCompany(name: String): Company
+  createFriendRequest(message: String, receiverId: ID, senderId: ID): FriendRequest
   createSubCategory(categoryId: ID, name: String): SubCategory
   deleteCategory(id: ID): Category
   deleteCheckin(id: ID): Checkin
+  deleteFriendRequest(id: ID): FriendRequest
   deleteProduct(id: ID): Product
   deleteUser(id: ID): User
   login(email: String, password: String): AuthPayload
@@ -331,6 +381,7 @@ type Query {
   checkins: [Checkin!]
   companies: [Company!]
   company(id: ID): [Company!]
+  friendRequests: [FriendRequest!]
   me: User
   product(id: ID): [Product!]
   products: [Product!]
@@ -408,8 +459,28 @@ type User {
   checkins(after: String, before: String, first: Int, last: Int, orderBy: CheckinOrderByInput, skip: Int, where: CheckinWhereInput): [Checkin!]
   email: String
   firstName: String!
+  friends(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): [User!]
   id: ID!
   lastName: String!
+}
+
+enum UserOrderByInput {
+  admin_ASC
+  admin_DESC
+  createdAt_ASC
+  createdAt_DESC
+  email_ASC
+  email_DESC
+  firstName_ASC
+  firstName_DESC
+  id_ASC
+  id_DESC
+  lastName_ASC
+  lastName_DESC
+  password_ASC
+  password_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
@@ -473,6 +544,9 @@ input UserWhereInput {
   firstName_not_in: [String!]
   firstName_not_starts_with: String
   firstName_starts_with: String
+  friendRequest_every: FriendRequestWhereInput
+  friendRequest_none: FriendRequestWhereInput
+  friendRequest_some: FriendRequestWhereInput
   friends_every: UserWhereInput
   friends_none: UserWhereInput
   friends_some: UserWhereInput

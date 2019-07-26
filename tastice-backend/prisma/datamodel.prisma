@@ -7,6 +7,7 @@ type User {
   admin: Boolean!
   checkins: [Checkin!]! @relation(name: "CheckInAuthor", onDelete: CASCADE)
   friends: [User!]!
+  friendRequest: [FriendRequest] @relation(name: "FriendRequestReceiver" onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   }
@@ -51,4 +52,11 @@ type SubCategory {
     category: Category!  
     name: String! @unique
     products: [Product]
+}
+
+type FriendRequest {
+    id: ID! @id
+    sender: [User!]! @relation(name: "FriendRequestSender")
+    receiver: [User!]! @relation(name: "FriendRequestReceiver")
+    message: String!
 }

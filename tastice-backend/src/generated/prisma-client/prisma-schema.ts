@@ -14,6 +14,10 @@ type AggregateCompany {
   count: Int!
 }
 
+type AggregateFriendRequest {
+  count: Int!
+}
+
 type AggregateProduct {
   count: Int!
 }
@@ -730,6 +734,197 @@ input CompanyWhereUniqueInput {
 
 scalar DateTime
 
+type FriendRequest {
+  id: ID!
+  sender(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  receiver(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  message: String!
+}
+
+type FriendRequestConnection {
+  pageInfo: PageInfo!
+  edges: [FriendRequestEdge]!
+  aggregate: AggregateFriendRequest!
+}
+
+input FriendRequestCreateInput {
+  id: ID
+  sender: UserCreateManyInput
+  receiver: UserCreateManyWithoutFriendRequestInput
+  message: String!
+}
+
+input FriendRequestCreateManyWithoutReceiverInput {
+  create: [FriendRequestCreateWithoutReceiverInput!]
+  connect: [FriendRequestWhereUniqueInput!]
+}
+
+input FriendRequestCreateWithoutReceiverInput {
+  id: ID
+  sender: UserCreateManyInput
+  message: String!
+}
+
+type FriendRequestEdge {
+  node: FriendRequest!
+  cursor: String!
+}
+
+enum FriendRequestOrderByInput {
+  id_ASC
+  id_DESC
+  message_ASC
+  message_DESC
+}
+
+type FriendRequestPreviousValues {
+  id: ID!
+  message: String!
+}
+
+input FriendRequestScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  message: String
+  message_not: String
+  message_in: [String!]
+  message_not_in: [String!]
+  message_lt: String
+  message_lte: String
+  message_gt: String
+  message_gte: String
+  message_contains: String
+  message_not_contains: String
+  message_starts_with: String
+  message_not_starts_with: String
+  message_ends_with: String
+  message_not_ends_with: String
+  AND: [FriendRequestScalarWhereInput!]
+  OR: [FriendRequestScalarWhereInput!]
+  NOT: [FriendRequestScalarWhereInput!]
+}
+
+type FriendRequestSubscriptionPayload {
+  mutation: MutationType!
+  node: FriendRequest
+  updatedFields: [String!]
+  previousValues: FriendRequestPreviousValues
+}
+
+input FriendRequestSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: FriendRequestWhereInput
+  AND: [FriendRequestSubscriptionWhereInput!]
+  OR: [FriendRequestSubscriptionWhereInput!]
+  NOT: [FriendRequestSubscriptionWhereInput!]
+}
+
+input FriendRequestUpdateInput {
+  sender: UserUpdateManyInput
+  receiver: UserUpdateManyWithoutFriendRequestInput
+  message: String
+}
+
+input FriendRequestUpdateManyDataInput {
+  message: String
+}
+
+input FriendRequestUpdateManyMutationInput {
+  message: String
+}
+
+input FriendRequestUpdateManyWithoutReceiverInput {
+  create: [FriendRequestCreateWithoutReceiverInput!]
+  delete: [FriendRequestWhereUniqueInput!]
+  connect: [FriendRequestWhereUniqueInput!]
+  set: [FriendRequestWhereUniqueInput!]
+  disconnect: [FriendRequestWhereUniqueInput!]
+  update: [FriendRequestUpdateWithWhereUniqueWithoutReceiverInput!]
+  upsert: [FriendRequestUpsertWithWhereUniqueWithoutReceiverInput!]
+  deleteMany: [FriendRequestScalarWhereInput!]
+  updateMany: [FriendRequestUpdateManyWithWhereNestedInput!]
+}
+
+input FriendRequestUpdateManyWithWhereNestedInput {
+  where: FriendRequestScalarWhereInput!
+  data: FriendRequestUpdateManyDataInput!
+}
+
+input FriendRequestUpdateWithoutReceiverDataInput {
+  sender: UserUpdateManyInput
+  message: String
+}
+
+input FriendRequestUpdateWithWhereUniqueWithoutReceiverInput {
+  where: FriendRequestWhereUniqueInput!
+  data: FriendRequestUpdateWithoutReceiverDataInput!
+}
+
+input FriendRequestUpsertWithWhereUniqueWithoutReceiverInput {
+  where: FriendRequestWhereUniqueInput!
+  update: FriendRequestUpdateWithoutReceiverDataInput!
+  create: FriendRequestCreateWithoutReceiverInput!
+}
+
+input FriendRequestWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  sender_every: UserWhereInput
+  sender_some: UserWhereInput
+  sender_none: UserWhereInput
+  receiver_every: UserWhereInput
+  receiver_some: UserWhereInput
+  receiver_none: UserWhereInput
+  message: String
+  message_not: String
+  message_in: [String!]
+  message_not_in: [String!]
+  message_lt: String
+  message_lte: String
+  message_gt: String
+  message_gte: String
+  message_contains: String
+  message_not_contains: String
+  message_starts_with: String
+  message_not_starts_with: String
+  message_ends_with: String
+  message_not_ends_with: String
+  AND: [FriendRequestWhereInput!]
+  OR: [FriendRequestWhereInput!]
+  NOT: [FriendRequestWhereInput!]
+}
+
+input FriendRequestWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
@@ -751,6 +946,12 @@ type Mutation {
   upsertCompany(where: CompanyWhereUniqueInput!, create: CompanyCreateInput!, update: CompanyUpdateInput!): Company!
   deleteCompany(where: CompanyWhereUniqueInput!): Company
   deleteManyCompanies(where: CompanyWhereInput): BatchPayload!
+  createFriendRequest(data: FriendRequestCreateInput!): FriendRequest!
+  updateFriendRequest(data: FriendRequestUpdateInput!, where: FriendRequestWhereUniqueInput!): FriendRequest
+  updateManyFriendRequests(data: FriendRequestUpdateManyMutationInput!, where: FriendRequestWhereInput): BatchPayload!
+  upsertFriendRequest(where: FriendRequestWhereUniqueInput!, create: FriendRequestCreateInput!, update: FriendRequestUpdateInput!): FriendRequest!
+  deleteFriendRequest(where: FriendRequestWhereUniqueInput!): FriendRequest
+  deleteManyFriendRequests(where: FriendRequestWhereInput): BatchPayload!
   createProduct(data: ProductCreateInput!): Product!
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
@@ -1163,6 +1364,9 @@ type Query {
   company(where: CompanyWhereUniqueInput!): Company
   companies(where: CompanyWhereInput, orderBy: CompanyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Company]!
   companiesConnection(where: CompanyWhereInput, orderBy: CompanyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CompanyConnection!
+  friendRequest(where: FriendRequestWhereUniqueInput!): FriendRequest
+  friendRequests(where: FriendRequestWhereInput, orderBy: FriendRequestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FriendRequest]!
+  friendRequestsConnection(where: FriendRequestWhereInput, orderBy: FriendRequestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FriendRequestConnection!
   product(where: ProductWhereUniqueInput!): Product
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
@@ -1408,6 +1612,7 @@ type Subscription {
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   checkin(where: CheckinSubscriptionWhereInput): CheckinSubscriptionPayload
   company(where: CompanySubscriptionWhereInput): CompanySubscriptionPayload
+  friendRequest(where: FriendRequestSubscriptionWhereInput): FriendRequestSubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   subCategory(where: SubCategorySubscriptionWhereInput): SubCategorySubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -1422,6 +1627,7 @@ type User {
   admin: Boolean!
   checkins(where: CheckinWhereInput, orderBy: CheckinOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Checkin!]
   friends(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  friendRequest(where: FriendRequestWhereInput, orderBy: FriendRequestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FriendRequest!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1441,10 +1647,16 @@ input UserCreateInput {
   admin: Boolean!
   checkins: CheckinCreateManyWithoutAuthorInput
   friends: UserCreateManyInput
+  friendRequest: FriendRequestCreateManyWithoutReceiverInput
 }
 
 input UserCreateManyInput {
   create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateManyWithoutFriendRequestInput {
+  create: [UserCreateWithoutFriendRequestInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -1460,6 +1672,18 @@ input UserCreateWithoutCheckinsInput {
   lastName: String!
   password: String!
   admin: Boolean!
+  friends: UserCreateManyInput
+  friendRequest: FriendRequestCreateManyWithoutReceiverInput
+}
+
+input UserCreateWithoutFriendRequestInput {
+  id: ID
+  email: String
+  firstName: String!
+  lastName: String!
+  password: String!
+  admin: Boolean!
+  checkins: CheckinCreateManyWithoutAuthorInput
   friends: UserCreateManyInput
 }
 
@@ -1618,6 +1842,7 @@ input UserUpdateDataInput {
   admin: Boolean
   checkins: CheckinUpdateManyWithoutAuthorInput
   friends: UserUpdateManyInput
+  friendRequest: FriendRequestUpdateManyWithoutReceiverInput
 }
 
 input UserUpdateInput {
@@ -1628,6 +1853,7 @@ input UserUpdateInput {
   admin: Boolean
   checkins: CheckinUpdateManyWithoutAuthorInput
   friends: UserUpdateManyInput
+  friendRequest: FriendRequestUpdateManyWithoutReceiverInput
 }
 
 input UserUpdateManyDataInput {
@@ -1658,6 +1884,18 @@ input UserUpdateManyMutationInput {
   admin: Boolean
 }
 
+input UserUpdateManyWithoutFriendRequestInput {
+  create: [UserCreateWithoutFriendRequestInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutFriendRequestInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutFriendRequestInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
+}
+
 input UserUpdateManyWithWhereNestedInput {
   where: UserScalarWhereInput!
   data: UserUpdateManyDataInput!
@@ -1677,11 +1915,27 @@ input UserUpdateWithoutCheckinsDataInput {
   password: String
   admin: Boolean
   friends: UserUpdateManyInput
+  friendRequest: FriendRequestUpdateManyWithoutReceiverInput
+}
+
+input UserUpdateWithoutFriendRequestDataInput {
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  admin: Boolean
+  checkins: CheckinUpdateManyWithoutAuthorInput
+  friends: UserUpdateManyInput
 }
 
 input UserUpdateWithWhereUniqueNestedInput {
   where: UserWhereUniqueInput!
   data: UserUpdateDataInput!
+}
+
+input UserUpdateWithWhereUniqueWithoutFriendRequestInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutFriendRequestDataInput!
 }
 
 input UserUpsertWithoutCheckinsInput {
@@ -1693,6 +1947,12 @@ input UserUpsertWithWhereUniqueNestedInput {
   where: UserWhereUniqueInput!
   update: UserUpdateDataInput!
   create: UserCreateInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutFriendRequestInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutFriendRequestDataInput!
+  create: UserCreateWithoutFriendRequestInput!
 }
 
 input UserWhereInput {
@@ -1774,6 +2034,9 @@ input UserWhereInput {
   friends_every: UserWhereInput
   friends_some: UserWhereInput
   friends_none: UserWhereInput
+  friendRequest_every: FriendRequestWhereInput
+  friendRequest_some: FriendRequestWhereInput
+  friendRequest_none: FriendRequestWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

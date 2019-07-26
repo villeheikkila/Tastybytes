@@ -26,6 +26,13 @@ export const Query = queryType({
             },
         });
 
+        t.list.field('friendRequests', {
+            type: 'FriendRequest',
+            resolve: (parent, args, ctx) => {
+                return ctx.prisma.friendRequests();
+            },
+        });
+
         t.list.field('categories', {
             type: 'Category',
             resolve: (parent, args, ctx) => {
