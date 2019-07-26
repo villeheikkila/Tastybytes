@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ALL_USERS, FILTER, SEARCH_USERS } from '../../queries';
+import { ME, FILTER, SEARCH_USERS } from '../../queries';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { FriendListItem } from './FriendListItem';
 import { errorHandler } from '../../utils';
@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const FriendList = () => {
     const classes = useStyles();
     const filter = useQuery(FILTER);
+    const meQuery = useQuery(ME);
     const users = useQuery(SEARCH_USERS, {
         variables: { name: filter.data.filter },
         onError: errorHandler,
@@ -32,11 +33,13 @@ export const FriendList = () => {
         return null;
     }
 
+    const me = meQuery.data.me;
+
     return (
         <List className={classes.root}>
             {users.data.searchUsers.map((user: any) => (
                 <>
-                    <FriendListItem key={user.id} user={user} />
+                    <FriendListItem key={user.id} user={user} me={me} />
                     <Divider light />
                 </>
             ))}
