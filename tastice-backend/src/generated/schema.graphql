@@ -211,6 +211,18 @@ type FriendRequest {
   sender(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): [User!]
 }
 
+type FriendRequestPreviousValues {
+  id: ID!
+  message: String!
+}
+
+type FriendRequestSubscriptionPayload {
+  mutation: MutationType!
+  node: FriendRequest
+  previousValues: FriendRequestPreviousValues
+  updatedFields: [String!]
+}
+
 input FriendRequestWhereInput {
   AND: [FriendRequestWhereInput!]
   id: ID
@@ -450,6 +462,7 @@ input SubCategoryWhereInput {
 }
 
 type Subscription {
+  friendRequest(id: ID): FriendRequestSubscriptionPayload
   product: ProductSubscriptionPayload
   user: UserSubscriptionPayload
 }

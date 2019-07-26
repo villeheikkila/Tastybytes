@@ -422,6 +422,16 @@ export interface NexusGenRootTypes {
     id: string; // ID!
     message: string; // String!
   }
+  FriendRequestPreviousValues: { // root type
+    id: string; // ID!
+    message: string; // String!
+  }
+  FriendRequestSubscriptionPayload: { // root type
+    mutation: NexusGenEnums['MutationType']; // MutationType!
+    node?: NexusGenRootTypes['FriendRequest'] | null; // FriendRequest
+    previousValues?: NexusGenRootTypes['FriendRequestPreviousValues'] | null; // FriendRequestPreviousValues
+    updatedFields?: string[] | null; // [String!]
+  }
   Mutation: {};
   Product: { // root type
     createdAt: any; // DateTime!
@@ -526,6 +536,16 @@ export interface NexusGenFieldTypes {
     receiver: NexusGenRootTypes['User'][] | null; // [User!]
     sender: NexusGenRootTypes['User'][] | null; // [User!]
   }
+  FriendRequestPreviousValues: { // field return type
+    id: string; // ID!
+    message: string; // String!
+  }
+  FriendRequestSubscriptionPayload: { // field return type
+    mutation: NexusGenEnums['MutationType']; // MutationType!
+    node: NexusGenRootTypes['FriendRequest'] | null; // FriendRequest
+    previousValues: NexusGenRootTypes['FriendRequestPreviousValues'] | null; // FriendRequestPreviousValues
+    updatedFields: string[] | null; // [String!]
+  }
   Mutation: { // field return type
     addFriend: NexusGenRootTypes['User'] | null; // User
     addProduct: NexusGenRootTypes['Product'] | null; // Product
@@ -591,6 +611,7 @@ export interface NexusGenFieldTypes {
     products: NexusGenRootTypes['Product'][] | null; // [Product!]
   }
   Subscription: { // field return type
+    friendRequest: NexusGenRootTypes['FriendRequestSubscriptionPayload'] | null; // FriendRequestSubscriptionPayload
     product: NexusGenRootTypes['ProductSubscriptionPayload'] | null; // ProductSubscriptionPayload
     user: NexusGenRootTypes['UserSubscriptionPayload'] | null; // UserSubscriptionPayload
   }
@@ -821,6 +842,11 @@ export interface NexusGenArgTypes {
       where?: NexusGenInputs['ProductWhereInput'] | null; // ProductWhereInput
     }
   }
+  Subscription: {
+    friendRequest: { // args
+      id?: string | null; // ID
+    }
+  }
   User: {
     checkins: { // args
       after?: string | null; // String
@@ -848,7 +874,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthPayload" | "Category" | "Checkin" | "Company" | "FriendRequest" | "Mutation" | "Product" | "ProductPreviousValues" | "ProductSubscriptionPayload" | "Query" | "SubCategory" | "Subscription" | "User" | "UserPreviousValues" | "UserSubscriptionPayload";
+export type NexusGenObjectNames = "AuthPayload" | "Category" | "Checkin" | "Company" | "FriendRequest" | "FriendRequestPreviousValues" | "FriendRequestSubscriptionPayload" | "Mutation" | "Product" | "ProductPreviousValues" | "ProductSubscriptionPayload" | "Query" | "SubCategory" | "Subscription" | "User" | "UserPreviousValues" | "UserSubscriptionPayload";
 
 export type NexusGenInputNames = "CategoryWhereInput" | "CheckinWhereInput" | "CompanyWhereInput" | "FriendRequestWhereInput" | "ProductWhereInput" | "SubCategoryWhereInput" | "UserWhereInput";
 
