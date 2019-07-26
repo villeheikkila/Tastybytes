@@ -44,8 +44,6 @@ export const ProfilePage: React.FC<any> = id => {
         variables: { id: id.id },
     });
 
-    console.log('user: ', user);
-
     if (user.data.user === undefined) {
         return null;
     }

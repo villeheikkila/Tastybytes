@@ -133,6 +133,16 @@ export const USER = gql`
     }
 `;
 
+export const SEARCH_USERS = gql`
+    query searchUsers($name: String!) {
+        searchUsers(name: $name) {
+            firstName
+            lastName
+            id
+        }
+    }
+`;
+
 export const CHECKIN = gql`
     query checkin($id: ID!) {
         checkin(id: $id) {

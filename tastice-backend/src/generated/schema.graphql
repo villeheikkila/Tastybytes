@@ -336,6 +336,7 @@ type Query {
   products: [Product!]
   searchCheckins(name: String): [Checkin!]
   searchProducts(name: String): [Product!]
+  searchUsers(name: String): [User!]
   subCategories: [SubCategory!]
   user(id: ID): [User!]
   users: [User!]

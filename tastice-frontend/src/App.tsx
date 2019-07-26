@@ -19,6 +19,7 @@ import { Account } from './components/Account';
 import { ActivityView } from './components/ActivityView';
 import { ProductPage } from './components/ProductPage';
 import { ProfilePage } from './components/ProfilePage';
+import { FriendList } from './components/FriendList';
 
 import { Box, createMuiTheme, Fade, CssBaseline } from '@material-ui/core';
 import { blue, pink } from '@material-ui/core/colors';
@@ -77,6 +78,7 @@ const App = () => {
                                     <Route exact path="/users" render={() => <UserList />} />
                                     <Route exact path="/activity" render={() => <ActivityView />} />
                                     <Route exact path="/addproduct" render={() => <AddProduct />} />
+                                    <Route exact path="/friends" render={() => <FriendList />} />
                                     <Route exact path="/menu" render={() => <MobileMenu setToken={setToken} />} />
                                     <Route exact path="/account" render={() => <Account setToken={setToken} />} />
                                     <Redirect from="/profile" to={`/user/${userId}`} />

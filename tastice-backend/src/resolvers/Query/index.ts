@@ -107,7 +107,6 @@ export const Query = queryType({
                 name: stringArg(),
             },
             resolve: (_, args, ctx) => {
-                console.log('args: ', args);
                 return ctx.prisma.products({
                     where: { name_starts_with: args.name },
                     orderBy: 'createdAt_DESC',
@@ -121,10 +120,21 @@ export const Query = queryType({
                 name: stringArg(),
             },
             resolve: (_, args, ctx) => {
-                console.log('args: ', args);
                 return ctx.prisma.checkins({
                     where: { product: { name_contains: args.name } },
                     orderBy: 'createdAt_DESC',
+                });
+            },
+        });
+
+        t.list.field('searchUsers', {
+            type: 'User',
+            args: {
+                name: stringArg(),
+            },
+            resolve: (_, args, ctx) => {
+                return ctx.prisma.users({
+                    where: { firstName_starts_with: args.name },
                 });
             },
         });
