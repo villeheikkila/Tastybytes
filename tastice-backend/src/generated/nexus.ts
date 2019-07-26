@@ -593,6 +593,7 @@ export interface NexusGenFieldTypes {
     checkins: NexusGenRootTypes['Checkin'][] | null; // [Checkin!]
     companies: NexusGenRootTypes['Company'][] | null; // [Company!]
     company: NexusGenRootTypes['Company'][] | null; // [Company!]
+    friendRequest: NexusGenRootTypes['FriendRequest'][] | null; // [FriendRequest!]
     friendRequests: NexusGenRootTypes['FriendRequest'][] | null; // [FriendRequest!]
     me: NexusGenRootTypes['User'] | null; // User
     product: NexusGenRootTypes['Product'][] | null; // [Product!]
@@ -813,6 +814,9 @@ export interface NexusGenArgTypes {
       id?: string | null; // ID
     }
     company: { // args
+      id?: string | null; // ID
+    }
+    friendRequest: { // args
       id?: string | null; // ID
     }
     product: { // args

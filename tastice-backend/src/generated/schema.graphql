@@ -393,6 +393,7 @@ type Query {
   checkins: [Checkin!]
   companies: [Company!]
   company(id: ID): [Company!]
+  friendRequest(id: ID): [FriendRequest!]
   friendRequests: [FriendRequest!]
   me: User
   product(id: ID): [Product!]

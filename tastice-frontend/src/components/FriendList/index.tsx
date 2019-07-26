@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ME, FILTER, SEARCH_USERS } from '../../queries';
+import { ME, FILTER, SEARCH_USERS, FRIENDREQUEST } from '../../queries';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { FriendListItem } from './FriendListItem';
 import { errorHandler } from '../../utils';
@@ -29,11 +29,18 @@ export const FriendList = () => {
         onError: errorHandler,
     });
 
+    const me = meQuery.data.me;
+    console.log('me: ', me);
+
+    const friendRequests = useQuery(FRIENDREQUEST, {
+        variables: { id: 'cjyjclp0w01va0741vqntjdu1' },
+    });
+
+    console.log('friendRequests: ', friendRequests);
+
     if (users.data.searchUsers === undefined) {
         return null;
     }
-
-    const me = meQuery.data.me;
 
     return (
         <List className={classes.root}>

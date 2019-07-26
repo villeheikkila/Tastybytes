@@ -33,6 +33,16 @@ export const Query = queryType({
             },
         });
 
+        t.list.field('friendRequest', {
+            type: 'FriendRequest',
+            args: {
+                id: idArg(),
+            },
+            resolve: (parent, { id }, ctx) => {
+                return ctx.prisma.friendRequests({ where: { receiver_some: { id } } });
+            },
+        });
+
         t.list.field('categories', {
             type: 'Category',
             resolve: (parent, args, ctx) => {

@@ -182,6 +182,24 @@ export const CHECKIN = gql`
     }
 `;
 
+export const FRIENDREQUEST = gql`
+    query friendRequest($id: ID!) {
+        friendRequest(id: $id) {
+            id
+            sender {
+                id
+                firstName
+                lastName
+            }
+            receiver {
+                id
+                firstName
+                lastName
+            }
+        }
+    }
+`;
+
 export const SIGN_UP = gql`
     mutation signup($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
         signup(firstName: $firstName, lastName: $lastName, email: $email, password: $password) {
