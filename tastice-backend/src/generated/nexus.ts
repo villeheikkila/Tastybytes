@@ -547,7 +547,7 @@ export interface NexusGenFieldTypes {
     updatedFields: string[] | null; // [String!]
   }
   Mutation: { // field return type
-    addFriend: NexusGenRootTypes['User'] | null; // User
+    acceptFriendRequest: NexusGenRootTypes['User'] | null; // User
     addProduct: NexusGenRootTypes['Product'] | null; // Product
     createCategory: NexusGenRootTypes['Category'] | null; // Category
     createCheckin: NexusGenRootTypes['Checkin'] | null; // Checkin
@@ -696,8 +696,7 @@ export interface NexusGenArgTypes {
     }
   }
   Mutation: {
-    addFriend: { // args
-      friendId?: string | null; // ID
+    acceptFriendRequest: { // args
       id?: string | null; // ID
     }
     addProduct: { // args

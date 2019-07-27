@@ -264,7 +264,7 @@ input FriendRequestWhereInput {
 }
 
 type Mutation {
-  addFriend(friendId: ID, id: ID): User
+  acceptFriendRequest(id: ID): User
   addProduct(categoryId: ID, company: String, name: String, subCategories: [String!]): Product
   createCategory(name: String): Category
   createCheckin(authorId: ID, comment: String, productId: ID, rating: Int): Checkin

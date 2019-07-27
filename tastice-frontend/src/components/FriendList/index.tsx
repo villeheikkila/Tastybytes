@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ME, FILTER, SEARCH_USERS, FRIENDREQUEST } from '../../queries';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { FriendListItem } from './FriendListItem';
+import { FriendRequestListItem } from './FriendRequestsList';
 import { errorHandler } from '../../utils';
 
 import { createStyles, Theme, makeStyles, Divider, List } from '@material-ui/core';
@@ -20,20 +21,19 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const FriendList = () => {
+export const FriendList = (id: any) => {
+    console.log('id: ', id);
     const classes = useStyles();
+    const me = useQuery(ME);
+    console.log('me: ', me);
     const filter = useQuery(FILTER);
-    const meQuery = useQuery(ME);
     const users = useQuery(SEARCH_USERS, {
         variables: { name: filter.data.filter },
         onError: errorHandler,
     });
 
-    const me = meQuery.data.me;
-    console.log('me: ', me);
-
     const friendRequests = useQuery(FRIENDREQUEST, {
-        variables: { id: 'cjyjclp0w01va0741vqntjdu1' },
+        variables: { id: id.id },
     });
 
     console.log('friendRequests: ', friendRequests);
@@ -43,13 +43,23 @@ export const FriendList = () => {
     }
 
     return (
-        <List className={classes.root}>
-            {users.data.searchUsers.map((user: any) => (
-                <>
-                    <FriendListItem key={user.id} user={user} me={me} />
-                    <Divider light />
-                </>
-            ))}
-        </List>
+        <div>
+            <List className={classes.root}>
+                {friendRequests.data.friendRequest.map((request: any) => (
+                    <>
+                        <FriendRequestListItem key={request.id} request={request} userId={id} />
+                        <Divider light />
+                    </>
+                ))}
+            </List>
+            <List className={classes.root}>
+                {users.data.searchUsers.map((user: any) => (
+                    <>
+                        <FriendListItem key={user.id} user={user} userId={id} />
+                        <Divider light />
+                    </>
+                ))}
+            </List>
+        </div>
     );
 };

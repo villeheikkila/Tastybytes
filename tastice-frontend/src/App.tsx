@@ -78,7 +78,7 @@ const App = () => {
                                     <Route exact path="/users" render={() => <UserList />} />
                                     <Route exact path="/activity" render={() => <ActivityView />} />
                                     <Route exact path="/addproduct" render={() => <AddProduct />} />
-                                    <Route exact path="/friends" render={() => <FriendList />} />
+                                    <Route exact path="/friends" render={() => <FriendList id={userId} />} />
                                     <Route exact path="/menu" render={() => <MobileMenu setToken={setToken} />} />
                                     <Route exact path="/account" render={() => <Account setToken={setToken} />} />
                                     <Redirect from="/profile" to={`/user/${userId}`} />

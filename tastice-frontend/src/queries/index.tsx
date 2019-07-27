@@ -200,6 +200,18 @@ export const FRIENDREQUEST = gql`
     }
 `;
 
+export const ACCEPT_FRIENDREQUEST = gql`
+    mutation acceptFriendRequest($id: ID!) {
+        acceptFriendRequest(id: $id) {
+            id
+            friends {
+                firstName
+                lastName
+            }
+        }
+    }
+`;
+
 export const SIGN_UP = gql`
     mutation signup($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
         signup(firstName: $firstName, lastName: $lastName, email: $email, password: $password) {

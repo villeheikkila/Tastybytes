@@ -119,22 +119,6 @@ export const Mutation = mutationType({
             },
         });
 
-        t.field('addFriend', {
-            type: 'User',
-            args: {
-                id: idArg(),
-                friendId: idArg(),
-            },
-            resolve: async (_, { id, friendId }) => {
-                return await prisma.updateUser({
-                    where: { id },
-                    data: {
-                        friends: { connect: { id: friendId } },
-                    },
-                });
-            },
-        });
-
         t.field('updateCheckin', {
             type: 'Checkin',
             args: {
@@ -239,6 +223,36 @@ export const Mutation = mutationType({
                     sender: { connect: { id: senderId } },
                     message,
                 });
+            },
+        });
+
+        t.field('acceptFriendRequest', {
+            type: 'User',
+            args: {
+                id: idArg(),
+            },
+            resolve: async (_, { id }) => {
+                const validFriendRequest = await prisma.$exists.friendRequest({
+                    id,
+                });
+
+                if (validFriendRequest) {
+                    const sender = await prisma.friendRequest({ id }).sender();
+                    const senderId = sender[0].id;
+                    const receiver = await prisma.friendRequest({ id }).receiver();
+                    const receiverId = receiver[0].id;
+
+                    await prisma.deleteFriendRequest({ id });
+
+                    return await prisma.updateUser({
+                        where: { id: receiverId },
+                        data: {
+                            friends: { connect: { id: senderId } },
+                        },
+                    });
+                } else {
+                    throw new Error('Invalid friend request');
+                }
             },
         });
 
