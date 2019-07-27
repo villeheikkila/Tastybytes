@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ME, FILTER, SEARCH_USERS, FRIENDREQUEST } from '../../queries';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { FriendListItem } from './FriendListItem';
+import { Friends } from './Friends';
 import { FriendRequestListItem } from './FriendRequestsList';
 import { errorHandler } from '../../utils';
 
@@ -38,12 +39,23 @@ export const FriendList = (id: any) => {
 
     console.log('friendRequests: ', friendRequests);
 
-    if (users.data.searchUsers === undefined) {
+    if (users.data.searchUsers === undefined || me.data.me.friends === undefined) {
         return null;
     }
 
     return (
         <div>
+            <h3>Friends</h3>
+            <List className={classes.root}>
+                {me.data.me.friends.map((user: any) => (
+                    <>
+                        <Friends key={user.id} user={user} userId={id} />
+                        <Divider light />
+                    </>
+                ))}
+            </List>
+
+            <h3>Pending Friend Requests</h3>
             <List className={classes.root}>
                 {friendRequests.data.friendRequest.map((request: any) => (
                     <>
@@ -52,6 +64,7 @@ export const FriendList = (id: any) => {
                     </>
                 ))}
             </List>
+            <h3>All users</h3>
             <List className={classes.root}>
                 {users.data.searchUsers.map((user: any) => (
                     <>

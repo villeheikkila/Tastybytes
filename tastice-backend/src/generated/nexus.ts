@@ -556,6 +556,7 @@ export interface NexusGenFieldTypes {
     createSubCategory: NexusGenRootTypes['SubCategory'] | null; // SubCategory
     deleteCategory: NexusGenRootTypes['Category'] | null; // Category
     deleteCheckin: NexusGenRootTypes['Checkin'] | null; // Checkin
+    deleteFriend: NexusGenRootTypes['User'] | null; // User
     deleteFriendRequest: NexusGenRootTypes['FriendRequest'] | null; // FriendRequest
     deleteProduct: NexusGenRootTypes['Product'] | null; // Product
     deleteUser: NexusGenRootTypes['User'] | null; // User
@@ -730,6 +731,10 @@ export interface NexusGenArgTypes {
       id?: string | null; // ID
     }
     deleteCheckin: { // args
+      id?: string | null; // ID
+    }
+    deleteFriend: { // args
+      friendId?: string | null; // ID
       id?: string | null; // ID
     }
     deleteFriendRequest: { // args

@@ -234,6 +234,11 @@ export const ME = gql`
             lastName
             email
             admin
+            friends {
+                id
+                firstName
+                lastName
+            }
             checkins {
                 rating
                 comment
@@ -296,6 +301,14 @@ export const DELETE_USER = gql`
 export const DELETE_CHECKIN = gql`
     mutation deleteCheckin($id: ID!) {
         deleteCheckin(id: $id) {
+            id
+        }
+    }
+`;
+
+export const DELETE_FRIEND = gql`
+    mutation deleteFriend($id: ID!, $friendId: ID!) {
+        deleteFriend(id: $id, friendId: $friendId) {
             id
         }
     }

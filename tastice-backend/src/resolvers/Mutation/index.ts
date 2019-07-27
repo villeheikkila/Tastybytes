@@ -148,6 +148,17 @@ export const Mutation = mutationType({
             },
         });
 
+        t.field('deleteFriendRequest', {
+            type: 'FriendRequest',
+            nullable: true,
+            args: {
+                id: idArg(),
+            },
+            resolve: (parent, { id }, ctx) => {
+                return ctx.prisma.deleteFriendRequest({ id });
+            },
+        });
+
         t.field('deleteUser', {
             type: 'User',
             nullable: true,
@@ -181,14 +192,19 @@ export const Mutation = mutationType({
             },
         });
 
-        t.field('deleteFriendRequest', {
-            type: 'FriendRequest',
-            nullable: true,
+        t.field('deleteFriend', {
+            type: 'User',
             args: {
                 id: idArg(),
+                friendId: idArg(),
             },
-            resolve: (parent, { id }, ctx) => {
-                return ctx.prisma.deleteFriendRequest({ id });
+            resolve: async (_, { id, friendId }, ctx) => {
+                return await prisma.updateUser({
+                    where: { id },
+                    data: {
+                        friends: { disconnect: { id: friendId } },
+                    },
+                });
             },
         });
 

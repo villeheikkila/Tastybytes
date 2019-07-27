@@ -1,38 +1,36 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { ACCEPT_FRIENDREQUEST, FRIENDREQUEST, ME } from '../../queries';
+import { DELETE_FRIEND } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 
 import { ListItemText, Typography, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
-export const FriendRequestListItem: React.FC<any> = ({ userId, request }) => {
+export const Friends: React.FC<any> = ({ userId, user }) => {
     console.log('userId: ', userId);
-    const { sender, id } = request;
-    console.log('sender: ', sender);
-    const { firstName, lastName } = sender[0];
-    const [createFriendRequest] = useMutation(ACCEPT_FRIENDREQUEST, {
+    const { firstName, lastName, id } = user;
+    console.log('id: ', id);
+    const [createFriendRequest] = useMutation(DELETE_FRIEND, {
         onError: errorHandler,
-        refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId.id } }],
     });
 
-    const acceptFriendRequest = async () => {
+    const deleteFriend = async () => {
         const result = await createFriendRequest({
             variables: {
-                id,
+                id: userId.id,
+                friendId: id,
             },
         });
 
-        console.log('result: ', result);
-
         if (result) {
+            console.log('result: ', result);
             notificationHandler({
-                message: `Friend request accepted for ${''} ${''}`,
+                message: `Friend request send for ${firstName} ${lastName}`,
                 variant: 'success',
             });
         }
     };
     return (
-        <ListItem button alignItems="flex-start" key={id} onClick={acceptFriendRequest}>
+        <ListItem button alignItems="flex-start" key={id} onClick={deleteFriend}>
             <ListItemAvatar>
                 <Avatar
                     alt={firstName}

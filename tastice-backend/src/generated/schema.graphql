@@ -273,6 +273,7 @@ type Mutation {
   createSubCategory(categoryId: ID, name: String): SubCategory
   deleteCategory(id: ID): Category
   deleteCheckin(id: ID): Checkin
+  deleteFriend(friendId: ID, id: ID): User
   deleteFriendRequest(id: ID): FriendRequest
   deleteProduct(id: ID): Product
   deleteUser(id: ID): User
