@@ -8,7 +8,6 @@ import { BottomBar } from './components/BottomBar';
 import { UserList } from './scenes/UserList';
 import { ProductList } from './scenes/ProductList';
 import { AddProduct } from './components/AddProduct';
-import { Index } from './components/Index';
 import { Notifications } from './components/Notification';
 import { MobileMenu } from './components/MobileMenu';
 import { LogIn } from './scenes/LogIn';
@@ -72,7 +71,6 @@ const App = () => {
                             <NavigationBar setToken={setToken} />
                             <Fade timeout={300}>
                                 <Switch>
-                                    <Route exact path="/" render={() => <Index />} />
                                     <Route exact path="/products" render={() => <ProductList />} />
                                     <Route exact path="/discover" render={() => <Discover />} />
                                     <Route exact path="/users" render={() => <UserList />} />
@@ -92,7 +90,8 @@ const App = () => {
                                         path="/user/:id"
                                         render={({ match }) => <Profile id={match.params.id} />}
                                     />
-                                    <Route render={() => <Index />} />
+                                    <Redirect from="/" to="/activity" />
+                                    <Route render={() => <Activity />} />
                                 </Switch>
                             </Fade>
                             <Box display={{ xs: 'block', md: 'none' }}>
