@@ -13,7 +13,7 @@ import { Notifications } from './components/Notification';
 import { MobileMenu } from './components/MobileMenu';
 import { LogIn } from './components/LogIn';
 import { SignUp } from './components/SignUp';
-import { NavigationBar } from './components/NavigationBar';
+import { NavigationBar } from './components/NavigationBar/';
 import { ProductView } from './components/ProductView';
 import { Account } from './components/Account';
 import { ActivityView } from './components/ActivityView';

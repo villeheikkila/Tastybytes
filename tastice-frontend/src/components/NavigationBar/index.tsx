@@ -8,24 +8,21 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { fade } from '@material-ui/core/styles';
 import 'typeface-leckerli-one';
 import { SearchInputBase } from './SearchInputBase';
+import { DesktopMenu } from './DesktopMenu';
 
 import {
     makeStyles,
     AppBar,
     Toolbar,
     ButtonBase,
-    InputBase,
-    Switch,
-    Menu,
     Badge,
-    MenuItem,
     IconButton,
     Typography,
     Theme,
     createStyles,
 } from '@material-ui/core';
 
-import { ExitToApp, BrightnessLow, BrightnessHigh, AccountCircle } from '@material-ui/icons/';
+import { AccountCircle } from '@material-ui/icons/';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -75,9 +72,6 @@ const useStyles = makeStyles((theme: Theme) =>
         logo: {
             fontFamily: 'Leckerli One',
         },
-        badge: {
-            marginRight: 15,
-        },
     }),
 );
 
@@ -85,32 +79,13 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [filter, setFilter] = useState('');
-    const [colorScheme, setColorScheme] = useState(false);
-    const { history, location } = useReactRouter();
-
-    const logout = () => {
-        localStorage.clear();
-        setToken(null);
-    };
+    const { location } = useReactRouter();
 
     filterChanger(filter);
 
     const searchLocations = ['activity', 'discover', 'user'];
 
     const showSearch = searchLocations.includes(location.pathname.split('/')[1]);
-
-    const handleColorSchemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        themeSwitcher(event.target.checked);
-        setColorScheme(event.target.checked);
-    };
-
-    const isMenuOpen = Boolean(anchorEl);
-
-    const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
 
     return (
         <div className={classes.grow}>
@@ -173,7 +148,7 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
                             aria-label="Account of current user"
                             aria-controls="primary-search-account-menu"
                             aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
+                            onClick={(event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget)}
                             color="inherit"
                         >
                             <AccountCircle />
@@ -185,7 +160,8 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
                             aria-label="Show more"
                             aria-controls="Mobile Menu"
                             aria-haspopup="true"
-                            onClick={() => history.push('/menu')}
+                            component={Link}
+                            to="/menu"
                             color="inherit"
                         >
                             <MoreIcon />
@@ -193,46 +169,7 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
                     </div>
                 </Toolbar>
             </AppBar>
-
-            <Menu
-                anchorEl={anchorEl}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                id="primary-search-account-menu"
-                keepMounted
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                open={isMenuOpen}
-                onClose={handleMenuClose}
-            >
-                <MenuItem>
-                    {colorScheme ? (
-                        <Badge badgeContent={0} color="secondary" className={classes.badge}>
-                            <BrightnessLow />
-                        </Badge>
-                    ) : (
-                        <Badge badgeContent={0} color="secondary" className={classes.badge}>
-                            <BrightnessHigh />
-                        </Badge>
-                    )}
-                    <Switch
-                        checked={colorScheme}
-                        onChange={handleColorSchemeChange}
-                        value="color scheme"
-                        inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    />
-                </MenuItem>
-                <MenuItem component={Link} to="/account" onClick={handleMenuClose}>
-                    <Badge badgeContent={0} color="secondary" className={classes.badge}>
-                        <AccountCircle />
-                    </Badge>
-                    Account
-                </MenuItem>
-                <MenuItem onClick={logout}>
-                    <Badge badgeContent={0} color="secondary" className={classes.badge}>
-                        <ExitToApp />
-                    </Badge>
-                    Logout
-                </MenuItem>
-            </Menu>
+            <DesktopMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} setToken={setToken} />
         </div>
     );
 };
