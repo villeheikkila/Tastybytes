@@ -1,9 +1,9 @@
 import React from 'react';
-import { ProductCard } from '../ProductCard';
+import { ProductCard } from '../../components/ProductCard';
 import { Product } from '../../types';
 import { useQuery } from '@apollo/react-hooks';
 import { SEARCH_PRODUCTS, FILTER } from '../../queries';
-import useReactRouter from 'use-react-router';
+import { Link } from 'react-router-dom';
 
 import AddIcon from '@material-ui/icons/Add';
 import { Grid, Fab, makeStyles, Card } from '@material-ui/core';
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const ProductView = () => {
+export const Discover = () => {
     const classes = useStyles();
     const filter = useQuery(FILTER);
     const searchProductsQuery = useQuery(SEARCH_PRODUCTS, {
@@ -38,8 +38,6 @@ export const ProductView = () => {
     });
 
     const products = searchProductsQuery.data.searchProducts;
-
-    const { history } = useReactRouter();
 
     if (products === undefined) {
         return null;
@@ -56,7 +54,7 @@ export const ProductView = () => {
                     ))}
                 </Grid>
             </Grid>
-            <Fab color="secondary" aria-label="Add" className={classes.fab} onClick={() => history.push('/addproduct')}>
+            <Fab color="secondary" aria-label="Add" className={classes.fab} component={Link} to="/product/new">
                 <AddIcon />
             </Fab>
         </div>

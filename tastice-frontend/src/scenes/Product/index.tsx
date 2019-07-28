@@ -1,10 +1,10 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { PRODUCT, ME } from '../../queries';
-import { ProductCard } from '../ProductCard';
-import { Divider } from '../Divider';
-import { CheckInCard } from '../CheckInCard';
-import { CreateCheckIn } from '../CreateCheckIn';
+import { ProductCard } from '../../components/ProductCard';
+import { Divider } from '../../components/Divider';
+import { CheckInCard } from '../../components/CheckInCard';
+import { CreateCheckIn } from './CreateCheckIn';
 import { makeStyles, Card } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const ProductPage: React.FC<any> = id => {
+export const Product: React.FC<any> = id => {
     const me = useQuery(ME);
     const classes = useStyles();
     const productsQuery = useQuery(PRODUCT, {

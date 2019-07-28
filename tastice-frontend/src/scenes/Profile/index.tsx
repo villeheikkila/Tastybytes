@@ -1,8 +1,8 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { USER } from '../../queries';
-import { CheckInCard } from '../CheckInCard';
-import { Divider } from '../Divider';
+import { CheckInCard } from '../../components/CheckInCard';
+import { Divider } from '../../components/Divider';
 
 import { Paper, Avatar, Typography, Theme, createStyles, makeStyles } from '@material-ui/core';
 
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const ProfilePage: React.FC<any> = id => {
+export const Profile: React.FC<any> = id => {
     const classes = useStyles();
     const user = useQuery(USER, {
         variables: { id: id.id },

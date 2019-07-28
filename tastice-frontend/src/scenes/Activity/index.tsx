@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckInCard } from '../CheckInCard';
+import { CheckInCard } from '../../components/CheckInCard';
 import { useQuery } from '@apollo/react-hooks';
 import { FILTER, SEARCH_CHECKINS } from '../../queries';
 import { Grid, makeStyles } from '@material-ui/core';
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const ActivityView = () => {
+export const Activity = () => {
     const classes = useStyles();
     const filter = useQuery(FILTER);
 

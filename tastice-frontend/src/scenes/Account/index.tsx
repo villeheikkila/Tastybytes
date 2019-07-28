@@ -5,7 +5,7 @@ import { ME, DELETE_USER, UPDATE_USER } from '../../queries';
 import { notificationHandler, errorHandler } from '../../utils';
 import { Token } from '../../types';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { ConfirmationDialog } from '../ConfirmationDialog';
+import { ConfirmationDialog } from '../../components/ConfirmationDialog';
 import { client } from '../../index';
 
 import { Paper, Typography, Grid, Avatar, Theme, createStyles, makeStyles, Button } from '@material-ui/core';

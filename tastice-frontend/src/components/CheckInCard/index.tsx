@@ -4,12 +4,12 @@ import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/ho
 import { blue } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ProductCard } from '../ProductCard';
-import { EditCheckIn } from '../EditCheckIn';
+import { EditCheckIn } from './EditCheckIn';
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_CHECKIN, PRODUCT } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
-import { CheckInContent } from '../CheckInContent';
+import { CheckInContent } from './CheckInContent';
 
 import { Link, Typography, IconButton, Avatar, CardHeader, Card, makeStyles, Menu, MenuItem } from '@material-ui/core';
 

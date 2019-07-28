@@ -5,20 +5,20 @@ import { ThemeProvider } from '@material-ui/styles';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import { BottomBar } from './components/BottomBar';
-import { UserList } from './components/UserList';
-import { ProductList } from './components/ProductList';
+import { UserList } from './scenes/UserList';
+import { ProductList } from './scenes/ProductList';
 import { AddProduct } from './components/AddProduct';
 import { Index } from './components/Index';
 import { Notifications } from './components/Notification';
 import { MobileMenu } from './components/MobileMenu';
-import { LogIn } from './components/LogIn';
-import { SignUp } from './components/SignUp';
+import { LogIn } from './scenes/LogIn';
+import { SignUp } from './scenes/SignUp';
 import { NavigationBar } from './components/NavigationBar/';
-import { ProductView } from './components/ProductView';
-import { Account } from './components/Account';
-import { ActivityView } from './components/ActivityView';
-import { ProductPage } from './components/ProductPage';
-import { ProfilePage } from './components/ProfilePage';
+import { Discover } from './scenes/Discover';
+import { Account } from './scenes/Account';
+import { Activity } from './scenes/Activity';
+import { Product } from './scenes/Product';
+import { Profile } from './scenes/Profile';
 import { FriendList } from './components/FriendList';
 
 import { Box, createMuiTheme, Fade, CssBaseline } from '@material-ui/core';
@@ -74,10 +74,10 @@ const App = () => {
                                 <Switch>
                                     <Route exact path="/" render={() => <Index />} />
                                     <Route exact path="/products" render={() => <ProductList />} />
-                                    <Route exact path="/discover" render={() => <ProductView />} />
+                                    <Route exact path="/discover" render={() => <Discover />} />
                                     <Route exact path="/users" render={() => <UserList />} />
-                                    <Route exact path="/activity" render={() => <ActivityView />} />
-                                    <Route exact path="/addproduct" render={() => <AddProduct />} />
+                                    <Route exact path="/activity" render={() => <Activity />} />
+                                    <Route exact path="/product/new" render={() => <AddProduct />} />
                                     <Route exact path="/friends" render={() => <FriendList id={userId} />} />
                                     <Route exact path="/menu" render={() => <MobileMenu setToken={setToken} />} />
                                     <Route exact path="/account" render={() => <Account setToken={setToken} />} />
@@ -85,17 +85,12 @@ const App = () => {
                                     <Route
                                         exact
                                         path="/product/:id"
-                                        render={({ match }) => <ProductPage id={match.params.id} />}
-                                    />
-                                    <Route
-                                        exact
-                                        path="/product/:id/edit"
-                                        render={({ match }) => <ProductPage id={match.params.id} />}
+                                        render={({ match }) => <Product id={match.params.id} />}
                                     />
                                     <Route
                                         exact
                                         path="/user/:id"
-                                        render={({ match }) => <ProfilePage id={match.params.id} />}
+                                        render={({ match }) => <Profile id={match.params.id} />}
                                     />
                                     <Route render={() => <Index />} />
                                 </Switch>

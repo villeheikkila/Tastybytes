@@ -7,7 +7,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import CloseIcon from '@material-ui/icons/Close';
 import { amber, green } from '@material-ui/core/colors';
 import WarningIcon from '@material-ui/icons/Warning';
-import { NotificationProps } from '../../../types';
+import { NotificationProps } from '../../types';
 
 import { IconButton, Theme, makeStyles, SnackbarContent } from '@material-ui/core';
 

@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { UpdateProduct } from '../UpdateProduct';
+import { UpdateProduct } from './UpdateProduct';
 
 import {
     Link,
