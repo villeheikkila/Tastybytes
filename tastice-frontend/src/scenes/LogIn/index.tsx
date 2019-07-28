@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import useReactRouter from 'use-react-router';
-import { Token } from '../../types';
 import { LOGIN } from '../../queries';
 import { errorHandler } from '../../utils';
 import 'typeface-leckerli-one';

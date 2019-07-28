@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { themeSwitcher } from '../../utils';
-import { Token } from '../../types';
 
 import {
     createStyles,

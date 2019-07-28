@@ -1,7 +1,6 @@
 import { client } from '../index';
-import { Notification } from '../types';
 
-export const notificationHandler = (notification: Notification) => {
+export const notificationHandler = (notification: NotificationContent) => {
     client.writeData({
         data: {
             notification: notification.message,

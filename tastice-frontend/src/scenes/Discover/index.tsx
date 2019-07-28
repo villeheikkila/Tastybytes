@@ -1,6 +1,5 @@
 import React from 'react';
 import { ProductCard } from '../../components/ProductCard';
-import { Product } from '../../types';
 import { useQuery } from '@apollo/react-hooks';
 import { SEARCH_PRODUCTS, FILTER } from '../../queries';
 import { Link } from 'react-router-dom';

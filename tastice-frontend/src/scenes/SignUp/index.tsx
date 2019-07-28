@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
 import { useMutation } from '@apollo/react-hooks';
 import { SIGN_UP } from '../../queries';
-import { Token } from '../../types';
 import { errorHandler } from '../../utils';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import 'typeface-leckerli-one';

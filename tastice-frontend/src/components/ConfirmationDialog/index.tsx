@@ -1,5 +1,4 @@
 import React from 'react';
-import { ConfirmationDialogProps } from '../../types';
 
 import { Dialog, DialogContent, DialogTitle, DialogContentText, Button, DialogActions } from '@material-ui/core';
 

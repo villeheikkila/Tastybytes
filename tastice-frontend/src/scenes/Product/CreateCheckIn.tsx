@@ -3,7 +3,6 @@ import { useMutation } from '@apollo/react-hooks';
 import Rating from 'material-ui-rating';
 import { notificationHandler, errorHandler } from '../../utils';
 import { CREATE_CHECKIN, ALL_CHECKINS, ME, PRODUCT } from '../../queries';
-import { CreateCheckInProps } from '../../types';
 
 import { makeStyles, createStyles, Theme, Paper, Button, TextField, Typography } from '@material-ui/core';
 

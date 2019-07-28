@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
 import { Link as RouterLink } from 'react-router-dom';
 import useReactRouter from 'use-react-router';
-import { ProductObject } from '../../types';
 import lipton from '../../images/lipton.jpg';
 import { DELETE_PRODUCT, ALL_PRODUCTS } from '../../queries';
 import { useMutation } from '@apollo/react-hooks';

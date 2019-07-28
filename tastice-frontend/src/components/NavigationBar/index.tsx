@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Token } from '../../types';
 import { themeSwitcher, filterChanger } from '../../utils';
 import useReactRouter from 'use-react-router';
 import MoreIcon from '@material-ui/icons/MoreVert';
