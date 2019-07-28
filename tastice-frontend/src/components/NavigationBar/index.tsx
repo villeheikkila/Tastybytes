@@ -86,7 +86,7 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [filter, setFilter] = useState('');
     const [colorScheme, setColorScheme] = useState(false);
-    const { history } = useReactRouter();
+    const { history, location } = useReactRouter();
 
     const logout = () => {
         localStorage.clear();
@@ -94,6 +94,10 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
     };
 
     filterChanger(filter);
+
+    const searchLocations = ['activity', 'discover', 'user'];
+
+    const showSearch = searchLocations.includes(location.pathname.split('/')[1]);
 
     const handleColorSchemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         themeSwitcher(event.target.checked);
@@ -155,7 +159,7 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
                         </ButtonBase>
                     </div>
 
-                    <SearchInputBase search={filter} setSearch={setFilter} placeholder={'Search...'} />
+                    {showSearch && <SearchInputBase search={filter} setSearch={setFilter} placeholder={'Search...'} />}
 
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
