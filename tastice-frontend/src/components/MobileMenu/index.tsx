@@ -51,6 +51,10 @@ export const MobileMenu: React.FC<Token> = ({ setToken }) => {
                 <ListItem button component={Link} to="/account">
                     <ListItemText primary="Account" />
                 </ListItem>
+                <Divider light />
+                <ListItem button component={Link} to="/friends">
+                    <ListItemText primary="Friends" />
+                </ListItem>
                 <Divider />
                 <ListItem button divider>
                     <ListItemText primary="Notifications" />

@@ -1,43 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { CREATE_FRIENDREQUEST } from '../../queries';
+import { DELETE_FRIEND, ME } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
-
-import { ListItemText, Typography, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
+import { ConfirmationDialog } from '../ConfirmationDialog';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { ListItemText, IconButton, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 export const FriendListItem: React.FC<any> = ({ userId, user }) => {
-    console.log('userId: ', userId);
     const { firstName, lastName, id } = user;
-    console.log('id: ', id);
-    const [createFriendRequest] = useMutation(CREATE_FRIENDREQUEST, {
+    const [visible, setVisible] = useState(false);
+
+    const [createFriendRequest] = useMutation(DELETE_FRIEND, {
         onError: errorHandler,
+        refetchQueries: [{ query: ME }],
     });
 
-    const sendFriendRequest = async () => {
+    const handleDeleteFriend = async () => {
         const result = await createFriendRequest({
             variables: {
-                senderId: userId.id,
-                receiverId: id,
-                message: 'Moi',
+                id: userId.id,
+                friendId: id,
             },
         });
 
         if (result) {
             notificationHandler({
-                message: `Friend request send for ${firstName} ${lastName}`,
+                message: `${firstName} ${lastName} was succesfully removed from your friend list`,
                 variant: 'success',
             });
         }
     };
+
     return (
-        <ListItem button alignItems="flex-start" key={id} onClick={sendFriendRequest}>
-            <ListItemAvatar>
-                <Avatar
-                    alt={firstName}
-                    src="https://cdn1.thr.com/sites/default/files/imagecache/scale_crop_768_433/2019/03/avatar-publicity_still-h_2019.jpg"
-                />
-            </ListItemAvatar>
-            <ListItemText primary={`${firstName} ${lastName}`} />
-        </ListItem>
+        <>
+            <ListItem button alignItems="flex-start" key={id}>
+                <ListItemAvatar>
+                    <Avatar
+                        alt={firstName}
+                        src="https://cdn1.thr.com/sites/default/files/imagecache/scale_crop_768_433/2019/03/avatar-publicity_still-h_2019.jpg"
+                        component={Link}
+                        to={`/user/${id}`}
+                    />
+                </ListItemAvatar>
+                <ListItemText primary={`${firstName} ${lastName}`} />
+                <IconButton aria-label="Delete" onClick={handleDeleteFriend}>
+                    <DeleteIcon fontSize="large" />
+                </IconButton>
+            </ListItem>
+            <ConfirmationDialog
+                visible={visible}
+                setVisible={setVisible}
+                description={'hei'}
+                title={'Warning!'}
+                content={`Are you sure you want to remove ${firstName} ${lastName} from your friends?`}
+                onAccept={handleDeleteFriend}
+                declineButton={'Cancel'}
+                acceptButton={'Yes'}
+            />
+        </>
     );
 };
