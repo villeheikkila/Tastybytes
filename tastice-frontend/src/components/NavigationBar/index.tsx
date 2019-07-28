@@ -4,10 +4,10 @@ import { Token } from '../../types';
 import { themeSwitcher, filterChanger } from '../../utils';
 import useReactRouter from 'use-react-router';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import SearchIcon from '@material-ui/icons/Search';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { fade } from '@material-ui/core/styles';
 import 'typeface-leckerli-one';
+import { SearchInputBase } from './SearchInputBase';
 
 import {
     makeStyles,
@@ -51,26 +51,6 @@ const useStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.up('sm')]: {
                 marginLeft: theme.spacing(3),
                 width: 'auto',
-            },
-        },
-        searchIcon: {
-            width: theme.spacing(7),
-            height: '100%',
-            position: 'absolute',
-            pointerEvents: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        inputRoot: {
-            color: 'inherit',
-        },
-        inputInput: {
-            padding: theme.spacing(1, 1, 1, 7),
-            transition: theme.transitions.create('width'),
-            width: '100%',
-            [theme.breakpoints.up('md')]: {
-                width: 200,
             },
         },
         sectionDesktop: {
@@ -124,8 +104,6 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
 
-    const handleSearchChange = (event: any) => setFilter(event.target.value);
-
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
@@ -177,21 +155,7 @@ export const NavigationBar: React.FC<Token> = ({ setToken }) => {
                         </ButtonBase>
                     </div>
 
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            value={filter}
-                            onChange={handleSearchChange}
-                            inputProps={{ 'aria-label': 'Search' }}
-                        />
-                    </div>
+                    <SearchInputBase search={filter} setSearch={setFilter} placeholder={'Search...'} />
 
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
