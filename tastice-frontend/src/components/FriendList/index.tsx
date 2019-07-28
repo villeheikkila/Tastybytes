@@ -6,13 +6,20 @@ import { FriendListItem } from './FriendListItem';
 import { FriendRequestListItem } from './FriendRequestsListItem';
 import { errorHandler } from '../../utils';
 
-import { createStyles, Theme, makeStyles, Divider, List, ListSubheader } from '@material-ui/core';
+import { createStyles, Card, Theme, makeStyles, Divider, List, ListSubheader } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        root: {
+            flexGrow: 1,
+            overflow: 'hidden',
+            maxWidth: 700,
+            margin: `${theme.spacing(1)}px auto`,
+            alignContent: 'center',
+            justifyContent: 'center',
+        },
         list: {
             width: '100%',
-            maxWidth: 360,
             backgroundColor: theme.palette.background.paper,
         },
     }),
@@ -41,7 +48,7 @@ export const FriendList = (id: any) => {
     const users = usersQuery.data.searchUsers;
 
     return (
-        <div>
+        <Card className={classes.root}>
             {friends.length !== 0 && (
                 <List
                     className={classes.list}
@@ -94,6 +101,6 @@ export const FriendList = (id: any) => {
                     </div>
                 ))}
             </List>
-        </div>
+        </Card>
     );
 };
