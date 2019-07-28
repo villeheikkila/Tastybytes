@@ -3,8 +3,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { CREATE_FRIENDREQUEST, ME, FRIENDREQUEST } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { FriendRequestDialog } from './FriendRequestDialog';
-import { ListItemText, Typography, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
-import { handleInputChange } from 'react-select/src/utils';
+import { ListItemText, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
 export const UserListItem: React.FC<any> = ({ userId, user }) => {
     const { firstName, lastName, id } = user;

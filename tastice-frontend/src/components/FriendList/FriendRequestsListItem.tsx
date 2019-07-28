@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { ACCEPT_FRIENDREQUEST, FRIENDREQUEST, ME } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 
-import { ListItemText, Typography, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
+import { ListItemText, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
 export const FriendRequestListItem: React.FC<any> = ({ userId, request }) => {
     const { sender, id } = request;

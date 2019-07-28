@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { ME, FILTER, SEARCH_USERS, FRIENDREQUEST } from '../../queries';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { UserListItem } from './UserListItem';
 import { FriendListItem } from './FriendListItem';
 import { FriendRequestListItem } from './FriendRequestsListItem';
 import { errorHandler } from '../../utils';
 
-import { createStyles, Theme, makeStyles, Divider, List, Typography, ListSubheader } from '@material-ui/core';
+import { createStyles, Theme, makeStyles, Divider, List, ListSubheader } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -54,11 +53,11 @@ export const FriendList = (id: any) => {
                     }
                 >
                     {friends.map((user: any) => (
-                        <>
+                        <div key={user.id.toUpperCase()}>
                             <Divider light />
                             <FriendListItem key={user.id} user={user} userId={id} />
                             <Divider light />
-                        </>
+                        </div>
                     ))}
                 </List>
             )}
@@ -71,11 +70,11 @@ export const FriendList = (id: any) => {
                         subheader={<ListSubheader component="div">Pending Friend Requests</ListSubheader>}
                     >
                         {friendRequests.map((request: any) => (
-                            <>
+                            <div key={request.id.toUpperCase()}>
                                 <Divider light />
                                 <FriendRequestListItem key={request.id} request={request} userId={id} />
                                 <Divider light />
-                            </>
+                            </div>
                         ))}
                     </List>
                 </>
@@ -88,11 +87,11 @@ export const FriendList = (id: any) => {
                 subheader={<ListSubheader component="div">All Users</ListSubheader>}
             >
                 {users.map((user: any) => (
-                    <>
+                    <div key={user.id.toUpperCase()}>
                         <Divider light />
                         <UserListItem key={user.id} user={user} userId={id} />
                         <Divider light />
-                    </>
+                    </div>
                 ))}
             </List>
         </div>

@@ -4,8 +4,9 @@ import { DELETE_FRIEND, ME } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { ListItemText, IconButton, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+
+import { ListItemText, IconButton, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
 export const FriendListItem: React.FC<any> = ({ userId, user }) => {
     const { firstName, lastName, id } = user;
@@ -17,6 +18,7 @@ export const FriendListItem: React.FC<any> = ({ userId, user }) => {
     });
 
     const handleDeleteFriend = async () => {
+        setVisible(false);
         const result = await createFriendRequest({
             variables: {
                 id: userId.id,
@@ -44,11 +46,12 @@ export const FriendListItem: React.FC<any> = ({ userId, user }) => {
                     />
                 </ListItemAvatar>
                 <ListItemText primary={`${firstName} ${lastName}`} />
-                <IconButton aria-label="Delete" onClick={handleDeleteFriend}>
+                <IconButton aria-label="Delete" onClick={() => setVisible(true)}>
                     <DeleteIcon fontSize="large" />
                 </IconButton>
             </ListItem>
             <ConfirmationDialog
+                key={firstName}
                 visible={visible}
                 setVisible={setVisible}
                 description={'hei'}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { CheckInCard } from '../CheckInCard';
 import { useQuery } from '@apollo/react-hooks';
-import { ALL_CHECKINS, FILTER, SEARCH_CHECKINS } from '../../queries';
+import { FILTER, SEARCH_CHECKINS } from '../../queries';
 import { Grid, makeStyles } from '@material-ui/core';
 import { errorHandler } from '../../utils';
 
