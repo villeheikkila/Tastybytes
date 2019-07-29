@@ -136,6 +136,7 @@ export const USER = gql`
             firstName
             lastName
             checkins {
+                id
                 rating
                 comment
                 author {

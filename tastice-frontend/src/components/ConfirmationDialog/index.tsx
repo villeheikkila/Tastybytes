@@ -9,8 +9,8 @@ interface ConfirmationDialogProps {
     declineButton: string;
     acceptButton: string;
     visible: boolean;
-    setVisible: any;
-    onAccept: any;
+    setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+    onAccept: { (onClick: React.MouseEvent<HTMLButtonElement, MouseEvent>): void };
 }
 
 export const ConfirmationDialog = ({

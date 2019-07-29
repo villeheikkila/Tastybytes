@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface CheckInProps {
     id: string;
     product: string;
-    setOpenEdit: any;
+    setOpenEdit: React.Dispatch<boolean | undefined>;
 }
 
 export const EditCheckIn = ({ id, setOpenEdit, product }: CheckInProps): JSX.Element | null => {
@@ -85,7 +85,7 @@ export const EditCheckIn = ({ id, setOpenEdit, product }: CheckInProps): JSX.Ele
                 value={comment}
                 margin="normal"
                 variant="outlined"
-                onChange={(event: any): void => setComment(event.target.value)}
+                onChange={(event): void => setComment(event.target.value)}
             />
             <Typography component="p">Rating</Typography>
             <Rating value={rating} max={5} onChange={(i: number): void => setRating(i)} />

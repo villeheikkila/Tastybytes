@@ -53,11 +53,11 @@ export const AddProduct = (): JSX.Element | null => {
 
     const handleNameChange = (event: any): void => setName(event.target.value);
 
-    const handleCompanyChange = (value: any): void => setCompany(value);
+    const handleCompanyChange = (value: Suggestions): void => setCompany(value);
 
-    const handleCategoryChange = (value: any): void => setCategory(value);
+    const handleCategoryChange = (value: Suggestions): void => setCategory(value);
 
-    const handleSubCategoryChange = (value: any): void => setSubCategory(value);
+    const handleSubCategoryChange = (value: Suggestions): void => setSubCategory(value);
 
     const handleAddProduct = async (event: any): Promise<void> => {
         event.preventDefault();

@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface SearchInputBaseProps {
     search: string;
-    setSearch: any;
+    setSearch: React.Dispatch<React.SetStateAction<string>>;
     placeholder: string;
 }
 
@@ -66,7 +66,7 @@ export const SearchInputBase = ({ search, setSearch, placeholder }: SearchInputB
                     input: classes.inputInput,
                 }}
                 value={search}
-                onChange={({ target: value }): void => setSearch(value)}
+                onChange={({ target }): void => setSearch(target.value)}
                 inputProps={{ 'aria-label': 'Search' }}
             />
         </div>

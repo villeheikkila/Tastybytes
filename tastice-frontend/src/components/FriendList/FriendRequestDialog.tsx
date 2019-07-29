@@ -37,7 +37,7 @@ export const FriendRequestDialog = ({
                     label="Say hello!"
                     type="text"
                     fullWidth
-                    onChange={(event: any): void => setMessage(event.target.value)}
+                    onChange={(event): void => setMessage(event.target.value)}
                     value={message}
                 />
             </DialogContent>

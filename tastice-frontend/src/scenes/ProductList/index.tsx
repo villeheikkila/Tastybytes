@@ -22,10 +22,12 @@ export const ProductList = (): JSX.Element | null => {
         return null;
     }
 
-    const productsObject = products.map((product: any) => ({
-        name: product.name,
-        producer: product.producer,
+    const productsObjects = products.map((product: ProductObject) => ({
         id: product.id,
+        name: product.name,
+        company: product.company[0],
+        category: product.category[0],
+        subCategory: product.subCategory,
     }));
 
     if (productsQuery.data.products === undefined) {
@@ -45,13 +47,26 @@ export const ProductList = (): JSX.Element | null => {
         }
     };
 
-    const handleUpdateProduct = async (product: any): Promise<void> => {
+    interface UpdatedProductObject {
+        id: string;
+        name: string;
+        company: string;
+        category: string;
+        subCategory: [string];
+    }
+
+    const handleUpdateProduct = async (product: UpdatedProductObject): Promise<void> => {
+        const subCategoryArray = product.subCategory.map((subCategoryUnit: any): string => {
+            return subCategoryUnit.name;
+        });
+
         const result = await updateProduct({
             variables: {
                 id: product.id,
                 name: product.name,
-                producer: product.producer,
-                type: product.type,
+                company: product.company,
+                category: product.category,
+                subCategory: subCategoryArray,
             },
         });
 
@@ -68,10 +83,11 @@ export const ProductList = (): JSX.Element | null => {
             title="List of all products"
             columns={[
                 { title: 'Name', field: 'name' },
-                { title: 'Producer', field: 'producer' },
+                { title: 'Company', field: 'company.name' },
+                { title: 'Category', field: 'category.name' },
                 { title: 'ID', field: 'id' },
             ]}
-            data={productsObject}
+            data={productsObjects}
             editable={{
                 onRowUpdate: updatedProduct =>
                     new Promise(resolve => {
