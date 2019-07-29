@@ -41,7 +41,7 @@ const months: any = {
     11: 'December',
 };
 
-export const CheckInCard = ({ checkin, showProduct }: any) => {
+export const CheckInCard = ({ checkin, showProduct }: any): JSX.Element => {
     const classes = useStyles();
     const [visible, setVisible] = useState();
     const [openEdit, setOpenEdit] = useState();
@@ -73,13 +73,12 @@ export const CheckInCard = ({ checkin, showProduct }: any) => {
         refetchQueries: [{ query: PRODUCT, variables: { id: checkinObject.id } }],
     });
 
-    const handleDeleteCheckin = async () => {
+    const handleDeleteCheckin = async (): Promise<void> => {
         setVisible(false);
         const result = await deleteCheckin({
             variables: { id: checkinObject.checkinId },
         });
         if (result) {
-            console.log('result: ', result);
             notificationHandler({
                 message: `Checkin succesfully deleted`,
                 variant: 'success',

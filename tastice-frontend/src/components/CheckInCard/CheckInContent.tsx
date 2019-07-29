@@ -3,12 +3,12 @@ import Rating from 'material-ui-rating';
 
 import { Typography, CardContent } from '@material-ui/core';
 
-export interface CheckInContentProps {
+interface CheckInContentProps {
     rating: number;
     comment: string;
 }
 
-export const CheckInContent = ({ rating, comment }: CheckInContentProps) => {
+export const CheckInContent = ({ rating, comment }: CheckInContentProps): JSX.Element => {
     return (
         <CardContent>
             <Typography variant="h6" color="textSecondary" component="p">

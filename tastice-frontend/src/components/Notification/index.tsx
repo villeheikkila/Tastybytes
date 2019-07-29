@@ -4,7 +4,7 @@ import { NOTIFICATION } from '../../queries';
 import { useQuery } from '@apollo/react-hooks';
 import { Snackbar } from '@material-ui/core';
 
-export const Notifications = () => {
+export const Notifications = (): JSX.Element | null => {
     const [open, setOpen] = useState(true);
     const notification = useQuery(NOTIFICATION);
     useEffect(() => setOpen(true), [notification]);
@@ -13,7 +13,7 @@ export const Notifications = () => {
         return null;
     }
 
-    const handleCloseNotification = (event?: SyntheticEvent, reason?: string) => {
+    const handleCloseNotification = (event?: SyntheticEvent, reason?: string): void => {
         if (reason === 'clickaway') {
             return;
         }

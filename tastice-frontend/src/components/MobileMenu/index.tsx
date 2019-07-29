@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const MobileMenu = ({ setToken }: Token) => {
+export const MobileMenu = ({ setToken }: Token): JSX.Element => {
     const classes = useStyles();
     const [colorScheme, setColorScheme] = useState(false);
     const themeQuery = useQuery(THEME);
@@ -40,7 +40,7 @@ export const MobileMenu = ({ setToken }: Token) => {
         if (theme === 1) setColorScheme(true);
     }, [theme]);
 
-    const logout = () => {
+    const logout = (): void => {
         localStorage.clear();
         setToken(null);
     };

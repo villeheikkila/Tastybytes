@@ -28,9 +28,10 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const Discover = () => {
+export const Discover = (): JSX.Element | null => {
     const classes = useStyles();
     const filter = useQuery(FILTER);
+
     const searchProductsQuery = useQuery(SEARCH_PRODUCTS, {
         variables: { name: filter.data.filter },
         onError: errorHandler,

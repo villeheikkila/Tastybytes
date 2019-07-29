@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const UpdateProduct = ({ product }: any) => {
+export const UpdateProduct = ({ product }: any): JSX.Element | null => {
     const classes = useStyles();
     const [name, setName] = useState('');
     const [company, setCompany] = useState();
@@ -58,7 +58,7 @@ export const UpdateProduct = ({ product }: any) => {
 
     const handleSubCategoryChange = (value: any) => setSubCategory(value);
 
-    const handleAddProduct = async (event: any) => {
+    const handleAddProduct = async (event: any): Promise<void> => {
         event.preventDefault();
 
         const subCategoryArray = subCategory.map((e: any) => {

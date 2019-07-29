@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const Activity = () => {
+export const Activity = (): JSX.Element | null => {
     const classes = useStyles();
     const filter = useQuery(FILTER);
 

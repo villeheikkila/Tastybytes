@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles';
 import 'typeface-leckerli-one';
@@ -45,7 +45,13 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const SearchInputBase = ({ search, setSearch, placeholder }: any) => {
+interface SearchInputBaseProps {
+    search: string;
+    setSearch: any;
+    placeholder: string;
+}
+
+export const SearchInputBase = ({ search, setSearch, placeholder }: SearchInputBaseProps): JSX.Element => {
     const classes = useStyles();
 
     return (

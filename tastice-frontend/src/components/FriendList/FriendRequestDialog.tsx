@@ -10,7 +10,7 @@ import {
     DialogActions,
 } from '@material-ui/core';
 
-export const FriendRequestDialog = ({ visible, setVisible, message, setMessage, onClick }: any) => {
+export const FriendRequestDialog = ({ visible, setVisible, message, setMessage, onClick }: any): JSX.Element => {
     return (
         <Dialog open={visible} onClose={() => setVisible(false)} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Friend Request</DialogTitle>

@@ -19,7 +19,11 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Divider = ({ text }: any) => {
+interface DividerProps {
+    text: string;
+}
+
+export const Divider = ({ text }: DividerProps): JSX.Element => {
     const classes = useStyles();
 
     return (

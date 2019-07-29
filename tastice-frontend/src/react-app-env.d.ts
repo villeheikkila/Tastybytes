@@ -36,13 +36,6 @@ interface UserObject {
     user: User | null;
 }
 
-interface NotificationProps {
-    className?: string;
-    message?: string;
-    onClose?: () => void;
-    variant: 'success' | 'warning' | 'error' | 'info';
-}
-
 interface NotificationContent {
     message: string;
     variant: any;
@@ -55,20 +48,4 @@ interface NotificationObject {
 interface OptionType {
     label: string;
     value: string;
-}
-
-interface ConfirmationDialogProps {
-    content: string;
-    title: string;
-    description: string;
-    declineButton: string;
-    acceptButton: string;
-    visible: boolean;
-    setVisible: any;
-    onAccept: any;
-}
-
-interface CreateCheckInProps {
-    authorId: string;
-    productId: string;
 }

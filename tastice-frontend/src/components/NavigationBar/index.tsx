@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { themeSwitcher, filterChanger } from '../../utils';
+import { filterChanger } from '../../utils';
 import useReactRouter from 'use-react-router';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const NavigationBar = ({ setToken }: Token) => {
+export const NavigationBar = ({ setToken }: Token): JSX.Element => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [filter, setFilter] = useState('');

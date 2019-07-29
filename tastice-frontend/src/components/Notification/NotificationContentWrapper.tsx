@@ -47,7 +47,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export const NotificationContentWrapper = ({ className, message, onClose, variant }: NotificationProps) => {
+interface NotificationContentWrapperProps {
+    className?: string;
+    message?: string;
+    onClose?: () => void;
+    variant: 'success' | 'warning' | 'error' | 'info';
+}
+
+export const NotificationContentWrapper = ({
+    className,
+    message,
+    onClose,
+    variant,
+}: NotificationContentWrapperProps): JSX.Element => {
     const classes = useStyles();
     const Icon = variantIcon[variant];
 

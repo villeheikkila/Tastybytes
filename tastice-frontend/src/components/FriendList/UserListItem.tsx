@@ -5,8 +5,7 @@ import { errorHandler, notificationHandler } from '../../utils';
 import { FriendRequestDialog } from './FriendRequestDialog';
 import { ListItemText, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
-export const UserListItem = ({ userId, user }: any) => {
-    const { firstName, lastName, id } = user;
+export const UserListItem = ({ userId, user: { firstName, lastName, id } }: any): JSX.Element => {
     const [message, setMessage] = useState();
     const [visible, setVisible] = useState(false);
 
@@ -15,7 +14,7 @@ export const UserListItem = ({ userId, user }: any) => {
         refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId.id } }],
     });
 
-    const sendFriendRequest = async () => {
+    const sendFriendRequest = async (): Promise<void> => {
         setVisible(false);
         const result = await createFriendRequest({
             variables: {

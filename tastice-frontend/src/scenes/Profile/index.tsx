@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Profile = (id: any) => {
+export const Profile = (id: any): JSX.Element | null => {
     const classes = useStyles();
     const user = useQuery(USER, {
         variables: { id: id.id },

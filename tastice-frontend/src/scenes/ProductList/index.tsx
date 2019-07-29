@@ -4,7 +4,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { notificationHandler, errorHandler } from '../../utils';
 import MaterialTable from 'material-table';
 
-export const ProductList = () => {
+export const ProductList = (): JSX.Element | null => {
     const productsQuery = useQuery(ALL_PRODUCTS);
     const products = productsQuery.data.products;
 
@@ -32,7 +32,7 @@ export const ProductList = () => {
         return null;
     }
 
-    const handleDeleteProduct = async (id: any) => {
+    const handleDeleteProduct = async (id: any): Promise<void> => {
         const result = await deleteProduct({
             variables: { id },
         });
@@ -45,7 +45,7 @@ export const ProductList = () => {
         }
     };
 
-    const handleUpdateProduct = async (product: any) => {
+    const handleUpdateProduct = async (product: any): Promise<void> => {
         const result = await updateProduct({
             variables: {
                 id: product.id,

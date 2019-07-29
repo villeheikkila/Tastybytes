@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const Product = (id: any) => {
+export const Product = (id: any): JSX.Element | null => {
     const me = useQuery(ME);
     const classes = useStyles();
     const productsQuery = useQuery(PRODUCT, {

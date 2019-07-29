@@ -15,7 +15,13 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: any) => {
+interface DesktopMenuProps {
+    anchorEl: Element | null | undefined;
+    setAnchorEl: any;
+    setToken: any;
+}
+
+export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: DesktopMenuProps): JSX.Element => {
     const classes = useStyles();
     const [colorScheme, setColorScheme] = useState(false);
     const themeQuery = useQuery(THEME);
@@ -26,7 +32,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: any) => {
         if (theme === 1) setColorScheme(true);
     }, [theme]);
 
-    const logout = () => {
+    const logout = (): void => {
         localStorage.clear();
         setToken(null);
     };

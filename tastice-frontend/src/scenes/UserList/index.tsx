@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { notificationHandler, errorHandler } from '../../utils';
 import MaterialTable from 'material-table';
 
-export const UserList = () => {
+export const UserList = (): JSX.Element | null => {
     const usersQuery = useQuery(ALL_USERS);
     const users = usersQuery.data.users;
 
@@ -23,7 +23,7 @@ export const UserList = () => {
         return null;
     }
 
-    const handleDeleteUser = async (id: any) => {
+    const handleDeleteUser = async (id: string): Promise<void> => {
         const result = await deleteUser({
             variables: { id },
         });
@@ -35,7 +35,7 @@ export const UserList = () => {
         }
     };
 
-    const handleUpdateUser = async (user: any) => {
+    const handleUpdateUser = async (user: any): Promise<void> => {
         const result = await updateUser({
             variables: {
                 id: user.id,

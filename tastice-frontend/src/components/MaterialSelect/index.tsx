@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const NoOptionsMessage = ({ selectProps, innerProps, children }: any) => {
+const NoOptionsMessage = ({ selectProps, innerProps, children }: any): JSX.Element => {
     return (
         <Typography color="textSecondary" className={selectProps.classes.noOptionsMessage} {...innerProps}>
             {children}
@@ -80,11 +80,11 @@ const NoOptionsMessage = ({ selectProps, innerProps, children }: any) => {
 
 type InputComponentProps = Pick<BaseTextFieldProps, 'inputRef'> & HTMLAttributes<HTMLDivElement>;
 
-const inputComponent = ({ inputRef, ...props }: InputComponentProps) => {
+const inputComponent = ({ inputRef, ...props }: InputComponentProps): JSX.Element => {
     return <div ref={inputRef} {...props} />;
 };
 
-const Control = ({ children, innerProps, innerRef, selectProps: { classes, TextFieldProps } }: any) => {
+const Control = ({ children, innerProps, innerRef, selectProps: { classes, TextFieldProps } }: any): JSX.Element => {
     return (
         <TextField
             fullWidth
@@ -102,7 +102,7 @@ const Control = ({ children, innerProps, innerRef, selectProps: { classes, TextF
     );
 };
 
-const Option = ({ innerRef, isFocused, isSelected, innerProps, children }: any) => {
+const Option = ({ innerRef, isFocused, isSelected, innerProps, children }: any): JSX.Element => {
     return (
         <MenuItem
             ref={innerRef}
@@ -118,7 +118,7 @@ const Option = ({ innerRef, isFocused, isSelected, innerProps, children }: any) 
     );
 };
 
-const Placeholder = ({ selectProps, innerProps, children }: any) => {
+const Placeholder = ({ selectProps, innerProps, children }: any): JSX.Element => {
     return (
         <Typography color="textSecondary" className={selectProps.classes.placeholder} {...innerProps}>
             {children}
@@ -126,7 +126,7 @@ const Placeholder = ({ selectProps, innerProps, children }: any) => {
     );
 };
 
-const SingleValue = ({ selectProps, innerProps, children }: any) => {
+const SingleValue = ({ selectProps, innerProps, children }: any): JSX.Element => {
     return (
         <Typography className={selectProps.classes.singleValue} {...innerProps}>
             {children}
@@ -134,11 +134,11 @@ const SingleValue = ({ selectProps, innerProps, children }: any) => {
     );
 };
 
-const ValueContainer = ({ selectProps, children }: any) => {
+const ValueContainer = ({ selectProps, children }: any): JSX.Element => {
     return <div className={selectProps.classes.valueContainer}>{children}</div>;
 };
 
-const MultiValue = ({ selectProps, children, removeProps, isFocused }: any) => {
+const MultiValue = ({ selectProps, children, removeProps, isFocused }: any): JSX.Element => {
     return (
         <Chip
             tabIndex={-1}
@@ -152,7 +152,7 @@ const MultiValue = ({ selectProps, children, removeProps, isFocused }: any) => {
     );
 };
 
-const Menu = ({ selectProps, innerProps, children }: any) => {
+const Menu = ({ selectProps, innerProps, children }: any): JSX.Element => {
     return (
         <Paper square className={selectProps.classes.paper} {...innerProps}>
             {children}
@@ -171,7 +171,15 @@ const components = {
     ValueContainer,
 };
 
-export const MaterialSelect = ({ placeholder, label, isCreatable, suggestions, value, isMulti, onChange }: any) => {
+export const MaterialSelect = ({
+    placeholder,
+    label,
+    isCreatable,
+    suggestions,
+    value,
+    isMulti,
+    onChange,
+}: any): JSX.Element => {
     const classes = useStyles();
     const theme = useTheme();
 

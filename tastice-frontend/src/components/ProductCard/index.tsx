@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const ProductCard = ({ product, showMenu }: ProductObject) => {
+export const ProductCard = ({ product, showMenu }: ProductObject): JSX.Element => {
     const classes = useStyles();
     const [visible, setVisible] = useState(false);
     const [showEditProduct, setShowEditProduct] = useState();
@@ -53,7 +53,7 @@ export const ProductCard = ({ product, showMenu }: ProductObject) => {
 
     const { id, name, company, category, subCategory } = product;
 
-    const handleDeleteProduct = async () => {
+    const handleDeleteProduct = async (): Promise<void> => {
         setVisible(false);
         const result = await deleteProduct({
             variables: { id: product.id },

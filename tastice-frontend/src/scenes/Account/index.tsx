@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Account = ({ setToken }: any) => {
+export const Account = ({ setToken }: Token): JSX.Element | null => {
     const me = useQuery(ME);
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
@@ -66,7 +66,7 @@ export const Account = ({ setToken }: any) => {
 
     const user = me.data.me;
 
-    const handleUpdateUser = async (event: any) => {
+    const handleUpdateUser = async (): Promise<void> => {
         const result = await updateUser({
             variables: {
                 id: user.id,
@@ -84,7 +84,7 @@ export const Account = ({ setToken }: any) => {
         }
     };
 
-    const handleDeleteUser = async () => {
+    const handleDeleteUser = async (): Promise<void> => {
         setVisible(false);
         await deleteUser({
             variables: { id: user.id },

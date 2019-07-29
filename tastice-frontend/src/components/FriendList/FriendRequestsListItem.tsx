@@ -5,8 +5,7 @@ import { errorHandler, notificationHandler } from '../../utils';
 
 import { ListItemText, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
-export const FriendRequestListItem = ({ userId, request }: any) => {
-    const { sender, id } = request;
+export const FriendRequestListItem = ({ userId, request: { sender, id } }: any): JSX.Element => {
     const { firstName, lastName } = sender[0];
 
     const [acceptFriendRequestMutation] = useMutation(ACCEPT_FRIENDREQUEST, {
@@ -14,7 +13,7 @@ export const FriendRequestListItem = ({ userId, request }: any) => {
         refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId.id } }],
     });
 
-    const acceptFriendRequest = async () => {
+    const acceptFriendRequest = async (): Promise<void> => {
         const result = await acceptFriendRequestMutation({
             variables: {
                 id,

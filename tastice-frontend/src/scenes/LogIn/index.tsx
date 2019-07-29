@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const LogIn = ({ setToken }: Token) => {
+export const LogIn = ({ setToken }: Token): JSX.Element => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { history } = useReactRouter();
@@ -59,7 +59,7 @@ export const LogIn = ({ setToken }: Token) => {
         }
     };
 
-    const handlePushToSignUp = () => history.push('/signup');
+    const handlePushToSignUp = (): void => history.push('/signup');
 
     return (
         <Container component="main" maxWidth="xs">

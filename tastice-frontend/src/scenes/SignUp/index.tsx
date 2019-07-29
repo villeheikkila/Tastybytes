@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const SignUp = ({ setToken }: Token) => {
+export const SignUp = ({ setToken }: Token): JSX.Element => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -43,13 +43,11 @@ export const SignUp = ({ setToken }: Token) => {
         onError: errorHandler,
     });
 
-    const handleSignUp = async (event: any) => {
+    const handleSignUp = async (event: any): Promise<void> => {
         event.preventDefault();
-
         const result = await signup({
             variables: { firstName, lastName, email, password },
         });
-
         if (result) {
             const token: string = result.data.signup.token;
             const userId: string = result.data.signup.user.id;
@@ -59,15 +57,15 @@ export const SignUp = ({ setToken }: Token) => {
         }
     };
 
-    const handlePushToLogin = () => history.push('/');
+    const handlePushToLogin = (): void => history.push('/');
 
-    const handlePasswordChange = (event: any) => setPassword(event.target.value);
+    const handlePasswordChange = (event: any): void => setPassword(event.target.value);
 
-    const handleEmailChange = (event: any) => setEmail(event.target.value);
+    const handleEmailChange = (event: any): void => setEmail(event.target.value);
 
-    const handleLastNameChange = (event: any) => setLastName(event.target.value);
+    const handleLastNameChange = (event: any): void => setLastName(event.target.value);
 
-    const handleFirstNameChange = (event: any) => setFirstName(event.target.value);
+    const handleFirstNameChange = (event: any): void => setFirstName(event.target.value);
 
     return (
         <Container component="main" maxWidth="xs">

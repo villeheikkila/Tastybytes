@@ -2,6 +2,17 @@ import React from 'react';
 
 import { Dialog, DialogContent, DialogTitle, DialogContentText, Button, DialogActions } from '@material-ui/core';
 
+interface ConfirmationDialogProps {
+    content: string;
+    title: string;
+    description: string;
+    declineButton: string;
+    acceptButton: string;
+    visible: boolean;
+    setVisible: any;
+    onAccept: any;
+}
+
 export const ConfirmationDialog = ({
     content,
     title,
@@ -11,7 +22,7 @@ export const ConfirmationDialog = ({
     visible,
     setVisible,
     onAccept,
-}: ConfirmationDialogProps) => {
+}: ConfirmationDialogProps): JSX.Element => {
     return (
         <div>
             <Dialog

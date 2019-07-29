@@ -25,7 +25,12 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps) => {
+interface CreateCheckInProps {
+    authorId: string;
+    productId: string;
+}
+
+export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.Element => {
     const classes = useStyles();
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
@@ -34,7 +39,7 @@ export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps) => {
         refetchQueries: [{ query: ALL_CHECKINS }, { query: ME }, { query: PRODUCT, variables: { id: productId } }],
     });
 
-    const handeCheckIn = async () => {
+    const handeCheckIn = async (): Promise<void> => {
         const result = await createCheckin({
             variables: {
                 authorId: authorId,

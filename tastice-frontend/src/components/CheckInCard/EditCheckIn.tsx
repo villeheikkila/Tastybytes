@@ -24,13 +24,13 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export interface CheckInProps {
+interface CheckInProps {
     id: string;
     product: string;
     setOpenEdit: any;
 }
 
-export const EditCheckIn = ({ id, setOpenEdit, product }: CheckInProps) => {
+export const EditCheckIn = ({ id, setOpenEdit, product }: CheckInProps): JSX.Element | null => {
     const classes = useStyles();
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
@@ -49,7 +49,7 @@ export const EditCheckIn = ({ id, setOpenEdit, product }: CheckInProps) => {
         }
     }, [checkinQuery.data.checkin]);
 
-    const handleEditCheckInEdit = async () => {
+    const handleEditCheckInEdit = async (): Promise<void> => {
         setOpenEdit(false);
         const result = await updateCheckin({
             variables: {

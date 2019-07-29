@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ME, FILTER, SEARCH_USERS, FRIENDREQUEST } from '../../queries';
+import { ME, SEARCH_USERS, FRIENDREQUEST } from '../../queries';
 import { useQuery } from '@apollo/react-hooks';
 import { UserListItem } from './UserListItem';
 import { FriendListItem } from './FriendListItem';
@@ -7,17 +7,7 @@ import { FriendRequestListItem } from './FriendRequestsListItem';
 import { errorHandler } from '../../utils';
 import { fade } from '@material-ui/core/styles';
 
-import {
-    createStyles,
-    InputBase,
-    Card,
-    Theme,
-    makeStyles,
-    Divider,
-    List,
-    ListSubheader,
-    TextField,
-} from '@material-ui/core';
+import { createStyles, InputBase, Card, Theme, makeStyles, Divider, List, ListSubheader } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -67,15 +57,13 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const FriendList = (id: any) => {
+export const FriendList = (id: any): JSX.Element | null => {
     const classes = useStyles();
     const me = useQuery(ME);
-    const filter = useQuery(FILTER);
-    console.log('filter: ', filter.data.filter);
     const [search, setSearch] = useState('');
 
     const usersQuery = useQuery(SEARCH_USERS, {
-        variables: { name: search || filter.data.filter },
+        variables: { name: search },
         onError: errorHandler,
     });
 

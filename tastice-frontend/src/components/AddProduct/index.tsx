@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const AddProduct = () => {
+export const AddProduct = (): JSX.Element | null => {
     const classes = useStyles();
     const [name, setName] = useState('');
     const [company, setCompany] = useState();
@@ -48,15 +48,15 @@ export const AddProduct = () => {
         return null;
     }
 
-    const handleNameChange = (event: any) => setName(event.target.value);
+    const handleNameChange = (event: any): void => setName(event.target.value);
 
-    const handleCompanyChange = (value: any) => setCompany(value);
+    const handleCompanyChange = (value: any): void => setCompany(value);
 
-    const handleCategoryChange = (value: any) => setCategory(value);
+    const handleCategoryChange = (value: any): void => setCategory(value);
 
-    const handleSubCategoryChange = (value: any) => setSubCategory(value);
+    const handleSubCategoryChange = (value: any): void => setSubCategory(value);
 
-    const handleAddProduct = async (event: any) => {
+    const handleAddProduct = async (event: any): Promise<void> => {
         event.preventDefault();
 
         const subCategoryArray = subCategory.map((e: any) => {

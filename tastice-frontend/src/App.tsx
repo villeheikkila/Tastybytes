@@ -38,14 +38,14 @@ const whiteTheme = createMuiTheme({
     },
 });
 
-const App = () => {
+const App = (): JSX.Element => {
     const [token, setToken] = useState();
     const [userId, setUserId] = useState();
     const themeSwitcher = useQuery(THEME);
     const theme = themeSwitcher.data.theme ? 1 : 0;
     const themes = [darkTheme, whiteTheme];
 
-    useEffect(() => {
+    useEffect((): void => {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
         if (token) {

@@ -8,8 +8,7 @@ import { Link } from 'react-router-dom';
 
 import { ListItemText, IconButton, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
-export const FriendListItem = ({ userId, user }: any) => {
-    const { firstName, lastName, id } = user;
+export const FriendListItem = ({ userId, user: { firstName, lastName, id } }: any): JSX.Element => {
     const [visible, setVisible] = useState(false);
 
     const [createFriendRequest] = useMutation(DELETE_FRIEND, {
@@ -17,7 +16,7 @@ export const FriendListItem = ({ userId, user }: any) => {
         refetchQueries: [{ query: ME }],
     });
 
-    const handleDeleteFriend = async () => {
+    const handleDeleteFriend = async (): Promise<void> => {
         setVisible(false);
         const result = await createFriendRequest({
             variables: {
