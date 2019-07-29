@@ -62,8 +62,8 @@ export const AddProduct = (): JSX.Element | null => {
     const handleAddProduct = async (event: any): Promise<void> => {
         event.preventDefault();
 
-        const subCategoryArray = subCategory.map((e: any): string => {
-            return e.value;
+        const subCategoryArray = subCategory.map((subCategoryItem: Suggestions): string => {
+            return subCategoryItem.value;
         });
 
         const result = await addProduct({

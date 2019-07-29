@@ -5,7 +5,12 @@ import { errorHandler, notificationHandler } from '../../utils';
 import { FriendRequestDialog } from './FriendRequestDialog';
 import { ListItemText, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
-export const UserListItem = ({ userId, user: { firstName, lastName, id } }: any): JSX.Element => {
+interface UserListItemProps {
+    userId: IdObject;
+    user: SimpleUserObject;
+}
+
+export const UserListItem = ({ userId, user: { firstName, lastName, id } }: UserListItemProps): JSX.Element => {
     const [message, setMessage] = useState();
     const [visible, setVisible] = useState(false);
 

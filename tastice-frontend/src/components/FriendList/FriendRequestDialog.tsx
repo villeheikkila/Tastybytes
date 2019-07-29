@@ -10,7 +10,21 @@ import {
     DialogActions,
 } from '@material-ui/core';
 
-export const FriendRequestDialog = ({ visible, setVisible, message, setMessage, onClick }: any): JSX.Element => {
+interface FriendRequestDialogProps {
+    visible: boolean;
+    message: string;
+    setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+    setMessage: React.Dispatch<React.SetStateAction<string | null>>;
+    onClick: { (onClick: React.MouseEvent<HTMLButtonElement, MouseEvent>): void };
+}
+
+export const FriendRequestDialog = ({
+    visible,
+    setVisible,
+    message,
+    setMessage,
+    onClick,
+}: FriendRequestDialogProps): JSX.Element => {
     return (
         <Dialog open={visible} onClose={(): void => setVisible(false)} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Friend Request</DialogTitle>

@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Profile = (id: any): JSX.Element | null => {
+export const Profile = (id: IdObject): JSX.Element | null => {
     const classes = useStyles();
     const user = useQuery(USER, {
         variables: { id: id.id },
@@ -75,8 +75,8 @@ export const Profile = (id: any): JSX.Element | null => {
             <Divider text={dividerText} />
 
             {userObject.checkins.map(
-                (checkin: any): JSX.Element => (
-                    <CheckInCard key={checkin.createdAt} checkin={checkin} showProduct={true} />
+                (checkin: CheckInObject): JSX.Element => (
+                    <CheckInCard key={checkin.id} checkin={checkin} showProduct={true} />
                 ),
             )}
         </div>

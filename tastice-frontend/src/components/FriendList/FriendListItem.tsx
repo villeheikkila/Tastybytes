@@ -8,7 +8,12 @@ import { Link } from 'react-router-dom';
 
 import { ListItemText, IconButton, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
-export const FriendListItem = ({ userId, user: { firstName, lastName, id } }: any): JSX.Element => {
+interface FriendListItemProps {
+    userId: IdObject;
+    user: SimpleUserObject;
+}
+
+export const FriendListItem = ({ userId, user: { firstName, lastName, id } }: FriendListItemProps): JSX.Element => {
     const [visible, setVisible] = useState(false);
 
     const [createFriendRequest] = useMutation(DELETE_FRIEND, {

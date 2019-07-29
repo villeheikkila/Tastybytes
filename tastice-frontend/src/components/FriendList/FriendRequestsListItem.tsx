@@ -5,7 +5,12 @@ import { errorHandler, notificationHandler } from '../../utils';
 
 import { ListItemText, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
-export const FriendRequestListItem = ({ userId, request: { sender, id } }: any): JSX.Element => {
+interface FriendRequestListItemProps {
+    userId: IdObject;
+    request: FriendRequestObject;
+}
+
+export const FriendRequestListItem = ({ userId, request: { sender, id } }: FriendRequestListItemProps): JSX.Element => {
     const { firstName, lastName } = sender[0];
 
     const [acceptFriendRequestMutation] = useMutation(ACCEPT_FRIENDREQUEST, {

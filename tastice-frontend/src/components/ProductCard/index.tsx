@@ -29,7 +29,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const ProductCard = ({ product, showMenu }: ProductObject): JSX.Element => {
+interface ProductCardProps {
+    product: ProductObject;
+    showMenu: boolean;
+}
+
+export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Element => {
     const classes = useStyles();
     const [visible, setVisible] = useState(false);
     const [showEditProduct, setShowEditProduct] = useState();
@@ -110,19 +115,24 @@ export const ProductCard = ({ product, showMenu }: ProductObject): JSX.Element =
                                     {company[0].name}
                                 </Typography>
                                 {category.map(
-                                    (e: any): JSX.Element => (
-                                        <Chip label={e.name} key={e.name} className={classes.chip} color="default" />
+                                    (CategoryItem: NameId): JSX.Element => (
+                                        <Chip
+                                            label={CategoryItem.name}
+                                            key={CategoryItem.name}
+                                            className={classes.chip}
+                                            color="default"
+                                        />
                                     ),
                                 )}
                                 <Grid item>
                                     {subCategory.map(
-                                        (e: any): JSX.Element => (
+                                        (subCategoryItem: NameId): JSX.Element => (
                                             <Chip
                                                 variant="outlined"
                                                 size="small"
                                                 color="default"
-                                                label={e.name}
-                                                key={e.name}
+                                                label={subCategoryItem.name}
+                                                key={subCategoryItem.name}
                                                 className={classes.chip}
                                             />
                                         ),

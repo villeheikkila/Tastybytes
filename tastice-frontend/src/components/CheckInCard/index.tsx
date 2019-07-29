@@ -41,7 +41,12 @@ const months: any = {
     11: 'December',
 };
 
-export const CheckInCard = ({ checkin, showProduct }: any): JSX.Element => {
+interface CheckInCardProps {
+    checkin: CheckInObject;
+    showProduct: boolean;
+}
+
+export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Element => {
     const classes = useStyles();
     const [visible, setVisible] = useState();
     const [openEdit, setOpenEdit] = useState();
@@ -56,7 +61,6 @@ export const CheckInCard = ({ checkin, showProduct }: any): JSX.Element => {
         name: checkin.product,
         id: checkin.product.id,
         checkinId: checkin.id,
-        company: checkin.product.company.name,
         date: new Date(checkin.createdAt),
     };
 

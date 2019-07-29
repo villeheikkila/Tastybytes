@@ -35,7 +35,7 @@ export const UserList = (): JSX.Element | null => {
         }
     };
 
-    const handleUpdateUser = async (user: any): Promise<void> => {
+    const handleUpdateUser = async (user: User): Promise<void> => {
         const result = await updateUser({
             variables: {
                 id: user.id,

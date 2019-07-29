@@ -8,16 +8,12 @@ interface Product {
     subCategory: any;
 }
 
-interface ProductObject {
-    product: Product;
-    showMenu: boolean;
-}
-
 interface User {
+    id: string;
     firstName: string;
     lastName: string;
     email: string;
-    id: string;
+    admin: boolean;
 }
 
 interface UserList {
@@ -29,7 +25,7 @@ interface ProductList {
 }
 
 interface Token {
-    setToken: any;
+    setToken: React.Dispatch<string | null>;
 }
 
 interface UserObject {
@@ -56,17 +52,46 @@ interface Suggestions {
     id: string;
 }
 
-interface SubCategory {
-    id: string;
-    name: string;
-}
 interface Category {
     id: string;
     name: string;
-    subCategory: SubCategory[];
+    subCategory: NameId[];
 }
 
 interface NameId {
     name: string;
     id: string;
+}
+
+interface SimpleUserObject {
+    id: string;
+    firstName: string;
+    lastName: string;
+}
+
+interface IdObject {
+    id: string;
+}
+
+interface ProductObject {
+    name: string;
+    id: string;
+    category: [NameId];
+    subCategory: [NameId];
+    company: [NameId];
+}
+
+interface CheckInObject {
+    id: string;
+    rating: number;
+    comment: string;
+    createdAt: Date;
+    author: SimpleUserObject;
+    product: ProductObject;
+}
+
+interface FriendRequestObject {
+    id: string;
+    receiver: SimpleUserObject;
+    sender: [SimpleUserObject];
 }

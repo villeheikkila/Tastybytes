@@ -17,8 +17,8 @@ const useStyles = makeStyles(() =>
 
 interface DesktopMenuProps {
     anchorEl: Element | null | undefined;
-    setAnchorEl: any;
-    setToken: any;
+    setAnchorEl: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+    setToken: React.Dispatch<string | null>;
 }
 
 export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: DesktopMenuProps): JSX.Element => {

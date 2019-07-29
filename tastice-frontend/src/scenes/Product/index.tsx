@@ -14,14 +14,14 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const Product = (id: any): JSX.Element | null => {
+export const Product = (id: IdObject): JSX.Element | null => {
     const me = useQuery(ME);
     const classes = useStyles();
     const productsQuery = useQuery(PRODUCT, {
         variables: { id: id.id },
     });
 
-    if (productsQuery.data === undefined || productsQuery.data.product === undefined) {
+    if (me.data === undefined || productsQuery.data === undefined || productsQuery.data.product === undefined) {
         return null;
     }
 
@@ -46,8 +46,8 @@ export const Product = (id: any): JSX.Element | null => {
             <Divider text={dividerText} />
 
             {product.checkins.map(
-                (checkin: any): JSX.Element => (
-                    <CheckInCard key={checkin.createdAt} checkin={checkin} />
+                (checkin: CheckInObject): JSX.Element => (
+                    <CheckInCard key={checkin.id} checkin={checkin} showProduct={false} />
                 ),
             )}
         </>

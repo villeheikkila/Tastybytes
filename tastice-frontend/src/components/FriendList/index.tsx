@@ -92,7 +92,7 @@ export const FriendList = (id: any): JSX.Element | null => {
                     }
                 >
                     {friends.map(
-                        (user: any): JSX.Element => (
+                        (user: SimpleUserObject): JSX.Element => (
                             <div key={user.id.toUpperCase()}>
                                 <Divider light />
                                 <FriendListItem key={user.id} user={user} userId={id} />
@@ -110,10 +110,10 @@ export const FriendList = (id: any): JSX.Element | null => {
                         subheader={<ListSubheader component="div">Pending Friend Requests</ListSubheader>}
                     >
                         {friendRequests.map(
-                            (user: any): JSX.Element => (
-                                <div key={user.id.toUpperCase()}>
+                            (request: FriendRequestObject): JSX.Element => (
+                                <div key={request.id.toUpperCase()}>
                                     <Divider light />
-                                    <FriendRequestListItem key={user.id} request={user} userId={id} />
+                                    <FriendRequestListItem key={request.id} request={request} userId={id} />
                                     <Divider light />
                                 </div>
                             ),
@@ -137,14 +137,14 @@ export const FriendList = (id: any): JSX.Element | null => {
                                 input: classes.inputInput,
                             }}
                             value={search}
-                            onChange={(event: any): void => setSearch(event.target.value)}
+                            onChange={({ target: { value } }): void => setSearch(value)}
                             inputProps={{ 'aria-label': 'Search' }}
                         />
                     </div>
                 }
             >
                 {users.map(
-                    (user: any): JSX.Element => (
+                    (user: SimpleUserObject): JSX.Element => (
                         <div key={user.id.toUpperCase()}>
                             <Divider light />
                             <UserListItem key={user.id} user={user} userId={id} />
