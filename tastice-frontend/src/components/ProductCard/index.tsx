@@ -10,18 +10,7 @@ import { ConfirmationDialog } from '../ConfirmationDialog';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { UpdateProduct } from './UpdateProduct';
 
-import {
-    Link,
-    Avatar,
-    Typography,
-    CardActionArea,
-    makeStyles,
-    Chip,
-    Grid,
-    IconButton,
-    Menu,
-    MenuItem,
-} from '@material-ui/core';
+import { Link, Avatar, Typography, CardActionArea, makeStyles, Chip, Grid, Menu, MenuItem } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     actionArea: {
@@ -139,9 +128,7 @@ export const ProductCard = ({ product, showMenu }: ProductObject): JSX.Element =
                         </Grid>
                         {showMenu && (
                             <Grid>
-                                <IconButton aria-label="Settings" {...bindTrigger(menuState)}>
-                                    <MoreVertIcon />
-                                </IconButton>
+                                <MoreVertIcon {...bindTrigger(menuState)} />
                                 {menu}
                             </Grid>
                         )}
