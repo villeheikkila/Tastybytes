@@ -31,9 +31,13 @@ interface CreateCheckInProps {
 }
 
 export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.Element => {
+    console.log('authorId: ', authorId);
+    console.log('productId: ', productId);
     const classes = useStyles();
     const [rating, setRating] = useState();
+    console.log('rating: ', rating);
     const [comment, setComment] = useState();
+    console.log('comment: ', comment);
     const [createCheckin] = useMutation(CREATE_CHECKIN, {
         onError: errorHandler,
         refetchQueries: [{ query: ALL_CHECKINS }, { query: ME }, { query: PRODUCT, variables: { id: productId } }],
@@ -42,8 +46,8 @@ export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.
     const handeCheckIn = async (): Promise<void> => {
         const result = await createCheckin({
             variables: {
-                authorId: authorId,
-                productId: productId,
+                authorId,
+                productId,
                 comment,
                 rating,
             },
@@ -71,7 +75,7 @@ export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
-                    onChange={({ target: value }): void => setComment(value)}
+                    onChange={({ target }): void => setComment(target.value)}
                 />
                 <Typography component="p">Rating</Typography>
                 <Rating value={rating} max={5} onChange={(i: number): void => setRating(i)} />
