@@ -5,7 +5,7 @@ import { THEME } from '../../queries';
 import { useQuery } from '@apollo/react-hooks';
 
 import { makeStyles, Switch, Menu, Badge, MenuItem, createStyles } from '@material-ui/core';
-import { ExitToApp, BrightnessLow, BrightnessHigh, AccountCircle } from '@material-ui/icons/';
+import { ExitToApp, BrightnessLow, BrightnessHigh, AccountCircle, PersonOutline } from '@material-ui/icons/';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -71,6 +71,12 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: DesktopMenuProp
                     <AccountCircle />
                 </Badge>
                 Account
+            </MenuItem>
+            <MenuItem button component={Link} to="/friends">
+                <Badge badgeContent={0} color="secondary" className={classes.badge}>
+                    <PersonOutline />
+                </Badge>
+                Friends
             </MenuItem>
             <MenuItem onClick={logout}>
                 <Badge badgeContent={0} color="secondary" className={classes.badge}>
