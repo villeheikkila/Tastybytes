@@ -45,11 +45,6 @@ export const MobileMenu = ({ setToken }: Token) => {
         setToken(null);
     };
 
-    const handleColorSchemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        themeSwitcher(event.target.checked);
-        setColorScheme(event.target.checked);
-    };
-
     return (
         <div className={classes.container}>
             <Typography variant="h4" color="textSecondary" component="p">
@@ -71,7 +66,9 @@ export const MobileMenu = ({ setToken }: Token) => {
                     <ListItemText primary="Change color scheme" />
                     <Switch
                         checked={colorScheme}
-                        onChange={handleColorSchemeChange}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            themeSwitcher(event.target.checked);
+                        }}
                         value="color scheme"
                         inputProps={{ 'aria-label': 'secondary checkbox' }}
                     />

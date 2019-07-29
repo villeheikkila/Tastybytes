@@ -70,10 +70,10 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const NoOptionsMessage = (props: any) => {
+const NoOptionsMessage = ({ selectProps, innerProps, children }: any) => {
     return (
-        <Typography color="textSecondary" className={props.selectProps.classes.noOptionsMessage} {...props.innerProps}>
-            {props.children}
+        <Typography color="textSecondary" className={selectProps.classes.noOptionsMessage} {...innerProps}>
+            {children}
         </Typography>
     );
 };
@@ -84,14 +84,7 @@ const inputComponent = ({ inputRef, ...props }: InputComponentProps) => {
     return <div ref={inputRef} {...props} />;
 };
 
-const Control = (props: any) => {
-    const {
-        children,
-        innerProps,
-        innerRef,
-        selectProps: { classes, TextFieldProps },
-    } = props;
-
+const Control = ({ children, innerProps, innerRef, selectProps: { classes, TextFieldProps } }: any) => {
     return (
         <TextField
             fullWidth
@@ -109,60 +102,60 @@ const Control = (props: any) => {
     );
 };
 
-const Option = (props: any) => {
+const Option = ({ innerRef, isFocused, isSelected, innerProps, children }: any) => {
     return (
         <MenuItem
-            ref={props.innerRef}
-            selected={props.isFocused}
+            ref={innerRef}
+            selected={isFocused}
             component="div"
             style={{
-                fontWeight: props.isSelected ? 500 : 400,
+                fontWeight: isSelected ? 500 : 400,
             }}
-            {...props.innerProps}
+            {...innerProps}
         >
-            {props.children}
+            {children}
         </MenuItem>
     );
 };
 
-const Placeholder = (props: any) => {
+const Placeholder = ({ selectProps, innerProps, children }: any) => {
     return (
-        <Typography color="textSecondary" className={props.selectProps.classes.placeholder} {...props.innerProps}>
-            {props.children}
+        <Typography color="textSecondary" className={selectProps.classes.placeholder} {...innerProps}>
+            {children}
         </Typography>
     );
 };
 
-const SingleValue = (props: any) => {
+const SingleValue = ({ selectProps, innerProps, children }: any) => {
     return (
-        <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
-            {props.children}
+        <Typography className={selectProps.classes.singleValue} {...innerProps}>
+            {children}
         </Typography>
     );
 };
 
-const ValueContainer = (props: any) => {
-    return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
+const ValueContainer = ({ selectProps, children }: any) => {
+    return <div className={selectProps.classes.valueContainer}>{children}</div>;
 };
 
-const MultiValue = (props: any) => {
+const MultiValue = ({ selectProps, children, removeProps, isFocused }: any) => {
     return (
         <Chip
             tabIndex={-1}
-            label={props.children}
-            className={clsx(props.selectProps.classes.chip, {
-                [props.selectProps.classes.chipFocused]: props.isFocused,
+            label={children}
+            className={clsx(selectProps.classes.chip, {
+                [selectProps.classes.chipFocused]: isFocused,
             })}
-            onDelete={props.removeProps.onClick}
-            deleteIcon={<CancelIcon {...props.removeProps} />}
+            onDelete={removeProps.onClick}
+            deleteIcon={<CancelIcon {...removeProps} />}
         />
     );
 };
 
-const Menu = (props: any) => {
+const Menu = ({ selectProps, innerProps, children }: any) => {
     return (
-        <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
-            {props.children}
+        <Paper square className={selectProps.classes.paper} {...innerProps}>
+            {children}
         </Paper>
     );
 };
@@ -178,7 +171,7 @@ const components = {
     ValueContainer,
 };
 
-export const MaterialSelect = (props: any) => {
+export const MaterialSelect = ({ placeholder, label, isCreatable, suggestions, value, isMulti, onChange }: any) => {
     const classes = useStyles();
     const theme = useTheme();
 
@@ -194,24 +187,24 @@ export const MaterialSelect = (props: any) => {
 
     return (
         <div className={classes.root}>
-            {props.isCreatable ? (
+            {isCreatable ? (
                 <CreatableSelect
                     classes={classes}
                     styles={selectStyles}
                     inputId="react-select-multiple"
                     TextFieldProps={{
-                        label: props.label,
+                        label: label,
                         InputLabelProps: {
                             htmlFor: 'react-select-multiple',
                             shrink: true,
                         },
                     }}
-                    placeholder={props.placeholder}
-                    options={props.suggestions}
+                    placeholder={placeholder}
+                    options={suggestions}
                     components={components}
-                    value={props.value}
-                    onChange={props.onChange}
-                    isMulti={props.isMulti}
+                    value={value}
+                    onChange={onChange}
+                    isMulti={isMulti}
                 />
             ) : (
                 <Select
@@ -219,18 +212,18 @@ export const MaterialSelect = (props: any) => {
                     styles={selectStyles}
                     inputId="react-select-multiple"
                     TextFieldProps={{
-                        label: props.label,
+                        label,
                         InputLabelProps: {
                             htmlFor: 'react-select-multiple',
                             shrink: true,
                         },
                     }}
-                    placeholder={props.placeholder}
-                    options={props.suggestions}
+                    placeholder={placeholder}
+                    options={suggestions}
                     components={components}
-                    value={props.value}
-                    onChange={props.onChange}
-                    isMulti={props.isMulti}
+                    value={value}
+                    onChange={onChange}
+                    isMulti={isMulti}
                 />
             )}
         </div>

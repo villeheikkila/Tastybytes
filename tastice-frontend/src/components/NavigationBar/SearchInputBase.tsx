@@ -45,8 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const SearchInputBase = (props: any) => {
-    const { search, setSearch, placeholder } = props;
+export const SearchInputBase = ({ search, setSearch, placeholder }: any) => {
     const classes = useStyles();
 
     return (

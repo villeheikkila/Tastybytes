@@ -15,8 +15,7 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-export const DesktopMenu = (props: any) => {
-    const { anchorEl, setAnchorEl, setToken } = props;
+export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: any) => {
     const classes = useStyles();
     const [colorScheme, setColorScheme] = useState(false);
     const themeQuery = useQuery(THEME);
@@ -32,13 +31,6 @@ export const DesktopMenu = (props: any) => {
         setToken(null);
     };
 
-    const handleColorSchemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        themeSwitcher(event.target.checked);
-        setColorScheme(event.target.checked);
-    };
-
-    const isMenuOpen = Boolean(anchorEl);
-
     return (
         <Menu
             anchorEl={anchorEl}
@@ -46,7 +38,7 @@ export const DesktopMenu = (props: any) => {
             id="primary-search-account-menu"
             keepMounted
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={isMenuOpen}
+            open={Boolean(anchorEl)}
             onClose={() => setAnchorEl(null)}
         >
             <MenuItem>
@@ -61,7 +53,9 @@ export const DesktopMenu = (props: any) => {
                 )}
                 <Switch
                     checked={colorScheme}
-                    onChange={handleColorSchemeChange}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        themeSwitcher(event.target.checked);
+                    }}
                     value="color scheme"
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                 />
