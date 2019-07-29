@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Dialog, DialogContent, DialogTitle, DialogContentText, Button, DialogActions } from '@material-ui/core';
 
-export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+export const ConfirmationDialog = ({
     content,
     title,
     description,
@@ -11,7 +11,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     visible,
     setVisible,
     onAccept,
-}) => {
+}: ConfirmationDialogProps) => {
     return (
         <div>
             <Dialog

@@ -5,7 +5,7 @@ import { errorHandler, notificationHandler } from '../../utils';
 
 import { ListItemText, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
-export const FriendRequestListItem: React.FC<any> = ({ userId, request }) => {
+export const FriendRequestListItem = ({ userId, request }: any) => {
     const { sender, id } = request;
     const { firstName, lastName } = sender[0];
 

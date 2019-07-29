@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const LogIn: React.FC<Token> = ({ setToken }) => {
+export const LogIn = ({ setToken }: Token) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { history } = useReactRouter();

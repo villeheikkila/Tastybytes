@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const MobileMenu: React.FC<Token> = ({ setToken }) => {
+export const MobileMenu = ({ setToken }: Token) => {
     const classes = useStyles();
     const [colorScheme, setColorScheme] = useState(false);
 

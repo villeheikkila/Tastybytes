@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 import { ListItemText, IconButton, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
-export const FriendListItem: React.FC<any> = ({ userId, user }) => {
+export const FriendListItem = ({ userId, user }: any) => {
     const { firstName, lastName, id } = user;
     const [visible, setVisible] = useState(false);
 

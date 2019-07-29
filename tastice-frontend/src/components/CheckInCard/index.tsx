@@ -41,7 +41,7 @@ const months: any = {
     11: 'December',
 };
 
-export const CheckInCard: React.FC<any> = ({ checkin, showProduct }) => {
+export const CheckInCard = ({ checkin, showProduct }: any) => {
     const classes = useStyles();
     const [visible, setVisible] = useState();
     const [openEdit, setOpenEdit] = useState();

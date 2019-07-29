@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const SignUp: React.FC<Token> = ({ setToken }) => {
+export const SignUp = ({ setToken }: Token) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');

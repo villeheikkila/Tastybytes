@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const Product: React.FC<any> = id => {
+export const Product = (id: any) => {
     const me = useQuery(ME);
     const classes = useStyles();
     const productsQuery = useQuery(PRODUCT, {

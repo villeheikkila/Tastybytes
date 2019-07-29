@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const NavigationBar: React.FC<Token> = ({ setToken }) => {
+export const NavigationBar = ({ setToken }: Token) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [filter, setFilter] = useState('');

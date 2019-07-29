@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Account: React.FC<Token> = ({ setToken }) => {
+export const Account = ({ setToken }: any) => {
     const me = useQuery(ME);
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();

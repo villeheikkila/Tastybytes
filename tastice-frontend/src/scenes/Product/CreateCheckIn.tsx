@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const CreateCheckIn: React.FC<CreateCheckInProps> = ({ authorId, productId }) => {
+export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps) => {
     const classes = useStyles();
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();

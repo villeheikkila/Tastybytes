@@ -5,7 +5,7 @@ import { errorHandler, notificationHandler } from '../../utils';
 import { FriendRequestDialog } from './FriendRequestDialog';
 import { ListItemText, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
-export const UserListItem: React.FC<any> = ({ userId, user }) => {
+export const UserListItem = ({ userId, user }: any) => {
     const { firstName, lastName, id } = user;
     const [message, setMessage] = useState();
     const [visible, setVisible] = useState(false);

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Divider: React.FC<any> = ({ text }) => {
+export const Divider = ({ text }: any) => {
     const classes = useStyles();
 
     return (

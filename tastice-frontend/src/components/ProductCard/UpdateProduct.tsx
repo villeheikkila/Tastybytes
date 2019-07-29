@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const UpdateProduct: React.FC<any> = ({ product }) => {
+export const UpdateProduct = ({ product }: any) => {
     const classes = useStyles();
     const [name, setName] = useState('');
     const [company, setCompany] = useState();

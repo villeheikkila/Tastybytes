@@ -8,7 +8,7 @@ export interface CheckInContentProps {
     comment: string;
 }
 
-export const CheckInContent: React.FC<CheckInContentProps> = ({ rating, comment }) => {
+export const CheckInContent = ({ rating, comment }: CheckInContentProps) => {
     return (
         <CardContent>
             <Typography variant="h6" color="textSecondary" component="p">

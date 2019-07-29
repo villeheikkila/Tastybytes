@@ -30,7 +30,7 @@ export interface CheckInProps {
     setOpenEdit: any;
 }
 
-export const EditCheckIn: React.FC<CheckInProps> = ({ id, setOpenEdit, product }) => {
+export const EditCheckIn = ({ id, setOpenEdit, product }: CheckInProps) => {
     const classes = useStyles();
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();

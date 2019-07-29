@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export const NotificationContentWrapper: React.FC<NotificationProps> = ({ className, message, onClose, variant }) => {
+export const NotificationContentWrapper = ({ className, message, onClose, variant }: NotificationProps) => {
     const classes = useStyles();
     const Icon = variantIcon[variant];
 

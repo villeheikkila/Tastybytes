@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const ProductCard: React.FC<ProductObject> = ({ product, showMenu }) => {
+export const ProductCard = ({ product, showMenu }: ProductObject) => {
     const classes = useStyles();
     const [visible, setVisible] = useState(false);
     const [showEditProduct, setShowEditProduct] = useState();

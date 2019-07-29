@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Profile: React.FC<any> = id => {
+export const Profile = (id: any) => {
     const classes = useStyles();
     const user = useQuery(USER, {
         variables: { id: id.id },
