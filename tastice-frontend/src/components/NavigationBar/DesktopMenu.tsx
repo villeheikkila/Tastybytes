@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { themeSwitcher } from '../../utils';
+import { THEME } from '../../queries';
+import { useQuery } from '@apollo/react-hooks';
 
 import { makeStyles, Switch, Menu, Badge, MenuItem, createStyles } from '@material-ui/core';
 import { ExitToApp, BrightnessLow, BrightnessHigh, AccountCircle } from '@material-ui/icons/';
@@ -17,6 +19,13 @@ export const DesktopMenu = (props: any) => {
     const { anchorEl, setAnchorEl, setToken } = props;
     const classes = useStyles();
     const [colorScheme, setColorScheme] = useState(false);
+    const themeQuery = useQuery(THEME);
+    const theme = themeQuery.data.theme ? 1 : 0;
+
+    useEffect(() => {
+        if (theme === 0) setColorScheme(false);
+        if (theme === 1) setColorScheme(true);
+    }, [theme]);
 
     const logout = () => {
         localStorage.clear();
