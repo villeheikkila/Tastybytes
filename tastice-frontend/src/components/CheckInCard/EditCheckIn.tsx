@@ -42,7 +42,7 @@ export const EditCheckIn = ({ id, setOpenEdit, product }: CheckInProps): JSX.Ele
         refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
-    useEffect(() => {
+    useEffect((): void => {
         if (checkinQuery.data.checkin !== undefined) {
             setComment(checkinQuery.data.checkin[0].comment);
             setRating(checkinQuery.data.checkin[0].rating);
@@ -85,10 +85,10 @@ export const EditCheckIn = ({ id, setOpenEdit, product }: CheckInProps): JSX.Ele
                 value={comment}
                 margin="normal"
                 variant="outlined"
-                onChange={(event: any) => setComment(event.target.value)}
+                onChange={(event: any): void => setComment(event.target.value)}
             />
             <Typography component="p">Rating</Typography>
-            <Rating value={rating} max={5} onChange={(i: any) => setRating(i)} />
+            <Rating value={rating} max={5} onChange={(i: number): void => setRating(i)} />
             <Button variant="contained" color="primary" className={classes.button} onClick={handleEditCheckInEdit}>
                 Check-in!
             </Button>

@@ -45,9 +45,11 @@ export const Product = (id: any): JSX.Element | null => {
             <CreateCheckIn authorId={me.data.me.id} productId={product.id} />
             <Divider text={dividerText} />
 
-            {product.checkins.map((checkin: any) => (
-                <CheckInCard key={checkin.createdAt} checkin={checkin} />
-            ))}
+            {product.checkins.map(
+                (checkin: any): JSX.Element => (
+                    <CheckInCard key={checkin.createdAt} checkin={checkin} />
+                ),
+            )}
         </>
     );
 };

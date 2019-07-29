@@ -124,7 +124,7 @@ export const CheckInCard = ({ checkin, showProduct }: any): JSX.Element => {
 
             <Menu {...bindMenu(menuState)}>
                 <MenuItem
-                    onClick={() => {
+                    onClick={(): void => {
                         setOpenEdit(true);
                         menuState.close();
                     }}
@@ -132,7 +132,7 @@ export const CheckInCard = ({ checkin, showProduct }: any): JSX.Element => {
                     Edit Check-in
                 </MenuItem>
                 <MenuItem
-                    onClick={() => {
+                    onClick={(): void => {
                         setVisible(true);
                         menuState.close();
                     }}

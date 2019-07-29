@@ -35,7 +35,7 @@ export const MobileMenu = ({ setToken }: Token): JSX.Element => {
     const themeQuery = useQuery(THEME);
     const theme = themeQuery.data.theme ? 1 : 0;
 
-    useEffect(() => {
+    useEffect((): void => {
         if (theme === 0) setColorScheme(false);
         if (theme === 1) setColorScheme(true);
     }, [theme]);
@@ -66,7 +66,7 @@ export const MobileMenu = ({ setToken }: Token): JSX.Element => {
                     <ListItemText primary="Change color scheme" />
                     <Switch
                         checked={colorScheme}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                             themeSwitcher(event.target.checked);
                         }}
                         value="color scheme"

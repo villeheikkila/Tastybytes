@@ -45,7 +45,7 @@ export const FriendListItem = ({ userId, user: { firstName, lastName, id } }: an
                     />
                 </ListItemAvatar>
                 <ListItemText primary={`${firstName} ${lastName}`} />
-                <IconButton aria-label="Delete" onClick={() => setVisible(true)}>
+                <IconButton aria-label="Delete" onClick={(): void => setVisible(true)}>
                     <DeleteIcon fontSize="large" />
                 </IconButton>
             </ListItem>

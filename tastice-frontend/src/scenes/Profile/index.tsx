@@ -74,9 +74,11 @@ export const Profile = (id: any): JSX.Element | null => {
 
             <Divider text={dividerText} />
 
-            {userObject.checkins.map((checkin: any) => (
-                <CheckInCard key={checkin.createdAt} checkin={checkin} showProduct={true} />
-            ))}
+            {userObject.checkins.map(
+                (checkin: any): JSX.Element => (
+                    <CheckInCard key={checkin.createdAt} checkin={checkin} showProduct={true} />
+                ),
+            )}
         </div>
     );
 };

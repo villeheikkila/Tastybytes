@@ -27,7 +27,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: DesktopMenuProp
     const themeQuery = useQuery(THEME);
     const theme = themeQuery.data.theme ? 1 : 0;
 
-    useEffect(() => {
+    useEffect((): void => {
         if (theme === 0) setColorScheme(false);
         if (theme === 1) setColorScheme(true);
     }, [theme]);
@@ -45,7 +45,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: DesktopMenuProp
             keepMounted
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             open={Boolean(anchorEl)}
-            onClose={() => setAnchorEl(null)}
+            onClose={(): void => setAnchorEl(null)}
         >
             <MenuItem>
                 {colorScheme ? (
@@ -59,14 +59,14 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: DesktopMenuProp
                 )}
                 <Switch
                     checked={colorScheme}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                         themeSwitcher(event.target.checked);
                     }}
                     value="color scheme"
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                 />
             </MenuItem>
-            <MenuItem component={Link} to="/account" onClick={() => setAnchorEl(null)}>
+            <MenuItem component={Link} to="/account" onClick={(): void => setAnchorEl(null)}>
                 <Badge badgeContent={0} color="secondary" className={classes.badge}>
                     <AccountCircle />
                 </Badge>

@@ -83,7 +83,7 @@ export const LogIn = ({ setToken }: Token): JSX.Element => {
                         name="email"
                         autoComplete="email"
                         autoFocus
-                        onChange={({ target }) => setEmail(target.value)}
+                        onChange={({ target }): void => setEmail(target.value)}
                     />
 
                     <TextField
@@ -96,7 +96,7 @@ export const LogIn = ({ setToken }: Token): JSX.Element => {
                         type="password"
                         id="password"
                         autoComplete="current-password"
-                        onChange={({ target }) => setPassword(target.value)}
+                        onChange={({ target }): void => setPassword(target.value)}
                     />
 
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>

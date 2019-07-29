@@ -36,17 +36,20 @@ export const AddProduct = (): JSX.Element | null => {
     const [category, setCategory] = useState();
     const [subCategory, setSubCategory] = useState();
     const { history } = useReactRouter();
-    const categories = useQuery(ALL_CATEGORIES);
-    const companies = useQuery(ALL_COMPANIES);
+    const categoriesQuery = useQuery(ALL_CATEGORIES);
+    const companiesQuery = useQuery(ALL_COMPANIES);
 
     const [addProduct] = useMutation(ADD_PRODUCT, {
         onError: errorHandler,
         refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
-    if (addProduct === null || categories === null || categories.data.categories === undefined) {
+    if (addProduct === null || categoriesQuery === null || categoriesQuery.data.categories === undefined) {
         return null;
     }
+
+    const categories = categoriesQuery.data.categories;
+    const companies = companiesQuery.data.companies;
 
     const handleNameChange = (event: any): void => setName(event.target.value);
 
@@ -59,7 +62,7 @@ export const AddProduct = (): JSX.Element | null => {
     const handleAddProduct = async (event: any): Promise<void> => {
         event.preventDefault();
 
-        const subCategoryArray = subCategory.map((e: any) => {
+        const subCategoryArray = subCategory.map((e: any): string => {
             return e.value;
         });
 
@@ -81,35 +84,43 @@ export const AddProduct = (): JSX.Element | null => {
         }
     };
 
-    const categorySuggestions = categories.data.categories.map((suggestion: any) => ({
-        value: suggestion.name,
-        label: suggestion.name,
-        id: suggestion.id,
-    }));
-
-    const companySuggestions = companies.data.companies.map((suggestion: any) => ({
-        value: suggestion.name,
-        label: suggestion.name,
-        id: suggestion.id,
-    }));
-
-    const selected = category && category.value;
-
-    const subCategoriesSelected = categories.data.categories.filter((x: any) => x.name === selected);
-
-    const subCategoriesSuggestions =
-        subCategoriesSelected.length > 0 &&
-        subCategoriesSelected[0].subCategory.map((suggestion: any) => ({
+    const categorySuggestions = categories.map(
+        (suggestion: NameId): Suggestions => ({
             value: suggestion.name,
             label: suggestion.name,
             id: suggestion.id,
-        }));
+        }),
+    );
+
+    const companySuggestions = companies.map(
+        (suggestion: NameId): Suggestions => ({
+            value: suggestion.name,
+            label: suggestion.name,
+            id: suggestion.id,
+        }),
+    );
+
+    const selected = category && category.value;
+
+    const subCategoriesSelected = categories.filter(
+        (categoryObject: Category): boolean => categoryObject.name === selected,
+    );
+
+    const subCategoriesSuggestions =
+        subCategoriesSelected.length > 0 &&
+        subCategoriesSelected[0].subCategory.map(
+            (suggestion: NameId): Suggestions => ({
+                value: suggestion.name,
+                label: suggestion.name,
+                id: suggestion.id,
+            }),
+        );
 
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <Typography component="h1" variant="h5">
-                    Add a new product!
+                    Add a new product!console.log();
                 </Typography>
 
                 <form onSubmit={handleAddProduct}>

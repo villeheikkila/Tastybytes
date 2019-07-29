@@ -71,10 +71,10 @@ export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
-                    onChange={(event: any) => setComment(event.target.value)}
+                    onChange={(event: any): void => setComment(event.target.value)}
                 />
                 <Typography component="p">Rating</Typography>
-                <Rating value={rating} max={5} onChange={(i: any) => setRating(i)} />
+                <Rating value={rating} max={5} onChange={(i: number): void => setRating(i)} />
                 <Button variant="contained" color="primary" className={classes.button} onClick={handeCheckIn}>
                     Check-in!
                 </Button>

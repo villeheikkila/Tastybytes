@@ -66,7 +66,7 @@ export const SearchInputBase = ({ search, setSearch, placeholder }: SearchInputB
                     input: classes.inputInput,
                 }}
                 value={search}
-                onChange={(event: any) => setSearch(event.target.value)}
+                onChange={(event: any): void => setSearch(event.target.value)}
                 inputProps={{ 'aria-label': 'Search' }}
             />
         </div>

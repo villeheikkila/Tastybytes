@@ -39,9 +39,11 @@ export const Activity = (): JSX.Element | null => {
         <div className={classes.root}>
             <Grid container justify="center" spacing={10}>
                 <Grid item xs={12}>
-                    {checkins.data.searchCheckins.map((checkin: any) => (
-                        <CheckInCard key={checkin.createdAt} showProduct={true} checkin={checkin} />
-                    ))}
+                    {checkins.data.searchCheckins.map(
+                        (checkin: any): JSX.Element => (
+                            <CheckInCard key={checkin.createdAt} showProduct={true} checkin={checkin} />
+                        ),
+                    )}
                 </Grid>
             </Grid>
         </div>

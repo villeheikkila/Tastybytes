@@ -27,7 +27,7 @@ export const ConfirmationDialog = ({
         <div>
             <Dialog
                 open={visible || false}
-                onClose={() => setVisible(false)}
+                onClose={(): void => setVisible(false)}
                 aria-labelledby={title}
                 aria-describedby={description}
             >
@@ -38,7 +38,7 @@ export const ConfirmationDialog = ({
 
                 <DialogActions>
                     <Button
-                        onClick={() => {
+                        onClick={(): void => {
                             setVisible(false);
                         }}
                         color="primary"

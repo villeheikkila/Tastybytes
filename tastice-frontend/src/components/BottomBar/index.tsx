@@ -38,7 +38,7 @@ export const BottomBar = (): JSX.Element => {
     return (
         <BottomNavigation
             value={highlight}
-            onChange={(event, newHighlight) => {
+            onChange={(event, newHighlight): void => {
                 setHighlight(newHighlight);
             }}
             showLabels

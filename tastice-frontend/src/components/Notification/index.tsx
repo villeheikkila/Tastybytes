@@ -7,7 +7,7 @@ import { Snackbar } from '@material-ui/core';
 export const Notifications = (): JSX.Element | null => {
     const [open, setOpen] = useState(true);
     const notification = useQuery(NOTIFICATION);
-    useEffect(() => setOpen(true), [notification]);
+    useEffect((): void => setOpen(true), [notification]);
 
     if (notification.data === undefined || notification.data.notification === 'clear') {
         return null;

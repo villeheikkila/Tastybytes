@@ -147,7 +147,7 @@ export const NavigationBar = ({ setToken }: Token): JSX.Element => {
                             aria-label="Account of current user"
                             aria-controls="primary-search-account-menu"
                             aria-haspopup="true"
-                            onClick={(event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget)}
+                            onClick={(event: React.MouseEvent<HTMLElement>): void => setAnchorEl(event.currentTarget)}
                             color="inherit"
                         >
                             <AccountCircle />

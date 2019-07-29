@@ -95,11 +95,11 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
         history.push('/');
     };
 
-    const handleEmailChange = (event: any) => setEmail(event.target.value);
+    const handleEmailChange = (event: any): void => setEmail(event.target.value);
 
-    const handleLastNameChange = (event: any) => setLastName(event.target.value);
+    const handleLastNameChange = (event: any): void => setLastName(event.target.value);
 
-    const handleFirstNameChange = (event: any) => setFirstName(event.target.value);
+    const handleFirstNameChange = (event: any): void => setFirstName(event.target.value);
 
     return (
         <div>
@@ -179,7 +179,7 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                             variant="outlined"
                             color="secondary"
                             className={classes.button}
-                            onClick={() => setVisible(true)}
+                            onClick={(): void => setVisible(true)}
                         >
                             Delete User
                         </Button>

@@ -1,6 +1,6 @@
 import { client } from '../index';
 
-export const notificationHandler = (notification: NotificationContent) => {
+export const notificationHandler = (notification: NotificationContent): void => {
     client.writeData({
         data: {
             notification: notification.message,
@@ -8,7 +8,7 @@ export const notificationHandler = (notification: NotificationContent) => {
         },
     });
     setTimeout(
-        () =>
+        (): void =>
             client.writeData({
                 data: {
                     notification: 'clear',
@@ -19,7 +19,7 @@ export const notificationHandler = (notification: NotificationContent) => {
     );
 };
 
-export const errorHandler = (error: any) => {
+export const errorHandler = (error: any): void => {
     client.writeData({
         data: {
             notification: error.message,
@@ -27,7 +27,7 @@ export const errorHandler = (error: any) => {
         },
     });
     setTimeout(
-        () =>
+        (): void =>
             client.writeData({
                 data: {
                     notification: 'clear',
@@ -38,7 +38,7 @@ export const errorHandler = (error: any) => {
     );
 };
 
-export const filterChanger = (filter: any) => {
+export const filterChanger = (filter: string): void => {
     client.writeData({
         data: {
             filter,
@@ -46,7 +46,7 @@ export const filterChanger = (filter: any) => {
     });
 };
 
-export const themeSwitcher = (value: boolean) => {
+export const themeSwitcher = (value: boolean): void => {
     localStorage.setItem('theme', `${value}`);
     client.writeData({
         data: {

@@ -40,7 +40,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const link = split(
-    ({ query }) => {
+    ({ query }): boolean => {
         const { kind, operation } = getMainDefinition(query);
         return kind === 'OperationDefinition' && operation === 'subscription';
     },
@@ -61,7 +61,7 @@ client.writeData({
     },
 });
 
-const render = () => {
+const render = (): void => {
     ReactDOM.render(
         <ApolloProvider client={client}>
             <App />

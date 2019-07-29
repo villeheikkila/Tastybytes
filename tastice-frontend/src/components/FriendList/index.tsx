@@ -91,13 +91,15 @@ export const FriendList = (id: any): JSX.Element | null => {
                         </ListSubheader>
                     }
                 >
-                    {friends.map((user: any) => (
-                        <div key={user.id.toUpperCase()}>
-                            <Divider light />
-                            <FriendListItem key={user.id} user={user} userId={id} />
-                            <Divider light />
-                        </div>
-                    ))}
+                    {friends.map(
+                        (user: any): JSX.Element => (
+                            <div key={user.id.toUpperCase()}>
+                                <Divider light />
+                                <FriendListItem key={user.id} user={user} userId={id} />
+                                <Divider light />
+                            </div>
+                        ),
+                    )}
                 </List>
             )}
             {friendRequests.length !== 0 && (
@@ -107,13 +109,15 @@ export const FriendList = (id: any): JSX.Element | null => {
                         aria-labelledby="nested-list-subheader"
                         subheader={<ListSubheader component="div">Pending Friend Requests</ListSubheader>}
                     >
-                        {friendRequests.map((user: any) => (
-                            <div key={user.id.toUpperCase()}>
-                                <Divider light />
-                                <FriendRequestListItem key={user.id} request={user} userId={id} />
-                                <Divider light />
-                            </div>
-                        ))}
+                        {friendRequests.map(
+                            (user: any): JSX.Element => (
+                                <div key={user.id.toUpperCase()}>
+                                    <Divider light />
+                                    <FriendRequestListItem key={user.id} request={user} userId={id} />
+                                    <Divider light />
+                                </div>
+                            ),
+                        )}
                     </List>
                 </>
             )}
@@ -133,19 +137,21 @@ export const FriendList = (id: any): JSX.Element | null => {
                                 input: classes.inputInput,
                             }}
                             value={search}
-                            onChange={(event: any) => setSearch(event.target.value)}
+                            onChange={(event: any): void => setSearch(event.target.value)}
                             inputProps={{ 'aria-label': 'Search' }}
                         />
                     </div>
                 }
             >
-                {users.map((user: any) => (
-                    <div key={user.id.toUpperCase()}>
-                        <Divider light />
-                        <UserListItem key={user.id} user={user} userId={id} />
-                        <Divider light />
-                    </div>
-                ))}
+                {users.map(
+                    (user: any): JSX.Element => (
+                        <div key={user.id.toUpperCase()}>
+                            <Divider light />
+                            <UserListItem key={user.id} user={user} userId={id} />
+                            <Divider light />
+                        </div>
+                    ),
+                )}
             </List>
         </Card>
     );

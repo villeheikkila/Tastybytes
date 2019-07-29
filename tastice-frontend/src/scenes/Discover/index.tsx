@@ -47,11 +47,13 @@ export const Discover = (): JSX.Element | null => {
         <div className={classes.root}>
             <Grid container justify="center" spacing={10}>
                 <Grid item xs={12}>
-                    {products.map((product: Product) => (
-                        <Card key={product.id} className={classes.card}>
-                            <ProductCard key={product.id} product={product} showMenu={false} />
-                        </Card>
-                    ))}
+                    {products.map(
+                        (product: Product): JSX.Element => (
+                            <Card key={product.id} className={classes.card}>
+                                <ProductCard key={product.id} product={product} showMenu={false} />
+                            </Card>
+                        ),
+                    )}
                 </Grid>
             </Grid>
             <Fab color="secondary" aria-label="Add" className={classes.fab} component={Link} to="/product/new">

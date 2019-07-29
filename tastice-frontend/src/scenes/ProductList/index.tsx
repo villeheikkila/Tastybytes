@@ -73,16 +73,16 @@ export const ProductList = (): JSX.Element | null => {
             ]}
             data={productsObject}
             editable={{
-                onRowUpdate: (updatedProduct, oldProduct) =>
+                onRowUpdate: updatedProduct =>
                     new Promise(resolve => {
-                        setTimeout(() => {
+                        setTimeout((): void => {
                             resolve();
                             handleUpdateProduct(updatedProduct);
                         }, 600);
                     }),
                 onRowDelete: oldProduct =>
                     new Promise(resolve => {
-                        setTimeout(() => {
+                        setTimeout((): void => {
                             resolve();
                             handleDeleteProduct(oldProduct.id);
                         }, 100);

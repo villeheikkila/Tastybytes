@@ -171,6 +171,14 @@ const components = {
     ValueContainer,
 };
 
+interface Input {
+    font: string;
+}
+interface SelectStyles extends CSSProperties {
+    color: string;
+    '& input': Input;
+}
+
 export const MaterialSelect = ({
     placeholder,
     label,
@@ -184,7 +192,7 @@ export const MaterialSelect = ({
     const theme = useTheme();
 
     const selectStyles = {
-        input: (base: CSSProperties) => ({
+        input: (base: CSSProperties): SelectStyles => ({
             ...base,
             color: theme.palette.text.primary,
             '& input': {

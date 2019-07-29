@@ -64,16 +64,16 @@ export const UserList = (): JSX.Element | null => {
             ]}
             data={users}
             editable={{
-                onRowUpdate: (updatedUser, oldUser) =>
+                onRowUpdate: updatedUser =>
                     new Promise(resolve => {
-                        setTimeout(() => {
+                        setTimeout((): void => {
                             resolve();
                             handleUpdateUser(updatedUser);
                         }, 600);
                     }),
                 onRowDelete: oldUser =>
                     new Promise(resolve => {
-                        setTimeout(() => {
+                        setTimeout((): void => {
                             resolve();
                             handleDeleteUser(oldUser.id);
                         }, 100);

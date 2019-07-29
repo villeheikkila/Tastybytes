@@ -12,7 +12,7 @@ import {
 
 export const FriendRequestDialog = ({ visible, setVisible, message, setMessage, onClick }: any): JSX.Element => {
     return (
-        <Dialog open={visible} onClose={() => setVisible(false)} aria-labelledby="form-dialog-title">
+        <Dialog open={visible} onClose={(): void => setVisible(false)} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Friend Request</DialogTitle>
             <DialogContent>
                 <DialogContentText>Send a message with the friend request!</DialogContentText>
@@ -23,13 +23,13 @@ export const FriendRequestDialog = ({ visible, setVisible, message, setMessage, 
                     label="Say hello!"
                     type="text"
                     fullWidth
-                    onChange={(event: any) => setMessage(event.target.value)}
+                    onChange={(event: any): void => setMessage(event.target.value)}
                     value={message}
                 />
             </DialogContent>
             <DialogActions>
                 <Button
-                    onClick={() => {
+                    onClick={(): void => {
                         setVisible(false);
                     }}
                     color="primary"

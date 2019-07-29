@@ -49,3 +49,24 @@ interface OptionType {
     label: string;
     value: string;
 }
+
+interface Suggestions {
+    value: string;
+    label: string;
+    id: string;
+}
+
+interface SubCategory {
+    id: string;
+    name: string;
+}
+interface Category {
+    id: string;
+    name: string;
+    subCategory: SubCategory[];
+}
+
+interface NameId {
+    name: string;
+    id: string;
+}

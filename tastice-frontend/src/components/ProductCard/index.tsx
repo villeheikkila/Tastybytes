@@ -61,7 +61,7 @@ export const ProductCard = ({ product, showMenu }: ProductObject): JSX.Element =
         <div>
             <Menu {...bindMenu(menuState)}>
                 <MenuItem
-                    onClick={() => {
+                    onClick={(): void => {
                         menuState.close();
                         setShowEditProduct(true);
                     }}
@@ -69,7 +69,7 @@ export const ProductCard = ({ product, showMenu }: ProductObject): JSX.Element =
                     Edit Product
                 </MenuItem>
                 <MenuItem
-                    onClick={() => {
+                    onClick={(): void => {
                         menuState.close();
                         setVisible(true);
                     }}
@@ -93,7 +93,7 @@ export const ProductCard = ({ product, showMenu }: ProductObject): JSX.Element =
 
     return (
         <div>
-            <CardActionArea onClick={() => history.push(`/product/${id}`)} className={classes.actionArea}>
+            <CardActionArea onClick={(): void => history.push(`/product/${id}`)} className={classes.actionArea}>
                 <Grid container spacing={3} direction="row">
                     <Grid item>
                         <Avatar alt="Image" src={lipton} className={classes.picture} />
@@ -109,20 +109,24 @@ export const ProductCard = ({ product, showMenu }: ProductObject): JSX.Element =
                                 <Typography variant="h5" gutterBottom>
                                     {company[0].name}
                                 </Typography>
-                                {category.map((e: any) => (
-                                    <Chip label={e.name} key={e.name} className={classes.chip} color="default" />
-                                ))}
+                                {category.map(
+                                    (e: any): JSX.Element => (
+                                        <Chip label={e.name} key={e.name} className={classes.chip} color="default" />
+                                    ),
+                                )}
                                 <Grid item>
-                                    {subCategory.map((e: any) => (
-                                        <Chip
-                                            variant="outlined"
-                                            size="small"
-                                            color="default"
-                                            label={e.name}
-                                            key={e.name}
-                                            className={classes.chip}
-                                        />
-                                    ))}
+                                    {subCategory.map(
+                                        (e: any): JSX.Element => (
+                                            <Chip
+                                                variant="outlined"
+                                                size="small"
+                                                color="default"
+                                                label={e.name}
+                                                key={e.name}
+                                                className={classes.chip}
+                                            />
+                                        ),
+                                    )}
                                 </Grid>
                             </Grid>
                         </Grid>

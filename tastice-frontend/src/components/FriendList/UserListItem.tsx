@@ -34,7 +34,7 @@ export const UserListItem = ({ userId, user: { firstName, lastName, id } }: any)
 
     return (
         <>
-            <ListItem button alignItems="flex-start" key={id} onClick={() => setVisible(true)}>
+            <ListItem button alignItems="flex-start" key={id} onClick={(): void => setVisible(true)}>
                 <ListItemAvatar>
                     <Avatar
                         alt={firstName}
