@@ -4,6 +4,14 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { notificationHandler, errorHandler } from '../../utils';
 import MaterialTable from 'material-table';
 
+interface UpdatedProductObject {
+    id: string;
+    name: string;
+    company: string;
+    category: string;
+    subCategory: [string];
+}
+
 export const ProductList = (): JSX.Element | null => {
     const productsQuery = useQuery(ALL_PRODUCTS);
     const products = productsQuery.data.products;
@@ -46,14 +54,6 @@ export const ProductList = (): JSX.Element | null => {
             });
         }
     };
-
-    interface UpdatedProductObject {
-        id: string;
-        name: string;
-        company: string;
-        category: string;
-        subCategory: [string];
-    }
 
     const handleUpdateProduct = async (product: UpdatedProductObject): Promise<void> => {
         const subCategoryArray = product.subCategory.map((subCategoryUnit: any): string => {
