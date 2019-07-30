@@ -18,19 +18,11 @@ export const BottomBar = (): JSX.Element => {
     const [highlight, setHighlight] = useState(3);
     const { location } = useReactRouter();
 
-    if (location.pathname === '/activity' && highlight !== 0) {
-        setHighlight(0);
-    } else if (location.pathname === '/discover' && highlight !== 1) {
-        setHighlight(1);
-    } else if (location.pathname === '/profile' && highlight !== 2) {
-        setHighlight(2);
-    } else if (
-        location.pathname !== '/discover' &&
-        location.pathname !== '/activity' &&
-        location.pathname !== '/profile' &&
-        highlight !== 3
-    ) {
-        setHighlight(3);
+    const locations: string[] = ['activity', 'discover', 'user'];
+    const currentLocation = locations.indexOf(location.pathname.split('/')[1]);
+
+    if (currentLocation !== highlight) {
+        setHighlight(currentLocation);
     }
 
     return (
