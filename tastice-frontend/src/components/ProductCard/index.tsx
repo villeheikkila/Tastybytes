@@ -97,7 +97,7 @@ export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Elemen
     );
 
     return (
-        <div>
+        <>
             <CardActionArea onClick={(): void => history.push(`/product/${id}`)} className={classes.actionArea}>
                 <Grid container spacing={3} direction="row">
                     <Grid item>
@@ -150,6 +150,6 @@ export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Elemen
                 </Grid>
             </CardActionArea>
             {showEditProduct && <UpdateProduct product={product} />}
-        </div>
+        </>
     );
 };

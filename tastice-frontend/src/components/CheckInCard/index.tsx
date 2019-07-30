@@ -52,21 +52,23 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
     const [openEdit, setOpenEdit] = useState();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
 
+    const authorObject = {
+        id: checkin.author.id,
+        firstName: checkin.author.firstName,
+        lastName: checkin.author.lastName,
+    };
+
     const checkinObject = {
-        authorFirstName: checkin.author.firstName,
-        authorLastName: checkin.author.lastName,
-        authorId: checkin.author.id,
+        id: checkin.id,
         comment: checkin.comment,
         rating: checkin.rating,
         name: checkin.product,
-        id: checkin.product.id,
-        checkinId: checkin.id,
         date: new Date(checkin.createdAt),
     };
 
     const productObject = {
-        name: checkin.product.name,
         id: checkin.product.id,
+        name: checkin.product.name,
         company: checkin.product.company,
         category: checkin.product.category,
         subCategory: checkin.product.subCategory,
@@ -80,7 +82,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
     const handleDeleteCheckin = async (): Promise<void> => {
         setVisible(false);
         const result = await deleteCheckin({
-            variables: { id: checkinObject.checkinId },
+            variables: { id: checkinObject.id },
         });
         if (result) {
             notificationHandler({
@@ -91,7 +93,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
     };
 
     return (
-        <div>
+        <>
             <Card className={classes.card}>
                 <CardHeader
                     avatar={
@@ -106,8 +108,8 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
                     }
                     title={
                         <Typography variant="h6" color="textSecondary" component="p">
-                            <Link component={RouterLink} to={`/user/${checkinObject.authorId}`}>
-                                {checkinObject.authorFirstName} {checkinObject.authorLastName}
+                            <Link component={RouterLink} to={`/user/${authorObject.id}`}>
+                                {authorObject.firstName} {authorObject.lastName}
                             </Link>
                         </Typography>
                     }
@@ -120,7 +122,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
                 {showProduct && <ProductCard product={productObject} showMenu={false} />}
 
                 {openEdit ? (
-                    <EditCheckIn id={checkinObject.checkinId} setOpenEdit={setOpenEdit} product={productObject.name} />
+                    <EditCheckIn id={checkinObject.id} setOpenEdit={setOpenEdit} product={productObject.name} />
                 ) : (
                     <CheckInContent rating={checkinObject.rating} comment={checkinObject.comment} />
                 )}
@@ -155,6 +157,6 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
                 declineButton={'Cancel'}
                 acceptButton={'Yes'}
             />
-        </div>
+        </>
     );
 };
