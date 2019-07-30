@@ -1,14 +1,13 @@
-import React from 'react';
-
 import {
-    TextField,
-    Dialog,
     Button,
-    DialogTitle,
-    DialogContentText,
-    DialogContent,
+    Dialog,
     DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    TextField,
 } from '@material-ui/core';
+import React from 'react';
 
 interface FriendRequestDialogProps {
     visible: boolean;

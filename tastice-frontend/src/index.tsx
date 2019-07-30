@@ -1,15 +1,15 @@
-import React from 'react';
-import * as ReactDOM from 'react-dom';
+import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient, InMemoryCache, NormalizedCacheObject } from 'apollo-boost';
 import { persistCache } from 'apollo-cache-persist';
-import { ApolloProvider } from '@apollo/react-hooks';
-import { createHttpLink } from 'apollo-link-http';
-import { setContext } from 'apollo-link-context';
+import { PersistedData, PersistentStorage } from 'apollo-cache-persist/types';
 import { split } from 'apollo-link';
+import { setContext } from 'apollo-link-context';
+import { createHttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import App from './App';
-import { PersistentStorage, PersistedData } from 'apollo-cache-persist/types';
 
 const SERVER_URL: string = process.env.REACT_APP_SERVER_URL || 'localhost:4000/';
 

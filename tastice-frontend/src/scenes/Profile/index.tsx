@@ -1,10 +1,9 @@
-import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { USER } from '../../queries';
+import { Avatar, createStyles, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
+import React from 'react';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
-
-import { Paper, Avatar, Typography, Theme, createStyles, makeStyles } from '@material-ui/core';
+import { USER } from '../../queries';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

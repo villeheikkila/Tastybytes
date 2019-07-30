@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { CREATE_FRIENDREQUEST, ME, FRIENDREQUEST } from '../../queries';
+import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
+import React, { useState } from 'react';
+import { CREATE_FRIENDREQUEST, FRIENDREQUEST, ME } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { FriendRequestDialog } from './FriendRequestDialog';
-import { ListItemText, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
 interface UserListItemProps {
     userId: IdObject;

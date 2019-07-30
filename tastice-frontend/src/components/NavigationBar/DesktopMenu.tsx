@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { themeSwitcher } from '../../utils';
-import { THEME } from '../../queries';
 import { useQuery } from '@apollo/react-hooks';
-
-import { makeStyles, Switch, Menu, Badge, MenuItem, createStyles } from '@material-ui/core';
-import { ExitToApp, BrightnessLow, BrightnessHigh, AccountCircle, PersonOutline } from '@material-ui/icons/';
+import { Badge, createStyles, makeStyles, Menu, MenuItem, Switch } from '@material-ui/core';
+import { AccountCircle, BrightnessHigh, BrightnessLow, ExitToApp, PersonOutline } from '@material-ui/icons/';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { THEME } from '../../queries';
+import { themeSwitcher } from '../../utils';
 
 const useStyles = makeStyles(() =>
     createStyles({

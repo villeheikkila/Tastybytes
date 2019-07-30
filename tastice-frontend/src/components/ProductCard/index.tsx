@@ -1,16 +1,15 @@
+import { useMutation } from '@apollo/react-hooks';
+import { Avatar, CardActionArea, Chip, Grid, Link, makeStyles, Menu, MenuItem, Typography } from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 import React, { useState } from 'react';
-import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
 import { Link as RouterLink } from 'react-router-dom';
 import useReactRouter from 'use-react-router';
 import lipton from '../../images/lipton.jpg';
-import { DELETE_PRODUCT, ALL_PRODUCTS } from '../../queries';
-import { useMutation } from '@apollo/react-hooks';
+import { ALL_PRODUCTS, DELETE_PRODUCT } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { UpdateProduct } from './UpdateProduct';
-
-import { Link, Avatar, Typography, CardActionArea, makeStyles, Chip, Grid, Menu, MenuItem } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     actionArea: {

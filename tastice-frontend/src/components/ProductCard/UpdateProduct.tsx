@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { notificationHandler, errorHandler } from '../../utils';
+import { Button, CardContent, Grid, makeStyles, TextField, Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { ALL_CATEGORIES, ALL_COMPANIES, ALL_PRODUCTS, UPDATE_PRODUCT } from '../../queries';
+import { errorHandler, notificationHandler } from '../../utils';
 import { MaterialSelect } from '../MaterialSelect';
-import { ALL_PRODUCTS, ALL_CATEGORIES, ALL_COMPANIES, UPDATE_PRODUCT } from '../../queries';
-import { Typography, Grid, Button, TextField, makeStyles, CardContent } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     card: {

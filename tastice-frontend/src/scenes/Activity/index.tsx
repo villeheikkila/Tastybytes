@@ -1,8 +1,8 @@
+import { useQuery } from '@apollo/react-hooks';
+import { Grid, makeStyles } from '@material-ui/core';
 import React from 'react';
 import { CheckInCard } from '../../components/CheckInCard';
-import { useQuery } from '@apollo/react-hooks';
 import { FILTER, SEARCH_CHECKINS } from '../../queries';
-import { Grid, makeStyles } from '@material-ui/core';
 import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles(theme => ({

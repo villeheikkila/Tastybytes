@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
+import { Button, Grid, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
-
-import { notificationHandler, errorHandler } from '../../utils';
+import { ADD_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES, ALL_PRODUCTS } from '../../queries';
+import { errorHandler, notificationHandler } from '../../utils';
 import { MaterialSelect } from '../MaterialSelect';
-
-import { ADD_PRODUCT, ALL_PRODUCTS, ALL_CATEGORIES, ALL_COMPANIES } from '../../queries';
-
-import { Paper, Typography, Grid, Button, TextField, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     paper: {

@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
+import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { DELETE_FRIEND, ME } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { Link } from 'react-router-dom';
-
-import { ListItemText, IconButton, ListItemAvatar, Avatar, ListItem } from '@material-ui/core';
 
 interface FriendListItemProps {
     userId: IdObject;

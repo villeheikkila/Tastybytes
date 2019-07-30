@@ -1,9 +1,8 @@
-import React from 'react';
-import SearchIcon from '@material-ui/icons/Search';
+import { createStyles, InputBase, makeStyles, Theme } from '@material-ui/core';
 import { fade } from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
+import React from 'react';
 import 'typeface-leckerli-one';
-
-import { makeStyles, InputBase, Theme, createStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

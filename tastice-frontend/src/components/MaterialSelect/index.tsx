@@ -1,31 +1,30 @@
 /* eslint import/named: 0 import/namespace: 0 */
 
-import React, { CSSProperties, HTMLAttributes } from 'react';
-import clsx from 'clsx';
-import CreatableSelect from 'react-select/creatable';
-import Select from 'react-select';
+import {
+    Chip,
+    createStyles,
+    makeStyles,
+    MenuItem,
+    Paper,
+    TextField,
+    Theme,
+    Typography,
+    useTheme,
+} from '@material-ui/core';
+import { emphasize } from '@material-ui/core/styles';
 import { BaseTextFieldProps } from '@material-ui/core/TextField';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { emphasize } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import React, { CSSProperties, HTMLAttributes } from 'react';
+import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
+import { ValueContainerProps } from 'react-select/src/components/containers';
 import { ControlProps } from 'react-select/src/components/Control';
 import { MenuProps, NoticeProps } from 'react-select/src/components/Menu';
 import { MultiValueProps } from 'react-select/src/components/MultiValue';
 import { OptionProps } from 'react-select/src/components/Option';
 import { PlaceholderProps } from 'react-select/src/components/Placeholder';
 import { SingleValueProps } from 'react-select/src/components/SingleValue';
-import { ValueContainerProps } from 'react-select/src/components/containers';
-
-import {
-    createStyles,
-    Theme,
-    makeStyles,
-    Paper,
-    MenuItem,
-    Chip,
-    useTheme,
-    TextField,
-    Typography,
-} from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -236,7 +235,7 @@ export const MaterialSelect = ({
                     styles={selectStyles}
                     inputId="react-select-multiple"
                     TextFieldProps={{
-                        label: label,
+                        label,
                         InputLabelProps: {
                             htmlFor: 'react-select-multiple',
                             shrink: true,

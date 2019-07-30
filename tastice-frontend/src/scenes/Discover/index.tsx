@@ -1,11 +1,10 @@
-import React from 'react';
-import { ProductCard } from '../../components/ProductCard';
 import { useQuery } from '@apollo/react-hooks';
-import { SEARCH_PRODUCTS, FILTER } from '../../queries';
-import { Link } from 'react-router-dom';
-
+import { Card, Fab, Grid, makeStyles } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { Grid, Fab, makeStyles, Card } from '@material-ui/core';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ProductCard } from '../../components/ProductCard';
+import { FILTER, SEARCH_PRODUCTS } from '../../queries';
 import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles(theme => ({

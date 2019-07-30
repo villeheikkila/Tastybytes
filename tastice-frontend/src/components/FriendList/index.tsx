@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { ME, SEARCH_USERS, FRIENDREQUEST } from '../../queries';
 import { useQuery } from '@apollo/react-hooks';
-import { UserListItem } from './UserListItem';
+import { Card, createStyles, Divider, InputBase, List, ListSubheader, makeStyles, Theme } from '@material-ui/core';
+import { fade } from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
+import React, { useState } from 'react';
+import { FRIENDREQUEST, ME, SEARCH_USERS } from '../../queries';
+import { errorHandler } from '../../utils';
 import { FriendListItem } from './FriendListItem';
 import { FriendRequestListItem } from './FriendRequestsListItem';
-import { errorHandler } from '../../utils';
-import { fade } from '@material-ui/core/styles';
-
-import { createStyles, InputBase, Card, Theme, makeStyles, Divider, List, ListSubheader } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import { UserListItem } from './UserListItem';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

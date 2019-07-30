@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { themeSwitcher } from '../../utils';
-import { THEME } from '../../queries';
 import { useQuery } from '@apollo/react-hooks';
-
 import {
     createStyles,
-    Theme,
-    makeStyles,
-    ListItemText,
     Divider,
-    Typography,
-    Switch,
     List,
     ListItem,
+    ListItemText,
+    makeStyles,
+    Switch,
+    Theme,
+    Typography,
 } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { THEME } from '../../queries';
+import { themeSwitcher } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { filterChanger } from '../../utils';
-import useReactRouter from 'use-react-router';
+import {
+    AppBar,
+    Badge,
+    ButtonBase,
+    createStyles,
+    IconButton,
+    makeStyles,
+    Theme,
+    Toolbar,
+    Typography,
+} from '@material-ui/core';
+import { fade } from '@material-ui/core/styles';
+import { AccountCircle } from '@material-ui/icons/';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { fade } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import 'typeface-leckerli-one';
-import { SearchInputBase } from './SearchInputBase';
+import useReactRouter from 'use-react-router';
+import { filterChanger } from '../../utils';
 import { DesktopMenu } from './DesktopMenu';
-
-import {
-    makeStyles,
-    AppBar,
-    Toolbar,
-    ButtonBase,
-    Badge,
-    IconButton,
-    Typography,
-    Theme,
-    createStyles,
-} from '@material-ui/core';
-
-import { AccountCircle } from '@material-ui/icons/';
+import { SearchInputBase } from './SearchInputBase';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

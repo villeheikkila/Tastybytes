@@ -1,13 +1,12 @@
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { Avatar, Button, createStyles, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import useReactRouter from 'use-react-router';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { ME, DELETE_USER, UPDATE_USER } from '../../queries';
-import { notificationHandler, errorHandler } from '../../utils';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
 import { client } from '../../index';
-
-import { Paper, Typography, Grid, Avatar, Theme, createStyles, makeStyles, Button } from '@material-ui/core';
+import { DELETE_USER, ME, UPDATE_USER } from '../../queries';
+import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

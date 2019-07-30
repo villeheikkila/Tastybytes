@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { usePopupState, bindTrigger, bindMenu } from 'material-ui-popup-state/hooks';
+import { useMutation } from '@apollo/react-hooks';
+import { Avatar, Card, CardHeader, IconButton, Link, makeStyles, Menu, MenuItem, Typography } from '@material-ui/core';
 import { blue } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { ProductCard } from '../ProductCard';
-import { EditCheckIn } from './EditCheckIn';
-import { useMutation } from '@apollo/react-hooks';
+import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
+import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { DELETE_CHECKIN, PRODUCT } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
+import { ProductCard } from '../ProductCard';
 import { CheckInContent } from './CheckInContent';
-
-import { Link, Typography, IconButton, Avatar, CardHeader, Card, makeStyles, Menu, MenuItem } from '@material-ui/core';
+import { EditCheckIn } from './EditCheckIn';
 
 const useStyles = makeStyles(theme => ({
     card: {

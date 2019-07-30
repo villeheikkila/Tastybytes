@@ -1,11 +1,11 @@
-import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { PRODUCT, ME } from '../../queries';
-import { ProductCard } from '../../components/ProductCard';
-import { Divider } from '../../components/Divider';
+import { Card, makeStyles } from '@material-ui/core';
+import React from 'react';
 import { CheckInCard } from '../../components/CheckInCard';
+import { Divider } from '../../components/Divider';
+import { ProductCard } from '../../components/ProductCard';
+import { ME, PRODUCT } from '../../queries';
 import { CreateCheckIn } from './CreateCheckIn';
-import { makeStyles, Card } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     card: {

@@ -1,9 +1,8 @@
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import MaterialTable from 'material-table';
 import React from 'react';
 import { ALL_USERS, DELETE_USER, UPDATE_USER } from '../../queries';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-
-import { notificationHandler, errorHandler } from '../../utils';
-import MaterialTable from 'material-table';
+import { errorHandler, notificationHandler } from '../../utils';
 
 export const UserList = (): JSX.Element | null => {
     const usersQuery = useQuery(ALL_USERS);

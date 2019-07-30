@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import { BottomNavigation, BottomNavigationAction, makeStyles } from '@material-ui/core';
+import { Explore, Face } from '@material-ui/icons/';
 import ViewListIcon from '@material-ui/icons/ViewList';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useReactRouter from 'use-react-router';
-
-import { BottomNavigationAction, BottomNavigation, makeStyles } from '@material-ui/core';
-
-import { Face, Explore } from '@material-ui/icons/';
 
 const useStyles = makeStyles({
     root: {

@@ -1,7 +1,7 @@
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
-import { Theme, createStyles, makeStyles } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import React from 'react';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

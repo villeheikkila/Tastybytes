@@ -1,8 +1,8 @@
-import React from 'react';
-import { ALL_PRODUCTS, UPDATE_PRODUCT, DELETE_PRODUCT } from '../../queries';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { notificationHandler, errorHandler } from '../../utils';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import MaterialTable from 'material-table';
+import React from 'react';
+import { ALL_PRODUCTS, DELETE_PRODUCT, UPDATE_PRODUCT } from '../../queries';
+import { errorHandler, notificationHandler } from '../../utils';
 
 interface UpdatedProductObject {
     id: string;

@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
+import { Button, Container, makeStyles, TextField, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
 import { LOGIN } from '../../queries';
 import { errorHandler } from '../../utils';
-import 'typeface-leckerli-one';
-
-import { makeStyles, Container, Button, TextField, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     paper: {

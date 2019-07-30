@@ -1,27 +1,25 @@
-import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { THEME } from './queries';
+import { Box, createMuiTheme, CssBaseline, Fade } from '@material-ui/core';
+import { blue, pink } from '@material-ui/core/colors';
 import { ThemeProvider } from '@material-ui/styles';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-
-import { BottomBar } from './components/BottomBar';
-import { UserList } from './scenes/UserList';
-import { ProductList } from './scenes/ProductList';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { AddProduct } from './components/AddProduct';
-import { Notifications } from './components/Notification';
+import { BottomBar } from './components/BottomBar';
+import { FriendList } from './components/FriendList';
 import { MobileMenu } from './components/MobileMenu';
-import { LogIn } from './scenes/LogIn';
-import { SignUp } from './scenes/SignUp';
 import { NavigationBar } from './components/NavigationBar/';
-import { Discover } from './scenes/Discover';
+import { Notifications } from './components/Notification';
+import { THEME } from './queries';
 import { Account } from './scenes/Account';
 import { Activity } from './scenes/Activity';
+import { Discover } from './scenes/Discover';
+import { LogIn } from './scenes/LogIn';
 import { Product } from './scenes/Product';
+import { ProductList } from './scenes/ProductList';
 import { Profile } from './scenes/Profile';
-import { FriendList } from './components/FriendList';
-
-import { Box, createMuiTheme, Fade, CssBaseline } from '@material-ui/core';
-import { blue, pink } from '@material-ui/core/colors';
+import { SignUp } from './scenes/SignUp';
+import { UserList } from './scenes/UserList';
 
 const darkTheme = createMuiTheme({
     palette: {
