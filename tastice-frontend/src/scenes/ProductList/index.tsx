@@ -42,7 +42,7 @@ export const ProductList = (): JSX.Element | null => {
         return null;
     }
 
-    const handleDeleteProduct = async (id: any): Promise<void> => {
+    const handleDeleteProduct = async (id: string): Promise<void> => {
         const result = await deleteProduct({
             variables: { id },
         });

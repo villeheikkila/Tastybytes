@@ -3,9 +3,9 @@
 interface Product {
     id: string;
     name: string;
-    company: any;
-    category: any;
-    subCategory: any;
+    company: [NameId];
+    category: [NameId];
+    subCategory: [NameId];
 }
 
 interface User {

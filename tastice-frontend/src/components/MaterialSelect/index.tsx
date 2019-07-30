@@ -1,3 +1,5 @@
+/* eslint import/named: 0 import/namespace: 0 */
+
 import React, { CSSProperties, HTMLAttributes } from 'react';
 import clsx from 'clsx';
 import CreatableSelect from 'react-select/creatable';
@@ -5,6 +7,13 @@ import Select from 'react-select';
 import { BaseTextFieldProps } from '@material-ui/core/TextField';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles';
+import { ControlProps } from 'react-select/src/components/Control';
+import { MenuProps, NoticeProps } from 'react-select/src/components/Menu';
+import { MultiValueProps } from 'react-select/src/components/MultiValue';
+import { OptionProps } from 'react-select/src/components/Option';
+import { PlaceholderProps } from 'react-select/src/components/Placeholder';
+import { SingleValueProps } from 'react-select/src/components/SingleValue';
+import { ValueContainerProps } from 'react-select/src/components/containers';
 
 import {
     createStyles,
@@ -70,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const NoOptionsMessage = ({ selectProps, innerProps, children }: any): JSX.Element => {
+const NoOptionsMessage = ({ selectProps, innerProps, children }: NoticeProps<OptionType>): JSX.Element => {
     return (
         <Typography color="textSecondary" className={selectProps.classes.noOptionsMessage} {...innerProps}>
             {children}
@@ -84,7 +93,12 @@ const inputComponent = ({ inputRef, ...props }: InputComponentProps): JSX.Elemen
     return <div ref={inputRef} {...props} />;
 };
 
-const Control = ({ children, innerProps, innerRef, selectProps: { classes, TextFieldProps } }: any): JSX.Element => {
+const Control = ({
+    children,
+    innerProps,
+    innerRef,
+    selectProps: { classes, TextFieldProps },
+}: ControlProps<OptionType>): JSX.Element => {
     return (
         <TextField
             fullWidth
@@ -102,7 +116,7 @@ const Control = ({ children, innerProps, innerRef, selectProps: { classes, TextF
     );
 };
 
-const Option = ({ innerRef, isFocused, isSelected, innerProps, children }: any): JSX.Element => {
+const Option = ({ innerRef, isFocused, isSelected, innerProps, children }: OptionProps<OptionType>): JSX.Element => {
     return (
         <MenuItem
             ref={innerRef}
@@ -118,7 +132,10 @@ const Option = ({ innerRef, isFocused, isSelected, innerProps, children }: any):
     );
 };
 
-const Placeholder = ({ selectProps, innerProps, children }: any): JSX.Element => {
+type MuiPlaceholderProps = Omit<PlaceholderProps<OptionType>, 'innerProps'> &
+    Partial<Pick<PlaceholderProps<OptionType>, 'innerProps'>>;
+
+const Placeholder = ({ selectProps, innerProps, children }: MuiPlaceholderProps): JSX.Element => {
     return (
         <Typography color="textSecondary" className={selectProps.classes.placeholder} {...innerProps}>
             {children}
@@ -126,7 +143,7 @@ const Placeholder = ({ selectProps, innerProps, children }: any): JSX.Element =>
     );
 };
 
-const SingleValue = ({ selectProps, innerProps, children }: any): JSX.Element => {
+const SingleValue = ({ selectProps, innerProps, children }: SingleValueProps<OptionType>): JSX.Element => {
     return (
         <Typography className={selectProps.classes.singleValue} {...innerProps}>
             {children}
@@ -134,11 +151,11 @@ const SingleValue = ({ selectProps, innerProps, children }: any): JSX.Element =>
     );
 };
 
-const ValueContainer = ({ selectProps, children }: any): JSX.Element => {
+const ValueContainer = ({ selectProps, children }: ValueContainerProps<OptionType>): JSX.Element => {
     return <div className={selectProps.classes.valueContainer}>{children}</div>;
 };
 
-const MultiValue = ({ selectProps, children, removeProps, isFocused }: any): JSX.Element => {
+const MultiValue = ({ selectProps, children, removeProps, isFocused }: MultiValueProps<OptionType>): JSX.Element => {
     return (
         <Chip
             tabIndex={-1}
@@ -152,7 +169,7 @@ const MultiValue = ({ selectProps, children, removeProps, isFocused }: any): JSX
     );
 };
 
-const Menu = ({ selectProps, innerProps, children }: any): JSX.Element => {
+const Menu = ({ selectProps, innerProps, children }: MenuProps<OptionType>): JSX.Element => {
     return (
         <Paper square className={selectProps.classes.paper} {...innerProps}>
             {children}
@@ -179,6 +196,16 @@ interface SelectStyles extends CSSProperties {
     '& input': Input;
 }
 
+interface MaterialSelectProps {
+    placeholder: string;
+    label: string;
+    isCreatable: boolean;
+    isMulti: boolean;
+    suggestions: [Suggestions];
+    onChange: any;
+    value: Suggestions;
+}
+
 export const MaterialSelect = ({
     placeholder,
     label,
@@ -187,7 +214,7 @@ export const MaterialSelect = ({
     value,
     isMulti,
     onChange,
-}: any): JSX.Element => {
+}: MaterialSelectProps): JSX.Element => {
     const classes = useStyles();
     const theme = useTheme();
 

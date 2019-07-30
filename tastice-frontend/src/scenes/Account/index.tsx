@@ -95,11 +95,12 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
         history.push('/');
     };
 
-    const handleEmailChange = (event: any): void => setEmail(event.target.value);
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>): void => setEmail(event.target.value);
 
-    const handleLastNameChange = (event: any): void => setLastName(event.target.value);
+    const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => setLastName(event.target.value);
 
-    const handleFirstNameChange = (event: any): void => setFirstName(event.target.value);
+    const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>): void =>
+        setFirstName(event.target.value);
 
     return (
         <div>

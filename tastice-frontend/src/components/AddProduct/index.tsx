@@ -51,7 +51,7 @@ export const AddProduct = (): JSX.Element | null => {
     const categories = categoriesQuery.data.categories;
     const companies = companiesQuery.data.companies;
 
-    const handleNameChange = (event: any): void => setName(event.target.value);
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => setName(event.target.value);
 
     const handleCompanyChange = (value: Suggestions): void => setCompany(value);
 
@@ -59,7 +59,7 @@ export const AddProduct = (): JSX.Element | null => {
 
     const handleSubCategoryChange = (value: Suggestions): void => setSubCategory(value);
 
-    const handleAddProduct = async (event: any): Promise<void> => {
+    const handleAddProduct = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
 
         const subCategoryArray = subCategory.map((subCategoryItem: Suggestions): string => {

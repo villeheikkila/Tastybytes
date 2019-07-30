@@ -59,13 +59,14 @@ export const SignUp = ({ setToken }: Token): JSX.Element => {
 
     const handlePushToLogin = (): void => history.push('/');
 
-    const handlePasswordChange = (event: any): void => setPassword(event.target.value);
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>): void => setPassword(event.target.value);
 
-    const handleEmailChange = (event: any): void => setEmail(event.target.value);
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>): void => setEmail(event.target.value);
 
-    const handleLastNameChange = (event: any): void => setLastName(event.target.value);
+    const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => setLastName(event.target.value);
 
-    const handleFirstNameChange = (event: any): void => setFirstName(event.target.value);
+    const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>): void =>
+        setFirstName(event.target.value);
 
     return (
         <Container component="main" maxWidth="xs">

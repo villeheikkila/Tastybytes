@@ -31,13 +31,9 @@ interface CreateCheckInProps {
 }
 
 export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.Element => {
-    console.log('authorId: ', authorId);
-    console.log('productId: ', productId);
     const classes = useStyles();
     const [rating, setRating] = useState();
-    console.log('rating: ', rating);
     const [comment, setComment] = useState();
-    console.log('comment: ', comment);
     const [createCheckin] = useMutation(CREATE_CHECKIN, {
         onError: errorHandler,
         refetchQueries: [{ query: ALL_CHECKINS }, { query: ME }, { query: PRODUCT, variables: { id: productId } }],
