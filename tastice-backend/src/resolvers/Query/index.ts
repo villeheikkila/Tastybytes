@@ -1,6 +1,5 @@
+import { idArg, queryType, stringArg } from 'nexus';
 import { getUserId } from '../../utils';
-import { queryType } from 'nexus';
-import { idArg, stringArg } from 'nexus';
 
 export const Query = queryType({
     definition(t) {

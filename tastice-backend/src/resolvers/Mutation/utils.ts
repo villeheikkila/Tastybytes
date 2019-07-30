@@ -1,6 +1,6 @@
 import { prisma } from '../../generated/prisma-client';
 
-export const createIfNewCompany = async name => {
+export const createIfNewCompany = async (name: string): Promise<string> => {
     const companyExists = await prisma.$exists.company({
         name,
     });
@@ -17,9 +17,12 @@ export const createIfNewCompany = async name => {
 
     return company.id;
 };
+interface Id {
+    id: string;
+}
 
-export const createIfNewSubCategories = async (subCategories, categoryId) => {
-    const subCategoriesIds: any = [];
+export const createIfNewSubCategories = async (subCategories: string[], categoryId: string): Promise<Id[]> => {
+    const subCategoriesIds: Id[] = [];
 
     for (let i = 0; i < subCategories.length; i++) {
         const subCategoryExists = await prisma.$exists.subCategory({

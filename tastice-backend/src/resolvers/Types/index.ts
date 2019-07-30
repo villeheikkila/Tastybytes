@@ -1,5 +1,5 @@
-import { prismaObjectType } from 'nexus-prisma';
 import { objectType } from 'nexus';
+import { prismaObjectType } from 'nexus-prisma';
 
 export const SubCategory = prismaObjectType({
     name: 'SubCategory',

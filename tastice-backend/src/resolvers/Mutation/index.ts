@@ -1,6 +1,6 @@
-import { stringArg, idArg, intArg, mutationType, arg } from 'nexus';
-import { hash, compare } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import { idArg, intArg, mutationType, stringArg } from 'nexus';
 import { prisma } from '../../generated/prisma-client';
 import { SECRET } from '../../utils';
 import { createIfNewCompany, createIfNewSubCategories } from './utils';
