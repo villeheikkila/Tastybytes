@@ -59,9 +59,7 @@ export const AddProduct = (): JSX.Element | null => {
     const handleAddProduct = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
 
-        const subCategoryArray = subCategory.map((subCategoryItem: Suggestions): string => {
-            return subCategoryItem.value;
-        });
+        const subCategoryArray = subCategory.map((subCategoryItem: Suggestions): string => subCategoryItem.value);
 
         const result = await addProduct({
             variables: {

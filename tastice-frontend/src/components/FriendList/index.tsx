@@ -80,7 +80,17 @@ export const FriendList = (id: IdObject): JSX.Element | null => {
 
     const friends = me.data.me.friends;
     const friendRequests = friendRequest.data.friendRequest;
-    const users = usersQuery.data.searchUsers;
+
+    const friendRequestIds = friendRequests.map(
+        (friendRequestItem: FriendRequestObject) => friendRequestItem.sender[0].id,
+    );
+
+    const friendIds = friends.map((friendItem: SimpleUserObject) => friendItem.id);
+
+    const users = usersQuery.data.searchUsers.filter(
+        (userItem: SimpleUserObject) =>
+            userItem.id !== id.id && !friendRequestIds.includes(userItem.id) && !friendIds.includes(userItem.id),
+    );
 
     return (
         <Card className={classes.root}>

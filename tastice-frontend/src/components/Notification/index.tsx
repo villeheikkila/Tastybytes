@@ -8,7 +8,9 @@ export const Notifications = (): JSX.Element | null => {
     const [open, setOpen] = useState(false);
     const notification = useQuery(NOTIFICATION);
 
-    useEffect((): void => setOpen(true), [notification]);
+    useEffect((): void => {
+        if (notification.data.notification) setOpen(true);
+    }, [notification]);
 
     if (notification.data === undefined || notification.data === {} || notification.data.notification === 'clear') {
         return null;
