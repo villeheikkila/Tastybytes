@@ -194,9 +194,7 @@ export interface NexusGenInputs {
     checkins_every?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     checkins_none?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     checkins_some?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
-    company_every?: NexusGenInputs['CompanyWhereInput'] | null; // CompanyWhereInput
-    company_none?: NexusGenInputs['CompanyWhereInput'] | null; // CompanyWhereInput
-    company_some?: NexusGenInputs['CompanyWhereInput'] | null; // CompanyWhereInput
+    company?: NexusGenInputs['CompanyWhereInput'] | null; // CompanyWhereInput
     createdAt?: any | null; // DateTime
     createdAt_gt?: any | null; // DateTime
     createdAt_gte?: any | null; // DateTime
@@ -391,7 +389,6 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   CategoryOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   CheckinOrderByInput: "comment_ASC" | "comment_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "rating_ASC" | "rating_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
-  CompanyOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   MutationType: "CREATED" | "DELETED" | "UPDATED"
   ProductOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   SubCategoryOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
@@ -498,7 +495,6 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   UserWhereInput: NexusGenInputs['UserWhereInput'];
   CategoryOrderByInput: NexusGenEnums['CategoryOrderByInput'];
   CheckinOrderByInput: NexusGenEnums['CheckinOrderByInput'];
-  CompanyOrderByInput: NexusGenEnums['CompanyOrderByInput'];
   MutationType: NexusGenEnums['MutationType'];
   ProductOrderByInput: NexusGenEnums['ProductOrderByInput'];
   SubCategoryOrderByInput: NexusGenEnums['SubCategoryOrderByInput'];
@@ -569,7 +565,7 @@ export interface NexusGenFieldTypes {
   Product: { // field return type
     category: NexusGenRootTypes['Category'][] | null; // [Category!]
     checkins: NexusGenRootTypes['Checkin'][] | null; // [Checkin!]
-    company: NexusGenRootTypes['Company'][] | null; // [Company!]
+    company: NexusGenRootTypes['Company']; // Company!
     createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
@@ -794,15 +790,6 @@ export interface NexusGenArgTypes {
       skip?: number | null; // Int
       where?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     }
-    company: { // args
-      after?: string | null; // String
-      before?: string | null; // String
-      first?: number | null; // Int
-      last?: number | null; // Int
-      orderBy?: NexusGenEnums['CompanyOrderByInput'] | null; // CompanyOrderByInput
-      skip?: number | null; // Int
-      where?: NexusGenInputs['CompanyWhereInput'] | null; // CompanyWhereInput
-    }
     subCategory: { // args
       after?: string | null; // String
       before?: string | null; // String
@@ -886,7 +873,7 @@ export type NexusGenObjectNames = "AuthPayload" | "Category" | "Checkin" | "Comp
 
 export type NexusGenInputNames = "CategoryWhereInput" | "CheckinWhereInput" | "CompanyWhereInput" | "FriendRequestWhereInput" | "ProductWhereInput" | "SubCategoryWhereInput" | "UserWhereInput";
 
-export type NexusGenEnumNames = "CategoryOrderByInput" | "CheckinOrderByInput" | "CompanyOrderByInput" | "MutationType" | "ProductOrderByInput" | "SubCategoryOrderByInput" | "UserOrderByInput";
+export type NexusGenEnumNames = "CategoryOrderByInput" | "CheckinOrderByInput" | "MutationType" | "ProductOrderByInput" | "SubCategoryOrderByInput" | "UserOrderByInput";
 
 export type NexusGenInterfaceNames = never;
 

@@ -3,7 +3,7 @@
 interface Product {
     id: string;
     name: string;
-    company: [NameId];
+    company: NameId;
     category: [NameId];
     subCategory: [NameId];
 }
@@ -71,14 +71,6 @@ interface SimpleUserObject {
 
 interface IdObject {
     id: string;
-}
-
-interface ProductObject {
-    name: string;
-    id: string;
-    category: [NameId];
-    subCategory: [NameId];
-    company: [NameId];
 }
 
 interface CheckInObject {

@@ -154,17 +154,6 @@ type Company {
   products(after: String, before: String, first: Int, last: Int, orderBy: ProductOrderByInput, skip: Int, where: ProductWhereInput): [Product!]
 }
 
-enum CompanyOrderByInput {
-  createdAt_ASC
-  createdAt_DESC
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
 input CompanyWhereInput {
   AND: [CompanyWhereInput!]
   id: ID
@@ -293,7 +282,7 @@ enum MutationType {
 type Product {
   category(after: String, before: String, first: Int, last: Int, orderBy: CategoryOrderByInput, skip: Int, where: CategoryWhereInput): [Category!]
   checkins(after: String, before: String, first: Int, last: Int, orderBy: CheckinOrderByInput, skip: Int, where: CheckinWhereInput): [Checkin!]
-  company(after: String, before: String, first: Int, last: Int, orderBy: CompanyOrderByInput, skip: Int, where: CompanyWhereInput): [Company!]
+  company: Company!
   createdAt: DateTime!
   id: ID!
   name: String!
@@ -334,9 +323,7 @@ input ProductWhereInput {
   checkins_every: CheckinWhereInput
   checkins_none: CheckinWhereInput
   checkins_some: CheckinWhereInput
-  company_every: CompanyWhereInput
-  company_none: CompanyWhereInput
-  company_some: CompanyWhereInput
+  company: CompanyWhereInput
   createdAt: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime

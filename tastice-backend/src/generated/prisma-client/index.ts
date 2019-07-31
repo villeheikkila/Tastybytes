@@ -361,12 +361,6 @@ export type ProductOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type CompanyOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC";
-
 export type CheckinOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -404,6 +398,12 @@ export type FriendRequestOrderByInput =
   | "message_DESC";
 
 export type CategoryOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC";
+
+export type CompanyOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
@@ -523,9 +523,7 @@ export interface ProductWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
-  company_every?: Maybe<CompanyWhereInput>;
-  company_some?: Maybe<CompanyWhereInput>;
-  company_none?: Maybe<CompanyWhereInput>;
+  company?: Maybe<CompanyWhereInput>;
   checkins_every?: Maybe<CheckinWhereInput>;
   checkins_some?: Maybe<CheckinWhereInput>;
   checkins_none?: Maybe<CheckinWhereInput>;
@@ -855,16 +853,14 @@ export interface ProductCreateManyWithoutSubCategoryInput {
 export interface ProductCreateWithoutSubCategoryInput {
   id?: Maybe<ID_Input>;
   name: String;
-  company?: Maybe<CompanyCreateManyWithoutProductsInput>;
+  company: CompanyCreateOneWithoutProductsInput;
   checkins?: Maybe<CheckinCreateManyWithoutProductInput>;
   category?: Maybe<CategoryCreateManyWithoutProductsInput>;
 }
 
-export interface CompanyCreateManyWithoutProductsInput {
-  create?: Maybe<
-    CompanyCreateWithoutProductsInput[] | CompanyCreateWithoutProductsInput
-  >;
-  connect?: Maybe<CompanyWhereUniqueInput[] | CompanyWhereUniqueInput>;
+export interface CompanyCreateOneWithoutProductsInput {
+  create?: Maybe<CompanyCreateWithoutProductsInput>;
+  connect?: Maybe<CompanyWhereUniqueInput>;
 }
 
 export interface CompanyCreateWithoutProductsInput {
@@ -941,7 +937,7 @@ export interface ProductCreateOneWithoutCheckinsInput {
 export interface ProductCreateWithoutCheckinsInput {
   id?: Maybe<ID_Input>;
   name: String;
-  company?: Maybe<CompanyCreateManyWithoutProductsInput>;
+  company: CompanyCreateOneWithoutProductsInput;
   category?: Maybe<CategoryCreateManyWithoutProductsInput>;
   subCategory?: Maybe<SubCategoryCreateManyWithoutProductsInput>;
 }
@@ -994,7 +990,7 @@ export interface ProductCreateManyWithoutCategoryInput {
 export interface ProductCreateWithoutCategoryInput {
   id?: Maybe<ID_Input>;
   name: String;
-  company?: Maybe<CompanyCreateManyWithoutProductsInput>;
+  company: CompanyCreateOneWithoutProductsInput;
   checkins?: Maybe<CheckinCreateManyWithoutProductInput>;
   subCategory?: Maybe<SubCategoryCreateManyWithoutProductsInput>;
 }
@@ -1090,90 +1086,25 @@ export interface ProductUpdateWithWhereUniqueWithoutSubCategoryInput {
 
 export interface ProductUpdateWithoutSubCategoryDataInput {
   name?: Maybe<String>;
-  company?: Maybe<CompanyUpdateManyWithoutProductsInput>;
+  company?: Maybe<CompanyUpdateOneRequiredWithoutProductsInput>;
   checkins?: Maybe<CheckinUpdateManyWithoutProductInput>;
   category?: Maybe<CategoryUpdateManyWithoutProductsInput>;
 }
 
-export interface CompanyUpdateManyWithoutProductsInput {
-  create?: Maybe<
-    CompanyCreateWithoutProductsInput[] | CompanyCreateWithoutProductsInput
-  >;
-  delete?: Maybe<CompanyWhereUniqueInput[] | CompanyWhereUniqueInput>;
-  connect?: Maybe<CompanyWhereUniqueInput[] | CompanyWhereUniqueInput>;
-  set?: Maybe<CompanyWhereUniqueInput[] | CompanyWhereUniqueInput>;
-  disconnect?: Maybe<CompanyWhereUniqueInput[] | CompanyWhereUniqueInput>;
-  update?: Maybe<
-    | CompanyUpdateWithWhereUniqueWithoutProductsInput[]
-    | CompanyUpdateWithWhereUniqueWithoutProductsInput
-  >;
-  upsert?: Maybe<
-    | CompanyUpsertWithWhereUniqueWithoutProductsInput[]
-    | CompanyUpsertWithWhereUniqueWithoutProductsInput
-  >;
-  deleteMany?: Maybe<CompanyScalarWhereInput[] | CompanyScalarWhereInput>;
-  updateMany?: Maybe<
-    | CompanyUpdateManyWithWhereNestedInput[]
-    | CompanyUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface CompanyUpdateWithWhereUniqueWithoutProductsInput {
-  where: CompanyWhereUniqueInput;
-  data: CompanyUpdateWithoutProductsDataInput;
+export interface CompanyUpdateOneRequiredWithoutProductsInput {
+  create?: Maybe<CompanyCreateWithoutProductsInput>;
+  update?: Maybe<CompanyUpdateWithoutProductsDataInput>;
+  upsert?: Maybe<CompanyUpsertWithoutProductsInput>;
+  connect?: Maybe<CompanyWhereUniqueInput>;
 }
 
 export interface CompanyUpdateWithoutProductsDataInput {
   name?: Maybe<String>;
 }
 
-export interface CompanyUpsertWithWhereUniqueWithoutProductsInput {
-  where: CompanyWhereUniqueInput;
+export interface CompanyUpsertWithoutProductsInput {
   update: CompanyUpdateWithoutProductsDataInput;
   create: CompanyCreateWithoutProductsInput;
-}
-
-export interface CompanyScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<CompanyScalarWhereInput[] | CompanyScalarWhereInput>;
-  OR?: Maybe<CompanyScalarWhereInput[] | CompanyScalarWhereInput>;
-  NOT?: Maybe<CompanyScalarWhereInput[] | CompanyScalarWhereInput>;
-}
-
-export interface CompanyUpdateManyWithWhereNestedInput {
-  where: CompanyScalarWhereInput;
-  data: CompanyUpdateManyDataInput;
-}
-
-export interface CompanyUpdateManyDataInput {
-  name?: Maybe<String>;
 }
 
 export interface CheckinUpdateManyWithoutProductInput {
@@ -1306,7 +1237,7 @@ export interface ProductUpdateOneRequiredWithoutCheckinsInput {
 
 export interface ProductUpdateWithoutCheckinsDataInput {
   name?: Maybe<String>;
-  company?: Maybe<CompanyUpdateManyWithoutProductsInput>;
+  company?: Maybe<CompanyUpdateOneRequiredWithoutProductsInput>;
   category?: Maybe<CategoryUpdateManyWithoutProductsInput>;
   subCategory?: Maybe<SubCategoryUpdateManyWithoutProductsInput>;
 }
@@ -1473,7 +1404,7 @@ export interface ProductUpdateWithWhereUniqueWithoutCategoryInput {
 
 export interface ProductUpdateWithoutCategoryDataInput {
   name?: Maybe<String>;
-  company?: Maybe<CompanyUpdateManyWithoutProductsInput>;
+  company?: Maybe<CompanyUpdateOneRequiredWithoutProductsInput>;
   checkins?: Maybe<CheckinUpdateManyWithoutProductInput>;
   subCategory?: Maybe<SubCategoryUpdateManyWithoutProductsInput>;
 }
@@ -2079,7 +2010,7 @@ export interface FriendRequestUpdateManyMutationInput {
 export interface ProductCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
-  company?: Maybe<CompanyCreateManyWithoutProductsInput>;
+  company: CompanyCreateOneWithoutProductsInput;
   checkins?: Maybe<CheckinCreateManyWithoutProductInput>;
   category?: Maybe<CategoryCreateManyWithoutProductsInput>;
   subCategory?: Maybe<SubCategoryCreateManyWithoutProductsInput>;
@@ -2087,7 +2018,7 @@ export interface ProductCreateInput {
 
 export interface ProductUpdateInput {
   name?: Maybe<String>;
-  company?: Maybe<CompanyUpdateManyWithoutProductsInput>;
+  company?: Maybe<CompanyUpdateOneRequiredWithoutProductsInput>;
   checkins?: Maybe<CheckinUpdateManyWithoutProductInput>;
   category?: Maybe<CategoryUpdateManyWithoutProductsInput>;
   subCategory?: Maybe<SubCategoryUpdateManyWithoutProductsInput>;
@@ -2372,15 +2303,7 @@ export interface Product {
 export interface ProductPromise extends Promise<Product>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  company: <T = FragmentableArray<Company>>(args?: {
-    where?: CompanyWhereInput;
-    orderBy?: CompanyOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  company: <T = CompanyPromise>() => T;
   checkins: <T = FragmentableArray<Checkin>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -2417,15 +2340,7 @@ export interface ProductSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
-  company: <T = Promise<AsyncIterator<CompanySubscription>>>(args?: {
-    where?: CompanyWhereInput;
-    orderBy?: CompanyOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  company: <T = CompanySubscription>() => T;
   checkins: <T = Promise<AsyncIterator<CheckinSubscription>>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -2462,15 +2377,7 @@ export interface ProductNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  company: <T = FragmentableArray<Company>>(args?: {
-    where?: CompanyWhereInput;
-    orderBy?: CompanyOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  company: <T = CompanyPromise>() => T;
   checkins: <T = FragmentableArray<Checkin>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;

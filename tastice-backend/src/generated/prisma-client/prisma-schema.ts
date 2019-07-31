@@ -566,9 +566,9 @@ input CompanyCreateInput {
   products: ProductCreateManyWithoutCompanyInput
 }
 
-input CompanyCreateManyWithoutProductsInput {
-  create: [CompanyCreateWithoutProductsInput!]
-  connect: [CompanyWhereUniqueInput!]
+input CompanyCreateOneWithoutProductsInput {
+  create: CompanyCreateWithoutProductsInput
+  connect: CompanyWhereUniqueInput
 }
 
 input CompanyCreateWithoutProductsInput {
@@ -591,40 +591,6 @@ enum CompanyOrderByInput {
 type CompanyPreviousValues {
   id: ID!
   name: String!
-}
-
-input CompanyScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  AND: [CompanyScalarWhereInput!]
-  OR: [CompanyScalarWhereInput!]
-  NOT: [CompanyScalarWhereInput!]
 }
 
 type CompanySubscriptionPayload {
@@ -650,42 +616,22 @@ input CompanyUpdateInput {
   products: ProductUpdateManyWithoutCompanyInput
 }
 
-input CompanyUpdateManyDataInput {
-  name: String
-}
-
 input CompanyUpdateManyMutationInput {
   name: String
 }
 
-input CompanyUpdateManyWithoutProductsInput {
-  create: [CompanyCreateWithoutProductsInput!]
-  delete: [CompanyWhereUniqueInput!]
-  connect: [CompanyWhereUniqueInput!]
-  set: [CompanyWhereUniqueInput!]
-  disconnect: [CompanyWhereUniqueInput!]
-  update: [CompanyUpdateWithWhereUniqueWithoutProductsInput!]
-  upsert: [CompanyUpsertWithWhereUniqueWithoutProductsInput!]
-  deleteMany: [CompanyScalarWhereInput!]
-  updateMany: [CompanyUpdateManyWithWhereNestedInput!]
-}
-
-input CompanyUpdateManyWithWhereNestedInput {
-  where: CompanyScalarWhereInput!
-  data: CompanyUpdateManyDataInput!
+input CompanyUpdateOneRequiredWithoutProductsInput {
+  create: CompanyCreateWithoutProductsInput
+  update: CompanyUpdateWithoutProductsDataInput
+  upsert: CompanyUpsertWithoutProductsInput
+  connect: CompanyWhereUniqueInput
 }
 
 input CompanyUpdateWithoutProductsDataInput {
   name: String
 }
 
-input CompanyUpdateWithWhereUniqueWithoutProductsInput {
-  where: CompanyWhereUniqueInput!
-  data: CompanyUpdateWithoutProductsDataInput!
-}
-
-input CompanyUpsertWithWhereUniqueWithoutProductsInput {
-  where: CompanyWhereUniqueInput!
+input CompanyUpsertWithoutProductsInput {
   update: CompanyUpdateWithoutProductsDataInput!
   create: CompanyCreateWithoutProductsInput!
 }
@@ -992,7 +938,7 @@ type PageInfo {
 type Product {
   id: ID!
   name: String!
-  company(where: CompanyWhereInput, orderBy: CompanyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Company!]
+  company: Company!
   checkins(where: CheckinWhereInput, orderBy: CheckinOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Checkin!]
   category(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
   subCategory(where: SubCategoryWhereInput, orderBy: SubCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SubCategory!]
@@ -1009,7 +955,7 @@ type ProductConnection {
 input ProductCreateInput {
   id: ID
   name: String!
-  company: CompanyCreateManyWithoutProductsInput
+  company: CompanyCreateOneWithoutProductsInput!
   checkins: CheckinCreateManyWithoutProductInput
   category: CategoryCreateManyWithoutProductsInput
   subCategory: SubCategoryCreateManyWithoutProductsInput
@@ -1038,7 +984,7 @@ input ProductCreateOneWithoutCheckinsInput {
 input ProductCreateWithoutCategoryInput {
   id: ID
   name: String!
-  company: CompanyCreateManyWithoutProductsInput
+  company: CompanyCreateOneWithoutProductsInput!
   checkins: CheckinCreateManyWithoutProductInput
   subCategory: SubCategoryCreateManyWithoutProductsInput
 }
@@ -1046,7 +992,7 @@ input ProductCreateWithoutCategoryInput {
 input ProductCreateWithoutCheckinsInput {
   id: ID
   name: String!
-  company: CompanyCreateManyWithoutProductsInput
+  company: CompanyCreateOneWithoutProductsInput!
   category: CategoryCreateManyWithoutProductsInput
   subCategory: SubCategoryCreateManyWithoutProductsInput
 }
@@ -1062,7 +1008,7 @@ input ProductCreateWithoutCompanyInput {
 input ProductCreateWithoutSubCategoryInput {
   id: ID
   name: String!
-  company: CompanyCreateManyWithoutProductsInput
+  company: CompanyCreateOneWithoutProductsInput!
   checkins: CheckinCreateManyWithoutProductInput
   category: CategoryCreateManyWithoutProductsInput
 }
@@ -1160,7 +1106,7 @@ input ProductSubscriptionWhereInput {
 
 input ProductUpdateInput {
   name: String
-  company: CompanyUpdateManyWithoutProductsInput
+  company: CompanyUpdateOneRequiredWithoutProductsInput
   checkins: CheckinUpdateManyWithoutProductInput
   category: CategoryUpdateManyWithoutProductsInput
   subCategory: SubCategoryUpdateManyWithoutProductsInput
@@ -1224,14 +1170,14 @@ input ProductUpdateOneRequiredWithoutCheckinsInput {
 
 input ProductUpdateWithoutCategoryDataInput {
   name: String
-  company: CompanyUpdateManyWithoutProductsInput
+  company: CompanyUpdateOneRequiredWithoutProductsInput
   checkins: CheckinUpdateManyWithoutProductInput
   subCategory: SubCategoryUpdateManyWithoutProductsInput
 }
 
 input ProductUpdateWithoutCheckinsDataInput {
   name: String
-  company: CompanyUpdateManyWithoutProductsInput
+  company: CompanyUpdateOneRequiredWithoutProductsInput
   category: CategoryUpdateManyWithoutProductsInput
   subCategory: SubCategoryUpdateManyWithoutProductsInput
 }
@@ -1245,7 +1191,7 @@ input ProductUpdateWithoutCompanyDataInput {
 
 input ProductUpdateWithoutSubCategoryDataInput {
   name: String
-  company: CompanyUpdateManyWithoutProductsInput
+  company: CompanyUpdateOneRequiredWithoutProductsInput
   checkins: CheckinUpdateManyWithoutProductInput
   category: CategoryUpdateManyWithoutProductsInput
 }
@@ -1317,9 +1263,7 @@ input ProductWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  company_every: CompanyWhereInput
-  company_some: CompanyWhereInput
-  company_none: CompanyWhereInput
+  company: CompanyWhereInput
   checkins_every: CheckinWhereInput
   checkins_some: CheckinWhereInput
   checkins_none: CheckinWhereInput

@@ -26,14 +26,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface UpdateProductProps {
-    product: ProductObject;
+    product: Product;
 }
 export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | null => {
+    console.log('TCL: product', product);
     const classes = useStyles();
     const [name, setName] = useState('');
     const [company, setCompany] = useState();
+    console.log('TCL: company', company);
     const [category, setCategory] = useState();
+    console.log('TCL: category', category);
     const [subCategory, setSubCategory] = useState();
+    console.log('TCL: subCategory', subCategory);
     const categoriesQuery = useQuery(ALL_CATEGORIES);
     const companiesQuery = useQuery(ALL_COMPANIES);
 
@@ -44,9 +48,22 @@ export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | nu
 
     useEffect((): void => {
         setName(product.name);
-        setCompany(product.company[0]);
-        setCategory(product.category[0].name);
-        setSubCategory(product.subCategory[0].name);
+        setCompany({
+            value: product.company.name,
+            label: product.company.name,
+            id: product.company.id,
+        });
+        setCategory({
+            value: product.category[0].name,
+            label: product.category[0].name,
+            id: product.category[0].id,
+        });
+        const oldSubCategories = product.subCategory.map((subCategoryItem: NameId) => ({
+            value: subCategoryItem.name,
+            label: subCategoryItem.name,
+            id: subCategoryItem.id,
+        }));
+        setSubCategory(oldSubCategories);
     }, [product.name, product.company, product.category, product.subCategory]);
 
     if (categoriesQuery === null || categoriesQuery.data.categories === undefined) {
@@ -67,9 +84,8 @@ export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | nu
     const handleAddProduct = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
 
-        const subCategoryArray = subCategory.map((subCategoryItem: Suggestions): string => {
-            return subCategoryItem.value;
-        });
+        const subCategoryArray = subCategory.map((subCategoryItem: Suggestions): string => subCategoryItem.value);
+        console.log('TCL: subCategoryArray', subCategoryArray);
 
         const result = await updateProduct({
             variables: {
@@ -80,10 +96,11 @@ export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | nu
                 subCategories: subCategoryArray,
             },
         });
+        console.log('TCL: result', result);
 
         if (result) {
             notificationHandler({
-                message: `Product ${result.data.addProduct.name} succesfully updated`,
+                message: `Product ${result.data.updateProduct.name} succesfully updated`,
                 variant: 'success',
             });
         }

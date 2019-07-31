@@ -30,10 +30,10 @@ export const ProductList = (): JSX.Element | null => {
         return null;
     }
 
-    const productsObjects = products.map((product: ProductObject) => ({
+    const productsObjects = products.map((product: Product) => ({
         id: product.id,
         name: product.name,
-        company: product.company[0],
+        company: product.company,
         category: product.category[0],
         subCategory: product.subCategory,
     }));

@@ -26,11 +26,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface ProductCardProps {
-    product: ProductObject;
+    product: Product;
     showMenu: boolean;
 }
 
 export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Element => {
+    console.log('TCL: product', product);
     const classes = useStyles();
     const [showEditProduct, setShowEditProduct] = useState();
     const { history } = useReactRouter();
@@ -52,7 +53,7 @@ export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Elemen
                                     </Link>
                                 </Typography>
                                 <Typography variant="h5" gutterBottom>
-                                    {product.company[0].name}
+                                    {product.company.name}
                                 </Typography>
                                 {product.category.map(
                                     (CategoryItem: NameId): JSX.Element => (

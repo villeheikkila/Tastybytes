@@ -133,7 +133,7 @@ export interface NexusPrismaTypes {
       CheckinCreateWithoutAuthorInput: CheckinCreateWithoutAuthorInputInputObject
       ProductCreateOneWithoutCheckinsInput: ProductCreateOneWithoutCheckinsInputInputObject
       ProductCreateWithoutCheckinsInput: ProductCreateWithoutCheckinsInputInputObject
-      CompanyCreateManyWithoutProductsInput: CompanyCreateManyWithoutProductsInputInputObject
+      CompanyCreateOneWithoutProductsInput: CompanyCreateOneWithoutProductsInputInputObject
       CompanyCreateWithoutProductsInput: CompanyCreateWithoutProductsInputInputObject
       CategoryCreateManyWithoutProductsInput: CategoryCreateManyWithoutProductsInputInputObject
       CategoryCreateWithoutProductsInput: CategoryCreateWithoutProductsInputInputObject
@@ -160,13 +160,9 @@ export interface NexusPrismaTypes {
       CheckinUpdateWithoutAuthorDataInput: CheckinUpdateWithoutAuthorDataInputInputObject
       ProductUpdateOneRequiredWithoutCheckinsInput: ProductUpdateOneRequiredWithoutCheckinsInputInputObject
       ProductUpdateWithoutCheckinsDataInput: ProductUpdateWithoutCheckinsDataInputInputObject
-      CompanyUpdateManyWithoutProductsInput: CompanyUpdateManyWithoutProductsInputInputObject
-      CompanyUpdateWithWhereUniqueWithoutProductsInput: CompanyUpdateWithWhereUniqueWithoutProductsInputInputObject
+      CompanyUpdateOneRequiredWithoutProductsInput: CompanyUpdateOneRequiredWithoutProductsInputInputObject
       CompanyUpdateWithoutProductsDataInput: CompanyUpdateWithoutProductsDataInputInputObject
-      CompanyUpsertWithWhereUniqueWithoutProductsInput: CompanyUpsertWithWhereUniqueWithoutProductsInputInputObject
-      CompanyScalarWhereInput: CompanyScalarWhereInputInputObject
-      CompanyUpdateManyWithWhereNestedInput: CompanyUpdateManyWithWhereNestedInputInputObject
-      CompanyUpdateManyDataInput: CompanyUpdateManyDataInputInputObject
+      CompanyUpsertWithoutProductsInput: CompanyUpsertWithoutProductsInputInputObject
       CategoryUpdateManyWithoutProductsInput: CategoryUpdateManyWithoutProductsInputInputObject
       CategoryUpdateWithWhereUniqueWithoutProductsInput: CategoryUpdateWithWhereUniqueWithoutProductsInputInputObject
       CategoryUpdateWithoutProductsDataInput: CategoryUpdateWithoutProductsDataInputInputObject
@@ -267,12 +263,12 @@ export interface NexusPrismaTypes {
   }
   enumTypes: {
     CheckinOrderByInput: CheckinOrderByInputValues,
-    CompanyOrderByInput: CompanyOrderByInputValues,
     ProductOrderByInput: ProductOrderByInputValues,
     CategoryOrderByInput: CategoryOrderByInputValues,
     SubCategoryOrderByInput: SubCategoryOrderByInputValues,
     UserOrderByInput: UserOrderByInputValues,
     FriendRequestOrderByInput: FriendRequestOrderByInputValues,
+    CompanyOrderByInput: CompanyOrderByInputValues,
     MutationType: MutationTypeValues,
   }
 }
@@ -996,7 +992,7 @@ type ProductObject =
   | ProductFields
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'name', args?: [] | false, alias?: string  } 
-  | { name: 'company', args?: ProductCompanyArgs[] | false, alias?: string  } 
+  | { name: 'company', args?: [] | false, alias?: string  } 
   | { name: 'checkins', args?: ProductCheckinsArgs[] | false, alias?: string  } 
   | { name: 'category', args?: ProductCategoryArgs[] | false, alias?: string  } 
   | { name: 'subCategory', args?: ProductSubCategoryArgs[] | false, alias?: string  } 
@@ -1014,14 +1010,6 @@ type ProductFields =
   | 'updatedAt'
 
 
-type ProductCompanyArgs =
-  | 'where'
-  | 'orderBy'
-  | 'skip'
-  | 'after'
-  | 'before'
-  | 'first'
-  | 'last'
 type ProductCheckinsArgs =
   | 'where'
   | 'orderBy'
@@ -1067,16 +1055,16 @@ export interface ProductFieldDetails {
   }
   company: {
     type: 'Company'
-    args: Record<ProductCompanyArgs, core.NexusArgDef<string>>
+    args: {}
     description: string
-    list: true
+    list: undefined
     nullable: false
     resolve: (
       root: core.RootValue<"Product">,
-      args: { where?: CompanyWhereInput | null, orderBy?: prisma.CompanyOrderByInput | null, skip?: number | null, after?: string | null, before?: string | null, first?: number | null, last?: number | null }  ,
+      args: {  }  ,
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
-    ) => Promise<prisma.Company[]> | prisma.Company[]
+    ) => Promise<prisma.Company> | prisma.Company
   }
   checkins: {
     type: 'Checkin'
@@ -4556,9 +4544,7 @@ export interface ProductWhereInput {
   name_not_starts_with?: string | null
   name_ends_with?: string | null
   name_not_ends_with?: string | null
-  company_every?: CompanyWhereInput | null
-  company_some?: CompanyWhereInput | null
-  company_none?: CompanyWhereInput | null
+  company?: CompanyWhereInput | null
   checkins_every?: CheckinWhereInput | null
   checkins_some?: CheckinWhereInput | null
   checkins_none?: CheckinWhereInput | null
@@ -4618,9 +4604,7 @@ export type ProductWhereInputInputObject =
   | { name: 'name_not_starts_with', alias?: string  } 
   | { name: 'name_ends_with', alias?: string  } 
   | { name: 'name_not_ends_with', alias?: string  } 
-  | { name: 'company_every', alias?: string  } 
-  | { name: 'company_some', alias?: string  } 
-  | { name: 'company_none', alias?: string  } 
+  | { name: 'company', alias?: string  } 
   | { name: 'checkins_every', alias?: string  } 
   | { name: 'checkins_some', alias?: string  } 
   | { name: 'checkins_none', alias?: string  } 
@@ -4982,7 +4966,7 @@ export type ProductCreateOneWithoutCheckinsInputInputObject =
 export interface ProductCreateWithoutCheckinsInput {
   id?: string | null
   name?: string
-  company?: CompanyCreateManyWithoutProductsInput | null
+  company?: CompanyCreateOneWithoutProductsInput
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
 }
@@ -4994,12 +4978,12 @@ export type ProductCreateWithoutCheckinsInputInputObject =
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
-export interface CompanyCreateManyWithoutProductsInput {
-  create?: CompanyCreateWithoutProductsInput[]
-  connect?: CompanyWhereUniqueInput[]
+export interface CompanyCreateOneWithoutProductsInput {
+  create?: CompanyCreateWithoutProductsInput | null
+  connect?: CompanyWhereUniqueInput | null
 }
-export type CompanyCreateManyWithoutProductsInputInputObject =
-  | Extract<keyof CompanyCreateManyWithoutProductsInput, string>
+export type CompanyCreateOneWithoutProductsInputInputObject =
+  | Extract<keyof CompanyCreateOneWithoutProductsInput, string>
   | { name: 'create', alias?: string  } 
   | { name: 'connect', alias?: string  } 
   
@@ -5064,7 +5048,7 @@ export type ProductCreateManyWithoutSubCategoryInputInputObject =
 export interface ProductCreateWithoutSubCategoryInput {
   id?: string | null
   name?: string
-  company?: CompanyCreateManyWithoutProductsInput | null
+  company?: CompanyCreateOneWithoutProductsInput
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
 }
@@ -5209,7 +5193,7 @@ export type ProductCreateManyWithoutCategoryInputInputObject =
 export interface ProductCreateWithoutCategoryInput {
   id?: string | null
   name?: string
-  company?: CompanyCreateManyWithoutProductsInput | null
+  company?: CompanyCreateOneWithoutProductsInput
   checkins?: CheckinCreateManyWithoutProductInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
 }
@@ -5300,7 +5284,7 @@ export type ProductUpdateOneRequiredWithoutCheckinsInputInputObject =
   
 export interface ProductUpdateWithoutCheckinsDataInput {
   name?: string | null
-  company?: CompanyUpdateManyWithoutProductsInput | null
+  company?: CompanyUpdateOneRequiredWithoutProductsInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
 }
@@ -5311,37 +5295,18 @@ export type ProductUpdateWithoutCheckinsDataInputInputObject =
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
-export interface CompanyUpdateManyWithoutProductsInput {
-  create?: CompanyCreateWithoutProductsInput[]
-  delete?: CompanyWhereUniqueInput[]
-  connect?: CompanyWhereUniqueInput[]
-  set?: CompanyWhereUniqueInput[]
-  disconnect?: CompanyWhereUniqueInput[]
-  update?: CompanyUpdateWithWhereUniqueWithoutProductsInput[]
-  upsert?: CompanyUpsertWithWhereUniqueWithoutProductsInput[]
-  deleteMany?: CompanyScalarWhereInput[]
-  updateMany?: CompanyUpdateManyWithWhereNestedInput[]
+export interface CompanyUpdateOneRequiredWithoutProductsInput {
+  create?: CompanyCreateWithoutProductsInput | null
+  update?: CompanyUpdateWithoutProductsDataInput | null
+  upsert?: CompanyUpsertWithoutProductsInput | null
+  connect?: CompanyWhereUniqueInput | null
 }
-export type CompanyUpdateManyWithoutProductsInputInputObject =
-  | Extract<keyof CompanyUpdateManyWithoutProductsInput, string>
+export type CompanyUpdateOneRequiredWithoutProductsInputInputObject =
+  | Extract<keyof CompanyUpdateOneRequiredWithoutProductsInput, string>
   | { name: 'create', alias?: string  } 
-  | { name: 'delete', alias?: string  } 
-  | { name: 'connect', alias?: string  } 
-  | { name: 'set', alias?: string  } 
-  | { name: 'disconnect', alias?: string  } 
   | { name: 'update', alias?: string  } 
   | { name: 'upsert', alias?: string  } 
-  | { name: 'deleteMany', alias?: string  } 
-  | { name: 'updateMany', alias?: string  } 
-  
-export interface CompanyUpdateWithWhereUniqueWithoutProductsInput {
-  where?: CompanyWhereUniqueInput
-  data?: CompanyUpdateWithoutProductsDataInput
-}
-export type CompanyUpdateWithWhereUniqueWithoutProductsInputInputObject =
-  | Extract<keyof CompanyUpdateWithWhereUniqueWithoutProductsInput, string>
-  | { name: 'where', alias?: string  } 
-  | { name: 'data', alias?: string  } 
+  | { name: 'connect', alias?: string  } 
   
 export interface CompanyUpdateWithoutProductsDataInput {
   name?: string | null
@@ -5350,99 +5315,14 @@ export type CompanyUpdateWithoutProductsDataInputInputObject =
   | Extract<keyof CompanyUpdateWithoutProductsDataInput, string>
   | { name: 'name', alias?: string  } 
   
-export interface CompanyUpsertWithWhereUniqueWithoutProductsInput {
-  where?: CompanyWhereUniqueInput
+export interface CompanyUpsertWithoutProductsInput {
   update?: CompanyUpdateWithoutProductsDataInput
   create?: CompanyCreateWithoutProductsInput
 }
-export type CompanyUpsertWithWhereUniqueWithoutProductsInputInputObject =
-  | Extract<keyof CompanyUpsertWithWhereUniqueWithoutProductsInput, string>
-  | { name: 'where', alias?: string  } 
+export type CompanyUpsertWithoutProductsInputInputObject =
+  | Extract<keyof CompanyUpsertWithoutProductsInput, string>
   | { name: 'update', alias?: string  } 
   | { name: 'create', alias?: string  } 
-  
-export interface CompanyScalarWhereInput {
-  id?: string | null
-  id_not?: string | null
-  id_in?: string[]
-  id_not_in?: string[]
-  id_lt?: string | null
-  id_lte?: string | null
-  id_gt?: string | null
-  id_gte?: string | null
-  id_contains?: string | null
-  id_not_contains?: string | null
-  id_starts_with?: string | null
-  id_not_starts_with?: string | null
-  id_ends_with?: string | null
-  id_not_ends_with?: string | null
-  name?: string | null
-  name_not?: string | null
-  name_in?: string[]
-  name_not_in?: string[]
-  name_lt?: string | null
-  name_lte?: string | null
-  name_gt?: string | null
-  name_gte?: string | null
-  name_contains?: string | null
-  name_not_contains?: string | null
-  name_starts_with?: string | null
-  name_not_starts_with?: string | null
-  name_ends_with?: string | null
-  name_not_ends_with?: string | null
-  AND?: CompanyScalarWhereInput[]
-  OR?: CompanyScalarWhereInput[]
-  NOT?: CompanyScalarWhereInput[]
-}
-export type CompanyScalarWhereInputInputObject =
-  | Extract<keyof CompanyScalarWhereInput, string>
-  | { name: 'id', alias?: string  } 
-  | { name: 'id_not', alias?: string  } 
-  | { name: 'id_in', alias?: string  } 
-  | { name: 'id_not_in', alias?: string  } 
-  | { name: 'id_lt', alias?: string  } 
-  | { name: 'id_lte', alias?: string  } 
-  | { name: 'id_gt', alias?: string  } 
-  | { name: 'id_gte', alias?: string  } 
-  | { name: 'id_contains', alias?: string  } 
-  | { name: 'id_not_contains', alias?: string  } 
-  | { name: 'id_starts_with', alias?: string  } 
-  | { name: 'id_not_starts_with', alias?: string  } 
-  | { name: 'id_ends_with', alias?: string  } 
-  | { name: 'id_not_ends_with', alias?: string  } 
-  | { name: 'name', alias?: string  } 
-  | { name: 'name_not', alias?: string  } 
-  | { name: 'name_in', alias?: string  } 
-  | { name: 'name_not_in', alias?: string  } 
-  | { name: 'name_lt', alias?: string  } 
-  | { name: 'name_lte', alias?: string  } 
-  | { name: 'name_gt', alias?: string  } 
-  | { name: 'name_gte', alias?: string  } 
-  | { name: 'name_contains', alias?: string  } 
-  | { name: 'name_not_contains', alias?: string  } 
-  | { name: 'name_starts_with', alias?: string  } 
-  | { name: 'name_not_starts_with', alias?: string  } 
-  | { name: 'name_ends_with', alias?: string  } 
-  | { name: 'name_not_ends_with', alias?: string  } 
-  | { name: 'AND', alias?: string  } 
-  | { name: 'OR', alias?: string  } 
-  | { name: 'NOT', alias?: string  } 
-  
-export interface CompanyUpdateManyWithWhereNestedInput {
-  where?: CompanyScalarWhereInput
-  data?: CompanyUpdateManyDataInput
-}
-export type CompanyUpdateManyWithWhereNestedInputInputObject =
-  | Extract<keyof CompanyUpdateManyWithWhereNestedInput, string>
-  | { name: 'where', alias?: string  } 
-  | { name: 'data', alias?: string  } 
-  
-export interface CompanyUpdateManyDataInput {
-  name?: string | null
-}
-export type CompanyUpdateManyDataInputInputObject =
-  | Extract<keyof CompanyUpdateManyDataInput, string>
-  | { name: 'name', alias?: string  } 
   
 export interface CategoryUpdateManyWithoutProductsInput {
   create?: CategoryCreateWithoutProductsInput[]
@@ -5560,7 +5440,7 @@ export type ProductUpdateWithWhereUniqueWithoutSubCategoryInputInputObject =
   
 export interface ProductUpdateWithoutSubCategoryDataInput {
   name?: string | null
-  company?: CompanyUpdateManyWithoutProductsInput | null
+  company?: CompanyUpdateOneRequiredWithoutProductsInput | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
 }
@@ -6620,7 +6500,7 @@ export type ProductUpdateWithWhereUniqueWithoutCategoryInputInputObject =
   
 export interface ProductUpdateWithoutCategoryDataInput {
   name?: string | null
-  company?: CompanyUpdateManyWithoutProductsInput | null
+  company?: CompanyUpdateOneRequiredWithoutProductsInput | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
 }
@@ -6700,7 +6580,7 @@ export type UserUpdateManyMutationInputInputObject =
 export interface ProductCreateInput {
   id?: string | null
   name?: string
-  company?: CompanyCreateManyWithoutProductsInput | null
+  company?: CompanyCreateOneWithoutProductsInput
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
@@ -6716,7 +6596,7 @@ export type ProductCreateInputInputObject =
   
 export interface ProductUpdateInput {
   name?: string | null
-  company?: CompanyUpdateManyWithoutProductsInput | null
+  company?: CompanyUpdateOneRequiredWithoutProductsInput | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
@@ -7225,16 +7105,6 @@ export type CheckinOrderByInputValues =
   | 'updatedAt_ASC'
   | 'updatedAt_DESC'
   
-export type CompanyOrderByInputValues =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'name_ASC'
-  | 'name_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC'
-  
 export type ProductOrderByInputValues =
   | 'id_ASC'
   | 'id_DESC'
@@ -7288,6 +7158,16 @@ export type FriendRequestOrderByInputValues =
   | 'id_DESC'
   | 'message_ASC'
   | 'message_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC'
+  
+export type CompanyOrderByInputValues =
+  | 'id_ASC'
+  | 'id_DESC'
+  | 'name_ASC'
+  | 'name_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'

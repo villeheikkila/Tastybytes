@@ -92,7 +92,7 @@ export const Mutation = mutationType({
                         name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
                         company: { connect: { id: companyId } },
                         category: { connect: { id: categoryId } },
-                        subCategory: { connect: subCategoryIds },
+                        subCategory: { set: subCategoryIds },
                     },
                 });
             },

@@ -34,12 +34,15 @@ export const ALL_CHECKINS = gql`
                 name
                 company {
                     name
+                    id
                 }
                 category {
                     name
+                    id
                 }
                 subCategory {
                     name
+                    id
                 }
             }
             createdAt
@@ -154,12 +157,15 @@ export const USER = gql`
                     name
                     company {
                         name
+                        id
                     }
                     category {
                         name
+                        id
                     }
                     subCategory {
                         name
+                        id
                     }
                 }
                 createdAt
@@ -258,12 +264,15 @@ export const ME = gql`
                     name
                     company {
                         name
+                        id
                     }
                     category {
                         name
+                        id
                     }
                     subCategory {
                         name
+                        id
                     }
                 }
                 createdAt
@@ -361,8 +370,47 @@ export const ADD_PRODUCT = gql`
 export const UPDATE_PRODUCT = gql`
     mutation updateProduct($id: ID!, $name: String!, $company: String!, $categoryId: ID!, $subCategories: [String!]) {
         updateProduct(id: $id, name: $name, company: $company, categoryId: $categoryId, subCategories: $subCategories) {
-            name
             id
+            name
+            company {
+                name
+                id
+            }
+            category {
+                name
+                id
+            }
+            subCategory {
+                name
+                id
+            }
+            checkins {
+                id
+                rating
+                comment
+                author {
+                    id
+                    firstName
+                    lastName
+                }
+                product {
+                    id
+                    name
+                    company {
+                        name
+                        id
+                    }
+                    category {
+                        name
+                        id
+                    }
+                    subCategory {
+                        name
+                        id
+                    }
+                }
+                createdAt
+            }
         }
     }
 `;
@@ -392,12 +440,15 @@ export const PRODUCT = gql`
             name
             company {
                 name
+                id
             }
             category {
                 name
+                id
             }
             subCategory {
                 name
+                id
             }
             checkins {
                 id
@@ -413,12 +464,15 @@ export const PRODUCT = gql`
                     name
                     company {
                         name
+                        id
                     }
                     category {
                         name
+                        id
                     }
                     subCategory {
                         name
+                        id
                     }
                 }
                 createdAt
@@ -434,12 +488,15 @@ export const SEARCH_PRODUCTS = gql`
             name
             company {
                 name
+                id
             }
             category {
                 name
+                id
             }
             subCategory {
                 name
+                id
             }
             checkins {
                 id
@@ -455,12 +512,15 @@ export const SEARCH_PRODUCTS = gql`
                     name
                     company {
                         name
+                        id
                     }
                     category {
                         name
+                        id
                     }
                     subCategory {
                         name
+                        id
                     }
                 }
                 createdAt
@@ -485,12 +545,15 @@ export const SEARCH_CHECKINS = gql`
                 name
                 company {
                     name
+                    id
                 }
                 category {
                     name
+                    id
                 }
                 subCategory {
                     name
+                    id
                 }
             }
             createdAt
