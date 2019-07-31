@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/react-hooks';
-import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
+import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText, Typography } from '@material-ui/core';
 import { Clear, HowToReg } from '@material-ui/icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -24,6 +24,8 @@ export const FriendRequestListItem = ({ userId, request: { sender, id } }: Frien
         refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId } }],
     });
 
+    const userIsTheSender = userId === sender[0].id;
+
     const acceptFriendRequest = async (): Promise<void> => {
         const result = await acceptFriendRequestMutation({
             variables: {
@@ -33,7 +35,7 @@ export const FriendRequestListItem = ({ userId, request: { sender, id } }: Frien
 
         if (result) {
             notificationHandler({
-                message: `Friend request accepted for ${firstName} ${lastName}`,
+                message: `Friend request from ${firstName} ${lastName} accepted`,
                 variant: 'success',
             });
         }
@@ -47,10 +49,17 @@ export const FriendRequestListItem = ({ userId, request: { sender, id } }: Frien
         });
 
         if (result) {
-            notificationHandler({
-                message: `Friend request declined for ${firstName} ${lastName}`,
-                variant: 'success',
-            });
+            if (!userIsTheSender) {
+                notificationHandler({
+                    message: `Friend request declined for ${firstName} ${lastName}`,
+                    variant: 'success',
+                });
+            } else {
+                notificationHandler({
+                    message: `Friend request for ${firstName} ${lastName} cancelled`,
+                    variant: 'success',
+                });
+            }
         }
     };
 
@@ -65,9 +74,15 @@ export const FriendRequestListItem = ({ userId, request: { sender, id } }: Frien
                 />
             </ListItemAvatar>
             <ListItemText primary={`${firstName} ${lastName}`} />
-            <IconButton aria-label="Accept" color="primary" onClick={acceptFriendRequest}>
-                <HowToReg fontSize="large" />
-            </IconButton>
+
+            {!userIsTheSender ? (
+                <IconButton aria-label="Accept" color="primary" onClick={acceptFriendRequest}>
+                    <HowToReg fontSize="large" />
+                </IconButton>
+            ) : (
+                <Typography> Friend request is pending </Typography>
+            )}
+
             <IconButton aria-label="Clear" color="secondary" onClick={declineFriendRequest}>
                 <Clear fontSize="large" />
             </IconButton>

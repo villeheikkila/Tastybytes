@@ -198,6 +198,13 @@ export const Mutation = mutationType({
                 friendId: idArg(),
             },
             resolve: async (_, { id, friendId }, ctx) => {
+                await prisma.updateUser({
+                    where: { id: friendId },
+                    data: {
+                        friends: { disconnect: { id } },
+                    },
+                });
+
                 return await prisma.updateUser({
                     where: { id },
                     data: {
@@ -258,6 +265,13 @@ export const Mutation = mutationType({
                     const receiverId = receiver[0].id;
 
                     await prisma.deleteFriendRequest({ id });
+
+                    await prisma.updateUser({
+                        where: { id: senderId },
+                        data: {
+                            friends: { connect: { id: receiverId } },
+                        },
+                    });
 
                     return await prisma.updateUser({
                         where: { id: receiverId },

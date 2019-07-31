@@ -1,16 +1,39 @@
 import { useQuery } from '@apollo/react-hooks';
-import { Avatar, createStyles, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
+import {
+    Avatar,
+    createStyles,
+    ExpansionPanel,
+    ExpansionPanelDetails,
+    ExpansionPanelSummary,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    makeStyles,
+    Paper,
+    Theme,
+    Typography,
+} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
 import { USER } from '../../queries';
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         paper: {
             marginTop: 30,
             maxWidth: 700,
             padding: theme.spacing(1, 1),
+            margin: `${theme.spacing(1)}px auto`,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            alignContent: 'center',
+        },
+        friends: {
+            maxWidth: 700,
             margin: `${theme.spacing(1)}px auto`,
             display: 'flex',
             flexDirection: 'column',
@@ -25,6 +48,9 @@ const useStyles = makeStyles((theme: Theme) =>
             width: 150,
             height: 150,
         },
+        smallAvatar: {
+            margin: 10,
+        },
         textField: {
             marginTop: 10,
         },
@@ -33,6 +59,10 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         root: {
             alignItems: 'center',
+        },
+        heading: {},
+        panel: {
+            width: '100%',
         },
     }),
 );
@@ -51,6 +81,7 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
         firstName: user.data.user[0].firstName,
         lastName: user.data.user[0].lastName,
         checkins: user.data.user[0].checkins,
+        friends: user.data.user[0].friends,
     };
 
     const dividerText = userObject.checkins.length === 0 ? 'No Recent Activity' : 'Recent Activity';
@@ -70,6 +101,42 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
                     Checkins in total: {userObject.checkins.length}
                 </Typography>
             </Paper>
+
+            <div className={classes.friends}>
+                <ExpansionPanel className={classes.panel}>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content">
+                        <Typography variant="h6" component="h6" className={classes.heading}>
+                            Friends
+                        </Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <List>
+                            {userObject.friends.map((user: User) => (
+                                <ListItem
+                                    button
+                                    alignItems="flex-start"
+                                    component={Link}
+                                    to={`/user/${user.id}`}
+                                    key={id}
+                                >
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            alt={user.firstName}
+                                            src="https://cdn1.thr.com/sites/default/files/imagecache/scale_crop_768_433/2019/03/avatar-publicity_still-h_2019.jpg"
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText primary={`${user.firstName} ${user.lastName}`} />
+                                </ListItem>
+                            ))}
+                            <ListItem button alignItems="flex-start" key={id}>
+                                <Typography component="p" className={classes.heading}>
+                                    Send a friend request!
+                                </Typography>
+                            </ListItem>
+                        </List>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+            </div>
 
             <Divider text={dividerText} />
 

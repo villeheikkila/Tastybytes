@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/react-hooks';
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { CREATE_FRIENDREQUEST, FRIENDREQUEST, ME } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { FriendRequestDialog } from './FriendRequestDialog';
@@ -43,6 +44,8 @@ export const UserListItem = ({ userId, user: { firstName, lastName, id } }: User
                 <ListItemAvatar>
                     <Avatar
                         alt={firstName}
+                        component={Link}
+                        to={`/user/${id}`}
                         src="https://cdn1.thr.com/sites/default/files/imagecache/scale_crop_768_433/2019/03/avatar-publicity_still-h_2019.jpg"
                     />
                 </ListItemAvatar>

@@ -38,7 +38,11 @@ export const Query = queryType({
                 id: idArg(),
             },
             resolve: (parent, { id }, ctx) => {
-                return ctx.prisma.friendRequests({ where: { receiver_some: { id } } });
+                return ctx.prisma.friendRequests({
+                    where: {
+                        OR: [{ receiver_some: { id } }, { sender_some: { id } }],
+                    },
+                });
             },
         });
 

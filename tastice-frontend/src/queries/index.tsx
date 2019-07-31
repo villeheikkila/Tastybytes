@@ -135,6 +135,11 @@ export const USER = gql`
             id
             firstName
             lastName
+            friends {
+                id
+                firstName
+                lastName
+            }
             checkins {
                 id
                 rating
