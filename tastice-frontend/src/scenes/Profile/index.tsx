@@ -37,10 +37,10 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Profile = (id: IdObject): JSX.Element | null => {
+export const Profile = ({ id }: IdObject): JSX.Element | null => {
     const classes = useStyles();
     const user = useQuery(USER, {
-        variables: { id: id.id },
+        variables: { id },
     });
 
     if (user.data.user === undefined) {

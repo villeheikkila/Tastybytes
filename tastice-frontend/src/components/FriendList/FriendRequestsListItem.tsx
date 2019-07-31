@@ -7,7 +7,7 @@ import { ACCEPT_FRIENDREQUEST, DELETE_FRIENDREQUEST, FRIENDREQUEST, ME } from '.
 import { errorHandler, notificationHandler } from '../../utils';
 
 interface FriendRequestListItemProps {
-    userId: IdObject;
+    userId: string;
     request: FriendRequestObject;
 }
 
@@ -16,12 +16,12 @@ export const FriendRequestListItem = ({ userId, request: { sender, id } }: Frien
 
     const [acceptFriendRequestMutation] = useMutation(ACCEPT_FRIENDREQUEST, {
         onError: errorHandler,
-        refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId.id } }],
+        refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId } }],
     });
 
     const [deleteFriendRequestMutation] = useMutation(DELETE_FRIENDREQUEST, {
         onError: errorHandler,
-        refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId.id } }],
+        refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId } }],
     });
 
     const acceptFriendRequest = async (): Promise<void> => {

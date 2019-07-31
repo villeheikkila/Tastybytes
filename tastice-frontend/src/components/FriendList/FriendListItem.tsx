@@ -8,7 +8,7 @@ import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 
 interface FriendListItemProps {
-    userId: IdObject;
+    userId: string;
     user: SimpleUserObject;
 }
 
@@ -24,7 +24,7 @@ export const FriendListItem = ({ userId, user: { firstName, lastName, id } }: Fr
         setVisible(false);
         const result = await createFriendRequest({
             variables: {
-                id: userId.id,
+                id: userId,
                 friendId: id,
             },
         });

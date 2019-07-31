@@ -14,11 +14,11 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const Product = (id: IdObject): JSX.Element | null => {
+export const Product = ({ id }: IdObject): JSX.Element | null => {
     const me = useQuery(ME);
     const classes = useStyles();
     const productsQuery = useQuery(PRODUCT, {
-        variables: { id: id.id },
+        variables: { id },
     });
 
     if (me.data.me === undefined || productsQuery.data === undefined || productsQuery.data.product === undefined) {

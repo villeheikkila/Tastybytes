@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const FriendList = (id: IdObject): JSX.Element | null => {
+export const FriendList = ({ id }: IdObject): JSX.Element | null => {
     const classes = useStyles();
     const me = useQuery(ME);
     const [filter, setFilter] = useState('');
@@ -67,7 +67,7 @@ export const FriendList = (id: IdObject): JSX.Element | null => {
     });
 
     const friendRequest = useQuery(FRIENDREQUEST, {
-        variables: { id: id.id },
+        variables: { id },
     });
 
     if (
@@ -89,7 +89,7 @@ export const FriendList = (id: IdObject): JSX.Element | null => {
 
     const users = usersQuery.data.searchUsers.filter(
         (userItem: SimpleUserObject) =>
-            userItem.id !== id.id && !friendRequestIds.includes(userItem.id) && !friendIds.includes(userItem.id),
+            userItem.id !== id && !friendRequestIds.includes(userItem.id) && !friendIds.includes(userItem.id),
     );
 
     return (

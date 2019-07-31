@@ -6,7 +6,7 @@ import { errorHandler, notificationHandler } from '../../utils';
 import { FriendRequestDialog } from './FriendRequestDialog';
 
 interface UserListItemProps {
-    userId: IdObject;
+    userId: string;
     user: SimpleUserObject;
 }
 
@@ -16,14 +16,14 @@ export const UserListItem = ({ userId, user: { firstName, lastName, id } }: User
 
     const [createFriendRequest] = useMutation(CREATE_FRIENDREQUEST, {
         onError: errorHandler,
-        refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId.id } }],
+        refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId } }],
     });
 
     const sendFriendRequest = async (): Promise<void> => {
         setVisible(false);
         const result = await createFriendRequest({
             variables: {
-                senderId: userId.id,
+                senderId: userId,
                 receiverId: id,
                 message,
             },
