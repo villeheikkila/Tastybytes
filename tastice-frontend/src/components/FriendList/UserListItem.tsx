@@ -11,7 +11,7 @@ interface UserListItemProps {
 }
 
 export const UserListItem = ({ userId, user: { firstName, lastName, id } }: UserListItemProps): JSX.Element => {
-    const [message, setMessage] = useState();
+    const [message, setMessage] = useState('');
     const [visible, setVisible] = useState(false);
 
     const [createFriendRequest] = useMutation(CREATE_FRIENDREQUEST, {

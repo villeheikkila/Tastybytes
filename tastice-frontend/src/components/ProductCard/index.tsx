@@ -36,11 +36,9 @@ export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Elemen
     const { history } = useReactRouter();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
 
-    const { id, name, company, category, subCategory } = product;
-
     return (
         <>
-            <CardActionArea onClick={(): void => history.push(`/product/${id}`)} className={classes.actionArea}>
+            <CardActionArea onClick={(): void => history.push(`/product/${product.id}`)} className={classes.actionArea}>
                 <Grid container spacing={3} direction="row">
                     <Grid item>
                         <Avatar alt="Image" src={lipton} className={classes.picture} />
@@ -49,14 +47,14 @@ export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Elemen
                         <Grid item xs container direction="column">
                             <Grid item>
                                 <Typography gutterBottom variant="h4">
-                                    <Link component={RouterLink} to={`/product/${id}`}>
-                                        {name}
+                                    <Link component={RouterLink} to={`/product/${product.id}`}>
+                                        {product.name}
                                     </Link>
                                 </Typography>
                                 <Typography variant="h5" gutterBottom>
-                                    {company[0].name}
+                                    {product.company[0].name}
                                 </Typography>
-                                {category.map(
+                                {product.category.map(
                                     (CategoryItem: NameId): JSX.Element => (
                                         <Chip
                                             label={CategoryItem.name}
@@ -67,7 +65,7 @@ export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Elemen
                                     ),
                                 )}
                                 <Grid item>
-                                    {subCategory.map(
+                                    {product.subCategory.map(
                                         (subCategoryItem: NameId): JSX.Element => (
                                             <Chip
                                                 variant="outlined"

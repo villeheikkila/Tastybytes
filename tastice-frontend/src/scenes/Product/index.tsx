@@ -27,20 +27,12 @@ export const Product = ({ id }: IdObject): JSX.Element | null => {
 
     const product = productsQuery.data.product[0];
 
-    const productObject = {
-        id: product.id,
-        name: product.name,
-        company: product.company,
-        category: product.category,
-        subCategory: product.subCategory,
-    };
-
     const dividerText = product.checkins.length === 0 ? 'No Recent Activity' : 'Recent Activity';
 
     return (
         <>
             <Card className={classes.card}>
-                <ProductCard product={productObject} showMenu={true} />
+                <ProductCard product={product} showMenu={true} />
             </Card>
             <CreateCheckIn authorId={me.data.me.id} productId={product.id} />
             <Divider text={dividerText} />

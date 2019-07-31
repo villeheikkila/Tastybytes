@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Avatar, Button, createStyles, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import useReactRouter from 'use-react-router';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
@@ -45,11 +45,19 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Account = ({ setToken }: Token): JSX.Element | null => {
     const me = useQuery(ME);
-    const [firstName, setFirstName] = useState();
-    const [lastName, setLastName] = useState();
-    const [email, setEmail] = useState();
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
     const { history } = useReactRouter();
     const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        if (me.data.me !== undefined && firstName === '') {
+            setFirstName(me.data.me.firstName);
+            setLastName(me.data.me.lastName);
+            setEmail(me.data.me.email);
+        }
+    }, [me, firstName, lastName, email]);
 
     const [deleteUser] = useMutation(DELETE_USER, {
         onError: errorHandler,
@@ -128,7 +136,6 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                                 validators={[]}
                                 errorMessages={[]}
                                 value={firstName}
-                                defaultValue={user.firstName}
                                 onChange={handleFirstNameChange}
                             />
                         </Grid>
@@ -144,7 +151,6 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                                 validators={[]}
                                 errorMessages={[]}
                                 value={lastName}
-                                defaultValue={user.lastName}
                                 onChange={handleLastNameChange}
                             />
                         </Grid>
@@ -161,7 +167,6 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                                 validators={['isEmail']}
                                 errorMessages={['The entered email is not valid']}
                                 value={email}
-                                defaultValue={user.email}
                                 onChange={handleEmailChange}
                             />
                         </Grid>

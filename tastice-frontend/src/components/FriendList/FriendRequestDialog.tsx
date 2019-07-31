@@ -13,7 +13,7 @@ interface FriendRequestDialogProps {
     visible: boolean;
     message: string;
     setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-    setMessage: React.Dispatch<React.SetStateAction<string | null>>;
+    setMessage: React.Dispatch<React.SetStateAction<string>>;
     onClick: { (onClick: React.MouseEvent<HTMLButtonElement, MouseEvent>): void };
 }
 
