@@ -115,7 +115,7 @@ export const AddProduct = (): JSX.Element | null => {
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <Typography component="h1" variant="h5">
-                    Add a new product!console.log();
+                    Add a new product!
                 </Typography>
 
                 <form onSubmit={handleAddProduct}>
