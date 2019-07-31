@@ -27,7 +27,7 @@ export const Activity = (): JSX.Element | null => {
     const filter = useQuery(FILTER);
 
     const checkins = useQuery(SEARCH_CHECKINS, {
-        variables: { name: filter.data.filter },
+        variables: { filter: filter.data.filter },
         onError: errorHandler,
     });
 

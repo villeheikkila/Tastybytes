@@ -120,11 +120,19 @@ export const Query = queryType({
         t.list.field('searchProducts', {
             type: 'Product',
             args: {
-                name: stringArg(),
+                filter: stringArg(),
             },
-            resolve: (_, args, ctx) => {
+            resolve: (_, { filter }, ctx) => {
+                if (!filter) ctx.prisma.products({ orderBy: 'createdAt_DESC' });
                 return ctx.prisma.products({
-                    where: { name_starts_with: args.name },
+                    where: {
+                        OR: [
+                            { name_contains: filter },
+                            { name_contains: filter.toLowerCase() },
+                            { name_contains: filter.toUpperCase() },
+                            { name_contains: filter.charAt(0).toUpperCase() + filter.slice(1).toLowerCase() },
+                        ],
+                    },
                     orderBy: 'createdAt_DESC',
                 });
             },
@@ -133,11 +141,22 @@ export const Query = queryType({
         t.list.field('searchCheckins', {
             type: 'Checkin',
             args: {
-                name: stringArg(),
+                filter: stringArg(),
             },
-            resolve: (_, args, ctx) => {
+            resolve: (_, { filter }, ctx) => {
                 return ctx.prisma.checkins({
-                    where: { product: { name_contains: args.name } },
+                    where: {
+                        OR: [
+                            { product: { name_contains: filter } },
+                            { product: { name_contains: filter.toLowerCase() } },
+                            { product: { name_contains: filter.toUpperCase() } },
+                            {
+                                product: {
+                                    name_contains: filter.charAt(0).toUpperCase() + filter.slice(1).toLowerCase(),
+                                },
+                            },
+                        ],
+                    },
                     orderBy: 'createdAt_DESC',
                 });
             },
@@ -146,11 +165,23 @@ export const Query = queryType({
         t.list.field('searchUsers', {
             type: 'User',
             args: {
-                name: stringArg(),
+                filter: stringArg(),
             },
-            resolve: (_, args, ctx) => {
+            resolve: (_, { filter }, ctx) => {
+                if (!filter) ctx.prisma.products({ orderBy: 'createdAt_DESC' });
                 return ctx.prisma.users({
-                    where: { firstName_starts_with: args.name },
+                    where: {
+                        OR: [
+                            { firstName_contains: filter },
+                            { firstName_contains: filter.toLowerCase() },
+                            { firstName_contains: filter.toUpperCase() },
+                            { firstName_contains: filter.charAt(0).toUpperCase() + filter.slice(1).toLowerCase() },
+                            { lastName_contains: filter },
+                            { lastName_contains: filter.toLowerCase() },
+                            { lastName_contains: filter.toUpperCase() },
+                            { lastName_contains: filter.charAt(0).toUpperCase() + filter.slice(1).toLowerCase() },
+                        ],
+                    },
                 });
             },
         });

@@ -32,15 +32,15 @@ export const Discover = (): JSX.Element | null => {
     const filter = useQuery(FILTER);
 
     const searchProductsQuery = useQuery(SEARCH_PRODUCTS, {
-        variables: { name: filter.data.filter },
+        variables: { filter: filter.data.filter },
         onError: errorHandler,
     });
 
-    const products = searchProductsQuery.data.searchProducts;
-
-    if (products === undefined) {
+    if (searchProductsQuery === undefined || searchProductsQuery.data.searchProducts === undefined) {
         return null;
     }
+
+    const products = searchProductsQuery.data.searchProducts;
 
     return (
         <div className={classes.root}>

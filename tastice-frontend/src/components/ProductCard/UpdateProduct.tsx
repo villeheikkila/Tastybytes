@@ -44,7 +44,7 @@ export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | nu
 
     useEffect((): void => {
         setName(product.name);
-        setCompany(product.company);
+        setCompany(product.company[0]);
         setCategory(product.category[0].name);
         setSubCategory(product.subCategory[0].name);
     }, [product.name, product.company, product.category, product.subCategory]);

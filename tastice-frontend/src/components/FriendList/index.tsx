@@ -59,10 +59,10 @@ const useStyles = makeStyles((theme: Theme) =>
 export const FriendList = (id: IdObject): JSX.Element | null => {
     const classes = useStyles();
     const me = useQuery(ME);
-    const [search, setSearch] = useState('');
+    const [filter, setFilter] = useState('');
 
     const usersQuery = useQuery(SEARCH_USERS, {
-        variables: { name: search },
+        variables: { filter },
         onError: errorHandler,
     });
 
@@ -70,7 +70,11 @@ export const FriendList = (id: IdObject): JSX.Element | null => {
         variables: { id: id.id },
     });
 
-    if (usersQuery.data.searchUsers === undefined || me.data.me === undefined) {
+    if (
+        usersQuery.data.searchUsers === undefined ||
+        friendRequest.data.friendRequest === undefined ||
+        me.data.me === undefined
+    ) {
         return null;
     }
 
@@ -135,8 +139,8 @@ export const FriendList = (id: IdObject): JSX.Element | null => {
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
                             }}
-                            value={search}
-                            onChange={({ target: { value } }): void => setSearch(value)}
+                            value={filter}
+                            onChange={({ target: { value } }): void => setFilter(value)}
                             inputProps={{ 'aria-label': 'Search' }}
                         />
                     </div>

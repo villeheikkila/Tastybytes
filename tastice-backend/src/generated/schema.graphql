@@ -399,9 +399,9 @@ type Query {
   me: User
   product(id: ID): [Product!]
   products: [Product!]
-  searchCheckins(name: String): [Checkin!]
-  searchProducts(name: String): [Product!]
-  searchUsers(name: String): [User!]
+  searchCheckins(filter: String): [Checkin!]
+  searchProducts(filter: String): [Product!]
+  searchUsers(filter: String): [User!]
   subCategories: [SubCategory!]
   user(id: ID): [User!]
   users: [User!]

@@ -61,15 +61,14 @@ export const Mutation = mutationType({
                 categoryId: idArg({ nullable: true }),
                 subCategories: stringArg({ list: true }),
             },
-            resolve: async (_, args) => {
-                const subCategories = await createIfNewSubCategories(args.subCategories, args.categoryId);
-                const companyId = await createIfNewCompany(args.company);
-
+            resolve: async (_, { name, company, categoryId, subCategories }) => {
+                const subCategoryIds = await createIfNewSubCategories(subCategories, categoryId);
+                const companyId = await createIfNewCompany(company);
                 return await prisma.createProduct({
-                    name: args.name,
+                    name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
                     company: { connect: { id: companyId } },
-                    category: { connect: { id: args.categoryId } },
-                    subCategory: { connect: subCategories },
+                    category: { connect: { id: categoryId } },
+                    subCategory: { connect: subCategoryIds },
                 });
             },
         });
@@ -83,17 +82,17 @@ export const Mutation = mutationType({
                 categoryId: idArg({ nullable: true }),
                 subCategories: stringArg({ list: true }),
             },
-            resolve: async (_, args) => {
-                const subCategories = await createIfNewSubCategories(args.subCategories, args.categoryId);
-                const companyId = await createIfNewCompany(args.company);
+            resolve: async (_, { id, name, company, categoryId, subCategories }) => {
+                const subCategoryIds = await createIfNewSubCategories(subCategories, categoryId);
+                const companyId = await createIfNewCompany(company);
 
                 return await prisma.updateProduct({
-                    where: { id: args.id },
+                    where: { id },
                     data: {
-                        name: args.name,
+                        name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
                         company: { connect: { id: companyId } },
-                        category: { connect: { id: args.categoryId } },
-                        subCategory: { connect: subCategories },
+                        category: { connect: { id: categoryId } },
+                        subCategory: { connect: subCategoryIds },
                     },
                 });
             },
@@ -107,13 +106,13 @@ export const Mutation = mutationType({
                 lastName: stringArg(),
                 email: stringArg(),
             },
-            resolve: async (_, args) => {
+            resolve: async (_, { id, firstName, lastName, email }) => {
                 return await prisma.updateUser({
-                    where: { id: args.id },
+                    where: { id },
                     data: {
-                        firstName: args.firstName,
-                        lastName: args.lastName,
-                        email: args.email,
+                        firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase(),
+                        lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase(),
+                        email: email.toLowerCase(),
                     },
                 });
             },
@@ -279,7 +278,7 @@ export const Mutation = mutationType({
             },
             resolve: (_, { name }, ctx) => {
                 return ctx.prisma.createCategory({
-                    name,
+                    name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
                 });
             },
         });
@@ -291,7 +290,7 @@ export const Mutation = mutationType({
             },
             resolve: (_, { name }, ctx) => {
                 return ctx.prisma.createCompany({
-                    name,
+                    name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
                 });
             },
         });
@@ -305,7 +304,7 @@ export const Mutation = mutationType({
             resolve: (_, { name, categoryId }, ctx) => {
                 return ctx.prisma.createSubCategory({
                     category: { connect: { id: categoryId } },
-                    name,
+                    name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
                 });
             },
         });

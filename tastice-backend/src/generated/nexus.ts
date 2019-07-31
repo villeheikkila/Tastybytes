@@ -827,13 +827,13 @@ export interface NexusGenArgTypes {
       id?: string | null; // ID
     }
     searchCheckins: { // args
-      name?: string | null; // String
+      filter?: string | null; // String
     }
     searchProducts: { // args
-      name?: string | null; // String
+      filter?: string | null; // String
     }
     searchUsers: { // args
-      name?: string | null; // String
+      filter?: string | null; // String
     }
     user: { // args
       id?: string | null; // ID

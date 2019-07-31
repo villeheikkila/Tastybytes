@@ -21,7 +21,7 @@ export const Product = (id: IdObject): JSX.Element | null => {
         variables: { id: id.id },
     });
 
-    if (me.data === undefined || productsQuery.data === undefined || productsQuery.data.product === undefined) {
+    if (me.data.me === undefined || productsQuery.data === undefined || productsQuery.data.product === undefined) {
         return null;
     }
 

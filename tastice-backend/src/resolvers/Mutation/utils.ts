@@ -10,7 +10,7 @@ export const createIfNewCompany = async (name: string): Promise<string> => {
               where: { name },
           })
         : await prisma.createCompany({
-              name,
+              name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
           });
 
     const company = companyObject[0] || companyObject;
@@ -32,7 +32,7 @@ export const createIfNewSubCategories = async (subCategories: string[], category
         if (!subCategoryExists) {
             const res = await prisma.createSubCategory({
                 category: { connect: { id: categoryId } },
-                name: subCategories[i],
+                name: subCategories[i].charAt(0).toUpperCase() + subCategories[i].slice(1).toLowerCase(),
             });
 
             subCategoriesIds.push({ id: res.id });

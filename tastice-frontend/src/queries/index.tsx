@@ -164,8 +164,8 @@ export const USER = gql`
 `;
 
 export const SEARCH_USERS = gql`
-    query searchUsers($name: String!) {
-        searchUsers(name: $name) {
+    query searchUsers($filter: String!) {
+        searchUsers(filter: $filter) {
             firstName
             lastName
             id
@@ -423,8 +423,8 @@ export const PRODUCT = gql`
 `;
 
 export const SEARCH_PRODUCTS = gql`
-    query searchProducts($name: String!) {
-        searchProducts(name: $name) {
+    query searchProducts($filter: String!) {
+        searchProducts(filter: $filter) {
             id
             name
             company {
@@ -465,8 +465,8 @@ export const SEARCH_PRODUCTS = gql`
 `;
 
 export const SEARCH_CHECKINS = gql`
-    query searchCheckins($name: String!) {
-        searchCheckins(name: $name) {
+    query searchCheckins($filter: String!) {
+        searchCheckins(filter: $filter) {
             id
             rating
             comment
