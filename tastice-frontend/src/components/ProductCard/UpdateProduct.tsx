@@ -29,15 +29,11 @@ interface UpdateProductProps {
     product: Product;
 }
 export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | null => {
-    console.log('TCL: product', product);
     const classes = useStyles();
     const [name, setName] = useState('');
     const [company, setCompany] = useState();
-    console.log('TCL: company', company);
     const [category, setCategory] = useState();
-    console.log('TCL: category', category);
     const [subCategory, setSubCategory] = useState();
-    console.log('TCL: subCategory', subCategory);
     const categoriesQuery = useQuery(ALL_CATEGORIES);
     const companiesQuery = useQuery(ALL_COMPANIES);
 
@@ -85,7 +81,6 @@ export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | nu
         event.preventDefault();
 
         const subCategoryArray = subCategory.map((subCategoryItem: Suggestions): string => subCategoryItem.value);
-        console.log('TCL: subCategoryArray', subCategoryArray);
 
         const result = await updateProduct({
             variables: {
@@ -96,7 +91,6 @@ export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | nu
                 subCategories: subCategoryArray,
             },
         });
-        console.log('TCL: result', result);
 
         if (result) {
             notificationHandler({

@@ -118,6 +118,41 @@ export const Mutation = mutationType({
             },
         });
 
+        t.field('updateUserPassword', {
+            type: 'User',
+            args: {
+                id: idArg(),
+                existingPassword: stringArg(),
+                password: stringArg(),
+            },
+            resolve: async (_, { id, password, existingPassword }, context) => {
+            console.log("TCL: existingPassword", existingPassword)
+                const user = await context.prisma.user({ id });
+                const hashedPassword = await hash(password, 10);
+
+                console.log("TCL: user", user)
+
+                if (!user) {
+                    throw new Error(`No user found for id: ${id}`);
+                }
+
+                const passwordValid = await compare(existingPassword, user.password);
+                console.log("TCL: passwordValid", passwordValid)
+                console.log("TCL: password", user.password)
+
+                if (!passwordValid) {
+                    throw new Error('Invalid password');
+                }
+
+                return await prisma.updateUser({
+                    where: { id },
+                    data: {
+                        password: hashedPassword,
+                    },
+                });
+            },
+        });
+
         t.field('updateCheckin', {
             type: 'Checkin',
             args: {

@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { client } from '../../index';
 import { THEME } from '../../queries';
 import { themeSwitcher } from '../../utils';
 
@@ -39,7 +40,9 @@ export const MobileMenu = ({ setToken }: Token): JSX.Element => {
         if (theme === 1) setColorScheme(true);
     }, [theme]);
 
-    const logout = (): void => {
+    const logout = async (): Promise<void> => {
+        localStorage.clear();
+        await client.clearStore();
         localStorage.clear();
         setToken(null);
     };

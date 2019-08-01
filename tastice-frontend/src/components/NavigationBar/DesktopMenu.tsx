@@ -3,6 +3,7 @@ import { Badge, createStyles, makeStyles, Menu, MenuItem, Switch } from '@materi
 import { AccountCircle, BrightnessHigh, BrightnessLow, ExitToApp, PersonOutline } from '@material-ui/icons/';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { client } from '../../index';
 import { THEME } from '../../queries';
 import { themeSwitcher } from '../../utils';
 
@@ -31,7 +32,9 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: DesktopMenuProp
         if (theme === 1) setColorScheme(true);
     }, [theme]);
 
-    const logout = (): void => {
+    const logout = async (): Promise<void> => {
+        localStorage.clear();
+        await client.clearStore();
         localStorage.clear();
         setToken(null);
     };

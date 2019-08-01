@@ -1,11 +1,11 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Avatar, Button, createStyles, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
+import { Avatar, Button, createStyles, Grid, makeStyles, Paper, TextField, Theme, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import useReactRouter from 'use-react-router';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
 import { client } from '../../index';
-import { DELETE_USER, ME, UPDATE_USER } from '../../queries';
+import { DELETE_USER, ME, UPDATE_PASSWORD, UPDATE_USER } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -45,9 +45,16 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Account = ({ setToken }: Token): JSX.Element | null => {
     const me = useQuery(ME);
+    const classes = useStyles();
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [newPasswordCheck, setNewPasswordCheck] = useState('');
+
     const { history } = useReactRouter();
     const [visible, setVisible] = useState(false);
 
@@ -62,10 +69,14 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
     const [deleteUser] = useMutation(DELETE_USER, {
         onError: errorHandler,
     });
+
     const [updateUser] = useMutation(UPDATE_USER, {
         onError: errorHandler,
     });
-    const classes = useStyles();
+
+    const [changePassword] = useMutation(UPDATE_PASSWORD, {
+        onError: errorHandler,
+    });
 
     if (me.data.me === undefined) {
         return null;
@@ -102,6 +113,35 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
         history.push('/');
     };
 
+    const handlePasswordChange = async (): Promise<void> => {
+        if (newPassword !== newPasswordCheck) {
+            notificationHandler({
+                message: `The given passwords don't match`,
+                variant: 'error',
+            });
+            setNewPassword('');
+            setNewPasswordCheck('');
+        } else {
+            const result = await changePassword({
+                variables: {
+                    id: user.id,
+                    existingPassword: currentPassword,
+                    password: newPassword,
+                },
+            });
+
+            if (result) {
+                notificationHandler({
+                    message: `Password succesfully updated!`,
+                    variant: 'success',
+                });
+                setCurrentPassword('');
+                setNewPassword('');
+                setNewPasswordCheck('');
+            }
+        }
+    };
+
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>): void => setEmail(event.target.value);
 
     const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => setLastName(event.target.value);
@@ -113,7 +153,7 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
         <div>
             <Paper className={classes.paper}>
                 <Typography variant="h4" component="h3" className={classes.textField}>
-                    Account Settings
+                    Edit Profile Settings
                 </Typography>
                 <Avatar
                     alt="Avatar"
@@ -180,27 +220,78 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                         >
                             Save changes
                         </Button>
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            className={classes.button}
-                            onClick={(): void => setVisible(true)}
-                        >
-                            Delete User
-                        </Button>
-                        <ConfirmationDialog
-                            visible={visible}
-                            setVisible={setVisible}
-                            description={'hei'}
-                            title={'Warning!'}
-                            content={'Are you sure you want to remove your account?'}
-                            onAccept={handleDeleteUser}
-                            declineButton={'Cancel'}
-                            acceptButton={'Yes'}
-                        />
                     </Grid>
                 </ValidatorForm>
+
+                <Typography variant="h5" component="h5" className={classes.textField}>
+                    Change Password
+                </Typography>
+
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Current Password"
+                    type="password"
+                    autoComplete="current-password"
+                    value={currentPassword}
+                    onChange={({ target }): void => setCurrentPassword(target.value)}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="newPassword"
+                    label="New Password"
+                    type="password"
+                    value={newPassword}
+                    onChange={({ target }): void => setNewPassword(target.value)}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="newPasswordCheck"
+                    label="Repeat New Password"
+                    type="password"
+                    value={newPasswordCheck}
+                    onChange={({ target }): void => setNewPasswordCheck(target.value)}
+                />
+
+                <Button
+                    onClick={handlePasswordChange}
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                >
+                    Change password!
+                </Button>
+
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    className={classes.button}
+                    onClick={(): void => setVisible(true)}
+                >
+                    Delete User
+                </Button>
             </Paper>
+
+            <ConfirmationDialog
+                visible={visible}
+                setVisible={setVisible}
+                description={'hei'}
+                title={'Warning!'}
+                content={'Are you sure you want to remove your account?'}
+                onAccept={handleDeleteUser}
+                declineButton={'Cancel'}
+                acceptButton={'Yes'}
+            />
         </div>
     );
 };

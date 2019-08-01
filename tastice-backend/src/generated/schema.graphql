@@ -271,6 +271,7 @@ type Mutation {
   updateCheckin(comment: String, id: ID, rating: Int): Checkin
   updateProduct(categoryId: ID, company: String, id: ID, name: String, subCategories: [String!]): Product
   updateUser(email: String, firstName: String, id: ID, lastName: String): User
+  updateUserPassword(existingPassword: String, id: ID, password: String): User
 }
 
 enum MutationType {

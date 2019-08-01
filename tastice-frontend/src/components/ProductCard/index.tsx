@@ -31,7 +31,6 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Element => {
-    console.log('TCL: product', product);
     const classes = useStyles();
     const [showEditProduct, setShowEditProduct] = useState();
     const { history } = useReactRouter();
