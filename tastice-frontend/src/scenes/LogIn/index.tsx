@@ -51,10 +51,10 @@ export const LogIn = ({ setToken }: Token): JSX.Element => {
 
         if (result) {
             const token: string = result.data.login.token;
-            const userId: string = result.data.login.user.id;
+            const id: string = result.data.login.user.id;
             setToken(token);
             localStorage.setItem('token', token);
-            localStorage.setItem('userId', userId);
+            localStorage.setItem('id', id);
         }
     };
 

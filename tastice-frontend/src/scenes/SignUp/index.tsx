@@ -49,10 +49,10 @@ export const SignUp = ({ setToken }: Token): JSX.Element => {
         });
         if (result) {
             const token: string = result.data.signup.token;
-            const userId: string = result.data.signup.user.id;
+            const id: string = result.data.signup.user.id;
             setToken(token);
             localStorage.setItem('token', token);
-            localStorage.setItem('userId', userId);
+            localStorage.setItem('id', id);
         }
     };
 

@@ -38,17 +38,17 @@ const whiteTheme = createMuiTheme({
 
 const App = (): JSX.Element => {
     const [token, setToken] = useState();
-    const [userId, setUserId] = useState();
+    const [id, setId] = useState();
     const themeSwitcher = useQuery(THEME);
     const theme = themeSwitcher.data.theme ? 1 : 0;
     const themes = [darkTheme, whiteTheme];
 
     useEffect((): void => {
         const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem('id');
         if (token) {
             setToken(token);
-            setUserId(userId);
+            setId(userId);
         }
     }, [token]);
 
@@ -74,11 +74,7 @@ const App = (): JSX.Element => {
                                     <Route exact path="/users" render={(): JSX.Element => <UserList />} />
                                     <Route exact path="/activity" render={(): JSX.Element => <Activity />} />
                                     <Route exact path="/product/new" render={(): JSX.Element => <AddProduct />} />
-                                    <Route
-                                        exact
-                                        path="/friends"
-                                        render={(): JSX.Element => <FriendList id={userId} />}
-                                    />
+                                    <Route exact path="/friends" render={(): JSX.Element => <FriendList id={id} />} />
                                     <Route
                                         exact
                                         path="/menu"
@@ -89,7 +85,7 @@ const App = (): JSX.Element => {
                                         path="/account"
                                         render={(): JSX.Element => <Account setToken={setToken} />}
                                     />
-                                    <Redirect from="/profile" to={`/user/${userId}`} />
+                                    <Redirect from="/profile" to={`/user/${id}`} />
                                     <Route
                                         exact
                                         path="/product/:id"

@@ -69,17 +69,14 @@ export const FriendList = ({ id }: IdObject): JSX.Element | null => {
     const friendRequest = useQuery(FRIENDREQUEST, {
         variables: { id },
     });
+    console.log('TCL: friendRequest', friendRequest);
 
-    if (
-        usersQuery.data.searchUsers === undefined ||
-        friendRequest.data.friendRequest === undefined ||
-        me.data.me === undefined
-    ) {
+    if (usersQuery.data.searchUsers === undefined || friendRequest.data === undefined || me.data.me === undefined) {
         return null;
     }
 
     const friends = me.data.me.friends;
-    const friendRequests = friendRequest.data.friendRequest;
+    const friendRequests = friendRequest.data.friendRequest || [];
 
     const friendRequestIds = friendRequests.map(
         (friendRequestItem: FriendRequestObject) => friendRequestItem.sender[0].id,
