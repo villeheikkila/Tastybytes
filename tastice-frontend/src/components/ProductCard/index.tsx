@@ -94,7 +94,7 @@ export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Elemen
                     </Grid>
                 </Grid>
             </CardActionArea>
-            {showEditProduct && <UpdateProduct product={product} />}
+            {showEditProduct && <UpdateProduct product={product} onCancel={() => setShowEditProduct(false)} />}
         </>
     );
 };

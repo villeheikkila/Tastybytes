@@ -1,4 +1,12 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    useTheme,
+} from '@material-ui/core';
 import React from 'react';
 
 interface ConfirmationDialogProps {
@@ -22,6 +30,8 @@ export const ConfirmationDialog = ({
     setVisible,
     onAccept,
 }: ConfirmationDialogProps): JSX.Element => {
+    const theme = useTheme();
+
     return (
         <div>
             <Dialog
@@ -29,6 +39,7 @@ export const ConfirmationDialog = ({
                 onClose={(): void => setVisible(false)}
                 aria-labelledby={title}
                 aria-describedby={description}
+                fullWidth
             >
                 <DialogTitle id={title}>{title}</DialogTitle>
                 <DialogContent>

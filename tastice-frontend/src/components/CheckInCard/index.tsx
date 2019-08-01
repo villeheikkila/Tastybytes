@@ -5,7 +5,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { DELETE_CHECKIN, PRODUCT } from '../../queries';
+import { DELETE_CHECKIN, PRODUCT, SEARCH_CHECKINS, USER } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { ProductCard } from '../ProductCard';
@@ -75,7 +75,11 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
 
     const [deleteCheckin] = useMutation(DELETE_CHECKIN, {
         onError: errorHandler,
-        refetchQueries: [{ query: PRODUCT, variables: { id: checkinObject.id } }],
+        refetchQueries: [
+            { query: USER, variables: { id: authorObject.id } },
+            { query: PRODUCT, variables: { id: productObject.id } },
+            { query: SEARCH_CHECKINS, variables: { filter: '' } },
+        ],
     });
 
     const handleDeleteCheckin = async (): Promise<void> => {

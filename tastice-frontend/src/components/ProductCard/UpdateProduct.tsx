@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, CardContent, Grid, makeStyles, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { ALL_CATEGORIES, ALL_COMPANIES, ALL_PRODUCTS, UPDATE_PRODUCT } from '../../queries';
+import { ALL_CATEGORIES, ALL_COMPANIES, UPDATE_PRODUCT, SEARCH_CHECKINS, SEARCH_PRODUCTS } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { MaterialSelect } from '../MaterialSelect';
 
@@ -27,8 +27,9 @@ const useStyles = makeStyles(theme => ({
 
 interface UpdateProductProps {
     product: Product;
+    onCancel: any;
 }
-export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | null => {
+export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.Element | null => {
     const classes = useStyles();
     const [name, setName] = useState('');
     const [company, setCompany] = useState();
@@ -39,7 +40,10 @@ export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | nu
 
     const [updateProduct] = useMutation(UPDATE_PRODUCT, {
         onError: errorHandler,
-        refetchQueries: [{ query: ALL_PRODUCTS }],
+        refetchQueries: [
+            { query: SEARCH_CHECKINS, variables: { filter: '' } },
+            { query: SEARCH_PRODUCTS, variables: { filter: '' } },
+        ],
     });
 
     useEffect((): void => {
@@ -77,10 +81,36 @@ export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | nu
 
     const handleSubCategoryChange = (value: Suggestions): void => setSubCategory(value);
 
-    const handleAddProduct = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    const handleUpdateProduct = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
 
-        const subCategoryArray = subCategory.map((subCategoryItem: Suggestions): string => subCategoryItem.value);
+        if (name.length < 3) {
+            notificationHandler({
+                message: `Product name must have at least three letters`,
+                variant: 'error',
+            });
+            return;
+        }
+
+        if (company.value.length < 3) {
+            notificationHandler({
+                message: `Company name must have at least three letters`,
+                variant: 'error',
+            });
+            return;
+        }
+
+        if (!category) {
+            notificationHandler({
+                message: `Please select a category`,
+                variant: 'error',
+            });
+            return;
+        }
+
+        const subCategoryArray = subCategory
+            ? subCategory.map((subCategoryItem: Suggestions): string => subCategoryItem.value)
+            : [];
 
         const result = await updateProduct({
             variables: {
@@ -139,7 +169,7 @@ export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | nu
                     Edit Product
                 </Typography>
 
-                <form onSubmit={handleAddProduct}>
+                <form onSubmit={handleUpdateProduct}>
                     <TextField
                         id="Name"
                         label="Name"
@@ -181,8 +211,11 @@ export const UpdateProduct = ({ product }: UpdateProductProps): JSX.Element | nu
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Button type="submit" variant="contained" color="secondary" className={classes.button}>
+                            <Button type="submit" variant="contained" color="primary" className={classes.button}>
                                 Update Product!
+                            </Button>
+                            <Button variant="contained" color="secondary" className={classes.button} onClick={onCancel}>
+                                Cancel
                             </Button>
                         </Grid>
                     </Grid>

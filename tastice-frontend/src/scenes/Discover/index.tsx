@@ -41,7 +41,6 @@ export const Discover = (): JSX.Element | null => {
     }
 
     const products = searchProductsQuery.data.searchProducts;
-    console.log('TCL: products', products);
 
     return (
         <div className={classes.root}>

@@ -328,9 +328,6 @@ export const DELETE_PRODUCT = gql`
         deleteProduct(id: $id) {
             name
             id
-            company {
-                name
-            }
         }
     }
 `;

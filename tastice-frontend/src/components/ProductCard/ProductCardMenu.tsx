@@ -3,7 +3,7 @@ import { Menu, MenuItem } from '@material-ui/core';
 import { bindMenu } from 'material-ui-popup-state/hooks';
 import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
-import { ALL_CHECKINS, ALL_PRODUCTS, DELETE_PRODUCT } from '../../queries';
+import { DELETE_PRODUCT, SEARCH_CHECKINS, SEARCH_PRODUCTS } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 
@@ -20,7 +20,10 @@ export const ProductCardMenu = ({ id, name, menuState, setShowEditProduct }: Pro
 
     const [deleteProduct] = useMutation(DELETE_PRODUCT, {
         onError: errorHandler,
-        refetchQueries: [{ query: ALL_PRODUCTS }, { query: ALL_CHECKINS }],
+        refetchQueries: [
+            { query: SEARCH_CHECKINS, variables: { filter: '' } },
+            { query: SEARCH_PRODUCTS, variables: { filter: '' } },
+        ],
     });
 
     const handleDeleteProduct = async (): Promise<void> => {

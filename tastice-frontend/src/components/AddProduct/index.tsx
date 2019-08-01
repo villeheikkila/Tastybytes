@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, Grid, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
-import { ADD_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES, ALL_PRODUCTS } from '../../queries';
+import { ADD_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES, SEARCH_CHECKINS, SEARCH_PRODUCTS } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { MaterialSelect } from '../MaterialSelect';
 
@@ -38,7 +38,10 @@ export const AddProduct = (): JSX.Element | null => {
 
     const [addProduct] = useMutation(ADD_PRODUCT, {
         onError: errorHandler,
-        refetchQueries: [{ query: ALL_PRODUCTS }],
+        refetchQueries: [
+            { query: SEARCH_CHECKINS, variables: { filter: '' } },
+            { query: SEARCH_PRODUCTS, variables: { filter: '' } },
+        ],
     });
 
     if (addProduct === null || categoriesQuery === null || categoriesQuery.data.categories === undefined) {
@@ -59,7 +62,33 @@ export const AddProduct = (): JSX.Element | null => {
     const handleAddProduct = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
 
-        const subCategoryArray = subCategory.map((subCategoryItem: Suggestions): string => subCategoryItem.value);
+        if (name.length < 3) {
+            notificationHandler({
+                message: `Product name must have at least three letters`,
+                variant: 'error',
+            });
+            return;
+        }
+
+        if (company.value.length < 3) {
+            notificationHandler({
+                message: `Company name must have at least three letters`,
+                variant: 'error',
+            });
+            return;
+        }
+
+        if (!category) {
+            notificationHandler({
+                message: `Please select a category`,
+                variant: 'error',
+            });
+            return;
+        }
+
+        const subCategoryArray = subCategory
+            ? subCategory.map((subCategoryItem: Suggestions): string => subCategoryItem.value)
+            : [];
 
         const result = await addProduct({
             variables: {

@@ -64,6 +64,19 @@ export const Mutation = mutationType({
             resolve: async (_, { name, company, categoryId, subCategories }) => {
                 const subCategoryIds = await createIfNewSubCategories(subCategories, categoryId);
                 const companyId = await createIfNewCompany(company);
+
+                if (!company) {
+                    throw new Error('Please select a company');
+                }
+
+                if (!categoryId) {
+                    throw new Error('Please select a category');
+                }
+
+                if (!subCategories) {
+                    throw new Error('Please add at least one subcategory');
+                }
+
                 return await prisma.createProduct({
                     name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
                     company: { connect: { id: companyId } },

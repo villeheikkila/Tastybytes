@@ -26,7 +26,7 @@ type Product {
 type Checkin {
     id: ID! @id
     rating: Int!
-    comment: String!
+    comment: String
     author: User! @relation(name: "CheckInAuthor", onDelete: SET_NULL)
     product: Product! @relation(name: "CheckInProduct", onDelete: SET_NULL)
     createdAt: DateTime! @createdAt

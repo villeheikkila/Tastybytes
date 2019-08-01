@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { Button, createStyles, makeStyles, Paper, TextField, Theme, Typography } from '@material-ui/core';
 import Rating from 'material-ui-rating';
 import React, { useState } from 'react';
-import { ALL_CHECKINS, CREATE_CHECKIN, ME, PRODUCT } from '../../queries';
+import { CREATE_CHECKIN, ME, PRODUCT, SEARCH_CHECKINS } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -35,7 +35,11 @@ export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.
     const [comment, setComment] = useState();
     const [createCheckin] = useMutation(CREATE_CHECKIN, {
         onError: errorHandler,
-        refetchQueries: [{ query: ALL_CHECKINS }, { query: ME }, { query: PRODUCT, variables: { id: productId } }],
+        refetchQueries: [
+            { query: ME },
+            { query: PRODUCT, variables: { id: productId } },
+            { query: SEARCH_CHECKINS, variables: { filter: '' } },
+        ],
     });
 
     const handeCheckIn = async (): Promise<void> => {

@@ -32,14 +32,20 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexWrap: 'wrap',
             flexDirection: 'column',
+            alignItems: 'center',
+            alignContent: 'center',
+            justifyContent: 'center',
         },
         textField: {
             marginTop: 10,
         },
         button: {
-            marginTop: 30,
+            marginTop: 15,
+            width: '30%',
         },
-        form: { padding: theme.spacing(3, 0) },
+        form: {
+            padding: theme.spacing(3, 0),
+        },
     }),
 );
 
@@ -69,10 +75,12 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
 
     const [deleteUser] = useMutation(DELETE_USER, {
         onError: errorHandler,
+        refetchQueries: [{ query: ME }],
     });
 
     const [updateUser] = useMutation(UPDATE_USER, {
         onError: errorHandler,
+        refetchQueries: [{ query: ME }],
     });
 
     const [changePassword] = useMutation(UPDATE_PASSWORD, {
@@ -117,7 +125,12 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
     };
 
     const handlePasswordChange = async (): Promise<void> => {
-        if (newPassword !== newPasswordCheck) {
+        if (newPassword.length < 3) {
+            notificationHandler({
+                message: `The password can't be under three characters`,
+                variant: 'error',
+            });
+        } else if (newPassword !== newPasswordCheck) {
             notificationHandler({
                 message: `The given passwords don't match`,
                 variant: 'error',
@@ -165,7 +178,7 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                 />
 
                 <ValidatorForm onSubmit={handleUpdateUser} className={classes.form} onError={errorHandler}>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={2} alignItems="center" justify="center">
                         <Grid item xs={12}>
                             <TextValidator
                                 autoComplete="fname"
@@ -216,8 +229,8 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
 
                         <Button
                             type="submit"
-                            variant="outlined"
                             color="primary"
+                            variant="contained"
                             className={classes.button}
                             onClick={handleUpdateUser}
                         >
@@ -265,13 +278,7 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                     onChange={({ target }): void => setNewPasswordCheck(target.value)}
                 />
 
-                <Button
-                    onClick={handlePasswordChange}
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                >
+                <Button onClick={handlePasswordChange} variant="contained" color="primary" className={classes.button}>
                     Change password!
                 </Button>
 
