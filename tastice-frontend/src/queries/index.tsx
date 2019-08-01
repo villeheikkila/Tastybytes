@@ -6,12 +6,6 @@ export const THEME = gql`
     }
 `;
 
-export const NOTIFICATION = gql`
-    {
-        notification @client
-    }
-`;
-
 export const FILTER = gql`
     {
         filter @client
@@ -595,5 +589,12 @@ export const UPDATE_PASSWORD = gql`
             lastName
             email
         }
+    }
+`;
+
+export const GET_NOTIFICATION = gql`
+    {
+        notification @client
+        variant @client
     }
 `;

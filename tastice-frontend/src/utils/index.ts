@@ -7,16 +7,6 @@ export const notificationHandler = (notification: NotificationContent): void => 
             variant: notification.variant,
         },
     });
-    setTimeout(
-        (): void =>
-            client.writeData({
-                data: {
-                    notification: 'clear',
-                    variant: 'success',
-                },
-            }),
-        2500,
-    );
 };
 
 export const errorHandler = (error: any): void => {
@@ -26,16 +16,6 @@ export const errorHandler = (error: any): void => {
             variant: 'error',
         },
     });
-    setTimeout(
-        (): void =>
-            client.writeData({
-                data: {
-                    notification: 'clear',
-                    variant: 'success',
-                },
-            }),
-        2500,
-    );
 };
 
 export const filterChanger = (filter: string): void => {

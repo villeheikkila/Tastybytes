@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Account = ({ setToken }: Token): JSX.Element | null => {
     const me = useQuery(ME);
+
     const classes = useStyles();
 
     const [firstName, setFirstName] = useState('');
@@ -84,7 +85,9 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
 
     const user = me.data.me;
 
-    const handleUpdateUser = async (): Promise<void> => {
+    const handleUpdateUser = async (event: any): Promise<void> => {
+        event.preventDefault();
+
         const result = await updateUser({
             variables: {
                 id: user.id,
