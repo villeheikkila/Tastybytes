@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/react-hooks';
-import { Avatar, Card, CardHeader, IconButton, Link, makeStyles, Menu, MenuItem, Typography } from '@material-ui/core';
+import { Card, CardHeader, IconButton, Link, makeStyles, Menu, MenuItem, Typography } from '@material-ui/core';
 import { blue } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
@@ -9,9 +9,9 @@ import { DELETE_CHECKIN, PRODUCT, SEARCH_CHECKINS, USER } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { ProductCard } from '../ProductCard';
+import { SmartAvatar } from '../SmartAvatar';
 import { CheckInContent } from './CheckInContent';
 import { EditCheckIn } from './EditCheckIn';
-
 const useStyles = makeStyles(theme => ({
     card: {
         maxWidth: 700,
@@ -55,6 +55,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
         id: checkin.author.id,
         firstName: checkin.author.firstName,
         lastName: checkin.author.lastName,
+        avatarId: checkin.author.avatarId,
     };
 
     const checkinObject = {
@@ -100,9 +101,12 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
             <Card className={classes.card}>
                 <CardHeader
                     avatar={
-                        <Avatar aria-label="Author" src={''} className={classes.avatar}>
-                            R
-                        </Avatar>
+                        <SmartAvatar
+                            firstName={authorObject.firstName}
+                            lastName={authorObject.lastName}
+                            id={authorObject.id}
+                            avatarId={authorObject.avatarId}
+                        />
                     }
                     action={
                         <IconButton aria-label="Settings" {...bindTrigger(menuState)}>

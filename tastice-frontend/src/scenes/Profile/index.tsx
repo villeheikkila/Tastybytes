@@ -15,11 +15,13 @@ import {
     Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Image } from 'cloudinary-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
 import { USER } from '../../queries';
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         paper: {
@@ -82,6 +84,7 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
         lastName: user.data.user[0].lastName,
         checkins: user.data.user[0].checkins,
         friends: user.data.user[0].friends,
+        avatarId: user.data.user[0].avatarId,
     };
 
     const dividerText = userObject.checkins.length === 0 ? 'No Recent Activity' : 'Recent Activity';
@@ -92,11 +95,21 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
                 <Typography variant="h4" component="h3" className={classes.textField}>
                     {userObject.firstName} {userObject.lastName}
                 </Typography>
-                <Avatar
-                    alt="Avatar"
-                    src="https://pixel.nymag.com/imgs/daily/vulture/2018/11/02/02-avatar-2.w700.h467.jpg"
-                    className={classes.avatar}
-                />
+                <Avatar alt="Avatar" className={classes.avatar}>
+                    {userObject.avatarId ? (
+                        <Image
+                            cloudName={process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}
+                            publicId={userObject.avatarId}
+                            width="200"
+                            crop="thumb"
+                        ></Image>
+                    ) : (
+                        <Typography variant="h3" className={classes.avatar}>
+                            {userObject.firstName.charAt(0).toUpperCase()}
+                            {userObject.lastName.charAt(0).toUpperCase()}
+                        </Typography>
+                    )}
+                </Avatar>
                 <Typography variant="h4" component="h3" className={classes.textField}>
                     Checkins in total: {userObject.checkins.length}
                 </Typography>

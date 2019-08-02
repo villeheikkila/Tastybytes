@@ -146,6 +146,7 @@ export const USER = gql`
                     id
                     firstName
                     lastName
+                    avatarId
                 }
                 product {
                     id
@@ -454,6 +455,7 @@ export const PRODUCT = gql`
                     id
                     firstName
                     lastName
+                    avatarId
                 }
                 product {
                     id
@@ -535,6 +537,7 @@ export const SEARCH_CHECKINS = gql`
                 id
                 firstName
                 lastName
+                avatarId
             }
             product {
                 id

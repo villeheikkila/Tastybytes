@@ -79,12 +79,12 @@ interface CheckInObject {
     rating: number;
     comment: string;
     createdAt: Date;
-    author: SimpleUserObject;
+    author: user;
     product: ProductObject;
 }
 
 interface FriendRequestObject {
     id: string;
-    receiver: SimpleUserObject;
+    receiver: User;
     sender: [User];
 }

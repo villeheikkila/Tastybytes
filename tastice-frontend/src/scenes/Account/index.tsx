@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Avatar, Button, createStyles, Grid, makeStyles, Paper, TextField, Theme, Typography } from '@material-ui/core';
+import { deepPurple } from '@material-ui/core/colors';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -26,10 +27,11 @@ const useStyles = makeStyles((theme: Theme) =>
         Avatar: {
             marginLeft: 30,
             marginRight: 30,
-            marginTop: 15,
+            marginTop: 20,
             marginBottom: 15,
-            width: 150,
-            height: 150,
+            width: 200,
+            backgroundColor: deepPurple[500],
+            height: 200,
         },
         container: {
             display: 'flex',
@@ -48,6 +50,13 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         form: {
             padding: theme.spacing(3, 0),
+        },
+        avatarInitials: {
+            margin: 10,
+            color: '#fff',
+        },
+        imageAvatar: {
+            marginTop: 20,
         },
     }),
 );
@@ -208,9 +217,20 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                 </Typography>
                 <div {...getRootProps()}>
                     <input {...getInputProps()} />
-
                     <Avatar alt="Avatar" className={classes.Avatar}>
-                        <Image cloudName={`heikkila`} publicId={newAvatarId} width="300" crop="scale" />
+                        {user.avatarId ? (
+                            <Image
+                                cloudName={process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}
+                                publicId={newAvatarId}
+                                width="200"
+                                crop="thumb"
+                            ></Image>
+                        ) : (
+                            <Typography variant="h3" className={classes.avatarInitials}>
+                                {firstName.charAt(0).toUpperCase()}
+                                {lastName.charAt(0).toUpperCase()}
+                            </Typography>
+                        )}
                     </Avatar>
                 </div>
 
