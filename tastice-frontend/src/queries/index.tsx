@@ -1,5 +1,127 @@
 import { gql } from 'apollo-boost';
 
+const USER_DETAILS = gql`
+  fragment UserDetails on User {
+    id
+    firstName
+    lastName
+    avatarId
+  }
+`
+
+const PRODUCT_DETAILS = gql`
+  fragment ProductDetails on Product {
+    id
+    name
+    company {
+        id
+        name
+    }
+    category {
+        id
+        name
+    }
+    subCategory {
+        id
+        name
+    }
+  }
+`
+
+const CHECKIN_DETAILS = gql`
+  fragment CheckInDetails on Checkin {
+        id
+        rating
+        comment
+        createdAt
+  }
+`
+
+export const SEARCH_CHECKINS = gql`
+    query searchCheckins($filter: String!) {
+        searchCheckins(filter: $filter) {
+            ...CheckInDetails
+            author {
+                ...UserDetails
+            }
+            product {
+                ...ProductDetails
+            }
+        }
+    }
+    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}  
+`;
+
+export const SEARCH_PRODUCTS = gql`
+    query searchProducts($filter: String!) {
+        searchProducts(filter: $filter) {
+            ...ProductDetails
+            checkins {
+                ...CheckInDetails
+                author {
+                    ...UserDetails
+                }
+                product {
+                    ...ProductDetails
+                }
+            }
+        }
+    }
+    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}  
+`;
+
+export const SEARCH_USERS = gql`
+    query searchUsers($filter: String!) {
+        searchUsers(filter: $filter) {
+            ...UserDetails
+        }
+    }
+    ${USER_DETAILS}
+`;
+
+export const USER = gql`
+    query user($id: ID!) {
+        user(id: $id) {
+            ...UserDetails
+            friends {
+                ...UserDetails
+            }
+            checkins {
+                ...CheckInDetails
+                author {
+                    ...UserDetails
+                }
+                product {
+                    ...ProductDetails
+                }
+            }
+        }
+    }
+    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}
+`;
+
+export const ME = gql`
+    {
+        me {
+            ...UserDetails
+            admin
+            friends {
+                ...UserDetails
+            }
+            checkins {
+                ...CheckInDetails
+                author {
+                    ...UserDetails
+                }
+                product {
+                    ...ProductDetails
+                }
+            }
+        }
+    }
+    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}
+`;
+
 export const THEME = gql`
     {
         theme @client
@@ -9,38 +131,6 @@ export const THEME = gql`
 export const FILTER = gql`
     {
         filter @client
-    }
-`;
-
-export const ALL_CHECKINS = gql`
-    {
-        checkins {
-            id
-            rating
-            comment
-            author {
-                id
-                firstName
-                lastName
-            }
-            product {
-                id
-                name
-                company {
-                    name
-                    id
-                }
-                category {
-                    name
-                    id
-                }
-                subCategory {
-                    name
-                    id
-                }
-            }
-            createdAt
-        }
     }
 `;
 
@@ -80,29 +170,25 @@ export const CREATE_FRIENDREQUEST = gql`
     mutation createFriendRequest($senderId: ID!, $receiverId: ID!, $message: String!) {
         createFriendRequest(senderId: $senderId, receiverId: $receiverId, message: $message) {
             receiver {
-                id
-                firstName
-                lastName
+                ...UserDetails
             }
             sender {
-                id
-                firstName
-                lastName
+                ...UserDetails
             }
         }
     }
+    ${USER_DETAILS}
 `;
 
 export const ADD_FRIEND = gql`
     mutation addFriend($id: ID!, $friendId: ID!) {
         addFriend(id: $id, friendId: $friendId) {
             friends {
-                id
-                firstName
-                lastName
+                ...UserDetails
             }
         }
     }
+    ${USER_DETAILS}
 `;
 
 export const CREATE_SUBCATEGORY = gql`
@@ -117,78 +203,20 @@ export const CREATE_SUBCATEGORY = gql`
 export const ALL_USERS = gql`
     {
         users {
-            firstName
-            lastName
-            id
-            email
+            ...UserDetails
             admin
         }
     }
-`;
-
-export const USER = gql`
-    query user($id: ID!) {
-        user(id: $id) {
-            id
-            firstName
-            lastName
-            avatarId
-            friends {
-                id
-                firstName
-                lastName
-            }
-            checkins {
-                id
-                rating
-                comment
-                author {
-                    id
-                    firstName
-                    lastName
-                    avatarId
-                }
-                product {
-                    id
-                    name
-                    company {
-                        name
-                        id
-                    }
-                    category {
-                        name
-                        id
-                    }
-                    subCategory {
-                        name
-                        id
-                    }
-                }
-                createdAt
-            }
-        }
-    }
-`;
-
-export const SEARCH_USERS = gql`
-    query searchUsers($filter: String!) {
-        searchUsers(filter: $filter) {
-            firstName
-            lastName
-            avatarId
-            id
-        }
-    }
+    ${USER_DETAILS}
 `;
 
 export const CHECKIN = gql`
     query checkin($id: ID!) {
         checkin(id: $id) {
-            id
-            rating
-            comment
+            ...CheckInDetails
         }
     }
+    ${CHECKIN_DETAILS}
 `;
 
 export const FRIENDREQUEST = gql`
@@ -196,18 +224,14 @@ export const FRIENDREQUEST = gql`
         friendRequest(id: $id) {
             id
             sender {
-                id
-                firstName
-                lastName
-                avatarId
+                ...UserDetails
             }
             receiver {
-                id
-                firstName
-                lastName
+                ...UserDetails
             }
         }
     }
+    ${USER_DETAILS}
 `;
 
 export const ACCEPT_FRIENDREQUEST = gql`
@@ -215,11 +239,11 @@ export const ACCEPT_FRIENDREQUEST = gql`
         acceptFriendRequest(id: $id) {
             id
             friends {
-                firstName
-                lastName
+                ...UserDetails
             }
         }
     }
+    ${USER_DETAILS}
 `;
 
 export const SIGN_UP = gql`
@@ -227,90 +251,38 @@ export const SIGN_UP = gql`
         signup(firstName: $firstName, lastName: $lastName, email: $email, password: $password) {
             token
             user {
-                email
-                firstName
-                lastName
-                id
+                ...UserDetails
             }
         }
     }
-`;
-
-export const ME = gql`
-    {
-        me {
-            id
-            firstName
-            lastName
-            email
-            admin
-            avatarId
-            friends {
-                id
-                firstName
-                lastName
-                avatarId
-            }
-            checkins {
-                rating
-                comment
-                author {
-                    id
-                    firstName
-                    lastName
-                }
-                product {
-                    id
-                    name
-                    company {
-                        name
-                        id
-                    }
-                    category {
-                        name
-                        id
-                    }
-                    subCategory {
-                        name
-                        id
-                    }
-                }
-                createdAt
-            }
-        }
-    }
+    ${USER_DETAILS}
 `;
 
 export const UPDATE_USER = gql`
     mutation updateUser($id: ID!, $firstName: String!, $lastName: String!, $email: String!) {
         updateUser(id: $id, firstName: $firstName, lastName: $lastName, email: $email) {
-            id
-            firstName
-            lastName
-            email
+            ...UserDetails
         }
     }
+    ${USER_DETAILS}
 `;
 
 export const UPDATE_CHECKIN = gql`
     mutation updateCheckin($id: ID!, $rating: Int!, $comment: String!) {
         updateCheckin(id: $id, rating: $rating, comment: $comment) {
-            id
-            rating
-            comment
+            ...CheckInDetails
         }
     }
+    ${CHECKIN_DETAILS}
 `;
 
 export const DELETE_USER = gql`
     mutation deleteUser($id: ID!) {
         deleteUser(id: $id) {
-            id
-            firstName
-            lastName
-            email
+            ...UserDetails
         }
     }
+    ${USER_DETAILS}
 `;
 
 export const DELETE_CHECKIN = gql`
@@ -349,215 +321,55 @@ export const DELETE_FRIENDREQUEST = gql`
 export const ADD_PRODUCT = gql`
     mutation addProduct($name: String!, $company: String!, $categoryId: ID!, $subCategories: [String!]) {
         addProduct(name: $name, company: $company, categoryId: $categoryId, subCategories: $subCategories) {
-            name
-            company {
-                name
-            }
-            id
-            category {
-                name
-            }
-            subCategory {
-                name
-            }
+            ...ProductDetails
         }
     }
+    ${PRODUCT_DETAILS}
 `;
 
 export const UPDATE_PRODUCT = gql`
     mutation updateProduct($id: ID!, $name: String!, $company: String!, $categoryId: ID!, $subCategories: [String!]) {
         updateProduct(id: $id, name: $name, company: $company, categoryId: $categoryId, subCategories: $subCategories) {
-            id
-            name
-            company {
-                name
-                id
-            }
-            category {
-                name
-                id
-            }
-            subCategory {
-                name
-                id
-            }
+            ...ProductDetails
             checkins {
-                id
-                rating
-                comment
+                ...CheckInDetails
                 author {
-                    id
-                    firstName
-                    lastName
+                    ...UserDetails
                 }
                 product {
-                    id
-                    name
-                    company {
-                        name
-                        id
-                    }
-                    category {
-                        name
-                        id
-                    }
-                    subCategory {
-                        name
-                        id
-                    }
+                    ...ProductDetails
                 }
-                createdAt
             }
         }
     }
+    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}
 `;
 
 export const ALL_PRODUCTS = gql`
     {
         products {
-            name
-            company {
-                name
-            }
-            id
-            category {
-                name
-            }
-            subCategory {
-                name
-            }
+            ...ProductDetails
         }
     }
+    ${PRODUCT_DETAILS}
 `;
 
 export const PRODUCT = gql`
     query product($id: ID!) {
         product(id: $id) {
-            id
-            name
-            company {
-                name
-                id
-            }
-            category {
-                name
-                id
-            }
-            subCategory {
-                name
-                id
-            }
+            ...ProductDetails
             checkins {
-                id
-                rating
-                comment
+                ...CheckInDetails
                 author {
-                    id
-                    firstName
-                    lastName
-                    avatarId
+                    ...UserDetails
                 }
                 product {
-                    id
-                    name
-                    company {
-                        name
-                        id
-                    }
-                    category {
-                        name
-                        id
-                    }
-                    subCategory {
-                        name
-                        id
-                    }
+                    ...ProductDetails
                 }
-                createdAt
             }
         }
     }
-`;
-
-export const SEARCH_PRODUCTS = gql`
-    query searchProducts($filter: String!) {
-        searchProducts(filter: $filter) {
-            id
-            name
-            company {
-                name
-                id
-            }
-            category {
-                name
-                id
-            }
-            subCategory {
-                name
-                id
-            }
-            checkins {
-                id
-                rating
-                comment
-                author {
-                    id
-                    firstName
-                    lastName
-                }
-                product {
-                    id
-                    name
-                    company {
-                        name
-                        id
-                    }
-                    category {
-                        name
-                        id
-                    }
-                    subCategory {
-                        name
-                        id
-                    }
-                }
-                createdAt
-            }
-        }
-    }
-`;
-
-export const SEARCH_CHECKINS = gql`
-    query searchCheckins($filter: String!) {
-        searchCheckins(filter: $filter) {
-            id
-            rating
-            comment
-            author {
-                id
-                firstName
-                lastName
-                avatarId
-            }
-            product {
-                id
-                name
-                company {
-                    name
-                    id
-                }
-                category {
-                    name
-                    id
-                }
-                subCategory {
-                    name
-                    id
-                }
-            }
-            createdAt
-        }
-    }
+    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}
 `;
 
 export const LOGIN = gql`
@@ -565,36 +377,31 @@ export const LOGIN = gql`
         login(email: $email, password: $password) {
             token
             user {
-                email
-                firstName
-                lastName
-                id
+                ...UserDetails
             }
         }
     }
+    ${USER_DETAILS}
 `;
 
 export const USER_ADDED = gql`
     subscription {
         user {
             node {
-                lastName
-                firstName
-                email
+                ...UserDetails
             }
         }
     }
+    ${USER_DETAILS}
 `;
 
 export const UPDATE_PASSWORD = gql`
     mutation updateUserPassword($id: ID!, $password: String!, $existingPassword: String!) {
         updateUserPassword(id: $id, password: $password, existingPassword: $existingPassword) {
-            id
-            firstName
-            lastName
-            email
+            ...UserDetails
         }
     }
+    ${USER_DETAILS}
 `;
 
 export const UPDATE_AVATAR = gql`
