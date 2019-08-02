@@ -5,6 +5,7 @@ type User {
   lastName: String!
   password: String!
   admin: Boolean!
+  avatarId: String
   checkins: [Checkin!]! @relation(name: "CheckInAuthor", onDelete: CASCADE)
   friends: [User!]!
   friendRequest: [FriendRequest] @relation(name: "FriendRequestReceiver" onDelete: CASCADE)
@@ -16,6 +17,7 @@ type Product {
   id: ID! @id
   name: String!
   company: Company!
+  avatarId: String
   checkins: [Checkin!]! @relation(name: "CheckInProduct", onDelete: CASCADE)
   category: [Category] 
   subCategory: [SubCategory] 

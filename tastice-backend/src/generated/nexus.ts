@@ -188,6 +188,20 @@ export interface NexusGenInputs {
   }
   ProductWhereInput: { // input type
     AND?: NexusGenInputs['ProductWhereInput'][] | null; // [ProductWhereInput!]
+    avatarId?: string | null; // String
+    avatarId_contains?: string | null; // String
+    avatarId_ends_with?: string | null; // String
+    avatarId_gt?: string | null; // String
+    avatarId_gte?: string | null; // String
+    avatarId_in?: string[] | null; // [String!]
+    avatarId_lt?: string | null; // String
+    avatarId_lte?: string | null; // String
+    avatarId_not?: string | null; // String
+    avatarId_not_contains?: string | null; // String
+    avatarId_not_ends_with?: string | null; // String
+    avatarId_not_in?: string[] | null; // [String!]
+    avatarId_not_starts_with?: string | null; // String
+    avatarId_starts_with?: string | null; // String
     category_every?: NexusGenInputs['CategoryWhereInput'] | null; // CategoryWhereInput
     category_none?: NexusGenInputs['CategoryWhereInput'] | null; // CategoryWhereInput
     category_some?: NexusGenInputs['CategoryWhereInput'] | null; // CategoryWhereInput
@@ -286,6 +300,20 @@ export interface NexusGenInputs {
     admin?: boolean | null; // Boolean
     admin_not?: boolean | null; // Boolean
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    avatarId?: string | null; // String
+    avatarId_contains?: string | null; // String
+    avatarId_ends_with?: string | null; // String
+    avatarId_gt?: string | null; // String
+    avatarId_gte?: string | null; // String
+    avatarId_in?: string[] | null; // [String!]
+    avatarId_lt?: string | null; // String
+    avatarId_lte?: string | null; // String
+    avatarId_not?: string | null; // String
+    avatarId_not_contains?: string | null; // String
+    avatarId_not_ends_with?: string | null; // String
+    avatarId_not_in?: string[] | null; // [String!]
+    avatarId_not_starts_with?: string | null; // String
+    avatarId_starts_with?: string | null; // String
     checkins_every?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     checkins_none?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     checkins_some?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
@@ -390,9 +418,9 @@ export interface NexusGenEnums {
   CategoryOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   CheckinOrderByInput: "comment_ASC" | "comment_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "rating_ASC" | "rating_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   MutationType: "CREATED" | "DELETED" | "UPDATED"
-  ProductOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
+  ProductOrderByInput: "avatarId_ASC" | "avatarId_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   SubCategoryOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
-  UserOrderByInput: "admin_ASC" | "admin_DESC" | "createdAt_ASC" | "createdAt_DESC" | "email_ASC" | "email_DESC" | "firstName_ASC" | "firstName_DESC" | "id_ASC" | "id_DESC" | "lastName_ASC" | "lastName_DESC" | "password_ASC" | "password_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
+  UserOrderByInput: "admin_ASC" | "admin_DESC" | "avatarId_ASC" | "avatarId_DESC" | "createdAt_ASC" | "createdAt_DESC" | "email_ASC" | "email_DESC" | "firstName_ASC" | "firstName_DESC" | "id_ASC" | "id_DESC" | "lastName_ASC" | "lastName_DESC" | "password_ASC" | "password_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
 }
 
 export interface NexusGenRootTypes {
@@ -405,7 +433,7 @@ export interface NexusGenRootTypes {
     name: string; // String!
   }
   Checkin: { // root type
-    comment: string; // String!
+    comment?: string | null; // String
     createdAt: any; // DateTime!
     id: string; // ID!
     rating: number; // Int!
@@ -431,12 +459,14 @@ export interface NexusGenRootTypes {
   }
   Mutation: {};
   Product: { // root type
+    avatarId?: string | null; // String
     createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
     updatedAt: any; // DateTime!
   }
   ProductPreviousValues: { // root type
+    avatarId?: string | null; // String
     createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
@@ -456,6 +486,7 @@ export interface NexusGenRootTypes {
   Subscription: {};
   User: { // root type
     admin: boolean; // Boolean!
+    avatarId?: string | null; // String
     email?: string | null; // String
     firstName: string; // String!
     id: string; // ID!
@@ -463,6 +494,7 @@ export interface NexusGenRootTypes {
   }
   UserPreviousValues: { // root type
     admin: boolean; // Boolean!
+    avatarId?: string | null; // String
     createdAt: any; // DateTime!
     email?: string | null; // String
     firstName: string; // String!
@@ -514,7 +546,7 @@ export interface NexusGenFieldTypes {
   }
   Checkin: { // field return type
     author: NexusGenRootTypes['User']; // User!
-    comment: string; // String!
+    comment: string | null; // String
     createdAt: any; // DateTime!
     id: string; // ID!
     product: NexusGenRootTypes['Product']; // Product!
@@ -561,9 +593,11 @@ export interface NexusGenFieldTypes {
     updateCheckin: NexusGenRootTypes['Checkin'] | null; // Checkin
     updateProduct: NexusGenRootTypes['Product'] | null; // Product
     updateUser: NexusGenRootTypes['User'] | null; // User
+    updateUserAvatar: NexusGenRootTypes['User'] | null; // User
     updateUserPassword: NexusGenRootTypes['User'] | null; // User
   }
   Product: { // field return type
+    avatarId: string | null; // String
     category: NexusGenRootTypes['Category'][] | null; // [Category!]
     checkins: NexusGenRootTypes['Checkin'][] | null; // [Checkin!]
     company: NexusGenRootTypes['Company']; // Company!
@@ -574,6 +608,7 @@ export interface NexusGenFieldTypes {
     updatedAt: any; // DateTime!
   }
   ProductPreviousValues: { // field return type
+    avatarId: string | null; // String
     createdAt: any; // DateTime!
     id: string; // ID!
     name: string; // String!
@@ -616,6 +651,7 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     admin: boolean; // Boolean!
+    avatarId: string | null; // String
     checkins: NexusGenRootTypes['Checkin'][] | null; // [Checkin!]
     email: string | null; // String
     firstName: string; // String!
@@ -625,6 +661,7 @@ export interface NexusGenFieldTypes {
   }
   UserPreviousValues: { // field return type
     admin: boolean; // Boolean!
+    avatarId: string | null; // String
     createdAt: any; // DateTime!
     email: string | null; // String
     firstName: string; // String!
@@ -770,6 +807,10 @@ export interface NexusGenArgTypes {
       firstName?: string | null; // String
       id?: string | null; // ID
       lastName?: string | null; // String
+    }
+    updateUserAvatar: { // args
+      avatarId?: string | null; // String
+      id?: string | null; // ID
     }
     updateUserPassword: { // args
       existingPassword?: string | null; // String

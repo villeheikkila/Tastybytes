@@ -131,6 +131,23 @@ export const Mutation = mutationType({
             },
         });
 
+        t.field('updateUserAvatar', {
+            type: 'User',
+            args: {
+                id: idArg(),
+                avatarId: stringArg(),
+            },
+            resolve: async (_, { id, avatarId }) => {
+                return await prisma.updateUser({
+                    where: { id },
+                    data: {
+                        avatarId,
+                    },
+                });
+            },
+        });
+
+
         t.field('updateUserPassword', {
             type: 'User',
             args: {

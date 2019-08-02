@@ -240,6 +240,7 @@ export const ME = gql`
             lastName
             email
             admin
+            avatarId
             friends {
                 id
                 firstName
@@ -585,6 +586,14 @@ export const UPDATE_PASSWORD = gql`
             firstName
             lastName
             email
+        }
+    }
+`;
+
+export const UPDATE_AVATAR = gql`
+    mutation updateUserAvatar($id: ID!, $avatarId: String!) {
+        updateUserAvatar(id: $id, avatarId: $avatarId) {
+            avatarId
         }
     }
 `;

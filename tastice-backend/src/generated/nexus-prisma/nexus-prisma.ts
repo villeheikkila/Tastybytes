@@ -738,6 +738,7 @@ type UserObject =
   | { name: 'lastName', args?: [] | false, alias?: string  } 
   | { name: 'password', args?: [] | false, alias?: string  } 
   | { name: 'admin', args?: [] | false, alias?: string  } 
+  | { name: 'avatarId', args?: [] | false, alias?: string  } 
   | { name: 'checkins', args?: UserCheckinsArgs[] | false, alias?: string  } 
   | { name: 'friends', args?: UserFriendsArgs[] | false, alias?: string  } 
   | { name: 'friendRequest', args?: UserFriendRequestArgs[] | false, alias?: string  } 
@@ -751,6 +752,7 @@ type UserFields =
   | 'lastName'
   | 'password'
   | 'admin'
+  | 'avatarId'
   | 'checkins'
   | 'friends'
   | 'friendRequest'
@@ -831,6 +833,14 @@ export interface UserFieldDetails {
     description: string
     list: undefined
     nullable: false
+    resolve: undefined
+  }
+  avatarId: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
     resolve: undefined
   }
   checkins: {
@@ -938,7 +948,7 @@ export interface CheckinFieldDetails {
     args: {}
     description: string
     list: undefined
-    nullable: false
+    nullable: true
     resolve: undefined
   }
   author: {
@@ -993,6 +1003,7 @@ type ProductObject =
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'name', args?: [] | false, alias?: string  } 
   | { name: 'company', args?: [] | false, alias?: string  } 
+  | { name: 'avatarId', args?: [] | false, alias?: string  } 
   | { name: 'checkins', args?: ProductCheckinsArgs[] | false, alias?: string  } 
   | { name: 'category', args?: ProductCategoryArgs[] | false, alias?: string  } 
   | { name: 'subCategory', args?: ProductSubCategoryArgs[] | false, alias?: string  } 
@@ -1003,6 +1014,7 @@ type ProductFields =
   | 'id'
   | 'name'
   | 'company'
+  | 'avatarId'
   | 'checkins'
   | 'category'
   | 'subCategory'
@@ -1065,6 +1077,14 @@ export interface ProductFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.Company> | prisma.Company
+  }
+  avatarId: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: undefined
   }
   checkins: {
     type: 'Checkin'
@@ -3337,6 +3357,7 @@ type UserPreviousValuesObject =
   | { name: 'lastName', args?: [] | false, alias?: string  } 
   | { name: 'password', args?: [] | false, alias?: string  } 
   | { name: 'admin', args?: [] | false, alias?: string  } 
+  | { name: 'avatarId', args?: [] | false, alias?: string  } 
   | { name: 'createdAt', args?: [] | false, alias?: string  } 
   | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
@@ -3347,6 +3368,7 @@ type UserPreviousValuesFields =
   | 'lastName'
   | 'password'
   | 'admin'
+  | 'avatarId'
   | 'createdAt'
   | 'updatedAt'
 
@@ -3401,6 +3423,14 @@ export interface UserPreviousValuesFieldDetails {
     description: string
     list: undefined
     nullable: false
+    resolve: undefined
+  }
+  avatarId: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
     resolve: undefined
   }
   createdAt: {
@@ -3498,12 +3528,14 @@ type ProductPreviousValuesObject =
   | ProductPreviousValuesFields
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'name', args?: [] | false, alias?: string  } 
+  | { name: 'avatarId', args?: [] | false, alias?: string  } 
   | { name: 'createdAt', args?: [] | false, alias?: string  } 
   | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
 type ProductPreviousValuesFields =
   | 'id'
   | 'name'
+  | 'avatarId'
   | 'createdAt'
   | 'updatedAt'
 
@@ -3526,6 +3558,14 @@ export interface ProductPreviousValuesFieldDetails {
     description: string
     list: undefined
     nullable: false
+    resolve: undefined
+  }
+  avatarId: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
     resolve: undefined
   }
   createdAt: {
@@ -3660,7 +3700,7 @@ export interface CheckinPreviousValuesFieldDetails {
     args: {}
     description: string
     list: undefined
-    nullable: false
+    nullable: true
     resolve: undefined
   }
   createdAt: {
@@ -4304,6 +4344,20 @@ export interface UserWhereInput {
   password_not_ends_with?: string | null
   admin?: boolean | null
   admin_not?: boolean | null
+  avatarId?: string | null
+  avatarId_not?: string | null
+  avatarId_in?: string[]
+  avatarId_not_in?: string[]
+  avatarId_lt?: string | null
+  avatarId_lte?: string | null
+  avatarId_gt?: string | null
+  avatarId_gte?: string | null
+  avatarId_contains?: string | null
+  avatarId_not_contains?: string | null
+  avatarId_starts_with?: string | null
+  avatarId_not_starts_with?: string | null
+  avatarId_ends_with?: string | null
+  avatarId_not_ends_with?: string | null
   checkins_every?: CheckinWhereInput | null
   checkins_some?: CheckinWhereInput | null
   checkins_none?: CheckinWhereInput | null
@@ -4407,6 +4461,20 @@ export type UserWhereInputInputObject =
   | { name: 'password_not_ends_with', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'admin_not', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarId_not', alias?: string  } 
+  | { name: 'avatarId_in', alias?: string  } 
+  | { name: 'avatarId_not_in', alias?: string  } 
+  | { name: 'avatarId_lt', alias?: string  } 
+  | { name: 'avatarId_lte', alias?: string  } 
+  | { name: 'avatarId_gt', alias?: string  } 
+  | { name: 'avatarId_gte', alias?: string  } 
+  | { name: 'avatarId_contains', alias?: string  } 
+  | { name: 'avatarId_not_contains', alias?: string  } 
+  | { name: 'avatarId_starts_with', alias?: string  } 
+  | { name: 'avatarId_not_starts_with', alias?: string  } 
+  | { name: 'avatarId_ends_with', alias?: string  } 
+  | { name: 'avatarId_not_ends_with', alias?: string  } 
   | { name: 'checkins_every', alias?: string  } 
   | { name: 'checkins_some', alias?: string  } 
   | { name: 'checkins_none', alias?: string  } 
@@ -4545,6 +4613,20 @@ export interface ProductWhereInput {
   name_ends_with?: string | null
   name_not_ends_with?: string | null
   company?: CompanyWhereInput | null
+  avatarId?: string | null
+  avatarId_not?: string | null
+  avatarId_in?: string[]
+  avatarId_not_in?: string[]
+  avatarId_lt?: string | null
+  avatarId_lte?: string | null
+  avatarId_gt?: string | null
+  avatarId_gte?: string | null
+  avatarId_contains?: string | null
+  avatarId_not_contains?: string | null
+  avatarId_starts_with?: string | null
+  avatarId_not_starts_with?: string | null
+  avatarId_ends_with?: string | null
+  avatarId_not_ends_with?: string | null
   checkins_every?: CheckinWhereInput | null
   checkins_some?: CheckinWhereInput | null
   checkins_none?: CheckinWhereInput | null
@@ -4605,6 +4687,20 @@ export type ProductWhereInputInputObject =
   | { name: 'name_ends_with', alias?: string  } 
   | { name: 'name_not_ends_with', alias?: string  } 
   | { name: 'company', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarId_not', alias?: string  } 
+  | { name: 'avatarId_in', alias?: string  } 
+  | { name: 'avatarId_not_in', alias?: string  } 
+  | { name: 'avatarId_lt', alias?: string  } 
+  | { name: 'avatarId_lte', alias?: string  } 
+  | { name: 'avatarId_gt', alias?: string  } 
+  | { name: 'avatarId_gte', alias?: string  } 
+  | { name: 'avatarId_contains', alias?: string  } 
+  | { name: 'avatarId_not_contains', alias?: string  } 
+  | { name: 'avatarId_starts_with', alias?: string  } 
+  | { name: 'avatarId_not_starts_with', alias?: string  } 
+  | { name: 'avatarId_ends_with', alias?: string  } 
+  | { name: 'avatarId_not_ends_with', alias?: string  } 
   | { name: 'checkins_every', alias?: string  } 
   | { name: 'checkins_some', alias?: string  } 
   | { name: 'checkins_none', alias?: string  } 
@@ -4916,6 +5012,7 @@ export interface UserCreateInput {
   lastName?: string
   password?: string
   admin?: boolean
+  avatarId?: string | null
   checkins?: CheckinCreateManyWithoutAuthorInput | null
   friends?: UserCreateManyInput | null
   friendRequest?: FriendRequestCreateManyWithoutReceiverInput | null
@@ -4928,6 +5025,7 @@ export type UserCreateInputInputObject =
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   | { name: 'friendRequest', alias?: string  } 
@@ -4944,7 +5042,7 @@ export type CheckinCreateManyWithoutAuthorInputInputObject =
 export interface CheckinCreateWithoutAuthorInput {
   id?: string | null
   rating?: number
-  comment?: string
+  comment?: string | null
   product?: ProductCreateOneWithoutCheckinsInput
 }
 export type CheckinCreateWithoutAuthorInputInputObject =
@@ -4967,6 +5065,7 @@ export interface ProductCreateWithoutCheckinsInput {
   id?: string | null
   name?: string
   company?: CompanyCreateOneWithoutProductsInput
+  avatarId?: string | null
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
 }
@@ -4975,6 +5074,7 @@ export type ProductCreateWithoutCheckinsInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
@@ -5049,6 +5149,7 @@ export interface ProductCreateWithoutSubCategoryInput {
   id?: string | null
   name?: string
   company?: CompanyCreateOneWithoutProductsInput
+  avatarId?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
 }
@@ -5057,6 +5158,7 @@ export type ProductCreateWithoutSubCategoryInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   
@@ -5072,7 +5174,7 @@ export type CheckinCreateManyWithoutProductInputInputObject =
 export interface CheckinCreateWithoutProductInput {
   id?: string | null
   rating?: number
-  comment?: string
+  comment?: string | null
   author?: UserCreateOneWithoutCheckinsInput
 }
 export type CheckinCreateWithoutProductInputInputObject =
@@ -5098,6 +5200,7 @@ export interface UserCreateWithoutCheckinsInput {
   lastName?: string
   password?: string
   admin?: boolean
+  avatarId?: string | null
   friends?: UserCreateManyInput | null
   friendRequest?: FriendRequestCreateManyWithoutReceiverInput | null
 }
@@ -5109,6 +5212,7 @@ export type UserCreateWithoutCheckinsInputInputObject =
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   | { name: 'friendRequest', alias?: string  } 
   
@@ -5194,6 +5298,7 @@ export interface ProductCreateWithoutCategoryInput {
   id?: string | null
   name?: string
   company?: CompanyCreateOneWithoutProductsInput
+  avatarId?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
 }
@@ -5202,6 +5307,7 @@ export type ProductCreateWithoutCategoryInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
@@ -5211,6 +5317,7 @@ export interface UserUpdateInput {
   lastName?: string | null
   password?: string | null
   admin?: boolean | null
+  avatarId?: string | null
   checkins?: CheckinUpdateManyWithoutAuthorInput | null
   friends?: UserUpdateManyInput | null
   friendRequest?: FriendRequestUpdateManyWithoutReceiverInput | null
@@ -5222,6 +5329,7 @@ export type UserUpdateInputInputObject =
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   | { name: 'friendRequest', alias?: string  } 
@@ -5285,6 +5393,7 @@ export type ProductUpdateOneRequiredWithoutCheckinsInputInputObject =
 export interface ProductUpdateWithoutCheckinsDataInput {
   name?: string | null
   company?: CompanyUpdateOneRequiredWithoutProductsInput | null
+  avatarId?: string | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
 }
@@ -5292,6 +5401,7 @@ export type ProductUpdateWithoutCheckinsDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutCheckinsDataInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
@@ -5441,6 +5551,7 @@ export type ProductUpdateWithWhereUniqueWithoutSubCategoryInputInputObject =
 export interface ProductUpdateWithoutSubCategoryDataInput {
   name?: string | null
   company?: CompanyUpdateOneRequiredWithoutProductsInput | null
+  avatarId?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
 }
@@ -5448,6 +5559,7 @@ export type ProductUpdateWithoutSubCategoryDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutSubCategoryDataInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   
@@ -5513,6 +5625,7 @@ export interface UserUpdateWithoutCheckinsDataInput {
   lastName?: string | null
   password?: string | null
   admin?: boolean | null
+  avatarId?: string | null
   friends?: UserUpdateManyInput | null
   friendRequest?: FriendRequestUpdateManyWithoutReceiverInput | null
 }
@@ -5523,6 +5636,7 @@ export type UserUpdateWithoutCheckinsDataInputInputObject =
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   | { name: 'friendRequest', alias?: string  } 
   
@@ -5564,6 +5678,7 @@ export interface UserUpdateDataInput {
   lastName?: string | null
   password?: string | null
   admin?: boolean | null
+  avatarId?: string | null
   checkins?: CheckinUpdateManyWithoutAuthorInput | null
   friends?: UserUpdateManyInput | null
   friendRequest?: FriendRequestUpdateManyWithoutReceiverInput | null
@@ -5575,6 +5690,7 @@ export type UserUpdateDataInputInputObject =
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   | { name: 'friendRequest', alias?: string  } 
@@ -5798,6 +5914,20 @@ export interface UserScalarWhereInput {
   password_not_ends_with?: string | null
   admin?: boolean | null
   admin_not?: boolean | null
+  avatarId?: string | null
+  avatarId_not?: string | null
+  avatarId_in?: string[]
+  avatarId_not_in?: string[]
+  avatarId_lt?: string | null
+  avatarId_lte?: string | null
+  avatarId_gt?: string | null
+  avatarId_gte?: string | null
+  avatarId_contains?: string | null
+  avatarId_not_contains?: string | null
+  avatarId_starts_with?: string | null
+  avatarId_not_starts_with?: string | null
+  avatarId_ends_with?: string | null
+  avatarId_not_ends_with?: string | null
   createdAt?: string | null
   createdAt_not?: string | null
   createdAt_in?: string[]
@@ -5892,6 +6022,20 @@ export type UserScalarWhereInputInputObject =
   | { name: 'password_not_ends_with', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'admin_not', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarId_not', alias?: string  } 
+  | { name: 'avatarId_in', alias?: string  } 
+  | { name: 'avatarId_not_in', alias?: string  } 
+  | { name: 'avatarId_lt', alias?: string  } 
+  | { name: 'avatarId_lte', alias?: string  } 
+  | { name: 'avatarId_gt', alias?: string  } 
+  | { name: 'avatarId_gte', alias?: string  } 
+  | { name: 'avatarId_contains', alias?: string  } 
+  | { name: 'avatarId_not_contains', alias?: string  } 
+  | { name: 'avatarId_starts_with', alias?: string  } 
+  | { name: 'avatarId_not_starts_with', alias?: string  } 
+  | { name: 'avatarId_ends_with', alias?: string  } 
+  | { name: 'avatarId_not_ends_with', alias?: string  } 
   | { name: 'createdAt', alias?: string  } 
   | { name: 'createdAt_not', alias?: string  } 
   | { name: 'createdAt_in', alias?: string  } 
@@ -5927,6 +6071,7 @@ export interface UserUpdateManyDataInput {
   lastName?: string | null
   password?: string | null
   admin?: boolean | null
+  avatarId?: string | null
 }
 export type UserUpdateManyDataInputInputObject =
   | Extract<keyof UserUpdateManyDataInput, string>
@@ -5935,6 +6080,7 @@ export type UserUpdateManyDataInputInputObject =
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   
 export interface UserUpsertWithoutCheckinsInput {
   update?: UserUpdateWithoutCheckinsDataInput
@@ -6129,6 +6275,20 @@ export interface ProductScalarWhereInput {
   name_not_starts_with?: string | null
   name_ends_with?: string | null
   name_not_ends_with?: string | null
+  avatarId?: string | null
+  avatarId_not?: string | null
+  avatarId_in?: string[]
+  avatarId_not_in?: string[]
+  avatarId_lt?: string | null
+  avatarId_lte?: string | null
+  avatarId_gt?: string | null
+  avatarId_gte?: string | null
+  avatarId_contains?: string | null
+  avatarId_not_contains?: string | null
+  avatarId_starts_with?: string | null
+  avatarId_not_starts_with?: string | null
+  avatarId_ends_with?: string | null
+  avatarId_not_ends_with?: string | null
   createdAt?: string | null
   createdAt_not?: string | null
   createdAt_in?: string[]
@@ -6179,6 +6339,20 @@ export type ProductScalarWhereInputInputObject =
   | { name: 'name_not_starts_with', alias?: string  } 
   | { name: 'name_ends_with', alias?: string  } 
   | { name: 'name_not_ends_with', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarId_not', alias?: string  } 
+  | { name: 'avatarId_in', alias?: string  } 
+  | { name: 'avatarId_not_in', alias?: string  } 
+  | { name: 'avatarId_lt', alias?: string  } 
+  | { name: 'avatarId_lte', alias?: string  } 
+  | { name: 'avatarId_gt', alias?: string  } 
+  | { name: 'avatarId_gte', alias?: string  } 
+  | { name: 'avatarId_contains', alias?: string  } 
+  | { name: 'avatarId_not_contains', alias?: string  } 
+  | { name: 'avatarId_starts_with', alias?: string  } 
+  | { name: 'avatarId_not_starts_with', alias?: string  } 
+  | { name: 'avatarId_ends_with', alias?: string  } 
+  | { name: 'avatarId_not_ends_with', alias?: string  } 
   | { name: 'createdAt', alias?: string  } 
   | { name: 'createdAt_not', alias?: string  } 
   | { name: 'createdAt_in', alias?: string  } 
@@ -6210,10 +6384,12 @@ export type ProductUpdateManyWithWhereNestedInputInputObject =
   
 export interface ProductUpdateManyDataInput {
   name?: string | null
+  avatarId?: string | null
 }
 export type ProductUpdateManyDataInputInputObject =
   | Extract<keyof ProductUpdateManyDataInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   
 export interface SubCategoryUpsertWithWhereUniqueWithoutCategoryInput {
   where?: SubCategoryWhereUniqueInput
@@ -6501,6 +6677,7 @@ export type ProductUpdateWithWhereUniqueWithoutCategoryInputInputObject =
 export interface ProductUpdateWithoutCategoryDataInput {
   name?: string | null
   company?: CompanyUpdateOneRequiredWithoutProductsInput | null
+  avatarId?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
 }
@@ -6508,6 +6685,7 @@ export type ProductUpdateWithoutCategoryDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutCategoryDataInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
@@ -6568,6 +6746,7 @@ export interface UserUpdateManyMutationInput {
   lastName?: string | null
   password?: string | null
   admin?: boolean | null
+  avatarId?: string | null
 }
 export type UserUpdateManyMutationInputInputObject =
   | Extract<keyof UserUpdateManyMutationInput, string>
@@ -6576,11 +6755,13 @@ export type UserUpdateManyMutationInputInputObject =
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   
 export interface ProductCreateInput {
   id?: string | null
   name?: string
   company?: CompanyCreateOneWithoutProductsInput
+  avatarId?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
@@ -6590,6 +6771,7 @@ export type ProductCreateInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
@@ -6597,6 +6779,7 @@ export type ProductCreateInputInputObject =
 export interface ProductUpdateInput {
   name?: string | null
   company?: CompanyUpdateOneRequiredWithoutProductsInput | null
+  avatarId?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
@@ -6605,21 +6788,24 @@ export type ProductUpdateInputInputObject =
   | Extract<keyof ProductUpdateInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'company', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
 export interface ProductUpdateManyMutationInput {
   name?: string | null
+  avatarId?: string | null
 }
 export type ProductUpdateManyMutationInputInputObject =
   | Extract<keyof ProductUpdateManyMutationInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   
 export interface CheckinCreateInput {
   id?: string | null
   rating?: number
-  comment?: string
+  comment?: string | null
   author?: UserCreateOneWithoutCheckinsInput
   product?: ProductCreateOneWithoutCheckinsInput
 }
@@ -6676,6 +6862,7 @@ export type ProductCreateManyWithoutCompanyInputInputObject =
 export interface ProductCreateWithoutCompanyInput {
   id?: string | null
   name?: string
+  avatarId?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
@@ -6684,6 +6871,7 @@ export type ProductCreateWithoutCompanyInputInputObject =
   | Extract<keyof ProductCreateWithoutCompanyInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
@@ -6731,6 +6919,7 @@ export type ProductUpdateWithWhereUniqueWithoutCompanyInputInputObject =
   
 export interface ProductUpdateWithoutCompanyDataInput {
   name?: string | null
+  avatarId?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
@@ -6738,6 +6927,7 @@ export interface ProductUpdateWithoutCompanyDataInput {
 export type ProductUpdateWithoutCompanyDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutCompanyDataInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
@@ -6851,6 +7041,7 @@ export interface UserCreateWithoutFriendRequestInput {
   lastName?: string
   password?: string
   admin?: boolean
+  avatarId?: string | null
   checkins?: CheckinCreateManyWithoutAuthorInput | null
   friends?: UserCreateManyInput | null
 }
@@ -6862,6 +7053,7 @@ export type UserCreateWithoutFriendRequestInputInputObject =
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   
@@ -6914,6 +7106,7 @@ export interface UserUpdateWithoutFriendRequestDataInput {
   lastName?: string | null
   password?: string | null
   admin?: boolean | null
+  avatarId?: string | null
   checkins?: CheckinUpdateManyWithoutAuthorInput | null
   friends?: UserUpdateManyInput | null
 }
@@ -6924,6 +7117,7 @@ export type UserUpdateWithoutFriendRequestDataInputInputObject =
   | { name: 'lastName', alias?: string  } 
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
+  | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   
@@ -7110,6 +7304,8 @@ export type ProductOrderByInputValues =
   | 'id_DESC'
   | 'name_ASC'
   | 'name_DESC'
+  | 'avatarId_ASC'
+  | 'avatarId_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'
@@ -7148,6 +7344,8 @@ export type UserOrderByInputValues =
   | 'password_DESC'
   | 'admin_ASC'
   | 'admin_DESC'
+  | 'avatarId_ASC'
+  | 'avatarId_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'

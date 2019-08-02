@@ -356,6 +356,8 @@ export type ProductOrderByInput =
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "avatarId_ASC"
+  | "avatarId_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -386,6 +388,8 @@ export type UserOrderByInput =
   | "password_DESC"
   | "admin_ASC"
   | "admin_DESC"
+  | "avatarId_ASC"
+  | "avatarId_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -524,6 +528,20 @@ export interface ProductWhereInput {
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
   company?: Maybe<CompanyWhereInput>;
+  avatarId?: Maybe<String>;
+  avatarId_not?: Maybe<String>;
+  avatarId_in?: Maybe<String[] | String>;
+  avatarId_not_in?: Maybe<String[] | String>;
+  avatarId_lt?: Maybe<String>;
+  avatarId_lte?: Maybe<String>;
+  avatarId_gt?: Maybe<String>;
+  avatarId_gte?: Maybe<String>;
+  avatarId_contains?: Maybe<String>;
+  avatarId_not_contains?: Maybe<String>;
+  avatarId_starts_with?: Maybe<String>;
+  avatarId_not_starts_with?: Maybe<String>;
+  avatarId_ends_with?: Maybe<String>;
+  avatarId_not_ends_with?: Maybe<String>;
   checkins_every?: Maybe<CheckinWhereInput>;
   checkins_some?: Maybe<CheckinWhereInput>;
   checkins_none?: Maybe<CheckinWhereInput>;
@@ -724,6 +742,20 @@ export interface UserWhereInput {
   password_not_ends_with?: Maybe<String>;
   admin?: Maybe<Boolean>;
   admin_not?: Maybe<Boolean>;
+  avatarId?: Maybe<String>;
+  avatarId_not?: Maybe<String>;
+  avatarId_in?: Maybe<String[] | String>;
+  avatarId_not_in?: Maybe<String[] | String>;
+  avatarId_lt?: Maybe<String>;
+  avatarId_lte?: Maybe<String>;
+  avatarId_gt?: Maybe<String>;
+  avatarId_gte?: Maybe<String>;
+  avatarId_contains?: Maybe<String>;
+  avatarId_not_contains?: Maybe<String>;
+  avatarId_starts_with?: Maybe<String>;
+  avatarId_not_starts_with?: Maybe<String>;
+  avatarId_ends_with?: Maybe<String>;
+  avatarId_not_ends_with?: Maybe<String>;
   checkins_every?: Maybe<CheckinWhereInput>;
   checkins_some?: Maybe<CheckinWhereInput>;
   checkins_none?: Maybe<CheckinWhereInput>;
@@ -854,6 +886,7 @@ export interface ProductCreateWithoutSubCategoryInput {
   id?: Maybe<ID_Input>;
   name: String;
   company: CompanyCreateOneWithoutProductsInput;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinCreateManyWithoutProductInput>;
   category?: Maybe<CategoryCreateManyWithoutProductsInput>;
 }
@@ -878,7 +911,7 @@ export interface CheckinCreateManyWithoutProductInput {
 export interface CheckinCreateWithoutProductInput {
   id?: Maybe<ID_Input>;
   rating: Int;
-  comment: String;
+  comment?: Maybe<String>;
   author: UserCreateOneWithoutCheckinsInput;
 }
 
@@ -894,6 +927,7 @@ export interface UserCreateWithoutCheckinsInput {
   lastName: String;
   password: String;
   admin: Boolean;
+  avatarId?: Maybe<String>;
   friends?: Maybe<UserCreateManyInput>;
   friendRequest?: Maybe<FriendRequestCreateManyWithoutReceiverInput>;
 }
@@ -910,6 +944,7 @@ export interface UserCreateInput {
   lastName: String;
   password: String;
   admin: Boolean;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinCreateManyWithoutAuthorInput>;
   friends?: Maybe<UserCreateManyInput>;
   friendRequest?: Maybe<FriendRequestCreateManyWithoutReceiverInput>;
@@ -925,7 +960,7 @@ export interface CheckinCreateManyWithoutAuthorInput {
 export interface CheckinCreateWithoutAuthorInput {
   id?: Maybe<ID_Input>;
   rating: Int;
-  comment: String;
+  comment?: Maybe<String>;
   product: ProductCreateOneWithoutCheckinsInput;
 }
 
@@ -938,6 +973,7 @@ export interface ProductCreateWithoutCheckinsInput {
   id?: Maybe<ID_Input>;
   name: String;
   company: CompanyCreateOneWithoutProductsInput;
+  avatarId?: Maybe<String>;
   category?: Maybe<CategoryCreateManyWithoutProductsInput>;
   subCategory?: Maybe<SubCategoryCreateManyWithoutProductsInput>;
 }
@@ -991,6 +1027,7 @@ export interface ProductCreateWithoutCategoryInput {
   id?: Maybe<ID_Input>;
   name: String;
   company: CompanyCreateOneWithoutProductsInput;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinCreateManyWithoutProductInput>;
   subCategory?: Maybe<SubCategoryCreateManyWithoutProductsInput>;
 }
@@ -1087,6 +1124,7 @@ export interface ProductUpdateWithWhereUniqueWithoutSubCategoryInput {
 export interface ProductUpdateWithoutSubCategoryDataInput {
   name?: Maybe<String>;
   company?: Maybe<CompanyUpdateOneRequiredWithoutProductsInput>;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinUpdateManyWithoutProductInput>;
   category?: Maybe<CategoryUpdateManyWithoutProductsInput>;
 }
@@ -1154,6 +1192,7 @@ export interface UserUpdateWithoutCheckinsDataInput {
   lastName?: Maybe<String>;
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
+  avatarId?: Maybe<String>;
   friends?: Maybe<UserUpdateManyInput>;
   friendRequest?: Maybe<FriendRequestUpdateManyWithoutReceiverInput>;
 }
@@ -1189,6 +1228,7 @@ export interface UserUpdateDataInput {
   lastName?: Maybe<String>;
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
   friends?: Maybe<UserUpdateManyInput>;
   friendRequest?: Maybe<FriendRequestUpdateManyWithoutReceiverInput>;
@@ -1238,6 +1278,7 @@ export interface ProductUpdateOneRequiredWithoutCheckinsInput {
 export interface ProductUpdateWithoutCheckinsDataInput {
   name?: Maybe<String>;
   company?: Maybe<CompanyUpdateOneRequiredWithoutProductsInput>;
+  avatarId?: Maybe<String>;
   category?: Maybe<CategoryUpdateManyWithoutProductsInput>;
   subCategory?: Maybe<SubCategoryUpdateManyWithoutProductsInput>;
 }
@@ -1405,6 +1446,7 @@ export interface ProductUpdateWithWhereUniqueWithoutCategoryInput {
 export interface ProductUpdateWithoutCategoryDataInput {
   name?: Maybe<String>;
   company?: Maybe<CompanyUpdateOneRequiredWithoutProductsInput>;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinUpdateManyWithoutProductInput>;
   subCategory?: Maybe<SubCategoryUpdateManyWithoutProductsInput>;
 }
@@ -1444,6 +1486,20 @@ export interface ProductScalarWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  avatarId?: Maybe<String>;
+  avatarId_not?: Maybe<String>;
+  avatarId_in?: Maybe<String[] | String>;
+  avatarId_not_in?: Maybe<String[] | String>;
+  avatarId_lt?: Maybe<String>;
+  avatarId_lte?: Maybe<String>;
+  avatarId_gt?: Maybe<String>;
+  avatarId_gte?: Maybe<String>;
+  avatarId_contains?: Maybe<String>;
+  avatarId_not_contains?: Maybe<String>;
+  avatarId_starts_with?: Maybe<String>;
+  avatarId_not_starts_with?: Maybe<String>;
+  avatarId_ends_with?: Maybe<String>;
+  avatarId_not_ends_with?: Maybe<String>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1472,6 +1528,7 @@ export interface ProductUpdateManyWithWhereNestedInput {
 
 export interface ProductUpdateManyDataInput {
   name?: Maybe<String>;
+  avatarId?: Maybe<String>;
 }
 
 export interface CategoryUpsertWithoutSubCategoryInput {
@@ -1777,6 +1834,20 @@ export interface UserScalarWhereInput {
   password_not_ends_with?: Maybe<String>;
   admin?: Maybe<Boolean>;
   admin_not?: Maybe<Boolean>;
+  avatarId?: Maybe<String>;
+  avatarId_not?: Maybe<String>;
+  avatarId_in?: Maybe<String[] | String>;
+  avatarId_not_in?: Maybe<String[] | String>;
+  avatarId_lt?: Maybe<String>;
+  avatarId_lte?: Maybe<String>;
+  avatarId_gt?: Maybe<String>;
+  avatarId_gte?: Maybe<String>;
+  avatarId_contains?: Maybe<String>;
+  avatarId_not_contains?: Maybe<String>;
+  avatarId_starts_with?: Maybe<String>;
+  avatarId_not_starts_with?: Maybe<String>;
+  avatarId_ends_with?: Maybe<String>;
+  avatarId_not_ends_with?: Maybe<String>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1809,6 +1880,7 @@ export interface UserUpdateManyDataInput {
   lastName?: Maybe<String>;
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
+  avatarId?: Maybe<String>;
 }
 
 export interface UserUpsertWithoutCheckinsInput {
@@ -1841,7 +1913,7 @@ export interface CategoryUpdateManyMutationInput {
 export interface CheckinCreateInput {
   id?: Maybe<ID_Input>;
   rating: Int;
-  comment: String;
+  comment?: Maybe<String>;
   author: UserCreateOneWithoutCheckinsInput;
   product: ProductCreateOneWithoutCheckinsInput;
 }
@@ -1874,6 +1946,7 @@ export interface ProductCreateManyWithoutCompanyInput {
 export interface ProductCreateWithoutCompanyInput {
   id?: Maybe<ID_Input>;
   name: String;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinCreateManyWithoutProductInput>;
   category?: Maybe<CategoryCreateManyWithoutProductsInput>;
   subCategory?: Maybe<SubCategoryCreateManyWithoutProductsInput>;
@@ -1914,6 +1987,7 @@ export interface ProductUpdateWithWhereUniqueWithoutCompanyInput {
 
 export interface ProductUpdateWithoutCompanyDataInput {
   name?: Maybe<String>;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinUpdateManyWithoutProductInput>;
   category?: Maybe<CategoryUpdateManyWithoutProductsInput>;
   subCategory?: Maybe<SubCategoryUpdateManyWithoutProductsInput>;
@@ -1950,6 +2024,7 @@ export interface UserCreateWithoutFriendRequestInput {
   lastName: String;
   password: String;
   admin: Boolean;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinCreateManyWithoutAuthorInput>;
   friends?: Maybe<UserCreateManyInput>;
 }
@@ -1993,6 +2068,7 @@ export interface UserUpdateWithoutFriendRequestDataInput {
   lastName?: Maybe<String>;
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
   friends?: Maybe<UserUpdateManyInput>;
 }
@@ -2011,6 +2087,7 @@ export interface ProductCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
   company: CompanyCreateOneWithoutProductsInput;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinCreateManyWithoutProductInput>;
   category?: Maybe<CategoryCreateManyWithoutProductsInput>;
   subCategory?: Maybe<SubCategoryCreateManyWithoutProductsInput>;
@@ -2019,6 +2096,7 @@ export interface ProductCreateInput {
 export interface ProductUpdateInput {
   name?: Maybe<String>;
   company?: Maybe<CompanyUpdateOneRequiredWithoutProductsInput>;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinUpdateManyWithoutProductInput>;
   category?: Maybe<CategoryUpdateManyWithoutProductsInput>;
   subCategory?: Maybe<SubCategoryUpdateManyWithoutProductsInput>;
@@ -2026,6 +2104,7 @@ export interface ProductUpdateInput {
 
 export interface ProductUpdateManyMutationInput {
   name?: Maybe<String>;
+  avatarId?: Maybe<String>;
 }
 
 export interface SubCategoryCreateInput {
@@ -2051,6 +2130,7 @@ export interface UserUpdateInput {
   lastName?: Maybe<String>;
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
+  avatarId?: Maybe<String>;
   checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
   friends?: Maybe<UserUpdateManyInput>;
   friendRequest?: Maybe<FriendRequestUpdateManyWithoutReceiverInput>;
@@ -2062,6 +2142,7 @@ export interface UserUpdateManyMutationInput {
   lastName?: Maybe<String>;
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
+  avatarId?: Maybe<String>;
 }
 
 export interface CategorySubscriptionWhereInput {
@@ -2296,6 +2377,7 @@ export interface SubCategoryNullablePromise
 export interface Product {
   id: ID_Output;
   name: String;
+  avatarId?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -2304,6 +2386,7 @@ export interface ProductPromise extends Promise<Product>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   company: <T = CompanyPromise>() => T;
+  avatarId: () => Promise<String>;
   checkins: <T = FragmentableArray<Checkin>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -2341,6 +2424,7 @@ export interface ProductSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   company: <T = CompanySubscription>() => T;
+  avatarId: () => Promise<AsyncIterator<String>>;
   checkins: <T = Promise<AsyncIterator<CheckinSubscription>>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -2378,6 +2462,7 @@ export interface ProductNullablePromise
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   company: <T = CompanyPromise>() => T;
+  avatarId: () => Promise<String>;
   checkins: <T = FragmentableArray<Checkin>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -2463,7 +2548,7 @@ export interface CompanyNullablePromise
 export interface Checkin {
   id: ID_Output;
   rating: Int;
-  comment: String;
+  comment?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -2509,6 +2594,7 @@ export interface User {
   lastName: String;
   password: String;
   admin: Boolean;
+  avatarId?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -2520,6 +2606,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   lastName: () => Promise<String>;
   password: () => Promise<String>;
   admin: () => Promise<Boolean>;
+  avatarId: () => Promise<String>;
   checkins: <T = FragmentableArray<Checkin>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -2560,6 +2647,7 @@ export interface UserSubscription
   lastName: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   admin: () => Promise<AsyncIterator<Boolean>>;
+  avatarId: () => Promise<AsyncIterator<String>>;
   checkins: <T = Promise<AsyncIterator<CheckinSubscription>>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -2602,6 +2690,7 @@ export interface UserNullablePromise
   lastName: () => Promise<String>;
   password: () => Promise<String>;
   admin: () => Promise<Boolean>;
+  avatarId: () => Promise<String>;
   checkins: <T = FragmentableArray<Checkin>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -3208,7 +3297,7 @@ export interface CheckinSubscriptionPayloadSubscription
 export interface CheckinPreviousValues {
   id: ID_Output;
   rating: Int;
-  comment: String;
+  comment?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -3349,6 +3438,7 @@ export interface ProductSubscriptionPayloadSubscription
 export interface ProductPreviousValues {
   id: ID_Output;
   name: String;
+  avatarId?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -3358,6 +3448,7 @@ export interface ProductPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  avatarId: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3367,6 +3458,7 @@ export interface ProductPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  avatarId: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -3447,6 +3539,7 @@ export interface UserPreviousValues {
   lastName: String;
   password: String;
   admin: Boolean;
+  avatarId?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -3460,6 +3553,7 @@ export interface UserPreviousValuesPromise
   lastName: () => Promise<String>;
   password: () => Promise<String>;
   admin: () => Promise<Boolean>;
+  avatarId: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3473,6 +3567,7 @@ export interface UserPreviousValuesSubscription
   lastName: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   admin: () => Promise<AsyncIterator<Boolean>>;
+  avatarId: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }

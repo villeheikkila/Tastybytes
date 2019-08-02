@@ -67,7 +67,7 @@ input CategoryWhereInput {
 
 type Checkin {
   author: User!
-  comment: String!
+  comment: String
   createdAt: DateTime!
   id: ID!
   product: Product!
@@ -271,6 +271,7 @@ type Mutation {
   updateCheckin(comment: String, id: ID, rating: Int): Checkin
   updateProduct(categoryId: ID, company: String, id: ID, name: String, subCategories: [String!]): Product
   updateUser(email: String, firstName: String, id: ID, lastName: String): User
+  updateUserAvatar(avatarId: String, id: ID): User
   updateUserPassword(existingPassword: String, id: ID, password: String): User
 }
 
@@ -281,6 +282,7 @@ enum MutationType {
 }
 
 type Product {
+  avatarId: String
   category(after: String, before: String, first: Int, last: Int, orderBy: CategoryOrderByInput, skip: Int, where: CategoryWhereInput): [Category!]
   checkins(after: String, before: String, first: Int, last: Int, orderBy: CheckinOrderByInput, skip: Int, where: CheckinWhereInput): [Checkin!]
   company: Company!
@@ -292,6 +294,8 @@ type Product {
 }
 
 enum ProductOrderByInput {
+  avatarId_ASC
+  avatarId_DESC
   createdAt_ASC
   createdAt_DESC
   id_ASC
@@ -303,6 +307,7 @@ enum ProductOrderByInput {
 }
 
 type ProductPreviousValues {
+  avatarId: String
   createdAt: DateTime!
   id: ID!
   name: String!
@@ -318,6 +323,20 @@ type ProductSubscriptionPayload {
 
 input ProductWhereInput {
   AND: [ProductWhereInput!]
+  avatarId: String
+  avatarId_contains: String
+  avatarId_ends_with: String
+  avatarId_gt: String
+  avatarId_gte: String
+  avatarId_in: [String!]
+  avatarId_lt: String
+  avatarId_lte: String
+  avatarId_not: String
+  avatarId_not_contains: String
+  avatarId_not_ends_with: String
+  avatarId_not_in: [String!]
+  avatarId_not_starts_with: String
+  avatarId_starts_with: String
   category_every: CategoryWhereInput
   category_none: CategoryWhereInput
   category_some: CategoryWhereInput
@@ -459,6 +478,7 @@ type Subscription {
 
 type User {
   admin: Boolean!
+  avatarId: String
   checkins(after: String, before: String, first: Int, last: Int, orderBy: CheckinOrderByInput, skip: Int, where: CheckinWhereInput): [Checkin!]
   email: String
   firstName: String!
@@ -470,6 +490,8 @@ type User {
 enum UserOrderByInput {
   admin_ASC
   admin_DESC
+  avatarId_ASC
+  avatarId_DESC
   createdAt_ASC
   createdAt_DESC
   email_ASC
@@ -488,6 +510,7 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   admin: Boolean!
+  avatarId: String
   createdAt: DateTime!
   email: String
   firstName: String!
@@ -508,6 +531,20 @@ input UserWhereInput {
   admin: Boolean
   admin_not: Boolean
   AND: [UserWhereInput!]
+  avatarId: String
+  avatarId_contains: String
+  avatarId_ends_with: String
+  avatarId_gt: String
+  avatarId_gte: String
+  avatarId_in: [String!]
+  avatarId_lt: String
+  avatarId_lte: String
+  avatarId_not: String
+  avatarId_not_contains: String
+  avatarId_not_ends_with: String
+  avatarId_not_in: [String!]
+  avatarId_not_starts_with: String
+  avatarId_starts_with: String
   checkins_every: CheckinWhereInput
   checkins_none: CheckinWhereInput
   checkins_some: CheckinWhereInput

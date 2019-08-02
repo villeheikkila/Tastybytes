@@ -1,11 +1,14 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Avatar, Button, createStyles, Grid, makeStyles, Paper, TextField, Theme, Typography } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Image } from 'cloudinary-react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import useReactRouter from 'use-react-router';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
 import { client } from '../../index';
-import { DELETE_USER, ME, UPDATE_PASSWORD, UPDATE_USER } from '../../queries';
+import { DELETE_USER, ME, UPDATE_AVATAR, UPDATE_PASSWORD, UPDATE_USER } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -51,12 +54,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Account = ({ setToken }: Token): JSX.Element | null => {
     const me = useQuery(ME);
-
     const classes = useStyles();
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [newAvatarId, setNewAvatarId] = useState('');
 
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -65,13 +68,10 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
     const { history } = useReactRouter();
     const [visible, setVisible] = useState(false);
 
-    useEffect(() => {
-        if (me.data.me !== undefined && firstName === '') {
-            setFirstName(me.data.me.firstName);
-            setLastName(me.data.me.lastName);
-            setEmail(me.data.me.email);
-        }
-    }, [me, firstName, lastName, email]);
+    const [updateAvatar] = useMutation(UPDATE_AVATAR, {
+        onError: errorHandler,
+        refetchQueries: [{ query: ME }],
+    });
 
     const [deleteUser] = useMutation(DELETE_USER, {
         onError: errorHandler,
@@ -86,6 +86,32 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
     const [changePassword] = useMutation(UPDATE_PASSWORD, {
         onError: errorHandler,
     });
+
+    const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET || 'demo';
+
+    const onDrop = useCallback(async acceptedFiles => {
+        const formData = new FormData();
+        formData.append('file', acceptedFiles[0]);
+        formData.append('upload_preset', uploadPreset);
+
+        const response = await axios.post(
+            `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
+            formData,
+        );
+
+        setNewAvatarId(response.data.public_id);
+    }, []);
+
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+    useEffect(() => {
+        if (me.data.me !== undefined && firstName === '') {
+            setFirstName(me.data.me.firstName);
+            setLastName(me.data.me.lastName);
+            setEmail(me.data.me.email);
+            setNewAvatarId(me.data.me.avatarId);
+        }
+    }, [me, firstName, lastName, email]);
 
     if (me.data.me === undefined) {
         return null;
@@ -104,6 +130,15 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                 email: email || user.email,
             },
         });
+
+        if (newAvatarId) {
+            await updateAvatar({
+                variables: {
+                    id: user.id,
+                    avatarId: newAvatarId,
+                },
+            });
+        }
 
         if (result) {
             notificationHandler({
@@ -171,11 +206,13 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                 <Typography variant="h4" component="h3" className={classes.textField}>
                     Edit Profile Settings
                 </Typography>
-                <Avatar
-                    alt="Avatar"
-                    src="https://pixel.nymag.com/imgs/daily/vulture/2018/11/02/02-avatar-2.w700.h467.jpg"
-                    className={classes.Avatar}
-                />
+                <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+
+                    <Avatar alt="Avatar" className={classes.Avatar}>
+                        <Image cloudName={`heikkila`} publicId={newAvatarId} width="300" crop="scale" />
+                    </Avatar>
+                </div>
 
                 <ValidatorForm onSubmit={handleUpdateUser} className={classes.form} onError={errorHandler}>
                     <Grid container spacing={2} alignItems="center" justify="center">

@@ -257,7 +257,7 @@ input CategoryWhereUniqueInput {
 type Checkin {
   id: ID!
   rating: Int!
-  comment: String!
+  comment: String
   author: User!
   product: Product!
   createdAt: DateTime!
@@ -273,7 +273,7 @@ type CheckinConnection {
 input CheckinCreateInput {
   id: ID
   rating: Int!
-  comment: String!
+  comment: String
   author: UserCreateOneWithoutCheckinsInput!
   product: ProductCreateOneWithoutCheckinsInput!
 }
@@ -291,14 +291,14 @@ input CheckinCreateManyWithoutProductInput {
 input CheckinCreateWithoutAuthorInput {
   id: ID
   rating: Int!
-  comment: String!
+  comment: String
   product: ProductCreateOneWithoutCheckinsInput!
 }
 
 input CheckinCreateWithoutProductInput {
   id: ID
   rating: Int!
-  comment: String!
+  comment: String
   author: UserCreateOneWithoutCheckinsInput!
 }
 
@@ -323,7 +323,7 @@ enum CheckinOrderByInput {
 type CheckinPreviousValues {
   id: ID!
   rating: Int!
-  comment: String!
+  comment: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -939,6 +939,7 @@ type Product {
   id: ID!
   name: String!
   company: Company!
+  avatarId: String
   checkins(where: CheckinWhereInput, orderBy: CheckinOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Checkin!]
   category(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
   subCategory(where: SubCategoryWhereInput, orderBy: SubCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SubCategory!]
@@ -956,6 +957,7 @@ input ProductCreateInput {
   id: ID
   name: String!
   company: CompanyCreateOneWithoutProductsInput!
+  avatarId: String
   checkins: CheckinCreateManyWithoutProductInput
   category: CategoryCreateManyWithoutProductsInput
   subCategory: SubCategoryCreateManyWithoutProductsInput
@@ -985,6 +987,7 @@ input ProductCreateWithoutCategoryInput {
   id: ID
   name: String!
   company: CompanyCreateOneWithoutProductsInput!
+  avatarId: String
   checkins: CheckinCreateManyWithoutProductInput
   subCategory: SubCategoryCreateManyWithoutProductsInput
 }
@@ -993,6 +996,7 @@ input ProductCreateWithoutCheckinsInput {
   id: ID
   name: String!
   company: CompanyCreateOneWithoutProductsInput!
+  avatarId: String
   category: CategoryCreateManyWithoutProductsInput
   subCategory: SubCategoryCreateManyWithoutProductsInput
 }
@@ -1000,6 +1004,7 @@ input ProductCreateWithoutCheckinsInput {
 input ProductCreateWithoutCompanyInput {
   id: ID
   name: String!
+  avatarId: String
   checkins: CheckinCreateManyWithoutProductInput
   category: CategoryCreateManyWithoutProductsInput
   subCategory: SubCategoryCreateManyWithoutProductsInput
@@ -1009,6 +1014,7 @@ input ProductCreateWithoutSubCategoryInput {
   id: ID
   name: String!
   company: CompanyCreateOneWithoutProductsInput!
+  avatarId: String
   checkins: CheckinCreateManyWithoutProductInput
   category: CategoryCreateManyWithoutProductsInput
 }
@@ -1023,6 +1029,8 @@ enum ProductOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  avatarId_ASC
+  avatarId_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1032,6 +1040,7 @@ enum ProductOrderByInput {
 type ProductPreviousValues {
   id: ID!
   name: String!
+  avatarId: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1065,6 +1074,20 @@ input ProductScalarWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  avatarId: String
+  avatarId_not: String
+  avatarId_in: [String!]
+  avatarId_not_in: [String!]
+  avatarId_lt: String
+  avatarId_lte: String
+  avatarId_gt: String
+  avatarId_gte: String
+  avatarId_contains: String
+  avatarId_not_contains: String
+  avatarId_starts_with: String
+  avatarId_not_starts_with: String
+  avatarId_ends_with: String
+  avatarId_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1107,6 +1130,7 @@ input ProductSubscriptionWhereInput {
 input ProductUpdateInput {
   name: String
   company: CompanyUpdateOneRequiredWithoutProductsInput
+  avatarId: String
   checkins: CheckinUpdateManyWithoutProductInput
   category: CategoryUpdateManyWithoutProductsInput
   subCategory: SubCategoryUpdateManyWithoutProductsInput
@@ -1114,10 +1138,12 @@ input ProductUpdateInput {
 
 input ProductUpdateManyDataInput {
   name: String
+  avatarId: String
 }
 
 input ProductUpdateManyMutationInput {
   name: String
+  avatarId: String
 }
 
 input ProductUpdateManyWithoutCategoryInput {
@@ -1171,6 +1197,7 @@ input ProductUpdateOneRequiredWithoutCheckinsInput {
 input ProductUpdateWithoutCategoryDataInput {
   name: String
   company: CompanyUpdateOneRequiredWithoutProductsInput
+  avatarId: String
   checkins: CheckinUpdateManyWithoutProductInput
   subCategory: SubCategoryUpdateManyWithoutProductsInput
 }
@@ -1178,12 +1205,14 @@ input ProductUpdateWithoutCategoryDataInput {
 input ProductUpdateWithoutCheckinsDataInput {
   name: String
   company: CompanyUpdateOneRequiredWithoutProductsInput
+  avatarId: String
   category: CategoryUpdateManyWithoutProductsInput
   subCategory: SubCategoryUpdateManyWithoutProductsInput
 }
 
 input ProductUpdateWithoutCompanyDataInput {
   name: String
+  avatarId: String
   checkins: CheckinUpdateManyWithoutProductInput
   category: CategoryUpdateManyWithoutProductsInput
   subCategory: SubCategoryUpdateManyWithoutProductsInput
@@ -1192,6 +1221,7 @@ input ProductUpdateWithoutCompanyDataInput {
 input ProductUpdateWithoutSubCategoryDataInput {
   name: String
   company: CompanyUpdateOneRequiredWithoutProductsInput
+  avatarId: String
   checkins: CheckinUpdateManyWithoutProductInput
   category: CategoryUpdateManyWithoutProductsInput
 }
@@ -1264,6 +1294,20 @@ input ProductWhereInput {
   name_ends_with: String
   name_not_ends_with: String
   company: CompanyWhereInput
+  avatarId: String
+  avatarId_not: String
+  avatarId_in: [String!]
+  avatarId_not_in: [String!]
+  avatarId_lt: String
+  avatarId_lte: String
+  avatarId_gt: String
+  avatarId_gte: String
+  avatarId_contains: String
+  avatarId_not_contains: String
+  avatarId_starts_with: String
+  avatarId_not_starts_with: String
+  avatarId_ends_with: String
+  avatarId_not_ends_with: String
   checkins_every: CheckinWhereInput
   checkins_some: CheckinWhereInput
   checkins_none: CheckinWhereInput
@@ -1569,6 +1613,7 @@ type User {
   lastName: String!
   password: String!
   admin: Boolean!
+  avatarId: String
   checkins(where: CheckinWhereInput, orderBy: CheckinOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Checkin!]
   friends(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   friendRequest(where: FriendRequestWhereInput, orderBy: FriendRequestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FriendRequest!]
@@ -1589,6 +1634,7 @@ input UserCreateInput {
   lastName: String!
   password: String!
   admin: Boolean!
+  avatarId: String
   checkins: CheckinCreateManyWithoutAuthorInput
   friends: UserCreateManyInput
   friendRequest: FriendRequestCreateManyWithoutReceiverInput
@@ -1616,6 +1662,7 @@ input UserCreateWithoutCheckinsInput {
   lastName: String!
   password: String!
   admin: Boolean!
+  avatarId: String
   friends: UserCreateManyInput
   friendRequest: FriendRequestCreateManyWithoutReceiverInput
 }
@@ -1627,6 +1674,7 @@ input UserCreateWithoutFriendRequestInput {
   lastName: String!
   password: String!
   admin: Boolean!
+  avatarId: String
   checkins: CheckinCreateManyWithoutAuthorInput
   friends: UserCreateManyInput
 }
@@ -1649,6 +1697,8 @@ enum UserOrderByInput {
   password_DESC
   admin_ASC
   admin_DESC
+  avatarId_ASC
+  avatarId_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1662,6 +1712,7 @@ type UserPreviousValues {
   lastName: String!
   password: String!
   admin: Boolean!
+  avatarId: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1739,6 +1790,20 @@ input UserScalarWhereInput {
   password_not_ends_with: String
   admin: Boolean
   admin_not: Boolean
+  avatarId: String
+  avatarId_not: String
+  avatarId_in: [String!]
+  avatarId_not_in: [String!]
+  avatarId_lt: String
+  avatarId_lte: String
+  avatarId_gt: String
+  avatarId_gte: String
+  avatarId_contains: String
+  avatarId_not_contains: String
+  avatarId_starts_with: String
+  avatarId_not_starts_with: String
+  avatarId_ends_with: String
+  avatarId_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1784,6 +1849,7 @@ input UserUpdateDataInput {
   lastName: String
   password: String
   admin: Boolean
+  avatarId: String
   checkins: CheckinUpdateManyWithoutAuthorInput
   friends: UserUpdateManyInput
   friendRequest: FriendRequestUpdateManyWithoutReceiverInput
@@ -1795,6 +1861,7 @@ input UserUpdateInput {
   lastName: String
   password: String
   admin: Boolean
+  avatarId: String
   checkins: CheckinUpdateManyWithoutAuthorInput
   friends: UserUpdateManyInput
   friendRequest: FriendRequestUpdateManyWithoutReceiverInput
@@ -1806,6 +1873,7 @@ input UserUpdateManyDataInput {
   lastName: String
   password: String
   admin: Boolean
+  avatarId: String
 }
 
 input UserUpdateManyInput {
@@ -1826,6 +1894,7 @@ input UserUpdateManyMutationInput {
   lastName: String
   password: String
   admin: Boolean
+  avatarId: String
 }
 
 input UserUpdateManyWithoutFriendRequestInput {
@@ -1858,6 +1927,7 @@ input UserUpdateWithoutCheckinsDataInput {
   lastName: String
   password: String
   admin: Boolean
+  avatarId: String
   friends: UserUpdateManyInput
   friendRequest: FriendRequestUpdateManyWithoutReceiverInput
 }
@@ -1868,6 +1938,7 @@ input UserUpdateWithoutFriendRequestDataInput {
   lastName: String
   password: String
   admin: Boolean
+  avatarId: String
   checkins: CheckinUpdateManyWithoutAuthorInput
   friends: UserUpdateManyInput
 }
@@ -1972,6 +2043,20 @@ input UserWhereInput {
   password_not_ends_with: String
   admin: Boolean
   admin_not: Boolean
+  avatarId: String
+  avatarId_not: String
+  avatarId_in: [String!]
+  avatarId_not_in: [String!]
+  avatarId_lt: String
+  avatarId_lte: String
+  avatarId_gt: String
+  avatarId_gte: String
+  avatarId_contains: String
+  avatarId_not_contains: String
+  avatarId_starts_with: String
+  avatarId_not_starts_with: String
+  avatarId_ends_with: String
+  avatarId_not_ends_with: String
   checkins_every: CheckinWhereInput
   checkins_some: CheckinWhereInput
   checkins_none: CheckinWhereInput
