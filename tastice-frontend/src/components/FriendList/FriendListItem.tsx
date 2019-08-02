@@ -1,18 +1,21 @@
 import { useMutation } from '@apollo/react-hooks';
-import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
+import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { DELETE_FRIEND, ME } from '../../queries';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
+import { SmartAvatar } from '../SmartAvatar';
 
 interface FriendListItemProps {
     userId: string;
-    user: SimpleUserObject;
+    user: User;
 }
 
-export const FriendListItem = ({ userId, user: { firstName, lastName, id } }: FriendListItemProps): JSX.Element => {
+export const FriendListItem = ({
+    userId,
+    user: { firstName, lastName, avatarId, id },
+}: FriendListItemProps): JSX.Element => {
     const [visible, setVisible] = useState(false);
 
     const [createFriendRequest] = useMutation(DELETE_FRIEND, {
@@ -41,12 +44,7 @@ export const FriendListItem = ({ userId, user: { firstName, lastName, id } }: Fr
         <>
             <ListItem button alignItems="flex-start" key={id}>
                 <ListItemAvatar>
-                    <Avatar
-                        alt={firstName}
-                        src="https://cdn1.thr.com/sites/default/files/imagecache/scale_crop_768_433/2019/03/avatar-publicity_still-h_2019.jpg"
-                        component={Link}
-                        to={`/user/${id}`}
-                    />
+                    <SmartAvatar firstName={firstName} lastName={lastName} id={id} avatarId={avatarId} />
                 </ListItemAvatar>
                 <ListItemText primary={`${firstName} ${lastName}`} />
                 <IconButton aria-label="Delete" onClick={(): void => setVisible(true)}>

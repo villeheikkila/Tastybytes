@@ -69,7 +69,6 @@ export const FriendList = ({ id }: IdObject): JSX.Element | null => {
     const friendRequest = useQuery(FRIENDREQUEST, {
         variables: { id },
     });
-    console.log('TCL: friendRequest', friendRequest);
 
     if (usersQuery.data.searchUsers === undefined || friendRequest.data === undefined || me.data.me === undefined) {
         return null;
@@ -102,7 +101,7 @@ export const FriendList = ({ id }: IdObject): JSX.Element | null => {
                     }
                 >
                     {friends.map(
-                        (user: SimpleUserObject): JSX.Element => (
+                        (user: User): JSX.Element => (
                             <div key={user.id.toUpperCase()}>
                                 <Divider light />
                                 <FriendListItem key={user.id} user={user} userId={id} />
@@ -154,7 +153,7 @@ export const FriendList = ({ id }: IdObject): JSX.Element | null => {
                 }
             >
                 {users.map(
-                    (user: SimpleUserObject): JSX.Element => (
+                    (user: User): JSX.Element => (
                         <div key={user.id.toUpperCase()}>
                             <Divider light />
                             <UserListItem key={user.id} user={user} userId={id} />

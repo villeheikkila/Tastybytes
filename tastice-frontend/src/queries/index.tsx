@@ -132,6 +132,7 @@ export const USER = gql`
             id
             firstName
             lastName
+            avatarId
             friends {
                 id
                 firstName
@@ -173,6 +174,7 @@ export const SEARCH_USERS = gql`
         searchUsers(filter: $filter) {
             firstName
             lastName
+            avatarId
             id
         }
     }
@@ -196,6 +198,7 @@ export const FRIENDREQUEST = gql`
                 id
                 firstName
                 lastName
+                avatarId
             }
             receiver {
                 id
@@ -245,6 +248,7 @@ export const ME = gql`
                 id
                 firstName
                 lastName
+                avatarId
             }
             checkins {
                 rating

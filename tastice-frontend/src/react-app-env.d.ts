@@ -12,6 +12,7 @@ interface User {
     id: string;
     firstName: string;
     lastName: string;
+    avatarId: string;
     email: string;
     admin: boolean;
 }
@@ -85,5 +86,5 @@ interface CheckInObject {
 interface FriendRequestObject {
     id: string;
     receiver: SimpleUserObject;
-    sender: [SimpleUserObject];
+    sender: [User];
 }
