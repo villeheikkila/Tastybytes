@@ -27,7 +27,7 @@ interface UserContext {
     id: string;
 }
 
-const App = (): JSX.Element => {
+export const App = (): JSX.Element => {
     const [token, setToken] = useState();
     const [id, setId] = useState();
     const themeSwitcher = useQuery(THEME);
@@ -60,5 +60,3 @@ export const UserContext = createContext<UserContext>({
     token: '',
     setToken: () => {},
 });
-
-export default App;
