@@ -69,11 +69,11 @@ const App = (): JSX.Element => {
                             <NavigationBar setToken={setToken} />
                             <Fade timeout={300}>
                                 <Switch>
-                                    <Route exact path="/products" render={(): JSX.Element => <ProductList />} />
-                                    <Route exact path="/discover" render={(): JSX.Element => <Discover />} />
-                                    <Route exact path="/users" render={(): JSX.Element => <UserList />} />
-                                    <Route exact path="/activity" render={(): JSX.Element => <Activity />} />
-                                    <Route exact path="/product/new" render={(): JSX.Element => <AddProduct />} />
+                                    <Route exact path="/products" component={ProductList} />
+                                    <Route exact path="/discover" component={Discover} />
+                                    <Route exact path="/users" component={UserList} />
+                                    <Route exact path="/activity" component={Activity} />
+                                    <Route exact path="/product/new" component={AddProduct} />
                                     <Route exact path="/friends" render={(): JSX.Element => <FriendList id={id} />} />
                                     <Route
                                         exact
@@ -97,7 +97,7 @@ const App = (): JSX.Element => {
                                         render={({ match }): JSX.Element => <Profile id={match.params.id} />}
                                     />
                                     <Redirect from="/" to="/activity" />
-                                    <Route render={(): JSX.Element => <Activity />} />
+                                    <Route component={Activity} />
                                 </Switch>
                             </Fade>
                             <Box display={{ xs: 'block', md: 'none' }}>
