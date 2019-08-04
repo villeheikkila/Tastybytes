@@ -61,27 +61,25 @@ export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.
     };
 
     return (
-        <div>
-            <Paper className={classes.paper}>
-                <Typography variant="h5" component="h3">
-                    How did you like it?
-                </Typography>
-                <TextField
-                    id="outlined-multiline-static"
-                    label="Comments"
-                    multiline
-                    rows="4"
-                    className={classes.textField}
-                    margin="normal"
-                    variant="outlined"
-                    onChange={({ target }): void => setComment(target.value)}
-                />
-                <Typography component="p">Rating</Typography>
-                <Rating value={rating} max={5} onChange={(i: number): void => setRating(i)} />
-                <Button variant="contained" color="primary" className={classes.button} onClick={handeCheckIn}>
-                    Check-in!
-                </Button>
-            </Paper>
-        </div>
+        <Paper className={classes.paper}>
+            <Typography variant="h5" component="h3">
+                How did you like it?
+            </Typography>
+            <TextField
+                id="outlined-multiline-static"
+                label="Comments"
+                multiline
+                rows="4"
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
+                onChange={({ target }): void => setComment(target.value)}
+            />
+            <Typography component="p">Rating</Typography>
+            <Rating value={rating} max={5} onChange={(i: number): void => setRating(i)} />
+            <Button variant="contained" color="primary" className={classes.button} onClick={handeCheckIn}>
+                Check-in!
+            </Button>
+        </Paper>
     );
 };

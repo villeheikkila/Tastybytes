@@ -44,14 +44,12 @@ export const App = (): JSX.Element => {
     }, [token]);
 
     return (
-        <div>
-            <ThemeProvider theme={themes[theme]}>
-                <CssBaseline />
-                <UserContext.Provider value={{ setToken, token, id }}>
-                    <Routes />
-                </UserContext.Provider>
-            </ThemeProvider>
-        </div>
+        <ThemeProvider theme={themes[theme]}>
+            <CssBaseline />
+            <UserContext.Provider value={{ setToken, token, id }}>
+                <Routes />
+            </UserContext.Provider>
+        </ThemeProvider>
     );
 };
 

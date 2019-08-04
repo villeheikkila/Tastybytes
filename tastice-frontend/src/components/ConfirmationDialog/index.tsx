@@ -1,12 +1,4 @@
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    useTheme,
-} from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import React from 'react';
 
 interface ConfirmationDialogProps {
@@ -30,37 +22,33 @@ export const ConfirmationDialog = ({
     setVisible,
     onAccept,
 }: ConfirmationDialogProps): JSX.Element => {
-    const theme = useTheme();
-
     return (
-        <div>
-            <Dialog
-                open={visible || false}
-                onClose={(): void => setVisible(false)}
-                aria-labelledby={title}
-                aria-describedby={description}
-                fullWidth
-            >
-                <DialogTitle id={title}>{title}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id={description}>{content}</DialogContentText>
-                </DialogContent>
+        <Dialog
+            open={visible || false}
+            onClose={(): void => setVisible(false)}
+            aria-labelledby={title}
+            aria-describedby={description}
+            fullWidth
+        >
+            <DialogTitle id={title}>{title}</DialogTitle>
+            <DialogContent>
+                <DialogContentText id={description}>{content}</DialogContentText>
+            </DialogContent>
 
-                <DialogActions>
-                    <Button
-                        onClick={(): void => {
-                            setVisible(false);
-                        }}
-                        color="primary"
-                    >
-                        {declineButton}
-                    </Button>
+            <DialogActions>
+                <Button
+                    onClick={(): void => {
+                        setVisible(false);
+                    }}
+                    color="primary"
+                >
+                    {declineButton}
+                </Button>
 
-                    <Button onClick={onAccept} color="primary" autoFocus>
-                        {acceptButton}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
+                <Button onClick={onAccept} color="primary" autoFocus>
+                    {acceptButton}
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };

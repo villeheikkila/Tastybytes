@@ -1,7 +1,8 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, createStyles, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import useReactRouter from 'use-react-router';
+import { UserContext } from '../../App';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
 import { DELETE_USER, ME } from '../../graphql';
 import { client } from '../../index';
@@ -9,7 +10,6 @@ import { errorHandler } from '../../utils';
 import { AccountAvatar } from './AccountAvatar';
 import { PasswordForm } from './PasswordForm';
 import { UserForm } from './UserForm';
-import { UserContext } from '../../App';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -63,7 +63,7 @@ export const Account = (): JSX.Element | null => {
     };
 
     return (
-        <div>
+        <>
             <Paper className={classes.paper}>
                 <Typography variant="h4" component="h3" className={classes.title}>
                     Edit Profile Settings
@@ -93,6 +93,6 @@ export const Account = (): JSX.Element | null => {
                 declineButton={'Cancel'}
                 acceptButton={'Yes'}
             />
-        </div>
+        </>
     );
 };
