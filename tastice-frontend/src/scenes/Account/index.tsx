@@ -1,16 +1,17 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Avatar, Button, createStyles, Grid, makeStyles, Paper, TextField, Theme, Typography } from '@material-ui/core';
+import { Avatar, Button, createStyles, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import { deepPurple } from '@material-ui/core/colors';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import useReactRouter from 'use-react-router';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
 import { client } from '../../index';
-import { DELETE_USER, ME, UPDATE_AVATAR, UPDATE_PASSWORD, UPDATE_USER } from '../../queries';
-import { errorHandler, notificationHandler } from '../../utils';
+import { DELETE_USER, ME, UPDATE_AVATAR } from '../../queries';
+import { errorHandler } from '../../utils';
+import { PasswordForm } from './PasswordForm'
+import { UserForm } from './UserForm'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
             alignContent: 'center',
         },
-        Avatar: {
+        avatar: {
             marginLeft: 30,
             marginRight: 30,
             marginTop: 20,
@@ -41,15 +42,12 @@ const useStyles = makeStyles((theme: Theme) =>
             alignContent: 'center',
             justifyContent: 'center',
         },
-        textField: {
+        title: {
             marginTop: 10,
         },
         button: {
             marginTop: 15,
             width: '30%',
-        },
-        form: {
-            padding: theme.spacing(3, 0),
         },
         avatarInitials: {
             margin: 10,
@@ -65,14 +63,8 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
     const me = useQuery(ME);
     const classes = useStyles();
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
     const [newAvatarId, setNewAvatarId] = useState('');
 
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [newPasswordCheck, setNewPasswordCheck] = useState('');
 
     const { history } = useReactRouter();
     const [visible, setVisible] = useState(false);
@@ -85,15 +77,6 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
     const [deleteUser] = useMutation(DELETE_USER, {
         onError: errorHandler,
         refetchQueries: [{ query: ME }],
-    });
-
-    const [updateUser] = useMutation(UPDATE_USER, {
-        onError: errorHandler,
-        refetchQueries: [{ query: ME }],
-    });
-
-    const [changePassword] = useMutation(UPDATE_PASSWORD, {
-        onError: errorHandler,
     });
 
     const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET || 'demo';
@@ -114,48 +97,23 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     useEffect(() => {
-        if (me.data.me !== undefined && firstName === '') {
-            setFirstName(me.data.me.firstName);
-            setLastName(me.data.me.lastName);
-            setEmail(me.data.me.email);
-            setNewAvatarId(me.data.me.avatarId);
+        if (newAvatarId) {
+            const result = async () => {
+                await updateAvatar({
+                    variables: {
+                        id: user.id,
+                        avatarId: newAvatarId,
+                    },
+                });
+            }
         }
-    }, [me, firstName, lastName, email]);
+    }, [newAvatarId])
 
     if (me.data.me === undefined) {
         return null;
     }
 
     const user = me.data.me;
-
-    const handleUpdateUser = async (event: any): Promise<void> => {
-        event.preventDefault();
-
-        const result = await updateUser({
-            variables: {
-                id: user.id,
-                firstName: firstName || user.firstName,
-                lastName: lastName || user.lastName,
-                email: email || user.email,
-            },
-        });
-
-        if (newAvatarId) {
-            await updateAvatar({
-                variables: {
-                    id: user.id,
-                    avatarId: newAvatarId,
-                },
-            });
-        }
-
-        if (result) {
-            notificationHandler({
-                message: `User '${result.data.updateUser.firstName}' succesfully updated`,
-                variant: 'success',
-            });
-        }
-    };
 
     const handleDeleteUser = async (): Promise<void> => {
         setVisible(false);
@@ -168,56 +126,15 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
         history.push('/');
     };
 
-    const handlePasswordChange = async (): Promise<void> => {
-        if (newPassword.length < 3) {
-            notificationHandler({
-                message: `The password can't be under three characters`,
-                variant: 'error',
-            });
-        } else if (newPassword !== newPasswordCheck) {
-            notificationHandler({
-                message: `The given passwords don't match`,
-                variant: 'error',
-            });
-            setNewPassword('');
-            setNewPasswordCheck('');
-        } else {
-            const result = await changePassword({
-                variables: {
-                    id: user.id,
-                    existingPassword: currentPassword,
-                    password: newPassword,
-                },
-            });
-
-            if (result) {
-                notificationHandler({
-                    message: `Password succesfully updated!`,
-                    variant: 'success',
-                });
-                setCurrentPassword('');
-                setNewPassword('');
-                setNewPasswordCheck('');
-            }
-        }
-    };
-
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>): void => setEmail(event.target.value);
-
-    const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => setLastName(event.target.value);
-
-    const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>): void =>
-        setFirstName(event.target.value);
-
     return (
         <div>
             <Paper className={classes.paper}>
-                <Typography variant="h4" component="h3" className={classes.textField}>
+                <Typography variant="h4" component="h3" className={classes.title}>
                     Edit Profile Settings
                 </Typography>
                 <div {...getRootProps()}>
                     <input {...getInputProps()} />
-                    <Avatar alt="Avatar" className={classes.Avatar}>
+                    <Avatar alt="Avatar" className={classes.avatar}>
                         {user.avatarId ? (
                             <Image
                                 cloudName={process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}
@@ -226,118 +143,16 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                                 crop="thumb"
                             ></Image>
                         ) : (
-                            <Typography variant="h3" className={classes.avatarInitials}>
-                                {firstName.charAt(0).toUpperCase()}
-                                {lastName.charAt(0).toUpperCase()}
-                            </Typography>
-                        )}
+                                <Typography variant="h3" className={classes.avatarInitials}>
+                                    {user.firstName.charAt(0).toUpperCase()}
+                                    {user.lastName.charAt(0).toUpperCase()}
+                                </Typography>
+                            )}
                     </Avatar>
                 </div>
 
-                <ValidatorForm onSubmit={handleUpdateUser} className={classes.form} onError={errorHandler}>
-                    <Grid container spacing={2} alignItems="center" justify="center">
-                        <Grid item xs={12}>
-                            <TextValidator
-                                autoComplete="fname"
-                                name="firstName"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="firstName"
-                                label="First Name"
-                                autoFocus
-                                validators={[]}
-                                errorMessages={[]}
-                                value={firstName}
-                                onChange={handleFirstNameChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextValidator
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="lname"
-                                validators={[]}
-                                errorMessages={[]}
-                                value={lastName}
-                                onChange={handleLastNameChange}
-                            />
-                        </Grid>
-
-                        <Grid item xs={12}>
-                            <TextValidator
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                validators={['isEmail']}
-                                errorMessages={['The entered email is not valid']}
-                                value={email}
-                                onChange={handleEmailChange}
-                            />
-                        </Grid>
-
-                        <Button
-                            type="submit"
-                            color="primary"
-                            variant="contained"
-                            className={classes.button}
-                            onClick={handleUpdateUser}
-                        >
-                            Save changes
-                        </Button>
-                    </Grid>
-                </ValidatorForm>
-
-                <Typography variant="h5" component="h5" className={classes.textField}>
-                    Change Password
-                </Typography>
-
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Current Password"
-                    type="password"
-                    autoComplete="current-password"
-                    value={currentPassword}
-                    onChange={({ target }): void => setCurrentPassword(target.value)}
-                />
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="newPassword"
-                    label="New Password"
-                    type="password"
-                    value={newPassword}
-                    onChange={({ target }): void => setNewPassword(target.value)}
-                />
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="newPasswordCheck"
-                    label="Repeat New Password"
-                    type="password"
-                    value={newPasswordCheck}
-                    onChange={({ target }): void => setNewPasswordCheck(target.value)}
-                />
-
-                <Button onClick={handlePasswordChange} variant="contained" color="primary" className={classes.button}>
-                    Change password!
-                </Button>
+                <UserForm user={user} />
+                <PasswordForm id={user.id} />
 
                 <Button
                     variant="outlined"
@@ -347,6 +162,7 @@ export const Account = ({ setToken }: Token): JSX.Element | null => {
                 >
                     Delete User
                 </Button>
+
             </Paper>
 
             <ConfirmationDialog

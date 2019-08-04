@@ -105,6 +105,7 @@ export const ME = gql`
         me {
             ...UserDetails
             admin
+            email
             friends {
                 ...UserDetails
             }
