@@ -65,7 +65,7 @@ export const UserForm = ({ user }: any): JSX.Element | null => {
         setFirstName(event.target.value);
 
     return (
-        <ValidatorForm onSubmit={handleUpdateUser} className={classes.form} onError={errorHandler} >
+        <ValidatorForm onSubmit={handleUpdateUser} className={classes.form} onError={errorHandler}>
             <Grid container spacing={2} alignItems="center" justify="center">
                 <Grid item xs={12}>
                     <TextValidator
@@ -123,8 +123,8 @@ export const UserForm = ({ user }: any): JSX.Element | null => {
                     onClick={handleUpdateUser}
                 >
                     Save changes
-                        </Button>
+                </Button>
             </Grid>
-        </ValidatorForm >
+        </ValidatorForm>
     );
 };

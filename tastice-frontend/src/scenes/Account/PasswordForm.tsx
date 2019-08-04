@@ -1,10 +1,10 @@
 import { useMutation } from '@apollo/react-hooks';
-import { Button, createStyles, makeStyles, TextField, Theme, Typography } from '@material-ui/core';
+import { Button, createStyles, makeStyles, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import { UPDATE_PASSWORD } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         textField: {
             marginTop: 10,
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const PasswordForm = ({ id }: any) => {
+export const PasswordForm = ({ id }: any): JSX.Element => {
     const classes = useStyles();
 
     const [currentPassword, setCurrentPassword] = useState('');
@@ -106,5 +106,5 @@ export const PasswordForm = ({ id }: any) => {
                 Change password!
             </Button>
         </>
-    )
-}
+    );
+};
