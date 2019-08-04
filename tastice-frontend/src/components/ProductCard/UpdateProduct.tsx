@@ -1,8 +1,9 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, CardContent, Grid, makeStyles, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { ALL_CATEGORIES, ALL_COMPANIES, UPDATE_PRODUCT, SEARCH_CHECKINS, SEARCH_PRODUCTS } from '../../graphql';
+import { ALL_CATEGORIES, ALL_COMPANIES, SEARCH_CHECKINS, SEARCH_PRODUCTS, UPDATE_PRODUCT } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
+import { ImageUpload } from '../ImageUpload';
 import { MaterialSelect } from '../MaterialSelect';
 
 const useStyles = makeStyles(theme => ({
@@ -34,6 +35,7 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
     const [name, setName] = useState('');
     const [company, setCompany] = useState();
     const [category, setCategory] = useState();
+    const [image, setImage] = useState();
     const [subCategory, setSubCategory] = useState();
     const categoriesQuery = useQuery(ALL_CATEGORIES);
     const companiesQuery = useQuery(ALL_COMPANIES);
@@ -64,7 +66,8 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
             id: subCategoryItem.id,
         }));
         setSubCategory(oldSubCategories);
-    }, [product.name, product.company, product.category, product.subCategory]);
+        setImage(product.imageId);
+    }, [product]);
 
     if (categoriesQuery === null || categoriesQuery.data.categories === undefined) {
         return null;
@@ -116,6 +119,7 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
             variables: {
                 id: product.id,
                 name,
+                imageId: image,
                 company: company.value,
                 categoryId: category.id,
                 subCategories: subCategoryArray,
@@ -168,7 +172,7 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
                 <Typography component="h1" variant="h5">
                     Edit Product
                 </Typography>
-
+                <ImageUpload image={image} setImage={setImage} />
                 <form onSubmit={handleUpdateProduct}>
                     <TextField
                         id="Name"

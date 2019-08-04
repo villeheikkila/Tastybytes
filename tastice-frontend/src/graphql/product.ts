@@ -1,5 +1,5 @@
 import { gql } from 'apollo-boost';
-import { USER_DETAILS, PRODUCT_DETAILS, CHECKIN_DETAILS } from './fragments'
+import { CHECKIN_DETAILS, PRODUCT_DETAILS, USER_DETAILS } from './fragments';
 
 export const SEARCH_PRODUCTS = gql`
     query searchProducts($filter: String!) {
@@ -59,10 +59,21 @@ export const DELETE_PRODUCT = gql`
     }
 `;
 
-
 export const ADD_PRODUCT = gql`
-    mutation addProduct($name: String!, $company: String!, $categoryId: ID!, $subCategories: [String!]) {
-        addProduct(name: $name, company: $company, categoryId: $categoryId, subCategories: $subCategories) {
+    mutation addProduct(
+        $name: String!
+        $imageId: String!
+        $company: String!
+        $categoryId: ID!
+        $subCategories: [String!]
+    ) {
+        addProduct(
+            name: $name
+            company: $company
+            categoryId: $categoryId
+            subCategories: $subCategories
+            imageId: $imageId
+        ) {
             ...ProductDetails
         }
     }
@@ -70,8 +81,8 @@ export const ADD_PRODUCT = gql`
 `;
 
 export const UPDATE_PRODUCT = gql`
-    mutation updateProduct($id: ID!, $name: String!, $company: String!, $categoryId: ID!, $subCategories: [String!]) {
-        updateProduct(id: $id, name: $name, company: $company, categoryId: $categoryId, subCategories: $subCategories) {
+    mutation updateProduct($id: ID!, $name: String!, $imageId: String!, $company: String!, $categoryId: ID!, $subCategories: [String!]) {
+        updateProduct(id: $id, name: $name, imageId: $imageId, company: $company, categoryId: $categoryId, subCategories: $subCategories) {
             ...ProductDetails
             checkins {
                 ...CheckInDetails

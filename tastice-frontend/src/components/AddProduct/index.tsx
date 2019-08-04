@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
 import { ADD_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES, SEARCH_CHECKINS, SEARCH_PRODUCTS } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
+import { ImageUpload } from '../ImageUpload';
 import { MaterialSelect } from '../MaterialSelect';
 
 const useStyles = makeStyles(theme => ({
@@ -28,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 export const AddProduct = (): JSX.Element | null => {
     const classes = useStyles();
+    const [image, setImage] = useState();
     const [name, setName] = useState('');
     const [company, setCompany] = useState();
     const [category, setCategory] = useState();
@@ -93,6 +95,7 @@ export const AddProduct = (): JSX.Element | null => {
         const result = await addProduct({
             variables: {
                 name,
+                imageId: image,
                 company: company.value,
                 categoryId: category.id,
                 subCategories: subCategoryArray,
@@ -146,7 +149,7 @@ export const AddProduct = (): JSX.Element | null => {
                 <Typography component="h1" variant="h5">
                     Add a new product!
                 </Typography>
-
+                <ImageUpload image={image} setImage={setImage} />
                 <form onSubmit={handleAddProduct}>
                     <TextField
                         id="Name"

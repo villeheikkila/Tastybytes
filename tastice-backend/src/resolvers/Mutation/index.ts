@@ -57,11 +57,12 @@ export const Mutation = mutationType({
             type: 'Product',
             args: {
                 name: stringArg(),
+                imageId: stringArg(),
                 company: stringArg(),
                 categoryId: idArg({ nullable: true }),
                 subCategories: stringArg({ list: true }),
             },
-            resolve: async (_, { name, company, categoryId, subCategories }) => {
+            resolve: async (_, { name, imageId, company, categoryId, subCategories }) => {
                 const subCategoryIds = await createIfNewSubCategories(subCategories, categoryId);
                 const companyId = await createIfNewCompany(company);
 
@@ -79,6 +80,7 @@ export const Mutation = mutationType({
 
                 return await prisma.createProduct({
                     name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
+                    imageId,
                     company: { connect: { id: companyId } },
                     category: { connect: { id: categoryId } },
                     subCategory: { connect: subCategoryIds },
@@ -90,18 +92,20 @@ export const Mutation = mutationType({
             type: 'Product',
             args: {
                 id: idArg(),
+                imageId: stringArg(),
                 name: stringArg(),
                 company: stringArg(),
                 categoryId: idArg({ nullable: true }),
                 subCategories: stringArg({ list: true }),
             },
-            resolve: async (_, { id, name, company, categoryId, subCategories }) => {
+            resolve: async (_, { id, name, imageId, company, categoryId, subCategories }) => {
                 const subCategoryIds = await createIfNewSubCategories(subCategories, categoryId);
                 const companyId = await createIfNewCompany(company);
 
                 return await prisma.updateProduct({
                     where: { id },
                     data: {
+                        imageId,
                         name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
                         company: { connect: { id: companyId } },
                         category: { connect: { id: categoryId } },

@@ -1,5 +1,5 @@
 import { gql } from 'apollo-boost';
-import { USER_DETAILS, PRODUCT_DETAILS, CHECKIN_DETAILS } from './fragments'
+import { CHECKIN_DETAILS, PRODUCT_DETAILS, USER_DETAILS } from './fragments';
 
 export const SEARCH_CHECKINS = gql`
     query searchCheckins($filter: String!) {
@@ -51,5 +51,3 @@ export const DELETE_CHECKIN = gql`
         }
     }
 `;
-
-

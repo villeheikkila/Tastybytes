@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
 import { USER } from '../../graphql';
+import { CLOUDINARY_CLOUD_NAME } from '../../index';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -98,7 +99,7 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
                 <Avatar alt="Avatar" className={classes.avatar}>
                     {userObject.avatarId ? (
                         <Image
-                            cloudName={process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}
+                            cloudName={CLOUDINARY_CLOUD_NAME}
                             publicId={userObject.avatarId}
                             width="200"
                             crop="thumb"

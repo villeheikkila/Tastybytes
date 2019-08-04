@@ -1,5 +1,5 @@
 import { gql } from 'apollo-boost';
-import { USER_DETAILS, PRODUCT_DETAILS, CHECKIN_DETAILS } from './fragments'    
+import { CHECKIN_DETAILS, PRODUCT_DETAILS, USER_DETAILS } from './fragments';
 
 export const SEARCH_USERS = gql`
     query searchUsers($filter: String!) {
@@ -54,7 +54,6 @@ export const ME = gql`
     ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}
 `;
 
-
 export const CREATE_FRIENDREQUEST = gql`
     mutation createFriendRequest($senderId: ID!, $receiverId: ID!, $message: String!) {
         createFriendRequest(senderId: $senderId, receiverId: $receiverId, message: $message) {
@@ -80,7 +79,6 @@ export const ADD_FRIEND = gql`
     ${USER_DETAILS}
 `;
 
-
 export const ALL_USERS = gql`
     {
         users {
@@ -90,7 +88,6 @@ export const ALL_USERS = gql`
     }
     ${USER_DETAILS}
 `;
-
 
 export const FRIENDREQUEST = gql`
     query friendRequest($id: ID!) {
@@ -140,7 +137,6 @@ export const UPDATE_USER = gql`
     ${USER_DETAILS}
 `;
 
-
 export const DELETE_USER = gql`
     mutation deleteUser($id: ID!) {
         deleteUser(id: $id) {
@@ -149,7 +145,6 @@ export const DELETE_USER = gql`
     }
     ${USER_DETAILS}
 `;
-
 
 export const DELETE_FRIEND = gql`
     mutation deleteFriend($id: ID!, $friendId: ID!) {

@@ -4,6 +4,7 @@ interface Product {
     id: string;
     name: string;
     company: NameId;
+    imageId: string;
     category: [NameId];
     subCategory: [NameId];
 }

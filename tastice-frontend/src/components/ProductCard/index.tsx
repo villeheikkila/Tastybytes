@@ -1,10 +1,11 @@
-import { Avatar, CardActionArea, Chip, Grid, Link, makeStyles, Typography } from '@material-ui/core';
+import { CardActionArea, Chip, Grid, Link, makeStyles, Typography } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Image } from 'cloudinary-react';
 import { bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import useReactRouter from 'use-react-router';
-import lipton from '../../images/lipton.jpg';
+import { CLOUDINARY_CLOUD_NAME } from '../..';
 import { ProductCardMenu } from './ProductCardMenu';
 import { UpdateProduct } from './UpdateProduct';
 
@@ -41,7 +42,12 @@ export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Elemen
             <CardActionArea onClick={(): void => history.push(`/product/${product.id}`)} className={classes.actionArea}>
                 <Grid container spacing={3} direction="row">
                     <Grid item>
-                        <Avatar alt="Image" src={lipton} className={classes.picture} />
+                        <Image
+                            cloudName={CLOUDINARY_CLOUD_NAME}
+                            publicId={product.imageId}
+                            width="200"
+                            crop="thumb"
+                        ></Image>
                     </Grid>
                     <Grid item xs container>
                         <Grid item xs container direction="column">

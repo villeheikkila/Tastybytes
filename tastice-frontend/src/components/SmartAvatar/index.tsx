@@ -3,6 +3,7 @@ import { deepOrange } from '@material-ui/core/colors';
 import { Image } from 'cloudinary-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { CLOUDINARY_CLOUD_NAME } from '../../index';
 
 interface SmartAvatarProps {
     firstName: string;
@@ -30,12 +31,7 @@ export const SmartAvatar = ({ firstName, lastName, id, avatarId }: SmartAvatarPr
         <>
             <Avatar alt={firstName} component={Link} to={`/user/${id}`} className={classes.avatar}>
                 {avatarId ? (
-                    <Image
-                        cloudName={process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}
-                        publicId={avatarId}
-                        width="50"
-                        crop="thumb"
-                    ></Image>
+                    <Image cloudName={CLOUDINARY_CLOUD_NAME} publicId={avatarId} width="50" crop="thumb"></Image>
                 ) : (
                     <Typography variant="h6">
                         {firstName.charAt(0).toUpperCase()}

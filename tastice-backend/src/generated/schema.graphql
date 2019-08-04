@@ -254,7 +254,7 @@ input FriendRequestWhereInput {
 
 type Mutation {
   acceptFriendRequest(id: ID): User
-  addProduct(categoryId: ID, company: String, name: String, subCategories: [String!]): Product
+  addProduct(categoryId: ID, company: String, imageId: String, name: String, subCategories: [String!]): Product
   createCategory(name: String): Category
   createCheckin(authorId: ID, comment: String, productId: ID, rating: Int): Checkin
   createCompany(name: String): Company
@@ -269,7 +269,7 @@ type Mutation {
   login(email: String, password: String): AuthPayload
   signup(email: String, firstName: String, lastName: String, password: String): AuthPayload
   updateCheckin(comment: String, id: ID, rating: Int): Checkin
-  updateProduct(categoryId: ID, company: String, id: ID, name: String, subCategories: [String!]): Product
+  updateProduct(categoryId: ID, company: String, id: ID, imageId: String, name: String, subCategories: [String!]): Product
   updateUser(email: String, firstName: String, id: ID, lastName: String): User
   updateUserAvatar(avatarId: String, id: ID): User
   updateUserPassword(existingPassword: String, id: ID, password: String): User
@@ -288,6 +288,7 @@ type Product {
   company: Company!
   createdAt: DateTime!
   id: ID!
+  imageId: String
   name: String!
   subCategory(after: String, before: String, first: Int, last: Int, orderBy: SubCategoryOrderByInput, skip: Int, where: SubCategoryWhereInput): [SubCategory!]
   updatedAt: DateTime!
@@ -300,6 +301,8 @@ enum ProductOrderByInput {
   createdAt_DESC
   id_ASC
   id_DESC
+  imageId_ASC
+  imageId_DESC
   name_ASC
   name_DESC
   updatedAt_ASC
@@ -310,6 +313,7 @@ type ProductPreviousValues {
   avatarId: String
   createdAt: DateTime!
   id: ID!
+  imageId: String
   name: String!
   updatedAt: DateTime!
 }
@@ -366,6 +370,20 @@ input ProductWhereInput {
   id_not_in: [ID!]
   id_not_starts_with: ID
   id_starts_with: ID
+  imageId: String
+  imageId_contains: String
+  imageId_ends_with: String
+  imageId_gt: String
+  imageId_gte: String
+  imageId_in: [String!]
+  imageId_lt: String
+  imageId_lte: String
+  imageId_not: String
+  imageId_not_contains: String
+  imageId_not_ends_with: String
+  imageId_not_in: [String!]
+  imageId_not_starts_with: String
+  imageId_starts_with: String
   name: String
   name_contains: String
   name_ends_with: String

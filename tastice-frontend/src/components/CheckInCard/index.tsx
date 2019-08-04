@@ -69,6 +69,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
     const productObject = {
         id: checkin.product.id,
         name: checkin.product.name,
+        imageId: checkin.product.imageId,
         company: checkin.product.company,
         category: checkin.product.category,
         subCategory: checkin.product.subCategory,

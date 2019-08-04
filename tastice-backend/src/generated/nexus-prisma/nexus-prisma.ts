@@ -1007,6 +1007,7 @@ type ProductObject =
   | { name: 'checkins', args?: ProductCheckinsArgs[] | false, alias?: string  } 
   | { name: 'category', args?: ProductCategoryArgs[] | false, alias?: string  } 
   | { name: 'subCategory', args?: ProductSubCategoryArgs[] | false, alias?: string  } 
+  | { name: 'imageId', args?: [] | false, alias?: string  } 
   | { name: 'createdAt', args?: [] | false, alias?: string  } 
   | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
@@ -1018,6 +1019,7 @@ type ProductFields =
   | 'checkins'
   | 'category'
   | 'subCategory'
+  | 'imageId'
   | 'createdAt'
   | 'updatedAt'
 
@@ -1124,6 +1126,14 @@ export interface ProductFieldDetails {
       context: core.GetGen<"context">,
       info?: GraphQLResolveInfo
     ) => Promise<prisma.SubCategory[]> | prisma.SubCategory[]
+  }
+  imageId: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: undefined
   }
   createdAt: {
     type: 'DateTime'
@@ -3529,6 +3539,7 @@ type ProductPreviousValuesObject =
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'name', args?: [] | false, alias?: string  } 
   | { name: 'avatarId', args?: [] | false, alias?: string  } 
+  | { name: 'imageId', args?: [] | false, alias?: string  } 
   | { name: 'createdAt', args?: [] | false, alias?: string  } 
   | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
@@ -3536,6 +3547,7 @@ type ProductPreviousValuesFields =
   | 'id'
   | 'name'
   | 'avatarId'
+  | 'imageId'
   | 'createdAt'
   | 'updatedAt'
 
@@ -3561,6 +3573,14 @@ export interface ProductPreviousValuesFieldDetails {
     resolve: undefined
   }
   avatarId: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: undefined
+  }
+  imageId: {
     type: 'String'
     args: {}
     description: string
@@ -4636,6 +4656,20 @@ export interface ProductWhereInput {
   subCategory_every?: SubCategoryWhereInput | null
   subCategory_some?: SubCategoryWhereInput | null
   subCategory_none?: SubCategoryWhereInput | null
+  imageId?: string | null
+  imageId_not?: string | null
+  imageId_in?: string[]
+  imageId_not_in?: string[]
+  imageId_lt?: string | null
+  imageId_lte?: string | null
+  imageId_gt?: string | null
+  imageId_gte?: string | null
+  imageId_contains?: string | null
+  imageId_not_contains?: string | null
+  imageId_starts_with?: string | null
+  imageId_not_starts_with?: string | null
+  imageId_ends_with?: string | null
+  imageId_not_ends_with?: string | null
   createdAt?: string | null
   createdAt_not?: string | null
   createdAt_in?: string[]
@@ -4710,6 +4744,20 @@ export type ProductWhereInputInputObject =
   | { name: 'subCategory_every', alias?: string  } 
   | { name: 'subCategory_some', alias?: string  } 
   | { name: 'subCategory_none', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
+  | { name: 'imageId_not', alias?: string  } 
+  | { name: 'imageId_in', alias?: string  } 
+  | { name: 'imageId_not_in', alias?: string  } 
+  | { name: 'imageId_lt', alias?: string  } 
+  | { name: 'imageId_lte', alias?: string  } 
+  | { name: 'imageId_gt', alias?: string  } 
+  | { name: 'imageId_gte', alias?: string  } 
+  | { name: 'imageId_contains', alias?: string  } 
+  | { name: 'imageId_not_contains', alias?: string  } 
+  | { name: 'imageId_starts_with', alias?: string  } 
+  | { name: 'imageId_not_starts_with', alias?: string  } 
+  | { name: 'imageId_ends_with', alias?: string  } 
+  | { name: 'imageId_not_ends_with', alias?: string  } 
   | { name: 'createdAt', alias?: string  } 
   | { name: 'createdAt_not', alias?: string  } 
   | { name: 'createdAt_in', alias?: string  } 
@@ -5068,6 +5116,7 @@ export interface ProductCreateWithoutCheckinsInput {
   avatarId?: string | null
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
+  imageId?: string | null
 }
 export type ProductCreateWithoutCheckinsInputInputObject =
   | Extract<keyof ProductCreateWithoutCheckinsInput, string>
@@ -5077,6 +5126,7 @@ export type ProductCreateWithoutCheckinsInputInputObject =
   | { name: 'avatarId', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface CompanyCreateOneWithoutProductsInput {
   create?: CompanyCreateWithoutProductsInput | null
@@ -5152,6 +5202,7 @@ export interface ProductCreateWithoutSubCategoryInput {
   avatarId?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
+  imageId?: string | null
 }
 export type ProductCreateWithoutSubCategoryInputInputObject =
   | Extract<keyof ProductCreateWithoutSubCategoryInput, string>
@@ -5161,6 +5212,7 @@ export type ProductCreateWithoutSubCategoryInputInputObject =
   | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface CheckinCreateManyWithoutProductInput {
   create?: CheckinCreateWithoutProductInput[]
@@ -5301,6 +5353,7 @@ export interface ProductCreateWithoutCategoryInput {
   avatarId?: string | null
   checkins?: CheckinCreateManyWithoutProductInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
+  imageId?: string | null
 }
 export type ProductCreateWithoutCategoryInputInputObject =
   | Extract<keyof ProductCreateWithoutCategoryInput, string>
@@ -5310,6 +5363,7 @@ export type ProductCreateWithoutCategoryInputInputObject =
   | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface UserUpdateInput {
   email?: string | null
@@ -5396,6 +5450,7 @@ export interface ProductUpdateWithoutCheckinsDataInput {
   avatarId?: string | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
+  imageId?: string | null
 }
 export type ProductUpdateWithoutCheckinsDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutCheckinsDataInput, string>
@@ -5404,6 +5459,7 @@ export type ProductUpdateWithoutCheckinsDataInputInputObject =
   | { name: 'avatarId', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface CompanyUpdateOneRequiredWithoutProductsInput {
   create?: CompanyCreateWithoutProductsInput | null
@@ -5554,6 +5610,7 @@ export interface ProductUpdateWithoutSubCategoryDataInput {
   avatarId?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
+  imageId?: string | null
 }
 export type ProductUpdateWithoutSubCategoryDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutSubCategoryDataInput, string>
@@ -5562,6 +5619,7 @@ export type ProductUpdateWithoutSubCategoryDataInputInputObject =
   | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface CheckinUpdateManyWithoutProductInput {
   create?: CheckinCreateWithoutProductInput[]
@@ -6289,6 +6347,20 @@ export interface ProductScalarWhereInput {
   avatarId_not_starts_with?: string | null
   avatarId_ends_with?: string | null
   avatarId_not_ends_with?: string | null
+  imageId?: string | null
+  imageId_not?: string | null
+  imageId_in?: string[]
+  imageId_not_in?: string[]
+  imageId_lt?: string | null
+  imageId_lte?: string | null
+  imageId_gt?: string | null
+  imageId_gte?: string | null
+  imageId_contains?: string | null
+  imageId_not_contains?: string | null
+  imageId_starts_with?: string | null
+  imageId_not_starts_with?: string | null
+  imageId_ends_with?: string | null
+  imageId_not_ends_with?: string | null
   createdAt?: string | null
   createdAt_not?: string | null
   createdAt_in?: string[]
@@ -6353,6 +6425,20 @@ export type ProductScalarWhereInputInputObject =
   | { name: 'avatarId_not_starts_with', alias?: string  } 
   | { name: 'avatarId_ends_with', alias?: string  } 
   | { name: 'avatarId_not_ends_with', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
+  | { name: 'imageId_not', alias?: string  } 
+  | { name: 'imageId_in', alias?: string  } 
+  | { name: 'imageId_not_in', alias?: string  } 
+  | { name: 'imageId_lt', alias?: string  } 
+  | { name: 'imageId_lte', alias?: string  } 
+  | { name: 'imageId_gt', alias?: string  } 
+  | { name: 'imageId_gte', alias?: string  } 
+  | { name: 'imageId_contains', alias?: string  } 
+  | { name: 'imageId_not_contains', alias?: string  } 
+  | { name: 'imageId_starts_with', alias?: string  } 
+  | { name: 'imageId_not_starts_with', alias?: string  } 
+  | { name: 'imageId_ends_with', alias?: string  } 
+  | { name: 'imageId_not_ends_with', alias?: string  } 
   | { name: 'createdAt', alias?: string  } 
   | { name: 'createdAt_not', alias?: string  } 
   | { name: 'createdAt_in', alias?: string  } 
@@ -6385,11 +6471,13 @@ export type ProductUpdateManyWithWhereNestedInputInputObject =
 export interface ProductUpdateManyDataInput {
   name?: string | null
   avatarId?: string | null
+  imageId?: string | null
 }
 export type ProductUpdateManyDataInputInputObject =
   | Extract<keyof ProductUpdateManyDataInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'avatarId', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface SubCategoryUpsertWithWhereUniqueWithoutCategoryInput {
   where?: SubCategoryWhereUniqueInput
@@ -6680,6 +6768,7 @@ export interface ProductUpdateWithoutCategoryDataInput {
   avatarId?: string | null
   checkins?: CheckinUpdateManyWithoutProductInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
+  imageId?: string | null
 }
 export type ProductUpdateWithoutCategoryDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutCategoryDataInput, string>
@@ -6688,6 +6777,7 @@ export type ProductUpdateWithoutCategoryDataInputInputObject =
   | { name: 'avatarId', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface ProductUpsertWithWhereUniqueWithoutCategoryInput {
   where?: ProductWhereUniqueInput
@@ -6765,6 +6855,7 @@ export interface ProductCreateInput {
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
+  imageId?: string | null
 }
 export type ProductCreateInputInputObject =
   | Extract<keyof ProductCreateInput, string>
@@ -6775,6 +6866,7 @@ export type ProductCreateInputInputObject =
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface ProductUpdateInput {
   name?: string | null
@@ -6783,6 +6875,7 @@ export interface ProductUpdateInput {
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
+  imageId?: string | null
 }
 export type ProductUpdateInputInputObject =
   | Extract<keyof ProductUpdateInput, string>
@@ -6792,15 +6885,18 @@ export type ProductUpdateInputInputObject =
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface ProductUpdateManyMutationInput {
   name?: string | null
   avatarId?: string | null
+  imageId?: string | null
 }
 export type ProductUpdateManyMutationInputInputObject =
   | Extract<keyof ProductUpdateManyMutationInput, string>
   | { name: 'name', alias?: string  } 
   | { name: 'avatarId', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface CheckinCreateInput {
   id?: string | null
@@ -6866,6 +6962,7 @@ export interface ProductCreateWithoutCompanyInput {
   checkins?: CheckinCreateManyWithoutProductInput | null
   category?: CategoryCreateManyWithoutProductsInput | null
   subCategory?: SubCategoryCreateManyWithoutProductsInput | null
+  imageId?: string | null
 }
 export type ProductCreateWithoutCompanyInputInputObject =
   | Extract<keyof ProductCreateWithoutCompanyInput, string>
@@ -6875,6 +6972,7 @@ export type ProductCreateWithoutCompanyInputInputObject =
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface CompanyUpdateInput {
   name?: string | null
@@ -6923,6 +7021,7 @@ export interface ProductUpdateWithoutCompanyDataInput {
   checkins?: CheckinUpdateManyWithoutProductInput | null
   category?: CategoryUpdateManyWithoutProductsInput | null
   subCategory?: SubCategoryUpdateManyWithoutProductsInput | null
+  imageId?: string | null
 }
 export type ProductUpdateWithoutCompanyDataInputInputObject =
   | Extract<keyof ProductUpdateWithoutCompanyDataInput, string>
@@ -6931,6 +7030,7 @@ export type ProductUpdateWithoutCompanyDataInputInputObject =
   | { name: 'checkins', alias?: string  } 
   | { name: 'category', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
+  | { name: 'imageId', alias?: string  } 
   
 export interface ProductUpsertWithWhereUniqueWithoutCompanyInput {
   where?: ProductWhereUniqueInput
@@ -7306,6 +7406,8 @@ export type ProductOrderByInputValues =
   | 'name_DESC'
   | 'avatarId_ASC'
   | 'avatarId_DESC'
+  | 'imageId_ASC'
+  | 'imageId_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'

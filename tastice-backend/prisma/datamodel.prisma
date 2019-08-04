@@ -21,6 +21,7 @@ type Product {
   checkins: [Checkin!]! @relation(name: "CheckInProduct", onDelete: CASCADE)
   category: [Category] 
   subCategory: [SubCategory] 
+  imageId: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   }

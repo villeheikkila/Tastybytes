@@ -5,6 +5,7 @@ import { Image } from 'cloudinary-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ME, UPDATE_AVATAR } from '../../graphql';
+import { CLOUDINARY_CLOUD_NAME } from '../../index';
 import { uploadCloudinary } from '../../services/cloudinary';
 import { errorHandler } from '../../utils';
 
@@ -90,12 +91,7 @@ export const AccountAvatar = ({ user }: any): JSX.Element | null => {
             <input {...getInputProps()} />
             <Avatar alt="Avatar" className={classes.avatar}>
                 {user.avatarId ? (
-                    <Image
-                        cloudName={process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}
-                        publicId={user.avatarId}
-                        width="200"
-                        crop="thumb"
-                    ></Image>
+                    <Image cloudName={CLOUDINARY_CLOUD_NAME} publicId={user.avatarId} width="200" crop="thumb"></Image>
                 ) : (
                     <Typography variant="h3" className={classes.avatarInitials}>
                         {user.firstName.charAt(0).toUpperCase()}
