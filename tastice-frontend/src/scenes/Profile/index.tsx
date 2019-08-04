@@ -20,7 +20,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
-import { USER } from '../../queries';
+import { USER } from '../../graphql';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

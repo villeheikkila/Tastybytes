@@ -8,7 +8,7 @@ import { useDropzone } from 'react-dropzone';
 import useReactRouter from 'use-react-router';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
 import { client } from '../../index';
-import { DELETE_USER, ME, UPDATE_AVATAR } from '../../queries';
+import { DELETE_USER, ME, UPDATE_AVATAR } from '../../graphql';
 import { errorHandler } from '../../utils';
 import { PasswordForm } from './PasswordForm'
 import { UserForm } from './UserForm'

@@ -5,7 +5,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { DELETE_CHECKIN, PRODUCT, SEARCH_CHECKINS, USER } from '../../queries';
+import { DELETE_CHECKIN, PRODUCT, SEARCH_CHECKINS, USER } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { ProductCard } from '../ProductCard';

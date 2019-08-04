@@ -3,7 +3,7 @@ import { Menu, MenuItem } from '@material-ui/core';
 import { bindMenu } from 'material-ui-popup-state/hooks';
 import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
-import { DELETE_PRODUCT, SEARCH_CHECKINS, SEARCH_PRODUCTS } from '../../queries';
+import { DELETE_PRODUCT, SEARCH_CHECKINS, SEARCH_PRODUCTS } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 

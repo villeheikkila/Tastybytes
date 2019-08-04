@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
-import { SIGN_UP } from '../../queries';
+import { SIGN_UP } from '../../graphql';
 import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles(theme => ({

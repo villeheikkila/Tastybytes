@@ -10,7 +10,7 @@ import { FriendList } from './components/FriendList';
 import { MobileMenu } from './components/MobileMenu';
 import { NavigationBar } from './components/NavigationBar/';
 import { Notifications } from './components/Notification';
-import { THEME } from './queries';
+import { THEME } from './graphql';
 import { Account } from './scenes/Account';
 import { Activity } from './scenes/Activity';
 import { Discover } from './scenes/Discover';

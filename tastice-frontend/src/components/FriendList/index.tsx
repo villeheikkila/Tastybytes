@@ -3,7 +3,7 @@ import { Card, createStyles, Divider, InputBase, List, ListSubheader, makeStyles
 import { fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import React, { useState } from 'react';
-import { FRIENDREQUEST, ME, SEARCH_USERS } from '../../queries';
+import { FRIENDREQUEST, ME, SEARCH_USERS } from '../../graphql';
 import { errorHandler } from '../../utils';
 import { FriendListItem } from './FriendListItem';
 import { FriendRequestListItem } from './FriendRequestsListItem';

@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import MaterialTable from 'material-table';
 import React from 'react';
-import { ALL_PRODUCTS, DELETE_PRODUCT, UPDATE_PRODUCT } from '../../queries';
+import { ALL_PRODUCTS, DELETE_PRODUCT, UPDATE_PRODUCT } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
 interface UpdatedProductObject {

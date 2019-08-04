@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { Snackbar } from '@material-ui/core';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { client } from '../../index';
-import { GET_NOTIFICATION } from '../../queries';
+import { GET_NOTIFICATION } from '../../graphql';
 import { NotificationContentWrapper } from './NotificationContentWrapper';
 
 export const Notifications = (): JSX.Element | null => {

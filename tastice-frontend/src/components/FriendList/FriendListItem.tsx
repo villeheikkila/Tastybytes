@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import React, { useState } from 'react';
-import { DELETE_FRIEND, ME } from '../../queries';
+import { DELETE_FRIEND, ME } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { SmartAvatar } from '../SmartAvatar';

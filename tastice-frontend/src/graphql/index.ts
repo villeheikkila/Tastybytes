@@ -1,74 +1,13 @@
 import { gql } from 'apollo-boost';
+import { USER_DETAILS, PRODUCT_DETAILS, CHECKIN_DETAILS } from './fragments'
 
-const USER_DETAILS = gql`
-  fragment UserDetails on User {
-    id
-    firstName
-    lastName
-    avatarId
-  }
-`
+import { SEARCH_CHECKINS, DELETE_CHECKIN, CHECKIN, CREATE_CHECKIN, UPDATE_CHECKIN } from './checkin'
+import { PRODUCT, SEARCH_PRODUCTS, DELETE_PRODUCT, CREATE_SUBCATEGORY, UPDATE_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES } from './product'
+import { SIGN_UP } from './user'
 
-const PRODUCT_DETAILS = gql`
-  fragment ProductDetails on Product {
-    id
-    name
-    company {
-        id
-        name
-    }
-    category {
-        id
-        name
-    }
-    subCategory {
-        id
-        name
-    }
-  }
-`
 
-const CHECKIN_DETAILS = gql`
-  fragment CheckInDetails on Checkin {
-        id
-        rating
-        comment
-        createdAt
-  }
-`
+export { SIGN_UP, SEARCH_CHECKINS, DELETE_CHECKIN, CHECKIN, CREATE_CHECKIN, UPDATE_CHECKIN, PRODUCT, SEARCH_PRODUCTS, DELETE_PRODUCT, CREATE_SUBCATEGORY, UPDATE_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES }
 
-export const SEARCH_CHECKINS = gql`
-    query searchCheckins($filter: String!) {
-        searchCheckins(filter: $filter) {
-            ...CheckInDetails
-            author {
-                ...UserDetails
-            }
-            product {
-                ...ProductDetails
-            }
-        }
-    }
-    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}  
-`;
-
-export const SEARCH_PRODUCTS = gql`
-    query searchProducts($filter: String!) {
-        searchProducts(filter: $filter) {
-            ...ProductDetails
-            checkins {
-                ...CheckInDetails
-                author {
-                    ...UserDetails
-                }
-                product {
-                    ...ProductDetails
-                }
-            }
-        }
-    }
-    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}  
-`;
 
 export const SEARCH_USERS = gql`
     query searchUsers($filter: String!) {
@@ -135,37 +74,8 @@ export const FILTER = gql`
     }
 `;
 
-export const ALL_CATEGORIES = gql`
-    {
-        categories {
-            name
-            id
-            subCategory {
-                id
-                name
-            }
-        }
-    }
-`;
 
-export const ALL_COMPANIES = gql`
-    {
-        companies {
-            name
-            id
-        }
-    }
-`;
 
-export const CREATE_CHECKIN = gql`
-    mutation createCheckin($authorId: ID!, $productId: ID!, $comment: String!, $rating: Int!) {
-        createCheckin(authorId: $authorId, productId: $productId, comment: $comment, rating: $rating) {
-            product {
-                name
-            }
-        }
-    }
-`;
 
 export const CREATE_FRIENDREQUEST = gql`
     mutation createFriendRequest($senderId: ID!, $receiverId: ID!, $message: String!) {
@@ -192,14 +102,7 @@ export const ADD_FRIEND = gql`
     ${USER_DETAILS}
 `;
 
-export const CREATE_SUBCATEGORY = gql`
-    mutation createSubCategory($categoryId: ID!, $name: String!) {
-        createSubCategory(categoryId: $categoryId, name: $name) {
-            id
-            name
-        }
-    }
-`;
+
 
 export const ALL_USERS = gql`
     {
@@ -209,15 +112,6 @@ export const ALL_USERS = gql`
         }
     }
     ${USER_DETAILS}
-`;
-
-export const CHECKIN = gql`
-    query checkin($id: ID!) {
-        checkin(id: $id) {
-            ...CheckInDetails
-        }
-    }
-    ${CHECKIN_DETAILS}
 `;
 
 export const FRIENDREQUEST = gql`
@@ -247,17 +141,6 @@ export const ACCEPT_FRIENDREQUEST = gql`
     ${USER_DETAILS}
 `;
 
-export const SIGN_UP = gql`
-    mutation signup($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
-        signup(firstName: $firstName, lastName: $lastName, email: $email, password: $password) {
-            token
-            user {
-                ...UserDetails
-            }
-        }
-    }
-    ${USER_DETAILS}
-`;
 
 export const UPDATE_USER = gql`
     mutation updateUser($id: ID!, $firstName: String!, $lastName: String!, $email: String!) {
@@ -266,15 +149,6 @@ export const UPDATE_USER = gql`
         }
     }
     ${USER_DETAILS}
-`;
-
-export const UPDATE_CHECKIN = gql`
-    mutation updateCheckin($id: ID!, $rating: Int!, $comment: String!) {
-        updateCheckin(id: $id, rating: $rating, comment: $comment) {
-            ...CheckInDetails
-        }
-    }
-    ${CHECKIN_DETAILS}
 `;
 
 export const DELETE_USER = gql`
@@ -286,13 +160,6 @@ export const DELETE_USER = gql`
     ${USER_DETAILS}
 `;
 
-export const DELETE_CHECKIN = gql`
-    mutation deleteCheckin($id: ID!) {
-        deleteCheckin(id: $id) {
-            id
-        }
-    }
-`;
 
 export const DELETE_FRIEND = gql`
     mutation deleteFriend($id: ID!, $friendId: ID!) {
@@ -302,14 +169,6 @@ export const DELETE_FRIEND = gql`
     }
 `;
 
-export const DELETE_PRODUCT = gql`
-    mutation deleteProduct($id: ID!) {
-        deleteProduct(id: $id) {
-            name
-            id
-        }
-    }
-`;
 
 export const DELETE_FRIENDREQUEST = gql`
     mutation deleteFriendRequest($id: ID!) {
@@ -328,23 +187,7 @@ export const ADD_PRODUCT = gql`
     ${PRODUCT_DETAILS}
 `;
 
-export const UPDATE_PRODUCT = gql`
-    mutation updateProduct($id: ID!, $name: String!, $company: String!, $categoryId: ID!, $subCategories: [String!]) {
-        updateProduct(id: $id, name: $name, company: $company, categoryId: $categoryId, subCategories: $subCategories) {
-            ...ProductDetails
-            checkins {
-                ...CheckInDetails
-                author {
-                    ...UserDetails
-                }
-                product {
-                    ...ProductDetails
-                }
-            }
-        }
-    }
-    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}
-`;
+
 
 export const ALL_PRODUCTS = gql`
     {
@@ -355,23 +198,7 @@ export const ALL_PRODUCTS = gql`
     ${PRODUCT_DETAILS}
 `;
 
-export const PRODUCT = gql`
-    query product($id: ID!) {
-        product(id: $id) {
-            ...ProductDetails
-            checkins {
-                ...CheckInDetails
-                author {
-                    ...UserDetails
-                }
-                product {
-                    ...ProductDetails
-                }
-            }
-        }
-    }
-    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}
-`;
+
 
 export const LOGIN = gql`
     mutation login($email: String!, $password: String!) {

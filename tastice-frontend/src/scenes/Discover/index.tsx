@@ -4,7 +4,7 @@ import AddIcon from '@material-ui/icons/Add';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ProductCard } from '../../components/ProductCard';
-import { FILTER, SEARCH_PRODUCTS } from '../../queries';
+import { FILTER, SEARCH_PRODUCTS } from '../../graphql';
 import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles(theme => ({

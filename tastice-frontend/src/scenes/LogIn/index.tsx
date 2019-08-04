@@ -3,7 +3,7 @@ import { Button, Container, makeStyles, TextField, Typography } from '@material-
 import React, { useState } from 'react';
 import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
-import { LOGIN } from '../../queries';
+import { LOGIN } from '../../graphql';
 import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles(theme => ({

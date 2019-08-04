@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { IconButton, ListItem, ListItemAvatar, ListItemText, Typography } from '@material-ui/core';
 import { Clear, HowToReg } from '@material-ui/icons';
 import React from 'react';
-import { ACCEPT_FRIENDREQUEST, DELETE_FRIENDREQUEST, FRIENDREQUEST, ME } from '../../queries';
+import { ACCEPT_FRIENDREQUEST, DELETE_FRIENDREQUEST, FRIENDREQUEST, ME } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 import { SmartAvatar } from '../SmartAvatar';
 

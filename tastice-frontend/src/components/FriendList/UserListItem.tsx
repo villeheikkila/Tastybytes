@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/react-hooks';
 import { ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
-import { CREATE_FRIENDREQUEST, FRIENDREQUEST, ME } from '../../queries';
+import { CREATE_FRIENDREQUEST, FRIENDREQUEST, ME } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 import { SmartAvatar } from '../SmartAvatar';
 import { FriendRequestDialog } from './FriendRequestDialog';

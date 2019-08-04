@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { Button, createStyles, Grid, makeStyles, Theme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
-import { ME, UPDATE_USER } from '../../queries';
+import { ME, UPDATE_USER } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>

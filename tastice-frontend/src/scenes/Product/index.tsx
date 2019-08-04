@@ -4,7 +4,7 @@ import React from 'react';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
 import { ProductCard } from '../../components/ProductCard';
-import { ME, PRODUCT } from '../../queries';
+import { ME, PRODUCT } from '../../graphql';
 import { CreateCheckIn } from './CreateCheckIn';
 
 const useStyles = makeStyles(theme => ({

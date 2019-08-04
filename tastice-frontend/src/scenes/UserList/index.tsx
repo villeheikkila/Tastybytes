@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import MaterialTable from 'material-table';
 import React from 'react';
-import { ALL_USERS, DELETE_USER, UPDATE_USER } from '../../queries';
+import { ALL_USERS, DELETE_USER, UPDATE_USER } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
 export const UserList = (): JSX.Element | null => {

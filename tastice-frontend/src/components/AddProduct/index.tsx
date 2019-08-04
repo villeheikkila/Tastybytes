@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, Grid, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
-import { ADD_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES, SEARCH_CHECKINS, SEARCH_PRODUCTS } from '../../queries';
+import { ADD_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES, SEARCH_CHECKINS, SEARCH_PRODUCTS } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 import { MaterialSelect } from '../MaterialSelect';
 

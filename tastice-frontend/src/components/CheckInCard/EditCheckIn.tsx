@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, CardContent, createStyles, makeStyles, TextField, Theme, Typography } from '@material-ui/core';
 import Rating from 'material-ui-rating';
 import React, { useEffect, useState } from 'react';
-import { ALL_PRODUCTS, CHECKIN, UPDATE_CHECKIN } from '../../queries';
+import { ALL_PRODUCTS, CHECKIN, UPDATE_CHECKIN } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>

@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { Button, createStyles, makeStyles, Paper, TextField, Theme, Typography } from '@material-ui/core';
 import Rating from 'material-ui-rating';
 import React, { useState } from 'react';
-import { CREATE_CHECKIN, ME, PRODUCT, SEARCH_CHECKINS } from '../../queries';
+import { CREATE_CHECKIN, ME, PRODUCT, SEARCH_CHECKINS } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>

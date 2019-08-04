@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { client } from '../../index';
-import { THEME } from '../../queries';
+import { THEME } from '../../graphql';
 import { themeSwitcher } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>

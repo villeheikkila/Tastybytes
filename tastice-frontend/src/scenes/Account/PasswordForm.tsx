@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/react-hooks';
 import { Button, createStyles, makeStyles, TextField, Theme, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
-import { UPDATE_PASSWORD } from '../../queries';
+import { UPDATE_PASSWORD } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
