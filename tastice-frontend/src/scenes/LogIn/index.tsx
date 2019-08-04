@@ -1,8 +1,9 @@
 import { useMutation } from '@apollo/react-hooks';
 import { Button, Container, makeStyles, TextField, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
+import { UserContext } from '../../App';
 import { LOGIN } from '../../graphql';
 import { errorHandler } from '../../utils';
 
@@ -32,11 +33,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const LogIn = ({ setToken }: Token): JSX.Element => {
+export const LogIn = (): JSX.Element => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { history } = useReactRouter();
     const classes = useStyles();
+    const { setToken } = useContext(UserContext);
 
     const [login] = useMutation(LOGIN, {
         onError: errorHandler,

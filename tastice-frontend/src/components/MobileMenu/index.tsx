@@ -10,10 +10,11 @@ import {
     Theme,
     Typography,
 } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { client } from '../../index';
+import { UserContext } from '../../App';
 import { THEME } from '../../graphql';
+import { client } from '../../index';
 import { themeSwitcher } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -29,10 +30,12 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const MobileMenu = ({ setToken }: Token): JSX.Element => {
+export const MobileMenu = (): JSX.Element => {
     const classes = useStyles();
     const [colorScheme, setColorScheme] = useState(false);
     const themeQuery = useQuery(THEME);
+    const { setToken } = useContext(UserContext);
+
     const theme = themeQuery.data.theme ? 1 : 0;
 
     useEffect((): void => {

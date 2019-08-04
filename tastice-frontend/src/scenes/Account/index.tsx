@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, createStyles, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import useReactRouter from 'use-react-router';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
 import { DELETE_USER, ME } from '../../graphql';
@@ -9,6 +9,7 @@ import { errorHandler } from '../../utils';
 import { AccountAvatar } from './AccountAvatar';
 import { PasswordForm } from './PasswordForm';
 import { UserForm } from './UserForm';
+import { UserContext } from '../../App';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,9 +33,10 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Account = ({ setToken }: Token): JSX.Element | null => {
+export const Account = (): JSX.Element | null => {
     const me = useQuery(ME);
     const classes = useStyles();
+    const { setToken } = useContext(UserContext);
     const { history } = useReactRouter();
     const [visible, setVisible] = useState(false);
 

@@ -20,6 +20,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
+import { SmartAvatar } from '../../components/SmartAvatar';
 import { USER } from '../../graphql';
 import { CLOUDINARY_CLOUD_NAME } from '../../index';
 
@@ -134,9 +135,11 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
                                     key={id}
                                 >
                                     <ListItemAvatar>
-                                        <Avatar
-                                            alt={user.firstName}
-                                            src="https://cdn1.thr.com/sites/default/files/imagecache/scale_crop_768_433/2019/03/avatar-publicity_still-h_2019.jpg"
+                                        <SmartAvatar
+                                            firstName={user.firstName}
+                                            lastName={user.lastName}
+                                            id={user.id}
+                                            avatarId={user.avatarId}
                                         />
                                     </ListItemAvatar>
                                     <ListItemText primary={`${user.firstName} ${user.lastName}`} />

@@ -1,9 +1,10 @@
 import { useMutation } from '@apollo/react-hooks';
 import { Button, Container, Grid, makeStyles, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
+import { UserContext } from '../../App';
 import { SIGN_UP } from '../../graphql';
 import { errorHandler } from '../../utils';
 
@@ -30,7 +31,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const SignUp = ({ setToken }: Token): JSX.Element => {
+export const SignUp = (): JSX.Element => {
+    const { setToken } = useContext(UserContext);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');

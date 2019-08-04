@@ -2,7 +2,8 @@ import { useQuery } from '@apollo/react-hooks';
 import { Card, createStyles, Divider, InputBase, List, ListSubheader, makeStyles, Theme } from '@material-ui/core';
 import { fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { UserContext } from '../../App';
 import { FRIENDREQUEST, ME, SEARCH_USERS } from '../../graphql';
 import { errorHandler } from '../../utils';
 import { FriendListItem } from './FriendListItem';
@@ -56,8 +57,9 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const FriendList = ({ id }: IdObject): JSX.Element | null => {
+export const FriendList = (): JSX.Element | null => {
     const classes = useStyles();
+    const { id } = useContext(UserContext);
     const me = useQuery(ME);
     const [filter, setFilter] = useState('');
 
