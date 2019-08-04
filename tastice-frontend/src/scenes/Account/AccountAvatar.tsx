@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/react-hooks';
 import { Avatar, createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
 import { deepPurple } from '@material-ui/core/colors';
-import axios from 'axios';
 import { Image } from 'cloudinary-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ME, UPDATE_AVATAR } from '../../graphql';
+import { uploadCloudinary } from '../../services/cloudinary';
 import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -63,19 +63,9 @@ export const AccountAvatar = ({ user }: any): JSX.Element | null => {
         refetchQueries: [{ query: ME }],
     });
 
-    const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET || 'demo';
-
     const onDrop = useCallback(async acceptedFiles => {
-        const formData = new FormData();
-        formData.append('file', acceptedFiles[0]);
-        formData.append('upload_preset', uploadPreset);
-
-        const response = await axios.post(
-            `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
-            formData,
-        );
-
-        setNewAvatarId(response.data.public_id);
+        const publicId = await uploadCloudinary(acceptedFiles[0]);
+        setNewAvatarId(publicId);
     }, []);
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });

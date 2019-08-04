@@ -12,6 +12,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 
 const SERVER_URL: string = process.env.REACT_APP_SERVER_URL || 'localhost:4000/';
+export const CLOUDINARY_UPLOAD_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET || 'demo';
+export const CLOUDINARY_CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
 
 const httpLink = createHttpLink({
     uri: `http://${SERVER_URL}`,
