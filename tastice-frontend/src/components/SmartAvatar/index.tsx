@@ -1,9 +1,9 @@
 import { Avatar, createStyles, makeStyles, Typography } from '@material-ui/core';
-import { deepOrange } from '@material-ui/core/colors';
 import { Image } from 'cloudinary-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CLOUDINARY_CLOUD_NAME } from '../../index';
+import { randomColorGenerator } from '../../utils';
 
 interface SmartAvatarProps {
     firstName: string;
@@ -15,17 +15,18 @@ interface SmartAvatarProps {
 
 const useStyles = makeStyles(
     createStyles({
-        avatar: {
+        avatar: (props: any) => ({
             margin: 5,
-            backgroundColor: deepOrange[500],
+            backgroundColor: props.randomColor,
             textDecoration: 'none',
-            color: '#fff',
-        },
+            color: 'white',
+        }),
     }),
 );
 
 export const SmartAvatar = ({ firstName, lastName, id, avatarId }: SmartAvatarProps): JSX.Element => {
-    const classes = useStyles();
+    const randomColor = randomColorGenerator();
+    const classes = useStyles({ randomColor });
 
     return (
         <>

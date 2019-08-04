@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
 import { CREATE_FRIENDREQUEST, FRIENDREQUEST, ME } from '../../graphql';
-import { errorHandler, notificationHandler } from '../../utils';
+import { errorHandler, notificationHandler, randomColorGenerator } from '../../utils';
 import { SmartAvatar } from '../SmartAvatar';
 import { FriendRequestDialog } from './FriendRequestDialog';
 interface UserListItemProps {
@@ -21,6 +21,8 @@ export const UserListItem = ({
         onError: errorHandler,
         refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId } }],
     });
+
+    const randomColor = randomColorGenerator();
 
     const sendFriendRequest = async (): Promise<void> => {
         setVisible(false);
