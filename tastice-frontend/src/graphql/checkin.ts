@@ -17,8 +17,8 @@ export const SEARCH_CHECKINS = gql`
 `;
 
 export const CREATE_CHECKIN = gql`
-    mutation createCheckin($authorId: ID!, $productId: ID!, $comment: String!, $rating: Int!) {
-        createCheckin(authorId: $authorId, productId: $productId, comment: $comment, rating: $rating) {
+    mutation createCheckin($authorId: ID!, $image: String, $productId: ID!, $comment: String, $rating: Int!) {
+        createCheckin(authorId: $authorId, image: $image, productId: $productId, comment: $comment, rating: $rating) {
             product {
                 name
             }

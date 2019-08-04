@@ -63,6 +63,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
         comment: checkin.comment,
         rating: checkin.rating,
         name: checkin.product,
+        image: checkin.image,
         date: new Date(checkin.createdAt),
     };
 
@@ -96,6 +97,8 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
             });
         }
     };
+
+    const image = showProduct ? '' : checkinObject.image;
 
     return (
         <>
@@ -132,7 +135,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
                 {openEdit ? (
                     <EditCheckIn id={checkinObject.id} setOpenEdit={setOpenEdit} product={productObject.name} />
                 ) : (
-                    <CheckInContent rating={checkinObject.rating} comment={checkinObject.comment} />
+                    <CheckInContent rating={checkinObject.rating} comment={checkinObject.comment} image={image} />
                 )}
             </Card>
 

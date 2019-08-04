@@ -35,5 +35,6 @@ export const CHECKIN_DETAILS = gql`
         rating
         comment
         createdAt
+        image
     }
 `;

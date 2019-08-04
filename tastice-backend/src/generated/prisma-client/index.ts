@@ -372,6 +372,8 @@ export type CheckinOrderByInput =
   | "rating_DESC"
   | "comment_ASC"
   | "comment_DESC"
+  | "image_ASC"
+  | "image_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -662,6 +664,20 @@ export interface CheckinWhereInput {
   comment_not_starts_with?: Maybe<String>;
   comment_ends_with?: Maybe<String>;
   comment_not_ends_with?: Maybe<String>;
+  image?: Maybe<String>;
+  image_not?: Maybe<String>;
+  image_in?: Maybe<String[] | String>;
+  image_not_in?: Maybe<String[] | String>;
+  image_lt?: Maybe<String>;
+  image_lte?: Maybe<String>;
+  image_gt?: Maybe<String>;
+  image_gte?: Maybe<String>;
+  image_contains?: Maybe<String>;
+  image_not_contains?: Maybe<String>;
+  image_starts_with?: Maybe<String>;
+  image_not_starts_with?: Maybe<String>;
+  image_ends_with?: Maybe<String>;
+  image_not_ends_with?: Maybe<String>;
   author?: Maybe<UserWhereInput>;
   product?: Maybe<ProductWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
@@ -929,6 +945,7 @@ export interface CheckinCreateWithoutProductInput {
   id?: Maybe<ID_Input>;
   rating: Int;
   comment?: Maybe<String>;
+  image?: Maybe<String>;
   author: UserCreateOneWithoutCheckinsInput;
 }
 
@@ -978,6 +995,7 @@ export interface CheckinCreateWithoutAuthorInput {
   id?: Maybe<ID_Input>;
   rating: Int;
   comment?: Maybe<String>;
+  image?: Maybe<String>;
   product: ProductCreateOneWithoutCheckinsInput;
 }
 
@@ -1196,6 +1214,7 @@ export interface CheckinUpdateWithWhereUniqueWithoutProductInput {
 export interface CheckinUpdateWithoutProductDataInput {
   rating?: Maybe<Int>;
   comment?: Maybe<String>;
+  image?: Maybe<String>;
   author?: Maybe<UserUpdateOneRequiredWithoutCheckinsInput>;
 }
 
@@ -1285,6 +1304,7 @@ export interface CheckinUpdateWithWhereUniqueWithoutAuthorInput {
 export interface CheckinUpdateWithoutAuthorDataInput {
   rating?: Maybe<Int>;
   comment?: Maybe<String>;
+  image?: Maybe<String>;
   product?: Maybe<ProductUpdateOneRequiredWithoutCheckinsInput>;
 }
 
@@ -1670,6 +1690,20 @@ export interface CheckinScalarWhereInput {
   comment_not_starts_with?: Maybe<String>;
   comment_ends_with?: Maybe<String>;
   comment_not_ends_with?: Maybe<String>;
+  image?: Maybe<String>;
+  image_not?: Maybe<String>;
+  image_in?: Maybe<String[] | String>;
+  image_not_in?: Maybe<String[] | String>;
+  image_lt?: Maybe<String>;
+  image_lte?: Maybe<String>;
+  image_gt?: Maybe<String>;
+  image_gte?: Maybe<String>;
+  image_contains?: Maybe<String>;
+  image_not_contains?: Maybe<String>;
+  image_starts_with?: Maybe<String>;
+  image_not_starts_with?: Maybe<String>;
+  image_ends_with?: Maybe<String>;
+  image_not_ends_with?: Maybe<String>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1699,6 +1733,7 @@ export interface CheckinUpdateManyWithWhereNestedInput {
 export interface CheckinUpdateManyDataInput {
   rating?: Maybe<Int>;
   comment?: Maybe<String>;
+  image?: Maybe<String>;
 }
 
 export interface FriendRequestUpdateManyWithoutReceiverInput {
@@ -1951,6 +1986,7 @@ export interface CheckinCreateInput {
   id?: Maybe<ID_Input>;
   rating: Int;
   comment?: Maybe<String>;
+  image?: Maybe<String>;
   author: UserCreateOneWithoutCheckinsInput;
   product: ProductCreateOneWithoutCheckinsInput;
 }
@@ -1958,6 +1994,7 @@ export interface CheckinCreateInput {
 export interface CheckinUpdateInput {
   rating?: Maybe<Int>;
   comment?: Maybe<String>;
+  image?: Maybe<String>;
   author?: Maybe<UserUpdateOneRequiredWithoutCheckinsInput>;
   product?: Maybe<ProductUpdateOneRequiredWithoutCheckinsInput>;
 }
@@ -1965,6 +2002,7 @@ export interface CheckinUpdateInput {
 export interface CheckinUpdateManyMutationInput {
   rating?: Maybe<Int>;
   comment?: Maybe<String>;
+  image?: Maybe<String>;
 }
 
 export interface CompanyCreateInput {
@@ -2595,6 +2633,7 @@ export interface Checkin {
   id: ID_Output;
   rating: Int;
   comment?: String;
+  image?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -2603,6 +2642,7 @@ export interface CheckinPromise extends Promise<Checkin>, Fragmentable {
   id: () => Promise<ID_Output>;
   rating: () => Promise<Int>;
   comment: () => Promise<String>;
+  image: () => Promise<String>;
   author: <T = UserPromise>() => T;
   product: <T = ProductPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
@@ -2615,6 +2655,7 @@ export interface CheckinSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   rating: () => Promise<AsyncIterator<Int>>;
   comment: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
   author: <T = UserSubscription>() => T;
   product: <T = ProductSubscription>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -2627,6 +2668,7 @@ export interface CheckinNullablePromise
   id: () => Promise<ID_Output>;
   rating: () => Promise<Int>;
   comment: () => Promise<String>;
+  image: () => Promise<String>;
   author: <T = UserPromise>() => T;
   product: <T = ProductPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
@@ -3344,6 +3386,7 @@ export interface CheckinPreviousValues {
   id: ID_Output;
   rating: Int;
   comment?: String;
+  image?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -3354,6 +3397,7 @@ export interface CheckinPreviousValuesPromise
   id: () => Promise<ID_Output>;
   rating: () => Promise<Int>;
   comment: () => Promise<String>;
+  image: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3364,6 +3408,7 @@ export interface CheckinPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   rating: () => Promise<AsyncIterator<Int>>;
   comment: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }

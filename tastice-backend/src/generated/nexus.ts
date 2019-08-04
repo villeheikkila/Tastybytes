@@ -91,6 +91,20 @@ export interface NexusGenInputs {
     id_not_in?: string[] | null; // [ID!]
     id_not_starts_with?: string | null; // ID
     id_starts_with?: string | null; // ID
+    image?: string | null; // String
+    image_contains?: string | null; // String
+    image_ends_with?: string | null; // String
+    image_gt?: string | null; // String
+    image_gte?: string | null; // String
+    image_in?: string[] | null; // [String!]
+    image_lt?: string | null; // String
+    image_lte?: string | null; // String
+    image_not?: string | null; // String
+    image_not_contains?: string | null; // String
+    image_not_ends_with?: string | null; // String
+    image_not_in?: string[] | null; // [String!]
+    image_not_starts_with?: string | null; // String
+    image_starts_with?: string | null; // String
     NOT?: NexusGenInputs['CheckinWhereInput'][] | null; // [CheckinWhereInput!]
     OR?: NexusGenInputs['CheckinWhereInput'][] | null; // [CheckinWhereInput!]
     product?: NexusGenInputs['ProductWhereInput'] | null; // ProductWhereInput
@@ -430,7 +444,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   CategoryOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
-  CheckinOrderByInput: "comment_ASC" | "comment_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "rating_ASC" | "rating_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
+  CheckinOrderByInput: "comment_ASC" | "comment_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "image_ASC" | "image_DESC" | "rating_ASC" | "rating_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   MutationType: "CREATED" | "DELETED" | "UPDATED"
   ProductOrderByInput: "avatarId_ASC" | "avatarId_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "imageId_ASC" | "imageId_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   SubCategoryOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
@@ -450,6 +464,7 @@ export interface NexusGenRootTypes {
     comment?: string | null; // String
     createdAt: any; // DateTime!
     id: string; // ID!
+    image?: string | null; // String
     rating: number; // Int!
     updatedAt: any; // DateTime!
   }
@@ -565,6 +580,7 @@ export interface NexusGenFieldTypes {
     comment: string | null; // String
     createdAt: any; // DateTime!
     id: string; // ID!
+    image: string | null; // String
     product: NexusGenRootTypes['Product']; // Product!
     rating: number; // Int!
     updatedAt: any; // DateTime!
@@ -765,6 +781,7 @@ export interface NexusGenArgTypes {
     createCheckin: { // args
       authorId?: string | null; // ID
       comment?: string | null; // String
+      image?: string | null; // String
       productId?: string | null; // ID
       rating?: number | null; // Int
     }

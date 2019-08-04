@@ -70,6 +70,7 @@ type Checkin {
   comment: String
   createdAt: DateTime!
   id: ID!
+  image: String
   product: Product!
   rating: Int!
   updatedAt: DateTime!
@@ -82,6 +83,8 @@ enum CheckinOrderByInput {
   createdAt_DESC
   id_ASC
   id_DESC
+  image_ASC
+  image_DESC
   rating_ASC
   rating_DESC
   updatedAt_ASC
@@ -127,6 +130,20 @@ input CheckinWhereInput {
   id_not_in: [ID!]
   id_not_starts_with: ID
   id_starts_with: ID
+  image: String
+  image_contains: String
+  image_ends_with: String
+  image_gt: String
+  image_gte: String
+  image_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_not: String
+  image_not_contains: String
+  image_not_ends_with: String
+  image_not_in: [String!]
+  image_not_starts_with: String
+  image_starts_with: String
   NOT: [CheckinWhereInput!]
   OR: [CheckinWhereInput!]
   product: ProductWhereInput
@@ -256,7 +273,7 @@ type Mutation {
   acceptFriendRequest(id: ID): User
   addProduct(categoryId: ID, company: String, imageId: String, name: String, subCategories: [String!]): Product
   createCategory(name: String): Category
-  createCheckin(authorId: ID, comment: String, productId: ID, rating: Int): Checkin
+  createCheckin(authorId: ID, comment: String, image: String, productId: ID, rating: Int): Checkin
   createCompany(name: String): Company
   createFriendRequest(message: String, receiverId: ID, senderId: ID): FriendRequest
   createSubCategory(categoryId: ID, name: String): SubCategory

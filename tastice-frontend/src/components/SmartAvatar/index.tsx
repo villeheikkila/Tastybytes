@@ -10,36 +10,40 @@ interface SmartAvatarProps {
     lastName: string;
     id: string;
     avatarId: string;
-    width?: number;
+    size?: number;
 }
 
 const useStyles = makeStyles(
     createStyles({
         avatar: (props: any) => ({
             margin: 5,
+            width: props.size,
+            height: props.size,
             backgroundColor: props.randomColor,
             textDecoration: 'none',
             color: 'white',
         }),
+        text: (props: any) => ({
+            fontSize: props.size / 3,
+            fontWeight: 800,
+        }),
     }),
 );
 
-export const SmartAvatar = ({ firstName, lastName, id, avatarId }: SmartAvatarProps): JSX.Element => {
+export const SmartAvatar = ({ firstName, lastName, id, avatarId, size = 50 }: SmartAvatarProps): JSX.Element => {
     const randomColor = randomColorGenerator();
-    const classes = useStyles({ randomColor });
+    const classes = useStyles({ randomColor, size });
 
     return (
-        <>
-            <Avatar alt={firstName} component={Link} to={`/user/${id}`} className={classes.avatar}>
-                {avatarId ? (
-                    <Image cloudName={CLOUDINARY_CLOUD_NAME} publicId={avatarId} width="50" crop="thumb"></Image>
-                ) : (
-                    <Typography variant="h6">
-                        {firstName.charAt(0).toUpperCase()}
-                        {lastName.charAt(0).toUpperCase()}
-                    </Typography>
-                )}
-            </Avatar>
-        </>
+        <Avatar alt={firstName} component={Link} to={`/user/${id}`} className={classes.avatar}>
+            {avatarId ? (
+                <Image cloudName={CLOUDINARY_CLOUD_NAME} publicId={avatarId} width={size} crop="thumb"></Image>
+            ) : (
+                <Typography variant="h6" className={classes.text}>
+                    {firstName.charAt(0).toUpperCase()}
+                    {lastName.charAt(0).toUpperCase()}
+                </Typography>
+            )}
+        </Avatar>
     );
 };

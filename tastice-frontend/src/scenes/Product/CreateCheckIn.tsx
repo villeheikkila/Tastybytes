@@ -2,6 +2,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { Button, createStyles, makeStyles, Paper, TextField, Theme, Typography } from '@material-ui/core';
 import Rating from 'material-ui-rating';
 import React, { useState } from 'react';
+import { ImageUpload } from '../../components/ImageUpload';
 import { CREATE_CHECKIN, ME, PRODUCT, SEARCH_CHECKINS } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
@@ -33,6 +34,7 @@ export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.
     const classes = useStyles();
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
+    const [image, setImage] = useState();
     const [createCheckin] = useMutation(CREATE_CHECKIN, {
         onError: errorHandler,
         refetchQueries: [
@@ -48,6 +50,7 @@ export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.
                 authorId,
                 productId,
                 comment,
+                image,
                 rating,
             },
         });
@@ -65,6 +68,7 @@ export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.
             <Typography variant="h5" component="h3">
                 How did you like it?
             </Typography>
+            <ImageUpload image={image} setImage={setImage} />
             <TextField
                 id="outlined-multiline-static"
                 label="Comments"

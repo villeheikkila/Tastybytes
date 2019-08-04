@@ -908,6 +908,7 @@ type CheckinObject =
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'rating', args?: [] | false, alias?: string  } 
   | { name: 'comment', args?: [] | false, alias?: string  } 
+  | { name: 'image', args?: [] | false, alias?: string  } 
   | { name: 'author', args?: [] | false, alias?: string  } 
   | { name: 'product', args?: [] | false, alias?: string  } 
   | { name: 'createdAt', args?: [] | false, alias?: string  } 
@@ -917,6 +918,7 @@ type CheckinFields =
   | 'id'
   | 'rating'
   | 'comment'
+  | 'image'
   | 'author'
   | 'product'
   | 'createdAt'
@@ -944,6 +946,14 @@ export interface CheckinFieldDetails {
     resolve: undefined
   }
   comment: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: undefined
+  }
+  image: {
     type: 'String'
     args: {}
     description: string
@@ -3684,6 +3694,7 @@ type CheckinPreviousValuesObject =
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'rating', args?: [] | false, alias?: string  } 
   | { name: 'comment', args?: [] | false, alias?: string  } 
+  | { name: 'image', args?: [] | false, alias?: string  } 
   | { name: 'createdAt', args?: [] | false, alias?: string  } 
   | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
@@ -3691,6 +3702,7 @@ type CheckinPreviousValuesFields =
   | 'id'
   | 'rating'
   | 'comment'
+  | 'image'
   | 'createdAt'
   | 'updatedAt'
 
@@ -3716,6 +3728,14 @@ export interface CheckinPreviousValuesFieldDetails {
     resolve: undefined
   }
   comment: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: undefined
+  }
+  image: {
     type: 'String'
     args: {}
     description: string
@@ -4209,6 +4229,20 @@ export interface CheckinWhereInput {
   comment_not_starts_with?: string | null
   comment_ends_with?: string | null
   comment_not_ends_with?: string | null
+  image?: string | null
+  image_not?: string | null
+  image_in?: string[]
+  image_not_in?: string[]
+  image_lt?: string | null
+  image_lte?: string | null
+  image_gt?: string | null
+  image_gte?: string | null
+  image_contains?: string | null
+  image_not_contains?: string | null
+  image_starts_with?: string | null
+  image_not_starts_with?: string | null
+  image_ends_with?: string | null
+  image_not_ends_with?: string | null
   author?: UserWhereInput | null
   product?: ProductWhereInput | null
   createdAt?: string | null
@@ -4269,6 +4303,20 @@ export type CheckinWhereInputInputObject =
   | { name: 'comment_not_starts_with', alias?: string  } 
   | { name: 'comment_ends_with', alias?: string  } 
   | { name: 'comment_not_ends_with', alias?: string  } 
+  | { name: 'image', alias?: string  } 
+  | { name: 'image_not', alias?: string  } 
+  | { name: 'image_in', alias?: string  } 
+  | { name: 'image_not_in', alias?: string  } 
+  | { name: 'image_lt', alias?: string  } 
+  | { name: 'image_lte', alias?: string  } 
+  | { name: 'image_gt', alias?: string  } 
+  | { name: 'image_gte', alias?: string  } 
+  | { name: 'image_contains', alias?: string  } 
+  | { name: 'image_not_contains', alias?: string  } 
+  | { name: 'image_starts_with', alias?: string  } 
+  | { name: 'image_not_starts_with', alias?: string  } 
+  | { name: 'image_ends_with', alias?: string  } 
+  | { name: 'image_not_ends_with', alias?: string  } 
   | { name: 'author', alias?: string  } 
   | { name: 'product', alias?: string  } 
   | { name: 'createdAt', alias?: string  } 
@@ -5091,6 +5139,7 @@ export interface CheckinCreateWithoutAuthorInput {
   id?: string | null
   rating?: number
   comment?: string | null
+  image?: string | null
   product?: ProductCreateOneWithoutCheckinsInput
 }
 export type CheckinCreateWithoutAuthorInputInputObject =
@@ -5098,6 +5147,7 @@ export type CheckinCreateWithoutAuthorInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'rating', alias?: string  } 
   | { name: 'comment', alias?: string  } 
+  | { name: 'image', alias?: string  } 
   | { name: 'product', alias?: string  } 
   
 export interface ProductCreateOneWithoutCheckinsInput {
@@ -5227,6 +5277,7 @@ export interface CheckinCreateWithoutProductInput {
   id?: string | null
   rating?: number
   comment?: string | null
+  image?: string | null
   author?: UserCreateOneWithoutCheckinsInput
 }
 export type CheckinCreateWithoutProductInputInputObject =
@@ -5234,6 +5285,7 @@ export type CheckinCreateWithoutProductInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'rating', alias?: string  } 
   | { name: 'comment', alias?: string  } 
+  | { name: 'image', alias?: string  } 
   | { name: 'author', alias?: string  } 
   
 export interface UserCreateOneWithoutCheckinsInput {
@@ -5423,12 +5475,14 @@ export type CheckinUpdateWithWhereUniqueWithoutAuthorInputInputObject =
 export interface CheckinUpdateWithoutAuthorDataInput {
   rating?: number | null
   comment?: string | null
+  image?: string | null
   product?: ProductUpdateOneRequiredWithoutCheckinsInput | null
 }
 export type CheckinUpdateWithoutAuthorDataInputInputObject =
   | Extract<keyof CheckinUpdateWithoutAuthorDataInput, string>
   | { name: 'rating', alias?: string  } 
   | { name: 'comment', alias?: string  } 
+  | { name: 'image', alias?: string  } 
   | { name: 'product', alias?: string  } 
   
 export interface ProductUpdateOneRequiredWithoutCheckinsInput {
@@ -5656,12 +5710,14 @@ export type CheckinUpdateWithWhereUniqueWithoutProductInputInputObject =
 export interface CheckinUpdateWithoutProductDataInput {
   rating?: number | null
   comment?: string | null
+  image?: string | null
   author?: UserUpdateOneRequiredWithoutCheckinsInput | null
 }
 export type CheckinUpdateWithoutProductDataInputInputObject =
   | Extract<keyof CheckinUpdateWithoutProductDataInput, string>
   | { name: 'rating', alias?: string  } 
   | { name: 'comment', alias?: string  } 
+  | { name: 'image', alias?: string  } 
   | { name: 'author', alias?: string  } 
   
 export interface UserUpdateOneRequiredWithoutCheckinsInput {
@@ -6197,6 +6253,20 @@ export interface CheckinScalarWhereInput {
   comment_not_starts_with?: string | null
   comment_ends_with?: string | null
   comment_not_ends_with?: string | null
+  image?: string | null
+  image_not?: string | null
+  image_in?: string[]
+  image_not_in?: string[]
+  image_lt?: string | null
+  image_lte?: string | null
+  image_gt?: string | null
+  image_gte?: string | null
+  image_contains?: string | null
+  image_not_contains?: string | null
+  image_starts_with?: string | null
+  image_not_starts_with?: string | null
+  image_ends_with?: string | null
+  image_not_ends_with?: string | null
   createdAt?: string | null
   createdAt_not?: string | null
   createdAt_in?: string[]
@@ -6255,6 +6325,20 @@ export type CheckinScalarWhereInputInputObject =
   | { name: 'comment_not_starts_with', alias?: string  } 
   | { name: 'comment_ends_with', alias?: string  } 
   | { name: 'comment_not_ends_with', alias?: string  } 
+  | { name: 'image', alias?: string  } 
+  | { name: 'image_not', alias?: string  } 
+  | { name: 'image_in', alias?: string  } 
+  | { name: 'image_not_in', alias?: string  } 
+  | { name: 'image_lt', alias?: string  } 
+  | { name: 'image_lte', alias?: string  } 
+  | { name: 'image_gt', alias?: string  } 
+  | { name: 'image_gte', alias?: string  } 
+  | { name: 'image_contains', alias?: string  } 
+  | { name: 'image_not_contains', alias?: string  } 
+  | { name: 'image_starts_with', alias?: string  } 
+  | { name: 'image_not_starts_with', alias?: string  } 
+  | { name: 'image_ends_with', alias?: string  } 
+  | { name: 'image_not_ends_with', alias?: string  } 
   | { name: 'createdAt', alias?: string  } 
   | { name: 'createdAt_not', alias?: string  } 
   | { name: 'createdAt_in', alias?: string  } 
@@ -6287,11 +6371,13 @@ export type CheckinUpdateManyWithWhereNestedInputInputObject =
 export interface CheckinUpdateManyDataInput {
   rating?: number | null
   comment?: string | null
+  image?: string | null
 }
 export type CheckinUpdateManyDataInputInputObject =
   | Extract<keyof CheckinUpdateManyDataInput, string>
   | { name: 'rating', alias?: string  } 
   | { name: 'comment', alias?: string  } 
+  | { name: 'image', alias?: string  } 
   
 export interface ProductUpsertWithWhereUniqueWithoutSubCategoryInput {
   where?: ProductWhereUniqueInput
@@ -6902,6 +6988,7 @@ export interface CheckinCreateInput {
   id?: string | null
   rating?: number
   comment?: string | null
+  image?: string | null
   author?: UserCreateOneWithoutCheckinsInput
   product?: ProductCreateOneWithoutCheckinsInput
 }
@@ -6910,12 +6997,14 @@ export type CheckinCreateInputInputObject =
   | { name: 'id', alias?: string  } 
   | { name: 'rating', alias?: string  } 
   | { name: 'comment', alias?: string  } 
+  | { name: 'image', alias?: string  } 
   | { name: 'author', alias?: string  } 
   | { name: 'product', alias?: string  } 
   
 export interface CheckinUpdateInput {
   rating?: number | null
   comment?: string | null
+  image?: string | null
   author?: UserUpdateOneRequiredWithoutCheckinsInput | null
   product?: ProductUpdateOneRequiredWithoutCheckinsInput | null
 }
@@ -6923,17 +7012,20 @@ export type CheckinUpdateInputInputObject =
   | Extract<keyof CheckinUpdateInput, string>
   | { name: 'rating', alias?: string  } 
   | { name: 'comment', alias?: string  } 
+  | { name: 'image', alias?: string  } 
   | { name: 'author', alias?: string  } 
   | { name: 'product', alias?: string  } 
   
 export interface CheckinUpdateManyMutationInput {
   rating?: number | null
   comment?: string | null
+  image?: string | null
 }
 export type CheckinUpdateManyMutationInputInputObject =
   | Extract<keyof CheckinUpdateManyMutationInput, string>
   | { name: 'rating', alias?: string  } 
   | { name: 'comment', alias?: string  } 
+  | { name: 'image', alias?: string  } 
   
 export interface CompanyCreateInput {
   id?: string | null
@@ -7394,6 +7486,8 @@ export type CheckinOrderByInputValues =
   | 'rating_DESC'
   | 'comment_ASC'
   | 'comment_DESC'
+  | 'image_ASC'
+  | 'image_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'

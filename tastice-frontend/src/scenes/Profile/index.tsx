@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/react-hooks';
 import {
-    Avatar,
     createStyles,
     ExpansionPanel,
     ExpansionPanelDetails,
@@ -15,14 +14,12 @@ import {
     Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Image } from 'cloudinary-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
 import { SmartAvatar } from '../../components/SmartAvatar';
 import { USER } from '../../graphql';
-import { CLOUDINARY_CLOUD_NAME } from '../../index';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -97,21 +94,13 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
                 <Typography variant="h4" component="h3" className={classes.textField}>
                     {userObject.firstName} {userObject.lastName}
                 </Typography>
-                <Avatar alt="Avatar" className={classes.avatar}>
-                    {userObject.avatarId ? (
-                        <Image
-                            cloudName={CLOUDINARY_CLOUD_NAME}
-                            publicId={userObject.avatarId}
-                            width="200"
-                            crop="thumb"
-                        ></Image>
-                    ) : (
-                        <Typography variant="h3" className={classes.avatar}>
-                            {userObject.firstName.charAt(0).toUpperCase()}
-                            {userObject.lastName.charAt(0).toUpperCase()}
-                        </Typography>
-                    )}
-                </Avatar>
+                <SmartAvatar
+                    id={id}
+                    size={150}
+                    firstName={userObject.firstName}
+                    lastName={userObject.lastName}
+                    avatarId={userObject.avatarId}
+                />
                 <Typography variant="h4" component="h3" className={classes.textField}>
                     Checkins in total: {userObject.checkins.length}
                 </Typography>

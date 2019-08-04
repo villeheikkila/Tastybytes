@@ -258,6 +258,7 @@ type Checkin {
   id: ID!
   rating: Int!
   comment: String
+  image: String
   author: User!
   product: Product!
   createdAt: DateTime!
@@ -274,6 +275,7 @@ input CheckinCreateInput {
   id: ID
   rating: Int!
   comment: String
+  image: String
   author: UserCreateOneWithoutCheckinsInput!
   product: ProductCreateOneWithoutCheckinsInput!
 }
@@ -292,6 +294,7 @@ input CheckinCreateWithoutAuthorInput {
   id: ID
   rating: Int!
   comment: String
+  image: String
   product: ProductCreateOneWithoutCheckinsInput!
 }
 
@@ -299,6 +302,7 @@ input CheckinCreateWithoutProductInput {
   id: ID
   rating: Int!
   comment: String
+  image: String
   author: UserCreateOneWithoutCheckinsInput!
 }
 
@@ -314,6 +318,8 @@ enum CheckinOrderByInput {
   rating_DESC
   comment_ASC
   comment_DESC
+  image_ASC
+  image_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -324,6 +330,7 @@ type CheckinPreviousValues {
   id: ID!
   rating: Int!
   comment: String
+  image: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -365,6 +372,20 @@ input CheckinScalarWhereInput {
   comment_not_starts_with: String
   comment_ends_with: String
   comment_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -407,6 +428,7 @@ input CheckinSubscriptionWhereInput {
 input CheckinUpdateInput {
   rating: Int
   comment: String
+  image: String
   author: UserUpdateOneRequiredWithoutCheckinsInput
   product: ProductUpdateOneRequiredWithoutCheckinsInput
 }
@@ -414,11 +436,13 @@ input CheckinUpdateInput {
 input CheckinUpdateManyDataInput {
   rating: Int
   comment: String
+  image: String
 }
 
 input CheckinUpdateManyMutationInput {
   rating: Int
   comment: String
+  image: String
 }
 
 input CheckinUpdateManyWithoutAuthorInput {
@@ -453,12 +477,14 @@ input CheckinUpdateManyWithWhereNestedInput {
 input CheckinUpdateWithoutAuthorDataInput {
   rating: Int
   comment: String
+  image: String
   product: ProductUpdateOneRequiredWithoutCheckinsInput
 }
 
 input CheckinUpdateWithoutProductDataInput {
   rating: Int
   comment: String
+  image: String
   author: UserUpdateOneRequiredWithoutCheckinsInput
 }
 
@@ -521,6 +547,20 @@ input CheckinWhereInput {
   comment_not_starts_with: String
   comment_ends_with: String
   comment_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
   author: UserWhereInput
   product: ProductWhereInput
   createdAt: DateTime

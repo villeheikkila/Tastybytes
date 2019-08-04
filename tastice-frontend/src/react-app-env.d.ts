@@ -82,6 +82,7 @@ interface CheckInObject {
     createdAt: Date;
     author: user;
     product: ProductObject;
+    image: string;
 }
 
 interface FriendRequestObject {

@@ -288,13 +288,15 @@ export const Mutation = mutationType({
             args: {
                 authorId: idArg({ nullable: true }),
                 productId: idArg({ nullable: true }),
+                image: stringArg(),
                 rating: intArg(),
                 comment: stringArg(),
             },
-            resolve: (_, { authorId, productId, rating, comment }, ctx) => {
+            resolve: (_, { authorId, productId, rating, comment, image }, ctx) => {
                 return ctx.prisma.createCheckin({
                     rating,
                     comment,
+                    image,
                     product: { connect: { id: productId } },
                     author: { connect: { id: authorId } },
                 });
