@@ -6,6 +6,8 @@ type User {
   password: String!
   admin: Boolean!
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
   checkins: [Checkin!]! @relation(name: "CheckInAuthor", onDelete: CASCADE)
   friends: [User!]!
   friendRequest: [FriendRequest] @relation(name: "FriendRequestReceiver" onDelete: CASCADE)

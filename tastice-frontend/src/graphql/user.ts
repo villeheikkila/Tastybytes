@@ -37,6 +37,7 @@ export const ME = gql`
             ...UserDetails
             admin
             email
+            colorScheme
             friends {
                 ...UserDetails
             }
@@ -129,8 +130,8 @@ export const SIGN_UP = gql`
 `;
 
 export const UPDATE_USER = gql`
-    mutation updateUser($id: ID!, $firstName: String!, $lastName: String!, $email: String!) {
-        updateUser(id: $id, firstName: $firstName, lastName: $lastName, email: $email) {
+    mutation updateUser($id: ID!, $firstName: String, $lastName: String, $email: String, $colorScheme: Int) {
+        updateUser(id: $id, firstName: $firstName, lastName: $lastName, email: $email, colorScheme: $colorScheme) {
             ...UserDetails
         }
     }

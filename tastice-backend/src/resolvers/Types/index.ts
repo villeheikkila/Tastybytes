@@ -11,7 +11,7 @@ export const SubCategory = prismaObjectType({
 export const User = prismaObjectType({
     name: 'User',
     definition(t) {
-        t.prismaFields(['id', 'firstName', 'lastName', 'email', 'admin', 'checkins', 'friends', 'avatarId']);
+        t.prismaFields(['id', 'firstName', 'lastName', 'email', 'admin', 'checkins', 'friends', 'avatarId', 'avatarColor', 'colorScheme']);
     },
 });
 

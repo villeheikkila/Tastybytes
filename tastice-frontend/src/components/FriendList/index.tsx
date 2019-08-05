@@ -83,10 +83,10 @@ export const FriendList = (): JSX.Element | null => {
         (friendRequestItem: FriendRequestObject) => friendRequestItem.sender[0].id,
     );
 
-    const friendIds = friends.map((friendItem: SimpleUserObject) => friendItem.id);
+    const friendIds = friends.map((friendItem: User) => friendItem.id);
 
     const users = usersQuery.data.searchUsers.filter(
-        (userItem: SimpleUserObject) =>
+        (userItem: User) =>
             userItem.id !== id && !friendRequestIds.includes(userItem.id) && !friendIds.includes(userItem.id),
     );
 

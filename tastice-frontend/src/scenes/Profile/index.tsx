@@ -84,6 +84,7 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
         checkins: user.data.user[0].checkins,
         friends: user.data.user[0].friends,
         avatarId: user.data.user[0].avatarId,
+        avatarColor: user.data.user[0].avatarColor,
     };
 
     const dividerText = userObject.checkins.length === 0 ? 'No Recent Activity' : 'Recent Activity';
@@ -100,6 +101,7 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
                     firstName={userObject.firstName}
                     lastName={userObject.lastName}
                     avatarId={userObject.avatarId}
+                    avatarColor={userObject.avatarColor}
                 />
                 <Typography variant="h4" component="h3" className={classes.textField}>
                     Checkins in total: {userObject.checkins.length}

@@ -328,6 +328,20 @@ export interface NexusGenInputs {
     admin?: boolean | null; // Boolean
     admin_not?: boolean | null; // Boolean
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    avatarColor?: string | null; // String
+    avatarColor_contains?: string | null; // String
+    avatarColor_ends_with?: string | null; // String
+    avatarColor_gt?: string | null; // String
+    avatarColor_gte?: string | null; // String
+    avatarColor_in?: string[] | null; // [String!]
+    avatarColor_lt?: string | null; // String
+    avatarColor_lte?: string | null; // String
+    avatarColor_not?: string | null; // String
+    avatarColor_not_contains?: string | null; // String
+    avatarColor_not_ends_with?: string | null; // String
+    avatarColor_not_in?: string[] | null; // [String!]
+    avatarColor_not_starts_with?: string | null; // String
+    avatarColor_starts_with?: string | null; // String
     avatarId?: string | null; // String
     avatarId_contains?: string | null; // String
     avatarId_ends_with?: string | null; // String
@@ -345,6 +359,14 @@ export interface NexusGenInputs {
     checkins_every?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     checkins_none?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
     checkins_some?: NexusGenInputs['CheckinWhereInput'] | null; // CheckinWhereInput
+    colorScheme?: number | null; // Int
+    colorScheme_gt?: number | null; // Int
+    colorScheme_gte?: number | null; // Int
+    colorScheme_in?: number[] | null; // [Int!]
+    colorScheme_lt?: number | null; // Int
+    colorScheme_lte?: number | null; // Int
+    colorScheme_not?: number | null; // Int
+    colorScheme_not_in?: number[] | null; // [Int!]
     createdAt?: any | null; // DateTime
     createdAt_gt?: any | null; // DateTime
     createdAt_gte?: any | null; // DateTime
@@ -448,7 +470,7 @@ export interface NexusGenEnums {
   MutationType: "CREATED" | "DELETED" | "UPDATED"
   ProductOrderByInput: "avatarId_ASC" | "avatarId_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "imageId_ASC" | "imageId_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   SubCategoryOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
-  UserOrderByInput: "admin_ASC" | "admin_DESC" | "avatarId_ASC" | "avatarId_DESC" | "createdAt_ASC" | "createdAt_DESC" | "email_ASC" | "email_DESC" | "firstName_ASC" | "firstName_DESC" | "id_ASC" | "id_DESC" | "lastName_ASC" | "lastName_DESC" | "password_ASC" | "password_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
+  UserOrderByInput: "admin_ASC" | "admin_DESC" | "avatarColor_ASC" | "avatarColor_DESC" | "avatarId_ASC" | "avatarId_DESC" | "colorScheme_ASC" | "colorScheme_DESC" | "createdAt_ASC" | "createdAt_DESC" | "email_ASC" | "email_DESC" | "firstName_ASC" | "firstName_DESC" | "id_ASC" | "id_DESC" | "lastName_ASC" | "lastName_DESC" | "password_ASC" | "password_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
 }
 
 export interface NexusGenRootTypes {
@@ -517,7 +539,9 @@ export interface NexusGenRootTypes {
   Subscription: {};
   User: { // root type
     admin: boolean; // Boolean!
+    avatarColor?: string | null; // String
     avatarId?: string | null; // String
+    colorScheme?: number | null; // Int
     email?: string | null; // String
     firstName: string; // String!
     id: string; // ID!
@@ -525,7 +549,9 @@ export interface NexusGenRootTypes {
   }
   UserPreviousValues: { // root type
     admin: boolean; // Boolean!
+    avatarColor?: string | null; // String
     avatarId?: string | null; // String
+    colorScheme?: number | null; // Int
     createdAt: any; // DateTime!
     email?: string | null; // String
     firstName: string; // String!
@@ -685,8 +711,10 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     admin: boolean; // Boolean!
+    avatarColor: string | null; // String
     avatarId: string | null; // String
     checkins: NexusGenRootTypes['Checkin'][] | null; // [Checkin!]
+    colorScheme: number | null; // Int
     email: string | null; // String
     firstName: string; // String!
     friends: NexusGenRootTypes['User'][] | null; // [User!]
@@ -695,7 +723,9 @@ export interface NexusGenFieldTypes {
   }
   UserPreviousValues: { // field return type
     admin: boolean; // Boolean!
+    avatarColor: string | null; // String
     avatarId: string | null; // String
+    colorScheme: number | null; // Int
     createdAt: any; // DateTime!
     email: string | null; // String
     firstName: string; // String!
@@ -840,6 +870,7 @@ export interface NexusGenArgTypes {
       subCategories?: string[] | null; // [String!]
     }
     updateUser: { // args
+      colorScheme?: number | null; // Int
       email?: string | null; // String
       firstName?: string | null; // String
       id?: string | null; // ID

@@ -12,7 +12,7 @@ interface FriendRequestListItemProps {
 }
 
 export const FriendRequestListItem = ({ userId, request: { sender, id } }: FriendRequestListItemProps): JSX.Element => {
-    const { firstName, lastName, avatarId } = sender[0];
+    const { firstName, lastName, avatarId, avatarColor } = sender[0];
 
     const [acceptFriendRequestMutation] = useMutation(ACCEPT_FRIENDREQUEST, {
         onError: errorHandler,
@@ -66,7 +66,13 @@ export const FriendRequestListItem = ({ userId, request: { sender, id } }: Frien
     return (
         <ListItem button alignItems="flex-start" key={id}>
             <ListItemAvatar>
-                <SmartAvatar firstName={firstName} lastName={lastName} id={id} avatarId={avatarId} />
+                <SmartAvatar
+                    firstName={firstName}
+                    lastName={lastName}
+                    id={id}
+                    avatarId={avatarId}
+                    avatarColor={avatarColor}
+                />
             </ListItemAvatar>
             <ListItemText primary={`${firstName} ${lastName}`} />
 

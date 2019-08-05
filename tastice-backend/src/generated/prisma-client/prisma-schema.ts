@@ -1698,6 +1698,8 @@ type User {
   password: String!
   admin: Boolean!
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
   checkins(where: CheckinWhereInput, orderBy: CheckinOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Checkin!]
   friends(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   friendRequest(where: FriendRequestWhereInput, orderBy: FriendRequestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FriendRequest!]
@@ -1719,6 +1721,8 @@ input UserCreateInput {
   password: String!
   admin: Boolean!
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
   checkins: CheckinCreateManyWithoutAuthorInput
   friends: UserCreateManyInput
   friendRequest: FriendRequestCreateManyWithoutReceiverInput
@@ -1747,6 +1751,8 @@ input UserCreateWithoutCheckinsInput {
   password: String!
   admin: Boolean!
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
   friends: UserCreateManyInput
   friendRequest: FriendRequestCreateManyWithoutReceiverInput
 }
@@ -1759,6 +1765,8 @@ input UserCreateWithoutFriendRequestInput {
   password: String!
   admin: Boolean!
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
   checkins: CheckinCreateManyWithoutAuthorInput
   friends: UserCreateManyInput
 }
@@ -1783,6 +1791,10 @@ enum UserOrderByInput {
   admin_DESC
   avatarId_ASC
   avatarId_DESC
+  avatarColor_ASC
+  avatarColor_DESC
+  colorScheme_ASC
+  colorScheme_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1797,6 +1809,8 @@ type UserPreviousValues {
   password: String!
   admin: Boolean!
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1888,6 +1902,28 @@ input UserScalarWhereInput {
   avatarId_not_starts_with: String
   avatarId_ends_with: String
   avatarId_not_ends_with: String
+  avatarColor: String
+  avatarColor_not: String
+  avatarColor_in: [String!]
+  avatarColor_not_in: [String!]
+  avatarColor_lt: String
+  avatarColor_lte: String
+  avatarColor_gt: String
+  avatarColor_gte: String
+  avatarColor_contains: String
+  avatarColor_not_contains: String
+  avatarColor_starts_with: String
+  avatarColor_not_starts_with: String
+  avatarColor_ends_with: String
+  avatarColor_not_ends_with: String
+  colorScheme: Int
+  colorScheme_not: Int
+  colorScheme_in: [Int!]
+  colorScheme_not_in: [Int!]
+  colorScheme_lt: Int
+  colorScheme_lte: Int
+  colorScheme_gt: Int
+  colorScheme_gte: Int
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1934,6 +1970,8 @@ input UserUpdateDataInput {
   password: String
   admin: Boolean
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
   checkins: CheckinUpdateManyWithoutAuthorInput
   friends: UserUpdateManyInput
   friendRequest: FriendRequestUpdateManyWithoutReceiverInput
@@ -1946,6 +1984,8 @@ input UserUpdateInput {
   password: String
   admin: Boolean
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
   checkins: CheckinUpdateManyWithoutAuthorInput
   friends: UserUpdateManyInput
   friendRequest: FriendRequestUpdateManyWithoutReceiverInput
@@ -1958,6 +1998,8 @@ input UserUpdateManyDataInput {
   password: String
   admin: Boolean
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
 }
 
 input UserUpdateManyInput {
@@ -1979,6 +2021,8 @@ input UserUpdateManyMutationInput {
   password: String
   admin: Boolean
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
 }
 
 input UserUpdateManyWithoutFriendRequestInput {
@@ -2012,6 +2056,8 @@ input UserUpdateWithoutCheckinsDataInput {
   password: String
   admin: Boolean
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
   friends: UserUpdateManyInput
   friendRequest: FriendRequestUpdateManyWithoutReceiverInput
 }
@@ -2023,6 +2069,8 @@ input UserUpdateWithoutFriendRequestDataInput {
   password: String
   admin: Boolean
   avatarId: String
+  avatarColor: String
+  colorScheme: Int
   checkins: CheckinUpdateManyWithoutAuthorInput
   friends: UserUpdateManyInput
 }
@@ -2141,6 +2189,28 @@ input UserWhereInput {
   avatarId_not_starts_with: String
   avatarId_ends_with: String
   avatarId_not_ends_with: String
+  avatarColor: String
+  avatarColor_not: String
+  avatarColor_in: [String!]
+  avatarColor_not_in: [String!]
+  avatarColor_lt: String
+  avatarColor_lte: String
+  avatarColor_gt: String
+  avatarColor_gte: String
+  avatarColor_contains: String
+  avatarColor_not_contains: String
+  avatarColor_starts_with: String
+  avatarColor_not_starts_with: String
+  avatarColor_ends_with: String
+  avatarColor_not_ends_with: String
+  colorScheme: Int
+  colorScheme_not: Int
+  colorScheme_in: [Int!]
+  colorScheme_not_in: [Int!]
+  colorScheme_lt: Int
+  colorScheme_lte: Int
+  colorScheme_gt: Int
+  colorScheme_gte: Int
   checkins_every: CheckinWhereInput
   checkins_some: CheckinWhereInput
   checkins_none: CheckinWhereInput

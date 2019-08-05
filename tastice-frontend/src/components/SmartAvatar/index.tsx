@@ -3,13 +3,13 @@ import { Image } from 'cloudinary-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CLOUDINARY_CLOUD_NAME } from '../../index';
-import { randomColorGenerator } from '../../utils';
 
 interface SmartAvatarProps {
     firstName: string;
     lastName: string;
     id: string;
     avatarId: string;
+    avatarColor?: string;
     size?: number;
 }
 
@@ -19,7 +19,7 @@ const useStyles = makeStyles(
             margin: 5,
             width: props.size,
             height: props.size,
-            backgroundColor: props.randomColor,
+            backgroundColor: props.avatarColor,
             textDecoration: 'none',
             color: 'white',
         }),
@@ -30,9 +30,15 @@ const useStyles = makeStyles(
     }),
 );
 
-export const SmartAvatar = ({ firstName, lastName, id, avatarId, size = 50 }: SmartAvatarProps): JSX.Element => {
-    const randomColor = randomColorGenerator();
-    const classes = useStyles({ randomColor, size });
+export const SmartAvatar = ({
+    firstName,
+    lastName,
+    id,
+    avatarId,
+    avatarColor = '#f2b50c',
+    size = 50,
+}: SmartAvatarProps): JSX.Element => {
+    const classes = useStyles({ avatarColor, size });
 
     return (
         <Avatar alt={firstName} component={Link} to={`/user/${id}`} className={classes.avatar}>

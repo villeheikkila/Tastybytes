@@ -58,6 +58,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
         firstName: checkin.author.firstName,
         lastName: checkin.author.lastName,
         avatarId: checkin.author.avatarId,
+        avatarColor: checkin.author.avatarColor,
     };
 
     const checkinObject = {
@@ -123,6 +124,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
                             lastName={authorObject.lastName}
                             id={authorObject.id}
                             avatarId={authorObject.avatarId}
+                            avatarColor={authorObject.avatarColor}
                         />
                     }
                     action={settings()}

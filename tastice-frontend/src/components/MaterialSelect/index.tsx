@@ -78,6 +78,11 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
+interface OptionType {
+    label: string;
+    value: string;
+}
+
 const NoOptionsMessage = ({ selectProps, innerProps, children }: NoticeProps<OptionType>): JSX.Element => {
     return (
         <Typography color="textSecondary" className={selectProps.classes.noOptionsMessage} {...innerProps}>

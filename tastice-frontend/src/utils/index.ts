@@ -1,5 +1,10 @@
 import { client } from '../index';
 
+interface NotificationContent {
+    message: string;
+    variant: any;
+}
+
 export const notificationHandler = (notification: NotificationContent): void => {
     client.writeData({
         data: {
@@ -33,8 +38,4 @@ export const themeSwitcher = (value: boolean): void => {
             theme: value,
         },
     });
-};
-
-export const randomColorGenerator = (): string => {
-    return '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
 };

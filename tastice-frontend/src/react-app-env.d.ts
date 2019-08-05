@@ -14,38 +14,9 @@ interface User {
     firstName: string;
     lastName: string;
     avatarId: string;
+    avatarColor: string;
     email: string;
     admin: boolean;
-}
-
-interface UserList {
-    users: User[];
-}
-
-interface ProductList {
-    products: Product[];
-}
-
-interface Token {
-    setToken: React.Dispatch<string | null>;
-}
-
-interface UserObject {
-    user: User | null;
-}
-
-interface NotificationContent {
-    message: string;
-    variant: any;
-}
-
-interface NotificationObject {
-    notification: Notification;
-}
-
-interface OptionType {
-    label: string;
-    value: string;
 }
 
 interface Suggestions {
@@ -63,12 +34,6 @@ interface Category {
 interface NameId {
     name: string;
     id: string;
-}
-
-interface SimpleUserObject {
-    id: string;
-    firstName: string;
-    lastName: string;
 }
 
 interface IdObject {

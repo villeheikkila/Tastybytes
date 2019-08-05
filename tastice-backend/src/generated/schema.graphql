@@ -287,7 +287,7 @@ type Mutation {
   signup(email: String, firstName: String, lastName: String, password: String): AuthPayload
   updateCheckin(comment: String, id: ID, rating: Int): Checkin
   updateProduct(categoryId: ID, company: String, id: ID, imageId: String, name: String, subCategories: [String!]): Product
-  updateUser(email: String, firstName: String, id: ID, lastName: String): User
+  updateUser(colorScheme: Int, email: String, firstName: String, id: ID, lastName: String): User
   updateUserAvatar(avatarId: String, id: ID): User
   updateUserPassword(existingPassword: String, id: ID, password: String): User
 }
@@ -513,8 +513,10 @@ type Subscription {
 
 type User {
   admin: Boolean!
+  avatarColor: String
   avatarId: String
   checkins(after: String, before: String, first: Int, last: Int, orderBy: CheckinOrderByInput, skip: Int, where: CheckinWhereInput): [Checkin!]
+  colorScheme: Int
   email: String
   firstName: String!
   friends(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): [User!]
@@ -525,8 +527,12 @@ type User {
 enum UserOrderByInput {
   admin_ASC
   admin_DESC
+  avatarColor_ASC
+  avatarColor_DESC
   avatarId_ASC
   avatarId_DESC
+  colorScheme_ASC
+  colorScheme_DESC
   createdAt_ASC
   createdAt_DESC
   email_ASC
@@ -545,7 +551,9 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   admin: Boolean!
+  avatarColor: String
   avatarId: String
+  colorScheme: Int
   createdAt: DateTime!
   email: String
   firstName: String!
@@ -566,6 +574,20 @@ input UserWhereInput {
   admin: Boolean
   admin_not: Boolean
   AND: [UserWhereInput!]
+  avatarColor: String
+  avatarColor_contains: String
+  avatarColor_ends_with: String
+  avatarColor_gt: String
+  avatarColor_gte: String
+  avatarColor_in: [String!]
+  avatarColor_lt: String
+  avatarColor_lte: String
+  avatarColor_not: String
+  avatarColor_not_contains: String
+  avatarColor_not_ends_with: String
+  avatarColor_not_in: [String!]
+  avatarColor_not_starts_with: String
+  avatarColor_starts_with: String
   avatarId: String
   avatarId_contains: String
   avatarId_ends_with: String
@@ -583,6 +605,14 @@ input UserWhereInput {
   checkins_every: CheckinWhereInput
   checkins_none: CheckinWhereInput
   checkins_some: CheckinWhereInput
+  colorScheme: Int
+  colorScheme_gt: Int
+  colorScheme_gte: Int
+  colorScheme_in: [Int!]
+  colorScheme_lt: Int
+  colorScheme_lte: Int
+  colorScheme_not: Int
+  colorScheme_not_in: [Int!]
   createdAt: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime

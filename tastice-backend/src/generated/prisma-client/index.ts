@@ -394,6 +394,10 @@ export type UserOrderByInput =
   | "admin_DESC"
   | "avatarId_ASC"
   | "avatarId_DESC"
+  | "avatarColor_ASC"
+  | "avatarColor_DESC"
+  | "colorScheme_ASC"
+  | "colorScheme_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -788,6 +792,28 @@ export interface UserWhereInput {
   avatarId_not_starts_with?: Maybe<String>;
   avatarId_ends_with?: Maybe<String>;
   avatarId_not_ends_with?: Maybe<String>;
+  avatarColor?: Maybe<String>;
+  avatarColor_not?: Maybe<String>;
+  avatarColor_in?: Maybe<String[] | String>;
+  avatarColor_not_in?: Maybe<String[] | String>;
+  avatarColor_lt?: Maybe<String>;
+  avatarColor_lte?: Maybe<String>;
+  avatarColor_gt?: Maybe<String>;
+  avatarColor_gte?: Maybe<String>;
+  avatarColor_contains?: Maybe<String>;
+  avatarColor_not_contains?: Maybe<String>;
+  avatarColor_starts_with?: Maybe<String>;
+  avatarColor_not_starts_with?: Maybe<String>;
+  avatarColor_ends_with?: Maybe<String>;
+  avatarColor_not_ends_with?: Maybe<String>;
+  colorScheme?: Maybe<Int>;
+  colorScheme_not?: Maybe<Int>;
+  colorScheme_in?: Maybe<Int[] | Int>;
+  colorScheme_not_in?: Maybe<Int[] | Int>;
+  colorScheme_lt?: Maybe<Int>;
+  colorScheme_lte?: Maybe<Int>;
+  colorScheme_gt?: Maybe<Int>;
+  colorScheme_gte?: Maybe<Int>;
   checkins_every?: Maybe<CheckinWhereInput>;
   checkins_some?: Maybe<CheckinWhereInput>;
   checkins_none?: Maybe<CheckinWhereInput>;
@@ -962,6 +988,8 @@ export interface UserCreateWithoutCheckinsInput {
   password: String;
   admin: Boolean;
   avatarId?: Maybe<String>;
+  avatarColor?: Maybe<String>;
+  colorScheme?: Maybe<Int>;
   friends?: Maybe<UserCreateManyInput>;
   friendRequest?: Maybe<FriendRequestCreateManyWithoutReceiverInput>;
 }
@@ -979,6 +1007,8 @@ export interface UserCreateInput {
   password: String;
   admin: Boolean;
   avatarId?: Maybe<String>;
+  avatarColor?: Maybe<String>;
+  colorScheme?: Maybe<Int>;
   checkins?: Maybe<CheckinCreateManyWithoutAuthorInput>;
   friends?: Maybe<UserCreateManyInput>;
   friendRequest?: Maybe<FriendRequestCreateManyWithoutReceiverInput>;
@@ -1232,6 +1262,8 @@ export interface UserUpdateWithoutCheckinsDataInput {
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
   avatarId?: Maybe<String>;
+  avatarColor?: Maybe<String>;
+  colorScheme?: Maybe<Int>;
   friends?: Maybe<UserUpdateManyInput>;
   friendRequest?: Maybe<FriendRequestUpdateManyWithoutReceiverInput>;
 }
@@ -1268,6 +1300,8 @@ export interface UserUpdateDataInput {
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
   avatarId?: Maybe<String>;
+  avatarColor?: Maybe<String>;
+  colorScheme?: Maybe<Int>;
   checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
   friends?: Maybe<UserUpdateManyInput>;
   friendRequest?: Maybe<FriendRequestUpdateManyWithoutReceiverInput>;
@@ -1920,6 +1954,28 @@ export interface UserScalarWhereInput {
   avatarId_not_starts_with?: Maybe<String>;
   avatarId_ends_with?: Maybe<String>;
   avatarId_not_ends_with?: Maybe<String>;
+  avatarColor?: Maybe<String>;
+  avatarColor_not?: Maybe<String>;
+  avatarColor_in?: Maybe<String[] | String>;
+  avatarColor_not_in?: Maybe<String[] | String>;
+  avatarColor_lt?: Maybe<String>;
+  avatarColor_lte?: Maybe<String>;
+  avatarColor_gt?: Maybe<String>;
+  avatarColor_gte?: Maybe<String>;
+  avatarColor_contains?: Maybe<String>;
+  avatarColor_not_contains?: Maybe<String>;
+  avatarColor_starts_with?: Maybe<String>;
+  avatarColor_not_starts_with?: Maybe<String>;
+  avatarColor_ends_with?: Maybe<String>;
+  avatarColor_not_ends_with?: Maybe<String>;
+  colorScheme?: Maybe<Int>;
+  colorScheme_not?: Maybe<Int>;
+  colorScheme_in?: Maybe<Int[] | Int>;
+  colorScheme_not_in?: Maybe<Int[] | Int>;
+  colorScheme_lt?: Maybe<Int>;
+  colorScheme_lte?: Maybe<Int>;
+  colorScheme_gt?: Maybe<Int>;
+  colorScheme_gte?: Maybe<Int>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1953,6 +2009,8 @@ export interface UserUpdateManyDataInput {
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
   avatarId?: Maybe<String>;
+  avatarColor?: Maybe<String>;
+  colorScheme?: Maybe<Int>;
 }
 
 export interface UserUpsertWithoutCheckinsInput {
@@ -2102,6 +2160,8 @@ export interface UserCreateWithoutFriendRequestInput {
   password: String;
   admin: Boolean;
   avatarId?: Maybe<String>;
+  avatarColor?: Maybe<String>;
+  colorScheme?: Maybe<Int>;
   checkins?: Maybe<CheckinCreateManyWithoutAuthorInput>;
   friends?: Maybe<UserCreateManyInput>;
 }
@@ -2146,6 +2206,8 @@ export interface UserUpdateWithoutFriendRequestDataInput {
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
   avatarId?: Maybe<String>;
+  avatarColor?: Maybe<String>;
+  colorScheme?: Maybe<Int>;
   checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
   friends?: Maybe<UserUpdateManyInput>;
 }
@@ -2211,6 +2273,8 @@ export interface UserUpdateInput {
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
   avatarId?: Maybe<String>;
+  avatarColor?: Maybe<String>;
+  colorScheme?: Maybe<Int>;
   checkins?: Maybe<CheckinUpdateManyWithoutAuthorInput>;
   friends?: Maybe<UserUpdateManyInput>;
   friendRequest?: Maybe<FriendRequestUpdateManyWithoutReceiverInput>;
@@ -2223,6 +2287,8 @@ export interface UserUpdateManyMutationInput {
   password?: Maybe<String>;
   admin?: Maybe<Boolean>;
   avatarId?: Maybe<String>;
+  avatarColor?: Maybe<String>;
+  colorScheme?: Maybe<Int>;
 }
 
 export interface CategorySubscriptionWhereInput {
@@ -2683,6 +2749,8 @@ export interface User {
   password: String;
   admin: Boolean;
   avatarId?: String;
+  avatarColor?: String;
+  colorScheme?: Int;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -2695,6 +2763,8 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   password: () => Promise<String>;
   admin: () => Promise<Boolean>;
   avatarId: () => Promise<String>;
+  avatarColor: () => Promise<String>;
+  colorScheme: () => Promise<Int>;
   checkins: <T = FragmentableArray<Checkin>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -2736,6 +2806,8 @@ export interface UserSubscription
   password: () => Promise<AsyncIterator<String>>;
   admin: () => Promise<AsyncIterator<Boolean>>;
   avatarId: () => Promise<AsyncIterator<String>>;
+  avatarColor: () => Promise<AsyncIterator<String>>;
+  colorScheme: () => Promise<AsyncIterator<Int>>;
   checkins: <T = Promise<AsyncIterator<CheckinSubscription>>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -2779,6 +2851,8 @@ export interface UserNullablePromise
   password: () => Promise<String>;
   admin: () => Promise<Boolean>;
   avatarId: () => Promise<String>;
+  avatarColor: () => Promise<String>;
+  colorScheme: () => Promise<Int>;
   checkins: <T = FragmentableArray<Checkin>>(args?: {
     where?: CheckinWhereInput;
     orderBy?: CheckinOrderByInput;
@@ -3634,6 +3708,8 @@ export interface UserPreviousValues {
   password: String;
   admin: Boolean;
   avatarId?: String;
+  avatarColor?: String;
+  colorScheme?: Int;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -3648,6 +3724,8 @@ export interface UserPreviousValuesPromise
   password: () => Promise<String>;
   admin: () => Promise<Boolean>;
   avatarId: () => Promise<String>;
+  avatarColor: () => Promise<String>;
+  colorScheme: () => Promise<Int>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3662,6 +3740,8 @@ export interface UserPreviousValuesSubscription
   password: () => Promise<AsyncIterator<String>>;
   admin: () => Promise<AsyncIterator<Boolean>>;
   avatarId: () => Promise<AsyncIterator<String>>;
+  avatarColor: () => Promise<AsyncIterator<String>>;
+  colorScheme: () => Promise<AsyncIterator<Int>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }

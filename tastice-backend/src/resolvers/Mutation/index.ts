@@ -3,7 +3,7 @@ import { sign } from 'jsonwebtoken';
 import { idArg, intArg, mutationType, stringArg } from 'nexus';
 import { prisma } from '../../generated/prisma-client';
 import { SECRET } from '../../utils';
-import { createIfNewCompany, createIfNewSubCategories } from './utils';
+import { createIfNewCompany, createIfNewSubCategories, randomColorGenerator } from './utils';
 
 export const Mutation = mutationType({
     definition(t) {
@@ -17,10 +17,13 @@ export const Mutation = mutationType({
             },
             resolve: async (parent, { firstName, lastName, email, password }, ctx) => {
                 const hashedPassword = await hash(password, 10);
+                const avatarColor = randomColorGenerator();
+
                 const user = await ctx.prisma.createUser({
                     firstName,
                     lastName,
                     email,
+                    avatarColor,
                     password: hashedPassword,
                     admin: false,
                 });
@@ -122,14 +125,23 @@ export const Mutation = mutationType({
                 firstName: stringArg(),
                 lastName: stringArg(),
                 email: stringArg(),
+                colorScheme: intArg(),
             },
-            resolve: async (_, { id, firstName, lastName, email }) => {
+            resolve: async (_, { id, firstName, lastName, email, colorScheme }) => {
+            console.log("TCL: colorScheme", colorScheme)
+                const firstNameTitleCase =
+                    firstName && firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+                const lastNameTitleCase =
+                    lastName && lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
+
+                const emailToLowerCase = email && email.toLowerCase();
                 return await prisma.updateUser({
                     where: { id },
                     data: {
-                        firstName: firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase(),
-                        lastName: lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase(),
-                        email: email.toLowerCase(),
+                        firstName: firstNameTitleCase,
+                        lastName: lastNameTitleCase,
+                        email: emailToLowerCase,
+                        colorScheme,
                     },
                 });
             },
@@ -160,19 +172,14 @@ export const Mutation = mutationType({
                 password: stringArg(),
             },
             resolve: async (_, { id, password, existingPassword }, context) => {
-            console.log("TCL: existingPassword", existingPassword)
                 const user = await context.prisma.user({ id });
                 const hashedPassword = await hash(password, 10);
-
-                console.log("TCL: user", user)
 
                 if (!user) {
                     throw new Error(`No user found for id: ${id}`);
                 }
 
                 const passwordValid = await compare(existingPassword, user.password);
-                console.log("TCL: passwordValid", passwordValid)
-                console.log("TCL: password", user.password)
 
                 if (!passwordValid) {
                     throw new Error('Invalid password');

@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
 import { CREATE_FRIENDREQUEST, FRIENDREQUEST, ME } from '../../graphql';
-import { errorHandler, notificationHandler, randomColorGenerator } from '../../utils';
+import { errorHandler, notificationHandler } from '../../utils';
 import { SmartAvatar } from '../SmartAvatar';
 import { FriendRequestDialog } from './FriendRequestDialog';
 interface UserListItemProps {
@@ -12,7 +12,7 @@ interface UserListItemProps {
 
 export const UserListItem = ({
     userId,
-    user: { firstName, lastName, avatarId, id },
+    user: { firstName, lastName, avatarId, id, avatarColor },
 }: UserListItemProps): JSX.Element => {
     const [message, setMessage] = useState('');
     const [visible, setVisible] = useState(false);
@@ -21,8 +21,6 @@ export const UserListItem = ({
         onError: errorHandler,
         refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId } }],
     });
-
-    const randomColor = randomColorGenerator();
 
     const sendFriendRequest = async (): Promise<void> => {
         setVisible(false);
@@ -46,7 +44,13 @@ export const UserListItem = ({
         <>
             <ListItem button alignItems="flex-start" key={id} onClick={(): void => setVisible(true)}>
                 <ListItemAvatar>
-                    <SmartAvatar firstName={firstName} lastName={lastName} id={id} avatarId={avatarId} />
+                    <SmartAvatar
+                        firstName={firstName}
+                        lastName={lastName}
+                        id={id}
+                        avatarId={avatarId}
+                        avatarColor={avatarColor}
+                    />
                 </ListItemAvatar>
                 <ListItemText primary={`${firstName} ${lastName}`} />
             </ListItem>

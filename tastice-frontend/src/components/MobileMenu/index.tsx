@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import {
     createStyles,
     Divider,
@@ -13,9 +13,9 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../App';
-import { THEME } from '../../graphql';
+import { ME, UPDATE_USER } from '../../graphql';
 import { client } from '../../index';
-import { themeSwitcher } from '../../utils';
+import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -33,10 +33,16 @@ const useStyles = makeStyles((theme: Theme) =>
 export const MobileMenu = (): JSX.Element => {
     const classes = useStyles();
     const [colorScheme, setColorScheme] = useState(false);
-    const themeQuery = useQuery(THEME);
-    const { setToken } = useContext(UserContext);
+    const me = useQuery(ME);
 
-    const theme = themeQuery.data.theme ? 1 : 0;
+    const [updateUser] = useMutation(UPDATE_USER, {
+        onError: errorHandler,
+        refetchQueries: [{ query: ME }],
+    });
+
+    const { setToken, id } = useContext(UserContext);
+
+    const theme = me.data.me && me.data.me.colorScheme ? 1 : 0;
 
     useEffect((): void => {
         if (theme === 0) setColorScheme(false);
@@ -48,6 +54,16 @@ export const MobileMenu = (): JSX.Element => {
         await client.clearStore();
         localStorage.clear();
         setToken(null);
+    };
+
+    const handleColorSchemeChange = async (): Promise<void> => {
+        const colorTheme = colorScheme ? 0 : 1;
+        await updateUser({
+            variables: {
+                id,
+                colorScheme: colorTheme,
+            },
+        });
     };
 
     return (
@@ -72,7 +88,7 @@ export const MobileMenu = (): JSX.Element => {
                     <Switch
                         checked={colorScheme}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
-                            themeSwitcher(event.target.checked);
+                            handleColorSchemeChange();
                         }}
                         value="color scheme"
                         inputProps={{ 'aria-label': 'secondary checkbox' }}

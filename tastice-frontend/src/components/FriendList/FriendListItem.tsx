@@ -14,7 +14,7 @@ interface FriendListItemProps {
 
 export const FriendListItem = ({
     userId,
-    user: { firstName, lastName, avatarId, id },
+    user: { firstName, lastName, avatarId, id, avatarColor },
 }: FriendListItemProps): JSX.Element => {
     const [visible, setVisible] = useState(false);
 
@@ -44,7 +44,13 @@ export const FriendListItem = ({
         <>
             <ListItem button alignItems="flex-start" key={id}>
                 <ListItemAvatar>
-                    <SmartAvatar firstName={firstName} lastName={lastName} id={id} avatarId={avatarId} />
+                    <SmartAvatar
+                        firstName={firstName}
+                        lastName={lastName}
+                        id={id}
+                        avatarId={avatarId}
+                        avatarColor={avatarColor}
+                    />
                 </ListItemAvatar>
                 <ListItemText primary={`${firstName} ${lastName}`} />
                 <IconButton aria-label="Delete" onClick={(): void => setVisible(true)}>

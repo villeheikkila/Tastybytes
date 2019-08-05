@@ -1,6 +1,5 @@
 import { useMutation } from '@apollo/react-hooks';
 import { Avatar, createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
-import { deepPurple } from '@material-ui/core/colors';
 import { Image } from 'cloudinary-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -21,15 +20,15 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
             alignContent: 'center',
         },
-        avatar: {
+        avatar: (props: any) => ({
             marginLeft: 30,
             marginRight: 30,
             marginTop: 20,
             marginBottom: 15,
             width: 200,
-            backgroundColor: deepPurple[500],
+            backgroundColor: props.avatarColor,
             height: 200,
-        },
+        }),
         container: {
             display: 'flex',
             flexWrap: 'wrap',
@@ -56,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const AccountAvatar = ({ user }: any): JSX.Element | null => {
-    const classes = useStyles();
+    const classes = useStyles({ avatarColor: user.avatarColor });
     const [newAvatarId, setNewAvatarId] = useState('');
 
     const [updateAvatar] = useMutation(UPDATE_AVATAR, {

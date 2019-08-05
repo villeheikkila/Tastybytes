@@ -739,6 +739,8 @@ type UserObject =
   | { name: 'password', args?: [] | false, alias?: string  } 
   | { name: 'admin', args?: [] | false, alias?: string  } 
   | { name: 'avatarId', args?: [] | false, alias?: string  } 
+  | { name: 'avatarColor', args?: [] | false, alias?: string  } 
+  | { name: 'colorScheme', args?: [] | false, alias?: string  } 
   | { name: 'checkins', args?: UserCheckinsArgs[] | false, alias?: string  } 
   | { name: 'friends', args?: UserFriendsArgs[] | false, alias?: string  } 
   | { name: 'friendRequest', args?: UserFriendRequestArgs[] | false, alias?: string  } 
@@ -753,6 +755,8 @@ type UserFields =
   | 'password'
   | 'admin'
   | 'avatarId'
+  | 'avatarColor'
+  | 'colorScheme'
   | 'checkins'
   | 'friends'
   | 'friendRequest'
@@ -837,6 +841,22 @@ export interface UserFieldDetails {
   }
   avatarId: {
     type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: undefined
+  }
+  avatarColor: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: undefined
+  }
+  colorScheme: {
+    type: 'Int'
     args: {}
     description: string
     list: undefined
@@ -3378,6 +3398,8 @@ type UserPreviousValuesObject =
   | { name: 'password', args?: [] | false, alias?: string  } 
   | { name: 'admin', args?: [] | false, alias?: string  } 
   | { name: 'avatarId', args?: [] | false, alias?: string  } 
+  | { name: 'avatarColor', args?: [] | false, alias?: string  } 
+  | { name: 'colorScheme', args?: [] | false, alias?: string  } 
   | { name: 'createdAt', args?: [] | false, alias?: string  } 
   | { name: 'updatedAt', args?: [] | false, alias?: string  } 
 
@@ -3389,6 +3411,8 @@ type UserPreviousValuesFields =
   | 'password'
   | 'admin'
   | 'avatarId'
+  | 'avatarColor'
+  | 'colorScheme'
   | 'createdAt'
   | 'updatedAt'
 
@@ -3447,6 +3471,22 @@ export interface UserPreviousValuesFieldDetails {
   }
   avatarId: {
     type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: undefined
+  }
+  avatarColor: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
+    resolve: undefined
+  }
+  colorScheme: {
+    type: 'Int'
     args: {}
     description: string
     list: undefined
@@ -4426,6 +4466,28 @@ export interface UserWhereInput {
   avatarId_not_starts_with?: string | null
   avatarId_ends_with?: string | null
   avatarId_not_ends_with?: string | null
+  avatarColor?: string | null
+  avatarColor_not?: string | null
+  avatarColor_in?: string[]
+  avatarColor_not_in?: string[]
+  avatarColor_lt?: string | null
+  avatarColor_lte?: string | null
+  avatarColor_gt?: string | null
+  avatarColor_gte?: string | null
+  avatarColor_contains?: string | null
+  avatarColor_not_contains?: string | null
+  avatarColor_starts_with?: string | null
+  avatarColor_not_starts_with?: string | null
+  avatarColor_ends_with?: string | null
+  avatarColor_not_ends_with?: string | null
+  colorScheme?: number | null
+  colorScheme_not?: number | null
+  colorScheme_in?: number[]
+  colorScheme_not_in?: number[]
+  colorScheme_lt?: number | null
+  colorScheme_lte?: number | null
+  colorScheme_gt?: number | null
+  colorScheme_gte?: number | null
   checkins_every?: CheckinWhereInput | null
   checkins_some?: CheckinWhereInput | null
   checkins_none?: CheckinWhereInput | null
@@ -4543,6 +4605,28 @@ export type UserWhereInputInputObject =
   | { name: 'avatarId_not_starts_with', alias?: string  } 
   | { name: 'avatarId_ends_with', alias?: string  } 
   | { name: 'avatarId_not_ends_with', alias?: string  } 
+  | { name: 'avatarColor', alias?: string  } 
+  | { name: 'avatarColor_not', alias?: string  } 
+  | { name: 'avatarColor_in', alias?: string  } 
+  | { name: 'avatarColor_not_in', alias?: string  } 
+  | { name: 'avatarColor_lt', alias?: string  } 
+  | { name: 'avatarColor_lte', alias?: string  } 
+  | { name: 'avatarColor_gt', alias?: string  } 
+  | { name: 'avatarColor_gte', alias?: string  } 
+  | { name: 'avatarColor_contains', alias?: string  } 
+  | { name: 'avatarColor_not_contains', alias?: string  } 
+  | { name: 'avatarColor_starts_with', alias?: string  } 
+  | { name: 'avatarColor_not_starts_with', alias?: string  } 
+  | { name: 'avatarColor_ends_with', alias?: string  } 
+  | { name: 'avatarColor_not_ends_with', alias?: string  } 
+  | { name: 'colorScheme', alias?: string  } 
+  | { name: 'colorScheme_not', alias?: string  } 
+  | { name: 'colorScheme_in', alias?: string  } 
+  | { name: 'colorScheme_not_in', alias?: string  } 
+  | { name: 'colorScheme_lt', alias?: string  } 
+  | { name: 'colorScheme_lte', alias?: string  } 
+  | { name: 'colorScheme_gt', alias?: string  } 
+  | { name: 'colorScheme_gte', alias?: string  } 
   | { name: 'checkins_every', alias?: string  } 
   | { name: 'checkins_some', alias?: string  } 
   | { name: 'checkins_none', alias?: string  } 
@@ -5109,6 +5193,8 @@ export interface UserCreateInput {
   password?: string
   admin?: boolean
   avatarId?: string | null
+  avatarColor?: string | null
+  colorScheme?: number | null
   checkins?: CheckinCreateManyWithoutAuthorInput | null
   friends?: UserCreateManyInput | null
   friendRequest?: FriendRequestCreateManyWithoutReceiverInput | null
@@ -5122,6 +5208,8 @@ export type UserCreateInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarColor', alias?: string  } 
+  | { name: 'colorScheme', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   | { name: 'friendRequest', alias?: string  } 
@@ -5305,6 +5393,8 @@ export interface UserCreateWithoutCheckinsInput {
   password?: string
   admin?: boolean
   avatarId?: string | null
+  avatarColor?: string | null
+  colorScheme?: number | null
   friends?: UserCreateManyInput | null
   friendRequest?: FriendRequestCreateManyWithoutReceiverInput | null
 }
@@ -5317,6 +5407,8 @@ export type UserCreateWithoutCheckinsInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarColor', alias?: string  } 
+  | { name: 'colorScheme', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   | { name: 'friendRequest', alias?: string  } 
   
@@ -5424,6 +5516,8 @@ export interface UserUpdateInput {
   password?: string | null
   admin?: boolean | null
   avatarId?: string | null
+  avatarColor?: string | null
+  colorScheme?: number | null
   checkins?: CheckinUpdateManyWithoutAuthorInput | null
   friends?: UserUpdateManyInput | null
   friendRequest?: FriendRequestUpdateManyWithoutReceiverInput | null
@@ -5436,6 +5530,8 @@ export type UserUpdateInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarColor', alias?: string  } 
+  | { name: 'colorScheme', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   | { name: 'friendRequest', alias?: string  } 
@@ -5740,6 +5836,8 @@ export interface UserUpdateWithoutCheckinsDataInput {
   password?: string | null
   admin?: boolean | null
   avatarId?: string | null
+  avatarColor?: string | null
+  colorScheme?: number | null
   friends?: UserUpdateManyInput | null
   friendRequest?: FriendRequestUpdateManyWithoutReceiverInput | null
 }
@@ -5751,6 +5849,8 @@ export type UserUpdateWithoutCheckinsDataInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarColor', alias?: string  } 
+  | { name: 'colorScheme', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   | { name: 'friendRequest', alias?: string  } 
   
@@ -5793,6 +5893,8 @@ export interface UserUpdateDataInput {
   password?: string | null
   admin?: boolean | null
   avatarId?: string | null
+  avatarColor?: string | null
+  colorScheme?: number | null
   checkins?: CheckinUpdateManyWithoutAuthorInput | null
   friends?: UserUpdateManyInput | null
   friendRequest?: FriendRequestUpdateManyWithoutReceiverInput | null
@@ -5805,6 +5907,8 @@ export type UserUpdateDataInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarColor', alias?: string  } 
+  | { name: 'colorScheme', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   | { name: 'friendRequest', alias?: string  } 
@@ -6042,6 +6146,28 @@ export interface UserScalarWhereInput {
   avatarId_not_starts_with?: string | null
   avatarId_ends_with?: string | null
   avatarId_not_ends_with?: string | null
+  avatarColor?: string | null
+  avatarColor_not?: string | null
+  avatarColor_in?: string[]
+  avatarColor_not_in?: string[]
+  avatarColor_lt?: string | null
+  avatarColor_lte?: string | null
+  avatarColor_gt?: string | null
+  avatarColor_gte?: string | null
+  avatarColor_contains?: string | null
+  avatarColor_not_contains?: string | null
+  avatarColor_starts_with?: string | null
+  avatarColor_not_starts_with?: string | null
+  avatarColor_ends_with?: string | null
+  avatarColor_not_ends_with?: string | null
+  colorScheme?: number | null
+  colorScheme_not?: number | null
+  colorScheme_in?: number[]
+  colorScheme_not_in?: number[]
+  colorScheme_lt?: number | null
+  colorScheme_lte?: number | null
+  colorScheme_gt?: number | null
+  colorScheme_gte?: number | null
   createdAt?: string | null
   createdAt_not?: string | null
   createdAt_in?: string[]
@@ -6150,6 +6276,28 @@ export type UserScalarWhereInputInputObject =
   | { name: 'avatarId_not_starts_with', alias?: string  } 
   | { name: 'avatarId_ends_with', alias?: string  } 
   | { name: 'avatarId_not_ends_with', alias?: string  } 
+  | { name: 'avatarColor', alias?: string  } 
+  | { name: 'avatarColor_not', alias?: string  } 
+  | { name: 'avatarColor_in', alias?: string  } 
+  | { name: 'avatarColor_not_in', alias?: string  } 
+  | { name: 'avatarColor_lt', alias?: string  } 
+  | { name: 'avatarColor_lte', alias?: string  } 
+  | { name: 'avatarColor_gt', alias?: string  } 
+  | { name: 'avatarColor_gte', alias?: string  } 
+  | { name: 'avatarColor_contains', alias?: string  } 
+  | { name: 'avatarColor_not_contains', alias?: string  } 
+  | { name: 'avatarColor_starts_with', alias?: string  } 
+  | { name: 'avatarColor_not_starts_with', alias?: string  } 
+  | { name: 'avatarColor_ends_with', alias?: string  } 
+  | { name: 'avatarColor_not_ends_with', alias?: string  } 
+  | { name: 'colorScheme', alias?: string  } 
+  | { name: 'colorScheme_not', alias?: string  } 
+  | { name: 'colorScheme_in', alias?: string  } 
+  | { name: 'colorScheme_not_in', alias?: string  } 
+  | { name: 'colorScheme_lt', alias?: string  } 
+  | { name: 'colorScheme_lte', alias?: string  } 
+  | { name: 'colorScheme_gt', alias?: string  } 
+  | { name: 'colorScheme_gte', alias?: string  } 
   | { name: 'createdAt', alias?: string  } 
   | { name: 'createdAt_not', alias?: string  } 
   | { name: 'createdAt_in', alias?: string  } 
@@ -6186,6 +6334,8 @@ export interface UserUpdateManyDataInput {
   password?: string | null
   admin?: boolean | null
   avatarId?: string | null
+  avatarColor?: string | null
+  colorScheme?: number | null
 }
 export type UserUpdateManyDataInputInputObject =
   | Extract<keyof UserUpdateManyDataInput, string>
@@ -6195,6 +6345,8 @@ export type UserUpdateManyDataInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarColor', alias?: string  } 
+  | { name: 'colorScheme', alias?: string  } 
   
 export interface UserUpsertWithoutCheckinsInput {
   update?: UserUpdateWithoutCheckinsDataInput
@@ -6923,6 +7075,8 @@ export interface UserUpdateManyMutationInput {
   password?: string | null
   admin?: boolean | null
   avatarId?: string | null
+  avatarColor?: string | null
+  colorScheme?: number | null
 }
 export type UserUpdateManyMutationInputInputObject =
   | Extract<keyof UserUpdateManyMutationInput, string>
@@ -6932,6 +7086,8 @@ export type UserUpdateManyMutationInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarColor', alias?: string  } 
+  | { name: 'colorScheme', alias?: string  } 
   
 export interface ProductCreateInput {
   id?: string | null
@@ -7234,6 +7390,8 @@ export interface UserCreateWithoutFriendRequestInput {
   password?: string
   admin?: boolean
   avatarId?: string | null
+  avatarColor?: string | null
+  colorScheme?: number | null
   checkins?: CheckinCreateManyWithoutAuthorInput | null
   friends?: UserCreateManyInput | null
 }
@@ -7246,6 +7404,8 @@ export type UserCreateWithoutFriendRequestInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarColor', alias?: string  } 
+  | { name: 'colorScheme', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   
@@ -7299,6 +7459,8 @@ export interface UserUpdateWithoutFriendRequestDataInput {
   password?: string | null
   admin?: boolean | null
   avatarId?: string | null
+  avatarColor?: string | null
+  colorScheme?: number | null
   checkins?: CheckinUpdateManyWithoutAuthorInput | null
   friends?: UserUpdateManyInput | null
 }
@@ -7310,6 +7472,8 @@ export type UserUpdateWithoutFriendRequestDataInputInputObject =
   | { name: 'password', alias?: string  } 
   | { name: 'admin', alias?: string  } 
   | { name: 'avatarId', alias?: string  } 
+  | { name: 'avatarColor', alias?: string  } 
+  | { name: 'colorScheme', alias?: string  } 
   | { name: 'checkins', alias?: string  } 
   | { name: 'friends', alias?: string  } 
   
@@ -7542,6 +7706,10 @@ export type UserOrderByInputValues =
   | 'admin_DESC'
   | 'avatarId_ASC'
   | 'avatarId_DESC'
+  | 'avatarColor_ASC'
+  | 'avatarColor_DESC'
+  | 'colorScheme_ASC'
+  | 'colorScheme_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'
