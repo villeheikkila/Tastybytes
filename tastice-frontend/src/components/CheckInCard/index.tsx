@@ -3,8 +3,9 @@ import { Card, CardHeader, IconButton, Link, makeStyles, Menu, MenuItem, Typogra
 import { blue } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { UserContext } from '../../App';
 import { DELETE_CHECKIN, PRODUCT, SEARCH_CHECKINS, USER } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
@@ -47,6 +48,7 @@ interface CheckInCardProps {
 
 export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Element => {
     const classes = useStyles();
+    const { id } = useContext(UserContext);
     const [visible, setVisible] = useState();
     const [openEdit, setOpenEdit] = useState();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
@@ -99,6 +101,13 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
     };
 
     const image = showProduct ? '' : checkinObject.image;
+    const userIsTheAuthor = authorObject.id === id;
+
+    const icon = (
+        <IconButton aria-label="Settings" {...bindTrigger(menuState)}>
+            <MoreVertIcon />
+        </IconButton>
+    );
 
     return (
         <>
@@ -112,11 +121,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
                             avatarId={authorObject.avatarId}
                         />
                     }
-                    action={
-                        <IconButton aria-label="Settings" {...bindTrigger(menuState)}>
-                            <MoreVertIcon />
-                        </IconButton>
-                    }
+                    action={{ icon }}
                     title={
                         <Typography variant="h6" color="textSecondary" component="p">
                             <Link component={RouterLink} to={`/user/${authorObject.id}`}>
