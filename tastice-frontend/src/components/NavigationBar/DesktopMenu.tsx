@@ -1,11 +1,12 @@
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Badge, createStyles, makeStyles, Menu, MenuItem, Switch } from '@material-ui/core';
 import { AccountCircle, BrightnessHigh, BrightnessLow, ExitToApp, PersonOutline } from '@material-ui/icons/';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../App';
+import { ME, UPDATE_USER } from '../../graphql';
 import { client } from '../../index';
-import { THEME } from '../../graphql';
-import { themeSwitcher } from '../../utils';
+import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -18,14 +19,20 @@ const useStyles = makeStyles(() =>
 interface DesktopMenuProps {
     anchorEl: Element | null | undefined;
     setAnchorEl: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
-    setToken: React.Dispatch<string | null>;
 }
 
-export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: DesktopMenuProps): JSX.Element => {
+export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.Element => {
     const classes = useStyles();
     const [colorScheme, setColorScheme] = useState(false);
-    const themeQuery = useQuery(THEME);
-    const theme = themeQuery.data.theme ? 1 : 0;
+    const me = useQuery(ME);
+    const { setToken, id } = useContext(UserContext);
+
+    const [updateUser] = useMutation(UPDATE_USER, {
+        onError: errorHandler,
+        refetchQueries: [{ query: ME }],
+    });
+
+    const theme = me.data.me && me.data.me.colorScheme ? 1 : 0;
 
     useEffect((): void => {
         if (theme === 0) setColorScheme(false);
@@ -37,6 +44,16 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: DesktopMenuProp
         await client.clearStore();
         localStorage.clear();
         setToken(null);
+    };
+
+    const handleColorSchemeChange = async (): Promise<void> => {
+        const colorTheme = colorScheme ? 0 : 1;
+        await updateUser({
+            variables: {
+                id,
+                colorScheme: colorTheme,
+            },
+        });
     };
 
     return (
@@ -61,9 +78,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl, setToken }: DesktopMenuProp
                 )}
                 <Switch
                     checked={colorScheme}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
-                        themeSwitcher(event.target.checked);
-                    }}
+                    onChange={(): Promise<void> => handleColorSchemeChange()}
                     value="color scheme"
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                 />

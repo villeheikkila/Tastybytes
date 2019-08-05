@@ -87,7 +87,7 @@ export const MobileMenu = (): JSX.Element => {
                     <ListItemText primary="Change color scheme" />
                     <Switch
                         checked={colorScheme}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+                        onChange={(): void => {
                             handleColorSchemeChange();
                         }}
                         value="color scheme"

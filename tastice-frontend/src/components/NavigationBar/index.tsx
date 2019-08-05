@@ -13,11 +13,10 @@ import { fade } from '@material-ui/core/styles';
 import { AccountCircle } from '@material-ui/icons/';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
-import { UserContext } from '../../App';
 import { filterChanger } from '../../utils';
 import { DesktopMenu } from './DesktopMenu';
 import { SearchInputBase } from './SearchInputBase';
@@ -75,7 +74,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const NavigationBar = (): JSX.Element => {
     const classes = useStyles();
-    const { setToken } = useContext(UserContext);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [filter, setFilter] = useState('');
     const { location } = useReactRouter();
@@ -168,7 +166,7 @@ export const NavigationBar = (): JSX.Element => {
                     </div>
                 </Toolbar>
             </AppBar>
-            <DesktopMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} setToken={setToken} />
+            <DesktopMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
         </div>
     );
 };

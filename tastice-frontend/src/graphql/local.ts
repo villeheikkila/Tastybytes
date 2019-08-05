@@ -7,12 +7,6 @@ export const GET_NOTIFICATION = gql`
     }
 `;
 
-export const THEME = gql`
-    {
-        theme @client
-    }
-`;
-
 export const FILTER = gql`
     {
         filter @client

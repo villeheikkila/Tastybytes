@@ -30,12 +30,3 @@ export const filterChanger = (filter: string): void => {
         },
     });
 };
-
-export const themeSwitcher = (value: boolean): void => {
-    localStorage.setItem('theme', `${value}`);
-    client.writeData({
-        data: {
-            theme: value,
-        },
-    });
-};

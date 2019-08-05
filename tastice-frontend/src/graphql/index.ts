@@ -1,5 +1,5 @@
 import { CHECKIN, CREATE_CHECKIN, DELETE_CHECKIN, SEARCH_CHECKINS, UPDATE_CHECKIN } from './checkin';
-import { FILTER, GET_NOTIFICATION, THEME } from './local';
+import { FILTER, GET_NOTIFICATION } from './local';
 import {
     ADD_PRODUCT,
     ALL_CATEGORIES,
@@ -46,7 +46,6 @@ export {
     ALL_CATEGORIES,
     ALL_COMPANIES,
     FILTER,
-    THEME,
     GET_NOTIFICATION,
     UPDATE_AVATAR,
     UPDATE_PASSWORD,
