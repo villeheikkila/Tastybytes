@@ -103,11 +103,15 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
     const image = showProduct ? '' : checkinObject.image;
     const userIsTheAuthor = authorObject.id === id;
 
-    const icon = (
-        <IconButton aria-label="Settings" {...bindTrigger(menuState)}>
-            <MoreVertIcon />
-        </IconButton>
-    );
+    // A workaround for not being able to use ternary operator on CardHeader action prop
+    const settings = (): JSX.Element | undefined => {
+        if (userIsTheAuthor)
+            return (
+                <IconButton aria-label="Settings" {...bindTrigger(menuState)}>
+                    <MoreVertIcon />
+                </IconButton>
+            );
+    };
 
     return (
         <>
@@ -121,7 +125,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
                             avatarId={authorObject.avatarId}
                         />
                     }
-                    action={{ icon }}
+                    action={settings()}
                     title={
                         <Typography variant="h6" color="textSecondary" component="p">
                             <Link component={RouterLink} to={`/user/${authorObject.id}`}>
