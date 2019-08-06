@@ -1,10 +1,9 @@
 import { useMutation } from '@apollo/react-hooks';
-import { Avatar, createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
-import { Image } from 'cloudinary-react';
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { SmartAvatar } from '../../components/SmartAvatar';
 import { ME, UPDATE_AVATAR } from '../../graphql';
-import { CLOUDINARY_CLOUD_NAME } from '../../index';
 import { uploadCloudinary } from '../../services/cloudinary';
 import { errorHandler } from '../../utils';
 
@@ -88,16 +87,15 @@ export const AccountAvatar = ({ user }: any): JSX.Element | null => {
     return (
         <div {...getRootProps()}>
             <input {...getInputProps()} />
-            <Avatar alt="Avatar" className={classes.avatar}>
-                {user.avatarId ? (
-                    <Image cloudName={CLOUDINARY_CLOUD_NAME} publicId={user.avatarId} width="200" crop="thumb"></Image>
-                ) : (
-                    <Typography variant="h3" className={classes.avatarInitials}>
-                        {user.firstName.charAt(0).toUpperCase()}
-                        {user.lastName.charAt(0).toUpperCase()}
-                    </Typography>
-                )}
-            </Avatar>
+            <SmartAvatar
+                id={user.id}
+                size={200}
+                firstName={user.firstName}
+                lastName={user.lastName}
+                avatarId={user.avatarId}
+                avatarColor={user.avatarColor}
+                isClickable={false}
+            />
         </div>
     );
 };

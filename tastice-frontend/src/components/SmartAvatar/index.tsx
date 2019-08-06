@@ -11,6 +11,7 @@ interface SmartAvatarProps {
     avatarId: string;
     avatarColor?: string;
     size?: number;
+    isClickable?: boolean;
 }
 
 const useStyles = makeStyles(
@@ -37,19 +38,35 @@ export const SmartAvatar = ({
     avatarId,
     avatarColor = '#f2b50c',
     size = 50,
+    isClickable = true,
 }: SmartAvatarProps): JSX.Element => {
     const classes = useStyles({ avatarColor, size });
 
     return (
-        <Avatar alt={firstName} component={Link} to={`/user/${id}`} className={classes.avatar}>
-            {avatarId ? (
-                <Image cloudName={CLOUDINARY_CLOUD_NAME} publicId={avatarId} width={size} crop="thumb"></Image>
+        <>
+            {isClickable ? (
+                <Avatar alt={firstName} component={Link} to={`/user/${id}`} className={classes.avatar}>
+                    {avatarId ? (
+                        <Image cloudName={CLOUDINARY_CLOUD_NAME} publicId={avatarId} width={size} crop="thumb"></Image>
+                    ) : (
+                        <Typography variant="h6" className={classes.text}>
+                            {firstName.charAt(0).toUpperCase()}
+                            {lastName.charAt(0).toUpperCase()}
+                        </Typography>
+                    )}
+                </Avatar>
             ) : (
-                <Typography variant="h6" className={classes.text}>
-                    {firstName.charAt(0).toUpperCase()}
-                    {lastName.charAt(0).toUpperCase()}
-                </Typography>
+                <Avatar alt={firstName} className={classes.avatar}>
+                    {avatarId ? (
+                        <Image cloudName={CLOUDINARY_CLOUD_NAME} publicId={avatarId} width={size} crop="thumb"></Image>
+                    ) : (
+                        <Typography variant="h6" className={classes.text}>
+                            {firstName.charAt(0).toUpperCase()}
+                            {lastName.charAt(0).toUpperCase()}
+                        </Typography>
+                    )}
+                </Avatar>
             )}
-        </Avatar>
+        </>
     );
 };

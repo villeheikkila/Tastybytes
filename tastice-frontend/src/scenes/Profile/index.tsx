@@ -103,11 +103,12 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
                 </Typography>
                 <SmartAvatar
                     id={id}
-                    size={150}
+                    size={200}
                     firstName={userObject.firstName}
                     lastName={userObject.lastName}
                     avatarId={userObject.avatarId}
                     avatarColor={userObject.avatarColor}
+                    isClickable={false}
                 />
                 <Typography variant="h4" component="h3" className={classes.textField}>
                     Checkins in total: {userObject.checkins.length}
