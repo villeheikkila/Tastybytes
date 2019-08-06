@@ -930,9 +930,13 @@ export interface NexusGenArgTypes {
     }
     searchCheckins: { // args
       filter?: string | null; // String
+      first?: number | null; // Int
+      skip?: number | null; // Int
     }
     searchProducts: { // args
       filter?: string | null; // String
+      first?: number | null; // Int
+      skip?: number | null; // Int
     }
     searchUsers: { // args
       filter?: string | null; // String

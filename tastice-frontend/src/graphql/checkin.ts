@@ -2,8 +2,8 @@ import { gql } from 'apollo-boost';
 import { CHECKIN_DETAILS, PRODUCT_DETAILS, USER_DETAILS } from './fragments';
 
 export const SEARCH_CHECKINS = gql`
-    query searchCheckins($filter: String!) {
-        searchCheckins(filter: $filter) {
+    query searchCheckins($filter: String, $first: Int, $skip: Int) {
+        searchCheckins(filter: $filter, first: $first, skip: $skip) {
             ...CheckInDetails
             author {
                 ...UserDetails

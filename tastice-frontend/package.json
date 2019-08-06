@@ -33,6 +33,7 @@
         "react-router-dom": "^5.0.1",
         "react-scripts": "3.0.1",
         "react-select": "^3.0.4",
+        "react-waypoint": "^9.0.2",
         "recharts": "^1.6.2",
         "subscriptions-transport-ws": "^0.9.16",
         "typeface-leckerli-one": "0.0.72",

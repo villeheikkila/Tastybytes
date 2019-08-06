@@ -1,4 +1,4 @@
-import { idArg, queryType, stringArg } from 'nexus';
+import { idArg, intArg, queryType, stringArg } from 'nexus';
 import { getUserId } from '../../utils';
 
 export const Query = queryType({
@@ -125,8 +125,10 @@ export const Query = queryType({
             type: 'Product',
             args: {
                 filter: stringArg(),
+                first: intArg(),
+                skip: intArg(),
             },
-            resolve: (_, { filter }, ctx) => {
+            resolve: (_, { filter, first, skip }, ctx) => {
                 if (!filter) ctx.prisma.products({ orderBy: 'createdAt_DESC' });
                 return ctx.prisma.products({
                     where: {
@@ -137,6 +139,8 @@ export const Query = queryType({
                             { name_contains: filter.charAt(0).toUpperCase() + filter.slice(1).toLowerCase() },
                         ],
                     },
+                    first,
+                    skip,
                     orderBy: 'createdAt_DESC',
                 });
             },
@@ -146,8 +150,10 @@ export const Query = queryType({
             type: 'Checkin',
             args: {
                 filter: stringArg(),
+                first: intArg(),
+                skip: intArg(),
             },
-            resolve: (_, { filter }, ctx) => {
+            resolve: (_, { filter, first, skip }, ctx) => {
                 return ctx.prisma.checkins({
                     where: {
                         OR: [
@@ -161,6 +167,8 @@ export const Query = queryType({
                             },
                         ],
                     },
+                    first,
+                    skip,
                     orderBy: 'createdAt_DESC',
                 });
             },

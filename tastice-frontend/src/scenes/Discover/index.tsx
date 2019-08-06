@@ -1,8 +1,9 @@
 import { useQuery } from '@apollo/react-hooks';
 import { Card, Fab, Grid, makeStyles, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import { Waypoint } from 'react-waypoint';
 import { ProductCard } from '../../components/ProductCard';
 import { FILTER, SEARCH_PRODUCTS } from '../../graphql';
 import { errorHandler } from '../../utils';
@@ -31,16 +32,30 @@ export const Discover = (): JSX.Element | null => {
     const classes = useStyles();
     const filter = useQuery(FILTER);
 
-    const searchProductsQuery = useQuery(SEARCH_PRODUCTS, {
-        variables: { filter: filter.data.filter },
+    const { data, fetchMore } = useQuery(SEARCH_PRODUCTS, {
+        variables: { filter: filter.data.filter, first: 5 },
         onError: errorHandler,
     });
 
-    if (searchProductsQuery === undefined || searchProductsQuery.data.searchProducts === undefined) {
+    if (data === undefined || data.searchProducts === undefined) {
         return null;
     }
 
-    const products = searchProductsQuery.data.searchProducts;
+    const loadMore = (): void => {
+        fetchMore({
+            variables: {
+                skip: data.searchProducts.length,
+            },
+            updateQuery: (prev: any, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev;
+                return Object.assign({}, prev, {
+                    searchProducts: [...prev.searchProducts, ...fetchMoreResult.searchProducts],
+                });
+            },
+        });
+    };
+
+    const products = data.searchProducts;
     const noResults = products.length === 0;
 
     return (
@@ -50,10 +65,13 @@ export const Discover = (): JSX.Element | null => {
             <Grid container justify="center" spacing={10}>
                 <Grid item xs={12}>
                     {products.map(
-                        (product: Product): JSX.Element => (
-                            <Card key={product.id} className={classes.card}>
-                                <ProductCard key={product.id} product={product} showMenu={false} />
-                            </Card>
+                        (product: Product, index: number): JSX.Element => (
+                            <Fragment key={product.id.toUpperCase()}>
+                                {data.searchProducts.length - index <= 1 && <Waypoint onEnter={loadMore} />}
+                                <Card key={product.id} className={classes.card}>
+                                    <ProductCard key={product.id} product={product} showMenu={false} />
+                                </Card>
+                            </Fragment>
                         ),
                     )}
                 </Grid>
