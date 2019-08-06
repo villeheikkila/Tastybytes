@@ -28,9 +28,10 @@ const useStyles = makeStyles((theme: Theme) =>
 interface CreateCheckInProps {
     authorId: string;
     productId: string;
+    setSubmitted: any;
 }
 
-export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.Element => {
+export const CreateCheckIn = ({ authorId, productId, setSubmitted }: CreateCheckInProps): JSX.Element => {
     const classes = useStyles();
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
@@ -61,6 +62,7 @@ export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.
                 message: `Checkin for '${result.data.createCheckin.product.name}' succesfully added`,
                 variant: 'success',
             });
+            setSubmitted(result.data.createCheckin);
         }
     };
 

@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/react-hooks';
 import { Card, makeStyles } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
 import { ProductCard } from '../../components/ProductCard';
@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
 
 export const Product = ({ id }: IdObject): JSX.Element | null => {
     const me = useQuery(ME);
+    const [submitted, setSubmitted] = useState();
     const classes = useStyles();
     const productsQuery = useQuery(PRODUCT, {
         variables: { id },
@@ -29,15 +30,22 @@ export const Product = ({ id }: IdObject): JSX.Element | null => {
 
     const dividerText = product.checkins.length === 0 ? 'No Recent Activity' : 'Recent Activity';
 
+    // Workaround due to fact that Prisma can't order nested fields
+    const reverseOrderCheckins = product.checkins.reverse();
+
     return (
         <>
             <Card className={classes.card}>
                 <ProductCard product={product} showMenu={true} />
             </Card>
-            <CreateCheckIn authorId={me.data.me.id} productId={product.id} />
+
+            {!submitted && (
+                <CreateCheckIn authorId={me.data.me.id} productId={product.id} setSubmitted={setSubmitted} />
+            )}
+
             <Divider text={dividerText} />
 
-            {product.checkins.map(
+            {reverseOrderCheckins.map(
                 (checkin: CheckInObject): JSX.Element => (
                     <CheckInCard key={checkin.id} checkin={checkin} showProduct={false} />
                 ),
