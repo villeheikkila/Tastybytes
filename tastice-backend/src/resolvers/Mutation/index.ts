@@ -128,7 +128,6 @@ export const Mutation = mutationType({
                 colorScheme: intArg(),
             },
             resolve: async (_, { id, firstName, lastName, email, colorScheme }) => {
-            console.log("TCL: colorScheme", colorScheme)
                 const firstNameTitleCase =
                     firstName && firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
                 const lastNameTitleCase =

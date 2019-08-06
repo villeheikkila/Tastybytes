@@ -14,17 +14,17 @@ import {
     Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
 import { SmartAvatar } from '../../components/SmartAvatar';
 import { USER } from '../../graphql';
+import { RatingChart } from './RatingChart';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         paper: {
-            marginTop: 30,
             maxWidth: 700,
             padding: theme.spacing(1, 1),
             margin: `${theme.spacing(1)}px auto`,
@@ -40,14 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: 'column',
             alignItems: 'center',
             alignContent: 'center',
-        },
-        avatar: {
-            marginLeft: 30,
-            marginRight: 30,
-            marginTop: 15,
-            marginBottom: 15,
-            width: 150,
-            height: 150,
         },
         smallAvatar: {
             margin: 10,
@@ -70,6 +62,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Profile = ({ id }: IdObject): JSX.Element | null => {
     const classes = useStyles();
+    const [ratingFilter, setRatingFilter] = useState();
+
     const user = useQuery(USER, {
         variables: { id },
     });
@@ -86,6 +80,18 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
         avatarId: user.data.user[0].avatarId,
         avatarColor: user.data.user[0].avatarColor,
     };
+
+    const ratings = userObject.checkins
+        .reduce(
+            (count: number[], checkin: CheckInObject) => (
+                (count[checkin.rating - 1] = ++count[checkin.rating - 1] || 1), count
+            ),
+            new Array(5).fill(0),
+        )
+        .map((count: number, index: number) => ({
+            value: index + 1,
+            count,
+        }));
 
     const dividerText = userObject.checkins.length === 0 ? 'No Recent Activity' : 'Recent Activity';
 
@@ -106,6 +112,10 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
                 <Typography variant="h4" component="h3" className={classes.textField}>
                     Checkins in total: {userObject.checkins.length}
                 </Typography>
+            </Paper>
+
+            <Paper className={classes.paper}>
+                <RatingChart ratings={ratings} setRatingFilter={setRatingFilter} />
             </Paper>
 
             <div className={classes.friends}>
@@ -148,11 +158,13 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
 
             <Divider text={dividerText} />
 
-            {userObject.checkins.map(
-                (checkin: CheckInObject): JSX.Element => (
-                    <CheckInCard key={checkin.id} checkin={checkin} showProduct={true} />
-                ),
-            )}
+            {userObject.checkins
+                .filter((checkin: CheckInObject) => !ratingFilter || checkin.rating === ratingFilter)
+                .map(
+                    (checkin: CheckInObject): JSX.Element => (
+                        <CheckInCard key={checkin.id} checkin={checkin} showProduct={true} />
+                    ),
+                )}
         </div>
     );
 };
