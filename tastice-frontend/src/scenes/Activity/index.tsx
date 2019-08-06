@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/react-hooks';
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 import { CheckInCard } from '../../components/CheckInCard';
 import { FILTER, SEARCH_CHECKINS } from '../../graphql';
@@ -12,13 +12,7 @@ const useStyles = makeStyles(theme => ({
         maxWidth: 700,
         margin: `${theme.spacing(1)}px auto`,
         alignContent: 'center',
-    },
-    fab: {
-        margin: 0,
-        top: 'auto',
-        right: 30,
-        bottom: 70,
-        position: 'fixed',
+        position: 'relative',
     },
 }));
 
@@ -35,8 +29,11 @@ export const Activity = (): JSX.Element | null => {
         return null;
     }
 
+    const noResults = checkins.data.searchCheckins.length === 0;
+
     return (
         <div className={classes.root}>
+            {noResults && <Typography variant="h5">No checkins found</Typography>}
             <Grid container justify="center" spacing={10}>
                 <Grid item xs={12}>
                     {checkins.data.searchCheckins.map(

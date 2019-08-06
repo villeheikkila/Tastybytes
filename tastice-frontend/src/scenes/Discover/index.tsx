@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/react-hooks';
-import { Card, Fab, Grid, makeStyles } from '@material-ui/core';
+import { Card, Fab, Grid, makeStyles, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -41,9 +41,12 @@ export const Discover = (): JSX.Element | null => {
     }
 
     const products = searchProductsQuery.data.searchProducts;
+    const noResults = products.length === 0;
 
     return (
         <div className={classes.root}>
+            {noResults && <Typography variant="h5">No products found</Typography>}
+
             <Grid container justify="center" spacing={10}>
                 <Grid item xs={12}>
                     {products.map(
