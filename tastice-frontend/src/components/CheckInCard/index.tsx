@@ -144,7 +144,12 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
                 {showProduct && <ProductCard product={productObject} showMenu={false} />}
 
                 {openEdit ? (
-                    <EditCheckIn id={checkinObject.id} setOpenEdit={setOpenEdit} product={productObject.name} />
+                    <EditCheckIn
+                        id={checkinObject.id}
+                        setOpenEdit={setOpenEdit}
+                        product={productObject.name}
+                        setVisible={setOpenEdit}
+                    />
                 ) : (
                     <CheckInContent rating={checkinObject.rating} comment={checkinObject.comment} image={image} />
                 )}

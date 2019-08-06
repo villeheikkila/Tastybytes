@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         button: {
             margin: theme.spacing(1),
+            width: 150,
         },
     }),
 );
@@ -27,9 +28,10 @@ interface CheckInProps {
     id: string;
     product: string;
     setOpenEdit: React.Dispatch<boolean | undefined>;
+    setVisible: React.Dispatch<boolean | undefined>;
 }
 
-export const EditCheckIn = ({ id, setOpenEdit, product }: CheckInProps): JSX.Element | null => {
+export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInProps): JSX.Element | null => {
     const classes = useStyles();
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
@@ -88,9 +90,19 @@ export const EditCheckIn = ({ id, setOpenEdit, product }: CheckInProps): JSX.Ele
             />
             <Typography component="p">Rating</Typography>
             <Rating value={rating} max={5} onChange={(i: number): void => setRating(i)} />
-            <Button variant="contained" color="primary" className={classes.button} onClick={handleEditCheckInEdit}>
-                Check-in!
-            </Button>
+            <div>
+                <Button variant="contained" color="primary" className={classes.button} onClick={handleEditCheckInEdit}>
+                    Edit
+                </Button>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    className={classes.button}
+                    onClick={() => setVisible(false)}
+                >
+                    Cancel
+                </Button>
+            </div>
         </CardContent>
     );
 };

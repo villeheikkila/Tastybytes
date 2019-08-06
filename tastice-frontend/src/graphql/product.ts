@@ -62,7 +62,7 @@ export const DELETE_PRODUCT = gql`
 export const ADD_PRODUCT = gql`
     mutation addProduct(
         $name: String!
-        $imageId: String!
+        $imageId: String
         $company: String!
         $categoryId: ID!
         $subCategories: [String!]

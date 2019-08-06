@@ -35,6 +35,7 @@ export const CreateCheckIn = ({ authorId, productId }: CreateCheckInProps): JSX.
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
     const [image, setImage] = useState();
+
     const [createCheckin] = useMutation(CREATE_CHECKIN, {
         onError: errorHandler,
         refetchQueries: [
