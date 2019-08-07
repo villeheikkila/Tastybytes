@@ -49,6 +49,7 @@ type Company {
 type Category {
   id: ID! @id
   name: String! @unique
+  color: String
   subCategory: [SubCategory] 
   products: [Product] 
 }

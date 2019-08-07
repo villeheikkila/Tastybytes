@@ -22,6 +22,7 @@ export const PRODUCT_DETAILS = gql`
         category {
             id
             name
+            color
         }
         subCategory {
             id

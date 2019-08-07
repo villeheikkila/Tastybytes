@@ -37,6 +37,7 @@ type BatchPayload {
 type Category {
   id: ID!
   name: String!
+  color: String
   subCategory(where: SubCategoryWhereInput, orderBy: SubCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SubCategory!]
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
 }
@@ -50,6 +51,7 @@ type CategoryConnection {
 input CategoryCreateInput {
   id: ID
   name: String!
+  color: String
   subCategory: SubCategoryCreateManyWithoutCategoryInput
   products: ProductCreateManyWithoutCategoryInput
 }
@@ -67,12 +69,14 @@ input CategoryCreateOneWithoutSubCategoryInput {
 input CategoryCreateWithoutProductsInput {
   id: ID
   name: String!
+  color: String
   subCategory: SubCategoryCreateManyWithoutCategoryInput
 }
 
 input CategoryCreateWithoutSubCategoryInput {
   id: ID
   name: String!
+  color: String
   products: ProductCreateManyWithoutCategoryInput
 }
 
@@ -86,11 +90,14 @@ enum CategoryOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  color_ASC
+  color_DESC
 }
 
 type CategoryPreviousValues {
   id: ID!
   name: String!
+  color: String
 }
 
 input CategoryScalarWhereInput {
@@ -122,6 +129,20 @@ input CategoryScalarWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  color: String
+  color_not: String
+  color_in: [String!]
+  color_not_in: [String!]
+  color_lt: String
+  color_lte: String
+  color_gt: String
+  color_gte: String
+  color_contains: String
+  color_not_contains: String
+  color_starts_with: String
+  color_not_starts_with: String
+  color_ends_with: String
+  color_not_ends_with: String
   AND: [CategoryScalarWhereInput!]
   OR: [CategoryScalarWhereInput!]
   NOT: [CategoryScalarWhereInput!]
@@ -147,16 +168,19 @@ input CategorySubscriptionWhereInput {
 
 input CategoryUpdateInput {
   name: String
+  color: String
   subCategory: SubCategoryUpdateManyWithoutCategoryInput
   products: ProductUpdateManyWithoutCategoryInput
 }
 
 input CategoryUpdateManyDataInput {
   name: String
+  color: String
 }
 
 input CategoryUpdateManyMutationInput {
   name: String
+  color: String
 }
 
 input CategoryUpdateManyWithoutProductsInput {
@@ -185,11 +209,13 @@ input CategoryUpdateOneRequiredWithoutSubCategoryInput {
 
 input CategoryUpdateWithoutProductsDataInput {
   name: String
+  color: String
   subCategory: SubCategoryUpdateManyWithoutCategoryInput
 }
 
 input CategoryUpdateWithoutSubCategoryDataInput {
   name: String
+  color: String
   products: ProductUpdateManyWithoutCategoryInput
 }
 
@@ -238,6 +264,20 @@ input CategoryWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  color: String
+  color_not: String
+  color_in: [String!]
+  color_not_in: [String!]
+  color_lt: String
+  color_lte: String
+  color_gt: String
+  color_gte: String
+  color_contains: String
+  color_not_contains: String
+  color_starts_with: String
+  color_not_starts_with: String
+  color_ends_with: String
+  color_not_ends_with: String
   subCategory_every: SubCategoryWhereInput
   subCategory_some: SubCategoryWhereInput
   subCategory_none: SubCategoryWhereInput

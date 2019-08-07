@@ -43,7 +43,7 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
     const [updateProduct] = useMutation(UPDATE_PRODUCT, {
         onError: errorHandler,
         refetchQueries: [
-            { query: SEARCH_CHECKINS, variables: { filter: '' } },
+            { query: SEARCH_CHECKINS, variables: { filter: '', first: 5 } },
             { query: SEARCH_PRODUCTS, variables: { filter: '' } },
         ],
     });

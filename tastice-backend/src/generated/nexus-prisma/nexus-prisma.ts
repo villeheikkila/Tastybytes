@@ -1247,12 +1247,14 @@ type CategoryObject =
   | CategoryFields
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'name', args?: [] | false, alias?: string  } 
+  | { name: 'color', args?: [] | false, alias?: string  } 
   | { name: 'subCategory', args?: CategorySubCategoryArgs[] | false, alias?: string  } 
   | { name: 'products', args?: CategoryProductsArgs[] | false, alias?: string  } 
 
 type CategoryFields =
   | 'id'
   | 'name'
+  | 'color'
   | 'subCategory'
   | 'products'
 
@@ -1290,6 +1292,14 @@ export interface CategoryFieldDetails {
     description: string
     list: undefined
     nullable: false
+    resolve: undefined
+  }
+  color: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
     resolve: undefined
   }
   subCategory: {
@@ -3983,10 +3993,12 @@ type CategoryPreviousValuesObject =
   | CategoryPreviousValuesFields
   | { name: 'id', args?: [] | false, alias?: string  } 
   | { name: 'name', args?: [] | false, alias?: string  } 
+  | { name: 'color', args?: [] | false, alias?: string  } 
 
 type CategoryPreviousValuesFields =
   | 'id'
   | 'name'
+  | 'color'
 
 
 
@@ -4007,6 +4019,14 @@ export interface CategoryPreviousValuesFieldDetails {
     description: string
     list: undefined
     nullable: false
+    resolve: undefined
+  }
+  color: {
+    type: 'String'
+    args: {}
+    description: string
+    list: undefined
+    nullable: true
     resolve: undefined
   }
 }
@@ -5012,6 +5032,20 @@ export interface CategoryWhereInput {
   name_not_starts_with?: string | null
   name_ends_with?: string | null
   name_not_ends_with?: string | null
+  color?: string | null
+  color_not?: string | null
+  color_in?: string[]
+  color_not_in?: string[]
+  color_lt?: string | null
+  color_lte?: string | null
+  color_gt?: string | null
+  color_gte?: string | null
+  color_contains?: string | null
+  color_not_contains?: string | null
+  color_starts_with?: string | null
+  color_not_starts_with?: string | null
+  color_ends_with?: string | null
+  color_not_ends_with?: string | null
   subCategory_every?: SubCategoryWhereInput | null
   subCategory_some?: SubCategoryWhereInput | null
   subCategory_none?: SubCategoryWhereInput | null
@@ -5052,6 +5086,20 @@ export type CategoryWhereInputInputObject =
   | { name: 'name_not_starts_with', alias?: string  } 
   | { name: 'name_ends_with', alias?: string  } 
   | { name: 'name_not_ends_with', alias?: string  } 
+  | { name: 'color', alias?: string  } 
+  | { name: 'color_not', alias?: string  } 
+  | { name: 'color_in', alias?: string  } 
+  | { name: 'color_not_in', alias?: string  } 
+  | { name: 'color_lt', alias?: string  } 
+  | { name: 'color_lte', alias?: string  } 
+  | { name: 'color_gt', alias?: string  } 
+  | { name: 'color_gte', alias?: string  } 
+  | { name: 'color_contains', alias?: string  } 
+  | { name: 'color_not_contains', alias?: string  } 
+  | { name: 'color_starts_with', alias?: string  } 
+  | { name: 'color_not_starts_with', alias?: string  } 
+  | { name: 'color_ends_with', alias?: string  } 
+  | { name: 'color_not_ends_with', alias?: string  } 
   | { name: 'subCategory_every', alias?: string  } 
   | { name: 'subCategory_some', alias?: string  } 
   | { name: 'subCategory_none', alias?: string  } 
@@ -5296,12 +5344,14 @@ export type CategoryCreateManyWithoutProductsInputInputObject =
 export interface CategoryCreateWithoutProductsInput {
   id?: string | null
   name?: string
+  color?: string | null
   subCategory?: SubCategoryCreateManyWithoutCategoryInput | null
 }
 export type CategoryCreateWithoutProductsInputInputObject =
   | Extract<keyof CategoryCreateWithoutProductsInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
+  | { name: 'color', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
 export interface SubCategoryCreateManyWithoutCategoryInput {
@@ -5473,12 +5523,14 @@ export type CategoryCreateOneWithoutSubCategoryInputInputObject =
 export interface CategoryCreateWithoutSubCategoryInput {
   id?: string | null
   name?: string
+  color?: string | null
   products?: ProductCreateManyWithoutCategoryInput | null
 }
 export type CategoryCreateWithoutSubCategoryInputInputObject =
   | Extract<keyof CategoryCreateWithoutSubCategoryInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
+  | { name: 'color', alias?: string  } 
   | { name: 'products', alias?: string  } 
   
 export interface ProductCreateManyWithoutCategoryInput {
@@ -5674,11 +5726,13 @@ export type CategoryUpdateWithWhereUniqueWithoutProductsInputInputObject =
   
 export interface CategoryUpdateWithoutProductsDataInput {
   name?: string | null
+  color?: string | null
   subCategory?: SubCategoryUpdateManyWithoutCategoryInput | null
 }
 export type CategoryUpdateWithoutProductsDataInputInputObject =
   | Extract<keyof CategoryUpdateWithoutProductsDataInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'color', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   
 export interface SubCategoryUpdateManyWithoutCategoryInput {
@@ -6851,6 +6905,20 @@ export interface CategoryScalarWhereInput {
   name_not_starts_with?: string | null
   name_ends_with?: string | null
   name_not_ends_with?: string | null
+  color?: string | null
+  color_not?: string | null
+  color_in?: string[]
+  color_not_in?: string[]
+  color_lt?: string | null
+  color_lte?: string | null
+  color_gt?: string | null
+  color_gte?: string | null
+  color_contains?: string | null
+  color_not_contains?: string | null
+  color_starts_with?: string | null
+  color_not_starts_with?: string | null
+  color_ends_with?: string | null
+  color_not_ends_with?: string | null
   AND?: CategoryScalarWhereInput[]
   OR?: CategoryScalarWhereInput[]
   NOT?: CategoryScalarWhereInput[]
@@ -6885,6 +6953,20 @@ export type CategoryScalarWhereInputInputObject =
   | { name: 'name_not_starts_with', alias?: string  } 
   | { name: 'name_ends_with', alias?: string  } 
   | { name: 'name_not_ends_with', alias?: string  } 
+  | { name: 'color', alias?: string  } 
+  | { name: 'color_not', alias?: string  } 
+  | { name: 'color_in', alias?: string  } 
+  | { name: 'color_not_in', alias?: string  } 
+  | { name: 'color_lt', alias?: string  } 
+  | { name: 'color_lte', alias?: string  } 
+  | { name: 'color_gt', alias?: string  } 
+  | { name: 'color_gte', alias?: string  } 
+  | { name: 'color_contains', alias?: string  } 
+  | { name: 'color_not_contains', alias?: string  } 
+  | { name: 'color_starts_with', alias?: string  } 
+  | { name: 'color_not_starts_with', alias?: string  } 
+  | { name: 'color_ends_with', alias?: string  } 
+  | { name: 'color_not_ends_with', alias?: string  } 
   | { name: 'AND', alias?: string  } 
   | { name: 'OR', alias?: string  } 
   | { name: 'NOT', alias?: string  } 
@@ -6900,10 +6982,12 @@ export type CategoryUpdateManyWithWhereNestedInputInputObject =
   
 export interface CategoryUpdateManyDataInput {
   name?: string | null
+  color?: string | null
 }
 export type CategoryUpdateManyDataInputInputObject =
   | Extract<keyof CategoryUpdateManyDataInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'color', alias?: string  } 
   
 export interface SubCategoryUpdateManyWithoutProductsInput {
   create?: SubCategoryCreateWithoutProductsInput[]
@@ -6961,11 +7045,13 @@ export type CategoryUpdateOneRequiredWithoutSubCategoryInputInputObject =
   
 export interface CategoryUpdateWithoutSubCategoryDataInput {
   name?: string | null
+  color?: string | null
   products?: ProductUpdateManyWithoutCategoryInput | null
 }
 export type CategoryUpdateWithoutSubCategoryDataInputInputObject =
   | Extract<keyof CategoryUpdateWithoutSubCategoryDataInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'color', alias?: string  } 
   | { name: 'products', alias?: string  } 
   
 export interface ProductUpdateManyWithoutCategoryInput {
@@ -7301,6 +7387,7 @@ export type CompanyUpdateManyMutationInputInputObject =
 export interface CategoryCreateInput {
   id?: string | null
   name?: string
+  color?: string | null
   subCategory?: SubCategoryCreateManyWithoutCategoryInput | null
   products?: ProductCreateManyWithoutCategoryInput | null
 }
@@ -7308,26 +7395,31 @@ export type CategoryCreateInputInputObject =
   | Extract<keyof CategoryCreateInput, string>
   | { name: 'id', alias?: string  } 
   | { name: 'name', alias?: string  } 
+  | { name: 'color', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   | { name: 'products', alias?: string  } 
   
 export interface CategoryUpdateInput {
   name?: string | null
+  color?: string | null
   subCategory?: SubCategoryUpdateManyWithoutCategoryInput | null
   products?: ProductUpdateManyWithoutCategoryInput | null
 }
 export type CategoryUpdateInputInputObject =
   | Extract<keyof CategoryUpdateInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'color', alias?: string  } 
   | { name: 'subCategory', alias?: string  } 
   | { name: 'products', alias?: string  } 
   
 export interface CategoryUpdateManyMutationInput {
   name?: string | null
+  color?: string | null
 }
 export type CategoryUpdateManyMutationInputInputObject =
   | Extract<keyof CategoryUpdateManyMutationInput, string>
   | { name: 'name', alias?: string  } 
+  | { name: 'color', alias?: string  } 
   
 export interface SubCategoryCreateInput {
   id?: string | null
@@ -7676,6 +7768,8 @@ export type CategoryOrderByInputValues =
   | 'id_DESC'
   | 'name_ASC'
   | 'name_DESC'
+  | 'color_ASC'
+  | 'color_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'

@@ -8,6 +8,7 @@ type AuthPayload {
 }
 
 type Category {
+  color: String
   id: ID!
   name: String!
   products(after: String, before: String, first: Int, last: Int, orderBy: ProductOrderByInput, skip: Int, where: ProductWhereInput): [Product!]
@@ -15,6 +16,8 @@ type Category {
 }
 
 enum CategoryOrderByInput {
+  color_ASC
+  color_DESC
   createdAt_ASC
   createdAt_DESC
   id_ASC
@@ -27,6 +30,20 @@ enum CategoryOrderByInput {
 
 input CategoryWhereInput {
   AND: [CategoryWhereInput!]
+  color: String
+  color_contains: String
+  color_ends_with: String
+  color_gt: String
+  color_gte: String
+  color_in: [String!]
+  color_lt: String
+  color_lte: String
+  color_not: String
+  color_not_contains: String
+  color_not_ends_with: String
+  color_not_in: [String!]
+  color_not_starts_with: String
+  color_starts_with: String
   id: ID
   id_contains: ID
   id_ends_with: ID

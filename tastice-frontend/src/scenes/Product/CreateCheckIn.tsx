@@ -42,7 +42,7 @@ export const CreateCheckIn = ({ authorId, productId, setSubmitted }: CreateCheck
         refetchQueries: [
             { query: ME },
             { query: PRODUCT, variables: { id: productId } },
-            { query: SEARCH_CHECKINS, variables: { filter: '' } },
+            { query: SEARCH_CHECKINS, variables: { filter: '', first: 5 } },
         ],
     });
 

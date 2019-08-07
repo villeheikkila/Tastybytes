@@ -5,7 +5,7 @@ interface Product {
     name: string;
     company: NameId;
     imageId: string;
-    category: [NameId];
+    category: [Category];
     subCategory: [NameId];
 }
 
@@ -28,7 +28,8 @@ interface Suggestions {
 interface Category {
     id: string;
     name: string;
-    subCategory: NameId[];
+    color: string;
+    subCategory?: NameId[];
 }
 
 interface NameId {

@@ -15,6 +15,20 @@ declare global {
 export interface NexusGenInputs {
   CategoryWhereInput: { // input type
     AND?: NexusGenInputs['CategoryWhereInput'][] | null; // [CategoryWhereInput!]
+    color?: string | null; // String
+    color_contains?: string | null; // String
+    color_ends_with?: string | null; // String
+    color_gt?: string | null; // String
+    color_gte?: string | null; // String
+    color_in?: string[] | null; // [String!]
+    color_lt?: string | null; // String
+    color_lte?: string | null; // String
+    color_not?: string | null; // String
+    color_not_contains?: string | null; // String
+    color_not_ends_with?: string | null; // String
+    color_not_in?: string[] | null; // [String!]
+    color_not_starts_with?: string | null; // String
+    color_starts_with?: string | null; // String
     id?: string | null; // ID
     id_contains?: string | null; // ID
     id_ends_with?: string | null; // ID
@@ -465,7 +479,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  CategoryOrderByInput: "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
+  CategoryOrderByInput: "color_ASC" | "color_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   CheckinOrderByInput: "comment_ASC" | "comment_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "image_ASC" | "image_DESC" | "rating_ASC" | "rating_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
   MutationType: "CREATED" | "DELETED" | "UPDATED"
   ProductOrderByInput: "avatarId_ASC" | "avatarId_DESC" | "createdAt_ASC" | "createdAt_DESC" | "id_ASC" | "id_DESC" | "imageId_ASC" | "imageId_DESC" | "name_ASC" | "name_DESC" | "updatedAt_ASC" | "updatedAt_DESC"
@@ -479,6 +493,7 @@ export interface NexusGenRootTypes {
     user?: NexusGenRootTypes['User'] | null; // User
   }
   Category: { // root type
+    color?: string | null; // String
     id: string; // ID!
     name: string; // String!
   }
@@ -596,6 +611,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User'] | null; // User
   }
   Category: { // field return type
+    color: string | null; // String
     id: string; // ID!
     name: string; // String!
     products: NexusGenRootTypes['Product'][] | null; // [Product!]

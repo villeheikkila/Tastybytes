@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 import { UserContext } from '../../App';
 import { Account } from '../../scenes/Account';
 import { Activity } from '../../scenes/Activity';
+import { Dashboard } from '../../scenes/Dashboard';
 import { Discover } from '../../scenes/Discover';
 import { LogIn } from '../../scenes/LogIn';
 import { Product } from '../../scenes/Product';
@@ -17,7 +18,6 @@ import { FriendList } from '../FriendList';
 import { MobileMenu } from '../MobileMenu';
 import { NavigationBar } from '../NavigationBar/';
 import { Notifications } from '../Notification';
-
 export const Routes = (): JSX.Element => {
     const { id, token } = useContext(UserContext);
 
@@ -43,6 +43,7 @@ export const Routes = (): JSX.Element => {
                             <Route exact path="/friends" component={FriendList} />
                             <Route exact path="/menu" component={MobileMenu} />
                             <Route exact path="/account" component={Account} />
+                            <Route exact path="/dashboard" component={Dashboard} />
                             <Redirect from="/profile" to={`/user/${id}`} />
                             <Route
                                 exact

@@ -413,7 +413,9 @@ export type CategoryOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
-  | "name_DESC";
+  | "name_DESC"
+  | "color_ASC"
+  | "color_DESC";
 
 export type CompanyOrderByInput =
   | "id_ASC"
@@ -495,6 +497,20 @@ export interface CategoryWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  color?: Maybe<String>;
+  color_not?: Maybe<String>;
+  color_in?: Maybe<String[] | String>;
+  color_not_in?: Maybe<String[] | String>;
+  color_lt?: Maybe<String>;
+  color_lte?: Maybe<String>;
+  color_gt?: Maybe<String>;
+  color_gte?: Maybe<String>;
+  color_contains?: Maybe<String>;
+  color_not_contains?: Maybe<String>;
+  color_starts_with?: Maybe<String>;
+  color_not_starts_with?: Maybe<String>;
+  color_ends_with?: Maybe<String>;
+  color_not_ends_with?: Maybe<String>;
   subCategory_every?: Maybe<SubCategoryWhereInput>;
   subCategory_some?: Maybe<SubCategoryWhereInput>;
   subCategory_none?: Maybe<SubCategoryWhereInput>;
@@ -914,6 +930,7 @@ export type UserWhereUniqueInput = AtLeastOne<{
 export interface CategoryCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
+  color?: Maybe<String>;
   subCategory?: Maybe<SubCategoryCreateManyWithoutCategoryInput>;
   products?: Maybe<ProductCreateManyWithoutCategoryInput>;
 }
@@ -1054,6 +1071,7 @@ export interface CategoryCreateManyWithoutProductsInput {
 export interface CategoryCreateWithoutProductsInput {
   id?: Maybe<ID_Input>;
   name: String;
+  color?: Maybe<String>;
   subCategory?: Maybe<SubCategoryCreateManyWithoutCategoryInput>;
 }
 
@@ -1079,6 +1097,7 @@ export interface CategoryCreateOneWithoutSubCategoryInput {
 export interface CategoryCreateWithoutSubCategoryInput {
   id?: Maybe<ID_Input>;
   name: String;
+  color?: Maybe<String>;
   products?: Maybe<ProductCreateManyWithoutCategoryInput>;
 }
 
@@ -1117,6 +1136,7 @@ export interface FriendRequestCreateWithoutReceiverInput {
 
 export interface CategoryUpdateInput {
   name?: Maybe<String>;
+  color?: Maybe<String>;
   subCategory?: Maybe<SubCategoryUpdateManyWithoutCategoryInput>;
   products?: Maybe<ProductUpdateManyWithoutCategoryInput>;
 }
@@ -1388,6 +1408,7 @@ export interface CategoryUpdateWithWhereUniqueWithoutProductsInput {
 
 export interface CategoryUpdateWithoutProductsDataInput {
   name?: Maybe<String>;
+  color?: Maybe<String>;
   subCategory?: Maybe<SubCategoryUpdateManyWithoutCategoryInput>;
 }
 
@@ -1426,6 +1447,20 @@ export interface CategoryScalarWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  color?: Maybe<String>;
+  color_not?: Maybe<String>;
+  color_in?: Maybe<String[] | String>;
+  color_not_in?: Maybe<String[] | String>;
+  color_lt?: Maybe<String>;
+  color_lte?: Maybe<String>;
+  color_gt?: Maybe<String>;
+  color_gte?: Maybe<String>;
+  color_contains?: Maybe<String>;
+  color_not_contains?: Maybe<String>;
+  color_starts_with?: Maybe<String>;
+  color_not_starts_with?: Maybe<String>;
+  color_ends_with?: Maybe<String>;
+  color_not_ends_with?: Maybe<String>;
   AND?: Maybe<CategoryScalarWhereInput[] | CategoryScalarWhereInput>;
   OR?: Maybe<CategoryScalarWhereInput[] | CategoryScalarWhereInput>;
   NOT?: Maybe<CategoryScalarWhereInput[] | CategoryScalarWhereInput>;
@@ -1438,6 +1473,7 @@ export interface CategoryUpdateManyWithWhereNestedInput {
 
 export interface CategoryUpdateManyDataInput {
   name?: Maybe<String>;
+  color?: Maybe<String>;
 }
 
 export interface SubCategoryUpdateManyWithoutProductsInput {
@@ -1487,6 +1523,7 @@ export interface CategoryUpdateOneRequiredWithoutSubCategoryInput {
 
 export interface CategoryUpdateWithoutSubCategoryDataInput {
   name?: Maybe<String>;
+  color?: Maybe<String>;
   products?: Maybe<ProductUpdateManyWithoutCategoryInput>;
 }
 
@@ -2038,6 +2075,7 @@ export interface SubCategoryUpsertWithWhereUniqueWithoutCategoryInput {
 
 export interface CategoryUpdateManyMutationInput {
   name?: Maybe<String>;
+  color?: Maybe<String>;
 }
 
 export interface CheckinCreateInput {
@@ -2391,11 +2429,13 @@ export interface NodeNode {
 export interface Category {
   id: ID_Output;
   name: String;
+  color?: String;
 }
 
 export interface CategoryPromise extends Promise<Category>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  color: () => Promise<String>;
   subCategory: <T = FragmentableArray<SubCategory>>(args?: {
     where?: SubCategoryWhereInput;
     orderBy?: SubCategoryOrderByInput;
@@ -2421,6 +2461,7 @@ export interface CategorySubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  color: () => Promise<AsyncIterator<String>>;
   subCategory: <T = Promise<AsyncIterator<SubCategorySubscription>>>(args?: {
     where?: SubCategoryWhereInput;
     orderBy?: SubCategoryOrderByInput;
@@ -2446,6 +2487,7 @@ export interface CategoryNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  color: () => Promise<String>;
   subCategory: <T = FragmentableArray<SubCategory>>(args?: {
     where?: SubCategoryWhereInput;
     orderBy?: SubCategoryOrderByInput;
@@ -3415,6 +3457,7 @@ export interface CategorySubscriptionPayloadSubscription
 export interface CategoryPreviousValues {
   id: ID_Output;
   name: String;
+  color?: String;
 }
 
 export interface CategoryPreviousValuesPromise
@@ -3422,6 +3465,7 @@ export interface CategoryPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  color: () => Promise<String>;
 }
 
 export interface CategoryPreviousValuesSubscription
@@ -3429,6 +3473,7 @@ export interface CategoryPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  color: () => Promise<AsyncIterator<String>>;
 }
 
 export interface CheckinSubscriptionPayload {

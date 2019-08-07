@@ -50,6 +50,16 @@ export const CREATE_SUBCATEGORY = gql`
     }
 `;
 
+export const CREATE_CATEGORY = gql`
+    mutation createCategory($name: String!) {
+        createCategory(name: $name) {
+            id
+            name
+            color
+        }
+    }
+`;
+
 export const DELETE_PRODUCT = gql`
     mutation deleteProduct($id: ID!) {
         deleteProduct(id: $id) {

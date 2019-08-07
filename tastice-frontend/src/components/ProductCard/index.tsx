@@ -1,4 +1,4 @@
-import { CardActionArea, Chip, Grid, Link, makeStyles, Typography } from '@material-ui/core';
+import { Box, CardActionArea, Chip, Grid, Link, makeStyles, Theme, Typography } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Image } from 'cloudinary-react';
 import { bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
@@ -9,7 +9,7 @@ import { CLOUDINARY_CLOUD_NAME } from '../..';
 import { ProductCardMenu } from './ProductCardMenu';
 import { UpdateProduct } from './UpdateProduct';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
     actionArea: {
         padding: theme.spacing(1, 1),
     },
@@ -24,6 +24,17 @@ const useStyles = makeStyles(theme => ({
     chip: {
         margin: theme.spacing(0.3),
     },
+    box: (props: any) => ({
+        width: 200,
+        height: 100,
+        backgroundColor: props.color,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }),
+    text: {
+        fontWeight: 800,
+    },
 }));
 
 interface ProductCardProps {
@@ -32,7 +43,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({ color: product.category[0].color });
     const [showEditProduct, setShowEditProduct] = useState();
     const { history } = useReactRouter();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });
@@ -42,12 +53,20 @@ export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Elemen
             <CardActionArea onClick={(): void => history.push(`/product/${product.id}`)} className={classes.actionArea}>
                 <Grid container spacing={3} direction="row">
                     <Grid item>
-                        <Image
-                            cloudName={CLOUDINARY_CLOUD_NAME}
-                            publicId={product.imageId}
-                            width="200"
-                            crop="thumb"
-                        ></Image>
+                        {product.imageId ? (
+                            <Image
+                                cloudName={CLOUDINARY_CLOUD_NAME}
+                                publicId={product.imageId}
+                                width="200"
+                                crop="thumb"
+                            />
+                        ) : (
+                            <Box className={classes.box}>
+                                <Typography variant="h4" className={classes.text}>
+                                    {product.category[0].name.toUpperCase()}
+                                </Typography>
+                            </Box>
+                        )}
                     </Grid>
                     <Grid item xs container>
                         <Grid item xs container direction="column">

@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, Grid, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
-import { ADD_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES, SEARCH_CHECKINS, SEARCH_PRODUCTS } from '../../graphql';
+import { ADD_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES, SEARCH_PRODUCTS } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ImageUpload } from '../ImageUpload';
 import { MaterialSelect } from '../MaterialSelect';
@@ -41,8 +41,9 @@ export const AddProduct = (): JSX.Element | null => {
     const [addProduct] = useMutation(ADD_PRODUCT, {
         onError: errorHandler,
         refetchQueries: [
-            { query: SEARCH_CHECKINS, variables: { filter: '' } },
-            { query: SEARCH_PRODUCTS, variables: { filter: '' } },
+            { query: SEARCH_PRODUCTS, variables: { filter: '', first: 5 } },
+            { query: ALL_CATEGORIES },
+            { query: ALL_COMPANIES },
         ],
     });
 

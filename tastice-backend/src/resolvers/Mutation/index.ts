@@ -368,8 +368,10 @@ export const Mutation = mutationType({
                 name: stringArg(),
             },
             resolve: (_, { name }, ctx) => {
+                const color = randomColorGenerator();
                 return ctx.prisma.createCategory({
                     name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
+                    color,
                 });
             },
         });
