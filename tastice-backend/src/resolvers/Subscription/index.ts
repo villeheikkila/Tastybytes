@@ -25,10 +25,10 @@ export const FriendRequestSubscription = subscriptionField('friendRequest', {
     args: {
         id: idArg(),
     },
-    subscribe(root, { id }, ctx) {
+    subscribe(root, { id }, ctx, info) {
         return ctx.prisma.$subscribe.friendRequest({
-            where: {
-                receiver_every: { id_contains: id },
+            node: {
+                receiver_every: { id }
             },
         }) as any;
     },

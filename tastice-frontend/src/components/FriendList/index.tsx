@@ -1,10 +1,11 @@
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useSubscription } from '@apollo/react-hooks';
 import { Card, createStyles, Divider, InputBase, List, ListSubheader, makeStyles, Theme } from '@material-ui/core';
 import { fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../../App';
 import { FRIENDREQUEST, ME, SEARCH_USERS } from '../../graphql';
+import { FRIENDREQUEST_SUBSCRIPTION } from '../../graphql/user'
 import { errorHandler } from '../../utils';
 import { FriendListItem } from './FriendListItem';
 import { FriendRequestListItem } from './FriendRequestsListItem';

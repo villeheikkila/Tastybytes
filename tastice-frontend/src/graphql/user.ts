@@ -1,5 +1,5 @@
 import { gql } from 'apollo-boost';
-import { CHECKIN_DETAILS, PRODUCT_DETAILS, USER_DETAILS } from './fragments';
+import { CHECKIN_DETAILS, PRODUCT_DETAILS, USER_DETAILS } from './fragments'
 
 export const SEARCH_USERS = gql`
     query searchUsers($filter: String!) {
@@ -201,4 +201,18 @@ export const UPDATE_AVATAR = gql`
             avatarId
         }
     }
+`;
+
+export const FRIENDREQUEST_SUBSCRIPTION = gql`
+subscription friendRequestSubscription($id: ID!) {
+    friendRequest(id: $id) {
+        node {
+            id
+            sender {
+                ...UserDetails
+            }
+        }
+    }
+}
+${USER_DETAILS}
 `;

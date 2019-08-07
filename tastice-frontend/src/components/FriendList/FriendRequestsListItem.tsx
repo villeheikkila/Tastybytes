@@ -14,7 +14,6 @@ interface FriendRequestListItemProps {
 export const FriendRequestListItem = ({ userId, request: { sender, receiver, id } }: FriendRequestListItemProps): JSX.Element => {
     const userIsTheSender = userId === sender[0].id;
     const show = userIsTheSender ? receiver[0] : sender[0]
-    console.log('show: ', show);
     const { firstName, lastName, avatarId, avatarColor } = show;
 
     const [acceptFriendRequestMutation] = useMutation(ACCEPT_FRIENDREQUEST, {
@@ -26,7 +25,6 @@ export const FriendRequestListItem = ({ userId, request: { sender, receiver, id 
         onError: errorHandler,
         refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId } }],
     });
-
 
     const acceptFriendRequest = async (): Promise<void> => {
         const result = await acceptFriendRequestMutation({
