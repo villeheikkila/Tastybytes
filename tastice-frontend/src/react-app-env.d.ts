@@ -53,6 +53,6 @@ interface CheckInObject {
 
 interface FriendRequestObject {
     id: string;
-    receiver: User;
+    receiver: [User];
     sender: [User];
 }

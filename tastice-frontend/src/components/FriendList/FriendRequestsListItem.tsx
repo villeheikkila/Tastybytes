@@ -11,8 +11,11 @@ interface FriendRequestListItemProps {
     request: FriendRequestObject;
 }
 
-export const FriendRequestListItem = ({ userId, request: { sender, id } }: FriendRequestListItemProps): JSX.Element => {
-    const { firstName, lastName, avatarId, avatarColor } = sender[0];
+export const FriendRequestListItem = ({ userId, request: { sender, receiver, id } }: FriendRequestListItemProps): JSX.Element => {
+    const userIsTheSender = userId === sender[0].id;
+    const show = userIsTheSender ? receiver[0] : sender[0]
+    console.log('show: ', show);
+    const { firstName, lastName, avatarId, avatarColor } = show;
 
     const [acceptFriendRequestMutation] = useMutation(ACCEPT_FRIENDREQUEST, {
         onError: errorHandler,
@@ -24,7 +27,6 @@ export const FriendRequestListItem = ({ userId, request: { sender, id } }: Frien
         refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId } }],
     });
 
-    const userIsTheSender = userId === sender[0].id;
 
     const acceptFriendRequest = async (): Promise<void> => {
         const result = await acceptFriendRequestMutation({
@@ -81,8 +83,8 @@ export const FriendRequestListItem = ({ userId, request: { sender, id } }: Frien
                     <HowToReg fontSize="large" />
                 </IconButton>
             ) : (
-                <Typography> Friend request is pending </Typography>
-            )}
+                    <Typography> Friend request is pending </Typography>
+                )}
 
             <IconButton aria-label="Clear" color="secondary" onClick={declineFriendRequest}>
                 <Clear fontSize="large" />

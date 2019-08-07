@@ -17,6 +17,8 @@ export const FriendListItem = ({
     user: { firstName, lastName, avatarId, id, avatarColor },
 }: FriendListItemProps): JSX.Element => {
     const [visible, setVisible] = useState(false);
+    console.log('id: ', id);
+
 
     const [createFriendRequest] = useMutation(DELETE_FRIEND, {
         onError: errorHandler,

@@ -28,7 +28,7 @@ export const FriendRequestSubscription = subscriptionField('friendRequest', {
     subscribe(root, { id }, ctx) {
         return ctx.prisma.$subscribe.friendRequest({
             where: {
-                node: { receiver_some: { id } },
+                receiver_every: { id_contains: id },
             },
         }) as any;
     },

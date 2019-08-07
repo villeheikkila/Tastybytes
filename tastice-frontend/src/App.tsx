@@ -31,7 +31,7 @@ export const App = (): JSX.Element => {
     const [token, setToken] = useState();
     const [id, setId] = useState();
     const me = useQuery(ME);
-    const theme = (me.data.me && me.data.me.colorScheme) || 0;
+    const theme = ((token && me.data.me) && me.data.me.colorScheme) || 0;
     const themes = [darkTheme, whiteTheme];
 
     useEffect((): void => {
@@ -56,5 +56,5 @@ export const App = (): JSX.Element => {
 export const UserContext = createContext<UserContext>({
     id: '',
     token: '',
-    setToken: () => {},
+    setToken: () => { },
 });
