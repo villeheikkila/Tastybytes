@@ -1,5 +1,5 @@
-import { useMutation } from '@apollo/react-hooks';
-import { Button, Paper, TextField, Theme, Typography } from '@material-ui/core';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { Button, Paper, TextField, Theme, Typography, Divider, List, ListSubheader } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
 import { ALL_CATEGORIES, CREATE_CATEGORY } from '../../graphql/product';
@@ -23,16 +23,26 @@ const useStyles = makeStyles((theme: Theme) => ({
         marginTop: 15,
         width: '100%',
     },
+    list: {
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+    },
 }));
 
 export const Dashboard = (): JSX.Element | null => {
     const classes = useStyles('');
 
     const [name, setName] = useState();
+    const categoriesQuery = useQuery(ALL_CATEGORIES);
+
     const [createCategory] = useMutation(CREATE_CATEGORY, {
         onError: errorHandler,
         refetchQueries: [{ query: ALL_CATEGORIES }],
     });
+
+    if (categoriesQuery.data.categories === undefined) return null
+
+    const categories = categoriesQuery.data.categories
 
     const handleCreateCategory = async (event: any): Promise<void> => {
         event.preventDefault();
@@ -76,6 +86,21 @@ export const Dashboard = (): JSX.Element | null => {
                         Add
                     </Button>
                 </form>
+                <List
+                    className={classes.list}
+                    aria-labelledby="nested-list-subheader"
+                    subheader={<ListSubheader component="div">Pending Friend Requests</ListSubheader>}
+                >
+                    {categories.map(
+                        (category: Category): JSX.Element => (
+                            <div key={category.id.toUpperCase()}>
+                                <Divider light />
+                                <p>{category.name}</p>
+                                <Divider light />
+                            </div>
+                        ),
+                    )}
+                </List>
             </Paper>
         </div>
     );
