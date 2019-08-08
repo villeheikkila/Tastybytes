@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
+import Typography from '@material-ui/core/Typography';
 import MaterialTable from 'material-table';
 import React from 'react';
+import { SmartAvatar } from '../../components/SmartAvatar';
 import { ALL_USERS, DELETE_USER, UPDATE_USER } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
@@ -34,13 +36,13 @@ export const UserManagement = (): JSX.Element | null => {
         }
     };
 
-    const handleUpdateUser = async (user: User): Promise<void> => {
+    const handleUpdateUser = async ({ id, firstName, lastName, email }: User): Promise<void> => {
         const result = await updateUser({
             variables: {
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
+                id,
+                firstName,
+                lastName,
+                email,
             },
         });
 
@@ -76,6 +78,23 @@ export const UserManagement = (): JSX.Element | null => {
                             handleDeleteUser(oldUser.id);
                         }, 100);
                     }),
+            }}
+            options={{ exportButton: true }}
+            detailPanel={rowData => {
+                return (
+                    <>
+                        <Typography>Product image</Typography>
+                        <SmartAvatar
+                            id={rowData.id}
+                            size={150}
+                            firstName={rowData.firstName}
+                            lastName={rowData.lastName}
+                            avatarId={rowData.avatarId}
+                            avatarColor={rowData.avatarColor}
+                            isClickable={false}
+                        />
+                    </>
+                );
             }}
         />
     );

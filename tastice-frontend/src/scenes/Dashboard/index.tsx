@@ -8,14 +8,13 @@ import { UserManagement } from './UserManagement';
 const useStyles = makeStyles((theme: Theme) => ({
     paper: {
         padding: theme.spacing(3, 2),
-        maxWidth: 750,
+        maxWidth: 800,
         margin: `${theme.spacing(1)}px auto`,
         display: 'flex',
         flexDirection: 'column',
     },
     table: {
-        maxWidth: 783,
-        padding: theme.spacing(1, 2),
+        maxWidth: 800,
         margin: `${theme.spacing(1)}px auto`,
     },
 }));
@@ -30,9 +29,9 @@ export const Dashboard = (): JSX.Element | null => {
                     Admin dashboard
                 </Typography>
             </Paper>
-            <Paper className={classes.paper}>
+            <div className={classes.table}>
                 <CategoryManagement />
-            </Paper>
+            </div>
             <div className={classes.table}>
                 <UserManagement />
             </div>

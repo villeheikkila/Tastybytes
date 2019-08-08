@@ -1,31 +1,23 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Button, Divider, List, ListSubheader, TextField, Theme, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
-import React, { useState } from 'react';
-import { ALL_CATEGORIES, CREATE_CATEGORY } from '../../graphql/product';
+import MaterialTable from 'material-table';
+import React from 'react';
+import { ALL_CATEGORIES, CREATE_CATEGORY, DELETE_CATEGORY, UPDATE_CATEGORY } from '../../graphql/product';
 import { errorHandler, notificationHandler } from '../../utils';
 
-const useStyles = makeStyles((theme: Theme) => ({
-    button: {
-        margin: theme.spacing(1),
-    },
-    textField: {
-        marginTop: 15,
-        width: '100%',
-    },
-    list: {
-        width: '100%',
-        backgroundColor: theme.palette.background.paper,
-    },
-}));
-
 export const CategoryManagement = (): JSX.Element | null => {
-    const classes = useStyles('');
-
-    const [name, setName] = useState();
     const categoriesQuery = useQuery(ALL_CATEGORIES);
 
     const [createCategory] = useMutation(CREATE_CATEGORY, {
+        onError: errorHandler,
+        refetchQueries: [{ query: ALL_CATEGORIES }],
+    });
+
+    const [deleteCategory] = useMutation(DELETE_CATEGORY, {
+        onError: errorHandler,
+        refetchQueries: [{ query: ALL_CATEGORIES }],
+    });
+
+    const [updateCategory] = useMutation(UPDATE_CATEGORY, {
         onError: errorHandler,
         refetchQueries: [{ query: ALL_CATEGORIES }],
     });
@@ -34,8 +26,7 @@ export const CategoryManagement = (): JSX.Element | null => {
 
     const categories = categoriesQuery.data.categories;
 
-    const handleCreateCategory = async (event: any): Promise<void> => {
-        event.preventDefault();
+    const handleCreateCategory = async ({ name }: any): Promise<void> => {
         const result = await createCategory({
             variables: {
                 name,
@@ -50,40 +41,61 @@ export const CategoryManagement = (): JSX.Element | null => {
         }
     };
 
+    const handleDeleteCategory = async ({ id }: any): Promise<void> => {
+        const result = await deleteCategory({
+            variables: { id },
+        });
+
+        if (result) {
+            notificationHandler({
+                message: `Category ${result.data.deleteCategory.name} succesfully deleted`,
+                variant: 'success',
+            });
+        }
+    };
+
+    const handleUpdateCategory = async ({ name, id }: any): Promise<void> => {
+        const result = await updateCategory({
+            variables: { id, name },
+        });
+
+        if (result) {
+            notificationHandler({
+                message: `Category ${name} succesfully renamed to ${result.data.updateCategory.name}`,
+                variant: 'success',
+            });
+        }
+    };
+
     return (
-        <>
-            <Typography component="h1" variant="h5">
-                Add a new category!
-            </Typography>
-            <form onSubmit={handleCreateCategory}>
-                <TextField
-                    id="Name"
-                    label="Name"
-                    name="Name"
-                    placeholder="Name of the product"
-                    onChange={({ target }): void => setName(target.value)}
-                    value={name}
-                    className={classes.textField}
-                />
-                <Button type="submit" variant="contained" color="primary" className={classes.button}>
-                    Add
-                </Button>
-            </form>
-            <List
-                className={classes.list}
-                aria-labelledby="nested-list-subheader"
-                subheader={<ListSubheader component="div">Pending Friend Requests</ListSubheader>}
-            >
-                {categories.map(
-                    (category: Category): JSX.Element => (
-                        <div key={category.id.toUpperCase()}>
-                            <Divider light />
-                            <p>{category.name}</p>
-                            <Divider light />
-                        </div>
-                    ),
-                )}
-            </List>
-        </>
+        <MaterialTable
+            title="Categories"
+            columns={[{ title: 'Name', field: 'name' }]}
+            data={categories}
+            editable={{
+                onRowAdd: newCategory =>
+                    new Promise(resolve => {
+                        setTimeout(() => {
+                            resolve();
+                            handleCreateCategory(newCategory);
+                        }, 600);
+                    }),
+                onRowUpdate: updatedProduct =>
+                    new Promise(resolve => {
+                        setTimeout((): void => {
+                            resolve();
+                            handleUpdateCategory(updatedProduct);
+                        }, 600);
+                    }),
+                onRowDelete: deleteProduct =>
+                    new Promise(resolve => {
+                        setTimeout((): void => {
+                            resolve();
+                            handleDeleteCategory(deleteProduct);
+                        }, 100);
+                    }),
+            }}
+            options={{ exportButton: true }}
+        />
     );
 };

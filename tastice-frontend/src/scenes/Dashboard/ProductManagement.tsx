@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import Typography from '@material-ui/core/Typography';
 import MaterialTable from 'material-table';
 import React from 'react';
+import { BoxImage } from '../../components/BoxImage';
 import { ALL_PRODUCTS, DELETE_PRODUCT, UPDATE_PRODUCT } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
@@ -13,25 +13,8 @@ interface UpdatedProductObject {
     category: string;
     subCategory: [string];
 }
-const useStyles = makeStyles((theme: Theme) => ({
-    paper: {
-        padding: theme.spacing(3, 2),
-        maxWidth: 700,
-        margin: `${theme.spacing(1)}px auto`,
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    root: {
-        paddingTop: 30,
-    },
-}));
 
 export const ProductManagement = (): JSX.Element | null => {
-    const classes = useStyles('');
-
     const productsQuery = useQuery(ALL_PRODUCTS);
     const products = productsQuery.data.products;
 
@@ -55,6 +38,8 @@ export const ProductManagement = (): JSX.Element | null => {
         company: product.company,
         category: product.category[0],
         subCategory: product.subCategory,
+        imageId: product.imageId,
+        color: product.category[0].color,
     }));
 
     if (productsQuery.data.products === undefined) {
@@ -74,18 +59,18 @@ export const ProductManagement = (): JSX.Element | null => {
         }
     };
 
-    const handleUpdateProduct = async (product: UpdatedProductObject): Promise<void> => {
-        const subCategoryArray = product.subCategory.map((subCategoryUnit: any): string => {
+    const handleUpdateProduct = async ({ id, name, company, category, subCategory }: any): Promise<void> => {
+        const subCategoryArray = subCategory.map((subCategoryUnit: any): string => {
             return subCategoryUnit.name;
         });
 
         const result = await updateProduct({
             variables: {
-                id: product.id,
-                name: product.name,
-                company: product.company,
-                category: product.category,
-                subCategory: subCategoryArray,
+                id,
+                name,
+                company: company.name,
+                categoryId: category.id,
+                subCategories: subCategoryArray,
             },
         });
 
@@ -99,7 +84,7 @@ export const ProductManagement = (): JSX.Element | null => {
 
     return (
         <MaterialTable
-            title="List of all products"
+            title="Products"
             columns={[
                 { title: 'Name', field: 'name' },
                 { title: 'Company', field: 'company.name' },
@@ -114,13 +99,22 @@ export const ProductManagement = (): JSX.Element | null => {
                             handleUpdateProduct(updatedProduct);
                         }, 600);
                     }),
-                onRowDelete: oldProduct =>
+                onRowDelete: deleteProduct =>
                     new Promise(resolve => {
                         setTimeout((): void => {
                             resolve();
-                            handleDeleteProduct(oldProduct.id);
+                            handleDeleteProduct(deleteProduct.id);
                         }, 100);
                     }),
+            }}
+            options={{ exportButton: true }}
+            detailPanel={rowData => {
+                return (
+                    <>
+                        <Typography>Avatar</Typography>
+                        <BoxImage image={rowData.imageId} text={rowData.category.name} color={rowData.color} />
+                    </>
+                );
             }}
         />
     );
