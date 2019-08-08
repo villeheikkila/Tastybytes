@@ -1,4 +1,6 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
+import { Theme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import MaterialTable from 'material-table';
 import React from 'react';
 import { ALL_PRODUCTS, DELETE_PRODUCT, UPDATE_PRODUCT } from '../../graphql';
@@ -11,8 +13,25 @@ interface UpdatedProductObject {
     category: string;
     subCategory: [string];
 }
+const useStyles = makeStyles((theme: Theme) => ({
+    paper: {
+        padding: theme.spacing(3, 2),
+        maxWidth: 700,
+        margin: `${theme.spacing(1)}px auto`,
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    button: {
+        margin: theme.spacing(1),
+    },
+    root: {
+        paddingTop: 30,
+    },
+}));
 
-export const ProductList = (): JSX.Element | null => {
+export const ProductManagement = (): JSX.Element | null => {
+    const classes = useStyles('');
+
     const productsQuery = useQuery(ALL_PRODUCTS);
     const products = productsQuery.data.products;
 
@@ -85,7 +104,6 @@ export const ProductList = (): JSX.Element | null => {
                 { title: 'Name', field: 'name' },
                 { title: 'Company', field: 'company.name' },
                 { title: 'Category', field: 'category.name' },
-                { title: 'ID', field: 'id' },
             ]}
             data={productsObjects}
             editable={{

@@ -4,7 +4,7 @@ import React from 'react';
 import { ALL_USERS, DELETE_USER, UPDATE_USER } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
-export const UserList = (): JSX.Element | null => {
+export const UserManagement = (): JSX.Element | null => {
     const usersQuery = useQuery(ALL_USERS);
     const users = usersQuery.data.users;
 
@@ -59,7 +59,6 @@ export const UserList = (): JSX.Element | null => {
                 { title: 'First Name', field: 'firstName' },
                 { title: 'Last Name', field: 'lastName' },
                 { title: 'Email', field: 'email' },
-                { title: 'ID', field: 'id' },
             ]}
             data={users}
             editable={{

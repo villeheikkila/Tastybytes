@@ -6,7 +6,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import { Routes } from './components/Routes';
 import { ME } from './graphql';
 import { FRIENDREQUEST_SUBSCRIPTION } from './graphql/user';
-import { notificationHandler } from './utils'
+import { notificationHandler } from './utils';
 
 const darkTheme = createMuiTheme({
     palette: {
@@ -33,23 +33,19 @@ export const App = (): JSX.Element => {
     const [token, setToken] = useState();
     const [id, setId] = useState();
     const me = useQuery(ME);
-    const theme = ((token && me.data.me) && me.data.me.colorScheme) || 0;
+    const theme = (token && me.data.me && me.data.me.colorScheme) || 0;
     const themes = [darkTheme, whiteTheme];
 
-    const { data, loading } = useSubscription(
-        FRIENDREQUEST_SUBSCRIPTION,
-        { variables: { id } }
-    );
+    const { data, loading } = useSubscription(FRIENDREQUEST_SUBSCRIPTION, {
+        variables: { id },
+    });
 
     if (data && data.friendRequest.node && data.friendRequest.node.sender[0]) {
         notificationHandler({
             message: `Friend request recieved from ${data.friendRequest.node.sender[0].firstName}!`,
             variant: 'success',
         });
-        console.log('friendRequestSubscription: ', data.friendRequest.node)
     }
-
-
 
     useEffect((): void => {
         const token = localStorage.getItem('token');
@@ -73,5 +69,5 @@ export const App = (): JSX.Element => {
 export const UserContext = createContext<UserContext>({
     id: '',
     token: '',
-    setToken: () => { },
+    setToken: () => {},
 });

@@ -91,7 +91,7 @@ export const ADD_PRODUCT = gql`
 `;
 
 export const UPDATE_PRODUCT = gql`
-    mutation updateProduct($id: ID!, $name: String!, $imageId: String!, $company: String!, $categoryId: ID!, $subCategories: [String!]) {
+    mutation updateProduct($id: ID!, $name: String!, $imageId: String, $company: String!, $categoryId: ID!, $subCategories: [String!]) {
         updateProduct(id: $id, name: $name, imageId: $imageId, company: $company, categoryId: $categoryId, subCategories: $subCategories) {
             ...ProductDetails
             checkins {

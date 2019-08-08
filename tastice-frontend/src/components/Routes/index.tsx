@@ -8,10 +8,8 @@ import { Dashboard } from '../../scenes/Dashboard';
 import { Discover } from '../../scenes/Discover';
 import { LogIn } from '../../scenes/LogIn';
 import { Product } from '../../scenes/Product';
-import { ProductList } from '../../scenes/ProductList';
 import { Profile } from '../../scenes/Profile';
 import { SignUp } from '../../scenes/SignUp';
-import { UserList } from '../../scenes/UserList';
 import { AddProduct } from '../AddProduct';
 import { BottomBar } from '../BottomBar';
 import { FriendList } from '../FriendList';
@@ -35,9 +33,7 @@ export const Routes = (): JSX.Element => {
                     <NavigationBar />
                     <Fade timeout={300}>
                         <Switch>
-                            <Route exact path="/products" component={ProductList} />
                             <Route exact path="/discover" component={Discover} />
-                            <Route exact path="/users" component={UserList} />
                             <Route exact path="/activity" component={Activity} />
                             <Route exact path="/product/new" component={AddProduct} />
                             <Route exact path="/friends" component={FriendList} />
