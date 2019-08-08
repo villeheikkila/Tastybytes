@@ -211,6 +211,22 @@ export const Mutation = mutationType({
             },
         });
 
+        t.field('updateCategory', {
+            type: 'Category',
+            args: {
+                id: idArg(),
+                name: stringArg(),
+            },
+            resolve: async (_, { id, name }) => {
+                return await prisma.updateCategory({
+                    where: { id },
+                    data: {
+                        name,
+                    },
+                });
+            },
+        });
+
         t.field('deleteProduct', {
             type: 'Product',
             nullable: true,

@@ -302,6 +302,7 @@ type Mutation {
   deleteUser(id: ID): User
   login(email: String, password: String): AuthPayload
   signup(email: String, firstName: String, lastName: String, password: String): AuthPayload
+  updateCategory(id: ID, name: String): Category
   updateCheckin(comment: String, id: ID, rating: Int): Checkin
   updateProduct(categoryId: ID, company: String, id: ID, imageId: String, name: String, subCategories: [String!]): Product
   updateUser(colorScheme: Int, email: String, firstName: String, id: ID, lastName: String): User
