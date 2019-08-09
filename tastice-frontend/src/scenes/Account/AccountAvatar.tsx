@@ -21,20 +21,20 @@ export const AccountAvatar = ({ user }: any): JSX.Element | null => {
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-    const handleUpdateAvatar = async (): Promise<void> => {
+    const handleUpdateAvatar = useCallback(async (): Promise<void> => {
         await updateAvatar({
             variables: {
                 id: user.id,
                 avatarId: newAvatarId,
             },
         });
-    };
+    }, [newAvatarId, updateAvatar, user.id]);
 
     useEffect(() => {
         if (newAvatarId) {
             handleUpdateAvatar();
         }
-    }, [newAvatarId]);
+    }, [newAvatarId, handleUpdateAvatar]);
 
     return (
         <div {...getRootProps()}>

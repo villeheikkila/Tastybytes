@@ -10,10 +10,13 @@ interface ImageUploadProps {
     setImage: any;
 }
 export const ImageUpload = ({ image, setImage }: ImageUploadProps): JSX.Element | null => {
-    const onDrop = useCallback(async acceptedFiles => {
-        const publicId = await uploadCloudinary(acceptedFiles[0]);
-        setImage(publicId);
-    }, []);
+    const onDrop = useCallback(
+        async acceptedFiles => {
+            const publicId = await uploadCloudinary(acceptedFiles[0]);
+            setImage(publicId);
+        },
+        [setImage],
+    );
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
 

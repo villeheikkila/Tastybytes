@@ -187,7 +187,7 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
                 .filter((checkin: CheckInObject) => !ratingFilter || checkin.rating === ratingFilter)
                 .map(
                     (checkin: CheckInObject, index: number): JSX.Element => (
-                        <Fragment key={checkin.id.toUpperCase()}>
+                        <Fragment key={index}>
                             {data.searchUserCheckins.length - index <= 1 && <Waypoint onEnter={loadMore} />}
                             <CheckInCard key={checkin.id} checkin={checkin} showProduct={true} />
                         </Fragment>

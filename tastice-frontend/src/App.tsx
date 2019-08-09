@@ -26,9 +26,9 @@ const whiteTheme = createMuiTheme({
 
 export const App = (): JSX.Element => {
     const me = useQuery(ME);
-    const [user] = useLocalStorage<LocalStorageUser>('user');
 
-    const id = (user && user.id) || '';
+    const [user] = useLocalStorage<LocalStorageUser>('user');
+    const id = user && user.id;
 
     const theme = (id && me.data.me && me.data.me.colorScheme) || 0;
     const themes = [darkTheme, whiteTheme];

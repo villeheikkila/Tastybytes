@@ -1,9 +1,9 @@
-import { Box, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Box, makeStyles, Typography } from '@material-ui/core';
 import { Image } from 'cloudinary-react';
 import React from 'react';
 import { CLOUDINARY_CLOUD_NAME } from '../..';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
     box: (props: any) => ({
         width: 200,
         height: 100,
