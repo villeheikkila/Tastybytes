@@ -28,12 +28,11 @@ export const Routes = (): JSX.Element => {
 
     const [user] = useLocalStorage<LocalStorageUser>('user');
     const id = user && user.id;
-    const token = user && user.token;
 
     return (
         <Router>
             <Notifications />
-            {!token ? (
+            {!id ? (
                 <Switch>
                     <Route exact path="/" render={(): JSX.Element => <LogIn />} />
                     <Route exact path="/signup" render={(): JSX.Element => <SignUp />} />

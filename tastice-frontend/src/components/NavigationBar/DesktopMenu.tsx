@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Badge, createStyles, makeStyles, Menu, MenuItem, Switch } from '@material-ui/core';
 import { AccountCircle, BrightnessHigh, BrightnessLow, ExitToApp, PersonOutline } from '@material-ui/icons/';
-import useLocalStorage, { deleteFromStorage } from '@rehooks/local-storage';
+import { deleteFromStorage } from '@rehooks/local-storage';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ME, UPDATE_USER } from '../../graphql';
@@ -27,9 +27,6 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
     const { data } = useQuery(ME);
     const { me } = data;
 
-    const [user] = useLocalStorage<LocalStorageUser>('user');
-    const id = user && user.id;
-
     const [updateUser] = useMutation(UPDATE_USER, {
         onError: errorHandler,
         refetchQueries: [{ query: ME }],
@@ -52,7 +49,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
         const colorTheme = colorScheme ? 0 : 1;
         await updateUser({
             variables: {
-                id,
+                id: me.id,
                 colorScheme: colorTheme,
             },
         });

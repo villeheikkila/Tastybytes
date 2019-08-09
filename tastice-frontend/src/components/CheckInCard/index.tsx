@@ -12,7 +12,6 @@ import { ProductCard } from '../ProductCard';
 import { SmartAvatar } from '../SmartAvatar';
 import { CheckInContent } from './CheckInContent';
 import { EditCheckIn } from './EditCheckIn';
-import useLocalStorage from '@rehooks/local-storage';
 const useStyles = makeStyles(theme => ({
     card: {
         maxWidth: 700,
@@ -44,13 +43,11 @@ const months: string[] = [
 interface CheckInCardProps {
     checkin: CheckInObject;
     showProduct: boolean;
+    showMenu?: boolean;
 }
 
-export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Element => {
+export const CheckInCard = ({ checkin, showProduct, showMenu = false }: CheckInCardProps): JSX.Element => {
     const classes = useStyles();
-
-    const [user] = useLocalStorage<LocalStorageUser>('user');
-    const id = user && user.id;
 
     const [visible, setVisible] = useState();
     const [openEdit, setOpenEdit] = useState();
@@ -105,11 +102,10 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
     };
 
     const image = showProduct ? '' : checkinObject.image;
-    const userIsTheAuthor = authorObject.id === id;
 
     // A workaround for not being able to use ternary operator in the CardHeader action prop
     const settings = (): JSX.Element | undefined => {
-        if (userIsTheAuthor)
+        if (showMenu)
             return (
                 <IconButton aria-label="Settings" {...bindTrigger(menuState)}>
                     <MoreVertIcon />

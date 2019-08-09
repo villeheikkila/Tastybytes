@@ -2,7 +2,6 @@ import { useQuery } from '@apollo/react-hooks';
 import { Card, createStyles, Divider, InputBase, List, ListSubheader, makeStyles, Theme } from '@material-ui/core';
 import { fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import useLocalStorage from '@rehooks/local-storage';
 import React, { useState } from 'react';
 import { FRIENDREQUEST, ME, SEARCH_USERS } from '../../graphql';
 import { errorHandler } from '../../utils';
@@ -61,10 +60,9 @@ export const FriendList = (): JSX.Element | null => {
     const classes = useStyles();
     const [filter, setFilter] = useState('');
 
-    const [user] = useLocalStorage<LocalStorageUser>('user');
-    const id = (user && user.id) || '';
-
     const { data } = useQuery(ME);
+    const { me } = data;
+    const id = me && me.id;
 
     const { data: userData } = useQuery(SEARCH_USERS, {
         variables: { filter },
@@ -75,7 +73,6 @@ export const FriendList = (): JSX.Element | null => {
         variables: { id },
     });
 
-    const { me } = data;
     const { searchUsers } = userData;
     const { friendRequest } = friendRequestData;
 
