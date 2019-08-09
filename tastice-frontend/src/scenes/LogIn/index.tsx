@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/react-hooks';
 import { Button, Container, makeStyles, TextField, Typography } from '@material-ui/core';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
-import { UserContext } from '../../App';
 import { LOGIN } from '../../graphql';
 import { errorHandler } from '../../utils';
+import { writeStorage } from '@rehooks/local-storage';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -38,7 +38,6 @@ export const LogIn = (): JSX.Element => {
     const [password, setPassword] = useState('');
     const { history } = useReactRouter();
     const classes = useStyles();
-    const { setToken } = useContext(UserContext);
 
     const [login] = useMutation(LOGIN, {
         onError: errorHandler,
@@ -52,11 +51,7 @@ export const LogIn = (): JSX.Element => {
         });
 
         if (result) {
-            const token: string = result.data.login.token;
-            const id: string = result.data.login.user.id;
-            setToken(token);
-            localStorage.setItem('token', token);
-            localStorage.setItem('id', id);
+            writeStorage('user', { token: result.data.login.token, id: result.data.login.user.id, admin: false });
         }
     };
 

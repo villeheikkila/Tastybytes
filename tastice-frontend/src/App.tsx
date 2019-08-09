@@ -2,7 +2,8 @@ import { useQuery, useSubscription } from '@apollo/react-hooks';
 import { createMuiTheme, CssBaseline } from '@material-ui/core';
 import { blue, pink } from '@material-ui/core/colors';
 import { ThemeProvider } from '@material-ui/styles';
-import React, { createContext, useEffect, useState } from 'react';
+import { useLocalStorage } from '@rehooks/local-storage';
+import React from 'react';
 import { Routes } from './components/Routes';
 import { ME } from './graphql';
 import { FRIENDREQUEST_SUBSCRIPTION } from './graphql/user';
@@ -23,23 +24,16 @@ const whiteTheme = createMuiTheme({
     },
 });
 
-interface UserContext {
-    token: string;
-    setToken: React.Dispatch<string | null>;
-    id: string;
-}
-
 export const App = (): JSX.Element => {
-    const [token, setToken] = useState();
-    console.log('TCL: token', token);
-    const [id, setId] = useState();
-    console.log('TCL: id', id);
     const me = useQuery(ME);
+    const [user] = useLocalStorage<LocalStorageUser>('user');
 
-    const theme = (token && me.data.me && me.data.me.colorScheme) || 0;
+    const id = (user && user.id) || '';
+
+    const theme = (id && me.data.me && me.data.me.colorScheme) || 0;
     const themes = [darkTheme, whiteTheme];
 
-    const { data, loading } = useSubscription(FRIENDREQUEST_SUBSCRIPTION, {
+    const { data } = useSubscription(FRIENDREQUEST_SUBSCRIPTION, {
         variables: { id },
     });
 
@@ -49,27 +43,11 @@ export const App = (): JSX.Element => {
             variant: 'success',
         });
     }
-    useEffect((): void => {
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('id');
-        if (token && userId) {
-            setToken(token);
-            setId(userId);
-        }
-    }, [token, id]);
 
     return (
         <ThemeProvider theme={themes[theme]}>
             <CssBaseline />
-            <UserContext.Provider value={{ setToken, token, id }}>
-                <Routes />
-            </UserContext.Provider>
+            <Routes />
         </ThemeProvider>
     );
 };
-
-export const UserContext = createContext<UserContext>({
-    id: '',
-    token: '',
-    setToken: () => {},
-});

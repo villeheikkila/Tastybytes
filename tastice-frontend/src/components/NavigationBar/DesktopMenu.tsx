@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Badge, createStyles, makeStyles, Menu, MenuItem, Switch } from '@material-ui/core';
 import { AccountCircle, BrightnessHigh, BrightnessLow, ExitToApp, PersonOutline } from '@material-ui/icons/';
-import React, { useContext, useEffect, useState } from 'react';
+import useLocalStorage, { deleteFromStorage } from '@rehooks/local-storage';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../App';
 import { ME, UPDATE_USER } from '../../graphql';
 import { client } from '../../index';
 import { errorHandler } from '../../utils';
@@ -26,7 +26,9 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
     const [colorScheme, setColorScheme] = useState(false);
     const { data } = useQuery(ME);
     const { me } = data;
-    const { setToken, id } = useContext(UserContext);
+
+    const [user] = useLocalStorage<LocalStorageUser>('user');
+    const id = user && user.id;
 
     const [updateUser] = useMutation(UPDATE_USER, {
         onError: errorHandler,
@@ -43,7 +45,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
     const logout = async (): Promise<void> => {
         await client.clearStore();
         await window.localStorage.clear();
-        setToken(null);
+        deleteFromStorage('user');
     };
 
     const handleColorSchemeChange = async (): Promise<void> => {

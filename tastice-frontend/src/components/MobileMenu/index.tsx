@@ -10,9 +10,9 @@ import {
     Theme,
     Typography,
 } from '@material-ui/core';
-import React, { useContext, useEffect, useState } from 'react';
+import useLocalStorage, { deleteFromStorage } from '@rehooks/local-storage';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../App';
 import { ME, UPDATE_USER } from '../../graphql';
 import { client } from '../../index';
 import { errorHandler } from '../../utils';
@@ -41,7 +41,8 @@ export const MobileMenu = (): JSX.Element => {
         refetchQueries: [{ query: ME }],
     });
 
-    const { setToken, id } = useContext(UserContext);
+    const [user] = useLocalStorage<LocalStorageUser>('user');
+    const id = user && user.id;
 
     const theme = me && me.colorScheme ? 1 : 0;
 
@@ -52,8 +53,7 @@ export const MobileMenu = (): JSX.Element => {
 
     const logout = async (): Promise<void> => {
         await client.clearStore();
-        await localStorage.clear();
-        setToken(null);
+        deleteFromStorage('user');
     };
 
     const handleColorSchemeChange = async (): Promise<void> => {

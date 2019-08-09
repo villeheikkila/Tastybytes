@@ -3,9 +3,8 @@ import { Card, CardHeader, IconButton, Link, makeStyles, Menu, MenuItem, Typogra
 import { blue } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/hooks';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { UserContext } from '../../App';
 import { DELETE_CHECKIN, PRODUCT, SEARCH_CHECKINS, USER } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
@@ -13,6 +12,7 @@ import { ProductCard } from '../ProductCard';
 import { SmartAvatar } from '../SmartAvatar';
 import { CheckInContent } from './CheckInContent';
 import { EditCheckIn } from './EditCheckIn';
+import useLocalStorage from '@rehooks/local-storage';
 const useStyles = makeStyles(theme => ({
     card: {
         maxWidth: 700,
@@ -48,7 +48,10 @@ interface CheckInCardProps {
 
 export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Element => {
     const classes = useStyles();
-    const { id } = useContext(UserContext);
+
+    const [user] = useLocalStorage<LocalStorageUser>('user');
+    const id = user && user.id;
+
     const [visible, setVisible] = useState();
     const [openEdit, setOpenEdit] = useState();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });

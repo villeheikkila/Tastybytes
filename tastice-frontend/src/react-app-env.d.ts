@@ -56,3 +56,9 @@ interface FriendRequestObject {
     receiver: [User];
     sender: [User];
 }
+
+interface LocalStorageUser {
+    token: string | undefined;
+    id: string;
+    admin: boolean;
+}

@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/react-hooks';
 import { Button, createStyles, makeStyles, Paper, TextField, Theme, Typography } from '@material-ui/core';
+import useLocalStorage from '@rehooks/local-storage';
 import Rating from 'material-ui-rating';
-import React, { useContext, useState } from 'react';
-import { UserContext } from '../../App';
+import React, { useState } from 'react';
 import { ImageUpload } from '../../components/ImageUpload';
 import { CREATE_CHECKIN, ME, SEARCH_CHECKINS } from '../../graphql';
 import { SEARCH_PRODUCT_CHECKINS } from '../../graphql/checkin';
@@ -34,7 +34,10 @@ interface CreateCheckInProps {
 
 export const CreateCheckIn = ({ productId, setSubmitted }: CreateCheckInProps): JSX.Element => {
     const classes = useStyles();
-    const { id } = useContext(UserContext);
+
+    const [user] = useLocalStorage<LocalStorageUser>('user');
+    const id = user && user.id;
+
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
     const [image, setImage] = useState();

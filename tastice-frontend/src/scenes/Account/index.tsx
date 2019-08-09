@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, createStyles, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
-import React, { useContext, useState } from 'react';
+import { deleteFromStorage } from '@rehooks/local-storage';
+import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
-import { UserContext } from '../../App';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
 import { DELETE_USER, ME } from '../../graphql';
 import { client } from '../../index';
@@ -39,7 +39,6 @@ export const Account = (): JSX.Element | null => {
 
     const { data } = useQuery(ME);
     const { me } = data;
-    const { setToken } = useContext(UserContext);
     const { history } = useReactRouter();
 
     const [deleteUser] = useMutation(DELETE_USER, {
@@ -57,8 +56,7 @@ export const Account = (): JSX.Element | null => {
             variables: { id: me.id },
         });
         await client.clearStore();
-        localStorage.clear();
-        setToken(null);
+        deleteFromStorage('user');
         history.push('/');
     };
 

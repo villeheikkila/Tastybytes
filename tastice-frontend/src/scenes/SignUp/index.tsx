@@ -1,10 +1,10 @@
 import { useMutation } from '@apollo/react-hooks';
 import { Button, Container, Grid, makeStyles, Typography } from '@material-ui/core';
-import React, { useContext, useState } from 'react';
+import { writeStorage } from '@rehooks/local-storage';
+import React, { useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
-import { UserContext } from '../../App';
 import { SIGN_UP } from '../../graphql';
 import { errorHandler } from '../../utils';
 
@@ -32,7 +32,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const SignUp = (): JSX.Element => {
-    const { setToken } = useContext(UserContext);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -50,11 +49,7 @@ export const SignUp = (): JSX.Element => {
             variables: { firstName, lastName, email, password },
         });
         if (result) {
-            const token: string = result.data.signup.token;
-            const id: string = result.data.signup.user.id;
-            setToken(token);
-            await localStorage.setItem('token', token);
-            await localStorage.setItem('id', id);
+            writeStorage('user', { token: result.data.signup.token, id: result.data.signup.user.id, admin: false });
         }
     };
 

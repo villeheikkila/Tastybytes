@@ -1,7 +1,7 @@
 import { Box, Fade, makeStyles } from '@material-ui/core';
-import React, { useContext } from 'react';
+import useLocalStorage from '@rehooks/local-storage';
+import React from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
-import { UserContext } from '../../App';
 import { Account } from '../../scenes/Account';
 import { Activity } from '../../scenes/Activity';
 import { Dashboard } from '../../scenes/Dashboard';
@@ -24,8 +24,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const Routes = (): JSX.Element => {
-    const { id, token } = useContext(UserContext);
     const classes = useStyles();
+
+    const [user] = useLocalStorage<LocalStorageUser>('user');
+    const id = user && user.id;
+    const token = user && user.token;
 
     return (
         <Router>

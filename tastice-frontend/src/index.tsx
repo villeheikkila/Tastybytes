@@ -10,6 +10,7 @@ import { getMainDefinition } from 'apollo-utilities';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { App } from './App';
+import { parseToken } from './utils';
 
 const SERVER_URL: string = process.env.REACT_APP_SERVER_URL || 'localhost:4000/';
 export const CLOUDINARY_UPLOAD_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET || 'demo';
@@ -32,7 +33,7 @@ export const persistor = persistCache({
 });
 
 const authLink = setContext((_, { headers }) => {
-    const token = localStorage.getItem('token');
+    const token = parseToken(localStorage.getItem('user'));
     return {
         headers: {
             ...headers,
