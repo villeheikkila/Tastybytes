@@ -18,6 +18,7 @@ export const BottomBar = (): JSX.Element => {
     const [highlight, setHighlight] = useState(3);
     const { location } = useReactRouter();
 
+    // Show correct highlight on the bottom navigation bar regardless of how the user ended up in that page.
     const locations: string[] = ['activity', 'discover', 'user'];
     const currentLocation = locations.indexOf(location.pathname.split('/')[1]);
 

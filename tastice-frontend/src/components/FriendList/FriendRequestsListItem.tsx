@@ -15,8 +15,10 @@ export const FriendRequestListItem = ({
     userId,
     request: { sender, receiver, id },
 }: FriendRequestListItemProps): JSX.Element => {
+    // Display the sender's information for the receiver and the other way around for the sender.
     const userIsTheSender = userId === sender[0].id;
     const show = userIsTheSender ? receiver[0] : sender[0];
+
     const { firstName, lastName, avatarId, avatarColor } = show;
 
     const [acceptFriendRequestMutation] = useMutation(ACCEPT_FRIENDREQUEST, {

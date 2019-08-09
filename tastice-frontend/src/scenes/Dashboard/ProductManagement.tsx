@@ -15,8 +15,8 @@ interface UpdatedProductObject {
 }
 
 export const ProductManagement = (): JSX.Element | null => {
-    const productsQuery = useQuery(ALL_PRODUCTS);
-    const products = productsQuery.data.products;
+    const { data } = useQuery(ALL_PRODUCTS);
+    const { products } = data;
 
     const [deleteProduct] = useMutation(DELETE_PRODUCT, {
         onError: errorHandler,
@@ -28,7 +28,7 @@ export const ProductManagement = (): JSX.Element | null => {
         refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
-    if (productsQuery.data.products === undefined) {
+    if (products === undefined) {
         return null;
     }
 
@@ -42,7 +42,7 @@ export const ProductManagement = (): JSX.Element | null => {
         color: product.category[0].color,
     }));
 
-    if (productsQuery.data.products === undefined) {
+    if (data.products === undefined) {
         return null;
     }
 

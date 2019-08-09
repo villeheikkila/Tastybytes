@@ -31,8 +31,11 @@ interface UserContext {
 
 export const App = (): JSX.Element => {
     const [token, setToken] = useState();
+    console.log('TCL: token', token);
     const [id, setId] = useState();
+    console.log('TCL: id', id);
     const me = useQuery(ME);
+
     const theme = (token && me.data.me && me.data.me.colorScheme) || 0;
     const themes = [darkTheme, whiteTheme];
 
@@ -46,15 +49,14 @@ export const App = (): JSX.Element => {
             variant: 'success',
         });
     }
-
     useEffect((): void => {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('id');
-        if (token) {
+        if (token && userId) {
             setToken(token);
             setId(userId);
         }
-    }, [token]);
+    }, [token, id]);
 
     return (
         <ThemeProvider theme={themes[theme]}>

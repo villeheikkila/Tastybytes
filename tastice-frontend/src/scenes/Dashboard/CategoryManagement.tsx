@@ -5,7 +5,8 @@ import { ALL_CATEGORIES, CREATE_CATEGORY, DELETE_CATEGORY, UPDATE_CATEGORY } fro
 import { errorHandler, notificationHandler } from '../../utils';
 
 export const CategoryManagement = (): JSX.Element | null => {
-    const categoriesQuery = useQuery(ALL_CATEGORIES);
+    const { data } = useQuery(ALL_CATEGORIES);
+    const { categories } = data;
 
     const [createCategory] = useMutation(CREATE_CATEGORY, {
         onError: errorHandler,
@@ -22,9 +23,7 @@ export const CategoryManagement = (): JSX.Element | null => {
         refetchQueries: [{ query: ALL_CATEGORIES }],
     });
 
-    if (categoriesQuery.data.categories === undefined) return null;
-
-    const categories = categoriesQuery.data.categories;
+    if (categories === undefined) return null;
 
     const handleCreateCategory = async ({ name }: any): Promise<void> => {
         const result = await createCategory({

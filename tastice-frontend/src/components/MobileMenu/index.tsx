@@ -33,7 +33,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export const MobileMenu = (): JSX.Element => {
     const classes = useStyles();
     const [colorScheme, setColorScheme] = useState(false);
-    const me = useQuery(ME);
+    const { data } = useQuery(ME);
+    const { me } = data;
 
     const [updateUser] = useMutation(UPDATE_USER, {
         onError: errorHandler,
@@ -42,7 +43,7 @@ export const MobileMenu = (): JSX.Element => {
 
     const { setToken, id } = useContext(UserContext);
 
-    const theme = me.data.me && me.data.me.colorScheme ? 1 : 0;
+    const theme = me && me.colorScheme ? 1 : 0;
 
     useEffect((): void => {
         if (theme === 0) setColorScheme(false);
@@ -50,9 +51,8 @@ export const MobileMenu = (): JSX.Element => {
     }, [theme]);
 
     const logout = async (): Promise<void> => {
-        localStorage.clear();
         await client.clearStore();
-        localStorage.clear();
+        await localStorage.clear();
         setToken(null);
     };
 

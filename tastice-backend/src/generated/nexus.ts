@@ -709,7 +709,9 @@ export interface NexusGenFieldTypes {
     product: NexusGenRootTypes['Product'][] | null; // [Product!]
     products: NexusGenRootTypes['Product'][] | null; // [Product!]
     searchCheckins: NexusGenRootTypes['Checkin'][] | null; // [Checkin!]
+    searchProductCheckins: NexusGenRootTypes['Checkin'][] | null; // [Checkin!]
     searchProducts: NexusGenRootTypes['Product'][] | null; // [Product!]
+    searchUserCheckins: NexusGenRootTypes['Checkin'][] | null; // [Checkin!]
     searchUsers: NexusGenRootTypes['User'][] | null; // [User!]
     subCategories: NexusGenRootTypes['SubCategory'][] | null; // [SubCategory!]
     user: NexusGenRootTypes['User'][] | null; // [User!]
@@ -954,9 +956,21 @@ export interface NexusGenArgTypes {
       first?: number | null; // Int
       skip?: number | null; // Int
     }
+    searchProductCheckins: { // args
+      filter?: string | null; // String
+      first?: number | null; // Int
+      id?: string | null; // ID
+      skip?: number | null; // Int
+    }
     searchProducts: { // args
       filter?: string | null; // String
       first?: number | null; // Int
+      skip?: number | null; // Int
+    }
+    searchUserCheckins: { // args
+      filter?: string | null; // String
+      first?: number | null; // Int
+      id?: string | null; // ID
       skip?: number | null; // Int
     }
     searchUsers: { // args

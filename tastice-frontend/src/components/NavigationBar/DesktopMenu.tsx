@@ -24,7 +24,8 @@ interface DesktopMenuProps {
 export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.Element => {
     const classes = useStyles();
     const [colorScheme, setColorScheme] = useState(false);
-    const me = useQuery(ME);
+    const { data } = useQuery(ME);
+    const { me } = data;
     const { setToken, id } = useContext(UserContext);
 
     const [updateUser] = useMutation(UPDATE_USER, {
@@ -32,7 +33,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
         refetchQueries: [{ query: ME }],
     });
 
-    const theme = me.data.me && me.data.me.colorScheme ? 1 : 0;
+    const theme = me && me.colorScheme ? 1 : 0;
 
     useEffect((): void => {
         if (theme === 0) setColorScheme(false);
@@ -40,9 +41,8 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
     }, [theme]);
 
     const logout = async (): Promise<void> => {
-        localStorage.clear();
         await client.clearStore();
-        localStorage.clear();
+        await window.localStorage.clear();
         setToken(null);
     };
 

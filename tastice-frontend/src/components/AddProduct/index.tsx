@@ -35,8 +35,12 @@ export const AddProduct = (): JSX.Element | null => {
     const [category, setCategory] = useState();
     const [subCategory, setSubCategory] = useState();
     const { history } = useReactRouter();
-    const categoriesQuery = useQuery(ALL_CATEGORIES);
-    const companiesQuery = useQuery(ALL_COMPANIES);
+
+    const { data: categoriesData } = useQuery(ALL_CATEGORIES);
+    const { data: companiesData } = useQuery(ALL_COMPANIES);
+
+    const { categories } = categoriesData;
+    const { companies } = companiesData;
 
     const [addProduct] = useMutation(ADD_PRODUCT, {
         onError: errorHandler,
@@ -47,12 +51,9 @@ export const AddProduct = (): JSX.Element | null => {
         ],
     });
 
-    if (addProduct === null || categoriesQuery === null || categoriesQuery.data.categories === undefined) {
+    if (categories === null || companies === undefined) {
         return null;
     }
-
-    const categories = categoriesQuery.data.categories;
-    const companies = companiesQuery.data.companies;
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => setName(event.target.value);
 

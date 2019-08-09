@@ -1,19 +1,20 @@
 import { useQuery } from '@apollo/react-hooks';
 import { Snackbar } from '@material-ui/core';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
-import { client } from '../../index';
 import { GET_NOTIFICATION } from '../../graphql';
+import { client } from '../../index';
 import { NotificationContentWrapper } from './NotificationContentWrapper';
 
 export const Notifications = (): JSX.Element | null => {
     const [open, setOpen] = useState(true);
-    const notification = useQuery(GET_NOTIFICATION);
+    const { data } = useQuery(GET_NOTIFICATION);
+    const { notification, variant } = data;
 
     useEffect((): void => {
-        if (notification.data.notification) setOpen(true);
+        if (notification) setOpen(true);
     }, [notification]);
 
-    if (notification.data.variant === undefined || notification.data.notification === '') {
+    if (notification === undefined || notification === '' || variant === undefined) {
         return null;
     }
 
@@ -44,8 +45,8 @@ export const Notifications = (): JSX.Element | null => {
         >
             <NotificationContentWrapper
                 onClose={handleCloseNotification}
-                variant={notification.data.variant as any}
-                message={notification.data.notification}
+                variant={variant as any}
+                message={notification}
             />
         </Snackbar>
     );

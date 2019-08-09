@@ -35,20 +35,27 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
     const classes = useStyles();
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
-    const checkinQuery = useQuery(CHECKIN, {
+
+    const { data } = useQuery(CHECKIN, {
         variables: { id },
     });
+    const { checkin } = data;
+
     const [updateCheckin] = useMutation(UPDATE_CHECKIN, {
         onError: errorHandler,
         refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
     useEffect((): void => {
-        if (checkinQuery.data.checkin !== undefined) {
-            setComment(checkinQuery.data.checkin[0].comment);
-            setRating(checkinQuery.data.checkin[0].rating);
+        if (checkin !== undefined) {
+            setComment(checkin[0].comment);
+            setRating(checkin[0].rating);
         }
-    }, [checkinQuery.data.checkin]);
+    }, [checkin]);
+
+    if (checkin === undefined) {
+        return null;
+    }
 
     const handleEditCheckInEdit = async (): Promise<void> => {
         setOpenEdit(false);
@@ -67,10 +74,6 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
         }
     };
 
-    if (checkinQuery.data.checkin === undefined) {
-        return null;
-    }
-
     return (
         <CardContent className={classes.card}>
             <Typography variant="h5" component="h3">
@@ -81,7 +84,7 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
                 label="Comments"
                 multiline
                 rows="4"
-                defaultValue={checkinQuery.data.checkin[0].comment}
+                defaultValue={checkin[0].comment}
                 className={classes.textField}
                 value={comment}
                 margin="normal"

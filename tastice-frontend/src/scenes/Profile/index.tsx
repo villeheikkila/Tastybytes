@@ -14,12 +14,15 @@ import {
     Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Waypoint } from 'react-waypoint';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
 import { SmartAvatar } from '../../components/SmartAvatar';
-import { USER } from '../../graphql';
+import { FILTER, USER } from '../../graphql';
+import { SEARCH_USER_CHECKINS } from '../../graphql/checkin';
+import { errorHandler } from '../../utils';
 import { RatingChart } from './RatingChart';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -63,16 +66,37 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Profile = ({ id }: IdObject): JSX.Element | null => {
     const classes = useStyles();
     const [ratingFilter, setRatingFilter] = useState();
+    const { data: filterData } = useQuery(FILTER);
 
     const user = useQuery(USER, {
         variables: { id },
+    });
+
+    const { data, fetchMore } = useQuery(SEARCH_USER_CHECKINS, {
+        variables: { id: id, filter: filterData.filter, first: 5 },
+        onError: errorHandler,
     });
 
     if (user.data.user === undefined) {
         return null;
     }
 
+    const loadMore = (): void => {
+        fetchMore({
+            variables: {
+                skip: data.searchUserCheckins.length,
+            },
+            updateQuery: (prev: any, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev;
+                return Object.assign({}, prev, {
+                    searchUserCheckins: [...prev.searchUserCheckins, ...fetchMoreResult.searchUserCheckins],
+                });
+            },
+        });
+    };
+
     const userObject = {
+        id: user.data.user[0].id,
         firstName: user.data.user[0].firstName,
         lastName: user.data.user[0].lastName,
         checkins: user.data.user[0].checkins,
@@ -159,11 +183,14 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
 
             <Divider text={dividerText} />
 
-            {userObject.checkins
+            {data.searchUserCheckins
                 .filter((checkin: CheckInObject) => !ratingFilter || checkin.rating === ratingFilter)
                 .map(
-                    (checkin: CheckInObject): JSX.Element => (
-                        <CheckInCard key={checkin.id} checkin={checkin} showProduct={true} />
+                    (checkin: CheckInObject, index: number): JSX.Element => (
+                        <Fragment key={checkin.id.toUpperCase()}>
+                            {data.searchUserCheckins.length - index <= 1 && <Waypoint onEnter={loadMore} />}
+                            <CheckInCard key={checkin.id} checkin={checkin} showProduct={true} />
+                        </Fragment>
                     ),
                 )}
         </div>

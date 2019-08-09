@@ -37,8 +37,12 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
     const [category, setCategory] = useState();
     const [image, setImage] = useState();
     const [subCategory, setSubCategory] = useState();
-    const categoriesQuery = useQuery(ALL_CATEGORIES);
-    const companiesQuery = useQuery(ALL_COMPANIES);
+
+    const { data: categoriesData } = useQuery(ALL_CATEGORIES);
+    const { data: companiesData } = useQuery(ALL_COMPANIES);
+
+    const { categories } = categoriesData;
+    const { companies } = companiesData;
 
     const [updateProduct] = useMutation(UPDATE_PRODUCT, {
         onError: errorHandler,
@@ -69,12 +73,9 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
         setImage(product.imageId);
     }, [product]);
 
-    if (categoriesQuery === null || categoriesQuery.data.categories === undefined) {
+    if (categories === null || companies === undefined) {
         return null;
     }
-
-    const categories = categoriesQuery.data.categories;
-    const companies = companiesQuery.data.companies;
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => setName(event.target.value);
 

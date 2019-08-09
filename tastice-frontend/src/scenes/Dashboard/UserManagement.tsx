@@ -7,8 +7,8 @@ import { ALL_USERS, DELETE_USER, UPDATE_USER } from '../../graphql';
 import { errorHandler, notificationHandler } from '../../utils';
 
 export const UserManagement = (): JSX.Element | null => {
-    const usersQuery = useQuery(ALL_USERS);
-    const users = usersQuery.data.users;
+    const { data } = useQuery(ALL_USERS);
+    const { users } = data;
 
     const [deleteUser] = useMutation(DELETE_USER, {
         onError: errorHandler,
@@ -20,7 +20,7 @@ export const UserManagement = (): JSX.Element | null => {
         refetchQueries: [{ query: ALL_USERS }],
     });
 
-    if (usersQuery.data.users === undefined) {
+    if (users === undefined) {
         return null;
     }
 

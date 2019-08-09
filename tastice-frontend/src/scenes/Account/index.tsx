@@ -34,27 +34,27 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Account = (): JSX.Element | null => {
-    const me = useQuery(ME);
     const classes = useStyles();
+    const [visible, setVisible] = useState(false);
+
+    const { data } = useQuery(ME);
+    const { me } = data;
     const { setToken } = useContext(UserContext);
     const { history } = useReactRouter();
-    const [visible, setVisible] = useState(false);
 
     const [deleteUser] = useMutation(DELETE_USER, {
         onError: errorHandler,
         refetchQueries: [{ query: ME }],
     });
 
-    if (me.data.me === undefined) {
+    if (me === undefined) {
         return null;
     }
-
-    const user = me.data.me;
 
     const handleDeleteUser = async (): Promise<void> => {
         setVisible(false);
         await deleteUser({
-            variables: { id: user.id },
+            variables: { id: me.id },
         });
         await client.clearStore();
         localStorage.clear();
@@ -69,9 +69,9 @@ export const Account = (): JSX.Element | null => {
                     Edit Profile Settings
                 </Typography>
 
-                <AccountAvatar user={user} />
-                <UserForm user={user} />
-                <PasswordForm id={user.id} />
+                <AccountAvatar user={me} />
+                <UserForm user={me} />
+                <PasswordForm id={me} />
 
                 <Button
                     variant="outlined"

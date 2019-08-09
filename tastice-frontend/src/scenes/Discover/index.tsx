@@ -30,10 +30,10 @@ const useStyles = makeStyles(theme => ({
 
 export const Discover = (): JSX.Element | null => {
     const classes = useStyles();
-    const filter = useQuery(FILTER);
+    const { data: filterData } = useQuery(FILTER);
 
     const { data, fetchMore } = useQuery(SEARCH_PRODUCTS, {
-        variables: { filter: filter.data.filter, first: 5 },
+        variables: { filter: filterData.filter, first: 5 },
         onError: errorHandler,
     });
 

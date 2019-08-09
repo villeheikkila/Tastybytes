@@ -174,6 +174,72 @@ export const Query = queryType({
             },
         });
 
+        t.list.field('searchProductCheckins', {
+            type: 'Checkin',
+            args: {
+                id: idArg(),
+                filter: stringArg(),
+                first: intArg(),
+                skip: intArg(),
+            },
+            resolve: (_, { filter, first, skip, id }, ctx) => {
+                return ctx.prisma.product({ id }).checkins({
+                    where: {
+                        OR: [
+                            { author: { firstName_contains: filter } },
+                            { author: { firstName_contains: filter.toLowerCase() } },
+                            { author: { firstName_contains: filter.toUpperCase() } },
+                            {
+                                author: {
+                                    firstName_contains: filter.charAt(0).toUpperCase() + filter.slice(1).toLowerCase(),
+                                },
+                            },
+                            {
+                                author: {
+                                    lastName_contains: filter.charAt(0).toUpperCase() + filter.slice(1).toLowerCase(),
+                                },
+                            },
+                            { author: { lastName_contains: filter } },
+                            { author: { lastName_contains: filter.toLowerCase() } },
+                            { author: { lastName_contains: filter.toUpperCase() } },
+                        ],
+                    },
+                    first,
+                    skip,
+                    orderBy: 'createdAt_DESC',
+                });
+            },
+        });
+
+        t.list.field('searchUserCheckins', {
+            type: 'Checkin',
+            args: {
+                id: idArg(),
+                filter: stringArg(),
+                first: intArg(),
+                skip: intArg(),
+            },
+            resolve: (_, { filter, first, skip, id }, ctx) => {
+                return ctx.prisma.user({ id }).checkins({
+                    where: {
+                        OR: [
+                            { product: { name_contains: filter } },
+                            { product: { name_contains: filter.toLowerCase() } },
+                            { product: { name_contains: filter.toUpperCase() } },
+                            {
+                                product: {
+                                    name_contains: filter.charAt(0).toUpperCase() + filter.slice(1).toLowerCase(),
+                                },
+                            },
+                        ],
+                    },
+                    first,
+                    skip,
+                    orderBy: 'createdAt_DESC',
+                });
+            },
+        });
+
         t.list.field('searchUsers', {
             type: 'User',
             args: {

@@ -1,9 +1,11 @@
 import { useMutation } from '@apollo/react-hooks';
 import { Button, createStyles, makeStyles, Paper, TextField, Theme, Typography } from '@material-ui/core';
 import Rating from 'material-ui-rating';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { UserContext } from '../../App';
 import { ImageUpload } from '../../components/ImageUpload';
-import { CREATE_CHECKIN, ME, PRODUCT, SEARCH_CHECKINS } from '../../graphql';
+import { CREATE_CHECKIN, ME, SEARCH_CHECKINS } from '../../graphql';
+import { SEARCH_PRODUCT_CHECKINS } from '../../graphql/checkin';
 import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,13 +28,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface CreateCheckInProps {
-    authorId: string;
     productId: string;
     setSubmitted: any;
 }
 
-export const CreateCheckIn = ({ authorId, productId, setSubmitted }: CreateCheckInProps): JSX.Element => {
+export const CreateCheckIn = ({ productId, setSubmitted }: CreateCheckInProps): JSX.Element => {
     const classes = useStyles();
+    const { id } = useContext(UserContext);
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
     const [image, setImage] = useState();
@@ -41,7 +43,7 @@ export const CreateCheckIn = ({ authorId, productId, setSubmitted }: CreateCheck
         onError: errorHandler,
         refetchQueries: [
             { query: ME },
-            { query: PRODUCT, variables: { id: productId } },
+            { query: SEARCH_PRODUCT_CHECKINS, variables: { id: productId, filter: '', first: 5 } },
             { query: SEARCH_CHECKINS, variables: { filter: '', first: 5 } },
         ],
     });
@@ -49,7 +51,7 @@ export const CreateCheckIn = ({ authorId, productId, setSubmitted }: CreateCheck
     const handeCheckIn = async (): Promise<void> => {
         const result = await createCheckin({
             variables: {
-                authorId,
+                authorId: id,
                 productId,
                 comment,
                 image,

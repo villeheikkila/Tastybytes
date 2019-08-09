@@ -53,8 +53,8 @@ export const SignUp = (): JSX.Element => {
             const token: string = result.data.signup.token;
             const id: string = result.data.signup.user.id;
             setToken(token);
-            localStorage.setItem('token', token);
-            localStorage.setItem('id', id);
+            await localStorage.setItem('token', token);
+            await localStorage.setItem('id', id);
         }
     };
 

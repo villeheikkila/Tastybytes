@@ -1,4 +1,4 @@
-import { Box, Fade } from '@material-ui/core';
+import { Box, Fade, makeStyles } from '@material-ui/core';
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { UserContext } from '../../App';
@@ -16,8 +16,16 @@ import { FriendList } from '../FriendList';
 import { MobileMenu } from '../MobileMenu';
 import { NavigationBar } from '../NavigationBar/';
 import { Notifications } from '../Notification';
+
+const useStyles = makeStyles(() => ({
+    navigationBar: {
+        marginTop: 80,
+    },
+}));
+
 export const Routes = (): JSX.Element => {
     const { id, token } = useContext(UserContext);
+    const classes = useStyles();
 
     return (
         <Router>
@@ -29,7 +37,7 @@ export const Routes = (): JSX.Element => {
                     <Route render={(): JSX.Element => <LogIn />} />
                 </Switch>
             ) : (
-                <div style={{ paddingTop: 70 }}>
+                <div className={classes.navigationBar}>
                     <NavigationBar />
                     <Fade timeout={300}>
                         <Switch>

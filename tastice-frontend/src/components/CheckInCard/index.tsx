@@ -104,7 +104,7 @@ export const CheckInCard = ({ checkin, showProduct }: CheckInCardProps): JSX.Ele
     const image = showProduct ? '' : checkinObject.image;
     const userIsTheAuthor = authorObject.id === id;
 
-    // A workaround for not being able to use ternary operator on CardHeader action prop
+    // A workaround for not being able to use ternary operator in the CardHeader action prop
     const settings = (): JSX.Element | undefined => {
         if (userIsTheAuthor)
             return (

@@ -1,11 +1,10 @@
-import { useQuery, useSubscription } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { Card, createStyles, Divider, InputBase, List, ListSubheader, makeStyles, Theme } from '@material-ui/core';
 import { fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../../App';
 import { FRIENDREQUEST, ME, SEARCH_USERS } from '../../graphql';
-import { FRIENDREQUEST_SUBSCRIPTION } from '../../graphql/user'
 import { errorHandler } from '../../utils';
 import { FriendListItem } from './FriendListItem';
 import { FriendRequestListItem } from './FriendRequestsListItem';
@@ -60,25 +59,29 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const FriendList = (): JSX.Element | null => {
     const classes = useStyles();
-    const { id } = useContext(UserContext);
-    const me = useQuery(ME);
     const [filter, setFilter] = useState('');
+    const { id } = useContext(UserContext);
+    const { data } = useQuery(ME);
 
-    const usersQuery = useQuery(SEARCH_USERS, {
+    const { data: userData } = useQuery(SEARCH_USERS, {
         variables: { filter },
         onError: errorHandler,
     });
 
-    const friendRequest = useQuery(FRIENDREQUEST, {
+    const { data: friendRequestData } = useQuery(FRIENDREQUEST, {
         variables: { id },
     });
 
-    if (usersQuery.data.searchUsers === undefined || friendRequest.data === undefined || me.data.me === undefined) {
+    const { me } = data;
+    const { searchUsers } = userData;
+    const { friendRequest } = friendRequestData;
+
+    if (searchUsers === undefined || friendRequest === undefined || me === undefined) {
         return null;
     }
 
-    const friends = me.data.me.friends;
-    const friendRequests = friendRequest.data.friendRequest || [];
+    const friends = me.friends;
+    const friendRequests = friendRequest || [];
 
     const friendRequestIds = friendRequests.map(
         (friendRequestItem: FriendRequestObject) => friendRequestItem.sender[0].id,
@@ -86,7 +89,7 @@ export const FriendList = (): JSX.Element | null => {
 
     const friendIds = friends.map((friendItem: User) => friendItem.id);
 
-    const users = usersQuery.data.searchUsers.filter(
+    const users = searchUsers.filter(
         (userItem: User) =>
             userItem.id !== id && !friendRequestIds.includes(userItem.id) && !friendIds.includes(userItem.id),
     );

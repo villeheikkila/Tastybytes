@@ -16,6 +16,36 @@ export const SEARCH_CHECKINS = gql`
     ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}  
 `;
 
+export const SEARCH_PRODUCT_CHECKINS = gql`
+    query searchProductCheckins($id: ID!, $filter: String, $first: Int, $skip: Int) {
+        searchProductCheckins(id: $id, filter: $filter, first: $first, skip: $skip) {
+            ...CheckInDetails
+            author {
+                ...UserDetails
+            }
+            product {
+                ...ProductDetails
+            }
+        }
+    }
+    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}  
+`;
+
+export const SEARCH_USER_CHECKINS = gql`
+    query searchUserCheckins($id: ID!, $filter: String, $first: Int, $skip: Int) {
+        searchUserCheckins(id: $id, filter: $filter, first: $first, skip: $skip) {
+            ...CheckInDetails
+            author {
+                ...UserDetails
+            }
+            product {
+                ...ProductDetails
+            }
+        }
+    }
+    ${USER_DETAILS}, ${PRODUCT_DETAILS}, ${CHECKIN_DETAILS}  
+`;
+
 export const CREATE_CHECKIN = gql`
     mutation createCheckin($authorId: ID!, $image: String, $productId: ID!, $comment: String, $rating: Int!) {
         createCheckin(authorId: $authorId, image: $image, productId: $productId, comment: $comment, rating: $rating) {

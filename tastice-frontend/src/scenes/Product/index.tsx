@@ -1,10 +1,13 @@
 import { useQuery } from '@apollo/react-hooks';
 import { Card, makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
+import { Waypoint } from 'react-waypoint';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
 import { ProductCard } from '../../components/ProductCard';
-import { ME, PRODUCT } from '../../graphql';
+import { FILTER, PRODUCT } from '../../graphql';
+import { SEARCH_PRODUCT_CHECKINS } from '../../graphql/checkin';
+import { errorHandler } from '../../utils';
 import { CreateCheckIn } from './CreateCheckIn';
 
 const useStyles = makeStyles(theme => ({
@@ -15,23 +18,45 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Product = ({ id }: IdObject): JSX.Element | null => {
-    const me = useQuery(ME);
     const [submitted, setSubmitted] = useState();
     const classes = useStyles();
+    const { data: filterData } = useQuery(FILTER);
+
     const productsQuery = useQuery(PRODUCT, {
         variables: { id },
     });
 
-    if (me.data.me === undefined || productsQuery.data === undefined || productsQuery.data.product === undefined) {
+    const { data, fetchMore } = useQuery(SEARCH_PRODUCT_CHECKINS, {
+        variables: { id: id, filter: filterData.filter, first: 5 },
+        onError: errorHandler,
+    });
+
+    if (
+        data.searchProductCheckins === undefined ||
+        productsQuery.data === undefined ||
+        productsQuery.data.product === undefined
+    ) {
         return null;
     }
+
+    // This needs to be moved to backend at some point.
+    const loadMore = (): void => {
+        fetchMore({
+            variables: {
+                skip: data.searchProductCheckins.length,
+            },
+            updateQuery: (prev: any, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev;
+                return Object.assign({}, prev, {
+                    searchProductCheckins: [...prev.searchProductCheckins, ...fetchMoreResult.searchProductCheckins],
+                });
+            },
+        });
+    };
 
     const product = productsQuery.data.product[0];
 
     const dividerText = product.checkins.length === 0 ? 'No Recent Activity' : 'Recent Activity';
-
-    // Workaround due to fact that Prisma can't order nested fields
-    const reverseOrderCheckins = product.checkins.reverse();
 
     return (
         <>
@@ -39,15 +64,16 @@ export const Product = ({ id }: IdObject): JSX.Element | null => {
                 <ProductCard product={product} showMenu={true} />
             </Card>
 
-            {!submitted && (
-                <CreateCheckIn authorId={me.data.me.id} productId={product.id} setSubmitted={setSubmitted} />
-            )}
+            {!submitted && <CreateCheckIn productId={product.id} setSubmitted={setSubmitted} />}
 
             <Divider text={dividerText} />
 
-            {reverseOrderCheckins.map(
-                (checkin: CheckInObject): JSX.Element => (
-                    <CheckInCard key={checkin.id} checkin={checkin} showProduct={false} />
+            {data.searchProductCheckins.map(
+                (checkin: CheckInObject, index: number): JSX.Element => (
+                    <Fragment key={checkin.id.toUpperCase()}>
+                        {data.searchProductCheckins.length - index <= 1 && <Waypoint onEnter={loadMore} />}
+                        <CheckInCard key={checkin.id} checkin={checkin} showProduct={false} />
+                    </Fragment>
                 ),
             )}
         </>

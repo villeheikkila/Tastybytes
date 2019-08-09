@@ -80,7 +80,7 @@ export const NavigationBar = (): JSX.Element => {
 
     filterChanger(filter);
 
-    const searchLocations = ['activity', 'discover', 'user'];
+    const searchLocations = ['activity', 'discover', 'user', 'product'];
 
     const showSearch = searchLocations.includes(location.pathname.split('/')[1]);
 
