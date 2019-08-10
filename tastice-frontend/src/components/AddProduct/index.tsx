@@ -51,7 +51,7 @@ export const AddProduct = (): JSX.Element | null => {
         ],
     });
 
-    if (categories === null || companies === undefined) {
+    if (categories === undefined || companies === undefined) {
         return null;
     }
 

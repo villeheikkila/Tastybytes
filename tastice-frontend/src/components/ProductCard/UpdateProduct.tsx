@@ -73,7 +73,7 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
         setImage(product.imageId);
     }, [product]);
 
-    if (categories === null || companies === undefined) {
+    if (categories === undefined || companies === undefined) {
         return null;
     }
 

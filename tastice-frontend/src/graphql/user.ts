@@ -124,6 +124,7 @@ export const SIGN_UP = gql`
             token
             user {
                 ...UserDetails
+                admin
             }
         }
     }
@@ -170,6 +171,7 @@ export const LOGIN = gql`
             token
             user {
                 ...UserDetails
+                admin
             }
         }
     }

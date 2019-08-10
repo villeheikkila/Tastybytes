@@ -49,7 +49,12 @@ export const SignUp = (): JSX.Element => {
             variables: { firstName, lastName, email, password },
         });
         if (result) {
-            writeStorage('user', { token: result.data.signup.token, id: result.data.signup.user.id, admin: false });
+            const {
+                data: {
+                    signup: { token, user },
+                },
+            } = result;
+            writeStorage('user', { token, id: user.id, admin: user.admin });
         }
     };
 

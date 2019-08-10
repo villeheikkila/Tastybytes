@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/react-hooks';
 import { Button, Container, makeStyles, TextField, Typography } from '@material-ui/core';
+import { writeStorage } from '@rehooks/local-storage';
 import React, { useState } from 'react';
 import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
 import { LOGIN } from '../../graphql';
 import { errorHandler } from '../../utils';
-import { writeStorage } from '@rehooks/local-storage';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -51,7 +51,12 @@ export const LogIn = (): JSX.Element => {
         });
 
         if (result) {
-            writeStorage('user', { token: result.data.login.token, id: result.data.login.user.id, admin: false });
+            const {
+                data: {
+                    login: { token, user },
+                },
+            } = result;
+            writeStorage('user', { token, id: user.id, admin: user.admin });
         }
     };
 
