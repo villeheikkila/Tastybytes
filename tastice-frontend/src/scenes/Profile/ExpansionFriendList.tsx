@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const ExpansionFriendList = ({ friends }: any): JSX.Element | null => {
-    console.log('TCL: friends', friends);
     const classes = useStyles();
 
     return (

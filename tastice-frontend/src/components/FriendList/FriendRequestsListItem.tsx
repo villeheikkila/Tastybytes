@@ -14,9 +14,8 @@ export const FriendRequestListItem = ({
     userId,
     request: { sender, receiver, id, message },
 }: FriendRequestListItemProps): JSX.Element => {
-    console.log("TCL: userId", userId)
-
     const client = useApolloClient();
+
     // Display the sender's information for the receiver and the other way around for the sender.
     const userIsTheSender = userId === sender[0].id;
     const show = userIsTheSender ? receiver[0] : sender[0];
