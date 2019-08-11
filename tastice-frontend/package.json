@@ -28,6 +28,7 @@
         "material-ui-rating": "^4.1.1",
         "npm": "^6.10.1",
         "react": "^16.8.6",
+        "react-apollo": "^3.0.0-beta.2",
         "react-dom": "^16.8.6",
         "react-dropzone": "^10.1.7",
         "react-material-ui-form-validator": "^2.0.9",

@@ -5,7 +5,6 @@ import { deleteFromStorage } from '@rehooks/local-storage';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ME, UPDATE_USER } from '../../graphql';
-import { client } from '../../index';
 import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles(() =>
@@ -40,8 +39,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
     }, [theme]);
 
     const logout = async (): Promise<void> => {
-        await client.clearStore();
-        await window.localStorage.clear();
+        deleteFromStorage('apollo-cache-persist');
         deleteFromStorage('user');
     };
 
