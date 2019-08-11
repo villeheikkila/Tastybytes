@@ -77,7 +77,7 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
         onError: errorHandler,
     });
 
-    if (user.data.user === undefined) {
+    if (user.data.user === undefined || data.searchUserCheckins === undefined) {
         return null;
     }
 
