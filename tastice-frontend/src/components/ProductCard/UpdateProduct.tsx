@@ -1,8 +1,7 @@
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, CardContent, Grid, makeStyles, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { ALL_CATEGORIES, ALL_COMPANIES, SEARCH_CHECKINS, SEARCH_PRODUCTS, UPDATE_PRODUCT } from '../../graphql';
-import { errorHandler, notificationHandler } from '../../utils';
 import { ImageUpload } from '../ImageUpload';
 import { MaterialSelect } from '../MaterialSelect';
 
@@ -37,6 +36,7 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
     const [category, setCategory] = useState();
     const [image, setImage] = useState();
     const [subCategory, setSubCategory] = useState();
+    const client = useApolloClient();
 
     const { data: categoriesData } = useQuery(ALL_CATEGORIES);
     const { data: companiesData } = useQuery(ALL_COMPANIES);
@@ -45,7 +45,14 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
     const { companies } = companiesData;
 
     const [updateProduct] = useMutation(UPDATE_PRODUCT, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [
             { query: SEARCH_CHECKINS, variables: { filter: '', first: 5 } },
             { query: SEARCH_PRODUCTS, variables: { filter: '' } },
@@ -89,25 +96,31 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
         event.preventDefault();
 
         if (name.length < 3) {
-            notificationHandler({
-                message: `Product name must have at least three letters`,
-                variant: 'error',
+            client.writeData({
+                data: {
+                    notification: `Product name must have at least three letters`,
+                    variant: 'error',
+                },
             });
             return;
         }
 
         if (company.value.length < 3) {
-            notificationHandler({
-                message: `Company name must have at least three letters`,
-                variant: 'error',
+            client.writeData({
+                data: {
+                    notification: `Company name must have at least three letters`,
+                    variant: 'error',
+                },
             });
             return;
         }
 
         if (!category) {
-            notificationHandler({
-                message: `Please select a category`,
-                variant: 'error',
+            client.writeData({
+                data: {
+                    notification: `Please select a category`,
+                    variant: 'error',
+                },
             });
             return;
         }
@@ -128,9 +141,11 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
         });
 
         if (result) {
-            notificationHandler({
-                message: `Product ${result.data.updateProduct.name} succesfully updated`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `Product ${result.data.updateProduct.name} succesfully updated`,
+                    variant: 'success',
+                },
             });
         }
     };

@@ -22,7 +22,6 @@ import { Divider } from '../../components/Divider';
 import { SmartAvatar } from '../../components/SmartAvatar';
 import { FILTER, USER } from '../../graphql';
 import { SEARCH_USER_CHECKINS } from '../../graphql/checkin';
-import { errorHandler } from '../../utils';
 import { RatingChart } from './RatingChart';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -66,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Profile = ({ id }: IdObject): JSX.Element | null => {
     const classes = useStyles();
     const [ratingFilter, setRatingFilter] = useState();
-    const { data: filterData } = useQuery(FILTER);
+    const { data: filterData, client } = useQuery(FILTER);
 
     const user = useQuery(USER, {
         variables: { id },
@@ -74,7 +73,14 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
 
     const { data, fetchMore } = useQuery(SEARCH_USER_CHECKINS, {
         variables: { id: id, filter: filterData.filter, first: 5 },
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
     });
 
     if (user.data.user === undefined || data.searchUserCheckins === undefined) {

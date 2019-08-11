@@ -1,16 +1,23 @@
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { SmartAvatar } from '../../components/SmartAvatar';
 import { ME, UPDATE_AVATAR } from '../../graphql';
 import { uploadCloudinary } from '../../services/cloudinary';
-import { errorHandler } from '../../utils';
 
 export const AccountAvatar = ({ user }: any): JSX.Element | null => {
     const [newAvatarId, setNewAvatarId] = useState('');
+    const client = useApolloClient();
 
     const [updateAvatar] = useMutation(UPDATE_AVATAR, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ME }],
     });
 

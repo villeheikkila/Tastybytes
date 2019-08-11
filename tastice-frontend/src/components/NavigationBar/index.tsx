@@ -1,3 +1,4 @@
+import { useApolloClient } from '@apollo/react-hooks';
 import {
     AppBar,
     Badge,
@@ -17,7 +18,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
-import { filterChanger } from '../../utils';
 import { DesktopMenu } from './DesktopMenu';
 import { SearchInputBase } from './SearchInputBase';
 
@@ -74,11 +74,16 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const NavigationBar = (): JSX.Element => {
     const classes = useStyles();
+    const client = useApolloClient();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [filter, setFilter] = useState('');
     const { location } = useReactRouter();
 
-    filterChanger(filter);
+    client.writeData({
+        data: {
+            filter,
+        },
+    });
 
     const searchLocations = ['activity', 'discover', 'user', 'product'];
 

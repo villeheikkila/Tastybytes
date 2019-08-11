@@ -4,7 +4,6 @@ import MaterialTable from 'material-table';
 import React from 'react';
 import { BoxImage } from '../../components/BoxImage';
 import { ALL_PRODUCTS, DELETE_PRODUCT, UPDATE_PRODUCT } from '../../graphql';
-import { errorHandler, notificationHandler } from '../../utils';
 
 interface UpdatedProductObject {
     id: string;
@@ -15,16 +14,30 @@ interface UpdatedProductObject {
 }
 
 export const ProductManagement = (): JSX.Element | null => {
-    const { data } = useQuery(ALL_PRODUCTS);
+    const { data, client } = useQuery(ALL_PRODUCTS);
     const { products } = data;
 
     const [deleteProduct] = useMutation(DELETE_PRODUCT, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
     const [updateProduct] = useMutation(UPDATE_PRODUCT, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
@@ -52,9 +65,11 @@ export const ProductManagement = (): JSX.Element | null => {
         });
 
         if (result) {
-            notificationHandler({
-                message: `Product ${result.data.deleteProduct.name} succesfully deleted`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `Product ${result.data.deleteProduct.name} succesfully deleted`,
+                    variant: 'success',
+                },
             });
         }
     };
@@ -75,9 +90,11 @@ export const ProductManagement = (): JSX.Element | null => {
         });
 
         if (result) {
-            notificationHandler({
-                message: `Product ${result.data.updateProduct.name} succesfully updated`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `Product ${result.data.updateProduct.name} succesfully updated`,
+                    variant: 'success',
+                },
             });
         }
     };

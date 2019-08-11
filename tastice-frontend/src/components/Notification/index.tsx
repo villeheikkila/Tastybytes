@@ -2,12 +2,11 @@ import { useQuery } from '@apollo/react-hooks';
 import { Snackbar } from '@material-ui/core';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { GET_NOTIFICATION } from '../../graphql';
-import { client } from '../../index';
 import { NotificationContentWrapper } from './NotificationContentWrapper';
 
 export const Notifications = (): JSX.Element | null => {
     const [open, setOpen] = useState(true);
-    const { data } = useQuery(GET_NOTIFICATION);
+    const { data, client } = useQuery(GET_NOTIFICATION);
     const { notification, variant } = data;
 
     useEffect((): void => {

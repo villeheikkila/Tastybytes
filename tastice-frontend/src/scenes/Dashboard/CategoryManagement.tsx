@@ -2,24 +2,44 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import MaterialTable from 'material-table';
 import React from 'react';
 import { ALL_CATEGORIES, CREATE_CATEGORY, DELETE_CATEGORY, UPDATE_CATEGORY } from '../../graphql/product';
-import { errorHandler, notificationHandler } from '../../utils';
 
 export const CategoryManagement = (): JSX.Element | null => {
-    const { data } = useQuery(ALL_CATEGORIES);
+    const { data, client } = useQuery(ALL_CATEGORIES);
     const { categories } = data;
 
     const [createCategory] = useMutation(CREATE_CATEGORY, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ALL_CATEGORIES }],
     });
 
     const [deleteCategory] = useMutation(DELETE_CATEGORY, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ALL_CATEGORIES }],
     });
 
     const [updateCategory] = useMutation(UPDATE_CATEGORY, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ALL_CATEGORIES }],
     });
 
@@ -33,9 +53,11 @@ export const CategoryManagement = (): JSX.Element | null => {
         });
 
         if (result) {
-            notificationHandler({
-                message: `A new '${result.data.createCategory.name}' category created!`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `A new '${result.data.createCategory.name}' category created!`,
+                    variant: 'success',
+                },
             });
         }
     };
@@ -46,9 +68,11 @@ export const CategoryManagement = (): JSX.Element | null => {
         });
 
         if (result) {
-            notificationHandler({
-                message: `Category ${result.data.deleteCategory.name} succesfully deleted`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `Category ${result.data.deleteCategory.name} succesfully deleted`,
+                    variant: 'success',
+                },
             });
         }
     };
@@ -59,9 +83,11 @@ export const CategoryManagement = (): JSX.Element | null => {
         });
 
         if (result) {
-            notificationHandler({
-                message: `Category ${name} succesfully renamed to ${result.data.updateCategory.name}`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `Category ${name} succesfully renamed to ${result.data.updateCategory.name}`,
+                    variant: 'success',
+                },
             });
         }
     };

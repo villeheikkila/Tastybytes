@@ -4,19 +4,32 @@ import MaterialTable from 'material-table';
 import React from 'react';
 import { SmartAvatar } from '../../components/SmartAvatar';
 import { ALL_USERS, DELETE_USER, UPDATE_USER } from '../../graphql';
-import { errorHandler, notificationHandler } from '../../utils';
 
 export const UserManagement = (): JSX.Element | null => {
-    const { data } = useQuery(ALL_USERS);
+    const { data, client } = useQuery(ALL_USERS);
     const { users } = data;
 
     const [deleteUser] = useMutation(DELETE_USER, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ALL_USERS }],
     });
 
     const [updateUser] = useMutation(UPDATE_USER, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ALL_USERS }],
     });
 
@@ -29,9 +42,11 @@ export const UserManagement = (): JSX.Element | null => {
             variables: { id },
         });
         if (result) {
-            notificationHandler({
-                message: `User '${result.data.deleteUser.firstName}' succesfully deleted`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `User '${result.data.deleteUser.firstName}' succesfully deleted`,
+                    variant: 'success',
+                },
             });
         }
     };
@@ -47,9 +62,11 @@ export const UserManagement = (): JSX.Element | null => {
         });
 
         if (result) {
-            notificationHandler({
-                message: `User '${result.data.updateUser.firstName}' succesfully updated`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `User '${result.data.updateUser.firstName}' succesfully updated`,
+                    variant: 'success',
+                },
             });
         }
     };

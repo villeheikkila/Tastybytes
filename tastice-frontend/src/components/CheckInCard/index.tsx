@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { Card, CardHeader, IconButton, Link, makeStyles, Menu, MenuItem, Typography } from '@material-ui/core';
 import { blue } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -6,7 +6,6 @@ import { bindMenu, bindTrigger, usePopupState } from 'material-ui-popup-state/ho
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { DELETE_CHECKIN, PRODUCT, SEARCH_CHECKINS, USER } from '../../graphql';
-import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { ProductCard } from '../ProductCard';
 import { SmartAvatar } from '../SmartAvatar';
@@ -48,6 +47,7 @@ interface CheckInCardProps {
 
 export const CheckInCard = ({ checkin, showProduct, showMenu = false }: CheckInCardProps): JSX.Element => {
     const classes = useStyles();
+    const client = useApolloClient();
 
     const [visible, setVisible] = useState();
     const [openEdit, setOpenEdit] = useState();
@@ -80,7 +80,14 @@ export const CheckInCard = ({ checkin, showProduct, showMenu = false }: CheckInC
     };
 
     const [deleteCheckin] = useMutation(DELETE_CHECKIN, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [
             { query: USER, variables: { id: authorObject.id } },
             { query: PRODUCT, variables: { id: productObject.id } },
@@ -94,9 +101,11 @@ export const CheckInCard = ({ checkin, showProduct, showMenu = false }: CheckInC
             variables: { id: checkinObject.id },
         });
         if (result) {
-            notificationHandler({
-                message: `Checkin succesfully deleted`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `Checkin succesfully deleted`,
+                    variant: 'success',
+                },
             });
         }
     };

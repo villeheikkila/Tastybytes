@@ -1,9 +1,8 @@
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { Button, createStyles, Grid, makeStyles, Theme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { ME, UPDATE_USER } from '../../graphql';
-import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -19,13 +18,21 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const UserForm = ({ user }: any): JSX.Element | null => {
     const classes = useStyles();
+    const client = useApolloClient();
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
 
     const [updateUser] = useMutation(UPDATE_USER, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ME }],
     });
 
@@ -50,9 +57,11 @@ export const UserForm = ({ user }: any): JSX.Element | null => {
         });
 
         if (result) {
-            notificationHandler({
-                message: `User '${result.data.updateUser.firstName}' succesfully updated`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `User '${result.data.updateUser.firstName}' succesfully updated`,
+                    variant: 'success',
+                },
             });
         }
     };
@@ -65,7 +74,7 @@ export const UserForm = ({ user }: any): JSX.Element | null => {
         setFirstName(event.target.value);
 
     return (
-        <ValidatorForm onSubmit={handleUpdateUser} className={classes.form} onError={errorHandler}>
+        <ValidatorForm onSubmit={handleUpdateUser} className={classes.form}>
             <Grid container spacing={2} alignItems="center" justify="center">
                 <Grid item xs={12}>
                     <TextValidator

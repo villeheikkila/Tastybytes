@@ -5,8 +5,6 @@ import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
 import { DELETE_USER, ME } from '../../graphql';
-import { client } from '../../index';
-import { errorHandler } from '../../utils';
 import { AccountAvatar } from './AccountAvatar';
 import { PasswordForm } from './PasswordForm';
 import { UserForm } from './UserForm';
@@ -37,12 +35,19 @@ export const Account = (): JSX.Element | null => {
     const classes = useStyles();
     const [visible, setVisible] = useState(false);
 
-    const { data } = useQuery(ME);
+    const { data, client } = useQuery(ME);
     const { me } = data;
     const { history } = useReactRouter();
 
     const [deleteUser] = useMutation(DELETE_USER, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ME }],
     });
 
@@ -55,7 +60,7 @@ export const Account = (): JSX.Element | null => {
         await deleteUser({
             variables: { id: me.id },
         });
-        await client.clearStore();
+        deleteFromStorage('apollo-cache-persist');
         deleteFromStorage('user');
         history.push('/');
     };

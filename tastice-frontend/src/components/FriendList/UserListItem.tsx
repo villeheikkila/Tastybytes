@@ -1,8 +1,7 @@
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
 import { CREATE_FRIENDREQUEST, FRIENDREQUEST, ME } from '../../graphql';
-import { errorHandler, notificationHandler } from '../../utils';
 import { SmartAvatar } from '../SmartAvatar';
 import { FriendRequestDialog } from './FriendRequestDialog';
 interface UserListItemProps {
@@ -17,8 +16,16 @@ export const UserListItem = ({
     const [message, setMessage] = useState('');
     const [visible, setVisible] = useState(false);
 
+    const client = useApolloClient();
     const [createFriendRequest] = useMutation(CREATE_FRIENDREQUEST, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ME }, { query: FRIENDREQUEST, variables: { id: userId } }],
     });
 
@@ -33,9 +40,11 @@ export const UserListItem = ({
         });
 
         if (result) {
-            notificationHandler({
-                message: `Friend request send for ${firstName} ${lastName}`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `Friend request send for ${firstName} ${lastName}`,
+                    variant: 'success',
+                },
             });
         }
     };

@@ -1,4 +1,4 @@
-import { useQuery, useSubscription } from '@apollo/react-hooks';
+import { useApolloClient, useQuery, useSubscription } from '@apollo/react-hooks';
 import { createMuiTheme, CssBaseline } from '@material-ui/core';
 import { blue, pink } from '@material-ui/core/colors';
 import { ThemeProvider } from '@material-ui/styles';
@@ -7,7 +7,6 @@ import React from 'react';
 import { Routes } from './components/Routes';
 import { ME } from './graphql';
 import { FRIENDREQUEST_SUBSCRIPTION } from './graphql/user';
-import { notificationHandler } from './utils';
 
 const darkTheme = createMuiTheme({
     palette: {
@@ -25,6 +24,7 @@ const whiteTheme = createMuiTheme({
 });
 
 export const App = (): JSX.Element => {
+    const client = useApolloClient();
     const me = useQuery(ME);
 
     const [user] = useLocalStorage<LocalStorageUser>('user');
@@ -38,9 +38,11 @@ export const App = (): JSX.Element => {
     });
 
     if (data && data.friendRequest.node && data.friendRequest.node.sender[0]) {
-        notificationHandler({
-            message: `Friend request recieved from ${data.friendRequest.node.sender[0].firstName}!`,
-            variant: 'success',
+        client.writeData({
+            data: {
+                notification: `Friend request recieved from ${data.friendRequest.node.sender[0].firstName}!`,
+                variant: 'success',
+            },
         });
     }
 

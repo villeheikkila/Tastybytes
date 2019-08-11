@@ -4,7 +4,6 @@ import React, { Fragment } from 'react';
 import { Waypoint } from 'react-waypoint';
 import { CheckInCard } from '../../components/CheckInCard';
 import { FILTER, SEARCH_CHECKINS } from '../../graphql';
-import { errorHandler } from '../../utils';
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
@@ -18,11 +17,18 @@ const useStyles = makeStyles(theme => ({
 
 export const Activity = (): JSX.Element | null => {
     const classes = useStyles();
-    const filter = useQuery(FILTER);
+    const { data: filterData, client } = useQuery(FILTER);
 
     const { data, fetchMore } = useQuery(SEARCH_CHECKINS, {
-        variables: { filter: filter.data.filter, first: 5 },
-        onError: errorHandler,
+        variables: { filter: filterData.filter, first: 5 },
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
     });
 
     if (data === undefined || data.searchCheckins === undefined) {

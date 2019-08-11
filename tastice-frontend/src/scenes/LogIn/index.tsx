@@ -1,11 +1,10 @@
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { Button, Container, makeStyles, TextField, Typography } from '@material-ui/core';
 import { writeStorage } from '@rehooks/local-storage';
 import React, { useState } from 'react';
 import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
 import { LOGIN } from '../../graphql';
-import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -37,10 +36,18 @@ export const LogIn = (): JSX.Element => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { history } = useReactRouter();
+    const client = useApolloClient();
     const classes = useStyles();
 
     const [login] = useMutation(LOGIN, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
     });
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {

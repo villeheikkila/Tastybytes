@@ -7,7 +7,6 @@ import { Divider } from '../../components/Divider';
 import { ProductCard } from '../../components/ProductCard';
 import { FILTER, PRODUCT } from '../../graphql';
 import { SEARCH_PRODUCT_CHECKINS } from '../../graphql/checkin';
-import { errorHandler } from '../../utils';
 import { CreateCheckIn } from './CreateCheckIn';
 
 const useStyles = makeStyles(theme => ({
@@ -20,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 export const Product = ({ id }: IdObject): JSX.Element | null => {
     const [submitted, setSubmitted] = useState();
     const classes = useStyles();
-    const { data: filterData } = useQuery(FILTER);
+    const { data: filterData, client } = useQuery(FILTER);
 
     const productsQuery = useQuery(PRODUCT, {
         variables: { id },
@@ -28,7 +27,14 @@ export const Product = ({ id }: IdObject): JSX.Element | null => {
 
     const { data, fetchMore } = useQuery(SEARCH_PRODUCT_CHECKINS, {
         variables: { id: id, filter: filterData.filter, first: 5 },
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
     });
 
     if (
@@ -70,7 +76,7 @@ export const Product = ({ id }: IdObject): JSX.Element | null => {
 
             {data.searchProductCheckins.map(
                 (checkin: CheckInObject, index: number): JSX.Element => (
-                    <Fragment key={checkin.id.toUpperCase()}>
+                    <Fragment key={index}>
                         {data.searchProductCheckins.length - index <= 1 && <Waypoint onEnter={loadMore} />}
                         <CheckInCard key={checkin.id} checkin={checkin} showProduct={false} />
                     </Fragment>

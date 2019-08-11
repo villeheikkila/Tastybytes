@@ -1,9 +1,8 @@
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, Grid, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
 import { ADD_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES, SEARCH_PRODUCTS } from '../../graphql';
-import { errorHandler, notificationHandler } from '../../utils';
 import { ImageUpload } from '../ImageUpload';
 import { MaterialSelect } from '../MaterialSelect';
 
@@ -35,6 +34,7 @@ export const AddProduct = (): JSX.Element | null => {
     const [category, setCategory] = useState();
     const [subCategory, setSubCategory] = useState();
     const { history } = useReactRouter();
+    const client = useApolloClient();
 
     const { data: categoriesData } = useQuery(ALL_CATEGORIES);
     const { data: companiesData } = useQuery(ALL_COMPANIES);
@@ -43,7 +43,14 @@ export const AddProduct = (): JSX.Element | null => {
     const { companies } = companiesData;
 
     const [addProduct] = useMutation(ADD_PRODUCT, {
-        onError: errorHandler,
+        onError: (error: any) => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [
             { query: SEARCH_PRODUCTS, variables: { filter: '', first: 5 } },
             { query: ALL_CATEGORIES },
@@ -67,25 +74,31 @@ export const AddProduct = (): JSX.Element | null => {
         event.preventDefault();
 
         if (name.length < 3) {
-            notificationHandler({
-                message: `Product name must have at least three letters`,
-                variant: 'error',
+            client.writeData({
+                data: {
+                    notification: `Product name must have at least three letters`,
+                    variant: 'error',
+                },
             });
             return;
         }
 
         if (company.value.length < 3) {
-            notificationHandler({
-                message: `Company name must have at least three letters`,
-                variant: 'error',
+            client.writeData({
+                data: {
+                    notification: `Company name must have at least three letters`,
+                    variant: 'error',
+                },
             });
             return;
         }
 
         if (!category) {
-            notificationHandler({
-                message: `Please select a category`,
-                variant: 'error',
+            client.writeData({
+                data: {
+                    notification: `Please select a category`,
+                    variant: 'error',
+                },
             });
             return;
         }
@@ -105,9 +118,11 @@ export const AddProduct = (): JSX.Element | null => {
         });
 
         if (result) {
-            notificationHandler({
-                message: `Product ${result.data.addProduct.name} succesfully added`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `Product ${result.data.addProduct.name} succesfully added`,
+                    variant: 'success',
+                },
             });
             history.push(`/product/${result.data.addProduct.id}`);
         }

@@ -1,8 +1,7 @@
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { Button, createStyles, makeStyles, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import { UPDATE_PASSWORD } from '../../graphql';
-import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -18,25 +17,37 @@ const useStyles = makeStyles(() =>
 
 export const PasswordForm = ({ id }: any): JSX.Element => {
     const classes = useStyles();
+    const client = useApolloClient();
 
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordCheck, setNewPasswordCheck] = useState('');
 
     const [changePassword] = useMutation(UPDATE_PASSWORD, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
     });
 
     const handlePasswordChange = async (): Promise<void> => {
         if (newPassword.length < 3) {
-            notificationHandler({
-                message: `The password can't be under three characters`,
-                variant: 'error',
+            client.writeData({
+                data: {
+                    notification: `The password can't be under three characters`,
+                    variant: 'error',
+                },
             });
         } else if (newPassword !== newPasswordCheck) {
-            notificationHandler({
-                message: `The given passwords don't match`,
-                variant: 'error',
+            client.writeData({
+                data: {
+                    notification: `The given passwords don't match`,
+                    variant: 'error',
+                },
             });
             setNewPassword('');
             setNewPasswordCheck('');
@@ -50,9 +61,11 @@ export const PasswordForm = ({ id }: any): JSX.Element => {
             });
 
             if (result) {
-                notificationHandler({
-                    message: `Password succesfully updated!`,
-                    variant: 'success',
+                client.writeData({
+                    data: {
+                        notification: `Password succesfully updated!`,
+                        variant: 'success',
+                    },
                 });
                 setCurrentPassword('');
                 setNewPassword('');

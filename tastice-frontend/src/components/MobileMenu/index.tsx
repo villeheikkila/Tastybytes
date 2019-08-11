@@ -14,7 +14,6 @@ import useLocalStorage, { deleteFromStorage } from '@rehooks/local-storage';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ME, UPDATE_USER } from '../../graphql';
-import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,11 +31,18 @@ const useStyles = makeStyles((theme: Theme) =>
 export const MobileMenu = (): JSX.Element => {
     const classes = useStyles();
     const [colorScheme, setColorScheme] = useState(false);
-    const { data } = useQuery(ME);
+    const { data, client } = useQuery(ME);
     const { me } = data;
 
     const [updateUser] = useMutation(UPDATE_USER, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ME }],
     });
 

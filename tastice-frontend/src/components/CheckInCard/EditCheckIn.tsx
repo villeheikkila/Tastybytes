@@ -3,7 +3,6 @@ import { Button, CardContent, createStyles, makeStyles, TextField, Theme, Typogr
 import Rating from 'material-ui-rating';
 import React, { useEffect, useState } from 'react';
 import { ALL_PRODUCTS, CHECKIN, UPDATE_CHECKIN } from '../../graphql';
-import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -36,13 +35,20 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
 
-    const { data } = useQuery(CHECKIN, {
+    const { data, client } = useQuery(CHECKIN, {
         variables: { id },
     });
     const { checkin } = data;
 
     const [updateCheckin] = useMutation(UPDATE_CHECKIN, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
@@ -67,9 +73,11 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
             },
         });
         if (result) {
-            notificationHandler({
-                message: `Checkin for product '${product}' succesfully updated`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `Checkin for product '${product}' succesfully updated`,
+                    variant: 'success',
+                },
             });
         }
     };

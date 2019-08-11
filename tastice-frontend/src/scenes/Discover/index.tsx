@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { Waypoint } from 'react-waypoint';
 import { ProductCard } from '../../components/ProductCard';
 import { FILTER, SEARCH_PRODUCTS } from '../../graphql';
-import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -30,11 +29,18 @@ const useStyles = makeStyles(theme => ({
 
 export const Discover = (): JSX.Element | null => {
     const classes = useStyles();
-    const { data: filterData } = useQuery(FILTER);
+    const { data: filterData, client } = useQuery(FILTER);
 
     const { data, fetchMore } = useQuery(SEARCH_PRODUCTS, {
         variables: { filter: filterData.filter, first: 5 },
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
     });
 
     if (data === undefined || data.searchProducts === undefined) {

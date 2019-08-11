@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { Button, createStyles, makeStyles, Paper, TextField, Theme, Typography } from '@material-ui/core';
 import useLocalStorage from '@rehooks/local-storage';
 import Rating from 'material-ui-rating';
@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import { ImageUpload } from '../../components/ImageUpload';
 import { CREATE_CHECKIN, ME, SEARCH_CHECKINS } from '../../graphql';
 import { SEARCH_PRODUCT_CHECKINS } from '../../graphql/checkin';
-import { errorHandler, notificationHandler } from '../../utils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -34,16 +33,23 @@ interface CreateCheckInProps {
 
 export const CreateCheckIn = ({ productId, setSubmitted }: CreateCheckInProps): JSX.Element => {
     const classes = useStyles();
-
+    const client = useApolloClient();
     const [user] = useLocalStorage<LocalStorageUser>('user');
-    const id = user && user.id;
 
+    const id = user && user.id;
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
     const [image, setImage] = useState();
 
     const [createCheckin] = useMutation(CREATE_CHECKIN, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [
             { query: ME },
             { query: SEARCH_PRODUCT_CHECKINS, variables: { id: productId, filter: '', first: 5 } },
@@ -63,9 +69,11 @@ export const CreateCheckIn = ({ productId, setSubmitted }: CreateCheckInProps): 
         });
 
         if (result) {
-            notificationHandler({
-                message: `Checkin for '${result.data.createCheckin.product.name}' succesfully added`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `Checkin for '${result.data.createCheckin.product.name}' succesfully added`,
+                    variant: 'success',
+                },
             });
             setSubmitted(result.data.createCheckin);
         }

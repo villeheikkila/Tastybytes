@@ -4,7 +4,6 @@ import { fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import React, { useState } from 'react';
 import { FRIENDREQUEST, ME, SEARCH_USERS } from '../../graphql';
-import { errorHandler } from '../../utils';
 import { FriendListItem } from './FriendListItem';
 import { FriendRequestListItem } from './FriendRequestsListItem';
 import { UserListItem } from './UserListItem';
@@ -60,13 +59,20 @@ export const FriendList = (): JSX.Element | null => {
     const classes = useStyles();
     const [filter, setFilter] = useState('');
 
-    const { data } = useQuery(ME);
+    const { data, client } = useQuery(ME);
     const { me } = data;
     const id = me && me.id;
 
     const { data: userData } = useQuery(SEARCH_USERS, {
         variables: { filter },
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
     });
 
     const { data: friendRequestData } = useQuery(FRIENDREQUEST, {

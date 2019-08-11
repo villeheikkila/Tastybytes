@@ -1,9 +1,8 @@
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import React, { useState } from 'react';
 import { DELETE_FRIEND, ME } from '../../graphql';
-import { errorHandler, notificationHandler } from '../../utils';
 import { ConfirmationDialog } from '../ConfirmationDialog';
 import { SmartAvatar } from '../SmartAvatar';
 
@@ -17,9 +16,17 @@ export const FriendListItem = ({
     user: { firstName, lastName, avatarId, id, avatarColor },
 }: FriendListItemProps): JSX.Element => {
     const [visible, setVisible] = useState(false);
+    const client = useApolloClient();
 
     const [createFriendRequest] = useMutation(DELETE_FRIEND, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
         refetchQueries: [{ query: ME }],
     });
 
@@ -33,9 +40,11 @@ export const FriendListItem = ({
         });
 
         if (result) {
-            notificationHandler({
-                message: `${firstName} ${lastName} was succesfully removed from your friend list`,
-                variant: 'success',
+            client.writeData({
+                data: {
+                    notification: `${firstName} ${lastName} was succesfully removed from your friend list`,
+                    variant: 'success',
+                },
             });
         }
     };

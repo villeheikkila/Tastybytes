@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { Button, Container, Grid, makeStyles, Typography } from '@material-ui/core';
 import { writeStorage } from '@rehooks/local-storage';
 import React, { useState } from 'react';
@@ -6,7 +6,6 @@ import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import 'typeface-leckerli-one';
 import useReactRouter from 'use-react-router';
 import { SIGN_UP } from '../../graphql';
-import { errorHandler } from '../../utils';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -38,9 +37,17 @@ export const SignUp = (): JSX.Element => {
     const [password, setPassword] = useState('');
     const { history } = useReactRouter();
     const classes = useStyles();
+    const client = useApolloClient();
 
     const [signup] = useMutation(SIGN_UP, {
-        onError: errorHandler,
+        onError: error => {
+            client.writeData({
+                data: {
+                    notification: error.message,
+                    variant: 'error',
+                },
+            });
+        },
     });
 
     const handleSignUp = async (event: any): Promise<void> => {
@@ -79,7 +86,7 @@ export const SignUp = (): JSX.Element => {
                 <Typography component="h1" variant="h5" className={classes.title}>
                     Sign up
                 </Typography>
-                <ValidatorForm onSubmit={handleSignUp} onError={errorHandler}>
+                <ValidatorForm onSubmit={handleSignUp}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextValidator
