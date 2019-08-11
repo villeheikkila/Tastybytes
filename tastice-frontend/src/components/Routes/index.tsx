@@ -28,6 +28,7 @@ export const Routes = (): JSX.Element => {
 
     const [user] = useLocalStorage<LocalStorageUser>('user');
     const id = user && user.id;
+    const admin = user && user.admin;
 
     return (
         <Router>
@@ -49,7 +50,7 @@ export const Routes = (): JSX.Element => {
                             <Route exact path="/friends" component={FriendList} />
                             <Route exact path="/menu" component={MobileMenu} />
                             <Route exact path="/account" component={Account} />
-                            <Route exact path="/dashboard" component={Dashboard} />
+                            {admin && <Route exact path="/dashboard" component={Dashboard} />}
                             <Redirect from="/profile" to={`/user/${id}`} />
                             <Route
                                 exact

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Badge, createStyles, makeStyles, Menu, MenuItem, Switch } from '@material-ui/core';
-import { AccountCircle, BrightnessHigh, BrightnessLow, ExitToApp, PersonOutline } from '@material-ui/icons/';
+import { AccountCircle, BrightnessHigh, BrightnessLow, ExitToApp, PersonOutline, Settings } from '@material-ui/icons/';
 import { deleteFromStorage } from '@rehooks/local-storage';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -38,6 +38,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
     });
 
     const theme = me && me.colorScheme ? 1 : 0;
+    const admin = (me && me.admin) || false;
 
     useEffect((): void => {
         if (theme === 0) setColorScheme(false);
@@ -98,6 +99,14 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
                 </Badge>
                 Friends
             </MenuItem>
+            {admin && (
+                <MenuItem button component={Link} to="/dashboard">
+                    <Badge badgeContent={0} color="secondary" className={classes.badge}>
+                        <Settings />
+                    </Badge>
+                    Admin dashboard
+                </MenuItem>
+            )}
             <MenuItem onClick={logout}>
                 <Badge badgeContent={0} color="secondary" className={classes.badge}>
                     <ExitToApp />

@@ -15,7 +15,7 @@ const useStyles = makeStyles(() =>
     }),
 );
 
-export const PasswordForm = ({ id }: any): JSX.Element => {
+export const PasswordForm = (id: any): JSX.Element => {
     const classes = useStyles();
     const client = useApolloClient();
 

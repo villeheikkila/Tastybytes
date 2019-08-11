@@ -74,7 +74,7 @@ export const Account = (): JSX.Element | null => {
 
                 <AccountAvatar user={me} />
                 <UserForm user={me} />
-                <PasswordForm id={me} />
+                <PasswordForm id={me.id} />
 
                 <Button
                     variant="outlined"
