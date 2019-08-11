@@ -55,6 +55,7 @@ interface FriendRequestObject {
     id: string;
     receiver: [User];
     sender: [User];
+    message: string;
 }
 
 interface LocalStorageUser {

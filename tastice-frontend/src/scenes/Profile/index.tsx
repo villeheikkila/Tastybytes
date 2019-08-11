@@ -1,27 +1,13 @@
 import { useQuery } from '@apollo/react-hooks';
-import {
-    createStyles,
-    ExpansionPanel,
-    ExpansionPanelDetails,
-    ExpansionPanelSummary,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    makeStyles,
-    Paper,
-    Theme,
-    Typography,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { createStyles, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Waypoint } from 'react-waypoint';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
 import { SmartAvatar } from '../../components/SmartAvatar';
 import { FILTER, USER } from '../../graphql';
 import { SEARCH_USER_CHECKINS } from '../../graphql/checkin';
+import { ExpansionFriendList } from './ExpansionFriendList';
 import { RatingChart } from './RatingChart';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -149,43 +135,7 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
                 <RatingChart ratings={ratings} setRatingFilter={setRatingFilter} />
             </Paper>
 
-            <div className={classes.friends}>
-                <ExpansionPanel className={classes.panel}>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content">
-                        <Typography variant="h6" component="h6" className={classes.heading}>
-                            Friends
-                        </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                        <List>
-                            {userObject.friends.map((user: User) => (
-                                <ListItem
-                                    button
-                                    alignItems="flex-start"
-                                    component={Link}
-                                    to={`/user/${user.id}`}
-                                    key={id}
-                                >
-                                    <ListItemAvatar>
-                                        <SmartAvatar
-                                            firstName={user.firstName}
-                                            lastName={user.lastName}
-                                            id={user.id}
-                                            avatarId={user.avatarId}
-                                        />
-                                    </ListItemAvatar>
-                                    <ListItemText primary={`${user.firstName} ${user.lastName}`} />
-                                </ListItem>
-                            ))}
-                            <ListItem button alignItems="flex-start" key={id}>
-                                <Typography component="p" className={classes.heading}>
-                                    Send a friend request!
-                                </Typography>
-                            </ListItem>
-                        </List>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-            </div>
+            <ExpansionFriendList friends={userObject.friends} />
 
             <Divider text={dividerText} />
 

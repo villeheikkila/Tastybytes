@@ -65,5 +65,5 @@ type FriendRequest {
     id: ID! @id
     sender: [User!]! @relation(name: "FriendRequestSender")
     receiver: [User!]! @relation(name: "FriendRequestReceiver")
-    message: String!
+    message: String
 }

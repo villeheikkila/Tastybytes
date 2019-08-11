@@ -45,7 +45,8 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Profile = (userObject: any): JSX.Element | null => {
+export const ExpansionFriendList = ({ friends }: any): JSX.Element | null => {
+    console.log('TCL: friends', friends);
     const classes = useStyles();
 
     return (
@@ -58,13 +59,13 @@ export const Profile = (userObject: any): JSX.Element | null => {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <List>
-                        {userObject.friends.map((user: User) => (
+                        {friends.map((user: User) => (
                             <ListItem
                                 button
                                 alignItems="flex-start"
                                 component={Link}
                                 to={`/user/${user.id}`}
-                                key={userObject.id}
+                                key={user.id}
                             >
                                 <ListItemAvatar>
                                     <SmartAvatar
@@ -77,11 +78,6 @@ export const Profile = (userObject: any): JSX.Element | null => {
                                 <ListItemText primary={`${user.firstName} ${user.lastName}`} />
                             </ListItem>
                         ))}
-                        <ListItem button alignItems="flex-start" key={userObject.id}>
-                            <Typography component="p" className={classes.heading}>
-                                Send a friend request!
-                            </Typography>
-                        </ListItem>
                     </List>
                 </ExpansionPanelDetails>
             </ExpansionPanel>

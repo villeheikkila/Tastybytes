@@ -56,7 +56,7 @@ export const ME = gql`
 `;
 
 export const CREATE_FRIENDREQUEST = gql`
-    mutation createFriendRequest($senderId: ID!, $receiverId: ID!, $message: String!) {
+    mutation createFriendRequest($senderId: ID!, $receiverId: ID!, $message: String) {
         createFriendRequest(senderId: $senderId, receiverId: $receiverId, message: $message) {
             receiver {
                 ...UserDetails
@@ -101,6 +101,7 @@ export const FRIENDREQUEST = gql`
             receiver {
                 ...UserDetails
             }
+            message
         }
     }
     ${USER_DETAILS}

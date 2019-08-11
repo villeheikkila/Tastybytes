@@ -1477,7 +1477,7 @@ export interface FriendRequestFieldDetails {
     args: {}
     description: string
     list: undefined
-    nullable: false
+    nullable: true
     resolve: undefined
   }
 }
@@ -4236,7 +4236,7 @@ export interface FriendRequestPreviousValuesFieldDetails {
     args: {}
     description: string
     list: undefined
-    nullable: false
+    nullable: true
     resolve: undefined
   }
 }
@@ -5483,7 +5483,7 @@ export type FriendRequestCreateManyWithoutReceiverInputInputObject =
 export interface FriendRequestCreateWithoutReceiverInput {
   id?: string | null
   sender?: UserCreateManyInput | null
-  message?: string
+  message?: string | null
 }
 export type FriendRequestCreateWithoutReceiverInputInputObject =
   | Extract<keyof FriendRequestCreateWithoutReceiverInput, string>
@@ -7456,7 +7456,7 @@ export interface FriendRequestCreateInput {
   id?: string | null
   sender?: UserCreateManyInput | null
   receiver?: UserCreateManyWithoutFriendRequestInput | null
-  message?: string
+  message?: string | null
 }
 export type FriendRequestCreateInputInputObject =
   | Extract<keyof FriendRequestCreateInput, string>

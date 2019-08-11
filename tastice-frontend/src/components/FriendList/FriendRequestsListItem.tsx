@@ -12,8 +12,10 @@ interface FriendRequestListItemProps {
 
 export const FriendRequestListItem = ({
     userId,
-    request: { sender, receiver, id },
+    request: { sender, receiver, id, message },
 }: FriendRequestListItemProps): JSX.Element => {
+    console.log("TCL: userId", userId)
+
     const client = useApolloClient();
     // Display the sender's information for the receiver and the other way around for the sender.
     const userIsTheSender = userId === sender[0].id;
@@ -99,7 +101,7 @@ export const FriendRequestListItem = ({
                     avatarColor={avatarColor}
                 />
             </ListItemAvatar>
-            <ListItemText primary={`${firstName} ${lastName}`} />
+            <ListItemText primary={`${firstName} ${lastName}`} secondary={message} />
 
             {!userIsTheSender ? (
                 <IconButton aria-label="Accept" color="primary" onClick={acceptFriendRequest}>
@@ -108,7 +110,6 @@ export const FriendRequestListItem = ({
             ) : (
                 <Typography> Friend request is pending </Typography>
             )}
-
             <IconButton aria-label="Clear" color="secondary" onClick={declineFriendRequest}>
                 <Clear fontSize="large" />
             </IconButton>

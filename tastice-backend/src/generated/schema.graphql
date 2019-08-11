@@ -229,14 +229,14 @@ scalar DateTime
 
 type FriendRequest {
   id: ID!
-  message: String!
+  message: String
   receiver(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): [User!]
   sender(after: String, before: String, first: Int, last: Int, orderBy: UserOrderByInput, skip: Int, where: UserWhereInput): [User!]
 }
 
 type FriendRequestPreviousValues {
   id: ID!
-  message: String!
+  message: String
 }
 
 type FriendRequestSubscriptionPayload {

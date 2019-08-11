@@ -42,7 +42,7 @@ export const UserListItem = ({
         if (result) {
             client.writeData({
                 data: {
-                    notification: `Friend request send for ${firstName} ${lastName}`,
+                    notification: `Friend request sent for ${firstName} ${lastName}`,
                     variant: 'success',
                 },
             });

@@ -511,11 +511,11 @@ export interface NexusGenRootTypes {
   }
   FriendRequest: { // root type
     id: string; // ID!
-    message: string; // String!
+    message?: string | null; // String
   }
   FriendRequestPreviousValues: { // root type
     id: string; // ID!
-    message: string; // String!
+    message?: string | null; // String
   }
   FriendRequestSubscriptionPayload: { // root type
     mutation: NexusGenEnums['MutationType']; // MutationType!
@@ -634,13 +634,13 @@ export interface NexusGenFieldTypes {
   }
   FriendRequest: { // field return type
     id: string; // ID!
-    message: string; // String!
+    message: string | null; // String
     receiver: NexusGenRootTypes['User'][] | null; // [User!]
     sender: NexusGenRootTypes['User'][] | null; // [User!]
   }
   FriendRequestPreviousValues: { // field return type
     id: string; // ID!
-    message: string; // String!
+    message: string | null; // String
   }
   FriendRequestSubscriptionPayload: { // field return type
     mutation: NexusGenEnums['MutationType']; // MutationType!

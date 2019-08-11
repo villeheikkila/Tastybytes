@@ -38,6 +38,7 @@ export const Query = queryType({
                 id: idArg(),
             },
             resolve: (parent, { id }, ctx) => {
+                if (id === undefined) return null;
                 return ctx.prisma.friendRequests({
                     where: {
                         OR: [{ receiver_some: { id } }, { sender_some: { id } }],
