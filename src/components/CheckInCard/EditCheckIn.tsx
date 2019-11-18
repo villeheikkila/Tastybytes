@@ -31,7 +31,7 @@ interface CheckInProps {
 }
 
 export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInProps): JSX.Element | null => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();
 

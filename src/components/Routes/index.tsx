@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const Routes = (): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
 
     const [user] = useLocalStorage<LocalStorageUser>('user');
     const id = user && user.id;

@@ -51,7 +51,7 @@ interface SearchInputBaseProps {
 }
 
 export const SearchInputBase = ({ search, setSearch, placeholder }: SearchInputBaseProps): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
 
     return (
         <div className={classes.search}>

@@ -24,7 +24,7 @@ interface DividerProps {
 }
 
 export const Divider = ({ text }: DividerProps): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
 
     return (
         <Paper className={classes.paper}>

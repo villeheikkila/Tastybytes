@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const MobileMenu = (): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const [colorScheme, setColorScheme] = useState(false);
     const { data, client } = useQuery(ME);
     const { me } = data;

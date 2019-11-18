@@ -20,7 +20,7 @@ interface DesktopMenuProps {
 }
 
 export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const [colorScheme, setColorScheme] = useState(false);
     const { data, client } = useQuery(ME);
     const { me } = data;

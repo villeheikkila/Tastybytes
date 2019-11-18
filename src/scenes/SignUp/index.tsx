@@ -36,7 +36,7 @@ export const SignUp = (): JSX.Element => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { history } = useReactRouter();
-    const classes = useStyles();
+    const classes = useStyles({});
     const client = useApolloClient();
 
     const [signup] = useMutation(SIGN_UP, {

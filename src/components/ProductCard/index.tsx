@@ -31,7 +31,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, showMenu }: ProductCardProps): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const [showEditProduct, setShowEditProduct] = useState();
     const { history } = useReactRouter();
     const menuState = usePopupState({ variant: 'popover', popupId: 'CheckInMenu' });

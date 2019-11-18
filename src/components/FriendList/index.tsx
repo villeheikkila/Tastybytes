@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const FriendList = (): JSX.Element | null => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const [filter, setFilter] = useState('');
 
     const { data, client } = useQuery(ME);

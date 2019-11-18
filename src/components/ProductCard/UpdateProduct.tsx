@@ -30,7 +30,7 @@ interface UpdateProductProps {
     onCancel: any;
 }
 export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.Element | null => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const [name, setName] = useState('');
     const [company, setCompany] = useState();
     const [category, setCategory] = useState();

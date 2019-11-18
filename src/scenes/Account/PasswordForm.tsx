@@ -16,7 +16,7 @@ const useStyles = makeStyles(() =>
 );
 
 export const PasswordForm = (id: any): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const client = useApolloClient();
 
     const [currentPassword, setCurrentPassword] = useState('');

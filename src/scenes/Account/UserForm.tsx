@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const UserForm = ({ user }: any): JSX.Element | null => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const client = useApolloClient();
 
     const [firstName, setFirstName] = useState('');

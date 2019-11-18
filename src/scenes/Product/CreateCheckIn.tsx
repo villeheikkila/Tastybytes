@@ -32,7 +32,7 @@ interface CreateCheckInProps {
 }
 
 export const CreateCheckIn = ({ productId, setSubmitted }: CreateCheckInProps): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const client = useApolloClient();
     const [user] = useLocalStorage<LocalStorageUser>('user');
 

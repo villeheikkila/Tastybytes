@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Activity = (): JSX.Element | null => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const { data: filterData, client } = useQuery(FILTER);
 
     const { data, fetchMore } = useQuery(SEARCH_CHECKINS, {

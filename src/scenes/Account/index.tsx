@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Account = (): JSX.Element | null => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const [visible, setVisible] = useState(false);
 
     const { data, client } = useQuery(ME);

@@ -57,7 +57,7 @@ export const NotificationContentWrapper = ({
     onClose,
     variant,
 }: NotificationContentWrapperProps): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const Icon = variantIcon[variant];
 
     return (

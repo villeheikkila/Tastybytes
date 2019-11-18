@@ -45,7 +45,7 @@ export const ProductManagement = (): JSX.Element | null => {
         return null;
     }
 
-    const productsObject = products.map((product: Product) => ({
+    const productsObject: any = products.map((product: Product) => ({
         id: product.id,
         name: product.name,
         company: product.company,
@@ -108,7 +108,7 @@ export const ProductManagement = (): JSX.Element | null => {
                 { title: 'Category', field: 'category.name' },
                 { title: 'id', field: 'category.id' },
             ]}
-            data={productsObject}
+            data={productsObject as any}
             editable={{
                 onRowUpdate: updatedProduct =>
                     new Promise(resolve => {
@@ -117,16 +117,16 @@ export const ProductManagement = (): JSX.Element | null => {
                             handleUpdateProduct(updatedProduct);
                         }, 600);
                     }),
-                onRowDelete: deleteProduct =>
+                onRowDelete: (deleteProduct: any) =>
                     new Promise(resolve => {
                         setTimeout((): void => {
                             resolve();
-                            //handleDeleteProduct(deleteProduct.id);
+                            handleDeleteProduct(deleteProduct.id);
                         }, 100);
                     }),
             }}
             options={{ exportButton: true }}
-            detailPanel={rowData => {
+            detailPanel={(rowData: any) => {
                 return (
                     <>
                         <Typography>Avatar</Typography>

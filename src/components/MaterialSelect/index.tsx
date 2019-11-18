@@ -219,7 +219,7 @@ export const MaterialSelect = ({
     isMulti,
     onChange,
 }: MaterialSelectProps): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const theme = useTheme();
 
     const selectStyles = {

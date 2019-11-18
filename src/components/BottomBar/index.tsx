@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 });
 
 export const BottomBar = (): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const [highlight, setHighlight] = useState(3);
     const { location } = useReactRouter();
 

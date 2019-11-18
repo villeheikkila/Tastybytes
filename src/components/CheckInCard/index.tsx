@@ -46,7 +46,7 @@ interface CheckInCardProps {
 }
 
 export const CheckInCard = ({ checkin, showProduct, showMenu = false }: CheckInCardProps): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const client = useApolloClient();
 
     const [visible, setVisible] = useState();

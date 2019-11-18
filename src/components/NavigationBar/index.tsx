@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const NavigationBar = (): JSX.Element => {
-    const classes = useStyles();
+    const classes = useStyles({});
     const client = useApolloClient();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [filter, setFilter] = useState('');

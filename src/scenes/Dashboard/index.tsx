@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const Dashboard = (): JSX.Element | null => {
-    const classes = useStyles();
+    const classes = useStyles({});
 
     return (
         <>

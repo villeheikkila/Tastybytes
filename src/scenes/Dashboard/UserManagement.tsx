@@ -81,7 +81,7 @@ export const UserManagement = (): JSX.Element | null => {
             ]}
             data={users}
             editable={{
-                onRowUpdate: updatedUser =>
+                onRowUpdate: (updatedUser: any) =>
                     new Promise(resolve => {
                         setTimeout((): void => {
                             resolve();

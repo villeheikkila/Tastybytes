@@ -37,7 +37,7 @@ export const LogIn = (): JSX.Element => {
     const [password, setPassword] = useState('');
     const { history } = useReactRouter();
     const client = useApolloClient();
-    const classes = useStyles();
+    const classes = useStyles({});
 
     const [login] = useMutation(LOGIN, {
         onError: error => {
