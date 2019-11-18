@@ -46,8 +46,8 @@ interface CheckInObject {
     rating: number;
     comment: string;
     createdAt: Date;
-    author: user;
-    product: ProductObject;
+    author: User;
+    product: Product;
     image: string;
 }
 
