@@ -45,7 +45,7 @@ export const ProductManagement = (): JSX.Element | null => {
         return null;
     }
 
-    const productsObjects = products.map((product: Product) => ({
+    const productsObject = products.map((product: Product) => ({
         id: product.id,
         name: product.name,
         company: product.company,
@@ -107,7 +107,7 @@ export const ProductManagement = (): JSX.Element | null => {
                 { title: 'Company', field: 'company.name' },
                 { title: 'Category', field: 'category.name' },
             ]}
-            data={productsObjects}
+            data={productsObject}
             editable={{
                 onRowUpdate: updatedProduct =>
                     new Promise(resolve => {
