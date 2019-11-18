@@ -1,4 +1,5 @@
-endpoint: ${env:PRISMA_ENDPOINT}
+#endpoint: ${env:PRISMA_ENDPOINT}
+endpoint: https://tastice-prisma-83fbd4dddb.herokuapp.com/prisma-tastice/dev
 secret: ${env:PRISMA_SECRET}
 datamodel: datamodel.prisma
 
