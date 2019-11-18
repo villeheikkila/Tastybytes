@@ -23,7 +23,6 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
     const classes = useStyles({});
     const [colorScheme, setColorScheme] = useState(false);
     const { data, client } = useQuery(ME);
-    const { me } = data;
 
     const [updateUser] = useMutation(UPDATE_USER, {
         onError: error => {
@@ -37,13 +36,18 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
         refetchQueries: [{ query: ME }],
     });
 
-    const theme = me && me.colorScheme ? 1 : 0;
-    const admin = (me && me.admin) || false;
+    const theme = data && data.me && data.me.colorScheme ? 1 : 0;
+    const admin = (data && data.me && data.me.admin) || false;
 
     useEffect((): void => {
         if (theme === 0) setColorScheme(false);
         if (theme === 1) setColorScheme(true);
     }, [theme]);
+
+    if (data === undefined) {
+        return <div>loading...</div>;
+    }
+    const { me } = data;
 
     const logout = async (): Promise<void> => {
         deleteFromStorage('apollo-cache-persist');

@@ -33,10 +33,6 @@ export const App = (): JSX.Element => {
         variables: { id },
     });
 
-    if (me.data === undefined) {
-        return <div>loading..</div>;
-    }
-
     const theme = (id && me && me.data && me.data.me && me.data.me.colorScheme) || 0;
     const themes = [darkTheme, whiteTheme];
 
