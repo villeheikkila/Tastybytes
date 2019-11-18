@@ -29,13 +29,16 @@ export const App = (): JSX.Element => {
 
     const [user] = useLocalStorage<LocalStorageUser>('user');
     const id = user && user.id;
-
-    const theme = (id && me.data.me && me.data.me.colorScheme) || 0;
-    const themes = [darkTheme, whiteTheme];
-
     const { data } = useSubscription(FRIENDREQUEST_SUBSCRIPTION, {
         variables: { id },
     });
+
+    if (me.data === undefined) {
+        return <div>loading..</div>;
+    }
+
+    const theme = (id && me && me.data && me.data.me && me.data.me.colorScheme) || 0;
+    const themes = [darkTheme, whiteTheme];
 
     if (data && data.friendRequest.node && data.friendRequest.node.sender[0]) {
         client.writeData({

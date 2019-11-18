@@ -7,13 +7,17 @@ import { NotificationContentWrapper } from './NotificationContentWrapper';
 export const Notifications = (): JSX.Element | null => {
     const [open, setOpen] = useState(true);
     const { data, client } = useQuery(GET_NOTIFICATION);
-    const { notification, variant } = data;
 
     useEffect((): void => {
-        if (notification) setOpen(true);
-    }, [notification]);
+        if (data && data.notification) setOpen(true);
+    }, [data]);
 
-    if (notification === undefined || notification === '' || variant === undefined) {
+    if (
+        data === undefined ||
+        data.notification === undefined ||
+        data.notification === '' ||
+        data.variant === undefined
+    ) {
         return null;
     }
 
@@ -44,8 +48,8 @@ export const Notifications = (): JSX.Element | null => {
         >
             <NotificationContentWrapper
                 onClose={handleCloseNotification}
-                variant={variant as any}
-                message={notification}
+                variant={data.variant as any}
+                message={data.notification}
             />
         </Snackbar>
     );

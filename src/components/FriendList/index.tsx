@@ -79,6 +79,10 @@ export const FriendList = (): JSX.Element | null => {
         variables: { id },
     });
 
+    if (data === undefined) {
+        return <div>loading..</div>;
+    }
+
     const { searchUsers } = userData;
     const { friendRequest } = friendRequestData;
 
