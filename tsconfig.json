@@ -13,7 +13,8 @@
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "preserve",
-        "strict": true
+        "strict": true,
+        "outDir": "build"
     },
     "include": ["src", "./types/**/*.ts"]
 }
