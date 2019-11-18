@@ -42,9 +42,14 @@ const authLink = setContext((_, { headers }) => {
     };
 });
 
+interface Definition {
+    kind: string;
+    operation?: string;
+}
+
 const link = split(
     ({ query }): boolean => {
-        const { kind, operation } = getMainDefinition(query);
+        const { kind, operation }: Definition = getMainDefinition(query);
         return kind === 'OperationDefinition' && operation === 'subscription';
     },
     wsLink,
