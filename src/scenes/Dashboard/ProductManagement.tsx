@@ -106,6 +106,7 @@ export const ProductManagement = (): JSX.Element | null => {
                 { title: 'Name', field: 'name' },
                 { title: 'Company', field: 'company.name' },
                 { title: 'Category', field: 'category.name' },
+                { title: 'id', field: 'category.id' },
             ]}
             data={productsObject}
             editable={{
