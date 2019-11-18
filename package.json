@@ -23,6 +23,7 @@
         "typescript": "^3.5.2"
     },
     "dependencies": {
+        "typescript": "^3.5.2",
         "ts-node": "^8.3.0",
         "apollo-server-core": "^2.6.7",
         "bcrypt": "^3.0.6",
