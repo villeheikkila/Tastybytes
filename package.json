@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "dev": "dotenv-load ts-node-dev --no-notify --respawn --transpileOnly ./src",
-        "start": "ts-node ./src"
+        "start": "ts-node src/index.ts"
     },
     "keywords": [],
     "author": "Ville Heikkilä <tehomail@gmail.com>",
@@ -19,11 +19,11 @@
         "graphql-cli": "^3.0.11",
         "nodemon": "^1.19.1",
         "prettier": "^1.18.2",
-        "ts-node": "^8.3.0",
         "ts-node-dev": "^1.0.0-pre.40",
         "typescript": "^3.5.2"
     },
     "dependencies": {
+        "ts-node": "^8.3.0",
         "apollo-server-core": "^2.6.7",
         "bcrypt": "^3.0.6",
         "bcryptjs": "^2.4.3",
