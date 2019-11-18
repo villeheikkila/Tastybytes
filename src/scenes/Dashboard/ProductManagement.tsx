@@ -121,7 +121,7 @@ export const ProductManagement = (): JSX.Element | null => {
                     new Promise(resolve => {
                         setTimeout((): void => {
                             resolve();
-                            handleDeleteProduct(deleteProduct.id);
+                            //handleDeleteProduct(deleteProduct.id);
                         }, 100);
                     }),
             }}
