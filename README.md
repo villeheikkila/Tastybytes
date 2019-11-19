@@ -36,6 +36,12 @@ The application is build using React, Apollo, Material-UI and TypeScript on the 
 | REACT_APP_CLOUDINARY_UPLOAD_PRESET | Cloudinary Upload Preset for storing images. Defaults to "Demo".       |
 | REACT_APP_CLOUDINARY_CLOUD_NAME    | Cloudinary Cloud Name for storing images.                              |
 
+## How to get started
+
+1. Clone this repository
+2. Add the wanted environment variables to an .env file.
+3. Run "npm start" and start hacking
+
 ## Deployment
 
 Tastice frontend is currently deployed on Netlify, backend and Prisma server are both deployed on Heroku. This causes noticeable lag and long start up times due to the need for having two separate dynos. Each new commit to master triggers a deploy.
@@ -43,3 +49,7 @@ Tastice frontend is currently deployed on Netlify, backend and Prisma server are
 ## Backend
 
 [Backend repository on GitHub](https://github.com/villeheikkila/tastice-backend)
+
+## Other links
+
+[Timelog](timelog.md)
