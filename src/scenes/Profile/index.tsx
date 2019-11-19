@@ -69,7 +69,7 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
         },
     });
 
-    if (user.data.user === undefined || data.searchUserCheckins === undefined) {
+    if (!user.data || user.data.user === undefined || data.searchUserCheckins === undefined) {
         return <div>Loading...</div>;
     }
 

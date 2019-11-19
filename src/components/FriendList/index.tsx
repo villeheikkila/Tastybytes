@@ -79,7 +79,7 @@ export const FriendList = (): JSX.Element | null => {
         variables: { id },
     });
 
-    if (data === undefined) {
+    if (!data || !friendRequestData) {
         return <div>loading..</div>;
     }
 

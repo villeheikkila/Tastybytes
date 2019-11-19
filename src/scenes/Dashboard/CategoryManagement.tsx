@@ -5,7 +5,6 @@ import { ALL_CATEGORIES, CREATE_CATEGORY, DELETE_CATEGORY, UPDATE_CATEGORY } fro
 
 export const CategoryManagement = (): JSX.Element | null => {
     const { data, client } = useQuery(ALL_CATEGORIES);
-    const { categories } = data;
 
     const [createCategory] = useMutation(CREATE_CATEGORY, {
         onError: error => {
@@ -43,7 +42,9 @@ export const CategoryManagement = (): JSX.Element | null => {
         refetchQueries: [{ query: ALL_CATEGORIES }],
     });
 
-    if (categories === undefined) return null;
+    if (!data || !data.categories) return <div>Loading...</div>;
+
+    const { categories } = data;
 
     const handleCreateCategory = async ({ name }: any): Promise<void> => {
         const result = await createCategory({
