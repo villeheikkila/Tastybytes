@@ -18,11 +18,11 @@ export const CLOUDINARY_UPLOAD_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_
 export const CLOUDINARY_CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
 
 const httpLink = createHttpLink({
-    uri: `http://${SERVER_URL}`,
+    uri: `https://${SERVER_URL}`,
 });
 
 const wsLink = new WebSocketLink({
-    uri: `ws://${SERVER_URL}`,
+    uri: `wss://${SERVER_URL}`,
     options: { reconnect: true },
 });
 
@@ -63,13 +63,9 @@ export const client = new ApolloClient({
     resolvers: {},
 });
 
-const render = (): void => {
-    ReactDOM.render(
-        <ApolloProvider client={client}>
-            <App />
-        </ApolloProvider>,
-        document.getElementById('root'),
-    );
-};
-
-render();
+ReactDOM.render(
+    <ApolloProvider client={client}>
+        <App />
+    </ApolloProvider>,
+    document.getElementById('root'),
+);
