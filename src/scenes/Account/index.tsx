@@ -36,7 +36,6 @@ export const Account = (): JSX.Element | null => {
     const [visible, setVisible] = useState(false);
 
     const { data, client } = useQuery(ME);
-    const { me } = data;
     const { history } = useReactRouter();
 
     const [deleteUser] = useMutation(DELETE_USER, {
@@ -51,9 +50,11 @@ export const Account = (): JSX.Element | null => {
         refetchQueries: [{ query: ME }],
     });
 
-    if (me === undefined) {
-        return null;
+    if (data && data.me === undefined) {
+        return <div>loading...</div>;
     }
+
+    const { me } = data;
 
     const handleDeleteUser = async (): Promise<void> => {
         setVisible(false);

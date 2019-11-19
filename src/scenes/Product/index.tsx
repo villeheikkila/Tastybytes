@@ -38,11 +38,12 @@ export const Product = ({ id }: IdObject): JSX.Element | null => {
     });
 
     if (
+        !data ||
         data.searchProductCheckins === undefined ||
         productsQuery.data === undefined ||
         productsQuery.data.product === undefined
     ) {
-        return null;
+        return <div>Loading...</div>;
     }
 
     // This needs to be moved to backend at some point.

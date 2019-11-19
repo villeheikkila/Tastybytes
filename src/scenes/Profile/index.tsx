@@ -70,7 +70,7 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
     });
 
     if (user.data.user === undefined || data.searchUserCheckins === undefined) {
-        return null;
+        return <div>Loading...</div>;
     }
 
     const loadMore = (): void => {
