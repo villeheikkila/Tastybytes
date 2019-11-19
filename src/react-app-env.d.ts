@@ -25,6 +25,11 @@ interface Suggestions {
     id: string;
 }
 
+interface Definition {
+    kind: string;
+    operation?: string;
+}
+
 interface Category {
     id: string;
     name: string;

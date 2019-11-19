@@ -42,11 +42,6 @@ const authLink = setContext((_, { headers }) => {
     };
 });
 
-interface Definition {
-    kind: string;
-    operation?: string;
-}
-
 const link = split(
     ({ query }): boolean => {
         const { kind, operation }: Definition = getMainDefinition(query);

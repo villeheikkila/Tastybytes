@@ -26,7 +26,6 @@ const whiteTheme = createMuiTheme({
 export const App = (): JSX.Element => {
     const client = useApolloClient();
     const me = useQuery(ME);
-    console.log('Site should be loading...');
 
     const [user] = useLocalStorage<LocalStorageUser>('user');
     const id = user && user.id;
