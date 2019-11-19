@@ -38,8 +38,6 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
     const { data, client } = useQuery(CHECKIN, {
         variables: { id },
     });
-    const { checkin } = data;
-
     const [updateCheckin] = useMutation(UPDATE_CHECKIN, {
         onError: error => {
             client.writeData({
@@ -53,15 +51,17 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
     });
 
     useEffect((): void => {
-        if (checkin !== undefined) {
-            setComment(checkin[0].comment);
-            setRating(checkin[0].rating);
+        if (data.checkin !== undefined) {
+            setComment(data.checkin[0].comment);
+            setRating(data.checkin[0].rating);
         }
-    }, [checkin]);
+    }, [data.checkin]);
 
-    if (checkin === undefined) {
-        return null;
+    if (!data || !data.checkin) {
+        return <div>Loading...</div>;
     }
+
+    const { checkin } = data;
 
     const handleEditCheckInEdit = async (): Promise<void> => {
         setOpenEdit(false);

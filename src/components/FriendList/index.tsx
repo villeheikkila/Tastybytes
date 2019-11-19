@@ -79,7 +79,7 @@ export const FriendList = (): JSX.Element | null => {
     });
 
     if (!data || !userData || !friendRequestData) {
-        return <div>loading..</div>;
+        return <div>Loading..</div>;
     }
 
     const { me } = data;

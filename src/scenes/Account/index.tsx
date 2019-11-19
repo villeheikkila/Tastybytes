@@ -51,7 +51,7 @@ export const Account = (): JSX.Element | null => {
     });
 
     if (data && data.me === undefined) {
-        return <div>loading...</div>;
+        return <div>Loading...</div>;
     }
 
     const { me } = data;
