@@ -41,9 +41,6 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
     const { data: categoriesData } = useQuery(ALL_CATEGORIES);
     const { data: companiesData } = useQuery(ALL_COMPANIES);
 
-    const { categories } = categoriesData;
-    const { companies } = companiesData;
-
     const [updateProduct] = useMutation(UPDATE_PRODUCT, {
         onError: error => {
             client.writeData({
@@ -80,9 +77,17 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
         setImage(product.imageId);
     }, [product]);
 
-    if (categories === undefined || companies === undefined) {
-        return null;
+    if (
+        !categoriesData ||
+        !companiesData ||
+        categoriesData.categories === undefined ||
+        companiesData.companies === undefined
+    ) {
+        return <div>Loading...</div>;
     }
+
+    const { categories } = categoriesData;
+    const { companies } = companiesData;
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => setName(event.target.value);
 

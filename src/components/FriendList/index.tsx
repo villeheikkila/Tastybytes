@@ -60,8 +60,7 @@ export const FriendList = (): JSX.Element | null => {
     const [filter, setFilter] = useState('');
 
     const { data, client } = useQuery(ME);
-    const { me } = data;
-    const id = me && me.id;
+    const id = data && data.me.id;
 
     const { data: userData } = useQuery(SEARCH_USERS, {
         variables: { filter },
@@ -79,10 +78,11 @@ export const FriendList = (): JSX.Element | null => {
         variables: { id },
     });
 
-    if (!data || !friendRequestData) {
+    if (!data || !userData || !friendRequestData) {
         return <div>loading..</div>;
     }
 
+    const { me } = data;
     const { searchUsers } = userData;
     const { friendRequest } = friendRequestData;
 
