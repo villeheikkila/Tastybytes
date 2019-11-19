@@ -3866,7 +3866,7 @@ export const models: Model[] = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `https://tastice-prisma-83fbd4dddb.herokuapp.com/prisma-tastice/dev`,
+  endpoint: `https://tastice-prisma-83fbd4dddb.herokuapp.com/tastice-backend/dev`,
   secret: `${process.env["PRISMA_SECRET"]}`
 });
 export const prisma = new Prisma();
