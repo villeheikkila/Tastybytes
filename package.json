@@ -1,6 +1,6 @@
 {
     "name": "tastice-frontend",
-    "homepage": "/",
+    "homepage": "http://villeheikkila.github.io/tastice-frontend",
     "license": "MIT",
     "version": "0.1.0",
     "private": true,
@@ -23,6 +23,7 @@
         "cloudinary-react": "^1.2.1",
         "clsx": "^1.0.4",
         "dotenv": "^8.2.0",
+        "gh-pages": "^2.1.1",
         "graphql": "^14.5.8",
         "install": "^0.13.0",
         "material-table": "^1.54.1",
@@ -49,6 +50,8 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build",
         "lint:fix": "./node_modules/.bin/eslint './src/**/*.{ts,tsx}'"
     },
     "eslintConfig": {
