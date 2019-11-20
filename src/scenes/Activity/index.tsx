@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 
 export const Activity = (): JSX.Element => {
     const classes = useStyles({});
-    const { data: filterData, client } = useQuery(FILTER);
+    const { loading: filterLoading, data: filterData, client } = useQuery(FILTER);
     const { loading: meLoading, data: meData } = useQuery(ME);
 
     const { loading: searchLoading, data, fetchMore } = useQuery(SEARCH_CHECKINS, {
@@ -38,7 +38,7 @@ export const Activity = (): JSX.Element => {
         window.scrollTo(0, 0);
     }, []);
 
-    if (meLoading || searchLoading) return <Loading />;
+    if (filterLoading || meLoading || searchLoading) return <Loading />;
 
     const loadMore = (): void => {
         fetchMore({
