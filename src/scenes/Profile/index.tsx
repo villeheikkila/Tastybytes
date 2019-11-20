@@ -76,9 +76,7 @@ export const Profile = ({ id }: IdObject): JSX.Element => {
         },
     });
 
-    if (!user.data || !user.data.user || !data.searchUserCheckins || !meData || !meData.me) {
-        return <Loading />;
-    }
+    if (!user.data || !user.data.user || !data.searchUserCheckins || !meData || !meData.me) return <Loading />;
 
     const loadMore = (): void => {
         fetchMore({

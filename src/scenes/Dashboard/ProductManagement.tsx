@@ -54,8 +54,6 @@ export const ProductManagement = (): JSX.Element => {
         color: product.category[0].color,
     }));
 
-    if (!data.products) return <Loading />;
-
     const handleDeleteProduct = async (id: string): Promise<void> => {
         const result = await deleteProduct({
             variables: { id },

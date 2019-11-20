@@ -33,9 +33,7 @@ export const UserManagement = (): JSX.Element => {
         refetchQueries: [{ query: ALL_USERS }],
     });
 
-    if (!data || !data.users) {
-        return <Loading />;
-    }
+    if (!data || !data.users) return <Loading />;
 
     const { users } = data;
 

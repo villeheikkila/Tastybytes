@@ -36,7 +36,7 @@ export const Notifications = (): JSX.Element => {
                 horizontal: 'center',
             }}
             open={open}
-            autoHideDuration={1500}
+            autoHideDuration={3000}
             onClose={handleCloseNotification}
         >
             <NotificationContentWrapper
