@@ -5,7 +5,7 @@ import Rating from 'material-ui-rating';
 import React, { useState } from 'react';
 import { ImageUpload } from '../../components/ImageUpload';
 import { CREATE_CHECKIN, ME, SEARCH_CHECKINS } from '../../graphql';
-import { SEARCH_PRODUCT_CHECKINS } from '../../graphql/checkin';
+import { SEARCH_PRODUCT_CHECKINS, SEARCH_USER_CHECKINS } from '../../graphql/checkin';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -54,6 +54,7 @@ export const CreateCheckIn = ({ productId, setSubmitted }: CreateCheckInProps): 
             { query: ME },
             { query: SEARCH_PRODUCT_CHECKINS, variables: { id: productId, filter: '', first: 5 } },
             { query: SEARCH_CHECKINS, variables: { filter: '', first: 5 } },
+            { query: SEARCH_USER_CHECKINS, variables: { id, filter: '', first: 5 } },
         ],
     });
 
