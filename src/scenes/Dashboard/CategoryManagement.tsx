@@ -5,7 +5,7 @@ import { Loading } from '../../components/Loading';
 import { ALL_CATEGORIES, CREATE_CATEGORY, DELETE_CATEGORY, UPDATE_CATEGORY } from '../../graphql/product';
 
 export const CategoryManagement = (): JSX.Element => {
-    const { data, client } = useQuery(ALL_CATEGORIES);
+    const { loading, data, client } = useQuery(ALL_CATEGORIES);
 
     const [createCategory] = useMutation(CREATE_CATEGORY, {
         onError: error => {
@@ -43,7 +43,7 @@ export const CategoryManagement = (): JSX.Element => {
         refetchQueries: [{ query: ALL_CATEGORIES }],
     });
 
-    if (!data || !data.categories) return <Loading />;
+    if (loading) return <Loading />;
 
     const { categories } = data;
 

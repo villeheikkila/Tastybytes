@@ -26,7 +26,7 @@ export const Product = ({ id }: IdObject): JSX.Element => {
         variables: { id },
     });
 
-    const { data, fetchMore } = useQuery(SEARCH_PRODUCT_CHECKINS, {
+    const { loading, data, fetchMore } = useQuery(SEARCH_PRODUCT_CHECKINS, {
         variables: { id: id, filter: filterData.filter, first: 5 },
         onError: error => {
             client.writeData({
@@ -43,7 +43,7 @@ export const Product = ({ id }: IdObject): JSX.Element => {
         window.scrollTo(0, 0);
     }, []);
 
-    if (!data || !data.searchProductCheckins || !productsQuery.data || !productsQuery.data.product) return <Loading />;
+    if (loading || productsQuery.loading) return <Loading />;
 
     // This needs to be moved to backend at some point.
     const loadMore = (): void => {

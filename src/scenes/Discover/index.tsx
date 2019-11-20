@@ -32,7 +32,7 @@ export const Discover = (): JSX.Element => {
     const classes = useStyles({});
     const { data: filterData, client } = useQuery(FILTER);
 
-    const { data, fetchMore } = useQuery(SEARCH_PRODUCTS, {
+    const { loading, data, fetchMore } = useQuery(SEARCH_PRODUCTS, {
         variables: { filter: filterData.filter, first: 5 },
         onError: error => {
             client.writeData({
@@ -44,7 +44,7 @@ export const Discover = (): JSX.Element => {
         },
     });
 
-    if (!data || !data.searchProducts) return <Loading />;
+    if (loading) return <Loading />;
 
     const loadMore = (): void => {
         fetchMore({

@@ -15,7 +15,7 @@ interface UpdatedProductObject {
 }
 
 export const ProductManagement = (): JSX.Element => {
-    const { data, client } = useQuery(ALL_PRODUCTS);
+    const { loading, data, client } = useQuery(ALL_PRODUCTS);
 
     const [deleteProduct] = useMutation(DELETE_PRODUCT, {
         onError: error => {
@@ -41,7 +41,8 @@ export const ProductManagement = (): JSX.Element => {
         refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
-    if (!data || !data.products) return <Loading />;
+    if (loading) return <Loading />;
+
     const { products } = data;
 
     const productsObject: any = products.map((product: Product) => ({

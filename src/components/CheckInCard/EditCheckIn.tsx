@@ -36,7 +36,7 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
     const [rating, setRating] = useState();
     const [comment, setComment] = useState('');
 
-    const { data, client } = useQuery(CHECKIN, {
+    const { loading, data, client } = useQuery(CHECKIN, {
         variables: { id },
     });
     const [updateCheckin] = useMutation(UPDATE_CHECKIN, {
@@ -58,7 +58,7 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
         }
     }, [data]);
 
-    if (!data || !data.checkin) return <Loading />;
+    if (loading) return <Loading />;
 
     const handleEditCheckInEdit = async (): Promise<void> => {
         setOpenEdit(false);

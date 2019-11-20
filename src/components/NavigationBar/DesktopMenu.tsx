@@ -23,7 +23,7 @@ interface DesktopMenuProps {
 export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.Element => {
     const classes = useStyles({});
     const [colorScheme, setColorScheme] = useState(false);
-    const { data, client } = useQuery(ME);
+    const { loading, data, client } = useQuery(ME);
 
     const [updateUser] = useMutation(UPDATE_USER, {
         onError: error => {
@@ -45,7 +45,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
         if (theme === 1) setColorScheme(true);
     }, [theme]);
 
-    if (!data) return <Loading />;
+    if (loading) return <Loading />;
     const { me } = data;
 
     const logout = async (): Promise<void> => {

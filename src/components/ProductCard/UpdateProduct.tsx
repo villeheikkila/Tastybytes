@@ -39,8 +39,8 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
     const [subCategory, setSubCategory] = useState();
     const client = useApolloClient();
 
-    const { data: categoriesData } = useQuery(ALL_CATEGORIES);
-    const { data: companiesData } = useQuery(ALL_COMPANIES);
+    const { loading: categoriesLoading, data: categoriesData } = useQuery(ALL_CATEGORIES);
+    const { loading: companiesLoading, data: companiesData } = useQuery(ALL_COMPANIES);
 
     const [updateProduct] = useMutation(UPDATE_PRODUCT, {
         onError: error => {
@@ -78,7 +78,7 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
         setImage(product.imageId);
     }, [product]);
 
-    if (!categoriesData || !companiesData || !categoriesData.categories || !companiesData.companies) return <Loading />;
+    if (companiesLoading || categoriesLoading) return <Loading />;
 
     const { categories } = categoriesData;
     const { companies } = companiesData;

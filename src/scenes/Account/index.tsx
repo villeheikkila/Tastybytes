@@ -36,7 +36,7 @@ export const Account = (): JSX.Element => {
     const classes = useStyles({});
     const [visible, setVisible] = useState(false);
 
-    const { data, client } = useQuery(ME);
+    const { loading: meLoading, data, client } = useQuery(ME);
     const { history } = useReactRouter();
 
     const [deleteUser] = useMutation(DELETE_USER, {
@@ -51,7 +51,7 @@ export const Account = (): JSX.Element => {
         refetchQueries: [{ query: ME }],
     });
 
-    if (!data || !data.me) return <Loading />;
+    if (meLoading) return <Loading />;
 
     const { me } = data;
 

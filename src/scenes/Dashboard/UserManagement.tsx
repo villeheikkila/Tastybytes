@@ -7,7 +7,7 @@ import { SmartAvatar } from '../../components/SmartAvatar';
 import { ALL_USERS, DELETE_USER, UPDATE_USER } from '../../graphql';
 
 export const UserManagement = (): JSX.Element => {
-    const { data, client } = useQuery(ALL_USERS);
+    const { loading, data, client } = useQuery(ALL_USERS);
 
     const [deleteUser] = useMutation(DELETE_USER, {
         onError: error => {
@@ -33,7 +33,7 @@ export const UserManagement = (): JSX.Element => {
         refetchQueries: [{ query: ALL_USERS }],
     });
 
-    if (!data || !data.users) return <Loading />;
+    if (loading) return <Loading />;
 
     const { users } = data;
 

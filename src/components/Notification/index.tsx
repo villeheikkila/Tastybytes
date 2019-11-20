@@ -6,13 +6,13 @@ import { NotificationContentWrapper } from './NotificationContentWrapper';
 
 export const Notifications = (): JSX.Element => {
     const [open, setOpen] = useState(true);
-    const { data, client } = useQuery(GET_NOTIFICATION);
+    const { loading, data, client } = useQuery(GET_NOTIFICATION);
 
     useEffect((): void => {
         if (data && data.notification) setOpen(true);
     }, [data]);
 
-    if (!data || !data.notification || data.notification === '' || !data.variant) return <></>;
+    if (loading) return <></>;
 
     const handleCloseNotification = (event?: SyntheticEvent, reason?: string): void => {
         if (reason === 'clickaway') {

@@ -19,9 +19,9 @@ const useStyles = makeStyles(theme => ({
 export const Activity = (): JSX.Element => {
     const classes = useStyles({});
     const { data: filterData, client } = useQuery(FILTER);
-    const { data: meData } = useQuery(ME);
+    const { loading: meLoading, data: meData } = useQuery(ME);
 
-    const { data, fetchMore } = useQuery(SEARCH_CHECKINS, {
+    const { loading: searchLoading, data, fetchMore } = useQuery(SEARCH_CHECKINS, {
         variables: { filter: filterData.filter, first: 5 },
         onError: error => {
             client.writeData({
@@ -38,7 +38,7 @@ export const Activity = (): JSX.Element => {
         window.scrollTo(0, 0);
     }, []);
 
-    if (!data || !data.searchCheckins || !meData || !meData.me) return <Loading />;
+    if (meLoading || searchLoading) return <Loading />;
 
     const loadMore = (): void => {
         fetchMore({

@@ -53,7 +53,7 @@ export const Profile = ({ id }: IdObject): JSX.Element => {
     const classes = useStyles({});
     const [ratingFilter, setRatingFilter] = useState();
     const { data: filterData, client } = useQuery(FILTER);
-    const { data: meData } = useQuery(ME);
+    const { loading: meLoading, data: meData } = useQuery(ME);
 
     const user = useQuery(USER, {
         variables: { id },
@@ -76,7 +76,7 @@ export const Profile = ({ id }: IdObject): JSX.Element => {
         },
     });
 
-    if (!user.data || !user.data.user || !data.searchUserCheckins || !meData || !meData.me) return <Loading />;
+    if (meLoading || user.loading) return <Loading />;
 
     const loadMore = (): void => {
         fetchMore({

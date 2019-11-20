@@ -37,8 +37,8 @@ export const AddProduct = (): JSX.Element => {
     const { history } = useReactRouter();
     const client = useApolloClient();
 
-    const { data: categoriesData } = useQuery(ALL_CATEGORIES);
-    const { data: companiesData } = useQuery(ALL_COMPANIES);
+    const { loading: categoriesLoading, data: categoriesData } = useQuery(ALL_CATEGORIES);
+    const { loading: companiesLoading, data: companiesData } = useQuery(ALL_COMPANIES);
 
     const [addProduct] = useMutation(ADD_PRODUCT, {
         onError: (error: any) => {
@@ -56,7 +56,7 @@ export const AddProduct = (): JSX.Element => {
         ],
     });
 
-    if (!categoriesData || !companiesData || !categoriesData.categories || !companiesData.companies) return <Loading />;
+    if (categoriesLoading || companiesLoading) return <Loading />;
 
     const { categories } = categoriesData;
     const { companies } = companiesData;

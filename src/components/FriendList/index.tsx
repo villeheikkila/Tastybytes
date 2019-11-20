@@ -60,10 +60,10 @@ export const FriendList = (): JSX.Element => {
     const classes = useStyles({});
     const [filter, setFilter] = useState('');
 
-    const { data, client } = useQuery(ME);
+    const { loading: meLoading, data, client } = useQuery(ME);
     const id = data && data.me.id;
 
-    const { data: userData } = useQuery(SEARCH_USERS, {
+    const { loading: userLoading, data: userData } = useQuery(SEARCH_USERS, {
         variables: { filter },
         onError: error => {
             client.writeData({
@@ -75,20 +75,11 @@ export const FriendList = (): JSX.Element => {
         },
     });
 
-    const { data: friendRequestData } = useQuery(FRIENDREQUEST, {
+    const { loading: friendRequestLoading, data: friendRequestData } = useQuery(FRIENDREQUEST, {
         variables: { id },
     });
 
-    if (
-        !data ||
-        !userData ||
-        !friendRequestData ||
-        !data.me ||
-        !friendRequestData.friendRequest ||
-        !userData.searchUsers ||
-        !data.me.friends
-    )
-        return <Loading />;
+    if (meLoading || userLoading || friendRequestLoading) return <Loading />;
 
     const { me } = data;
     const { searchUsers } = userData;
