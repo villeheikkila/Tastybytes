@@ -3,6 +3,7 @@ import { Button, CardContent, createStyles, makeStyles, TextField, Theme, Typogr
 import Rating from 'material-ui-rating';
 import React, { useEffect, useState } from 'react';
 import { ALL_PRODUCTS, CHECKIN, UPDATE_CHECKIN } from '../../graphql';
+import { Loading } from '../Loading';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -57,9 +58,7 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
         }
     }, [data]);
 
-    if (!data || !data.checkin) {
-        return <div>Loading...</div>;
-    }
+    if (!data || !data.checkin) return <Loading />;
 
     const { checkin } = data;
 

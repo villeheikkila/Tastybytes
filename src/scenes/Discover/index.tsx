@@ -4,6 +4,7 @@ import AddIcon from '@material-ui/icons/Add';
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Waypoint } from 'react-waypoint';
+import { Loading } from '../../components/Loading';
 import { ProductCard } from '../../components/ProductCard';
 import { FILTER, SEARCH_PRODUCTS } from '../../graphql';
 
@@ -43,9 +44,7 @@ export const Discover = (): JSX.Element | null => {
         },
     });
 
-    if (data === undefined || data.searchProducts === undefined) {
-        return null;
-    }
+    if (!data || !data.searchProducts) return <Loading />;
 
     const loadMore = (): void => {
         fetchMore({

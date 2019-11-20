@@ -31,9 +31,7 @@ export const Activity = (): JSX.Element | null => {
         },
     });
 
-    if (data === undefined || data.searchCheckins === undefined) {
-        return null;
-    }
+    if (!data || !data.searchCheckins) return null;
 
     const loadMore = (): void => {
         fetchMore({

@@ -12,14 +12,7 @@ export const Notifications = (): JSX.Element | null => {
         if (data && data.notification) setOpen(true);
     }, [data]);
 
-    if (
-        data === undefined ||
-        data.notification === undefined ||
-        data.notification === '' ||
-        data.variant === undefined
-    ) {
-        return null;
-    }
+    if (!data || !data.notification || data.notification === '' || !data.variant) return null;
 
     const handleCloseNotification = (event?: SyntheticEvent, reason?: string): void => {
         if (reason === 'clickaway') {

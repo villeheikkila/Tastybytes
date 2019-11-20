@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import MaterialTable from 'material-table';
 import React from 'react';
+import { Loading } from '../../components/Loading';
 import { ALL_CATEGORIES, CREATE_CATEGORY, DELETE_CATEGORY, UPDATE_CATEGORY } from '../../graphql/product';
 
 export const CategoryManagement = (): JSX.Element | null => {
@@ -42,7 +43,7 @@ export const CategoryManagement = (): JSX.Element | null => {
         refetchQueries: [{ query: ALL_CATEGORIES }],
     });
 
-    if (!data || !data.categories) return <div>Loading...</div>;
+    if (!data || !data.categories) return <Loading />;
 
     const { categories } = data;
 

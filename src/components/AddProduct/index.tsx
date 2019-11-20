@@ -56,14 +56,7 @@ export const AddProduct = (): JSX.Element | null => {
         ],
     });
 
-    if (
-        !categoriesData ||
-        !companiesData ||
-        categoriesData.categories === undefined ||
-        companiesData.companies === undefined
-    ) {
-        return <Loading />;
-    }
+    if (!categoriesData || !companiesData || !categoriesData.categories || !companiesData.companies) return <Loading />;
 
     const { categories } = categoriesData;
     const { companies } = companiesData;

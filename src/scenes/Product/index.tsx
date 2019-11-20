@@ -38,14 +38,7 @@ export const Product = ({ id }: IdObject): JSX.Element | null => {
         },
     });
 
-    if (
-        !data ||
-        data.searchProductCheckins === undefined ||
-        productsQuery.data === undefined ||
-        productsQuery.data.product === undefined
-    ) {
-        return <Loading />;
-    }
+    if (!data || !data.searchProductCheckins || !productsQuery.data || !productsQuery.data.product) return <Loading />;
 
     // This needs to be moved to backend at some point.
     const loadMore = (): void => {

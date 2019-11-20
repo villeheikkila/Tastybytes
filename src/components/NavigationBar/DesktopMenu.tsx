@@ -45,9 +45,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
         if (theme === 1) setColorScheme(true);
     }, [theme]);
 
-    if (data === undefined) {
-        return <Loading />;
-    }
+    if (!data) return <Loading />;
     const { me } = data;
 
     const logout = async (): Promise<void> => {

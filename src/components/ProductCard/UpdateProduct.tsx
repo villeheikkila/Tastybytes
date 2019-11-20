@@ -78,14 +78,7 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
         setImage(product.imageId);
     }, [product]);
 
-    if (
-        !categoriesData ||
-        !companiesData ||
-        categoriesData.categories === undefined ||
-        companiesData.companies === undefined
-    ) {
-        return <Loading />;
-    }
+    if (!categoriesData || !companiesData || !categoriesData.categories || !companiesData.companies) return <Loading />;
 
     const { categories } = categoriesData;
     const { companies } = companiesData;

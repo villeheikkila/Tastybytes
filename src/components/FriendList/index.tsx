@@ -87,9 +87,7 @@ export const FriendList = (): JSX.Element | null => {
     const { searchUsers } = userData;
     const { friendRequest } = friendRequestData;
 
-    if (searchUsers === undefined || friendRequest === undefined || me === undefined) {
-        return null;
-    }
+    if (!searchUsers || !friendRequest || !me) return null;
 
     const friends = me.friends;
     const friendRequests = friendRequest || [];

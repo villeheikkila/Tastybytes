@@ -51,9 +51,7 @@ export const Account = (): JSX.Element | null => {
         refetchQueries: [{ query: ME }],
     });
 
-    if (data && data.me === undefined) {
-        return <Loading />;
-    }
+    if (!data || !data.me) return <Loading />;
 
     const { me } = data;
 
