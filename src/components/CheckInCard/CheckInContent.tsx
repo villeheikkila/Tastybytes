@@ -8,10 +8,9 @@ interface CheckInContentProps {
     rating: number;
     comment: string;
     image: string;
-    readOnly?: boolean;
 }
 
-export const CheckInContent = ({ rating, comment, image, readOnly = false }: CheckInContentProps): JSX.Element => {
+export const CheckInContent = ({ rating, comment, image }: CheckInContentProps): JSX.Element => {
     return (
         <CardContent>
             <Image cloudName={CLOUDINARY_CLOUD_NAME} publicId={image} width="200" crop="thumb"></Image>
@@ -19,7 +18,7 @@ export const CheckInContent = ({ rating, comment, image, readOnly = false }: Che
             <Typography variant="h6" color="textSecondary" component="p">
                 {comment && <>Comment: {comment}</>}
             </Typography>
-            <Rating value={rating} max={5} readOnly={readOnly} />
+            <Rating value={rating} max={5} readOnly={true} />
         </CardContent>
     );
 };

@@ -159,12 +159,7 @@ export const CheckInCard = ({ checkin, showProduct, showMenu = false }: CheckInC
                         setVisible={setOpenEdit}
                     />
                 ) : (
-                    <CheckInContent
-                        rating={checkinObject.rating}
-                        comment={checkinObject.comment}
-                        image={image}
-                        readOnly={!showMenu}
-                    />
+                    <CheckInContent rating={checkinObject.rating} comment={checkinObject.comment} image={image} />
                 )}
             </Card>
 
