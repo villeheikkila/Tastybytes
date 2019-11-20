@@ -34,7 +34,7 @@ interface CheckInProps {
 export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInProps): JSX.Element => {
     const classes = useStyles({});
     const [rating, setRating] = useState();
-    const [comment, setComment] = useState();
+    const [comment, setComment] = useState('');
 
     const { data, client } = useQuery(CHECKIN, {
         variables: { id },
@@ -59,8 +59,6 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
     }, [data]);
 
     if (!data || !data.checkin) return <Loading />;
-
-    const { checkin } = data;
 
     const handleEditCheckInEdit = async (): Promise<void> => {
         setOpenEdit(false);
@@ -91,7 +89,6 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
                 label="Comments"
                 multiline
                 rows="4"
-                defaultValue={checkin[0].comment}
                 className={classes.textField}
                 value={comment}
                 margin="normal"

@@ -79,15 +79,20 @@ export const FriendList = (): JSX.Element => {
         variables: { id },
     });
 
-    if (!data || !userData || !friendRequestData) {
+    if (
+        !data ||
+        !userData ||
+        !friendRequestData ||
+        !data.me ||
+        !friendRequestData.friendRequest ||
+        !userData.searchUsers ||
+        !data.me.friends
+    )
         return <Loading />;
-    }
 
     const { me } = data;
     const { searchUsers } = userData;
     const { friendRequest } = friendRequestData;
-
-    if (!searchUsers || !friendRequest || !me) return <Loading />;
 
     const friends = me.friends;
     const friendRequests = friendRequest || [];
