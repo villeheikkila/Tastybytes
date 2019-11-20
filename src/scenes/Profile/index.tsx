@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Profile = ({ id }: IdObject): JSX.Element => {
     const classes = useStyles({});
     const [ratingFilter, setRatingFilter] = useState();
-    const { data: filterData, client } = useQuery(FILTER);
+    const { loading: filterLoading, data: filterData, client } = useQuery(FILTER);
     const { loading: meLoading, data: meData } = useQuery(ME);
 
     const user = useQuery(USER, {
@@ -77,7 +77,7 @@ export const Profile = ({ id }: IdObject): JSX.Element => {
         },
     });
 
-    if (meLoading || user.loading) return <Loading />;
+    if (filterLoading || meLoading || user.loading) return <Loading />;
 
     const loadMore = (): void => {
         fetchMore({

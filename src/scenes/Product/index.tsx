@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 export const Product = ({ id }: IdObject): JSX.Element => {
     const [submitted, setSubmitted] = useState();
     const classes = useStyles({});
-    const { data: filterData, client } = useQuery(FILTER);
+    const { loading: filterLoading, data: filterData, client } = useQuery(FILTER);
 
     const productsQuery = useQuery(PRODUCT, {
         variables: { id },
@@ -43,7 +43,7 @@ export const Product = ({ id }: IdObject): JSX.Element => {
         window.scrollTo(0, 0);
     }, []);
 
-    if (loading || productsQuery.loading) return <Loading />;
+    if (filterLoading || loading || productsQuery.loading) return <Loading />;
 
     // This needs to be moved to backend at some point.
     const loadMore = (): void => {
