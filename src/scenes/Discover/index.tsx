@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 
 export const Discover = (): JSX.Element => {
     const classes = useStyles({});
-    const { data: filterData, client } = useQuery(FILTER);
+    const { loading: filterLoading, data: filterData, client } = useQuery(FILTER);
 
     const { loading, data, fetchMore } = useQuery(SEARCH_PRODUCTS, {
         variables: { filter: filterData.filter, first: 5 },
@@ -44,7 +44,7 @@ export const Discover = (): JSX.Element => {
         },
     });
 
-    if (loading) return <Loading />;
+    if (filterLoading || loading || !data) return <Loading />;
 
     const loadMore = (): void => {
         fetchMore({

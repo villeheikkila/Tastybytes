@@ -77,7 +77,7 @@ export const Profile = ({ id }: IdObject): JSX.Element => {
         },
     });
 
-    if (filterLoading || meLoading || user.loading) return <Loading />;
+    if (filterLoading || meLoading || user.loading || !data) return <Loading />;
 
     const loadMore = (): void => {
         fetchMore({

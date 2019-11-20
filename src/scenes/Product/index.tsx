@@ -43,7 +43,7 @@ export const Product = ({ id }: IdObject): JSX.Element => {
         window.scrollTo(0, 0);
     }, []);
 
-    if (filterLoading || loading || productsQuery.loading) return <Loading />;
+    if (filterLoading || loading || productsQuery.loading || !data) return <Loading />;
 
     // This needs to be moved to backend at some point.
     const loadMore = (): void => {
