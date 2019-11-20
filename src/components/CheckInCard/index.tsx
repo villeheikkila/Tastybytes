@@ -45,7 +45,7 @@ interface CheckInCardProps {
     showMenu?: boolean;
 }
 
-export const CheckInCard = ({ checkin, showProduct, showMenu = true }: CheckInCardProps): JSX.Element => {
+export const CheckInCard = ({ checkin, showProduct, showMenu = false }: CheckInCardProps): JSX.Element => {
     const classes = useStyles({});
     const client = useApolloClient();
 
@@ -159,7 +159,12 @@ export const CheckInCard = ({ checkin, showProduct, showMenu = true }: CheckInCa
                         setVisible={setOpenEdit}
                     />
                 ) : (
-                    <CheckInContent rating={checkinObject.rating} comment={checkinObject.comment} image={image} />
+                    <CheckInContent
+                        rating={checkinObject.rating}
+                        comment={checkinObject.comment}
+                        image={image}
+                        readOnly={!showMenu}
+                    />
                 )}
             </Card>
 

@@ -4,7 +4,7 @@ import React, { Fragment } from 'react';
 import { Waypoint } from 'react-waypoint';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Loading } from '../../components/Loading';
-import { FILTER, SEARCH_CHECKINS } from '../../graphql';
+import { FILTER, ME, SEARCH_CHECKINS } from '../../graphql';
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
 export const Activity = (): JSX.Element => {
     const classes = useStyles({});
     const { data: filterData, client } = useQuery(FILTER);
+    const { data: meData } = useQuery(ME);
 
     const { data, fetchMore } = useQuery(SEARCH_CHECKINS, {
         variables: { filter: filterData.filter, first: 5 },
@@ -32,7 +33,7 @@ export const Activity = (): JSX.Element => {
         },
     });
 
-    if (!data || !data.searchCheckins) return <Loading />;
+    if (!data || !data.searchCheckins || !meData || !meData.me) return <Loading />;
 
     const loadMore = (): void => {
         fetchMore({
@@ -59,7 +60,12 @@ export const Activity = (): JSX.Element => {
                         (checkin: CheckInObject, index: number): JSX.Element => (
                             <Fragment key={checkin.id.toUpperCase()}>
                                 {data.searchCheckins.length - index <= 1 && <Waypoint onEnter={loadMore} />}
-                                <CheckInCard key={checkin.id} showProduct={true} checkin={checkin} />
+                                <CheckInCard
+                                    key={checkin.id}
+                                    showProduct={true}
+                                    checkin={checkin}
+                                    showMenu={checkin.author.id === meData.me.id}
+                                />
                             </Fragment>
                         ),
                     )}

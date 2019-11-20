@@ -6,7 +6,7 @@ import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
 import { Loading } from '../../components/Loading';
 import { SmartAvatar } from '../../components/SmartAvatar';
-import { FILTER, USER } from '../../graphql';
+import { FILTER, ME, USER } from '../../graphql';
 import { SEARCH_USER_CHECKINS } from '../../graphql/checkin';
 import { ExpansionFriendList } from './ExpansionFriendList';
 import { RatingChart } from './RatingChart';
@@ -53,6 +53,7 @@ export const Profile = ({ id }: IdObject): JSX.Element => {
     const classes = useStyles({});
     const [ratingFilter, setRatingFilter] = useState();
     const { data: filterData, client } = useQuery(FILTER);
+    const { data: meData } = useQuery(ME);
 
     const user = useQuery(USER, {
         variables: { id },
@@ -70,7 +71,7 @@ export const Profile = ({ id }: IdObject): JSX.Element => {
         },
     });
 
-    if (!user.data || !user.data.user || !data.searchUserCheckins) {
+    if (!user.data || !user.data.user || !data.searchUserCheckins || !meData || !meData.me) {
         return <Loading />;
     }
 
@@ -97,6 +98,8 @@ export const Profile = ({ id }: IdObject): JSX.Element => {
         avatarId: user.data.user[0].avatarId,
         avatarColor: user.data.user[0].avatarColor,
     };
+
+    const ownProfile = meData.me.id === userObject.id;
 
     const ratings = userObject.checkins
         .reduce(
@@ -146,7 +149,7 @@ export const Profile = ({ id }: IdObject): JSX.Element => {
                     (checkin: CheckInObject, index: number): JSX.Element => (
                         <Fragment key={index}>
                             {data.searchUserCheckins.length - index <= 1 && <Waypoint onEnter={loadMore} />}
-                            <CheckInCard key={checkin.id} checkin={checkin} showProduct={true} />
+                            <CheckInCard key={checkin.id} checkin={checkin} showProduct={true} showMenu={ownProfile} />
                         </Fragment>
                     ),
                 )}
