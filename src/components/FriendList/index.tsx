@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const FriendList = (): JSX.Element | null => {
+export const FriendList = (): JSX.Element => {
     const classes = useStyles({});
     const [filter, setFilter] = useState('');
 
@@ -87,7 +87,7 @@ export const FriendList = (): JSX.Element | null => {
     const { searchUsers } = userData;
     const { friendRequest } = friendRequestData;
 
-    if (!searchUsers || !friendRequest || !me) return null;
+    if (!searchUsers || !friendRequest || !me) return <Loading />;
 
     const friends = me.friends;
     const friendRequests = friendRequest || [];

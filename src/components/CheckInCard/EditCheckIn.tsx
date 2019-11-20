@@ -31,7 +31,7 @@ interface CheckInProps {
     setVisible: React.Dispatch<boolean | undefined>;
 }
 
-export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInProps): JSX.Element | null => {
+export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInProps): JSX.Element => {
     const classes = useStyles({});
     const [rating, setRating] = useState();
     const [comment, setComment] = useState();

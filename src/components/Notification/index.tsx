@@ -4,7 +4,7 @@ import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { GET_NOTIFICATION } from '../../graphql';
 import { NotificationContentWrapper } from './NotificationContentWrapper';
 
-export const Notifications = (): JSX.Element | null => {
+export const Notifications = (): JSX.Element => {
     const [open, setOpen] = useState(true);
     const { data, client } = useQuery(GET_NOTIFICATION);
 
@@ -12,7 +12,7 @@ export const Notifications = (): JSX.Element | null => {
         if (data && data.notification) setOpen(true);
     }, [data]);
 
-    if (!data || !data.notification || data.notification === '' || !data.variant) return null;
+    if (!data || !data.notification || data.notification === '' || !data.variant) return <></>;
 
     const handleCloseNotification = (event?: SyntheticEvent, reason?: string): void => {
         if (reason === 'clickaway') {

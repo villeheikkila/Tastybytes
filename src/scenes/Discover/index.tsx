@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const Discover = (): JSX.Element | null => {
+export const Discover = (): JSX.Element => {
     const classes = useStyles({});
     const { data: filterData, client } = useQuery(FILTER);
 

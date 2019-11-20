@@ -1,11 +1,11 @@
-import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { SmartAvatar } from '../../components/SmartAvatar';
 import { ME, UPDATE_AVATAR } from '../../graphql';
 import { uploadCloudinary } from '../../services/cloudinary';
 
-export const AccountAvatar = ({ user }: any): JSX.Element | null => {
+export const AccountAvatar = ({ user }: any): JSX.Element => {
     const [newAvatarId, setNewAvatarId] = useState('');
     const client = useApolloClient();
 

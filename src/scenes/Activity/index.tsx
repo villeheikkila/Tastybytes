@@ -3,6 +3,7 @@ import { Grid, makeStyles, Typography } from '@material-ui/core';
 import React, { Fragment } from 'react';
 import { Waypoint } from 'react-waypoint';
 import { CheckInCard } from '../../components/CheckInCard';
+import { Loading } from '../../components/Loading';
 import { FILTER, SEARCH_CHECKINS } from '../../graphql';
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const Activity = (): JSX.Element | null => {
+export const Activity = (): JSX.Element => {
     const classes = useStyles({});
     const { data: filterData, client } = useQuery(FILTER);
 
@@ -31,7 +32,7 @@ export const Activity = (): JSX.Element | null => {
         },
     });
 
-    if (!data || !data.searchCheckins) return null;
+    if (!data || !data.searchCheckins) return <Loading />;
 
     const loadMore = (): void => {
         fetchMore({

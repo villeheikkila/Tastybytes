@@ -6,7 +6,7 @@ import { Loading } from '../../components/Loading';
 import { SmartAvatar } from '../../components/SmartAvatar';
 import { ALL_USERS, DELETE_USER, UPDATE_USER } from '../../graphql';
 
-export const UserManagement = (): JSX.Element | null => {
+export const UserManagement = (): JSX.Element => {
     const { data, client } = useQuery(ALL_USERS);
 
     const [deleteUser] = useMutation(DELETE_USER, {

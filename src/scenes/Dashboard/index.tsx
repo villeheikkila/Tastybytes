@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export const Dashboard = (): JSX.Element | null => {
+export const Dashboard = (): JSX.Element => {
     const classes = useStyles({});
 
     return (

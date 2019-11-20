@@ -14,7 +14,7 @@ interface UpdatedProductObject {
     subCategory: [string];
 }
 
-export const ProductManagement = (): JSX.Element | null => {
+export const ProductManagement = (): JSX.Element => {
     const { data, client } = useQuery(ALL_PRODUCTS);
 
     const [deleteProduct] = useMutation(DELETE_PRODUCT, {

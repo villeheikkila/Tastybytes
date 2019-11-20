@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const Product = ({ id }: IdObject): JSX.Element | null => {
+export const Product = ({ id }: IdObject): JSX.Element => {
     const [submitted, setSubmitted] = useState();
     const classes = useStyles({});
     const { data: filterData, client } = useQuery(FILTER);

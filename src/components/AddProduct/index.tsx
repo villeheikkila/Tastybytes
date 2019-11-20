@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const AddProduct = (): JSX.Element | null => {
+export const AddProduct = (): JSX.Element => {
     const classes = useStyles({});
     const [image, setImage] = useState();
     const [name, setName] = useState('');

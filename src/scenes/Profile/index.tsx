@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Profile = ({ id }: IdObject): JSX.Element | null => {
+export const Profile = ({ id }: IdObject): JSX.Element => {
     const classes = useStyles({});
     const [ratingFilter, setRatingFilter] = useState();
     const { data: filterData, client } = useQuery(FILTER);

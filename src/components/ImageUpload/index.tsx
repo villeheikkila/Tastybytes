@@ -9,7 +9,7 @@ interface ImageUploadProps {
     image: string;
     setImage: any;
 }
-export const ImageUpload = ({ image, setImage }: ImageUploadProps): JSX.Element | null => {
+export const ImageUpload = ({ image, setImage }: ImageUploadProps): JSX.Element => {
     const onDrop = useCallback(
         async acceptedFiles => {
             const publicId = await uploadCloudinary(acceptedFiles[0]);

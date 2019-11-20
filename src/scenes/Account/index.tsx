@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const Account = (): JSX.Element | null => {
+export const Account = (): JSX.Element => {
     const classes = useStyles({});
     const [visible, setVisible] = useState(false);
 
