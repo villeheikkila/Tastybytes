@@ -3,6 +3,7 @@ import { Card, createStyles, Divider, InputBase, List, ListSubheader, makeStyles
 import { fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import React, { useState } from 'react';
+import { Loading } from '../../components/Loading';
 import { FRIENDREQUEST, ME, SEARCH_USERS } from '../../graphql';
 import { FriendListItem } from './FriendListItem';
 import { FriendRequestListItem } from './FriendRequestsListItem';
@@ -79,7 +80,7 @@ export const FriendList = (): JSX.Element | null => {
     });
 
     if (!data || !userData || !friendRequestData) {
-        return <div>Loading..</div>;
+        return <Loading />;
     }
 
     const { me } = data;

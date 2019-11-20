@@ -4,6 +4,7 @@ import { deleteFromStorage } from '@rehooks/local-storage';
 import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
+import { Loading } from '../../components/Loading';
 import { DELETE_USER, ME } from '../../graphql';
 import { AccountAvatar } from './AccountAvatar';
 import { PasswordForm } from './PasswordForm';
@@ -51,7 +52,7 @@ export const Account = (): JSX.Element | null => {
     });
 
     if (data && data.me === undefined) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
 
     const { me } = data;

@@ -4,6 +4,7 @@ import React, { Fragment, useState } from 'react';
 import { Waypoint } from 'react-waypoint';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
+import { Loading } from '../../components/Loading';
 import { ProductCard } from '../../components/ProductCard';
 import { FILTER, PRODUCT } from '../../graphql';
 import { SEARCH_PRODUCT_CHECKINS } from '../../graphql/checkin';
@@ -43,7 +44,7 @@ export const Product = ({ id }: IdObject): JSX.Element | null => {
         productsQuery.data === undefined ||
         productsQuery.data.product === undefined
     ) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
 
     // This needs to be moved to backend at some point.

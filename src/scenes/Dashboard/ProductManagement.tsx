@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import MaterialTable from 'material-table';
 import React from 'react';
 import { BoxImage } from '../../components/BoxImage';
+import { Loading } from '../../components/Loading';
 import { ALL_PRODUCTS, DELETE_PRODUCT, UPDATE_PRODUCT } from '../../graphql';
 
 interface UpdatedProductObject {
@@ -40,8 +41,7 @@ export const ProductManagement = (): JSX.Element | null => {
         refetchQueries: [{ query: ALL_PRODUCTS }],
     });
 
-    if (!data || !data.products) return <div>Loading...</div>;
-
+    if (!data || !data.products) return <Loading />;
     const { products } = data;
 
     const productsObject: any = products.map((product: Product) => ({

@@ -2,6 +2,7 @@ import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, Grid, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import useReactRouter from 'use-react-router';
+import { Loading } from '../../components/Loading';
 import { ADD_PRODUCT, ALL_CATEGORIES, ALL_COMPANIES, SEARCH_PRODUCTS } from '../../graphql';
 import { ImageUpload } from '../ImageUpload';
 import { MaterialSelect } from '../MaterialSelect';
@@ -61,7 +62,7 @@ export const AddProduct = (): JSX.Element | null => {
         categoriesData.categories === undefined ||
         companiesData.companies === undefined
     ) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
 
     const { categories } = categoriesData;

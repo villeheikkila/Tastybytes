@@ -1,6 +1,7 @@
 import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks';
 import { Button, CardContent, Grid, makeStyles, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { Loading } from '../../components/Loading';
 import { ALL_CATEGORIES, ALL_COMPANIES, SEARCH_CHECKINS, SEARCH_PRODUCTS, UPDATE_PRODUCT } from '../../graphql';
 import { ImageUpload } from '../ImageUpload';
 import { MaterialSelect } from '../MaterialSelect';
@@ -83,7 +84,7 @@ export const UpdateProduct = ({ product, onCancel }: UpdateProductProps): JSX.El
         categoriesData.categories === undefined ||
         companiesData.companies === undefined
     ) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
 
     const { categories } = categoriesData;

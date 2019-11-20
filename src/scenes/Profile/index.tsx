@@ -4,6 +4,7 @@ import React, { Fragment, useState } from 'react';
 import { Waypoint } from 'react-waypoint';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
+import { Loading } from '../../components/Loading';
 import { SmartAvatar } from '../../components/SmartAvatar';
 import { FILTER, USER } from '../../graphql';
 import { SEARCH_USER_CHECKINS } from '../../graphql/checkin';
@@ -70,7 +71,7 @@ export const Profile = ({ id }: IdObject): JSX.Element | null => {
     });
 
     if (!user.data || !user.data.user || !data.searchUserCheckins) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
 
     const loadMore = (): void => {

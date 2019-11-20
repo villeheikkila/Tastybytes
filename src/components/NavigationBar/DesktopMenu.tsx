@@ -4,6 +4,7 @@ import { AccountCircle, BrightnessHigh, BrightnessLow, ExitToApp, PersonOutline,
 import { deleteFromStorage } from '@rehooks/local-storage';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Loading } from '../../components/Loading';
 import { ME, UPDATE_USER } from '../../graphql';
 
 const useStyles = makeStyles(() =>
@@ -45,7 +46,7 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
     }, [theme]);
 
     if (data === undefined) {
-        return <div>loading...</div>;
+        return <Loading />;
     }
     const { me } = data;
 

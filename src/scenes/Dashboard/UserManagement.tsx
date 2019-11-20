@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import Typography from '@material-ui/core/Typography';
 import MaterialTable from 'material-table';
 import React from 'react';
+import { Loading } from '../../components/Loading';
 import { SmartAvatar } from '../../components/SmartAvatar';
 import { ALL_USERS, DELETE_USER, UPDATE_USER } from '../../graphql';
 
@@ -33,7 +34,7 @@ export const UserManagement = (): JSX.Element | null => {
     });
 
     if (!data || !data.users) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
 
     const { users } = data;
