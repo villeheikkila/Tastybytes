@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/react-hooks';
 import { Card, makeStyles } from '@material-ui/core';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Waypoint } from 'react-waypoint';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
@@ -37,6 +37,11 @@ export const Product = ({ id }: IdObject): JSX.Element => {
             });
         },
     });
+
+    //scroll to the top of the page to reset the position
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     if (!data || !data.searchProductCheckins || !productsQuery.data || !productsQuery.data.product) return <Loading />;
 

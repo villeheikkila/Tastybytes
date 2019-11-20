@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/react-hooks';
 import { Grid, makeStyles, Typography } from '@material-ui/core';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Waypoint } from 'react-waypoint';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Loading } from '../../components/Loading';
@@ -32,6 +32,11 @@ export const Activity = (): JSX.Element => {
             });
         },
     });
+
+    //scroll to the top of the page to reset the position
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     if (!data || !data.searchCheckins || !meData || !meData.me) return <Loading />;
 

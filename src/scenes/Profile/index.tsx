@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/react-hooks';
 import { createStyles, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Waypoint } from 'react-waypoint';
 import { CheckInCard } from '../../components/CheckInCard';
 import { Divider } from '../../components/Divider';
@@ -58,6 +58,11 @@ export const Profile = ({ id }: IdObject): JSX.Element => {
     const user = useQuery(USER, {
         variables: { id },
     });
+
+    //scroll to the top of the page to reset the position
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const { data, fetchMore } = useQuery(SEARCH_USER_CHECKINS, {
         variables: { id: id, filter: filterData.filter, first: 5 },
