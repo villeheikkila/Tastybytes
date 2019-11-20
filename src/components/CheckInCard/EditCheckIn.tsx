@@ -51,11 +51,11 @@ export const EditCheckIn = ({ id, setOpenEdit, product, setVisible }: CheckInPro
     });
 
     useEffect((): void => {
-        if (data.checkin !== undefined) {
+        if (data && data.checkin) {
             setComment(data.checkin[0].comment);
             setRating(data.checkin[0].rating);
         }
-    }, [data.checkin]);
+    }, [data]);
 
     if (!data || !data.checkin) {
         return <div>Loading...</div>;
