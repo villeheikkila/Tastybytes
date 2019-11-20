@@ -37,12 +37,12 @@ export const DesktopMenu = ({ anchorEl, setAnchorEl }: DesktopMenuProps): JSX.El
         refetchQueries: [{ query: ME }],
     });
 
-    const theme = data && data.me && data.me.colorScheme ? 1 : 0;
+    const theme = data && data.me && data.me.colorScheme ? true : false;
     const admin = (data && data.me && data.me.admin) || false;
 
     useEffect((): void => {
-        if (theme === 0) setColorScheme(false);
-        if (theme === 1) setColorScheme(true);
+        if (!theme) setColorScheme(false);
+        else if (theme) setColorScheme(true);
     }, [theme]);
 
     if (loading) return <Loading />;

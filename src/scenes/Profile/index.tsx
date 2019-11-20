@@ -8,6 +8,7 @@ import { Loading } from '../../components/Loading';
 import { SmartAvatar } from '../../components/SmartAvatar';
 import { FILTER, ME, USER } from '../../graphql';
 import { SEARCH_USER_CHECKINS } from '../../graphql/checkin';
+import { AccountAvatar } from '../Account/AccountAvatar';
 import { ExpansionFriendList } from './ExpansionFriendList';
 import { RatingChart } from './RatingChart';
 
@@ -124,15 +125,19 @@ export const Profile = ({ id }: IdObject): JSX.Element => {
                 <Typography variant="h4" component="h3" className={classes.textField}>
                     {userObject.firstName} {userObject.lastName}
                 </Typography>
-                <SmartAvatar
-                    id={id}
-                    size={200}
-                    firstName={userObject.firstName}
-                    lastName={userObject.lastName}
-                    avatarId={userObject.avatarId}
-                    avatarColor={userObject.avatarColor}
-                    isClickable={false}
-                />
+                {!ownProfile ? (
+                    <SmartAvatar
+                        id={id}
+                        size={200}
+                        firstName={userObject.firstName}
+                        lastName={userObject.lastName}
+                        avatarId={userObject.avatarId}
+                        avatarColor={userObject.avatarColor}
+                        isClickable={false}
+                    />
+                ) : (
+                    <AccountAvatar user={meData.me} />
+                )}
                 <Typography variant="h4" component="h3" className={classes.textField}>
                     Checkins in total: {userObject.checkins.length}
                 </Typography>

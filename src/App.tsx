@@ -33,9 +33,11 @@ export const App = (): JSX.Element => {
         variables: { id },
     });
 
+    // This is way too slow way to deal with getting the users persistent color scheme
     const theme = (id && me && me.data && me.data.me && me.data.me.colorScheme) || 0;
     const themes = [darkTheme, whiteTheme];
 
+    // Show a notification when user receives a friend request
     if (data && data.friendRequest.node && data.friendRequest.node.sender[0]) {
         client.writeData({
             data: {
