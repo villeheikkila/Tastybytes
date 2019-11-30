@@ -24,6 +24,7 @@
         "clsx": "^1.0.4",
         "dotenv": "^8.2.0",
         "graphql": "^14.5.8",
+        "material-table": "^1.54.1",
         "material-ui-popup-state": "^1.4.1",
         "material-ui-rating": "^4.2.0",
         "react": "^16.12.0",
