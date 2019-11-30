@@ -11,5 +11,5 @@ export const uploadCloudinary = async (file: any): Promise<string> => {
         formData,
     );
 
-    return response.data.public_id;
+    return response.data.public_id || "gg1ouxpf3uk0zhnszbqx";
 };
