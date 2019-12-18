@@ -49,7 +49,3 @@ Tastice frontend is currently deployed on Netlify, backend and Prisma server are
 ## Backend
 
 [Backend repository on GitHub](https://github.com/villeheikkila/tastice-backend)
-
-## Other links
-
-[Timelog](timelog.md)
