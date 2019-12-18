@@ -14,7 +14,7 @@ import { parseToken } from './utils';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL || 'localhost:4000/';
 export const CLOUDINARY_UPLOAD_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET || 'demo';
-export const CLOUDINARY_CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
+export const CLOUDINARY_CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME || 'demo';
 
 const httpLink = createHttpLink({
     uri: `https://${SERVER_URL}`,
