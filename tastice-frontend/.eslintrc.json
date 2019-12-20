@@ -1,6 +1,7 @@
 {
     "extends": [
         "eslint:recommended",
+<<<<<<< HEAD
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
         "prettier/@typescript-eslint",
@@ -10,6 +11,13 @@
         "plugin:import/typescript"
     ],
     "plugins": ["react", "@typescript-eslint", "prettier"],
+=======
+        "plugin:@typescript-eslint/recommended",
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recommended"
+    ],
+    "plugins": ["@typescript-eslint", "prettier"],
+>>>>>>> tastice-backend/master
     "env": {
         "node": true,
         "browser": true,
@@ -19,7 +27,11 @@
     },
     "rules": {
         "prettier/prettier": ["error", { "singleQuote": true }],
+<<<<<<< HEAD
         "react/prop-types": 0,
+=======
+        "@typescript-eslint/camelcase": 0,
+>>>>>>> tastice-backend/master
         "@typescript-eslint/explicit-function-return-type": [
             "error",
             {
@@ -28,11 +40,14 @@
             }
         ]
     },
+<<<<<<< HEAD
     "settings": {
         "react": {
             "pragma": "React",
             "version": "detect"
         }
     },
+=======
+>>>>>>> tastice-backend/master
     "parser": "@typescript-eslint/parser"
 }
