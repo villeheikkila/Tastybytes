@@ -1,13 +1,10 @@
 # ![tastice](https://fontmeme.com/permalink/190704/0daa2ab57e001e0aa2002608810c7a69.png)
 
-This is the backend for tastice app. More information available in the [frontend repository](https://github.com/villeheikkila/tastice-frontend).
-
 ## How to get started
 
-1. Clone this repository
-2. Pass the required environment variables and run "docker-compose up"
-3. After the Prisma server is running and .env file is correctly set up, start the backend with "npm run dev".
-4. Profit
+1. Pass the required environment variables and run "docker-compose up"
+2. After the Prisma server is running and .env file is correctly set up, start the backend with "npm run dev".
+3. Profit
 
 ## Available Scripts
 
