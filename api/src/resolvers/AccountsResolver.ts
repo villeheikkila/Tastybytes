@@ -1,7 +1,7 @@
-import { Resolver, Query, Mutation, Arg } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, Ctx } from "type-graphql";
 import Account from "../models/Account";
-import { CreateAccountInput } from "../inputs/CreateAccountInput";
-import { UpdateAccountInput } from "../inputs/UpdateAccountInput";
+import jwt from "jsonwebtoken";
+import { JWT_PUBLIC_KEY, JWT_PRIVATE_KEY } from "../config";
 
 @Resolver()
 export class AccountResolver {
@@ -16,8 +16,12 @@ export class AccountResolver {
   }
 
   @Mutation(() => Account)
-  async createAccount(@Arg("data") data: CreateAccountInput) {
-    const account = Account.create(data);
+  async createAccount(
+    @Arg("firstName") firstName: string,
+    @Arg("lastName") lastName: string,
+    @Arg("email") email: string
+  ) {
+    const account = Account.create({ firstName, lastName, email });
 
     await account.save();
     return account;
@@ -26,11 +30,13 @@ export class AccountResolver {
   @Mutation(() => Account)
   async updateAccount(
     @Arg("id") id: string,
-    @Arg("data") data: UpdateAccountInput
+    @Arg("firstName") firstName: string,
+    @Arg("lastName") lastName: string,
+    @Arg("email") email: string
   ) {
     const account = await Account.findOne({ where: { id } });
     if (!account) throw new Error("Account not found!");
-    Object.assign(account, data);
+    Object.assign(account, { firstName, lastName, email });
 
     await account.save();
     return account;
@@ -44,4 +50,21 @@ export class AccountResolver {
     await account.remove();
     return true;
   }
+
+  @Query(() => Boolean)
+  async logIn(@Ctx() ctx: any, @Arg("email") email: string): Promise<Boolean> {
+    const account = await Account.findOne({ where: { email } });
+
+    if (account) {
+      return true;
+    }
+    return false;
+  }
 }
+
+const cookie = (ctx: any, id: string) => {
+  ctx.cookies.set(
+    JWT_PUBLIC_KEY,
+    jwt.sign({ id }, JWT_PRIVATE_KEY, { expiresIn: "30d" })
+  );
+};

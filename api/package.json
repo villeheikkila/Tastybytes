@@ -9,7 +9,9 @@
   "author": "Ville Heikkilä",
   "license": "MIT",
   "dependencies": {
+    "@types/jsonwebtoken": "^8.5.0",
     "apollo-server": "^2.9.16",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.3.3",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.1.1",

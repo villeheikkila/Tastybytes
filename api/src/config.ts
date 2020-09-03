@@ -12,3 +12,6 @@ export const typeOrmConfig: PostgresConnectionOptions = {
   logging: false,
   entities: [Account],
 };
+
+export const JWT_PUBLIC_KEY = process.env.JWT_PUBLIC_KEY as string;
+export const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY as string;

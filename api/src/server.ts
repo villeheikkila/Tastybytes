@@ -10,7 +10,9 @@ import { typeOrmConfig } from "./config";
     await createConnection(typeOrmConfig);
     console.log("Connected to the PostgreSQL database");
     const schema = await buildSchema({ resolvers: [AccountResolver] });
-    const server = new ApolloServer({ schema });
+    const server = new ApolloServer({
+      schema,
+    });
 
     await server.listen(4000);
     console.log(`Server has started on ${4000}`);
