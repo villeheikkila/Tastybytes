@@ -1,0 +1,24 @@
+{
+  "name": "herq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "nodemon -w src --ext ts --exec ts-node index.ts"
+  },
+  "author": "Ville Heikkilä",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^2.9.16",
+    "pg": "^8.3.3",
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^4.1.1",
+    "type-graphql": "^0.17.6",
+    "typeorm": "^0.2.22"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.6.0",
+    "typescript": "^3.7.4"
+  }
+}
