@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useQuery, gql } from "@apollo/client";
+import SignUp from "./pages/SignUp";
 
 export interface Package {
   alternatives: number[] | null;
@@ -33,6 +34,7 @@ const App = () => {
       </Header>
 
       <Page></Page>
+      <SignUp></SignUp>
     </>
   );
 };
