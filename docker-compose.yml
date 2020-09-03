@@ -1,10 +1,27 @@
 version: "3.7"
 
 services:
+  client:
+    container_name: client
+    stdin_open: true
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 3030:3000
+    networks:
+      - default
+    restart: unless-stopped
+    volumes:
+      - ./client:/service
+
   api:
+    container_name: api
     image: node:latest
     ports:
       - 4000:4000
+    networks:
+      - default
     depends_on:
       - db
     restart: always
@@ -21,6 +38,7 @@ services:
       DATABASE_HOST: db
 
   db:
+    container_name: postgres
     image: postgres
     restart: always
     networks:
@@ -34,3 +52,6 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
       PGDATA: /var/lib/postgresql/data
+
+networks:
+  default:
