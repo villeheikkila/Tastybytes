@@ -15,3 +15,4 @@ export const typeOrmConfig: PostgresConnectionOptions = {
 
 export const JWT_PUBLIC_KEY = process.env.JWT_PUBLIC_KEY as string;
 export const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY as string;
+export const API_PORT = parseInt(process.env.API_PORT as string);

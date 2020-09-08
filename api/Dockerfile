@@ -1,9 +1,9 @@
-FROM node:latest
+FROM node:current
 WORKDIR /service
 ARG SERVICE_DIR=.
 COPY /package.json \
-    ${SERVICE_DIR}/package-lock.* \
+    ./package-lock.* \
     /service/
 RUN npm install --loglevel warn
-EXPOSE 3000
+EXPOSE 4000
 CMD [ "npm", "start" ]

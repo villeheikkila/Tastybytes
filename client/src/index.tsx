@@ -8,13 +8,39 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
   ApolloProvider,
+  split,
+  HttpLink,
 } from "@apollo/client";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { WebSocketLink } from "@apollo/client/link/ws";
 
-const httpHost = `http://${window.location.hostname}:4000`;
+const httpLink = new HttpLink({
+  uri: `http://${window.location.hostname}:${process.env.API_PORT}/graphql`,
+  credentials: "include",
+});
+
+const wsLink = new WebSocketLink({
+  uri: `ws://${window.location.hostname}:${process.env.API_PORT}/subscriptions`,
+  options: {
+    reconnect: true,
+  },
+});
+
+const link = split(
+  ({ query }: any) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  httpLink
+);
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: httpHost,
+  link,
 });
 
 ReactDOM.render(

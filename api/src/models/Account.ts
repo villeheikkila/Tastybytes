@@ -19,4 +19,8 @@ export default class Account extends BaseEntity {
   @Field(() => String)
   @Column()
   email: string;
+
+  @Field(() => String)
+  @Column()
+  passwordHash: string;
 }
