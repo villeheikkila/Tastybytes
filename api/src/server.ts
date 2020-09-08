@@ -1,19 +1,19 @@
-import "reflect-metadata";
-import { createConnection } from "typeorm";
-import { ApolloServer } from "apollo-server-koa";
-import { buildSchema } from "type-graphql";
-import { AccountResolver } from "./resolvers/AccountsResolver";
+import 'reflect-metadata';
+import { createConnection } from 'typeorm';
+import { ApolloServer } from 'apollo-server-koa';
+import { buildSchema } from 'type-graphql';
+import { AccountResolver } from './resolvers/AccountsResolver';
 import {
   typeOrmConfig,
   JWT_PUBLIC_KEY,
   JWT_PRIVATE_KEY,
-  API_PORT,
-} from "./config";
-import koa from "koa";
-import jwt from "koa-jwt";
-import jsonwebtoken from "jsonwebtoken";
-import Cookie from "cookie";
-import cors from "@koa/cors";
+  API_PORT
+} from './config';
+import koa from 'koa';
+import jwt from 'koa-jwt';
+import jsonwebtoken from 'jsonwebtoken';
+import Cookie from 'cookie';
+import cors from '@koa/cors';
 
 (async () => {
   try {
@@ -22,11 +22,11 @@ import cors from "@koa/cors";
       resolvers: [AccountResolver],
       validate: true,
       authChecker: ({ context }: any) => {
-        if ("state" in context) {
+        if ('state' in context) {
           return !!context.state.user;
         }
         return !!context.id;
-      },
+      }
     });
 
     const server = new ApolloServer({
@@ -38,24 +38,24 @@ import cors from "@koa/cors";
         return connection.context;
       },
       subscriptions: {
-        path: "/subscriptions",
+        path: '/subscriptions',
         onConnect: (connectionParams, websocket, ctx) => {
-          const parsedCookie = Cookie.parse(ctx.request.headers.cookie || "");
+          const parsedCookie = Cookie.parse(ctx.request.headers.cookie || '');
           const checkAccount = jsonwebtoken.verify(
-            parsedCookie[JWT_PUBLIC_KEY] || "",
+            parsedCookie[JWT_PUBLIC_KEY] || '',
             JWT_PRIVATE_KEY
           ) as { id: string };
           return {
             ...ctx,
-            id: checkAccount.id,
+            id: checkAccount.id
           };
-        },
+        }
       },
       playground: {
         settings: {
-          "request.credentials": "include",
-        },
-      },
+          'request.credentials': 'include'
+        }
+      }
     });
 
     const app = new koa();
@@ -63,7 +63,7 @@ import cors from "@koa/cors";
 
     app.use(
       cors({
-        credentials: true,
+        credentials: true
       })
     );
 
@@ -76,7 +76,7 @@ import cors from "@koa/cors";
       jwt({
         cookie: JWT_PUBLIC_KEY,
         secret: JWT_PRIVATE_KEY,
-        passthrough: true,
+        passthrough: true
       })
     );
 
@@ -89,7 +89,7 @@ import cors from "@koa/cors";
       )
     );
 
-    server.applyMiddleware({ app, path: "/graphql" });
+    server.applyMiddleware({ app, path: '/graphql' });
     server.installSubscriptionHandlers(httpServer);
   } catch (error) {
     console.error(error);
