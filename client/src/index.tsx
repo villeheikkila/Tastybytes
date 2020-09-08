@@ -15,12 +15,12 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
 
 const httpLink = new HttpLink({
-  uri: `http://${window.location.hostname}:${process.env.API_PORT}/graphql`,
+  uri: `http://${window.location.hostname}:${process.env.REACT_APP_API_PORT}/graphql`,
   credentials: "include",
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${window.location.hostname}:${process.env.API_PORT}/subscriptions`,
+  uri: `ws://${window.location.hostname}:${process.env.REACT_APP_API_PORT}/subscriptions`,
   options: {
     reconnect: true,
   },
