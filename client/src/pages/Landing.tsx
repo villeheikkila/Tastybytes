@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 const Landing = () => {
-  const [logIn, { data }] = useLazyQuery<any>(LOGIN);
+  const [logIn] = useLazyQuery<any>(LOGIN);
 
   const { register, handleSubmit, errors } = useForm<{
     email: string;

@@ -1,12 +1,12 @@
 import React from "react";
 import Header from "../components/Header";
 
-const Home = () => {
+const Account = () => {
   return (
     <div>
-      <Header>Home</Header>
+      <Header>Activity</Header>
     </div>
   );
 };
 
-export default Home;
+export default Account;
