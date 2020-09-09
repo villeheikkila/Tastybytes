@@ -6,8 +6,6 @@ import styled from "styled-components";
 const Landing = () => {
   const [logIn, { data }] = useLazyQuery<any>(LOGIN);
 
-  console.log("data: ", data);
-
   const { register, handleSubmit, errors } = useForm<{
     email: string;
     password: string;
