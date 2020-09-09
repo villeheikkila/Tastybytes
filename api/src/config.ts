@@ -1,5 +1,8 @@
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import Account from './models/Account';
+import Treat from './models/Treat';
+import Review from './models/Review';
+import Company from './models/Company';
 
 export const typeOrmConfig: PostgresConnectionOptions = {
   type: 'postgres',
@@ -10,7 +13,7 @@ export const typeOrmConfig: PostgresConnectionOptions = {
   database: process.env.POSTGRES_DB,
   synchronize: true,
   logging: false,
-  entities: [Account]
+  entities: [Account, Treat, Review, Company]
 };
 
 export const JWT_PUBLIC_KEY = process.env.JWT_PUBLIC_KEY as string;

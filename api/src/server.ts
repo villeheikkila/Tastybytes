@@ -14,12 +14,20 @@ import jwt from 'koa-jwt';
 import jsonwebtoken from 'jsonwebtoken';
 import Cookie from 'cookie';
 import cors from '@koa/cors';
+import { CompanyResolver } from './resolvers/CompanyResolver';
+import { TreatResolver } from './resolvers/TreatResolver';
+import { ReviewResolver } from './resolvers/ReviewResolver';
 
 (async () => {
   try {
     await createConnection(typeOrmConfig);
     const schema = await buildSchema({
-      resolvers: [AccountResolver],
+      resolvers: [
+        AccountResolver,
+        CompanyResolver,
+        TreatResolver,
+        ReviewResolver
+      ],
       validate: true,
       authChecker: ({ context }: any) => {
         if ('state' in context) {
