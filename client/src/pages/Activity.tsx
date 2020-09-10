@@ -1,10 +1,13 @@
 import React from "react";
 import Header from "../components/Header";
+import CreateTreat from "../components/CreateTreat";
 
 const Account = () => {
   return (
     <div>
-      <Header>Activity</Header>
+      <Header>
+        <CreateTreat />
+      </Header>
     </div>
   );
 };
