@@ -5,9 +5,7 @@ import CreateTreat from "../components/CreateTreat";
 const Account = () => {
   return (
     <div>
-      <Header>
-        <CreateTreat />
-      </Header>
+      <CreateTreat />
     </div>
   );
 };

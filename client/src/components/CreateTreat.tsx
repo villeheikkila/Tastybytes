@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Input from "./Input";
 import { useForm } from "react-hook-form";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import Combobox, { Item } from "./Combobox";
+import { gql, useMutation } from "@apollo/client";
+import Portal from "./Portal";
+import Sheet from "./Sheet";
+import Search, { Item } from "./Search";
 
 const CreateTreat: React.FC = () => {
   const { register, handleSubmit } = useForm<{
@@ -11,53 +13,81 @@ const CreateTreat: React.FC = () => {
     producer: string;
   }>();
   const [createTreat] = useMutation(CREATE_TREAT);
-  const { data } = useQuery(QUERY_COMPANIES);
   const [selected, setSelected] = useState<Item | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
-  const companies =
-    data?.companies.map(({ id, name }: any) => ({
-      value: id,
-      label: name,
-    })) || [];
+  useEffect(() => setShowModal(false), [selected]);
 
-  const onSubmit = async ({
-    name,
-    producer,
-  }: {
-    name: string;
-    producer: string;
-  }) => {
+  const onSubmit = async ({ name }: { name: string }) => {
     if (!selected?.value) return;
 
     try {
-      const response = await createTreat({
+      await createTreat({
         variables: { name, producedBy: parseInt(selected.value) },
       });
-      console.log("response: ", response);
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <Container>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          placeholder="Name"
-          name="name"
-          ref={register({ required: true })}
-        />
-        <Combobox items={companies} setSelected={setSelected} />
+    <>
+      <Container>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <HeaderInput
+            placeholder="Insert the name"
+            name="name"
+            ref={register({ required: true })}
+          />
 
-        <Input type="submit" />
-      </Form>
-    </Container>
+          <Button onClick={() => setShowModal(true)}>
+            {selected === null ? "Select the producer" : selected.label}
+          </Button>
+
+          <Input type="submit" value="Submit" />
+        </Form>
+      </Container>
+      {showModal && (
+        <Portal onClose={() => setShowModal(false)}>
+          <Sheet onClose={() => setShowModal(false)}>
+            <Search setSelected={setSelected} />
+          </Sheet>
+        </Portal>
+      )}
+    </>
   );
 };
 
+const Button = styled.button`
+  border: none;
+  outline: none;
+  width: 100%;
+  text-align: center;
+  background-color: inherit;
+  color: rgba(255, 255, 255, 0.847);
+  border-top: solid 1px rgba(255, 255, 255, 0.247);
+  border-bottom: solid 1px rgba(255, 255, 255, 0.247);
+  padding: 8px;
+
+  :hover {
+    opacity: 0.8;
+  }
+`;
+
+const HeaderInput = styled.input`
+  background-color: inherit;
+  color: rgba(255, 255, 255, 0.847);
+  font-size: 38px;
+  padding: 10px;
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 80px;
+`;
+
 const Form = styled.form`
   display: grid;
-  grid-gap: 10px;
+  grid-gap: 20px;
 `;
 
 const CREATE_TREAT = gql`
@@ -81,12 +111,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
-  width: 800px;
+  max-width: 600px;
+  font-size: 28px;
   border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.4);
 
   @media (max-width: 800px) {
-    width: calc(100vw - 28px);
+    width: calc(100vw);
   }
 `;
 
