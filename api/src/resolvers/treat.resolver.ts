@@ -10,7 +10,9 @@ export class TreatResolver {
   @Authorized()
   @Query(() => [Treat])
   treats(): Promise<Treat[]> {
-    return Treat.find({ relations: ['producedBy', 'createdBy', 'reviews'] });
+    return Treat.find({
+      relations: ['producedBy', 'createdBy', 'reviews', 'category']
+    });
   }
 
   @Authorized()

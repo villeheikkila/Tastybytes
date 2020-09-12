@@ -3,11 +3,15 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany
+  OneToMany,
+  ManyToOne,
+  UpdateDateColumn,
+  CreateDateColumn
 } from 'typeorm';
 import { ObjectType, Field, ID } from 'type-graphql';
 import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
+import Account from './account.entity';
 
 @Entity()
 @ObjectType()
@@ -17,10 +21,26 @@ export default class Company extends BaseEntity {
   id: string;
 
   @Field(() => String)
-  @Column()
+  @Column({ unique: true })
   name: string;
+
+  @Field(() => Boolean)
+  @Column({ default: true })
+  isPublished: boolean;
 
   @OneToMany(() => Treat, (treat) => treat.producedBy, { lazy: true })
   @Field(() => [Treat])
   products: Lazy<Treat[]>;
+
+  @ManyToOne(() => Account, { lazy: true, nullable: true })
+  @Field(() => Account)
+  createdBy?: Lazy<Account>;
+
+  @Field()
+  @CreateDateColumn()
+  createdDate: Date;
+
+  @Field()
+  @UpdateDateColumn()
+  updatedDate: Date;
 }

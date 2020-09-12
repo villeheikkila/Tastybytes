@@ -3,7 +3,9 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 import { ObjectType, Field, ID } from 'type-graphql';
 import Treat from './treat.entity';
@@ -25,6 +27,9 @@ export default class Review extends BaseEntity {
   @Column({ nullable: true })
   review: string;
 
+  @Column({ default: true })
+  isPublished: boolean;
+
   @ManyToOne(() => Treat, (treat) => treat.reviews, { lazy: true })
   @Field(() => Treat)
   treat: Lazy<Treat>;
@@ -32,4 +37,12 @@ export default class Review extends BaseEntity {
   @ManyToOne(() => Account, (account) => account.reviews, { lazy: true })
   @Field(() => Account)
   author: Lazy<Account>;
+
+  @Field()
+  @CreateDateColumn()
+  createdDate: Date;
+
+  @Field()
+  @UpdateDateColumn()
+  updatedDate: Date;
 }

@@ -13,16 +13,23 @@ type Account {
   createdTreats: [Treat!]!
 }
 
-type Company {
+type Category {
   id: ID!
   name: String!
   products: [Treat!]!
 }
 
+type Company {
+  id: ID!
+  name: String!
+  products: [Treat!]!
+  createdBy: Account!
+}
+
 type Mutation {
   createAccount(password: String!, email: String!, lastName: String!, firstName: String!): Account!
-  updateAccount(email: String!, lastName: String!, firstName: String!, id: String!): Account!
-  deleteAccount(id: String!): Boolean!
+  updateAccount(email: String!, lastName: String!, firstName: String!): Account!
+  deleteAccount: Boolean!
   createCompany(name: String!): Company!
   deleteCompany(id: String!): Boolean!
   createReview(treatId: Float!, score: Float!, review: String!): Review!
@@ -39,6 +46,7 @@ type Query {
   company(id: Float!): Company!
   reviews: [Review!]!
   treats: [Treat!]!
+  treat(id: Float!): Treat!
   searchTreats(searchTerm: String!): [Treat!]!
 }
 
@@ -56,4 +64,5 @@ type Treat {
   reviews: [Review!]!
   createdBy: Account!
   producedBy: Company!
+  category: Category!
 }

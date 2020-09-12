@@ -8,44 +8,33 @@ import {
   CreateDateColumn
 } from 'typeorm';
 import { ObjectType, Field, ID } from 'type-graphql';
-import Review from './review.entity';
 import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
 
 @Entity()
 @ObjectType()
-export default class Account extends BaseEntity {
+export default class Category extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: string;
 
   @Field(() => String)
-  @Column()
-  firstName: string;
-
-  @Field(() => String)
-  @Column()
-  lastName: string;
-
-  @Field(() => String)
   @Column({ unique: true })
-  email: string;
+  name: string;
 
-  @Field(() => String)
-  @Column()
-  passwordHash: string;
+  @Field(() => Boolean)
+  @Column({ default: true })
+  isPublished: boolean;
 
-  @OneToMany(() => Review, (review) => review.author, { lazy: true })
-  @Field(() => [Review])
-  reviews: Lazy<Review[]>;
-
-  @OneToMany(() => Treat, (treat) => treat.createdBy, { lazy: true })
+  @OneToMany(() => Treat, (treat) => treat.producedBy, { lazy: true })
   @Field(() => [Treat])
-  createdTreats: Lazy<Treat[]>;
+  products: Lazy<Treat[]>;
 
+  @Field()
   @CreateDateColumn()
   createdDate: Date;
 
+  @Field()
   @UpdateDateColumn()
   updatedDate: Date;
 }
