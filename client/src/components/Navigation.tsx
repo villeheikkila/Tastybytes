@@ -8,7 +8,7 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 
 const Navigation = () => {
   const location = useLocation();
-  const currentLocation = location.pathname;
+  const currentLocation = location.pathname.split("/")[1];
 
   return (
     <Container>
@@ -16,7 +16,7 @@ const Navigation = () => {
         <NavTab currentLocation={currentLocation} path="/" icon={HomeIcon} />
         <NavTab
           currentLocation={currentLocation}
-          path="/activity"
+          path="/treats"
           icon={ActivityIcon}
         />
         <NavTab
@@ -34,7 +34,7 @@ const NavTab: React.FC<{
   path: string;
   icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 }> = ({ currentLocation, path, icon }) => {
-  const isActive = currentLocation === path;
+  const isActive = currentLocation === path.slice(1);
   const Icon = icon;
 
   return (
@@ -54,7 +54,7 @@ const Container = styled.div`
   display: flex;
   padding: 5px;
   width: 100%;
-  height: 50px;
+  height: 60px;
   background-color: rgba(0, 0, 0, 0.4);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
 `;

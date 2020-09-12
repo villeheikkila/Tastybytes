@@ -1,11 +1,12 @@
 import { Resolver, Query, Mutation, Arg, Authorized, Ctx } from 'type-graphql';
-import Treat from '../models/treat.entity';
-import Account from '../models/account.entity';
-import Review from '../models/review.entity';
+import Treat from '../entities/treat.entity';
+import Account from '../entities/account.entity';
+import Review from '../entities/review.entity';
 import { Context } from 'koa';
 
 @Resolver()
 export class ReviewResolver {
+  @Authorized()
   @Query(() => [Review])
   reviews(): Promise<Review[]> {
     return Review.find({ relations: ['treat', 'author'] });

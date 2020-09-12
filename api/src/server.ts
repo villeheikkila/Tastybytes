@@ -19,7 +19,7 @@ import path from 'path';
   try {
     await createConnection(typeOrmConfig);
     const schema = await buildSchema({
-      resolvers: ['/service/src/**/*.resolver.{ts,js}'],
+      resolvers: [__dirname + '/resolvers/*.resolver.{ts,js}'],
       emitSchemaFile: path.join(__dirname, '..', 'shared', 'schema.gql'),
       validate: true,
       authChecker: ({ context }) => {

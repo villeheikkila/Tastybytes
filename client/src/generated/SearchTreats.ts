@@ -7,33 +7,37 @@
 // GraphQL query operation: SearchTreats
 // ====================================================
 
-export interface SearchTreats_treats_producedBy {
+export interface SearchTreats_searchTreats_producedBy {
   __typename: "Company";
   name: string;
   id: string;
 }
 
-export interface SearchTreats_treats_reviews_author {
+export interface SearchTreats_searchTreats_reviews_author {
   __typename: "Account";
   firstName: string;
   lastName: string;
 }
 
-export interface SearchTreats_treats_reviews {
+export interface SearchTreats_searchTreats_reviews {
   __typename: "Review";
   score: number;
   review: string;
-  author: SearchTreats_treats_reviews_author;
+  author: SearchTreats_searchTreats_reviews_author;
 }
 
-export interface SearchTreats_treats {
+export interface SearchTreats_searchTreats {
   __typename: "Treat";
   id: string;
   name: string;
-  producedBy: SearchTreats_treats_producedBy;
-  reviews: SearchTreats_treats_reviews[];
+  producedBy: SearchTreats_searchTreats_producedBy;
+  reviews: SearchTreats_searchTreats_reviews[];
 }
 
 export interface SearchTreats {
-  treats: SearchTreats_treats[];
+  searchTreats: SearchTreats_searchTreats[];
+}
+
+export interface SearchTreatsVariables {
+  searchTerm: string;
 }

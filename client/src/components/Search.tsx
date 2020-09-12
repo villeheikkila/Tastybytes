@@ -43,8 +43,13 @@ const Search: React.FC<{ setSelected: (value: Item) => void }> = ({
 
       {show && <CreateCompany />}
 
-      {filteredCompanies.map((item: Item) => (
-        <Selection onClick={() => setSelected(item)}>{item.label}</Selection>
+      {filteredCompanies.map((item: Item, i) => (
+        <Selection
+          key={`search-companies-${i}`}
+          onClick={() => setSelected(item)}
+        >
+          {item.label}
+        </Selection>
       ))}
     </Container>
   );

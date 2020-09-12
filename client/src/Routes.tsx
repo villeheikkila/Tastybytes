@@ -5,10 +5,11 @@ import styled from "styled-components";
 import Navigation from "./components/Navigation";
 
 const Home = lazy(() => import("./pages/Home"));
-const Activity = lazy(() => import("./pages/Activity"));
+const Treats = lazy(() => import("./pages/Treats"));
 const Account = lazy(() => import("./pages/Account"));
 const Landing = lazy(() => import("./pages/Landing"));
 const SignUp = lazy(() => import("./pages/SignUp"));
+const AddTreat = lazy(() => import("./pages/AddTreat"));
 
 const Router = () => {
   const { data, loading } = useQuery(CURRENT_ACCOUNT);
@@ -34,11 +35,14 @@ const Router = () => {
               <Route path="/" exact>
                 <Home />
               </Route>
-              <Route path="/activity" exact>
-                <Activity />
+              <Route path="/treats" exact>
+                <Treats />
               </Route>
               <Route path="/account" exact>
                 <Account />
+              </Route>
+              <Route path="/treats/add" exact>
+                <AddTreat />
               </Route>
             </Page>
 
@@ -53,7 +57,7 @@ const Router = () => {
 const Page = styled.div`
   display: flex;
   justify-content: center;
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - 60px);
   max-width: 800px;
   margin: 0 auto;
   padding-bottom: env(safe-area-inset-bottom);

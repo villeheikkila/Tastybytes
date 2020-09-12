@@ -9,7 +9,7 @@ export const typeOrmConfig: PostgresConnectionOptions = {
   database: process.env.POSTGRES_DB,
   synchronize: true,
   logging: false,
-  entities: ['/service/src/models/*.entity.{ts,js}']
+  entities: [__dirname + '/entities/*.entity.{ts,js}']
 };
 
 export const JWT_PUBLIC_KEY = process.env.JWT_PUBLIC_KEY as string;
