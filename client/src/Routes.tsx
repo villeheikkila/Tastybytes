@@ -4,6 +4,7 @@ import { useQuery, gql } from "@apollo/client";
 import styled from "styled-components";
 import Navigation from "./components/Navigation";
 import { IsLoggedIn } from "./generated/IsLoggedIn";
+import Spinner from "./components/Spinner";
 
 const Home = lazy(() => import("./pages/Home"));
 const Treats = lazy(() => import("./pages/Treats"));
@@ -19,21 +20,21 @@ const Router = () => {
   if (loading) return null;
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Switch>
-        {!data?.currentAccount ? (
-          <>
-            <Route path="/signup" exact>
-              <SignUp />
-            </Route>
+    <Switch>
+      {!data?.currentAccount ? (
+        <>
+          <Route path="/signup" exact>
+            <SignUp />
+          </Route>
 
-            <Route path="/" exact>
-              <Landing />
-            </Route>
-          </>
-        ) : (
-          <>
-            <Page>
+          <Route path="/" exact>
+            <Landing />
+          </Route>
+        </>
+      ) : (
+        <>
+          <Page>
+            <Suspense fallback={<Spinner />}>
               <Route path="/" exact>
                 <Home />
               </Route>
@@ -50,13 +51,13 @@ const Router = () => {
               <Route path="/treats/add-review/:id" exact>
                 <AddReview />
               </Route>
-            </Page>
+            </Suspense>
+          </Page>
 
-            <Navigation />
-          </>
-        )}
-      </Switch>
-    </Suspense>
+          <Navigation />
+        </>
+      )}
+    </Switch>
   );
 };
 

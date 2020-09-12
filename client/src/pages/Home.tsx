@@ -4,11 +4,12 @@ import { gql, useQuery } from "@apollo/client";
 import Card from "../components/Card";
 import styled from "styled-components";
 import { Reviews } from "../generated/Reviews";
+import Spinner from "../components/Spinner";
 
 const Home = () => {
   const { data, loading } = useQuery<Reviews>(GET_REVIEWS);
 
-  if (loading || !data) return null;
+  if (loading || !data) return <Spinner />;
 
   return (
     <div>
