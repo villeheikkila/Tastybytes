@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import { CreateCompany } from "../generated/CreateCompany";
 
-const CreateCompany: React.FC = () => {
+const CreateCompanyForm: React.FC = () => {
   const { register, handleSubmit } = useForm<{
     name: string;
   }>();
@@ -76,4 +76,4 @@ const CREATE_COMPANY = gql`
   }
 `;
 
-export default CreateCompany;
+export default CreateCompanyForm;

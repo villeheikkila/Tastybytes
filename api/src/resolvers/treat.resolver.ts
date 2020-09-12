@@ -3,6 +3,7 @@ import Treat from '../models/treat.entity';
 import Company from '../models/company.entity';
 import Account from '../models/account.entity';
 import { GraphQLError } from 'graphql';
+import { Context } from 'koa';
 
 @Resolver()
 export class TreatResolver {

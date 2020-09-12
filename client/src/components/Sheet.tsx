@@ -24,7 +24,7 @@ const Sheet: React.FC<{ onClose: () => void }> = ({ children, onClose }) => {
 
       drag.set(0);
     },
-    [spring, drag]
+    [spring, drag, onClose]
   );
 
   return (
