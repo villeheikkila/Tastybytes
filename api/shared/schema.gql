@@ -16,23 +16,39 @@ type Account {
 type Category {
   id: ID!
   name: String!
+  isPublished: Boolean!
   products: [Treat!]!
+  subcategories: [Subcategory!]!
+  createdDate: DateTime!
+  updatedDate: DateTime!
 }
 
 type Company {
   id: ID!
   name: String!
+  isPublished: Boolean!
   products: [Treat!]!
   createdBy: Account!
+  createdDate: DateTime!
+  updatedDate: DateTime!
 }
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
 
 type Mutation {
   createAccount(password: String!, email: String!, lastName: String!, firstName: String!): Account!
   updateAccount(email: String!, lastName: String!, firstName: String!): Account!
   deleteAccount: Boolean!
+  createCategory(name: String!): Category!
+  deleteCategory(id: String!): Boolean!
   createCompany(name: String!): Company!
   deleteCompany(id: String!): Boolean!
   createReview(treatId: Float!, score: Float!, review: String!): Review!
+  createSubcategory(name: String!): Subcategory!
+  deleteSubategory(id: String!): Boolean!
   createTreat(producedBy: Float!, name: String!): Treat!
 }
 
@@ -42,9 +58,13 @@ type Query {
   logIn(password: String!, email: String!): Boolean!
   logOut: Boolean!
   currentAccount: Account!
+  categories: [Category!]!
+  category(id: Float!): Category!
   companies: [Company!]!
   company(id: Float!): Company!
   reviews: [Review!]!
+  subcategories: [Subcategory!]!
+  subcategory(id: Float!): Category!
   treats: [Treat!]!
   treat(id: Float!): Treat!
   searchTreats(searchTerm: String!): [Treat!]!
@@ -56,6 +76,18 @@ type Review {
   review: String!
   treat: Treat!
   author: Account!
+  createdDate: DateTime!
+  updatedDate: DateTime!
+}
+
+type Subcategory {
+  id: ID!
+  name: String!
+  isPublished: Boolean!
+  products: [Treat!]!
+  category: Category!
+  createdDate: DateTime!
+  updatedDate: DateTime!
 }
 
 type Treat {
@@ -65,4 +97,6 @@ type Treat {
   createdBy: Account!
   producedBy: Company!
   category: Category!
+  createdDate: DateTime!
+  updatedDate: DateTime!
 }

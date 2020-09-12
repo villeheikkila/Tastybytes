@@ -11,11 +11,11 @@ import {
 import { ObjectType, Field, ID } from 'type-graphql';
 import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
-import Subcategory from './subcategory.entity';
+import Category from './category.entity';
 
 @Entity()
 @ObjectType()
-export default class Category extends BaseEntity {
+export default class Subcategory extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: string;
@@ -28,15 +28,16 @@ export default class Category extends BaseEntity {
   @Column({ default: true })
   isPublished: boolean;
 
-  @OneToMany(() => Treat, (treat) => treat.producedBy, { lazy: true })
+  @OneToMany(() => Treat, (treat) => treat.producedBy, {
+    lazy: true,
+    nullable: true
+  })
   @Field(() => [Treat])
   products: Lazy<Treat[]>;
 
-  @OneToMany(() => Subcategory, (subcategory) => subcategory.category, {
-    lazy: true
-  })
-  @Field(() => [Subcategory])
-  subcategories: Lazy<Subcategory[]>;
+  @ManyToOne(() => Category, { lazy: true, nullable: true })
+  @Field(() => Category)
+  category?: Lazy<Category>;
 
   @Field()
   @CreateDateColumn()

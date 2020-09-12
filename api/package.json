@@ -6,7 +6,10 @@
   "scripts": {
     "start": "nodemon -w src --ext ts --exec ts-node index.ts",
     "lint": "eslint . --ext .ts",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate": "graphql-codegen --config codegen.yml",
+    "seed:generate": "ts-node node_modules/.bin/typeorm migration:generate -c seed -n ",
+    "seed:run": "ts-node node_modules/.bin/typeorm migration:run -c seed",
+    "seed:revert": "cd src && ts-node node_modules/.bin/typeorm migration:revert -c seed"
   },
   "author": "Ville Heikkilä",
   "license": "MIT",
