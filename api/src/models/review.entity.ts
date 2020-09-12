@@ -6,8 +6,8 @@ import {
   ManyToOne
 } from 'typeorm';
 import { ObjectType, Field, ID } from 'type-graphql';
-import Treat from './Treat';
-import Account from './Account';
+import Treat from './treat.entity';
+import Account from './account.entity';
 import { Lazy } from '../utils/helpers';
 
 @Entity()

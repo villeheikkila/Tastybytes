@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "start": "nodemon -w src --ext ts --exec ts-node index.ts",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "author": "Ville Heikkilä",
   "license": "MIT",
@@ -33,6 +34,10 @@
     "typeorm": "^0.2.22"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.17.8",
+    "@graphql-codegen/introspection": "^1.17.8",
+    "@graphql-codegen/typescript": "^1.17.9",
+    "@graphql-codegen/typescript-resolvers": "^1.17.9",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
     "@typescript-eslint/parser": "^4.1.0",
     "eslint": "^7.8.1",

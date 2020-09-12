@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Arg } from 'type-graphql';
-import Company from '../models/Company';
+import Company from '../models/company.entity';
 
 @Resolver()
 export class CompanyResolver {

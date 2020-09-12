@@ -2,27 +2,28 @@ import React from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { LogIn } from "../generated/LogIn";
 
 const Landing = () => {
-  const [logIn] = useLazyQuery<any>(LOGIN);
+  const [logIn] = useLazyQuery<LogIn>(LOGIN);
 
   const { register, handleSubmit, errors } = useForm<{
     email: string;
     password: string;
   }>();
 
-  const onSubmit = async ({ email, password }: any) => {
+  const onSubmit = handleSubmit(async ({ email, password }) => {
     await logIn({
       variables: {
         email,
         password,
       },
     });
-  };
+  });
 
   return (
-    <LogIn>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+    <LogInPage>
+      <Form onSubmit={onSubmit}>
         <Label htmlFor="email">Email</Label>
 
         <InputContainer>
@@ -49,11 +50,11 @@ const Landing = () => {
 
         <Submit type="submit" />
       </Form>
-    </LogIn>
+    </LogInPage>
   );
 };
 
-const LogIn = styled.div`
+const LogInPage = styled.div`
   position: absolute;
   left: 50%;
   top: 50%;

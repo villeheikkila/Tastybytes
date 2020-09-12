@@ -1,19 +1,20 @@
 import { Resolver, Query, Mutation, Arg, Ctx, Authorized } from 'type-graphql';
-import Account from '../models/Account';
+import Account from '../models/account.entity';
 import jwt from 'jsonwebtoken';
 import { JWT_PUBLIC_KEY, JWT_PRIVATE_KEY } from '../config';
 import bcrypt from 'bcryptjs';
+import { Context } from 'koa';
 
 @Resolver()
 export class AccountResolver {
   @Query(() => [Account])
-  accounts() {
+  accounts(): Promise<Account[]> {
     return Account.find();
   }
 
   @Query(() => Account)
-  account(@Arg('id') id: string) {
-    return Account.findOne({ where: { id } });
+  async account(@Arg('id') id: string): Promise<Account | boolean> {
+    return (await Account.findOne({ where: { id } })) || false;
   }
 
   @Mutation(() => Account)
@@ -22,7 +23,7 @@ export class AccountResolver {
     @Arg('lastName') lastName: string,
     @Arg('email') email: string,
     @Arg('password') password: string
-  ) {
+  ): Promise<Account> {
     const passwordHash = await bcrypt.hash(password, 10);
 
     const account = Account.create({
@@ -42,7 +43,7 @@ export class AccountResolver {
     @Arg('firstName') firstName: string,
     @Arg('lastName') lastName: string,
     @Arg('email') email: string
-  ) {
+  ): Promise<Account> {
     const account = await Account.findOne({ where: { id } });
     if (!account) throw new Error('Account not found!');
     Object.assign(account, { firstName, lastName, email });
@@ -52,7 +53,7 @@ export class AccountResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteAccount(@Arg('id') id: string) {
+  async deleteAccount(@Arg('id') id: string): Promise<boolean> {
     const account = await Account.findOne({ where: { id } });
     if (!account) throw new Error('Account not found!');
 
@@ -62,7 +63,7 @@ export class AccountResolver {
 
   @Query(() => Boolean)
   async logIn(
-    @Ctx() ctx: any,
+    @Ctx() ctx: Context,
     @Arg('email') email: string,
     @Arg('password') password: string
   ): Promise<boolean> {
@@ -87,14 +88,16 @@ export class AccountResolver {
   }
 
   @Query(() => Boolean)
-  async logOut(@Ctx() ctx: any): Promise<boolean> {
+  async logOut(@Ctx() ctx: Context): Promise<boolean> {
     ctx.cookies.set(JWT_PUBLIC_KEY);
     return true;
   }
 
   @Authorized()
   @Query(() => Account)
-  async currentAccount(@Ctx() ctx: any): Promise<any | null> {
-    return Account.findOne({ where: { id: ctx.state.user.id } });
+  async currentAccount(@Ctx() ctx: Context): Promise<Account | boolean> {
+    return (
+      (await Account.findOne({ where: { id: ctx.state.user.id } })) || false
+    );
   }
 }

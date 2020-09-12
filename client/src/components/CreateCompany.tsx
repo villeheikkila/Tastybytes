@@ -2,17 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
+import { CreateCompany } from "../generated/CreateCompany";
 
 const CreateCompany: React.FC = () => {
   const { register, handleSubmit } = useForm<{
     name: string;
-    producer: string;
   }>();
-  const [createCompany] = useMutation(CREATE_COMPANY, {
+  const [createCompany] = useMutation<CreateCompany>(CREATE_COMPANY, {
     refetchQueries: ["Companies"],
   });
 
-  const onSubmit = async ({ name }: { name: string }) => {
+  const onSubmit = handleSubmit(async ({ name }) => {
     try {
       await createCompany({
         variables: { name },
@@ -20,10 +20,10 @@ const CreateCompany: React.FC = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  });
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={onSubmit}>
       <Input
         placeholder="Add new company"
         name="name"

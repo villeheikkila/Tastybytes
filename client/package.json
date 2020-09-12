@@ -13,11 +13,9 @@
     "@types/react": "^16.9.48",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
-    "@types/react-select": "^3.0.19",
     "@types/styled-components": "^5.1.2",
     "apollo-link-ws": "^1.0.20",
     "axios": "^0.20.0",
-    "downshift": "^6.0.6",
     "framer-motion": "^2.6.9",
     "graphql": "^15.3.0",
     "react": "^16.13.1",
@@ -25,7 +23,6 @@
     "react-hook-form": "^6.7.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "react-select": "^3.1.0",
     "styled-components": "^5.1.1",
     "subscriptions-transport-ws": "^0.9.18",
     "typescript": "^3.7.5"
@@ -34,7 +31,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate": "apollo client:codegen --includes=\"./src/**/*.{ts,tsx}\" --localSchemaFile=./shared/schema.gql --passthroughCustomScalars --customScalarsPrefix=GraphQL_ --target typescript --tagName=gql --outputFlat src/generated"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "apollo": "^2.30.3"
   }
 }

@@ -32,7 +32,7 @@ const Navigation = () => {
 const NavTab: React.FC<{
   currentLocation: string;
   path: string;
-  icon: any;
+  icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 }> = ({ currentLocation, path, icon }) => {
   const isActive = currentLocation === path;
   const Icon = icon;
@@ -40,7 +40,6 @@ const NavTab: React.FC<{
   return (
     <NavLink to={path}>
       <Icon
-        size={26}
         style={{ zIndex: 10 }}
         fill={
           isActive ? "rgba(255, 255, 255, 1.0)" : "rgba(255, 255, 255, 0.549)"

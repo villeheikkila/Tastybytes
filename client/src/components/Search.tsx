@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
 import { gql, useQuery } from "@apollo/client";
 import { ReactComponent as DropdownIcon } from "../assets/plus.svg";
 import CreateCompany from "./CreateCompany";
+import { Companies } from "../generated/Companies";
 
 export interface Item {
   value: string;
@@ -13,17 +13,17 @@ export interface Item {
 const Search: React.FC<{ setSelected: (value: Item) => void }> = ({
   setSelected,
 }) => {
-  const { data } = useQuery(QUERY_COMPANIES);
-  const [value, setValue] = useState<string>("");
+  const { data } = useQuery<Companies>(QUERY_COMPANIES);
+  const [value, setValue] = useState("");
   const [show, setShow] = useState(false);
 
   const companies =
-    data?.companies.map(({ id, name }: any) => ({
+    data?.companies.map(({ id, name }) => ({
       value: id,
       label: name,
     })) || [];
 
-  const filteredCompanies = companies.filter(({ label }: any) =>
+  const filteredCompanies = companies.filter(({ label }) =>
     new RegExp(value, "ig").test(label)
   );
 

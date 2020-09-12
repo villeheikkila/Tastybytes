@@ -6,7 +6,7 @@ import {
   OneToMany
 } from 'typeorm';
 import { ObjectType, Field, ID } from 'type-graphql';
-import Treat from './Treat';
+import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
 
 @Entity()

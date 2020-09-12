@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import ReactDOM from "react-dom";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
 const Portal: React.FC<{ onClose: () => void }> = ({ onClose, children }) => {
   const portalNode = useContext(PortalNodeContext);

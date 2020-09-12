@@ -3,9 +3,10 @@ import { useQuery, gql, useLazyQuery } from "@apollo/client";
 import Card from "../components/Card";
 import styled from "styled-components";
 import Header from "../components/Header";
+import { CurrentAccount } from "../generated/CurrentAccount";
 
 const Account = () => {
-  const { data, loading } = useQuery(CURRENT_ACCOUNT);
+  const { data, loading } = useQuery<CurrentAccount>(CURRENT_ACCOUNT);
 
   const [logOut] = useLazyQuery(LOG_OUT, {
     onCompleted: async () => {
@@ -13,7 +14,7 @@ const Account = () => {
     },
   });
 
-  if (loading) return null;
+  if (loading || !data) return null;
 
   const { firstName, lastName, email } = data.currentAccount;
   return (

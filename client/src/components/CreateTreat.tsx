@@ -6,19 +6,19 @@ import { gql, useMutation } from "@apollo/client";
 import Portal from "./Portal";
 import Sheet from "./Sheet";
 import Search, { Item } from "./Search";
+import { CreateTreat } from "../generated/CreateTreat";
 
-const CreateTreat: React.FC = () => {
-  const { register, handleSubmit } = useForm<{
-    name: string;
-    producer: string;
-  }>();
-  const [createTreat] = useMutation(CREATE_TREAT);
+const CreateTreatForm: React.FC = () => {
+  const [createTreat] = useMutation<CreateTreat>(CREATE_TREAT);
   const [selected, setSelected] = useState<Item | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const { register, handleSubmit } = useForm<{
+    name: string;
+  }>();
 
   useEffect(() => setShowModal(false), [selected]);
 
-  const onSubmit = async ({ name }: { name: string }) => {
+  const onSubmit = handleSubmit(async ({ name }) => {
     if (!selected?.value) return;
 
     try {
@@ -28,12 +28,12 @@ const CreateTreat: React.FC = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  });
 
   return (
     <>
       <Container>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={onSubmit}>
           <HeaderInput
             placeholder="Insert the name"
             name="name"
@@ -98,15 +98,6 @@ const CREATE_TREAT = gql`
   }
 `;
 
-const QUERY_COMPANIES = gql`
-  query companies {
-    companies {
-      id
-      name
-    }
-  }
-`;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -120,4 +111,4 @@ const Container = styled.div`
   }
 `;
 
-export default CreateTreat;
+export default CreateTreatForm;

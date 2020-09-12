@@ -6,19 +6,25 @@ import Card from "../components/Card";
 
 const SignUp = () => {
   const [signUpMutation] = useMutation(CREATE_ACCOUNT);
-  const { register, handleSubmit } = useForm();
-  const onSubmit = async (data: any) => {
+  const { register, handleSubmit } = useForm<{
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+  }>();
+
+  const onSubmit = handleSubmit(async (signUpInput) => {
     await signUpMutation({
       variables: {
-        ...data,
+        ...signUpInput,
       },
     });
-  };
+  });
 
   return (
     <Container>
       <Card>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={onSubmit}>
           <Label>
             First Name:
             <Input name="firstName" ref={register({ required: true })} />

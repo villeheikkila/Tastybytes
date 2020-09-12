@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Arg, Authorized, Ctx } from 'type-graphql';
-import Treat from '../models/Treat';
-import Company from '../models/Company';
-import Account from '../models/Account';
+import Treat from '../models/treat.entity';
+import Company from '../models/company.entity';
+import Account from '../models/account.entity';
 import { GraphQLError } from 'graphql';
 
 @Resolver()
@@ -14,7 +14,7 @@ export class TreatResolver {
   @Authorized()
   @Mutation(() => Treat)
   async createTreat(
-    @Ctx() ctx: any,
+    @Ctx() ctx: Context,
     @Arg('name') name: string,
     @Arg('producedBy') producedById: number
   ): Promise<Treat> {

@@ -60,7 +60,7 @@ const Page = styled.div`
 `;
 
 const CURRENT_ACCOUNT = gql`
-  query CurrentAccount {
+  query IsLoggedIn {
     currentAccount {
       id
     }

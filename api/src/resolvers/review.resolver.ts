@@ -1,7 +1,8 @@
 import { Resolver, Query, Mutation, Arg, Authorized, Ctx } from 'type-graphql';
-import Treat from '../models/Treat';
-import Account from '../models/Account';
-import Review from '../models/Review';
+import Treat from '../models/treat.entity';
+import Account from '../models/account.entity';
+import Review from '../models/review.entity';
+import { Context } from 'koa';
 
 @Resolver()
 export class ReviewResolver {
@@ -13,7 +14,7 @@ export class ReviewResolver {
   @Authorized()
   @Mutation(() => Review)
   async createReview(
-    @Ctx() ctx: any,
+    @Ctx() ctx: Context,
     @Arg('review') review: string,
     @Arg('score') score: number,
     @Arg('treatId') treatId: number
@@ -29,8 +30,6 @@ export class ReviewResolver {
       treat,
       author
     });
-
-    console.log(reviewObject);
 
     await reviewObject.save();
     return reviewObject;

@@ -1,19 +1,15 @@
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
-import Account from './models/Account';
-import Treat from './models/Treat';
-import Review from './models/Review';
-import Company from './models/Company';
 
 export const typeOrmConfig: PostgresConnectionOptions = {
   type: 'postgres',
   host: 'db',
-  port: process.env.POSTGRES_PORT as any,
+  port: parseInt(process.env.POSTGRES_PORT as string),
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
   synchronize: true,
   logging: false,
-  entities: [Account, Treat, Review, Company]
+  entities: ['/service/src/models/*.entity.{ts,js}']
 };
 
 export const JWT_PUBLIC_KEY = process.env.JWT_PUBLIC_KEY as string;

@@ -6,8 +6,8 @@ import {
   OneToMany
 } from 'typeorm';
 import { ObjectType, Field, ID } from 'type-graphql';
-import Review from './Review';
-import Treat from './Treat';
+import Review from './review.entity';
+import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
 
 @Entity()

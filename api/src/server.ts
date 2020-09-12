@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { ApolloServer } from 'apollo-server-koa';
 import { buildSchema } from 'type-graphql';
-import { AccountResolver } from './resolvers/AccountsResolver';
 import {
   typeOrmConfig,
   JWT_PUBLIC_KEY,
@@ -14,22 +13,16 @@ import jwt from 'koa-jwt';
 import jsonwebtoken from 'jsonwebtoken';
 import Cookie from 'cookie';
 import cors from '@koa/cors';
-import { CompanyResolver } from './resolvers/CompanyResolver';
-import { TreatResolver } from './resolvers/TreatResolver';
-import { ReviewResolver } from './resolvers/ReviewResolver';
+import path from 'path';
 
 (async () => {
   try {
     await createConnection(typeOrmConfig);
     const schema = await buildSchema({
-      resolvers: [
-        AccountResolver,
-        CompanyResolver,
-        TreatResolver,
-        ReviewResolver
-      ],
+      resolvers: ['/service/src/**/*.resolver.{ts,js}'],
+      emitSchemaFile: path.join(__dirname, '..', 'shared', 'schema.gql'),
       validate: true,
-      authChecker: ({ context }: any) => {
+      authChecker: ({ context }) => {
         if ('state' in context) {
           return !!context.state.user;
         }
