@@ -39,6 +39,7 @@ type Query {
   company(id: Float!): Company!
   reviews: [Review!]!
   treats: [Treat!]!
+  treat(id: Float!): Treat!
   searchTreats(searchTerm: String!): [Treat!]!
 }
 

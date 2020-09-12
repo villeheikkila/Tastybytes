@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import { useQuery, gql } from "@apollo/client";
 import styled from "styled-components";
 import Navigation from "./components/Navigation";
+import { IsLoggedIn } from "./generated/IsLoggedIn";
 
 const Home = lazy(() => import("./pages/Home"));
 const Treats = lazy(() => import("./pages/Treats"));
@@ -10,9 +11,10 @@ const Account = lazy(() => import("./pages/Account"));
 const Landing = lazy(() => import("./pages/Landing"));
 const SignUp = lazy(() => import("./pages/SignUp"));
 const AddTreat = lazy(() => import("./pages/AddTreat"));
+const AddReview = lazy(() => import("./pages/AddReview"));
 
 const Router = () => {
-  const { data, loading } = useQuery(CURRENT_ACCOUNT);
+  const { data, loading } = useQuery<IsLoggedIn>(CURRENT_ACCOUNT);
 
   if (loading) return null;
 
@@ -43,6 +45,10 @@ const Router = () => {
               </Route>
               <Route path="/treats/add" exact>
                 <AddTreat />
+              </Route>
+
+              <Route path="/treats/add-review/:id" exact>
+                <AddReview />
               </Route>
             </Page>
 

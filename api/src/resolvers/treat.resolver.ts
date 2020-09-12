@@ -14,6 +14,11 @@ export class TreatResolver {
   }
 
   @Authorized()
+  @Query(() => Treat)
+  async treat(@Arg('id') id: number): Promise<Treat | boolean> {
+    return (await Treat.findOne({ where: { id } })) || false;
+  }
+  @Authorized()
   @Query(() => [Treat])
   // TODO: Add more search terms
   async searchTreats(@Arg('searchTerm') searchTerm: string): Promise<Treat[]> {
