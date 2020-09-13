@@ -12,9 +12,7 @@ export class TreatResolver {
   @Authorized()
   @Query(() => [Treat])
   treats(): Promise<Treat[]> {
-    return Treat.find({
-      relations: ['producedBy', 'createdBy', 'reviews', 'category']
-    });
+    return Treat.find();
   }
 
   @Authorized()
@@ -26,9 +24,7 @@ export class TreatResolver {
   @Query(() => [Treat])
   // TODO: Add more search terms
   async searchTreats(@Arg('searchTerm') searchTerm: string): Promise<Treat[]> {
-    const allTreats = await Treat.find({
-      relations: ['producedBy', 'createdBy', 'reviews']
-    });
+    const allTreats = await Treat.find();
 
     // TODO: Do the search in the database layer
     const filteredResults = allTreats.filter(({ name }) =>
@@ -47,13 +43,13 @@ export class TreatResolver {
     @Arg('categoryId') categoryId: number,
     @Arg('subcategoryId') subcategoryId: number
   ): Promise<Treat> {
-    const producedBy = await Company.findOne({ where: { id: companyId } });
+    const company = await Company.findOne({ where: { id: companyId } });
     const category = await Category.findOne({ where: { id: categoryId } });
     const subcategory = await Subcategory.findOne({
       where: { id: subcategoryId }
     });
 
-    if (!producedBy) throw new GraphQLError('Each treat must have a producer');
+    if (!company) throw new GraphQLError('Each treat must have a producer');
     if (!category) throw new GraphQLError('Each treat must have a category');
     if (!subcategory)
       throw new GraphQLError('Each treat must have a subcategory');
@@ -67,7 +63,7 @@ export class TreatResolver {
 
     const treat = await Treat.create({
       name,
-      producedBy,
+      company,
       category,
       subcategory,
       createdBy

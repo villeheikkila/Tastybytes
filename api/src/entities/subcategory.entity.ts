@@ -28,12 +28,12 @@ export default class Subcategory extends BaseEntity {
   @Column({ default: true })
   isPublished: boolean;
 
-  @OneToMany(() => Treat, (treat) => treat.producedBy, {
+  @OneToMany(() => Treat, (treat) => treat.company, {
     lazy: true,
     nullable: true
   })
   @Field(() => [Treat])
-  products: Lazy<Treat[]>;
+  treats: Lazy<Treat[]>;
 
   @ManyToOne(() => Category, { lazy: true, nullable: true })
   @Field(() => Category)

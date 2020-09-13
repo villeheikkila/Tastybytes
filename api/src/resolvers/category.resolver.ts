@@ -1,17 +1,22 @@
-import { Resolver, Query, Mutation, Arg, Authorized } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, Authorized, ID } from 'type-graphql';
 import Category from '../entities/category.entity';
+import { GraphQLLimitedString } from 'graphql-custom-types';
+
+const GraphQLCategoryConstraint = new GraphQLLimitedString(3, 16);
 
 @Resolver()
 export class CategoryResolver {
   @Authorized()
   @Query(() => [Category])
   categories(): Promise<Category[]> {
-    return Category.find({ relations: ['products'] });
+    return Category.find();
   }
 
   @Authorized()
   @Mutation(() => Category)
-  async createCategory(@Arg('name') name: string): Promise<Category> {
+  async createCategory(
+    @Arg('name', () => GraphQLCategoryConstraint) name: string
+  ): Promise<Category> {
     const category = Category.create({
       name
     });
@@ -22,11 +27,11 @@ export class CategoryResolver {
 
   @Authorized()
   @Mutation(() => Boolean)
-  async deleteCategory(@Arg('id') id: string): Promise<boolean> {
+  async deleteCategory(@Arg('id', () => ID) id: number): Promise<boolean> {
     const category = await Category.findOne({
-      where: { id },
-      relations: ['products']
+      where: { id }
     });
+
     if (!category) throw new Error('Category not found!');
 
     await category.remove();
@@ -35,10 +40,9 @@ export class CategoryResolver {
 
   @Authorized()
   @Query(() => Category)
-  async category(@Arg('id') id: number): Promise<Category | boolean> {
+  async category(@Arg('id', () => ID) id: number): Promise<Category | boolean> {
     const category = await Category.findOne({
-      where: { id },
-      relations: ['products']
+      where: { id }
     });
 
     return category || false;

@@ -3,22 +3,21 @@ import Treat from '../entities/treat.entity';
 import Account from '../entities/account.entity';
 import Review from '../entities/review.entity';
 import { Context } from 'koa';
+import { ReviewInput } from '../input/review.input';
 
 @Resolver()
 export class ReviewResolver {
   @Authorized()
   @Query(() => [Review])
   reviews(): Promise<Review[]> {
-    return Review.find({ relations: ['treat', 'author'] });
+    return Review.find();
   }
 
   @Authorized()
   @Mutation(() => Review)
   async createReview(
     @Ctx() ctx: Context,
-    @Arg('review') review: string,
-    @Arg('score') score: number,
-    @Arg('treatId') treatId: number
+    @Arg('account') { treatId, score, review }: ReviewInput
   ): Promise<Review> {
     const treat = await Treat.findOne({ where: { id: treatId } });
     const author = await Account.findOne({

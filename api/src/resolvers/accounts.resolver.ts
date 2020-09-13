@@ -1,9 +1,22 @@
-import { Resolver, Query, Mutation, Arg, Ctx, Authorized } from 'type-graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Arg,
+  Ctx,
+  Authorized,
+  ID
+} from 'type-graphql';
 import Account from '../entities/account.entity';
 import jwt from 'jsonwebtoken';
 import { JWT_PUBLIC_KEY, JWT_PRIVATE_KEY } from '../config';
 import bcrypt from 'bcryptjs';
 import { Context } from 'koa';
+import {
+  AccountInput,
+  UpdateAccountInput,
+  LogInInput
+} from '../input/account.input';
 
 @Resolver()
 export class AccountResolver {
@@ -15,24 +28,19 @@ export class AccountResolver {
 
   @Authorized()
   @Query(() => Account)
-  async account(@Arg('id') id: string): Promise<Account | boolean> {
+  async account(@Arg('id', () => ID) id: number): Promise<Account | boolean> {
     return (await Account.findOne({ where: { id } })) || false;
   }
 
   @Authorized()
   @Mutation(() => Account)
   async createAccount(
-    @Arg('firstName') firstName: string,
-    @Arg('lastName') lastName: string,
-    @Arg('email') email: string,
-    @Arg('password') password: string
+    @Arg('account') { password, ...rest }: AccountInput
   ): Promise<Account> {
     const passwordHash = await bcrypt.hash(password, 10);
 
     const account = Account.create({
-      firstName,
-      lastName,
-      email,
+      ...rest,
       passwordHash
     });
 
@@ -44,17 +52,16 @@ export class AccountResolver {
   @Mutation(() => Account)
   async updateAccount(
     @Ctx() ctx: Context,
-    @Arg('firstName') firstName: string,
-    @Arg('lastName') lastName: string,
-    @Arg('email') email: string
+    @Arg('account') { password, ...rest }: UpdateAccountInput
   ): Promise<Account> {
     const account = await Account.findOne({
       where: { id: ctx.state.user.id }
     });
 
     if (!account) throw new Error(`Account doesn't exist`);
+    const passwordHash = password && (await bcrypt.hash(password, 10));
 
-    Object.assign(account, { firstName, lastName, email });
+    Object.assign(account, { ...rest, passwordHash });
 
     await account.save();
     return account;
@@ -75,10 +82,9 @@ export class AccountResolver {
   @Query(() => Boolean)
   async logIn(
     @Ctx() ctx: Context,
-    @Arg('email') email: string,
-    @Arg('password') password: string
+    @Arg('account') { username, password }: LogInInput
   ): Promise<boolean> {
-    const account = await Account.findOne({ where: { email } });
+    const account = await Account.findOne({ where: { username } });
     if (!account) return false;
 
     const correctPassword = await bcrypt.compare(

@@ -27,6 +27,7 @@
     "boom": "^7.3.0",
     "cookie": "^0.4.1",
     "graphql": "^14.7.0",
+    "graphql-custom-types": "^1.6.0",
     "jsonwebtoken": "^8.5.1",
     "koa-jwt": "^4.0.0",
     "koa-router": "^9.4.0",

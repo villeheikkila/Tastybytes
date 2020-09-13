@@ -40,7 +40,7 @@ export default class Treat extends BaseEntity {
 
   @ManyToOne(() => Company, { lazy: true, nullable: true })
   @Field(() => Company)
-  producedBy?: Lazy<Company>;
+  company?: Lazy<Company>;
 
   @ManyToOne(() => Category, { lazy: true, nullable: true })
   @Field(() => Category)

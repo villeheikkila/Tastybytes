@@ -33,8 +33,7 @@ export class SubcategoryResolver {
   @Mutation(() => Boolean)
   async deleteSubategory(@Arg('id') id: string): Promise<boolean> {
     const subcategory = await Subcategory.findOne({
-      where: { id },
-      relations: ['products']
+      where: { id }
     });
     if (!subcategory) throw new Error('Category not found!');
 
@@ -46,8 +45,7 @@ export class SubcategoryResolver {
   @Query(() => Subcategory)
   async subcategory(@Arg('id') id: number): Promise<Subcategory | boolean> {
     const subcategory = await Subcategory.findOne({
-      where: { id },
-      relations: ['products']
+      where: { id }
     });
 
     return subcategory || false;
