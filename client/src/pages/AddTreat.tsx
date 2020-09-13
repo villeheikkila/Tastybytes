@@ -9,6 +9,7 @@ import CompanyPicker from "../components/CompanyPicker";
 import { CreateTreat } from "../generated/CreateTreat";
 import CategoryPicker from "../components/CategoryPicker";
 import SubcategoryPicker from "../components/SubcategoryPicker";
+import { useHistory } from "react-router-dom";
 
 type ModalsType = "CATEGORY" | "COMPANY" | "SUBCATEGORY";
 
@@ -19,6 +20,7 @@ const Modals = {
 };
 
 const AddTreat: React.FC = () => {
+  const history = useHistory();
   const [createTreat] = useMutation<CreateTreat>(CREATE_TREAT);
   const [selected, setSelected] = useState<any>(null);
   const [showModal, setShowModal] = useState<ModalsType | null>(null);
@@ -31,7 +33,7 @@ const AddTreat: React.FC = () => {
 
   const onSubmit = handleSubmit(async ({ name }) => {
     try {
-      await createTreat({
+      const response = await createTreat({
         variables: {
           name,
           companyId: parseInt(selected.company.value),
@@ -39,6 +41,8 @@ const AddTreat: React.FC = () => {
           subcategoryId: parseInt(selected.subcategory.id),
         },
       });
+
+      history.push(`/treats/add-review/${response?.data?.createTreat.id}`);
     } catch (error) {
       console.error(error);
     }

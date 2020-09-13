@@ -6,10 +6,11 @@ import { gql, useQuery } from "@apollo/client";
 import { SearchTreats } from "../generated/SearchTreats";
 import Input from "../components/Input";
 import { ReactComponent as DropdownIcon } from "../assets/plus.svg";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const Treats = () => {
   const [searchTerm, setSearchTerm] = useState("");
+
   const { data, loading } = useQuery<SearchTreats>(SEARCH_TREATS, {
     variables: { searchTerm },
   });

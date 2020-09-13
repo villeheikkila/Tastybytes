@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import Card from "../components/Card";
 import { GetTreat } from "../generated/GetTreat";
 import { CreateReview } from "../generated/CreateReview";
 
 const AddReview: React.FC = () => {
   const { id } = useParams();
+  const history = useHistory();
   const { data, loading } = useQuery<GetTreat>(GET_TREAT, {
     variables: { id: parseInt(id) },
   });
@@ -23,10 +24,6 @@ const AddReview: React.FC = () => {
   }>();
 
   const onSubmit = handleSubmit(async ({ score, review }) => {
-    console.log("review: ", review);
-    console.log("score: ", score);
-    console.log("id: ", id);
-
     try {
       const review2 = await createReview({
         variables: { treatId: parseInt(id), score: parseInt(score), review },
