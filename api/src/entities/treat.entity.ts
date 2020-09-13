@@ -14,6 +14,7 @@ import Account from './account.entity';
 import Company from './company.entity';
 import { Lazy } from '../utils/helpers';
 import Category from './category.entity';
+import Subcategory from './subcategory.entity';
 
 @Entity()
 @ObjectType()
@@ -44,6 +45,10 @@ export default class Treat extends BaseEntity {
   @ManyToOne(() => Category, { lazy: true, nullable: true })
   @Field(() => Category)
   category?: Lazy<Category>;
+
+  @ManyToOne(() => Subcategory, { lazy: true, nullable: true })
+  @Field(() => Subcategory)
+  subcategory?: Lazy<Subcategory>;
 
   @Field()
   @CreateDateColumn()

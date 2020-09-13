@@ -5,25 +5,39 @@ import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import Portal from "../components/Portal";
 import Sheet from "../components/Sheet";
-import Search, { Item } from "../components/Search";
+import CompanyPicker from "../components/CompanyPicker";
 import { CreateTreat } from "../generated/CreateTreat";
+import CategoryPicker from "../components/CategoryPicker";
+import SubcategoryPicker from "../components/SubcategoryPicker";
+
+type ModalsType = "CATEGORY" | "COMPANY" | "SUBCATEGORY";
+
+const Modals = {
+  CATEGORY: CategoryPicker,
+  COMPANY: CompanyPicker,
+  SUBCATEGORY: SubcategoryPicker,
+};
 
 const AddTreat: React.FC = () => {
   const [createTreat] = useMutation<CreateTreat>(CREATE_TREAT);
-  const [selected, setSelected] = useState<Item | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [selected, setSelected] = useState<any>(null);
+  const [showModal, setShowModal] = useState<ModalsType | null>(null);
   const { register, handleSubmit } = useForm<{
     name: string;
   }>();
+  const Modal = showModal && Modals[showModal];
 
-  useEffect(() => setShowModal(false), [selected]);
+  useEffect(() => setShowModal(null), [selected]);
 
   const onSubmit = handleSubmit(async ({ name }) => {
-    if (!selected?.value) return;
-
     try {
       await createTreat({
-        variables: { name, producedBy: parseInt(selected.value) },
+        variables: {
+          name,
+          companyId: parseInt(selected.company.value),
+          categoryId: parseInt(selected.category.id),
+          subcategoryId: parseInt(selected.subcategory.id),
+        },
       });
     } catch (error) {
       console.error(error);
@@ -40,17 +54,31 @@ const AddTreat: React.FC = () => {
             ref={register({ required: true })}
           />
 
-          <Button onClick={() => setShowModal(true)}>
-            {selected === null ? "Select the producer" : selected.label}
+          <Button onClick={() => setShowModal("COMPANY")}>
+            {!selected?.company
+              ? "Select the producer"
+              : selected.company.label}
+          </Button>
+
+          <Button onClick={() => setShowModal("CATEGORY")}>
+            {!selected?.category
+              ? "Select the category"
+              : selected["category"].name}
+          </Button>
+
+          <Button onClick={() => setShowModal("SUBCATEGORY")}>
+            {!selected?.subcategory
+              ? "Select the subcategory"
+              : selected.subcategory.name}
           </Button>
 
           <Input type="submit" value="Submit" />
         </Form>
       </Container>
-      {showModal && (
-        <Portal onClose={() => setShowModal(false)}>
-          <Sheet onClose={() => setShowModal(false)}>
-            <Search setSelected={setSelected} />
+      {showModal && Modal && (
+        <Portal onClose={() => setShowModal(null)}>
+          <Sheet onClose={() => setShowModal(null)}>
+            <Modal setSelected={setSelected} selected={selected} />
           </Sheet>
         </Portal>
       )}
@@ -91,8 +119,18 @@ const Form = styled.form`
 `;
 
 const CREATE_TREAT = gql`
-  mutation CreateTreat($name: String!, $producedBy: Float!) {
-    createTreat(name: $name, producedBy: $producedBy) {
+  mutation CreateTreat(
+    $name: String!
+    $companyId: Float!
+    $categoryId: Float!
+    $subcategoryId: Float!
+  ) {
+    createTreat(
+      name: $name
+      companyId: $companyId
+      categoryId: $categoryId
+      subcategoryId: $subcategoryId
+    ) {
       id
     }
   }

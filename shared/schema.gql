@@ -49,7 +49,7 @@ type Mutation {
   createReview(treatId: Float!, score: Float!, review: String!): Review!
   createSubcategory(categoryId: Float!, name: String!): Subcategory!
   deleteSubategory(id: String!): Boolean!
-  createTreat(producedBy: Float!, name: String!): Treat!
+  createTreat(subcategoryId: Float!, categoryId: Float!, companyId: Float!, name: String!): Treat!
 }
 
 type Query {
@@ -97,6 +97,7 @@ type Treat {
   createdBy: Account!
   producedBy: Company!
   category: Category!
+  subcategory: Subcategory!
   createdDate: DateTime!
   updatedDate: DateTime!
 }

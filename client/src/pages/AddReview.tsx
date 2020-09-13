@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import Portal from "../components/Portal";
-import Sheet from "../components/Sheet";
-import Search, { Item } from "../components/Search";
 import { useParams } from "react-router-dom";
 import Card from "../components/Card";
 import { GetTreat } from "../generated/GetTreat";
@@ -20,14 +16,11 @@ const AddReview: React.FC = () => {
   const [createReview] = useMutation<CreateReview>(CREATE_REVIEW, {
     refetchQueries: ["GetTreat"],
   });
-  const [selected, setSelected] = useState<Item | null>(null);
-  const [showModal, setShowModal] = useState(false);
+
   const { register, handleSubmit } = useForm<{
     score: string;
     review: string;
   }>();
-
-  useEffect(() => setShowModal(false), [selected]);
 
   const onSubmit = handleSubmit(async ({ score, review }) => {
     console.log("review: ", review);
@@ -77,14 +70,6 @@ const AddReview: React.FC = () => {
           ))}
         </CardContainer>
       </Container>
-
-      {showModal && (
-        <Portal onClose={() => setShowModal(false)}>
-          <Sheet onClose={() => setShowModal(false)}>
-            <Search setSelected={setSelected} />
-          </Sheet>
-        </Portal>
-      )}
     </>
   );
 };

@@ -4,6 +4,8 @@ import Company from '../entities/company.entity';
 import Account from '../entities/account.entity';
 import { GraphQLError } from 'graphql';
 import { Context } from 'koa';
+import Subcategory from '../entities/subcategory.entity';
+import Category from '../entities/category.entity';
 
 @Resolver()
 export class TreatResolver {
@@ -41,11 +43,20 @@ export class TreatResolver {
   async createTreat(
     @Ctx() ctx: Context,
     @Arg('name') name: string,
-    @Arg('producedBy') producedById: number
+    @Arg('companyId') companyId: number,
+    @Arg('categoryId') categoryId: number,
+    @Arg('subcategoryId') subcategoryId: number
   ): Promise<Treat> {
-    const producedBy = await Company.findOne({ where: { id: producedById } });
+    const producedBy = await Company.findOne({ where: { id: companyId } });
+    const category = await Category.findOne({ where: { id: categoryId } });
+    const subcategory = await Subcategory.findOne({
+      where: { id: subcategoryId }
+    });
 
     if (!producedBy) throw new GraphQLError('Each treat must have a producer');
+    if (!category) throw new GraphQLError('Each treat must have a category');
+    if (!subcategory)
+      throw new GraphQLError('Each treat must have a subcategory');
 
     const createdBy = await Account.findOne({
       where: { id: ctx.state.user.id }
@@ -57,6 +68,8 @@ export class TreatResolver {
     const treat = await Treat.create({
       name,
       producedBy,
+      category,
+      subcategory,
       createdBy
     });
 
