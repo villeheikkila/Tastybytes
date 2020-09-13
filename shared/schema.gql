@@ -8,14 +8,14 @@ type Account {
   username: String!
   firstName: String!
   lastName: String!
-  email: Email!
-  passwordHash: Password2!
+  email: String!
+  passwordHash: String!
   reviews: [Review!]!
   createdTreats: [Treat!]!
 }
 
 input AccountInput {
-  username: LimitedString!
+  username: UserName!
   email: Email!
   password: Password!
   firstName: String
@@ -32,6 +32,9 @@ type Category {
   updatedDate: DateTime!
 }
 
+"""CategoryName has to be between 3 and 16 characters long."""
+scalar CategoryName
+
 type Company {
   id: ID!
   name: String!
@@ -41,6 +44,9 @@ type Company {
   createdDate: DateTime!
   updatedDate: DateTime!
 }
+
+"""CompanyName has to be between 3 and 24 characters long."""
+scalar CompanyName
 
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
@@ -52,20 +58,8 @@ The Email scalar type represents E-Mail addresses compliant to RFC 822.
 """
 scalar Email
 
-"""A limited string. Has to be between 3 and 16 characters long."""
-scalar LimitedString
-
-"""A limited string. Has to be between 3 and 16 characters long."""
-scalar LimitedString2
-
-"""A limited string. Has to be between 3 and 24 characters long."""
-scalar LimitedString3
-
-"""A limited string. Has to be between 3 and 1024 characters long."""
-scalar LimitedString4
-
 input LogInInput {
-  username: LimitedString!
+  username: UserName!
   password: Password!
 }
 
@@ -73,21 +67,18 @@ type Mutation {
   createAccount(account: AccountInput!): Account!
   updateAccount(account: UpdateAccountInput!): Account!
   deleteAccount: Boolean!
-  createCategory(name: LimitedString2!): Category!
+  createCategory(name: CategoryName!): Category!
   deleteCategory(id: ID!): Boolean!
-  createCompany(name: LimitedString3!): Company!
+  createCompany(name: CompanyName!): Company!
   deleteCompany(id: ID!): Boolean!
-  createReview(account: ReviewInput!): Review!
-  createSubcategory(categoryId: Float!, name: String!): Subcategory!
-  deleteSubategory(id: String!): Boolean!
-  createTreat(subcategoryId: Float!, categoryId: Float!, companyId: Float!, name: String!): Treat!
+  createReview(review: ReviewInput!): Review!
+  createSubcategory(categoryId: ID!, name: CategoryName!): Subcategory!
+  deleteSubategory(id: ID!): Boolean!
+  createTreat(subcategoryId: ID!, categoryId: ID!, companyId: ID!, name: TreatName!): Treat!
 }
 
 """A password string. Has to be at least 6 characters long."""
 scalar Password
-
-"""A password string. Has to be between 6 and 124 characters long."""
-scalar Password2
 
 type Query {
   accounts: [Account!]!
@@ -101,10 +92,10 @@ type Query {
   company(id: ID!): Company!
   reviews: [Review!]!
   subcategories: [Subcategory!]!
-  subcategory(id: Float!): Subcategory!
+  subcategory(id: ID!): Subcategory!
   treats: [Treat!]!
-  treat(id: Float!): Treat!
-  searchTreats(searchTerm: String!): [Treat!]!
+  treat(id: ID!): Treat!
+  searchTreats(searchTerm: TreatName!): [Treat!]!
 }
 
 type Review {
@@ -120,8 +111,11 @@ type Review {
 input ReviewInput {
   treatId: ID!
   score: Int!
-  review: LimitedString4
+  review: ReviewText
 }
+
+"""ReviewText has to be between 3 and 1024 characters long."""
+scalar ReviewText
 
 type Subcategory {
   id: ID!
@@ -145,10 +139,16 @@ type Treat {
   updatedDate: DateTime!
 }
 
+"""TreatName has to be between 3 and 24 characters long."""
+scalar TreatName
+
 input UpdateAccountInput {
-  username: LimitedString
+  username: UserName
   email: Email
-  password: Password
+  password: String
   firstName: String
   lastName: String
 }
+
+"""UserName has to be between 3 and 16 characters long."""
+scalar UserName

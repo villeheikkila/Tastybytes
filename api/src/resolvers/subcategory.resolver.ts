@@ -1,6 +1,7 @@
-import { Resolver, Query, Mutation, Arg, Authorized } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, Authorized, ID } from 'type-graphql';
 import Category from '../entities/category.entity';
 import Subcategory from '../entities/subcategory.entity';
+import { GraphQLCategoryName } from '../utils/validators';
 
 @Resolver()
 export class SubcategoryResolver {
@@ -13,8 +14,8 @@ export class SubcategoryResolver {
   @Authorized()
   @Mutation(() => Subcategory)
   async createSubcategory(
-    @Arg('name') name: string,
-    @Arg('categoryId') categoryId: number
+    @Arg('name', () => GraphQLCategoryName) name: string,
+    @Arg('categoryId', () => ID) categoryId: number
   ): Promise<Subcategory> {
     const category = await Category.findOne({
       where: { id: categoryId }
@@ -31,10 +32,11 @@ export class SubcategoryResolver {
 
   @Authorized()
   @Mutation(() => Boolean)
-  async deleteSubategory(@Arg('id') id: string): Promise<boolean> {
+  async deleteSubategory(@Arg('id', () => ID) id: string): Promise<boolean> {
     const subcategory = await Subcategory.findOne({
       where: { id }
     });
+
     if (!subcategory) throw new Error('Category not found!');
 
     await subcategory.remove();
@@ -43,7 +45,9 @@ export class SubcategoryResolver {
 
   @Authorized()
   @Query(() => Subcategory)
-  async subcategory(@Arg('id') id: number): Promise<Subcategory | boolean> {
+  async subcategory(
+    @Arg('id', () => ID) id: number
+  ): Promise<Subcategory | boolean> {
     const subcategory = await Subcategory.findOne({
       where: { id }
     });

@@ -1,12 +1,6 @@
 import { InputType, Field } from 'type-graphql';
-import {
-  GraphQLPassword,
-  GraphQLEmail,
-  GraphQLLimitedString
-} from 'graphql-custom-types';
-
-const GraphQLUsername = new GraphQLLimitedString(3, 16);
-const GraphQLLimitedPassword = new GraphQLPassword(6);
+import { GraphQLEmail } from 'graphql-custom-types';
+import { GraphQLLimitedPassword, GraphQLUsername } from '../utils/validators';
 
 @InputType()
 export class AccountInput {
@@ -34,7 +28,7 @@ export class UpdateAccountInput {
   @Field(() => GraphQLEmail, { nullable: true })
   email?: string;
 
-  @Field(() => GraphQLLimitedPassword, { nullable: true })
+  @Field({ nullable: true })
   password?: string;
 
   @Field({ nullable: true })

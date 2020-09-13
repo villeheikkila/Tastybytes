@@ -1,8 +1,6 @@
 import { Resolver, Query, Mutation, Arg, Authorized, ID } from 'type-graphql';
 import Company from '../entities/company.entity';
-import { GraphQLLimitedString } from 'graphql-custom-types';
-
-const GraphQLCompanyConstraint = new GraphQLLimitedString(3, 24);
+import { GraphQLCompanyName } from '../utils/validators';
 
 @Resolver()
 export class CompanyResolver {
@@ -15,7 +13,7 @@ export class CompanyResolver {
   @Authorized()
   @Mutation(() => Company)
   async createCompany(
-    @Arg('name', () => GraphQLCompanyConstraint) name: string
+    @Arg('name', () => GraphQLCompanyName) name: string
   ): Promise<Company> {
     const company = Company.create({
       name

@@ -20,21 +20,21 @@ const Router = () => {
   if (loading) return null;
 
   return (
-    <Switch>
-      {!data?.currentAccount ? (
-        <>
-          <Route path="/signup" exact>
-            <SignUp />
-          </Route>
+    <Suspense fallback={<Spinner />}>
+      <Switch>
+        {!data?.currentAccount ? (
+          <>
+            <Route path="/signup" exact>
+              <SignUp />
+            </Route>
 
-          <Route path="/" exact>
-            <Landing />
-          </Route>
-        </>
-      ) : (
-        <>
-          <Page>
-            <Suspense fallback={<Spinner />}>
+            <Route path="/" exact>
+              <Landing />
+            </Route>
+          </>
+        ) : (
+          <>
+            <Page>
               <Route path="/" exact>
                 <Home />
               </Route>
@@ -51,13 +51,13 @@ const Router = () => {
               <Route path="/treats/add-review/:id" exact>
                 <AddReview />
               </Route>
-            </Suspense>
-          </Page>
+            </Page>
 
-          <Navigation />
-        </>
-      )}
-    </Switch>
+            <Navigation />
+          </>
+        )}
+      </Switch>
+    </Suspense>
   );
 };
 

@@ -1,8 +1,6 @@
 import { InputType, Field, Int, ID } from 'type-graphql';
-import { GraphQLLimitedString } from 'graphql-custom-types';
 import { Min, Max } from 'class-validator';
-
-const GraphQLCompanyConstraint = new GraphQLLimitedString(3, 1024);
+import { GrapQLReviewText } from '../utils/validators';
 
 @InputType()
 export class ReviewInput {
@@ -14,6 +12,8 @@ export class ReviewInput {
   @Max(5)
   score: number;
 
-  @Field(() => GraphQLCompanyConstraint, { nullable: true })
+  @Field(() => GrapQLReviewText, {
+    nullable: true
+  })
   review: string;
 }

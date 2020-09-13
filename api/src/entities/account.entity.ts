@@ -7,11 +7,11 @@ import {
   UpdateDateColumn,
   CreateDateColumn
 } from 'typeorm';
-import { ObjectType, Field, ID, InputType } from 'type-graphql';
+import { ObjectType, Field, ID } from 'type-graphql';
 import Review from './review.entity';
 import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
-import { GraphQLEmail, GraphQLPassword } from 'graphql-custom-types';
+
 @Entity()
 @ObjectType()
 export default class Account extends BaseEntity {
@@ -31,11 +31,11 @@ export default class Account extends BaseEntity {
   @Column({ nullable: true })
   lastName: string;
 
-  @Field(() => GraphQLEmail)
+  @Field(() => String)
   @Column({ unique: true })
   email: string;
 
-  @Field(() => new GraphQLPassword(6, 124))
+  @Field(() => String)
   @Column()
   passwordHash: string;
 

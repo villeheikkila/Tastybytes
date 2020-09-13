@@ -17,7 +17,7 @@ export class ReviewResolver {
   @Mutation(() => Review)
   async createReview(
     @Ctx() ctx: Context,
-    @Arg('account') { treatId, score, review }: ReviewInput
+    @Arg('review') { treatId, score, review }: ReviewInput
   ): Promise<Review> {
     const treat = await Treat.findOne({ where: { id: treatId } });
     const author = await Account.findOne({

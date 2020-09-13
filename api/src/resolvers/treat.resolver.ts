@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Arg, Authorized, Ctx } from 'type-graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Arg,
+  Authorized,
+  Ctx,
+  ID
+} from 'type-graphql';
 import Treat from '../entities/treat.entity';
 import Company from '../entities/company.entity';
 import Account from '../entities/account.entity';
@@ -6,6 +14,7 @@ import { GraphQLError } from 'graphql';
 import { Context } from 'koa';
 import Subcategory from '../entities/subcategory.entity';
 import Category from '../entities/category.entity';
+import { GraphQLTreatName } from '../utils/validators';
 
 @Resolver()
 export class TreatResolver {
@@ -17,13 +26,16 @@ export class TreatResolver {
 
   @Authorized()
   @Query(() => Treat)
-  async treat(@Arg('id') id: number): Promise<Treat | boolean> {
+  async treat(@Arg('id', () => ID) id: number): Promise<Treat | boolean> {
     return (await Treat.findOne({ where: { id } })) || false;
   }
+
   @Authorized()
   @Query(() => [Treat])
   // TODO: Add more search terms
-  async searchTreats(@Arg('searchTerm') searchTerm: string): Promise<Treat[]> {
+  async searchTreats(
+    @Arg('searchTerm', () => GraphQLTreatName) searchTerm: string
+  ): Promise<Treat[]> {
     const allTreats = await Treat.find();
 
     // TODO: Do the search in the database layer
@@ -38,10 +50,10 @@ export class TreatResolver {
   @Mutation(() => Treat)
   async createTreat(
     @Ctx() ctx: Context,
-    @Arg('name') name: string,
-    @Arg('companyId') companyId: number,
-    @Arg('categoryId') categoryId: number,
-    @Arg('subcategoryId') subcategoryId: number
+    @Arg('name', () => GraphQLTreatName) name: string,
+    @Arg('companyId', () => ID) companyId: number,
+    @Arg('categoryId', () => ID) categoryId: number,
+    @Arg('subcategoryId', () => ID) subcategoryId: number
   ): Promise<Treat> {
     const company = await Company.findOne({ where: { id: companyId } });
     const category = await Category.findOne({ where: { id: categoryId } });

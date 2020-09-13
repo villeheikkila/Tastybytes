@@ -1,8 +1,6 @@
 import { Resolver, Query, Mutation, Arg, Authorized, ID } from 'type-graphql';
 import Category from '../entities/category.entity';
-import { GraphQLLimitedString } from 'graphql-custom-types';
-
-const GraphQLCategoryConstraint = new GraphQLLimitedString(3, 16);
+import { GraphQLCategoryName } from '../utils/validators';
 
 @Resolver()
 export class CategoryResolver {
@@ -15,7 +13,7 @@ export class CategoryResolver {
   @Authorized()
   @Mutation(() => Category)
   async createCategory(
-    @Arg('name', () => GraphQLCategoryConstraint) name: string
+    @Arg('name', () => GraphQLCategoryName) name: string
   ): Promise<Category> {
     const category = Category.create({
       name

@@ -32,7 +32,6 @@ export class AccountResolver {
     return (await Account.findOne({ where: { id } })) || false;
   }
 
-  @Authorized()
   @Mutation(() => Account)
   async createAccount(
     @Arg('account') { password, ...rest }: AccountInput
