@@ -13,6 +13,9 @@ export class AccountInput {
   @Field(() => GraphQLLimitedPassword)
   password: string;
 
+  @Field()
+  captchaToken: string;
+
   @Field({ nullable: true })
   firstName?: string;
 

@@ -14,6 +14,8 @@ import {
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
 
+export const recaptchaSiteKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY || "";
+
 const httpLink = new HttpLink({
   uri: `http://${window.location.hostname}:${process.env.REACT_APP_API_PORT}/graphql`,
   credentials: "include",

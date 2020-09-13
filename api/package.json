@@ -22,6 +22,7 @@
     "@types/jsonwebtoken": "^8.5.0",
     "apollo-server": "^2.9.16",
     "apollo-server-koa": "^2.17.0",
+    "axios": "^0.20.0",
     "bcrypt": "^3.0.6",
     "bcryptjs": "^2.4.3",
     "boom": "^7.3.0",

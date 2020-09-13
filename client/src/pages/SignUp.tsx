@@ -1,31 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import styled from "styled-components";
-import Card from "../components/Card";
 import { ErrorMessage } from "@hookform/error-message";
+import ReCAPTCHA from "react-google-recaptcha";
+import { recaptchaSiteKey } from "..";
 
 const SignUp = () => {
   const [signUpMutation] = useMutation(CREATE_ACCOUNT);
-  const { register, handleSubmit, watch, errors } = useForm<{
+  const { register, handleSubmit, watch, errors, control } = useForm<{
     username: string;
     email: string;
     password: string;
+    captchaToken: string;
   }>();
 
   console.log("errors: ", errors);
 
-  const onSubmit = handleSubmit(async ({ password, email, username }) => {
-    try {
-      await signUpMutation({
-        variables: {
-          account: { password, email, username },
-        },
-      });
-    } catch (error) {
-      console.error(error);
+  const onSubmit = handleSubmit(
+    async ({ password, email, username, captchaToken }) => {
+      try {
+        await signUpMutation({
+          variables: {
+            account: { password, email, username, captchaToken },
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
-  });
+  );
 
   return (
     <Container>
@@ -111,7 +115,16 @@ const SignUp = () => {
               render={({ message }) => <Error>{message}</Error>}
             />
           </Label>
-          <Input type="submit" />
+          {recaptchaSiteKey && (
+            <Controller
+              control={control}
+              name="captchaToken"
+              render={({ onChange }) => (
+                <ReCAPTCHA sitekey={recaptchaSiteKey} onChange={onChange} />
+              )}
+            />
+          )}
+          <Button type="submit" />
         </Form>
       </Content>
     </Container>
@@ -138,6 +151,24 @@ const Content = styled.div`
 
   @media (max-width: 600px) {
     width: 100vw;
+  }
+`;
+
+const Button = styled.input`
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.847);
+  font-size: 24px;
+  padding: 5px;
+  border: none;
+  border-radius: 8px;
+  width: 250px;
+  outline: none;
+  height: 60px;
+  margin-bottom: 10px;
+
+  :focus,
+  :hover {
+    background-color: rgba(0, 0, 0, 0.8);
   }
 `;
 

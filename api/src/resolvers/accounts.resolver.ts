@@ -17,6 +17,7 @@ import {
   UpdateAccountInput,
   LogInInput
 } from '../input/account.input';
+import { verifyRecaptcha } from '../utils/recaptcha';
 
 @Resolver()
 export class AccountResolver {
@@ -34,9 +35,12 @@ export class AccountResolver {
 
   @Mutation(() => Account)
   async createAccount(
-    @Arg('account') { password, ...rest }: AccountInput
+    @Arg('account') { password, captchaToken, ...rest }: AccountInput
   ): Promise<Account> {
     const passwordHash = await bcrypt.hash(password, 10);
+    const isHuman = await verifyRecaptcha(captchaToken);
+
+    if (!isHuman) throw new Error(`Recaptcha failed!`);
 
     const account = Account.create({
       ...rest,

@@ -18,6 +18,7 @@ input AccountInput {
   username: UserName!
   email: Email!
   password: Password!
+  captchaToken: String!
   firstName: String
   lastName: String
 }
