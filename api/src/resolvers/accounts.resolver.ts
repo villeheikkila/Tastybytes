@@ -18,6 +18,8 @@ import {
   LogInInput
 } from '../input/account.input';
 import { verifyRecaptcha } from '../utils/recaptcha';
+import { sendVerificationMail } from '../utils/sendMail';
+import Token from '../entities/tokens.entity';
 
 @Resolver()
 export class AccountResolver {
@@ -35,7 +37,7 @@ export class AccountResolver {
 
   @Mutation(() => Account)
   async createAccount(
-    @Arg('account') { password, captchaToken, ...rest }: AccountInput
+    @Arg('account') { password, email, captchaToken, ...rest }: AccountInput
   ): Promise<Account> {
     const passwordHash = await bcrypt.hash(password, 10);
     const isHuman = await verifyRecaptcha(captchaToken);
@@ -43,11 +45,26 @@ export class AccountResolver {
     if (!isHuman) throw new Error(`Recaptcha failed!`);
 
     const account = Account.create({
+      email,
       ...rest,
       passwordHash
     });
 
+    const token = jwt.sign({ id: account.id }, JWT_PRIVATE_KEY, {
+      expiresIn: '2d'
+    });
+
+    const savedToken = Token.create({
+      token
+    });
+
+    await savedToken.save();
+
+    account.tokens = [savedToken];
+
     await account.save();
+
+    await sendVerificationMail(token, email);
     return account;
   }
 
@@ -120,5 +137,40 @@ export class AccountResolver {
     return (
       (await Account.findOne({ where: { id: ctx.state.user.id } })) || false
     );
+  }
+
+  @Mutation(() => Boolean)
+  async verifyAccount(
+    @Arg('token', () => String) token: string
+  ): Promise<boolean> {
+    const tokenAccount = await Token.findOne({
+      where: { token },
+      relations: ['account']
+    });
+    const decoded: any = jwt.verify(token, JWT_PRIVATE_KEY);
+
+    if (
+      typeof decoded === 'object' &&
+      'exp' in decoded &&
+      Date.now() >= decoded.exp * 1000
+    ) {
+      throw new Error(`Token has expired!`);
+    }
+
+    if (!tokenAccount) throw new Error(`Token doesn't exist`);
+    if (tokenAccount.isUsed) return false;
+
+    const accountData = await tokenAccount.account;
+    const account = await Account.findOne(accountData.id);
+
+    if (!account) throw new Error(`Account doesn't exist`);
+
+    account.isVerified = true;
+    tokenAccount.isUsed = true;
+
+    account.save();
+    tokenAccount.save();
+
+    return true;
   }
 }

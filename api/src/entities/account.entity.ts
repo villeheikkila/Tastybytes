@@ -11,6 +11,8 @@ import { ObjectType, Field, ID } from 'type-graphql';
 import Review from './review.entity';
 import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
+import { GraphQLEmail } from 'graphql-custom-types';
+import Token from './tokens.entity';
 
 @Entity()
 @ObjectType()
@@ -31,7 +33,7 @@ export default class Account extends BaseEntity {
   @Column({ nullable: true })
   lastName: string;
 
-  @Field(() => String)
+  @Field(() => GraphQLEmail)
   @Column({ unique: true })
   email: string;
 
@@ -39,9 +41,17 @@ export default class Account extends BaseEntity {
   @Column()
   passwordHash: string;
 
+  @Field(() => Boolean)
+  @Column({ default: false })
+  isVerified: boolean;
+
   @OneToMany(() => Review, (review) => review.author, { lazy: true })
   @Field(() => [Review])
   reviews: Lazy<Review[]>;
+
+  @OneToMany(() => Token, (token) => token.account, { lazy: true })
+  @Field(() => [Token])
+  tokens: Lazy<Token[]>;
 
   @OneToMany(() => Treat, (treat) => treat.createdBy, { lazy: true })
   @Field(() => [Treat])

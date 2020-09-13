@@ -13,6 +13,7 @@ const Landing = lazy(() => import("./pages/Landing"));
 const SignUp = lazy(() => import("./pages/SignUp"));
 const AddTreat = lazy(() => import("./pages/AddTreat"));
 const AddReview = lazy(() => import("./pages/AddReview"));
+const VerifyAccount = lazy(() => import("./pages/VerifyAccount"));
 
 const Router = () => {
   const { data, loading } = useQuery<IsLoggedIn>(CURRENT_ACCOUNT);
@@ -22,6 +23,9 @@ const Router = () => {
   return (
     <Suspense fallback={<Spinner />}>
       <Switch>
+        <Route path="/verify-email/:token" exact>
+          <VerifyAccount />
+        </Route>
         {!data?.currentAccount ? (
           <>
             <Route path="/signup" exact>

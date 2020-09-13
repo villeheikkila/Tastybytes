@@ -8,9 +8,11 @@ type Account {
   username: String!
   firstName: String!
   lastName: String!
-  email: String!
+  email: Email!
   passwordHash: String!
+  isVerified: Boolean!
   reviews: [Review!]!
+  tokens: [Token!]!
   createdTreats: [Treat!]!
 }
 
@@ -68,6 +70,7 @@ type Mutation {
   createAccount(account: AccountInput!): Account!
   updateAccount(account: UpdateAccountInput!): Account!
   deleteAccount: Boolean!
+  verifyAccount(token: String!): Boolean!
   createCategory(name: CategoryName!): Category!
   deleteCategory(id: ID!): Boolean!
   createCompany(name: CompanyName!): Company!
@@ -124,6 +127,15 @@ type Subcategory {
   isPublished: Boolean!
   treats: [Treat!]!
   category: Category!
+  createdDate: DateTime!
+  updatedDate: DateTime!
+}
+
+type Token {
+  id: ID!
+  token: String!
+  isUsed: Boolean!
+  account: Account!
   createdDate: DateTime!
   updatedDate: DateTime!
 }
