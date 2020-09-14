@@ -3,16 +3,14 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { LogInInput } from "./globalTypes";
-
 // ====================================================
-// GraphQL query operation: LogIn
+// GraphQL mutation operation: VerifyAccount
 // ====================================================
 
-export interface LogIn {
-  logIn: boolean;
+export interface VerifyAccount {
+  verifyAccount: boolean;
 }
 
-export interface LogInVariables {
-  account: LogInInput;
+export interface VerifyAccountVariables {
+  token: string;
 }

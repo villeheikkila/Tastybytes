@@ -69,7 +69,7 @@ const Form = styled.form`
 `;
 
 const CREATE_COMPANY = gql`
-  mutation CreateCompany($name: String!) {
+  mutation CreateCompany($name: CompanyName!) {
     createCompany(name: $name) {
       id
     }

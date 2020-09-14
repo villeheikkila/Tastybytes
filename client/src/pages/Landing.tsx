@@ -3,53 +3,80 @@ import { gql, useLazyQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { LogIn } from "../generated/LogIn";
+import { ErrorMessage } from "@hookform/error-message";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   const [logIn] = useLazyQuery<LogIn>(LOGIN);
 
   const { register, handleSubmit, errors } = useForm<{
-    email: string;
+    username: string;
     password: string;
   }>();
 
-  const onSubmit = handleSubmit(async ({ email, password }) => {
-    await logIn({
-      variables: {
-        email,
-        password,
-      },
-    });
+  const onSubmit = handleSubmit(async (account) => {
+    try {
+      await logIn({
+        variables: {
+          account,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   return (
     <LogInPage>
-      <Form onSubmit={onSubmit}>
-        <Label htmlFor="email">Email</Label>
+      <Content>
+        <Form onSubmit={onSubmit}>
+          <Label>
+            Username
+            <Input
+              name="username"
+              ref={register({
+                required: true,
+                minLength: {
+                  value: 3,
+                  message: `The username must be at least 3 characters long.`,
+                },
+                maxLength: {
+                  value: 16,
+                  message: `The username can't be over 16 characters long.`,
+                },
+              })}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="username"
+              render={({ message }) => <Error>{message}</Error>}
+            />
+          </Label>
 
-        <InputContainer>
-          <Input
-            type="text"
-            id="email"
-            name="email"
-            aria-invalid={errors.email ? "true" : "false"}
-            ref={register({ required: true })}
-          />
-        </InputContainer>
+          <Label>
+            Password
+            <Input
+              name="password"
+              type="password"
+              ref={register({
+                required: true,
+                minLength: {
+                  value: 6,
+                  message: `The password must be at least 6 characters long.`,
+                },
+              })}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="password"
+              render={({ message }) => <Error>{message}</Error>}
+            />
+          </Label>
 
-        <InputContainer>
-          <Label htmlFor="password">Password</Label>
-
-          <Input
-            type="password"
-            id="password"
-            name="password"
-            aria-invalid={errors.password ? "true" : "false"}
-            ref={register({ required: true })}
-          />
-        </InputContainer>
-
-        <Submit type="submit" />
-      </Form>
+          <Button type="submit" />
+        </Form>
+        <StyledLink to="/signup">Sign Up!</StyledLink>
+      </Content>
     </LogInPage>
   );
 };
@@ -59,32 +86,44 @@ const LogInPage = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 300px;
-  height: 300px;
-  padding: 20px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 `;
 
-const InputContainer = styled.div`
-  position: relative;
-  margin-bottom: 25px;
-`;
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  padding: 10px;
+  width: 400px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 30px;
 
-const Label = styled.label``;
-
-const Input = styled.input`
-  border: 0;
-  border-bottom: 1px solid #555;
-  background: transparent;
-  width: 100%;
-  padding: 8px 0 5px 0;
-  font-size: 16px;
-
-  :focus {
-    border: none;
-    outline: none;
-    border-bottom: 1px solid #2196f3;
+  @media (max-width: 600px) {
+    width: 100vw;
   }
+`;
+
+const Label = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 700;
+`;
+const Error = styled.strong`
+  color: red;
+`;
+const Input = styled.input`
+  width: 70%;
+  height: 30px;
+  border-radius: 6px;
+  outline: none;
+  border: none;
+  padding: 4px;
+  margin-top: 4px;
 `;
 
 const Form = styled.form`
@@ -92,35 +131,47 @@ const Form = styled.form`
   flex-direction: column;
 `;
 
-const Submit = styled.input`
+const Button = styled.input`
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.847);
+  font-size: 24px;
+  padding: 5px;
   border: none;
-  border-radius: 2px;
-  padding: 12px 18px;
-  font-size: 16px;
-  text-transform: uppercase;
-  cursor: pointer;
-  color: white;
-  background-color: #2196f3;
-  box-shadow: 0 0 4px #999;
+  border-radius: 8px;
+  width: 250px;
   outline: none;
-  background-position: center;
-  transition: background 0.8s;
+  height: 60px;
+  margin-bottom: 10px;
 
-  :active {
-    background-color: #6eb9f7;
-    background-size: 100%;
-    transition: background 0s;
-  }
-
+  :focus,
   :hover {
-    background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%)
-      center/15000%;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+`;
+
+const StyledLink = styled(Link)`
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.847);
+  font-size: 24px;
+  padding: 5px;
+  border: none;
+  border-radius: 8px;
+  width: 250px;
+  outline: none;
+  height: 60px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  text-align: center;
+
+  :focus,
+  :hover {
+    background-color: rgba(0, 0, 0, 0.8);
   }
 `;
 
 const LOGIN = gql`
-  query LogIn($email: String!, $password: String!) {
-    logIn(email: $email, password: $password)
+  query LogIn($account: LogInInput!) {
+    logIn(account: $account)
   }
 `;
 

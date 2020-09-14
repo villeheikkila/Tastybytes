@@ -7,7 +7,7 @@
 // GraphQL query operation: SearchTreats
 // ====================================================
 
-export interface SearchTreats_searchTreats_producedBy {
+export interface SearchTreats_searchTreats_company {
   __typename: "Company";
   name: string;
   id: string;
@@ -30,7 +30,7 @@ export interface SearchTreats_searchTreats {
   __typename: "Treat";
   id: string;
   name: string;
-  producedBy: SearchTreats_searchTreats_producedBy;
+  company: SearchTreats_searchTreats_company;
   reviews: SearchTreats_searchTreats_reviews[];
 }
 

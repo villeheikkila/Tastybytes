@@ -26,7 +26,9 @@ const AddReview: React.FC = () => {
   const onSubmit = handleSubmit(async ({ score, review }) => {
     try {
       const review2 = await createReview({
-        variables: { treatId: parseInt(id), score: parseInt(score), review },
+        variables: {
+          review: { treatId: parseInt(id), score: parseInt(score), review },
+        },
       });
 
       console.log("review: ", review2);
@@ -109,19 +111,19 @@ const Form = styled.form`
 `;
 
 const CREATE_REVIEW = gql`
-  mutation CreateReview($treatId: Float!, $score: Float!, $review: String!) {
-    createReview(treatId: $treatId, score: $score, review: $review) {
+  mutation CreateReview($review: ReviewInput!) {
+    createReview(review: $review) {
       id
     }
   }
 `;
 
 const GET_TREAT = gql`
-  query GetTreat($id: Float!) {
+  query GetTreat($id: ID!) {
     treat(id: $id) {
       id
       name
-      producedBy {
+      company {
         name
         id
       }

@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { AccountInput } from "./globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: CreateAccount
 // ====================================================
@@ -17,8 +19,5 @@ export interface CreateAccount {
 }
 
 export interface CreateAccountVariables {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
+  account: AccountInput;
 }

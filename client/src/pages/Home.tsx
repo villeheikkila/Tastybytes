@@ -38,7 +38,7 @@ const GET_REVIEWS = gql`
       score
       treat {
         name
-        producedBy {
+        company {
           name
         }
       }

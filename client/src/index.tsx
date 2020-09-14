@@ -10,6 +10,7 @@ import {
   ApolloProvider,
   split,
   HttpLink,
+  gql,
 } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
@@ -39,9 +40,14 @@ const link = split(
   wsLink,
   httpLink
 );
+const typeDefs = gql`
+  scalar GraphQL_CompanyName
+  scalar GraphQL_TreatName
+`;
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache: new InMemoryCache(),
+  typeDefs,
   link,
 });
 

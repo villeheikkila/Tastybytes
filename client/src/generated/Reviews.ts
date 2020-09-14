@@ -7,7 +7,7 @@
 // GraphQL query operation: Reviews
 // ====================================================
 
-export interface Reviews_reviews_treat_producedBy {
+export interface Reviews_reviews_treat_company {
   __typename: "Company";
   name: string;
 }
@@ -15,7 +15,7 @@ export interface Reviews_reviews_treat_producedBy {
 export interface Reviews_reviews_treat {
   __typename: "Treat";
   name: string;
-  producedBy: Reviews_reviews_treat_producedBy;
+  company: Reviews_reviews_treat_company;
 }
 
 export interface Reviews_reviews {

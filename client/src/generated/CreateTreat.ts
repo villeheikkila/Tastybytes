@@ -18,7 +18,7 @@ export interface CreateTreat {
 
 export interface CreateTreatVariables {
   name: string;
-  companyId: number;
-  categoryId: number;
-  subcategoryId: number;
+  companyId: string;
+  categoryId: string;
+  subcategoryId: string;
 }

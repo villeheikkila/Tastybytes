@@ -7,7 +7,7 @@
 // GraphQL query operation: GetTreat
 // ====================================================
 
-export interface GetTreat_treat_producedBy {
+export interface GetTreat_treat_company {
   __typename: "Company";
   name: string;
   id: string;
@@ -24,7 +24,7 @@ export interface GetTreat_treat {
   __typename: "Treat";
   id: string;
   name: string;
-  producedBy: GetTreat_treat_producedBy;
+  company: GetTreat_treat_company;
   reviews: GetTreat_treat_reviews[];
 }
 
@@ -33,5 +33,5 @@ export interface GetTreat {
 }
 
 export interface GetTreatVariables {
-  id: number;
+  id: string;
 }

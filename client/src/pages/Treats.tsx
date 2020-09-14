@@ -52,11 +52,11 @@ const Button = styled(Link)`
 `;
 
 const SEARCH_TREATS = gql`
-  query SearchTreats($searchTerm: String!) {
+  query SearchTreats($searchTerm: TreatName!) {
     searchTreats(searchTerm: $searchTerm) {
       id
       name
-      producedBy {
+      company {
         name
         id
       }

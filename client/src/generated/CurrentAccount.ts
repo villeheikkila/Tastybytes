@@ -11,7 +11,7 @@ export interface CurrentAccount_currentAccount {
   __typename: "Account";
   firstName: string;
   lastName: string;
-  email: string;
+  email: GraphQL_Email;
 }
 
 export interface CurrentAccount {

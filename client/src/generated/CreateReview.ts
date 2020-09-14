@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { ReviewInput } from "./globalTypes";
+
 // ====================================================
 // GraphQL mutation operation: CreateReview
 // ====================================================
@@ -17,7 +19,5 @@ export interface CreateReview {
 }
 
 export interface CreateReviewVariables {
-  treatId: number;
-  score: number;
-  review: string;
+  review: ReviewInput;
 }
