@@ -1,7 +1,6 @@
 import { Resolver, Query, Mutation, Arg, Authorized, ID } from 'type-graphql';
 import Category from '../entities/category.entity';
 import Subcategory from '../entities/subcategory.entity';
-import { GraphQLCategoryName } from '../utils/validators';
 
 @Resolver()
 export class SubcategoryResolver {
@@ -14,7 +13,7 @@ export class SubcategoryResolver {
   @Authorized()
   @Mutation(() => Subcategory)
   async createSubcategory(
-    @Arg('name', () => GraphQLCategoryName) name: string,
+    @Arg('name', () => String) name: string,
     @Arg('categoryId', () => ID) categoryId: number
   ): Promise<Subcategory> {
     const category = await Category.findOne({

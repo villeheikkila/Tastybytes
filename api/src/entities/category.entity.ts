@@ -5,8 +5,7 @@ import {
   Column,
   OneToMany,
   UpdateDateColumn,
-  CreateDateColumn,
-  ManyToOne
+  CreateDateColumn
 } from 'typeorm';
 import { ObjectType, Field, ID } from 'type-graphql';
 import Treat from './treat.entity';

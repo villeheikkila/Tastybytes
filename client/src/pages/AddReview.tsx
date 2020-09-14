@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Card from "../components/Card";
 import { GetTreat } from "../generated/GetTreat";
 import { CreateReview } from "../generated/CreateReview";
 
 const AddReview: React.FC = () => {
   const { id } = useParams();
-  const history = useHistory();
   const { data, loading } = useQuery<GetTreat>(GET_TREAT, {
     variables: { id: parseInt(id) },
   });
@@ -45,7 +44,7 @@ const AddReview: React.FC = () => {
     <>
       <Container>
         <span>{data.treat.name}</span>
-        <span>{data.treat.producedBy.name}</span>
+        <span>{data.treat.company.name}</span>
         <Form onSubmit={onSubmit}>
           <HeaderInput
             placeholder="Insert review"

@@ -8,23 +8,23 @@
 //==============================================================
 
 export interface AccountInput {
-  username: GraphQL_UserName;
-  email: GraphQL_Email;
-  password: GraphQL_Password;
+  username: string;
+  email: string;
+  password: string;
   captchaToken: string;
   firstName?: string | null;
   lastName?: string | null;
 }
 
 export interface LogInInput {
-  username: GraphQL_UserName;
-  password: GraphQL_Password;
+  username: string;
+  password: string;
 }
 
 export interface ReviewInput {
   treatId: string;
   score: number;
-  review?: GraphQL_ReviewText | null;
+  review?: string | null;
 }
 
 //==============================================================

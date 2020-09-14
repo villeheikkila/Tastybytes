@@ -33,7 +33,7 @@ export default class Account extends BaseEntity {
   @Column({ nullable: true })
   lastName: string;
 
-  @Field(() => GraphQLEmail)
+  @Field(() => String)
   @Column({ unique: true })
   email: string;
 

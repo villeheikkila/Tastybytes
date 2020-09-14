@@ -34,7 +34,7 @@ export class TreatResolver {
   @Query(() => [Treat])
   // TODO: Add more search terms
   async searchTreats(
-    @Arg('searchTerm', () => GraphQLTreatName) searchTerm: string
+    @Arg('searchTerm', () => String) searchTerm: string
   ): Promise<Treat[]> {
     const allTreats = await Treat.find();
 
@@ -50,7 +50,7 @@ export class TreatResolver {
   @Mutation(() => Treat)
   async createTreat(
     @Ctx() ctx: Context,
-    @Arg('name', () => GraphQLTreatName) name: string,
+    @Arg('name', () => String) name: string,
     @Arg('companyId', () => ID) companyId: number,
     @Arg('categoryId', () => ID) categoryId: number,
     @Arg('subcategoryId', () => ID) subcategoryId: number

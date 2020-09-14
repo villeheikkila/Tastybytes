@@ -18,9 +18,9 @@ import {
   LogInInput
 } from '../input/account.input';
 import { verifyRecaptcha } from '../utils/recaptcha';
-import { sendVerificationMail } from '../utils/sendMail';
+import { sendVerificationMail, sendResetPassword } from '../utils/sendMail';
 import Token from '../entities/tokens.entity';
-
+import { addHours } from 'date-fns';
 @Resolver()
 export class AccountResolver {
   @Authorized()
@@ -39,7 +39,7 @@ export class AccountResolver {
   async createAccount(
     @Arg('account') { password, email, captchaToken, ...rest }: AccountInput
   ): Promise<Account> {
-    const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, 12);
     const isHuman = await verifyRecaptcha(captchaToken);
 
     if (!isHuman) throw new Error(`Recaptcha failed!`);
@@ -50,9 +50,7 @@ export class AccountResolver {
       passwordHash
     });
 
-    const token = jwt.sign({ id: account.id }, JWT_PRIVATE_KEY, {
-      expiresIn: '2d'
-    });
+    const token = Math.random().toString(36).substr(2);
 
     const savedToken = Token.create({
       token
@@ -139,6 +137,63 @@ export class AccountResolver {
     );
   }
 
+  @Authorized()
+  @Query(() => Boolean)
+  async requestPasswordReset(
+    @Arg('email', () => String) email: string
+  ): Promise<boolean> {
+    const account = await Account.findOne({ where: { email } });
+
+    if (!account) throw new Error(`Account doesn't exist with that email.`);
+
+    const token = Math.random().toString(36).substr(2);
+    const savedToken = Token.create({
+      token
+    });
+
+    await savedToken.save();
+    account.tokens = [savedToken];
+    account.save();
+
+    sendResetPassword(token, email);
+
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async resetPassword(
+    @Arg('token', () => String) token: string,
+    @Arg('password', () => String) password: string
+  ): Promise<boolean> {
+    const tokenAccount = await Token.findOne({
+      where: { token },
+      relations: ['account']
+    });
+
+    if (!tokenAccount) throw new Error(`The token doesn't exist.`);
+
+    if (tokenAccount.isUsed)
+      throw new Error(`The token has already been used.`);
+
+    if (addHours(tokenAccount.createdDate, 24) > new Date())
+      throw new Error(`The token has expired!.`);
+
+    const accountData = await tokenAccount.account;
+    const account = await Account.findOne(accountData.id);
+
+    if (!account) throw new Error(`Account doesn't exist`);
+
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    account.passwordHash = passwordHash;
+    tokenAccount.isUsed = true;
+
+    account.save();
+    tokenAccount.save();
+
+    return true;
+  }
+
   @Mutation(() => Boolean)
   async verifyAccount(
     @Arg('token', () => String) token: string
@@ -147,17 +202,12 @@ export class AccountResolver {
       where: { token },
       relations: ['account']
     });
-    const decoded: any = jwt.verify(token, JWT_PRIVATE_KEY);
-
-    if (
-      typeof decoded === 'object' &&
-      'exp' in decoded &&
-      Date.now() >= decoded.exp * 1000
-    ) {
-      throw new Error(`Token has expired!`);
-    }
 
     if (!tokenAccount) throw new Error(`Token doesn't exist`);
+
+    if (addHours(tokenAccount.createdDate, 24) > new Date())
+      throw new Error(`The token has expired!.`);
+
     if (tokenAccount.isUsed) return false;
 
     const accountData = await tokenAccount.account;

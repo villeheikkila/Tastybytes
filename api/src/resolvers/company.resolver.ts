@@ -1,6 +1,5 @@
 import { Resolver, Query, Mutation, Arg, Authorized, ID } from 'type-graphql';
 import Company from '../entities/company.entity';
-import { GraphQLCompanyName } from '../utils/validators';
 
 @Resolver()
 export class CompanyResolver {
@@ -13,7 +12,7 @@ export class CompanyResolver {
   @Authorized()
   @Mutation(() => Company)
   async createCompany(
-    @Arg('name', () => GraphQLCompanyName) name: string
+    @Arg('name', () => String) name: string
   ): Promise<Company> {
     const company = Company.create({
       name

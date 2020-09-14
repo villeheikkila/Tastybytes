@@ -124,7 +124,7 @@ const Form = styled.form`
 
 const CREATE_TREAT = gql`
   mutation CreateTreat(
-    $name: TreatName!
+    $name: String!
     $companyId: ID!
     $categoryId: ID!
     $subcategoryId: ID!

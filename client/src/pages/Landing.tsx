@@ -76,6 +76,7 @@ const Landing = () => {
           <Button type="submit" />
         </Form>
         <StyledLink to="/signup">Sign Up!</StyledLink>
+        <button>Reset Password</button>
       </Content>
     </LogInPage>
   );

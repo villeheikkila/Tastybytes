@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useForm, Controller } from "react-hook-form";
 import styled from "styled-components";
@@ -67,6 +67,7 @@ const SignUp = () => {
               ref={register({
                 required: "You need input an email adress.",
                 pattern: {
+                  //eslint-disable-next-line
                   value: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
                   message: "The entered email address is not valid.",
                 },

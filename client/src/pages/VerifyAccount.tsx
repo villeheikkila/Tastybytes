@@ -20,11 +20,15 @@ const VerifyAccount = () => {
   };
 
   onClick();
-  return <div></div>;
+  return (
+    <div>
+      <input />
+    </div>
+  );
 };
 
 const VERIFY_EMAIL = gql`
-  mutation VerifyAccount($token: String!) {
+  mutation ChangePassword($token: String!) {
     verifyAccount(token: $token)
   }
 `;

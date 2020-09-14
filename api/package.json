@@ -29,6 +29,7 @@
     "bcryptjs": "^2.4.3",
     "boom": "^7.3.0",
     "cookie": "^0.4.1",
+    "date-fns": "^2.16.1",
     "graphql": "^14.7.0",
     "graphql-custom-types": "^1.6.0",
     "jsonwebtoken": "^8.5.1",

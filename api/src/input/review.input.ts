@@ -12,7 +12,7 @@ export class ReviewInput {
   @Max(5)
   score: number;
 
-  @Field(() => GrapQLReviewText, {
+  @Field(() => String, {
     nullable: true
   })
   review: string;
