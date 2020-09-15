@@ -8,8 +8,12 @@ import Spinner from "../components/Spinner";
 
 const Home = () => {
   const { data, loading } = useQuery<Reviews>(GET_REVIEWS);
+  console.log("loading: ", loading);
+  console.log("data: ", data);
 
   if (loading || !data) return <Spinner />;
+
+  console.log("moi");
 
   return (
     <div>
@@ -17,7 +21,7 @@ const Home = () => {
       <CardContainer>
         {data.reviews.map(({ id, score, review, treat }: any) => (
           <Card key={`review-card-${id}`}>
-            {review} {score} {treat.producedBy.name} {treat.name}
+            {review} {score} {treat.company.name} {treat.name}
           </Card>
         ))}
       </CardContainer>

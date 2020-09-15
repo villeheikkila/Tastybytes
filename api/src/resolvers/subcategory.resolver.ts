@@ -7,7 +7,7 @@ export class SubcategoryResolver {
   @Authorized()
   @Query(() => [Subcategory])
   subcategories(): Promise<Subcategory[]> {
-    return Subcategory.find({ relations: ['products'] });
+    return Subcategory.find({ relations: ['treats'] });
   }
 
   @Authorized()
@@ -45,12 +45,28 @@ export class SubcategoryResolver {
   @Authorized()
   @Query(() => Subcategory)
   async subcategory(
-    @Arg('id', () => ID) id: number
+    @Arg('id', () => ID, { nullable: true }) id?: number
   ): Promise<Subcategory | boolean> {
     const subcategory = await Subcategory.findOne({
       where: { id }
     });
 
     return subcategory || false;
+  }
+
+  @Authorized()
+  @Query(() => [Subcategory])
+  async subcategoriesByCategory(
+    @Arg('categoryId', () => ID) categoryId: number
+  ): Promise<Subcategory[] | boolean> {
+    const category = await Category.findOne({
+      where: { id: categoryId }
+    });
+
+    const subcategories = await Subcategory.find({
+      where: { category }
+    });
+
+    return subcategories || false;
   }
 }

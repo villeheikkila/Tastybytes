@@ -15,6 +15,8 @@ const Treats = () => {
     variables: { searchTerm },
   });
 
+  console.log("data: ", data);
+
   return (
     <div>
       <Header>Treats</Header>
@@ -64,8 +66,7 @@ const SEARCH_TREATS = gql`
         score
         review
         author {
-          firstName
-          lastName
+          username
         }
       }
     }

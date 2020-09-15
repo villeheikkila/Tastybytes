@@ -1,23 +1,32 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
-import { ReactComponent as DropdownIcon } from "../assets/plus.svg";
+import { ReactComponent as DropdownIcon } from "../../assets/plus.svg";
 import CreateCompany from "./CreateCompany";
-import { Categories } from "../generated/Categories";
+import { Companies } from "../../generated/Companies";
 
-const CategoryPicker: React.FC<{
+export interface Item {
+  value: string;
+  label: string;
+}
+
+const CompanyPicker: React.FC<{
   setSelected: (value: any) => void;
   selected: any;
 }> = ({ setSelected, selected }) => {
-  const { data, loading } = useQuery<Categories>(CATEGORIES);
+  const { data } = useQuery<Companies>(QUERY_COMPANIES);
 
   const [value, setValue] = useState("");
   const [show, setShow] = useState(false);
 
-  if (loading || !data) return null;
+  const companies =
+    data?.companies.map(({ id, name }) => ({
+      value: id,
+      label: name,
+    })) || [];
 
-  const filteredCompanies = data.categories.filter(({ name }: any) =>
-    new RegExp(value, "ig").test(name)
+  const filteredCompanies = companies.filter(({ label }) =>
+    new RegExp(value, "ig").test(label)
   );
 
   return (
@@ -36,12 +45,12 @@ const CategoryPicker: React.FC<{
 
       {show && <CreateCompany />}
 
-      {filteredCompanies.map((item: any) => (
+      {filteredCompanies.map((item: Item, i) => (
         <Selection
-          key={`search-companies-${item.id}`}
-          onClick={() => setSelected({ ...selected, category: item })}
+          key={`search-companies-${i}`}
+          onClick={() => setSelected({ ...selected, company: item })}
         >
-          {item.name}
+          {item.label}
         </Selection>
       ))}
     </Container>
@@ -86,18 +95,15 @@ const HeaderInput = styled.input`
   margin-bottom: 10px;
 `;
 
-const CATEGORIES = gql`
-  query Categories {
-    categories {
+const QUERY_COMPANIES = gql`
+  query Companies {
+    companies {
       id
       name
-      subcategories {
-        id
-        name
-      }
     }
   }
 `;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -110,4 +116,4 @@ const Container = styled.div`
   }
 `;
 
-export default CategoryPicker;
+export default CompanyPicker;

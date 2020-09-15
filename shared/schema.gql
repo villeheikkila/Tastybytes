@@ -84,7 +84,8 @@ type Query {
   company(id: ID!): Company!
   reviews: [Review!]!
   subcategories: [Subcategory!]!
-  subcategory(id: ID!): Subcategory!
+  subcategory(id: ID): Subcategory!
+  subcategoriesByCategory(categoryId: ID!): [Subcategory!]!
   treats: [Treat!]!
   treat(id: ID!): Treat!
   searchTreats(searchTerm: String!): [Treat!]!

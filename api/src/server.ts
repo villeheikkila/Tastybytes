@@ -21,7 +21,7 @@ import path from 'path';
     // await conn.runMigrations();
     const schema = await buildSchema({
       resolvers: [__dirname + '/resolvers/*.resolver.{ts,js}'],
-      emitSchemaFile: path.join(__dirname, '..', 'shared', 'schema.gql'),
+      emitSchemaFile: path.resolve(__dirname, '../shared/schema.gql'),
       validate: true,
       authChecker: ({ context }) => {
         if ('state' in context) {

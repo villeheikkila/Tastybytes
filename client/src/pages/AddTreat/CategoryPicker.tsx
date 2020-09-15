@@ -1,39 +1,30 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
-import { ReactComponent as DropdownIcon } from "../assets/plus.svg";
-import CreateCompany from "./CreateCompany";
-import { Companies } from "../generated/Companies";
+import { ReactComponent as DropdownIcon } from "../../assets/plus.svg";
+import { Categories } from "../../generated/Categories";
+import CreateCategoryForm from "./CreateCategory";
 
-export interface Item {
-  value: string;
-  label: string;
-}
-
-const CompanyPicker: React.FC<{
+const CategoryPicker: React.FC<{
   setSelected: (value: any) => void;
   selected: any;
 }> = ({ setSelected, selected }) => {
-  const { data } = useQuery<Companies>(QUERY_COMPANIES);
+  const { data, loading } = useQuery<Categories>(CATEGORIES);
 
   const [value, setValue] = useState("");
   const [show, setShow] = useState(false);
 
-  const companies =
-    data?.companies.map(({ id, name }) => ({
-      value: id,
-      label: name,
-    })) || [];
+  if (loading || !data) return null;
 
-  const filteredCompanies = companies.filter(({ label }) =>
-    new RegExp(value, "ig").test(label)
+  const filteredCompanies = data.categories.filter(({ name }: any) =>
+    new RegExp(value, "ig").test(name)
   );
 
   return (
     <Container>
       <FlexWrapper>
         <HeaderInput
-          placeholder="Search Companies..."
+          placeholder="Search Categories..."
           name="name"
           value={value}
           onChange={({ target }) => setValue(target.value)}
@@ -43,14 +34,14 @@ const CompanyPicker: React.FC<{
         </Button>
       </FlexWrapper>
 
-      {show && <CreateCompany />}
+      {show && <CreateCategoryForm />}
 
-      {filteredCompanies.map((item: Item, i) => (
+      {filteredCompanies.map((item: any) => (
         <Selection
-          key={`search-companies-${i}`}
-          onClick={() => setSelected({ ...selected, company: item })}
+          key={`search-companies-${item.id}`}
+          onClick={() => setSelected({ ...selected, category: item })}
         >
-          {item.label}
+          {item.name}
         </Selection>
       ))}
     </Container>
@@ -95,15 +86,18 @@ const HeaderInput = styled.input`
   margin-bottom: 10px;
 `;
 
-const QUERY_COMPANIES = gql`
-  query Companies {
-    companies {
+const CATEGORIES = gql`
+  query Categories {
+    categories {
       id
       name
+      subcategories {
+        id
+        name
+      }
     }
   }
 `;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -116,4 +110,4 @@ const Container = styled.div`
   }
 `;
 
-export default CompanyPicker;
+export default CategoryPicker;

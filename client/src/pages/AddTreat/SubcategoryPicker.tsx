@@ -1,30 +1,33 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
-import { ReactComponent as DropdownIcon } from "../assets/plus.svg";
-import CreateCompany from "./CreateCompany";
-import { Subcategories } from "../generated/Subcategories";
+import { ReactComponent as DropdownIcon } from "../../assets/plus.svg";
+import { SubcategoriesByCategory } from "../../generated/SubcategoriesByCategory";
+import CreateSubcategoryForm from "./CreateSubcategory";
 
 const SubcategoryPicker: React.FC<{
   setSelected: (value: any) => void;
   selected: any;
 }> = ({ setSelected, selected }) => {
-  const { data, loading } = useQuery<Subcategories>(SUBCATEGORIES);
+  const { data, loading } = useQuery<SubcategoriesByCategory>(SUBCATEGORIES, {
+    variables: { categoryId: selected.category.id },
+  });
+  console.log("data: ", data);
 
   const [value, setValue] = useState("");
   const [show, setShow] = useState(false);
 
   if (loading || !data) return null;
 
-  const filteredCompanies = data.subcategories.filter(({ name }: any) =>
-    new RegExp(value, "ig").test(name)
+  const filteredCompanies = data.subcategoriesByCategory.filter(
+    ({ name }: any) => new RegExp(value, "ig").test(name)
   );
 
   return (
     <Container>
       <FlexWrapper>
         <HeaderInput
-          placeholder="Search Companies..."
+          placeholder="Search Subcategories..."
           name="name"
           value={value}
           onChange={({ target }) => setValue(target.value)}
@@ -34,7 +37,7 @@ const SubcategoryPicker: React.FC<{
         </Button>
       </FlexWrapper>
 
-      {show && <CreateCompany />}
+      {show && <CreateSubcategoryForm categoryId={selected.category.id} />}
 
       {filteredCompanies.map((item: any) => (
         <Selection
@@ -87,8 +90,8 @@ const HeaderInput = styled.input`
 `;
 
 const SUBCATEGORIES = gql`
-  query Subcategories {
-    subcategories {
+  query SubcategoriesByCategory($categoryId: ID!) {
+    subcategoriesByCategory(categoryId: $categoryId) {
       id
       name
     }

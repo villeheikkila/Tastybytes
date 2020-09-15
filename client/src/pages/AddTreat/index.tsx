@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Input from "../components/Input";
+import Input from "../../components/Input";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
-import Portal from "../components/Portal";
-import Sheet from "../components/Sheet";
-import CompanyPicker from "../components/CompanyPicker";
-import { CreateTreat } from "../generated/CreateTreat";
-import CategoryPicker from "../components/CategoryPicker";
-import SubcategoryPicker from "../components/SubcategoryPicker";
 import { useHistory } from "react-router-dom";
-
-type ModalsType = "CATEGORY" | "COMPANY" | "SUBCATEGORY";
+import SubcategoryPicker from "./SubcategoryPicker";
+import CompanyPicker from "./CompanyPicker";
+import CategoryPicker from "./CategoryPicker";
+import { CreateTreat } from "../../generated/CreateTreat";
+import Portal from "../../components/Portal";
+import Sheet from "../../components/Sheet";
 
 const Modals = {
   CATEGORY: CategoryPicker,
   COMPANY: CompanyPicker,
   SUBCATEGORY: SubcategoryPicker,
 };
+
+type ModalsType = keyof typeof Modals;
 
 const AddTreat: React.FC = () => {
   const history = useHistory();
@@ -59,9 +59,7 @@ const AddTreat: React.FC = () => {
           />
 
           <Button onClick={() => setShowModal("COMPANY")}>
-            {!selected?.company
-              ? "Select the producer"
-              : selected.company.label}
+            {!selected?.company ? "Select the company" : selected.company.label}
           </Button>
 
           <Button onClick={() => setShowModal("CATEGORY")}>
@@ -70,7 +68,10 @@ const AddTreat: React.FC = () => {
               : selected["category"].name}
           </Button>
 
-          <Button onClick={() => setShowModal("SUBCATEGORY")}>
+          <Button
+            onClick={() => setShowModal("SUBCATEGORY")}
+            disabled={!selected?.category?.id}
+          >
             {!selected?.subcategory
               ? "Select the subcategory"
               : selected.subcategory.name}
