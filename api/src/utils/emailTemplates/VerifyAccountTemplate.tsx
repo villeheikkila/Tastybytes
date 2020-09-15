@@ -5,9 +5,6 @@ const VerifyAccountTemplate: FC<{ token: string }> = ({
   token
 }): JSX.Element => (
   <html lang="en-us">
-    <head>
-      <title>Hello World!</title>
-    </head>
     <body>
       <h1>HerQ</h1>
       <p>Verify account for HerQ app by clicking the link below</p>

@@ -5,6 +5,7 @@ import Card from "../components/Card";
 import styled from "styled-components";
 import { Reviews } from "../generated/Reviews";
 import Spinner from "../components/Spinner";
+import { motion } from "framer-motion";
 
 const Home = () => {
   const { data, loading } = useQuery<Reviews>(GET_REVIEWS);

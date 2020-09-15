@@ -1,9 +1,9 @@
 import React from "react";
 import { useQuery, gql, useLazyQuery } from "@apollo/client";
-import Card from "../components/Card";
+import Card from "../../components/Card";
 import styled from "styled-components";
-import Header from "../components/Header";
-import { CurrentAccount } from "../generated/CurrentAccount";
+import Header from "../../components/Header";
+import { CurrentAccount } from "../../generated/CurrentAccount";
 
 const Account = () => {
   const { data, loading } = useQuery<CurrentAccount>(CURRENT_ACCOUNT);
@@ -16,14 +16,12 @@ const Account = () => {
 
   if (loading || !data) return null;
 
-  const { firstName, lastName, email } = data.currentAccount;
+  const { username, email } = data.currentAccount;
   return (
     <div>
       <Header>Account</Header>
       <Card>
-        <span>First name: {firstName}</span>
-        <Divider />
-        <span>Last name: {lastName}</span>
+        <span>First name: {username}</span>
         <Divider /> <span>Emai: {email}</span>
         <Divider />
         <Button onClick={() => logOut()}>Log Out</Button>
@@ -57,8 +55,7 @@ const Divider = styled.div`
 const CURRENT_ACCOUNT = gql`
   query CurrentAccount {
     currentAccount {
-      firstName
-      lastName
+      username
       email
     }
   }

@@ -15,8 +15,7 @@ export interface SearchTreats_searchTreats_company {
 
 export interface SearchTreats_searchTreats_reviews_author {
   __typename: "Account";
-  firstName: string;
-  lastName: string;
+  username: string;
 }
 
 export interface SearchTreats_searchTreats_reviews {

@@ -1,21 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useForm, Controller } from "react-hook-form";
 import styled from "styled-components";
 import { ErrorMessage } from "@hookform/error-message";
 import ReCAPTCHA from "react-google-recaptcha";
-import { recaptchaSiteKey } from "..";
+import { recaptchaSiteKey } from "../..";
+import { useHistory } from "react-router-dom";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
+import Error from "../../components/Error";
+import Header from "../../components/Header";
+import Heading from "../../components/Heading";
 
 const SignUp = () => {
-  const [signUpMutation] = useMutation(CREATE_ACCOUNT);
+  const history = useHistory();
+  const [signUpMutation] = useMutation(CREATE_ACCOUNT, {
+    onCompleted: () => history.push("/email-sent/"),
+  });
   const { register, handleSubmit, watch, errors, control } = useForm<{
     username: string;
     email: string;
     password: string;
+    passwordCheck: string;
     captchaToken: string;
   }>();
-
-  console.log("errors: ", errors);
 
   const onSubmit = handleSubmit(
     async ({ password, email, username, captchaToken }) => {
@@ -34,13 +42,19 @@ const SignUp = () => {
   return (
     <Container>
       <Content>
-        <Header>HerQ</Header>
-        <Header>Create your Account</Header>
+        <Heading>HerQ</Heading>
+        <Heading>Create your Account</Heading>
+
+        <div style={{ height: "40px" }} />
+
         <Form onSubmit={onSubmit}>
-          <Label>
-            Username
+          <InputFieldContainer>
             <Input
               name="username"
+              type="text"
+              error={!!errors.username}
+              aria-invalid={errors.username ? "true" : "false"}
+              placeholder="Username"
               ref={register({
                 required: true,
                 minLength: {
@@ -58,12 +72,14 @@ const SignUp = () => {
               name="username"
               render={({ message }) => <Error>{message}</Error>}
             />
-          </Label>
+          </InputFieldContainer>
 
-          <Label>
-            Email
+          <InputFieldContainer>
             <Input
               name="email"
+              placeholder="Email"
+              error={!!errors.email}
+              aria-invalid={errors.email ? "true" : "false"}
               ref={register({
                 required: "You need input an email adress.",
                 pattern: {
@@ -78,13 +94,15 @@ const SignUp = () => {
               name="email"
               render={({ message }) => <Error>{message}</Error>}
             />
-          </Label>
+          </InputFieldContainer>
 
-          <Label>
-            Password
+          <InputFieldContainer>
             <Input
               name="password"
               type="password"
+              placeholder="Password"
+              error={!!errors.password}
+              aria-invalid={errors.password ? "true" : "false"}
               ref={register({
                 required: true,
                 minLength: {
@@ -97,14 +115,16 @@ const SignUp = () => {
               errors={errors}
               name="password"
               render={({ message }) => <Error>{message}</Error>}
-            />
-          </Label>
+            />{" "}
+          </InputFieldContainer>
 
-          <Label>
-            Confirm Password
+          <InputFieldContainer>
             <Input
               name="passwordCheck"
+              placeholder="Repeat Password"
               type="password"
+              error={!!errors.passwordCheck}
+              aria-invalid={errors.passwordCheck ? "true" : "false"}
               ref={register({
                 validate: (value) =>
                   value.length >= 6 && value === watch("password"),
@@ -115,7 +135,8 @@ const SignUp = () => {
               name="passwordCheck"
               render={({ message }) => <Error>{message}</Error>}
             />
-          </Label>
+          </InputFieldContainer>
+
           {recaptchaSiteKey && (
             <Controller
               control={control}
@@ -125,7 +146,8 @@ const SignUp = () => {
               )}
             />
           )}
-          <Button type="submit" />
+
+          <Button>Sign Up!</Button>
         </Form>
       </Content>
     </Container>
@@ -144,38 +166,6 @@ const Content = styled.div`
   flex-direction: column;
   justify-items: center;
   align-items: center;
-  padding: 10px;
-  width: 400px;
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 30px;
-
-  @media (max-width: 600px) {
-    width: 100vw;
-  }
-`;
-
-const Button = styled.input`
-  background-color: rgba(0, 0, 0, 0.4);
-  color: rgba(255, 255, 255, 0.847);
-  font-size: 24px;
-  padding: 5px;
-  border: none;
-  border-radius: 8px;
-  width: 250px;
-  outline: none;
-  height: 60px;
-  margin-bottom: 10px;
-
-  :focus,
-  :hover {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-`;
-
-const Header = styled.h1`
-  margin: 0;
-  padding-bottom: 10px;
 `;
 
 const Form = styled.form`
@@ -186,28 +176,12 @@ const Form = styled.form`
   align-items: center;
 `;
 
-const Error = styled.strong`
-  color: red;
-`;
-
-const Label = styled.label`
+const InputFieldContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
-  font-size: 12px;
-  text-transform: uppercase;
-  font-weight: 700;
-`;
-
-const Input = styled.input`
-  width: 70%;
-  height: 30px;
-  border-radius: 6px;
-  outline: none;
-  border: none;
-  padding: 4px;
-  margin-top: 4px;
+  align-items: center;
+  justify-items: center;
 `;
 
 const CREATE_ACCOUNT = gql`

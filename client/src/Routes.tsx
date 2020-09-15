@@ -9,12 +9,14 @@ import Spinner from "./components/Spinner";
 const Home = lazy(() => import("./pages/Home"));
 const Treats = lazy(() => import("./pages/Treats"));
 const Account = lazy(() => import("./pages/Account"));
-const Landing = lazy(() => import("./pages/Landing"));
-const SignUp = lazy(() => import("./pages/SignUp"));
+const Landing = lazy(() => import("./pages/Unauthorized/Landing"));
+const SignUp = lazy(() => import("./pages/Unauthorized/SignUp"));
 const AddTreat = lazy(() => import("./pages/AddTreat"));
 const AddReview = lazy(() => import("./pages/AddReview"));
-const VerifyAccount = lazy(() => import("./pages/VerifyAccount"));
-const PasswordReset = lazy(() => import("./pages/PasswordReset"));
+const CheckInbox = lazy(() => import("./pages/Unauthorized/CheckInbox"));
+
+const VerifyAccount = lazy(() => import("./pages/Unauthorized/VerifyAccount"));
+const PasswordReset = lazy(() => import("./pages/Unauthorized/PasswordReset"));
 
 const Router = () => {
   const { data, loading } = useQuery<IsLoggedIn>(CURRENT_ACCOUNT);
@@ -27,9 +29,11 @@ const Router = () => {
         <Route path="/verify-account/:token" exact>
           <VerifyAccount />
         </Route>
+
         <Route path="/password-reset/:token" exact>
           <PasswordReset />
         </Route>
+
         {!data?.currentAccount ? (
           <>
             <Route path="/signup" exact>
@@ -38,6 +42,10 @@ const Router = () => {
 
             <Route path="/" exact>
               <Landing />
+            </Route>
+
+            <Route path="/email-sent" exact>
+              <CheckInbox />
             </Route>
           </>
         ) : (

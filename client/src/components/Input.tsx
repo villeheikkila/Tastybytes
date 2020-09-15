@@ -1,15 +1,25 @@
 import styled from "styled-components";
 
-const Input = styled.input<{ width?: string }>`
-  background-color: inherit;
-  color: rgba(255, 255, 255, 0.847);
-  font-size: 38px;
-  padding: 10px;
-  border: none;
+const Input = styled.input<{ error?: boolean }>`
+  width: 70%;
+  height: 30px;
   outline: none;
-  width: ${(props) => props.width || "100%"};
-  height: 80px;
-  margin-bottom: 10px;
+  border: none;
+  height: 20px;
+  background-color: #333;
+  color: rgba(255, 255, 255, 1);
+  font-size: 16px;
+  height: 40px;
+  padding: 0px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+
+  ::placeholder {
+    color: #999;
+    font-size: 12px;
+  }
+
+  ${(props) => props.error && "box-shadow: inset 0 0 0 1px #f36;"}
 `;
 
 export default Input;

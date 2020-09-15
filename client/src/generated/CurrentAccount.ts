@@ -9,8 +9,7 @@
 
 export interface CurrentAccount_currentAccount {
   __typename: "Account";
-  firstName: string;
-  lastName: string;
+  username: string;
   email: string;
 }
 
