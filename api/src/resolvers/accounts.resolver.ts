@@ -18,9 +18,9 @@ import {
   LogInInput
 } from '../input/account.input';
 import { verifyRecaptcha } from '../utils/recaptcha';
-import { sendVerificationMail, sendResetPassword } from '../utils/sendMail';
 import Token from '../entities/tokens.entity';
 import { addHours } from 'date-fns';
+import { sendMail } from '../utils/sendMail';
 @Resolver()
 export class AccountResolver {
   @Authorized()
@@ -62,7 +62,7 @@ export class AccountResolver {
 
     await account.save();
 
-    await sendVerificationMail(token, email);
+    await sendMail(token, 'VERIFY', email);
     return account;
   }
 
@@ -155,7 +155,7 @@ export class AccountResolver {
     account.tokens = [savedToken];
     account.save();
 
-    sendResetPassword(token, email);
+    sendMail(token, 'RESET', email);
 
     return true;
   }
