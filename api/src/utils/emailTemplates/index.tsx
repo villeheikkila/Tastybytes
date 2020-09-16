@@ -8,12 +8,12 @@ export const getTemplate = (token: string) => ({
     html: ReactDOMServer.renderToStaticMarkup(
       <ResetPasswordTemplate token={token} />
     ),
-    subject: 'Reset Password for HerQ'
+    subject: 'Reset Password for Tastekeeper'
   },
   VERIFY: {
     html: ReactDOMServer.renderToStaticMarkup(
       <VerifyAccountTemplate token={token} />
     ),
-    subject: 'Verify Account for HerQ'
+    subject: 'Verify Account for Tastekeeper'
   }
 });

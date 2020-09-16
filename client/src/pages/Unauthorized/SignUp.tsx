@@ -42,7 +42,7 @@ const SignUp = () => {
   return (
     <Container>
       <Content>
-        <Heading>HerQ</Heading>
+        <Heading>Tastekeepr</Heading>
         <Heading>Create your Account</Heading>
 
         <div style={{ height: "40px" }} />

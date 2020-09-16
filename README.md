@@ -1,3 +1,3 @@
-## HerQ
+## Tastekeeper
 
 WIP

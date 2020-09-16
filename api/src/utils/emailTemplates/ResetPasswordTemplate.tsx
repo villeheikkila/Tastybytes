@@ -6,8 +6,8 @@ const ResetPasswordTemplate: FC<{ token: string }> = ({
 }): JSX.Element => (
   <html lang="en-us">
     <body>
-      <h1>HerQ</h1>
-      <p>Reset password for HerQ app by clicking the link below</p>
+      <h1>Tastekeeper</h1>
+      <p>Reset password for Tastekeeper app by clicking the link below</p>
       <a href={`${DOMAIN}/reset-password/${token}`}>Reset Password</a>
     </body>
   </html>
