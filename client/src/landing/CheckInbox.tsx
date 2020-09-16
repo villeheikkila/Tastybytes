@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as MailEnvelope } from "../../assets/mail.svg";
+import { ReactComponent as MailEnvelope } from "../assets/mail.svg";
 
 const CheckInbox = () => {
   return (

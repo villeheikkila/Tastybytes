@@ -7,6 +7,16 @@
 // GraphQL query operation: Reviews
 // ====================================================
 
+export interface Reviews_reviews_treat_category {
+  __typename: "Category";
+  name: string;
+}
+
+export interface Reviews_reviews_treat_subcategory {
+  __typename: "Subcategory";
+  name: string;
+}
+
 export interface Reviews_reviews_treat_company {
   __typename: "Company";
   name: string;
@@ -15,6 +25,8 @@ export interface Reviews_reviews_treat_company {
 export interface Reviews_reviews_treat {
   __typename: "Treat";
   name: string;
+  category: Reviews_reviews_treat_category;
+  subcategory: Reviews_reviews_treat_subcategory;
   company: Reviews_reviews_treat_company;
 }
 

@@ -1,15 +1,14 @@
 import React from "react";
-import { gql, useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { LogIn } from "../../generated/LogIn";
-import { ErrorMessage } from "@hookform/error-message";
+import { LogIn } from "../generated/LogIn";
 import { Link as RouterLink } from "react-router-dom";
-import Button from "../../components/Button";
-import Heading from "../../components/Heading";
-import Text from "../../components/Text";
-import Input from "../../components/Input";
-import Error from "../../components/Error";
+import Button from "../components/Button";
+import Heading from "../components/Heading";
+import Text from "../components/Text";
+import Input from "../components/Input";
+import { LOGIN } from "./grapqh";
 
 const Landing = () => {
   const [logIn] = useLazyQuery<LogIn>(LOGIN);
@@ -124,12 +123,6 @@ const Link = styled(RouterLink)`
   padding-left: 4px;
   color: #09f;
   font-weight: 600;
-`;
-
-const LOGIN = gql`
-  query LogIn($account: LogInInput!) {
-    logIn(account: $account)
-  }
 `;
 
 export default Landing;

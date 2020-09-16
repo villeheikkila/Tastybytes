@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
-import { ReactComponent as DropdownIcon } from "../../assets/plus.svg";
-import { Categories } from "../../generated/Categories";
+import { ReactComponent as DropdownIcon } from "../../../assets/plus.svg";
+import { Categories } from "../../../generated/Categories";
 import CreateCategoryForm from "./CreateCategory";
 
 const CategoryPicker: React.FC<{

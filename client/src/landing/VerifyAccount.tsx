@@ -1,9 +1,10 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
+import { VERIFY_EMAIL } from "./grapqh";
 
 const VerifyAccount = () => {
-  const { token } = useParams();
+  const { token } = useParams<{ token: string }>();
   const [verifyAccount] = useMutation(VERIFY_EMAIL);
 
   const onClick = async () => {
@@ -26,11 +27,5 @@ const VerifyAccount = () => {
     </div>
   );
 };
-
-const VERIFY_EMAIL = gql`
-  mutation ChangePassword($token: String!) {
-    verifyAccount(token: $token)
-  }
-`;
 
 export default VerifyAccount;

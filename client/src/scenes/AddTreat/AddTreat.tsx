@@ -4,12 +4,13 @@ import Input from "../../components/Input";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import { useHistory } from "react-router-dom";
-import SubcategoryPicker from "./SubcategoryPicker";
-import CompanyPicker from "./CompanyPicker";
-import CategoryPicker from "./CategoryPicker";
+import SubcategoryPicker from "./components/SubcategoryPicker";
+import CompanyPicker from "./components/CompanyPicker";
+import CategoryPicker from "./components/CategoryPicker";
 import { CreateTreat } from "../../generated/CreateTreat";
 import Portal from "../../components/Portal";
 import Sheet from "../../components/Sheet";
+import { CREATE_TREAT } from "./graphql";
 
 const Modals = {
   CATEGORY: CategoryPicker,
@@ -121,24 +122,6 @@ const HeaderInput = styled.input`
 const Form = styled.form`
   display: grid;
   grid-gap: 20px;
-`;
-
-const CREATE_TREAT = gql`
-  mutation CreateTreat(
-    $name: String!
-    $companyId: ID!
-    $categoryId: ID!
-    $subcategoryId: ID!
-  ) {
-    createTreat(
-      name: $name
-      companyId: $companyId
-      categoryId: $categoryId
-      subcategoryId: $subcategoryId
-    ) {
-      id
-    }
-  }
 `;
 
 const Container = styled.div`

@@ -2,20 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
-import { CreateCompany } from "../../generated/CreateCompany";
+import { CreateCompany } from "../../../generated/CreateCompany";
 
-const CreateCompanyForm: React.FC = () => {
+const CreateSubcategoryForm: React.FC<{ categoryId: number }> = ({
+  categoryId,
+}) => {
   const { register, handleSubmit } = useForm<{
     name: string;
   }>();
-  const [createCompany] = useMutation<CreateCompany>(CREATE_COMPANY, {
-    refetchQueries: ["Companies"],
+  const [createSubcategory] = useMutation<CreateCompany>(CREATE_SUBCATEGORY, {
+    refetchQueries: ["SubcategoriesByCategory"],
   });
 
   const onSubmit = handleSubmit(async ({ name }) => {
     try {
-      await createCompany({
-        variables: { name },
+      await createSubcategory({
+        variables: { name, categoryId },
       });
     } catch (error) {
       console.error(error);
@@ -25,7 +27,7 @@ const CreateCompanyForm: React.FC = () => {
   return (
     <Form onSubmit={onSubmit}>
       <Input
-        placeholder="Add new company"
+        placeholder="Add new subcategory"
         name="name"
         ref={register({ required: true })}
       />
@@ -68,12 +70,12 @@ const Form = styled.form`
   margin-bottom: 10px;
 `;
 
-const CREATE_COMPANY = gql`
-  mutation CreateCompany($name: String!) {
-    createCompany(name: $name) {
+const CREATE_SUBCATEGORY = gql`
+  mutation CreateSubcategory($name: String!, $categoryId: ID!) {
+    createSubcategory(name: $name, categoryId: $categoryId) {
       id
     }
   }
 `;
 
-export default CreateCompanyForm;
+export default CreateSubcategoryForm;

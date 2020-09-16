@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import Header from "../components/Header";
-import Card from "../components/Card";
+import Header from "../../components/Header";
 import styled from "styled-components";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import {
   SearchTreats,
   SearchTreats_searchTreats,
-} from "../generated/SearchTreats";
-import Input from "../components/LargeInput";
-import { ReactComponent as DropdownIcon } from "../assets/plus.svg";
+} from "../../generated/SearchTreats";
+import Input from "../../components/LargeInput";
+import { ReactComponent as DropdownIcon } from "../../assets/plus.svg";
 import { Link } from "react-router-dom";
-import Cards from "../components/Cards";
+import Cards from "../../components/Cards";
+import { SEARCH_TREATS } from "./graphql";
 
 const Treats = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,21 +35,13 @@ const Treats = () => {
       </FlexWrapper>
 
       {!loading && data && (
-        <Cards
-          reduceHeight={350}
-          data={data.searchTreats}
-          component={Card1}
-        ></Cards>
+        <Cards reduceHeight={350} data={data.searchTreats} component={Card1} />
       )}
     </div>
   );
 };
 
 const Card1 = (props: SearchTreats_searchTreats) => <>{props.company.name}</>;
-
-const Div = styled.div<{ color?: string }>`
-  background-color: ${(props) => props.color};
-`;
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -61,28 +53,4 @@ const Button = styled(Link)`
   border: none;
 `;
 
-const SEARCH_TREATS = gql`
-  query SearchTreats($searchTerm: String!) {
-    searchTreats(searchTerm: $searchTerm) {
-      id
-      name
-      company {
-        name
-        id
-      }
-      reviews {
-        score
-        review
-        author {
-          username
-        }
-      }
-    }
-  }
-`;
-
-const CardContainer = styled.div`
-  display: grid;
-  grid-gap: 15px;
-`;
 export default Treats;

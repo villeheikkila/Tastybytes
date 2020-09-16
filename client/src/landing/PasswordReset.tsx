@@ -4,9 +4,10 @@ import { gql, useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { ErrorMessage } from "@hookform/error-message";
 import { useForm } from "react-hook-form";
+import { PASSWORD_RESET } from "./grapqh";
 
 const PasswordReset = () => {
-  const { token } = useParams();
+  const { token }: { token: string } = useParams();
   const [resetPassword] = useMutation(PASSWORD_RESET);
   const { register, handleSubmit, watch, errors } = useForm<{
     password: string;
@@ -133,12 +134,6 @@ const Form = styled.form`
   grid-gap: 20px;
   justify-items: center;
   align-items: center;
-`;
-
-const PASSWORD_RESET = gql`
-  mutation PasswordResetMutation($token: String!, $password: String!) {
-    resetPassword(token: $token, password: $password)
-  }
 `;
 
 export default PasswordReset;

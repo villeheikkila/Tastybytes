@@ -1,39 +1,33 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
-import { ReactComponent as DropdownIcon } from "../../assets/plus.svg";
-import CreateCompany from "./CreateCompany";
-import { Companies } from "../../generated/Companies";
+import { ReactComponent as DropdownIcon } from "../../../assets/plus.svg";
+import { SubcategoriesByCategory } from "../../../generated/SubcategoriesByCategory";
+import CreateSubcategoryForm from "./CreateSubcategory";
 
-export interface Item {
-  value: string;
-  label: string;
-}
-
-const CompanyPicker: React.FC<{
+const SubcategoryPicker: React.FC<{
   setSelected: (value: any) => void;
   selected: any;
 }> = ({ setSelected, selected }) => {
-  const { data } = useQuery<Companies>(QUERY_COMPANIES);
+  const { data, loading } = useQuery<SubcategoriesByCategory>(SUBCATEGORIES, {
+    variables: { categoryId: selected.category.id },
+  });
+  console.log("data: ", data);
 
   const [value, setValue] = useState("");
   const [show, setShow] = useState(false);
 
-  const companies =
-    data?.companies.map(({ id, name }) => ({
-      value: id,
-      label: name,
-    })) || [];
+  if (loading || !data) return null;
 
-  const filteredCompanies = companies.filter(({ label }) =>
-    new RegExp(value, "ig").test(label)
+  const filteredCompanies = data.subcategoriesByCategory.filter(
+    ({ name }: any) => new RegExp(value, "ig").test(name)
   );
 
   return (
     <Container>
       <FlexWrapper>
         <HeaderInput
-          placeholder="Search Companies..."
+          placeholder="Search Subcategories..."
           name="name"
           value={value}
           onChange={({ target }) => setValue(target.value)}
@@ -43,14 +37,14 @@ const CompanyPicker: React.FC<{
         </Button>
       </FlexWrapper>
 
-      {show && <CreateCompany />}
+      {show && <CreateSubcategoryForm categoryId={selected.category.id} />}
 
-      {filteredCompanies.map((item: Item, i) => (
+      {filteredCompanies.map((item: any) => (
         <Selection
-          key={`search-companies-${i}`}
-          onClick={() => setSelected({ ...selected, company: item })}
+          key={`search-companies-${item.id}`}
+          onClick={() => setSelected({ ...selected, subcategory: item })}
         >
-          {item.label}
+          {item.name}
         </Selection>
       ))}
     </Container>
@@ -95,9 +89,9 @@ const HeaderInput = styled.input`
   margin-bottom: 10px;
 `;
 
-const QUERY_COMPANIES = gql`
-  query Companies {
-    companies {
+const SUBCATEGORIES = gql`
+  query SubcategoriesByCategory($categoryId: ID!) {
+    subcategoriesByCategory(categoryId: $categoryId) {
       id
       name
     }
@@ -116,4 +110,4 @@ const Container = styled.div`
   }
 `;
 
-export default CompanyPicker;
+export default SubcategoryPicker;

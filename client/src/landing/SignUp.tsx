@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { gql, useMutation } from "@apollo/client";
+import React from "react";
+import { useMutation } from "@apollo/client";
 import { useForm, Controller } from "react-hook-form";
 import styled from "styled-components";
 import { ErrorMessage } from "@hookform/error-message";
 import ReCAPTCHA from "react-google-recaptcha";
-import { recaptchaSiteKey } from "../..";
+import { recaptchaSiteKey } from "..";
 import { useHistory } from "react-router-dom";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
-import Error from "../../components/Error";
-import Header from "../../components/Header";
-import Heading from "../../components/Heading";
+import Button from "../components/Button";
+import Input from "../components/Input";
+import Error from "../components/Error";
+import Heading from "../components/Heading";
+import { CREATE_ACCOUNT } from "./grapqh";
 
 const SignUp = () => {
   const history = useHistory();
@@ -182,14 +182,6 @@ const InputFieldContainer = styled.div`
   width: 100%;
   align-items: center;
   justify-items: center;
-`;
-
-const CREATE_ACCOUNT = gql`
-  mutation CreateAccount($account: AccountInput!) {
-    createAccount(account: $account) {
-      id
-    }
-  }
 `;
 
 export default SignUp;

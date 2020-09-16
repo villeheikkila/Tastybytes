@@ -3,12 +3,13 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import Card from "../components/Card";
-import { GetTreat } from "../generated/GetTreat";
-import { CreateReview } from "../generated/CreateReview";
+import Card from "../../components/Card";
+import { GetTreat } from "../../generated/GetTreat";
+import { CreateReview } from "../../generated/CreateReview";
+import { GET_TREAT, CREATE_REVIEW } from "./grapqhl";
 
-const AddReview: React.FC = () => {
-  const { id } = useParams();
+export const AddReview: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const { data, loading } = useQuery<GetTreat>(GET_TREAT, {
     variables: { id: parseInt(id) },
   });
@@ -24,13 +25,11 @@ const AddReview: React.FC = () => {
 
   const onSubmit = handleSubmit(async ({ score, review }) => {
     try {
-      const review2 = await createReview({
+      await createReview({
         variables: {
           review: { treatId: parseInt(id), score: parseInt(score), review },
         },
       });
-
-      console.log("review: ", review2);
     } catch (error) {
       console.error(error);
     }
@@ -109,32 +108,6 @@ const Form = styled.form`
   grid-gap: 20px;
 `;
 
-const CREATE_REVIEW = gql`
-  mutation CreateReview($review: ReviewInput!) {
-    createReview(review: $review) {
-      id
-    }
-  }
-`;
-
-const GET_TREAT = gql`
-  query GetTreat($id: ID!) {
-    treat(id: $id) {
-      id
-      name
-      company {
-        name
-        id
-      }
-      reviews {
-        id
-        review
-        score
-      }
-    }
-  }
-`;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -147,5 +120,3 @@ const Container = styled.div`
     width: calc(100vw);
   }
 `;
-
-export default AddReview;
