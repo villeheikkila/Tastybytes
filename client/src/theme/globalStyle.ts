@@ -4,6 +4,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
     overflow-y: scroll;
     background-color: rgba(19, 19, 19);
     color: rgba(255, 255, 255, 1);
