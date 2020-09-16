@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 const useDimensions = () => {
   const [dimensions, setDimensions] = useState(getDimensions());
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleResize = () => setDimensions(getDimensions());
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);

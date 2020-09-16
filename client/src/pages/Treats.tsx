@@ -3,7 +3,10 @@ import Header from "../components/Header";
 import Card from "../components/Card";
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
-import { SearchTreats } from "../generated/SearchTreats";
+import {
+  SearchTreats,
+  SearchTreats_searchTreats,
+} from "../generated/SearchTreats";
 import Input from "../components/LargeInput";
 import { ReactComponent as DropdownIcon } from "../assets/plus.svg";
 import { Link } from "react-router-dom";
@@ -15,9 +18,6 @@ const Treats = () => {
   const { data, loading } = useQuery<SearchTreats>(SEARCH_TREATS, {
     variables: { searchTerm },
   });
-
-  if (!data) return null;
-  console.log("data: ", data);
 
   return (
     <div>
@@ -34,19 +34,22 @@ const Treats = () => {
         </Button>
       </FlexWrapper>
 
-      <CardContainer>
-        {!loading && data
-          ? data.searchTreats.map(({ name, id }) => (
-              <Card key={`treat-${id}`}>{name}</Card>
-            ))
-          : null}
-      </CardContainer>
-      <Cards data={data.searchTreats}>
-        <div style={{ background: "red" }}></div>
-      </Cards>
+      {!loading && data && (
+        <Cards
+          reduceHeight={350}
+          data={data.searchTreats}
+          component={Card1}
+        ></Cards>
+      )}
     </div>
   );
 };
+
+const Card1 = (props: SearchTreats_searchTreats) => <>{props.company.name}</>;
+
+const Div = styled.div<{ color?: string }>`
+  background-color: ${(props) => props.color};
+`;
 
 const FlexWrapper = styled.div`
   display: flex;
