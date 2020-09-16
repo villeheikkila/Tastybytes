@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import { Reviews } from "../generated/Reviews";
 import Spinner from "../components/Spinner";
 import Text from "../components/Text";
-import { useTransform, useMotionValue, motion } from "framer-motion";
+import {
+  useTransform,
+  useMotionValue,
+  motion,
+  motionValue,
+  useViewportScroll,
+} from "framer-motion";
 import useDimensions from "../hooks/useDimensions";
 
 const Home = () => {
   const { data, loading } = useQuery<Reviews>(GET_REVIEWS);
   const scrollY = useMotionValue(0);
-
   const { height: windowHeight, width: windowWidth } = useDimensions();
   const scale = useTransform(scrollY, [0, 100], [0, 1]);
   const opacity = useTransform(scrollY, [0, 100], [0, 1]);
   if (loading || !data) return <Spinner />;
-
   // Calculate the height of the CardContainer and the width of the Cards
   const draggableHeight = windowHeight - 150;
   const width = windowWidth > 800 ? 800 : windowWidth * 0.9;
@@ -28,8 +32,8 @@ const Home = () => {
       <Header>Home</Header>
       <RefreshIndicator
         style={{
-          scale: scale,
-          opacity: opacity,
+          scale,
+          opacity,
         }}
       />
       <CardContainer
@@ -74,9 +78,12 @@ const CardContainer = styled(motion.div)<{ height: number; width: number }>`
   width: ${(props) => `${props.width}px`};
   height: ${(props) => `${props.height}px`};
   border-radius: 10;
-  overflow: hidden;
   position: relative;
   transform: translateZ(0);
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    width: 0;
+  }
   cursor: grab;
 `;
 
