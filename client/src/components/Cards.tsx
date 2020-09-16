@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Header from "../components/Header";
-import { gql, useQuery } from "@apollo/client";
+import React from "react";
 import styled from "styled-components";
-import { Reviews } from "../generated/Reviews";
-import Spinner from "../components/Spinner";
-import Text from "../components/Text";
 import { useTransform, useMotionValue, motion } from "framer-motion";
 import useDimensions from "../hooks/useDimensions";
 
-const Home = () => {
-  const { data, loading } = useQuery<Reviews>(GET_REVIEWS);
+const Cards = ({ data, children }: { data: any[]; children: JSX.Element }) => {
   const scrollY = useMotionValue(0);
-
   const { height: windowHeight, width: windowWidth } = useDimensions();
   const scale = useTransform(scrollY, [0, 100], [0, 1]);
   const opacity = useTransform(scrollY, [0, 100], [0, 1]);
-  if (loading || !data) return <Spinner />;
 
   // Calculate the height of the CardContainer and the width of the Cards
   const draggableHeight = windowHeight - 150;
@@ -24,8 +16,7 @@ const Home = () => {
   const padding = 20;
 
   return (
-    <div>
-      <Header>Home</Header>
+    <>
       <RefreshIndicator
         style={{
           scale: scale,
@@ -49,24 +40,19 @@ const Home = () => {
             bottom: 0,
           }}
         >
-          {data.reviews.map(({ id, score, review, treat }: any, index) => (
+          {data.map((props: any, index: any) => (
             <Card
               width={width}
               height={height}
               top={(height + padding) * index}
               key={index}
             >
-              <CardHeader>
-                <Text>{treat.name}</Text> <Text>{treat.company.name}</Text>
-                <Text>{treat.category.name}</Text>
-                {treat.subcategory.name}
-              </CardHeader>
-              <CardScore>{score}</CardScore> <CardContent>{review}</CardContent>
+              {React.cloneElement(children, { ...props })}
             </Card>
           ))}
         </motion.div>
       </CardContainer>
-    </div>
+    </>
   );
 };
 
@@ -107,44 +93,4 @@ const RefreshIndicator = styled(motion.div)`
   left: 50%;
 `;
 
-const CardHeader = styled.div`
-  grid-area: "header";
-  font-size: 24px;
-  font-weight: 600;
-  display: grid;
-  grid-auto-flow: column;
-  height: 20px;
-  grid-template-columns: 1fr 1fr 0.5fr 0.5fr;
-`;
-
-const CardScore = styled.div`
-  grid-area: "score";
-`;
-
-const CardContent = styled.div`
-  grid-area: "content";
-`;
-
-const GET_REVIEWS = gql`
-  query Reviews {
-    reviews {
-      id
-      review
-      score
-      treat {
-        name
-        category {
-          name
-        }
-        subcategory {
-          name
-        }
-        company {
-          name
-        }
-      }
-    }
-  }
-`;
-
-export default Home;
+export default Cards;

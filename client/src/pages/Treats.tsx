@@ -4,9 +4,10 @@ import Card from "../components/Card";
 import styled from "styled-components";
 import { gql, useQuery } from "@apollo/client";
 import { SearchTreats } from "../generated/SearchTreats";
-import Input from "../components/Input";
+import Input from "../components/LargeInput";
 import { ReactComponent as DropdownIcon } from "../assets/plus.svg";
 import { Link } from "react-router-dom";
+import Cards from "../components/Cards";
 
 const Treats = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,6 +16,7 @@ const Treats = () => {
     variables: { searchTerm },
   });
 
+  if (!data) return null;
   console.log("data: ", data);
 
   return (
@@ -39,6 +41,9 @@ const Treats = () => {
             ))
           : null}
       </CardContainer>
+      <Cards data={data.searchTreats}>
+        <div style={{ background: "red" }}></div>
+      </Cards>
     </div>
   );
 };
