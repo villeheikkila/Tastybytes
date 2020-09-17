@@ -17,15 +17,14 @@ const Button: React.FC<{ onClick?: () => void }> = ({ children, onClick }) => (
 const MotionButton = styled(motion.button)`
   width: 180px;
   height: 20px;
-  background-color: #0af;
-  color: rgba(255, 255, 255, 0.847);
+  background-color: ${(props) => props.theme.colors.blue};
+  color: ${(props) => props.theme.colors.white};
   font-size: 20px;
   padding: 5px;
-  border: none;
   border-radius: 8px;
   width: 250px;
-  outline: none;
   height: 60px;
+  text-align: center;
 `;
 
 export default Button;

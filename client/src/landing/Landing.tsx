@@ -9,6 +9,8 @@ import Text from "../components/Text";
 import Input from "../components/Input";
 import { LOGIN } from "./grapqh";
 import Link from "../components/Link";
+import Spacer from "../components/Spacer";
+import Container from "../components/Container";
 
 const Landing = () => {
   const [logIn] = useLazyQuery<LogIn>(LOGIN);
@@ -31,17 +33,18 @@ const Landing = () => {
   });
 
   return (
-    <LogInPage>
-      <Content>
+    <Container centeredParent>
+      <Container y centered>
         <Heading>Welcome to Tastekeeper</Heading>
 
-        <div style={{ height: "8px" }} />
+        <Spacer y amount={8} />
 
-        <Flex>
-          <Text>Don't have an account?</Text> <Link to="/signup">Sign up!</Link>
-        </Flex>
+        <Container centered>
+          <Text>Don't have an account?</Text> <Spacer x amount={4} />
+          <Link to="/signup">Sign up!</Link>
+        </Container>
 
-        <div style={{ height: "40px" }} />
+        <Spacer y amount={40} />
 
         <Form onSubmit={onSubmit}>
           <Input
@@ -77,34 +80,14 @@ const Landing = () => {
             })}
           />
 
-          <div />
+          <Spacer />
 
           <Button>Login</Button>
         </Form>
-      </Content>
-    </LogInPage>
+      </Container>
+    </Container>
   );
 };
-
-const LogInPage = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  align-items: center;
-`;
-
-const Flex = styled.div`
-  display: flex;
-  text-align: center;
-  align-items: center;
-`;
 
 const Form = styled.form`
   display: grid;

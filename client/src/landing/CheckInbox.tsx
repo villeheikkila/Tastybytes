@@ -1,17 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as MailEnvelope } from "../assets/mail.svg";
+import Heading from "../components/Heading";
+import Spacer from "../components/Spacer";
+import Text from "../components/Text";
+import theme from "../theme";
 
 const CheckInbox = () => {
   return (
     <Container>
       <Content>
-        <MailEnvelope fill="#fff" width="80px" height="80px" />
-        <Header>Check your inbox</Header>
-        <p>
+        <MailEnvelope fill={theme.colors.white} width="80px" height="80px" />
+        <Heading>Check your inbox</Heading>
+
+        <Spacer y amount={10} />
+
+        <Text>
           We sent you an activation link. Make sure to check your spam folder
           too.
-        </p>
+        </Text>
       </Content>
     </Container>
   );
@@ -29,11 +36,6 @@ const Content = styled.div`
   flex-direction: column;
   justify-items: center;
   align-items: center;
-`;
-
-const Header = styled.h1`
-  margin: 0;
-  padding-bottom: 10px;
 `;
 
 export default CheckInbox;

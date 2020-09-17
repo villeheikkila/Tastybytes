@@ -11,6 +11,8 @@ import Input from "../components/Input";
 import Error from "../components/Error";
 import Heading from "../components/Heading";
 import { CREATE_ACCOUNT } from "./grapqh";
+import Container from "../components/Container";
+import Spacer from "../components/Spacer";
 
 const SignUp = () => {
   const history = useHistory();
@@ -40,12 +42,12 @@ const SignUp = () => {
   );
 
   return (
-    <Container>
-      <Content>
+    <Container centeredParent>
+      <Container y centered>
         <Heading>Tastekeepr</Heading>
-        <Heading>Create your Account</Heading>
+        <Heading tag="h3">Create your Account</Heading>
 
-        <div style={{ height: "40px" }} />
+        <Spacer y amount={40} />
 
         <Form onSubmit={onSubmit}>
           <InputFieldContainer>
@@ -149,24 +151,10 @@ const SignUp = () => {
 
           <Button>Sign Up!</Button>
         </Form>
-      </Content>
+      </Container>
     </Container>
   );
 };
-
-const Container = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  align-items: center;
-`;
 
 const Form = styled.form`
   display: grid;
