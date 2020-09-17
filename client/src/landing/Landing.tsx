@@ -3,12 +3,12 @@ import { useLazyQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { LogIn } from "../generated/LogIn";
-import { Link as RouterLink } from "react-router-dom";
 import Button from "../components/Button";
 import Heading from "../components/Heading";
 import Text from "../components/Text";
 import Input from "../components/Input";
 import { LOGIN } from "./grapqh";
+import Link from "../components/Link";
 
 const Landing = () => {
   const [logIn] = useLazyQuery<LogIn>(LOGIN);
@@ -112,17 +112,6 @@ const Form = styled.form`
   grid-gap: 20px;
   justify-items: center;
   align-items: center;
-`;
-
-const Link = styled(RouterLink)`
-  color: rgba(255, 255, 255, 0.847);
-  outline: none;
-  text-decoration: none;
-  text-align: center;
-  cursor: pointer;
-  padding-left: 4px;
-  color: #09f;
-  font-weight: 600;
 `;
 
 export default Landing;

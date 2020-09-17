@@ -1,13 +1,15 @@
 import { createGlobalStyle } from "styled-components";
+import theme from ".";
 
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
+    line-height: 1;
     font-size: 16px;
     font-family: 'Open Sans', sans-serif;
     overflow-y: scroll;
-    background-color: rgba(19, 19, 19);
-    color: rgba(255, 255, 255, 1);
+    background-color: ${theme.colors.backgroundColor};
+    color: ${theme.colors.white};
     -webkit-overflow-scrolling: touch;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
@@ -121,9 +123,7 @@ const GlobalStyle = createGlobalStyle`
   *[hidden] {
     display: none;
   }
-  body {
-    line-height: 1;
-  }
+ 
   ol,
   ul {
     list-style: none;
