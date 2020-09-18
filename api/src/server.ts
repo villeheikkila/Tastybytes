@@ -14,6 +14,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import Cookie from 'cookie';
 import cors from '@koa/cors';
 import path from 'path';
+import { graphqlUploadKoa } from 'graphql-upload';
 
 (async () => {
   try {
@@ -33,6 +34,7 @@ import path from 'path';
 
     const server = new ApolloServer({
       schema,
+      uploads: false,
       context: ({ ctx, connection }) => {
         if (ctx) {
           return ctx;
@@ -79,6 +81,13 @@ import path from 'path';
         cookie: JWT_PUBLIC_KEY,
         secret: JWT_PRIVATE_KEY,
         passthrough: true
+      })
+    );
+
+    app.use(
+      graphqlUploadKoa({
+        maxFileSize: 10000000,
+        maxFiles: 20
       })
     );
 

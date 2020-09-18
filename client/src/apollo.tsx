@@ -3,12 +3,12 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
   split,
-  HttpLink,
 } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
+import { createUploadLink } from "apollo-upload-client";
 
-const httpLink = new HttpLink({
+const httpLink = createUploadLink({
   uri: `http://${window.location.hostname}:${process.env.REACT_APP_API_PORT}/graphql`,
   credentials: "include",
 });

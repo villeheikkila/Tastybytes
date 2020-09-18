@@ -21,6 +21,10 @@ import { verifyRecaptcha } from '../utils/recaptcha';
 import Token from '../entities/tokens.entity';
 import { addHours } from 'date-fns';
 import { sendMail } from '../utils/sendMail';
+import { GraphQLUpload } from 'graphql-upload';
+import { createWriteStream } from 'fs';
+import { Stream } from 'stream';
+
 @Resolver()
 export class AccountResolver {
   @Authorized()
@@ -223,4 +227,26 @@ export class AccountResolver {
 
     return true;
   }
+
+  @Mutation(() => Boolean)
+  async uploadProfilePicture(
+    @Arg('picture', () => GraphQLUpload)
+    { createReadStream, filename }: Upload
+  ): Promise<boolean> {
+    createReadStream;
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve, reject) =>
+      createReadStream()
+        .pipe(createWriteStream(__dirname + `/../../uploads/${filename}`))
+        .on('finish', () => resolve(true))
+        .on('error', () => reject(false))
+    );
+  }
+}
+
+export interface Upload {
+  filename: string;
+  mimetype: string;
+  encoding: string;
+  createReadStream: () => Stream;
 }

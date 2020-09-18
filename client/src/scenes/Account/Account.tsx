@@ -6,6 +6,7 @@ import { CurrentAccount } from "../../generated/CurrentAccount";
 import { LOG_OUT, CURRENT_ACCOUNT } from "./grapqhl";
 import Button from "../../components/Button";
 import Text from "../../components/Text";
+import UploadFile from "../../components/UploadImage";
 
 const Account = () => {
   const { data, loading } = useQuery<CurrentAccount>(CURRENT_ACCOUNT);
@@ -26,6 +27,7 @@ const Account = () => {
         <Text>Username: {username}</Text>
         <Text>Emai: {email}</Text>
         <Button onClick={() => logOut()}>Log Out</Button>
+        <UploadFile />
       </Card>
     </div>
   );
