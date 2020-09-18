@@ -21,7 +21,7 @@
     }
   ],
   "start_url": "/",
-  "scope": "/",
+  "scope": ".",
   "display": "fullscreen",
   "description": "Keep notes on the good stuff!",
   "theme_color": "#dddd",

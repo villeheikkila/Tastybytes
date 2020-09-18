@@ -90,7 +90,6 @@ const Page = styled.div`
   min-height: calc(100vh - 60px);
   max-width: 800px;
   margin: 0 auto;
-  padding-bottom: env(safe-area-inset-bottom);
 `;
 
 const CURRENT_ACCOUNT = gql`

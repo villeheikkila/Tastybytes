@@ -20,7 +20,6 @@ const Treats = () => {
 
   return (
     <div>
-      <Header>Treats</Header>
       <Container>
         <Input
           value={searchTerm}
@@ -34,7 +33,7 @@ const Treats = () => {
 
       {!loading && data && (
         <Cards
-          reduceHeight={350}
+          reduceHeight={150}
           data={data.searchTreats}
           component={TreatCard}
         />

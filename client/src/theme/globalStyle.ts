@@ -206,6 +206,10 @@ const GlobalStyle = createGlobalStyle`
   textarea {
     user-select: text;
   }
+  body { font-size: 16px; }
+  
+  input, 
+  select { font-size: 100%; }
 `;
 
 export default GlobalStyle;
