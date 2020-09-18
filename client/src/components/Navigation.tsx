@@ -55,7 +55,7 @@ const Container = styled.div`
   padding: 5px;
   width: 100%;
   height: 60px;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(21, 21, 21);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
 `;
 

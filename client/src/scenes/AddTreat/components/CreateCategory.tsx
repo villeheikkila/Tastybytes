@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
+import { CREATE_CATEGORY } from "../graphql";
 
 const CreateCategoryForm: React.FC = () => {
   const { register, handleSubmit } = useForm<{
@@ -65,14 +66,6 @@ const Button = styled.input`
 const Form = styled.form`
   display: flex;
   margin-bottom: 10px;
-`;
-
-const CREATE_CATEGORY = gql`
-  mutation CreateCategory($name: String!) {
-    createCategory(name: $name) {
-      id
-    }
-  }
 `;
 
 export default CreateCategoryForm;

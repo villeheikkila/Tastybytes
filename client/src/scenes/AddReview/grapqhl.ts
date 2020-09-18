@@ -17,6 +17,14 @@ export const GET_TREAT = gql`
         name
         id
       }
+      category {
+        name
+        id
+      }
+      subcategory {
+        name
+        id
+      }
       reviews {
         id
         review

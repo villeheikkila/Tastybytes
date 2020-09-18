@@ -9,6 +9,14 @@ export const SEARCH_TREATS = gql`
         name
         id
       }
+      category {
+        id
+        name
+      }
+      subcategory {
+        id
+        name
+      }
       reviews {
         score
         review

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useTransform, useMotionValue, motion } from "framer-motion";
 import useDimensions from "../hooks/useDimensions";
@@ -85,7 +85,7 @@ const Card = styled(motion.div)<{
 }>`
   border-radius: 8px;
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: ${(props) => props.theme.colors.primary};
   width: ${(props) => `${props.width}px`};
   height: ${(props) => `${props.height}px`};
   padding: 10px;

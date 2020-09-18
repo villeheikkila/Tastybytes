@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { CreateCompany } from "../../../generated/CreateCompany";
+import { CREATE_SUBCATEGORY } from "../graphql";
 
 const CreateSubcategoryForm: React.FC<{ categoryId: number }> = ({
   categoryId,
@@ -68,14 +69,6 @@ const Button = styled.input`
 const Form = styled.form`
   display: flex;
   margin-bottom: 10px;
-`;
-
-const CREATE_SUBCATEGORY = gql`
-  mutation CreateSubcategory($name: String!, $categoryId: ID!) {
-    createSubcategory(name: $name, categoryId: $categoryId) {
-      id
-    }
-  }
 `;
 
 export default CreateSubcategoryForm;

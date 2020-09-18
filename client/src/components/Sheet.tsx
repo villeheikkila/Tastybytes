@@ -58,7 +58,7 @@ const Container = styled(motion.div)`
   bottom: 0;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
-  background-color: rgba(31, 31, 31);
+  background-color: ${(props) => props.theme.colors.primary};
   box-shadow: 0px -2px 16px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;

@@ -13,6 +13,18 @@ export interface SearchTreats_searchTreats_company {
   id: string;
 }
 
+export interface SearchTreats_searchTreats_category {
+  __typename: "Category";
+  id: string;
+  name: string;
+}
+
+export interface SearchTreats_searchTreats_subcategory {
+  __typename: "Subcategory";
+  id: string;
+  name: string;
+}
+
 export interface SearchTreats_searchTreats_reviews_author {
   __typename: "Account";
   username: string;
@@ -30,6 +42,8 @@ export interface SearchTreats_searchTreats {
   id: string;
   name: string;
   company: SearchTreats_searchTreats_company;
+  category: SearchTreats_searchTreats_category;
+  subcategory: SearchTreats_searchTreats_subcategory;
   reviews: SearchTreats_searchTreats_reviews[];
 }
 

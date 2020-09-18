@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { CreateCompany } from "../../../generated/CreateCompany";
+import { CREATE_COMPANY } from "../graphql";
 
 const CreateCompanyForm: React.FC = () => {
   const { register, handleSubmit } = useForm<{
@@ -66,14 +67,6 @@ const Button = styled.input`
 const Form = styled.form`
   display: flex;
   margin-bottom: 10px;
-`;
-
-const CREATE_COMPANY = gql`
-  mutation CreateCompany($name: String!) {
-    createCompany(name: $name) {
-      id
-    }
-  }
 `;
 
 export default CreateCompanyForm;

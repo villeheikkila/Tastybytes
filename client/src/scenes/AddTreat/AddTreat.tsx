@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Input from "../../components/Input";
 import { useForm } from "react-hook-form";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import SubcategoryPicker from "./components/SubcategoryPicker";
 import CompanyPicker from "./components/CompanyPicker";
@@ -11,6 +10,8 @@ import { CreateTreat } from "../../generated/CreateTreat";
 import Portal from "../../components/Portal";
 import Sheet from "../../components/Sheet";
 import { CREATE_TREAT } from "./graphql";
+import Button from "../../components/Button";
+import HeaderInput from "../../components/HeaderInput";
 
 const Modals = {
   CATEGORY: CategoryPicker,
@@ -59,26 +60,26 @@ const AddTreat: React.FC = () => {
             ref={register({ required: true })}
           />
 
-          <Button onClick={() => setShowModal("COMPANY")}>
+          <SelectionButton onClick={() => setShowModal("COMPANY")}>
             {!selected?.company ? "Select the company" : selected.company.label}
-          </Button>
+          </SelectionButton>
 
-          <Button onClick={() => setShowModal("CATEGORY")}>
+          <SelectionButton onClick={() => setShowModal("CATEGORY")}>
             {!selected?.category
               ? "Select the category"
               : selected["category"].name}
-          </Button>
+          </SelectionButton>
 
-          <Button
+          <SelectionButton
             onClick={() => setShowModal("SUBCATEGORY")}
             disabled={!selected?.category?.id}
           >
             {!selected?.subcategory
               ? "Select the subcategory"
               : selected.subcategory.name}
-          </Button>
+          </SelectionButton>
 
-          <Input type="submit" value="Submit" />
+          <Button type="submit">Submit!</Button>
         </Form>
       </Container>
       {showModal && Modal && (
@@ -92,15 +93,15 @@ const AddTreat: React.FC = () => {
   );
 };
 
-const Button = styled.button`
+const SelectionButton = styled.button`
   border: none;
   outline: none;
-  width: 100%;
+  font-size: 28px;
   text-align: center;
   background-color: inherit;
-  color: rgba(255, 255, 255, 0.847);
-  border-top: solid 1px rgba(255, 255, 255, 0.247);
-  border-bottom: solid 1px rgba(255, 255, 255, 0.247);
+  color: ${(props) => props.theme.colors.white};
+  border-top: solid 1px ${(props) => props.theme.colors.darkGray};
+  border-bottom: solid 1px ${(props) => props.theme.colors.darkGray};
   padding: 8px;
 
   :hover {
@@ -108,29 +109,17 @@ const Button = styled.button`
   }
 `;
 
-const HeaderInput = styled.input`
-  background-color: inherit;
-  color: rgba(255, 255, 255, 0.847);
-  font-size: 38px;
-  padding: 10px;
-  border: none;
-  outline: none;
-  width: 100%;
-  height: 80px;
-`;
-
 const Form = styled.form`
   display: grid;
   grid-gap: 20px;
+  width: 100%;
 `;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
-  max-width: 600px;
-  font-size: 28px;
-  border-radius: 8px;
+  width: 800px;
 
   @media (max-width: 800px) {
     width: calc(100vw);

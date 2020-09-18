@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
     line-height: 1;
     font-size: 16px;
     font-family: 'Open Sans', sans-serif;
-    overflow-y: scroll;
+    overflow-y: none;
     background-color: ${theme.colors.backgroundColor};
     color: ${theme.colors.white};
     -webkit-overflow-scrolling: touch;

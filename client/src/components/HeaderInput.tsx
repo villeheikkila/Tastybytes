@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-const Input = styled.input<{ width?: string }>`
+const HeaderInput = styled.input<{ width?: string }>`
   background-color: inherit;
-  color: rgba(255, 255, 255, 0.847);
+  color: ${(props) => props.theme.colors.white};
   font-size: 38px;
   padding: 10px;
   border: none;
@@ -12,4 +12,4 @@ const Input = styled.input<{ width?: string }>`
   margin-bottom: 10px;
 `;
 
-export default Input;
+export default HeaderInput;

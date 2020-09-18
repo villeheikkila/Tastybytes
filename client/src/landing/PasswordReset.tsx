@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { ErrorMessage } from "@hookform/error-message";
 import { useForm } from "react-hook-form";

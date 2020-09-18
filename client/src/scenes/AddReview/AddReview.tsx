@@ -1,12 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import Card from "../../components/Card";
-import { GetTreat } from "../../generated/GetTreat";
+import { GetTreat, GetTreat_treat_reviews } from "../../generated/GetTreat";
 import { CreateReview } from "../../generated/CreateReview";
 import { GET_TREAT, CREATE_REVIEW } from "./grapqhl";
+import Heading from "../../components/Heading";
+import Text from "../../components/Text";
+import Spacer from "../../components/Spacer";
+import Container from "../../components/Container";
+import Cards from "../../components/Cards";
+import Button from "../../components/Button";
 
 export const AddReview: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -40,75 +45,104 @@ export const AddReview: React.FC = () => {
   const reviews = data.treat.reviews;
 
   return (
-    <>
-      <Container>
-        <span>{data.treat.name}</span>
-        <span>{data.treat.company.name}</span>
+    <Page>
+      <Card>
+        <Heading>{data.treat.name}</Heading>
+        <Spacer y amount={12} />
+        <Text>{data.treat.company.name}</Text>
+        <Spacer y amount={12} />
+        <Container>
+          <Chip>
+            <Text>{data.treat.category.name} </Text>
+          </Chip>
+          <Spacer x amount={8} />
+          <Chip>
+            <Text>{data.treat.subcategory.name}</Text>
+          </Chip>
+        </Container>
+      </Card>
+
+      <Spacer y amount={20} />
+
+      <Card>
         <Form onSubmit={onSubmit}>
-          <HeaderInput
+          <TextArea
             placeholder="Insert review"
             name="review"
-            ref={register({ required: true })}
+            rows={5}
+            ref={register({ required: false })}
           />
-          <HeaderInput
+          <Input
             placeholder="Insert score"
             name="score"
             ref={register({ required: true })}
           />
 
-          <Button type="submit" value="Submit" />
+          <Button>Check-in!</Button>
         </Form>
+      </Card>
 
-        <CardContainer>
-          {reviews.map(({ id, score, review }: any) => (
-            <Card key={`review-card-${id}`}>
-              {review} {score}
-            </Card>
-          ))}
-        </CardContainer>
-      </Container>
-    </>
+      <Spacer y amount={20} />
+
+      <Cards reduceHeight={550} data={reviews} component={ReviewCard} />
+    </Page>
   );
 };
 
-const Button = styled.input`
-  border: none;
-  outline: none;
-  width: 100%;
-  text-align: center;
-  background-color: inherit;
-  color: rgba(255, 255, 255, 0.847);
-  border-top: solid 1px rgba(255, 255, 255, 0.247);
-  border-bottom: solid 1px rgba(255, 255, 255, 0.247);
-  padding: 8px;
+const ReviewCard = ({ review, score }: GetTreat_treat_reviews) => (
+  <>
+    {review} {score}
+  </>
+);
 
-  :hover {
-    opacity: 0.8;
-  }
+const Input = styled.input`
+  background-color: ${(props) => props.theme.colors.primary};
+  border: none;
+  padding: 4px;
+  font-family: ${(props) => props.theme.typography.body.fontFamily};
+  font-size: ${(props) =>
+    props.theme.typography.fontSizes[props.theme.typography.body.size]};
+  font-weight: ${(props) => props.theme.typography.body.fontWeight};
+  color: rgba(255, 255, 255, 1);
+  width: 100%;
 `;
 
-const HeaderInput = styled.input`
-  background-color: inherit;
-  color: rgba(255, 255, 255, 0.847);
-  font-size: 38px;
-  padding: 10px;
+const TextArea = styled.textarea`
+  border-radius: 8px;
+  display: block;
+  border: 1px solid ${(props) => props.theme.colors.black};
+  background-color: ${(props) => props.theme.colors.primary};
   border: none;
-  outline: none;
+  font-family: ${(props) => props.theme.typography.body.fontFamily};
+  font-size: ${(props) =>
+    props.theme.typography.fontSizes[props.theme.typography.body.size]};
+  font-weight: ${(props) => props.theme.typography.body.fontWeight};
+  color: rgba(255, 255, 255, 1);
+  line-height: ${(props) => props.theme.typography.body.fontHeight};
+  resize: none;
   width: 100%;
-  height: 80px;
 `;
 
-const CardContainer = styled.div`
-  display: grid;
-  grid-gap: 10px;
+const Chip = styled.div`
+  border-radius: 8px;
+  padding: 4px;
+  background-color: ${(props) => props.theme.colors.blue};
+`;
+
+const Card = styled.div`
+  border-radius: 8px;
+  background-color: ${(props) => props.theme.colors.primary};
+  padding: 20px;
+  max-width: 800px;
 `;
 
 const Form = styled.form`
   display: grid;
+  width: 100%;
   grid-gap: 20px;
 `;
 
-const Container = styled.div`
+const Page = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;

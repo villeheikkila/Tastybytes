@@ -13,6 +13,18 @@ export interface GetTreat_treat_company {
   id: string;
 }
 
+export interface GetTreat_treat_category {
+  __typename: "Category";
+  name: string;
+  id: string;
+}
+
+export interface GetTreat_treat_subcategory {
+  __typename: "Subcategory";
+  name: string;
+  id: string;
+}
+
 export interface GetTreat_treat_reviews {
   __typename: "Review";
   id: string;
@@ -25,6 +37,8 @@ export interface GetTreat_treat {
   id: string;
   name: string;
   company: GetTreat_treat_company;
+  category: GetTreat_treat_category;
+  subcategory: GetTreat_treat_subcategory;
   reviews: GetTreat_treat_reviews[];
 }
 
