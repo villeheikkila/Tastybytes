@@ -10,7 +10,14 @@ export class ReviewResolver {
   @Authorized()
   @Query(() => [Review])
   reviews(): Promise<Review[]> {
-    return Review.find({ relations: ['author', 'treat'] });
+    return Review.find({
+      relations: ['author', 'treat'],
+      skip: 0,
+      take: 10,
+      order: {
+        createdDate: 'ASC'
+      }
+    });
   }
 
   @Authorized()

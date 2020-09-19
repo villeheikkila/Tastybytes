@@ -16,12 +16,12 @@ import cors from '@koa/cors';
 import path from 'path';
 import { graphqlUploadKoa } from 'graphql-upload';
 import { GraphQLDatabaseLoader } from '@mando75/typeorm-graphql-loader';
-import queryComplexity, {
+import {
   fieldExtensionsEstimator,
   getComplexity,
   simpleEstimator
 } from 'graphql-query-complexity';
-import { GraphQLError, separateOperations } from 'graphql';
+import { separateOperations } from 'graphql';
 
 (async () => {
   try {
