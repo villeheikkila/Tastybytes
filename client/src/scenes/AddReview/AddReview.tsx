@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "@apollo/client";
@@ -12,8 +12,12 @@ import Spacer from "../../components/Spacer";
 import Container from "../../components/Container";
 import Cards from "../../components/Cards";
 import Button from "../../components/Button";
+import StarPicker from "../../components/StarPicker";
 
 export const AddReview: React.FC = () => {
+  const [score, setScore] = useState(0);
+  const [disabled, setDisabled] = useState(false);
+
   const { id } = useParams<{ id: string }>();
   const { data, loading } = useQuery<GetTreat>(GET_TREAT, {
     variables: { id: parseInt(id) },
@@ -28,13 +32,18 @@ export const AddReview: React.FC = () => {
     review: string;
   }>();
 
-  const onSubmit = handleSubmit(async ({ score, review }) => {
+  const onSubmit = handleSubmit(async ({ review }) => {
+    // TODO: Handle errors
+    if (!score) return;
+
     try {
       await createReview({
         variables: {
-          review: { treatId: parseInt(id), score: parseInt(score), review },
+          review: { treatId: parseInt(id), score, review },
         },
       });
+
+      setDisabled(true);
     } catch (error) {
       console.error(error);
     }
@@ -67,18 +76,14 @@ export const AddReview: React.FC = () => {
       <Card>
         <Form onSubmit={onSubmit}>
           <TextArea
-            placeholder="Insert review"
+            placeholder="Add review"
             name="review"
             rows={5}
             ref={register({ required: false })}
           />
-          <Input
-            placeholder="Insert score"
-            name="score"
-            ref={register({ required: true })}
-          />
+          <StarPicker score={score} setScore={setScore} />
 
-          <Button>Check-in!</Button>
+          <Button disabled={disabled}>Check-in!</Button>
         </Form>
       </Card>
 
@@ -95,18 +100,6 @@ const ReviewCard = ({ review, score }: GetTreat_treat_reviews) => (
   </>
 );
 
-const Input = styled.input`
-  background-color: ${(props) => props.theme.colors.primary};
-  border: none;
-  padding: 4px;
-  font-family: ${(props) => props.theme.typography.body.fontFamily};
-  font-size: ${(props) =>
-    props.theme.typography.fontSizes[props.theme.typography.body.size]};
-  font-weight: ${(props) => props.theme.typography.body.fontWeight};
-  color: rgba(255, 255, 255, 1);
-  width: 100%;
-`;
-
 const TextArea = styled.textarea`
   border-radius: 8px;
   display: block;
@@ -114,8 +107,7 @@ const TextArea = styled.textarea`
   background-color: ${(props) => props.theme.colors.primary};
   border: none;
   font-family: ${(props) => props.theme.typography.body.fontFamily};
-  font-size: ${(props) =>
-    props.theme.typography.fontSizes[props.theme.typography.body.size]};
+  font-size: ${(props) => props.theme.typography.fontSizes[2]};
   font-weight: ${(props) => props.theme.typography.body.fontWeight};
   color: rgba(255, 255, 255, 1);
   line-height: ${(props) => props.theme.typography.body.fontHeight};
