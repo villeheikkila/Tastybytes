@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useQuery } from "@apollo/client";
-import { ReactComponent as DropdownIcon } from "../../../assets/plus.svg";
 import { Categories } from "../../../generated/Categories";
 import CreateCategoryForm from "./CreateCategory";
 import HeaderInput from "../../../components/HeaderInput";
@@ -9,6 +8,9 @@ import Container from "../../../components/Container";
 import IconButton from "../../../components/IconButton";
 import SelectionButton from "../../../components/SelectionButton";
 import { CATEGORIES } from "../graphql";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import theme from "../../../theme";
 
 const CategoryPicker: React.FC<{
   setSelected: (value: any) => void;
@@ -34,7 +36,11 @@ const CategoryPicker: React.FC<{
           onChange={({ target }) => setValue(target.value)}
         />
         <IconButton onClick={() => setShow(!show)}>
-          <DropdownIcon width="48px" fill="rgba(255, 255, 255, 0.247)" />
+          <FontAwesomeIcon
+            icon={faPlusCircle}
+            size="lg"
+            color={theme.colors.darkGray}
+          />
         </IconButton>
       </Container>
 

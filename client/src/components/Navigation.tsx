@@ -1,10 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
-import { ReactComponent as HomeIcon } from "../assets/home.svg";
-import { ReactComponent as AccountIcon } from "../assets/account.svg";
-import { ReactComponent as ActivityIcon } from "../assets/candy.svg";
 import { motion, AnimateSharedLayout } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { faIceCream } from "@fortawesome/free-solid-svg-icons";
+import { faStream } from "@fortawesome/free-solid-svg-icons";
+import theme from "../theme";
+
+type IconDefinition = typeof faIceCream;
 
 const Navigation = () => {
   const location = useLocation();
@@ -13,16 +17,16 @@ const Navigation = () => {
   return (
     <Container>
       <AnimateSharedLayout>
-        <NavTab currentLocation={currentLocation} path="/" icon={HomeIcon} />
+        <NavTab currentLocation={currentLocation} path="/" icon={faStream} />
         <NavTab
           currentLocation={currentLocation}
           path="/treats"
-          icon={ActivityIcon}
+          icon={faIceCream}
         />
         <NavTab
           currentLocation={currentLocation}
           path="/account"
-          icon={AccountIcon}
+          icon={faUserCircle}
         />
       </AnimateSharedLayout>
     </Container>
@@ -32,19 +36,19 @@ const Navigation = () => {
 const NavTab: React.FC<{
   currentLocation: string;
   path: string;
-  icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  icon: IconDefinition;
 }> = ({ currentLocation, path, icon }) => {
   const isActive = currentLocation === path.slice(1);
-  const Icon = icon;
 
   return (
     <NavLink to={path}>
-      <Icon
-        style={{ zIndex: 10 }}
-        fill={
-          isActive ? "rgba(255, 255, 255, 1.0)" : "rgba(255, 255, 255, 0.549)"
-        }
+      <FontAwesomeIcon
+        size="lg"
+        color={!isActive ? theme.colors.darkGray : theme.colors.white}
+        icon={icon}
+        style={{ zIndex: 100 }}
       />
+
       {isActive && <Active />}
     </NavLink>
   );

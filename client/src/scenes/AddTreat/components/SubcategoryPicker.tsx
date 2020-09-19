@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useQuery } from "@apollo/client";
-import { ReactComponent as DropdownIcon } from "../../../assets/plus.svg";
 import { SubcategoriesByCategory } from "../../../generated/SubcategoriesByCategory";
 import CreateSubcategoryForm from "./CreateSubcategory";
 import HeaderInput from "../../../components/HeaderInput";
@@ -9,6 +8,9 @@ import IconButton from "../../../components/IconButton";
 import Container from "../../../components/Container";
 import SelectionButton from "../../../components/SelectionButton";
 import { SUBCATEGORIES } from "../graphql";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import theme from "../../../theme";
 
 const SubcategoryPicker: React.FC<{
   setSelected: (value: any) => void;
@@ -36,7 +38,11 @@ const SubcategoryPicker: React.FC<{
           onChange={({ target }) => setValue(target.value)}
         />
         <IconButton onClick={() => setShow(!show)}>
-          <DropdownIcon width="48px" fill="rgba(255, 255, 255, 0.247)" />
+          <FontAwesomeIcon
+            icon={faPlusCircle}
+            size="lg"
+            color={theme.colors.darkGray}
+          />
         </IconButton>
       </Container>
 

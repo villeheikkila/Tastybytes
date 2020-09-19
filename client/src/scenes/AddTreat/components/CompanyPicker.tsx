@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useQuery } from "@apollo/client";
-import { ReactComponent as DropdownIcon } from "../../../assets/plus.svg";
 import CreateCompany from "./CreateCompany";
 import { Companies } from "../../../generated/Companies";
 import HeaderInput from "../../../components/HeaderInput";
-import theme from "../../../theme";
 import IconButton from "../../../components/IconButton";
 import Container from "../../../components/Container";
 import SelectionButton from "../../../components/SelectionButton";
 import { QUERY_COMPANIES } from "../graphql";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import theme from "../../../theme";
 
 export interface Item {
   value: string;
@@ -45,7 +46,11 @@ const CompanyPicker: React.FC<{
           onChange={({ target }) => setValue(target.value)}
         />
         <IconButton onClick={() => setShow(!show)}>
-          <DropdownIcon width="48px" fill={theme.colors.darkGray} />
+          <FontAwesomeIcon
+            icon={faPlusCircle}
+            size="lg"
+            color={theme.colors.darkGray}
+          />
         </IconButton>
       </Container>
 

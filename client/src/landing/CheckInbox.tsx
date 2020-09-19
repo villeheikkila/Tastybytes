@@ -1,16 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as MailEnvelope } from "../assets/mail.svg";
 import Heading from "../components/Heading";
 import Spacer from "../components/Spacer";
 import Text from "../components/Text";
 import theme from "../theme";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const CheckInbox = () => {
   return (
     <Container>
       <Content>
-        <MailEnvelope fill={theme.colors.white} width="80px" height="80px" />
+        <FontAwesomeIcon
+          color={theme.colors.white}
+          icon={faEnvelope}
+          size="lg"
+        />
         <Heading>Check your inbox</Heading>
 
         <Spacer y amount={10} />
