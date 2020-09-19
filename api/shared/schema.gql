@@ -9,7 +9,6 @@ type Account {
   firstName: String!
   lastName: String!
   email: String!
-  avatarUri: String!
   passwordHash: String!
   isVerified: Boolean!
   reviews: [Review!]!
@@ -51,11 +50,6 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
-type Image {
-  filename: String!
-  avatarUri: String!
-}
-
 input LogInInput {
   username: String!
   password: String!
@@ -67,7 +61,7 @@ type Mutation {
   deleteAccount: Boolean!
   resetPassword(password: String!, token: String!): Boolean!
   verifyAccount(token: String!): Boolean!
-  uploadProfilePicture(picture: Upload!): Image!
+  uploadProfilePicture(picture: Upload!): Boolean!
   createCategory(name: String!): Category!
   deleteCategory(id: ID!): Boolean!
   createCompany(name: String!): Company!

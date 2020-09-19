@@ -11,7 +11,6 @@ import { ObjectType, Field, ID } from 'type-graphql';
 import Review from './review.entity';
 import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
-import { GraphQLEmail } from 'graphql-custom-types';
 import Token from './tokens.entity';
 
 @Entity()
@@ -36,6 +35,10 @@ export default class Account extends BaseEntity {
   @Field(() => String)
   @Column({ unique: true })
   email: string;
+
+  @Field(() => String)
+  @Column({ nullable: true })
+  avatarUri: string;
 
   @Field(() => String)
   @Column()

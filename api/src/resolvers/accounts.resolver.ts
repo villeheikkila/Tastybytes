@@ -5,7 +5,9 @@ import {
   Arg,
   Ctx,
   Authorized,
-  ID
+  ID,
+  ObjectType,
+  Field
 } from 'type-graphql';
 import Account from '../entities/account.entity';
 import jwt from 'jsonwebtoken';
@@ -24,6 +26,7 @@ import { sendMail } from '../utils/sendMail';
 import { GraphQLUpload } from 'graphql-upload';
 import { createWriteStream } from 'fs';
 import { Stream } from 'stream';
+import s3uploader from '../utils/s3uploader';
 
 @Resolver()
 export class AccountResolver {
@@ -228,20 +231,36 @@ export class AccountResolver {
     return true;
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => Image)
   async uploadProfilePicture(
+    @Ctx() ctx: Context,
     @Arg('picture', () => GraphQLUpload)
     { createReadStream, filename }: Upload
-  ): Promise<boolean> {
+  ): Promise<UploadedImage> {
     createReadStream;
-    // eslint-disable-next-line no-async-promise-executor
-    return new Promise(async (resolve, reject) =>
-      createReadStream()
-        .pipe(createWriteStream(__dirname + `/../../uploads/${filename}`))
-        .on('finish', () => resolve(true))
-        .on('error', () => reject(false))
-    );
+
+    const account = await Account.findOne({
+      where: { id: ctx.state.user.id }
+    });
+
+    if (!account) throw new Error(`Account doesn't exist`);
+
+    const avatarUri = await s3uploader(filename, createReadStream());
+    console.log('avatarUri: ', avatarUri);
+
+    account.avatarUri = avatarUri;
+    account.save();
+
+    return { avatarUri, filename };
   }
+}
+
+@ObjectType()
+class Image {
+  @Field()
+  filename: string;
+  @Field()
+  avatarUri: string;
 }
 
 export interface Upload {
@@ -249,4 +268,9 @@ export interface Upload {
   mimetype: string;
   encoding: string;
   createReadStream: () => Stream;
+}
+
+interface UploadedImage {
+  filename: string;
+  avatarUri: string;
 }
