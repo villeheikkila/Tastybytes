@@ -15,11 +15,17 @@ import Cookie from 'cookie';
 import cors from '@koa/cors';
 import path from 'path';
 import { graphqlUploadKoa } from 'graphql-upload';
+import { GraphQLDatabaseLoader } from '@mando75/typeorm-graphql-loader';
+import queryComplexity, {
+  fieldExtensionsEstimator,
+  getComplexity,
+  simpleEstimator
+} from 'graphql-query-complexity';
+import { GraphQLError, separateOperations } from 'graphql';
 
 (async () => {
   try {
     const conn = await createConnection(typeOrmConfig);
-    // await conn.runMigrations();
     const schema = await buildSchema({
       resolvers: [__dirname + '/resolvers/*.resolver.{ts,js}'],
       emitSchemaFile: path.resolve(__dirname, '../shared/schema.gql'),
@@ -36,10 +42,12 @@ import { graphqlUploadKoa } from 'graphql-upload';
       schema,
       uploads: false,
       context: ({ ctx, connection }) => {
+        const loader = new GraphQLDatabaseLoader(conn);
+
         if (ctx) {
-          return ctx;
+          return Object.assign(ctx, loader);
         }
-        return connection.context;
+        return Object.assign(connection.context, loader);
       },
       subscriptions: {
         path: '/subscriptions',
@@ -59,7 +67,32 @@ import { graphqlUploadKoa } from 'graphql-upload';
         settings: {
           'request.credentials': 'include'
         }
-      }
+      },
+      plugins: [
+        {
+          requestDidStart: () => ({
+            didResolveOperation({ request, document }) {
+              const complexity = getComplexity({
+                schema,
+                query: request.operationName
+                  ? separateOperations(document)[request.operationName]
+                  : document,
+                variables: request.variables,
+                estimators: [
+                  fieldExtensionsEstimator(),
+                  simpleEstimator({ defaultComplexity: 1 })
+                ]
+              });
+              if (complexity >= 20) {
+                throw new Error(
+                  `The complexity of ${complexity} is over 20 and therefore not allowed.`
+                );
+              }
+              console.log('Used query complexity points:', complexity);
+            }
+          })
+        }
+      ]
     });
 
     const app = new koa();

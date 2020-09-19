@@ -9,7 +9,7 @@ type Account {
   firstName: String!
   lastName: String!
   email: String!
-  avatarUri: String!
+  avatarUri: String
   passwordHash: String!
   isVerified: Boolean!
   reviews: [Review!]!

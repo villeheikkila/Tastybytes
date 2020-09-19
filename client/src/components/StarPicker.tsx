@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import Container from "./Container";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -11,7 +11,12 @@ const StarPicker: FC<{ score: number; setScore?: (score: number) => void }> = ({
   return (
     <Container>
       {[1, 2, 3, 4, 5].map((number) => (
-        <button onClick={() => setScore && setScore(number)}>
+        <button
+          onClick={(event) => {
+            event.preventDefault();
+            if (setScore) setScore(number);
+          }}
+        >
           <Star icon={faStar} isActive={score >= number} index={number} />
         </button>
       ))}
@@ -25,7 +30,8 @@ const Star = styled(FontAwesomeIcon)<{ isActive: boolean; index: number }>`
 
   :hover,
   :focus {
-    color: ${(props) => props.theme.colors.yellow};
+    color: ${(props) =>
+      props.isActive ? props.theme.colors.white : props.theme.colors.yellow};
   }
 `;
 

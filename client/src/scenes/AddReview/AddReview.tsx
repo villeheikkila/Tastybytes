@@ -16,7 +16,6 @@ import StarPicker from "../../components/StarPicker";
 
 export const AddReview: React.FC = () => {
   const [score, setScore] = useState(0);
-  const [disabled, setDisabled] = useState(false);
 
   const { id } = useParams<{ id: string }>();
   const { data, loading } = useQuery<GetTreat>(GET_TREAT, {
@@ -42,8 +41,6 @@ export const AddReview: React.FC = () => {
           review: { treatId: parseInt(id), score, review },
         },
       });
-
-      setDisabled(true);
     } catch (error) {
       console.error(error);
     }
@@ -83,7 +80,7 @@ export const AddReview: React.FC = () => {
           />
           <StarPicker score={score} setScore={setScore} />
 
-          <Button disabled={disabled}>Check-in!</Button>
+          <Button type="submit">Check-in!</Button>
         </Form>
       </Card>
 
