@@ -7,7 +7,9 @@ const ResetPasswordTemplate: FC<{ token: string }> = ({
   <html lang="en-us">
     <body>
       <h1>Tastekeeper</h1>
-      <p>Reset password for Tastekeeper app by clicking the link below</p>
+      <p>
+        Reset your password for the Tastekeeper app by clicking the link below
+      </p>
       <a href={`${DOMAIN}/reset-password/${token}`}>Reset Password</a>
     </body>
   </html>

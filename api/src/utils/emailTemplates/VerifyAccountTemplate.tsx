@@ -7,8 +7,10 @@ const VerifyAccountTemplate: FC<{ token: string }> = ({
   <html lang="en-us">
     <body>
       <h1>Tastekeeper</h1>
-      <p>Verify account for Tastekeeper app by clicking the link below</p>
-      <a href={`${DOMAIN}/reset-password/${token}`}>Verify Account</a>
+      <p>
+        Verify your account for the Tastekeeper app by clicking the link below
+      </p>
+      <a href={`${DOMAIN}/verify-account/${token}`}>Verify Account</a>
     </body>
   </html>
 );

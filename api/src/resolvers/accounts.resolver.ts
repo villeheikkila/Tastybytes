@@ -20,11 +20,8 @@ import {
   LogInInput
 } from '../input/account.input';
 import { verifyRecaptcha } from '../utils/recaptcha';
-import Token from '../entities/tokens.entity';
-import { addHours } from 'date-fns';
 import { sendMail } from '../utils/sendMail';
 import { GraphQLUpload } from 'graphql-upload';
-import { createWriteStream } from 'fs';
 import { Stream } from 'stream';
 import s3uploader from '../utils/s3uploader';
 
@@ -44,6 +41,7 @@ export class AccountResolver {
 
   @Mutation(() => Account)
   async createAccount(
+    @Ctx() { redis }: Context,
     @Arg('account') { password, email, captchaToken, ...rest }: AccountInput
   ): Promise<Account> {
     const passwordHash = await bcrypt.hash(password, 12);
@@ -59,14 +57,7 @@ export class AccountResolver {
 
     const token = Math.random().toString(36).substr(2);
 
-    const savedToken = Token.create({
-      token
-    });
-
-    await savedToken.save();
-
-    account.tokens = [savedToken];
-
+    await redis.set(token, email, 'ex', 1000 * 60 * 60 * 24 * 3);
     await account.save();
 
     await sendMail(token, 'VERIFY', email);
@@ -144,23 +135,17 @@ export class AccountResolver {
     );
   }
 
-  @Authorized()
   @Query(() => Boolean)
   async requestPasswordReset(
+    @Ctx() { redis }: Context,
     @Arg('email', () => String) email: string
   ): Promise<boolean> {
     const account = await Account.findOne({ where: { email } });
-
     if (!account) throw new Error(`Account doesn't exist with that email.`);
 
     const token = Math.random().toString(36).substr(2);
-    const savedToken = Token.create({
-      token
-    });
 
-    await savedToken.save();
-    account.tokens = [savedToken];
-    account.save();
+    await redis.set(token, account.id, 'ex', 1000 * 60 * 60 * 24 * 3);
 
     sendMail(token, 'RESET', email);
 
@@ -169,65 +154,47 @@ export class AccountResolver {
 
   @Mutation(() => Boolean)
   async resetPassword(
+    @Ctx() { redis }: Context,
     @Arg('token', () => String) token: string,
     @Arg('password', () => String) password: string
   ): Promise<boolean> {
-    const tokenAccount = await Token.findOne({
-      where: { token },
-      relations: ['account']
-    });
+    const accountId = await redis.get(token);
 
-    if (!tokenAccount) throw new Error(`The token doesn't exist.`);
+    if (!accountId) throw new Error(`The token doesn't exist.`);
 
-    if (tokenAccount.isUsed)
-      throw new Error(`The token has already been used.`);
+    await redis.del(token);
 
-    if (addHours(tokenAccount.createdDate, 24) > new Date())
-      throw new Error(`The token has expired!.`);
-
-    const accountData = await tokenAccount.account;
-    const account = await Account.findOne(accountData.id);
+    const account = await Account.findOne({ where: { id: accountId } });
 
     if (!account) throw new Error(`Account doesn't exist`);
 
     const passwordHash = await bcrypt.hash(password, 12);
 
     account.passwordHash = passwordHash;
-    tokenAccount.isUsed = true;
 
     account.save();
-    tokenAccount.save();
 
     return true;
   }
 
   @Mutation(() => Boolean)
   async verifyAccount(
+    @Ctx() { redis }: Context,
     @Arg('token', () => String) token: string
   ): Promise<boolean> {
-    const tokenAccount = await Token.findOne({
-      where: { token },
-      relations: ['account']
-    });
+    const email = await redis.get(token);
+    console.log('email: ', email);
 
-    if (!tokenAccount) throw new Error(`Token doesn't exist`);
+    if (!email) throw new Error(`Token doesn't exist`);
 
-    if (addHours(tokenAccount.createdDate, 24) > new Date())
-      throw new Error(`The token has expired!.`);
-
-    if (tokenAccount.isUsed) return false;
-
-    const accountData = await tokenAccount.account;
-    const account = await Account.findOne(accountData.id);
+    const account = await Account.findOne({ where: { email } });
 
     if (!account) throw new Error(`Account doesn't exist`);
 
     account.isVerified = true;
-    tokenAccount.isUsed = true;
 
+    await redis.del(token);
     account.save();
-    tokenAccount.save();
-
     return true;
   }
 

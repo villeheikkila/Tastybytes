@@ -22,10 +22,14 @@ import {
   simpleEstimator
 } from 'graphql-query-complexity';
 import { separateOperations } from 'graphql';
+import Redis from 'ioredis';
 
 (async () => {
   try {
     const conn = await createConnection(typeOrmConfig);
+    const loader = new GraphQLDatabaseLoader(conn);
+    const redis = new Redis({ host: 'redis' });
+
     const schema = await buildSchema({
       resolvers: [__dirname + '/resolvers/*.resolver.{ts,js}'],
       emitSchemaFile: path.resolve(__dirname, '../shared/schema.gql'),
@@ -42,12 +46,10 @@ import { separateOperations } from 'graphql';
       schema,
       uploads: false,
       context: ({ ctx, connection }) => {
-        const loader = new GraphQLDatabaseLoader(conn);
-
         if (ctx) {
-          return Object.assign(ctx, loader);
+          return ctx;
         }
-        return Object.assign(connection.context, loader);
+        return connection.context;
       },
       subscriptions: {
         path: '/subscriptions',
@@ -106,6 +108,8 @@ import { separateOperations } from 'graphql';
 
     app.use(async (ctx, next) => {
       ctx.state = ctx.state || {};
+      ctx.loader = loader;
+      ctx.redis = redis;
       await next();
     });
 
@@ -135,6 +139,18 @@ import { separateOperations } from 'graphql';
 
     server.applyMiddleware({ app, path: '/graphql' });
     server.installSubscriptionHandlers(httpServer);
+
+    const cleanup = async () => {
+      await conn.close();
+
+      setTimeout(function () {
+        console.error('Could not close connections in time, forcing shut down');
+        process.exit(1);
+      }, 30 * 1000);
+    };
+
+    process.on('SIGINT', cleanup);
+    process.on('SIGTERM', cleanup);
   } catch (error) {
     console.error(error);
   }

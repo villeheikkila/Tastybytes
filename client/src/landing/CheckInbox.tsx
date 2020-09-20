@@ -14,8 +14,10 @@ const CheckInbox = () => {
         <FontAwesomeIcon
           color={theme.colors.white}
           icon={faEnvelope}
-          size="lg"
+          size="5x"
         />
+        <Spacer y amount={20} />
+
         <Heading>Check your inbox</Heading>
 
         <Spacer y amount={10} />

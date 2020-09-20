@@ -117,3 +117,4 @@ dist
 
 # DB
 postgres
+redis

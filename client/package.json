@@ -23,6 +23,7 @@
     "react-dropzone": "^11.2.0",
     "react-google-recaptcha": "^2.1.0",
     "react-hook-form": "^6.7.1",
+    "react-intersection-observer-hook": "^1.0.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "styled-components": "^5.1.1",
