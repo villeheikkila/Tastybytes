@@ -1,3 +1,0 @@
-schema: "../shared/schema.gql"
-documents: "src/**/*.{graphql,js,ts,jsx,tsx"
-vscode-graphql.useSchemaFileDefinition: true,

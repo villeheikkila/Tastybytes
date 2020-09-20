@@ -172,6 +172,7 @@ export type Query = {
   __typename?: 'Query';
   accounts: Array<Account>;
   account: Account;
+  requestAccountVerification: Scalars['Boolean'];
   logIn: LoginResult;
   logOut: Scalars['Boolean'];
   currentAccount: Account;
@@ -192,6 +193,11 @@ export type Query = {
 
 export type QueryAccountArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryRequestAccountVerificationArgs = {
+  username: Scalars['String'];
 };
 
 
@@ -481,6 +487,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   accounts?: Resolver<Array<ResolversTypes['Account']>, ParentType, ContextType>;
   account?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<QueryAccountArgs, 'id'>>;
+  requestAccountVerification?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryRequestAccountVerificationArgs, 'username'>>;
   logIn?: Resolver<ResolversTypes['LoginResult'], ParentType, ContextType, RequireFields<QueryLogInArgs, 'account'>>;
   logOut?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   currentAccount?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;

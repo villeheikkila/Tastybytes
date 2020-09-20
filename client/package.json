@@ -18,6 +18,7 @@
     "apollo-upload-client": "^14.1.2",
     "framer-motion": "^2.6.9",
     "graphql": "^15.3.0",
+    "graphql-config": "^3.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.2.0",
