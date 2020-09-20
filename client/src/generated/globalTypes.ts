@@ -7,6 +7,16 @@
 // START Enums and Input Objects
 //==============================================================
 
+/**
+ * Return values for the login query.
+ */
+export enum LoginResult {
+  INCORRECT_PASSWORD = "INCORRECT_PASSWORD",
+  INEXISTENT_ACCOUNT = "INEXISTENT_ACCOUNT",
+  SUCCESS = "SUCCESS",
+  UNVERIFIED_ACCOUNT = "UNVERIFIED_ACCOUNT",
+}
+
 export interface AccountInput {
   username: string;
   email: string;

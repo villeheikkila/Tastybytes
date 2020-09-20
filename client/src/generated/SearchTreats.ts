@@ -53,4 +53,5 @@ export interface SearchTreats {
 
 export interface SearchTreatsVariables {
   searchTerm: string;
+  offset?: number | null;
 }

@@ -11,7 +11,7 @@ export interface CurrentAccount_currentAccount {
   __typename: "Account";
   username: string;
   email: string;
-  avatarUri: string;
+  avatarUri: string | null;
 }
 
 export interface CurrentAccount {

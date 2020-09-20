@@ -7,7 +7,8 @@ import {
   Authorized,
   ID,
   ObjectType,
-  Field
+  Field,
+  registerEnumType
 } from 'type-graphql';
 import Account from '../entities/account.entity';
 import jwt from 'jsonwebtoken';
@@ -64,6 +65,23 @@ export class AccountResolver {
     return account;
   }
 
+  @Query(() => Boolean)
+  async requestAccountVerification(
+    @Arg('username') username: string,
+    @Ctx() { redis }: Context
+  ): Promise<boolean> {
+    const account = await Account.findOne({ where: { username } });
+
+    if (!account) throw Error("The account doesn't exist");
+
+    const token = Math.random().toString(36).substr(2);
+
+    await redis.set(token, account.email, 'ex', 1000 * 60 * 60 * 24 * 3);
+    await sendMail(token, 'VERIFY', account.email);
+
+    return true;
+  }
+
   @Authorized()
   @Mutation(() => Account)
   async updateAccount(
@@ -95,13 +113,13 @@ export class AccountResolver {
     return true;
   }
 
-  @Query(() => Boolean)
+  @Query(() => LoginResult)
   async logIn(
     @Ctx() ctx: Context,
     @Arg('account') { username, password }: LogInInput
-  ): Promise<boolean> {
+  ): Promise<LoginResult> {
     const account = await Account.findOne({ where: { username } });
-    if (!account) return false;
+    if (!account) return LoginResult.INEXISTENT_ACCOUNT;
 
     const correctPassword = await bcrypt.compare(
       password,
@@ -109,15 +127,18 @@ export class AccountResolver {
     );
 
     if (correctPassword) {
+      if (!account.isVerified) return LoginResult.UNVERIFIED_ACCOUNT;
+
       ctx.cookies.set(
         JWT_PUBLIC_KEY,
         jwt.sign({ id: account.id }, JWT_PRIVATE_KEY, { expiresIn: '2d' }),
         { secure: false, httpOnly: true }
       );
 
-      return true;
+      return LoginResult.SUCCESS;
+    } else {
+      return LoginResult.INCORRECT_PASSWORD;
     }
-    return false;
   }
 
   @Query(() => Boolean)
@@ -241,3 +262,15 @@ interface UploadedImage {
   filename: string;
   avatarUri: string;
 }
+
+enum LoginResult {
+  SUCCESS,
+  INEXISTENT_ACCOUNT,
+  UNVERIFIED_ACCOUNT,
+  INCORRECT_PASSWORD
+}
+
+registerEnumType(LoginResult, {
+  name: 'LoginResult',
+  description: 'Return values for the login query.'
+});

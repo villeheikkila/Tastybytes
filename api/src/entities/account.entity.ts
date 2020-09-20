@@ -11,7 +11,6 @@ import { ObjectType, Field, ID } from 'type-graphql';
 import Review from './review.entity';
 import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
-import Token from './tokens.entity';
 
 @Entity()
 @ObjectType()
@@ -51,10 +50,6 @@ export default class Account extends BaseEntity {
   @OneToMany(() => Review, (review) => review.author, { lazy: true })
   @Field(() => [Review])
   reviews: Lazy<Review[]>;
-
-  @OneToMany(() => Token, (token) => token.account, { lazy: true })
-  @Field(() => [Token])
-  tokens: Lazy<Token[]>;
 
   @OneToMany(() => Treat, (treat) => treat.createdBy, { lazy: true })
   @Field(() => [Treat])

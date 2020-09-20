@@ -11,6 +11,8 @@ export type Scalars = {
   Float: number;
   /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
   DateTime: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 export type Account = {
@@ -20,10 +22,10 @@ export type Account = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   email: Scalars['String'];
+  avatarUri?: Maybe<Scalars['String']>;
   passwordHash: Scalars['String'];
   isVerified: Scalars['Boolean'];
   reviews: Array<Review>;
-  tokens: Array<Token>;
   createdTreats: Array<Treat>;
 };
 
@@ -59,10 +61,24 @@ export type Company = {
 };
 
 
+export type Image = {
+  __typename?: 'Image';
+  filename: Scalars['String'];
+  avatarUri: Scalars['String'];
+};
+
 export type LogInInput = {
   username: Scalars['String'];
   password: Scalars['String'];
 };
+
+/** Return values for the login query. */
+export enum LoginResult {
+  Success = 'SUCCESS',
+  InexistentAccount = 'INEXISTENT_ACCOUNT',
+  UnverifiedAccount = 'UNVERIFIED_ACCOUNT',
+  IncorrectPassword = 'INCORRECT_PASSWORD'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -71,6 +87,7 @@ export type Mutation = {
   deleteAccount: Scalars['Boolean'];
   resetPassword: Scalars['Boolean'];
   verifyAccount: Scalars['Boolean'];
+  uploadProfilePicture: Image;
   createCategory: Category;
   deleteCategory: Scalars['Boolean'];
   createCompany: Company;
@@ -100,6 +117,11 @@ export type MutationResetPasswordArgs = {
 
 export type MutationVerifyAccountArgs = {
   token: Scalars['String'];
+};
+
+
+export type MutationUploadProfilePictureArgs = {
+  picture: Scalars['Upload'];
 };
 
 
@@ -150,7 +172,7 @@ export type Query = {
   __typename?: 'Query';
   accounts: Array<Account>;
   account: Account;
-  logIn: Scalars['Boolean'];
+  logIn: LoginResult;
   logOut: Scalars['Boolean'];
   currentAccount: Account;
   requestPasswordReset: Scalars['Boolean'];
@@ -193,6 +215,11 @@ export type QueryCompanyArgs = {
 };
 
 
+export type QueryReviewsArgs = {
+  offset: Scalars['Float'];
+};
+
+
 export type QuerySubcategoryArgs = {
   id?: Maybe<Scalars['ID']>;
 };
@@ -209,6 +236,7 @@ export type QueryTreatArgs = {
 
 
 export type QuerySearchTreatsArgs = {
+  offset?: Maybe<Scalars['Float']>;
   searchTerm: Scalars['String'];
 };
 
@@ -240,16 +268,6 @@ export type Subcategory = {
   updatedDate: Scalars['DateTime'];
 };
 
-export type Token = {
-  __typename?: 'Token';
-  id: Scalars['ID'];
-  token: Scalars['String'];
-  isUsed: Scalars['Boolean'];
-  account: Account;
-  createdDate: Scalars['DateTime'];
-  updatedDate: Scalars['DateTime'];
-};
-
 export type Treat = {
   __typename?: 'Treat';
   id: Scalars['ID'];
@@ -270,6 +288,7 @@ export type UpdateAccountInput = {
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
 };
+
 
 
 
@@ -361,11 +380,13 @@ export type ResolversTypes = {
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Category: ResolverTypeWrapper<Category>;
   Subcategory: ResolverTypeWrapper<Subcategory>;
-  Token: ResolverTypeWrapper<Token>;
   LogInInput: LogInInput;
+  LoginResult: LoginResult;
   Mutation: ResolverTypeWrapper<{}>;
   AccountInput: AccountInput;
   UpdateAccountInput: UpdateAccountInput;
+  Upload: ResolverTypeWrapper<Scalars['Upload']>;
+  Image: ResolverTypeWrapper<Image>;
   ReviewInput: ReviewInput;
   Int: ResolverTypeWrapper<Scalars['Int']>;
 };
@@ -384,11 +405,12 @@ export type ResolversParentTypes = {
   DateTime: Scalars['DateTime'];
   Category: Category;
   Subcategory: Subcategory;
-  Token: Token;
   LogInInput: LogInInput;
   Mutation: {};
   AccountInput: AccountInput;
   UpdateAccountInput: UpdateAccountInput;
+  Upload: Scalars['Upload'];
+  Image: Image;
   ReviewInput: ReviewInput;
   Int: Scalars['Int'];
 };
@@ -399,10 +421,10 @@ export type AccountResolvers<ContextType = any, ParentType extends ResolversPare
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  avatarUri?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   passwordHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isVerified?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   reviews?: Resolver<Array<ResolversTypes['Review']>, ParentType, ContextType>;
-  tokens?: Resolver<Array<ResolversTypes['Token']>, ParentType, ContextType>;
   createdTreats?: Resolver<Array<ResolversTypes['Treat']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
@@ -433,12 +455,19 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'DateTime';
 }
 
+export type ImageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Image'] = ResolversParentTypes['Image']> = {
+  filename?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  avatarUri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createAccount?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<MutationCreateAccountArgs, 'account'>>;
   updateAccount?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<MutationUpdateAccountArgs, 'account'>>;
   deleteAccount?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   resetPassword?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'password' | 'token'>>;
   verifyAccount?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationVerifyAccountArgs, 'token'>>;
+  uploadProfilePicture?: Resolver<ResolversTypes['Image'], ParentType, ContextType, RequireFields<MutationUploadProfilePictureArgs, 'picture'>>;
   createCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationCreateCategoryArgs, 'name'>>;
   deleteCategory?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCategoryArgs, 'id'>>;
   createCompany?: Resolver<ResolversTypes['Company'], ParentType, ContextType, RequireFields<MutationCreateCompanyArgs, 'name'>>;
@@ -452,7 +481,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   accounts?: Resolver<Array<ResolversTypes['Account']>, ParentType, ContextType>;
   account?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<QueryAccountArgs, 'id'>>;
-  logIn?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryLogInArgs, 'account'>>;
+  logIn?: Resolver<ResolversTypes['LoginResult'], ParentType, ContextType, RequireFields<QueryLogInArgs, 'account'>>;
   logOut?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   currentAccount?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
   requestPasswordReset?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryRequestPasswordResetArgs, 'email'>>;
@@ -460,7 +489,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   category?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
   companies?: Resolver<Array<ResolversTypes['Company']>, ParentType, ContextType>;
   company?: Resolver<ResolversTypes['Company'], ParentType, ContextType, RequireFields<QueryCompanyArgs, 'id'>>;
-  reviews?: Resolver<Array<ResolversTypes['Review']>, ParentType, ContextType>;
+  reviews?: Resolver<Array<ResolversTypes['Review']>, ParentType, ContextType, RequireFields<QueryReviewsArgs, 'offset'>>;
   subcategories?: Resolver<Array<ResolversTypes['Subcategory']>, ParentType, ContextType>;
   subcategory?: Resolver<ResolversTypes['Subcategory'], ParentType, ContextType, RequireFields<QuerySubcategoryArgs, never>>;
   subcategoriesByCategory?: Resolver<Array<ResolversTypes['Subcategory']>, ParentType, ContextType, RequireFields<QuerySubcategoriesByCategoryArgs, 'categoryId'>>;
@@ -491,16 +520,6 @@ export type SubcategoryResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
-export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  isUsed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  account?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
-  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
-};
-
 export type TreatResolvers<ContextType = any, ParentType extends ResolversParentTypes['Treat'] = ResolversParentTypes['Treat']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -514,17 +533,22 @@ export type TreatResolvers<ContextType = any, ParentType extends ResolversParent
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
+export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
+  name: 'Upload';
+}
+
 export type Resolvers<ContextType = any> = {
   Account?: AccountResolvers<ContextType>;
   Category?: CategoryResolvers<ContextType>;
   Company?: CompanyResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
+  Image?: ImageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Review?: ReviewResolvers<ContextType>;
   Subcategory?: SubcategoryResolvers<ContextType>;
-  Token?: TokenResolvers<ContextType>;
   Treat?: TreatResolvers<ContextType>;
+  Upload?: GraphQLScalarType;
 };
 
 

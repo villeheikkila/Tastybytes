@@ -36,7 +36,9 @@ const Account = () => {
       <Card>
         <Container y centered>
           <Dropzone onUpload={onUpload}>
-            <Avatar src={data.currentAccount?.avatarUri}></Avatar>
+            {data.currentAccount.avatarUri && (
+              <Avatar src={data.currentAccount.avatarUri}></Avatar>
+            )}
           </Dropzone>
         </Container>
         <Text>Username: {username}</Text>

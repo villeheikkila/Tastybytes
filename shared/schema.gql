@@ -13,7 +13,6 @@ type Account {
   passwordHash: String!
   isVerified: Boolean!
   reviews: [Review!]!
-  tokens: [Token!]!
   createdTreats: [Treat!]!
 }
 
@@ -61,6 +60,14 @@ input LogInInput {
   password: String!
 }
 
+"""Return values for the login query."""
+enum LoginResult {
+  SUCCESS
+  INEXISTENT_ACCOUNT
+  UNVERIFIED_ACCOUNT
+  INCORRECT_PASSWORD
+}
+
 type Mutation {
   createAccount(account: AccountInput!): Account!
   updateAccount(account: UpdateAccountInput!): Account!
@@ -81,7 +88,8 @@ type Mutation {
 type Query {
   accounts: [Account!]!
   account(id: ID!): Account!
-  logIn(account: LogInInput!): Boolean!
+  requestAccountVerification(username: String!): Boolean!
+  logIn(account: LogInInput!): LoginResult!
   logOut: Boolean!
   currentAccount: Account!
   requestPasswordReset(email: String!): Boolean!
@@ -120,15 +128,6 @@ type Subcategory {
   isPublished: Boolean!
   treats: [Treat!]!
   category: Category!
-  createdDate: DateTime!
-  updatedDate: DateTime!
-}
-
-type Token {
-  id: ID!
-  token: String!
-  isUsed: Boolean!
-  account: Account!
   createdDate: DateTime!
   updatedDate: DateTime!
 }

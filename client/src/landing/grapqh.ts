@@ -12,6 +12,12 @@ export const LOGIN = gql`
   }
 `;
 
+export const REQUEST_VERIFICATION = gql`
+  query RequestAccountVerification($username: String!) {
+    requestAccountVerification(username: $username)
+  }
+`;
+
 export const CREATE_ACCOUNT = gql`
   mutation CreateAccount($account: AccountInput!) {
     createAccount(account: $account) {
