@@ -89,13 +89,13 @@ type Query {
   category(id: ID!): Category!
   companies: [Company!]!
   company(id: ID!): Company!
-  reviews: [Review!]!
+  reviews(offset: Float!): [Review!]!
   subcategories: [Subcategory!]!
   subcategory(id: ID): Subcategory!
   subcategoriesByCategory(categoryId: ID!): [Subcategory!]!
   treats: [Treat!]!
   treat(id: ID!): Treat!
-  searchTreats(searchTerm: String!): [Treat!]!
+  searchTreats(offset: Float, searchTerm: String!): [Treat!]!
 }
 
 type Review {

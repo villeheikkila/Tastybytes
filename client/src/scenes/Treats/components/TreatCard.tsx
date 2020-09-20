@@ -6,14 +6,15 @@ import Text from "../../../components/Text";
 
 const TreatCard = (props: SearchTreats_searchTreats) => (
   <>
-    <Link to={`/treats/add-review/${props.id}`}>
-      <CardContent>
-        <Text>Treat: {props.name}</Text>
-        <Text>Company: {props.company.name}</Text>
-        <Text>Category: {props.category.name}</Text>
-        <Text>Subcategory: {props.subcategory.name}</Text>
-      </CardContent>
-    </Link>
+    <CardContent>
+      <Link to={`/treats/add-review/${props.id}`}>
+        <Text>Treat: {props.name}</Text>{" "}
+      </Link>
+
+      <Text>Company: {props.company.name}</Text>
+      <Text>Category: {props.category.name}</Text>
+      <Text>Subcategory: {props.subcategory.name}</Text>
+    </CardContent>
   </>
 );
 

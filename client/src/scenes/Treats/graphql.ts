@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const SEARCH_TREATS = gql`
-  query SearchTreats($searchTerm: String!) {
-    searchTreats(searchTerm: $searchTerm) {
+  query SearchTreats($searchTerm: String!, $offset: Float) {
+    searchTreats(searchTerm: $searchTerm, offset: $offset) {
       id
       name
       company {

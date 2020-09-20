@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, RefObject, useLayoutEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useTransform, useMotionValue, motion } from "framer-motion";
 import useDimensions from "../hooks/useDimensions";
@@ -7,9 +7,15 @@ interface IProps<T> {
   data: T[];
   component: (data: T, index: number) => React.ReactElement;
   reduceHeight: number;
+  onDragEnd?: any;
 }
 
-function Cards<T extends object>({ data, component, reduceHeight }: IProps<T>) {
+function Cards<T extends object>({
+  data,
+  component,
+  reduceHeight,
+  onDragEnd,
+}: IProps<T>) {
   const { height: windowHeight, width: windowWidth } = useDimensions();
   const scrollY = useMotionValue(0);
   const scale = useTransform(scrollY, [0, 100], [0, 1]);
@@ -47,6 +53,7 @@ function Cards<T extends object>({ data, component, reduceHeight }: IProps<T>) {
             top: -draggableHeight + 100,
             bottom: 0,
           }}
+          onDragEnd={onDragEnd}
         >
           {data.map((e, i) => (
             <Card

@@ -58,7 +58,7 @@ services:
 
   db:
     container_name: postgres
-    image: postgres
+    image: postgres:latest
     restart: always
     networks:
       - default

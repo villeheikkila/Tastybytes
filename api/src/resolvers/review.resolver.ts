@@ -9,11 +9,14 @@ import { ReviewInput } from '../input/review.input';
 export class ReviewResolver {
   @Authorized()
   @Query(() => [Review])
-  reviews(): Promise<Review[]> {
+  reviews(
+    @Ctx() ctx: Context,
+    @Arg('offset') offset?: number
+  ): Promise<Review[]> {
     return Review.find({
       relations: ['author', 'treat'],
-      skip: 0,
-      take: 10,
+      skip: offset,
+      take: 3,
       order: {
         createdDate: 'ASC'
       }

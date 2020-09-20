@@ -14,7 +14,7 @@ import { GraphQLError } from 'graphql';
 import { Context } from 'koa';
 import Subcategory from '../entities/subcategory.entity';
 import Category from '../entities/category.entity';
-import { GraphQLTreatName } from '../utils/validators';
+import { ILike } from '../utils/iLikeTypeORM';
 
 @Resolver()
 export class TreatResolver {
@@ -32,18 +32,18 @@ export class TreatResolver {
 
   @Authorized()
   @Query(() => [Treat])
-  // TODO: Add more search terms
   async searchTreats(
-    @Arg('searchTerm', () => String) searchTerm: string
+    @Arg('searchTerm', () => String) searchTerm: string,
+    @Arg('offset', () => Number, { nullable: true }) offset?: number
   ): Promise<Treat[]> {
-    const allTreats = await Treat.find();
+    // TODO: Add search by companies, categories etc
+    const allTreats = await Treat.find({
+      skip: offset,
+      take: 10,
+      where: [{ name: ILike(`%${searchTerm}%`) }]
+    });
 
-    // TODO: Do the search in the database layer
-    const filteredResults = allTreats.filter(({ name }) =>
-      new RegExp(searchTerm, 'ig').test(name)
-    );
-
-    return filteredResults;
+    return allTreats;
   }
 
   @Authorized()

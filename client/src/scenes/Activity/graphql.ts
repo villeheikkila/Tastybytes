@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_REVIEWS = gql`
   query Reviews {
-    reviews {
+    reviews(offset: 0) {
       id
       review
       score
