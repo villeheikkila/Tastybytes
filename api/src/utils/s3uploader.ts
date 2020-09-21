@@ -14,7 +14,10 @@ const s3 = new AWS.S3({
   secretAccessKey: AWS_S3_SECRET_ACCESS_KEY
 });
 
-const s3uploader = async (fileName: string, content: Stream) => {
+const s3uploader = async (
+  fileName: string,
+  content: Stream
+): Promise<string> => {
   const { Location: uri } = await s3
     .upload({
       Bucket: AWS_S3_BUCKET_NAME,

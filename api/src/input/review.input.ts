@@ -1,6 +1,5 @@
 import { InputType, Field, Int, ID } from 'type-graphql';
 import { Min, Max } from 'class-validator';
-import { GrapQLReviewText } from '../utils/validators';
 
 @InputType()
 export class ReviewInput {

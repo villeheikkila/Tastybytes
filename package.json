@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "api-generate": "docker-compose exec -T api npm run generate",
+    "api-lint": "cd api && npm run lint",
+    "client-generate": "docker-compose exec -T client npm run generate"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run api-lint && npm run api-generate && npm run client-generate"
+    }
+  },
+  "devDependencies": {
+    "husky": "^4.3.0"
+  }
+}
