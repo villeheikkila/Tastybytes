@@ -2,7 +2,10 @@
   "scripts": {
     "generate:api": "docker-compose exec -T api npm run generate",
     "lint:api": "cd api && npm run lint",
-    "generate:client": "docker-compose exec -T client npm run generate"
+    "generate:client": "docker-compose exec -T client npm run generate",
+    "start": "docker-compose up",
+    "stop": "docker-compose down",
+    "build": "docker-compose build"
   },
   "husky": {
     "hooks": {
