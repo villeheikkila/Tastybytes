@@ -9,12 +9,12 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import { createUploadLink } from "apollo-upload-client";
 
 const httpLink = createUploadLink({
-  uri: `http://${window.location.hostname}:${process.env.REACT_APP_API_PORT}/graphql`,
+  uri: `http://${window.location.hostname}:4000/graphql`,
   credentials: "include",
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${window.location.hostname}:${process.env.REACT_APP_API_PORT}/subscriptions`,
+  uri: `ws://${window.location.hostname}:4000/subscriptions`,
   options: {
     reconnect: true,
   },
