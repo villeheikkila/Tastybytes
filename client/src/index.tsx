@@ -6,6 +6,7 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "./apollo";
 
 export const recaptchaSiteKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY || "";
+export const backendUrl = process.env.REACT_APP_BACKEND_URL || "";
 
 ReactDOM.render(
   <React.StrictMode>
