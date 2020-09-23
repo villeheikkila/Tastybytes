@@ -12,12 +12,12 @@ import { backendUrl } from ".";
 const httpUri =
   process.env.NODE_ENV === "development"
     ? `http://${window.location.hostname}:4000/graphql`
-    : `https://${backendUrl}`;
+    : `https://${process.env.REACT_APP_BACKEND_URL}/graphql`;
 
 const wsURI =
   process.env.NODE_ENV === "development"
     ? `ws://${window.location.hostname}:4000/subscriptions`
-    : `wss://${backendUrl}`;
+    : `wss://${process.env.REACT_APP_BACKEND_URL}/subscriptions`;
 
 const httpLink = createUploadLink({
   uri: httpUri,
