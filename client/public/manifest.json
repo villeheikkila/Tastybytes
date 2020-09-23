@@ -20,7 +20,7 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": "/",
+  "start_url": ".",
   "scope": ".",
   "display": "fullscreen",
   "description": "Keep notes on the good stuff!",

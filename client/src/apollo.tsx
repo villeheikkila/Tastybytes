@@ -7,17 +7,16 @@ import {
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { createUploadLink } from "apollo-upload-client";
-import { backendUrl } from ".";
 
 const httpUri =
   process.env.NODE_ENV === "development"
     ? `http://${window.location.hostname}:4000/graphql`
-    : `https://${process.env.REACT_APP_BACKEND_URL}/graphql`;
+    : `https://${window.location.hostname}/graphql`;
 
 const wsURI =
   process.env.NODE_ENV === "development"
     ? `ws://${window.location.hostname}:4000/subscriptions`
-    : `wss://${process.env.REACT_APP_BACKEND_URL}/subscriptions`;
+    : `wss://${window.location.hostname}/subscriptions`;
 
 const httpLink = createUploadLink({
   uri: httpUri,

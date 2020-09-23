@@ -1,6 +1,22 @@
 version: "3.7"
 
 services:
+  client:
+    container_name: client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3030:80"
+    volumes:
+      - ./client:/service
+      - ./shared:/service/shared
+    environment:
+      REACT_APP_API_PORT: ${API_PORT}
+      REACT_APP_RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY}
+      CHOKIDAR_USEPOLLING: 1
+      NODE_ENV: "production"
+
   api:
     container_name: api
     build:
