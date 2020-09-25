@@ -87,7 +87,7 @@ const AuthorizedRoutes = () => (
 const Page = styled.div`
   display: flex;
   justify-content: center;
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 70px);
   max-width: 800px;
   margin: 0 auto;
 `;

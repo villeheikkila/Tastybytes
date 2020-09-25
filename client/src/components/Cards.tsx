@@ -23,7 +23,7 @@ function Cards<T extends object>({
 
   // Calculate the height of the CardContainer and the width of the Cards
   const draggableHeight = windowHeight - reduceHeight;
-  const width = windowWidth > 800 ? 800 : windowWidth * 0.9;
+  const width = windowWidth > 800 ? 800 : windowWidth;
   const height = 200;
   const padding = 20;
 

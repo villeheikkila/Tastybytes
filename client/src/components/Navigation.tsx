@@ -43,7 +43,7 @@ const NavTab: React.FC<{
   return (
     <NavLink to={path}>
       <FontAwesomeIcon
-        size="lg"
+        size="2x"
         color={!isActive ? theme.colors.darkGray : theme.colors.white}
         icon={icon}
         style={{ zIndex: 100 }}
@@ -58,7 +58,7 @@ const Container = styled.div`
   display: flex;
   padding: 5px;
   width: 100%;
-  height: 60px;
+  height: 70px;
   background-color: rgba(21, 21, 21);
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
 `;
