@@ -55,6 +55,7 @@
     "sqlite3": "^4.1.1",
     "type-graphql": "^0.17.6",
     "typeorm": "^0.2.22",
+    "typeorm-naming-strategies": "^2.0.0",
     "uuid": "^8.3.0"
   },
   "devDependencies": {

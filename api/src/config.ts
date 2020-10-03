@@ -1,3 +1,4 @@
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 export const typeOrmConfig: PostgresConnectionOptions = {
@@ -11,6 +12,7 @@ export const typeOrmConfig: PostgresConnectionOptions = {
   logging: false,
   entities: [__dirname + '/entities/*.entity.{ts,js}'],
   migrations: [__dirname + '/migrations/*.migration.{ts,js}'],
+  namingStrategy: new SnakeNamingStrategy(),
   cli: {
     migrationsDir: __dirname + '/migrations'
   }
