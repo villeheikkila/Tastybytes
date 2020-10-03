@@ -1,28 +1,15 @@
-import {
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn
-} from 'typeorm';
-import { ObjectType, Field, ID } from 'type-graphql';
+import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
+import { ObjectType, Field } from 'type-graphql';
 import Review from './review.entity';
-import Account from './account.entity';
 import Company from './company.entity';
 import { Lazy } from '../utils/helpers';
 import Category from './category.entity';
 import Subcategory from './subcategory.entity';
+import ExtendedBaseEntity from '../typeorm/extendedBaseEntity';
 
 @Entity()
 @ObjectType()
-export default class Treat extends BaseEntity {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn()
-  id: string;
-
+export default class Treat extends ExtendedBaseEntity {
   @Field(() => String)
   @Column()
   name: string;
@@ -33,10 +20,6 @@ export default class Treat extends BaseEntity {
   @OneToMany(() => Review, (review) => review.treat, { lazy: true })
   @Field(() => [Review])
   reviews: Lazy<Review[]>;
-
-  @ManyToOne(() => Account, { lazy: true, nullable: true })
-  @Field(() => Account)
-  createdBy?: Lazy<Account>;
 
   @ManyToOne(() => Company, { lazy: true, nullable: true })
   @Field(() => Company)
@@ -49,12 +32,4 @@ export default class Treat extends BaseEntity {
   @ManyToOne(() => Subcategory, { lazy: true, nullable: true })
   @Field(() => Subcategory)
   subcategory?: Lazy<Subcategory>;
-
-  @Field()
-  @CreateDateColumn()
-  createdDate: Date;
-
-  @Field()
-  @UpdateDateColumn()
-  updatedDate: Date;
 }

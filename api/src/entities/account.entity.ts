@@ -1,11 +1,11 @@
 import {
   Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
   Column,
   OneToMany,
-  UpdateDateColumn,
-  CreateDateColumn
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 import { ObjectType, Field, ID } from 'type-graphql';
 import Review from './review.entity';
@@ -16,8 +16,16 @@ import { Lazy } from '../utils/helpers';
 @ObjectType()
 export default class Account extends BaseEntity {
   @Field(() => ID)
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Field()
+  @CreateDateColumn()
+  createdDate: Date;
+
+  @Field()
+  @UpdateDateColumn()
+  updatedDate: Date;
 
   @Field(() => String)
   @Column({ unique: true })
@@ -47,17 +55,11 @@ export default class Account extends BaseEntity {
   @Column({ default: false })
   isVerified: boolean;
 
-  @OneToMany(() => Review, (review) => review.author, { lazy: true })
+  @OneToMany(() => Review, (review) => review.createdBy, { lazy: true })
   @Field(() => [Review])
   reviews: Lazy<Review[]>;
 
   @OneToMany(() => Treat, (treat) => treat.createdBy, { lazy: true })
   @Field(() => [Treat])
   createdTreats: Lazy<Treat[]>;
-
-  @CreateDateColumn()
-  createdDate: Date;
-
-  @UpdateDateColumn()
-  updatedDate: Date;
 }

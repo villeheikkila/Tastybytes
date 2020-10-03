@@ -1,24 +1,13 @@
-import {
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  UpdateDateColumn,
-  CreateDateColumn
-} from 'typeorm';
-import { ObjectType, Field, ID } from 'type-graphql';
+import { Entity, Column, OneToMany } from 'typeorm';
+import { ObjectType, Field } from 'type-graphql';
 import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
 import Subcategory from './subcategory.entity';
+import ExtendedBaseEntity from '../typeorm/extendedBaseEntity';
 
 @Entity()
 @ObjectType()
-export default class Category extends BaseEntity {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn()
-  id: string;
-
+export default class Category extends ExtendedBaseEntity {
   @Field(() => String)
   @Column({ unique: true })
   name: string;
@@ -36,12 +25,4 @@ export default class Category extends BaseEntity {
   })
   @Field(() => [Subcategory])
   subcategories: Lazy<Subcategory[]>;
-
-  @Field()
-  @CreateDateColumn()
-  createdDate: Date;
-
-  @Field()
-  @UpdateDateColumn()
-  updatedDate: Date;
 }

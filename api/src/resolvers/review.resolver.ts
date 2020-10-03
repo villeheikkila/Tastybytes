@@ -30,7 +30,7 @@ export class ReviewResolver {
     @Arg('review') { treatId, score, review }: ReviewInput
   ): Promise<Review> {
     const treat = await Treat.findOne({ where: { id: treatId } });
-    const author = await Account.findOne({
+    const createdBy = await Account.findOne({
       where: { id: ctx.state.user.id }
     });
 
@@ -38,7 +38,7 @@ export class ReviewResolver {
       score,
       review,
       treat,
-      author
+      createdBy
     });
 
     await reviewObject.save();

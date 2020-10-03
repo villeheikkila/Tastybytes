@@ -1,24 +1,12 @@
-import {
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn
-} from 'typeorm';
-import { ObjectType, Field, ID } from 'type-graphql';
+import { Entity, Column, ManyToOne } from 'typeorm';
+import { ObjectType, Field } from 'type-graphql';
 import Treat from './treat.entity';
-import Account from './account.entity';
 import { Lazy } from '../utils/helpers';
+import ExtendedBaseEntity from '../typeorm/extendedBaseEntity';
 
 @Entity()
 @ObjectType()
-export default class Review extends BaseEntity {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn()
-  id: string;
-
+export default class Review extends ExtendedBaseEntity {
   @Field(() => Number)
   @Column({ nullable: true })
   score: number;
@@ -33,16 +21,4 @@ export default class Review extends BaseEntity {
   @ManyToOne(() => Treat, (treat) => treat.reviews, { lazy: true })
   @Field(() => Treat)
   treat: Lazy<Treat>;
-
-  @ManyToOne(() => Account, (account) => account.reviews, { lazy: true })
-  @Field(() => Account)
-  author: Lazy<Account>;
-
-  @Field()
-  @CreateDateColumn()
-  createdDate: Date;
-
-  @Field()
-  @UpdateDateColumn()
-  updatedDate: Date;
 }
