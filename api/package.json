@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon -w src --ext ts --exec ts-node index.ts",
+    "start": "nodemon -w src --ext ts --exec ts-node src/index.ts",
     "lint": "prettier --write . && eslint . --ext .ts",
     "generate": "graphql-codegen --config codegen.yml",
     "seed:generate": "ts-node node_modules/.bin/typeorm migration:generate -c seed -n ",

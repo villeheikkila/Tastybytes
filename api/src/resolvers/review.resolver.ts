@@ -4,7 +4,6 @@ import Account from '../entities/account.entity';
 import Review from '../entities/review.entity';
 import { Context } from 'koa';
 import { ReviewInput } from '../input/review.input';
-import { getRepository } from 'typeorm';
 
 @Resolver()
 export class ReviewResolver {
@@ -16,17 +15,6 @@ export class ReviewResolver {
   ): Promise<Review[]> {
     return Review.find({
       relations: ['author', 'treat'],
-      skip: offset,
-      take: 3,
-      order: {
-        createdDate: 'ASC'
-      }
-    });
-  }
-
-  @Query(() => [Review])
-  async reviewsNew(@Arg('offset') offset?: number): Promise<Review[]> {
-    return getRepository(Review).find({
       skip: offset,
       take: 3,
       order: {
