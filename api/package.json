@@ -28,6 +28,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/redis": "^2.8.27",
     "@types/uuid": "^8.3.0",
+    "apollo-log": "^0.2.0",
     "apollo-server": "^2.9.16",
     "apollo-server-koa": "^2.17.0",
     "aws-sdk": "^2.756.0",
