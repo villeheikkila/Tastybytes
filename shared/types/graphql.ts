@@ -27,6 +27,7 @@ export type Account = {
   avatarUri?: Maybe<Scalars['String']>;
   passwordHash: Scalars['String'];
   isVerified: Scalars['Boolean'];
+  role?: Maybe<Scalars['String']>;
   reviews: Array<Review>;
   createdTreats: Array<Treat>;
 };
@@ -453,6 +454,7 @@ export type AccountResolvers<ContextType = any, ParentType extends ResolversPare
   avatarUri?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   passwordHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isVerified?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  role?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   reviews?: Resolver<Array<ResolversTypes['Review']>, ParentType, ContextType>;
   createdTreats?: Resolver<Array<ResolversTypes['Treat']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;

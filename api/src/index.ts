@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import {
   typeOrmConfig,
@@ -18,7 +18,7 @@ import Account from './entities/account.entity';
 
 (async () => {
   try {
-    const conn = await createConnection(typeOrmConfig);
+    const connection = await createConnection(typeOrmConfig);
     const redis = new Redis({ host: 'redis' });
 
     const server = apolloServer(
@@ -30,10 +30,12 @@ import Account from './entities/account.entity';
           console.log('roles: ', roles);
 
           if (roles.includes('ADMIN')) {
-            const account = await conn.getRepository(Account).findOne({
-              where: { id: context.state.user.id },
-              select: ['role']
-            });
+            const account = await getConnection()
+              .getRepository(Account)
+              .findOne({
+                where: { id: context.state.user.id },
+                select: ['role']
+              });
 
             return account?.role === 'ADMIN';
           }
@@ -89,7 +91,7 @@ import Account from './entities/account.entity';
     server.installSubscriptionHandlers(httpServer);
 
     const cleanup = async () => {
-      await conn.close();
+      await connection.close();
 
       setTimeout(function () {
         console.error('Could not close connections in time, forcing shut down');
