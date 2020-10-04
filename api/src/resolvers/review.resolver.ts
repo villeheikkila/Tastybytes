@@ -4,6 +4,7 @@ import Account from '../entities/account.entity';
 import Review from '../entities/review.entity';
 import { Context } from 'koa';
 import { ReviewInput } from '../input/review.input';
+import { getRepository } from 'typeorm';
 
 @Resolver()
 export class ReviewResolver {
@@ -23,6 +24,17 @@ export class ReviewResolver {
     });
   }
 
+  @Query(() => [Review])
+  async reviewsNew(@Arg('offset') offset?: number): Promise<Review[]> {
+    return getRepository(Review).find({
+      skip: offset,
+      take: 3,
+      order: {
+        createdDate: 'ASC'
+      }
+    });
+  }
+
   @Authorized()
   @Mutation(() => Review)
   async createReview(
@@ -30,7 +42,8 @@ export class ReviewResolver {
     @Arg('review') { treatId, score, review }: ReviewInput
   ): Promise<Review> {
     const treat = await Treat.findOne({ where: { id: treatId } });
-    const createdBy = await Account.findOne({
+
+    const author = await Account.findOne({
       where: { id: ctx.state.user.id }
     });
 
@@ -38,8 +51,10 @@ export class ReviewResolver {
       score,
       review,
       treat,
-      createdBy
+      author
     });
+
+    console.log('reviewObject: ', reviewObject);
 
     await reviewObject.save();
     return reviewObject;

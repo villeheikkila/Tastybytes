@@ -1,8 +1,10 @@
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, RelationId } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
 import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
 import ExtendedBaseEntity from '../typeorm/extendedBaseEntity';
+import Account from './account.entity';
+import { TypeormLoader } from 'type-graphql-dataloader';
 
 @Entity()
 @ObjectType()
@@ -18,7 +20,19 @@ export default class Review extends ExtendedBaseEntity {
   @Column({ default: true })
   isPublished: boolean;
 
-  @ManyToOne(() => Treat, (treat) => treat.reviews, { lazy: true })
   @Field(() => Treat)
+  @ManyToOne(() => Treat, (treat) => treat.reviews, { lazy: true })
+  @TypeormLoader(() => Treat, (review: Review) => review.treatId)
   treat: Lazy<Treat>;
+
+  @RelationId((review: Review) => review.treat)
+  treatId?: string;
+
+  @Field(() => Account)
+  @ManyToOne(() => Account, { lazy: true, nullable: true })
+  @TypeormLoader(() => Account, (review: Review) => review.authorId)
+  author: Lazy<Account>;
+
+  @RelationId((review: Review) => review.author)
+  authorId?: string;
 }

@@ -5,6 +5,8 @@
 
 type Account {
   id: ID!
+  createdDate: DateTime!
+  updatedDate: DateTime!
   username: String!
   firstName: String!
   lastName: String!
@@ -27,28 +29,39 @@ input AccountInput {
 
 type Category {
   id: ID!
+  createdBy: Account!
+  updatedBy: Account!
+  createdDate: DateTime!
+  updatedDate: DateTime!
   name: String!
   isPublished: Boolean!
   treats: [Treat!]!
   subcategories: [Subcategory!]!
-  createdDate: DateTime!
-  updatedDate: DateTime!
 }
 
 type Company {
   id: ID!
+  createdBy: Account!
+  updatedBy: Account!
+  createdDate: DateTime!
+  updatedDate: DateTime!
   name: String!
   isPublished: Boolean!
   treats: [Treat!]!
-  createdBy: Account!
-  createdDate: DateTime!
-  updatedDate: DateTime!
 }
 
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
 scalar DateTime
+
+type ExtendedBaseEntity {
+  id: ID!
+  createdBy: Account!
+  updatedBy: Account!
+  createdDate: DateTime!
+  updatedDate: DateTime!
+}
 
 type Image {
   filename: String!
@@ -98,6 +111,7 @@ type Query {
   companies: [Company!]!
   company(id: ID!): Company!
   reviews(offset: Float!): [Review!]!
+  reviewsNew(offset: Float!): [Review!]!
   subcategories: [Subcategory!]!
   subcategory(id: ID): Subcategory!
   subcategoriesByCategory(categoryId: ID!): [Subcategory!]!
@@ -108,12 +122,14 @@ type Query {
 
 type Review {
   id: ID!
+  createdBy: Account!
+  updatedBy: Account!
+  createdDate: DateTime!
+  updatedDate: DateTime!
   score: Float!
   review: String!
   treat: Treat!
   author: Account!
-  createdDate: DateTime!
-  updatedDate: DateTime!
 }
 
 input ReviewInput {
@@ -124,24 +140,27 @@ input ReviewInput {
 
 type Subcategory {
   id: ID!
+  createdBy: Account!
+  updatedBy: Account!
+  createdDate: DateTime!
+  updatedDate: DateTime!
   name: String!
   isPublished: Boolean!
   treats: [Treat!]!
   category: Category!
-  createdDate: DateTime!
-  updatedDate: DateTime!
 }
 
 type Treat {
   id: ID!
+  createdBy: Account!
+  updatedBy: Account!
+  createdDate: DateTime!
+  updatedDate: DateTime!
   name: String!
   reviews: [Review!]!
-  createdBy: Account!
   company: Company!
   category: Category!
   subcategory: Subcategory!
-  createdDate: DateTime!
-  updatedDate: DateTime!
 }
 
 input UpdateAccountInput {

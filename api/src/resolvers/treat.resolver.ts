@@ -15,13 +15,14 @@ import { Context } from 'koa';
 import Subcategory from '../entities/subcategory.entity';
 import Category from '../entities/category.entity';
 import { ILike } from '../utils/iLikeTypeORM';
+import { getRepository } from 'typeorm';
 
 @Resolver()
 export class TreatResolver {
   @Authorized()
   @Query(() => [Treat])
   treats(): Promise<Treat[]> {
-    return Treat.find();
+    return getRepository(Treat).find();
   }
 
   @Authorized()

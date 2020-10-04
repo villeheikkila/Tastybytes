@@ -18,6 +18,8 @@ export type Scalars = {
 export type Account = {
   __typename?: 'Account';
   id: Scalars['ID'];
+  createdDate: Scalars['DateTime'];
+  updatedDate: Scalars['DateTime'];
   username: Scalars['String'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
@@ -41,25 +43,37 @@ export type AccountInput = {
 export type Category = {
   __typename?: 'Category';
   id: Scalars['ID'];
+  createdBy: Account;
+  updatedBy: Account;
+  createdDate: Scalars['DateTime'];
+  updatedDate: Scalars['DateTime'];
   name: Scalars['String'];
   isPublished: Scalars['Boolean'];
   treats: Array<Treat>;
   subcategories: Array<Subcategory>;
-  createdDate: Scalars['DateTime'];
-  updatedDate: Scalars['DateTime'];
 };
 
 export type Company = {
   __typename?: 'Company';
   id: Scalars['ID'];
+  createdBy: Account;
+  updatedBy: Account;
+  createdDate: Scalars['DateTime'];
+  updatedDate: Scalars['DateTime'];
   name: Scalars['String'];
   isPublished: Scalars['Boolean'];
   treats: Array<Treat>;
+};
+
+
+export type ExtendedBaseEntity = {
+  __typename?: 'ExtendedBaseEntity';
+  id: Scalars['ID'];
   createdBy: Account;
+  updatedBy: Account;
   createdDate: Scalars['DateTime'];
   updatedDate: Scalars['DateTime'];
 };
-
 
 export type Image = {
   __typename?: 'Image';
@@ -249,12 +263,14 @@ export type QuerySearchTreatsArgs = {
 export type Review = {
   __typename?: 'Review';
   id: Scalars['ID'];
+  createdBy: Account;
+  updatedBy: Account;
+  createdDate: Scalars['DateTime'];
+  updatedDate: Scalars['DateTime'];
   score: Scalars['Float'];
   review: Scalars['String'];
   treat: Treat;
   author: Account;
-  createdDate: Scalars['DateTime'];
-  updatedDate: Scalars['DateTime'];
 };
 
 export type ReviewInput = {
@@ -266,25 +282,28 @@ export type ReviewInput = {
 export type Subcategory = {
   __typename?: 'Subcategory';
   id: Scalars['ID'];
+  createdBy: Account;
+  updatedBy: Account;
+  createdDate: Scalars['DateTime'];
+  updatedDate: Scalars['DateTime'];
   name: Scalars['String'];
   isPublished: Scalars['Boolean'];
   treats: Array<Treat>;
   category: Category;
-  createdDate: Scalars['DateTime'];
-  updatedDate: Scalars['DateTime'];
 };
 
 export type Treat = {
   __typename?: 'Treat';
   id: Scalars['ID'];
+  createdBy: Account;
+  updatedBy: Account;
+  createdDate: Scalars['DateTime'];
+  updatedDate: Scalars['DateTime'];
   name: Scalars['String'];
   reviews: Array<Review>;
-  createdBy: Account;
   company: Company;
   category: Category;
   subcategory: Subcategory;
-  createdDate: Scalars['DateTime'];
-  updatedDate: Scalars['DateTime'];
 };
 
 export type UpdateAccountInput = {
@@ -377,13 +396,13 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   Account: ResolverTypeWrapper<Account>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Review: ResolverTypeWrapper<Review>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   Treat: ResolverTypeWrapper<Treat>;
   Company: ResolverTypeWrapper<Company>;
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Category: ResolverTypeWrapper<Category>;
   Subcategory: ResolverTypeWrapper<Subcategory>;
   LogInInput: LogInInput;
@@ -395,6 +414,7 @@ export type ResolversTypes = {
   Image: ResolverTypeWrapper<Image>;
   ReviewInput: ReviewInput;
   Int: ResolverTypeWrapper<Scalars['Int']>;
+  ExtendedBaseEntity: ResolverTypeWrapper<ExtendedBaseEntity>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -402,13 +422,13 @@ export type ResolversParentTypes = {
   Query: {};
   Account: Account;
   ID: Scalars['ID'];
+  DateTime: Scalars['DateTime'];
   String: Scalars['String'];
   Boolean: Scalars['Boolean'];
   Review: Review;
   Float: Scalars['Float'];
   Treat: Treat;
   Company: Company;
-  DateTime: Scalars['DateTime'];
   Category: Category;
   Subcategory: Subcategory;
   LogInInput: LogInInput;
@@ -419,10 +439,13 @@ export type ResolversParentTypes = {
   Image: Image;
   ReviewInput: ReviewInput;
   Int: Scalars['Int'];
+  ExtendedBaseEntity: ExtendedBaseEntity;
 };
 
 export type AccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['Account'] = ResolversParentTypes['Account']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -437,29 +460,41 @@ export type AccountResolvers<ContextType = any, ParentType extends ResolversPare
 
 export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  updatedBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isPublished?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   treats?: Resolver<Array<ResolversTypes['Treat']>, ParentType, ContextType>;
   subcategories?: Resolver<Array<ResolversTypes['Subcategory']>, ParentType, ContextType>;
-  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
 export type CompanyResolvers<ContextType = any, ParentType extends ResolversParentTypes['Company'] = ResolversParentTypes['Company']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  updatedBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isPublished?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   treats?: Resolver<Array<ResolversTypes['Treat']>, ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
-  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
   name: 'DateTime';
 }
+
+export type ExtendedBaseEntityResolvers<ContextType = any, ParentType extends ResolversParentTypes['ExtendedBaseEntity'] = ResolversParentTypes['ExtendedBaseEntity']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  updatedBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
 
 export type ImageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Image'] = ResolversParentTypes['Image']> = {
   filename?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -507,36 +542,41 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type ReviewResolvers<ContextType = any, ParentType extends ResolversParentTypes['Review'] = ResolversParentTypes['Review']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  updatedBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   review?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   treat?: Resolver<ResolversTypes['Treat'], ParentType, ContextType>;
   author?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
-  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
 export type SubcategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subcategory'] = ResolversParentTypes['Subcategory']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  updatedBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isPublished?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   treats?: Resolver<Array<ResolversTypes['Treat']>, ParentType, ContextType>;
   category?: Resolver<ResolversTypes['Category'], ParentType, ContextType>;
-  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
 export type TreatResolvers<ContextType = any, ParentType extends ResolversParentTypes['Treat'] = ResolversParentTypes['Treat']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  updatedBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
+  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   reviews?: Resolver<Array<ResolversTypes['Review']>, ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
   company?: Resolver<ResolversTypes['Company'], ParentType, ContextType>;
   category?: Resolver<ResolversTypes['Category'], ParentType, ContextType>;
   subcategory?: Resolver<ResolversTypes['Subcategory'], ParentType, ContextType>;
-  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -549,6 +589,7 @@ export type Resolvers<ContextType = any> = {
   Category?: CategoryResolvers<ContextType>;
   Company?: CompanyResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
+  ExtendedBaseEntity?: ExtendedBaseEntityResolvers<ContextType>;
   Image?: ImageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

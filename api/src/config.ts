@@ -9,7 +9,7 @@ export const typeOrmConfig: PostgresConnectionOptions = {
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
   synchronize: true,
-  logging: false,
+  logging: true,
   entities: [__dirname + '/entities/*.entity.{ts,js}'],
   migrations: [__dirname + '/migrations/*.migration.{ts,js}'],
   namingStrategy: new SnakeNamingStrategy(),

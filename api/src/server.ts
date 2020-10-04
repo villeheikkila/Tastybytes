@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection } from 'typeorm';
 import { ApolloServer } from 'apollo-server-koa';
 import { buildSchema } from 'type-graphql';
 import {
@@ -15,7 +15,6 @@ import Cookie from 'cookie';
 import cors from '@koa/cors';
 import path from 'path';
 import { graphqlUploadKoa } from 'graphql-upload';
-import { GraphQLDatabaseLoader } from '@mando75/typeorm-graphql-loader';
 import {
   fieldExtensionsEstimator,
   getComplexity,
@@ -23,11 +22,11 @@ import {
 } from 'graphql-query-complexity';
 import { separateOperations } from 'graphql';
 import Redis from 'ioredis';
+import { ApolloServerLoaderPlugin } from 'type-graphql-dataloader';
 
 (async () => {
   try {
     const conn = await createConnection(typeOrmConfig);
-    const loader = new GraphQLDatabaseLoader(conn);
     const redis = new Redis({ host: 'redis' });
 
     const schema = await buildSchema({
@@ -93,7 +92,10 @@ import Redis from 'ioredis';
               console.log('Used query complexity points:', complexity);
             }
           })
-        }
+        },
+        ApolloServerLoaderPlugin({
+          typeormGetConnection: getConnection
+        })
       ]
     });
 
@@ -108,7 +110,6 @@ import Redis from 'ioredis';
 
     app.use(async (ctx, next) => {
       ctx.state = ctx.state || {};
-      ctx.loader = loader;
       ctx.redis = redis;
       await next();
     });

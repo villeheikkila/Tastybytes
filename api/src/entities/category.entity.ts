@@ -4,6 +4,7 @@ import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
 import Subcategory from './subcategory.entity';
 import ExtendedBaseEntity from '../typeorm/extendedBaseEntity';
+import { TypeormLoader } from 'type-graphql-dataloader';
 
 @Entity()
 @ObjectType()
@@ -16,13 +17,23 @@ export default class Category extends ExtendedBaseEntity {
   @Column({ default: true })
   isPublished: boolean;
 
-  @OneToMany(() => Treat, (treat) => treat.company, { lazy: true })
   @Field(() => [Treat])
+  @OneToMany(() => Treat, (treat) => treat.category, { lazy: true })
+  @TypeormLoader(() => Treat, (treat: Treat) => treat.categoryId, {
+    selfKey: true
+  })
   treats: Lazy<Treat[]>;
 
+  @Field(() => [Subcategory])
   @OneToMany(() => Subcategory, (subcategory) => subcategory.category, {
     lazy: true
   })
-  @Field(() => [Subcategory])
+  @TypeormLoader(
+    () => Subcategory,
+    (subcategory: Subcategory) => subcategory.categoryId,
+    {
+      selfKey: true
+    }
+  )
   subcategories: Lazy<Subcategory[]>;
 }

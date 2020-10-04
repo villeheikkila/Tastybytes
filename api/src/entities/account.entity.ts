@@ -11,6 +11,7 @@ import { ObjectType, Field, ID } from 'type-graphql';
 import Review from './review.entity';
 import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
+import { TypeormLoader } from 'type-graphql-dataloader';
 
 @Entity()
 @ObjectType()
@@ -55,8 +56,11 @@ export default class Account extends BaseEntity {
   @Column({ default: false })
   isVerified: boolean;
 
-  @OneToMany(() => Review, (review) => review.createdBy, { lazy: true })
   @Field(() => [Review])
+  @OneToMany(() => Review, (review) => review.author, { lazy: true })
+  @TypeormLoader(() => Review, (review: Review) => review.authorId, {
+    selfKey: true
+  })
   reviews: Lazy<Review[]>;
 
   @OneToMany(() => Treat, (treat) => treat.createdBy, { lazy: true })

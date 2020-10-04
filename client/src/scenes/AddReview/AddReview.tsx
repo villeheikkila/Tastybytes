@@ -19,7 +19,7 @@ export const AddReview: React.FC = () => {
 
   const { id } = useParams<{ id: string }>();
   const { data, loading } = useQuery<GetTreat>(GET_TREAT, {
-    variables: { id: parseInt(id) },
+    variables: { id },
   });
 
   const [createReview] = useMutation<CreateReview>(CREATE_REVIEW, {
@@ -38,7 +38,7 @@ export const AddReview: React.FC = () => {
     try {
       await createReview({
         variables: {
-          review: { treatId: parseInt(id), score, review },
+          review: { treatId: id, score, review },
         },
       });
     } catch (error) {

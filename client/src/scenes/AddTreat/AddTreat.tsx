@@ -38,9 +38,9 @@ const AddTreat: React.FC = () => {
       const response = await createTreat({
         variables: {
           name,
-          companyId: parseInt(selected.company.value),
-          categoryId: parseInt(selected.category.id),
-          subcategoryId: parseInt(selected.subcategory.id),
+          companyId: selected.company.value,
+          categoryId: selected.category.id,
+          subcategoryId: selected.subcategory.id,
         },
       });
 
