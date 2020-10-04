@@ -14,6 +14,7 @@ type Account {
   avatarUri: String
   passwordHash: String!
   isVerified: Boolean!
+  role: String
   reviews: [Review!]!
   createdTreats: [Treat!]!
 }
@@ -111,7 +112,6 @@ type Query {
   companies: [Company!]!
   company(id: ID!): Company!
   reviews(offset: Float!): [Review!]!
-  reviewsNew(offset: Float!): [Review!]!
   subcategories: [Subcategory!]!
   subcategory(id: ID): Subcategory!
   subcategoriesByCategory(categoryId: ID!): [Subcategory!]!

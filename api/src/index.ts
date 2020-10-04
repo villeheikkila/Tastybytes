@@ -14,6 +14,7 @@ import path from 'path';
 import { graphqlUploadKoa } from 'graphql-upload';
 import Redis from 'ioredis';
 import apolloServer from './apolloServer';
+import Account from './entities/account.entity';
 
 (async () => {
   try {
@@ -25,7 +26,18 @@ import apolloServer from './apolloServer';
         resolvers: [__dirname + '/resolvers/*.resolver.{ts,js}'],
         emitSchemaFile: path.resolve(__dirname, '../shared/schema.gql'),
         validate: true,
-        authChecker: ({ context }) => {
+        authChecker: async ({ context }, roles) => {
+          console.log('roles: ', roles);
+
+          if (roles.includes('ADMIN')) {
+            const account = await conn.getRepository(Account).findOne({
+              where: { id: context.state.user.id },
+              select: ['role']
+            });
+
+            return account?.role === 'ADMIN';
+          }
+
           if ('state' in context) {
             return !!context.state.user;
           }

@@ -7,7 +7,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { ObjectType, Field, ID } from 'type-graphql';
+import { ObjectType, Field, ID, Authorized } from 'type-graphql';
 import Review from './review.entity';
 import Treat from './treat.entity';
 import { Lazy } from '../utils/helpers';
@@ -48,6 +48,7 @@ export default class Account extends BaseEntity {
   @Column({ nullable: true })
   avatarUri: string;
 
+  @Authorized('ADMIN')
   @Field(() => String)
   @Column()
   passwordHash: string;
@@ -55,6 +56,10 @@ export default class Account extends BaseEntity {
   @Field(() => Boolean)
   @Column({ default: false })
   isVerified: boolean;
+
+  @Field(() => String, { nullable: true })
+  @Column({ default: 'USER' })
+  role: 'USER' | 'ADMIN';
 
   @Field(() => [Review])
   @OneToMany(() => Review, (review) => review.author, { lazy: true })

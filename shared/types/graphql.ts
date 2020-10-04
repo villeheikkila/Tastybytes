@@ -196,7 +196,6 @@ export type Query = {
   companies: Array<Company>;
   company: Company;
   reviews: Array<Review>;
-  reviewsNew: Array<Review>;
   subcategories: Array<Subcategory>;
   subcategory: Subcategory;
   subcategoriesByCategory: Array<Subcategory>;
@@ -237,11 +236,6 @@ export type QueryCompanyArgs = {
 
 
 export type QueryReviewsArgs = {
-  offset: Scalars['Float'];
-};
-
-
-export type QueryReviewsNewArgs = {
   offset: Scalars['Float'];
 };
 
@@ -538,7 +532,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   companies?: Resolver<Array<ResolversTypes['Company']>, ParentType, ContextType>;
   company?: Resolver<ResolversTypes['Company'], ParentType, ContextType, RequireFields<QueryCompanyArgs, 'id'>>;
   reviews?: Resolver<Array<ResolversTypes['Review']>, ParentType, ContextType, RequireFields<QueryReviewsArgs, 'offset'>>;
-  reviewsNew?: Resolver<Array<ResolversTypes['Review']>, ParentType, ContextType, RequireFields<QueryReviewsNewArgs, 'offset'>>;
   subcategories?: Resolver<Array<ResolversTypes['Subcategory']>, ParentType, ContextType>;
   subcategory?: Resolver<ResolversTypes['Subcategory'], ParentType, ContextType, RequireFields<QuerySubcategoryArgs, never>>;
   subcategoriesByCategory?: Resolver<Array<ResolversTypes['Subcategory']>, ParentType, ContextType, RequireFields<QuerySubcategoriesByCategoryArgs, 'categoryId'>>;
