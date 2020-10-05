@@ -18,23 +18,23 @@ export enum LoginResult {
 }
 
 export interface AccountInput {
-  username: string;
-  email: string;
-  password: string;
   captchaToken: string;
+  email: string;
   firstName?: string | null;
   lastName?: string | null;
+  password: string;
+  username: string;
 }
 
 export interface LogInInput {
-  username: string;
   password: string;
+  username: string;
 }
 
 export interface ReviewInput {
-  treatId: string;
-  score: number;
   review?: string | null;
+  score: number;
+  treatId: string;
 }
 
 //==============================================================
