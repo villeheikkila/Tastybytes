@@ -14,7 +14,7 @@ const s3 = new AWS.S3({
   secretAccessKey: AWS_S3_SECRET_ACCESS_KEY
 });
 
-const s3uploader = async (
+const bucketUploader = async (
   fileName: string,
   content: Stream
 ): Promise<string> => {
@@ -29,4 +29,4 @@ const s3uploader = async (
   return uri;
 };
 
-export default s3uploader;
+export default bucketUploader;

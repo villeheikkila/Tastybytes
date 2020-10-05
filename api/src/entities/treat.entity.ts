@@ -2,7 +2,7 @@ import { Entity, Column, OneToMany, ManyToOne, RelationId } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
 import Review from './review.entity';
 import Company from './company.entity';
-import { Lazy } from '../utils/helpers';
+import { Lazy } from '../typeorm/lazy.util';
 import Category from './category.entity';
 import Subcategory from './subcategory.entity';
 import ExtendedBaseEntity from '../typeorm/extendedBaseEntity';

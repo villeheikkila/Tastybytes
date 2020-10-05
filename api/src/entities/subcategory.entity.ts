@@ -1,7 +1,7 @@
 import { Entity, Column, OneToMany, ManyToOne, RelationId } from 'typeorm';
 import { ObjectType, Field } from 'type-graphql';
 import Treat from './treat.entity';
-import { Lazy } from '../utils/helpers';
+import { Lazy } from '../typeorm/lazy.util';
 import Category from './category.entity';
 import ExtendedBaseEntity from '../typeorm/extendedBaseEntity';
 import { TypeormLoader } from 'type-graphql-dataloader';

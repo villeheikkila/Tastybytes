@@ -6,7 +6,7 @@ import {
   simpleEstimator
 } from 'graphql-query-complexity';
 import { ApolloServerLoaderPlugin } from 'type-graphql-dataloader';
-import { ENV, JWT_PRIVATE_KEY, JWT_PUBLIC_KEY } from './config';
+import { ENV, JWT_PRIVATE_KEY, JWT_PUBLIC_KEY } from '../config';
 import jsonwebtoken from 'jsonwebtoken';
 import Cookie from 'cookie';
 import { getConnection } from 'typeorm';

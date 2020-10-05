@@ -10,7 +10,7 @@ import {
 import { ObjectType, Field, ID, Authorized } from 'type-graphql';
 import Review from './review.entity';
 import Treat from './treat.entity';
-import { Lazy } from '../utils/helpers';
+import { Lazy } from '../typeorm/lazy.util';
 import { TypeormLoader } from 'type-graphql-dataloader';
 
 @Entity()

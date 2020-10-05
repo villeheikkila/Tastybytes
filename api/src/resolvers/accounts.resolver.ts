@@ -20,11 +20,11 @@ import {
   UpdateAccountInput,
   LogInInput
 } from '../input/account.input';
-import { verifyRecaptcha } from '../utils/recaptcha';
+import { verifyRecaptcha } from '../utils/verifyRecaptcha';
 import { sendMail } from '../utils/sendMail';
 import { GraphQLUpload } from 'graphql-upload';
 import { Stream } from 'stream';
-import s3uploader from '../utils/s3uploader';
+import bucketUploader from '../utils/bucketUploader';
 
 @Resolver()
 export class AccountResolver {
@@ -233,7 +233,7 @@ export class AccountResolver {
 
     if (!account) throw new Error(`Account doesn't exist`);
 
-    const avatarUri = await s3uploader(filename, createReadStream());
+    const avatarUri = await bucketUploader(filename, createReadStream());
     console.log('avatarUri: ', avatarUri);
 
     account.avatarUri = avatarUri;

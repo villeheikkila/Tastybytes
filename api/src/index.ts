@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import {
-  typeOrmConfig,
   JWT_PUBLIC_KEY,
   JWT_PRIVATE_KEY,
   API_PORT,
@@ -15,8 +14,9 @@ import cors from '@koa/cors';
 import path from 'path';
 import { graphqlUploadKoa } from 'graphql-upload';
 import Redis from 'ioredis';
-import apolloServer from './apolloServer';
+import apolloServer from './utils/apolloServer';
 import authChecker from './utils/authChecker';
+import { typeOrmConfig } from './typeorm/typeOrmConfig';
 
 (async () => {
   try {

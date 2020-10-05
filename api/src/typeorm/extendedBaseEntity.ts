@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { Lazy } from '../utils/helpers';
+import { Lazy } from './lazy.util';
 import Account from '../entities/account.entity';
 
 @ObjectType()

@@ -14,7 +14,7 @@ import { GraphQLError } from 'graphql';
 import { Context } from 'koa';
 import Subcategory from '../entities/subcategory.entity';
 import Category from '../entities/category.entity';
-import { ILike } from '../utils/iLikeTypeORM';
+import { ILike } from '../typeorm/ilike.util';
 import { getRepository } from 'typeorm';
 
 @Resolver()
