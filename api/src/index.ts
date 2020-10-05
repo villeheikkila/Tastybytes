@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { createConnection, getConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import {
   typeOrmConfig,
@@ -16,7 +16,7 @@ import path from 'path';
 import { graphqlUploadKoa } from 'graphql-upload';
 import Redis from 'ioredis';
 import apolloServer from './apolloServer';
-import Account from './entities/account.entity';
+import authChecker from './utils/authChecker';
 
 (async () => {
   try {
@@ -31,24 +31,7 @@ import Account from './entities/account.entity';
             ? path.resolve(__dirname, '../shared/schema.gql')
             : undefined,
         validate: true,
-        authChecker: async ({ context }, roles) => {
-          if (roles.includes('ADMIN')) {
-            const account = await getConnection()
-              .getRepository(Account)
-              .findOne({
-                where: { id: context.state.user.id },
-                select: ['role']
-              });
-
-            return account?.role === 'ADMIN';
-          }
-
-          if ('state' in context) {
-            return !!context.state.user;
-          }
-
-          return !!context.id;
-        }
+        authChecker
       })
     );
 
