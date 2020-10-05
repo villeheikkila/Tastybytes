@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RECAPTCHA_SECRET_KEY } from '../config';
+import config from '../config';
 
 export const verifyRecaptcha = async (
   recaptchaToken: string
@@ -8,7 +8,7 @@ export const verifyRecaptcha = async (
     const { data } = await axios({
       method: 'POST',
       url: 'https://www.google.com/recaptcha/api/siteverify',
-      data: `secret=${RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`
+      data: `secret=${config.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`
     });
 
     return !!data.success;

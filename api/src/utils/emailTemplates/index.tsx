@@ -3,7 +3,9 @@ import ReactDOMServer from 'react-dom/server';
 import ResetPasswordTemplate from './ResetPasswordTemplate';
 import VerifyAccountTemplate from './VerifyAccountTemplate';
 
-export const getTemplate = (token: string) => ({
+export const getTemplate = (
+  token: string
+): { [key: string]: { html: string; subject: string } } => ({
   RESET: {
     html: ReactDOMServer.renderToStaticMarkup(
       <ResetPasswordTemplate token={token} />

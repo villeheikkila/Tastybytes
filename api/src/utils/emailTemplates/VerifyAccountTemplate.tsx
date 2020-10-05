@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { DOMAIN } from '../../config';
+import config from '../../config';
 
 const VerifyAccountTemplate: FC<{ token: string }> = ({
   token
@@ -10,7 +10,7 @@ const VerifyAccountTemplate: FC<{ token: string }> = ({
       <p>
         Verify your account for the Tastekeeper app by clicking the link below
       </p>
-      <a href={`${DOMAIN}/verify-account/${token}`}>Verify Account</a>
+      <a href={`${config.DOMAIN}/verify-account/${token}`}>Verify Account</a>
     </body>
   </html>
 );

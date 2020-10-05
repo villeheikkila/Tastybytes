@@ -1,11 +1,11 @@
 import nodemailer from 'nodemailer';
 import nodemailerSendgrid from 'nodemailer-sendgrid';
-import { SENDGRID_API_KEY, EMAIL_SENDER } from '../config';
+import config from '../config';
 import { getTemplate } from './emailTemplates';
 
 const transport = nodemailer.createTransport(
   nodemailerSendgrid({
-    apiKey: SENDGRID_API_KEY
+    apiKey: config.SENDGRID_API_KEY
   })
 );
 
@@ -18,7 +18,7 @@ export const sendMail = async (
 
   try {
     await transport.sendMail({
-      from: EMAIL_SENDER,
+      from: config.EMAIL_SENDER,
       to,
       ...getHTML
     });

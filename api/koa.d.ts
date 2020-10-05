@@ -1,4 +1,3 @@
-import GraphQLDatabaseLoader from '@mando75/typeorm-graphql-loader';
 import { RedisClient } from 'redis';
 
 declare module 'koa' {
@@ -10,7 +9,6 @@ declare module 'koa' {
 
   interface Context<StateT = State> {
     state: StateT;
-    loader: GraphQLDatabaseLoader;
     redis: RedisClient;
   }
 }

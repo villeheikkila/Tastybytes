@@ -1,13 +1,7 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
-import {
-  JWT_PUBLIC_KEY,
-  JWT_PRIVATE_KEY,
-  API_PORT,
-  ENV,
-  DOMAIN
-} from './config';
+import config from './config';
 import koa from 'koa';
 import jwt from 'koa-jwt';
 import cors from '@koa/cors';
@@ -26,10 +20,9 @@ import { typeOrmConfig } from './typeorm/typeOrmConfig';
     const server = apolloServer(
       await buildSchema({
         resolvers: [__dirname + '/resolvers/*.resolver.{ts,js}'],
-        emitSchemaFile:
-          ENV === 'development'
-            ? path.resolve(__dirname, '../shared/schema.gql')
-            : undefined,
+        emitSchemaFile: !config.isProd
+          ? path.resolve(__dirname, '../shared/schema.gql')
+          : undefined,
         validate: true,
         authChecker
       })
@@ -40,7 +33,7 @@ import { typeOrmConfig } from './typeorm/typeOrmConfig';
 
     app.use(
       cors({
-        origin: ENV === 'production' ? DOMAIN : undefined,
+        origin: config.isProd ? config.DOMAIN : undefined,
         credentials: true
       })
     );
@@ -53,8 +46,8 @@ import { typeOrmConfig } from './typeorm/typeOrmConfig';
 
     app.use(
       jwt({
-        cookie: JWT_PUBLIC_KEY,
-        secret: JWT_PRIVATE_KEY,
+        cookie: config.JWT_PUBLIC_KEY,
+        secret: config.JWT_PRIVATE_KEY,
         passthrough: true
       })
     );
@@ -66,9 +59,9 @@ import { typeOrmConfig } from './typeorm/typeOrmConfig';
       })
     );
 
-    const httpServer = app.listen(API_PORT, () =>
+    const httpServer = app.listen(config.API_PORT, () =>
       console.log(
-        `🚀 Server is running in ${ENV} environment on the port ${API_PORT}.\n` +
+        `🚀 Server is running in ${config.ENV} environment on the port ${config.API_PORT}.\n` +
           `🚀 Database connection established on port ${process.env.POSTGRES_PORT}.\n` +
           `🚀 GraphQL server at path ${server.graphqlPath}.\n` +
           `🚀 GraphQL subscription server at path ${server.subscriptionsPath}.`

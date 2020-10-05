@@ -1,9 +1,10 @@
+import { AuthChecker } from 'type-graphql';
 import { getConnection } from 'typeorm';
 import Account from '../entities/account.entity';
 
-const authChecker = async (
-  { context }: any,
-  roles: any[]
+const authChecker: AuthChecker<{ state: { user: { id: string } } }> = async (
+  { context },
+  roles
 ): Promise<boolean> => {
   if (roles.includes('ADMIN')) {
     const account = await getConnection()
@@ -20,7 +21,7 @@ const authChecker = async (
     return !!context.state.user;
   }
 
-  return !!context.id;
+  return false;
 };
 
 export default authChecker;

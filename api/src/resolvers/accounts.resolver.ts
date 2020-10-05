@@ -12,7 +12,7 @@ import {
 } from 'type-graphql';
 import Account from '../entities/account.entity';
 import jwt from 'jsonwebtoken';
-import { JWT_PUBLIC_KEY, JWT_PRIVATE_KEY } from '../config';
+import config from '../config';
 import bcrypt from 'bcryptjs';
 import { Context } from 'koa';
 import {
@@ -130,8 +130,10 @@ export class AccountResolver {
       if (!account.isVerified) return LoginResult.UNVERIFIED_ACCOUNT;
 
       ctx.cookies.set(
-        JWT_PUBLIC_KEY,
-        jwt.sign({ id: account.id }, JWT_PRIVATE_KEY, { expiresIn: '2d' }),
+        config.JWT_PUBLIC_KEY,
+        jwt.sign({ id: account.id }, config.JWT_PRIVATE_KEY, {
+          expiresIn: '2d'
+        }),
         { secure: false, httpOnly: true }
       );
 
@@ -144,7 +146,7 @@ export class AccountResolver {
   @Query(() => Boolean)
   @Authorized()
   async logOut(@Ctx() ctx: Context): Promise<boolean> {
-    ctx.cookies.set(JWT_PUBLIC_KEY);
+    ctx.cookies.set(config.JWT_PUBLIC_KEY);
     return true;
   }
 

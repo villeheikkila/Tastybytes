@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { DOMAIN } from '../../config';
+import config from '../../config';
 
 const ResetPasswordTemplate: FC<{ token: string }> = ({
   token
@@ -10,7 +10,7 @@ const ResetPasswordTemplate: FC<{ token: string }> = ({
       <p>
         Reset your password for the Tastekeeper app by clicking the link below
       </p>
-      <a href={`${DOMAIN}/reset-password/${token}`}>Reset Password</a>
+      <a href={`${config.DOMAIN}/reset-password/${token}`}>Reset Password</a>
     </body>
   </html>
 );

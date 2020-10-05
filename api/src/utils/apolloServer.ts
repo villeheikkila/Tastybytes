@@ -6,7 +6,7 @@ import {
   simpleEstimator
 } from 'graphql-query-complexity';
 import { ApolloServerLoaderPlugin } from 'type-graphql-dataloader';
-import { ENV, JWT_PRIVATE_KEY, JWT_PUBLIC_KEY } from '../config';
+import config from '../config';
 import jsonwebtoken from 'jsonwebtoken';
 import Cookie from 'cookie';
 import { getConnection } from 'typeorm';
@@ -15,7 +15,7 @@ const apolloServer = (schema: GraphQLSchema): ApolloServer =>
   new ApolloServer({
     schema,
     uploads: false,
-    introspection: ENV === 'development',
+    introspection: !config.isProd,
     context: ({ ctx, connection }) => {
       if (ctx) {
         return ctx;
@@ -27,8 +27,8 @@ const apolloServer = (schema: GraphQLSchema): ApolloServer =>
       onConnect: (connectionParams, websocket, ctx) => {
         const parsedCookie = Cookie.parse(ctx.request.headers.cookie || '');
         const checkAccount = jsonwebtoken.verify(
-          parsedCookie[JWT_PUBLIC_KEY] || '',
-          JWT_PRIVATE_KEY
+          parsedCookie[config.JWT_PUBLIC_KEY] || '',
+          config.JWT_PRIVATE_KEY
         ) as { id: string };
         return {
           ...ctx,
