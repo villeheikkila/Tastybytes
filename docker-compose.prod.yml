@@ -8,8 +8,6 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - "3030:80"
-    volumes:
-      - ./client:/service
     environment:
       REACT_APP_API_PORT: ${API_PORT}
       REACT_APP_RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY}
@@ -28,9 +26,6 @@ services:
       - db
       - redis
     restart: always
-    volumes:
-      - ./api:/service
-      - /dev/null:/api/node_modules
     links:
       - redis:redis
     environment:

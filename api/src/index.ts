@@ -57,7 +57,7 @@ import Account from './entities/account.entity';
 
     app.use(
       cors({
-        origin: DOMAIN,
+        origin: ENV === 'production' ? DOMAIN : undefined,
         credentials: true
       })
     );
