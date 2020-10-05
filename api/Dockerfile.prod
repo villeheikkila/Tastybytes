@@ -5,7 +5,6 @@ ADD . .
 RUN npm ci
 RUN npm i -g typescript
 RUN npm run-script build
-RUN chown -R node:node shared
 EXPOSE 4000
 USER node
 

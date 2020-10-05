@@ -10,7 +10,6 @@ services:
       - "3030:80"
     volumes:
       - ./client:/service
-      - ./shared:/service/shared
     environment:
       REACT_APP_API_PORT: ${API_PORT}
       REACT_APP_RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY}
@@ -32,7 +31,6 @@ services:
     volumes:
       - ./api:/service
       - /dev/null:/api/node_modules
-      - ./shared:/service/shared
     links:
       - redis:redis
     environment:
@@ -51,6 +49,7 @@ services:
       AWS_S3_ACCESS_KEY: ${AWS_S3_ACCESS_KEY}
       AWS_S3_SECRET_ACCESS_KEY: ${AWS_S3_SECRET_ACCESS_KEY}
       AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
+      NODE_ENV: "production"
 
   db:
     container_name: postgres

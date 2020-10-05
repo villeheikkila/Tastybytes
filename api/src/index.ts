@@ -5,7 +5,9 @@ import {
   typeOrmConfig,
   JWT_PUBLIC_KEY,
   JWT_PRIVATE_KEY,
-  API_PORT
+  API_PORT,
+  ENV,
+  DOMAIN
 } from './config';
 import koa from 'koa';
 import jwt from 'koa-jwt';
@@ -24,11 +26,12 @@ import Account from './entities/account.entity';
     const server = apolloServer(
       await buildSchema({
         resolvers: [__dirname + '/resolvers/*.resolver.{ts,js}'],
-        emitSchemaFile: path.resolve(__dirname, '../shared/schema.gql'),
+        emitSchemaFile:
+          ENV === 'development'
+            ? path.resolve(__dirname, '../shared/schema.gql')
+            : undefined,
         validate: true,
         authChecker: async ({ context }, roles) => {
-          console.log('roles: ', roles);
-
           if (roles.includes('ADMIN')) {
             const account = await getConnection()
               .getRepository(Account)
@@ -43,6 +46,7 @@ import Account from './entities/account.entity';
           if ('state' in context) {
             return !!context.state.user;
           }
+
           return !!context.id;
         }
       })
@@ -53,6 +57,7 @@ import Account from './entities/account.entity';
 
     app.use(
       cors({
+        origin: DOMAIN,
         credentials: true
       })
     );
@@ -80,7 +85,7 @@ import Account from './entities/account.entity';
 
     const httpServer = app.listen(API_PORT, () =>
       console.log(
-        `🚀 Server has started on the port ${API_PORT}.\n` +
+        `🚀 Server is running in ${ENV} environment on the port ${API_PORT}.\n` +
           `🚀 Database connection established on port ${process.env.POSTGRES_PORT}.\n` +
           `🚀 GraphQL server at path ${server.graphqlPath}.\n` +
           `🚀 GraphQL subscription server at path ${server.subscriptionsPath}.`
