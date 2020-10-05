@@ -10,7 +10,6 @@ import { JWT_PRIVATE_KEY, JWT_PUBLIC_KEY } from './config';
 import jsonwebtoken from 'jsonwebtoken';
 import Cookie from 'cookie';
 import { getConnection } from 'typeorm';
-import { ApolloLogExtension } from 'apollo-log';
 
 const apolloServer = (schema: GraphQLSchema): ApolloServer =>
   new ApolloServer({
@@ -68,14 +67,6 @@ const apolloServer = (schema: GraphQLSchema): ApolloServer =>
       ApolloServerLoaderPlugin({
         typeormGetConnection: getConnection
       })
-    ],
-    extensions: [
-      () =>
-        new ApolloLogExtension({
-          prefix: 'apollo',
-          level: 'error',
-          timestamp: true
-        })
     ]
   });
 

@@ -4,51 +4,51 @@
 # -----------------------------------------------
 
 type Account {
-  id: ID!
+  avatarUri: String
   createdDate: DateTime!
+  createdTreats: [Treat!]!
+  email: String!
+  firstName: String!
+  id: ID!
+  isVerified: Boolean!
+  lastName: String!
+  passwordHash: String!
+  reviews: [Review!]!
+  role: String
   updatedDate: DateTime!
   username: String!
-  firstName: String!
-  lastName: String!
-  email: String!
-  avatarUri: String
-  passwordHash: String!
-  isVerified: Boolean!
-  role: String
-  reviews: [Review!]!
-  createdTreats: [Treat!]!
 }
 
 input AccountInput {
-  username: String!
-  email: String!
-  password: String!
   captchaToken: String!
+  email: String!
   firstName: String
   lastName: String
+  password: String!
+  username: String!
 }
 
 type Category {
-  id: ID!
   createdBy: Account!
-  updatedBy: Account!
   createdDate: DateTime!
-  updatedDate: DateTime!
-  name: String!
+  id: ID!
   isPublished: Boolean!
-  treats: [Treat!]!
+  name: String!
   subcategories: [Subcategory!]!
+  treats: [Treat!]!
+  updatedBy: Account!
+  updatedDate: DateTime!
 }
 
 type Company {
-  id: ID!
   createdBy: Account!
-  updatedBy: Account!
   createdDate: DateTime!
-  updatedDate: DateTime!
-  name: String!
+  id: ID!
   isPublished: Boolean!
+  name: String!
   treats: [Treat!]!
+  updatedBy: Account!
+  updatedDate: DateTime!
 }
 
 """
@@ -57,118 +57,118 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type ExtendedBaseEntity {
-  id: ID!
   createdBy: Account!
-  updatedBy: Account!
   createdDate: DateTime!
+  id: ID!
+  updatedBy: Account!
   updatedDate: DateTime!
 }
 
 type Image {
-  filename: String!
   avatarUri: String!
+  filename: String!
 }
 
 input LogInInput {
-  username: String!
   password: String!
+  username: String!
 }
 
 """Return values for the login query."""
 enum LoginResult {
-  SUCCESS
-  INEXISTENT_ACCOUNT
-  UNVERIFIED_ACCOUNT
   INCORRECT_PASSWORD
+  INEXISTENT_ACCOUNT
+  SUCCESS
+  UNVERIFIED_ACCOUNT
 }
 
 type Mutation {
   createAccount(account: AccountInput!): Account!
-  updateAccount(account: UpdateAccountInput!): Account!
-  deleteAccount: Boolean!
-  resetPassword(password: String!, token: String!): Boolean!
-  verifyAccount(token: String!): Boolean!
-  uploadProfilePicture(picture: Upload!): Image!
   createCategory(name: String!): Category!
-  deleteCategory(id: ID!): Boolean!
   createCompany(name: String!): Company!
-  deleteCompany(id: ID!): Boolean!
   createReview(review: ReviewInput!): Review!
   createSubcategory(categoryId: ID!, name: String!): Subcategory!
+  createTreat(categoryId: ID!, companyId: ID!, name: String!, subcategoryId: ID!): Treat!
+  deleteAccount: Boolean!
+  deleteCategory(id: ID!): Boolean!
+  deleteCompany(id: ID!): Boolean!
   deleteSubategory(id: ID!): Boolean!
-  createTreat(subcategoryId: ID!, categoryId: ID!, companyId: ID!, name: String!): Treat!
+  resetPassword(password: String!, token: String!): Boolean!
+  updateAccount(account: UpdateAccountInput!): Account!
+  uploadProfilePicture(picture: Upload!): Image!
+  verifyAccount(token: String!): Boolean!
 }
 
 type Query {
-  accounts: [Account!]!
   account(id: ID!): Account!
-  requestAccountVerification(username: String!): Boolean!
-  logIn(account: LogInInput!): LoginResult!
-  logOut: Boolean!
-  currentAccount: Account!
-  requestPasswordReset(email: String!): Boolean!
+  accounts: [Account!]!
   categories: [Category!]!
   category(id: ID!): Category!
   companies: [Company!]!
   company(id: ID!): Company!
+  currentAccount: Account!
+  logIn(account: LogInInput!): LoginResult!
+  logOut: Boolean!
+  requestAccountVerification(username: String!): Boolean!
+  requestPasswordReset(email: String!): Boolean!
   reviews(offset: Float!): [Review!]!
-  subcategories: [Subcategory!]!
-  subcategory(id: ID): Subcategory!
-  subcategoriesByCategory(categoryId: ID!): [Subcategory!]!
-  treats: [Treat!]!
-  treat(id: ID!): Treat!
   searchTreats(offset: Float, searchTerm: String!): [Treat!]!
+  subcategories: [Subcategory!]!
+  subcategoriesByCategory(categoryId: ID!): [Subcategory!]!
+  subcategory(id: ID): Subcategory!
+  treat(id: ID!): Treat!
+  treats: [Treat!]!
 }
 
 type Review {
-  id: ID!
-  createdBy: Account!
-  updatedBy: Account!
-  createdDate: DateTime!
-  updatedDate: DateTime!
-  score: Float!
-  review: String!
-  treat: Treat!
   author: Account!
+  createdBy: Account!
+  createdDate: DateTime!
+  id: ID!
+  review: String!
+  score: Float!
+  treat: Treat!
+  updatedBy: Account!
+  updatedDate: DateTime!
 }
 
 input ReviewInput {
-  treatId: ID!
-  score: Int!
   review: String
+  score: Int!
+  treatId: ID!
 }
 
 type Subcategory {
-  id: ID!
-  createdBy: Account!
-  updatedBy: Account!
-  createdDate: DateTime!
-  updatedDate: DateTime!
-  name: String!
-  isPublished: Boolean!
-  treats: [Treat!]!
   category: Category!
+  createdBy: Account!
+  createdDate: DateTime!
+  id: ID!
+  isPublished: Boolean!
+  name: String!
+  treats: [Treat!]!
+  updatedBy: Account!
+  updatedDate: DateTime!
 }
 
 type Treat {
-  id: ID!
+  category: Category!
+  company: Company!
   createdBy: Account!
-  updatedBy: Account!
   createdDate: DateTime!
-  updatedDate: DateTime!
+  id: ID!
   name: String!
   reviews: [Review!]!
-  company: Company!
-  category: Category!
   subcategory: Subcategory!
+  updatedBy: Account!
+  updatedDate: DateTime!
 }
 
 input UpdateAccountInput {
-  username: String
   email: String
-  password: String
   firstName: String
   lastName: String
+  password: String
+  username: String
 }
 
 """The `Upload` scalar type represents a file upload."""

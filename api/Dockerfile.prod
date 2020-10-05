@@ -1,0 +1,12 @@
+FROM node:current-alpine3.10
+WORKDIR /home/node/tastekeeper 
+
+ADD . .
+RUN npm ci
+RUN npm i -g typescript
+RUN npm run-script build
+RUN chown -R node:node shared
+EXPOSE 4000
+USER node
+
+CMD [ "node", "build/index.js" ]

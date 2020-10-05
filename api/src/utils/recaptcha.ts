@@ -11,7 +11,7 @@ export const verifyRecaptcha = async (
       data: `secret=${RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`
     });
 
-    return data.success ? true : false;
+    return !!data.success;
   } catch (error) {
     console.log(error);
     return false;
