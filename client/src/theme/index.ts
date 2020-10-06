@@ -1,3 +1,8 @@
+import { css as cssDefault, ThemedCssFunction } from "styled-components";
+
+/* Hack to avoid conflict where theme references itself through DefaultTheme */
+const css = cssDefault as ThemedCssFunction<any>;
+
 const colors = {
   backgroundColor: "rgba(32, 34, 38, 1.0)",
   primary: "rgba(22, 24, 24)",
@@ -18,30 +23,23 @@ const colors = {
 
 const theme = {
   colors,
-  typography: {
-    fontSizes: ["2.369rem", "1.777rem", "1.333rem"],
-    body: {
-      fontFamily:
-        "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
-      size: 3,
-      fontWeight: 500,
-      color: colors.white,
-      lineHeight: 1.4,
-    },
-    heading: {
-      fontFamily:
-        "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
-      size: 1,
-      fontWeight: 700,
-      color: colors.white,
-      lineHeight: 1.2,
-    },
-    link: {
-      color: colors.blue,
-      fontWeight: 600,
-    },
-  },
   borderRadius: "8px",
+  typography: {
+    heading: css`
+      font-size: 2.3rem;
+      font-weight: 700;
+      line-height: 1.2;
+    `,
+    body: css`
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.4;
+    `,
+    link: css`
+      color: ${colors.blue};
+      font-weight: 600;
+    `,
+  },
 };
 
 export default theme;

@@ -2,19 +2,6 @@ import { createGlobalStyle } from "styled-components";
 import theme from ".";
 
 const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    line-height: 1;
-    font-size: 16px;
-    font-family: 'Open Sans', sans-serif;
-    overflow-y: none;
-    background-color: ${theme.colors.backgroundColor};
-    color: ${theme.colors.white};
-    -webkit-overflow-scrolling: touch;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-  }
-
   html,
   body,
   div,
@@ -210,6 +197,19 @@ const GlobalStyle = createGlobalStyle`
   
   input, 
   select { font-size: 100%; }
+
+  body {
+    margin: 0;
+    line-height: 1;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    overflow-y: none;
+    background-color: ${theme.colors.backgroundColor};
+    color: ${theme.colors.white};
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
 `;
 
 export default GlobalStyle;

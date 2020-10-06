@@ -9,6 +9,7 @@ import Heading from "../../components/Heading";
 import Spacer from "../../components/Spacer";
 import StarPicker from "../../components/StarPicker";
 import Text from "../../components/Text";
+import theme from "../../theme";
 import { Review } from "../../types";
 import { useCreateReviewMutation, useGetTreatQuery } from "./queries.hooks";
 
@@ -104,11 +105,7 @@ const TextArea = styled.textarea`
   border: 1px solid ${(props) => props.theme.colors.black};
   background-color: ${(props) => props.theme.colors.primary};
   border: none;
-  font-family: ${(props) => props.theme.typography.body.fontFamily};
-  font-size: ${(props) => props.theme.typography.fontSizes[2]};
-  font-weight: ${(props) => props.theme.typography.body.fontWeight};
-  color: rgba(255, 255, 255, 1);
-  line-height: ${(props) => props.theme.typography.body.fontHeight};
+  ${theme.typography.body};
   resize: none;
   width: 100%;
 `;
