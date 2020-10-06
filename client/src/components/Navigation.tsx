@@ -1,12 +1,14 @@
-import React from "react";
-import styled from "styled-components";
-import { Link, useLocation } from "react-router-dom";
-import { motion, AnimateSharedLayout } from "framer-motion";
+import {
+  faIceCream,
+  faStream,
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import { faIceCream } from "@fortawesome/free-solid-svg-icons";
-import { faStream } from "@fortawesome/free-solid-svg-icons";
-import theme from "../theme";
+import { AnimateSharedLayout, motion } from "framer-motion";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import styled from "styled-components";
+import theme from "../theme/theme";
 
 type IconDefinition = typeof faIceCream;
 

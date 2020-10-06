@@ -56,10 +56,6 @@ const UnauthorizedRoutes = () => (
     <Route path="/email-sent" exact>
       <CheckInbox />
     </Route>
-
-    <Route>
-      <Landing />
-    </Route>
   </>
 );
 

@@ -1,7 +1,7 @@
-import React, { FC, RefObject, useLayoutEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import React from "react";
 import styled from "styled-components";
-import { useTransform, useMotionValue, motion } from "framer-motion";
-import useDimensions from "../hooks/useDimensions";
+import useDimensions from "../common/hooks/useDimensions";
 
 interface IProps<T> {
   data: T[];

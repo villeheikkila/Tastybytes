@@ -8,6 +8,7 @@ import Input from "../components/Input";
 import Link from "../components/Link";
 import Spacer from "../components/Spacer";
 import Text from "../components/Text";
+import { theme } from "../theme";
 import {
   useLogInLazyQuery,
   useRequestAccountVerificationLazyQuery,
@@ -127,12 +128,8 @@ const Error = styled.strong<{ isError: boolean }>`
 `;
 
 const LinkButton = styled.button`
-  font-family: ${(props) => props.theme.typography.body.fontFamily};
-  font-size: ${(props) =>
-    props.theme.typography.fontSizes[props.theme.typography.body.size]};
-  font-weight: ${(props) => props.theme.typography.link.fontWeight};
-  color: ${(props) => props.theme.typography.link.color};
-  line-height: ${(props) => props.theme.typography.body.fontHeight};
+  ${theme.typography.body}
+  ${theme.typography.link}
   cursor: grab;
 `;
 

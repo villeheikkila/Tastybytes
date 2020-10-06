@@ -6,7 +6,7 @@ import Container from "../../../components/Container";
 import HeaderInput from "../../../components/HeaderInput";
 import IconButton from "../../../components/IconButton";
 import SelectionButton from "../../../components/SelectionButton";
-import theme from "../../../theme";
+import theme from "../../../theme/theme";
 import { useCategoriesQuery } from "../queries.hooks";
 import CreateCategoryForm from "./CreateCategory";
 

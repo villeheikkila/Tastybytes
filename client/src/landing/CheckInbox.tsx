@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Heading from "../components/Heading";
 import Spacer from "../components/Spacer";
 import Text from "../components/Text";
-import theme from "../theme";
+import { theme } from "../theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
