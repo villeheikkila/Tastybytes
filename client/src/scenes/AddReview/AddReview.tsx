@@ -9,7 +9,7 @@ import Heading from "../../components/Heading";
 import Spacer from "../../components/Spacer";
 import StarPicker from "../../components/StarPicker";
 import Text from "../../components/Text";
-import theme from "../../theme/theme";
+import theme from "../../common/theme/theme";
 import { Review } from "../../types";
 import { useCreateReviewMutation, useGetTreatQuery } from "./queries.hooks";
 

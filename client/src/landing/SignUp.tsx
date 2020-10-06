@@ -4,7 +4,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Controller, useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { recaptchaSiteKey } from "..";
+import config from "../common/config";
 import Button from "../components/Button";
 import Container from "../components/Container";
 import Error from "../components/Error";
@@ -145,12 +145,15 @@ const SignUp = () => {
             />
           </InputFieldContainer>
 
-          {recaptchaSiteKey && (
+          {config.RECAPTCHA_SITE_KEY && (
             <Controller
               control={control}
               name="captchaToken"
               render={({ onChange }) => (
-                <ReCAPTCHA sitekey={recaptchaSiteKey} onChange={onChange} />
+                <ReCAPTCHA
+                  sitekey={config.RECAPTCHA_SITE_KEY}
+                  onChange={onChange}
+                />
               )}
             />
           )}

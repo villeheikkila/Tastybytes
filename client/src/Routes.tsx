@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
-import { useIsLoggedInQuery } from "./common/queries.hooks";
+import { useIsLoggedInQuery } from "./common/queries/queries.hooks";
 import Navigation from "./components/Navigation";
 import Spinner from "./components/Spinner";
 

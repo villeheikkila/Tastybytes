@@ -7,7 +7,7 @@ import Cards from "../../components/Cards";
 import Container from "../../components/Container";
 import Input from "../../components/HeaderInput";
 import IconButton from "../../components/IconButton";
-import theme from "../../theme/theme";
+import theme from "../../common/theme/theme";
 import TreatCard from "./components/TreatCard";
 import { useSearchTreatsQuery } from "./queries.hooks";
 

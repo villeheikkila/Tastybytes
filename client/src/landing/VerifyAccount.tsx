@@ -7,7 +7,7 @@ import Heading from "../components/Heading";
 import Link from "../components/Link";
 import Spacer from "../components/Spacer";
 import Text from "../components/Text";
-import theme from "../theme/theme";
+import theme from "../common/theme/theme";
 import { useVerifyAccountMutation } from "./queries.hooks";
 
 const VerifyAccount = () => {

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import theme from "../theme/theme";
+import theme from "../common/theme/theme";
 
 type HeadingTags = "h1" | "h2" | "h3" | "h4";
 

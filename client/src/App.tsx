@@ -1,23 +1,27 @@
+import { ApolloProvider } from "@apollo/client";
 import React from "react";
-import Routes from "./Routes";
 import { BrowserRouter } from "react-router-dom";
-import GlobalStyle from "./theme/globalStyle";
 import { ThemeProvider } from "styled-components";
-import theme from "./theme/theme";
-import PortalProvider from "./common/providers/PortalProvider";
+import { client } from "./common/apollo";
 import ModalProvider from "./common/providers/ModalProvider";
+import PortalProvider from "./common/providers/PortalProvider";
+import GlobalStyle from "./common/theme/globalStyle";
+import theme from "./common/theme/theme";
+import Routes from "./Routes";
 
 const App = () => (
-  <BrowserRouter>
-    <GlobalStyle />
+  <ApolloProvider client={client}>
     <ThemeProvider theme={theme}>
-      <PortalProvider>
-        <ModalProvider>
-          <Routes />
-        </ModalProvider>
-      </PortalProvider>
+      <BrowserRouter>
+        <GlobalStyle />
+        <PortalProvider>
+          <ModalProvider>
+            <Routes />
+          </ModalProvider>
+        </PortalProvider>
+      </BrowserRouter>
     </ThemeProvider>
-  </BrowserRouter>
+  </ApolloProvider>
 );
 
 export default App;

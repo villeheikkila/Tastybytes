@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import theme from "../theme/theme";
+import theme from "../common/theme/theme";
 
 const Text: FC = ({ children }) => <P>{children}</P>;
 

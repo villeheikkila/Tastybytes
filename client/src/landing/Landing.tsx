@@ -8,7 +8,7 @@ import Input from "../components/Input";
 import Link from "../components/Link";
 import Spacer from "../components/Spacer";
 import Text from "../components/Text";
-import { theme } from "../theme";
+import { theme } from "../common/theme";
 import {
   useLogInLazyQuery,
   useRequestAccountVerificationLazyQuery,

@@ -8,7 +8,7 @@ import { AnimateSharedLayout, motion } from "framer-motion";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import theme from "../theme/theme";
+import theme from "../common/theme/theme";
 
 type IconDefinition = typeof faIceCream;
 
