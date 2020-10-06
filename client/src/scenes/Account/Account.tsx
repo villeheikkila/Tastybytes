@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import Card from "../../components/Card";
@@ -14,6 +15,7 @@ import {
 
 const Account = () => {
   const { data, loading } = useCurrentAccountQuery();
+  const history = useHistory();
 
   const [mutate] = useUploadProfilePictureMutation({
     refetchQueries: ["CurrentAccount"],
@@ -25,6 +27,7 @@ const Account = () => {
 
   const [logOut] = useLogOutLazyQuery({
     onCompleted: async () => {
+      history.push("/");
       window.location.reload();
     },
   });
