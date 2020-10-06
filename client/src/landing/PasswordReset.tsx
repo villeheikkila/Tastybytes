@@ -117,8 +117,6 @@ const Header = styled.header`
   margin-bottom: 20px;
 `;
 
-const Error = styled.strong``;
-
 const Input = styled.input`
   width: 70%;
   height: 30px;

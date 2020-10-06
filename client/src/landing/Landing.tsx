@@ -20,10 +20,7 @@ import {
 const Landing = () => {
   const [logIn, { data }] = useLogInLazyQuery();
 
-  const [
-    requestVerification,
-    { data: verificationData },
-  ] = useRequestAccountVerificationLazyQuery();
+  const [requestVerification] = useRequestAccountVerificationLazyQuery();
 
   const { register, handleSubmit, errors, getValues } = useForm<{
     username: string;

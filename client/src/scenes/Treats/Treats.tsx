@@ -9,7 +9,7 @@ import { useSearchTreatsQuery } from "./queries.hooks";
 
 const Treats = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [ref, { entry }] = useIntersectionObserver();
+  const [, { entry }] = useIntersectionObserver();
 
   const isVisible = entry && entry.isIntersecting;
 

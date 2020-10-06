@@ -5,10 +5,14 @@ export const Dropzone: FC<{ onUpload: (picture: any) => void }> = ({
   children,
   onUpload,
 }) => {
-  const onDrop = useCallback((acceptedFiles) => {
-    const image = acceptedFiles[0];
-    onUpload(image);
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      const image = acceptedFiles[0];
+      onUpload(image);
+    },
+    [onUpload]
+  );
+
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
