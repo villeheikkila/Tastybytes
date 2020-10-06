@@ -1,4 +1,4 @@
-schema: http://localhost:4000/graphql
+schema: ../shared/graphql.schema.json
 documents: "src/**/*.gql"
 overwrite: true
 
@@ -11,6 +11,10 @@ generates:
     documents: "src/queries/**/**.gql"
     plugins:
       - typescript
+    config:
+      avoidOptionals: true
+      maybeValue: T
+
   src/:
     preset: near-operation-file
     presetConfig:
@@ -23,3 +27,8 @@ generates:
       withHOC: false
       withComponent: false
       withHooks: true
+      maybeValue: T
+      preResolveTypes: false
+      skipTypeNameForRoot: true
+      skipTypename: true
+      withRefetchFn: true

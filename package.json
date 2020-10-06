@@ -9,7 +9,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm-run-all lint:api generate:api generate:client"
+      "pre-commit": "npm-run-all lint:api generate:api"
     }
   },
   "dependencies": {

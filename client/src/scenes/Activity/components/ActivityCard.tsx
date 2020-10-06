@@ -1,9 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import { Reviews_reviews as ReviewsProps } from "../../../generated/Reviews";
 import Text from "../../../components/Text";
+import * as Types from "../../../types";
 
-const ActivityCard = ({ score, review, treat }: ReviewsProps) => (
+const ActivityCard = ({
+  score,
+  review,
+  treat,
+}: Pick<Types.Review, "id" | "review" | "score"> & {
+  treat: Pick<Types.Treat, "name"> & {
+    category: Pick<Types.Category, "name">;
+    subcategory: Pick<Types.Subcategory, "name">;
+    company: Pick<Types.Company, "name">;
+  };
+}) => (
   <CardContainer>
     <CardHeader>
       <Text>{treat.company.name}</Text> <Text>{treat.name}</Text>{" "}

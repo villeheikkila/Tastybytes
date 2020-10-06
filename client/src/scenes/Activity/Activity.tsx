@@ -1,14 +1,12 @@
 import React from "react";
-import Header from "../../components/Header";
-import { useQuery } from "@apollo/client";
-import { Reviews } from "../../generated/Reviews";
-import Spinner from "../../components/Spinner";
 import Cards from "../../components/Cards";
-import { GET_REVIEWS } from "./graphql";
+import Header from "../../components/Header";
+import Spinner from "../../components/Spinner";
 import ActivityCard from "./components/ActivityCard";
+import { useReviewsQuery } from "./queries.hooks";
 
 export const Activity = () => {
-  const { data, loading, fetchMore } = useQuery<Reviews>(GET_REVIEWS);
+  const { data, loading, fetchMore } = useReviewsQuery();
   if (loading || !data) return <Spinner />;
 
   const onLoadMore = () =>
@@ -16,7 +14,9 @@ export const Activity = () => {
       variables: {
         offset: data.reviews.length,
       },
-      updateQuery: (prev, { fetchMoreResult }) => {
+
+      // TODO: Fix the typing mess
+      updateQuery: (prev: any, { fetchMoreResult }: any) => {
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
           reviews: [...prev.reviews, ...fetchMoreResult.reviews],

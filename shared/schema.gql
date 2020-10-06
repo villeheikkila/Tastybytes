@@ -112,7 +112,7 @@ type Query {
   requestAccountVerification(username: String!): Boolean!
   requestPasswordReset(email: String!): Boolean!
   reviews(offset: Float!): [Review!]!
-  searchTreats(offset: Float, searchTerm: String!): [Treat!]!
+  searchTreats(offset: Float!, searchTerm: String!): [Treat!]!
   subcategories: [Subcategory!]!
   subcategoriesByCategory(categoryId: ID!): [Subcategory!]!
   subcategory(id: ID): Subcategory!

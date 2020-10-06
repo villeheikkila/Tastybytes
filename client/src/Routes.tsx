@@ -1,9 +1,8 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
-import { useQuery, gql } from "@apollo/client";
 import styled from "styled-components";
+import { useIsLoggedInQuery } from "./common/queries.hooks";
 import Navigation from "./components/Navigation";
-import { IsLoggedIn } from "./generated/IsLoggedIn";
 import Spinner from "./components/Spinner";
 
 const Activity = lazy(() => import("./scenes/Activity"));
@@ -19,7 +18,7 @@ const Landing = lazy(() => import("./landing/Landing"));
 const SignUp = lazy(() => import("./landing/SignUp"));
 
 const Router = () => {
-  const { data, loading } = useQuery<IsLoggedIn>(CURRENT_ACCOUNT);
+  const { data, loading } = useIsLoggedInQuery();
 
   if (loading) return null;
 
@@ -90,14 +89,6 @@ const Page = styled.div`
   min-height: calc(100vh - 70px);
   max-width: 800px;
   margin: 0 auto;
-`;
-
-const CURRENT_ACCOUNT = gql`
-  query IsLoggedIn {
-    currentAccount {
-      id
-    }
-  }
 `;
 
 export default Router;

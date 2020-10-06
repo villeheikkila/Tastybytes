@@ -1,22 +1,21 @@
-import React from "react";
-import { useMutation } from "@apollo/client";
-import { useForm, Controller } from "react-hook-form";
-import styled from "styled-components";
 import { ErrorMessage } from "@hookform/error-message";
+import React from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { recaptchaSiteKey } from "..";
+import { Controller, useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import { recaptchaSiteKey } from "..";
 import Button from "../components/Button";
-import Input from "../components/Input";
+import Container from "../components/Container";
 import Error from "../components/Error";
 import Heading from "../components/Heading";
-import { CREATE_ACCOUNT } from "./grapqh";
-import Container from "../components/Container";
+import Input from "../components/Input";
 import Spacer from "../components/Spacer";
+import { useCreateAccountMutation } from "./queries.hooks";
 
 const SignUp = () => {
   const history = useHistory();
-  const [signUpMutation] = useMutation(CREATE_ACCOUNT, {
+  const [signUpMutation] = useCreateAccountMutation({
     onCompleted: () => history.push("/email-sent/"),
   });
   const { register, handleSubmit, watch, errors, control } = useForm<{
@@ -32,7 +31,14 @@ const SignUp = () => {
       try {
         await signUpMutation({
           variables: {
-            account: { password, email, username, captchaToken },
+            account: {
+              password,
+              email,
+              username,
+              captchaToken,
+              firstName: "",
+              lastName: "",
+            },
           },
         });
       } catch (error) {

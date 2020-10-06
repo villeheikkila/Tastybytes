@@ -1,10 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { SearchTreats_searchTreats } from "../../../generated/SearchTreats";
 import Text from "../../../components/Text";
+import * as Types from "../../../types";
 
-const TreatCard = (props: SearchTreats_searchTreats) => (
+const TreatCard = (
+  props: Pick<Types.Treat, "id" | "name"> & {
+    company: Pick<Types.Company, "name" | "id">;
+    category: Pick<Types.Category, "id" | "name">;
+    subcategory: Pick<Types.Subcategory, "id" | "name">;
+    reviews: Array<
+      Pick<Types.Review, "id" | "score" | "review"> & {
+        author: Pick<Types.Account, "username">;
+      }
+    >;
+  }
+) => (
   <>
     <CardContent>
       <Link to={`/treats/add-review/${props.id}`}>

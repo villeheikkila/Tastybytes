@@ -1,28 +1,26 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { GetTreat, GetTreat_treat_reviews } from "../../generated/GetTreat";
-import { CreateReview } from "../../generated/CreateReview";
-import { GET_TREAT, CREATE_REVIEW } from "./grapqhl";
-import Heading from "../../components/Heading";
-import Text from "../../components/Text";
-import Spacer from "../../components/Spacer";
-import Container from "../../components/Container";
-import Cards from "../../components/Cards";
+import styled from "styled-components";
 import Button from "../../components/Button";
+import Cards from "../../components/Cards";
+import Container from "../../components/Container";
+import Heading from "../../components/Heading";
+import Spacer from "../../components/Spacer";
 import StarPicker from "../../components/StarPicker";
+import Text from "../../components/Text";
+import { Review } from "../../types";
+import { useCreateReviewMutation, useGetTreatQuery } from "./queries.hooks";
 
 export const AddReview: React.FC = () => {
   const [score, setScore] = useState(0);
 
   const { id } = useParams<{ id: string }>();
-  const { data, loading } = useQuery<GetTreat>(GET_TREAT, {
+  const { data, loading } = useGetTreatQuery({
     variables: { id },
   });
 
-  const [createReview] = useMutation<CreateReview>(CREATE_REVIEW, {
+  const [createReview] = useCreateReviewMutation({
     refetchQueries: ["GetTreat"],
   });
 
@@ -91,7 +89,10 @@ export const AddReview: React.FC = () => {
   );
 };
 
-const ReviewCard = ({ review, score }: GetTreat_treat_reviews) => (
+const ReviewCard = ({
+  review,
+  score,
+}: Pick<Review, "id" | "review" | "score">) => (
   <>
     {review} {score}
   </>

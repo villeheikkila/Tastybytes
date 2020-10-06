@@ -9,7 +9,7 @@ export const typeOrmConfig: PostgresConnectionOptions = {
   username: config.POSTGRES_USER,
   password: config.POSTGRES_PASSWORD,
   database: config.POSTGRES_DB,
-  synchronize: !config.isProd,
+  synchronize: false,
   logging: !config.isProd,
   entities: [__dirname + '/../entities/*.entity.{ts,js}'],
   migrations: [__dirname + '/../migrations/*.migration.{ts,js}'],

@@ -1,14 +1,13 @@
 import React from "react";
-import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@apollo/client";
-import { CREATE_CATEGORY } from "../graphql";
+import styled from "styled-components";
+import { useCreateCategoryMutation } from "../queries.hooks";
 
 const CreateCategoryForm: React.FC = () => {
   const { register, handleSubmit } = useForm<{
     name: string;
   }>();
-  const [createCategory] = useMutation(CREATE_CATEGORY, {
+  const [createCategory] = useCreateCategoryMutation({
     refetchQueries: ["Categories"],
   });
 

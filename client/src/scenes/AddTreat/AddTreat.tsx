@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@apollo/client";
 import { useHistory } from "react-router-dom";
-import SubcategoryPicker from "./components/SubcategoryPicker";
-import CompanyPicker from "./components/CompanyPicker";
-import CategoryPicker from "./components/CategoryPicker";
-import { CreateTreat } from "../../generated/CreateTreat";
-import Portal from "../../components/Portal";
-import Sheet from "../../components/Sheet";
-import { CREATE_TREAT } from "./graphql";
+import styled from "styled-components";
 import Button from "../../components/Button";
 import HeaderInput from "../../components/HeaderInput";
+import Portal from "../../components/Portal";
+import Sheet from "../../components/Sheet";
+import CategoryPicker from "./components/CategoryPicker";
+import CompanyPicker from "./components/CompanyPicker";
+import SubcategoryPicker from "./components/SubcategoryPicker";
+import { useCreateTreatMutation } from "./queries.hooks";
 
 const Modals = {
   CATEGORY: CategoryPicker,
@@ -23,7 +21,7 @@ type ModalsType = keyof typeof Modals;
 
 const AddTreat: React.FC = () => {
   const history = useHistory();
-  const [createTreat] = useMutation<CreateTreat>(CREATE_TREAT);
+  const [createTreat] = useCreateTreatMutation();
   const [selected, setSelected] = useState<any>(null);
   const [showModal, setShowModal] = useState<ModalsType | null>(null);
   const { register, handleSubmit } = useForm<{

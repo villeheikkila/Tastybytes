@@ -1,4 +1,4 @@
-mutation ChangePassword($token: String!) {
+mutation VerifyAccount($token: String!) {
   verifyAccount(token: $token)
 }
 
@@ -16,6 +16,6 @@ mutation CreateAccount($account: AccountInput!) {
   }
 }
 
-mutation PasswordResetMutation($token: String!, $password: String!) {
+mutation PasswordReset($token: String!, $password: String!) {
   resetPassword(token: $token, password: $password)
 }

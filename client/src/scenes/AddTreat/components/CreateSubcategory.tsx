@@ -1,17 +1,15 @@
 import React from "react";
-import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@apollo/client";
-import { CreateCompany } from "../../../generated/CreateCompany";
-import { CREATE_SUBCATEGORY } from "../graphql";
+import styled from "styled-components";
+import { useCreateSubcategoryMutation } from "../queries.hooks";
 
-const CreateSubcategoryForm: React.FC<{ categoryId: number }> = ({
+const CreateSubcategoryForm: React.FC<{ categoryId: string }> = ({
   categoryId,
 }) => {
   const { register, handleSubmit } = useForm<{
     name: string;
   }>();
-  const [createSubcategory] = useMutation<CreateCompany>(CREATE_SUBCATEGORY, {
+  const [createSubcategory] = useCreateSubcategoryMutation({
     refetchQueries: ["SubcategoriesByCategory"],
   });
 

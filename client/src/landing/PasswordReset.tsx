@@ -4,11 +4,11 @@ import { useMutation } from "@apollo/client";
 import styled from "styled-components";
 import { ErrorMessage } from "@hookform/error-message";
 import { useForm } from "react-hook-form";
-import { PASSWORD_RESET } from "./grapqh";
+import { usePasswordResetMutation } from "./queries.hooks";
 
 const PasswordReset = () => {
   const { token }: { token: string } = useParams();
-  const [resetPassword] = useMutation(PASSWORD_RESET);
+  const [resetPassword] = usePasswordResetMutation();
   const { register, handleSubmit, watch, errors } = useForm<{
     password: string;
     passwordCheck: string;

@@ -35,13 +35,13 @@ export class TreatResolver {
   @Query(() => [Treat])
   async searchTreats(
     @Arg('searchTerm', () => String) searchTerm: string,
-    @Arg('offset', () => Number, { nullable: true }) offset?: number
+    @Arg('offset', () => Number) offset: number
   ): Promise<Treat[]> {
     // TODO: Add search by companies, categories etc
     const allTreats = await Treat.find({
       skip: offset,
-      take: 10,
-      where: [{ name: ILike(`%${searchTerm}%`) }]
+      take: 10
+      // where: [{ name: ILike(`%${searchTerm}%`) }]
     });
 
     return allTreats;

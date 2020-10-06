@@ -1,15 +1,13 @@
 import React from "react";
-import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@apollo/client";
-import { CreateCompany } from "../../../generated/CreateCompany";
-import { CREATE_COMPANY } from "../graphql";
+import styled from "styled-components";
+import { useCreateCompanyMutation } from "../queries.hooks";
 
 const CreateCompanyForm: React.FC = () => {
   const { register, handleSubmit } = useForm<{
     name: string;
   }>();
-  const [createCompany] = useMutation<CreateCompany>(CREATE_COMPANY, {
+  const [createCompany] = useCreateCompanyMutation({
     refetchQueries: ["Companies"],
   });
 

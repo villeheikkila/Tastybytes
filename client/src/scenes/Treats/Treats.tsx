@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
-import { SearchTreats } from "../../generated/SearchTreats";
-import Input from "../../components/HeaderInput";
-import Cards from "../../components/Cards";
-import { SEARCH_TREATS } from "./graphql";
-import Container from "../../components/Container";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import theme from "../../theme";
-import IconButton from "../../components/IconButton";
-import TreatCard from "./components/TreatCard";
-import Button from "../../components/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
 import { useIntersectionObserver } from "react-intersection-observer-hook";
+import Button from "../../components/Button";
+import Cards from "../../components/Cards";
+import Container from "../../components/Container";
+import Input from "../../components/HeaderInput";
+import IconButton from "../../components/IconButton";
+import theme from "../../theme";
+import TreatCard from "./components/TreatCard";
+import { useSearchTreatsQuery } from "./queries.hooks";
 
 const Treats = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,13 +21,9 @@ const Treats = () => {
     console.log(`The component is ${isVisible ? "visible" : "not visible"}.`);
   }, [isVisible]);
 
-  const { data, loading, error, fetchMore } = useQuery<SearchTreats>(
-    SEARCH_TREATS,
-    {
-      variables: { searchTerm, offset: 0 },
-    }
-  );
-  console.log("error: ", error);
+  const { data, loading, fetchMore } = useSearchTreatsQuery({
+    variables: { searchTerm, offset: 0 },
+  });
 
   if (!data) return null;
 

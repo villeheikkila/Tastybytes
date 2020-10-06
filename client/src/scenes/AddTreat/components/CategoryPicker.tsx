@@ -1,16 +1,14 @@
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useQuery } from "@apollo/client";
-import { Categories } from "../../../generated/Categories";
-import CreateCategoryForm from "./CreateCategory";
-import HeaderInput from "../../../components/HeaderInput";
 import Container from "../../../components/Container";
+import HeaderInput from "../../../components/HeaderInput";
 import IconButton from "../../../components/IconButton";
 import SelectionButton from "../../../components/SelectionButton";
-import { CATEGORIES } from "../graphql";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import theme from "../../../theme";
+import { useCategoriesQuery } from "../queries.hooks";
+import CreateCategoryForm from "./CreateCategory";
 
 const CategoryPicker: React.FC<{
   setSelected: (value: any) => void;
@@ -18,7 +16,7 @@ const CategoryPicker: React.FC<{
 }> = ({ setSelected, selected }) => {
   const [value, setValue] = useState("");
   const [show, setShow] = useState(false);
-  const { data, loading } = useQuery<Categories>(CATEGORIES);
+  const { data, loading } = useCategoriesQuery();
 
   if (loading || !data) return null;
 

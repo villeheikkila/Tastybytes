@@ -1,20 +1,18 @@
+import { faGlassCheers } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { VERIFY_EMAIL } from "./grapqh";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Heading from "../components/Heading";
-import Text from "../components/Text";
-import Spacer from "../components/Spacer";
-import { faGlassCheers } from "@fortawesome/free-solid-svg-icons";
-import theme from "../theme";
 import Link from "../components/Link";
+import Spacer from "../components/Spacer";
+import Text from "../components/Text";
+import theme from "../theme";
+import { useVerifyAccountMutation } from "./queries.hooks";
 
 const VerifyAccount = () => {
   const { token } = useParams<{ token: string }>();
-  const [verifyAccount, { error }] = useMutation(VERIFY_EMAIL);
-  console.log("error: ", error);
+  const [verifyAccount, { error }] = useVerifyAccountMutation();
 
   const onClick = async () => {
     try {

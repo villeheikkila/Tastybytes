@@ -1,4 +1,4 @@
-query SearchTreats($searchTerm: String!, $offset: Float) {
+query SearchTreats($searchTerm: String!, $offset: Float!) {
   searchTreats(searchTerm: $searchTerm, offset: $offset) {
     id
     name
@@ -15,6 +15,7 @@ query SearchTreats($searchTerm: String!, $offset: Float) {
       name
     }
     reviews {
+      id
       score
       review
       author {

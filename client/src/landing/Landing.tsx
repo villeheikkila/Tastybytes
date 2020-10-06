@@ -1,24 +1,25 @@
 import React from "react";
-import { useLazyQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { LogIn } from "../generated/LogIn";
-import { RequestAccountVerification } from "../generated/RequestAccountVerification";
-
 import Button from "../components/Button";
+import Container from "../components/Container";
 import Heading from "../components/Heading";
-import Text from "../components/Text";
 import Input from "../components/Input";
-import { LOGIN, REQUEST_VERIFICATION } from "./grapqh";
 import Link from "../components/Link";
 import Spacer from "../components/Spacer";
-import Container from "../components/Container";
+import Text from "../components/Text";
+import {
+  useLogInLazyQuery,
+  useRequestAccountVerificationLazyQuery,
+} from "./queries.hooks";
 
 const Landing = () => {
-  const [logIn, { data }] = useLazyQuery<LogIn>(LOGIN);
-  const [requestVerification, { data: verificationData }] = useLazyQuery<
-    RequestAccountVerification
-  >(REQUEST_VERIFICATION);
+  const [logIn, { data }] = useLogInLazyQuery();
+
+  const [
+    requestVerification,
+    { data: verificationData },
+  ] = useRequestAccountVerificationLazyQuery();
 
   const { register, handleSubmit, errors, getValues } = useForm<{
     username: string;

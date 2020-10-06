@@ -1,19 +1,21 @@
 import React from "react";
-import { useQuery, useLazyQuery, useMutation } from "@apollo/client";
-import Card from "../../components/Card";
-import Header from "../../components/Header";
-import { CurrentAccount } from "../../generated/CurrentAccount";
-import { LOG_OUT, CURRENT_ACCOUNT, UPDATE_AVATAR } from "./grapqhl";
-import Button from "../../components/Button";
-import Text from "../../components/Text";
 import styled from "styled-components";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
 import Container from "../../components/Container";
 import Dropzone from "../../components/Dropzone";
+import Header from "../../components/Header";
+import Text from "../../components/Text";
+import {
+  useCurrentAccountQuery,
+  useLogOutLazyQuery,
+  useUploadProfilePictureMutation,
+} from "./queries.hooks";
 
 const Account = () => {
-  const { data, loading } = useQuery<CurrentAccount>(CURRENT_ACCOUNT);
+  const { data, loading } = useCurrentAccountQuery();
 
-  const [mutate] = useMutation(UPDATE_AVATAR, {
+  const [mutate] = useUploadProfilePictureMutation({
     refetchQueries: ["CurrentAccount"],
   });
 
@@ -21,7 +23,7 @@ const Account = () => {
     mutate({ variables: { picture } });
   };
 
-  const [logOut] = useLazyQuery(LOG_OUT, {
+  const [logOut] = useLogOutLazyQuery({
     onCompleted: async () => {
       window.location.reload();
     },
@@ -30,6 +32,7 @@ const Account = () => {
   if (loading || !data) return null;
 
   const { username, email } = data.currentAccount;
+
   return (
     <div>
       <Header>Account</Header>
