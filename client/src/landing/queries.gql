@@ -1,0 +1,21 @@
+mutation ChangePassword($token: String!) {
+  verifyAccount(token: $token)
+}
+
+query LogIn($account: LogInInput!) {
+  logIn(account: $account)
+}
+
+query RequestAccountVerification($username: String!) {
+  requestAccountVerification(username: $username)
+}
+
+mutation CreateAccount($account: AccountInput!) {
+  createAccount(account: $account) {
+    id
+  }
+}
+
+mutation PasswordResetMutation($token: String!, $password: String!) {
+  resetPassword(token: $token, password: $password)
+}

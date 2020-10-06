@@ -36,6 +36,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "schemas": "graphql-codegen --config codegen.yml",
+    "schemas:watch": "npm run schemas -- --watch",
     "generate": "apollo client:codegen --includes=\"./src/**/*.{ts,tsx}\" --localSchemaFile=./shared/schema.gql --passthroughCustomScalars --customScalarsPrefix=GraphQL_ --target typescript --tagName=gql --outputFlat src/generated"
   },
   "eslintConfig": {
@@ -54,6 +56,12 @@
     ]
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.17.10",
+    "@graphql-codegen/import-types-preset": "^1.17.9",
+    "@graphql-codegen/near-operation-file-preset": "^1.17.11",
+    "@graphql-codegen/typescript": "^1.17.10",
+    "@graphql-codegen/typescript-operations": "^1.17.8",
+    "@graphql-codegen/typescript-react-apollo": "^2.0.7",
     "apollo": "^2.30.3"
   }
 }

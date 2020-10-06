@@ -1,0 +1,29 @@
+mutation CreateReview($review: ReviewInput!) {
+  createReview(review: $review) {
+    id
+  }
+}
+
+query GetTreat($id: ID!) {
+  treat(id: $id) {
+    id
+    name
+    company {
+      name
+      id
+    }
+    category {
+      name
+      id
+    }
+    subcategory {
+      name
+      id
+    }
+    reviews {
+      id
+      review
+      score
+    }
+  }
+}
