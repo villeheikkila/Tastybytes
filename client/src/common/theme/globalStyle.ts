@@ -193,19 +193,17 @@ export const GlobalStyle = createGlobalStyle`
   textarea {
     user-select: text;
   }
-  body { font-size: 16px; }
   
   input, 
   select { font-size: 100%; }
 
   body {
-    margin: 0;
-    line-height: 1;
-    font-size: 16px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    overflow-y: none;
     background-color: ${theme.colors.backgroundColor};
     color: ${theme.colors.white};
+    font-family: ${theme.fontFamily};
+    line-height: 1;
+    font-size: 16px;
+    overflow-y: none;
     -webkit-overflow-scrolling: touch;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;

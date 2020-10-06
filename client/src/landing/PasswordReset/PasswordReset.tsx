@@ -3,7 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { ErrorText } from "../components";
+import { ErrorText } from "../../components";
 import { usePasswordResetMutation } from "./queries.hooks";
 
 const PasswordReset = () => {

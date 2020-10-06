@@ -75,3 +75,6 @@ export type ReviewsQueryResult = Apollo.QueryResult<
   ReviewsQuery,
   ReviewsQueryVariables
 >;
+export function refetchReviewsQuery(variables?: ReviewsQueryVariables) {
+  return { query: ReviewsDocument, variables: variables };
+}

@@ -4,7 +4,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Controller, useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { config } from "../common";
+import { config } from "../../common";
 import {
   Button,
   Container,
@@ -12,7 +12,7 @@ import {
   Heading,
   Input,
   Spacer,
-} from "../components";
+} from "../../components";
 import { useCreateAccountMutation } from "./queries.hooks";
 
 const SignUp = () => {

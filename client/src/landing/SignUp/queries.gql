@@ -1,0 +1,5 @@
+mutation CreateAccount($account: AccountInput!) {
+  createAccount(account: $account) {
+    id
+  }
+}

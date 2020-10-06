@@ -10,11 +10,15 @@ const Account = lazy(() => import("./scenes/Account/Account"));
 const AddTreat = lazy(() => import("./scenes/AddTreat/AddTreat"));
 const AddReview = lazy(() => import("./scenes/AddReview/AddReview"));
 
-const VerifyAccount = lazy(() => import("./landing/VerifyAccount"));
-const PasswordReset = lazy(() => import("./landing/PasswordReset"));
-const CheckInbox = lazy(() => import("./landing/CheckInbox"));
-const Landing = lazy(() => import("./landing/Landing"));
-const SignUp = lazy(() => import("./landing/SignUp"));
+const VerifyAccount = lazy(
+  () => import("./landing/VerifyAccount/VerifyAccount")
+);
+const PasswordReset = lazy(
+  () => import("./landing/PasswordReset/PasswordReset")
+);
+const CheckInbox = lazy(() => import("./landing/CheckInbox/CheckInbox"));
+const Landing = lazy(() => import("./landing/Landing/Landing"));
+const SignUp = lazy(() => import("./landing/SignUp/SignUp"));
 
 const Router = () => {
   const { data, loading } = useIsLoggedInQuery();

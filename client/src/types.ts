@@ -220,7 +220,7 @@ export type QueryReviewsArgs = {
 };
 
 export type QuerySearchTreatsArgs = {
-  offset: Maybe<Scalars["Float"]>;
+  offset: Scalars["Float"];
   searchTerm: Scalars["String"];
 };
 

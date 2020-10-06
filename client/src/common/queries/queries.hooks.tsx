@@ -59,3 +59,6 @@ export type IsLoggedInQueryResult = Apollo.QueryResult<
   IsLoggedInQuery,
   IsLoggedInQueryVariables
 >;
+export function refetchIsLoggedInQuery(variables?: IsLoggedInQueryVariables) {
+  return { query: IsLoggedInDocument, variables: variables };
+}

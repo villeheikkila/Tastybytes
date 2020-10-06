@@ -24,6 +24,8 @@ const colors = {
 export const theme = {
   colors,
   borderRadius: "8px",
+  fontFamily:
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
   typography: {
     heading: css`
       font-size: 2.3rem;

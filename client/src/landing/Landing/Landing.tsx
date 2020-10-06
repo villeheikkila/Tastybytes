@@ -1,16 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { theme } from "../common";
+import { theme } from "../../common";
 import {
   Button,
   Container,
+  ErrorText,
   Heading,
   Input,
   Link,
   Spacer,
   Typography,
-} from "../components";
+} from "../../components";
 
 import {
   useLogInLazyQuery,
@@ -111,9 +112,9 @@ const Landing = () => {
             })}
           />
 
-          <Error isError={!!data?.logIn}>
+          <ErrorText isError={!!data?.logIn}>
             {!!data?.logIn && loginErrors[data.logIn]}
-          </Error>
+          </ErrorText>
 
           <Button>Login</Button>
         </Form>
@@ -121,12 +122,6 @@ const Landing = () => {
     </Container>
   );
 };
-
-const Error = styled.strong<{ isError: boolean }>`
-  color: ${(props) => props.theme.colors.red};
-  display: ${(props) => (props.isError ? "block" : "hidden")};
-  height: 10px;
-`;
 
 const LinkButton = styled.button`
   ${theme.typography.body}

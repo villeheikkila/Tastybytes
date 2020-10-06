@@ -1,4 +1,5 @@
 import * as Types from "../../types";
+
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 export type SearchTreatsQueryVariables = Types.Exact<{
@@ -99,3 +100,8 @@ export type SearchTreatsQueryResult = Apollo.QueryResult<
   SearchTreatsQuery,
   SearchTreatsQueryVariables
 >;
+export function refetchSearchTreatsQuery(
+  variables?: SearchTreatsQueryVariables
+) {
+  return { query: SearchTreatsDocument, variables: variables };
+}

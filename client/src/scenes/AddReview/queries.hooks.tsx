@@ -140,3 +140,6 @@ export type GetTreatQueryResult = Apollo.QueryResult<
   GetTreatQuery,
   GetTreatQueryVariables
 >;
+export function refetchGetTreatQuery(variables?: GetTreatQueryVariables) {
+  return { query: GetTreatDocument, variables: variables };
+}

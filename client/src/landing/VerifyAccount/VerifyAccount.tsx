@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { theme } from "../common";
-import { Heading, Link, Spacer, Typography } from "../components";
+import { theme } from "../../common";
+import { Heading, Link, Spacer, Typography } from "../../components";
 import { useVerifyAccountMutation } from "./queries.hooks";
 
 const VerifyAccount = () => {

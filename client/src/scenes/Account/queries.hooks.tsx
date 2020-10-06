@@ -79,6 +79,11 @@ export type CurrentAccountQueryResult = Apollo.QueryResult<
   CurrentAccountQuery,
   CurrentAccountQueryVariables
 >;
+export function refetchCurrentAccountQuery(
+  variables?: CurrentAccountQueryVariables
+) {
+  return { query: CurrentAccountDocument, variables: variables };
+}
 export const LogOutDocument = gql`
   query LogOut {
     logOut
@@ -122,6 +127,9 @@ export type LogOutQueryResult = Apollo.QueryResult<
   LogOutQuery,
   LogOutQueryVariables
 >;
+export function refetchLogOutQuery(variables?: LogOutQueryVariables) {
+  return { query: LogOutDocument, variables: variables };
+}
 export const UploadProfilePictureDocument = gql`
   mutation UploadProfilePicture($picture: Upload!) {
     uploadProfilePicture(picture: $picture) {

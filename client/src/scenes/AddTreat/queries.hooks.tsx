@@ -231,6 +231,11 @@ export type SubcategoriesByCategoryQueryResult = Apollo.QueryResult<
   SubcategoriesByCategoryQuery,
   SubcategoriesByCategoryQueryVariables
 >;
+export function refetchSubcategoriesByCategoryQuery(
+  variables?: SubcategoriesByCategoryQueryVariables
+) {
+  return { query: SubcategoriesByCategoryDocument, variables: variables };
+}
 export const CompaniesDocument = gql`
   query Companies {
     companies {
@@ -282,6 +287,9 @@ export type CompaniesQueryResult = Apollo.QueryResult<
   CompaniesQuery,
   CompaniesQueryVariables
 >;
+export function refetchCompaniesQuery(variables?: CompaniesQueryVariables) {
+  return { query: CompaniesDocument, variables: variables };
+}
 export const CreateCategoryDocument = gql`
   mutation CreateCategory($name: String!) {
     createCategory(name: $name) {
@@ -440,3 +448,6 @@ export type CategoriesQueryResult = Apollo.QueryResult<
   CategoriesQuery,
   CategoriesQueryVariables
 >;
+export function refetchCategoriesQuery(variables?: CategoriesQueryVariables) {
+  return { query: CategoriesDocument, variables: variables };
+}

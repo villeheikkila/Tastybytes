@@ -2,8 +2,8 @@ import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styled from "styled-components";
-import { theme } from "../common";
-import { Heading, Spacer, Typography } from "../components";
+import { theme } from "../../common";
+import { Heading, Spacer, Typography } from "../../components";
 
 const CheckInbox = () => {
   return (
