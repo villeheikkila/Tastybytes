@@ -3,14 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import useModal from "../../common/hooks/useModal";
-import Button from "../../components/Button";
-import Card from "../../components/Card";
-import Container from "../../components/Container";
-import Dropzone from "../../components/Dropzone";
-import Header from "../../components/Header";
-import Sheet from "../../components/Sheet";
-import Text from "../../components/Text";
+import { useModal } from "../../common";
+import {
+  Button,
+  Card,
+  Container,
+  Dropzone,
+  Header,
+  Sheet,
+  Typography,
+} from "../../components";
+
 import {
   useCurrentAccountQuery,
   useLogOutLazyQuery,
@@ -59,8 +62,8 @@ const Account = () => {
                     )}
                   </Dropzone>
                 </Container>
-                <Text>Username: {username}</Text>
-                <Text>Emai: {email}</Text>
+                <Typography>Username: {username}</Typography>
+                <Typography>Emai: {email}</Typography>
                 <Button onClick={() => logOut()}>Log Out</Button>
               </Card>
             )
@@ -75,8 +78,8 @@ const Account = () => {
             )}
           </Dropzone>
         </Container>
-        <Text>Username: {username}</Text>
-        <Text>Emai: {email}</Text>
+        <Typography>Username: {username}</Typography>
+        <Typography>Emai: {email}</Typography>
         <Button onClick={() => logOut()}>Log Out</Button>
       </Card>
     </div>

@@ -2,20 +2,22 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import styled from "styled-components";
-import Container from "../../../components/Container";
-import HeaderInput from "../../../components/HeaderInput";
-import IconButton from "../../../components/IconButton";
-import SelectionButton from "../../../components/SelectionButton";
-import theme from "../../../common/theme/theme";
+import { theme } from "../../../common";
+import {
+  Container,
+  HeaderInput,
+  IconButton,
+  SelectionButton,
+} from "../../../components";
 import { useCompaniesQuery } from "../queries.hooks";
-import CreateCompany from "./CreateCompany";
+import { CreateCompanyForm } from ".";
 
 export interface Item {
   value: string;
   label: string;
 }
 
-const CompanyPicker: React.FC<{
+export const CompanyPicker: React.FC<{
   setSelected: (value: any) => void;
   selected: any;
 }> = ({ setSelected, selected }) => {
@@ -52,7 +54,7 @@ const CompanyPicker: React.FC<{
         </IconButton>
       </Container>
 
-      {show && <CreateCompany />}
+      {show && <CreateCompanyForm />}
 
       {filteredCompanies.map((item: Item, i) => (
         <SelectionButton
@@ -77,5 +79,3 @@ const Content = styled.div`
     width: calc(100vw);
   }
 `;
-
-export default CompanyPicker;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Spinner = styled.div`
+export const Spinner = styled.div`
   color: #ffffff;
   font-size: 20px;
   margin: 100px auto;
@@ -85,5 +85,3 @@ const Spinner = styled.div`
     }
   }
 `;
-
-export default Spinner;

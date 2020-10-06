@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Container = styled.div<{
+export const Container = styled.div<{
   y?: boolean;
   centered?: boolean;
   centeredParent?: boolean;
@@ -16,5 +16,3 @@ const Container = styled.div<{
   top: 50%;
   transform: translate(-50%, -50%);`}
 `;
-
-export default Container;

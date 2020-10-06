@@ -1,7 +1,7 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
-import useDimensions from "../common/hooks/useDimensions";
+import { useDimensions } from "../common";
 
 interface IProps<T> {
   data: T[];
@@ -10,7 +10,7 @@ interface IProps<T> {
   onDragEnd?: any;
 }
 
-function Cards<T extends object>({
+export function Cards<T extends object>({
   data,
   component,
   reduceHeight,
@@ -108,5 +108,3 @@ const RefreshIndicator = styled(motion.div)`
   top: 100;
   left: 50%;
 `;
-
-export default Cards;

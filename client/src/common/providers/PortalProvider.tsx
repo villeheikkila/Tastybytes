@@ -19,6 +19,5 @@ export const PortalProvider: React.FC = ({ children }) => {
 };
 
 type PortalNode = Element | null;
-export const PortalNodeContext = React.createContext<PortalNode>(null);
 
-export default PortalProvider;
+export const PortalNodeContext = React.createContext<PortalNode>(null);

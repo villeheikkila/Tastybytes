@@ -2,13 +2,9 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useIntersectionObserver } from "react-intersection-observer-hook";
-import Button from "../../components/Button";
-import Cards from "../../components/Cards";
-import Container from "../../components/Container";
-import Input from "../../components/HeaderInput";
-import IconButton from "../../components/IconButton";
-import theme from "../../common/theme/theme";
-import TreatCard from "./components/TreatCard";
+import { TreatCard } from ".";
+import { theme } from "../../common";
+import { Button, Cards, Container, IconButton, Input } from "../../components";
 import { useSearchTreatsQuery } from "./queries.hooks";
 
 const Treats = () => {

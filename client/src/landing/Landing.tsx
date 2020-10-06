@@ -1,14 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import Button from "../components/Button";
-import Container from "../components/Container";
-import Heading from "../components/Heading";
-import Input from "../components/Input";
-import Link from "../components/Link";
-import Spacer from "../components/Spacer";
-import Text from "../components/Text";
-import { theme } from "../common/theme";
+import { theme } from "../common";
+import {
+  Button,
+  Container,
+  Heading,
+  Input,
+  Link,
+  Spacer,
+  Typography,
+} from "../components";
+
 import {
   useLogInLazyQuery,
   useRequestAccountVerificationLazyQuery,
@@ -70,7 +73,8 @@ const Landing = () => {
         <Spacer y amount={8} />
 
         <Container centered>
-          <Text>Don't have an account?</Text> <Spacer x amount={4} />
+          <Typography>Don't have an account?</Typography>
+          <Spacer x amount={4} />
           <Link to="/signup">Sign up!</Link>
         </Container>
 

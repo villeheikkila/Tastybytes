@@ -2,13 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../../components/Button";
-import HeaderInput from "../../components/HeaderInput";
-import Portal from "../../components/Portal";
-import Sheet from "../../components/Sheet";
-import CategoryPicker from "./components/CategoryPicker";
-import CompanyPicker from "./components/CompanyPicker";
-import SubcategoryPicker from "./components/SubcategoryPicker";
+import { CategoryPicker, CompanyPicker, SubcategoryPicker } from ".";
+import { Button, HeaderInput, Portal, Sheet } from "../../components";
 import { useCreateTreatMutation } from "./queries.hooks";
 
 const Modals = {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const SelectionButton = styled.button`
+export const SelectionButton = styled.button`
   background-color: inherit;
   color: inherit;
   border-left: none;
@@ -15,5 +15,3 @@ const SelectionButton = styled.button`
     background-color: rgba(0, 0, 0, 0.4);
   }
 `;
-
-export default SelectionButton;

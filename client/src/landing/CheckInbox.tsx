@@ -1,11 +1,9 @@
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styled from "styled-components";
-import Heading from "../components/Heading";
-import Spacer from "../components/Spacer";
-import Text from "../components/Text";
-import { theme } from "../common/theme";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { theme } from "../common";
+import { Heading, Spacer, Typography } from "../components";
 
 const CheckInbox = () => {
   return (
@@ -22,10 +20,10 @@ const CheckInbox = () => {
 
         <Spacer y amount={10} />
 
-        <Text>
+        <Typography>
           We sent you an activation link. Make sure to check your spam folder
           too.
-        </Text>
+        </Typography>
       </Content>
     </Container>
   );

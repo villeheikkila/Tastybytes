@@ -1,11 +1,9 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import theme from "../common/theme/theme";
+import { theme } from "../common";
 
-const Text: FC = ({ children }) => <P>{children}</P>;
+export const Typography: FC = ({ children }) => <P>{children}</P>;
 
 const P = styled.p`
   ${theme.typography.body};
 `;
-
-export default Text;

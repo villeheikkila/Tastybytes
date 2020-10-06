@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Text from "../../../components/Text";
+import { Typography } from "../../../components";
 import * as Types from "../../../types";
 
-const ActivityCard = ({
+export const ActivityCard = ({
   score,
   review,
   treat,
@@ -16,15 +16,16 @@ const ActivityCard = ({
 }) => (
   <CardContainer>
     <CardHeader>
-      <Text>{treat.company.name}</Text> <Text>{treat.name}</Text>{" "}
-      <Text>{treat.subcategory.name}</Text>
-      <Text>{treat.category.name}</Text>
+      <Typography>{treat.company.name}</Typography> 
+      <Typography>{treat.name}</Typography>{" "}
+      <Typography>{treat.subcategory.name}</Typography>
+      <Typography>{treat.category.name}</Typography>
     </CardHeader>
     <CardScore>
-      <Text>{score}</Text>
+      <Typography>{score}</Typography>
     </CardScore>
     <ReviewSection>
-      <Text>{review}</Text>
+      <Typography>{review}</Typography>
     </ReviewSection>
   </CardContainer>
 );
@@ -54,5 +55,3 @@ const CardScore = styled.div`
 const ReviewSection = styled.div`
   grid-area: content;
 `;
-
-export default ActivityCard;

@@ -1,9 +1,9 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import styled from "styled-components";
 import { ErrorMessage } from "@hookform/error-message";
+import React from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import { ErrorText } from "../components";
 import { usePasswordResetMutation } from "./queries.hooks";
 
 const PasswordReset = () => {
@@ -48,7 +48,7 @@ const PasswordReset = () => {
           <ErrorMessage
             errors={errors}
             name="password"
-            render={({ message }) => <Error>{message}</Error>}
+            render={({ message }) => <ErrorText>{message}</ErrorText>}
           />
         </Label>
 
@@ -65,7 +65,7 @@ const PasswordReset = () => {
           <ErrorMessage
             errors={errors}
             name="passwordCheck"
-            render={({ message }) => <Error>{message}</Error>}
+            render={({ message }) => <ErrorText>{message}</ErrorText>}
           />
         </Label>
 

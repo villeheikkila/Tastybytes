@@ -1,6 +1,6 @@
 import React, { Context } from "react";
 
-function useStrictContext<TValue>(contextNode: Context<TValue | null>) {
+export function useStrictContext<TValue>(contextNode: Context<TValue | null>) {
   const context = React.useContext(contextNode);
 
   if (context === null) {
@@ -9,5 +9,3 @@ function useStrictContext<TValue>(contextNode: Context<TValue | null>) {
 
   return context;
 }
-
-export default useStrictContext;

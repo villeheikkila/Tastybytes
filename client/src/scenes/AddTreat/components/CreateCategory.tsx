@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useCreateCategoryMutation } from "../queries.hooks";
 
-const CreateCategoryForm: React.FC = () => {
+export const CreateCategoryForm: React.FC = () => {
   const { register, handleSubmit } = useForm<{
     name: string;
   }>();
@@ -66,5 +66,3 @@ const Form = styled.form`
   display: flex;
   margin-bottom: 10px;
 `;
-
-export default CreateCategoryForm;

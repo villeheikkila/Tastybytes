@@ -1,13 +1,13 @@
 import React, { FC } from "react";
-import Container from "./Container";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+import { Container } from ".";
 
-const StarPicker: FC<{ score: number; setScore?: (score: number) => void }> = ({
-  score,
-  setScore,
-}) => {
+export const StarPicker: FC<{
+  score: number;
+  setScore?: (score: number) => void;
+}> = ({ score, setScore }) => {
   return (
     <Container>
       {[1, 2, 3, 4, 5].map((number) => (
@@ -34,5 +34,3 @@ const Star = styled(FontAwesomeIcon)<{ isActive: boolean; index: number }>`
       props.isActive ? props.theme.colors.white : props.theme.colors.yellow};
   }
 `;
-
-export default StarPicker;

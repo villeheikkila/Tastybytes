@@ -1,11 +1,9 @@
 import React from "react";
-import Cards from "../../components/Cards";
-import Header from "../../components/Header";
-import Spinner from "../../components/Spinner";
-import ActivityCard from "./components/ActivityCard";
+import { ActivityCard } from ".";
+import { Cards, Header, Spinner } from "../../components";
 import { useReviewsQuery } from "./queries.hooks";
 
-export const Activity = () => {
+const Activity = () => {
   const { data, loading, fetchMore } = useReviewsQuery();
   if (loading || !data) return <Spinner />;
 
@@ -47,3 +45,5 @@ export const Activity = () => {
     </div>
   );
 };
+
+export default Activity;

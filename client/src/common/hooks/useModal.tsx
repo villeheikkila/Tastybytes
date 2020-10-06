@@ -1,8 +1,8 @@
 import React, { ComponentType, ReactNode } from "react";
+import { useStrictContext } from ".";
 import { ModalContext } from "../providers/ModalProvider";
-import useStrictContext from "./useStrictContext";
 
-function useModal<T>(container: ComponentType<T>) {
+export function useModal<T>(container: ComponentType<T>) {
   const dispatch = useStrictContext(ModalContext);
 
   return React.useMemo(
@@ -14,5 +14,3 @@ function useModal<T>(container: ComponentType<T>) {
     [dispatch]
   );
 }
-
-export default useModal;

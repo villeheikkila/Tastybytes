@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
-import theme from "./theme";
+import { theme } from "./theme";
 
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   html,
   body,
   div,
@@ -211,5 +211,3 @@ const GlobalStyle = createGlobalStyle`
     -webkit-touch-callout: none;
   }
 `;
-
-export default GlobalStyle;

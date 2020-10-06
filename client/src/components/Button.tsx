@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-const Button: React.FC<{
+export const Button: React.FC<{
   onClick?: () => void;
   disabled?: boolean;
   type?: "submit";
@@ -31,5 +31,3 @@ const MotionButton = styled(motion.button)`
   height: 60px;
   text-align: center;
 `;
-
-export default Button;

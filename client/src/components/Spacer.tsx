@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Spacer = styled.div<{
+export const Spacer = styled.div<{
   x?: boolean;
   y?: boolean;
   amount?: number;
@@ -8,5 +8,3 @@ const Spacer = styled.div<{
   width: ${(props) => (props.x ? `${props.amount}px` : 0)};
   height: ${(props) => (props.y ? `${props.amount}px` : 0)};
 `;
-
-export default Spacer;

@@ -21,7 +21,7 @@ const colors = {
   purple: "rgba(128, 0, 128, 1.0)",
 };
 
-const theme = {
+export const theme = {
   colors,
   borderRadius: "8px",
   typography: {
@@ -39,7 +39,6 @@ const theme = {
       color: ${colors.blue};
       font-weight: 600;
     `,
+    error: css``,
   },
 };
-
-export default theme;

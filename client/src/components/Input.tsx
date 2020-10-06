@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Input = styled.input<{ error?: boolean }>`
+export const Input = styled.input<{ error?: boolean }>`
   width: 70%;
   height: 30px;
   outline: none;
@@ -21,5 +21,3 @@ const Input = styled.input<{ error?: boolean }>`
 
   ${(props) => props.error && "box-shadow: inset 0 0 0 1px #f36;"}
 `;
-
-export default Input;

@@ -1,10 +1,9 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
 import { useSpring, useMotionValue, motion } from "framer-motion";
-import useStrictContext from "../common/hooks/useStrictContext";
-import { ModalStateContext } from "../common/providers/ModalProvider";
+import { ModalStateContext, useStrictContext } from "../common";
 
-const Sheet: React.FC<{ onClose: () => void }> = () => {
+export const Sheet: React.FC<{ onClose: () => void }> = () => {
   const { content } = useStrictContext(ModalStateContext);
   const dragConstraints = React.useRef<HTMLDivElement>(null);
   const windowHeight = window.innerHeight;
@@ -114,5 +113,3 @@ const DragHandler = styled.div`
     background-color: rgba(255, 255, 255, 0.847);
   }
 `;
-
-export default Sheet;

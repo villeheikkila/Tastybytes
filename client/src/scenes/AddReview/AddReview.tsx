@@ -2,18 +2,20 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../../components/Button";
-import Cards from "../../components/Cards";
-import Container from "../../components/Container";
-import Heading from "../../components/Heading";
-import Spacer from "../../components/Spacer";
-import StarPicker from "../../components/StarPicker";
-import Text from "../../components/Text";
-import theme from "../../common/theme/theme";
+import { theme } from "../../common";
+import {
+  Button,
+  Cards,
+  Container,
+  Heading,
+  Spacer,
+  StarPicker,
+  Typography,
+} from "../../components";
 import { Review } from "../../types";
 import { useCreateReviewMutation, useGetTreatQuery } from "./queries.hooks";
 
-export const AddReview: React.FC = () => {
+const AddReview: React.FC = () => {
   const [score, setScore] = useState(0);
 
   const { id } = useParams<{ id: string }>();
@@ -54,15 +56,15 @@ export const AddReview: React.FC = () => {
       <Card>
         <Heading>{data.treat.name}</Heading>
         <Spacer y amount={12} />
-        <Text>{data.treat.company.name}</Text>
+        <Typography>{data.treat.company.name}</Typography>
         <Spacer y amount={12} />
         <Container>
           <Chip>
-            <Text>{data.treat.category.name} </Text>
+            <Typography>{data.treat.category.name} </Typography>
           </Chip>
           <Spacer x amount={8} />
           <Chip>
-            <Text>{data.treat.subcategory.name}</Text>
+            <Typography>{data.treat.subcategory.name}</Typography>
           </Chip>
         </Container>
       </Card>
@@ -141,3 +143,5 @@ const Page = styled.div`
     width: calc(100vw);
   }
 `;
+
+export default AddReview;

@@ -4,13 +4,15 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Controller, useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import config from "../common/config";
-import Button from "../components/Button";
-import Container from "../components/Container";
-import Error from "../components/Error";
-import Heading from "../components/Heading";
-import Input from "../components/Input";
-import Spacer from "../components/Spacer";
+import { config } from "../common";
+import {
+  Button,
+  Container,
+  ErrorText,
+  Heading,
+  Input,
+  Spacer,
+} from "../components";
 import { useCreateAccountMutation } from "./queries.hooks";
 
 const SignUp = () => {
@@ -78,7 +80,7 @@ const SignUp = () => {
             <ErrorMessage
               errors={errors}
               name="username"
-              render={({ message }) => <Error>{message}</Error>}
+              render={({ message }) => <ErrorText>{message}</ErrorText>}
             />
           </InputFieldContainer>
 
@@ -100,7 +102,7 @@ const SignUp = () => {
             <ErrorMessage
               errors={errors}
               name="email"
-              render={({ message }) => <Error>{message}</Error>}
+              render={({ message }) => <ErrorText>{message}</ErrorText>}
             />
           </InputFieldContainer>
 
@@ -122,7 +124,7 @@ const SignUp = () => {
             <ErrorMessage
               errors={errors}
               name="password"
-              render={({ message }) => <Error>{message}</Error>}
+              render={({ message }) => <ErrorText>{message}</ErrorText>}
             />{" "}
           </InputFieldContainer>
 
@@ -141,7 +143,7 @@ const SignUp = () => {
             <ErrorMessage
               errors={errors}
               name="passwordCheck"
-              render={({ message }) => <Error>{message}</Error>}
+              render={({ message }) => <ErrorText>{message}</ErrorText>}
             />
           </InputFieldContainer>
 

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useCreateCompanyMutation } from "../queries.hooks";
 
-const CreateCompanyForm: React.FC = () => {
+export const CreateCompanyForm: React.FC = () => {
   const { register, handleSubmit } = useForm<{
     name: string;
   }>();
@@ -66,5 +66,3 @@ const Form = styled.form`
   display: flex;
   margin-bottom: 10px;
 `;
-
-export default CreateCompanyForm;

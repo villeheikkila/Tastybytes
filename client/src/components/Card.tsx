@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Card: React.FC = ({ children }) => {
+export const Card: React.FC = ({ children }) => {
   return <Container>{children}</Container>;
 };
 
@@ -17,5 +17,3 @@ const Container = styled.div`
     width: calc(100vw - 28px);
   }
 `;
-
-export default Card;

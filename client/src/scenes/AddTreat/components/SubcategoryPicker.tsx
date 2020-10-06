@@ -2,15 +2,17 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import styled from "styled-components";
-import Container from "../../../components/Container";
-import HeaderInput from "../../../components/HeaderInput";
-import IconButton from "../../../components/IconButton";
-import SelectionButton from "../../../components/SelectionButton";
-import theme from "../../../common/theme/theme";
+import { CreateSubcategoryForm } from ".";
+import { theme } from "../../../common";
+import {
+  Container,
+  HeaderInput,
+  IconButton,
+  SelectionButton,
+} from "../../../components";
 import { useSubcategoriesByCategoryQuery } from "../queries.hooks";
-import CreateSubcategoryForm from "./CreateSubcategory";
 
-const SubcategoryPicker: React.FC<{
+export const SubcategoryPicker: React.FC<{
   setSelected: (value: any) => void;
   selected: any;
 }> = ({ setSelected, selected }) => {
@@ -69,5 +71,3 @@ const Content = styled.div`
     width: calc(100vw);
   }
 `;
-
-export default SubcategoryPicker;

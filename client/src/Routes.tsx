@@ -2,14 +2,13 @@ import React, { lazy, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 import { useIsLoggedInQuery } from "./common/queries/queries.hooks";
-import Navigation from "./components/Navigation";
-import Spinner from "./components/Spinner";
+import { Navigation, Spinner } from "./components";
 
-const Activity = lazy(() => import("./scenes/Activity"));
+const Activity = lazy(() => import("./scenes/Activity/Activity"));
 const Treats = lazy(() => import("./scenes/Treats/Treats"));
-const Account = lazy(() => import("./scenes/Account"));
-const AddTreat = lazy(() => import("./scenes/AddTreat"));
-const AddReview = lazy(() => import("./scenes/AddReview"));
+const Account = lazy(() => import("./scenes/Account/Account"));
+const AddTreat = lazy(() => import("./scenes/AddTreat/AddTreat"));
+const AddReview = lazy(() => import("./scenes/AddReview/AddReview"));
 
 const VerifyAccount = lazy(() => import("./landing/VerifyAccount"));
 const PasswordReset = lazy(() => import("./landing/PasswordReset"));

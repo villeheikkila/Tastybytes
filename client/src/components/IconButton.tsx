@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes, FC } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const IconButton: FC<
+export const IconButton: FC<
   { to?: any } & ButtonHTMLAttributes<HTMLButtonElement>
 > = ({ to, children, ...rest }) => {
   return (
@@ -20,5 +20,3 @@ const Button = styled.button<{ to: string }>`
   outline: none;
   border: none;
 `;
-
-export default IconButton;

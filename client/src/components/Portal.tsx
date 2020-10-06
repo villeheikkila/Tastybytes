@@ -4,11 +4,13 @@ import React, {
   useEffect,
   useContext,
   useCallback,
+  createContext,
+  FC,
 } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 
-const Portal: React.FC<{ onClose: () => void }> = ({ onClose, children }) => {
+export const Portal: FC<{ onClose: () => void }> = ({ onClose, children }) => {
   const portalNode = useContext(PortalNodeContext);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -61,7 +63,7 @@ const Container = styled.div`
 `;
 
 type PortalNode = Element | null;
-export const PortalNodeContext = React.createContext<PortalNode>(null);
+export const PortalNodeContext = createContext<PortalNode>(null);
 
 export const PortalProvider: React.FC = ({ children }) => {
   const portalRef = useRef<HTMLDivElement>(null);
@@ -80,5 +82,3 @@ export const PortalProvider: React.FC = ({ children }) => {
     </div>
   );
 };
-
-export default Portal;

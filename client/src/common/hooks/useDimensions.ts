@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 
-const useDimensions = () => {
+export const useDimensions = () => {
   const [dimensions, setDimensions] = useState(getDimensions());
 
   useLayoutEffect(() => {
@@ -19,5 +19,3 @@ const getDimensions = () => {
     height,
   };
 };
-
-export default useDimensions;

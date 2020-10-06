@@ -8,11 +8,11 @@ import { AnimateSharedLayout, motion } from "framer-motion";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import theme from "../common/theme/theme";
+import { theme } from "../common";
 
 type IconDefinition = typeof faIceCream;
 
-const Navigation = () => {
+export const Navigation = () => {
   const location = useLocation();
   const currentLocation = location.pathname.split("/")[1];
 
@@ -85,5 +85,3 @@ const NavLink = styled(Link)`
   height: 100%;
   transition: transform 100ms ease;
 `;
-
-export default Navigation;

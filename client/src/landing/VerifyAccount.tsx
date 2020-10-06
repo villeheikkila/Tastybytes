@@ -3,11 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import Heading from "../components/Heading";
-import Link from "../components/Link";
-import Spacer from "../components/Spacer";
-import Text from "../components/Text";
-import theme from "../common/theme/theme";
+import { theme } from "../common";
+import { Heading, Link, Spacer, Typography } from "../components";
 import { useVerifyAccountMutation } from "./queries.hooks";
 
 const VerifyAccount = () => {
@@ -48,9 +45,9 @@ const onSuccess = () => (
 
     <Spacer y amount={10} />
 
-    <Text>
+    <Typography>
       Please continue by <Link to="/">logging in</Link> with your new account.
-    </Text>
+    </Typography>
   </>
 );
 

@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-const Dropzone: FC<{ onUpload: (picture: any) => void }> = ({
+export const Dropzone: FC<{ onUpload: (picture: any) => void }> = ({
   children,
   onUpload,
 }) => {
@@ -18,5 +18,3 @@ const Dropzone: FC<{ onUpload: (picture: any) => void }> = ({
     </div>
   );
 };
-
-export default Dropzone;

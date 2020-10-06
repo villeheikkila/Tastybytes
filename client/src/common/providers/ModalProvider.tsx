@@ -2,7 +2,7 @@ import React, { FC, useContext, useReducer } from "react";
 import ReactDOM from "react-dom";
 import { PortalNodeContext } from "./PortalProvider";
 
-const ModalProvider: FC = ({ children }) => {
+export const ModalProvider: FC = ({ children }) => {
   const portalNode = useContext(PortalNodeContext);
 
   const [state, dispatch] = useReducer((state: State, action: Action) => {
@@ -54,5 +54,3 @@ type Dispatch = (action: Action) => void;
 
 export const ModalStateContext = React.createContext<State | null>(null);
 export const ModalContext = React.createContext<Dispatch | null>(null);
-
-export default ModalProvider;

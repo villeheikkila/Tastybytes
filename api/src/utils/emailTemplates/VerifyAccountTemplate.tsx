@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import config from '../../config';
 
-const VerifyAccountTemplate: FC<{ token: string }> = ({
+export const VerifyAccountTemplate: FC<{ token: string }> = ({
   token
 }): JSX.Element => (
   <html lang="en-us">
@@ -14,5 +14,3 @@ const VerifyAccountTemplate: FC<{ token: string }> = ({
     </body>
   </html>
 );
-
-export default VerifyAccountTemplate;

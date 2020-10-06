@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Text from "../../../components/Text";
+import { Typography } from "../../../components";
 import * as Types from "../../../types";
 
-const TreatCard = (
+export const TreatCard = (
   props: Pick<Types.Treat, "id" | "name"> & {
     company: Pick<Types.Company, "name" | "id">;
     category: Pick<Types.Category, "id" | "name">;
@@ -19,12 +19,12 @@ const TreatCard = (
   <>
     <CardContent>
       <Link to={`/treats/add-review/${props.id}`}>
-        <Text>Treat: {props.name}</Text>{" "}
+        <Typography>Treat: {props.name}</Typography>{" "}
       </Link>
 
-      <Text>Company: {props.company.name}</Text>
-      <Text>Category: {props.category.name}</Text>
-      <Text>Subcategory: {props.subcategory.name}</Text>
+      <Typography>Company: {props.company.name}</Typography>
+      <Typography>Category: {props.category.name}</Typography>
+      <Typography>Subcategory: {props.subcategory.name}</Typography>
     </CardContent>
   </>
 );
@@ -35,5 +35,3 @@ const CardContent = styled.div`
   width: 100%;
   height: 100%;
 `;
-
-export default TreatCard;
