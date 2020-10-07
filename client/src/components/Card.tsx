@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 
-export const Card: React.FC = ({ children }) => {
+export const Card: FC = ({ children }) => {
   return <Container>{children}</Container>;
 };
 

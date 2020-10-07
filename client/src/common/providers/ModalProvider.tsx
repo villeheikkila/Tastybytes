@@ -1,5 +1,12 @@
-import React, { FC, useContext, useReducer } from "react";
-import ReactDOM from "react-dom";
+import React, {
+  ComponentType,
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useReducer,
+} from "react";
+import { createPortal } from "react-dom";
 import { PortalNodeContext } from "./PortalProvider";
 
 export const ModalProvider: FC = ({ children }) => {
@@ -22,7 +29,7 @@ export const ModalProvider: FC = ({ children }) => {
     <ModalStateContext.Provider value={state}>
       <ModalContext.Provider value={dispatch}>
         {children}
-        {portalNode && Modal && ReactDOM.createPortal(<Modal />, portalNode)}
+        {portalNode && Modal && createPortal(<Modal />, portalNode)}
       </ModalContext.Provider>
     </ModalStateContext.Provider>
   );
@@ -35,8 +42,8 @@ const defaultState = {
 };
 
 interface State {
-  container: React.ComponentType<any> | null;
-  content: React.ReactNode | null;
+  container: ComponentType<any> | null;
+  content: ReactNode | null;
   isOpen: boolean;
 }
 
@@ -44,13 +51,13 @@ type Action =
   | {
       type: "open";
       payload: {
-        content: React.ReactNode;
-        container: React.ComponentType<any>;
+        content: ReactNode;
+        container: ComponentType<any>;
       };
     }
   | { type: "close" };
 
 type Dispatch = (action: Action) => void;
 
-export const ModalStateContext = React.createContext<State | null>(null);
-export const ModalContext = React.createContext<Dispatch | null>(null);
+export const ModalStateContext = createContext<State | null>(null);
+export const ModalContext = createContext<Dispatch | null>(null);

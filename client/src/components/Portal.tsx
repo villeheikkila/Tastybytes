@@ -7,7 +7,7 @@ import React, {
   createContext,
   FC,
 } from "react";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 import styled from "styled-components";
 
 export const Portal: FC<{ onClose: () => void }> = ({ onClose, children }) => {
@@ -40,7 +40,7 @@ export const Portal: FC<{ onClose: () => void }> = ({ onClose, children }) => {
   }, [closeOnEsc]);
 
   return portalNode
-    ? ReactDOM.createPortal(
+    ? createPortal(
         <Container ref={overlayRef} onMouseDown={onClickOutside}>
           {children}
         </Container>,
@@ -65,7 +65,7 @@ const Container = styled.div`
 type PortalNode = Element | null;
 export const PortalNodeContext = createContext<PortalNode>(null);
 
-export const PortalProvider: React.FC = ({ children }) => {
+export const PortalProvider: FC = ({ children }) => {
   const portalRef = useRef<HTMLDivElement>(null);
   const [context, setContext] = useState<HTMLDivElement | null>(null);
 

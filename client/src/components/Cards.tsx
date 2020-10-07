@@ -1,11 +1,11 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import React from "react";
+import React, { ReactElement } from "react";
 import styled from "styled-components";
 import { useDimensions } from "../common";
 
 interface IProps<T> {
   data: T[];
-  component: (data: T, index: number) => React.ReactElement;
+  component: (data: T, index: number) => ReactElement;
   reduceHeight: number;
   onDragEnd?: any;
 }

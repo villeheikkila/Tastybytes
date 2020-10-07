@@ -1,11 +1,11 @@
-import React, { useCallback } from "react";
+import React, { FC, useCallback, useRef } from "react";
 import styled from "styled-components";
 import { useSpring, useMotionValue, motion } from "framer-motion";
 import { ModalStateContext, useStrictContext } from "../common";
 
-export const Sheet: React.FC<{ onClose: () => void }> = () => {
+export const Sheet: FC<{ onClose: () => void }> = () => {
   const { content } = useStrictContext(ModalStateContext);
-  const dragConstraints = React.useRef<HTMLDivElement>(null);
+  const dragConstraints = useRef<HTMLDivElement>(null);
   const windowHeight = window.innerHeight;
   const drag = useMotionValue(0);
   const spring = useSpring(windowHeight, {

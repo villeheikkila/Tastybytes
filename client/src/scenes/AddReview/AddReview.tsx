@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ import {
 import { Review } from "../../types";
 import { useCreateReviewMutation, useGetTreatQuery } from "./queries.hooks";
 
-const AddReview: React.FC = () => {
+const AddReview: FC = () => {
   const [score, setScore] = useState(0);
 
   const { id } = useParams<{ id: string }>();

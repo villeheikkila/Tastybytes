@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -14,7 +14,7 @@ const Modals = {
 
 type ModalsType = keyof typeof Modals;
 
-const AddTreat: React.FC = () => {
+const AddTreat: FC = () => {
   const history = useHistory();
   const [createTreat] = useCreateTreatMutation();
   const [selected, setSelected] = useState<any>(null);

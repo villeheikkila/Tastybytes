@@ -5,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimateSharedLayout, motion } from "framer-motion";
-import React from "react";
+import React, { FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../common";
@@ -35,7 +35,7 @@ export const Navigation = () => {
   );
 };
 
-const NavTab: React.FC<{
+const NavTab: FC<{
   currentLocation: string;
   path: string;
   icon: IconDefinition;

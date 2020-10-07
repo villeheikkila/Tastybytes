@@ -1,4 +1,4 @@
-schema: ../shared/graphql.schema.json
+schema: shared/graphql.schema.json
 documents: "src/**/*.gql"
 overwrite: true
 

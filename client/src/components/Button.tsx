@@ -1,8 +1,8 @@
-import React from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-export const Button: React.FC<{
+export const Button: FC<{
   onClick?: () => void;
   disabled?: boolean;
   type?: "submit";

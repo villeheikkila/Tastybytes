@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { createContext, FC, useEffect, useRef, useState } from "react";
 
-export const PortalProvider: React.FC = ({ children }) => {
+export const PortalProvider: FC = ({ children }) => {
   const portalRef = useRef<HTMLDivElement>(null);
   const [context, setContext] = useState<HTMLDivElement | null>(null);
 
@@ -20,4 +20,4 @@ export const PortalProvider: React.FC = ({ children }) => {
 
 type PortalNode = Element | null;
 
-export const PortalNodeContext = React.createContext<PortalNode>(null);
+export const PortalNodeContext = createContext<PortalNode>(null);

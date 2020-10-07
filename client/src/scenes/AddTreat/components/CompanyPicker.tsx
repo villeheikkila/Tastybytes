@@ -1,6 +1,6 @@
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../../common";
 import {
@@ -17,7 +17,7 @@ export interface Item {
   label: string;
 }
 
-export const CompanyPicker: React.FC<{
+export const CompanyPicker: FC<{
   setSelected: (value: any) => void;
   selected: any;
 }> = ({ setSelected, selected }) => {

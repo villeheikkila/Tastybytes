@@ -1,9 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useCreateSubcategoryMutation } from "../queries.hooks";
 
-export const CreateSubcategoryForm: React.FC<{ categoryId: string }> = ({
+export const CreateSubcategoryForm: FC<{ categoryId: string }> = ({
   categoryId,
 }) => {
   const { register, handleSubmit } = useForm<{

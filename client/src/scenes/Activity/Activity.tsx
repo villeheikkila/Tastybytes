@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityCard } from ".";
+import { ActivityCard } from "./components";
 import { Cards, Header, Spinner } from "../../components";
 import { useReviewsQuery } from "./queries.hooks";
 

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useCreateCompanyMutation } from "../queries.hooks";
 
-export const CreateCompanyForm: React.FC = () => {
+export const CreateCompanyForm: FC = () => {
   const { register, handleSubmit } = useForm<{
     name: string;
   }>();

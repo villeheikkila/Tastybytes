@@ -1,6 +1,6 @@
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { CreateCategoryForm } from ".";
 import { theme } from "../../../common";
@@ -12,7 +12,7 @@ import {
 } from "../../../components";
 import { useCategoriesQuery } from "../queries.hooks";
 
-export const CategoryPicker: React.FC<{
+export const CategoryPicker: FC<{
   setSelected: (value: any) => void;
   selected: any;
 }> = ({ setSelected, selected }) => {
