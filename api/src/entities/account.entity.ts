@@ -7,7 +7,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { ObjectType, Field, ID, Authorized } from 'type-graphql';
+import { ObjectType, Field, ID } from 'type-graphql';
 import Review from './review.entity';
 import Treat from './treat.entity';
 import { Lazy } from '../typeorm/lazy.util';
@@ -48,8 +48,6 @@ export default class Account extends BaseEntity {
   @Column({ nullable: true })
   avatarUri: string;
 
-  @Authorized('ADMIN')
-  @Field(() => String)
   @Column()
   passwordHash: string;
 

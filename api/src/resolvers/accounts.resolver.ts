@@ -34,7 +34,7 @@ export class AccountResolver {
     return Account.find();
   }
 
-  @Authorized()
+  @Authorized('ADMIN')
   @Query(() => Account)
   async account(@Arg('id', () => ID) id: number): Promise<Account | boolean> {
     return (await Account.findOne({ where: { id } })) || false;
@@ -101,6 +101,7 @@ export class AccountResolver {
     return account;
   }
 
+  @Authorized('ADMIN')
   @Authorized()
   @Mutation(() => Boolean)
   async deleteAccount(@Ctx() ctx: Context): Promise<boolean> {
