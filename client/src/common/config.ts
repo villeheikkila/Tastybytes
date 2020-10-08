@@ -1,4 +1,5 @@
 export const config = {
+  isLocal: true,
   isProd: process.env.NODE_ENV === "production",
   NODE_ENV: process.env.NODE_ENV,
   RECAPTCHA_SITE_KEY:

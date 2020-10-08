@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  client:
+  client-prod:
     container_name: client
     build:
       context: ./client
@@ -13,7 +13,7 @@ services:
       REACT_APP_RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY}
       NODE_ENV: "production"
 
-  api:
+  api-prod:
     container_name: api
     build:
       context: ./api

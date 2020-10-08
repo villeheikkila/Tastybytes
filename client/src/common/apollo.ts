@@ -9,11 +9,11 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import { createUploadLink } from "apollo-upload-client";
 import { config } from "./config";
 
-const httpUri = config.isProd
+const httpUri = !config.isLocal
   ? `https://${window.location.hostname}/graphql`
   : `http://${window.location.hostname}:4000/graphql`;
 
-const wsURI = config.isProd
+const wsURI = !config.isLocal
   ? `wss://${window.location.hostname}/subscriptions`
   : `ws://${window.location.hostname}:4000/subscriptions`;
 

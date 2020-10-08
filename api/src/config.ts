@@ -1,5 +1,6 @@
 const config = {
-  isProd: process.env.NODE_ENV === ('production' as string),
+  isLocal: true,
+  isProd: process.env.NODE_ENV === 'production',
   ENV: process.env.NODE_ENV as string,
   API_PORT: parseInt(process.env.API_PORT as string),
   DOMAIN: process.env.DOMAIN as string,

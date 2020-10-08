@@ -33,7 +33,7 @@ import { typeOrmConfig } from './typeorm/typeOrmConfig';
 
     app.use(
       cors({
-        origin: config.isProd ? config.DOMAIN : undefined,
+        origin: !config.isLocal ? config.DOMAIN : undefined,
         credentials: true
       })
     );

@@ -36,11 +36,7 @@ const apolloServer = (schema: GraphQLSchema): ApolloServer =>
         };
       }
     },
-    playground: {
-      settings: {
-        'request.credentials': 'include'
-      }
-    },
+    playground: !config.isProd ? playgroundConfig : false,
     plugins: [
       {
         requestDidStart: () => ({
@@ -70,5 +66,11 @@ const apolloServer = (schema: GraphQLSchema): ApolloServer =>
       })
     ]
   });
+
+const playgroundConfig = {
+  settings: {
+    'request.credentials': 'include'
+  }
+};
 
 export default apolloServer;
