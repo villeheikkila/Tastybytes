@@ -14,10 +14,14 @@ export type GetTreatQueryVariables = Types.Exact<{
 
 export type GetTreatQuery = {
   treat: Pick<Types.Treat, "id" | "name"> & {
-    company: Pick<Types.Company, "name" | "id">;
-    category: Pick<Types.Category, "name" | "id">;
-    subcategory: Pick<Types.Subcategory, "name" | "id">;
-    reviews: Array<Pick<Types.Review, "id" | "review" | "score">>;
+    company: Pick<Types.Company, "id" | "name">;
+    category: Pick<Types.Category, "id" | "name">;
+    subcategory: Pick<Types.Subcategory, "id" | "name">;
+    reviews: Array<
+      Pick<Types.Review, "id" | "review" | "score"> & {
+        author: Pick<Types.Account, "id" | "username">;
+      }
+    >;
   };
 };
 
@@ -77,21 +81,25 @@ export const GetTreatDocument = gql`
       id
       name
       company {
-        name
         id
+        name
       }
       category {
-        name
         id
+        name
       }
       subcategory {
-        name
         id
+        name
       }
       reviews {
         id
         review
         score
+        author {
+          id
+          username
+        }
       }
     }
   }

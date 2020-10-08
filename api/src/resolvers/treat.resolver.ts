@@ -27,7 +27,11 @@ export class TreatResolver {
   @Authorized()
   @Query(() => Treat)
   async treat(@Arg('id', () => ID) id: number): Promise<Treat | boolean> {
-    return (await Treat.findOne({ where: { id } })) || false;
+    return (
+      (await Treat.findOne({
+        where: { id }
+      })) || false
+    );
   }
 
   @Authorized()

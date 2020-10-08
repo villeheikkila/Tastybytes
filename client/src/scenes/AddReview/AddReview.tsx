@@ -12,7 +12,7 @@ import {
   StarPicker,
   Typography,
 } from "../../components";
-import { Review } from "../../types";
+import * as Types from "../../types";
 import { useCreateReviewMutation, useGetTreatQuery } from "./queries.hooks";
 
 const AddReview: FC = () => {
@@ -92,12 +92,13 @@ const AddReview: FC = () => {
   );
 };
 
-const ReviewCard = ({
-  review,
-  score,
-}: Pick<Review, "id" | "review" | "score">) => (
+type ReviewCardProps = Pick<Types.Review, "id" | "review" | "score"> & {
+  author: Pick<Types.Account, "id" | "username">;
+};
+
+const ReviewCard = ({ review, score, author }: ReviewCardProps) => (
   <>
-    {review} {score}
+    {review} {author.username} {score}
   </>
 );
 

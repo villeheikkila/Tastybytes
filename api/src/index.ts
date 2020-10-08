@@ -17,6 +17,7 @@ import { typeOrmConfig } from './typeorm/typeOrmConfig';
     const connection = await createConnection(typeOrmConfig);
     const redis = new Redis({ host: 'redis' });
 
+    console.log(__dirname, '/../shared/schema.gql');
     const server = apolloServer(
       await buildSchema({
         resolvers: [__dirname + '/resolvers/*.resolver.{ts,js}'],

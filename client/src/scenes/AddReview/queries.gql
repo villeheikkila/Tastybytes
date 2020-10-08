@@ -9,21 +9,25 @@ query GetTreat($id: ID!) {
     id
     name
     company {
-      name
       id
+      name
     }
     category {
-      name
       id
+      name
     }
     subcategory {
-      name
       id
+      name
     }
     reviews {
       id
       review
       score
+      author {
+        id
+        username
+      }
     }
   }
 }

@@ -1,18 +1,15 @@
-import { Resolver, Query, Mutation, Arg, Authorized, Ctx } from 'type-graphql';
+import { Resolver, Query, Mutation, Arg, Authorized } from 'type-graphql';
 import Treat from '../entities/treat.entity';
 import Account from '../entities/account.entity';
 import Review from '../entities/review.entity';
-import { Context } from 'koa';
 import { ReviewInput } from '../input/review.input';
+import CurrentUser from '../utils/decorators/currentUser';
 
 @Resolver()
 export class ReviewResolver {
   @Authorized()
   @Query(() => [Review])
-  reviews(
-    @Ctx() ctx: Context,
-    @Arg('offset') offset?: number
-  ): Promise<Review[]> {
+  reviews(@Arg('offset') offset?: number): Promise<Review[]> {
     return Review.find({
       relations: ['author', 'treat'],
       skip: offset,
@@ -26,14 +23,18 @@ export class ReviewResolver {
   @Authorized()
   @Mutation(() => Review)
   async createReview(
-    @Ctx() ctx: Context,
+    @CurrentUser() currentUser: string,
     @Arg('review') { treatId, score, review }: ReviewInput
   ): Promise<Review> {
+    console.log('currentUser', currentUser);
     const treat = await Treat.findOne({ where: { id: treatId } });
 
     const author = await Account.findOne({
-      where: { id: ctx.state.user.id }
+      where: { id: currentUser },
+      select: ['id']
     });
+
+    console.log('author: ', author);
 
     const reviewObject = await Review.create({
       score,
@@ -41,8 +42,6 @@ export class ReviewResolver {
       treat,
       author
     });
-
-    console.log('reviewObject: ', reviewObject);
 
     await reviewObject.save();
     return reviewObject;

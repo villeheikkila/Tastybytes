@@ -25,7 +25,6 @@ export type Account = {
   id: Scalars["ID"];
   isVerified: Scalars["Boolean"];
   lastName: Scalars["String"];
-  passwordHash: Scalars["String"];
   reviews: Array<Review>;
   role: Maybe<Scalars["String"]>;
   updatedDate: Scalars["DateTime"];

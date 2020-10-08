@@ -12,7 +12,6 @@ type Account {
   id: ID!
   isVerified: Boolean!
   lastName: String!
-  passwordHash: String!
   reviews: [Review!]!
   role: String
   updatedDate: DateTime!
