@@ -13,7 +13,10 @@ export const PortalProvider: FC = ({ children }) => {
       <PortalNodeContext.Provider value={context}>
         {children}
       </PortalNodeContext.Provider>
-      <div ref={portalRef} />
+      <div
+        style={{ display: "flex", justifyContent: "center" }}
+        ref={portalRef}
+      />
     </div>
   );
 };

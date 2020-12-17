@@ -35,7 +35,7 @@ export const Sheet: FC = () => {
       key="sheet"
       ref={dragConstraints}
       initial={{ y: windowHeight }}
-      animate={{ y: 32, transition: { type: "tween" } }}
+      animate={{ y: 48, transition: { type: "tween" } }}
       exit={{ y: windowHeight }}
       style={{ y: spring }}
     >
@@ -56,7 +56,7 @@ export const Sheet: FC = () => {
 };
 
 const Container = styled(motion.div)`
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   border-top-right-radius: 8px;
@@ -74,7 +74,6 @@ const Container = styled(motion.div)`
   @media (min-width: 1000px) {
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
-    max-height: 800px;
   }
 `;
 

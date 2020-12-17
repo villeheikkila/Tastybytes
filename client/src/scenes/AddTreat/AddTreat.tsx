@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { CategoryPicker, CompanyPicker, SubcategoryPicker } from ".";
 import { useModal } from "../../common";
-import { Button, HeaderInput, Portal, Sheet } from "../../components";
+import { Button, HeaderInput, Sheet } from "../../components";
 import { useCreateTreatMutation } from "./queries.hooks";
 
 const AddTreat: FC = () => {
