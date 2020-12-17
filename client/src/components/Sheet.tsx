@@ -1,10 +1,11 @@
 import React, { FC, useCallback, useRef } from "react";
 import styled from "styled-components";
 import { useSpring, useMotionValue, motion } from "framer-motion";
-import { ModalStateContext, useStrictContext } from "../common";
+import { ModalStateContext, useModal, useStrictContext } from "../common";
 
-export const Sheet: FC<{ onClose: () => void }> = () => {
+export const Sheet: FC = () => {
   const { content } = useStrictContext(ModalStateContext);
+  const modal = useModal(Sheet);
   const dragConstraints = useRef<HTMLDivElement>(null);
   const windowHeight = window.innerHeight;
   const drag = useMotionValue(0);
@@ -18,7 +19,7 @@ export const Sheet: FC<{ onClose: () => void }> = () => {
   const onDragEnd = useCallback(
     (_, { velocity }) => {
       if (velocity.y > 500) {
-        // onClose();
+        modal.close();
       } else {
         spring.stop();
         spring.set(32);

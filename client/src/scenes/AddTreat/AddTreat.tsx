@@ -3,28 +3,20 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { CategoryPicker, CompanyPicker, SubcategoryPicker } from ".";
+import { useModal } from "../../common";
 import { Button, HeaderInput, Portal, Sheet } from "../../components";
 import { useCreateTreatMutation } from "./queries.hooks";
 
-const Modals = {
-  CATEGORY: CategoryPicker,
-  COMPANY: CompanyPicker,
-  SUBCATEGORY: SubcategoryPicker,
-};
-
-type ModalsType = keyof typeof Modals;
-
 const AddTreat: FC = () => {
   const history = useHistory();
+  const modal = useModal(Sheet);
   const [createTreat] = useCreateTreatMutation();
   const [selected, setSelected] = useState<any>(null);
-  const [showModal, setShowModal] = useState<ModalsType | null>(null);
   const { register, handleSubmit } = useForm<{
     name: string;
   }>();
-  const Modal = showModal && Modals[showModal];
 
-  useEffect(() => setShowModal(null), [selected]);
+  useEffect(() => modal.close(), [selected]);
 
   const onSubmit = handleSubmit(async ({ name }) => {
     try {
@@ -53,18 +45,37 @@ const AddTreat: FC = () => {
             ref={register({ required: true })}
           />
 
-          <SelectionButton onClick={() => setShowModal("COMPANY")}>
+          <SelectionButton
+            onClick={() =>
+              modal.open(
+                <CompanyPicker setSelected={setSelected} selected={selected} />
+              )
+            }
+          >
             {!selected?.company ? "Select the company" : selected.company.label}
           </SelectionButton>
 
-          <SelectionButton onClick={() => setShowModal("CATEGORY")}>
+          <SelectionButton
+            onClick={() =>
+              modal.open(
+                <CategoryPicker setSelected={setSelected} selected={selected} />
+              )
+            }
+          >
             {!selected?.category
               ? "Select the category"
               : selected["category"].name}
           </SelectionButton>
 
           <SelectionButton
-            onClick={() => setShowModal("SUBCATEGORY")}
+            onClick={() =>
+              modal.open(
+                <SubcategoryPicker
+                  setSelected={setSelected}
+                  selected={selected}
+                />
+              )
+            }
             disabled={!selected?.category?.id}
           >
             {!selected?.subcategory
@@ -75,13 +86,6 @@ const AddTreat: FC = () => {
           <Button type="submit">Submit!</Button>
         </Form>
       </Container>
-      {showModal && Modal && (
-        <Portal onClose={() => setShowModal(null)}>
-          <Sheet onClose={() => setShowModal(null)}>
-            <Modal setSelected={setSelected} selected={selected} />
-          </Sheet>
-        </Portal>
-      )}
     </>
   );
 };
