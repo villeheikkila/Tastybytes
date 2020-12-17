@@ -1,7 +1,8 @@
 {
   "scripts": {
     "generate": "npm-run-all generate:api generate:client",
-    "generate:api": "docker-compose exec -T api npm run generate",
+    "generate:api": "docker-compose exec -T api npm run db:migrate",
+    "migrate:api": "docker-compose exec -T api npm run seed:generate",
     "generate:client": "docker-compose exec -T client npm run generate",
     "lint:api": "cd api && npm run lint",
     "start": "docker-compose up",
@@ -14,7 +15,7 @@
     }
   },
   "dependencies": {
-    "npm-run-all": "^4.1.5",
-    "husky": "^4.3.0"
+    "husky": "^4.3.6",
+    "npm-run-all": "^4.1.5"
   }
 }
