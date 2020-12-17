@@ -68,9 +68,7 @@ export function useCreateReviewMutation(
 export type CreateReviewMutationHookResult = ReturnType<
   typeof useCreateReviewMutation
 >;
-export type CreateReviewMutationResult = Apollo.MutationResult<
-  CreateReviewMutation
->;
+export type CreateReviewMutationResult = Apollo.MutationResult<CreateReviewMutation>;
 export type CreateReviewMutationOptions = Apollo.BaseMutationOptions<
   CreateReviewMutation,
   CreateReviewMutationVariables
@@ -122,7 +120,7 @@ export const GetTreatDocument = gql`
  * });
  */
 export function useGetTreatQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetTreatQuery, GetTreatQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetTreatQuery, GetTreatQueryVariables>
 ) {
   return Apollo.useQuery<GetTreatQuery, GetTreatQueryVariables>(
     GetTreatDocument,

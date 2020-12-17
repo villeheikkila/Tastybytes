@@ -69,7 +69,7 @@ export const SearchTreatsDocument = gql`
  * });
  */
 export function useSearchTreatsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
+  baseOptions: Apollo.QueryHookOptions<
     SearchTreatsQuery,
     SearchTreatsQueryVariables
   >

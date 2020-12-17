@@ -51,9 +51,7 @@ export function usePasswordResetMutation(
 export type PasswordResetMutationHookResult = ReturnType<
   typeof usePasswordResetMutation
 >;
-export type PasswordResetMutationResult = Apollo.MutationResult<
-  PasswordResetMutation
->;
+export type PasswordResetMutationResult = Apollo.MutationResult<PasswordResetMutation>;
 export type PasswordResetMutationOptions = Apollo.BaseMutationOptions<
   PasswordResetMutation,
   PasswordResetMutationVariables

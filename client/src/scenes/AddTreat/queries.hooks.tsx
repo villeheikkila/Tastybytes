@@ -116,9 +116,7 @@ export function useCreateTreatMutation(
 export type CreateTreatMutationHookResult = ReturnType<
   typeof useCreateTreatMutation
 >;
-export type CreateTreatMutationResult = Apollo.MutationResult<
-  CreateTreatMutation
->;
+export type CreateTreatMutationResult = Apollo.MutationResult<CreateTreatMutation>;
 export type CreateTreatMutationOptions = Apollo.BaseMutationOptions<
   CreateTreatMutation,
   CreateTreatMutationVariables
@@ -167,9 +165,7 @@ export function useCreateSubcategoryMutation(
 export type CreateSubcategoryMutationHookResult = ReturnType<
   typeof useCreateSubcategoryMutation
 >;
-export type CreateSubcategoryMutationResult = Apollo.MutationResult<
-  CreateSubcategoryMutation
->;
+export type CreateSubcategoryMutationResult = Apollo.MutationResult<CreateSubcategoryMutation>;
 export type CreateSubcategoryMutationOptions = Apollo.BaseMutationOptions<
   CreateSubcategoryMutation,
   CreateSubcategoryMutationVariables
@@ -200,7 +196,7 @@ export const SubcategoriesByCategoryDocument = gql`
  * });
  */
 export function useSubcategoriesByCategoryQuery(
-  baseOptions?: Apollo.QueryHookOptions<
+  baseOptions: Apollo.QueryHookOptions<
     SubcategoriesByCategoryQuery,
     SubcategoriesByCategoryQueryVariables
   >
@@ -333,9 +329,7 @@ export function useCreateCategoryMutation(
 export type CreateCategoryMutationHookResult = ReturnType<
   typeof useCreateCategoryMutation
 >;
-export type CreateCategoryMutationResult = Apollo.MutationResult<
-  CreateCategoryMutation
->;
+export type CreateCategoryMutationResult = Apollo.MutationResult<CreateCategoryMutation>;
 export type CreateCategoryMutationOptions = Apollo.BaseMutationOptions<
   CreateCategoryMutation,
   CreateCategoryMutationVariables
@@ -383,9 +377,7 @@ export function useCreateCompanyMutation(
 export type CreateCompanyMutationHookResult = ReturnType<
   typeof useCreateCompanyMutation
 >;
-export type CreateCompanyMutationResult = Apollo.MutationResult<
-  CreateCompanyMutation
->;
+export type CreateCompanyMutationResult = Apollo.MutationResult<CreateCompanyMutation>;
 export type CreateCompanyMutationOptions = Apollo.BaseMutationOptions<
   CreateCompanyMutation,
   CreateCompanyMutationVariables

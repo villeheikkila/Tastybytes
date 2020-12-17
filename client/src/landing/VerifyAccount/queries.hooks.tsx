@@ -49,9 +49,7 @@ export function useVerifyAccountMutation(
 export type VerifyAccountMutationHookResult = ReturnType<
   typeof useVerifyAccountMutation
 >;
-export type VerifyAccountMutationResult = Apollo.MutationResult<
-  VerifyAccountMutation
->;
+export type VerifyAccountMutationResult = Apollo.MutationResult<VerifyAccountMutation>;
 export type VerifyAccountMutationOptions = Apollo.BaseMutationOptions<
   VerifyAccountMutation,
   VerifyAccountMutationVariables

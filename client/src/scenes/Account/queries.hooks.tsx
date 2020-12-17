@@ -174,9 +174,7 @@ export function useUploadProfilePictureMutation(
 export type UploadProfilePictureMutationHookResult = ReturnType<
   typeof useUploadProfilePictureMutation
 >;
-export type UploadProfilePictureMutationResult = Apollo.MutationResult<
-  UploadProfilePictureMutation
->;
+export type UploadProfilePictureMutationResult = Apollo.MutationResult<UploadProfilePictureMutation>;
 export type UploadProfilePictureMutationOptions = Apollo.BaseMutationOptions<
   UploadProfilePictureMutation,
   UploadProfilePictureMutationVariables

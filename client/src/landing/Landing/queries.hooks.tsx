@@ -40,7 +40,7 @@ export const LogInDocument = gql`
  * });
  */
 export function useLogInQuery(
-  baseOptions?: Apollo.QueryHookOptions<LogInQuery, LogInQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<LogInQuery, LogInQueryVariables>
 ) {
   return Apollo.useQuery<LogInQuery, LogInQueryVariables>(
     LogInDocument,
@@ -87,7 +87,7 @@ export const RequestAccountVerificationDocument = gql`
  * });
  */
 export function useRequestAccountVerificationQuery(
-  baseOptions?: Apollo.QueryHookOptions<
+  baseOptions: Apollo.QueryHookOptions<
     RequestAccountVerificationQuery,
     RequestAccountVerificationQueryVariables
   >
