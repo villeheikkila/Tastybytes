@@ -2,7 +2,6 @@ const config = {
   isLocal: true,
   isProd: process.env.NODE_ENV === 'production',
   ENV: process.env.NODE_ENV as string,
-  API_PORT: parseInt(process.env.API_PORT as string),
   DOMAIN: process.env.DOMAIN as string,
   EMAIL_SENDER: process.env.EMAIL_SENDER as string,
   JWT_PUBLIC_KEY: process.env.JWT_PUBLIC_KEY as string,
@@ -15,7 +14,8 @@ const config = {
   POSTGRES_PORT: parseInt(process.env.POSTGRES_PORT as string),
   POSTGRES_USER: process.env.POSTGRES_USER as string,
   POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD as string,
-  POSTGRES_DB: process.env.POSTGRES_DB as string
+  POSTGRES_DB: process.env.POSTGRES_DB as string,
+  RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY as string
 };
 
 export default config;

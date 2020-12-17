@@ -60,9 +60,9 @@ import { typeOrmConfig } from './typeorm/typeOrmConfig';
       })
     );
 
-    const httpServer = app.listen(config.API_PORT, () =>
+    const httpServer = app.listen(4000, () =>
       console.log(
-        `🚀 Server is running in ${config.ENV} environment on the port ${config.API_PORT}.\n` +
+        `🚀 Server is running in ${config.ENV} environment on the port 4000.\n` +
           `🚀 Database connection established on port ${process.env.POSTGRES_PORT}.\n` +
           `🚀 GraphQL server at path ${server.graphqlPath}.\n` +
           `🚀 GraphQL subscription server at path ${server.subscriptionsPath}.`

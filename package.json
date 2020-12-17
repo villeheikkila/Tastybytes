@@ -1,7 +1,7 @@
 {
   "scripts": {
     "generate": "npm-run-all generate:api generate:client",
-    "generate:api": "docker-compose exec -T api npm run db:migrate",
+    "generate:api": "docker-compose exec -T api npm run generate",
     "migrate:api": "docker-compose exec -T api npm run seed:generate",
     "generate:client": "docker-compose exec -T client npm run generate",
     "lint:api": "cd api && npm run lint",

@@ -13,10 +13,14 @@ import {
   Input,
   Spacer,
 } from "../../components";
-import { useCreateAccountMutation } from "./queries.hooks";
+import {
+  useCreateAccountMutation,
+  useRecaptchaSiteKeyQuery,
+} from "./queries.hooks";
 
 const SignUp = () => {
   const history = useHistory();
+  const { data } = useRecaptchaSiteKeyQuery();
   const [signUpMutation] = useCreateAccountMutation({
     onCompleted: () => history.push("/email-sent/"),
   });
@@ -147,13 +151,13 @@ const SignUp = () => {
             />
           </InputFieldContainer>
 
-          {config.RECAPTCHA_SITE_KEY && (
+          {data?.configs.recaptchaSiteKey && (
             <Controller
               control={control}
               name="captchaToken"
               render={({ onChange }) => (
                 <ReCAPTCHA
-                  sitekey={config.RECAPTCHA_SITE_KEY}
+                  sitekey={data?.configs.recaptchaSiteKey}
                   onChange={onChange}
                 />
               )}

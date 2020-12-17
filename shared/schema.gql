@@ -50,6 +50,10 @@ type Company {
   updatedDate: DateTime!
 }
 
+type Config {
+  recaptchaSiteKey: String!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -105,6 +109,7 @@ type Query {
   category(id: ID!): Category!
   companies: [Company!]!
   company(id: ID!): Company!
+  configs: Config!
   currentAccount: Account!
   logIn(account: LogInInput!): LoginResult!
   logOut: Boolean!

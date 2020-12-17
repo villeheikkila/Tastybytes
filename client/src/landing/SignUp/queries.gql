@@ -3,3 +3,9 @@ mutation CreateAccount($account: AccountInput!) {
     id
   }
 }
+
+query RecaptchaSiteKey {
+  configs {
+    recaptchaSiteKey
+  }
+}

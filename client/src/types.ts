@@ -69,6 +69,13 @@ export type Company = {
   updatedDate: Scalars["DateTime"];
 };
 
+export type Config = {
+  __typename?: "Config";
+  isLocal: Scalars["Boolean"];
+  isProd: Scalars["Boolean"];
+  recaptchaSiteKey: Scalars["String"];
+};
+
 export type ExtendedBaseEntity = {
   __typename?: "ExtendedBaseEntity";
   createdBy: Account;
@@ -180,6 +187,7 @@ export type Query = {
   category: Category;
   companies: Array<Company>;
   company: Company;
+  configs: Config;
   currentAccount: Account;
   logIn: LoginResult;
   logOut: Scalars["Boolean"];
