@@ -38,8 +38,8 @@ const SignUp = () => {
               email,
               username,
               captchaToken,
-              firstName: "",
-              lastName: "",
+              firstName: "null",
+              lastName: "null",
             },
           },
         });

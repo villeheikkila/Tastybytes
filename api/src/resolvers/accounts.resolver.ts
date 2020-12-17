@@ -48,7 +48,7 @@ export class AccountResolver {
     const passwordHash = await bcrypt.hash(password, 12);
     const isHuman = await verifyRecaptcha(captchaToken);
 
-    if (isHuman) throw new Error(`Recaptcha failed!`);
+    if (!isHuman) throw new Error(`Recaptcha failed!`);
 
     const account = Account.create({
       email,
