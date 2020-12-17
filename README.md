@@ -43,3 +43,16 @@ For development environment:
 2. Set up all the environment variables
 3. docker-compose up --build
 4. access the running service at localhost:3000
+
+### Status
+
+Unfinished. The frontend side is at very early stages, nothing has been polished and a lot of features remain to be implemented. Backend is a bit more complete.
+
+### Demo
+
+Demo instance of the app is running at https://tastekeeper.xyz
+
+Test account credentials:
+
+username: testi
+password: testitesti
