@@ -4,6 +4,7 @@ WORKDIR /home/node/tastekeeper
 ADD . .
 RUN npm ci
 RUN npm i -g typescript
+RUN apk add --no-cache python make g++
 RUN npm run-script build
 EXPOSE 4000
 USER node
