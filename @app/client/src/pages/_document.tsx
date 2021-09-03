@@ -7,6 +7,8 @@ import Document, {
 } from "next/document";
 import React from "react";
 
+import { getCssText } from "../stitches.config";
+
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const initialProps = await Document.getInitialProps(ctx);
@@ -18,6 +20,7 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+          <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
         </Head>
         <body>
           <Main />
