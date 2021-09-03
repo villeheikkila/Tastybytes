@@ -1,0 +1,103 @@
+{
+  "name": "tasted",
+  "version": "0.1.0",
+  "private": true,
+  "description": "App for collecting tasting notes",
+  "scripts": {
+    "setup": "yarn && yarn setup:env auto && yarn setup:db && yarn setup:packages",
+    "setup:env": "node ./scripts/setup_env.js",
+    "setup:db": "node ./scripts/setup_db.js",
+    "setup:packages": "lerna run setup",
+    "start": "node ./scripts/start.js",
+    "pretest": "lerna run pretest",
+    "test": "node scripts/test.js",
+    "posttest": "lerna run posttest",
+    "test:watch": "node scripts/test.js --watch",
+    "lint": "tsc -b && yarn prettier:all --check && yarn eslint .",
+    "lint:fix": "yarn eslint --fix . && yarn prettier:all --write",
+    "eslint": "eslint --ext .js,.jsx,.ts,.tsx,.graphql",
+    "prettier:all": "prettier --ignore-path .eslintignore \"**/*.{js,jsx,ts,tsx,graphql,md}\"",
+    "depcheck": "lerna exec --stream \"yarn depcheck --ignores=\"@app/config,@app/client,tslib,webpack,babel-plugin-import,source-map-support,@graphql-codegen/*,*eslint*,@typescript-eslint/*,graphql-toolkit,net,tls,dayjs\" --ignore-dirs=\".next\"\"",
+    "dev": "yarn && lerna run codegen --stream && tsc -b && concurrently --kill-others --names \"TSC,WATCH,RUN,TEST\" --prefix \"({name})\" --prefix-colors \"yellow.bold,yellow.bold,cyan.bold,greenBright.bold\" \"tsc -b --watch --preserveWatchOutput\" \"lerna run --parallel watch\" \"lerna run --parallel dev\" \"yarn test:watch --delay 10\"",
+    "build": "lerna run build",
+    "licenses": "yarn --silent licenses generate-disclaimer > LICENSES.md",
+    "clean": "node ./scripts/clean.js",
+    "reset": "yarn clean && node ./scripts/delete-env-file.js",
+    "--shortcuts to run commands in workspaces--": "",
+    "client": "yarn workspace @app/client",
+    "components": "yarn workspace @app/components",
+    "db": "yarn workspace @app/db",
+    "graphql": "yarn workspace @app/graphql",
+    "lib": "yarn workspace @app/lib",
+    "server": "yarn workspace @app/server",
+    "docker": "yarn --cwd ./docker",
+    "docker-compose": "yarn --cwd ./docker compose"
+  },
+  "author": "Ville Heikkilä <mail@villeheikkila.com>",
+  "license": "MIT",
+  "dependencies": {
+    "abort-controller": "^3.0.0",
+    "graphql": "^15.4.0",
+    "lerna": "^4.0.0",
+    "string-width": "^5.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/jest": "^26.0.23",
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
+    "babel-jest": "^27.0.1",
+    "concurrently": "^6.2.0",
+    "depcheck": "^1.4.1",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.27.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-graphql": "^4.0.0",
+    "eslint-plugin-import": "^2.23.3",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint_d": "^10.1.2",
+    "inquirer": "^8.1.0",
+    "jest": "^27.0.1",
+    "mock-req": "^0.2.0",
+    "mock-res": "^0.5.0",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.3.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.1",
+    "ts-loader": "^8.0.11",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2",
+    "update-dotenv": "^1.1.1"
+  },
+  "resolutions": {
+    "graphql": "15.x",
+    "pg-connection-string": "2.x"
+  },
+  "workspaces": {
+    "packages": [
+      "@app/*",
+      "docker"
+    ]
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "proseWrap": "always",
+    "overrides": [
+      {
+        "files": [
+          "*.yml",
+          "*.yaml"
+        ],
+        "options": {
+          "printWidth": 120
+        }
+      }
+    ]
+  }
+}
