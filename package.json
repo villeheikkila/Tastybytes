@@ -33,7 +33,7 @@
     "docker": "yarn --cwd ./docker",
     "docker-compose": "yarn --cwd ./docker compose"
   },
-  "author": "Ville Heikkilä <mail@villeheikkila.com>",
+  "author": "Ville Heikkilä",
   "license": "MIT",
   "dependencies": {
     "abort-controller": "^3.0.0",

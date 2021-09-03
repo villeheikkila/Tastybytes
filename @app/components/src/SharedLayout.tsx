@@ -1,13 +1,13 @@
-import { CrownOutlined, DownOutlined } from "@ant-design/icons";
+import { CrownOutlined } from "@ant-design/icons";
 import { ApolloError, QueryResult, useApolloClient } from "@apollo/client";
-import { companyName, projectName } from "@app/config";
+import { author, projectName } from "@app/config";
 import {
   SharedLayout_QueryFragment,
   SharedLayout_UserFragment,
   useCurrentUserUpdatedSubscription,
   useLogoutMutation,
 } from "@app/graphql";
-import { Avatar, Col, Dropdown, Layout, Menu, Row, Typography } from "antd";
+import { Col, Dropdown, Layout, Menu, Row, Typography } from "antd";
 import Head from "next/head";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
@@ -15,6 +15,7 @@ import * as React from "react";
 import { useCallback } from "react";
 
 import { ErrorAlert, H3, StandardWidth, Warn } from ".";
+import { Avatar } from "./Avatar";
 import { Redirect } from "./Redirect";
 
 const { Header, Content, Footer } = Layout;
@@ -251,15 +252,11 @@ export function SharedLayout({
                   data-cy="layout-dropdown-user"
                   style={{ whiteSpace: "nowrap" }}
                 >
-                  <Avatar>
-                    {(data.currentUser.name && data.currentUser.name[0]) || "?"}
-                  </Avatar>
-                  <Warn okay={data.currentUser.isVerified}>
-                    <span style={{ marginLeft: 8, marginRight: 8 }}>
-                      {data.currentUser.name}
-                    </span>
-                    <DownOutlined />
-                  </Warn>
+                  <Avatar
+                    name={data.currentUser.name || "?"}
+                    imageUrl={data.currentUser.avatarUrl}
+                    status={!data.currentUser.isVerified ? "warn" : undefined}
+                  />
                 </span>
               </Dropdown>
             ) : forbidsLoggedIn ? null : (
@@ -286,8 +283,8 @@ export function SharedLayout({
           }}
         >
           <Text>
-            Copyright &copy; {new Date().getFullYear()} {companyName}. All
-            rights reserved.
+            Copyright &copy; {new Date().getFullYear()} {author}. All rights
+            reserved.
             {process.env.T_AND_C_URL ? (
               <span>
                 {" "}
@@ -299,15 +296,6 @@ export function SharedLayout({
                 </a>
               </span>
             ) : null}
-          </Text>
-          <Text>
-            Powered by{" "}
-            <a
-              style={{ textDecoration: "underline" }}
-              href="https://graphile.org/postgraphile"
-            >
-              PostGraphile
-            </a>
           </Text>
         </div>
       </Footer>
