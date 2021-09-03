@@ -1,0 +1,11 @@
+.env
+.next
+node_modules
+dist
+/heroku-setup
+/yarn-error.log
+/@app/graphql/index.*
+.agignore
+*.tsbuildinfo
+.ethereal
+yarn-error.log
