@@ -3,7 +3,6 @@ import { run } from "graphile-worker"
 import { Server } from "http";
 import { Middleware } from "postgraphile";
 
-import { cloudflareIps } from "./cloudflare";
 import * as middleware from "./middleware";
 import { makeShutdownActions, ShutdownAction } from "./shutdownActions";
 import { sanitizeEnv } from "./utils";
@@ -52,32 +51,6 @@ export async function makeApp({
     pollInterval: 1000,
     taskDirectory: `${__dirname}/tasks`,
   });
-
-  /*
-   * In production, we may need to enable the 'trust proxy' setting so that the
-   * server knows it's running in SSL mode, and so the logs can log the true
-   * IP address of the client rather than the IP address of our proxy.
-   */
-  if (process.env.TRUST_PROXY) {
-    /*
-      We recommend you set TRUST_PROXY to the following:
-
-        loopback,linklocal,uniquelocal
-
-      followed by any other IPs you need to trust. For example for CloudFlare
-      you can get the list of IPs from https://www.cloudflare.com/ips-v4; we
-      have a script that does this for you (`yarn server cloudflare:import`)
-      and a special `TRUST_PROXY=cloudflare` setting you can use to use them.
-    */
-    app.set(
-      "trust proxy",
-      process.env.TRUST_PROXY === "1"
-        ? true
-        : process.env.TRUST_PROXY === "cloudflare"
-        ? ["loopback", "linklocal", "uniquelocal", ...cloudflareIps]
-        : process.env.TRUST_PROXY.split(",")
-    );
-  }
 
   /*
    * Getting access to the HTTP server directly means that we can do things
