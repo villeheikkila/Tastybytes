@@ -7,26 +7,22 @@ export interface WarnProps extends React.ComponentProps<typeof DotContainer> {
   okay?: boolean;
 }
 
-const Dot = styled("div", {
-  display: "absolute",
+const Dot = styled("span", {
   height: "8px",
   width: "8px",
-  left: 0,
   borderRadius: "50%",
   backgroundColor: redA.redA10,
 });
 
 const DotContainer = styled("div");
 
-export function Warn({ children, okay, ...props }: WarnProps) {
+export function Warn({ children, okay }: WarnProps) {
   console.log("okay: ", okay);
   return okay ? (
     <>{children}</>
   ) : (
-    <span>
-      <DotContainer {...props}>
-        {children} <Dot />
-      </DotContainer>
-    </span>
+    <>
+      {children} <Dot />
+    </>
   );
 }

@@ -1845,6 +1845,22 @@ COMMENT ON TABLE app_private.user_secrets IS 'The contents of this table should 
 
 
 --
+-- Name: category; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.category (
+    category character varying(40) NOT NULL
+);
+
+
+--
+-- Name: TABLE category; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.category IS 'An category that can be selected';
+
+
+--
 -- Name: organization_invitations; Type: TABLE; Schema: app_public; Owner: -
 --
 
@@ -1962,6 +1978,14 @@ ALTER TABLE ONLY app_private.user_email_secrets
 
 ALTER TABLE ONLY app_private.user_secrets
     ADD CONSTRAINT user_secrets_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: category category_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.category
+    ADD CONSTRAINT category_pkey PRIMARY KEY (category);
 
 
 --
@@ -2855,6 +2879,13 @@ GRANT ALL ON FUNCTION app_public.users_has_password(u app_public.users) TO taste
 
 REVOKE ALL ON FUNCTION app_public.verify_email(user_email_id uuid, token text) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.verify_email(user_email_id uuid, token text) TO tasted_visitor;
+
+
+--
+-- Name: TABLE category; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.category TO tasted_visitor;
 
 
 --
