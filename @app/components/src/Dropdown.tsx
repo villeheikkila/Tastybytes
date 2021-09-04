@@ -1,13 +1,6 @@
-import { blackA, mauve, violet } from "@radix-ui/colors";
+import { mauve, violet } from "@radix-ui/colors";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import {
-  CheckIcon,
-  ChevronRightIcon,
-  DotFilledIcon,
-  HamburgerMenuIcon,
-} from "@radix-ui/react-icons";
 import { keyframes, styled } from "@stitches/react";
-import React from "react";
 
 const slideUpAndFade = keyframes({
   "0%": { opacity: 0, transform: "translateY(2px)" },
@@ -128,30 +121,3 @@ export const DropdownMenuTriggerItem = StyledTriggerItem;
 export const DropdownMenuLabel = StyledLabel;
 export const DropdownMenuSeparator = StyledSeparator;
 export const DropdownMenuArrow = StyledArrow;
-
-// Your app...
-const Box = styled("div", {});
-
-const RightSlot = styled("div", {
-  marginLeft: "auto",
-  paddingLeft: 20,
-  color: mauve.mauve11,
-  ":focus > &": { color: "white" },
-  "[data-disabled] &": { color: mauve.mauve8 },
-});
-
-const IconButton = styled("button", {
-  all: "unset",
-  fontFamily: "inherit",
-  borderRadius: "100%",
-  height: 35,
-  width: 35,
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: violet.violet11,
-  backgroundColor: "white",
-  boxShadow: `0 2px 10px ${blackA.blackA7}`,
-  "&:hover": { backgroundColor: violet.violet3 },
-  "&:focus": { boxShadow: `0 0 0 2px black` },
-});
