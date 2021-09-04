@@ -2,7 +2,6 @@ PostGraphile
 Graphile
 Heroku
 Docker
-Redis
 Nodemailer
 graphile-migrate
 graphile-worker
