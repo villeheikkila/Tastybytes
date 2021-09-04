@@ -1861,6 +1861,41 @@ COMMENT ON TABLE app_public.category IS 'An category that can be selected';
 
 
 --
+-- Name: company; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.company (
+    id integer NOT NULL,
+    name text NOT NULL,
+    is_approved boolean DEFAULT false NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by uuid,
+    updated_by uuid
+);
+
+
+--
+-- Name: company_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
+--
+
+CREATE SEQUENCE app_public.company_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: company_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
+--
+
+ALTER SEQUENCE app_public.company_id_seq OWNED BY app_public.company.id;
+
+
+--
 -- Name: organization_invitations; Type: TABLE; Schema: app_public; Owner: -
 --
 
@@ -1933,6 +1968,13 @@ COMMENT ON COLUMN app_public.user_authentications.details IS 'Additional profile
 
 
 --
+-- Name: company id; Type: DEFAULT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.company ALTER COLUMN id SET DEFAULT nextval('app_public.company_id_seq'::regclass);
+
+
+--
 -- Name: connect_pg_simple_sessions session_pkey; Type: CONSTRAINT; Schema: app_private; Owner: -
 --
 
@@ -1986,6 +2028,14 @@ ALTER TABLE ONLY app_private.user_secrets
 
 ALTER TABLE ONLY app_public.category
     ADD CONSTRAINT category_pkey PRIMARY KEY (category);
+
+
+--
+-- Name: company company_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.company
+    ADD CONSTRAINT company_pkey PRIMARY KEY (id);
 
 
 --
@@ -2286,6 +2336,22 @@ ALTER TABLE ONLY app_private.user_secrets
 
 
 --
+-- Name: company company_created_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.company
+    ADD CONSTRAINT company_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id);
+
+
+--
+-- Name: company company_updated_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.company
+    ADD CONSTRAINT company_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES app_public.users(id);
+
+
+--
 -- Name: organization_invitations organization_invitations_organization_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
 --
 
@@ -2362,6 +2428,12 @@ ALTER TABLE app_private.user_email_secrets ENABLE ROW LEVEL SECURITY;
 --
 
 ALTER TABLE app_private.user_secrets ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: company; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.company ENABLE ROW LEVEL SECURITY;
 
 --
 -- Name: user_authentications delete_own; Type: POLICY; Schema: app_public; Owner: -
@@ -2886,6 +2958,20 @@ GRANT ALL ON FUNCTION app_public.verify_email(user_email_id uuid, token text) TO
 --
 
 GRANT SELECT ON TABLE app_public.category TO tasted_visitor;
+
+
+--
+-- Name: TABLE company; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,INSERT,UPDATE ON TABLE app_public.company TO tasted_visitor;
+
+
+--
+-- Name: SEQUENCE company_id_seq; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,USAGE ON SEQUENCE app_public.company_id_seq TO tasted_visitor;
 
 
 --
