@@ -1,4 +1,5 @@
 require("@app/config");
+require("next/constants");
 const compose = require("lodash/flowRight");
 const AntDDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin");
 
@@ -42,6 +43,7 @@ if (!process.env.ROOT_URL) {
         javascriptEnabled: true,
         modifyVars: themeVariables, // make your antd custom effective
       },
+      webpack5: false,
       webpack(config, { webpack, dev, isServer }) {
         if (dev) config.devtool = "cheap-module-source-map";
 

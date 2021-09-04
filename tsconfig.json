@@ -25,7 +25,7 @@
     "preserveWatchOutput": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-
+    "useUnknownInCatchVariables": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
 

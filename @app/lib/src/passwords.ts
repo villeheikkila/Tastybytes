@@ -20,7 +20,8 @@ export const setPasswordInfo = (
   const { score, feedback } = zxcvbn(value || "");
   props.setPasswordStrength(score);
 
-  const messages = [...feedback.suggestions];
+  const messages = feedback.suggestions.slice();
+
   if (feedback.warning !== "") {
     messages.push(feedback.warning);
   }
