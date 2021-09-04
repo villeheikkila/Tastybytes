@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 import chalk from "chalk";
+import { run } from "graphile-worker"
 import { createServer } from "http";
 
 import { getShutdownActions, makeApp } from "./app";
@@ -11,6 +12,15 @@ const packageJson = require("../../../package.json");
 async function main() {
   // Create our HTTP server
   const httpServer = createServer();
+
+  // Create our Graphile Worker tasks
+  await run({
+    connectionString: process.env.DATABASE_URL,
+    concurrency: 5,
+    noHandleSignals: false,
+    pollInterval: 1000,
+    taskDirectory: `${__dirname}/tasks`,
+  });
 
   // Make our application (loading all the middleware, etc)
   const app = await makeApp({ httpServer });

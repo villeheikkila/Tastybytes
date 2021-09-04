@@ -1,5 +1,4 @@
 import express, { Express } from "express";
-import { run } from "graphile-worker"
 import { Server } from "http";
 import { Middleware } from "postgraphile";
 
@@ -39,18 +38,9 @@ export async function makeApp({
     });
   }
 
-  /*
-   * Our Express server
-   */
   const app = express();
 
-  await run({
-    connectionString: process.env.DATABASE_URL,
-    concurrency: 5,
-    noHandleSignals: false,
-    pollInterval: 1000,
-    taskDirectory: `${__dirname}/tasks`,
-  });
+
 
   /*
    * Getting access to the HTTP server directly means that we can do things
@@ -72,12 +62,6 @@ export async function makeApp({
     [];
   app.set("websocketMiddlewares", websocketMiddlewares);
 
-  /*
-   * Middleware is installed from the /server/middleware directory. These
-   * helpers may augment the express app with new settings and/or install
-   * express middleware. These helpers may be asynchronous, but they should
-   * operate very rapidly to enable quick as possible server startup.
-   */
   await middleware.installDatabasePools(app);
   await middleware.installWorkerUtils(app);
   await middleware.installHelmet(app);
@@ -92,10 +76,6 @@ export async function makeApp({
   await middleware.installSharedStatic(app);
   await middleware.installPostGraphile(app);
   await middleware.installSSR(app);
-
-  /*
-   * Error handling middleware
-   */
   await middleware.installErrorHandler(app);
   return app;
 }
