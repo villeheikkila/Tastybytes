@@ -2,7 +2,6 @@
 .next
 node_modules
 dist
-/heroku-setup
 /yarn-error.log
 /@app/graphql/index.*
 .agignore
@@ -10,3 +9,4 @@ dist
 .ethereal
 yarn-error.log
 old.sql
+.yarn/*
