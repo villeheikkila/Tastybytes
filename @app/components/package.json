@@ -7,13 +7,11 @@
     "test": "cross-env NODE_ENV=test NODE_OPTIONS=\"$NODE_OPTIONS -r @app/config/env\" jest"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.6.4",
     "@apollo/client": "^3.4.10",
     "@app/graphql": "0.0.0",
     "@radix-ui/colors": "^0.1.7",
     "@radix-ui/react-avatar": "^0.0.15",
     "@stitches/react": "^1.0.0",
-    "antd": "4.16.13",
     "next": "^11.1.2",
     "react": "^17.0.2",
     "tslib": "^2.3.1"

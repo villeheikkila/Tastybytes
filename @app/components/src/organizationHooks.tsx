@@ -1,6 +1,5 @@
 import { QueryResult } from "@apollo/client";
 import { OrganizationPage_QueryFragment } from "@app/graphql";
-import { Col, Row } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -35,8 +34,8 @@ export function useOrganizationLoading(
   }
 
   return child ? (
-    <Row>
-      <Col flex={1}>{child}</Col>
-    </Row>
+    <div>
+      <div>{child}</div>
+    </div>
   ) : null;
 }

@@ -1,19 +1,13 @@
 import { OrganizationPage_OrganizationFragment } from "@app/graphql";
-import { Layout, Menu, Typography } from "antd";
-import { TextProps } from "antd/lib/typography/Text";
 import Link from "next/link";
 import React, { useMemo } from "react";
 
 import { contentMinHeight } from "./SharedLayout";
 import { StandardWidth } from "./StandardWidth";
 
-const { Text } = Typography;
-const { Sider, Content } = Layout;
-
 interface PageSpec {
   title: string;
   cy: string;
-  titleProps?: TextProps;
 }
 
 // TypeScript shenanigans (so we can still use `keyof typeof pages` later)
@@ -32,9 +26,6 @@ const makePages = (_org: OrganizationPage_OrganizationFragment) => ({
   }),
   [`/o/[slug]/settings/delete`]: page({
     title: "Delete Organization",
-    titleProps: {
-      type: "danger",
-    },
     cy: "orgsettingslayout-link-delete",
   }),
 });
@@ -60,28 +51,26 @@ export function OrganizationSettingsLayout({
     href + (router && router.query ? `?${qs.stringify(router.query)}` : "");
     */
   return (
-    <Layout style={{ minHeight: contentMinHeight }} hasSider>
-      <Sider>
-        <Menu selectedKeys={[href]}>
+    <div style={{ minHeight: contentMinHeight }}>
+      <div>
+        <div key={href}>
           {Object.keys(pages).map((pageHref) => (
-            <Menu.Item key={pageHref}>
+            <div key={pageHref}>
               <Link
                 href={pageHref}
                 as={pageHref.replace("[slug]", organization.slug)}
               >
-                <a data-cy={pages[pageHref].cy}>
-                  <Text {...pages[pageHref].titleProps}>
-                    {pages[pageHref].title}
-                  </Text>
+                <a>
+                  <p {...pages[pageHref].titleProps}>{pages[pageHref].title}</p>
                 </a>
               </Link>
-            </Menu.Item>
+            </div>
           ))}
-        </Menu>
-      </Sider>
-      <Content>
+        </div>
+      </div>
+      <div>
         <StandardWidth>{children}</StandardWidth>
-      </Content>
-    </Layout>
+      </div>
+    </div>
   );
 }

@@ -14,7 +14,6 @@ import {
   useDeleteOrganizationMutation,
   useOrganizationPageQuery,
 } from "@app/graphql";
-import { Alert, Button, message, PageHeader, Popconfirm } from "antd";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
@@ -58,6 +57,7 @@ const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
   const router = useRouter();
   const [deleteOrganization] = useDeleteOrganizationMutation();
   const [error, setError] = useState<ApolloError | null>(null);
+  const [status, setStatus] = useState("");
   const handleDelete = useCallback(async () => {
     try {
       await deleteOrganization({
@@ -66,7 +66,7 @@ const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
         },
         refetchQueries: ["SharedLayout"],
       });
-      message.info(`Organization '${organization.name}' successfully deleted`);
+      setStatus(`Organization '${organization.name}' successfully deleted`);
       router.push("/");
     } catch (e) {
       setError(e);
@@ -76,32 +76,24 @@ const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
   return (
     <OrganizationSettingsLayout organization={organization} href={router.route}>
       <div>
-        <PageHeader title="Delete Organization?" />
+        <h1>Delete Organization?" </h1>
         {organization.currentUserIsOwner ? (
-          <Alert
-            type="error"
-            message={`Really delete '${organization.name}'`}
-            description={
-              <div>
-                <P>This action cannot be undone, be very careful.</P>
-                <Popconfirm
-                  title={`Are you sure you want to delete ${organization.name}?`}
-                  onConfirm={handleDelete}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <Button>Delete this organization</Button>
-                </Popconfirm>
-              </div>
-            }
-          />
+          <div>
+            Really delete '${organization.name}'?
+            <div>
+              <p>This action cannot be undone, be very careful.</p>
+              Are you sure you want to delete ${organization.name}?
+              <button onClick={handleDelete}>Delete this organization</button>
+            </div>
+          </div>
         ) : (
-          <Alert
-            type="warning"
-            message="You are not permitted to do this"
-            description="Only the owner may delete the organization. If you cannot reach the owner, please get in touch with support."
-          />
+          <div>
+            type="warning" message="You are not permitted to do this"
+            description="Only the owner may delete the organization. If you
+            cannot reach the owner, please get in touch with support."
+          </div>
         )}
+        {status}
         {error ? <ErrorAlert error={error} /> : null}
       </div>
     </OrganizationSettingsLayout>

@@ -6,6 +6,7 @@ const O: NextPage = () => {
   useEffect(() => {
     Router.replace("/");
   }, []);
+  
   return <div>Redirecting...</div>;
 };
 

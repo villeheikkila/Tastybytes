@@ -1,5 +1,3 @@
-import { Layout, Menu, Typography } from "antd";
-import { TextProps } from "antd/lib/typography/Text";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import * as qs from "querystring";
@@ -8,7 +6,6 @@ import React from "react";
 import { Redirect } from "./Redirect";
 import {
   AuthRestrict,
-  contentMinHeight,
   SharedLayout,
   SharedLayoutChildProps,
   SharedLayoutProps,
@@ -16,14 +13,10 @@ import {
 import { StandardWidth } from "./StandardWidth";
 import { Warn } from "./Warn";
 
-const { Text } = Typography;
-const { Sider, Content } = Layout;
-
 interface PageSpec {
   title: string;
   cy: string;
   warnIfUnverified?: boolean;
-  titleProps?: TextProps;
 }
 
 // TypeScript shenanigans (so we can still use `keyof typeof pages` later)
@@ -51,9 +44,6 @@ const pages = {
   }),
   "/settings/delete": page({
     title: "Delete Account",
-    titleProps: {
-      type: "danger",
-    },
     cy: "settingslayout-link-delete",
   }),
 };
@@ -86,13 +76,13 @@ export function SettingsLayout({
         !currentUser && !error && !loading ? (
           <Redirect href={`/login?next=${encodeURIComponent(fullHref)}`} />
         ) : (
-          <Layout style={{ minHeight: contentMinHeight }} hasSider>
-            <Sider>
-              <Menu selectedKeys={[href]}>
+          <div>
+            <div>
+              <div>
                 {Object.keys(pages).map((pageHref) => (
-                  <Menu.Item key={pageHref}>
+                  <div key={pageHref}>
                     <Link href={pageHref}>
-                      <a data-cy={pages[pageHref].cy}>
+                      <a>
                         <Warn
                           okay={
                             !currentUser ||
@@ -100,20 +90,18 @@ export function SettingsLayout({
                             !pages[pageHref].warnIfUnverified
                           }
                         >
-                          <Text {...pages[pageHref].titleProps}>
-                            {pages[pageHref].title}
-                          </Text>
+                          <p>{pages[pageHref].title}</p>
                         </Warn>
                       </a>
                     </Link>
-                  </Menu.Item>
+                  </div>
                 ))}
-              </Menu>
-            </Sider>
-            <Content>
+              </div>
+            </div>
+            <div>
               <StandardWidth>{children}</StandardWidth>
-            </Content>
-          </Layout>
+            </div>
+          </div>
         )
       }
     </SharedLayout>

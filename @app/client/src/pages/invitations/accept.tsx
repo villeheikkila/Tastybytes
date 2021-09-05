@@ -15,7 +15,6 @@ import {
   useInvitationDetailQuery,
 } from "@app/graphql";
 import { getCodeFromError } from "@app/lib";
-import { Button, Col, Result, Row, Skeleton } from "antd";
 import { NextPage } from "next";
 import Router, { NextRouter, useRouter } from "next/router";
 import * as qs from "querystring";
@@ -57,16 +56,16 @@ const InvitationAccept: NextPage<IProps> = (props) => {
         !currentUser && !error && !loading ? (
           <Redirect href={`/login?next=${encodeURIComponent(fullHref)}`} />
         ) : (
-          <Row>
-            <Col flex={1}>
+          <div>
+            <div>
               <InvitationAcceptInner
                 currentUser={currentUser}
                 id={id}
                 code={code}
                 query={query}
               />
-            </Col>
-          </Row>
+            </div>
+          </div>
         )
       }
     </SharedLayout>
@@ -119,58 +118,45 @@ const InvitationAcceptInner: FC<InvitationAcceptInnerProps> = (props) => {
     const code = getCodeFromError(error || acceptError);
     if (code === "NTFND") {
       child = (
-        <Result
-          status="404"
-          title="That invitation could not be found"
+        <div>
+          status="404" title="That invitation could not be found"
           subTitle="Perhaps you have already accepted it?"
-        />
+        </div>
       );
     } else if (code === "DNIED") {
       child = (
-        <Result
-          status="403"
-          title="That invitation is not for you"
-          subTitle="Perhaps you should log out and log in with a different account?"
-        />
+        <div>
+          status="403" title="That invitation is not for you" subTitle="Perhaps
+          you should log out and log in with a different account?"
+        </div>
       );
     } else if (code === "LOGIN") {
       child = (
-        <Result
-          status="403"
-          title="Log in to accept invitation"
-          extra={
-            <ButtonLink
-              href={`/login?next=${encodeURIComponent(router.asPath)}`}
-            >
-              Log in
-            </ButtonLink>
-          }
-        />
+        <div>
+          status="403" title="Log in to accept invitation"
+          <ButtonLink href={`/login?next=${encodeURIComponent(router.asPath)}`}>
+            Log in
+          </ButtonLink>
+        </div>
       );
     } else {
       child = <ErrorAlert error={error || acceptError!} />;
     }
   } else if (organization) {
     child = (
-      <Result
-        status="success"
-        title={`You were invited to ${organization.name}`}
-        extra={
-          <Button onClick={handleAccept} type="primary">
-            Accept invitation
-          </Button>
-        }
-      />
+      <div>
+        status="success" title={`You were invited to ${organization.name}`}
+        extra={<button onClick={handleAccept}>Accept invitation</button>}
+      </div>
     );
   } else if (loading) {
-    child = <Skeleton />;
+    child = <div />;
   } else {
     child = (
-      <Result
-        status="error"
-        title="Something went wrong"
-        subTitle="We couldn't find details about this invite, please try again later"
-      />
+      <div>
+        status="error" title="Something went wrong" subTitle="We couldn't find
+        details about this invite, please try again later"
+      </div>
     );
   }
   return child;

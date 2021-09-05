@@ -1,5 +1,3 @@
-import { InfoCircleOutlined } from "@ant-design/icons";
-import { Col, Popover, Progress, Row } from "antd";
 import React, { useEffect, useState } from "react";
 
 export interface PasswordStrengthProps {
@@ -45,10 +43,6 @@ export function PasswordStrength({
 
   if (!isDirty) return null;
 
-  const handleVisibleChange = (visible: boolean) => {
-    setVisible(visible);
-  };
-
   const content = (
     <ul>
       {suggestions.map((suggestion, key) => {
@@ -58,35 +52,23 @@ export function PasswordStrength({
   );
 
   return (
-    <Row style={{ lineHeight: "2rem" }}>
-      <Col span={20} offset={1}>
-        <Progress
-          percent={strengthToPercent(passwordStrength)}
-          status={passwordStrength < 2 ? "exception" : undefined}
-        />
-      </Col>
-      <Col span={3}>
-        <Popover
-          placement="bottomRight"
-          title={"Password Hints"}
-          content={content}
-          trigger="click"
-          visible={visible}
-          onVisibleChange={handleVisibleChange}
+    <div style={{ lineHeight: "2rem" }}>
+      <div>
+        progress: {strengthToPercent(passwordStrength)}
+        status: {passwordStrength < 2 ? "exception" : undefined}
+      </div>
+      <div style={{ visibility: visible ? "visible" : "hidden" }}>
+        "Password Hints"
+        <div
+          style={{
+            width: "100%",
+            textAlign: "right",
+            padding: "0 13px",
+          }}
         >
-          <div
-            style={{
-              width: "100%",
-              textAlign: "right",
-              padding: "0 13px",
-            }}
-          >
-            <InfoCircleOutlined
-              style={suggestions.length > 0 ? {} : { visibility: "hidden" }}
-            />
-          </div>
-        </Popover>
-      </Col>
-    </Row>
+          {content}
+        </div>
+      </div>
+    </div>
   );
 }

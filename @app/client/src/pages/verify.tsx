@@ -1,6 +1,5 @@
-import { Col, Row, SharedLayout } from "@app/components";
+import { SharedLayout } from "@app/components";
 import { useSharedQuery, useVerifyEmailMutation } from "@app/graphql";
-import { Alert } from "antd";
 import get from "lodash/get";
 import { NextPage } from "next";
 import React, { useEffect } from "react";
@@ -20,6 +19,7 @@ const VerifyPage: NextPage<IProps> = (props) => {
   >(props.id && props.token ? "SUBMITTING" : "PENDING");
   const [error, setError] = React.useState<Error | null>(null);
   const [verifyEmail] = useVerifyEmailMutation();
+
   useEffect(() => {
     if (state === "SUBMITTING") {
       setError(null);
@@ -43,6 +43,7 @@ const VerifyPage: NextPage<IProps> = (props) => {
         });
     }
   }, [id, token, state, props, verifyEmail]);
+
   function form() {
     return (
       <form onSubmit={() => setState("SUBMITTING")}>
@@ -60,24 +61,23 @@ const VerifyPage: NextPage<IProps> = (props) => {
   const query = useSharedQuery();
   return (
     <SharedLayout title="Verify Email Address" query={query}>
-      <Row>
-        <Col flex={1}>
+      <div>
+        <div>
           {state === "PENDING" ? (
             form()
           ) : state === "SUBMITTING" ? (
             "Submitting..."
           ) : state === "SUCCESS" ? (
-            <Alert
-              type="success"
-              showIcon
-              message="Email Verified"
-              description="Thank you for verifying your email address. You may now close this window."
-            />
+            <p>
+              type="success" showIcon message="Email Verified"
+              description="Thank you for verifying your email address. You may
+              now close this window."
+            </p>
           ) : (
             "Unknown state"
           )}
-        </Col>
-      </Row>
+        </div>
+      </div>
     </SharedLayout>
   );
 };

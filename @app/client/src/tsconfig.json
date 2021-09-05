@@ -3,7 +3,7 @@
   "compilerOptions": {
     "composite": false,
     "incremental": false,
-    "target": "es5",
+    "target": "es2020",
     "lib": ["dom", "dom.iterable", "esnext"],
     "noEmit": true,
     "esModuleInterop": true,
@@ -12,7 +12,12 @@
     "isolatedModules": true
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../../components/stitches.config.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "../../components/stitches.config.ts"
+  ],
   "references": [
     { "path": "../../config" },
     { "path": "../../graphql" },
