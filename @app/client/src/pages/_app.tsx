@@ -2,7 +2,6 @@ import "nprogress/nprogress.css";
 
 import { ApolloClient, ApolloProvider } from "@apollo/client";
 import { withApollo } from "@app/lib";
-import { notification } from "antd";
 import App from "next/app";
 import Router from "next/router";
 import NProgress from "nprogress";
@@ -44,7 +43,7 @@ if (typeof window !== "undefined") {
     if (err["cancelled"]) {
       // No worries; you deliberately cancelled it
     } else {
-      notification.open({
+      console.dir({
         message: "Page load failed",
         description: `This is very embarrassing! Please reload the page. Further error details: ${
           typeof err === "string" ? err : err.message

@@ -6,25 +6,21 @@ import {
   useOrganizationBySlugLazyQuery,
   useSharedQuery,
 } from "@app/graphql";
-import {
-  extractError,
-  formItemLayout,
-  getCodeFromError,
-  tailFormItemLayout,
-} from "@app/lib";
-import { Alert, Button, Col, Form, Input, PageHeader, Row, Spin } from "antd";
-import { useForm } from "antd/lib/form/Form";
-import Text from "antd/lib/typography/Text";
+import { extractError, getCodeFromError } from "@app/lib";
 import { debounce } from "lodash";
 import { NextPage } from "next";
-import { Store } from "rc-field-form/lib/interface";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import slugify from "slugify";
+
+interface CreateOrganizationForm {
+  name: string;
+}
 
 const CreateOrganizationPage: NextPage = () => {
   const [formError, setFormError] = useState<Error | ApolloError | null>(null);
   const query = useSharedQuery();
-  const [form] = useForm();
+  const { register, handleSubmit, watch } = useForm();
   const [slug, setSlug] = useState("");
   const [
     lookupOrganizationBySlug,
@@ -53,16 +49,22 @@ const CreateOrganizationPage: NextPage = () => {
   );
 
   useEffect(() => {
-    setSlugCheckIsValid(false);
-    checkSlug(slug);
-  }, [checkSlug, slug]);
+    const name = watch("name");
+    setSlug(
+      slugify(name, {
+        lower: true,
+      })
+    );
+    checkSlug(name);
+  }, [checkSlug, slug, watch, setSlug]);
 
   const code = getCodeFromError(formError);
   const [organization, setOrganization] =
     useState<null | CreatedOrganizationFragment>(null);
   const [createOrganization] = useCreateOrganizationMutation();
-  const handleSubmit = useCallback(
-    async (values: Store) => {
+
+  const onSubmit = useCallback(
+    async (values: CreateOrganizationForm) => {
       setFormError(null);
       try {
         const { name } = values;
@@ -83,15 +85,6 @@ const CreateOrganizationPage: NextPage = () => {
     },
     [createOrganization]
   );
-  const handleValuesChange = useCallback((values: Store) => {
-    if ("name" in values) {
-      setSlug(
-        slugify(values.name, {
-          lower: true,
-        })
-      );
-    }
-  }, []);
 
   if (organization) {
     return (
@@ -101,89 +94,58 @@ const CreateOrganizationPage: NextPage = () => {
 
   return (
     <SharedLayout title="" query={query} forbidWhen={AuthRestrict.LOGGED_OUT}>
-      <Row>
-        <Col flex={1}>
-          <PageHeader title="Create Organization" />
+      <div>
+        <div>
+          <h1>Create Organization" </h1>
           <div>
-            <Form
-              {...formItemLayout}
-              form={form}
-              onValuesChange={handleValuesChange}
-              onFinish={handleSubmit}
-            >
-              <Form.Item
-                label="Name"
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please choose a name for the organization",
-                  },
-                ]}
-              >
-                <div>
-                  <Input data-cy="createorganization-input-name" />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <input
+                placeholder="Name"
+                {...register("name", { required: true })}
+              />
+              <div>
+                <input />
+                <p>
+                  Your organization URL will be{" "}
+                  <span>{`${process.env.ROOT_URL}/o/${slug}`}</span>
+                </p>
+                {!slug ? null : !slugCheckIsValid || slugLoading ? (
+                  <div>Checking organization name</div>
+                ) : existingOrganizationData?.organizationBySlug ? (
+                  <p>Organization name is already in use</p>
+                ) : slugError ? (
                   <p>
-                    Your organization URL will be{" "}
-                    <span data-cy="createorganization-slug-value">{`${process.env.ROOT_URL}/o/${slug}`}</span>
+                    Error occurred checking for existing organization with this
+                    name (error code: ERR_{getCodeFromError(slugError)})
                   </p>
-                  {!slug ? null : !slugCheckIsValid || slugLoading ? (
-                    <div>
-                      <Spin /> Checking organization name
-                    </div>
-                  ) : existingOrganizationData?.organizationBySlug ? (
-                    <Text
-                      type="danger"
-                      data-cy="createorganization-hint-nameinuse"
-                    >
-                      Organization name is already in use
-                    </Text>
-                  ) : slugError ? (
-                    <Text type="warning">
-                      Error occurred checking for existing organization with
-                      this name (error code: ERR_{getCodeFromError(slugError)})
-                    </Text>
-                  ) : null}
-                </div>
-              </Form.Item>
+                ) : null}
+              </div>
               {formError ? (
-                <Form.Item {...tailFormItemLayout}>
-                  <Alert
-                    type="error"
-                    message={`Creating organization failed`}
-                    description={
+                <div>
+                  Creating organization failed
+                  <span>
+                    {code === "NUNIQ" ? (
                       <span>
-                        {code === "NUNIQ" ? (
-                          <span data-cy="createorganization-alert-nuniq">
-                            That organization name is already in use, please
-                            choose a different organization name.
-                          </span>
-                        ) : (
-                          extractError(formError).message
-                        )}
-                        {code ? (
-                          <span>
-                            {" "}
-                            (Error code: <code>ERR_{code}</code>)
-                          </span>
-                        ) : null}
+                        That organization name is already in use, please choose
+                        a different organization name.
                       </span>
-                    }
-                  />
-                </Form.Item>
+                    ) : (
+                      extractError(formError).message
+                    )}
+                    {code ? (
+                      <span>
+                        {" "}
+                        (Error code: <code>ERR_{code}</code>)
+                      </span>
+                    ) : null}
+                  </span>
+                </div>
               ) : null}
-              <Form.Item {...tailFormItemLayout}>
-                <Button
-                  htmlType="submit"
-                  data-cy="createorganization-button-create"
-                >
-                  Create
-                </Button>
-              </Form.Item>
-            </Form>
+              <button type="submit">Create</button>
+            </form>
           </div>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </SharedLayout>
   );
 };

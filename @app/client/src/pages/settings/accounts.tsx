@@ -1,18 +1,16 @@
-import { GithubFilled } from "@ant-design/icons";
 import {
   ErrorAlert,
   SettingsLayout,
   SocialLoginOptions,
   SpinPadded,
-  Strong,
 } from "@app/components";
+import { Avatar } from "@app/components/src/Avatar";
 import {
   useCurrentUserAuthenticationsQuery,
   UserAuthentication,
   useSharedQuery,
   useUnlinkUserAuthenticationMutation,
 } from "@app/graphql";
-import { Avatar, Card, List, Modal, PageHeader, Spin } from "antd";
 import { NextPage } from "next";
 import React, { useCallback, useState } from "react";
 
@@ -26,12 +24,12 @@ function authName(service: string) {
 }
 
 const AUTH_ICON_LOOKUP = {
-  github: <GithubFilled />,
+  github: "",
 };
 function authAvatar(service: string) {
   const icon = AUTH_ICON_LOOKUP[service] || null;
   if (icon) {
-    return <Avatar size="large" icon={icon} />;
+    return <Avatar name={icon} />;
   }
 }
 
@@ -40,12 +38,6 @@ function UnlinkAccountButton({ id }: { id: string }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const handleOpenModal = useCallback(() => {
-    setModalOpen(true);
-  }, [setModalOpen]);
-  const handleCloseModal = useCallback(() => {
-    setModalOpen(false);
-  }, [setModalOpen]);
   const handleUnlink = useCallback(async () => {
     setModalOpen(false);
     setDeleting(true);
@@ -58,17 +50,12 @@ function UnlinkAccountButton({ id }: { id: string }) {
 
   return (
     <>
-      <Modal
-        title="Are you sure?"
-        visible={modalOpen}
-        onCancel={handleCloseModal}
-        onOk={handleUnlink}
-      >
-        If you unlink this account you won't be able to log in with it any more;
-        please make sure your email is valid.
-      </Modal>
-      <a key="unlink" onClick={handleOpenModal}>
-        {deleting ? <Spin /> : "Unlink"}
+      <div style={{ visibility: modalOpen ? "visible" : "hidden" }}>
+        Are you sure? If you unlink this account you won't be able to log in
+        with it any more; please make sure your email is valid.
+      </div>
+      <a key="unlink" onClick={handleUnlink}>
+        {deleting ? <div>Loading...</div> : "Unlink"}
       </a>
     </>
   );
@@ -78,18 +65,14 @@ function renderAuth(
   auth: Pick<UserAuthentication, "id" | "service" | "createdAt">
 ) {
   return (
-    <List.Item
-      key={auth.id}
-      actions={[<UnlinkAccountButton key="unlink" id={auth.id} />]}
-    >
-      <List.Item.Meta
-        title={<Strong>{authName(auth.service)}</Strong>}
-        description={`Added ${new Date(
-          Date.parse(auth.createdAt)
-        ).toLocaleString()}`}
-        avatar={authAvatar(auth.service)}
-      />
-    </List.Item>
+    <div key={auth.id}>
+      <div>
+        title {<strong>{authName(auth.service)}</strong>}
+        {`Added ${new Date(Date.parse(auth.createdAt)).toLocaleString()}`}
+        {authAvatar(auth.service)}
+        <UnlinkAccountButton key="unlink" id={auth.id} />
+      </div>
+    </div>
   );
 }
 
@@ -100,26 +83,22 @@ const Settings_Accounts: NextPage = () => {
     loading || !data || !data.currentUser ? (
       <SpinPadded />
     ) : (
-      <List
-        bordered
-        size="large"
-        dataSource={data.currentUser.authentications}
-        renderItem={renderAuth}
-      />
+      <div>{data.currentUser.authentications.map(renderAuth)}</div>
     );
 
   const query = useSharedQuery();
 
   return (
     <SettingsLayout href="/settings/accounts" query={query}>
-      <PageHeader title="Linked accounts" />
+      <h1>Linked accounts" </h1>
       {error && !loading ? <ErrorAlert error={error} /> : linkedAccounts}
-      <Card style={{ marginTop: "2rem" }} title="Link another account">
+      <div style={{ marginTop: "2rem" }}>
+        "Link another account"
         <SocialLoginOptions
           next="/settings/accounts"
           buttonTextFromService={(service) => `Link ${service} account`}
         />
-      </Card>
+      </div>
     </SettingsLayout>
   );
 };

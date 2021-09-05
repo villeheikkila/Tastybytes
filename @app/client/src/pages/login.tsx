@@ -1,11 +1,8 @@
-import { LockOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
 import { ApolloError, useApolloClient } from "@apollo/client";
 import {
   AuthRestrict,
   ButtonLink,
-  Col,
   Redirect,
-  Row,
   SharedLayout,
   SharedLayoutChildProps,
   SocialLoginOptions,
@@ -16,17 +13,11 @@ import {
   getCodeFromError,
   resetWebsocketConnection,
 } from "@app/lib";
-import { Alert, Button, Form, Input } from "antd";
-import { useForm } from "antd/lib/form/Form";
 import { NextPage } from "next";
 import Link from "next/link";
 import Router from "next/router";
-import { Store } from "rc-field-form/lib/interface";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-
-function hasErrors(fieldsError: Object) {
-  return Object.keys(fieldsError).some((field) => fieldsError[field]);
-}
+import { useForm } from "react-hook-form";
 
 interface LoginProps {
   next: string | null;
@@ -54,57 +45,44 @@ const Login: NextPage<LoginProps> = ({ next: rawNext }) => {
         currentUser ? (
           <Redirect href={next} />
         ) : (
-          <Row justify="center" style={{ marginTop: 32 }}>
+          <div style={{ marginTop: 32 }}>
             {showLogin ? (
-              <Col xs={24} sm={12}>
-                <Row>
+              <div>
+                <div>
                   <LoginForm
                     onSuccessRedirectTo={next}
                     onCancel={() => setShowLogin(false)}
                     error={error}
                     setError={setError}
                   />
-                </Row>
-              </Col>
+                </div>
+              </div>
             ) : (
-              <Col xs={24} sm={12}>
-                <Row style={{ marginBottom: 8 }}>
-                  <Col span={24}>
-                    <Button
-                      data-cy="loginpage-button-withusername"
-                      icon={<UserOutlined />}
-                      size="large"
-                      block
-                      onClick={() => setShowLogin(true)}
-                      type="primary"
-                    >
+              <div>
+                <div style={{ marginBottom: 8 }}>
+                  <div>
+                    <button onClick={() => setShowLogin(true)}>
                       Sign in with E-mail or Username
-                    </Button>
-                  </Col>
-                </Row>
-                <Row style={{ marginBottom: 8 }}>
-                  <Col span={24}>
+                    </button>
+                  </div>
+                </div>
+                <div style={{ marginBottom: 8 }}>
+                  <div>
                     <SocialLoginOptions next={next} />
-                  </Col>
-                </Row>
-                <Row justify="center">
-                  <Col flex={1}>
+                  </div>
+                </div>
+                <div>
+                  <div>
                     <ButtonLink
-                      icon={<UserAddOutlined />}
-                      size="large"
-                      block
-                      type="default"
                       href={`/register?next=${encodeURIComponent(next)}`}
                     >
-                      <a data-cy="loginpage-button-register">
-                        Create an account
-                      </a>
+                      <a>Create an account</a>
                     </ButtonLink>
-                  </Col>
-                </Row>
-              </Col>
+                  </div>
+                </div>
+              </div>
             )}
-          </Row>
+          </div>
         )
       }
     </SharedLayout>
@@ -130,13 +108,19 @@ function LoginForm({
   error,
   setError,
 }: LoginFormProps) {
-  const [form] = useForm();
+  const {
+    register,
+    handleSubmit,
+    setError: setFormError,
+  } = useForm<{ username: string; password: string }>();
+
   const [login] = useLoginMutation({});
   const client = useApolloClient();
 
   const [submitDisabled, setSubmitDisabled] = useState(false);
-  const handleSubmit = useCallback(
-    async (values: Store) => {
+  const onSubmit = useCallback(
+    async (values) => {
+      console.log("values: ", values);
       setError(null);
       try {
         await login({
@@ -152,106 +136,59 @@ function LoginForm({
       } catch (e) {
         const code = getCodeFromError(e);
         if (code === "CREDS") {
-          form.setFields([
-            {
-              name: "password",
-              value: form.getFieldValue("password"),
-              errors: ["Incorrect username or passphrase"],
-            },
-          ]);
+          setFormError("password", {
+            message: "Incorrect username or passphrase",
+          });
           setSubmitDisabled(true);
         } else {
           setError(e);
         }
       }
     },
-    [client, form, login, onSuccessRedirectTo, setError]
+    [client, login, setFormError, onSuccessRedirectTo, setError]
   );
 
-  const focusElement = useRef<Input>(null);
+  const focusElement = useRef<any>(null);
   useEffect(
     () => void (focusElement.current && focusElement.current!.focus()),
     [focusElement]
   );
 
-  const handleValuesChange = useCallback(() => {
-    setSubmitDisabled(hasErrors(form.getFieldsError().length !== 0));
-  }, [form]);
-
   const code = getCodeFromError(error);
+  console.log("code: ", code);
 
   return (
-    <Form
-      form={form}
-      layout="vertical"
-      onFinish={handleSubmit}
-      onValuesChange={handleValuesChange}
-      style={{ width: "100%" }}
-    >
-      <Form.Item
-        name="username"
-        rules={[{ required: true, message: "Please input your username" }]}
-      >
-        <Input
-          size="large"
-          prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
-          placeholder="E-mail or Username"
-          autoComplete="email username"
-          ref={focusElement}
-          data-cy="loginpage-input-username"
-        />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: "Please input your passphrase" }]}
-      >
-        <Input
-          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
-          size="large"
-          type="password"
-          placeholder="Passphrase"
-          autoComplete="current-password"
-          data-cy="loginpage-input-password"
-        />
-      </Form.Item>
-      <Form.Item>
-        <Link href="/forgot">
-          <a>Forgotten passphrase?</a>
-        </Link>
-      </Form.Item>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input
+        id="username"
+        autoComplete="email username"
+        placeholder="E-mail or Username"
+        {...register("username", { required: true })}
+      />
+      <input
+        autoComplete="current-password"
+        id="password"
+        type="password"
+        placeholder="Passphrase"
+        {...register("password", { required: true })}
+      />
+
+      <Link href="/forgot">Forgotten passphrase?</Link>
 
       {error ? (
-        <Form.Item>
-          <Alert
-            type="error"
-            message={`Sign in failed`}
-            description={
-              <span>
-                {extractError(error).message}
-                {code ? (
-                  <span>
-                    {" "}
-                    (Error code: <code>ERR_{code}</code>)
-                  </span>
-                ) : null}
-              </span>
-            }
-          />
-        </Form.Item>
+        <span>
+          {extractError(error).message}
+          {code ? (
+            <span>
+              (Error code: <code>ERR_{code}</code>)
+            </span>
+          ) : null}
+        </span>
       ) : null}
-      <Form.Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          disabled={submitDisabled}
-          data-cy="loginpage-button-submit"
-        >
-          Sign in
-        </Button>
-        <a style={{ marginLeft: 16 }} onClick={onCancel}>
-          Use a different sign in method
-        </a>
-      </Form.Item>
-    </Form>
+      <button type="submit" disabled={submitDisabled}>
+        Sign in
+      </button>
+      <a onClick={onCancel}>Use a different sign in method</a>
+    </form>
   );
 }

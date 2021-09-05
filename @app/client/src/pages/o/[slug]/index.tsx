@@ -8,7 +8,6 @@ import {
   OrganizationPage_OrganizationFragment,
   useOrganizationPageQuery,
 } from "@app/graphql";
-import { Col, Empty, PageHeader, Row } from "antd";
 import { NextPage } from "next";
 import React, { FC } from "react";
 
@@ -40,40 +39,31 @@ const OrganizationPageInner: FC<OrganizationPageInnerProps> = (props) => {
   const { organization } = props;
 
   return (
-    <Row>
-      <Col flex={1}>
-        <div>
-          <PageHeader
-            title={"Dashboard"}
-            extra={
-              organization.currentUserIsBillingContact ||
-              organization.currentUserIsOwner
-                ? [
-                    <ButtonLink
-                      key="settings"
-                      href={`/o/[slug]/settings`}
-                      as={`/o/${organization.slug}/settings`}
-                      type="primary"
-                      data-cy="organizationpage-button-settings"
-                    >
-                      Settings
-                    </ButtonLink>,
-                  ]
-                : null
-            }
-          />
-          <Empty
-            description={
-              <span>
-                Customize this page in
-                <br />
-                <code>@app/client/src/pages/o/[slug]/index.tsx</code>
-              </span>
-            }
-          />
-        </div>
-      </Col>
-    </Row>
+    <div>
+      <div>
+        <header>
+          Dashboard
+          {organization.currentUserIsBillingContact ||
+          organization.currentUserIsOwner
+            ? [
+                <ButtonLink
+                  key="settings"
+                  href={`/o/[slug]/settings`}
+                  // as={`/o/${organization.slug}/settings`}
+                >
+                  Settings
+                </ButtonLink>,
+              ]
+            : null}
+        </header>
+
+        <span>
+          Customize this page in
+          <br />
+          <code>@app/client/src/pages/o/[slug]/index.tsx</code>
+        </span>
+      </div>
+    </div>
   );
 };
 

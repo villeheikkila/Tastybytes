@@ -11,13 +11,11 @@ import {
   useOrganizationPageQuery,
   useUpdateOrganizationMutation,
 } from "@app/graphql";
-import { extractError, formItemLayout, tailFormItemLayout } from "@app/lib";
-import { Alert, Button, Form, Input, message, PageHeader } from "antd";
-import { useForm } from "antd/lib/form/Form";
+import { extractError } from "@app/lib";
 import { NextPage } from "next";
 import Router, { useRouter } from "next/router";
-import { Store } from "rc-field-form/lib/interface";
 import React, { FC, useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const OrganizationSettingsPage: NextPage = () => {
   const slug = useOrganizationSlug();
@@ -45,6 +43,11 @@ interface OrganizationSettingsPageInnerProps {
   organization: OrganizationPage_OrganizationFragment;
 }
 
+interface OrganizationSettingsForm {
+  slug: string;
+  name: string;
+}
+
 const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
   props
 ) => {
@@ -52,11 +55,16 @@ const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
   const { name, slug } = organization;
   const router = useRouter();
 
-  const [form] = useForm();
+  const { register, handleSubmit } = useForm<OrganizationSettingsForm>({
+    defaultValues: { slug, name },
+  });
+
+  const [status, setStatus] = useState("");
   const [updateOrganization] = useUpdateOrganizationMutation();
   const [error, setError] = useState<Error | null>(null);
-  const handleSubmit = useCallback(
-    async (values: Store) => {
+
+  const onSubmit = useCallback(
+    async (values: OrganizationSettingsForm) => {
       try {
         setError(null);
         const { data } = await updateOrganization({
@@ -67,7 +75,7 @@ const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
             },
           },
         });
-        message.success("Organization updated");
+        setStatus("Organization updated");
         const newSlug = data?.updateOrganization?.organization?.slug;
         if (newSlug && newSlug !== organization.slug) {
           Router.push(`/o/[slug]/settings`, `/o/${newSlug}/settings`);
@@ -89,49 +97,25 @@ const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
   return (
     <OrganizationSettingsLayout organization={organization} href={router.route}>
       <div>
-        <PageHeader title="Profile" />
-        <Form
-          {...formItemLayout}
-          form={form}
-          onFinish={handleSubmit}
-          initialValues={{
-            slug,
-            name,
-          }}
-        >
-          <Form.Item
-            label="Organization name"
-            name="name"
-            rules={[
-              { required: true, message: "Organization name is required" },
-              { min: 1, message: "Organization name must not be empty" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Slug"
-            name="slug"
-            rules={[
-              { required: true, message: "Slug is required" },
-              { min: 2, message: "Slug must be at least 2 characters long" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+        <h1>Profile</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input
+            placeholder="Organization name"
+            {...register("name", { required: true, min: 1 })}
+          />
+          <input
+            placeholder="Slug"
+            {...register("slug", { required: true, min: 2 })}
+          />
           {error ? (
-            <Form.Item>
-              <Alert
-                type="error"
-                message={`Updating organization`}
-                description={<span>{extractError(error).message}</span>}
-              />
-            </Form.Item>
+            <div>
+              type="error" message={`Updating organization`}
+              description: {<span>{extractError(error).message}</span>}
+            </div>
           ) : null}
-          <Form.Item {...tailFormItemLayout}>
-            <Button htmlType="submit">Update organization</Button>
-          </Form.Item>
-        </Form>
+          <button type="submit">Update organization</button>
+          {status}
+        </form>
       </div>
     </OrganizationSettingsLayout>
   );

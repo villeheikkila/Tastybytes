@@ -1,4 +1,3 @@
-import { CrownOutlined } from "@ant-design/icons";
 import { ApolloError, QueryResult, useApolloClient } from "@apollo/client";
 import { author, projectName } from "@app/config";
 import {
@@ -7,30 +6,15 @@ import {
   useCurrentUserUpdatedSubscription,
   useLogoutMutation,
 } from "@app/graphql";
-import { Col, Dropdown, Layout, Menu, Row, Typography } from "antd";
 import Head from "next/head";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import * as React from "react";
 import { useCallback } from "react";
 
-import { ErrorAlert, H3, StandardWidth, Warn } from ".";
+import { ErrorAlert, StandardWidth, Warn } from ".";
 import { Avatar } from "./Avatar";
 import { Redirect } from "./Redirect";
-
-const { Header, Content, Footer } = Layout;
-const { Text } = Typography;
-/*
- * For some reason, possibly related to the interaction between
- * `babel-plugin-import` and https://github.com/babel/babel/pull/9766, we can't
- * directly export these values, but if we reference them and re-export then we
- * can.
- *
- * TODO: change back to `export { Row, Col, Link }` when this issue is fixed.
- */
-const _babelHackRow = Row;
-const _babelHackCol = Col;
-export { _babelHackCol as Col, Link, _babelHackRow as Row };
 
 export const contentMinHeight = "calc(100vh - 64px - 70px)";
 
@@ -105,6 +89,7 @@ export function SharedLayout({
   const client = useApolloClient();
   const [logout] = useLogoutMutation();
   const handleLogout = useCallback(() => {
+    console.log("Hei");
     const reset = async () => {
       Router.events.off("routeChangeComplete", reset);
       try {
@@ -162,119 +147,96 @@ export function SharedLayout({
   const { data, loading, error } = query;
 
   return (
-    <Layout>
+    <div>
       {data && data.currentUser ? <CurrentUserUpdatedSubscription /> : null}
-      <Header
+      <header
         style={{
           boxShadow: "0 2px 8px #f0f1f2",
           zIndex: 1,
           overflow: "hidden",
         }}
       >
+        <button onClick={handleLogout}>Logout</button>
+
         <Head>
           <title>{title ? `${title} — ${projectName}` : projectName}</title>
         </Head>
-        <Row justify="space-between">
-          <Col span={6}>
+        <div>
+          <div>
             <Link href="/">
               <a>{projectName}</a>
             </Link>
-          </Col>
-          <Col span={12}>
-            <H3
-              style={{
-                margin: 0,
-                padding: 0,
-                textAlign: "center",
-                lineHeight: "64px",
-              }}
-              data-cy="layout-header-title"
-            >
+          </div>
+          <div>
+            <h3>
               {titleHref ? (
                 <Link href={titleHref} as={titleHrefAs}>
-                  <a data-cy="layout-header-titlelink">{title}</a>
+                  <a>{title}</a>
                 </Link>
               ) : (
                 title
               )}
-            </H3>
-          </Col>
-          <Col span={6} style={{ textAlign: "right" }}>
+            </h3>
+          </div>
+          <div style={{ textAlign: "right" }}>
             {data && data.currentUser ? (
-              <Dropdown
-                overlay={
-                  <Menu>
-                    {data.currentUser.organizationMemberships.nodes.map(
-                      ({ organization, isOwner }) => (
-                        <Menu.Item key={organization?.id}>
-                          <Link
-                            href={`/o/[slug]`}
-                            as={`/o/${organization?.slug}`}
-                          >
-                            <a>
-                              {organization?.name}
-                              {isOwner ? (
-                                <span>
-                                  {" "}
-                                  <CrownOutlined />
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </a>
-                          </Link>
-                        </Menu.Item>
-                      )
-                    )}
-                    <Menu.Item>
-                      <Link href="/create-organization">
-                        <a data-cy="layout-link-create-organization">
-                          Create organization
-                        </a>
-                      </Link>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <Link href="/settings">
-                        <a data-cy="layout-link-settings">
-                          <Warn okay={data.currentUser.isVerified}>
-                            Settings
-                          </Warn>
-                        </a>
-                      </Link>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <a onClick={handleLogout}>Logout</a>
-                    </Menu.Item>
-                  </Menu>
-                }
-              >
-                <span
-                  data-cy="layout-dropdown-user"
-                  style={{ whiteSpace: "nowrap" }}
-                >
+              <div>
+                <div>
+                  {data.currentUser.organizationMemberships.nodes.map(
+                    ({ organization, isOwner }) => (
+                      <div key={organization?.id}>
+                        <Link
+                          href={`/o/[slug]`}
+                          as={`/o/${organization?.slug}`}
+                        >
+                          <a>
+                            {organization?.name}
+                            {isOwner ? <span> </span> : ""}
+                          </a>
+                        </Link>
+                      </div>
+                    )
+                  )}
+                  <div>
+                    <Link href="/create-organization">
+                      <a>Create organization</a>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link href="/settings">
+                      <a>
+                        <Warn okay={data.currentUser.isVerified}>Settings</Warn>
+                      </a>
+                    </Link>
+                  </div>
+                  <div>
+                    <button onClick={handleLogout}>Logout</button>
+                  </div>
+                </div>
+                <span style={{ whiteSpace: "nowrap" }}>
                   <Avatar
                     name={data.currentUser.name || "?"}
                     imageUrl={data.currentUser.avatarUrl}
                     status={!data.currentUser.isVerified ? "warn" : undefined}
                   />
                 </span>
-              </Dropdown>
+              </div>
             ) : forbidsLoggedIn ? null : (
               <Link href={`/login?next=${encodeURIComponent(currentUrl)}`}>
-                <a data-cy="header-login-button">Sign in</a>
+                <a>Sign in</a>
               </Link>
             )}
-          </Col>
-        </Row>
-      </Header>
-      <Content style={{ minHeight: contentMinHeight }}>
+          </div>
+        </div>
+      </header>
+      <div style={{ minHeight: contentMinHeight }}>
         {renderChildren({
           error,
           loading,
           currentUser: data && data.currentUser,
         })}
-      </Content>
-      <Footer>
+      </div>
+      <footer>
         <div
           style={{
             display: "flex",
@@ -282,7 +244,7 @@ export function SharedLayout({
             justifyContent: "space-between",
           }}
         >
-          <Text>
+          <p>
             Copyright &copy; {new Date().getFullYear()} {author}. All rights
             reserved.
             {process.env.T_AND_C_URL ? (
@@ -296,9 +258,9 @@ export function SharedLayout({
                 </a>
               </span>
             ) : null}
-          </Text>
+          </p>
         </div>
-      </Footer>
-    </Layout>
+      </footer>
+    </div>
   );
 }

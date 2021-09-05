@@ -16,23 +16,10 @@ import {
   useTransferOrganizationBillingContactMutation,
   useTransferOrganizationOwnershipMutation,
 } from "@app/graphql";
-import { formItemLayout, tailFormItemLayout } from "@app/lib";
-import {
-  Button,
-  Card,
-  Form,
-  Input,
-  List,
-  message,
-  PageHeader,
-  Popconfirm,
-  Typography,
-} from "antd";
-import Text from "antd/lib/typography/Text";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Store } from "rc-field-form/lib/interface";
 import React, { FC, useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const OrganizationSettingsPage: NextPage = () => {
   const slug = useOrganizationSlug();
@@ -79,18 +66,16 @@ interface OrganizationSettingsPageInnerProps {
 // This needs to match the `first:` used in OrganizationMembers.graphql
 const RESULTS_PER_PAGE = 10;
 
+interface InvitationFormValues {
+  inviteText: string;
+}
+
 const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
   props
 ) => {
   const { organization, currentUser, page, setPage } = props;
   const router = useRouter();
-
-  const handlePaginationChange = (
-    page: number
-    //pageSize?: number | undefined
-  ) => {
-    setPage(page);
-  };
+  const [status, setStatus] = useState("");
 
   const renderItem = useCallback(
     (node: OrganizationMembers_MembershipFragment) => (
@@ -105,9 +90,9 @@ const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
 
   const [inviteToOrganization] = useInviteToOrganizationMutation();
   const [inviteInProgress, setInviteInProgress] = useState(false);
-  const [form] = Form.useForm();
-  const handleInviteSubmit = useCallback(
-    async (values: Store) => {
+  const { register, handleSubmit, reset } = useForm<InvitationFormValues>();
+  const onSubmit = useCallback(
+    async (values: InvitationFormValues) => {
       if (inviteInProgress) {
         return;
       }
@@ -122,11 +107,11 @@ const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
             username: isEmail ? null : inviteText,
           },
         });
-        message.success(`'${inviteText}' invited.`);
-        form.setFieldsValue({ inviteText: "" });
+        setStatus(`'${inviteText}' invited.`);
+        reset({ inviteText: "" });
       } catch (e) {
         // TODO: handle this through the interface
-        message.error(
+        setStatus(
           "Could not invite to organization: " +
             e.message.replace(/^GraphQL Error:/i, "")
         );
@@ -134,7 +119,7 @@ const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
         setInviteInProgress(false);
       }
     },
-    [form, inviteInProgress, inviteToOrganization, organization.id]
+    [reset, inviteInProgress, inviteToOrganization, organization.id]
   );
 
   if (
@@ -144,43 +129,39 @@ const OrganizationSettingsPageInner: FC<OrganizationSettingsPageInnerProps> = (
     return <Redirect as={`/o/${organization.slug}`} href="/o/[slug]" />;
   }
 
+  const handlePaginationChange = (
+    page: number
+    //pageSize?: number | undefined
+  ) => {
+    setPage(page);
+  };
+
   return (
     <OrganizationSettingsLayout organization={organization} href={router.route}>
       <div>
-        <PageHeader title="Members" />
-        <Card title="Invite new member">
-          <Form {...formItemLayout} form={form} onFinish={handleInviteSubmit}>
-            <Form.Item label="Username or email" name="inviteText">
-              <Input
-                placeholder="Enter username or email"
-                disabled={inviteInProgress}
-              />
-            </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-              <Button htmlType="submit" disabled={inviteInProgress}>
-                Invite
-              </Button>
-            </Form.Item>
-          </Form>
-        </Card>
-        <List
-          style={{ marginTop: "2rem", borderColor: "#f0f0f0" }}
-          header={
-            <Typography.Text style={{ fontSize: "16px" }} strong>
-              Existing members
-            </Typography.Text>
-          }
-          size="large"
-          bordered
-          dataSource={organization.organizationMemberships?.nodes ?? []}
-          pagination={{
-            current: page,
-            pageSize: RESULTS_PER_PAGE,
-            total: organization.organizationMemberships?.totalCount,
-            onChange: handlePaginationChange,
-          }}
-          renderItem={renderItem}
-        />
+        <h1>Members</h1>
+        <div>Invite new member</div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input
+            placeholder="Username or email"
+            id="inviteText"
+            disabled={inviteInProgress}
+            {...register("inviteText", { required: true })}
+          />
+          <input type="submit">Invite</input>
+        </form>
+        {status}
+      </div>
+      current page: {page}
+      pageSize: {RESULTS_PER_PAGE}
+      total={organization.organizationMemberships?.totalCount},
+      <button onClick={() => handlePaginationChange(page + 1)}>
+        change page
+      </button>
+      <div>
+        {organization.organizationMemberships?.nodes?.map((member) =>
+          renderItem(member)
+        )}
       </div>
     </OrganizationSettingsLayout>
   );
@@ -196,6 +177,7 @@ const OrganizationMemberListItem: FC<OrganizationMemberListItemProps> = (
   props
 ) => {
   const { node, organization, currentUser } = props;
+  const [status, setStatus] = useState("");
 
   const [removeMember] = useRemoveFromOrganizationMutation();
   const handleRemove = useCallback(async () => {
@@ -208,7 +190,7 @@ const OrganizationMemberListItem: FC<OrganizationMemberListItemProps> = (
         refetchQueries: ["OrganizationMembers"],
       });
     } catch (e) {
-      message.error("Error occurred when removing member: " + e.message);
+      setStatus("Error occurred when removing member: " + e.message);
     }
   }, [node.user, organization.id, removeMember]);
 
@@ -223,7 +205,7 @@ const OrganizationMemberListItem: FC<OrganizationMemberListItemProps> = (
         refetchQueries: ["OrganizationMembers"],
       });
     } catch (e) {
-      message.error("Error occurred when transferring ownership: " + e.message);
+      setStatus("Error occurred when transferring ownership: " + e.message);
     }
   }, [node.user, organization.id, transferOwnership]);
 
@@ -238,7 +220,7 @@ const OrganizationMemberListItem: FC<OrganizationMemberListItemProps> = (
         refetchQueries: ["OrganizationMembers"],
       });
     } catch (e) {
-      message.error(
+      setStatus(
         "Error occurred when transferring billing contact: " + e.message
       );
     }
@@ -251,58 +233,43 @@ const OrganizationMemberListItem: FC<OrganizationMemberListItemProps> = (
     .filter(Boolean)
     .join(" and ");
   return (
-    <List.Item
-      actions={[
+    <div>
+      {[
         organization.currentUserIsOwner && node.user?.id !== currentUser?.id ? (
-          <Popconfirm
-            title={`Are you sure you want to remove ${node.user?.name} from ${organization.name}?`}
-            onConfirm={handleRemove}
-            okText="Yes"
-            cancelText="No"
-            key="remove"
-          >
+          <button onClick={handleRemove}>
+            {`Are you sure you want to remove ${node.user?.name} from ${organization.name}?`}
+            okText="Yes" cancelText="No" key="remove"
             <a>Remove</a>
-          </Popconfirm>
+          </button>
         ) : null,
         organization.currentUserIsOwner && node.user?.id !== currentUser?.id ? (
-          <Popconfirm
-            title={`Are you sure you want to transfer ownership of ${organization.name} to ${node.user?.name}?`}
-            onConfirm={handleTransfer}
-            okText="Yes"
-            cancelText="No"
-            key="transfer"
-          >
+          <button onClick={handleTransfer}>
+            {`Are you sure you want to transfer ownership of ${organization.name} to ${node.user?.name}?`}
+            okText="Yes" cancelText="No" key="transfer"
             <a>Make owner</a>
-          </Popconfirm>
+          </button>
         ) : null,
         organization.currentUserIsOwner && !node.isBillingContact ? (
-          <Popconfirm
-            title={`Are you sure you want to make ${node.user?.name} the billing contact for ${organization.name}?`}
-            onConfirm={handleBillingTransfer}
-            okText="Yes"
-            cancelText="No"
-            key="billingTransfer"
-          >
+          <button onClick={handleBillingTransfer}>
+            {`Are you sure you want to make ${node.user?.name} the billing contact for ${organization.name}?`}
+            okText="Yes" cancelText="No" key="billingTransfer"
             <a>Make billing contact</a>
-          </Popconfirm>
+          </button>
         ) : null,
       ].filter(Boolean)}
-    >
-      <List.Item.Meta
-        //avatar={...}
-        title={node.user?.name}
-        description={
-          <div>
-            <Text>{node.user?.username}</Text>
-            {roles ? (
-              <div>
-                <Text type="secondary">({roles})</Text>
-              </div>
-            ) : null}
-          </div>
-        }
-      />
-    </List.Item>
+      {status}
+      <div>
+        {node.user?.name}
+        <div>
+          <p>{node.user?.username}</p>
+          {roles ? (
+            <div>
+              <p>({roles})</p>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </div>
   );
 };
 

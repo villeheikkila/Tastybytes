@@ -1,7 +1,4 @@
-import { SyncOutlined } from "@ant-design/icons";
 import { ApolloError } from "@apollo/client";
-import { Alert, Button, Result } from "antd";
-import Paragraph from "antd/lib/typography/Paragraph";
 import React from "react";
 
 export interface ErrorAlertProps {
@@ -13,41 +10,26 @@ export function ErrorAlert({ error }: ErrorAlertProps) {
     ?.errors?.[0]?.code;
   if (code === "EBADCSRFTOKEN") {
     return (
-      <Result
-        status="403"
-        title="Invalid CSRF token"
-        subTitle={
-          <>
-            <Paragraph type="secondary">
-              Our security protections have failed to authenticate your request;
-              to solve this you need to refresh the page:
-            </Paragraph>
-            <Paragraph>
-              <Button
-                type="primary"
-                onClick={() => window.location.reload()}
-                icon={<SyncOutlined />}
-              >
-                Refresh page
-              </Button>
-            </Paragraph>
-          </>
-        }
-      />
+      <div>
+        403 Invalid CSRF token
+        <p>
+          Our security protections have failed to authenticate your request; to
+          solve this you need to refresh the page:
+        </p>
+        <p>
+          <button onClick={() => window.location.reload()}>Refresh page</button>
+        </p>
+      </div>
     );
   }
   return (
-    <Result
-      status="error"
-      title="Unexpected error occurred"
-      subTitle={
-        <span>
-          We're really sorry, but an unexpected error occurred. Please{" "}
-          <a href="/">return to the homepage</a> and try again.
-        </span>
-      }
-    >
-      <Alert type="error" message={error.message} />
-    </Result>
+    <div>
+      Unexpected error occurred"
+      <span>
+        We're really sorry, but an unexpected error occurred. Please{" "}
+        <a href="/">return to the homepage</a> and try again.
+      </span>
+      {error.message}
+    </div>
   );
 }

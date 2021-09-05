@@ -1,12 +1,5 @@
-import {
-  ErrorOccurred,
-  FourOhFour,
-  H2,
-  P,
-  SharedLayout,
-} from "@app/components";
+import { ErrorOccurred, FourOhFour, SharedLayout } from "@app/components";
 import { useSharedQuery } from "@app/graphql";
-import { Alert, Col, Row } from "antd";
 import { NextPage } from "next";
 import Link from "next/link";
 import * as React from "react";
@@ -20,30 +13,23 @@ interface SocialAuthErrorProps {
 function SocialAuthError({ provider }: SocialAuthErrorProps) {
   return (
     <div>
-      <H2>This application is not configured for that auth provider</H2>
-      <P>
-        Please try and{" "}
+      <h2>This application is not configured for that auth provider</h2>
+      <p>
+        please try and{" "}
         <Link href="/login">
           <a>login with another method</a>
         </Link>
         .
-      </P>
+      </p>
       {isDev && (
-        <Alert
-          type="info"
-          message="Development Only Error"
-          description={
-            <div>
-              You seem to be trying to log in with the '<code>{provider}</code>'
-              OAuth provider. You should check that{" "}
-              <code>{`${provider}_key`.toUpperCase()}</code> and any other
-              required variables are set in your environment (e.g.{" "}
-              <code>.env</code> file). If they are, check the provider is
-              configured in{" "}
-              <code>@app/server/src/middleware/installPassport.ts</code>
-            </div>
-          }
-        />
+        <div>
+          "Development Only Error" You seem to be trying to log in with the '
+          <code>{provider}</code>' OAuth provider. You should check that{" "}
+          <code>{`${provider}_key`.toUpperCase()}</code> and any other required
+          variables are set in your environment (e.g. <code>.env</code> file).
+          If they are, check the provider is configured in{" "}
+          <code>@app/server/src/middleware/installPassport.ts</code>
+        </div>
       )}
     </div>
   );
@@ -93,11 +79,11 @@ const ErrorPage: NextPage<ErrorPageProps> = (props) => {
   const query = useSharedQuery();
   return (
     <SharedLayout title={title} query={query}>
-      <Row>
-        <Col flex={1}>
+      <div>
+        <div>
           <Component {...componentProps} />
-        </Col>
-      </Row>
+        </div>
+      </div>
     </SharedLayout>
   );
 };

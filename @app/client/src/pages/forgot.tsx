@@ -1,25 +1,22 @@
-import { UserOutlined } from "@ant-design/icons";
 import { ApolloError } from "@apollo/client";
 import { AuthRestrict, SharedLayout } from "@app/components";
 import { useForgotPasswordMutation, useSharedQuery } from "@app/graphql";
 import { extractError, getCodeFromError } from "@app/lib";
-import { Alert, Button, Form, Input } from "antd";
-import { useForm } from "antd/lib/form/Form";
 import { NextPage } from "next";
 import Link from "next/link";
-import { Store } from "rc-field-form/lib/interface";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const ForgotPassword: NextPage = () => {
   const [error, setError] = useState<Error | ApolloError | null>(null);
   const query = useSharedQuery();
 
-  const [form] = useForm();
+  const { register, handleSubmit } = useForm();
   const [forgotPassword] = useForgotPasswordMutation();
   const [successfulEmail, setSuccessfulEmail] = useState<string | null>(null);
 
-  const handleSubmit = useCallback(
-    (values: Store): void => {
+  const onSubmit = useCallback(
+    (values: any): void => {
       setError(null);
       (async () => {
         try {
@@ -39,22 +36,15 @@ const ForgotPassword: NextPage = () => {
     [forgotPassword, setError]
   );
 
-  const focusElement = useRef<Input>(null);
-  useEffect(
-    () => void (focusElement.current && focusElement.current!.focus()),
-    [focusElement]
-  );
-
   const code = getCodeFromError(error);
 
   if (successfulEmail != null) {
     return (
       <SharedLayout title="Forgot Password" query={query}>
-        <Alert
-          type="success"
-          message="You've got mail"
-          description={`We've sent an email reset link to '${successfulEmail}'; click the link and follow the instructions. If you don't receive the link, please ensure you entered the email address correctly, and check in your spam folder just in case.`}
-        />
+        <div>You've got mail"
+          
+          We've sent an email reset link to '${successfulEmail}'; click the link and follow the instructions. If you don't receive the link, please ensure you entered the email address correctly, and check in your spam folder just in case.
+        </div>
       </SharedLayout>
     );
   }
@@ -65,31 +55,12 @@ const ForgotPassword: NextPage = () => {
       query={query}
       forbidWhen={AuthRestrict.LOGGED_IN}
     >
-      <Form form={form} layout="vertical" onFinish={handleSubmit}>
-        <Form.Item
-          name="email"
-          rules={[
-            {
-              type: "email",
-              message: "The input is not valid E-mail",
-            },
-            { required: true, message: "Please input your email" },
-          ]}
-        >
-          <Input
-            prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
-            placeholder="Email"
-            ref={focusElement}
-          />
-        </Form.Item>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input id="email" placeholder="email" {...register('email', {required: true})} />
 
         {error ? (
-          <Form.Item>
-            <Alert
-              type="error"
-              message={`Something went wrong`}
-              description={
                 <span>
+                  `Something went wrong`
                   {extractError(error).message}
                   {code ? (
                     <span>
@@ -98,23 +69,19 @@ const ForgotPassword: NextPage = () => {
                     </span>
                   ) : null}
                 </span>
-              }
-            />
-          </Form.Item>
+              
         ) : null}
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Reset password
-          </Button>
-        </Form.Item>
-        <Form.Item>
+        <div>
+          <button type="submit">Reset password</button>
+        </div>
+        <div>
           <p>
             <Link href="/login">
               <a>Remembered your password? Log in.</a>
             </Link>
           </p>
-        </Form.Item>
-      </Form>
+        </div>
+      </form>
     </SharedLayout>
   );
 };

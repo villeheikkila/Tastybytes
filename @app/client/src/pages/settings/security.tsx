@@ -1,43 +1,31 @@
 import { ApolloError } from "@apollo/client";
-import {
-  ErrorAlert,
-  P,
-  PasswordStrength,
-  SettingsLayout,
-} from "@app/components";
+import { ErrorAlert, SettingsLayout } from "@app/components";
 import {
   useChangePasswordMutation,
   useForgotPasswordMutation,
   useSettingsPasswordQuery,
   useSharedQuery,
 } from "@app/graphql";
-import {
-  extractError,
-  formItemLayout,
-  getCodeFromError,
-  setPasswordInfo,
-  tailFormItemLayout,
-} from "@app/lib";
-import { Alert, Button, Form, Input, PageHeader } from "antd";
-import { useForm } from "antd/lib/form/Form";
+import { extractError, getCodeFromError } from "@app/lib";
 import { NextPage } from "next";
 import Link from "next/link";
-import { Store } from "rc-field-form/lib/interface";
 import React, { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
+
+interface PasswordChangeFormValues {
+  oldPassword: string
+  newPassword: string
+}
 
 const Settings_Security: NextPage = () => {
+  const { register, handleSubmit, setError: setFormError } = useForm<PasswordChangeFormValues>();
   const [error, setError] = useState<Error | ApolloError | null>(null);
-  const [passwordStrength, setPasswordStrength] = useState<number>(0);
-  const [passwordSuggestions, setPasswordSuggestions] = useState<string[]>([]);
-
   const query = useSharedQuery();
-
-  const [form] = useForm();
   const [changePassword] = useChangePasswordMutation();
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = useCallback(
-    async (values: Store) => {
+  const onSubmit = useCallback(
+    async (values: PasswordChangeFormValues) => {
       setSuccess(false);
       setError(null);
       try {
@@ -52,29 +40,20 @@ const Settings_Security: NextPage = () => {
       } catch (e) {
         const errcode = getCodeFromError(e);
         if (errcode === "WEAKP") {
-          form.setFields([
-            {
-              name: "newPassword",
-              value: form.getFieldValue("newPassword"),
-              errors: [
-                "The server believes this passphrase is too weak, please make it stronger",
-              ],
-            },
-          ]);
+          setFormError("newPassword", {
+            message:
+              "The server believes this passphrase is too weak, please make it stronger",
+          });
         } else if (errcode === "CREDS") {
-          form.setFields([
-            {
-              name: "oldPassword",
-              value: form.getFieldValue("oldPassword"),
-              errors: ["Incorrect old passphrase"],
-            },
-          ]);
+          setFormError("oldPassword", {
+            message: "Incorrect old passphrase",
+          });
         } else {
           setError(e);
         }
       }
     },
-    [changePassword, form, setError]
+    [changePassword, setFormError]
   );
 
   const {
@@ -103,26 +82,6 @@ const Settings_Security: NextPage = () => {
     })();
   }, [email, forgotPassword, resetError, resetInProgress]);
 
-  const [passwordIsFocussed, setPasswordIsFocussed] = useState(false);
-  const setPasswordFocussed = useCallback(() => {
-    setPasswordIsFocussed(true);
-  }, [setPasswordIsFocussed]);
-  const setPasswordNotFocussed = useCallback(() => {
-    setPasswordIsFocussed(false);
-  }, [setPasswordIsFocussed]);
-  const [passwordIsDirty, setPasswordIsDirty] = useState(false);
-  const handleValuesChange = useCallback(
-    (changedValues) => {
-      setPasswordInfo(
-        { setPasswordStrength, setPasswordSuggestions },
-        changedValues,
-        "newPassword"
-      );
-      setPasswordIsDirty(form.isFieldTouched("password"));
-    },
-    [form]
-  );
-
   const inner = () => {
     if (loading) {
       /* noop */
@@ -131,17 +90,17 @@ const Settings_Security: NextPage = () => {
     } else if (data && data.currentUser && !data.currentUser.hasPassword) {
       return (
         <div>
-          <PageHeader title="Change passphrase" />
-          <P>
+          <h1>Change passphrase</h1>
+          <p>
             You registered your account through social login, so you do not
             currently have a passphrase. If you would like a passphrase, press
             the button below to request a passphrase reset email to '{email}'
             (you can choose a different email by making it primary in{" "}
             <Link href="/settings/emails">email settings</Link>).
-          </P>
-          <Button onClick={handleResetPassword} disabled={resetInProgress}>
+          </p>
+          <button onClick={handleResetPassword} disabled={resetInProgress}>
             Reset passphrase
-          </Button>
+          </button>
         </div>
       );
     }
@@ -149,76 +108,41 @@ const Settings_Security: NextPage = () => {
     const code = getCodeFromError(error);
     return (
       <div>
-        <PageHeader title="Change passphrase" />
-        <Form
-          {...formItemLayout}
-          form={form}
-          onFinish={handleSubmit}
-          onValuesChange={handleValuesChange}
-        >
-          <Form.Item
-            label="Old passphrase"
-            name="oldPassword"
-            rules={[
-              {
-                required: true,
-                message: "Please input your passphrase",
-              },
-            ]}
-          >
-            <Input type="password" />
-          </Form.Item>
-          <Form.Item label="New passphrase" required>
-            <Form.Item
-              noStyle
-              name="newPassword"
-              rules={[
-                {
-                  required: true,
-                  message: "Please confirm your passphrase",
-                },
-              ]}
-            >
-              <Input
-                type="password"
-                onFocus={setPasswordFocussed}
-                onBlur={setPasswordNotFocussed}
-              />
-            </Form.Item>
-            <PasswordStrength
-              passwordStrength={passwordStrength}
-              suggestions={passwordSuggestions}
-              isDirty={passwordIsDirty}
-              isFocussed={passwordIsFocussed}
-            />
-          </Form.Item>
+        <h1>Change passphrase</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input
+            placeholder="Old passphrase"
+            id="oldPassword"
+            {...register("oldPassword", {
+              required: true,
+            })}
+          />
+          <input
+            placeholder="New passphrase"
+            id="newPassword"
+            type="password"
+            {...register("newPassword", {
+              required: true,
+            })}
+          />
           {error ? (
-            <Form.Item>
-              <Alert
-                type="error"
-                message={`Changing passphrase failed`}
-                description={
+            <>
+              `Changing passphrase failed`
+              <span>
+                {extractError(error).message}
+                {code ? (
                   <span>
-                    {extractError(error).message}
-                    {code ? (
-                      <span>
-                        {" "}
-                        (Error code: <code>ERR_{code}</code>)
-                      </span>
-                    ) : null}
+                    {" "}
+                    (Error code: <code>ERR_{code}</code>)
                   </span>
-                }
-              />
-            </Form.Item>
+                ) : null}
+              </span>
+            </>
           ) : success ? (
-            <Form.Item>
-              <Alert type="success" message={`Password changed!`} />
-            </Form.Item>
+            `Password changed!`
           ) : null}
-          <Form.Item {...tailFormItemLayout}>
-            <Button htmlType="submit">Change Passphrase</Button>
-          </Form.Item>
-        </Form>
+          <button type="submit">Change Passphrase</button>
+        </form>
       </div>
     );
   };

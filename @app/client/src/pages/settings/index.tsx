@@ -5,17 +5,10 @@ import {
   useSettingsProfileQuery,
   useUpdateUserMutation,
 } from "@app/graphql";
-import {
-  extractError,
-  formItemLayout,
-  getCodeFromError,
-  tailFormItemLayout,
-} from "@app/lib";
-import { Alert, Button, Form, Input, PageHeader } from "antd";
-import { useForm } from "antd/lib/form/Form";
+import { extractError, getCodeFromError } from "@app/lib";
 import { NextPage } from "next";
-import { Store } from "rc-field-form/lib/interface";
 import React, { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Settings_Profile: NextPage = () => {
   const [formError, setFormError] = useState<Error | ApolloError | null>(null);
@@ -57,17 +50,31 @@ interface ProfileSettingsFormProps {
   setError: (error: Error | ApolloError | null) => void;
 }
 
+interface ProfileSettingsFormValues {
+  name: string | null;
+  username: string;
+}
+
 function ProfileSettingsForm({
   user,
   error,
   setError,
 }: ProfileSettingsFormProps) {
-  const [form] = useForm();
+  const {
+    register,
+    handleSubmit,
+    setError: setFormError,
+  } = useForm<ProfileSettingsFormValues>({
+    defaultValues: {
+      name: user.name,
+      username: user.username,
+    },
+  });
   const [updateUser] = useUpdateUserMutation();
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = useCallback(
-    async (values: Store) => {
+  const onSubmit = useCallback(
+    async (values: ProfileSettingsFormValues) => {
       setSuccess(false);
       setError(null);
       try {
@@ -85,84 +92,50 @@ function ProfileSettingsForm({
       } catch (e) {
         const errcode = getCodeFromError(e);
         if (errcode === "23505") {
-          form.setFields([
-            {
-              name: "username",
-              value: form.getFieldValue("username"),
-              errors: [
-                "This username is already in use, please pick a different name",
-              ],
-            },
-          ]);
+          setFormError("username", {
+            message:
+              "This username is already in use, please pick a different name",
+          });
         } else {
           setError(e);
         }
       }
     },
-    [setError, updateUser, user.id, form]
+    [setError, updateUser, user.id, setFormError]
   );
 
   const code = getCodeFromError(error);
   return (
     <div>
-      <PageHeader title="Edit profile" />
-      <Form
-        {...formItemLayout}
-        form={form}
-        onFinish={handleSubmit}
-        initialValues={{ name: user.name, username: user.username }}
-      >
-        <Form.Item
-          label="Name"
-          name="name"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your name",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: "Please choose a username",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
+      <h1>Edit profile</h1>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          id="name"
+          placeholder="name"
+          {...register("name", { required: true })}
+        />
+        <input
+          id="username"
+          placeholder="username"
+          {...register("username", { required: true })}
+        />
+
         {error ? (
-          <Form.Item>
-            <Alert
-              type="error"
-              message={`Updating username`}
-              description={
-                <span>
-                  {extractError(error).message}
-                  {code ? (
-                    <span>
-                      {" "}
-                      (Error code: <code>ERR_{code}</code>)
-                    </span>
-                  ) : null}
-                </span>
-              }
-            />
-          </Form.Item>
+          <span>
+            `Updating username`
+            {extractError(error).message}
+            {code ? (
+              <span>
+                {" "}
+                (Error code: <code>ERR_{code}</code>)
+              </span>
+            ) : null}
+          </span>
         ) : success ? (
-          <Form.Item>
-            <Alert type="success" message={`Profile updated`} />
-          </Form.Item>
+          <span>Profile updated</span>
         ) : null}
-        <Form.Item {...tailFormItemLayout}>
-          <Button htmlType="submit">Update Profile</Button>
-        </Form.Item>
-      </Form>
+        <button type="submit">Update Profile</button>
+      </form>
     </div>
   );
 }

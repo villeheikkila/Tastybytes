@@ -12,15 +12,12 @@
     "graphql-ws": "^5.4.1",
     "next": "^11.1.2",
     "next-with-apollo": "^5.2.1",
-    "rc-field-form": "^1.21.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "tslib": "^2.3.1",
-    "zxcvbn": "^4.4.2"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
-    "@types/zxcvbn": "^4.4.1",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "jest": "^27.1.0",
