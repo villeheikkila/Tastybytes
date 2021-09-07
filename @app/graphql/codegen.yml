@@ -14,6 +14,7 @@ config:
   withComponent: false
   withHooks: true
   reactApolloVersion: 3
+  maybeValue: T
 generates:
   index.tsx:
     plugins:
