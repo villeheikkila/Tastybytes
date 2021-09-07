@@ -1,10 +1,7 @@
-import "nprogress/nprogress.css";
-
 import { ApolloClient, ApolloProvider } from "@apollo/client";
 import { withApollo } from "@app/lib";
 import App from "next/app";
 import Router from "next/router";
-import NProgress from "nprogress";
 import * as React from "react";
 
 declare global {
@@ -15,10 +12,6 @@ declare global {
     };
   }
 }
-
-NProgress.configure({
-  showSpinner: false,
-});
 
 if (typeof window !== "undefined") {
   const nextDataEl = document.getElementById("__NEXT_DATA__");
@@ -32,14 +25,14 @@ if (typeof window !== "undefined") {
   };
 
   Router.events.on("routeChangeStart", () => {
-    NProgress.start();
+    <div>Done</div>;
   });
 
   Router.events.on("routeChangeComplete", () => {
-    NProgress.done();
+    <div>Done</div>;
   });
   Router.events.on("routeChangeError", (err: Error | string) => {
-    NProgress.done();
+    <div>Done</div>;
     if (err["cancelled"]) {
       // No worries; you deliberately cancelled it
     } else {
