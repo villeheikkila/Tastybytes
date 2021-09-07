@@ -5,7 +5,7 @@
   "scripts": {
     "gm": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS -r @app/config/env\" graphile-migrate",
     "migrate": "yarn gm migrate",
-    "watch": "yarn gm watch",
+    "watch": "yarn gm watch --shadow",
     "commit": "yarn gm commit",
     "uncommit": "yarn gm uncommit",
     "reset": "yarn gm reset",
