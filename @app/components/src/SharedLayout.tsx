@@ -89,7 +89,6 @@ export function SharedLayout({
   const client = useApolloClient();
   const [logout] = useLogoutMutation();
   const handleLogout = useCallback(() => {
-    console.log("Hei");
     const reset = async () => {
       Router.events.off("routeChangeComplete", reset);
       try {
@@ -145,88 +144,86 @@ export function SharedLayout({
     return noPad ? inner : <StandardWidth>{inner}</StandardWidth>;
   };
   const { data, loading, error } = query;
+  console.log("data: ", data);
 
   return (
     <div>
       {data && data.currentUser ? <CurrentUserUpdatedSubscription /> : null}
       <header
         style={{
+          height: "80px",
           boxShadow: "0 2px 8px #f0f1f2",
           zIndex: 1,
-          overflow: "hidden",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
-        <button onClick={handleLogout}>Logout</button>
-
         <Head>
           <title>{title ? `${title} — ${projectName}` : projectName}</title>
         </Head>
         <div>
-          <div>
-            <Link href="/">
-              <a>{projectName}</a>
-            </Link>
-          </div>
-          <div>
-            <h3>
-              {titleHref ? (
-                <Link href={titleHref} as={titleHrefAs}>
-                  <a>{title}</a>
-                </Link>
-              ) : (
-                title
-              )}
-            </h3>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            {data && data.currentUser ? (
-              <div>
-                <div>
-                  {data.currentUser.organizationMemberships.nodes.map(
-                    ({ organization, isOwner }) => (
-                      <div key={organization?.id}>
-                        <Link
-                          href={`/o/[slug]`}
-                          as={`/o/${organization?.slug}`}
-                        >
-                          <a>
-                            {organization?.name}
-                            {isOwner ? <span> </span> : ""}
-                          </a>
-                        </Link>
-                      </div>
-                    )
-                  )}
-                  <div>
-                    <Link href="/create-organization">
-                      <a>Create organization</a>
-                    </Link>
-                  </div>
-                  <div>
-                    <Link href="/settings">
-                      <a>
-                        <Warn okay={data.currentUser.isVerified}>Settings</Warn>
-                      </a>
-                    </Link>
-                  </div>
-                  <div>
-                    <button onClick={handleLogout}>Logout</button>
-                  </div>
-                </div>
-                <span style={{ whiteSpace: "nowrap" }}>
-                  <Avatar
-                    name={data.currentUser.name || "?"}
-                    imageUrl={data.currentUser.avatarUrl}
-                    status={!data.currentUser.isVerified ? "warn" : undefined}
-                  />
-                </span>
-              </div>
-            ) : forbidsLoggedIn ? null : (
-              <Link href={`/login?next=${encodeURIComponent(currentUrl)}`}>
-                <a>Sign in</a>
+          <Link href="/">
+            <a>{projectName}</a>
+          </Link>
+        </div>
+        <div>
+          <h3>
+            {titleHref ? (
+              <Link href={titleHref} as={titleHrefAs}>
+                <a>{title}</a>
               </Link>
+            ) : (
+              title
             )}
-          </div>
+          </h3>
+        </div>
+
+        <div>
+          {data && data.currentUser ? (
+            <div>
+              <div style={{ display: "none" }}>
+                {data.currentUser.organizationMemberships.nodes.map(
+                  ({ organization, isOwner }) => (
+                    <div key={organization?.id}>
+                      <Link href={`/o/[slug]`} as={`/o/${organization?.slug}`}>
+                        <a>
+                          {organization?.name}
+                          {isOwner ? <span> </span> : ""}
+                        </a>
+                      </Link>
+                    </div>
+                  )
+                )}
+                <div>
+                  <Link href="/create-organization">
+                    <a>Create organization</a>
+                  </Link>
+                </div>
+                <div>
+                  <Link href="/settings">
+                    <a>
+                      <Warn okay={data.currentUser.isVerified}>Settings</Warn>
+                    </a>
+                  </Link>
+                </div>
+                <div>
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              </div>
+              <span style={{ whiteSpace: "nowrap" }}>
+                <Avatar
+                  name={data.currentUser.name || "?"}
+                  imageUrl={data.currentUser.avatarUrl}
+                  status={!data.currentUser.isVerified ? "warn" : undefined}
+                />
+              </span>
+            </div>
+          ) : forbidsLoggedIn ? null : (
+            <Link href={`/login?next=${encodeURIComponent(currentUrl)}`}>
+              <a>Sign in</a>
+            </Link>
+          )}
         </div>
       </header>
       <div style={{ minHeight: contentMinHeight }}>

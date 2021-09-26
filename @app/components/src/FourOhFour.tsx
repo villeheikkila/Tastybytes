@@ -9,6 +9,7 @@ interface FourOhFourProps {
 
 export function FourOhFour(props: FourOhFourProps) {
   const { currentUser } = props;
+  console.log("currentUser: ", currentUser);
   return (
     <div>
       404

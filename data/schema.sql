@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 13.3
--- Dumped by pg_dump version 13.4
+-- Dumped from database version 14beta3
+-- Dumped by pg_dump version 14beta3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -359,6 +359,86 @@ $$;
 --
 
 COMMENT ON FUNCTION app_private.login(username public.citext, password text) IS 'Returns a user that matches the username/password combo, or null on failure.';
+
+
+--
+-- Name: migrate_seed(); Type: PROCEDURE; Schema: app_private; Owner: -
+--
+
+CREATE PROCEDURE app_private.migrate_seed()
+    LANGUAGE sql
+    AS $$
+INSERT INTO app_public.companies (name)
+SELECT DISTINCT company AS name
+FROM app_private.transferable_check_ins ON CONFLICT DO NOTHING;
+INSERT INTO app_public.categories (name)
+SELECT DISTINCT category AS name
+FROM app_private.transferable_check_ins ON CONFLICT DO NOTHING;
+WITH types AS (
+  SELECT DISTINCT category,
+    style AS name
+  FROM app_private.transferable_check_ins
+)
+INSERT INTO app_public.types (name, category)
+SELECT name,
+  category
+FROM types ON CONFLICT DO NOTHING;
+WITH brands AS (
+  SELECT DISTINCT brand,
+    company
+  FROM app_private.transferable_check_ins
+)
+INSERT INTO app_public.brands (name, company_id)
+SELECT b.brand as name,
+  c.id as company_id
+FROM brands b
+  LEFT JOIN app_public.companies c ON b.company = c.name ON CONFLICT DO NOTHING;
+WITH items AS (
+  SELECT b.id as brand_id,
+    p.flavor,
+    c.id AS manufacturer_id,
+    t.id AS type_id
+  FROM app_private.transferable_check_ins p
+    LEFT JOIN app_public.companies c ON p.company = c.name
+    LEFT JOIN app_public.types t ON p.style = t.name
+    LEFT JOIN app_public.brands b ON p.brand = b.name
+)
+INSERT INTO app_public.items (flavor, brand_id, manufacturer_id, type_id)
+SELECT flavor,
+  brand_id,
+  manufacturer_id,
+  type_id
+FROM items ON CONFLICT DO NOTHING;
+WITH items AS (
+  SELECT CASE
+      WHEN LENGTH(p.rating) > 0 THEN (
+        REPLACE(p.rating, ',', '.')::DECIMAL * 2
+      )::INTEGER
+      ELSE NULL
+    END AS rating,
+    i.id AS item_id
+  FROM app_private.transferable_check_ins p
+    LEFT JOIN app_public.companies c ON p.company = c.name
+    LEFT JOIN app_public.items i ON i.manufacturer_id = c.id
+    AND i.flavor = p.flavor
+)
+INSERT INTO app_public.check_ins (rating, item_id, author_id)
+SELECT rating,
+  i.item_id,
+  (
+    SELECT id
+    FROM app_public.users
+    WHERE username = 'villeheikkila'
+  ) AS author_id
+FROM items i
+WHERE NOT EXISTS (
+    SELECT rating,
+      item_id,
+      author_id
+    FROM app_public.check_ins c
+    WHERE c.item_id = i.item_id
+  );
+$$;
 
 
 --
@@ -1751,6 +1831,20 @@ CREATE TABLE app_private.connect_pg_simple_sessions (
 
 
 --
+-- Name: transferable_check_ins; Type: TABLE; Schema: app_private; Owner: -
+--
+
+CREATE TABLE app_private.transferable_check_ins (
+    company text,
+    brand text,
+    flavor text,
+    category text,
+    style text,
+    rating text
+);
+
+
+--
 -- Name: unregistered_email_password_resets; Type: TABLE; Schema: app_private; Owner: -
 --
 
@@ -1845,41 +1939,22 @@ COMMENT ON TABLE app_private.user_secrets IS 'The contents of this table should 
 
 
 --
--- Name: category; Type: TABLE; Schema: app_public; Owner: -
+-- Name: brands; Type: TABLE; Schema: app_public; Owner: -
 --
 
-CREATE TABLE app_public.category (
-    category character varying(40) NOT NULL
-);
-
-
---
--- Name: TABLE category; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON TABLE app_public.category IS 'An category that can be selected';
-
-
---
--- Name: company; Type: TABLE; Schema: app_public; Owner: -
---
-
-CREATE TABLE app_public.company (
+CREATE TABLE app_public.brands (
     id integer NOT NULL,
-    name text NOT NULL,
-    is_approved boolean DEFAULT false NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by uuid,
-    updated_by uuid
+    name text,
+    company_id integer,
+    CONSTRAINT brands_name_check CHECK (((length(name) >= 2) AND (length(name) <= 56)))
 );
 
 
 --
--- Name: company_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
+-- Name: brands_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
 --
 
-CREATE SEQUENCE app_public.company_id_seq
+CREATE SEQUENCE app_public.brands_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -1889,10 +1964,191 @@ CREATE SEQUENCE app_public.company_id_seq
 
 
 --
--- Name: company_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
+-- Name: brands_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
 --
 
-ALTER SEQUENCE app_public.company_id_seq OWNED BY app_public.company.id;
+ALTER SEQUENCE app_public.brands_id_seq OWNED BY app_public.brands.id;
+
+
+--
+-- Name: categories; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.categories (
+    name character varying(40) NOT NULL
+);
+
+
+--
+-- Name: TABLE categories; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.categories IS 'Main categories for items';
+
+
+--
+-- Name: check_ins; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.check_ins (
+    id integer NOT NULL,
+    rating integer,
+    review text,
+    item_id integer NOT NULL,
+    author_id uuid NOT NULL,
+    check_in_date date,
+    location uuid,
+    is_public boolean DEFAULT true,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT check_ins_rating CHECK (((rating >= 0) AND (rating <= 10))),
+    CONSTRAINT check_ins_review_check CHECK (((length(review) >= 1) AND (length(review) <= 1024)))
+);
+
+
+--
+-- Name: TABLE check_ins; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.check_ins IS 'Check-in is a review given to an item';
+
+
+--
+-- Name: check_ins_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
+--
+
+CREATE SEQUENCE app_public.check_ins_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: check_ins_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
+--
+
+ALTER SEQUENCE app_public.check_ins_id_seq OWNED BY app_public.check_ins.id;
+
+
+--
+-- Name: companies; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.companies (
+    id integer NOT NULL,
+    name text NOT NULL,
+    is_verified boolean DEFAULT false NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by uuid,
+    CONSTRAINT companies_name_check CHECK (((length(name) >= 2) AND (length(name) <= 56)))
+);
+
+
+--
+-- Name: companies_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
+--
+
+CREATE SEQUENCE app_public.companies_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: companies_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
+--
+
+ALTER SEQUENCE app_public.companies_id_seq OWNED BY app_public.companies.id;
+
+
+--
+-- Name: items; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.items (
+    id integer NOT NULL,
+    flavor text,
+    description text,
+    type_id integer NOT NULL,
+    manufacturer_id integer NOT NULL,
+    is_verified boolean DEFAULT false,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by uuid,
+    updated_by uuid,
+    brand_id integer NOT NULL,
+    CONSTRAINT items_description_check CHECK (((length(description) >= 2) AND (length(description) <= 512))),
+    CONSTRAINT items_flavor_check CHECK (((length(flavor) >= 2) AND (length(flavor) <= 99)))
+);
+
+
+--
+-- Name: TABLE items; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.items IS 'Item defines a product that can be rated';
+
+
+--
+-- Name: items_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
+--
+
+CREATE SEQUENCE app_public.items_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: items_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
+--
+
+ALTER SEQUENCE app_public.items_id_seq OWNED BY app_public.items.id;
+
+
+--
+-- Name: items_tags; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.items_tags (
+    item_id integer NOT NULL,
+    tag_id integer NOT NULL
+);
+
+
+--
+-- Name: TABLE items_tags; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.items_tags IS 'Junction table between an item and a tag';
+
+
+--
+-- Name: locations; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.locations (
+    id uuid NOT NULL,
+    name text NOT NULL,
+    latitude numeric,
+    longitude numeric,
+    CONSTRAINT locations_name_check CHECK (((length(name) >= 2) AND (length(name) <= 24)))
+);
+
+
+--
+-- Name: TABLE locations; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.locations IS 'Contains locations for check ins';
 
 
 --
@@ -1922,6 +2178,82 @@ CREATE TABLE app_public.organization_memberships (
     is_billing_contact boolean DEFAULT false NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL
 );
+
+
+--
+-- Name: tags; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.tags (
+    id integer NOT NULL,
+    name text,
+    CONSTRAINT tag_name_check CHECK (((length(name) >= 2) AND (length(name) <= 10)))
+);
+
+
+--
+-- Name: TABLE tags; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.tags IS 'Tag for an item or check-in';
+
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
+--
+
+CREATE SEQUENCE app_public.tags_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
+--
+
+ALTER SEQUENCE app_public.tags_id_seq OWNED BY app_public.tags.id;
+
+
+--
+-- Name: types; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.types (
+    id integer NOT NULL,
+    name text NOT NULL,
+    category text NOT NULL
+);
+
+
+--
+-- Name: TABLE types; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.types IS 'Type item that is part of a category';
+
+
+--
+-- Name: types_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
+--
+
+CREATE SEQUENCE app_public.types_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: types_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
+--
+
+ALTER SEQUENCE app_public.types_id_seq OWNED BY app_public.types.id;
 
 
 --
@@ -1968,10 +2300,45 @@ COMMENT ON COLUMN app_public.user_authentications.details IS 'Additional profile
 
 
 --
--- Name: company id; Type: DEFAULT; Schema: app_public; Owner: -
+-- Name: brands id; Type: DEFAULT; Schema: app_public; Owner: -
 --
 
-ALTER TABLE ONLY app_public.company ALTER COLUMN id SET DEFAULT nextval('app_public.company_id_seq'::regclass);
+ALTER TABLE ONLY app_public.brands ALTER COLUMN id SET DEFAULT nextval('app_public.brands_id_seq'::regclass);
+
+
+--
+-- Name: check_ins id; Type: DEFAULT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_ins ALTER COLUMN id SET DEFAULT nextval('app_public.check_ins_id_seq'::regclass);
+
+
+--
+-- Name: companies id; Type: DEFAULT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.companies ALTER COLUMN id SET DEFAULT nextval('app_public.companies_id_seq'::regclass);
+
+
+--
+-- Name: items id; Type: DEFAULT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.items ALTER COLUMN id SET DEFAULT nextval('app_public.items_id_seq'::regclass);
+
+
+--
+-- Name: tags id; Type: DEFAULT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.tags ALTER COLUMN id SET DEFAULT nextval('app_public.tags_id_seq'::regclass);
+
+
+--
+-- Name: types id; Type: DEFAULT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.types ALTER COLUMN id SET DEFAULT nextval('app_public.types_id_seq'::regclass);
 
 
 --
@@ -2023,19 +2390,75 @@ ALTER TABLE ONLY app_private.user_secrets
 
 
 --
--- Name: category category_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+-- Name: brands brands_company_id_name_key; Type: CONSTRAINT; Schema: app_public; Owner: -
 --
 
-ALTER TABLE ONLY app_public.category
-    ADD CONSTRAINT category_pkey PRIMARY KEY (category);
+ALTER TABLE ONLY app_public.brands
+    ADD CONSTRAINT brands_company_id_name_key UNIQUE (company_id, name);
 
 
 --
--- Name: company company_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+-- Name: brands brands_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
 --
 
-ALTER TABLE ONLY app_public.company
-    ADD CONSTRAINT company_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY app_public.brands
+    ADD CONSTRAINT brands_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: categories categories_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (name);
+
+
+--
+-- Name: check_ins check_ins_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_ins
+    ADD CONSTRAINT check_ins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: companies companies_name_key; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.companies
+    ADD CONSTRAINT companies_name_key UNIQUE (name);
+
+
+--
+-- Name: companies companies_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.companies
+    ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: items items_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.items
+    ADD CONSTRAINT items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: items_tags items_tags_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.items_tags
+    ADD CONSTRAINT items_tags_pkey PRIMARY KEY (item_id, tag_id);
+
+
+--
+-- Name: locations locations_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.locations
+    ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
 
 
 --
@@ -2095,6 +2518,38 @@ ALTER TABLE ONLY app_public.organizations
 
 
 --
+-- Name: tags tags_name_key; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.tags
+    ADD CONSTRAINT tags_name_key UNIQUE (name);
+
+
+--
+-- Name: tags tags_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.tags
+    ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: types types_name_category_key; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.types
+    ADD CONSTRAINT types_name_category_key UNIQUE (name, category);
+
+
+--
+-- Name: types types_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.types
+    ADD CONSTRAINT types_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: user_authentications uniq_user_authentications; Type: CONSTRAINT; Schema: app_public; Owner: -
 --
 
@@ -2150,6 +2605,34 @@ CREATE INDEX sessions_user_id_idx ON app_private.sessions USING btree (user_id);
 
 
 --
+-- Name: check_ins_author_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX check_ins_author_idx ON app_public.check_ins USING btree (author_id);
+
+
+--
+-- Name: check_ins_item_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX check_ins_item_id_idx ON app_public.check_ins USING btree (item_id);
+
+
+--
+-- Name: check_ins_location_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX check_ins_location_idx ON app_public.check_ins USING btree (location);
+
+
+--
+-- Name: companies_created_by_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX companies_created_by_idx ON app_public.companies USING btree (created_by);
+
+
+--
 -- Name: idx_user_emails_primary; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -2164,6 +2647,62 @@ CREATE INDEX idx_user_emails_user ON app_public.user_emails USING btree (user_id
 
 
 --
+-- Name: items_brand_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX items_brand_id_idx ON app_public.items USING btree (brand_id);
+
+
+--
+-- Name: items_created_by_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX items_created_by_idx ON app_public.items USING btree (created_by);
+
+
+--
+-- Name: items_manufacturer_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX items_manufacturer_idx ON app_public.items USING btree (manufacturer_id);
+
+
+--
+-- Name: items_tags_item_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX items_tags_item_id_idx ON app_public.items_tags USING btree (item_id);
+
+
+--
+-- Name: items_tags_tag_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX items_tags_tag_id_idx ON app_public.items_tags USING btree (tag_id);
+
+
+--
+-- Name: items_type_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX items_type_id_idx ON app_public.items USING btree (type_id);
+
+
+--
+-- Name: items_type_id_idx1; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX items_type_id_idx1 ON app_public.items USING btree (type_id);
+
+
+--
+-- Name: items_updated_by_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX items_updated_by_idx ON app_public.items USING btree (updated_by);
+
+
+--
 -- Name: organization_invitations_user_id_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -2175,6 +2714,13 @@ CREATE INDEX organization_invitations_user_id_idx ON app_public.organization_inv
 --
 
 CREATE INDEX organization_memberships_user_id_idx ON app_public.organization_memberships USING btree (user_id);
+
+
+--
+-- Name: types_category_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX types_category_idx ON app_public.types USING btree (category);
 
 
 --
@@ -2336,19 +2882,99 @@ ALTER TABLE ONLY app_private.user_secrets
 
 
 --
--- Name: company company_created_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+-- Name: brands brands_company_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
 --
 
-ALTER TABLE ONLY app_public.company
-    ADD CONSTRAINT company_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id);
+ALTER TABLE ONLY app_public.brands
+    ADD CONSTRAINT brands_company_id_fkey FOREIGN KEY (company_id) REFERENCES app_public.companies(id);
 
 
 --
--- Name: company company_updated_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+-- Name: check_ins check_ins_author_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
 --
 
-ALTER TABLE ONLY app_public.company
-    ADD CONSTRAINT company_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES app_public.users(id);
+ALTER TABLE ONLY app_public.check_ins
+    ADD CONSTRAINT check_ins_author_fkey FOREIGN KEY (author_id) REFERENCES app_public.users(id);
+
+
+--
+-- Name: check_ins check_ins_item_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_ins
+    ADD CONSTRAINT check_ins_item_id_fkey FOREIGN KEY (item_id) REFERENCES app_public.items(id);
+
+
+--
+-- Name: check_ins check_ins_location_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_ins
+    ADD CONSTRAINT check_ins_location_fkey FOREIGN KEY (location) REFERENCES app_public.locations(id);
+
+
+--
+-- Name: companies companies_created_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.companies
+    ADD CONSTRAINT companies_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id);
+
+
+--
+-- Name: items items_brand_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.items
+    ADD CONSTRAINT items_brand_id_fkey FOREIGN KEY (brand_id) REFERENCES app_public.brands(id) ON DELETE CASCADE;
+
+
+--
+-- Name: items items_created_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.items
+    ADD CONSTRAINT items_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id);
+
+
+--
+-- Name: items items_manufacturer_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.items
+    ADD CONSTRAINT items_manufacturer_fkey FOREIGN KEY (manufacturer_id) REFERENCES app_public.companies(id);
+
+
+--
+-- Name: items_tags items_tags_item_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.items_tags
+    ADD CONSTRAINT items_tags_item_id_fkey FOREIGN KEY (item_id) REFERENCES app_public.items(id);
+
+
+--
+-- Name: items_tags items_tags_tag_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.items_tags
+    ADD CONSTRAINT items_tags_tag_id_fkey FOREIGN KEY (tag_id) REFERENCES app_public.tags(id);
+
+
+--
+-- Name: items items_type_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.items
+    ADD CONSTRAINT items_type_id_fkey FOREIGN KEY (type_id) REFERENCES app_public.types(id);
+
+
+--
+-- Name: items items_updated_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.items
+    ADD CONSTRAINT items_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES app_public.users(id);
 
 
 --
@@ -2381,6 +3007,14 @@ ALTER TABLE ONLY app_public.organization_memberships
 
 ALTER TABLE ONLY app_public.organization_memberships
     ADD CONSTRAINT organization_memberships_user_id_fkey FOREIGN KEY (user_id) REFERENCES app_public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: types types_category_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.types
+    ADD CONSTRAINT types_category_fkey FOREIGN KEY (category) REFERENCES app_public.categories(name);
 
 
 --
@@ -2428,12 +3062,6 @@ ALTER TABLE app_private.user_email_secrets ENABLE ROW LEVEL SECURITY;
 --
 
 ALTER TABLE app_private.user_secrets ENABLE ROW LEVEL SECURITY;
-
---
--- Name: company; Type: ROW SECURITY; Schema: app_public; Owner: -
---
-
-ALTER TABLE app_public.company ENABLE ROW LEVEL SECURITY;
 
 --
 -- Name: user_authentications delete_own; Type: POLICY; Schema: app_public; Owner: -
@@ -2628,6 +3256,13 @@ REVOKE ALL ON FUNCTION app_private.link_or_register_user(f_user_id uuid, f_servi
 --
 
 REVOKE ALL ON FUNCTION app_private.login(username public.citext, password text) FROM PUBLIC;
+
+
+--
+-- Name: PROCEDURE migrate_seed(); Type: ACL; Schema: app_private; Owner: -
+--
+
+REVOKE ALL ON PROCEDURE app_private.migrate_seed() FROM PUBLIC;
 
 
 --
@@ -2954,24 +3589,80 @@ GRANT ALL ON FUNCTION app_public.verify_email(user_email_id uuid, token text) TO
 
 
 --
--- Name: TABLE category; Type: ACL; Schema: app_public; Owner: -
+-- Name: TABLE brands; Type: ACL; Schema: app_public; Owner: -
 --
 
-GRANT SELECT ON TABLE app_public.category TO tasted_visitor;
-
-
---
--- Name: TABLE company; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT,INSERT,UPDATE ON TABLE app_public.company TO tasted_visitor;
+GRANT SELECT ON TABLE app_public.brands TO tasted_visitor;
 
 
 --
--- Name: SEQUENCE company_id_seq; Type: ACL; Schema: app_public; Owner: -
+-- Name: SEQUENCE brands_id_seq; Type: ACL; Schema: app_public; Owner: -
 --
 
-GRANT SELECT,USAGE ON SEQUENCE app_public.company_id_seq TO tasted_visitor;
+GRANT SELECT,USAGE ON SEQUENCE app_public.brands_id_seq TO tasted_visitor;
+
+
+--
+-- Name: TABLE categories; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.categories TO tasted_visitor;
+
+
+--
+-- Name: TABLE check_ins; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.check_ins TO tasted_visitor;
+
+
+--
+-- Name: SEQUENCE check_ins_id_seq; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,USAGE ON SEQUENCE app_public.check_ins_id_seq TO tasted_visitor;
+
+
+--
+-- Name: TABLE companies; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.companies TO tasted_visitor;
+
+
+--
+-- Name: SEQUENCE companies_id_seq; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,USAGE ON SEQUENCE app_public.companies_id_seq TO tasted_visitor;
+
+
+--
+-- Name: TABLE items; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.items TO tasted_visitor;
+
+
+--
+-- Name: SEQUENCE items_id_seq; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,USAGE ON SEQUENCE app_public.items_id_seq TO tasted_visitor;
+
+
+--
+-- Name: TABLE items_tags; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.items_tags TO tasted_visitor;
+
+
+--
+-- Name: TABLE locations; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.locations TO tasted_visitor;
 
 
 --
@@ -2979,6 +3670,34 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.company_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT ON TABLE app_public.organization_memberships TO tasted_visitor;
+
+
+--
+-- Name: TABLE tags; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.tags TO tasted_visitor;
+
+
+--
+-- Name: SEQUENCE tags_id_seq; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,USAGE ON SEQUENCE app_public.tags_id_seq TO tasted_visitor;
+
+
+--
+-- Name: TABLE types; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.types TO tasted_visitor;
+
+
+--
+-- Name: SEQUENCE types_id_seq; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,USAGE ON SEQUENCE app_public.types_id_seq TO tasted_visitor;
 
 
 --

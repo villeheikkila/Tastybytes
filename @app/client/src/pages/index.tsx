@@ -1,7 +1,8 @@
 import { SharedLayout } from "@app/components";
 import { styled } from "@app/components/stitches.config";
-import { useCategoriesQuery, useSharedQuery } from "@app/graphql";
+import { useCheckInsByUserQuery, useSharedQuery } from "@app/graphql";
 import { NextPage } from "next";
+import { check } from "prettier";
 import * as React from "react";
 
 const Text = styled("p", {
@@ -25,17 +26,12 @@ const Text = styled("p", {
 
 const Home: NextPage = () => {
   const query = useSharedQuery();
-  const { data } = useCategoriesQuery();
 
   return (
     <SharedLayout title="" query={query}>
       <Text as="h1" size="3">
-        Categories
+        Check-ins
       </Text>
-      {data &&
-        data?.categories?.nodes?.map((e) => (
-          <h3 key={e.category}>{e.category}</h3>
-        ))}
     </SharedLayout>
   );
 };

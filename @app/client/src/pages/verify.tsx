@@ -14,6 +14,7 @@ const VerifyPage: NextPage<IProps> = (props) => {
     props.id || "",
     props.token || "",
   ]);
+
   const [state, setState] = React.useState<
     "PENDING" | "SUBMITTING" | "SUCCESS"
   >(props.id && props.token ? "SUBMITTING" : "PENDING");
@@ -30,6 +31,9 @@ const VerifyPage: NextPage<IProps> = (props) => {
         },
       })
         .then((result) => {
+          console.log("result: ", result);
+          console.log("token: ", token);
+          console.log("id: ", id);
           if (get(result, "data.verifyEmail.success")) {
             setState("SUCCESS");
           } else {
