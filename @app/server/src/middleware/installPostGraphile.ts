@@ -1,5 +1,6 @@
 import PgPubsub from "@graphile/pg-pubsub";
 import GraphilePro from "@graphile/pro"; // Requires license key
+import PgManyToManyPlugin from "@graphile-contrib/pg-many-to-many"
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
 import { Express, Request, Response } from "express";
 import { NodePlugin } from "graphile-build";
@@ -165,7 +166,7 @@ export function getPostGraphileOptions({
       // PostGraphile adds a `query: Query` field to `Query` for Relay 1
       // compatibility. We don't need that.
       RemoveQueryQueryPlugin,
-
+      PgManyToManyPlugin,
       // Adds support for our `postgraphile.tags.json5` file
       TagsFilePlugin,
 

@@ -19,6 +19,7 @@ export function useOrganizationLoading(
   >
 ) {
   const { data, loading, error } = query;
+  console.log("data: ", data);
 
   let child: JSX.Element | null = null;
   const organization = data?.organizationBySlug;

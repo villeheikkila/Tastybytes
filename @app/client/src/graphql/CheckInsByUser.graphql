@@ -1,0 +1,37 @@
+query CheckInsByUsername($username: String!) {
+  userByUsername(username: $username) {
+    id
+    authoredCheckIns(first: 20) {
+      totalCount
+      nodes {
+        id
+        rating
+        review
+        checkInDate
+        createdAt
+        item {
+          id
+          flavor
+          brand {
+            id
+            name
+            company {
+              id
+              name
+            }
+          }
+          manufacturer {
+            id
+            name
+          }
+          type {
+            id
+            category
+            name
+          }
+        }
+      }
+    }
+    ...SharedLayout_User
+  }
+}

@@ -1,7 +1,0 @@
-query Categories {
-  categories {
-    nodes {
-      category
-    }
-  }
-}
