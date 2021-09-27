@@ -401,7 +401,9 @@ WITH items AS (
   FROM app_private.transferable_check_ins p
     LEFT JOIN app_public.companies c ON p.company = c.name
     LEFT JOIN app_public.types t ON p.style = t.name
+    AND p.category = t.category
     LEFT JOIN app_public.brands b ON p.brand = b.name
+    AND b.company_id = c.id
 )
 INSERT INTO app_public.items (flavor, brand_id, manufacturer_id, type_id)
 SELECT flavor,
@@ -409,7 +411,7 @@ SELECT flavor,
   manufacturer_id,
   type_id
 FROM items ON CONFLICT DO NOTHING;
-WITH items AS (
+WITH check_ins AS (
   SELECT CASE
       WHEN LENGTH(p.rating) > 0 THEN (
         REPLACE(p.rating, ',', '.')::DECIMAL * 2
@@ -419,26 +421,25 @@ WITH items AS (
     i.id AS item_id
   FROM app_private.transferable_check_ins p
     LEFT JOIN app_public.companies c ON p.company = c.name
+    LEFT JOIN app_public.brands b ON b.company_id = c.id
+    AND b.name = p.brand
+    LEFT JOIN app_public.categories k ON k.name = p.category
+    LEFT JOIN app_public.types t ON t.category = k.name
+    AND p.style = t.name
     LEFT JOIN app_public.items i ON i.manufacturer_id = c.id
+    AND b.id = i.brand_id
     AND i.flavor = p.flavor
+    AND i.type_id = t.id
 )
 INSERT INTO app_public.check_ins (rating, item_id, author_id)
 SELECT rating,
-  i.item_id,
+  i.item_id AS item_id,
   (
     SELECT id
     FROM app_public.users
     WHERE username = 'villeheikkila'
   ) AS author_id
-FROM items i
-WHERE NOT EXISTS (
-    SELECT rating,
-      item_id,
-      author_id
-    FROM app_public.check_ins c
-    WHERE c.item_id = i.item_id
-  );
-$$;
+FROM check_ins i $$;
 
 
 --
