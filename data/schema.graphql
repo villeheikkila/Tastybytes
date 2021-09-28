@@ -1522,6 +1522,9 @@ input ItemCondition {
   """Checks for equality with the object’s `createdBy` field."""
   createdBy: UUID
 
+  """Checks for equality with the object’s `flavor` field."""
+  flavor: String
+
   """Checks for equality with the object’s `id` field."""
   id: Int
 
@@ -1703,6 +1706,8 @@ enum ItemsOrderBy {
   BRAND_ID_DESC
   CREATED_BY_ASC
   CREATED_BY_DESC
+  FLAVOR_ASC
+  FLAVOR_DESC
   ID_ASC
   ID_DESC
   MANUFACTURER_ID_ASC
