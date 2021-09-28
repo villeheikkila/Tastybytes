@@ -2620,6 +2620,13 @@ CREATE INDEX check_ins_item_id_idx ON app_public.check_ins USING btree (item_id)
 
 
 --
+-- Name: check_ins_item_id_idx1; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX check_ins_item_id_idx1 ON app_public.check_ins USING btree (item_id);
+
+
+--
 -- Name: check_ins_location_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -2631,6 +2638,13 @@ CREATE INDEX check_ins_location_idx ON app_public.check_ins USING btree (locatio
 --
 
 CREATE INDEX companies_created_by_idx ON app_public.companies USING btree (created_by);
+
+
+--
+-- Name: companies_name_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX companies_name_idx ON app_public.companies USING btree (name);
 
 
 --
@@ -2655,10 +2669,24 @@ CREATE INDEX items_brand_id_idx ON app_public.items USING btree (brand_id);
 
 
 --
+-- Name: items_brand_id_idx1; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX items_brand_id_idx1 ON app_public.items USING btree (brand_id);
+
+
+--
 -- Name: items_created_by_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
 CREATE INDEX items_created_by_idx ON app_public.items USING btree (created_by);
+
+
+--
+-- Name: items_flavor_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX items_flavor_idx ON app_public.items USING btree (flavor);
 
 
 --
