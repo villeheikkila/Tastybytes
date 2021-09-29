@@ -1,0 +1,29 @@
+query ProductById($itemId: Int!) {
+  checkIns(condition: { itemId: $itemId }) {
+    edges {
+      node {
+        id
+        item {
+          id
+          flavor
+          type {
+            id
+            name
+            category
+          }
+          checkIns {
+            nodes {
+              id
+              rating
+              review
+              author {
+                id
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

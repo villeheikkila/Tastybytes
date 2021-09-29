@@ -1,67 +1,28 @@
-import { SharedLayout, useOrganizationSlug } from "@app/components";
+import { SharedLayout } from "@app/components";
 import {
-  CheckInsByUsernameQuery,
   ProductsByCompanyNameQuery,
-  ProductsByCompanyNameQueryResult,
   useProductsByCompanyNameQuery,
 } from "@app/graphql";
 import { styled } from "@stitches/react";
-import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
 
-export function useCatchAllSlug() {
-  const router = useRouter();
-  const { slug } = router.query;
-  return slug;
-}
-
-const CompanyPageRouter: NextPage = () => {
-  const slug = useCatchAllSlug();
-
-  if (slug?.length === 1) {
-    return <CompanyPage slug={slug[0]} />;
-  } else {
-    return <ProductPage slug={slug} />;
-  }
-};
-
 const CompanyPage = ({ slug }: { slug: string }) => {
+  const router = useRouter();
+  const companyName = router.query.company;
+
   const checkIns = useProductsByCompanyNameQuery({
     variables: {
-      companyName: slug![0] ?? "",
+      companyName: String(companyName) ?? "",
     },
   });
 
   const data = checkIns.data?.companyByName;
-  console.log("checkIns: ", checkIns);
 
   return (
     <SharedLayout
-      title={`${data?.name ?? slug}`}
-      titleHref={`/user/[slug]`}
-      titleHrefAs={`/user/${slug}`}
-      query={checkIns!}
-    >
-      {<CompanyPageInner data={data!} />}
-    </SharedLayout>
-  );
-};
-
-const ProductPage = ({ slug }: { slug: string }) => {
-  const checkIns = useProductsByCompanyNameQuery({
-    variables: {
-      companyName: slug![0] ?? "",
-    },
-  });
-
-  const data = checkIns.data?.companyByName;
-  console.log("checkIns: ", checkIns);
-
-  return (
-    <SharedLayout
-      title={`${data?.name ?? slug}`}
+      title={`${data?.name ?? companyName}`}
       titleHref={`/user/[slug]`}
       titleHrefAs={`/user/${slug}`}
       query={checkIns!}
@@ -84,7 +45,7 @@ const CompanyPageInner: FC<UserPageInnerProps> = ({ data }) => {
             <h3>{brand.node.name}</h3>
             {brand.node.items.edges.map((item) => (
               <div key={item.node.id}>
-                <Link href={`/c/${data.name}/${item.node.flavor}`}>
+                <Link href={`/c/${data.name}/${item.node.id}`}>
                   {item.node.flavor}
                 </Link>
               </div>
@@ -115,4 +76,4 @@ const Card = styled("div", {
   },
 });
 
-export default CompanyPageRouter;
+export default CompanyPage;
