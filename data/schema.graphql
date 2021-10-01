@@ -2673,6 +2673,7 @@ type Query {
   """The currently logged in user (or null if not logged in)."""
   currentUser: User
   item(id: Int!): Item
+  itemByBrandIdAndFlavor(brandId: Int!, flavor: String!): Item
 
   """Reads and enables pagination through a set of `Item`."""
   items(

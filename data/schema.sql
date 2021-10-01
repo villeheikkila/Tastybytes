@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14beta3
--- Dumped by pg_dump version 14beta3
+-- Dumped from database version 14.0
+-- Dumped by pg_dump version 14.0
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2452,6 +2452,14 @@ ALTER TABLE ONLY app_public.items
 
 ALTER TABLE ONLY app_public.items_tags
     ADD CONSTRAINT items_tags_pkey PRIMARY KEY (item_id, tag_id);
+
+
+--
+-- Name: items itens_brand_id_flavor_key; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.items
+    ADD CONSTRAINT itens_brand_id_flavor_key UNIQUE (brand_id, flavor);
 
 
 --

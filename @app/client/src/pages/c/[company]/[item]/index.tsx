@@ -7,6 +7,7 @@ import React, { FC } from "react";
 const ProductPage = () => {
   const router = useRouter();
   const item = router.query.item;
+  console.log("item: ", item);
   const itemId = parseInt(String(item), 10);
   const productById = useProductByIdQuery({
     variables: {
@@ -14,7 +15,7 @@ const ProductPage = () => {
     },
   });
 
-  const checkIns = productById?.data?.checkIns;
+  const checkIns = productById?.data?.item;
   console.log("checkIns: ", checkIns);
 
   return (
@@ -24,27 +25,27 @@ const ProductPage = () => {
       titleHrefAs={`/user/${item}`}
       query={productById!}
     >
-      {<ProductPageInner data={checkIns!} />}
+      {checkIns && <ProductPageInner data={checkIns} />}
     </SharedLayout>
   );
 };
 
 interface UserPageInnerProps {
-  data: ProductByIdQuery["checkIns"];
+  data: ProductByIdQuery["item"];
 }
 
 const ProductPageInner: FC<UserPageInnerProps> = ({ data }) => {
   return (
     <div>
+      <h1>
+        {data.brand.company.name} {data.brand.name} {data.flavor}
+      </h1>
       <CardContainer>
-        {data?.edges.map((checkIn) => (
-          <Card key={checkIn.node.id}>
-            <h3>{checkIn.node.item.flavor}</h3>
-            {checkIn.node.item.checkIns.nodes.map((checkIn) => (
-              <div key={checkIn.id}>
-                {checkIn.author.name} {checkIn.rating / 2}
-              </div>
-            ))}
+        {data?.checkIns.nodes.map((checkIn) => (
+          <Card key={checkIn.id}>
+            <div key={checkIn.id}>
+              {checkIn.author.name} {checkIn.rating / 2}
+            </div>
           </Card>
         ))}
       </CardContainer>
