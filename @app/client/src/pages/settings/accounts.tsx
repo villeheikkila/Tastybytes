@@ -4,7 +4,6 @@ import {
   SocialLoginOptions,
   SpinPadded,
 } from "@app/components";
-import { Avatar } from "@app/components/src/Avatar";
 import {
   useCurrentUserAuthenticationsQuery,
   UserAuthentication,
@@ -21,16 +20,6 @@ const AUTH_NAME_LOOKUP = {
 };
 function authName(service: string) {
   return AUTH_NAME_LOOKUP[service] || service;
-}
-
-const AUTH_ICON_LOOKUP = {
-  github: "",
-};
-function authAvatar(service: string) {
-  const icon = AUTH_ICON_LOOKUP[service] || null;
-  if (icon) {
-    return <Avatar name={icon} />;
-  }
 }
 
 function UnlinkAccountButton({ id }: { id: string }) {
@@ -69,7 +58,6 @@ function renderAuth(
       <div>
         title {<strong>{authName(auth.service)}</strong>}
         {`Added ${new Date(Date.parse(auth.createdAt)).toLocaleString()}`}
-        {authAvatar(auth.service)}
         <UnlinkAccountButton key="unlink" id={auth.id} />
       </div>
     </div>
@@ -90,10 +78,12 @@ const Settings_Accounts: NextPage = () => {
 
   return (
     <SettingsLayout href="/settings/accounts" query={query}>
-      <h1>Linked accounts" </h1>
+      <header>
+        <h1>Linked accounts</h1>
+      </header>
       {error && !loading ? <ErrorAlert error={error} /> : linkedAccounts}
-      <div style={{ marginTop: "2rem" }}>
-        "Link another account"
+      <div>
+        Link another account
         <SocialLoginOptions
           next="/settings/accounts"
           buttonTextFromService={(service) => `Link ${service} account`}

@@ -14,6 +14,7 @@ import {
   getExceptionFromError,
   resetWebsocketConnection,
 } from "@app/lib";
+import { ErrorMessage } from "@hookform/error-message";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,8 +49,11 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
     handleSubmit,
     setError: setFormError,
     watch,
+    formState: { errors },
     setFocus,
   } = useForm<RegisterFormValues>();
+
+  console.log("errors: ", errors);
 
   const onSubmit = async ({
     username,
@@ -135,17 +139,20 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
                 <Input
                   autoComplete="given-name"
                   placeholder="First Name"
+                  aria-invalid={errors.firstName ? "true" : "false"}
                   {...register("firstName", { required: true })}
                 />
                 <Input
                   autoComplete="family-name"
                   placeholder="Last Name"
+                  aria-invalid={errors.lastName ? "true" : "false"}
                   {...register("lastName", { required: true })}
                 />
               </Box>
               <Input
                 autoComplete="username"
                 placeholder="Username"
+                aria-invalid={errors.username ? "true" : "false"}
                 {...register("username", {
                   required: true,
                   pattern: {
@@ -154,10 +161,12 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
                   },
                 })}
               />
+
               <Input
                 id="email"
                 autoComplete="email"
                 placeholder="Email"
+                aria-invalid={errors.email ? "true" : "false"}
                 {...register("email", {
                   required: true,
                   pattern: {
@@ -188,6 +197,7 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
               <Input
                 placeholder="Password"
                 autoComplete="password"
+                aria-invalid={errors.password ? "true" : "false"}
                 type="password"
                 {...register("password", {
                   required: true,
@@ -201,6 +211,7 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
                 autoComplete="new-password"
                 type="password"
                 placeholder="Confirm Password"
+                aria-invalid={errors.confirm ? "true" : "false"}
                 {...register("confirm", {
                   required: true,
                   validate: (value) =>
@@ -208,6 +219,8 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
                     "The passwords do not match",
                 })}
               />
+
+              <Button type="submit">Sign up with email</Button>
 
               {error ? (
                 <div>
@@ -223,7 +236,6 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
                   </span>
                 </div>
               ) : null}
-              <Button type="submit">Sign up with email</Button>
             </Registration.Form>
           </Registration.Wrapper>
         )

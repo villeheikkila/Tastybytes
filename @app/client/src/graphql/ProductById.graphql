@@ -16,7 +16,8 @@ query ProductById($itemId: Int!) {
         author {
           id
           username
-          name
+          firstName
+          lastName
         }
       }
     }

@@ -11,6 +11,7 @@ import {
   SharedLayoutProps,
 } from "./SharedLayout";
 import { StandardWidth } from "./StandardWidth";
+import { styled } from "./stitches.config";
 import { Warn } from "./Warn";
 
 interface PageSpec {
@@ -26,11 +27,11 @@ function page(spec: PageSpec): PageSpec {
 
 const pages = {
   "/settings": page({
-    title: "Profile",
+    title: "Account",
     cy: "settingslayout-link-profile",
   }),
   "/settings/security": page({
-    title: "Passphrase",
+    title: "Security",
     cy: "settingslayout-link-password",
   }),
   "/settings/accounts": page({
@@ -77,33 +78,34 @@ export function SettingsLayout({
           <Redirect href={`/login?next=${encodeURIComponent(fullHref)}`} />
         ) : (
           <div>
-            <div>
-              <div>
-                {Object.keys(pages).map((pageHref) => (
-                  <div key={pageHref}>
-                    <Link href={pageHref}>
-                      <a>
-                        <Warn
-                          okay={
-                            !currentUser ||
-                            currentUser.isVerified ||
-                            !pages[pageHref].warnIfUnverified
-                          }
-                        >
-                          <p>{pages[pageHref].title}</p>
-                        </Warn>
-                      </a>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <StandardWidth>{children}</StandardWidth>
-            </div>
+            <Settings.Container>
+              {Object.keys(pages).map((pageHref) => (
+                <Settings.Tab key={pageHref}>
+                  <Link href={pageHref}>
+                    <a>
+                      <Warn
+                        okay={
+                          !currentUser ||
+                          currentUser.isVerified ||
+                          !pages[pageHref].warnIfUnverified
+                        }
+                      >
+                        <p>{pages[pageHref].title}</p>
+                      </Warn>
+                    </a>
+                  </Link>
+                </Settings.Tab>
+              ))}
+            </Settings.Container>
+            <StandardWidth>{children}</StandardWidth>
           </div>
         )
       }
     </SharedLayout>
   );
 }
+
+const Settings = {
+  Container: styled("div", { display: "flex" }),
+  Tab: styled("div", { padding: "12px" }),
+};
