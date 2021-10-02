@@ -9,7 +9,8 @@ const PassportLoginPlugin = makeExtendSchemaPlugin((build) => ({
       username: String!
       email: String!
       password: String!
-      name: String
+      firstName: String
+      lastName: String
       avatarUrl: String
     }
 
@@ -89,7 +90,7 @@ const PassportLoginPlugin = makeExtendSchemaPlugin((build) => ({
     Mutation: {
       async register(_mutation, args, context: OurGraphQLContext, resolveInfo) {
         const { selectGraphQLResultFromTable } = resolveInfo.graphile;
-        const { username, password, email, name, avatarUrl } = args.input;
+        const { username, password, email, firstName, lastName, avatarUrl } = args.input;
         const { rootPgPool, login, pgClient } = context;
         try {
           // Call our login function to find out if the username/password combination exists
@@ -102,9 +103,10 @@ const PassportLoginPlugin = makeExtendSchemaPlugin((build) => ({
                 username => $1,
                 email => $2,
                 email_is_verified => false,
-                name => $3,
-                avatar_url => $4,
-                password => $5
+                first_name => $3,
+                last_name => $4,
+                avatar_url => $5,
+                password => $6
               ) users where not (users is null)
             ), new_session as (
               insert into app_private.sessions (user_id)
@@ -113,7 +115,7 @@ const PassportLoginPlugin = makeExtendSchemaPlugin((build) => ({
             )
             select new_user.id as user_id, new_session.uuid as session_id
             from new_user, new_session`,
-            [username, email, name, avatarUrl, password]
+            [username, email, firstName, lastName, avatarUrl, password]
           );
 
           if (!details || !details.user_id) {

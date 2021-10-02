@@ -2871,7 +2871,8 @@ type Query {
 input RegisterInput {
   avatarUrl: String
   email: String!
-  name: String
+  firstName: String
+  lastName: String
   password: String!
   username: String!
 }
@@ -3879,7 +3880,9 @@ type User {
     """The method to use when ordering `Company`."""
     orderBy: [CompaniesOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserCompaniesByItemUpdatedByAndManufacturerIdManyToManyConnection!
+  country: String
   createdAt: Datetime!
+  firstName: String
   hasPassword: Boolean
 
   """Unique identifier for the user."""
@@ -3975,6 +3978,8 @@ type User {
     """The method to use when ordering `Item`."""
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection!
+  lastName: String
+  location: String
 
   """Reads and enables pagination through a set of `Location`."""
   locationsByCheckInAuthorIdAndLocation(
