@@ -57,6 +57,7 @@ export interface SharedLayoutProps {
   noPad?: boolean;
   noHandleErrors?: boolean;
   forbidWhen?: AuthRestrict;
+  hideNavigation?: boolean;
 }
 
 /* The Apollo `useSubscription` hook doesn't currently allow skipping the
@@ -77,12 +78,11 @@ function CurrentUserUpdatedSubscription() {
 
 export function SharedLayout({
   title,
-  titleHref,
-  titleHrefAs,
   noPad = false,
   noHandleErrors = false,
   query,
   forbidWhen = AuthRestrict.NEVER,
+  hideNavigation,
   children,
 }: SharedLayoutProps) {
   const router = useRouter();
@@ -153,10 +153,12 @@ export function SharedLayout({
   return (
     <>
       {data && data.currentUser ? <CurrentUserUpdatedSubscription /> : null}
-      <Navigation.Header>
-        <Head>
-          <title>{title ? `${title} — ${projectName}` : projectName}</title>
-        </Head>
+      <Head>
+        <title>{title ? `${title} — ${projectName}` : projectName}</title>
+      </Head>
+      <Navigation.Header
+        css={{ visibility: hideNavigation ? "hidden" : "visible" }}
+      >
         <Navigation.Content>
           <Link href="/">
             <ProjectLogo>
@@ -245,8 +247,7 @@ const Navigation = {
     justifyContent: "center",
     alignContent: "center",
 
-    boxShadow: "0 2px 8px #f0f1f2",
-    background: "white",
+    borderBottom: "1px solid #5f6368",
   }),
   Content: styled("div", {
     display: "flex",
@@ -259,6 +260,8 @@ const Navigation = {
 const Content = styled("div", {
   marginTop: "70px",
   minHeight: "calc(100vh - 50px)",
+  display: "flex",
+  justifyContent: "center",
 });
 
 const ProjectLogo = styled("div", {
@@ -267,7 +270,7 @@ const ProjectLogo = styled("div", {
   textTransform: "capitalize",
 });
 
-const LogoText = styled("span", { color: "black", textDecoration: "inherit" });
+const LogoText = styled("span", { color: "white", textDecoration: "inherit" });
 
 const LogInLink = styled(Link, {});
 
