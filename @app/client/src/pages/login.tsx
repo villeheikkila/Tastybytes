@@ -1,4 +1,4 @@
-import { ApolloError, useApolloClient } from "@apollo/client";
+import { ApolloError } from "@apollo/client";
 import {
   AuthRestrict,
   Button,
@@ -17,6 +17,7 @@ import {
 } from "@app/lib";
 import { ErrorMessage } from "@hookform/error-message";
 import { NextPage } from "next";
+import Image from "next/image";
 import NextLink from "next/link";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
@@ -47,11 +48,12 @@ const LoginPage: NextPage<LoginPageProps> = ({ next: rawNext }) => {
         ) : (
           <Authentication.Wrapper>
             <Authentication.Header>
+              <Image color="white" src="/maku.svg" height={48} width={48} />
               <Authentication.H1>Welcome to Maku</Authentication.H1>
               <p>
                 Don't have an account?{" "}
                 <Link href={`/register?next=${encodeURIComponent(next)}`}>
-                  Sign up for free
+                  Sign up for free!
                 </Link>
               </p>
             </Authentication.Header>
@@ -93,8 +95,7 @@ const LoginForm = ({
   setError,
 }: LoginFormProps) => {
   const [submitDisabled, setSubmitDisabled] = useState(false);
-  const [login] = useLoginMutation();
-  const client = useApolloClient();
+  const [login, { client }] = useLoginMutation();
 
   const {
     register,
@@ -134,8 +135,6 @@ const LoginForm = ({
   }, [setFocus]);
 
   const code = getCodeFromError(error);
-
-  console.log(errors);
 
   return (
     <Authentication.Form onSubmit={handleSubmit(onSubmit)}>
