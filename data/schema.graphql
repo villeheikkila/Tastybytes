@@ -4010,9 +4010,6 @@ type User {
     orderBy: [LocationsOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserLocationsByCheckInAuthorIdAndLocationManyToManyConnection!
 
-  """Public-facing name (or pseudonym) of the user."""
-  name: String
-
   """
   Reads and enables pagination through a set of `OrganizationMembership`.
   """
@@ -4747,9 +4744,6 @@ type UserOrganizationsByOrganizationMembershipUserIdAndOrganizationIdManyToManyE
 input UserPatch {
   """Optional avatar URL."""
   avatarUrl: String
-
-  """Public-facing name (or pseudonym) of the user."""
-  name: String
 
   """Public-facing username (or 'handle') of the user."""
   username: String

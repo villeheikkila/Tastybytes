@@ -1,5 +1,12 @@
 import { ApolloError } from "@apollo/client";
-import { ErrorAlert, SettingsLayout } from "@app/components";
+import {
+  Button,
+  ErrorAlert,
+  Input,
+  Label,
+  SettingsLayout,
+} from "@app/components";
+import { styled } from "@app/components/src/stitches.config";
 import {
   useChangePasswordMutation,
   useForgotPasswordMutation,
@@ -9,65 +16,70 @@ import {
 import { extractError, getCodeFromError } from "@app/lib";
 import { NextPage } from "next";
 import Link from "next/link";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface PasswordChangeFormValues {
-  oldPassword: string
-  newPassword: string
+  oldPassword: string;
+  newPassword: string;
 }
 
 const Settings_Security: NextPage = () => {
-  const { register, handleSubmit, setError: setFormError } = useForm<PasswordChangeFormValues>();
-  const [error, setError] = useState<Error | ApolloError | null>(null);
   const query = useSharedQuery();
+  const [error, setError] = useState<Error | ApolloError | null>(null);
   const [changePassword] = useChangePasswordMutation();
   const [success, setSuccess] = useState(false);
 
-  const onSubmit = useCallback(
-    async (values: PasswordChangeFormValues) => {
-      setSuccess(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError: setFormError,
+  } = useForm<PasswordChangeFormValues>();
+
+  const onSubmit = async (values: PasswordChangeFormValues) => {
+    setSuccess(false);
+    setError(null);
+    try {
+      await changePassword({
+        variables: {
+          oldPassword: values.oldPassword,
+          newPassword: values.newPassword,
+        },
+      });
       setError(null);
-      try {
-        await changePassword({
-          variables: {
-            oldPassword: values.oldPassword,
-            newPassword: values.newPassword,
-          },
+      setSuccess(true);
+    } catch (e) {
+      const errcode = getCodeFromError(e);
+      if (errcode === "WEAKP") {
+        setFormError("newPassword", {
+          message:
+            "The server believes this passphrase is too weak, please make it stronger",
         });
-        setError(null);
-        setSuccess(true);
-      } catch (e) {
-        const errcode = getCodeFromError(e);
-        if (errcode === "WEAKP") {
-          setFormError("newPassword", {
-            message:
-              "The server believes this passphrase is too weak, please make it stronger",
-          });
-        } else if (errcode === "CREDS") {
-          setFormError("oldPassword", {
-            message: "Incorrect old passphrase",
-          });
-        } else {
-          setError(e);
-        }
+      } else if (errcode === "CREDS") {
+        setFormError("oldPassword", {
+          message: "Incorrect old passphrase",
+        });
+      } else {
+        setError(e);
       }
-    },
-    [changePassword, setFormError]
-  );
+    }
+  };
 
   const {
     data,
     error: graphqlQueryError,
     loading,
   } = useSettingsPasswordQuery();
+
   const [forgotPassword] = useForgotPasswordMutation();
   const u = data && data.currentUser;
   const userEmail = u && u.userEmails.nodes[0];
   const email = userEmail ? userEmail.email : null;
   const [resetInProgress, setResetInProgress] = useState(false);
   const [resetError, setResetError] = useState(null);
-  const handleResetPassword = useCallback(() => {
+
+  const handleResetPassword = () => {
     if (!email) return;
     if (resetInProgress) return;
     (async () => {
@@ -80,7 +92,7 @@ const Settings_Security: NextPage = () => {
       }
       setResetInProgress(false);
     })();
-  }, [email, forgotPassword, resetError, resetInProgress]);
+  };
 
   const inner = () => {
     if (loading) {
@@ -107,43 +119,54 @@ const Settings_Security: NextPage = () => {
 
     const code = getCodeFromError(error);
     return (
-      <div>
-        <h1>Change passphrase</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input
-            placeholder="Old passphrase"
-            id="oldPassword"
-            {...register("oldPassword", {
-              required: true,
-            })}
-          />
-          <input
-            placeholder="New passphrase"
-            id="newPassword"
-            type="password"
-            {...register("newPassword", {
-              required: true,
-            })}
-          />
-          {error ? (
-            <>
-              `Changing passphrase failed`
-              <span>
-                {extractError(error).message}
-                {code ? (
-                  <span>
-                    {" "}
-                    (Error code: <code>ERR_{code}</code>)
-                  </span>
-                ) : null}
-              </span>
-            </>
-          ) : success ? (
-            `Password changed!`
-          ) : null}
-          <button type="submit">Change Passphrase</button>
-        </form>
-      </div>
+      <Security.Container>
+        <header>
+          <h1>Change password</h1>
+        </header>
+        <Security.Form onSubmit={handleSubmit(onSubmit)}>
+          <Label>
+            Current Password
+            <Input
+              placeholder="Old passphrase"
+              aria-invalid={errors.oldPassword ? "true" : "false"}
+              id="oldPassword"
+              {...register("oldPassword", {
+                required: true,
+              })}
+            />
+          </Label>
+          <Label>
+            New Password
+            <Input
+              placeholder="New passphrase"
+              id="newPassword"
+              type="password"
+              aria-invalid={errors.newPassword ? "true" : "false"}
+              {...register("newPassword", {
+                required: true,
+              })}
+            />
+          </Label>
+
+          <Button type="submit">Change Passphrase</Button>
+        </Security.Form>
+        {error ? (
+          <>
+            `Changing passphrase failed`
+            <span>
+              {extractError(error).message}
+              {code ? (
+                <span>
+                  {" "}
+                  (Error code: <code>ERR_{code}</code>)
+                </span>
+              ) : null}
+            </span>
+          </>
+        ) : success ? (
+          `Password changed!`
+        ) : null}
+      </Security.Container>
     );
   };
   return (
@@ -151,6 +174,19 @@ const Settings_Security: NextPage = () => {
       {inner()}
     </SettingsLayout>
   );
+};
+
+const Security = {
+  Container: styled("div", {
+    display: "flex",
+    flexDirection: "column",
+    gap: "24px",
+  }),
+  Form: styled("form", {
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+  }),
 };
 
 export default Settings_Security;

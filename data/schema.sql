@@ -106,7 +106,6 @@ SET default_table_access_method = heap;
 CREATE TABLE app_public.users (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     username public.citext NOT NULL,
-    name text,
     avatar_url text,
     is_admin boolean DEFAULT false NOT NULL,
     is_verified boolean DEFAULT false NOT NULL,
@@ -144,13 +143,6 @@ COMMENT ON COLUMN app_public.users.id IS 'Unique identifier for the user.';
 --
 
 COMMENT ON COLUMN app_public.users.username IS 'Public-facing username (or ''handle'') of the user.';
-
-
---
--- Name: COLUMN users.name; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON COLUMN app_public.users.name IS 'Public-facing name (or pseudonym) of the user.';
 
 
 --
@@ -3322,13 +3314,6 @@ GRANT SELECT ON TABLE app_public.users TO tasted_visitor;
 --
 
 GRANT UPDATE(username) ON TABLE app_public.users TO tasted_visitor;
-
-
---
--- Name: COLUMN users.name; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT UPDATE(name) ON TABLE app_public.users TO tasted_visitor;
 
 
 --

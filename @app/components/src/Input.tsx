@@ -11,7 +11,7 @@ export const Input = styled("input", {
   border: "none",
   "&:focus": { outline: "1px solid $blue" },
   transition: "outline 0.4s ease 0s, color 0.2s ease 0s",
-  "&:invalid": {
+  "&[aria-invalid='true']": {
     outline: "1px solid red",
   },
 });

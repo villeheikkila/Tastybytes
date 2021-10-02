@@ -8,6 +8,7 @@ import {
 } from "@app/graphql";
 import { blackA, violet } from "@radix-ui/colors";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import * as React from "react";
@@ -162,6 +163,8 @@ export function SharedLayout({
         <Navigation.Content>
           <Link href="/">
             <ProjectLogo>
+              <Image color="white" src="/maku.svg" height={32} width={32} />
+
               <LogoText>{projectName}</LogoText>
             </ProjectLogo>
           </Link>
@@ -172,14 +175,14 @@ export function SharedLayout({
                 <Dropdown.Trigger asChild>
                   <IconButton>
                     <Avatar
-                      name={data.currentUser.name || "?"}
+                      name={data.currentUser.username || "?"}
                       imageUrl={data.currentUser.avatarUrl}
                       status={!data.currentUser.isVerified ? "warn" : undefined}
                     />
                   </IconButton>
                 </Dropdown.Trigger>
 
-                <Dropdown.Content sideOffset={5}>
+                <Dropdown.Content sideOffset={1}>
                   <Dropdown.Item>
                     <Link
                       href={{
@@ -191,15 +194,11 @@ export function SharedLayout({
                     </Link>
                   </Dropdown.Item>
                   <Dropdown.Item>
-                    <Link href="/u/[user]">Friends</Link>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Link href="/u/[user]">Stats</Link>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Link href="/settings">
-                      <Warn okay={data.currentUser.isVerified}>Settings</Warn>
-                    </Link>
+                    <a>
+                      <Link href="/settings">
+                        <Warn okay={data.currentUser.isVerified}>Settings</Warn>
+                      </Link>
+                    </a>
                   </Dropdown.Item>
                   <Dropdown.Item>
                     <button onClick={handleLogout}>Logout</button>
@@ -265,12 +264,22 @@ const Content = styled("div", {
 });
 
 const ProjectLogo = styled("div", {
-  fontSize: "38px",
-  fontWeight: "bold",
-  textTransform: "capitalize",
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+
+  ":hover": {
+    color: "$blue",
+  },
 });
 
-const LogoText = styled("span", { color: "white", textDecoration: "inherit" });
+const LogoText = styled("h1", {
+  textTransform: "capitalize",
+  fontSize: "36px",
+  color: "white",
+  fontWeight: "bold",
+  alignText: "center",
+});
 
 const LogInLink = styled(Link, {});
 

@@ -1,5 +1,5 @@
 import { ApolloError } from "@apollo/client";
-import { ErrorAlert, Redirect, SettingsLayout } from "@app/components";
+import { Button, ErrorAlert, Redirect, SettingsLayout } from "@app/components";
 import {
   EmailsForm_UserEmailFragment,
   useAddEmailMutation,
@@ -96,15 +96,17 @@ const Settings_Emails: NextPage = () => {
     } else {
       return (
         <div>
+          <header>
+            <h1>Email addresses</h1>
+          </header>
           {user.isVerified ? null : (
-            <div style={{ marginBottom: "0.5rem" }}>
-              ` No verified emails You do not have any verified email addresses,
+            <div>
+              No verified emails You do not have any verified email addresses,
               this will make account recovery impossible and may limit your
               available functionality within this application. Please complete
-              email verification. `
+              email verification.
             </div>
           )}
-          <h1>"Email addresses" </h1>
           <p>
             <strong>
               Account notices will be sent your primary email address.
@@ -122,9 +124,9 @@ const Settings_Emails: NextPage = () => {
           ))}
           {!showAddEmailForm ? (
             <div>
-              <button onClick={() => setShowAddEmailForm(true)}>
+              <Button onClick={() => setShowAddEmailForm(true)}>
                 Add email
-              </button>
+              </Button>
             </div>
           ) : (
             <AddEmailForm

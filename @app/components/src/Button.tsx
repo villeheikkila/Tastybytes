@@ -12,4 +12,11 @@ export const Button = styled("button", {
   textAlign: "center",
   height: "40px",
   border: "none",
+  variants: {
+    variant: {
+      warning: {
+        backgroundColor: "$red",
+      },
+    },
+  },
 });

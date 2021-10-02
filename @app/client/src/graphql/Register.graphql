@@ -17,7 +17,8 @@ mutation Register(
     user {
       id
       username
-      name
+      firstName
+      lastName
     }
   }
 }

@@ -1,6 +1,7 @@
 fragment ProfileSettingsForm_User on User {
   id
-  name
+  firstName
+  lastName
   username
   avatarUrl
 }

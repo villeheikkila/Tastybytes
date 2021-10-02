@@ -1,13 +1,21 @@
 import { ApolloError } from "@apollo/client";
-import { ErrorAlert, Redirect, SettingsLayout } from "@app/components";
+import {
+  Button,
+  ErrorAlert,
+  Input,
+  Label,
+  Redirect,
+  SettingsLayout,
+} from "@app/components";
+import { styled } from "@app/components/src/stitches.config";
 import {
   ProfileSettingsForm_UserFragment,
   useSettingsProfileQuery,
   useUpdateUserMutation,
 } from "@app/graphql";
-import { extractError, getCodeFromError } from "@app/lib";
+import { extractError, getCodeFromError, Nullable } from "@app/lib";
 import { NextPage } from "next";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const Settings_Profile: NextPage = () => {
@@ -35,15 +43,6 @@ const Settings_Profile: NextPage = () => {
 
 export default Settings_Profile;
 
-/**
- * These are the values in our form
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface FormValues {
-  username: string;
-  name: string;
-}
-
 interface ProfileSettingsFormProps {
   user: ProfileSettingsForm_UserFragment;
   error: Error | ApolloError | null;
@@ -51,7 +50,8 @@ interface ProfileSettingsFormProps {
 }
 
 interface ProfileSettingsFormValues {
-  name: string | null;
+  firstName: Nullable<string>;
+  lastName: Nullable<string>;
   username: string;
 }
 
@@ -60,65 +60,86 @@ function ProfileSettingsForm({
   error,
   setError,
 }: ProfileSettingsFormProps) {
+  const [updateUser] = useUpdateUserMutation();
+  const [success, setSuccess] = useState(false);
+
   const {
     register,
     handleSubmit,
     setError: setFormError,
   } = useForm<ProfileSettingsFormValues>({
     defaultValues: {
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       username: user.username,
     },
   });
-  const [updateUser] = useUpdateUserMutation();
-  const [success, setSuccess] = useState(false);
 
-  const onSubmit = useCallback(
-    async (values: ProfileSettingsFormValues) => {
-      setSuccess(false);
-      setError(null);
-      try {
-        await updateUser({
-          variables: {
-            id: user.id,
-            patch: {
-              username: values.username,
-              name: values.name,
-            },
+  const onSubmit = async ({
+    username,
+    firstName,
+    lastName,
+  }: ProfileSettingsFormValues) => {
+    setSuccess(false);
+    setError(null);
+    try {
+      await updateUser({
+        variables: {
+          id: user.id,
+          patch: {
+            username,
+            firstName,
+            lastName,
           },
+        },
+      });
+      setError(null);
+      setSuccess(true);
+    } catch (e) {
+      const errcode = getCodeFromError(e);
+      if (errcode === "23505") {
+        setFormError("username", {
+          message:
+            "This username is already in use, please pick a different name",
         });
-        setError(null);
-        setSuccess(true);
-      } catch (e) {
-        const errcode = getCodeFromError(e);
-        if (errcode === "23505") {
-          setFormError("username", {
-            message:
-              "This username is already in use, please pick a different name",
-          });
-        } else {
-          setError(e);
-        }
+      } else {
+        setError(e);
       }
-    },
-    [setError, updateUser, user.id, setFormError]
-  );
+    }
+  };
 
   const code = getCodeFromError(error);
+
   return (
-    <div>
-      <h1>Edit profile</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          id="name"
-          placeholder="name"
-          {...register("name", { required: true })}
-        />
-        <input
-          id="username"
-          placeholder="username"
-          {...register("username", { required: true })}
-        />
+    <Box>
+      <header>
+        <h1>Edit profile</h1>
+      </header>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Label>
+          First Name
+          <Input
+            id="firstName"
+            placeholder="First Name"
+            {...register("firstName", { required: true })}
+          />
+        </Label>
+        <Label>
+          Last Name
+          <Input
+            id="lastName"
+            placeholder="Last Name"
+            {...register("lastName", { required: true })}
+          />
+        </Label>
+        <Label>
+          Username
+          <Input
+            id="username"
+            placeholder="username"
+            {...register("username", { required: true })}
+          />
+        </Label>
 
         {error ? (
           <span>
@@ -134,8 +155,21 @@ function ProfileSettingsForm({
         ) : success ? (
           <span>Profile updated</span>
         ) : null}
-        <button type="submit">Update Profile</button>
-      </form>
-    </div>
+        <Button type="submit">Update Profile</Button>
+      </Form>
+    </Box>
   );
 }
+
+const Form = styled("form", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
+  width: "400px",
+});
+
+const Box = styled("form", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "24px",
+});

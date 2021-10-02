@@ -6,7 +6,8 @@ fragment OrganizationMembers_Membership on OrganizationMembership {
   user {
     id
     username
-    name
+    firstName
+    lastName
   }
 }
 
