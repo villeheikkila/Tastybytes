@@ -1,38 +1,37 @@
 import { ApolloError, useApolloClient } from "@apollo/client";
 import {
   AuthRestrict,
-  ButtonLink,
+  Button,
+  Input,
   Redirect,
   SharedLayout,
   SharedLayoutChildProps,
-  SocialLoginOptions,
 } from "@app/components";
+import { styled } from "@app/components/src/stitches.config";
 import { useLoginMutation, useSharedQuery } from "@app/graphql";
 import {
   extractError,
   getCodeFromError,
+  Nullable,
   resetWebsocketConnection,
 } from "@app/lib";
+import { ErrorMessage } from "@hookform/error-message";
 import { NextPage } from "next";
-import Link from "next/link";
+import NextLink from "next/link";
 import Router from "next/router";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-interface LoginProps {
+interface LoginPageProps {
   next: string | null;
 }
 
-export function isSafe(nextUrl: string | null) {
+export const isSafe = (nextUrl: Nullable<string>) => {
   return (nextUrl && nextUrl[0] === "/") || false;
-}
+};
 
-/**
- * Login page just renders the standard layout and embeds the login form
- */
-const Login: NextPage<LoginProps> = ({ next: rawNext }) => {
+const LoginPage: NextPage<LoginPageProps> = ({ next: rawNext }) => {
   const [error, setError] = useState<Error | ApolloError | null>(null);
-  const [showLogin, setShowLogin] = useState<boolean>(false);
   const next: string = isSafe(rawNext) ? rawNext! : "/";
   const query = useSharedQuery();
   return (
@@ -40,140 +39,126 @@ const Login: NextPage<LoginProps> = ({ next: rawNext }) => {
       title="Sign in"
       query={query}
       forbidWhen={AuthRestrict.LOGGED_IN}
+      hideNavigation
     >
       {({ currentUser }: SharedLayoutChildProps) =>
         currentUser ? (
           <Redirect href={next} />
         ) : (
-          <div style={{ marginTop: 32 }}>
-            {showLogin ? (
-              <div>
-                <div>
-                  <LoginForm
-                    onSuccessRedirectTo={next}
-                    onCancel={() => setShowLogin(false)}
-                    error={error}
-                    setError={setError}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div>
-                <div style={{ marginBottom: 8 }}>
-                  <div>
-                    <button onClick={() => setShowLogin(true)}>
-                      Sign in with E-mail or Username
-                    </button>
-                  </div>
-                </div>
-                <div style={{ marginBottom: 8 }}>
-                  <div>
-                    <SocialLoginOptions next={next} />
-                  </div>
-                </div>
-                <div>
-                  <div>
-                    <ButtonLink
-                      href={`/register?next=${encodeURIComponent(next)}`}
-                    >
-                      <a>Create an account</a>
-                    </ButtonLink>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+          <Authentication.Wrapper>
+            <Authentication.Header>
+              <Authentication.H1>Welcome to Maku</Authentication.H1>
+              <p>
+                Don't have an account?{" "}
+                <Link href={`/register?next=${encodeURIComponent(next)}`}>
+                  Sign up for free
+                </Link>
+              </p>
+            </Authentication.Header>
+
+            <div>
+              <LoginForm
+                onSuccessRedirectTo={next}
+                error={error}
+                setError={setError}
+              />
+            </div>
+          </Authentication.Wrapper>
         )
       }
     </SharedLayout>
   );
 };
 
-Login.getInitialProps = async ({ query }) => ({
+LoginPage.getInitialProps = async ({ query }) => ({
   next: typeof query.next === "string" ? query.next : null,
 });
 
-export default Login;
+export default LoginPage;
 
 interface LoginFormProps {
   onSuccessRedirectTo: string;
   error: Error | ApolloError | null;
   setError: (error: Error | ApolloError | null) => void;
-  onCancel: () => void;
 }
 
-function LoginForm({
+interface LoginFormInput {
+  username: string;
+  password: string;
+}
+
+const LoginForm = ({
   onSuccessRedirectTo,
-  onCancel,
   error,
   setError,
-}: LoginFormProps) {
+}: LoginFormProps) => {
+  const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [login] = useLoginMutation();
+  const client = useApolloClient();
+
   const {
     register,
     handleSubmit,
+    formState: { errors },
     setError: setFormError,
-  } = useForm<{ username: string; password: string }>();
+    setFocus,
+  } = useForm<LoginFormInput>();
 
-  const [login] = useLoginMutation({});
-  const client = useApolloClient();
-
-  const [submitDisabled, setSubmitDisabled] = useState(false);
-  const onSubmit = useCallback(
-    async (values) => {
-      console.log("values: ", values);
-      setError(null);
-      try {
-        await login({
-          variables: {
-            username: values.username,
-            password: values.password,
-          },
+  const onSubmit = async (values: LoginFormInput) => {
+    setError(null);
+    try {
+      await login({
+        variables: {
+          username: values.username,
+          password: values.password,
+        },
+      });
+      resetWebsocketConnection();
+      client.resetStore();
+      Router.push(onSuccessRedirectTo);
+    } catch (e) {
+      const code = getCodeFromError(e);
+      if (code === "CREDS") {
+        setFormError("password", {
+          message: "Incorrect username or password",
         });
-        // Success: refetch
-        resetWebsocketConnection();
-        client.resetStore();
-        Router.push(onSuccessRedirectTo);
-      } catch (e) {
-        const code = getCodeFromError(e);
-        if (code === "CREDS") {
-          setFormError("password", {
-            message: "Incorrect username or passphrase",
-          });
-          setSubmitDisabled(true);
-        } else {
-          setError(e);
-        }
+        setSubmitDisabled(false);
+      } else {
+        setError(e);
       }
-    },
-    [client, login, setFormError, onSuccessRedirectTo, setError]
-  );
+    }
+  };
 
-  const focusElement = useRef<any>(null);
-  useEffect(
-    () => void (focusElement.current && focusElement.current!.focus()),
-    [focusElement]
-  );
+  useEffect(() => {
+    setFocus("username");
+  }, [setFocus]);
 
   const code = getCodeFromError(error);
-  console.log("code: ", code);
+
+  console.log(errors);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
+    <Authentication.Form onSubmit={handleSubmit(onSubmit)}>
+      <Input
         id="username"
         autoComplete="email username"
         placeholder="E-mail or Username"
+        aria-invalid={errors.username ? "true" : "false"}
         {...register("username", { required: true })}
       />
-      <input
+
+      <Input
         autoComplete="current-password"
         id="password"
         type="password"
-        placeholder="Passphrase"
+        aria-invalid={errors.password ? "true" : "false"}
+        placeholder="Password"
         {...register("password", { required: true })}
       />
 
-      <Link href="/forgot">Forgotten passphrase?</Link>
+      <Link as={NextLink} href="/forgot">
+        Forgotten password?
+      </Link>
 
       {error ? (
         <span>
@@ -185,10 +170,40 @@ function LoginForm({
           ) : null}
         </span>
       ) : null}
-      <button type="submit" disabled={submitDisabled}>
+
+      <Button type="submit" disabled={submitDisabled}>
         Sign in
-      </button>
-      <a onClick={onCancel}>Use a different sign in method</a>
-    </form>
+      </Button>
+
+      <ErrorMessage
+        errors={errors}
+        name="password"
+        render={({ message }) => <p>{message}</p>}
+      />
+    </Authentication.Form>
   );
-}
+};
+
+const Authentication = {
+  Wrapper: styled("div", {
+    display: "flex",
+    flexDirection: "column",
+    gap: "16px",
+    width: "330px",
+  }),
+  Header: styled("header", {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "10px",
+  }),
+  H1: styled("h1", { fontSize: "28px" }),
+  Form: styled("form", {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  }),
+};
+
+const Link = styled("a", { color: "rgba(0, 153, 254, 1.00)" });

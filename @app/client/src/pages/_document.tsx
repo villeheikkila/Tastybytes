@@ -13,6 +13,11 @@ const MyDocument = () => {
     <Html>
       <Head>
         <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="//fonts.googleapis.com/css?family=Muli"
+        />
         <style
           id="stitches"
           dangerouslySetInnerHTML={{ __html: getCssText() }}
