@@ -51,9 +51,9 @@ const StyledFallback = styled(AvatarPrimitive.Fallback, {
   justifyContent: "center",
   backgroundColor: "green",
   color: whiteA.whiteA12,
-  fontSize: 15,
-  lineHeight: 1,
-  fontWeight: 500,
+  fontSize: "0.8rem",
+  textTransform: "uppercase",
+  fontWeight: "bold",
 });
 
 interface AvatarProps {
@@ -67,7 +67,7 @@ const shortenName = (name: string) => name.substring(0, 2);
 export const Avatar: React.FC<AvatarProps> = ({ imageUrl, name, status }) => (
   <StyledAvatar status={status}>
     {imageUrl ? (
-      <StyledImage src={imageUrl} alt={`Avatar of ${name}`}></StyledImage>
+      <StyledImage src={imageUrl} alt={`Avatar of ${name}`} />
     ) : (
       <StyledFallback>{shortenName(name)}</StyledFallback>
     )}

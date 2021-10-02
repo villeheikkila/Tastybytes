@@ -1,8 +1,7 @@
 import { SharedLayout } from "@app/components";
-import { styled } from "@app/components/stitches.config";
-import { useCheckInsByUserQuery, useSharedQuery } from "@app/graphql";
+import { styled } from "@app/components/src/stitches.config";
+import { useSharedQuery } from "@app/graphql";
 import { NextPage } from "next";
-import { check } from "prettier";
 import * as React from "react";
 
 const Text = styled("p", {
