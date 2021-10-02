@@ -1,5 +1,12 @@
-import { ApolloError, useApolloClient } from "@apollo/client";
-import { AuthRestrict, Redirect, SharedLayout } from "@app/components";
+import { ApolloError } from "@apollo/client";
+import {
+  AuthRestrict,
+  Button,
+  Input,
+  Redirect,
+  SharedLayout,
+} from "@app/components";
+import { styled } from "@app/components/src/stitches.config";
 import { useRegisterMutation, useSharedQuery } from "@app/graphql";
 import {
   extractError,
@@ -8,8 +15,10 @@ import {
   resetWebsocketConnection,
 } from "@app/lib";
 import { NextPage } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import Router from "next/router";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { isSafe } from "./login";
@@ -19,114 +28,138 @@ interface RegisterProps {
 }
 
 interface RegisterFormValues {
-  name: string,
-  username: string,
-  email: string,
-  password: string,
-  confirm: string
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  confirm: string;
 }
-/**
- * The registration page just renders the standard layout and embeds the
- * registration form.
- */
+
 const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
   const [error, setError] = useState<Error | ApolloError | null>(null);
-  const next: string = isSafe(rawNext) ? rawNext! : "/";
+  const [signUp, { client }] = useRegisterMutation({});
   const query = useSharedQuery();
 
-  const [signUp] = useRegisterMutation({});
-  const client = useApolloClient();
-  const { register, handleSubmit, setError: setFormError, watch } = useForm<RegisterFormValues>();
+  const next: string = isSafe(rawNext) ? rawNext! : "/";
 
-  const onSubmit = useCallback(
-    async (values: RegisterFormValues) => {
-      try {
-        await signUp({
-          variables: {
-            username: values.username,
-            email: values.email,
-            password: values.password,
-            name: values.name,
-          },
+  const {
+    register,
+    handleSubmit,
+    setError: setFormError,
+    watch,
+  } = useForm<RegisterFormValues>();
+
+  const onSubmit = async ({
+    username,
+    email,
+    password,
+    name,
+  }: RegisterFormValues) => {
+    try {
+      await signUp({
+        variables: {
+          username,
+          email,
+          password,
+          name,
+        },
+      });
+      resetWebsocketConnection();
+      client.resetStore();
+      Router.push(next);
+    } catch (e) {
+      const code = getCodeFromError(e);
+      const exception = getExceptionFromError(e);
+      const fields: any = exception && exception["fields"];
+
+      if (code === "WEAKP") {
+        setFormError("password", {
+          message:
+            "The server believes this passphrase is too weak, please make it stronger",
         });
-        // Success: refetch
-        resetWebsocketConnection();
-        client.resetStore();
-        Router.push(next);
-      } catch (e) {
-        const code = getCodeFromError(e);
-        const exception = getExceptionFromError(e);
-        const fields: any = exception && exception["fields"];
-        if (code === "WEAKP") {
-          setFormError("password", {
-            message:
-              "The server believes this passphrase is too weak, please make it stronger",
-          });
-        } else if (code === "EMTKN") {
-          setFormError("email", {
-            message:
-              "An account with this email address has already been registered, consider using the 'Forgot passphrase' function.",
-          });
-        } else if (code === "NUNIQ" && fields === "username") {
-          setFormError("username", {
-            message:
-              "An account with this username has already been registered, please try a different username.",
-          });
-        } else if (code === "23514") {
-          setFormError("username", {
-            message:
-              "This username is not allowed; usernames must be between 2 and 24 characters long (inclusive), must start with a letter, and must contain only alphanumeric characters and underscores.",
-          });
-        } else {
-          setError(e);
-        }
+      } else if (code === "EMTKN") {
+        setFormError("email", {
+          message:
+            "An account with this email address has already been registered, consider using the 'Forgot passphrase' function.",
+        });
+      } else if (code === "NUNIQ" && fields === "username") {
+        setFormError("username", {
+          message:
+            "An account with this username has already been registered, please try a different username.",
+        });
+      } else if (code === "23514") {
+        setFormError("username", {
+          message:
+            "This username is not allowed; usernames must be between 2 and 24 characters long (inclusive), must start with a letter, and must contain only alphanumeric characters and underscores.",
+        });
+      } else {
+        setError(e);
       }
-    },
-    [setFormError, signUp, client, next]
-  );
+    }
+  };
 
   const code = getCodeFromError(error);
+
   return (
     <SharedLayout
       title="Register"
       query={query}
       forbidWhen={AuthRestrict.LOGGED_IN}
+      hideNavigation
     >
       {({ currentUser }) =>
         currentUser ? (
           <Redirect href={next} />
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-              autoComplete="name"
-              placeholder="name"
-              {...register("name", { required: true })}
-            />
-            <input
-              autoComplete="username"
-              placeholder="username"
-              {...register("username", {
-                required: true,
-                pattern: {
-                  value: /^([a-zA-Z]|$)/,
-                  message: "Username must start with a letter.",
-                },
-              })}
-            />
-            <input
-              id="email"
-              autoComplete="email"
-              placeholder="email"
-              {...register("email", {
-                required: true,
-                pattern: {
-                  value: /\S+@\S+\.\S+/,
-                  message: "Entered value does not match email format",
-                },
-              })}
-            />
+          <Registration.Wrapper>
+            <Registration.Header>
+              <Image color="white" src="/maku.svg" height={48} width={48} />
+              <Registration.H1>Create Account</Registration.H1>
+              <p>
+                Already have an account?{" "}
+                <Link href={`/login?next=${encodeURIComponent(next)}`}>
+                  Sign in!
+                </Link>
+              </p>
+            </Registration.Header>
+            <Registration.Form onSubmit={handleSubmit(onSubmit)}>
+              <Box>
+                <Input
+                  autoComplete="given-name"
+                  placeholder="First Name"
+                  {...register("name", { required: true })}
+                />
+                <Input
+                  autoComplete="family-name"
+                  placeholder="Last Name"
+                  {...register("name", { required: true })}
+                />
+              </Box>
+              <Input
+                autoComplete="username"
+                placeholder="Username"
+                {...register("username", {
+                  required: true,
+                  pattern: {
+                    value: /^([a-zA-Z]|$)/,
+                    message: "Username must start with a letter.",
+                  },
+                })}
+              />
+              <Input
+                id="email"
+                autoComplete="email"
+                placeholder="Email"
+                {...register("email", {
+                  required: true,
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "Entered value does not match email format",
+                  },
+                })}
+              />
 
-            {/* //   min: 2,
+              {/* //   min: 2,
             //   message: "Username must be at least 2 characters long.",
             // },
             // {
@@ -144,41 +177,47 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
             //   message:
             //     "Username must contain only alphanumeric characters and underscores.",
             // }})}  */}
-            <input
-              placeholder="password"
-              autoComplete="password"
-              type="password"
-              {...register("password", { required: true,           minLength: {
-                value: 8,
-                message: "Password must have at least 8 characters"
-              }})}
-            />
-            <input
-              autoComplete="new-password"
-              type="password"
-              placeholder="confirm password"
-              {...register("confirm", { required: true, validate: value =>
-                value === watch("password", "") || "The passwords do not match"})}
-            />
+              <Input
+                placeholder="Password"
+                autoComplete="password"
+                type="password"
+                {...register("password", {
+                  required: true,
+                  minLength: {
+                    value: 8,
+                    message: "Password must have at least 8 characters",
+                  },
+                })}
+              />
+              <Input
+                autoComplete="new-password"
+                type="password"
+                placeholder="Confirm Password"
+                {...register("confirm", {
+                  required: true,
+                  validate: (value) =>
+                    value === watch("password", "") ||
+                    "The passwords do not match",
+                })}
+              />
 
-            {error ? (
-              <div>
-                <span>
-                  Registration failed
-                  {extractError(error).message}
-                  {code ? (
-                    <span>
-                      {" "}
-                      (Error code: <code>ERR_{code}</code>)
-                    </span>
-                  ) : null}
-                </span>
-              </div>
-            ) : null}
-            <div>
-              <button type="submit">Register</button>
-            </div>
-          </form>
+              {error ? (
+                <div>
+                  <span>
+                    Registration failed
+                    {extractError(error).message}
+                    {code ? (
+                      <span>
+                        {" "}
+                        (Error code: <code>ERR_{code}</code>)
+                      </span>
+                    ) : null}
+                  </span>
+                </div>
+              ) : null}
+              <Button type="submit">Sign up with email</Button>
+            </Registration.Form>
+          </Registration.Wrapper>
         )
       }
     </SharedLayout>
@@ -189,4 +228,30 @@ Register.getInitialProps = async ({ query }) => ({
   next: typeof query.next === "string" ? query.next : null,
 });
 
+const Registration = {
+  Wrapper: styled("div", {
+    display: "flex",
+    flexDirection: "column",
+    gap: "16px",
+    width: "400px",
+  }),
+  Header: styled("header", {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "10px",
+  }),
+  H1: styled("h1", { fontSize: "28px" }),
+  Form: styled("form", {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  }),
+};
+
+const Box = styled("div", {
+  display: "flex",
+  gap: "8px",
+});
 export default Register;
