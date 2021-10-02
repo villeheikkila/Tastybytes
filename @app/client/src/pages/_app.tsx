@@ -1,5 +1,7 @@
 import { ApolloClient, ApolloProvider } from "@apollo/client";
+import { globalStyles } from "@app/components/src/stitches.config";
 import { withApollo } from "@app/lib";
+import { IdProvider } from "@radix-ui/react-id";
 import App from "next/app";
 import Router from "next/router";
 import * as React from "react";
@@ -47,26 +49,31 @@ if (typeof window !== "undefined") {
   });
 }
 
-class MyApp extends App<{ apollo: ApolloClient<any> }> {
-  static async getInitialProps({ Component, ctx }: any) {
-    let pageProps = {};
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-    }
-
-    return { pageProps };
-  }
-
-  render() {
-    const { Component, pageProps, apollo } = this.props;
-
-    return (
-      <ApolloProvider client={apollo}>
-        <Component {...pageProps} />
-      </ApolloProvider>
-    );
-  }
+interface MyAppProps extends App {
+  Component: any;
+  pageProps: any;
+  apollo: ApolloClient<any>;
 }
+const MyApp = ({ Component, pageProps, apollo }: MyAppProps) => {
+  globalStyles();
+
+  return (
+    <ApolloProvider client={apollo}>
+      <IdProvider>
+        <Component {...pageProps} />
+      </IdProvider>
+    </ApolloProvider>
+  );
+};
+
+MyApp.getInitialProps = async ({ Component, ctx }: any) => {
+  let pageProps = {};
+
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+
+  return { pageProps };
+};
 
 export default withApollo(MyApp);

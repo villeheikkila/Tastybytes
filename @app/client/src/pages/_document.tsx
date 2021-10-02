@@ -1,4 +1,4 @@
-import { getCssText } from "@app/components/stitches.config";
+import { getCssText } from "@app/components/src/stitches.config";
 import Document, {
   DocumentContext,
   Head,
@@ -8,26 +8,27 @@ import Document, {
 } from "next/document";
 import React from "react";
 
-class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
-    const initialProps = await Document.getInitialProps(ctx);
-    return { ...initialProps };
-  }
+const MyDocument = () => {
+  return (
+    <Html>
+      <Head>
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <style
+          id="stitches"
+          dangerouslySetInnerHTML={{ __html: getCssText() }}
+        />
+      </Head>
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
+};
 
-  render() {
-    return (
-      <Html>
-        <Head>
-          <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-          <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
-        </Head>
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    );
-  }
-}
+MyDocument.getInitialProps = async (ctx: DocumentContext) => {
+  const initialProps = await Document.getInitialProps(ctx);
+  return { ...initialProps };
+};
 
 export default MyDocument;

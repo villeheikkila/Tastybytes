@@ -6,6 +6,7 @@ import {
   useCurrentUserUpdatedSubscription,
   useLogoutMutation,
 } from "@app/graphql";
+import { blackA, violet } from "@radix-ui/colors";
 import Head from "next/head";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
@@ -14,9 +15,9 @@ import { useCallback } from "react";
 
 import { ErrorAlert, StandardWidth, Warn } from ".";
 import { Avatar } from "./Avatar";
+import { Dropdown } from "./Dropdown";
 import { Redirect } from "./Redirect";
-
-export const contentMinHeight = "calc(100vh - 64px - 70px)";
+import { styled } from "./stitches.config";
 
 export interface SharedLayoutChildProps {
   error?: ApolloError | Error;
@@ -86,8 +87,10 @@ export function SharedLayout({
 }: SharedLayoutProps) {
   const router = useRouter();
   const currentUrl = router.asPath;
+
   const client = useApolloClient();
   const [logout] = useLogoutMutation();
+
   const handleLogout = useCallback(() => {
     const reset = async () => {
       Router.events.off("routeChangeComplete", reset);
@@ -96,16 +99,17 @@ export function SharedLayout({
         client.resetStore();
       } catch (e) {
         console.error(e);
-        // Something went wrong; redirect to /logout to force logout.
         window.location.href = "/logout";
       }
     };
     Router.events.on("routeChangeComplete", reset);
     Router.push("/");
   }, [client, logout]);
+
   const forbidsLoggedIn = forbidWhen & AuthRestrict.LOGGED_IN;
   const forbidsLoggedOut = forbidWhen & AuthRestrict.LOGGED_OUT;
   const forbidsNotAdmin = forbidWhen & AuthRestrict.NOT_ADMIN;
+
   const renderChildren = (props: SharedLayoutChildProps) => {
     const inner =
       props.error && !props.loading && !noHandleErrors ? (
@@ -147,117 +151,149 @@ export function SharedLayout({
   console.log("data: ", data);
 
   return (
-    <div>
+    <>
       {data && data.currentUser ? <CurrentUserUpdatedSubscription /> : null}
-      <header
-        style={{
-          height: "80px",
-          boxShadow: "0 2px 8px #f0f1f2",
-          zIndex: 1,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+      <Navigation.Header>
         <Head>
           <title>{title ? `${title} — ${projectName}` : projectName}</title>
         </Head>
-        <div>
+        <Navigation.Content>
           <Link href="/">
-            <a>{projectName}</a>
+            <ProjectLogo>
+              <LogoText>{projectName}</LogoText>
+            </ProjectLogo>
           </Link>
-        </div>
-        <div>
-          <h3>
-            {titleHref ? (
-              <Link href={titleHref} as={titleHrefAs}>
-                <a>{title}</a>
-              </Link>
-            ) : (
-              title
-            )}
-          </h3>
-        </div>
 
-        <div>
-          {data && data.currentUser ? (
-            <div>
-              <div style={{ display: "none" }}>
-                {data.currentUser.organizationMemberships.nodes.map(
-                  ({ organization, isOwner }) => (
-                    <div key={organization?.id}>
-                      <Link href={`/o/[slug]`} as={`/o/${organization?.slug}`}>
-                        <a>
-                          {organization?.name}
-                          {isOwner ? <span> </span> : ""}
-                        </a>
-                      </Link>
-                    </div>
-                  )
-                )}
-                <div>
-                  <Link href="/create-organization">
-                    <a>Create organization</a>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="/settings">
-                    <a>
+          <div>
+            {data && data.currentUser ? (
+              <Dropdown.Menu>
+                <Dropdown.Trigger asChild>
+                  <IconButton>
+                    <Avatar
+                      name={data.currentUser.name || "?"}
+                      imageUrl={data.currentUser.avatarUrl}
+                      status={!data.currentUser.isVerified ? "warn" : undefined}
+                    />
+                  </IconButton>
+                </Dropdown.Trigger>
+
+                <Dropdown.Content sideOffset={5}>
+                  <Dropdown.Item>
+                    <Link
+                      href={{
+                        pathname: "/u/[user]",
+                        query: { user: "villeheikkila" },
+                      }}
+                    >
+                      Profile
+                    </Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Link href="/u/[user]">Friends</Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Link href="/u/[user]">Stats</Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Link href="/settings">
                       <Warn okay={data.currentUser.isVerified}>Settings</Warn>
-                    </a>
-                  </Link>
-                </div>
-                <div>
-                  <button onClick={handleLogout}>Logout</button>
-                </div>
-              </div>
-              <span style={{ whiteSpace: "nowrap" }}>
-                <Avatar
-                  name={data.currentUser.name || "?"}
-                  imageUrl={data.currentUser.avatarUrl}
-                  status={!data.currentUser.isVerified ? "warn" : undefined}
-                />
-              </span>
-            </div>
-          ) : forbidsLoggedIn ? null : (
-            <Link href={`/login?next=${encodeURIComponent(currentUrl)}`}>
-              <a>Sign in</a>
-            </Link>
-          )}
-        </div>
-      </header>
-      <div style={{ minHeight: contentMinHeight }}>
+                    </Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <button onClick={handleLogout}>Logout</button>
+                  </Dropdown.Item>
+                </Dropdown.Content>
+              </Dropdown.Menu>
+            ) : forbidsLoggedIn ? null : (
+              <LogInLink href={`/login?next=${encodeURIComponent(currentUrl)}`}>
+                Sign in
+              </LogInLink>
+            )}
+          </div>
+        </Navigation.Content>
+      </Navigation.Header>
+      <Content>
         {renderChildren({
           error,
           loading,
           currentUser: data && data.currentUser,
         })}
-      </div>
-      <footer>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-          }}
-        >
+      </Content>
+      <Footer.Wrapper>
+        <Footer.Content>
           <p>
             Copyright &copy; {new Date().getFullYear()} {author}. All rights
             reserved.
-            {process.env.T_AND_C_URL ? (
-              <span>
-                {" "}
-                <a
-                  style={{ textDecoration: "underline" }}
-                  href={process.env.T_AND_C_URL}
-                >
-                  Terms and conditions
-                </a>
-              </span>
-            ) : null}
           </p>
-        </div>
-      </footer>
-    </div>
+        </Footer.Content>
+      </Footer.Wrapper>
+    </>
   );
 }
+
+const Navigation = {
+  Header: styled("header", {
+    position: "fixed",
+    zIndex: 10,
+    top: 0,
+    left: 0,
+
+    height: "70px",
+    width: "100%",
+
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
+
+    boxShadow: "0 2px 8px #f0f1f2",
+    background: "white",
+  }),
+  Content: styled("div", {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "900px",
+  }),
+};
+
+const Content = styled("div", {
+  marginTop: "70px",
+  minHeight: "calc(100vh - 50px)",
+});
+
+const ProjectLogo = styled("div", {
+  fontSize: "38px",
+  fontWeight: "bold",
+  textTransform: "capitalize",
+});
+
+const LogoText = styled("span", { color: "black", textDecoration: "inherit" });
+
+const LogInLink = styled(Link, {});
+
+const IconButton = styled("button", {
+  all: "unset",
+  fontFamily: "inherit",
+  borderRadius: "100%",
+  height: "42px",
+  width: "42px",
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: violet.violet11,
+  backgroundColor: "white",
+  boxShadow: `0 2px 10px ${blackA.blackA7}`,
+  "&:hover": { backgroundColor: violet.violet3 },
+  "&:focus": { boxShadow: `0 0 0 2px black` },
+});
+
+const Footer = {
+  Wrapper: styled("div", {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "50px",
+  }),
+  Content: styled("span", {}),
+};

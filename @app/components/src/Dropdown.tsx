@@ -25,7 +25,7 @@ const slideLeftAndFade = keyframes({
 const StyledContent = styled(DropdownMenuPrimitive.Content, {
   minWidth: 220,
   backgroundColor: "white",
-  borderRadius: 6,
+  borderRadius: "8px",
   padding: 5,
   boxShadow:
     "0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2)",
@@ -44,16 +44,16 @@ const StyledContent = styled(DropdownMenuPrimitive.Content, {
 
 const itemStyles = {
   all: "unset",
-  fontSize: 13,
+  fontSize: "1rem",
   lineHeight: 1,
   color: violet.violet11,
   borderRadius: 3,
   display: "flex",
   alignItems: "center",
-  height: 25,
+  height: "2rem",
   padding: "0 5px",
   position: "relative",
-  paddingLeft: 25,
+  paddingLeft: "1rem",
   userSelect: "none",
 
   "&[data-disabled]": {
@@ -108,16 +108,17 @@ const StyledArrow = styled(DropdownMenuPrimitive.Arrow, {
   fill: "white",
 });
 
-// Exports
-export const DropdownMenu = DropdownMenuPrimitive.Root;
-export const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
-export const DropdownMenuContent = StyledContent;
-export const DropdownMenuItem = StyledItem;
-export const DropdownMenuCheckboxItem = StyledCheckboxItem;
-export const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup;
-export const DropdownMenuRadioItem = StyledRadioItem;
-export const DropdownMenuItemIndicator = StyledItemIndicator;
-export const DropdownMenuTriggerItem = StyledTriggerItem;
-export const DropdownMenuLabel = StyledLabel;
-export const DropdownMenuSeparator = StyledSeparator;
-export const DropdownMenuArrow = StyledArrow;
+export const Dropdown = {
+  Menu: DropdownMenuPrimitive.Root,
+  Trigger: DropdownMenuPrimitive.Trigger,
+  Content: StyledContent,
+  Item: StyledItem,
+  CheckboxItem: StyledCheckboxItem,
+  RadioGroup: DropdownMenuPrimitive.RadioGroup,
+  RadioItem: StyledRadioItem,
+  ItemIndicator: StyledItemIndicator,
+  TriggerItem: StyledTriggerItem,
+  Label: StyledLabel,
+  Separator: StyledSeparator,
+  Arrow: StyledArrow,
+};

@@ -2,7 +2,6 @@ import { OrganizationPage_OrganizationFragment } from "@app/graphql";
 import Link from "next/link";
 import React, { useMemo } from "react";
 
-import { contentMinHeight } from "./SharedLayout";
 import { StandardWidth } from "./StandardWidth";
 
 interface PageSpec {
@@ -51,7 +50,7 @@ export function OrganizationSettingsLayout({
     href + (router && router.query ? `?${qs.stringify(router.query)}` : "");
     */
   return (
-    <div style={{ minHeight: contentMinHeight }}>
+    <div style={{ minHeight: "1000px" }}>
       <div>
         <div key={href}>
           {Object.keys(pages).map((pageHref) => (
