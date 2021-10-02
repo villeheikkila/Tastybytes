@@ -112,7 +112,15 @@ CREATE TABLE app_public.users (
     is_verified boolean DEFAULT false NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    first_name text,
+    last_name text,
+    location text,
+    country text,
     CONSTRAINT users_avatar_url_check CHECK ((avatar_url ~ '^https?://[^/]+'::text)),
+    CONSTRAINT users_country_check CHECK (((length(country) >= 2) AND (length(country) <= 56))),
+    CONSTRAINT users_first_name_check CHECK (((length(first_name) >= 2) AND (length(first_name) <= 56))),
+    CONSTRAINT users_last_name_check CHECK (((length(last_name) >= 2) AND (length(last_name) <= 56))),
+    CONSTRAINT users_location_check CHECK (((length(location) >= 2) AND (length(location) <= 56))),
     CONSTRAINT users_username_check CHECK (((length((username)::text) >= 2) AND (length((username)::text) <= 24) AND (username OPERATOR(public.~) '^[a-zA-Z]([_]?[a-zA-Z0-9])+$'::public.citext)))
 );
 
@@ -171,7 +179,8 @@ declare
   v_matched_user_id uuid;
   v_matched_authentication_id uuid;
   v_email citext;
-  v_name text;
+  v_first_name text;
+  v_last_name text;
   v_avatar_url text;
   v_user app_public.users;
   v_user_email app_public.user_emails;
@@ -189,7 +198,8 @@ begin
   end if;
 
   v_email = f_profile ->> 'email';
-  v_name := f_profile ->> 'name';
+  v_first_name := f_profile ->> 'first_name';
+  v_last_name := f_profile ->> 'last_name';
   v_avatar_url := f_profile ->> 'avatar_url';
 
   if v_matched_authentication_id is null then
@@ -242,7 +252,8 @@ begin
         where user_authentication_id = v_matched_authentication_id;
       update app_public.users
         set
-          name = coalesce(users.name, v_name),
+          first_name = coalesce(users.name, v_first_name),
+          last_name = coalesce(users.name, v_last_name),
           avatar_url = coalesce(users.avatar_url, v_avatar_url)
         where id = v_matched_user_id
         returning  * into v_user;
@@ -493,6 +504,49 @@ COMMENT ON FUNCTION app_private.really_create_user(username public.citext, email
 
 
 --
+-- Name: really_create_user(public.citext, text, boolean, text, text, text, text); Type: FUNCTION; Schema: app_private; Owner: -
+--
+
+CREATE FUNCTION app_private.really_create_user(username public.citext, email text, email_is_verified boolean, first_name text, last_name text, avatar_url text, password text DEFAULT NULL::text) RETURNS app_public.users
+    LANGUAGE plpgsql
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+declare
+  v_user app_public.users;
+  v_username citext = username;
+begin
+  if password is not null then
+    perform app_private.assert_valid_password(password);
+  end if;
+  if email is null then
+    raise exception 'Email is required' using errcode = 'MODAT';
+  end if;
+
+  -- Insert the new user
+  insert into app_public.users (username, first_name, last_name, avatar_url) values
+    (v_username, first_name, last_name, avatar_url)
+    returning * into v_user;
+
+	-- Add the user's email
+  insert into app_public.user_emails (user_id, email, is_verified, is_primary)
+  values (v_user.id, email, email_is_verified, email_is_verified);
+
+  -- Store the password
+  if password is not null then
+    update app_private.user_secrets
+    set password_hash = crypt(password, gen_salt('bf'))
+    where user_id = v_user.id;
+  end if;
+
+  -- Refresh the user
+  select * into v_user from app_public.users where id = v_user.id;
+
+  return v_user;
+end;
+$$;
+
+
+--
 -- Name: register_user(character varying, character varying, json, json, boolean); Type: FUNCTION; Schema: app_private; Owner: -
 --
 
@@ -503,20 +557,22 @@ CREATE FUNCTION app_private.register_user(f_service character varying, f_identif
 declare
   v_user app_public.users;
   v_email citext;
-  v_name text;
+  v_first_name text;
+  v_last_name text;
   v_username citext;
   v_avatar_url text;
   v_user_authentication_id uuid;
 begin
   -- Extract data from the user’s OAuth profile data.
   v_email := f_profile ->> 'email';
-  v_name := f_profile ->> 'name';
+  v_first_name := f_profile ->> 'first_name';
+  v_last_name := f_profile ->> 'last_name';
   v_username := f_profile ->> 'username';
   v_avatar_url := f_profile ->> 'avatar_url';
 
   -- Sanitise the username, and make it unique if necessary.
   if v_username is null then
-    v_username = coalesce(v_name, 'user');
+    v_username = coalesce(concat(v_first_name, '-', v_last_name), 'user');
   end if;
   v_username = regexp_replace(v_username, '^[^a-z]+', '', 'gi');
   v_username = regexp_replace(v_username, '[^a-z0-9]+', '_', 'gi');
@@ -546,7 +602,8 @@ begin
     username => v_username,
     email => v_email,
     email_is_verified => f_email_is_verified,
-    name => v_name,
+    first_name => v_first_name,
+    last_name => v_last_name,
     avatar_url => v_avatar_url
   );
 
@@ -3307,6 +3364,13 @@ REVOKE ALL ON PROCEDURE app_private.migrate_seed() FROM PUBLIC;
 --
 
 REVOKE ALL ON FUNCTION app_private.really_create_user(username public.citext, email text, email_is_verified boolean, name text, avatar_url text, password text) FROM PUBLIC;
+
+
+--
+-- Name: FUNCTION really_create_user(username public.citext, email text, email_is_verified boolean, first_name text, last_name text, avatar_url text, password text); Type: ACL; Schema: app_private; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_private.really_create_user(username public.citext, email text, email_is_verified boolean, first_name text, last_name text, avatar_url text, password text) FROM PUBLIC;
 
 
 --

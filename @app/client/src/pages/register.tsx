@@ -18,7 +18,7 @@ import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Router from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { isSafe } from "./login";
@@ -28,7 +28,8 @@ interface RegisterProps {
 }
 
 interface RegisterFormValues {
-  name: string;
+  firstName: string;
+  lastName: string;
   username: string;
   email: string;
   password: string;
@@ -47,13 +48,15 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
     handleSubmit,
     setError: setFormError,
     watch,
+    setFocus,
   } = useForm<RegisterFormValues>();
 
   const onSubmit = async ({
     username,
     email,
     password,
-    name,
+    firstName,
+    lastName,
   }: RegisterFormValues) => {
     try {
       await signUp({
@@ -61,7 +64,8 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
           username,
           email,
           password,
-          name,
+          firstName,
+          lastName,
         },
       });
       resetWebsocketConnection();
@@ -98,6 +102,10 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
     }
   };
 
+  useEffect(() => {
+    setFocus("username");
+  }, [setFocus]);
+
   const code = getCodeFromError(error);
 
   return (
@@ -127,12 +135,12 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
                 <Input
                   autoComplete="given-name"
                   placeholder="First Name"
-                  {...register("name", { required: true })}
+                  {...register("firstName", { required: true })}
                 />
                 <Input
                   autoComplete="family-name"
                   placeholder="Last Name"
-                  {...register("name", { required: true })}
+                  {...register("lastName", { required: true })}
                 />
               </Box>
               <Input
