@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
 
-const CompanyPage = ({ slug }: { slug: string }) => {
+const CompanyPage = () => {
   const router = useRouter();
   const companyName = router.query.company;
 
@@ -22,8 +22,8 @@ const CompanyPage = ({ slug }: { slug: string }) => {
   return (
     <SharedLayout
       title={`${data?.name ?? companyName}`}
-      titleHref={`/user/[slug]`}
-      titleHrefAs={`/user/${slug}`}
+      titleHref={`/c/[company]`}
+      titleHrefAs={`/c/${companyName}`}
       query={brands}
     >
       {data && <CompanyPageInner data={data} />}

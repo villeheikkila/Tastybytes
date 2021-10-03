@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Router from "next/router";
 import React, { useEffect } from "react";
 
-const O: NextPage = () => {
+const U: NextPage = () => {
   useEffect(() => {
     Router.replace("/");
   }, []);
@@ -10,4 +10,4 @@ const O: NextPage = () => {
   return <div>Redirecting...</div>;
 };
 
-export default O;
+export default U;
