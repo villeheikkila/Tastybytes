@@ -1,4 +1,5 @@
 query CheckInsByUsername($username: String!) {
+  ...SharedLayout_Query
   userByUsername(username: $username) {
     id
     authoredCheckIns(first: 20) {
