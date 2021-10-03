@@ -118,8 +118,8 @@ export const globalStyles = globalCss({
     fontVariant: "normal",
     fontWeight: 500,
     lineHeight: "20px",
-    textDecoration  : "none",
-    color: "rgba(0, 153, 254, 1.00)"
+    textDecoration: "none",
+    color: "rgba(0, 153, 254, 1.00)",
   },
   p: {
     fontFamily: "Muli",

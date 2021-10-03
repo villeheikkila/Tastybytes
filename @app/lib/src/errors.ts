@@ -2,9 +2,8 @@ import { ApolloError } from "@apollo/client";
 import { GraphQLError } from "graphql";
 import { z } from "zod";
 
-
 export const ApolloErrorCheck = z.object({
-  graphQLErrors: z.object({message: z.string()})
+  graphQLErrors: z.object({ message: z.string() }),
 });
 
 export function extractError(error: null): null;

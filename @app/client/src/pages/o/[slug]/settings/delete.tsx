@@ -3,7 +3,6 @@ import {
   AuthRestrict,
   ErrorAlert,
   OrganizationSettingsLayout,
-  P,
   SharedLayout,
   useOrganizationLoading,
   useOrganizationSlug,
