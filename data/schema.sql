@@ -3324,6 +3324,20 @@ GRANT UPDATE(avatar_url) ON TABLE app_public.users TO tasted_visitor;
 
 
 --
+-- Name: COLUMN users.first_name; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(first_name) ON TABLE app_public.users TO tasted_visitor;
+
+
+--
+-- Name: COLUMN users.last_name; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(last_name) ON TABLE app_public.users TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION link_or_register_user(f_user_id uuid, f_service character varying, f_identifier character varying, f_profile json, f_auth_details json); Type: ACL; Schema: app_private; Owner: -
 --
 

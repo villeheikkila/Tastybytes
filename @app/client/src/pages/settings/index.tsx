@@ -2,6 +2,7 @@ import { ApolloError } from "@apollo/client";
 import {
   Button,
   ErrorAlert,
+  ErrorText,
   Input,
   Label,
   Redirect,
@@ -13,7 +14,7 @@ import {
   useSettingsProfileQuery,
   useUpdateUserMutation,
 } from "@app/graphql";
-import { extractError, getCodeFromError, Nullable } from "@app/lib";
+import { extractError, getCodeFromError } from "@app/lib";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -50,16 +51,16 @@ interface ProfileSettingsFormProps {
 }
 
 interface ProfileSettingsFormValues {
-  firstName: Nullable<string>;
-  lastName: Nullable<string>;
+  firstName: string | undefined;
+  lastName: string | undefined;
   username: string;
 }
 
-function ProfileSettingsForm({
+const ProfileSettingsForm = ({
   user,
   error,
   setError,
-}: ProfileSettingsFormProps) {
+}: ProfileSettingsFormProps) => {
   const [updateUser] = useUpdateUserMutation();
   const [success, setSuccess] = useState(false);
 
@@ -142,16 +143,16 @@ function ProfileSettingsForm({
         </Label>
 
         {error ? (
-          <span>
-            `Updating username`
+          <ErrorText>
+            Updating username
             {extractError(error).message}
             {code ? (
-              <span>
+              <>
                 {" "}
                 (Error code: <code>ERR_{code}</code>)
-              </span>
+              </>
             ) : null}
-          </span>
+          </ErrorText>
         ) : success ? (
           <span>Profile updated</span>
         ) : null}
@@ -159,7 +160,7 @@ function ProfileSettingsForm({
       </Form>
     </Box>
   );
-}
+};
 
 const Form = styled("form", {
   display: "flex",

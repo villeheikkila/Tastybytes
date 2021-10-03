@@ -4744,6 +4744,8 @@ type UserOrganizationsByOrganizationMembershipUserIdAndOrganizationIdManyToManyE
 input UserPatch {
   """Optional avatar URL."""
   avatarUrl: String
+  firstName: String
+  lastName: String
 
   """Public-facing username (or 'handle') of the user."""
   username: String
