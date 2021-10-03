@@ -1,6 +1,7 @@
-import { SharedLayout } from "@app/components";
+import { Card, Layout, SharedLayout, Stars } from "@app/components";
 import { ProductByIdQuery, useProductByIdQuery } from "@app/graphql";
-import { styled } from "@stitches/react";
+import { getDisplayName } from "@app/lib";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
 
@@ -34,40 +35,32 @@ interface UserPageInnerProps {
 
 const ProductPageInner: FC<UserPageInnerProps> = ({ data }) => {
   return (
-    <div>
-      <h1>
-        {data.brand.company.name} {data.brand.name} {data.flavor}
-      </h1>
-      <CardContainer>
-        {data.checkIns.nodes.map((checkIn) => (
-          <Card key={checkIn.id}>
-            <div key={checkIn.id}>
-              {checkIn.author.firstName} {checkIn.rating / 2}
-            </div>
-          </Card>
+    <Layout.Root>
+      <Layout.Header>
+        <h1>
+          {data.brand.company.name} {data.brand.name} {data.flavor}
+        </h1>
+      </Layout.Header>
+
+      <Card.Container>
+        {data.checkIns.nodes.map(({ id, author, rating }) => (
+          <Card.Wrapper key={id}>
+            <p>
+              <b>{getDisplayName(author)}</b> has tasted{" "}
+              <Link
+                href={`/c/${data.brand.company.name}/${data.id}`}
+              >{`${data.brand.name} - ${data.flavor}`}</Link>{" "}
+              by{" "}
+              <Link href={`/c/${data.brand.company.name}`}>
+                {data.brand.company.name}
+              </Link>
+            </p>
+            <Stars rating={rating} />
+          </Card.Wrapper>
         ))}
-      </CardContainer>
-    </div>
+      </Card.Container>
+    </Layout.Root>
   );
 };
-
-const CardContainer = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  gap: "12px",
-});
-
-const Card = styled("div", {
-  borderRadius: 6,
-  padding: 24,
-  width: "clamp(700px, 80vw)",
-  backgroundColor: "white",
-  boxShadow:
-    "hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
-  "@media (prefers-reduced-motion: no-preference)": {
-    animationDuration: "400ms",
-    animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-  },
-});
 
 export default ProductPage;
