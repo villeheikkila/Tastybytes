@@ -1,4 +1,5 @@
-query ProductsByCompanyName($companyName: String!) {
+query BrandsByCompanyName($companyName: String!) {
+  ...SharedLayout_Query
   companyByName(name: $companyName) {
     id
     name

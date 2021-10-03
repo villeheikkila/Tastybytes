@@ -54,6 +54,7 @@ interface MyAppProps extends App {
   pageProps: any;
   apollo: ApolloClient<any>;
 }
+
 const MyApp = ({ Component, pageProps, apollo }: MyAppProps) => {
   globalStyles();
 

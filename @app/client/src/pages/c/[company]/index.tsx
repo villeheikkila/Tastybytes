@@ -1,7 +1,7 @@
 import { SharedLayout } from "@app/components";
 import {
-  ProductsByCompanyNameQuery,
-  useProductsByCompanyNameQuery,
+  BrandsByCompanyNameQuery,
+  useBrandsByCompanyNameQuery,
 } from "@app/graphql";
 import { styled } from "@stitches/react";
 import Link from "next/link";
@@ -12,35 +12,35 @@ const CompanyPage = ({ slug }: { slug: string }) => {
   const router = useRouter();
   const companyName = router.query.company;
 
-  const checkIns = useProductsByCompanyNameQuery({
+  const brands = useBrandsByCompanyNameQuery({
     variables: {
       companyName: String(companyName) ?? "",
     },
   });
 
-  const data = checkIns.data?.companyByName;
+  const data = brands.data?.companyByName;
 
   return (
     <SharedLayout
       title={`${data?.name ?? companyName}`}
       titleHref={`/user/[slug]`}
       titleHrefAs={`/user/${slug}`}
-      query={checkIns!}
+      query={brands}
     >
-      {<CompanyPageInner data={data!} />}
+      {data && <CompanyPageInner data={data} />}
     </SharedLayout>
   );
 };
 
 interface UserPageInnerProps {
-  data: ProductsByCompanyNameQuery["companyByName"];
+  data: BrandsByCompanyNameQuery["companyByName"];
 }
 
 const CompanyPageInner: FC<UserPageInnerProps> = ({ data }) => {
   return (
     <div>
       <CardContainer>
-        {data?.brands.edges.map((brand) => (
+        {data.brands.edges.map((brand) => (
           <Card key={brand.node.id}>
             <h3>{brand.node.name}</h3>
             {brand.node.items.edges.map((item) => (

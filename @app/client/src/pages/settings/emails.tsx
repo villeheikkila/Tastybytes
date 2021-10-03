@@ -1,5 +1,13 @@
 import { ApolloError } from "@apollo/client";
-import { Button, ErrorAlert, Redirect, SettingsLayout } from "@app/components";
+import {
+  Button,
+  ErrorAlert,
+  ErrorText,
+  Input,
+  Redirect,
+  SettingsLayout,
+} from "@app/components";
+import { styled } from "@app/components/src/stitches.config";
 import {
   EmailsForm_UserEmailFragment,
   useAddEmailMutation,
@@ -9,6 +17,7 @@ import {
   useSettingsEmailsQuery,
 } from "@app/graphql";
 import { extractError, getCodeFromError } from "@app/lib";
+import { ErrorMessage } from "@hookform/error-message";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -61,7 +70,6 @@ const Email = ({
       ].filter((_) => _)}
       <div>
         <span>
-          {" "}
           {email.email}{" "}
           <span
             title={
@@ -70,11 +78,7 @@ const Email = ({
                 : "Pending verification (please check your inbox / spam folder"
             }
           >
-            {email.isVerified ? (
-              "✅"
-            ) : (
-              <small style={{ color: "red" }}>(unverified)</small>
-            )}
+            {email.isVerified ? "✅" : <ErrorText>(unverified)</ErrorText>}
           </span>
         </span>
         Added ${new Date(Date.parse(email.createdAt)).toLocaleString()}
@@ -85,10 +89,10 @@ const Email = ({
 
 const Settings_Emails: NextPage = () => {
   const [showAddEmailForm, setShowAddEmailForm] = useState(false);
-  const [formError, setFormError] = useState<Error | ApolloError | null>(null);
   const query = useSettingsEmailsQuery();
   const { data, loading, error } = query;
   const user = data && data.currentUser;
+
   const pageContent = (() => {
     if (error && !loading) {
       return <ErrorAlert error={error} />;
@@ -107,12 +111,12 @@ const Settings_Emails: NextPage = () => {
             <h1>Email addresses</h1>
           </header>
           {user.isVerified ? null : (
-            <div>
+            <p>
               No verified emails You do not have any verified email addresses,
               this will make account recovery impossible and may limit your
               available functionality within this application. Please complete
               email verification.
-            </div>
+            </p>
           )}
           <p>
             <strong>
@@ -136,11 +140,7 @@ const Settings_Emails: NextPage = () => {
               </Button>
             </div>
           ) : (
-            <AddEmailForm
-              onComplete={() => setShowAddEmailForm(false)}
-              error={formError}
-              setError={setFormError}
-            />
+            <AddEmailForm onComplete={() => setShowAddEmailForm(false)} />
           )}
         </div>
       );
@@ -157,55 +157,67 @@ export default Settings_Emails;
 
 interface AddEmailFormProps {
   onComplete: () => void;
-  error: Error | ApolloError | null;
-  setError: (error: Error | ApolloError | null) => void;
 }
 
 interface EmailFormValues {
   email: string;
 }
 
-const AddEmailForm = ({ error, setError, onComplete }: AddEmailFormProps) => {
-  const { register, handleSubmit } = useForm<EmailFormValues>();
+const AddEmailForm = ({ onComplete }: AddEmailFormProps) => {
   const [addEmail] = useAddEmailMutation();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<EmailFormValues>();
 
   const onSubmit = async (values: EmailFormValues) => {
     try {
-      setError(null);
       await addEmail({ variables: { email: values.email } });
       onComplete();
     } catch (e) {
-      setError(e);
+      const errorMessage = extractError(e as ApolloError);
+      const errCode = getCodeFromError(e);
+      setError("email", {
+        message: `${errCode}: Error occured while adding email ${errorMessage.message}`,
+      });
     }
   };
 
-  const code = getCodeFromError(error);
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        id="email"
-        {...register("email", {
-          required: true,
-        })}
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <InputRow>
+        <Input
+          id="email"
+          autoComplete="email"
+          placeholder="Email"
+          aria-invalid={errors.email ? "true" : "false"}
+          {...register("email", {
+            required: true,
+          })}
+        />
+
+        <Button type="submit">Add email</Button>
+      </InputRow>
+      <ErrorMessage
+        errors={errors}
+        name="email"
+        render={({ message }) => <ErrorText>{message}</ErrorText>}
       />
-
-      {error ? (
-        <div>
-          Error adding email
-          <span>
-            {extractError(error).message}
-            {code ? (
-              <span>
-                {" "}
-                (Error code: <code>ERR_{code}</code>)
-              </span>
-            ) : null}
-          </span>
-        </div>
-      ) : null}
-
-      <button type="submit">Add email</button>
-    </form>
+    </Form>
   );
 };
+
+const InputRow = styled("div", {
+  display: "flex",
+  width: "420px",
+  gap: "12px",
+});
+
+const Form = styled("form", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "4px",
+});

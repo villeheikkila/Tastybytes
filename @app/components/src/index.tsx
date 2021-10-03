@@ -2,6 +2,7 @@ export * from "./AlertDialog";
 export * from "./Button";
 export * from "./ButtonLink";
 export * from "./Dialog";
+export * from "./Error";
 export * from "./ErrorAlert";
 export * from "./ErrorOccurred";
 export * from "./FourOhFour";

@@ -2,6 +2,7 @@ import { ApolloError } from "@apollo/client";
 import {
   AuthRestrict,
   Button,
+  ErrorText,
   Input,
   Redirect,
   SharedLayout,
@@ -177,7 +178,7 @@ const LoginForm = ({
       <ErrorMessage
         errors={errors}
         name="password"
-        render={({ message }) => <p>{message}</p>}
+        render={({ message }) => <ErrorText>{message}</ErrorText>}
       />
     </Authentication.Form>
   );

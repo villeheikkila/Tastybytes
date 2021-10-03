@@ -1,4 +1,5 @@
 query ProductById($itemId: Int!) {
+  ...SharedLayout_Query
   item(id: $itemId) {
     brand {
       id

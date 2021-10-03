@@ -14,7 +14,6 @@ import {
   getExceptionFromError,
   resetWebsocketConnection,
 } from "@app/lib";
-import { ErrorMessage } from "@hookform/error-message";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
