@@ -14,16 +14,16 @@ const ProductPage = () => {
     },
   });
 
-  const checkIns = productById?.data?.item;
+  const data = productById?.data?.item;
 
   return (
     <SharedLayout
       title={`${item}`}
       titleHref={`/user/[item]`}
       titleHrefAs={`/user/${item}`}
-      query={productById!}
+      query={productById}
     >
-      {checkIns && <ProductPageInner data={checkIns} />}
+      {data && <ProductPageInner data={data} />}
     </SharedLayout>
   );
 };
@@ -39,10 +39,10 @@ const ProductPageInner: FC<UserPageInnerProps> = ({ data }) => {
         {data.brand.company.name} {data.brand.name} {data.flavor}
       </h1>
       <CardContainer>
-        {data?.checkIns.nodes.map((checkIn) => (
+        {data.checkIns.nodes.map((checkIn) => (
           <Card key={checkIn.id}>
             <div key={checkIn.id}>
-              {checkIn.author.name} {checkIn.rating / 2}
+              {checkIn.author.firstName} {checkIn.rating / 2}
             </div>
           </Card>
         ))}

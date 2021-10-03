@@ -1,15 +1,20 @@
-import { SharedLayout } from "@app/components";
+import { Button, Input, SharedLayout } from "@app/components";
+import { styled } from "@app/components/src/stitches.config";
 import { useSharedQuery, useVerifyEmailMutation } from "@app/graphql";
 import get from "lodash/get";
 import { NextPage } from "next";
 import React, { useEffect } from "react";
 
-interface IProps {
+interface VerifyPageProps {
   id: string | null;
   token: string | null;
 }
 
-const VerifyPage: NextPage<IProps> = (props) => {
+const VerifyPage: NextPage<VerifyPageProps> = (props) => {
+  const [error, setError] = React.useState<Error | null>(null);
+  const [verifyEmail] = useVerifyEmailMutation();
+  const query = useSharedQuery();
+
   const [[id, token], setIdAndToken] = React.useState<[string, string]>([
     props.id || "",
     props.token || "",
@@ -18,8 +23,6 @@ const VerifyPage: NextPage<IProps> = (props) => {
   const [state, setState] = React.useState<
     "PENDING" | "SUBMITTING" | "SUCCESS"
   >(props.id && props.token ? "SUBMITTING" : "PENDING");
-  const [error, setError] = React.useState<Error | null>(null);
-  const [verifyEmail] = useVerifyEmailMutation();
 
   useEffect(() => {
     if (state === "SUBMITTING") {
@@ -45,43 +48,57 @@ const VerifyPage: NextPage<IProps> = (props) => {
     }
   }, [id, token, state, props, verifyEmail]);
 
-  function form() {
-    return (
-      <form onSubmit={() => setState("SUBMITTING")}>
-        <p>Please enter your email verification code</p>
-        <input
-          type="text"
-          value={token}
-          onChange={(e) => setIdAndToken([id, e.target.value])}
-        />
-        {error ? <p>{error.message || error}</p> : null}
-        <button>Submit</button>
-      </form>
-    );
-  }
-  const query = useSharedQuery();
   return (
-    <SharedLayout title="Verify Email Address" query={query}>
-      <div>
-        <div>
-          {state === "PENDING" ? (
-            form()
-          ) : state === "SUBMITTING" ? (
-            "Submitting..."
-          ) : state === "SUCCESS" ? (
+    <SharedLayout title="Verify Email Address" query={query} hideNavigation>
+      <Wrapper>
+        {state === "PENDING" ? (
+          <Form onSubmit={() => setState("SUBMITTING")}>
+            <header>
+              <h1>Email Verification</h1>
+            </header>
+            <p>Please enter your email verification code</p>
+            <Input
+              type="text"
+              value={token}
+              onChange={(e) => setIdAndToken([id, e.target.value])}
+            />
+            {error ? <p>{error.message || error}</p> : null}
+            <Button>Submit</Button>
+          </Form>
+        ) : state === "SUBMITTING" ? (
+          <header>
+            <h1>Submitting...</h1>
+          </header>
+        ) : state === "SUCCESS" ? (
+          <>
+            <header>
+              <h1>Email Verified!</h1>
+            </header>
             <p>
-              type="success" showIcon message="Email Verified"
-              description="Thank you for verifying your email address. You may
-              now close this window."
+              Thank you for verifying your email address. You may now close this
+              window.
             </p>
-          ) : (
-            "Unknown state"
-          )}
-        </div>
-      </div>
+          </>
+        ) : (
+          "Unknown state"
+        )}
+      </Wrapper>
     </SharedLayout>
   );
 };
+
+const Wrapper = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
+});
+
+const Form = styled("form", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
+  width: "380px",
+});
 
 VerifyPage.getInitialProps = async ({ query: { id, token } }) => ({
   id: typeof id === "string" ? id : null,

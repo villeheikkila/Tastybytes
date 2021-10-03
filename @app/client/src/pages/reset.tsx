@@ -1,14 +1,18 @@
-import { AuthRestrict, SharedLayout } from "@app/components";
+import {
+  AuthRestrict,
+  Button,
+  ErrorText,
+  Input,
+  SharedLayout,
+} from "@app/components";
+import { styled } from "@app/components/src/stitches.config";
 import { useResetPasswordMutation, useSharedQuery } from "@app/graphql";
 import get from "lodash/get";
 import { NextPage } from "next";
-import React, { useCallback, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-
-interface IProps {
-  userId: string | null;
-  token: string | null;
-}
 
 enum State {
   PENDING = "PENDING",
@@ -16,36 +20,28 @@ enum State {
   SUCCESS = "SUCCESS",
 }
 
+interface ResetPageProps {
+  userId: string | null;
+  token: string | null;
+}
+
 interface ResetFormValues {
-  token: string;
   password: string;
   confirm: string;
 }
 
-const ResetPage: NextPage<IProps> = ({
-  userId: rawUserId,
-  token: rawToken,
-}) => {
+const ResetPage: NextPage<ResetPageProps> = ({ userId, token }) => {
+  const [resetPassword] = useResetPasswordMutation();
   const [error, setError] = useState<Error | null>(null);
   const [state, setState] = useState<State>(State.PENDING);
   const query = useSharedQuery();
   const { register, handleSubmit, watch } = useForm<ResetFormValues>();
 
-  const [[userId, token], setIdAndToken] = useState<[string, string]>([
-    rawUserId || "",
-    rawToken || "",
-  ]);
-
-  const [resetPassword] = useResetPasswordMutation();
-
-  const clearError = useCallback(() => {
+  const onSubmit = (values: ResetFormValues) => {
+    setState(State.SUBMITTING);
     setError(null);
-  }, [setError]);
 
-  const onSubmit = useCallback(
-    (values: ResetFormValues) => {
-      setState(State.SUBMITTING);
-      setError(null);
+    if (!!token) {
       (async () => {
         try {
           const result = await resetPassword({
@@ -59,7 +55,7 @@ const ResetPage: NextPage<IProps> = ({
             setState(State.SUCCESS);
           } else {
             setState(State.PENDING);
-            setError(new Error("Incorrect token, please check and try again"));
+            setError(new Error("Incorrect or already used token."));
           }
         } catch (e) {
           if (e.message) {
@@ -71,9 +67,8 @@ const ResetPage: NextPage<IProps> = ({
           setState(State.PENDING);
         }
       })();
-    },
-    [resetPassword, token, userId]
-  );
+    }
+  };
 
   return (
     <SharedLayout
@@ -83,63 +78,86 @@ const ResetPage: NextPage<IProps> = ({
         // reset is used to change password of OAuth-authenticated users
         AuthRestrict.NEVER
       }
+      hideNavigation
     >
-      <div>
-        <div>
-          <div>
-            {state === "SUBMITTING" ? (
-              <div>
-                type="info" message="Submitting..." description="This might take
-                a few moments..."
-              </div>
-            ) : state === "SUCCESS" ? (
-              <div>
-                type="success" message="Password Reset" description="Your
-                password was reset; you can go and log in now"
-              </div>
-            ) : null}
+      <Wrapper>
+        <Header>
+          <Image color="white" src="/maku.svg" height={48} width={48} />
+          <h1>Reset password</h1>
+        </Header>
 
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              style={{ display: state === State.PENDING ? "" : "none" }}
-            >
-              <input
-                placeholder="Enter your reset token:"
-                type="text"
-                value={token}
-                onChange={(e) => setIdAndToken([userId, e.target.value])}
-              />
-              <input
-                placeholder="Choose a new passphrase:"
-                type="password"
-                autoComplete="new-password"
-                {...register("password")}
-              />
-              <input
-                type="password"
-                placeholder="Confirm passphrase"
-                autoComplete="new-password"
-                {...register("confirm", {
-                  required: true,
-                  validate: (value) =>
-                    value === watch("password", "") ||
-                    "The passwords do not match",
-                })}
-              />
-              <button type="submit">Reset passphrase</button>
-              {error ? (
-                <div onClick={clearError}>
-                  type="error" closable message=
-                  {error.message ? String(error.message) : String(error)}
-                </div>
-              ) : null}
-            </form>
-          </div>
-        </div>
-      </div>
+        <Form
+          onSubmit={handleSubmit(onSubmit)}
+          css={{ display: state === State.PENDING ? "" : "none" }}
+        >
+          <Input
+            placeholder="Choose a new passphrase:"
+            type="password"
+            autoComplete="new-password"
+            {...register("password")}
+          />
+          <Input
+            type="password"
+            placeholder="Confirm passphrase"
+            autoComplete="new-password"
+            {...register("confirm", {
+              required: true,
+              validate: (value) =>
+                value === watch("password", "") || "The passwords do not match",
+            })}
+          />
+          <Button type="submit">Reset password</Button>
+          {error ? (
+            <ErrorText onClick={() => setError(null)}>
+              {error.message ? String(error.message) : String(error)}
+            </ErrorText>
+          ) : null}
+        </Form>
+
+        {state === "SUBMITTING" ? (
+          <Info>Submitting...</Info>
+        ) : state === "SUCCESS" ? (
+          <Info>
+            <p>Your password was reset, you can go and log in now!</p>
+            <Link href="/login">
+              <Button>Go back to the login screen</Button>
+            </Link>
+          </Info>
+        ) : null}
+      </Wrapper>
     </SharedLayout>
   );
 };
+
+const Form = styled("form", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
+  width: "380px",
+});
+
+const Header = styled("header", {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "10px",
+});
+
+const Wrapper = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "24px",
+  width: "400px",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const Info = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
+});
 
 ResetPage.getInitialProps = async ({ query: { user_id, token } = {} }) => ({
   userId: typeof user_id === "string" ? user_id : null,

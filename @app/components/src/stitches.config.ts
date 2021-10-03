@@ -129,6 +129,14 @@ export const globalStyles = globalCss({
     fontWeight: 400,
     lineHeight: "20px",
   },
+  em: {
+    fontFamily: "Muli",
+    fontSize: "14px",
+    fontStyle: "normal",
+    fontVariant: "normal",
+    fontWeight: 600,
+    lineHeight: "20px",
+  },
   label: {
     fontFamily: "Muli",
     fontSize: "14px",
