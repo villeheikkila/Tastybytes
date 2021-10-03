@@ -249,7 +249,8 @@ const Navigation = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    width: "900px",
+    width: "700px",
+    backgroundColor: "$midnight",
   }),
 };
 
