@@ -1,9 +1,8 @@
-import { SharedLayout } from "@app/components";
+import { Card, Layout, SharedLayout } from "@app/components";
 import {
   BrandsByCompanyNameQuery,
   useBrandsByCompanyNameQuery,
 } from "@app/graphql";
-import { styled } from "@stitches/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
@@ -38,10 +37,13 @@ interface UserPageInnerProps {
 
 const CompanyPageInner: FC<UserPageInnerProps> = ({ data }) => {
   return (
-    <div>
-      <CardContainer>
+    <Layout.Root>
+      <Layout.Header>
+        <h1>{data.name}</h1>
+      </Layout.Header>
+      <Card.Container>
         {data.brands.edges.map((brand) => (
-          <Card key={brand.node.id}>
+          <Card.Wrapper key={brand.node.id}>
             <h3>{brand.node.name}</h3>
             {brand.node.items.edges.map((item) => (
               <div key={item.node.id}>
@@ -50,30 +52,11 @@ const CompanyPageInner: FC<UserPageInnerProps> = ({ data }) => {
                 </Link>
               </div>
             ))}
-          </Card>
+          </Card.Wrapper>
         ))}
-      </CardContainer>
-    </div>
+      </Card.Container>
+    </Layout.Root>
   );
 };
-
-const CardContainer = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  gap: "12px",
-});
-
-const Card = styled("div", {
-  borderRadius: 6,
-  padding: 24,
-  width: "clamp(700px, 80vw)",
-  backgroundColor: "white",
-  boxShadow:
-    "hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
-  "@media (prefers-reduced-motion: no-preference)": {
-    animationDuration: "400ms",
-    animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-  },
-});
 
 export default CompanyPage;

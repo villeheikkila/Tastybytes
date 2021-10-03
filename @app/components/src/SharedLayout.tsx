@@ -251,6 +251,7 @@ const Navigation = {
     alignItems: "center",
     width: "700px",
     backgroundColor: "$midnight",
+    padding: "12px",
   }),
 };
 
