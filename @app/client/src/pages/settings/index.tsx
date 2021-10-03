@@ -168,7 +168,7 @@ const Form = styled("form", {
   width: "400px",
 });
 
-const Box = styled("form", {
+const Box = styled("div", {
   display: "flex",
   flexDirection: "column",
   gap: "24px",

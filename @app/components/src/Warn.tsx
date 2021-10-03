@@ -16,8 +16,7 @@ const Dot = styled("span", {
 
 const DotContainer = styled("div");
 
-export function Warn({ children, okay }: WarnProps) {
-  console.log("okay: ", okay);
+export const Warn = ({ children, okay }: WarnProps) => {
   return okay ? (
     <>{children}</>
   ) : (
@@ -25,4 +24,4 @@ export function Warn({ children, okay }: WarnProps) {
       {children} <Dot />
     </>
   );
-}
+};

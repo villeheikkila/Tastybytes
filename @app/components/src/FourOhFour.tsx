@@ -7,9 +7,7 @@ interface FourOhFourProps {
   currentUser?: Pick<User, "id"> | null;
 }
 
-export function FourOhFour(props: FourOhFourProps) {
-  const { currentUser } = props;
-  console.log("currentUser: ", currentUser);
+export const FourOhFour = ({ currentUser }: FourOhFourProps) => {
   return (
     <div>
       404
@@ -19,4 +17,4 @@ export function FourOhFour(props: FourOhFourProps) {
       <ButtonLink href="/">Back Home</ButtonLink>
     </div>
   );
-}
+};

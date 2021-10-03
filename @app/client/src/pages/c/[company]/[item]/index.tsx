@@ -7,7 +7,6 @@ import React, { FC } from "react";
 const ProductPage = () => {
   const router = useRouter();
   const item = router.query.item;
-  console.log("item: ", item);
   const itemId = parseInt(String(item), 10);
   const productById = useProductByIdQuery({
     variables: {
@@ -16,7 +15,6 @@ const ProductPage = () => {
   });
 
   const checkIns = productById?.data?.item;
-  console.log("checkIns: ", checkIns);
 
   return (
     <SharedLayout
