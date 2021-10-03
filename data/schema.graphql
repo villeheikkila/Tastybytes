@@ -924,6 +924,11 @@ input CompanyCondition {
   name: String
 }
 
+"""An input for mutations affecting `Company`"""
+input CompanyInput {
+  name: String!
+}
+
 """A connection to a list of `Type` values, with data from `Item`."""
 type CompanyTypesByItemManufacturerIdAndTypeIdManyToManyConnection {
   """
@@ -1112,6 +1117,44 @@ type ConfirmAccountDeletionPayload {
   """
   query: Query
   success: Boolean
+}
+
+"""All input for the create `Company` mutation."""
+input CreateCompanyInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Company` to be created by this mutation."""
+  company: CompanyInput!
+}
+
+"""The output of our create `Company` mutation."""
+type CreateCompanyPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Company` that was created by this mutation."""
+  company: Company
+
+  """An edge for our `Company`. May be used by Relay 1."""
+  companyEdge(
+    """The method to use when ordering `Company`."""
+    orderBy: [CompaniesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CompaniesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `Company`."""
+  userByCreatedBy: User
 }
 
 """All input for the `createOrganization` mutation."""
@@ -2107,6 +2150,14 @@ type Mutation {
     """
     input: ConfirmAccountDeletionInput!
   ): ConfirmAccountDeletionPayload
+
+  """Creates a single `Company`."""
+  createCompany(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateCompanyInput!
+  ): CreateCompanyPayload
 
   """
   An `Organization` is a great way of sharing access to resources between multiple users without compromising security. When you create an organization you will have the 'owner' and 'billing contact' roles. You may invite other users and redistribute these roles.

@@ -981,6 +981,49 @@ COMMENT ON FUNCTION app_public.confirm_account_deletion(token text) IS 'If you''
 
 
 --
+-- Name: companies; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.companies (
+    id integer NOT NULL,
+    name text NOT NULL,
+    is_verified boolean DEFAULT false NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by uuid,
+    CONSTRAINT companies_name_check CHECK (((length(name) >= 2) AND (length(name) <= 56)))
+);
+
+
+--
+-- Name: create_company(text); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.create_company(name text) RETURNS app_public.companies
+    LANGUAGE plpgsql
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+declare
+  v_company app_public.companies;
+begin
+  if name is null then
+    raise exception 'The company name is required' using errcode = 'MODAT';
+  end if;
+
+  insert into app_public.companies (name) values (name) returning * into v_company;
+  select * into v_company from app_public.companies where id = v_company.id;
+  return v_company;
+end;
+$$;
+
+
+--
+-- Name: FUNCTION create_company(name text); Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON FUNCTION app_public.create_company(name text) IS 'Creates a new company. All arguments are required.';
+
+
+--
 -- Name: organizations; Type: TABLE; Schema: app_public; Owner: -
 --
 
@@ -2080,20 +2123,6 @@ CREATE SEQUENCE app_public.check_ins_id_seq
 --
 
 ALTER SEQUENCE app_public.check_ins_id_seq OWNED BY app_public.check_ins.id;
-
-
---
--- Name: companies; Type: TABLE; Schema: app_public; Owner: -
---
-
-CREATE TABLE app_public.companies (
-    id integer NOT NULL,
-    name text NOT NULL,
-    is_verified boolean DEFAULT false NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by uuid,
-    CONSTRAINT companies_name_check CHECK (((length(name) >= 2) AND (length(name) <= 56)))
-);
 
 
 --
@@ -3446,6 +3475,28 @@ GRANT ALL ON FUNCTION app_public.confirm_account_deletion(token text) TO tasted_
 
 
 --
+-- Name: TABLE companies; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.companies TO tasted_visitor;
+
+
+--
+-- Name: COLUMN companies.name; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT INSERT(name) ON TABLE app_public.companies TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION create_company(name text); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.create_company(name text) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.create_company(name text) TO tasted_visitor;
+
+
+--
 -- Name: TABLE organizations; Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -3721,13 +3772,6 @@ GRANT SELECT ON TABLE app_public.check_ins TO tasted_visitor;
 --
 
 GRANT SELECT,USAGE ON SEQUENCE app_public.check_ins_id_seq TO tasted_visitor;
-
-
---
--- Name: TABLE companies; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT ON TABLE app_public.companies TO tasted_visitor;
 
 
 --
