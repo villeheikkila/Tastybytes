@@ -90,7 +90,8 @@ const PassportLoginPlugin = makeExtendSchemaPlugin((build) => ({
     Mutation: {
       async register(_mutation, args, context: OurGraphQLContext, resolveInfo) {
         const { selectGraphQLResultFromTable } = resolveInfo.graphile;
-        const { username, password, email, firstName, lastName, avatarUrl } = args.input;
+        const { username, password, email, firstName, lastName, avatarUrl } =
+          args.input;
         const { rootPgPool, login, pgClient } = context;
         try {
           // Call our login function to find out if the username/password combination exists

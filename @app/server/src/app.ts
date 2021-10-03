@@ -40,8 +40,6 @@ export async function makeApp({
 
   const app = express();
 
-
-
   /*
    * Getting access to the HTTP server directly means that we can do things
    * with websockets if we need to (e.g. GraphQL subscriptions).

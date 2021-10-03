@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 import chalk from "chalk";
-import { run } from "graphile-worker"
+import { run } from "graphile-worker";
 import { createServer } from "http";
 
 import { getShutdownActions, makeApp } from "./app";
