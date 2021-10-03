@@ -18,7 +18,7 @@ const UserPage: NextPage = () => {
 
   const user = useCheckInsByUsernameQuery({
     variables: {
-      username: username,
+      username,
     },
   });
 
@@ -27,8 +27,8 @@ const UserPage: NextPage = () => {
   return (
     <SharedLayout
       title={`${data?.username ?? username}`}
-      titleHref={`/user/[username]`}
-      titleHrefAs={`/user/${username}`}
+      titleHref={`/u/[username]`}
+      titleHrefAs={`/u/${username}`}
       query={user}
     >
       {data && <UserPageInner user={data} />}
