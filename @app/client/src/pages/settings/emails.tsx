@@ -10,31 +10,37 @@ import {
 } from "@app/graphql";
 import { extractError, getCodeFromError } from "@app/lib";
 import { NextPage } from "next";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-function Email({
+const Email = ({
   email,
   hasOtherEmails,
 }: {
   email: EmailsForm_UserEmailFragment;
   hasOtherEmails: boolean;
-}) {
-  const canDelete = !email.isPrimary && hasOtherEmails;
+}) => {
   const [deleteEmail] = useDeleteEmailMutation();
   const [resendEmailVerification] = useResendEmailVerificationMutation();
   const [makeEmailPrimary] = useMakeEmailPrimaryMutation();
+
+  const canDelete = !email.isPrimary && hasOtherEmails;
+
   return (
-    <div key={email.id}>
+    <div>
       {[
         email.isPrimary && <span>Primary</span>,
         canDelete && (
-          <a onClick={() => deleteEmail({ variables: { emailId: email.id } })}>
+          <a
+            key={email.id}
+            onClick={() => deleteEmail({ variables: { emailId: email.id } })}
+          >
             Delete
           </a>
         ),
         !email.isVerified && (
           <a
+            key={email.id}
             onClick={() =>
               resendEmailVerification({ variables: { emailId: email.id } })
             }
@@ -44,6 +50,7 @@ function Email({
         ),
         email.isVerified && !email.isPrimary && (
           <a
+            key={email.id}
             onClick={() =>
               makeEmailPrimary({ variables: { emailId: email.id } })
             }
@@ -70,11 +77,11 @@ function Email({
             )}
           </span>
         </span>
-        `Added ${new Date(Date.parse(email.createdAt)).toLocaleString()}`
+        Added ${new Date(Date.parse(email.createdAt)).toLocaleString()}
       </div>
     </div>
   );
-}
+};
 
 const Settings_Emails: NextPage = () => {
   const [showAddEmailForm, setShowAddEmailForm] = useState(false);
@@ -158,22 +165,19 @@ interface EmailFormValues {
   email: string;
 }
 
-function AddEmailForm({ error, setError, onComplete }: AddEmailFormProps) {
+const AddEmailForm = ({ error, setError, onComplete }: AddEmailFormProps) => {
   const { register, handleSubmit } = useForm<EmailFormValues>();
   const [addEmail] = useAddEmailMutation();
 
-  const onSubmit = useCallback(
-    async (values: EmailFormValues) => {
-      try {
-        setError(null);
-        await addEmail({ variables: { email: values.email } });
-        onComplete();
-      } catch (e) {
-        setError(e);
-      }
-    },
-    [addEmail, onComplete, setError]
-  );
+  const onSubmit = async (values: EmailFormValues) => {
+    try {
+      setError(null);
+      await addEmail({ variables: { email: values.email } });
+      onComplete();
+    } catch (e) {
+      setError(e);
+    }
+  };
 
   const code = getCodeFromError(error);
 
@@ -204,4 +208,4 @@ function AddEmailForm({ error, setError, onComplete }: AddEmailFormProps) {
       <button type="submit">Add email</button>
     </form>
   );
-}
+};

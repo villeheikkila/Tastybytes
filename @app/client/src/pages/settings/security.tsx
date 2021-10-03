@@ -128,6 +128,7 @@ const Settings_Security: NextPage = () => {
             Current Password
             <Input
               placeholder="Old passphrase"
+              autoComplete="password"
               aria-invalid={errors.oldPassword ? "true" : "false"}
               id="oldPassword"
               {...register("oldPassword", {
@@ -138,8 +139,9 @@ const Settings_Security: NextPage = () => {
           <Label>
             New Password
             <Input
-              placeholder="New passphrase"
+              placeholder="New password"
               id="newPassword"
+              autoComplete="new-password"
               type="password"
               aria-invalid={errors.newPassword ? "true" : "false"}
               {...register("newPassword", {

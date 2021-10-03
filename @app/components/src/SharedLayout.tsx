@@ -149,7 +149,6 @@ export function SharedLayout({
     return noPad ? inner : <StandardWidth>{inner}</StandardWidth>;
   };
   const { data, loading, error } = query;
-  console.log("data: ", data);
 
   return (
     <>
@@ -194,10 +193,8 @@ export function SharedLayout({
                     </Link>
                   </Dropdown.Item>
                   <Dropdown.Item>
-                    <a>
-                      <Link href="/settings">
-                        <Warn okay={data.currentUser.isVerified}>Settings</Warn>
-                      </Link>
+                    <a href="/settings">
+                      <Warn okay={data.currentUser.isVerified}>Settings</Warn>
                     </a>
                   </Dropdown.Item>
                   <Dropdown.Item>

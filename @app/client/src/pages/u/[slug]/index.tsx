@@ -16,7 +16,6 @@ const UserPage: NextPage = () => {
   });
 
   const data = checkIns.data?.userByUsername;
-  console.log("checkIns: ", checkIns);
 
   return (
     <SharedLayout

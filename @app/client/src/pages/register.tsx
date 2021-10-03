@@ -53,8 +53,6 @@ const Register: NextPage<RegisterProps> = ({ next: rawNext }) => {
     setFocus,
   } = useForm<RegisterFormValues>();
 
-  console.log("errors: ", errors);
-
   const onSubmit = async ({
     username,
     email,
