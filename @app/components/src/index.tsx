@@ -9,6 +9,7 @@ export * from "./ErrorOccurred";
 export * from "./FourOhFour";
 export * from "./Input";
 export * from "./Label";
+export * from "./LabeledInput";
 export * from "./Layout";
 export * from "./organizationHooks";
 export * from "./OrganizationSettingsLayout";
