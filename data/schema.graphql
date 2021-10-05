@@ -1119,6 +1119,50 @@ type ConfirmAccountDeletionPayload {
   success: Boolean
 }
 
+"""All input for the `createCheckIn` mutation."""
+input CreateCheckInInput {
+  checkInDate: Date
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  itemId: Int!
+  rating: Int
+  review: String
+}
+
+"""The output of our `createCheckIn` mutation."""
+type CreateCheckInPayload {
+  """Reads a single `User` that is related to this `CheckIn`."""
+  author: User
+  checkIn: CheckIn
+
+  """An edge for our `CheckIn`. May be used by Relay 1."""
+  checkInEdge(
+    """The method to use when ordering `CheckIn`."""
+    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CheckInsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Item` that is related to this `CheckIn`."""
+  item: Item
+
+  """Reads a single `Location` that is related to this `CheckIn`."""
+  locationByLocation: Location
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the create `Company` mutation."""
 input CreateCompanyInput {
   """
@@ -1187,6 +1231,57 @@ type CreateOrganizationPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+"""All input for the `createProduct` mutation."""
+input CreateProductInput {
+  brandId: Int!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  description: String
+  flavor: String!
+  manufacturerId: Int
+  typeId: Int!
+}
+
+"""The output of our `createProduct` mutation."""
+type CreateProductPayload {
+  """Reads a single `Brand` that is related to this `Item`."""
+  brand: Brand
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  item: Item
+
+  """An edge for our `Item`. May be used by Relay 1."""
+  itemEdge(
+    """The method to use when ordering `Item`."""
+    orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemsEdge
+
+  """Reads a single `Company` that is related to this `Item`."""
+  manufacturer: Company
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Type` that is related to this `Item`."""
+  type: Type
+
+  """Reads a single `User` that is related to this `Item`."""
+  userByCreatedBy: User
+
+  """Reads a single `User` that is related to this `Item`."""
+  userByUpdatedBy: User
 }
 
 """All input for the create `UserEmail` mutation."""
@@ -2150,6 +2245,12 @@ type Mutation {
     """
     input: ConfirmAccountDeletionInput!
   ): ConfirmAccountDeletionPayload
+  createCheckIn(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateCheckInInput!
+  ): CreateCheckInPayload
 
   """Creates a single `Company`."""
   createCompany(
@@ -2168,6 +2269,12 @@ type Mutation {
     """
     input: CreateOrganizationInput!
   ): CreateOrganizationPayload
+  createProduct(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateProductInput!
+  ): CreateProductPayload
 
   """Creates a single `UserEmail`."""
   createUserEmail(
@@ -2917,6 +3024,36 @@ type Query {
   userAuthentication(id: UUID!): UserAuthentication
   userByUsername(username: String!): User
   userEmail(id: UUID!): UserEmail
+  userSetting(id: UUID!): UserSetting
+
+  """Reads and enables pagination through a set of `UserSetting`."""
+  userSettings(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserSettingCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `UserSetting`."""
+    orderBy: [UserSettingsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserSettingsConnection
 }
 
 input RegisterInput {
@@ -4226,6 +4363,38 @@ type User {
     orderBy: [UserEmailsOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserEmailsConnection!
 
+  """Reads a single `UserSetting` that is related to this `User`."""
+  userSettingById: UserSetting
+
+  """Reads and enables pagination through a set of `UserSetting`."""
+  userSettingsById(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserSettingCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `UserSetting`."""
+    orderBy: [UserSettingsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserSettingsConnection! @deprecated(reason: "Please use userSettingById instead")
+
   """Public-facing username (or 'handle') of the user."""
   username: String!
 
@@ -4800,6 +4969,58 @@ input UserPatch {
 
   """Public-facing username (or 'handle') of the user."""
   username: String
+}
+
+type UserSetting {
+  id: UUID!
+  isPublicCheckIns: Boolean
+
+  """Reads a single `User` that is related to this `UserSetting`."""
+  userById: User
+}
+
+"""
+A condition to be used against `UserSetting` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input UserSettingCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+}
+
+"""A connection to a list of `UserSetting` values."""
+type UserSettingsConnection {
+  """
+  A list of edges which contains the `UserSetting` and cursor to aid in pagination.
+  """
+  edges: [UserSettingsEdge!]!
+
+  """A list of `UserSetting` objects."""
+  nodes: [UserSetting!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `UserSetting` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `UserSetting` edge in the connection."""
+type UserSettingsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UserSetting` at the end of the edge."""
+  node: UserSetting!
+}
+
+"""Methods to use when ordering `UserSetting`."""
+enum UserSettingsOrderBy {
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
 }
 
 type UserSubscriptionPayload {

@@ -1,0 +1,31 @@
+mutation CreateProduct(
+  $flavor: String!
+  $typeId: Int!
+  $brandId: Int!
+  $manufacturerId: Int!
+  $description: String
+) {
+  createProduct(
+    input: {
+      flavor: $flavor
+      typeId: $typeId
+      brandId: $brandId
+      manufacturerId: $manufacturerId
+      description: $description
+    }
+  ) {
+    item {
+      id
+      flavor
+      brand {
+        id
+        name
+      }
+      type {
+        id
+        name
+        category
+      }
+    }
+  }
+}

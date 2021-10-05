@@ -80,6 +80,22 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 
 
 --
+-- Name: name; Type: DOMAIN; Schema: app_public; Owner: -
+--
+
+CREATE DOMAIN app_public.name AS text
+	CONSTRAINT name_check CHECK (((length(VALUE) >= 2) AND (length(VALUE) <= 56)));
+
+
+--
+-- Name: rating; Type: DOMAIN; Schema: app_public; Owner: -
+--
+
+CREATE DOMAIN app_public.rating AS integer
+	CONSTRAINT rating_check CHECK (((VALUE >= 0) AND (VALUE <= 10)));
+
+
+--
 -- Name: assert_valid_password(text); Type: FUNCTION; Schema: app_private; Owner: -
 --
 
@@ -981,6 +997,58 @@ COMMENT ON FUNCTION app_public.confirm_account_deletion(token text) IS 'If you''
 
 
 --
+-- Name: check_ins; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.check_ins (
+    id integer NOT NULL,
+    rating integer,
+    review text,
+    item_id integer NOT NULL,
+    author_id uuid NOT NULL,
+    check_in_date date,
+    location uuid,
+    is_public boolean DEFAULT true,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT check_ins_rating CHECK (((rating >= 0) AND (rating <= 10))),
+    CONSTRAINT check_ins_review_check CHECK (((length(review) >= 1) AND (length(review) <= 1024)))
+);
+
+
+--
+-- Name: TABLE check_ins; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.check_ins IS 'Check-in is a review given to an item';
+
+
+--
+-- Name: create_check_in(integer, text, integer, date); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.create_check_in(item_id integer, review text DEFAULT NULL::text, rating integer DEFAULT NULL::integer, check_in_date date DEFAULT NULL::date) RETURNS app_public.check_ins
+    LANGUAGE plpgsql SECURITY DEFINER
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+declare
+  v_is_public boolean;
+  v_check_in app_public.check_ins;
+  v_current_user uuid;
+begin
+  select id into v_current_user from app_public.user_settings where id = app_public.current_user_id();
+  if v_current_user is null then
+    raise exception 'You must log in to create a check in' using errcode = 'LOGIN';
+  end if;
+  select is_public_check_ins into v_is_public from app_public.user_settings where id = v_current_user;
+
+  insert into app_public.check_ins (item_id, rating, review, author_id, is_public) values (item_id, rating, review, v_current_user, v_is_public) returning * into v_check_in;
+
+  return v_check_in;
+end;
+$$;
+
+
+--
 -- Name: companies; Type: TABLE; Schema: app_public; Owner: -
 --
 
@@ -1053,6 +1121,61 @@ begin
   insert into app_public.organization_memberships (organization_id, user_id, is_owner, is_billing_contact)
     values(v_org.id, app_public.current_user_id(), true, true);
   return v_org;
+end;
+$$;
+
+
+--
+-- Name: items; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.items (
+    id integer NOT NULL,
+    flavor text,
+    description text,
+    type_id integer NOT NULL,
+    manufacturer_id integer NOT NULL,
+    is_verified boolean DEFAULT false,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by uuid,
+    updated_by uuid,
+    brand_id integer NOT NULL,
+    CONSTRAINT items_description_check CHECK (((length(description) >= 2) AND (length(description) <= 512))),
+    CONSTRAINT items_flavor_check CHECK (((length(flavor) >= 2) AND (length(flavor) <= 99)))
+);
+
+
+--
+-- Name: TABLE items; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.items IS 'Item defines a product that can be rated';
+
+
+--
+-- Name: create_product(text, integer, integer, integer, text); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.create_product(flavor text, type_id integer, brand_id integer, manufacturer_id integer DEFAULT NULL::integer, description text DEFAULT NULL::text) RETURNS app_public.items
+    LANGUAGE plpgsql SECURITY DEFINER
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+declare
+  v_is_verified boolean;
+  v_item app_public.items;
+  v_current_user uuid;
+begin
+  if app_public.current_user_id() is null then
+    raise exception 'You must log in to create an item' using errcode = 'LOGIN';
+  end if;
+
+  select id into v_current_user from app_public.user_settings where id = app_public.current_user_id();
+  select is_admin into v_is_verified from app_public.users where id = v_current_user;
+
+  insert into app_public.items (flavor, type_id, brand_id, manufacturer_id, description, is_verified, created_by, updated_by) values (flavor, type_id, brand_id, manufacturer_id, description, v_is_verified, v_current_user, v_current_user) returning * into v_item;
+
+  return v_item;
 end;
 $$;
 
@@ -2080,32 +2203,6 @@ COMMENT ON TABLE app_public.categories IS 'Main categories for items';
 
 
 --
--- Name: check_ins; Type: TABLE; Schema: app_public; Owner: -
---
-
-CREATE TABLE app_public.check_ins (
-    id integer NOT NULL,
-    rating integer,
-    review text,
-    item_id integer NOT NULL,
-    author_id uuid NOT NULL,
-    check_in_date date,
-    location uuid,
-    is_public boolean DEFAULT true,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    CONSTRAINT check_ins_rating CHECK (((rating >= 0) AND (rating <= 10))),
-    CONSTRAINT check_ins_review_check CHECK (((length(review) >= 1) AND (length(review) <= 1024)))
-);
-
-
---
--- Name: TABLE check_ins; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON TABLE app_public.check_ins IS 'Check-in is a review given to an item';
-
-
---
 -- Name: check_ins_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
 --
 
@@ -2143,34 +2240,6 @@ CREATE SEQUENCE app_public.companies_id_seq
 --
 
 ALTER SEQUENCE app_public.companies_id_seq OWNED BY app_public.companies.id;
-
-
---
--- Name: items; Type: TABLE; Schema: app_public; Owner: -
---
-
-CREATE TABLE app_public.items (
-    id integer NOT NULL,
-    flavor text,
-    description text,
-    type_id integer NOT NULL,
-    manufacturer_id integer NOT NULL,
-    is_verified boolean DEFAULT false,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by uuid,
-    updated_by uuid,
-    brand_id integer NOT NULL,
-    CONSTRAINT items_description_check CHECK (((length(description) >= 2) AND (length(description) <= 512))),
-    CONSTRAINT items_flavor_check CHECK (((length(flavor) >= 2) AND (length(flavor) <= 99)))
-);
-
-
---
--- Name: TABLE items; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON TABLE app_public.items IS 'Item defines a product that can be rated';
 
 
 --
@@ -2376,6 +2445,16 @@ COMMENT ON COLUMN app_public.user_authentications.identifier IS 'A unique identi
 --
 
 COMMENT ON COLUMN app_public.user_authentications.details IS 'Additional profile details extracted from this login method';
+
+
+--
+-- Name: user_settings; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.user_settings (
+    id uuid NOT NULL,
+    is_public_check_ins boolean DEFAULT true
+);
 
 
 --
@@ -2666,6 +2745,14 @@ ALTER TABLE ONLY app_public.user_emails
 
 ALTER TABLE ONLY app_public.user_emails
     ADD CONSTRAINT user_emails_user_id_email_key UNIQUE (user_id, email);
+
+
+--
+-- Name: user_settings user_settings_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.user_settings
+    ADD CONSTRAINT user_settings_pkey PRIMARY KEY (id);
 
 
 --
@@ -3149,6 +3236,14 @@ ALTER TABLE ONLY app_public.user_emails
 
 
 --
+-- Name: user_settings user_settings_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.user_settings
+    ADD CONSTRAINT user_settings_id_fkey FOREIGN KEY (id) REFERENCES app_public.users(id);
+
+
+--
 -- Name: connect_pg_simple_sessions; Type: ROW SECURITY; Schema: app_private; Owner: -
 --
 
@@ -3475,6 +3570,21 @@ GRANT ALL ON FUNCTION app_public.confirm_account_deletion(token text) TO tasted_
 
 
 --
+-- Name: TABLE check_ins; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.check_ins TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION create_check_in(item_id integer, review text, rating integer, check_in_date date); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.create_check_in(item_id integer, review text, rating integer, check_in_date date) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.create_check_in(item_id integer, review text, rating integer, check_in_date date) TO tasted_visitor;
+
+
+--
 -- Name: TABLE companies; Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -3523,6 +3633,21 @@ GRANT UPDATE(name) ON TABLE app_public.organizations TO tasted_visitor;
 
 REVOKE ALL ON FUNCTION app_public.create_organization(slug public.citext, name text) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.create_organization(slug public.citext, name text) TO tasted_visitor;
+
+
+--
+-- Name: TABLE items; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.items TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION create_product(flavor text, type_id integer, brand_id integer, manufacturer_id integer, description text); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.create_product(flavor text, type_id integer, brand_id integer, manufacturer_id integer, description text) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.create_product(flavor text, type_id integer, brand_id integer, manufacturer_id integer, description text) TO tasted_visitor;
 
 
 --
@@ -3761,13 +3886,6 @@ GRANT SELECT ON TABLE app_public.categories TO tasted_visitor;
 
 
 --
--- Name: TABLE check_ins; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT ON TABLE app_public.check_ins TO tasted_visitor;
-
-
---
 -- Name: SEQUENCE check_ins_id_seq; Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -3779,13 +3897,6 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.check_ins_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT,USAGE ON SEQUENCE app_public.companies_id_seq TO tasted_visitor;
-
-
---
--- Name: TABLE items; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT ON TABLE app_public.items TO tasted_visitor;
 
 
 --
@@ -3849,6 +3960,13 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.types_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT,DELETE ON TABLE app_public.user_authentications TO tasted_visitor;
+
+
+--
+-- Name: TABLE user_settings; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.user_settings TO tasted_visitor;
 
 
 --
