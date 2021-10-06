@@ -32,9 +32,14 @@ const Input = styled("input", {
   lineHeight: 1,
   marginLeft: "15px",
   color: "white",
-  backgroundColor: blackA.blackA5,
+  backgroundColor: "blackA.blackA5",
+  border: "none",
+  "&:focus": { outline: "1px solid $blue" },
+  transition: "outline 0.4s ease 0s, color 0.2s ease 0s",
+  "&[aria-invalid='true']": {
+    outline: "1px solid red",
+  },
   boxShadow: `0 0 0 1px ${blackA.blackA9}`,
-  "&:focus": { boxShadow: `0 0 0 2px black` },
 });
 
 interface LabeledInputProps extends React.ComponentProps<typeof Input> {
@@ -46,12 +51,12 @@ const spacesToHyphens = (s: string) => s.replaceAll(" ", "-");
 export const LabeledInput = React.forwardRef<
   React.ElementRef<typeof Input>,
   LabeledInputProps
->(function labeledInput({ label }, forwardedRef) {
+>(function labeledInput({ label, ...props }, forwardedRef) {
   const id = spacesToHyphens(label);
   return (
     <Flex>
       <Label htmlFor={id}>{label}</Label>
-      <Input ref={forwardedRef} type="text" id={id} />
+      <Input type="text" ref={forwardedRef} {...props} id={id} />
     </Flex>
   );
 });

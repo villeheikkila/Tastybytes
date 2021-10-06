@@ -1,9 +1,17 @@
-import { Button, LabeledInput, Layout, SharedLayout } from "@app/components";
+import {
+  Button,
+  ErrorText,
+  LabeledInput,
+  Layout,
+  SharedLayout,
+} from "@app/components";
 import {
   CreateProductPropsQuery,
+  useCreateCompanyMutation,
   useCreateProductMutation,
   useCreateProductPropsQuery,
 } from "@app/graphql";
+import { ErrorMessage } from "@hookform/error-message";
 import { NextPage } from "next";
 import * as React from "react";
 import { useForm } from "react-hook-form";
@@ -31,6 +39,7 @@ const CreateProductInner: React.FC<CreateProductInnerProps> = ({
   data: { categories, companies },
 }) => {
   const [createProduct] = useCreateProductMutation();
+  console.log("createProduct: ", createProduct);
   const [category, setCategory] = React.useState<string>();
   const [brand, setBrand] = React.useState<string>();
   const [type, setType] = React.useState<string>();
@@ -108,11 +117,64 @@ const CreateProductInner: React.FC<CreateProductInnerProps> = ({
         ))}
       </select>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input id="flavor" {...register("flavor")} placeholder="flavor" />
-        <button type="submit">Create</button>
+        <LabeledInput
+          label="Flavor"
+          id="flavor"
+          placeholder="flavor"
+          {...register("flavor")}
+        />
+        <Button type="submit">Create</Button>
       </form>
+      <h1>Companies</h1>
+      <CompanyForm companies={companies} />
     </Layout.Root>
   );
 };
 
+type CompanyFormInput = {
+  name: string;
+};
+
+type CompanyFormProps = {
+  companies: CreateProductPropsQuery["companies"];
+};
+
+const CompanyForm = ({ companies }: CompanyFormProps) => {
+  const [createCompany] = useCreateCompanyMutation({
+    refetchQueries: ["CreateProductProps"],
+  });
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<CompanyFormInput>();
+
+  const onSubmit = ({ name }: CompanyFormInput) => {
+    if (companies.nodes.some((c) => name === c.name)) {
+      setError("name", { message: "Company by that name exist already" });
+    } else {
+      createCompany({ variables: { name } })
+        .then((response) => console.log(response))
+        .catch((error) => setError("name", { message: error.message }));
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <LabeledInput
+        label="Company name"
+        id="name"
+        placeholder="name"
+        {...register("name")}
+      />
+      <ErrorMessage
+        errors={errors}
+        name="name"
+        render={({ message }) => <ErrorText>{message}</ErrorText>}
+      />
+      <Button type="submit">Add new company</Button>
+    </form>
+  );
+};
 export default CreateProductPage;
