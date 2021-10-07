@@ -576,6 +576,7 @@ type CheckIn {
   """Reads a single `Item` that is related to this `CheckIn`."""
   item: Item
   itemId: Int!
+  likes: Int
   location: UUID
 
   """Reads a single `Location` that is related to this `CheckIn`."""
@@ -2157,6 +2158,47 @@ enum ItemsTagsOrderBy {
   TAG_ID_DESC
 }
 
+"""All input for the `likeCheckIn` mutation."""
+input LikeCheckInInput {
+  checkInId: Int!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our `likeCheckIn` mutation."""
+type LikeCheckInPayload {
+  """Reads a single `User` that is related to this `CheckIn`."""
+  author: User
+  checkIn: CheckIn
+
+  """An edge for our `CheckIn`. May be used by Relay 1."""
+  checkInEdge(
+    """The method to use when ordering `CheckIn`."""
+    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CheckInsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Item` that is related to this `CheckIn`."""
+  item: Item
+
+  """Reads a single `Location` that is related to this `CheckIn`."""
+  locationByLocation: Location
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """Contains locations for check ins"""
 type Location {
   """Reads and enables pagination through a set of `CheckIn`."""
@@ -2573,6 +2615,12 @@ type Mutation {
     """
     input: InviteToOrganizationInput!
   ): InviteToOrganizationPayload
+  likeCheckIn(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: LikeCheckInInput!
+  ): LikeCheckInPayload
 
   """
   Use this mutation to log in to your account; this login uses sessions so you do not need to take further action.
