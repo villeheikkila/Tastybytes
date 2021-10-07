@@ -1052,6 +1052,7 @@ CREATE TABLE app_public.check_ins (
     location uuid,
     is_public boolean DEFAULT true,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
+    likes integer DEFAULT 0,
     CONSTRAINT check_ins_rating CHECK (((rating >= 0) AND (rating <= 10))),
     CONSTRAINT check_ins_review_check CHECK (((length(review) >= 1) AND (length(review) <= 1024)))
 );
@@ -1487,6 +1488,41 @@ begin
   -- Invite the user
   insert into app_public.organization_invitations(organization_id, user_id, email, code)
     values (invite_to_organization.organization_id, v_user.id, email, v_code);
+end;
+$$;
+
+
+--
+-- Name: like_check_in(integer); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.like_check_in(check_in_id integer) RETURNS app_public.check_ins
+    LANGUAGE plpgsql SECURITY DEFINER
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+declare
+  v_check_in app_public.check_ins;
+  v_current_user uuid;
+  v_already_liked boolean;
+begin
+  select id into v_current_user from app_public.user_settings where id = app_public.current_user_id();
+
+  if v_current_user is null then
+    raise exception 'You must log in to like a check in' using errcode = 'LOGIN';
+  end if;
+
+  select exists(select 1 from app_public.check_in_likes where liked_by = v_current_user and id = check_in_id) into v_already_liked;
+
+  if v_already_liked is true then
+    update app_public.check_ins set likes = likes - 1 where id = check_in_id;
+    delete from app_public.check_in_likes where id = check_in_id and liked_by = v_current_user;
+    select * from app_public.check_ins where id = check_in_id;
+  else
+    update app_public.check_ins set likes = likes + 1 where id = check_in_id;
+    insert into app_public.check_in_likes (id, liked_by) values (check_in_id, v_current_user) returning * into v_check_in;
+  end if;
+
+  return v_check_in;
 end;
 $$;
 
@@ -2239,6 +2275,36 @@ COMMENT ON TABLE app_public.categories IS 'Main categories for items';
 
 
 --
+-- Name: check_in_likes; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.check_in_likes (
+    id integer NOT NULL,
+    liked_by uuid
+);
+
+
+--
+-- Name: check_in_likes_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
+--
+
+CREATE SEQUENCE app_public.check_in_likes_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: check_in_likes_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
+--
+
+ALTER SEQUENCE app_public.check_in_likes_id_seq OWNED BY app_public.check_in_likes.id;
+
+
+--
 -- Name: check_ins_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
 --
 
@@ -2527,6 +2593,13 @@ ALTER TABLE ONLY app_public.brands ALTER COLUMN id SET DEFAULT nextval('app_publ
 
 
 --
+-- Name: check_in_likes id; Type: DEFAULT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_likes ALTER COLUMN id SET DEFAULT nextval('app_public.check_in_likes_id_seq'::regclass);
+
+
+--
 -- Name: check_ins id; Type: DEFAULT; Schema: app_public; Owner: -
 --
 
@@ -2631,6 +2704,14 @@ ALTER TABLE ONLY app_public.brands
 
 ALTER TABLE ONLY app_public.categories
     ADD CONSTRAINT categories_pkey PRIMARY KEY (name);
+
+
+--
+-- Name: check_in_likes check_in_likes_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_likes
+    ADD CONSTRAINT check_in_likes_pkey PRIMARY KEY (id);
 
 
 --
@@ -3166,6 +3247,22 @@ ALTER TABLE ONLY app_public.brands
 
 ALTER TABLE ONLY app_public.brands
     ADD CONSTRAINT brands_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: check_in_likes check_in_likes_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_likes
+    ADD CONSTRAINT check_in_likes_id_fkey FOREIGN KEY (id) REFERENCES app_public.check_ins(id) ON DELETE CASCADE;
+
+
+--
+-- Name: check_in_likes check_in_likes_liked_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_likes
+    ADD CONSTRAINT check_in_likes_liked_by_fkey FOREIGN KEY (liked_by) REFERENCES app_public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -3807,6 +3904,14 @@ GRANT ALL ON FUNCTION app_public.invite_to_organization(organization_id uuid, us
 
 
 --
+-- Name: FUNCTION like_check_in(check_in_id integer); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.like_check_in(check_in_id integer) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.like_check_in(check_in_id integer) TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION logout(); Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -3968,6 +4073,13 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.brands_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT ON TABLE app_public.categories TO tasted_visitor;
+
+
+--
+-- Name: SEQUENCE check_in_likes_id_seq; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,USAGE ON SEQUENCE app_public.check_in_likes_id_seq TO tasted_visitor;
 
 
 --
