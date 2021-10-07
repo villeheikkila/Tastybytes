@@ -997,6 +997,48 @@ COMMENT ON FUNCTION app_public.confirm_account_deletion(token text) IS 'If you''
 
 
 --
+-- Name: brands; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.brands (
+    id integer NOT NULL,
+    name text,
+    company_id integer,
+    is_verified boolean,
+    created_by uuid,
+    CONSTRAINT brands_name_check CHECK (((length(name) >= 2) AND (length(name) <= 56)))
+);
+
+
+--
+-- Name: create_brand(text, integer); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.create_brand(name text, company_id integer) RETURNS app_public.brands
+    LANGUAGE plpgsql SECURITY DEFINER
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+declare
+  v_is_verified boolean;
+  v_brand app_public.brands;
+  v_current_user uuid;
+begin
+  select id into v_current_user from app_public.user_settings where id = app_public.current_user_id();
+
+  if app_public.current_user_id() is null then
+    raise exception 'You must log in to create a company' using errcode = 'LOGIN';
+  end if;
+
+  select is_admin into v_is_verified from app_public.users where id = v_current_user;
+
+  insert into app_public.brands (name, company_id, is_verified, created_by) values (name, company_id, v_is_verified, v_current_user) returning * into v_brand;
+
+  return v_brand;
+end;
+$$;
+
+
+--
 -- Name: check_ins; Type: TABLE; Schema: app_public; Owner: -
 --
 
@@ -2161,18 +2203,6 @@ COMMENT ON TABLE app_private.user_secrets IS 'The contents of this table should 
 
 
 --
--- Name: brands; Type: TABLE; Schema: app_public; Owner: -
---
-
-CREATE TABLE app_public.brands (
-    id integer NOT NULL,
-    name text,
-    company_id integer,
-    CONSTRAINT brands_name_check CHECK (((length(name) >= 2) AND (length(name) <= 56)))
-);
-
-
---
 -- Name: brands_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
 --
 
@@ -2332,6 +2362,32 @@ CREATE TABLE app_public.organization_memberships (
     is_billing_contact boolean DEFAULT false NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL
 );
+
+
+--
+-- Name: public_check_ins; Type: VIEW; Schema: app_public; Owner: -
+--
+
+CREATE VIEW app_public.public_check_ins AS
+ SELECT check_ins.id,
+    check_ins.rating,
+    check_ins.review,
+    check_ins.item_id,
+    check_ins.author_id,
+    check_ins.check_in_date,
+    check_ins.location,
+    check_ins.is_public,
+    check_ins.created_at
+   FROM app_public.check_ins
+  WHERE (check_ins.is_public IS TRUE);
+
+
+--
+-- Name: VIEW public_check_ins; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON VIEW app_public.public_check_ins IS '@foreignKey (item_id) references app_public.items(id)
+@foreignKey (author_id) references app_public.users(id)';
 
 
 --
@@ -2785,6 +2841,13 @@ CREATE INDEX sessions_user_id_idx ON app_private.sessions USING btree (user_id);
 
 
 --
+-- Name: brands_created_by_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX brands_created_by_idx ON app_public.brands USING btree (created_by);
+
+
+--
 -- Name: check_ins_author_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -3095,6 +3158,14 @@ ALTER TABLE ONLY app_private.user_secrets
 
 ALTER TABLE ONLY app_public.brands
     ADD CONSTRAINT brands_company_id_fkey FOREIGN KEY (company_id) REFERENCES app_public.companies(id);
+
+
+--
+-- Name: brands brands_created_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.brands
+    ADD CONSTRAINT brands_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id) ON DELETE SET NULL;
 
 
 --
@@ -3576,6 +3647,21 @@ GRANT ALL ON FUNCTION app_public.confirm_account_deletion(token text) TO tasted_
 
 
 --
+-- Name: TABLE brands; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.brands TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION create_brand(name text, company_id integer); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.create_brand(name text, company_id integer) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.create_brand(name text, company_id integer) TO tasted_visitor;
+
+
+--
 -- Name: TABLE check_ins; Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -3871,13 +3957,6 @@ GRANT ALL ON FUNCTION app_public.verify_email(user_email_id uuid, token text) TO
 
 
 --
--- Name: TABLE brands; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT ON TABLE app_public.brands TO tasted_visitor;
-
-
---
 -- Name: SEQUENCE brands_id_seq; Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -3931,6 +4010,13 @@ GRANT SELECT ON TABLE app_public.locations TO tasted_visitor;
 --
 
 GRANT SELECT ON TABLE app_public.organization_memberships TO tasted_visitor;
+
+
+--
+-- Name: TABLE public_check_ins; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.public_check_ins TO tasted_visitor;
 
 
 --
