@@ -1,3 +1,29 @@
+"""All input for the `acceptFriendRequest` mutation."""
+input AcceptFriendRequestInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  userId: UUID!
+}
+
+"""The output of our `acceptFriendRequest` mutation."""
+type AcceptFriendRequestPayload {
+  boolean: Boolean
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `acceptInvitationToOrganization` mutation."""
 input AcceptInvitationToOrganizationInput {
   """
@@ -21,6 +47,55 @@ type AcceptInvitationToOrganizationPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+type ActivityFeed {
+  """Reads a single `User` that is related to this `ActivityFeed`."""
+  author: User
+  authorId: UUID
+  checkInDate: Date
+  createdAt: Datetime
+  id: Int
+  isPublic: Boolean
+
+  """Reads a single `Item` that is related to this `ActivityFeed`."""
+  item: Item
+  itemId: Int
+  likes: Int
+  location: UUID
+  rating: Int
+  review: String
+}
+
+"""A connection to a list of `ActivityFeed` values."""
+type ActivityFeedsConnection {
+  """
+  A list of edges which contains the `ActivityFeed` and cursor to aid in pagination.
+  """
+  edges: [ActivityFeedsEdge!]!
+
+  """A list of `ActivityFeed` objects."""
+  nodes: [ActivityFeed!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `ActivityFeed` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `ActivityFeed` edge in the connection."""
+type ActivityFeedsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `ActivityFeed` at the end of the edge."""
+  node: ActivityFeed!
+}
+
+"""Methods to use when ordering `ActivityFeed`."""
+enum ActivityFeedsOrderBy {
+  NATURAL
 }
 
 """
@@ -1335,6 +1410,32 @@ type CreateCompanyPayload {
   userByCreatedBy: User
 }
 
+"""All input for the `createFriendRequest` mutation."""
+input CreateFriendRequestInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  userId: UUID!
+}
+
+"""The output of our `createFriendRequest` mutation."""
+type CreateFriendRequestPayload {
+  boolean: Boolean
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `createOrganization` mutation."""
 input CreateOrganizationInput {
   """
@@ -1467,6 +1568,58 @@ A point in time as described by the [ISO
 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
 """
 scalar Datetime
+
+"""All input for the `deleteFriend` mutation."""
+input DeleteFriendInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  friendId: UUID!
+}
+
+"""The output of our `deleteFriend` mutation."""
+type DeleteFriendPayload {
+  boolean: Boolean
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteFriendRequest` mutation."""
+input DeleteFriendRequestInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  userId: UUID!
+}
+
+"""The output of our `deleteFriendRequest` mutation."""
+type DeleteFriendRequestPayload {
+  boolean: Boolean
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
 
 """All input for the `deleteOrganization` mutation."""
 input DeleteOrganizationInput {
@@ -1612,6 +1765,30 @@ type InviteToOrganizationPayload {
 
 """Item defines a product that can be rated"""
 type Item {
+  """Reads and enables pagination through a set of `ActivityFeed`."""
+  activityFeeds(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ActivityFeed`."""
+    orderBy: [ActivityFeedsOrderBy!] = [NATURAL]
+  ): ActivityFeedsConnection!
+
   """Reads a single `Brand` that is related to this `Item`."""
   brand: Brand
   brandId: Int!
@@ -1779,6 +1956,35 @@ type Item {
   userByUpdatedBy: User
 
   """Reads and enables pagination through a set of `User`."""
+  usersByActivityFeedItemIdAndAuthorId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemUsersByActivityFeedItemIdAndAuthorIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `User`."""
   usersByCheckInItemIdAndAuthorId(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -1942,6 +2148,58 @@ type ItemTagsByItemsTagItemIdAndTagIdManyToManyEdge {
 
   """The `Tag` at the end of the edge."""
   node: Tag!
+}
+
+"""
+A connection to a list of `User` values, with data from `ActivityFeed`.
+"""
+type ItemUsersByActivityFeedItemIdAndAuthorIdManyToManyConnection {
+  """
+  A list of edges which contains the `User`, info from the `ActivityFeed`, and the cursor to aid in pagination.
+  """
+  edges: [ItemUsersByActivityFeedItemIdAndAuthorIdManyToManyEdge!]!
+
+  """A list of `User` objects."""
+  nodes: [User!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `User` edge in the connection, with data from `ActivityFeed`."""
+type ItemUsersByActivityFeedItemIdAndAuthorIdManyToManyEdge {
+  """Reads and enables pagination through a set of `ActivityFeed`."""
+  authoredActivityFeeds(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ActivityFeed`."""
+    orderBy: [ActivityFeedsOrderBy!] = [NATURAL]
+  ): ActivityFeedsConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `User` at the end of the edge."""
+  node: User!
 }
 
 """A connection to a list of `User` values, with data from `CheckIn`."""
@@ -2498,6 +2756,13 @@ type MakeEmailPrimaryPayload {
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
+  acceptFriendRequest(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: AcceptFriendRequestInput!
+  ): AcceptFriendRequestPayload
+
   """
   If someone invited you by your email address then you must include the code that was emailed to you, otherwise you may accept the invitation directly using the UUID. If successful, you will be a member of the organization.
   """
@@ -2545,6 +2810,12 @@ type Mutation {
     """
     input: CreateCompanyInput!
   ): CreateCompanyPayload
+  createFriendRequest(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFriendRequestInput!
+  ): CreateFriendRequestPayload
 
   """
   An `Organization` is a great way of sharing access to resources between multiple users without compromising security. When you create an organization you will have the 'owner' and 'billing contact' roles. You may invite other users and redistribute these roles.
@@ -2569,6 +2840,18 @@ type Mutation {
     """
     input: CreateUserEmailInput!
   ): CreateUserEmailPayload
+  deleteFriend(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFriendInput!
+  ): DeleteFriendPayload
+  deleteFriendRequest(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFriendRequestInput!
+  ): DeleteFriendRequestPayload
 
   """
   Only the 'owner' may delete an organization. This operation cannot be undone, so be sure that it is what you intend.
@@ -3045,6 +3328,29 @@ enum PublicCheckInsOrderBy {
 
 """The root query type which gives access points into the data universe."""
 type Query {
+  """Reads and enables pagination through a set of `ActivityFeed`."""
+  activityFeeds(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ActivityFeed`."""
+    orderBy: [ActivityFeedsOrderBy!] = [NATURAL]
+  ): ActivityFeedsConnection
   brand(id: Int!): Brand
   brandByCompanyIdAndName(companyId: Int!, name: String!): Brand
 
@@ -4256,6 +4562,30 @@ type UpdateUserPayload {
 
 """A user who can log in to the application."""
 type User {
+  """Reads and enables pagination through a set of `ActivityFeed`."""
+  authoredActivityFeeds(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ActivityFeed`."""
+    orderBy: [ActivityFeedsOrderBy!] = [NATURAL]
+  ): ActivityFeedsConnection!
+
   """Reads and enables pagination through a set of `CheckIn`."""
   authoredCheckIns(
     """Read all values in the set after (below) this cursor."""
@@ -4525,6 +4855,35 @@ type User {
   """If true, the user has elevated privileges."""
   isAdmin: Boolean!
   isVerified: Boolean!
+
+  """Reads and enables pagination through a set of `Item`."""
+  itemsByActivityFeedAuthorIdAndItemId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Item`."""
+    orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserItemsByActivityFeedAuthorIdAndItemIdManyToManyConnection!
 
   """Reads and enables pagination through a set of `Item`."""
   itemsByCheckInAuthorIdAndItemId(
@@ -5343,6 +5702,58 @@ enum UserEmailsOrderBy {
   PRIMARY_KEY_DESC
   USER_ID_ASC
   USER_ID_DESC
+}
+
+"""
+A connection to a list of `Item` values, with data from `ActivityFeed`.
+"""
+type UserItemsByActivityFeedAuthorIdAndItemIdManyToManyConnection {
+  """
+  A list of edges which contains the `Item`, info from the `ActivityFeed`, and the cursor to aid in pagination.
+  """
+  edges: [UserItemsByActivityFeedAuthorIdAndItemIdManyToManyEdge!]!
+
+  """A list of `Item` objects."""
+  nodes: [Item!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Item` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Item` edge in the connection, with data from `ActivityFeed`."""
+type UserItemsByActivityFeedAuthorIdAndItemIdManyToManyEdge {
+  """Reads and enables pagination through a set of `ActivityFeed`."""
+  activityFeeds(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ActivityFeed`."""
+    orderBy: [ActivityFeedsOrderBy!] = [NATURAL]
+  ): ActivityFeedsConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Item` at the end of the edge."""
+  node: Item!
 }
 
 """A connection to a list of `Item` values, with data from `CheckIn`."""
