@@ -2408,7 +2408,8 @@ CREATE VIEW app_public.activity_feed AS
     check_ins.likes
    FROM (app_public.check_ins
      LEFT JOIN app_public.friends ON ((check_ins.author_id = friends.user_id_2)))
-  WHERE (friends.user_id_1 = app_public.current_user_id());
+  WHERE ((friends.user_id_1 = app_public.current_user_id()) OR (check_ins.author_id = app_public.current_user_id()))
+  ORDER BY check_ins.created_at DESC;
 
 
 --
@@ -3157,6 +3158,13 @@ CREATE INDEX brands_created_by_idx ON app_public.brands USING btree (created_by)
 --
 
 CREATE INDEX check_ins_author_idx ON app_public.check_ins USING btree (author_id);
+
+
+--
+-- Name: check_ins_created_at_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX check_ins_created_at_idx ON app_public.check_ins USING btree (created_at);
 
 
 --

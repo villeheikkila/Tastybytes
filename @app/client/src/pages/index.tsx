@@ -13,6 +13,7 @@ const Home: NextPage = () => {
   const query = useSharedQuery();
   const activityFeed = useActivityFeedQuery();
   const data = activityFeed.data?.activityFeeds;
+  console.log("data: ", data);
 
   return (
     <SharedLayout title="Activity" query={query}>
@@ -35,7 +36,10 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ data }) => {
         {data.nodes.map(({ id, item, rating, author }) => (
           <Card.Wrapper key={id}>
             <p>
-              <b>{getDisplayName(author)}</b> has tasted{" "}
+              <Link href={`/u/${author.username}`}>
+                {getDisplayName(author)}
+              </Link>{" "}
+              has tasted{" "}
               <Link
                 href={`/c/${item.brand.company.name}/${item.id}`}
               >{`${item.brand.name} - ${item.flavor}`}</Link>{" "}

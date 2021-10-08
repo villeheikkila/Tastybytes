@@ -667,6 +667,9 @@ input CheckInCondition {
   """Checks for equality with the object’s `authorId` field."""
   authorId: UUID
 
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
   """Checks for equality with the object’s `id` field."""
   id: Int
 
@@ -707,6 +710,8 @@ type CheckInsEdge {
 enum CheckInsOrderBy {
   AUTHOR_ID_ASC
   AUTHOR_ID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
   ID_ASC
   ID_DESC
   ITEM_ID_ASC
