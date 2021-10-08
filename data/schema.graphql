@@ -1742,6 +1742,13 @@ type ForgotPasswordPayload {
   query: Query
 }
 
+enum FriendStatus {
+  FRIEND
+  NONE
+  PENDING_RECEIVED
+  PENDING_SENT
+}
+
 """All input for the `inviteToOrganization` mutation."""
 input InviteToOrganizationInput {
   """
@@ -3331,6 +3338,52 @@ enum PublicCheckInsOrderBy {
   NATURAL
 }
 
+type PublicUser {
+  avatarUrl: String
+  country: String
+  createdAt: Datetime
+  firstName: String
+  friendStatus: FriendStatus
+  id: UUID
+  isAdmin: Boolean
+  isVerified: Boolean
+  lastName: String
+  location: String
+  updatedAt: Datetime
+  username: String
+}
+
+"""A connection to a list of `PublicUser` values."""
+type PublicUsersConnection {
+  """
+  A list of edges which contains the `PublicUser` and cursor to aid in pagination.
+  """
+  edges: [PublicUsersEdge!]!
+
+  """A list of `PublicUser` objects."""
+  nodes: [PublicUser!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `PublicUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `PublicUser` edge in the connection."""
+type PublicUsersEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `PublicUser` at the end of the edge."""
+  node: PublicUser!
+}
+
+"""Methods to use when ordering `PublicUser`."""
+enum PublicUsersOrderBy {
+  NATURAL
+}
+
 """The root query type which gives access points into the data universe."""
 type Query {
   """Reads and enables pagination through a set of `ActivityFeed`."""
@@ -3633,6 +3686,30 @@ type Query {
     """The method to use when ordering `PublicCheckIn`."""
     orderBy: [PublicCheckInsOrderBy!] = [NATURAL]
   ): PublicCheckInsConnection
+
+  """Reads and enables pagination through a set of `PublicUser`."""
+  publicUsers(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `PublicUser`."""
+    orderBy: [PublicUsersOrderBy!] = [NATURAL]
+  ): PublicUsersConnection
   tag(id: Int!): Tag
   tagByName(name: String!): Tag
 
@@ -5971,6 +6048,7 @@ input UserPatch {
 
 type UserSetting {
   id: UUID!
+  isPublic: Boolean
   isPublicCheckIns: Boolean
 
   """Reads a single `User` that is related to this `UserSetting`."""

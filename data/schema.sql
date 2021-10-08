@@ -80,6 +80,18 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 
 
 --
+-- Name: friend_status; Type: TYPE; Schema: app_public; Owner: -
+--
+
+CREATE TYPE app_public.friend_status AS ENUM (
+    'friend',
+    'pending-sent',
+    'pending-received',
+    'none'
+);
+
+
+--
 -- Name: name; Type: DOMAIN; Schema: app_public; Owner: -
 --
 
@@ -2650,6 +2662,62 @@ COMMENT ON VIEW app_public.public_check_ins IS '@foreignKey (item_id) references
 
 
 --
+-- Name: user_settings; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.user_settings (
+    id uuid NOT NULL,
+    is_public_check_ins boolean DEFAULT true,
+    is_public boolean DEFAULT true
+);
+
+
+--
+-- Name: public_users; Type: VIEW; Schema: app_public; Owner: -
+--
+
+CREATE VIEW app_public.public_users AS
+ WITH public_users AS (
+         SELECT u.id,
+            u.username,
+            u.avatar_url,
+            u.is_admin,
+            u.is_verified,
+            u.created_at,
+            u.updated_at,
+            u.first_name,
+            u.last_name,
+            u.location,
+            u.country
+           FROM (app_public.users u
+             LEFT JOIN app_public.user_settings s ON ((u.id = s.id)))
+          WHERE (s.is_public = true)
+        )
+ SELECT p.id,
+    p.username,
+    p.avatar_url,
+    p.is_admin,
+    p.is_verified,
+    p.created_at,
+    p.updated_at,
+    p.first_name,
+    p.last_name,
+    p.location,
+    p.country,
+        CASE
+            WHEN (f.user_id_1 IS NOT NULL) THEN 'friend'::app_public.friend_status
+            WHEN (sfr.sender_id IS NOT NULL) THEN 'pending-sent'::app_public.friend_status
+            WHEN (rfr.sender_id IS NOT NULL) THEN 'pending-received'::app_public.friend_status
+            ELSE 'none'::app_public.friend_status
+        END AS friend_status
+   FROM (((public_users p
+     LEFT JOIN app_public.friends f ON (((f.user_id_1 = app_public.current_user_id()) AND (p.id = f.user_id_2))))
+     LEFT JOIN app_public.friend_requests sfr ON (((sfr.sender_id = app_public.current_user_id()) AND (sfr.receiver_id = p.id))))
+     LEFT JOIN app_public.friend_requests rfr ON (((rfr.sender_id = p.id) AND (rfr.receiver_id = app_public.current_user_id()))))
+  WHERE (p.id <> app_public.current_user_id());
+
+
+--
 -- Name: tags; Type: TABLE; Schema: app_public; Owner: -
 --
 
@@ -2766,16 +2834,6 @@ COMMENT ON COLUMN app_public.user_authentications.identifier IS 'A unique identi
 --
 
 COMMENT ON COLUMN app_public.user_authentications.details IS 'Additional profile details extracted from this login method';
-
-
---
--- Name: user_settings; Type: TABLE; Schema: app_public; Owner: -
---
-
-CREATE TABLE app_public.user_settings (
-    id uuid NOT NULL,
-    is_public_check_ins boolean DEFAULT true
-);
 
 
 --
@@ -3154,6 +3212,13 @@ CREATE INDEX brands_created_by_idx ON app_public.brands USING btree (created_by)
 
 
 --
+-- Name: check_in_likes_liked_by_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX check_in_likes_liked_by_idx ON app_public.check_in_likes USING btree (liked_by);
+
+
+--
 -- Name: check_ins_author_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -3200,6 +3265,13 @@ CREATE INDEX companies_created_by_idx ON app_public.companies USING btree (creat
 --
 
 CREATE INDEX companies_name_idx ON app_public.companies USING btree (name);
+
+
+--
+-- Name: friends_user_id_2_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX friends_user_id_2_idx ON app_public.friends USING btree (user_id_2);
 
 
 --
@@ -4435,6 +4507,20 @@ GRANT SELECT ON TABLE app_public.public_check_ins TO tasted_visitor;
 
 
 --
+-- Name: TABLE user_settings; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.user_settings TO tasted_visitor;
+
+
+--
+-- Name: TABLE public_users; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.public_users TO tasted_visitor;
+
+
+--
 -- Name: TABLE tags; Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -4467,13 +4553,6 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.types_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT,DELETE ON TABLE app_public.user_authentications TO tasted_visitor;
-
-
---
--- Name: TABLE user_settings; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT ON TABLE app_public.user_settings TO tasted_visitor;
 
 
 --
