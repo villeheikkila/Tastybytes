@@ -1,0 +1,5 @@
+mutation AcceptFriendRequest($userId: UUID!) {
+  acceptFriendRequest(input: { userId: $userId }) {
+    clientMutationId
+  }
+}

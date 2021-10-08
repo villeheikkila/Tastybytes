@@ -1,0 +1,13 @@
+query Friends {
+  ...SharedLayout_Query
+  publicUsers {
+    nodes {
+      id
+      username
+      firstName
+      lastName
+      avatarUrl
+      friendStatus
+    }
+  }
+}
