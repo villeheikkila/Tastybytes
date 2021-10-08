@@ -1,7 +1,6 @@
 query ActivityFeed {
   ...SharedLayout_Query
   activityFeeds(first: 20) {
-    totalCount
     nodes {
       id
       rating

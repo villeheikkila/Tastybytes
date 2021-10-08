@@ -26,7 +26,7 @@ const UserPage: NextPage = () => {
 
   return (
     <SharedLayout
-      title={`${data?.username ?? username}`}
+      title={`${data?.id ?? username}`}
       titleHref={`/u/[username]`}
       titleHrefAs={`/u/${username}`}
       query={user}
@@ -44,7 +44,7 @@ const UserPageInner: FC<UserPageInnerProps> = ({ user }) => {
   return (
     <Layout.Root>
       <Layout.Header>
-        <h1>Ville Heikkilä</h1>
+        <h1>{getDisplayName(user)}</h1>
         <p>Total check-ins: {user?.authoredCheckIns.totalCount}</p>
       </Layout.Header>
       <Card.Container>
