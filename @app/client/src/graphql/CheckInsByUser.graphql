@@ -33,6 +33,5 @@ query CheckInsByUsername($username: String!) {
         }
       }
     }
-    ...SharedLayout_User
   }
 }
