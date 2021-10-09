@@ -98,6 +98,38 @@ enum ActivityFeedsOrderBy {
   NATURAL
 }
 
+"""All input for the `addCheckInComment` mutation."""
+input AddCheckInCommentInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  comment: String!
+  targetCheckInId: Int!
+}
+
+"""The output of our `addCheckInComment` mutation."""
+type AddCheckInCommentPayload {
+  """Reads a single `CheckIn` that is related to this `CheckInComment`."""
+  checkIn: CheckIn
+  checkInComment: CheckInComment
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `CheckInComment`."""
+  userByCreatedBy: User
+}
+
 """
 A floating point number that requires more precision than IEEE 754 binary 64
 """
@@ -658,6 +690,19 @@ type CheckIn {
   locationByLocation: Location
   rating: Int
   review: String
+}
+
+type CheckInComment {
+  """Reads a single `CheckIn` that is related to this `CheckInComment`."""
+  checkIn: CheckIn
+  checkInId: Int!
+  comment: LongText
+  createdAt: Datetime!
+  createdBy: UUID!
+  id: Int!
+
+  """Reads a single `User` that is related to this `CheckInComment`."""
+  userByCreatedBy: User
 }
 
 """
@@ -2730,6 +2775,8 @@ type LogoutPayload {
   success: Boolean
 }
 
+scalar LongText
+
 """All input for the `makeEmailPrimary` mutation."""
 input MakeEmailPrimaryInput {
   """
@@ -2784,6 +2831,12 @@ type Mutation {
     """
     input: AcceptInvitationToOrganizationInput!
   ): AcceptInvitationToOrganizationPayload
+  addCheckInComment(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: AddCheckInCommentInput!
+  ): AddCheckInCommentPayload
 
   """Enter your old password and a new password to change your password."""
   changePassword(

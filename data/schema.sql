@@ -92,6 +92,14 @@ CREATE TYPE app_public.friend_status AS ENUM (
 
 
 --
+-- Name: long_text; Type: DOMAIN; Schema: app_public; Owner: -
+--
+
+CREATE DOMAIN app_public.long_text AS text
+	CONSTRAINT long_text_check CHECK (((length(VALUE) >= 0) AND (length(VALUE) <= 1024)));
+
+
+--
 -- Name: name; Type: DOMAIN; Schema: app_public; Owner: -
 --
 
@@ -940,6 +948,79 @@ begin
 
   -- Delete the invitation
   delete from app_public.organization_invitations where id = invitation_id;
+end;
+$$;
+
+
+--
+-- Name: check_in_comments; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.check_in_comments (
+    id integer NOT NULL,
+    check_in_id integer NOT NULL,
+    created_by uuid NOT NULL,
+    comment app_public.long_text,
+    created_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: add_check_in_comment(integer, text); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.add_check_in_comment(target_check_in_id integer, comment text) RETURNS app_public.check_in_comments
+    LANGUAGE plpgsql SECURITY DEFINER
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+declare
+  v_check_in_exists boolean;
+  v_too_often       boolean;
+  v_are_friends     boolean;
+  v_current_user    uuid;
+  v_check_in_id     integer;
+  v_comment         app_public.check_in_comments;
+begin
+  v_current_user := app_public.current_user_id();
+  v_check_in_id := target_check_in_id;
+
+  if v_current_user is null then
+    raise exception 'You must log in to add a comment' using errcode = 'LOGIN';
+  end if;
+
+  select exists(select 1 from app_public.check_ins where id = v_check_in_id)
+  into v_check_in_exists;
+
+  if v_check_in_exists is false then
+    raise exception 'No such check in exists' using errcode = 'INVAL';
+  end if;
+
+  select exists(select 1
+                from app_public.check_in_comments c
+                       left join app_public.check_ins ci on ci.id = c.check_in_id
+                       left join app_public.friends f on ci.author_id = f.user_id_2
+                where f.user_id_1 = v_current_user)
+  into v_are_friends;
+
+  if v_are_friends is false then
+    raise exception 'You need to be friends to comment on a check in' using errcode = 'INVAL';
+  end if;
+
+  select exists(select 1
+                from app_public.check_in_comments c
+                where c.check_in_id = v_check_in_id
+                  and c.created_at > NOW() - INTERVAL '1 minutes')
+  into v_too_often;
+
+  if v_too_often is true then
+    raise exception 'You can only comment on same check in once in one minute' using errcode = 'LIMIT';
+  end if;
+
+  insert into app_public.check_in_comments (created_by, check_in_id, comment)
+  values (v_current_user, check_in_id, comment)
+  returning * into v_comment;
+
+  return v_comment;
 end;
 $$;
 
@@ -2469,6 +2550,26 @@ COMMENT ON TABLE app_public.categories IS 'Main categories for items';
 
 
 --
+-- Name: check_in_comments_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
+--
+
+CREATE SEQUENCE app_public.check_in_comments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: check_in_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
+--
+
+ALTER SEQUENCE app_public.check_in_comments_id_seq OWNED BY app_public.check_in_comments.id;
+
+
+--
 -- Name: check_in_likes; Type: TABLE; Schema: app_public; Owner: -
 --
 
@@ -2844,6 +2945,13 @@ ALTER TABLE ONLY app_public.brands ALTER COLUMN id SET DEFAULT nextval('app_publ
 
 
 --
+-- Name: check_in_comments id; Type: DEFAULT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_comments ALTER COLUMN id SET DEFAULT nextval('app_public.check_in_comments_id_seq'::regclass);
+
+
+--
 -- Name: check_in_likes id; Type: DEFAULT; Schema: app_public; Owner: -
 --
 
@@ -2955,6 +3063,14 @@ ALTER TABLE ONLY app_public.brands
 
 ALTER TABLE ONLY app_public.categories
     ADD CONSTRAINT categories_pkey PRIMARY KEY (name);
+
+
+--
+-- Name: check_in_comments check_in_comments_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_comments
+    ADD CONSTRAINT check_in_comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -3209,6 +3325,20 @@ CREATE INDEX sessions_user_id_idx ON app_private.sessions USING btree (user_id);
 --
 
 CREATE INDEX brands_created_by_idx ON app_public.brands USING btree (created_by);
+
+
+--
+-- Name: check_in_comments_check_in_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX check_in_comments_check_in_id_idx ON app_public.check_in_comments USING btree (check_in_id);
+
+
+--
+-- Name: check_in_comments_created_by_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX check_in_comments_created_by_idx ON app_public.check_in_comments USING btree (created_by);
 
 
 --
@@ -3551,6 +3681,22 @@ ALTER TABLE ONLY app_public.brands
 
 ALTER TABLE ONLY app_public.brands
     ADD CONSTRAINT brands_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: check_in_comments check_in_comments_check_in_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_comments
+    ADD CONSTRAINT check_in_comments_check_in_id_fkey FOREIGN KEY (check_in_id) REFERENCES app_public.check_ins(id) ON DELETE CASCADE;
+
+
+--
+-- Name: check_in_comments check_in_comments_created_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_comments
+    ADD CONSTRAINT check_in_comments_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -4072,6 +4218,14 @@ GRANT ALL ON FUNCTION app_public.accept_invitation_to_organization(invitation_id
 
 
 --
+-- Name: FUNCTION add_check_in_comment(target_check_in_id integer, comment text); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.add_check_in_comment(target_check_in_id integer, comment text) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.add_check_in_comment(target_check_in_id integer, comment text) TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION change_password(old_password text, new_password text); Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -4448,6 +4602,13 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.brands_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT ON TABLE app_public.categories TO tasted_visitor;
+
+
+--
+-- Name: SEQUENCE check_in_comments_id_seq; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,USAGE ON SEQUENCE app_public.check_in_comments_id_seq TO tasted_visitor;
 
 
 --
