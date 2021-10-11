@@ -114,6 +114,14 @@ CREATE DOMAIN app_public.rating AS integer
 
 
 --
+-- Name: short_text; Type: DOMAIN; Schema: app_public; Owner: -
+--
+
+CREATE DOMAIN app_public.short_text AS text
+	CONSTRAINT short_text_check CHECK (((length(VALUE) >= 2) AND (length(VALUE) <= 64)));
+
+
+--
 -- Name: assert_valid_password(text); Type: FUNCTION; Schema: app_private; Owner: -
 --
 
@@ -2607,6 +2615,43 @@ ALTER SEQUENCE app_public.companies_id_seq OWNED BY app_public.companies.id;
 
 
 --
+-- Name: item_edit_suggestions; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.item_edit_suggestions (
+    id integer NOT NULL,
+    description app_public.long_text,
+    flavor app_public.short_text,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    item_id integer NOT NULL,
+    manufacturer_id integer,
+    brand_id integer NOT NULL,
+    author_id uuid NOT NULL,
+    accepted timestamp with time zone
+);
+
+
+--
+-- Name: item_edit_suggestions_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
+--
+
+CREATE SEQUENCE app_public.item_edit_suggestions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: item_edit_suggestions_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
+--
+
+ALTER SEQUENCE app_public.item_edit_suggestions_id_seq OWNED BY app_public.item_edit_suggestions.id;
+
+
+--
 -- Name: items_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
 --
 
@@ -2914,6 +2959,13 @@ ALTER TABLE ONLY app_public.companies ALTER COLUMN id SET DEFAULT nextval('app_p
 
 
 --
+-- Name: item_edit_suggestions id; Type: DEFAULT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.item_edit_suggestions ALTER COLUMN id SET DEFAULT nextval('app_public.item_edit_suggestions_id_seq'::regclass);
+
+
+--
 -- Name: items id; Type: DEFAULT; Schema: app_public; Owner: -
 --
 
@@ -3052,6 +3104,14 @@ ALTER TABLE ONLY app_public.companies
 
 ALTER TABLE ONLY app_public.friends
     ADD CONSTRAINT friends_pkey PRIMARY KEY (user_id_1, user_id_2);
+
+
+--
+-- Name: item_edit_suggestions item_edit_suggestions_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.item_edit_suggestions
+    ADD CONSTRAINT item_edit_suggestions_pkey PRIMARY KEY (id);
 
 
 --
@@ -3340,6 +3400,27 @@ CREATE INDEX idx_user_emails_primary ON app_public.user_emails USING btree (is_p
 --
 
 CREATE INDEX idx_user_emails_user ON app_public.user_emails USING btree (user_id);
+
+
+--
+-- Name: item_edit_suggestions_author_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX item_edit_suggestions_author_id_idx ON app_public.item_edit_suggestions USING btree (author_id);
+
+
+--
+-- Name: item_edit_suggestions_item_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX item_edit_suggestions_item_id_idx ON app_public.item_edit_suggestions USING btree (item_id);
+
+
+--
+-- Name: item_edit_suggestions_manufacturer_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX item_edit_suggestions_manufacturer_id_idx ON app_public.item_edit_suggestions USING btree (manufacturer_id);
 
 
 --
@@ -3685,6 +3766,38 @@ ALTER TABLE ONLY app_public.friends
 
 ALTER TABLE ONLY app_public.friends
     ADD CONSTRAINT friends_user_id_2_fkey FOREIGN KEY (user_id_2) REFERENCES app_public.users(id);
+
+
+--
+-- Name: item_edit_suggestions item_edit_suggestions_author_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.item_edit_suggestions
+    ADD CONSTRAINT item_edit_suggestions_author_id_fkey FOREIGN KEY (author_id) REFERENCES app_public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: item_edit_suggestions item_edit_suggestions_brand_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.item_edit_suggestions
+    ADD CONSTRAINT item_edit_suggestions_brand_id_fkey FOREIGN KEY (brand_id) REFERENCES app_public.brands(id) ON DELETE CASCADE;
+
+
+--
+-- Name: item_edit_suggestions item_edit_suggestions_item_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.item_edit_suggestions
+    ADD CONSTRAINT item_edit_suggestions_item_id_fkey FOREIGN KEY (item_id) REFERENCES app_public.items(id) ON DELETE CASCADE;
+
+
+--
+-- Name: item_edit_suggestions item_edit_suggestions_manufacturer_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.item_edit_suggestions
+    ADD CONSTRAINT item_edit_suggestions_manufacturer_id_fkey FOREIGN KEY (manufacturer_id) REFERENCES app_public.companies(id) ON DELETE CASCADE;
 
 
 --
@@ -4530,6 +4643,13 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.check_ins_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT,USAGE ON SEQUENCE app_public.companies_id_seq TO tasted_visitor;
+
+
+--
+-- Name: SEQUENCE item_edit_suggestions_id_seq; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,USAGE ON SEQUENCE app_public.item_edit_suggestions_id_seq TO tasted_visitor;
 
 
 --
