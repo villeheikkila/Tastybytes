@@ -10,8 +10,6 @@ input AcceptFriendRequestInput {
 
 """The output of our `acceptFriendRequest` mutation."""
 type AcceptFriendRequestPayload {
-  boolean: Boolean
-
   """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.
@@ -3666,14 +3664,23 @@ type Subscription {
 
 """Tag for an item or check-in"""
 type Tag {
+  createdAt: Datetime!
+  createdBy: UUID
   id: Int!
+  isVerified: Boolean!
   name: String
+
+  """Reads a single `User` that is related to this `Tag`."""
+  userByCreatedBy: User
 }
 
 """
 A condition to be used against `Tag` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input TagCondition {
+  """Checks for equality with the object’s `createdBy` field."""
+  createdBy: UUID
+
   """Checks for equality with the object’s `id` field."""
   id: Int
 
@@ -3709,6 +3716,8 @@ type TagsEdge {
 
 """Methods to use when ordering `Tag`."""
 enum TagsOrderBy {
+  CREATED_BY_ASC
+  CREATED_BY_DESC
   ID_ASC
   ID_DESC
   NAME_ASC
@@ -4770,6 +4779,35 @@ type User {
     """The method to use when ordering `Organization`."""
     orderBy: [OrganizationsOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserOrganizationsByOrganizationMembershipUserIdAndOrganizationIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Tag`."""
+  tagsByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TagCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Tag`."""
+    orderBy: [TagsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TagsConnection!
 
   """Reads and enables pagination through a set of `Type`."""
   typesByItemCreatedByAndTypeId(

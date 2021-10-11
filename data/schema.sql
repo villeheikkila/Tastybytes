@@ -899,14 +899,13 @@ COMMENT ON FUNCTION app_private.tg_user_secrets__insert_with_user() IS 'Ensures 
 -- Name: accept_friend_request(uuid); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
-CREATE FUNCTION app_public.accept_friend_request(user_id uuid) RETURNS boolean
+CREATE FUNCTION app_public.accept_friend_request(user_id uuid) RETURNS void
     LANGUAGE plpgsql SECURITY DEFINER
     SET search_path TO 'pg_catalog', 'public', 'pg_temp'
     AS $$
 declare
-  v_request_exists boolean;
-  v_already_friends boolean;
-  v_current_user uuid;
+  v_current_status  app_public.friends;
+  v_current_user    uuid;
 begin
   v_current_user := app_public.current_user_id();
 
@@ -914,22 +913,19 @@ begin
     raise exception 'You must log in to accept a friendship relation' using errcode = 'LOGIN';
   end if;
 
-  select exists(select 1 from app_public.friend_requests where receiver_id = v_current_user and sender_id = user_id) into v_request_exists;
+  select *
+  from app_public.friends
+  where (user_id_1 = v_current_user and user_id_2 = user_id)
+     or (user_id_1 = user_id and user_id_2 = v_current_user)
+  into v_current_status;
 
-  if v_request_exists is false then
+  if exists(select 1 from v_current_status) = false then
     raise exception 'No such friend request exists' using errcode = 'INVAL';
-  end if;
-
-  select exists(select 1 from app_public.friends where (user_id_1 = v_current_user and user_id_2 = user_id) or (user_id_2 = v_current_user and user_id_1 = user_id)) into v_already_friends;
-
-
-  if v_already_friends is true then
+  elseif (select status from v_current_status) = 'accepted' then
     raise exception 'You are already friends' using errcode = 'INVAL';
   end if;
 
-  insert into app_public.friends (user_id_1, user_id_2) values (v_current_user, user_id), (user_id, v_current_user);
-
-  return true;
+  update app_public.friends set (status) = ('accepted') where user_id = (select user_id_1 from v_current_status) and user_id_2 = (select user_id_2 from v_current_status);
 end;
 $$;
 
@@ -2805,6 +2801,9 @@ CREATE VIEW app_public.public_users AS
 CREATE TABLE app_public.tags (
     id integer NOT NULL,
     name text,
+    created_by uuid,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    is_verified boolean DEFAULT false NOT NULL,
     CONSTRAINT tag_name_check CHECK (((length(name) >= 2) AND (length(name) <= 10)))
 );
 
@@ -3516,6 +3515,13 @@ CREATE INDEX organization_memberships_user_id_idx ON app_public.organization_mem
 
 
 --
+-- Name: tags_created_by_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX tags_created_by_idx ON app_public.tags USING btree (created_by);
+
+
+--
 -- Name: types_category_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -3902,6 +3908,14 @@ ALTER TABLE ONLY app_public.organization_memberships
 
 ALTER TABLE ONLY app_public.organization_memberships
     ADD CONSTRAINT organization_memberships_user_id_fkey FOREIGN KEY (user_id) REFERENCES app_public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: tags tags_created_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.tags
+    ADD CONSTRAINT tags_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id) ON DELETE SET NULL;
 
 
 --
