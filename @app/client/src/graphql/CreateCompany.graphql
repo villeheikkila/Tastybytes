@@ -1,5 +1,5 @@
-mutation CreateCompany($name: String!) {
-  createCompany(input: { company: { name: $name } }) {
+mutation CreateCompany($companyName: String!) {
+  createCompany(input: { companyName: $companyName }) {
     company {
       id
       name

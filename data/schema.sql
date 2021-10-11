@@ -1243,7 +1243,7 @@ CREATE TABLE app_public.companies (
 -- Name: create_company(text); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
-CREATE FUNCTION app_public.create_company(name text) RETURNS app_public.companies
+CREATE FUNCTION app_public.create_company(company_name text) RETURNS app_public.companies
     LANGUAGE plpgsql SECURITY DEFINER
     SET search_path TO 'pg_catalog', 'public', 'pg_temp'
     AS $$
@@ -1260,7 +1260,7 @@ begin
 
   select is_admin into v_is_verified from app_public.users where id = v_current_user;
 
-  insert into app_public.companies (name, is_verified, created_by) values (name, v_is_verified, v_current_user) returning * into v_company;
+  insert into app_public.companies (name, is_verified, created_by) values (company_name, v_is_verified, v_current_user) returning * into v_company;
 
   return v_company;
 end;
@@ -1268,10 +1268,10 @@ $$;
 
 
 --
--- Name: FUNCTION create_company(name text); Type: COMMENT; Schema: app_public; Owner: -
+-- Name: FUNCTION create_company(company_name text); Type: COMMENT; Schema: app_public; Owner: -
 --
 
-COMMENT ON FUNCTION app_public.create_company(name text) IS 'Creates a new company. All arguments are required.';
+COMMENT ON FUNCTION app_public.create_company(company_name text) IS 'Creates a new company. All arguments are required.';
 
 
 --
@@ -4330,18 +4330,11 @@ GRANT SELECT ON TABLE app_public.companies TO tasted_visitor;
 
 
 --
--- Name: COLUMN companies.name; Type: ACL; Schema: app_public; Owner: -
+-- Name: FUNCTION create_company(company_name text); Type: ACL; Schema: app_public; Owner: -
 --
 
-GRANT INSERT(name) ON TABLE app_public.companies TO tasted_visitor;
-
-
---
--- Name: FUNCTION create_company(name text); Type: ACL; Schema: app_public; Owner: -
---
-
-REVOKE ALL ON FUNCTION app_public.create_company(name text) FROM PUBLIC;
-GRANT ALL ON FUNCTION app_public.create_company(name text) TO tasted_visitor;
+REVOKE ALL ON FUNCTION app_public.create_company(company_name text) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.create_company(company_name text) TO tasted_visitor;
 
 
 --
