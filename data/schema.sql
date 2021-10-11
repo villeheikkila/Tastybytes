@@ -84,10 +84,8 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 --
 
 CREATE TYPE app_public.friend_status AS ENUM (
-    'friend',
-    'pending-sent',
-    'pending-received',
-    'none'
+    'accepted',
+    'pending'
 );
 
 
@@ -1276,14 +1274,13 @@ COMMENT ON FUNCTION app_public.create_company(name text) IS 'Creates a new compa
 -- Name: create_friend_request(uuid); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
-CREATE FUNCTION app_public.create_friend_request(user_id uuid) RETURNS boolean
+CREATE FUNCTION app_public.create_friend_request(user_id uuid) RETURNS void
     LANGUAGE plpgsql SECURITY DEFINER
     SET search_path TO 'pg_catalog', 'public', 'pg_temp'
     AS $$
 declare
   v_request_exists boolean;
-  v_already_friends boolean;
-  v_current_user uuid;
+  v_current_user   uuid;
 begin
   v_current_user := app_public.current_user_id();
 
@@ -1291,22 +1288,17 @@ begin
     raise exception 'You must log in to create a friend request' using errcode = 'LOGIN';
   end if;
 
-  select exists(select 1 from app_public.friend_requests where (receiver_id = v_current_user and sender_id = user_id) or (receiver_id = user_id and sender_id = v_current_user)) into v_request_exists;
+  select exists(select 1
+                from app_public.friends
+                where (user_id_1 = v_current_user and user_id_2 = user_id)
+                   or (user_id_1 = user_id and user_id_2 = v_current_user))
+  into v_request_exists;
 
   if v_request_exists is true then
-    raise exception 'Friend request between the given users already exists' using errcode = 'INVAL';
+    raise exception 'Friend request already exists' using errcode = 'INVAL';
   end if;
 
-  select exists(select 1 from app_public.friend_requests where (receiver_id = v_current_user and sender_id = user_id) or (sender_id = v_current_user and receiver_id = user_id)) into v_already_friends;
-
-
-  if v_already_friends is true then
-    raise exception 'You are already friends' using errcode = 'INVAL';
-  end if;
-
-  insert into app_public.friend_requests (sender_id, receiver_id) values (v_current_user, user_id);
-
-  return true;
+  insert into app_public.friends (user_id_1, user_id_2) values (v_current_user, user_id);
 end;
 $$;
 
@@ -1485,63 +1477,34 @@ $$;
 -- Name: delete_friend(uuid); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
-CREATE FUNCTION app_public.delete_friend(friend_id uuid) RETURNS boolean
+CREATE FUNCTION app_public.delete_friend(friend_id uuid) RETURNS void
     LANGUAGE plpgsql SECURITY DEFINER
     SET search_path TO 'pg_catalog', 'public', 'pg_temp'
     AS $$
 declare
-  v_is_friends boolean;
+  v_is_friends   boolean;
   v_current_user uuid;
 begin
   v_current_user := app_public.current_user_id();
 
   if v_current_user is null then
-    raise exception 'You must log in to delete a friendship relation' using errcode = 'LOGIN';
+    raise exception 'You must log in to remove a friend request or friendship' using errcode = 'LOGIN';
   end if;
 
-  select exists(select 1 from app_public.friends where (user_id_1 = v_current_user and user_id_2 = friend_id) or (user_id_2 = v_current_user and user_id_1 = friend_id)) into v_is_friends;
+  select exists(select 1
+                from app_public.friends
+                where (user_id_1 = v_current_user and user_id_2 = friend_id)
+                   or (user_id_2 = v_current_user and user_id_1 = friend_id))
+  into v_is_friends;
 
   if v_is_friends is false then
-    raise exception 'You are not friends with given user' using errcode = 'INVAL';
+    raise exception 'There is no such friend relation' using errcode = 'INVAL';
   end if;
 
-  delete from app_public.friends where (user_id_1 = v_current_user and user_id_2 = friend_id) or (user_id_2 = v_current_user and user_id_1 = friend_id);
-
-  return true;
-end;
-$$;
-
-
---
--- Name: delete_friend_request(uuid); Type: FUNCTION; Schema: app_public; Owner: -
---
-
-CREATE FUNCTION app_public.delete_friend_request(user_id uuid) RETURNS boolean
-    LANGUAGE plpgsql SECURITY DEFINER
-    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
-    AS $$
-declare
-  v_friend_request app_public.friend_requests;
-  v_current_user uuid;
-  v_friend_request_exists boolean;
-begin
-  select id into v_current_user from app_public.users where id = app_public.current_user_id();
-
-  if v_current_user is null then
-    raise exception 'You must log in to remove a friend request' using errcode = 'LOGIN';
-  end if;
-
-  select exists(select 1 from app_public.friend_requests where (sender_id = v_current_user and receiver_id = user_id) or (receiver_id = v_current_user and sender_id = user_id)) into v_friend_request_exists;
-
-  if (v_friend_request_exists) is false then
-    raise exception 'There is no friend request between the given users`' using errcode = 'INVAL';
-  end if;
-
-  delete from app_public.friend_requests where (sender_id = v_current_user and receiver_id = user_id) or (receiver_id = v_current_user and sender_id = user_id);
-
-  select * into v_friend_request from app_public.friend_requests where receiver_id = v_current_user or sender_id = v_current_user;
-
-  return true;
+  delete
+  from app_public.friends
+  where (user_id_1 = v_current_user and user_id_2 = friend_id)
+     or (user_id_2 = v_current_user and user_id_1 = friend_id);
 end;
 $$;
 
@@ -2480,7 +2443,11 @@ COMMENT ON TABLE app_private.user_secrets IS 'The contents of this table should 
 
 CREATE TABLE app_public.friends (
     user_id_1 uuid NOT NULL,
-    user_id_2 uuid NOT NULL
+    user_id_2 uuid NOT NULL,
+    status app_public.friend_status DEFAULT 'pending'::app_public.friend_status NOT NULL,
+    sent date DEFAULT now() NOT NULL,
+    accepted date,
+    CONSTRAINT friends_check CHECK ((user_id_1 <> user_id_2))
 );
 
 
@@ -2500,9 +2467,9 @@ CREATE VIEW app_public.activity_feed AS
     check_ins.created_at,
     check_ins.likes
    FROM (app_public.check_ins
-     LEFT JOIN app_public.friends ON ((check_ins.author_id = friends.user_id_2)))
-  WHERE ((friends.user_id_1 = app_public.current_user_id()) OR (check_ins.author_id = app_public.current_user_id()))
-  ORDER BY check_ins.created_at DESC;
+     LEFT JOIN app_public.friends f ON (((check_ins.author_id = f.user_id_2) OR (check_ins.author_id = f.user_id_1))))
+  WHERE (f.status = 'accepted'::app_public.friend_status)
+  ORDER BY check_ins.created_at;
 
 
 --
@@ -2640,17 +2607,6 @@ ALTER SEQUENCE app_public.companies_id_seq OWNED BY app_public.companies.id;
 
 
 --
--- Name: friend_requests; Type: TABLE; Schema: app_public; Owner: -
---
-
-CREATE TABLE app_public.friend_requests (
-    sender_id uuid NOT NULL,
-    receiver_id uuid NOT NULL,
-    CONSTRAINT sender_is_not_receiver CHECK ((sender_id <> receiver_id))
-);
-
-
---
 -- Name: items_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
 --
 
@@ -2755,14 +2711,6 @@ CREATE VIEW app_public.public_check_ins AS
 
 
 --
--- Name: VIEW public_check_ins; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON VIEW app_public.public_check_ins IS '@foreignKey (item_id) references app_public.items(id)
-@foreignKey (author_id) references app_public.users(id)';
-
-
---
 -- Name: user_settings; Type: TABLE; Schema: app_public; Owner: -
 --
 
@@ -2805,16 +2753,9 @@ CREATE VIEW app_public.public_users AS
     p.last_name,
     p.location,
     p.country,
-        CASE
-            WHEN (f.user_id_1 IS NOT NULL) THEN 'friend'::app_public.friend_status
-            WHEN (sfr.sender_id IS NOT NULL) THEN 'pending-sent'::app_public.friend_status
-            WHEN (rfr.sender_id IS NOT NULL) THEN 'pending-received'::app_public.friend_status
-            ELSE 'none'::app_public.friend_status
-        END AS friend_status
-   FROM (((public_users p
-     LEFT JOIN app_public.friends f ON (((f.user_id_1 = app_public.current_user_id()) AND (p.id = f.user_id_2))))
-     LEFT JOIN app_public.friend_requests sfr ON (((sfr.sender_id = app_public.current_user_id()) AND (sfr.receiver_id = p.id))))
-     LEFT JOIN app_public.friend_requests rfr ON (((rfr.sender_id = p.id) AND (rfr.receiver_id = app_public.current_user_id()))))
+    f.status
+   FROM (public_users p
+     LEFT JOIN app_public.friends f ON ((((f.user_id_1 = app_public.current_user_id()) AND (p.id = f.user_id_2)) OR ((f.user_id_1 = p.id) AND (f.user_id_1 = app_public.current_user_id())))))
   WHERE (p.id <> app_public.current_user_id());
 
 
@@ -3106,22 +3047,6 @@ ALTER TABLE ONLY app_public.companies
 
 
 --
--- Name: friend_requests friend_requests_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
---
-
-ALTER TABLE ONLY app_public.friend_requests
-    ADD CONSTRAINT friend_requests_pkey PRIMARY KEY (sender_id, receiver_id);
-
-
---
--- Name: friend_requests friend_requests_receiver_id_sender_id_key; Type: CONSTRAINT; Schema: app_public; Owner: -
---
-
-ALTER TABLE ONLY app_public.friend_requests
-    ADD CONSTRAINT friend_requests_receiver_id_sender_id_key UNIQUE (receiver_id, sender_id);
-
-
---
 -- Name: friends friends_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
 --
 
@@ -3258,14 +3183,6 @@ ALTER TABLE ONLY app_public.user_authentications
 
 
 --
--- Name: friend_requests unique_sender_receiver_id; Type: CONSTRAINT; Schema: app_public; Owner: -
---
-
-ALTER TABLE ONLY app_public.friend_requests
-    ADD CONSTRAINT unique_sender_receiver_id UNIQUE (sender_id, receiver_id);
-
-
---
 -- Name: user_authentications user_authentications_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
 --
 
@@ -3395,6 +3312,13 @@ CREATE INDEX companies_created_by_idx ON app_public.companies USING btree (creat
 --
 
 CREATE INDEX companies_name_idx ON app_public.companies USING btree (name);
+
+
+--
+-- Name: friends_user_id_1_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX friends_user_id_1_idx ON app_public.friends USING btree (user_id_1);
 
 
 --
@@ -3748,27 +3672,11 @@ ALTER TABLE ONLY app_public.companies
 
 
 --
--- Name: friend_requests friend_requests_receiver_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
---
-
-ALTER TABLE ONLY app_public.friend_requests
-    ADD CONSTRAINT friend_requests_receiver_id_fkey FOREIGN KEY (receiver_id) REFERENCES app_public.users(id) ON DELETE CASCADE;
-
-
---
--- Name: friend_requests friend_requests_sender_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
---
-
-ALTER TABLE ONLY app_public.friend_requests
-    ADD CONSTRAINT friend_requests_sender_id_fkey FOREIGN KEY (sender_id) REFERENCES app_public.users(id) ON DELETE CASCADE;
-
-
---
 -- Name: friends friends_user_id_1_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
 --
 
 ALTER TABLE ONLY app_public.friends
-    ADD CONSTRAINT friends_user_id_1_fkey FOREIGN KEY (user_id_1) REFERENCES app_public.users(id) ON DELETE CASCADE;
+    ADD CONSTRAINT friends_user_id_1_fkey FOREIGN KEY (user_id_1) REFERENCES app_public.users(id);
 
 
 --
@@ -3776,7 +3684,7 @@ ALTER TABLE ONLY app_public.friends
 --
 
 ALTER TABLE ONLY app_public.friends
-    ADD CONSTRAINT friends_user_id_2_fkey FOREIGN KEY (user_id_2) REFERENCES app_public.users(id) ON DELETE CASCADE;
+    ADD CONSTRAINT friends_user_id_2_fkey FOREIGN KEY (user_id_2) REFERENCES app_public.users(id);
 
 
 --
@@ -4391,14 +4299,6 @@ GRANT ALL ON FUNCTION app_public.current_user_member_organization_ids() TO taste
 
 REVOKE ALL ON FUNCTION app_public.delete_friend(friend_id uuid) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.delete_friend(friend_id uuid) TO tasted_visitor;
-
-
---
--- Name: FUNCTION delete_friend_request(user_id uuid); Type: ACL; Schema: app_public; Owner: -
---
-
-REVOKE ALL ON FUNCTION app_public.delete_friend_request(user_id uuid) FROM PUBLIC;
-GRANT ALL ON FUNCTION app_public.delete_friend_request(user_id uuid) TO tasted_visitor;
 
 
 --

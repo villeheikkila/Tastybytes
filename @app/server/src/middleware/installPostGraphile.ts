@@ -1,5 +1,6 @@
 import PgPubsub from "@graphile/pg-pubsub";
 import GraphilePro from "@graphile/pro"; // Requires license key
+import {ConstraintErrorTagsPlugin } from "@graphile-contrib/constraint-error-tags"
 import PgManyToManyPlugin from "@graphile-contrib/pg-many-to-many";
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
 import { Express, Request, Response } from "express";
@@ -184,6 +185,7 @@ export function getPostGraphileOptions({
 
       // Adds custom orders to our GraphQL schema
       OrdersPlugin,
+      ConstraintErrorTagsPlugin,
     ],
 
     /*

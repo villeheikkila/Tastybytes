@@ -1092,6 +1092,13 @@
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.2.tgz#30aa825f11d438671d585bd44e7fd564535fc210"
   integrity sha512-82cpyJyKRoQoRi+14ibCeGPu0CwypgtBAdBhq1WfvagpCZNKqwXbKwXllYSMG91DhmG4jt9gN8eP6lGOtozuaw==
 
+"@graphile-contrib/constraint-error-tags@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@graphile-contrib/constraint-error-tags/-/constraint-error-tags-1.0.3.tgz#7f5aac7ce4e7ab4d12980bad22646a2bbf436b57"
+  integrity sha512-Q+T1F8wX3/fBWVtkxQ2sUas7o9C8zF7AO/AqWNgg+npt4334JJTMTmiRPClJ8LIsLnpn7PLg7j4xiKn/LCz1nQ==
+  dependencies:
+    graphile-build-pg ">=4.7.0"
+
 "@graphile-contrib/pg-many-to-many@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@graphile-contrib/pg-many-to-many/-/pg-many-to-many-1.0.1.tgz#c6eb333c877938f7a4fda3da0ee95393b223bd08"
@@ -7761,7 +7768,7 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.8.tgz#e412b8d33f5e006593cbd3cee6df9f2cebbe802a"
   integrity sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==
 
-graphile-build-pg@4.12.1, graphile-build-pg@^4.12.1:
+graphile-build-pg@4.12.1, graphile-build-pg@>=4.7.0, graphile-build-pg@^4.12.1:
   version "4.12.1"
   resolved "https://registry.yarnpkg.com/graphile-build-pg/-/graphile-build-pg-4.12.1.tgz#f6102a60968076beedfefeb102e8558255e65921"
   integrity sha512-Rd9QBtbyLJ425VUeHggFCvh3s3oKR58mUU6JYK0sQTRjYbxrE/eWDNAQZQLuWeemfSHvgS5W0EzppkHjkoiWiQ==
