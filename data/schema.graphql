@@ -1088,11 +1088,6 @@ input CompanyCondition {
   name: String
 }
 
-"""An input for mutations affecting `Company`"""
-input CompanyInput {
-  name: String!
-}
-
 """A connection to a list of `Type` values, with data from `Item`."""
 type CompanyTypesByItemManufacturerIdAndTypeIdManyToManyConnection {
   """
@@ -1421,27 +1416,23 @@ type CreateCheckInPayload {
   query: Query
 }
 
-"""All input for the create `Company` mutation."""
+"""All input for the `createCompany` mutation."""
 input CreateCompanyInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-
-  """The `Company` to be created by this mutation."""
-  company: CompanyInput!
+  companyName: String!
 }
 
-"""The output of our create `Company` mutation."""
+"""The output of our `createCompany` mutation."""
 type CreateCompanyPayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
-
-  """The `Company` that was created by this mutation."""
   company: Company
 
   """An edge for our `Company`. May be used by Relay 1."""
@@ -2586,7 +2577,7 @@ type Mutation {
     input: CreateCheckInInput!
   ): CreateCheckInPayload
 
-  """Creates a single `Company`."""
+  """Creates a new company. All arguments are required."""
   createCompany(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
