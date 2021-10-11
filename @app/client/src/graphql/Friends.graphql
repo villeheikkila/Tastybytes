@@ -7,7 +7,7 @@ query Friends {
       firstName
       lastName
       avatarUrl
-      friendStatus
+      status
     }
   }
 }
