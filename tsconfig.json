@@ -3,7 +3,6 @@
     "composite": true,
     "incremental": true,
     "noEmitOnError": true,
-
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -28,7 +27,6 @@
     "useUnknownInCatchVariables": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-
     "noEmit": true,
     "declaration": true,
     "declarationMap": true,
@@ -38,7 +36,6 @@
     }
   },
   "include": [],
-  "exclude": ["@app/e2e"],
   "references": [
     { "path": "@app/config" },
     { "path": "@app/components" },
