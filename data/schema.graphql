@@ -168,6 +168,7 @@ type Brand {
   """Reads a single `Company` that is related to this `Brand`."""
   company: Company
   companyId: Int
+  createdAt: Datetime!
   createdBy: UUID
   id: Int!
   isVerified: Boolean
@@ -200,7 +201,7 @@ type Brand {
     """The method to use when ordering `Item`."""
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection!
-  name: String
+  name: ShortText
 
   """Reads and enables pagination through a set of `Type`."""
   typesByItemBrandIdAndTypeId(
@@ -1853,35 +1854,6 @@ type Item {
   id: Int!
   isVerified: Boolean
 
-  """Reads and enables pagination through a set of `ItemsTag`."""
-  itemsTags(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ItemsTagCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `ItemsTag`."""
-    orderBy: [ItemsTagsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ItemsTagsConnection!
-
   """Reads and enables pagination through a set of `Location`."""
   locationsByCheckInItemIdAndLocation(
     """Read all values in the set after (below) this cursor."""
@@ -1914,35 +1886,6 @@ type Item {
   """Reads a single `Company` that is related to this `Item`."""
   manufacturer: Company
   manufacturerId: Int!
-
-  """Reads and enables pagination through a set of `Tag`."""
-  tagsByItemsTagItemIdAndTagId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: TagCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Tag`."""
-    orderBy: [TagsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ItemTagsByItemsTagItemIdAndTagIdManyToManyConnection!
 
   """Reads a single `Type` that is related to this `Item`."""
   type: Type
@@ -2094,32 +2037,6 @@ type ItemLocationsByCheckInItemIdAndLocationManyToManyEdge {
 
   """The `Location` at the end of the edge."""
   node: Location!
-}
-
-"""A connection to a list of `Tag` values, with data from `ItemsTag`."""
-type ItemTagsByItemsTagItemIdAndTagIdManyToManyConnection {
-  """
-  A list of edges which contains the `Tag`, info from the `ItemsTag`, and the cursor to aid in pagination.
-  """
-  edges: [ItemTagsByItemsTagItemIdAndTagIdManyToManyEdge!]!
-
-  """A list of `Tag` objects."""
-  nodes: [Tag!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Tag` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Tag` edge in the connection, with data from `ItemsTag`."""
-type ItemTagsByItemsTagItemIdAndTagIdManyToManyEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Tag` at the end of the edge."""
-  node: Tag!
 }
 
 """
@@ -2274,66 +2191,6 @@ enum ItemsOrderBy {
   TYPE_ID_DESC
   UPDATED_BY_ASC
   UPDATED_BY_DESC
-}
-
-"""Junction table between an item and a tag"""
-type ItemsTag {
-  """Reads a single `Item` that is related to this `ItemsTag`."""
-  item: Item
-  itemId: Int!
-
-  """Reads a single `Tag` that is related to this `ItemsTag`."""
-  tag: Tag
-  tagId: Int!
-}
-
-"""
-A condition to be used against `ItemsTag` object types. All fields are tested
-for equality and combined with a logical ‘and.’
-"""
-input ItemsTagCondition {
-  """Checks for equality with the object’s `itemId` field."""
-  itemId: Int
-
-  """Checks for equality with the object’s `tagId` field."""
-  tagId: Int
-}
-
-"""A connection to a list of `ItemsTag` values."""
-type ItemsTagsConnection {
-  """
-  A list of edges which contains the `ItemsTag` and cursor to aid in pagination.
-  """
-  edges: [ItemsTagsEdge!]!
-
-  """A list of `ItemsTag` objects."""
-  nodes: [ItemsTag!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `ItemsTag` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `ItemsTag` edge in the connection."""
-type ItemsTagsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `ItemsTag` at the end of the edge."""
-  node: ItemsTag!
-}
-
-"""Methods to use when ordering `ItemsTag`."""
-enum ItemsTagsOrderBy {
-  ITEM_ID_ASC
-  ITEM_ID_DESC
-  NATURAL
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  TAG_ID_ASC
-  TAG_ID_DESC
 }
 
 """All input for the `likeCheckIn` mutation."""
@@ -3315,7 +3172,7 @@ type Query {
     orderBy: [ActivityFeedsOrderBy!] = [NATURAL]
   ): ActivityFeedsConnection
   brand(id: Int!): Brand
-  brandByCompanyIdAndName(companyId: Int!, name: String!): Brand
+  brandByCompanyIdAndName(companyId: Int!, name: ShortText!): Brand
 
   """Reads and enables pagination through a set of `Brand`."""
   brands(
@@ -3470,36 +3327,6 @@ type Query {
     """The method to use when ordering `Item`."""
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection
-  itemsTag(itemId: Int!, tagId: Int!): ItemsTag
-
-  """Reads and enables pagination through a set of `ItemsTag`."""
-  itemsTags(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ItemsTagCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `ItemsTag`."""
-    orderBy: [ItemsTagsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ItemsTagsConnection
   location(id: UUID!): Location
 
   """Reads and enables pagination through a set of `Location`."""
@@ -3827,6 +3654,8 @@ type ResetPasswordPayload {
   success: Boolean
 }
 
+scalar ShortText
+
 """
 The root subscription type: contains realtime events you can subscribe to with the `subscription` operation.
 """
@@ -3838,64 +3667,6 @@ type Subscription {
 """Tag for an item or check-in"""
 type Tag {
   id: Int!
-
-  """Reads and enables pagination through a set of `Item`."""
-  itemsByItemsTagTagIdAndItemId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ItemCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Item`."""
-    orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): TagItemsByItemsTagTagIdAndItemIdManyToManyConnection!
-
-  """Reads and enables pagination through a set of `ItemsTag`."""
-  itemsTags(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ItemsTagCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `ItemsTag`."""
-    orderBy: [ItemsTagsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ItemsTagsConnection!
   name: String
 }
 
@@ -3908,32 +3679,6 @@ input TagCondition {
 
   """Checks for equality with the object’s `name` field."""
   name: String
-}
-
-"""A connection to a list of `Item` values, with data from `ItemsTag`."""
-type TagItemsByItemsTagTagIdAndItemIdManyToManyConnection {
-  """
-  A list of edges which contains the `Item`, info from the `ItemsTag`, and the cursor to aid in pagination.
-  """
-  edges: [TagItemsByItemsTagTagIdAndItemIdManyToManyEdge!]!
-
-  """A list of `Item` objects."""
-  nodes: [Item!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Item` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Item` edge in the connection, with data from `ItemsTag`."""
-type TagItemsByItemsTagTagIdAndItemIdManyToManyEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Item` at the end of the edge."""
-  node: Item!
 }
 
 """A connection to a list of `Tag` values."""

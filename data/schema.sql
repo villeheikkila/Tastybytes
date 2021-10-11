@@ -1140,11 +1140,11 @@ COMMENT ON FUNCTION app_public.confirm_account_deletion(token text) IS 'If you''
 
 CREATE TABLE app_public.brands (
     id integer NOT NULL,
-    name text,
+    name app_public.short_text,
     company_id integer,
     is_verified boolean,
     created_by uuid,
-    CONSTRAINT brands_name_check CHECK (((length(name) >= 2) AND (length(name) <= 56)))
+    created_at timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
@@ -2575,6 +2575,16 @@ ALTER SEQUENCE app_public.check_in_likes_id_seq OWNED BY app_public.check_in_lik
 
 
 --
+-- Name: check_in_tags; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.check_in_tags (
+    check_in_id integer NOT NULL,
+    tag_id integer NOT NULL
+);
+
+
+--
 -- Name: check_ins_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
 --
 
@@ -2627,7 +2637,8 @@ CREATE TABLE app_public.item_edit_suggestions (
     manufacturer_id integer,
     brand_id integer NOT NULL,
     author_id uuid NOT NULL,
-    accepted timestamp with time zone
+    accepted timestamp with time zone,
+    type_id integer NOT NULL
 );
 
 
@@ -2669,23 +2680,6 @@ CREATE SEQUENCE app_public.items_id_seq
 --
 
 ALTER SEQUENCE app_public.items_id_seq OWNED BY app_public.items.id;
-
-
---
--- Name: items_tags; Type: TABLE; Schema: app_public; Owner: -
---
-
-CREATE TABLE app_public.items_tags (
-    item_id integer NOT NULL,
-    tag_id integer NOT NULL
-);
-
-
---
--- Name: TABLE items_tags; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON TABLE app_public.items_tags IS 'Junction table between an item and a tag';
 
 
 --
@@ -3075,6 +3069,14 @@ ALTER TABLE ONLY app_public.check_in_likes
 
 
 --
+-- Name: check_in_tags check_in_tags_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_tags
+    ADD CONSTRAINT check_in_tags_pkey PRIMARY KEY (check_in_id, tag_id);
+
+
+--
 -- Name: check_ins check_ins_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
 --
 
@@ -3120,14 +3122,6 @@ ALTER TABLE ONLY app_public.item_edit_suggestions
 
 ALTER TABLE ONLY app_public.items
     ADD CONSTRAINT items_pkey PRIMARY KEY (id);
-
-
---
--- Name: items_tags items_tags_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
---
-
-ALTER TABLE ONLY app_public.items_tags
-    ADD CONSTRAINT items_tags_pkey PRIMARY KEY (item_id, tag_id);
 
 
 --
@@ -3326,6 +3320,13 @@ CREATE INDEX check_in_likes_liked_by_idx ON app_public.check_in_likes USING btre
 
 
 --
+-- Name: check_in_tags_tag_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX check_in_tags_tag_id_idx ON app_public.check_in_tags USING btree (tag_id);
+
+
+--
 -- Name: check_ins_author_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -3410,6 +3411,13 @@ CREATE INDEX item_edit_suggestions_author_id_idx ON app_public.item_edit_suggest
 
 
 --
+-- Name: item_edit_suggestions_brand_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX item_edit_suggestions_brand_id_idx ON app_public.item_edit_suggestions USING btree (brand_id);
+
+
+--
 -- Name: item_edit_suggestions_item_id_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -3421,6 +3429,20 @@ CREATE INDEX item_edit_suggestions_item_id_idx ON app_public.item_edit_suggestio
 --
 
 CREATE INDEX item_edit_suggestions_manufacturer_id_idx ON app_public.item_edit_suggestions USING btree (manufacturer_id);
+
+
+--
+-- Name: item_edit_suggestions_type_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX item_edit_suggestions_type_id_idx ON app_public.item_edit_suggestions USING btree (type_id);
+
+
+--
+-- Name: item_edit_suggestions_type_id_idx1; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX item_edit_suggestions_type_id_idx1 ON app_public.item_edit_suggestions USING btree (type_id);
 
 
 --
@@ -3456,20 +3478,6 @@ CREATE INDEX items_flavor_idx ON app_public.items USING btree (flavor);
 --
 
 CREATE INDEX items_manufacturer_idx ON app_public.items USING btree (manufacturer_id);
-
-
---
--- Name: items_tags_item_id_idx; Type: INDEX; Schema: app_public; Owner: -
---
-
-CREATE INDEX items_tags_item_id_idx ON app_public.items_tags USING btree (item_id);
-
-
---
--- Name: items_tags_tag_id_idx; Type: INDEX; Schema: app_public; Owner: -
---
-
-CREATE INDEX items_tags_tag_id_idx ON app_public.items_tags USING btree (tag_id);
 
 
 --
@@ -3721,11 +3729,27 @@ ALTER TABLE ONLY app_public.check_in_likes
 
 
 --
+-- Name: check_in_tags check_in_tags_check_in_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_tags
+    ADD CONSTRAINT check_in_tags_check_in_id_fkey FOREIGN KEY (check_in_id) REFERENCES app_public.check_ins(id) ON DELETE CASCADE;
+
+
+--
+-- Name: check_in_tags check_in_tags_tag_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_tags
+    ADD CONSTRAINT check_in_tags_tag_id_fkey FOREIGN KEY (tag_id) REFERENCES app_public.tags(id) ON DELETE CASCADE;
+
+
+--
 -- Name: check_ins check_ins_author_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
 --
 
 ALTER TABLE ONLY app_public.check_ins
-    ADD CONSTRAINT check_ins_author_fkey FOREIGN KEY (author_id) REFERENCES app_public.users(id);
+    ADD CONSTRAINT check_ins_author_fkey FOREIGN KEY (author_id) REFERENCES app_public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -3733,7 +3757,7 @@ ALTER TABLE ONLY app_public.check_ins
 --
 
 ALTER TABLE ONLY app_public.check_ins
-    ADD CONSTRAINT check_ins_item_id_fkey FOREIGN KEY (item_id) REFERENCES app_public.items(id);
+    ADD CONSTRAINT check_ins_item_id_fkey FOREIGN KEY (item_id) REFERENCES app_public.items(id) ON DELETE CASCADE;
 
 
 --
@@ -3741,7 +3765,7 @@ ALTER TABLE ONLY app_public.check_ins
 --
 
 ALTER TABLE ONLY app_public.check_ins
-    ADD CONSTRAINT check_ins_location_fkey FOREIGN KEY (location) REFERENCES app_public.locations(id);
+    ADD CONSTRAINT check_ins_location_fkey FOREIGN KEY (location) REFERENCES app_public.locations(id) ON DELETE SET NULL;
 
 
 --
@@ -3749,7 +3773,7 @@ ALTER TABLE ONLY app_public.check_ins
 --
 
 ALTER TABLE ONLY app_public.companies
-    ADD CONSTRAINT companies_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id);
+    ADD CONSTRAINT companies_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id) ON DELETE SET NULL;
 
 
 --
@@ -3801,6 +3825,14 @@ ALTER TABLE ONLY app_public.item_edit_suggestions
 
 
 --
+-- Name: item_edit_suggestions item_edit_suggestions_type_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.item_edit_suggestions
+    ADD CONSTRAINT item_edit_suggestions_type_id_fkey FOREIGN KEY (type_id) REFERENCES app_public.types(id);
+
+
+--
 -- Name: items items_brand_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
 --
 
@@ -3813,7 +3845,7 @@ ALTER TABLE ONLY app_public.items
 --
 
 ALTER TABLE ONLY app_public.items
-    ADD CONSTRAINT items_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id);
+    ADD CONSTRAINT items_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id) ON DELETE SET NULL;
 
 
 --
@@ -3821,23 +3853,7 @@ ALTER TABLE ONLY app_public.items
 --
 
 ALTER TABLE ONLY app_public.items
-    ADD CONSTRAINT items_manufacturer_fkey FOREIGN KEY (manufacturer_id) REFERENCES app_public.companies(id);
-
-
---
--- Name: items_tags items_tags_item_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
---
-
-ALTER TABLE ONLY app_public.items_tags
-    ADD CONSTRAINT items_tags_item_id_fkey FOREIGN KEY (item_id) REFERENCES app_public.items(id);
-
-
---
--- Name: items_tags items_tags_tag_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
---
-
-ALTER TABLE ONLY app_public.items_tags
-    ADD CONSTRAINT items_tags_tag_id_fkey FOREIGN KEY (tag_id) REFERENCES app_public.tags(id);
+    ADD CONSTRAINT items_manufacturer_fkey FOREIGN KEY (manufacturer_id) REFERENCES app_public.companies(id) ON DELETE CASCADE;
 
 
 --
@@ -3845,7 +3861,7 @@ ALTER TABLE ONLY app_public.items_tags
 --
 
 ALTER TABLE ONLY app_public.items
-    ADD CONSTRAINT items_type_id_fkey FOREIGN KEY (type_id) REFERENCES app_public.types(id);
+    ADD CONSTRAINT items_type_id_fkey FOREIGN KEY (type_id) REFERENCES app_public.types(id) ON DELETE CASCADE;
 
 
 --
@@ -3853,7 +3869,7 @@ ALTER TABLE ONLY app_public.items
 --
 
 ALTER TABLE ONLY app_public.items
-    ADD CONSTRAINT items_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES app_public.users(id);
+    ADD CONSTRAINT items_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES app_public.users(id) ON DELETE SET NULL;
 
 
 --
@@ -3893,7 +3909,7 @@ ALTER TABLE ONLY app_public.organization_memberships
 --
 
 ALTER TABLE ONLY app_public.types
-    ADD CONSTRAINT types_category_fkey FOREIGN KEY (category) REFERENCES app_public.categories(name);
+    ADD CONSTRAINT types_category_fkey FOREIGN KEY (category) REFERENCES app_public.categories(name) ON DELETE CASCADE;
 
 
 --
@@ -3917,7 +3933,7 @@ ALTER TABLE ONLY app_public.user_emails
 --
 
 ALTER TABLE ONLY app_public.user_settings
-    ADD CONSTRAINT user_settings_id_fkey FOREIGN KEY (id) REFERENCES app_public.users(id);
+    ADD CONSTRAINT user_settings_id_fkey FOREIGN KEY (id) REFERENCES app_public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -4657,13 +4673,6 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.item_edit_suggestions_id_seq TO tasted
 --
 
 GRANT SELECT,USAGE ON SEQUENCE app_public.items_id_seq TO tasted_visitor;
-
-
---
--- Name: TABLE items_tags; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT ON TABLE app_public.items_tags TO tasted_visitor;
 
 
 --
