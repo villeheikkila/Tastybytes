@@ -5,3 +5,4 @@ node_modules
 /@app/graphql/index.*
 /@app/client/.next
 .next
+GRAPHILE_STARTER_LICENSE.md
