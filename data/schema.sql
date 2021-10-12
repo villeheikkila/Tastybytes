@@ -1433,6 +1433,20 @@ COMMENT ON FUNCTION app_public."current_user"() IS 'The currently logged in user
 
 
 --
+-- Name: current_user_friends(); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.current_user_friends() RETURNS SETOF uuid
+    LANGUAGE sql STABLE SECURITY DEFINER
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+  select user_id_1 as user_id from app_public.friends
+    where user_id_2 = app_public.current_user_id() and status = 'accepted' union select user_id_2 as user_id from app_public.friends
+    where user_id_1 = app_public.current_user_id() and status = 'accepted'
+$$;
+
+
+--
 -- Name: current_user_id(); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -3322,6 +3336,13 @@ CREATE INDEX check_in_comments_created_by_idx ON app_public.check_in_comments US
 
 
 --
+-- Name: check_in_friends_check_in_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX check_in_friends_check_in_id_idx ON app_public.check_in_friends USING btree (check_in_id);
+
+
+--
 -- Name: check_in_friends_friend_id_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -4014,6 +4035,44 @@ ALTER TABLE app_private.user_email_secrets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app_private.user_secrets ENABLE ROW LEVEL SECURITY;
 
 --
+-- Name: brands; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.brands ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: categories; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.categories ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: check_ins; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.check_ins ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: companies; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.companies ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: check_ins create_check_in; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY create_check_in ON app_public.check_ins FOR INSERT WITH CHECK ((app_public.current_user_id() IS NOT NULL));
+
+
+--
+-- Name: companies create_companies; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY create_companies ON app_public.companies FOR INSERT WITH CHECK (((created_by = app_public.current_user_id()) AND (created_by IS NOT NULL)));
+
+
+--
 -- Name: user_authentications delete_own; Type: POLICY; Schema: app_public; Owner: -
 --
 
@@ -4035,6 +4094,12 @@ CREATE POLICY insert_own ON app_public.user_emails FOR INSERT WITH CHECK ((user_
 
 
 --
+-- Name: items; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.items ENABLE ROW LEVEL SECURITY;
+
+--
 -- Name: organization_invitations; Type: ROW SECURITY; Schema: app_public; Owner: -
 --
 
@@ -4053,10 +4118,52 @@ ALTER TABLE app_public.organization_memberships ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app_public.organizations ENABLE ROW LEVEL SECURITY;
 
 --
+-- Name: brands select_all; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY select_all ON app_public.brands FOR SELECT USING (true);
+
+
+--
+-- Name: categories select_all; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY select_all ON app_public.categories FOR SELECT USING (true);
+
+
+--
+-- Name: companies select_all; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY select_all ON app_public.companies FOR SELECT USING (true);
+
+
+--
+-- Name: items select_all; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY select_all ON app_public.items FOR SELECT USING (true);
+
+
+--
+-- Name: types select_all; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY select_all ON app_public.types FOR SELECT USING (true);
+
+
+--
 -- Name: users select_all; Type: POLICY; Schema: app_public; Owner: -
 --
 
 CREATE POLICY select_all ON app_public.users FOR SELECT USING (true);
+
+
+--
+-- Name: check_ins select_friends; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY select_friends ON app_public.check_ins FOR SELECT USING ((author_id IN ( SELECT app_public.current_user_friends() AS current_user_friends)));
 
 
 --
@@ -4099,6 +4206,26 @@ CREATE POLICY select_own ON app_public.user_authentications FOR SELECT USING ((u
 --
 
 CREATE POLICY select_own ON app_public.user_emails FOR SELECT USING ((user_id = app_public.current_user_id()));
+
+
+--
+-- Name: check_ins select_public; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY select_public ON app_public.check_ins FOR SELECT USING ((is_public = true));
+
+
+--
+-- Name: types; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.types ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: check_ins update_own; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY update_own ON app_public.check_ins FOR UPDATE USING ((author_id = app_public.current_user_id()));
 
 
 --
@@ -4436,6 +4563,14 @@ GRANT ALL ON FUNCTION app_public.current_session_id() TO tasted_visitor;
 
 REVOKE ALL ON FUNCTION app_public."current_user"() FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public."current_user"() TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION current_user_friends(); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.current_user_friends() FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.current_user_friends() TO tasted_visitor;
 
 
 --
