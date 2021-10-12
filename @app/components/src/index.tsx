@@ -11,8 +11,6 @@ export * from "./Input";
 export * from "./Label";
 export * from "./LabeledInput";
 export * from "./Layout";
-export * from "./organizationHooks";
-export * from "./OrganizationSettingsLayout";
 export * from "./PasswordStrength";
 export * from "./Redirect";
 export * from "./SettingsLayout";

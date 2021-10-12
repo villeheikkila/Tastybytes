@@ -1,6 +1,6 @@
 import PgPubsub from "@graphile/pg-pubsub";
 import GraphilePro from "@graphile/pro"; // Requires license key
-import {ConstraintErrorTagsPlugin } from "@graphile-contrib/constraint-error-tags"
+import { ConstraintErrorTagsPlugin } from "@graphile-contrib/constraint-error-tags";
 import PgManyToManyPlugin from "@graphile-contrib/pg-many-to-many";
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
 import { Express, Request, Response } from "express";
@@ -17,7 +17,6 @@ import {
 import { makePgSmartTagsFromFilePlugin } from "postgraphile/plugins";
 
 import { getHttpServer, getWebsocketMiddlewares } from "../app";
-import OrdersPlugin from "../plugins/Orders";
 import PassportLoginPlugin from "../plugins/PassportLoginPlugin";
 import PrimaryKeyMutationsOnlyPlugin from "../plugins/PrimaryKeyMutationsOnlyPlugin";
 import RemoveQueryQueryPlugin from "../plugins/RemoveQueryQueryPlugin";
@@ -182,9 +181,6 @@ export function getPostGraphileOptions({
 
       // Adds realtime features to our GraphQL schema
       SubscriptionsPlugin,
-
-      // Adds custom orders to our GraphQL schema
-      OrdersPlugin,
       ConstraintErrorTagsPlugin,
     ],
 
