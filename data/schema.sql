@@ -2541,6 +2541,16 @@ ALTER SEQUENCE app_public.check_in_comments_id_seq OWNED BY app_public.check_in_
 
 
 --
+-- Name: check_in_friends; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.check_in_friends (
+    check_in_id integer,
+    friend_id uuid
+);
+
+
+--
 -- Name: check_in_likes; Type: TABLE; Schema: app_public; Owner: -
 --
 
@@ -3312,6 +3322,13 @@ CREATE INDEX check_in_comments_created_by_idx ON app_public.check_in_comments US
 
 
 --
+-- Name: check_in_friends_friend_id_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX check_in_friends_friend_id_idx ON app_public.check_in_friends USING btree (friend_id);
+
+
+--
 -- Name: check_in_likes_liked_by_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -3716,6 +3733,22 @@ ALTER TABLE ONLY app_public.check_in_comments
 
 ALTER TABLE ONLY app_public.check_in_comments
     ADD CONSTRAINT check_in_comments_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: check_in_friends check_in_friends_check_in_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_friends
+    ADD CONSTRAINT check_in_friends_check_in_id_fkey FOREIGN KEY (check_in_id) REFERENCES app_public.check_ins(id) ON DELETE CASCADE;
+
+
+--
+-- Name: check_in_friends check_in_friends_friend_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.check_in_friends
+    ADD CONSTRAINT check_in_friends_friend_id_fkey FOREIGN KEY (friend_id) REFERENCES app_public.users(id) ON DELETE CASCADE;
 
 
 --
