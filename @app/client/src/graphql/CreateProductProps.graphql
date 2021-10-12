@@ -1,4 +1,4 @@
-query CreateProductProps {
+query CreateItemProps {
   ...SharedLayout_Query
   companies {
     nodes {
