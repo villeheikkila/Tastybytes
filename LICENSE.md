@@ -3,8 +3,6 @@ writing (2019-09-13), is located at https://github.com/graphile/starter) and
 thus contains code that is copyright Graphile Ltd. See
 `GRAPHILE_STARTER_LICENSE.md` for details of the license of that code.
 
-TODO: insert your own copyright notices here.
-
 The MIT License (MIT) Copyright © 2021 Ville Heikkilä
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
