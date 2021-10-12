@@ -1,11 +1,11 @@
-mutation CreateProduct(
+mutation CreateItem(
   $flavor: String!
   $typeId: Int!
   $brandId: Int!
   $manufacturerId: Int!
   $description: String
 ) {
-  createProduct(
+  createItem(
     input: {
       flavor: $flavor
       typeId: $typeId

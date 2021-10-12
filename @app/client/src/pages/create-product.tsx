@@ -6,10 +6,10 @@ import {
   SharedLayout,
 } from "@app/components";
 import {
-  CreateProductPropsQuery,
+  CreateItemPropsQuery,
   useCreateCompanyMutation,
-  useCreateProductMutation,
-  useCreateProductPropsQuery,
+  useCreateItemMutation,
+  useCreateItemPropsQuery,
 } from "@app/graphql";
 import { ErrorMessage } from "@hookform/error-message";
 import { NextPage } from "next";
@@ -17,7 +17,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 
 const CreateProductPage: NextPage = () => {
-  const createItemProps = useCreateProductPropsQuery();
+  const createItemProps = useCreateItemPropsQuery();
   const data = createItemProps.data;
 
   return (
@@ -28,7 +28,7 @@ const CreateProductPage: NextPage = () => {
 };
 
 interface CreateProductInnerProps {
-  data: CreateProductPropsQuery;
+  data: CreateItemPropsQuery;
 }
 
 interface ProductFormInput {
@@ -38,7 +38,7 @@ interface ProductFormInput {
 const CreateProductInner: React.FC<CreateProductInnerProps> = ({
   data: { categories, companies },
 }) => {
-  const [createProduct] = useCreateProductMutation();
+  const [createProduct] = useCreateItemMutation();
   console.log("createProduct: ", createProduct);
   const [category, setCategory] = React.useState<string>();
   const [brand, setBrand] = React.useState<string>();
@@ -136,7 +136,7 @@ type CompanyFormInput = {
 };
 
 type CompanyFormProps = {
-  companies: CreateProductPropsQuery["companies"];
+  companies: CreateItemPropsQuery["companies"];
 };
 
 const CompanyForm = ({ companies }: CompanyFormProps) => {

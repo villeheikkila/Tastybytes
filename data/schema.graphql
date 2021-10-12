@@ -71,38 +71,6 @@ enum ActivityFeedsOrderBy {
   NATURAL
 }
 
-"""All input for the `addCheckInComment` mutation."""
-input AddCheckInCommentInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  comment: String!
-  targetCheckInId: Int!
-}
-
-"""The output of our `addCheckInComment` mutation."""
-type AddCheckInCommentPayload {
-  """Reads a single `CheckIn` that is related to this `CheckInComment`."""
-  checkIn: CheckIn
-  checkInComment: CheckInComment
-
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `User` that is related to this `CheckInComment`."""
-  userByCreatedBy: User
-}
-
 """
 A floating point number that requires more precision than IEEE 754 binary 64
 """
@@ -1347,6 +1315,38 @@ type CreateBrandPayload {
   userByCreatedBy: User
 }
 
+"""All input for the `createCheckInComment` mutation."""
+input CreateCheckInCommentInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  comment: String!
+  targetCheckInId: Int!
+}
+
+"""The output of our `createCheckInComment` mutation."""
+type CreateCheckInCommentPayload {
+  """Reads a single `CheckIn` that is related to this `CheckInComment`."""
+  checkIn: CheckIn
+  checkInComment: CheckInComment
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `CheckInComment`."""
+  userByCreatedBy: User
+}
+
 """All input for the `createCheckIn` mutation."""
 input CreateCheckInInput {
   checkInDate: Date
@@ -1449,8 +1449,8 @@ type CreateFriendRequestPayload {
   query: Query
 }
 
-"""All input for the `createProduct` mutation."""
-input CreateProductInput {
+"""All input for the `createItem` mutation."""
+input CreateItemInput {
   brandId: Int!
 
   """
@@ -1464,8 +1464,8 @@ input CreateProductInput {
   typeId: Int!
 }
 
-"""The output of our `createProduct` mutation."""
-type CreateProductPayload {
+"""The output of our `createItem` mutation."""
+type CreateItemPayload {
   """Reads a single `Brand` that is related to this `Item`."""
   brand: Brand
 
@@ -2446,12 +2446,6 @@ type Mutation {
     """
     input: AcceptFriendRequestInput!
   ): AcceptFriendRequestPayload
-  addCheckInComment(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: AddCheckInCommentInput!
-  ): AddCheckInCommentPayload
 
   """Enter your old password and a new password to change your password."""
   changePassword(
@@ -2482,6 +2476,12 @@ type Mutation {
     """
     input: CreateCheckInInput!
   ): CreateCheckInPayload
+  createCheckInComment(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateCheckInCommentInput!
+  ): CreateCheckInCommentPayload
 
   """Creates a new company. All arguments are required."""
   createCompany(
@@ -2496,12 +2496,12 @@ type Mutation {
     """
     input: CreateFriendRequestInput!
   ): CreateFriendRequestPayload
-  createProduct(
+  createItem(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: CreateProductInput!
-  ): CreateProductPayload
+    input: CreateItemInput!
+  ): CreateItemPayload
 
   """Creates a single `UserEmail`."""
   createUserEmail(
