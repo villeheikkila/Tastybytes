@@ -84,6 +84,11 @@
           "omit": true
         }
       },
+      "app_public.current_user_friends": {
+        "tags": {
+          "omit": true
+        }
+      },
       "app_public.current_user_id": {
         "tags": {
           "omit": true
