@@ -1,3 +1,7 @@
+--! Previous: sha1:40b39cd8f99619210d560cee181bd05e57201763
+--! Hash: sha1:69cfa5212b335470e5a4c52ea0c1baef44db3b59
+
+--! split: 1-current.sql
 -- Enter migration here
 drop FUNCTION app_public.users_check_in_statistics(u app_public.users);
 

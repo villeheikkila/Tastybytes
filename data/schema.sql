@@ -1012,6 +1012,17 @@ COMMENT ON FUNCTION app_public.change_password(old_password text, new_password t
 
 
 --
+-- Name: checkinstatistics(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.checkinstatistics(u app_public.users) RETURNS text
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT 'dasda';
+$$;
+
+
+--
 -- Name: confirm_account_deletion(text); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -1938,6 +1949,17 @@ begin
   update app_public.users set is_verified = true where id = new.user_id and is_verified is false;
   return new;
 end;
+$$;
+
+
+--
+-- Name: users_check_in_statistics(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.users_check_in_statistics(u app_public.users) RETURNS TABLE(total_check_ins integer, unique_check_ins integer)
+    LANGUAGE sql STABLE
+    AS $$
+  SELECT count(*) as total_check_ins, count(distinct item_id) as unique_check_ins from app_public.check_ins where author_id = u.id;
 $$;
 
 
@@ -4005,6 +4027,14 @@ GRANT ALL ON FUNCTION app_public.change_password(old_password text, new_password
 
 
 --
+-- Name: FUNCTION checkinstatistics(u app_public.users); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.checkinstatistics(u app_public.users) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.checkinstatistics(u app_public.users) TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION confirm_account_deletion(token text); Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -4305,6 +4335,14 @@ GRANT ALL ON FUNCTION app_public.tg_user_emails__prevent_delete_last_email() TO 
 
 REVOKE ALL ON FUNCTION app_public.tg_user_emails__verify_account_on_verified() FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.tg_user_emails__verify_account_on_verified() TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION users_check_in_statistics(u app_public.users); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.users_check_in_statistics(u app_public.users) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.users_check_in_statistics(u app_public.users) TO tasted_visitor;
 
 
 --
