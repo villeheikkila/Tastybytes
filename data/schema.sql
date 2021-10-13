@@ -3638,6 +3638,41 @@ CREATE POLICY moderator_delete ON app_public.tags FOR DELETE USING (app_public.c
 
 
 --
+-- Name: brands moderator_update; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY moderator_update ON app_public.brands FOR UPDATE USING (app_public.current_user_is_privileged());
+
+
+--
+-- Name: companies moderator_update; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY moderator_update ON app_public.companies FOR UPDATE USING (app_public.current_user_is_privileged());
+
+
+--
+-- Name: items moderator_update; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY moderator_update ON app_public.items FOR UPDATE USING (app_public.current_user_is_privileged());
+
+
+--
+-- Name: tags moderator_update; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY moderator_update ON app_public.tags FOR UPDATE USING (app_public.current_user_is_privileged());
+
+
+--
+-- Name: types moderator_update; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY moderator_update ON app_public.types FOR INSERT WITH CHECK (app_public.current_user_is_privileged());
+
+
+--
 -- Name: brands select_all; Type: POLICY; Schema: app_public; Owner: -
 --
 
@@ -3947,6 +3982,27 @@ GRANT SELECT,DELETE ON TABLE app_public.brands TO tasted_visitor;
 
 
 --
+-- Name: COLUMN brands.name; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(name) ON TABLE app_public.brands TO tasted_visitor;
+
+
+--
+-- Name: COLUMN brands.company_id; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(company_id) ON TABLE app_public.brands TO tasted_visitor;
+
+
+--
+-- Name: COLUMN brands.is_verified; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(is_verified) ON TABLE app_public.brands TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION create_brand(name text, company_id integer); Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -3985,6 +4041,20 @@ GRANT SELECT,DELETE ON TABLE app_public.companies TO tasted_visitor;
 
 
 --
+-- Name: COLUMN companies.name; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(name) ON TABLE app_public.companies TO tasted_visitor;
+
+
+--
+-- Name: COLUMN companies.is_verified; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(is_verified) ON TABLE app_public.companies TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION create_company(company_name text); Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -4005,6 +4075,48 @@ GRANT ALL ON FUNCTION app_public.create_friend_request(user_id uuid) TO tasted_v
 --
 
 GRANT SELECT,DELETE ON TABLE app_public.items TO tasted_visitor;
+
+
+--
+-- Name: COLUMN items.flavor; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(flavor) ON TABLE app_public.items TO tasted_visitor;
+
+
+--
+-- Name: COLUMN items.description; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(description) ON TABLE app_public.items TO tasted_visitor;
+
+
+--
+-- Name: COLUMN items.type_id; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(type_id) ON TABLE app_public.items TO tasted_visitor;
+
+
+--
+-- Name: COLUMN items.manufacturer_id; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(manufacturer_id) ON TABLE app_public.items TO tasted_visitor;
+
+
+--
+-- Name: COLUMN items.is_verified; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(is_verified) ON TABLE app_public.items TO tasted_visitor;
+
+
+--
+-- Name: COLUMN items.brand_id; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(brand_id) ON TABLE app_public.items TO tasted_visitor;
 
 
 --
@@ -4279,6 +4391,20 @@ GRANT SELECT,DELETE ON TABLE app_public.tags TO tasted_visitor;
 
 
 --
+-- Name: COLUMN tags.name; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(name) ON TABLE app_public.tags TO tasted_visitor;
+
+
+--
+-- Name: COLUMN tags.is_verified; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(is_verified) ON TABLE app_public.tags TO tasted_visitor;
+
+
+--
 -- Name: SEQUENCE tags_id_seq; Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -4290,6 +4416,20 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.tags_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT ON TABLE app_public.types TO tasted_visitor;
+
+
+--
+-- Name: COLUMN types.name; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT INSERT(name) ON TABLE app_public.types TO tasted_visitor;
+
+
+--
+-- Name: COLUMN types.category; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT INSERT(category) ON TABLE app_public.types TO tasted_visitor;
 
 
 --
