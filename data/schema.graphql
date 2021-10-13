@@ -71,11 +71,6 @@ enum ActivityFeedsOrderBy {
   NATURAL
 }
 
-"""
-A floating point number that requires more precision than IEEE 754 binary 64
-"""
-scalar BigFloat
-
 type Brand {
   """Reads and enables pagination through a set of `Company`."""
   companiesByItemBrandIdAndManufacturerId(
@@ -106,6 +101,35 @@ type Brand {
     orderBy: [CompaniesOrderBy!] = [PRIMARY_KEY_ASC]
   ): BrandCompaniesByItemBrandIdAndManufacturerIdManyToManyConnection!
 
+  """Reads and enables pagination through a set of `Company`."""
+  companiesByItemEditSuggestionBrandIdAndManufacturerId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CompanyCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Company`."""
+    orderBy: [CompaniesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): BrandCompaniesByItemEditSuggestionBrandIdAndManufacturerIdManyToManyConnection!
+
   """Reads a single `Company` that is related to this `Brand`."""
   company: Company
   companyId: Int
@@ -113,6 +137,35 @@ type Brand {
   createdBy: UUID
   id: Int!
   isVerified: Boolean
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
 
   """Reads and enables pagination through a set of `Item`."""
   items(
@@ -142,6 +195,35 @@ type Brand {
     """The method to use when ordering `Item`."""
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection!
+
+  """Reads and enables pagination through a set of `Item`."""
+  itemsByItemEditSuggestionBrandIdAndItemId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Item`."""
+    orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): BrandItemsByItemEditSuggestionBrandIdAndItemIdManyToManyConnection!
   name: ShortText
 
   """Reads and enables pagination through a set of `Type`."""
@@ -172,6 +254,35 @@ type Brand {
     """The method to use when ordering `Type`."""
     orderBy: [TypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): BrandTypesByItemBrandIdAndTypeIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Type`."""
+  typesByItemEditSuggestionBrandIdAndTypeId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TypeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Type`."""
+    orderBy: [TypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): BrandTypesByItemEditSuggestionBrandIdAndTypeIdManyToManyConnection!
 
   """Reads a single `User` that is related to this `Brand`."""
   userByCreatedBy: User
@@ -233,6 +344,35 @@ type Brand {
     """The method to use when ordering `User`."""
     orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): BrandUsersByItemBrandIdAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `User`."""
+  usersByItemEditSuggestionBrandIdAndAuthorId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): BrandUsersByItemEditSuggestionBrandIdAndAuthorIdManyToManyConnection!
 }
 
 """A connection to a list of `Company` values, with data from `Item`."""
@@ -291,6 +431,65 @@ type BrandCompaniesByItemBrandIdAndManufacturerIdManyToManyEdge {
 }
 
 """
+A connection to a list of `Company` values, with data from `ItemEditSuggestion`.
+"""
+type BrandCompaniesByItemEditSuggestionBrandIdAndManufacturerIdManyToManyConnection {
+  """
+  A list of edges which contains the `Company`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [BrandCompaniesByItemEditSuggestionBrandIdAndManufacturerIdManyToManyEdge!]!
+
+  """A list of `Company` objects."""
+  nodes: [Company!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Company` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Company` edge in the connection, with data from `ItemEditSuggestion`.
+"""
+type BrandCompaniesByItemEditSuggestionBrandIdAndManufacturerIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestionsByManufacturerId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """The `Company` at the end of the edge."""
+  node: Company!
+}
+
+"""
 A condition to be used against `Brand` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input BrandCondition {
@@ -302,6 +501,63 @@ input BrandCondition {
 
   """Checks for equality with the object’s `id` field."""
   id: Int
+}
+
+"""
+A connection to a list of `Item` values, with data from `ItemEditSuggestion`.
+"""
+type BrandItemsByItemEditSuggestionBrandIdAndItemIdManyToManyConnection {
+  """
+  A list of edges which contains the `Item`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [BrandItemsByItemEditSuggestionBrandIdAndItemIdManyToManyEdge!]!
+
+  """A list of `Item` objects."""
+  nodes: [Item!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Item` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Item` edge in the connection, with data from `ItemEditSuggestion`."""
+type BrandItemsByItemEditSuggestionBrandIdAndItemIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """The `Item` at the end of the edge."""
+  node: Item!
 }
 
 """A connection to a list of `Type` values, with data from `Item`."""
@@ -354,6 +610,63 @@ type BrandTypesByItemBrandIdAndTypeIdManyToManyEdge {
     """The method to use when ordering `Item`."""
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection!
+
+  """The `Type` at the end of the edge."""
+  node: Type!
+}
+
+"""
+A connection to a list of `Type` values, with data from `ItemEditSuggestion`.
+"""
+type BrandTypesByItemEditSuggestionBrandIdAndTypeIdManyToManyConnection {
+  """
+  A list of edges which contains the `Type`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [BrandTypesByItemEditSuggestionBrandIdAndTypeIdManyToManyEdge!]!
+
+  """A list of `Type` objects."""
+  nodes: [Type!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Type` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Type` edge in the connection, with data from `ItemEditSuggestion`."""
+type BrandTypesByItemEditSuggestionBrandIdAndTypeIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
 
   """The `Type` at the end of the edge."""
   node: Type!
@@ -464,6 +777,63 @@ type BrandUsersByItemBrandIdAndUpdatedByManyToManyEdge {
     """The method to use when ordering `Item`."""
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection!
+
+  """The `User` at the end of the edge."""
+  node: User!
+}
+
+"""
+A connection to a list of `User` values, with data from `ItemEditSuggestion`.
+"""
+type BrandUsersByItemEditSuggestionBrandIdAndAuthorIdManyToManyConnection {
+  """
+  A list of edges which contains the `User`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [BrandUsersByItemEditSuggestionBrandIdAndAuthorIdManyToManyEdge!]!
+
+  """A list of `User` objects."""
+  nodes: [User!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `User` edge in the connection, with data from `ItemEditSuggestion`."""
+type BrandUsersByItemEditSuggestionBrandIdAndAuthorIdManyToManyEdge {
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  authoredItemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
 
   """The `User` at the end of the edge."""
   node: User!
@@ -627,9 +997,6 @@ type CheckIn {
   itemId: Int!
   likes: Int
   location: UUID
-
-  """Reads a single `Location` that is related to this `CheckIn`."""
-  locationByLocation: Location
   rating: Int
   review: String
 }
@@ -780,6 +1147,35 @@ type Company {
   ): BrandsConnection!
 
   """Reads and enables pagination through a set of `Brand`."""
+  brandsByItemEditSuggestionManufacturerIdAndBrandId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: BrandCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Brand`."""
+    orderBy: [BrandsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CompanyBrandsByItemEditSuggestionManufacturerIdAndBrandIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Brand`."""
   brandsByItemManufacturerIdAndBrandId(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -812,6 +1208,64 @@ type Company {
   id: Int!
   isVerified: Boolean!
 
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestionsByManufacturerId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """Reads and enables pagination through a set of `Item`."""
+  itemsByItemEditSuggestionManufacturerIdAndItemId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Item`."""
+    orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CompanyItemsByItemEditSuggestionManufacturerIdAndItemIdManyToManyConnection!
+
   """Reads and enables pagination through a set of `Item`."""
   itemsByManufacturerId(
     """Read all values in the set after (below) this cursor."""
@@ -841,6 +1295,35 @@ type Company {
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection!
   name: String!
+
+  """Reads and enables pagination through a set of `Type`."""
+  typesByItemEditSuggestionManufacturerIdAndTypeId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TypeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Type`."""
+    orderBy: [TypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CompanyTypesByItemEditSuggestionManufacturerIdAndTypeIdManyToManyConnection!
 
   """Reads and enables pagination through a set of `Type`."""
   typesByItemManufacturerIdAndTypeId(
@@ -904,6 +1387,35 @@ type Company {
   ): CompanyUsersByBrandCompanyIdAndCreatedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `User`."""
+  usersByItemEditSuggestionManufacturerIdAndAuthorId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CompanyUsersByItemEditSuggestionManufacturerIdAndAuthorIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `User`."""
   usersByItemManufacturerIdAndCreatedBy(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -960,6 +1472,63 @@ type Company {
     """The method to use when ordering `User`."""
     orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): CompanyUsersByItemManufacturerIdAndUpdatedByManyToManyConnection!
+}
+
+"""
+A connection to a list of `Brand` values, with data from `ItemEditSuggestion`.
+"""
+type CompanyBrandsByItemEditSuggestionManufacturerIdAndBrandIdManyToManyConnection {
+  """
+  A list of edges which contains the `Brand`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [CompanyBrandsByItemEditSuggestionManufacturerIdAndBrandIdManyToManyEdge!]!
+
+  """A list of `Brand` objects."""
+  nodes: [Brand!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Brand` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Brand` edge in the connection, with data from `ItemEditSuggestion`."""
+type CompanyBrandsByItemEditSuggestionManufacturerIdAndBrandIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """The `Brand` at the end of the edge."""
+  node: Brand!
 }
 
 """A connection to a list of `Brand` values, with data from `Item`."""
@@ -1029,6 +1598,120 @@ input CompanyCondition {
 
   """Checks for equality with the object’s `name` field."""
   name: String
+}
+
+"""
+A connection to a list of `Item` values, with data from `ItemEditSuggestion`.
+"""
+type CompanyItemsByItemEditSuggestionManufacturerIdAndItemIdManyToManyConnection {
+  """
+  A list of edges which contains the `Item`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [CompanyItemsByItemEditSuggestionManufacturerIdAndItemIdManyToManyEdge!]!
+
+  """A list of `Item` objects."""
+  nodes: [Item!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Item` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Item` edge in the connection, with data from `ItemEditSuggestion`."""
+type CompanyItemsByItemEditSuggestionManufacturerIdAndItemIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """The `Item` at the end of the edge."""
+  node: Item!
+}
+
+"""
+A connection to a list of `Type` values, with data from `ItemEditSuggestion`.
+"""
+type CompanyTypesByItemEditSuggestionManufacturerIdAndTypeIdManyToManyConnection {
+  """
+  A list of edges which contains the `Type`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [CompanyTypesByItemEditSuggestionManufacturerIdAndTypeIdManyToManyEdge!]!
+
+  """A list of `Type` objects."""
+  nodes: [Type!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Type` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Type` edge in the connection, with data from `ItemEditSuggestion`."""
+type CompanyTypesByItemEditSuggestionManufacturerIdAndTypeIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """The `Type` at the end of the edge."""
+  node: Type!
 }
 
 """A connection to a list of `Type` values, with data from `Item`."""
@@ -1133,6 +1816,63 @@ type CompanyUsersByBrandCompanyIdAndCreatedByManyToManyEdge {
     """The method to use when ordering `Brand`."""
     orderBy: [BrandsOrderBy!] = [PRIMARY_KEY_ASC]
   ): BrandsConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `User` at the end of the edge."""
+  node: User!
+}
+
+"""
+A connection to a list of `User` values, with data from `ItemEditSuggestion`.
+"""
+type CompanyUsersByItemEditSuggestionManufacturerIdAndAuthorIdManyToManyConnection {
+  """
+  A list of edges which contains the `User`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [CompanyUsersByItemEditSuggestionManufacturerIdAndAuthorIdManyToManyEdge!]!
+
+  """A list of `User` objects."""
+  nodes: [User!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `User` edge in the connection, with data from `ItemEditSuggestion`."""
+type CompanyUsersByItemEditSuggestionManufacturerIdAndAuthorIdManyToManyEdge {
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  authoredItemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
 
   """A cursor for use in pagination."""
   cursor: Cursor
@@ -1381,9 +2121,6 @@ type CreateCheckInPayload {
 
   """Reads a single `Item` that is related to this `CheckIn`."""
   item: Item
-
-  """Reads a single `Location` that is related to this `CheckIn`."""
-  locationByLocation: Location
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -1701,6 +2438,35 @@ type Item {
   brand: Brand
   brandId: Int!
 
+  """Reads and enables pagination through a set of `Brand`."""
+  brandsByItemEditSuggestionItemIdAndBrandId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: BrandCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Brand`."""
+    orderBy: [BrandsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemBrandsByItemEditSuggestionItemIdAndBrandIdManyToManyConnection!
+
   """Reads and enables pagination through a set of `CheckIn`."""
   checkIns(
     """Read all values in the set after (below) this cursor."""
@@ -1729,15 +2495,9 @@ type Item {
     """The method to use when ordering `CheckIn`."""
     orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
   ): CheckInsConnection!
-  createdAt: Datetime!
-  createdBy: UUID
-  description: String
-  flavor: String
-  id: Int!
-  isVerified: Boolean
 
-  """Reads and enables pagination through a set of `Location`."""
-  locationsByCheckInItemIdAndLocation(
+  """Reads and enables pagination through a set of `Company`."""
+  companiesByItemEditSuggestionItemIdAndManufacturerId(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
 
@@ -1747,7 +2507,7 @@ type Item {
     """
     A condition to be used in determining which values should be returned by the collection.
     """
-    condition: LocationCondition
+    condition: CompanyCondition
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -1761,9 +2521,44 @@ type Item {
     """
     offset: Int
 
-    """The method to use when ordering `Location`."""
-    orderBy: [LocationsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ItemLocationsByCheckInItemIdAndLocationManyToManyConnection!
+    """The method to use when ordering `Company`."""
+    orderBy: [CompaniesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemCompaniesByItemEditSuggestionItemIdAndManufacturerIdManyToManyConnection!
+  createdAt: Datetime!
+  createdBy: UUID
+  description: String
+  flavor: String
+  id: Int!
+  isVerified: Boolean
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
 
   """Reads a single `Company` that is related to this `Item`."""
   manufacturer: Company
@@ -1772,6 +2567,35 @@ type Item {
   """Reads a single `Type` that is related to this `Item`."""
   type: Type
   typeId: Int!
+
+  """Reads and enables pagination through a set of `Type`."""
+  typesByItemEditSuggestionItemIdAndTypeId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TypeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Type`."""
+    orderBy: [TypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemTypesByItemEditSuggestionItemIdAndTypeIdManyToManyConnection!
   updatedAt: Datetime!
   updatedBy: UUID
 
@@ -1838,6 +2662,151 @@ type Item {
     """The method to use when ordering `User`."""
     orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemUsersByCheckInItemIdAndAuthorIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `User`."""
+  usersByItemEditSuggestionItemIdAndAuthorId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemUsersByItemEditSuggestionItemIdAndAuthorIdManyToManyConnection!
+}
+
+"""
+A connection to a list of `Brand` values, with data from `ItemEditSuggestion`.
+"""
+type ItemBrandsByItemEditSuggestionItemIdAndBrandIdManyToManyConnection {
+  """
+  A list of edges which contains the `Brand`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [ItemBrandsByItemEditSuggestionItemIdAndBrandIdManyToManyEdge!]!
+
+  """A list of `Brand` objects."""
+  nodes: [Brand!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Brand` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Brand` edge in the connection, with data from `ItemEditSuggestion`."""
+type ItemBrandsByItemEditSuggestionItemIdAndBrandIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """The `Brand` at the end of the edge."""
+  node: Brand!
+}
+
+"""
+A connection to a list of `Company` values, with data from `ItemEditSuggestion`.
+"""
+type ItemCompaniesByItemEditSuggestionItemIdAndManufacturerIdManyToManyConnection {
+  """
+  A list of edges which contains the `Company`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [ItemCompaniesByItemEditSuggestionItemIdAndManufacturerIdManyToManyEdge!]!
+
+  """A list of `Company` objects."""
+  nodes: [Company!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Company` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Company` edge in the connection, with data from `ItemEditSuggestion`.
+"""
+type ItemCompaniesByItemEditSuggestionItemIdAndManufacturerIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestionsByManufacturerId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """The `Company` at the end of the edge."""
+  node: Company!
 }
 
 """
@@ -1866,27 +2835,131 @@ input ItemCondition {
   updatedBy: UUID
 }
 
-"""A connection to a list of `Location` values, with data from `CheckIn`."""
-type ItemLocationsByCheckInItemIdAndLocationManyToManyConnection {
-  """
-  A list of edges which contains the `Location`, info from the `CheckIn`, and the cursor to aid in pagination.
-  """
-  edges: [ItemLocationsByCheckInItemIdAndLocationManyToManyEdge!]!
+type ItemEditSuggestion {
+  accepted: Datetime
 
-  """A list of `Location` objects."""
-  nodes: [Location!]!
+  """Reads a single `User` that is related to this `ItemEditSuggestion`."""
+  author: User
+  authorId: UUID!
+
+  """Reads a single `Brand` that is related to this `ItemEditSuggestion`."""
+  brand: Brand
+  brandId: Int!
+  createdAt: Datetime!
+  description: LongText
+  flavor: ShortText
+  id: Int!
+
+  """Reads a single `Item` that is related to this `ItemEditSuggestion`."""
+  item: Item
+  itemId: Int!
+
+  """Reads a single `Company` that is related to this `ItemEditSuggestion`."""
+  manufacturer: Company
+  manufacturerId: Int
+
+  """Reads a single `Type` that is related to this `ItemEditSuggestion`."""
+  type: Type
+  typeId: Int!
+}
+
+"""
+A condition to be used against `ItemEditSuggestion` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input ItemEditSuggestionCondition {
+  """Checks for equality with the object’s `authorId` field."""
+  authorId: UUID
+
+  """Checks for equality with the object’s `brandId` field."""
+  brandId: Int
+
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `itemId` field."""
+  itemId: Int
+
+  """Checks for equality with the object’s `manufacturerId` field."""
+  manufacturerId: Int
+
+  """Checks for equality with the object’s `typeId` field."""
+  typeId: Int
+}
+
+"""A connection to a list of `ItemEditSuggestion` values."""
+type ItemEditSuggestionsConnection {
+  """
+  A list of edges which contains the `ItemEditSuggestion` and cursor to aid in pagination.
+  """
+  edges: [ItemEditSuggestionsEdge!]!
+
+  """A list of `ItemEditSuggestion` objects."""
+  nodes: [ItemEditSuggestion!]!
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  """The count of *all* `Location` you could get from the connection."""
+  """
+  The count of *all* `ItemEditSuggestion` you could get from the connection.
+  """
   totalCount: Int!
 }
 
-"""A `Location` edge in the connection, with data from `CheckIn`."""
-type ItemLocationsByCheckInItemIdAndLocationManyToManyEdge {
-  """Reads and enables pagination through a set of `CheckIn`."""
-  checkInsByLocation(
+"""A `ItemEditSuggestion` edge in the connection."""
+type ItemEditSuggestionsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `ItemEditSuggestion` at the end of the edge."""
+  node: ItemEditSuggestion!
+}
+
+"""Methods to use when ordering `ItemEditSuggestion`."""
+enum ItemEditSuggestionsOrderBy {
+  AUTHOR_ID_ASC
+  AUTHOR_ID_DESC
+  BRAND_ID_ASC
+  BRAND_ID_DESC
+  ID_ASC
+  ID_DESC
+  ITEM_ID_ASC
+  ITEM_ID_DESC
+  MANUFACTURER_ID_ASC
+  MANUFACTURER_ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  TYPE_ID_ASC
+  TYPE_ID_DESC
+}
+
+"""
+A connection to a list of `Type` values, with data from `ItemEditSuggestion`.
+"""
+type ItemTypesByItemEditSuggestionItemIdAndTypeIdManyToManyConnection {
+  """
+  A list of edges which contains the `Type`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [ItemTypesByItemEditSuggestionItemIdAndTypeIdManyToManyEdge!]!
+
+  """A list of `Type` objects."""
+  nodes: [Type!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Type` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Type` edge in the connection, with data from `ItemEditSuggestion`."""
+type ItemTypesByItemEditSuggestionItemIdAndTypeIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
 
@@ -1896,7 +2969,7 @@ type ItemLocationsByCheckInItemIdAndLocationManyToManyEdge {
     """
     A condition to be used in determining which values should be returned by the collection.
     """
-    condition: CheckInCondition
+    condition: ItemEditSuggestionCondition
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -1910,15 +2983,12 @@ type ItemLocationsByCheckInItemIdAndLocationManyToManyEdge {
     """
     offset: Int
 
-    """The method to use when ordering `CheckIn`."""
-    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CheckInsConnection!
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
 
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Location` at the end of the edge."""
-  node: Location!
+  """The `Type` at the end of the edge."""
+  node: Type!
 }
 
 """
@@ -2028,6 +3098,63 @@ type ItemUsersByCheckInItemIdAndAuthorIdManyToManyEdge {
   node: User!
 }
 
+"""
+A connection to a list of `User` values, with data from `ItemEditSuggestion`.
+"""
+type ItemUsersByItemEditSuggestionItemIdAndAuthorIdManyToManyConnection {
+  """
+  A list of edges which contains the `User`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [ItemUsersByItemEditSuggestionItemIdAndAuthorIdManyToManyEdge!]!
+
+  """A list of `User` objects."""
+  nodes: [User!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `User` edge in the connection, with data from `ItemEditSuggestion`."""
+type ItemUsersByItemEditSuggestionItemIdAndAuthorIdManyToManyEdge {
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  authoredItemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `User` at the end of the edge."""
+  node: User!
+}
+
 """A connection to a list of `Item` values."""
 type ItemsConnection {
   """
@@ -2107,261 +3234,10 @@ type LikeCheckInPayload {
   """Reads a single `Item` that is related to this `CheckIn`."""
   item: Item
 
-  """Reads a single `Location` that is related to this `CheckIn`."""
-  locationByLocation: Location
-
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
-}
-
-"""Contains locations for check ins"""
-type Location {
-  """Reads and enables pagination through a set of `CheckIn`."""
-  checkInsByLocation(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CheckInCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `CheckIn`."""
-    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CheckInsConnection!
-  id: UUID!
-
-  """Reads and enables pagination through a set of `Item`."""
-  itemsByCheckInLocationAndItemId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ItemCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Item`."""
-    orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): LocationItemsByCheckInLocationAndItemIdManyToManyConnection!
-  latitude: BigFloat
-  longitude: BigFloat
-  name: String!
-
-  """Reads and enables pagination through a set of `User`."""
-  usersByCheckInLocationAndAuthorId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: UserCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `User`."""
-    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
-  ): LocationUsersByCheckInLocationAndAuthorIdManyToManyConnection!
-}
-
-"""
-A condition to be used against `Location` object types. All fields are tested
-for equality and combined with a logical ‘and.’
-"""
-input LocationCondition {
-  """Checks for equality with the object’s `id` field."""
-  id: UUID
-}
-
-"""A connection to a list of `Item` values, with data from `CheckIn`."""
-type LocationItemsByCheckInLocationAndItemIdManyToManyConnection {
-  """
-  A list of edges which contains the `Item`, info from the `CheckIn`, and the cursor to aid in pagination.
-  """
-  edges: [LocationItemsByCheckInLocationAndItemIdManyToManyEdge!]!
-
-  """A list of `Item` objects."""
-  nodes: [Item!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Item` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Item` edge in the connection, with data from `CheckIn`."""
-type LocationItemsByCheckInLocationAndItemIdManyToManyEdge {
-  """Reads and enables pagination through a set of `CheckIn`."""
-  checkIns(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CheckInCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `CheckIn`."""
-    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CheckInsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Item` at the end of the edge."""
-  node: Item!
-}
-
-"""A connection to a list of `User` values, with data from `CheckIn`."""
-type LocationUsersByCheckInLocationAndAuthorIdManyToManyConnection {
-  """
-  A list of edges which contains the `User`, info from the `CheckIn`, and the cursor to aid in pagination.
-  """
-  edges: [LocationUsersByCheckInLocationAndAuthorIdManyToManyEdge!]!
-
-  """A list of `User` objects."""
-  nodes: [User!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `User` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `User` edge in the connection, with data from `CheckIn`."""
-type LocationUsersByCheckInLocationAndAuthorIdManyToManyEdge {
-  """Reads and enables pagination through a set of `CheckIn`."""
-  authoredCheckIns(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CheckInCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `CheckIn`."""
-    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CheckInsConnection!
-
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `User` at the end of the edge."""
-  node: User!
-}
-
-"""A connection to a list of `Location` values."""
-type LocationsConnection {
-  """
-  A list of edges which contains the `Location` and cursor to aid in pagination.
-  """
-  edges: [LocationsEdge!]!
-
-  """A list of `Location` objects."""
-  nodes: [Location!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Location` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Location` edge in the connection."""
-type LocationsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Location` at the end of the edge."""
-  node: Location!
-}
-
-"""Methods to use when ordering `Location`."""
-enum LocationsOrderBy {
-  ID_ASC
-  ID_DESC
-  NATURAL
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
 }
 
 input LoginInput {
@@ -2862,8 +3738,39 @@ type Query {
 
   """The currently logged in user (or null if not logged in)."""
   currentUser: User
+  currentUserIsPrivileged: Boolean
   item(id: Int!): Item
   itemByBrandIdAndFlavor(brandId: Int!, flavor: String!): Item
+  itemEditSuggestion(id: Int!): ItemEditSuggestion
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection
 
   """Reads and enables pagination through a set of `Item`."""
   items(
@@ -2893,36 +3800,6 @@ type Query {
     """The method to use when ordering `Item`."""
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection
-  location(id: UUID!): Location
-
-  """Reads and enables pagination through a set of `Location`."""
-  locations(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: LocationCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Location`."""
-    orderBy: [LocationsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): LocationsConnection
 
   """Reads and enables pagination through a set of `PublicCheckIn`."""
   publicCheckIns(
@@ -3236,6 +4113,35 @@ enum TagsOrderBy {
 """Type item that is part of a category"""
 type Type {
   """Reads and enables pagination through a set of `Brand`."""
+  brandsByItemEditSuggestionTypeIdAndBrandId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: BrandCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Brand`."""
+    orderBy: [BrandsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TypeBrandsByItemEditSuggestionTypeIdAndBrandIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Brand`."""
   brandsByItemTypeIdAndBrandId(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -3269,6 +4175,35 @@ type Type {
   categoryByCategory: Category
 
   """Reads and enables pagination through a set of `Company`."""
+  companiesByItemEditSuggestionTypeIdAndManufacturerId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CompanyCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Company`."""
+    orderBy: [CompaniesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TypeCompaniesByItemEditSuggestionTypeIdAndManufacturerIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Company`."""
   companiesByItemTypeIdAndManufacturerId(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -3298,6 +4233,35 @@ type Type {
   ): TypeCompaniesByItemTypeIdAndManufacturerIdManyToManyConnection!
   id: Int!
 
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
   """Reads and enables pagination through a set of `Item`."""
   items(
     """Read all values in the set after (below) this cursor."""
@@ -3326,7 +4290,65 @@ type Type {
     """The method to use when ordering `Item`."""
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection!
+
+  """Reads and enables pagination through a set of `Item`."""
+  itemsByItemEditSuggestionTypeIdAndItemId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Item`."""
+    orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TypeItemsByItemEditSuggestionTypeIdAndItemIdManyToManyConnection!
   name: String!
+
+  """Reads and enables pagination through a set of `User`."""
+  usersByItemEditSuggestionTypeIdAndAuthorId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TypeUsersByItemEditSuggestionTypeIdAndAuthorIdManyToManyConnection!
 
   """Reads and enables pagination through a set of `User`."""
   usersByItemTypeIdAndCreatedBy(
@@ -3387,6 +4409,63 @@ type Type {
   ): TypeUsersByItemTypeIdAndUpdatedByManyToManyConnection!
 }
 
+"""
+A connection to a list of `Brand` values, with data from `ItemEditSuggestion`.
+"""
+type TypeBrandsByItemEditSuggestionTypeIdAndBrandIdManyToManyConnection {
+  """
+  A list of edges which contains the `Brand`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [TypeBrandsByItemEditSuggestionTypeIdAndBrandIdManyToManyEdge!]!
+
+  """A list of `Brand` objects."""
+  nodes: [Brand!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Brand` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Brand` edge in the connection, with data from `ItemEditSuggestion`."""
+type TypeBrandsByItemEditSuggestionTypeIdAndBrandIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """The `Brand` at the end of the edge."""
+  node: Brand!
+}
+
 """A connection to a list of `Brand` values, with data from `Item`."""
 type TypeBrandsByItemTypeIdAndBrandIdManyToManyConnection {
   """
@@ -3440,6 +4519,65 @@ type TypeBrandsByItemTypeIdAndBrandIdManyToManyEdge {
 
   """The `Brand` at the end of the edge."""
   node: Brand!
+}
+
+"""
+A connection to a list of `Company` values, with data from `ItemEditSuggestion`.
+"""
+type TypeCompaniesByItemEditSuggestionTypeIdAndManufacturerIdManyToManyConnection {
+  """
+  A list of edges which contains the `Company`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [TypeCompaniesByItemEditSuggestionTypeIdAndManufacturerIdManyToManyEdge!]!
+
+  """A list of `Company` objects."""
+  nodes: [Company!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Company` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Company` edge in the connection, with data from `ItemEditSuggestion`.
+"""
+type TypeCompaniesByItemEditSuggestionTypeIdAndManufacturerIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestionsByManufacturerId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """The `Company` at the end of the edge."""
+  node: Company!
 }
 
 """A connection to a list of `Company` values, with data from `Item`."""
@@ -3509,6 +4647,120 @@ input TypeCondition {
 
   """Checks for equality with the object’s `name` field."""
   name: String
+}
+
+"""
+A connection to a list of `Item` values, with data from `ItemEditSuggestion`.
+"""
+type TypeItemsByItemEditSuggestionTypeIdAndItemIdManyToManyConnection {
+  """
+  A list of edges which contains the `Item`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [TypeItemsByItemEditSuggestionTypeIdAndItemIdManyToManyEdge!]!
+
+  """A list of `Item` objects."""
+  nodes: [Item!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Item` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Item` edge in the connection, with data from `ItemEditSuggestion`."""
+type TypeItemsByItemEditSuggestionTypeIdAndItemIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """The `Item` at the end of the edge."""
+  node: Item!
+}
+
+"""
+A connection to a list of `User` values, with data from `ItemEditSuggestion`.
+"""
+type TypeUsersByItemEditSuggestionTypeIdAndAuthorIdManyToManyConnection {
+  """
+  A list of edges which contains the `User`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [TypeUsersByItemEditSuggestionTypeIdAndAuthorIdManyToManyEdge!]!
+
+  """A list of `User` objects."""
+  nodes: [User!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `User` edge in the connection, with data from `ItemEditSuggestion`."""
+type TypeUsersByItemEditSuggestionTypeIdAndAuthorIdManyToManyEdge {
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  authoredItemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `User` at the end of the edge."""
+  node: User!
 }
 
 """A connection to a list of `User` values, with data from `Item`."""
@@ -3760,6 +5012,35 @@ type User {
     orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
   ): CheckInsConnection!
 
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  authoredItemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
   """Optional avatar URL."""
   avatarUrl: String
 
@@ -3820,6 +5101,35 @@ type User {
     """The method to use when ordering `Brand`."""
     orderBy: [BrandsOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserBrandsByItemCreatedByAndBrandIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Brand`."""
+  brandsByItemEditSuggestionAuthorIdAndBrandId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: BrandCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Brand`."""
+    orderBy: [BrandsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserBrandsByItemEditSuggestionAuthorIdAndBrandIdManyToManyConnection!
 
   """Reads and enables pagination through a set of `Brand`."""
   brandsByItemUpdatedByAndBrandId(
@@ -3936,6 +5246,35 @@ type User {
     """The method to use when ordering `Company`."""
     orderBy: [CompaniesOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserCompaniesByItemCreatedByAndManufacturerIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Company`."""
+  companiesByItemEditSuggestionAuthorIdAndManufacturerId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CompanyCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Company`."""
+    orderBy: [CompaniesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserCompaniesByItemEditSuggestionAuthorIdAndManufacturerIdManyToManyConnection!
 
   """Reads and enables pagination through a set of `Company`."""
   companiesByItemUpdatedByAndManufacturerId(
@@ -4065,6 +5404,35 @@ type User {
   ): ItemsConnection!
 
   """Reads and enables pagination through a set of `Item`."""
+  itemsByItemEditSuggestionAuthorIdAndItemId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Item`."""
+    orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserItemsByItemEditSuggestionAuthorIdAndItemIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Item`."""
   itemsByUpdatedBy(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -4094,35 +5462,6 @@ type User {
   ): ItemsConnection!
   lastName: String
   location: String
-
-  """Reads and enables pagination through a set of `Location`."""
-  locationsByCheckInAuthorIdAndLocation(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: LocationCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `Location`."""
-    orderBy: [LocationsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): UserLocationsByCheckInAuthorIdAndLocationManyToManyConnection!
 
   """Reads and enables pagination through a set of `Tag`."""
   tagsByCreatedBy(
@@ -4181,6 +5520,35 @@ type User {
     """The method to use when ordering `Type`."""
     orderBy: [TypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserTypesByItemCreatedByAndTypeIdManyToManyConnection!
+
+  """Reads and enables pagination through a set of `Type`."""
+  typesByItemEditSuggestionAuthorIdAndTypeId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TypeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Type`."""
+    orderBy: [TypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserTypesByItemEditSuggestionAuthorIdAndTypeIdManyToManyConnection!
 
   """Reads and enables pagination through a set of `Type`."""
   typesByItemUpdatedByAndTypeId(
@@ -4454,6 +5822,63 @@ type UserBrandsByItemCreatedByAndBrandIdManyToManyEdge {
   node: Brand!
 }
 
+"""
+A connection to a list of `Brand` values, with data from `ItemEditSuggestion`.
+"""
+type UserBrandsByItemEditSuggestionAuthorIdAndBrandIdManyToManyConnection {
+  """
+  A list of edges which contains the `Brand`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [UserBrandsByItemEditSuggestionAuthorIdAndBrandIdManyToManyEdge!]!
+
+  """A list of `Brand` objects."""
+  nodes: [Brand!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Brand` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Brand` edge in the connection, with data from `ItemEditSuggestion`."""
+type UserBrandsByItemEditSuggestionAuthorIdAndBrandIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
+
+  """The `Brand` at the end of the edge."""
+  node: Brand!
+}
+
 """A connection to a list of `Brand` values, with data from `Item`."""
 type UserBrandsByItemUpdatedByAndBrandIdManyToManyConnection {
   """
@@ -4614,6 +6039,65 @@ type UserCompaniesByItemCreatedByAndManufacturerIdManyToManyEdge {
     """The method to use when ordering `Item`."""
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection!
+
+  """The `Company` at the end of the edge."""
+  node: Company!
+}
+
+"""
+A connection to a list of `Company` values, with data from `ItemEditSuggestion`.
+"""
+type UserCompaniesByItemEditSuggestionAuthorIdAndManufacturerIdManyToManyConnection {
+  """
+  A list of edges which contains the `Company`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [UserCompaniesByItemEditSuggestionAuthorIdAndManufacturerIdManyToManyEdge!]!
+
+  """A list of `Company` objects."""
+  nodes: [Company!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Company` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""
+A `Company` edge in the connection, with data from `ItemEditSuggestion`.
+"""
+type UserCompaniesByItemEditSuggestionAuthorIdAndManufacturerIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestionsByManufacturerId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
 
   """The `Company` at the end of the edge."""
   node: Company!
@@ -4872,27 +6356,32 @@ type UserItemsByCheckInAuthorIdAndItemIdManyToManyEdge {
   node: Item!
 }
 
-"""A connection to a list of `Location` values, with data from `CheckIn`."""
-type UserLocationsByCheckInAuthorIdAndLocationManyToManyConnection {
+"""
+A connection to a list of `Item` values, with data from `ItemEditSuggestion`.
+"""
+type UserItemsByItemEditSuggestionAuthorIdAndItemIdManyToManyConnection {
   """
-  A list of edges which contains the `Location`, info from the `CheckIn`, and the cursor to aid in pagination.
+  A list of edges which contains the `Item`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
   """
-  edges: [UserLocationsByCheckInAuthorIdAndLocationManyToManyEdge!]!
+  edges: [UserItemsByItemEditSuggestionAuthorIdAndItemIdManyToManyEdge!]!
 
-  """A list of `Location` objects."""
-  nodes: [Location!]!
+  """A list of `Item` objects."""
+  nodes: [Item!]!
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  """The count of *all* `Location` you could get from the connection."""
+  """The count of *all* `Item` you could get from the connection."""
   totalCount: Int!
 }
 
-"""A `Location` edge in the connection, with data from `CheckIn`."""
-type UserLocationsByCheckInAuthorIdAndLocationManyToManyEdge {
-  """Reads and enables pagination through a set of `CheckIn`."""
-  checkInsByLocation(
+"""A `Item` edge in the connection, with data from `ItemEditSuggestion`."""
+type UserItemsByItemEditSuggestionAuthorIdAndItemIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
 
@@ -4902,7 +6391,7 @@ type UserLocationsByCheckInAuthorIdAndLocationManyToManyEdge {
     """
     A condition to be used in determining which values should be returned by the collection.
     """
-    condition: CheckInCondition
+    condition: ItemEditSuggestionCondition
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -4916,15 +6405,12 @@ type UserLocationsByCheckInAuthorIdAndLocationManyToManyEdge {
     """
     offset: Int
 
-    """The method to use when ordering `CheckIn`."""
-    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): CheckInsConnection!
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
 
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Location` at the end of the edge."""
-  node: Location!
+  """The `Item` at the end of the edge."""
+  node: Item!
 }
 
 """Represents an update to a `User`. Fields that are set will be updated."""
@@ -5046,6 +6532,63 @@ type UserTypesByItemCreatedByAndTypeIdManyToManyEdge {
     """The method to use when ordering `Item`."""
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection!
+
+  """The `Type` at the end of the edge."""
+  node: Type!
+}
+
+"""
+A connection to a list of `Type` values, with data from `ItemEditSuggestion`.
+"""
+type UserTypesByItemEditSuggestionAuthorIdAndTypeIdManyToManyConnection {
+  """
+  A list of edges which contains the `Type`, info from the `ItemEditSuggestion`, and the cursor to aid in pagination.
+  """
+  edges: [UserTypesByItemEditSuggestionAuthorIdAndTypeIdManyToManyEdge!]!
+
+  """A list of `Type` objects."""
+  nodes: [Type!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Type` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Type` edge in the connection, with data from `ItemEditSuggestion`."""
+type UserTypesByItemEditSuggestionAuthorIdAndTypeIdManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `ItemEditSuggestion`."""
+  itemEditSuggestions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ItemEditSuggestionCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ItemEditSuggestion`."""
+    orderBy: [ItemEditSuggestionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ItemEditSuggestionsConnection!
 
   """The `Type` at the end of the edge."""
   node: Type!
