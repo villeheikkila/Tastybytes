@@ -835,6 +835,23 @@ COMMENT ON FUNCTION app_private.tg__add_job() IS 'Useful shortcut to create a jo
 
 
 --
+-- Name: tg__created(); Type: FUNCTION; Schema: app_private; Owner: -
+--
+
+CREATE FUNCTION app_private.tg__created() RETURNS trigger
+    LANGUAGE plpgsql
+    SET search_path TO 'pg_cata'
+    AS $$
+begin
+  NEW.created_at = NOW();
+  NEW.created_by = app_public.current_user_id();
+  NEW.is_verified = app_public.current_user_is_privileged ();
+  return NEW;
+end;
+$$;
+
+
+--
 -- Name: tg__timestamps(); Type: FUNCTION; Schema: app_private; Owner: -
 --
 
@@ -3093,6 +3110,13 @@ CREATE INDEX user_authentications_user_id_idx ON app_public.user_authentications
 
 
 --
+-- Name: tags _100_timestamps; Type: TRIGGER; Schema: app_public; Owner: -
+--
+
+CREATE TRIGGER _100_timestamps BEFORE INSERT ON app_public.tags FOR EACH ROW EXECUTE FUNCTION app_private.tg__created();
+
+
+--
 -- Name: user_authentications _100_timestamps; Type: TRIGGER; Schema: app_public; Owner: -
 --
 
@@ -3603,6 +3627,13 @@ ALTER TABLE app_public.item_edit_suggestions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app_public.items ENABLE ROW LEVEL SECURITY;
 
 --
+-- Name: tags logged_in_insert; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY logged_in_insert ON app_public.tags FOR INSERT WITH CHECK ((app_public.current_user_id() IS NOT NULL));
+
+
+--
 -- Name: brands moderator_delete; Type: POLICY; Schema: app_public; Owner: -
 --
 
@@ -3927,6 +3958,13 @@ REVOKE ALL ON FUNCTION app_private.tg__add_audit_job() FROM PUBLIC;
 --
 
 REVOKE ALL ON FUNCTION app_private.tg__add_job() FROM PUBLIC;
+
+
+--
+-- Name: FUNCTION tg__created(); Type: ACL; Schema: app_private; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_private.tg__created() FROM PUBLIC;
 
 
 --
@@ -4394,7 +4432,7 @@ GRANT SELECT,DELETE ON TABLE app_public.tags TO tasted_visitor;
 -- Name: COLUMN tags.name; Type: ACL; Schema: app_public; Owner: -
 --
 
-GRANT UPDATE(name) ON TABLE app_public.tags TO tasted_visitor;
+GRANT INSERT(name),UPDATE(name) ON TABLE app_public.tags TO tasted_visitor;
 
 
 --
