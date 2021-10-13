@@ -80,6 +80,17 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 
 
 --
+-- Name: role; Type: TYPE; Schema: app_private; Owner: -
+--
+
+CREATE TYPE app_private.role AS ENUM (
+    'user',
+    'moderator',
+    'admin'
+);
+
+
+--
 -- Name: friend_status; Type: TYPE; Schema: app_public; Owner: -
 --
 
@@ -1408,6 +1419,23 @@ COMMENT ON FUNCTION app_public.current_user_id() IS 'Handy method to get the cur
 
 
 --
+-- Name: current_user_is_privileged(); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.current_user_is_privileged() RETURNS boolean
+    LANGUAGE sql STABLE SECURITY DEFINER
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+with current_user_roles as (
+  select role
+  from app_private.user_secrets where user_id = (select id from app_public.current_user())
+)
+select case when role = 'moderator' or role = 'admin' then true else false end as is_privileged
+from current_user_roles;
+$$;
+
+
+--
 -- Name: delete_friend(uuid); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -2047,7 +2075,8 @@ CREATE TABLE app_private.user_secrets (
     failed_reset_password_attempts integer DEFAULT 0 NOT NULL,
     first_failed_reset_password_attempt timestamp with time zone,
     delete_account_token text,
-    delete_account_token_generated timestamp with time zone
+    delete_account_token_generated timestamp with time zone,
+    role app_private.role DEFAULT 'user'::app_private.role
 );
 
 
@@ -2303,26 +2332,6 @@ CREATE SEQUENCE app_public.items_id_seq
 --
 
 ALTER SEQUENCE app_public.items_id_seq OWNED BY app_public.items.id;
-
-
---
--- Name: locations; Type: TABLE; Schema: app_public; Owner: -
---
-
-CREATE TABLE app_public.locations (
-    id uuid NOT NULL,
-    name text NOT NULL,
-    latitude numeric,
-    longitude numeric,
-    CONSTRAINT locations_name_check CHECK (((length(name) >= 2) AND (length(name) <= 24)))
-);
-
-
---
--- Name: TABLE locations; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON TABLE app_public.locations IS 'Contains locations for check ins';
 
 
 --
@@ -2727,14 +2736,6 @@ ALTER TABLE ONLY app_public.items
 
 ALTER TABLE ONLY app_public.items
     ADD CONSTRAINT itens_brand_id_flavor_key UNIQUE (brand_id, flavor);
-
-
---
--- Name: locations locations_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
---
-
-ALTER TABLE ONLY app_public.locations
-    ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
 
 
 --
@@ -3311,14 +3312,6 @@ ALTER TABLE ONLY app_public.check_ins
 
 
 --
--- Name: check_ins check_ins_location_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
---
-
-ALTER TABLE ONLY app_public.check_ins
-    ADD CONSTRAINT check_ins_location_fkey FOREIGN KEY (location) REFERENCES app_public.locations(id) ON DELETE SET NULL;
-
-
---
 -- Name: companies companies_created_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
 --
 
@@ -3505,6 +3498,30 @@ ALTER TABLE app_public.brands ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app_public.categories ENABLE ROW LEVEL SECURITY;
 
 --
+-- Name: check_in_comments; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.check_in_comments ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: check_in_friends; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.check_in_friends ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: check_in_likes; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.check_in_likes ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: check_in_tags; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.check_in_tags ENABLE ROW LEVEL SECURITY;
+
+--
 -- Name: check_ins; Type: ROW SECURITY; Schema: app_public; Owner: -
 --
 
@@ -3545,11 +3562,23 @@ CREATE POLICY delete_own ON app_public.user_emails FOR DELETE USING ((user_id = 
 
 
 --
+-- Name: friends; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.friends ENABLE ROW LEVEL SECURITY;
+
+--
 -- Name: user_emails insert_own; Type: POLICY; Schema: app_public; Owner: -
 --
 
 CREATE POLICY insert_own ON app_public.user_emails FOR INSERT WITH CHECK ((user_id = app_public.current_user_id()));
 
+
+--
+-- Name: item_edit_suggestions; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.item_edit_suggestions ENABLE ROW LEVEL SECURITY;
 
 --
 -- Name: items; Type: ROW SECURITY; Schema: app_public; Owner: -
@@ -3579,10 +3608,24 @@ CREATE POLICY select_all ON app_public.companies FOR SELECT USING (true);
 
 
 --
+-- Name: item_edit_suggestions select_all; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY select_all ON app_public.item_edit_suggestions FOR SELECT USING (app_public.current_user_is_privileged());
+
+
+--
 -- Name: items select_all; Type: POLICY; Schema: app_public; Owner: -
 --
 
 CREATE POLICY select_all ON app_public.items FOR SELECT USING (true);
+
+
+--
+-- Name: tags select_all; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY select_all ON app_public.tags FOR SELECT USING (true);
 
 
 --
@@ -3626,6 +3669,12 @@ CREATE POLICY select_own ON app_public.user_emails FOR SELECT USING ((user_id = 
 
 CREATE POLICY select_public ON app_public.check_ins FOR SELECT USING ((is_public = true));
 
+
+--
+-- Name: tags; Type: ROW SECURITY; Schema: app_public; Owner: -
+--
+
+ALTER TABLE app_public.tags ENABLE ROW LEVEL SECURITY;
 
 --
 -- Name: types; Type: ROW SECURITY; Schema: app_public; Owner: -
@@ -3948,6 +3997,14 @@ GRANT ALL ON FUNCTION app_public.current_user_id() TO tasted_visitor;
 
 
 --
+-- Name: FUNCTION current_user_is_privileged(); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.current_user_is_privileged() FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.current_user_is_privileged() TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION delete_friend(friend_id uuid); Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -4115,6 +4172,13 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.companies_id_seq TO tasted_visitor;
 
 
 --
+-- Name: TABLE item_edit_suggestions; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.item_edit_suggestions TO tasted_visitor;
+
+
+--
 -- Name: SEQUENCE item_edit_suggestions_id_seq; Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -4126,13 +4190,6 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.item_edit_suggestions_id_seq TO tasted
 --
 
 GRANT SELECT,USAGE ON SEQUENCE app_public.items_id_seq TO tasted_visitor;
-
-
---
--- Name: TABLE locations; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT ON TABLE app_public.locations TO tasted_visitor;
 
 
 --
