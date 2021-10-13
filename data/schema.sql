@@ -3220,7 +3220,7 @@ ALTER TABLE ONLY app_private.user_secrets
 --
 
 ALTER TABLE ONLY app_public.brands
-    ADD CONSTRAINT brands_company_id_fkey FOREIGN KEY (company_id) REFERENCES app_public.companies(id);
+    ADD CONSTRAINT brands_company_id_fkey FOREIGN KEY (company_id) REFERENCES app_public.companies(id) ON DELETE CASCADE;
 
 
 --
@@ -3548,6 +3548,22 @@ CREATE POLICY create_companies ON app_public.companies FOR INSERT WITH CHECK (((
 
 
 --
+-- Name: check_ins delete_own; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY delete_own ON app_public.check_ins FOR DELETE USING ((author_id = app_public.current_user_id()));
+
+
+--
+-- Name: friends delete_own; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY delete_own ON app_public.friends FOR DELETE USING ((EXISTS ( SELECT 1
+   FROM app_public.friends friends_1
+  WHERE ((friends_1.user_id_1 = app_public.current_user_id()) OR (friends_1.user_id_2 = app_public.current_user_id())))));
+
+
+--
 -- Name: user_authentications delete_own; Type: POLICY; Schema: app_public; Owner: -
 --
 
@@ -3585,6 +3601,41 @@ ALTER TABLE app_public.item_edit_suggestions ENABLE ROW LEVEL SECURITY;
 --
 
 ALTER TABLE app_public.items ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: brands moderator_delete; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY moderator_delete ON app_public.brands FOR DELETE USING (app_public.current_user_is_privileged());
+
+
+--
+-- Name: check_ins moderator_delete; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY moderator_delete ON app_public.check_ins FOR DELETE USING (app_public.current_user_is_privileged());
+
+
+--
+-- Name: companies moderator_delete; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY moderator_delete ON app_public.companies FOR DELETE USING (app_public.current_user_is_privileged());
+
+
+--
+-- Name: items moderator_delete; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY moderator_delete ON app_public.items FOR DELETE USING (app_public.current_user_is_privileged());
+
+
+--
+-- Name: tags moderator_delete; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY moderator_delete ON app_public.tags FOR DELETE USING (app_public.current_user_is_privileged());
+
 
 --
 -- Name: brands select_all; Type: POLICY; Schema: app_public; Owner: -
@@ -3892,7 +3943,7 @@ GRANT ALL ON FUNCTION app_public.confirm_account_deletion(token text) TO tasted_
 -- Name: TABLE brands; Type: ACL; Schema: app_public; Owner: -
 --
 
-GRANT SELECT ON TABLE app_public.brands TO tasted_visitor;
+GRANT SELECT,DELETE ON TABLE app_public.brands TO tasted_visitor;
 
 
 --
@@ -3907,7 +3958,7 @@ GRANT ALL ON FUNCTION app_public.create_brand(name text, company_id integer) TO 
 -- Name: TABLE check_ins; Type: ACL; Schema: app_public; Owner: -
 --
 
-GRANT SELECT ON TABLE app_public.check_ins TO tasted_visitor;
+GRANT SELECT,DELETE ON TABLE app_public.check_ins TO tasted_visitor;
 
 
 --
@@ -3930,7 +3981,7 @@ GRANT ALL ON FUNCTION app_public.create_check_in_comment(target_check_in_id inte
 -- Name: TABLE companies; Type: ACL; Schema: app_public; Owner: -
 --
 
-GRANT SELECT ON TABLE app_public.companies TO tasted_visitor;
+GRANT SELECT,DELETE ON TABLE app_public.companies TO tasted_visitor;
 
 
 --
@@ -3953,7 +4004,7 @@ GRANT ALL ON FUNCTION app_public.create_friend_request(user_id uuid) TO tasted_v
 -- Name: TABLE items; Type: ACL; Schema: app_public; Owner: -
 --
 
-GRANT SELECT ON TABLE app_public.items TO tasted_visitor;
+GRANT SELECT,DELETE ON TABLE app_public.items TO tasted_visitor;
 
 
 --
@@ -4123,6 +4174,13 @@ GRANT ALL ON FUNCTION app_public.verify_email(user_email_id uuid, token text) TO
 
 
 --
+-- Name: TABLE friends; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.friends TO tasted_visitor;
+
+
+--
 -- Name: TABLE activity_feed; Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -4217,7 +4275,7 @@ GRANT SELECT ON TABLE app_public.public_users TO tasted_visitor;
 -- Name: TABLE tags; Type: ACL; Schema: app_public; Owner: -
 --
 
-GRANT SELECT ON TABLE app_public.tags TO tasted_visitor;
+GRANT SELECT,DELETE ON TABLE app_public.tags TO tasted_visitor;
 
 
 --
