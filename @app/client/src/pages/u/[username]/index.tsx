@@ -3,7 +3,7 @@ import {
   CheckInsByUsernameQuery,
   useCheckInsByUsernameQuery,
 } from "@app/graphql";
-import { getDisplayName } from "@app/lib";
+import { getDisplayName } from "@app/common";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";

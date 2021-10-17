@@ -1,4 +1,5 @@
-import { getCssText } from "@app/components/src/stitches.config";
+import { getCssText } from "@app/components";
+
 import Document, {
   DocumentContext,
   Head,

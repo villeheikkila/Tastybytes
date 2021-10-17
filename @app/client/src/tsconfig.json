@@ -12,15 +12,10 @@
     "isolatedModules": true
   },
   "exclude": ["node_modules"],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "../../components/src/stitches.config.ts"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "references": [
     { "path": "../../graphql" },
     { "path": "../../components" },
-    { "path": "../../lib" }
+    { "path": "../../common" }
   ]
 }

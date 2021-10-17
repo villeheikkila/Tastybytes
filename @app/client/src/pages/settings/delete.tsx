@@ -5,7 +5,7 @@ import {
   ErrorAlert,
   SettingsLayout,
 } from "@app/components";
-import { styled } from "@app/components/src/stitches.config";
+import { styled } from "@app/components";
 import {
   useConfirmAccountDeletionMutation,
   useRequestAccountDeletionMutation,

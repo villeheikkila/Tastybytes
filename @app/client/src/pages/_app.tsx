@@ -1,6 +1,6 @@
 import { ApolloClient, ApolloProvider } from "@apollo/client";
-import { globalStyles } from "@app/components/src/stitches.config";
-import { withApollo } from "@app/lib";
+import { globalStyles } from "@app/components";
+import { withApollo } from "@app/common";
 import { IdProvider } from "@radix-ui/react-id";
 import App from "next/app";
 import Router from "next/router";

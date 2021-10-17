@@ -8,13 +8,13 @@ import {
   Redirect,
   SettingsLayout,
 } from "@app/components";
-import { styled } from "@app/components/src/stitches.config";
+import { styled } from "@app/components";
 import {
   ProfileSettingsForm_UserFragment,
   useSettingsProfileQuery,
   useUpdateUserMutation,
 } from "@app/graphql";
-import { extractError, getCodeFromError } from "@app/lib";
+import { extractError, getCodeFromError } from "@app/common";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";

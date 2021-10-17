@@ -1,5 +1,5 @@
 import { Card, Layout, SharedLayout } from "@app/components";
-import { styled } from "@app/components/src/stitches.config";
+import { styled } from "@app/components";
 import {
   FriendsQuery,
   FriendStatus,

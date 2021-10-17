@@ -5,7 +5,7 @@ import {
   Input,
   SharedLayout,
 } from "@app/components";
-import { styled } from "@app/components/src/stitches.config";
+import { styled } from "@app/components";
 import { useResetPasswordMutation, useSharedQuery } from "@app/graphql";
 import { NextPage } from "next";
 import Image from "next/image";

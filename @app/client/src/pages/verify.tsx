@@ -1,5 +1,5 @@
 import { Button, Input, SharedLayout } from "@app/components";
-import { styled } from "@app/components/src/stitches.config";
+import { styled } from "@app/components";
 import { useSharedQuery, useVerifyEmailMutation } from "@app/graphql";
 import { NextPage } from "next";
 import React, { useEffect } from "react";
