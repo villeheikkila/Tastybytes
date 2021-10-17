@@ -1,17 +1,5 @@
 {
   "presets": ["next/babel"],
-  "plugins": [
-    ["import", { "libraryName": "antd" }, "antd"],
-    [
-      "import",
-      {
-        "libraryName": "lodash",
-        "libraryDirectory": "",
-        "camel2DashComponentName": false
-      },
-      "lodash"
-    ]
-  ],
   "env": {
     "development": {
       "presets": [
