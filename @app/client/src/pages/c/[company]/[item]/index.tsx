@@ -1,6 +1,6 @@
 import { Card, Layout, SharedLayout, Stars } from "@app/components";
 import { ProductByIdQuery, useProductByIdQuery } from "@app/graphql";
-import { getDisplayName } from "@app/lib";
+import { getDisplayName } from "@app/common";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC } from "react";

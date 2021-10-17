@@ -7,7 +7,7 @@ import {
   Redirect,
   SettingsLayout,
 } from "@app/components";
-import { styled } from "@app/components/src/stitches.config";
+import { styled } from "@app/components";
 import {
   EmailsForm_UserEmailFragment,
   useAddEmailMutation,
@@ -16,7 +16,7 @@ import {
   useResendEmailVerificationMutation,
   useSettingsEmailsQuery,
 } from "@app/graphql";
-import { extractError, getCodeFromError } from "@app/lib";
+import { extractError, getCodeFromError } from "@app/common";
 import { ErrorMessage } from "@hookform/error-message";
 import { NextPage } from "next";
 import React, { useState } from "react";

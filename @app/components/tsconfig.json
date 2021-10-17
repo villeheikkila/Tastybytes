@@ -17,7 +17,7 @@
       "path": "../graphql"
     },
     {
-      "path": "../lib"
+      "path": "../common"
     }
   ]
 }

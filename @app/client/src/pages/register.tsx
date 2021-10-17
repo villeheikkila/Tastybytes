@@ -6,14 +6,14 @@ import {
   Redirect,
   SharedLayout,
 } from "@app/components";
-import { styled } from "@app/components/src/stitches.config";
+import { styled } from "@app/components";
 import { useRegisterMutation, useSharedQuery } from "@app/graphql";
 import {
   extractError,
   getCodeFromError,
   getExceptionFromError,
   resetWebsocketConnection,
-} from "@app/lib";
+} from "@app/common";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";

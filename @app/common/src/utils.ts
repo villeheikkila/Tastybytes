@@ -1,4 +1,3 @@
-import { User } from "@app/graphql";
 import { Nullable } from "./types";
 
 export const getDisplayName = ({

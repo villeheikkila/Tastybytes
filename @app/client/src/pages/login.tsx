@@ -8,14 +8,14 @@ import {
   SharedLayout,
   SharedLayoutChildProps,
 } from "@app/components";
-import { styled } from "@app/components/src/stitches.config";
+import { styled } from "@app/components";
 import { useLoginMutation, useSharedQuery } from "@app/graphql";
 import {
   extractError,
   getCodeFromError,
   Nullable,
   resetWebsocketConnection,
-} from "@app/lib";
+} from "@app/common";
 import { ErrorMessage } from "@hookform/error-message";
 import { NextPage } from "next";
 import Image from "next/image";

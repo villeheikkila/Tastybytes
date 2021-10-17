@@ -28,7 +28,7 @@
     "components": "yarn workspace @app/components",
     "db": "yarn workspace @api/db",
     "graphql": "yarn workspace @app/graphql",
-    "lib": "yarn workspace @app/lib",
+    "common": "yarn workspace @app/common",
     "server": "yarn workspace @api/server"
   },
   "author": "Ville Heikkilä",

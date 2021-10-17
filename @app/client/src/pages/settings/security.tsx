@@ -6,14 +6,14 @@ import {
   Label,
   SettingsLayout,
 } from "@app/components";
-import { styled } from "@app/components/src/stitches.config";
+import { styled } from "@app/components";
 import {
   useChangePasswordMutation,
   useForgotPasswordMutation,
   useSettingsPasswordQuery,
   useSharedQuery,
 } from "@app/graphql";
-import { extractError, getCodeFromError } from "@app/lib";
+import { extractError, getCodeFromError } from "@app/common";
 import { NextPage } from "next";
 import Link from "next/link";
 import React, { useState } from "react";
