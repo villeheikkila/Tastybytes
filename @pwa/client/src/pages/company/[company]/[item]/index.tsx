@@ -20,8 +20,6 @@ const ProductPage = () => {
   return (
     <SharedLayout
       title={`${item}`}
-      titleHref={`/c/[company]/[item]`}
-      titleHrefAs={`/c/[company]/${item}`}
       query={productById}
     >
       {data && <ProductPageInner data={data} />}

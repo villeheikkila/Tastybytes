@@ -4,7 +4,7 @@ export const { styled, getCssText, keyframes } = createStitches({
   theme: {
     colors: {
       black: "rgba(19, 19, 21, 1)",
-      white: "rgba(255, 255, 255, 1)",
+      white: "#e8eaed",
       gray: "rgba(128, 128, 128, 1)",
       blue: "rgba(0, 153, 254, 1.00)",
       red: "rgba(249, 16, 74, 1)",
@@ -13,6 +13,7 @@ export const { styled, getCssText, keyframes } = createStitches({
       turq: "rgba(0, 245, 196, 1)",
       orange: "rgba(255, 135, 31, 1)",
       midnight: "rgba(24, 24, 24, 1.00)",
+      darkGray: "rgba(45, 46, 48, 1.00)"
     },
     fonts: {
       sans: "Inter, sans-serif",
@@ -66,7 +67,6 @@ export const globalStyles = globalCss({
       border: 0,
       fontSize: "100%",
       font: "inherit",
-      verticalAlign: "baseline",
       boxSizing: "border-box",
       color: "$white",
     },
@@ -79,7 +79,7 @@ export const globalStyles = globalCss({
   },
   body: {
     lineHeight: "1",
-    backgroundColor: "$midnight",
+    background: "$midnight",
   },
   "ol, ul": {
     listStyle: "none",

@@ -23,12 +23,11 @@ const slideLeftAndFade = keyframes({
 });
 
 const StyledContent = styled(DropdownMenuPrimitive.Content, {
-  minWidth: 220,
-  backgroundColor: "white",
+  minWidth: 240,
+  backgroundColor: "$darkGray",
   borderRadius: "8px",
-  padding: 5,
   boxShadow:
-    "0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2)",
+    "0 2px 10px rgb(0 0 0 / 20%)",
   "@media (prefers-reduced-motion: no-preference)": {
     animationDuration: "400ms",
     animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
@@ -46,15 +45,13 @@ const itemStyles = {
   all: "unset",
   fontSize: "1rem",
   lineHeight: 1,
-  color: violet.violet11,
+  color: "$white",
   borderRadius: 3,
   display: "flex",
   alignItems: "center",
-  height: "2rem",
-  padding: "0 5px",
   position: "relative",
-  paddingLeft: "1rem",
   userSelect: "none",
+  padding: "1rem 1.2rem",
 
   "&[data-disabled]": {
     color: mauve.mauve8,
@@ -62,9 +59,20 @@ const itemStyles = {
   },
 
   "&:focus": {
-    backgroundColor: violet.violet9,
-    color: violet.violet1,
+    opacity: 0.8,
   },
+
+  "a": {
+    color: "$white",
+  },
+
+  variants: {
+    alignment: {
+      "centered": {
+        justifyContent: "center"
+      }
+    }
+  }
 };
 
 const StyledItem = styled(DropdownMenuPrimitive.Item, { ...itemStyles });
@@ -90,9 +98,8 @@ const StyledLabel = styled(DropdownMenuPrimitive.Label, {
 });
 
 const StyledSeparator = styled(DropdownMenuPrimitive.Separator, {
-  height: 1,
-  backgroundColor: violet.violet6,
-  margin: 5,
+  height: 0.5,
+  backgroundColor: "#5f6368",
 });
 
 const StyledItemIndicator = styled(DropdownMenuPrimitive.ItemIndicator, {

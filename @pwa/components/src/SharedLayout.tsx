@@ -5,6 +5,7 @@ import {
   useCurrentUserUpdatedSubscription,
   useLogoutMutation,
 } from "@pwa/graphql";
+import { paths } from "@pwa/common";
 import { blackA, violet } from "@radix-ui/colors";
 import Head from "next/head";
 import Image from "next/image";
@@ -49,8 +50,6 @@ export interface SharedLayoutProps {
   >;
 
   title: string;
-  titleHref?: string;
-  titleHrefAs?: string;
   children:
     | React.ReactNode
     | ((props: SharedLayoutChildProps) => React.ReactNode);
@@ -162,12 +161,9 @@ export function SharedLayout({
           <Link href="/">
             <ProjectLogo>
               <Image color="white" src="/maku.svg" height={32} width={32} />
-
-              <LogoText>Maku</LogoText>
+              <LogoText>maku</LogoText>
             </ProjectLogo>
           </Link>
-
-          <div>
             {data && data.currentUser ? (
               <Dropdown.Menu>
                 <Dropdown.Trigger asChild>
@@ -175,29 +171,30 @@ export function SharedLayout({
                     <Avatar
                       name={data.currentUser.username || "?"}
                       imageUrl={data.currentUser.avatarUrl}
-                      status={!data.currentUser.isVerified ? "warn" : undefined}
+                      status={undefined}
                     />
                   </IconButton>
                 </Dropdown.Trigger>
 
-                <Dropdown.Content sideOffset={1}>
+                <Dropdown.Content sideOffset={-53}>
                   <Dropdown.Item>
                     <Link
-                      href={{
-                        pathname: "/u/[user]",
-                        query: { user: "villeheikkila" },
-                      }}
+                      href={paths.user(query.data?.currentUser?.username ?? "")}
                     >
                       Profile
                     </Link>
                   </Dropdown.Item>
+                  <Dropdown.Separator />
                   <Dropdown.Item>
-                    <a href="/settings">
-                      <Warn okay={data.currentUser.isVerified}>Settings</Warn>
-                    </a>
+                    <Link
+                      href="/settings"
+                    >
+                      Settings
+                    </Link>
                   </Dropdown.Item>
-                  <Dropdown.Item>
-                    <button onClick={handleLogout}>Logout</button>
+                  <Dropdown.Separator />
+                  <Dropdown.Item alignment="centered">
+                    <SquareButton onClick={handleLogout}>Logout</SquareButton>
                   </Dropdown.Item>
                 </Dropdown.Content>
               </Dropdown.Menu>
@@ -206,7 +203,6 @@ export function SharedLayout({
                 Sign in
               </LogInLink>
             )}
-          </div>
         </Navigation.Content>
       </Navigation.Header>
       <Content>
@@ -228,6 +224,7 @@ export function SharedLayout({
   );
 }
 
+const SquareButton = styled("button", {padding: "8px 24px", backgroundColor: "$darkGray", border: "1px solid #5f6368", color: "#e8eaed", borderRadius: "4px"})
 const Navigation = {
   Header: styled("header", {
     position: "fixed",
@@ -264,6 +261,7 @@ const Content = styled("div", {
 const ProjectLogo = styled("div", {
   display: "flex",
   alignItems: "center",
+  justifyContent: "center",
   gap: "8px",
 
   ":hover": {
@@ -272,7 +270,6 @@ const ProjectLogo = styled("div", {
 });
 
 const LogoText = styled("h1", {
-  textTransform: "capitalize",
   fontSize: "36px",
   color: "white",
   fontWeight: "bold",

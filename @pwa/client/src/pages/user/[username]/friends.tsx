@@ -1,3 +1,4 @@
+import { paths } from "@pwa/common";
 import { Card, Layout, SharedLayout } from "@pwa/components";
 import { styled } from "@pwa/components";
 import {
@@ -8,7 +9,6 @@ import {
   useFriendsQuery,
   useSendFriendRequestMutation,
 } from "@pwa/graphql";
-import { greenA, redA } from "@radix-ui/colors";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -26,8 +26,6 @@ const FriendsPage: NextPage = () => {
   return (
     <SharedLayout
       title={`${query.data?.currentUser?.username ?? username}`}
-      titleHref={`/u/[username]`}
-      titleHrefAs={`/u/${username}`}
       query={query}
     >
       {data && <FriendsPageInner data={data} />}
@@ -84,7 +82,7 @@ const FriendsPageInner: FC<FriendsPageInnerProps> = ({ data }) => {
         {data.nodes.map((user) => (
           <Card.Wrapper key={user.id}>
             <Flex>
-              <Link href={`/u/${user.username}`}>
+              <Link href={paths.user(user?.username ?? "")}>
                 <h2>{user.username}</h2>
               </Link>
               {/* <FriendStatusIcon
