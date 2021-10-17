@@ -32,15 +32,15 @@
     "declarationMap": true,
     "baseUrl": ".",
     "paths": {
-      "@app/*": ["@app/*"],
+      "@pwa/*": ["@pwa/*"],
       "@api/*": ["@api/*"]
     }
   },
   "exclude": [],
   "include": [],
   "references": [
-    { "path": "@app/components" },
-    { "path": "@app/graphql" },
+    { "path": "@pwa/components" },
+    { "path": "@pwa/graphql" },
     { "path": "@api/server" },
     { "path": "@api/config" }
   ]

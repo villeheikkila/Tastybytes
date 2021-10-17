@@ -5,8 +5,8 @@ const { resolve } = require("path");
 
 function fixFilePaths(connectionString) {
   // Connection string may contain '../../data/amazon-rds-ca-cert.pem' or
-  // similar; but we might be running it from somewhere other than `@app/*/`
-  // (e.g. maybe `@app/*/dist/`). To solve this, we make the file path concrete
+  // similar; but we might be running it from somewhere other than `@pwa/*/`
+  // (e.g. maybe `@pwa/*/dist/`). To solve this, we make the file path concrete
   // here.
   return connectionString.replace(
     /\.\.\/\.\.\/data\//g,

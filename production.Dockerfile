@@ -15,7 +15,7 @@ ARG ROOT_URL
 # Cache node_modules for as long as possible
 COPY lerna.json package.json yarn.lock /app/
 COPY db /app/db
-COPY @app/ /app/@app/
+COPY @pwa/ /app/@pwa/
 COPY @api/ /app/@api/
 WORKDIR /app/
 RUN yarn install --frozen-lockfile --production=false --no-progress
@@ -38,14 +38,14 @@ ARG ROOT_URL
 # Copy over selectively just the tings we need, try and avoid the rest
 COPY --from=builder /app/lerna.json /app/package.json /app/yarn.lock /app/
 COPY --from=builder /app/@api/config/ /app/@api/config/
-COPY --from=builder /app/@app/graphql/ /app/@app/graphql/
-COPY --from=builder /app/@app/common/ /app/@app/common/
-COPY --from=builder /app/@app/components/package.json /app/@app/components/
-COPY --from=builder /app/@app/components/dist/ /app/@app/components/dist/
-COPY --from=builder /app/@app/client/package.json /app/@app/client/package.json
-COPY --from=builder /app/@app/client/assets/ /app/@app/client/assets/
-COPY --from=builder /app/@app/client/src/next.config.js /app/@app/client/src/next.config.js
-COPY --from=builder /app/@app/client/.next /app/@app/client/.next
+COPY --from=builder /app/@pwa/graphql/ /app/@pwa/graphql/
+COPY --from=builder /app/@pwa/common/ /app/@pwa/common/
+COPY --from=builder /app/@pwa/components/package.json /app/@pwa/components/
+COPY --from=builder /app/@pwa/components/dist/ /app/@pwa/components/dist/
+COPY --from=builder /app/@pwa/client/package.json /app/@pwa/client/package.json
+COPY --from=builder /app/@pwa/client/assets/ /app/@pwa/client/assets/
+COPY --from=builder /app/@pwa/client/src/next.config.js /app/@pwa/client/src/next.config.js
+COPY --from=builder /app/@pwa/client/.next /app/@pwa/client/.next
 COPY --from=builder /app/@api/server/package.json /app/@api/server/
 COPY --from=builder /app/@api/server/postgraphile.tags.jsonc /app/@api/server/
 COPY --from=builder /app/@api/server/dist/ /app/@api/server/dist/
@@ -57,7 +57,7 @@ COPY --from=builder /app/@api/server/dist/ /app/@api/server/dist/
 # push them to a .env file that we can source from ENTRYPOINT.
 RUN echo -e "NODE_ENV=$NODE_ENV\nROOT_URL=$ROOT_URL" > /app/.env
 
-RUN rm -Rf /app/node_modules /app/@app/*/node_modules
+RUN rm -Rf /app/node_modules /app/@pwa/*/node_modules
 
 ################################################################################
 # Build stage FINAL - COPY everything, once, and then do a clean `yarn install`

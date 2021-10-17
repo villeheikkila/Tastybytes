@@ -12,7 +12,7 @@
     "install-db-schema": "mkdirp dist && yarn gw --schema-only"
   },
   "dependencies": {
-    "@app/client": "0.0.0",
+    "@pwa/client": "0.0.0",
     "@api/config": "0.0.0",
     "@graphile-contrib/constraint-error-tags": "^1.0.3",
     "@graphile-contrib/pg-many-to-many": "^1.0.1",

@@ -3,7 +3,7 @@
 node_modules
 dist
 /yarn-error.log
-/@app/graphql/index.*
+/@pwa/graphql/index.*
 .agignore
 *.tsbuildinfo
 .ethereal
