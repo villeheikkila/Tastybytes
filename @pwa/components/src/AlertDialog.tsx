@@ -1,6 +1,6 @@
+import { keyframes, styled } from "@pwa/common";
 import { blackA, mauve } from "@radix-ui/colors";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
-import { keyframes, styled } from "@stitches/react";
 import React from "react";
 
 const overlayShow = keyframes({

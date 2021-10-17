@@ -1,6 +1,6 @@
 import { blackA } from "@radix-ui/colors";
 import * as LabelPrimitive from "@radix-ui/react-label";
-import { styled } from "@stitches/react";
+import { styled } from "@pwa/common";
 import React from "react";
 
 const StyledLabel = styled(LabelPrimitive.Root, {

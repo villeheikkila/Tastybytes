@@ -5,7 +5,7 @@ import {
   ErrorAlert,
   SettingsLayout,
 } from "@pwa/components";
-import { styled } from "@pwa/components";
+import { styled } from "@pwa/common";
 import {
   useConfirmAccountDeletionMutation,
   useRequestAccountDeletionMutation,

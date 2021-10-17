@@ -5,7 +5,7 @@ import {
   Input,
   SharedLayout,
 } from "@pwa/components";
-import { styled } from "@pwa/components";
+import { styled } from "@pwa/common";
 import { useResetPasswordMutation, useSharedQuery } from "@pwa/graphql";
 import { NextPage } from "next";
 import Image from "next/image";

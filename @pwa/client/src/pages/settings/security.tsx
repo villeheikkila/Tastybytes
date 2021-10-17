@@ -6,7 +6,7 @@ import {
   Label,
   SettingsLayout,
 } from "@pwa/components";
-import { styled } from "@pwa/components";
+import { styled } from "@pwa/common";
 import {
   useChangePasswordMutation,
   useForgotPasswordMutation,

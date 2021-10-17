@@ -6,7 +6,7 @@ import {
   Redirect,
   SharedLayout,
 } from "@pwa/components";
-import { styled } from "@pwa/components";
+import { styled } from "@pwa/common";
 import { useRegisterMutation, useSharedQuery } from "@pwa/graphql";
 import {
   extractError,

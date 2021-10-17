@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { styled } from "./stitches.config";
+import { styled } from "@pwa/common";
 
 export interface StandardWidthProps {
   children: React.ReactNode;

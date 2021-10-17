@@ -8,7 +8,7 @@ import {
 } from "@radix-ui/react-icons";
 import React from "react";
 
-import { keyframes, styled } from "./stitches.config";
+import { keyframes, styled } from "@pwa/common";
 
 const slideUpAndFade = keyframes({
   "0%": { opacity: 0, transform: "translateY(2px)" },
