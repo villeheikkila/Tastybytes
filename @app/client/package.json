@@ -3,8 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "build": "cd src && NODE_ENV=production NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" next build",
-    "test": "NODE_ENV=test NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" jest"
+    "build": "cd src && NODE_ENV=production NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" next build"
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",
