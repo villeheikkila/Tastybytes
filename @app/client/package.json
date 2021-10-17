@@ -27,8 +27,5 @@
     "react-hook-form": "^7.17.4",
     "stitches": "^1.2.11",
     "zod": "^3.9.8"
-  },
-  "devDependencies": {
-    "babel-plugin-import": "^1.13.3"
   }
 }
