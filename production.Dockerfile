@@ -14,14 +14,15 @@ ARG ROOT_URL
 
 # Cache node_modules for as long as possible
 COPY lerna.json package.json yarn.lock /app/
+COPY db /app/db
 COPY @app/ /app/@app/
+COPY @api/ /app/@api/
 WORKDIR /app/
 RUN yarn install --frozen-lockfile --production=false --no-progress
 
 COPY tsconfig.json /app/
 # Folders must be copied separately, files can be copied all at once
 COPY scripts/ /app/scripts/
-COPY data/ /app/data/
 
 # Finally run the build script
 RUN yarn run build
@@ -36,8 +37,7 @@ ARG ROOT_URL
 
 # Copy over selectively just the tings we need, try and avoid the rest
 COPY --from=builder /app/lerna.json /app/package.json /app/yarn.lock /app/
-COPY --from=builder /app/@app/config/ /app/@app/config/
-COPY --from=builder /app/@app/db/ /app/@app/db/
+COPY --from=builder /app/@api/config/ /app/@api/config/
 COPY --from=builder /app/@app/graphql/ /app/@app/graphql/
 COPY --from=builder /app/@app/lib/ /app/@app/lib/
 COPY --from=builder /app/@app/components/package.json /app/@app/components/
@@ -46,9 +46,9 @@ COPY --from=builder /app/@app/client/package.json /app/@app/client/package.json
 COPY --from=builder /app/@app/client/assets/ /app/@app/client/assets/
 COPY --from=builder /app/@app/client/src/next.config.js /app/@app/client/src/next.config.js
 COPY --from=builder /app/@app/client/.next /app/@app/client/.next
-COPY --from=builder /app/@app/server/package.json /app/@app/server/
-COPY --from=builder /app/@app/server/postgraphile.tags.jsonc /app/@app/server/
-COPY --from=builder /app/@app/server/dist/ /app/@app/server/dist/
+COPY --from=builder /app/@api/server/package.json /app/@api/server/
+COPY --from=builder /app/@api/server/postgraphile.tags.jsonc /app/@api/server/
+COPY --from=builder /app/@api/server/dist/ /app/@api/server/dist/
 
 # Shared args shouldn't be overridable at runtime (because they're baked into
 # the built JS).

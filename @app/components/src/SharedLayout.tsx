@@ -1,5 +1,4 @@
 import { ApolloError, QueryResult, useApolloClient } from "@apollo/client";
-import { author, projectName } from "@app/config";
 import {
   SharedLayout_QueryFragment,
   SharedLayout_UserFragment,
@@ -154,7 +153,7 @@ export function SharedLayout({
     <>
       {data && data.currentUser ? <CurrentUserUpdatedSubscription /> : null}
       <Head>
-        <title>{title ? `${title} — ${projectName}` : projectName}</title>
+        <title>{title ? `${title} — maku` : "maku"}</title>
       </Head>
       <Navigation.Header
         css={{ visibility: hideNavigation ? "hidden" : "visible" }}
@@ -164,7 +163,7 @@ export function SharedLayout({
             <ProjectLogo>
               <Image color="white" src="/maku.svg" height={32} width={32} />
 
-              <LogoText>{projectName}</LogoText>
+              <LogoText>Maku</LogoText>
             </ProjectLogo>
           </Link>
 
@@ -220,8 +219,8 @@ export function SharedLayout({
       <Footer.Wrapper>
         <Footer.Content>
           <p>
-            Copyright &copy; {new Date().getFullYear()} {author}. All rights
-            reserved.
+            Copyright &copy; {new Date().getFullYear()} Ville Heikkilä. All
+            rights reserved.
           </p>
         </Footer.Content>
       </Footer.Wrapper>

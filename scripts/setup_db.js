@@ -21,7 +21,7 @@ runMain(async () => {
 
   // Source our environment
   dotenv.config({ path: `${__dirname}/../.env` });
-  require(`${__dirname}/../@app/config/extra`);
+  require(`${__dirname}/../@api/config/extra`);
   const {
     DATABASE_AUTHENTICATOR,
     DATABASE_AUTHENTICATOR_PASSWORD,

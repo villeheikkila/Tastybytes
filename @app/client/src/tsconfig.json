@@ -19,7 +19,6 @@
     "../../components/src/stitches.config.ts"
   ],
   "references": [
-    { "path": "../../config" },
     { "path": "../../graphql" },
     { "path": "../../components" },
     { "path": "../../lib" }

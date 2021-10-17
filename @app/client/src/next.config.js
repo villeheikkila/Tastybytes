@@ -1,4 +1,3 @@
-require("@app/config");
 require("next/constants");
 const compose = require("lodash/flowRight");
 
