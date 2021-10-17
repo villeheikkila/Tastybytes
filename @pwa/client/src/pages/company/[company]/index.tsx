@@ -22,8 +22,6 @@ const CompanyPage = () => {
   return (
     <SharedLayout
       title={`${data?.name ?? companyName}`}
-      titleHref={`/c/[company]`}
-      titleHrefAs={`/c/${companyName}`}
       query={brands}
     >
       {data && <CompanyPageInner data={data} />}

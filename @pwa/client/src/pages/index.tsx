@@ -4,7 +4,7 @@ import {
   useActivityFeedQuery,
   useSharedQuery,
 } from "@pwa/graphql";
-import { getDisplayName } from "@pwa/common";
+import { getDisplayName, paths } from "@pwa/common";
 import { NextPage } from "next";
 import Link from "next/link";
 import * as React from "react";
@@ -36,7 +36,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ data }) => {
         {data.nodes.map(({ id, item, rating, author }) => (
           <Card.Wrapper key={id}>
             <p>
-              <Link href={`/u/${author?.username}`}>
+              <Link href={paths.user(author?.username ?? "")}>
                 {author && getDisplayName(author)}
               </Link>{" "}
               has tasted{" "}

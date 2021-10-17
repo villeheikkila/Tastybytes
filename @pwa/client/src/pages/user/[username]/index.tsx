@@ -3,7 +3,7 @@ import {
   CheckInsByUsernameQuery,
   useCheckInsByUsernameQuery,
 } from "@pwa/graphql";
-import { getDisplayName } from "@pwa/common";
+import { getDisplayName, paths } from "@pwa/common";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -27,8 +27,6 @@ const UserPage: NextPage = () => {
   return (
     <SharedLayout
       title={`${data?.id ?? username}`}
-      titleHref={`/u/[username]`}
-      titleHrefAs={`/u/${username}`}
       query={user}
     >
       {data && <UserPageInner user={data} />}
