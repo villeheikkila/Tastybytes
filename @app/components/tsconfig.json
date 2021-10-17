@@ -7,7 +7,7 @@
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
     "declarationDir": "dist",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "target": "es6",
+    "target": "es2020",
     "module": "commonjs",
     "jsx": "react"
   },

@@ -38,7 +38,7 @@ const ProductPageInner: FC<UserPageInnerProps> = ({ data }) => {
     <Layout.Root>
       <Layout.Header>
         <h1>
-          {data.brand.company.name} {data.brand.name} {data.flavor}
+          {data?.brand?.company.name} {data?.brand?.name} {data.flavor}
         </h1>
       </Layout.Header>
 
