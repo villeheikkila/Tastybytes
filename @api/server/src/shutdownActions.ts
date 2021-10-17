@@ -1,6 +1,12 @@
 /*
  * For a clean nodemon shutdown, we need to close all our sockets/etc otherwise
  * we might not come up cleanly again (inside nodemon).
+ *
+ * In development we restart the server quite frequently. We don't want the server
+ * to fail to start when the previous one was killed, so we maintain a list of
+ * `shutdownActions` to cleanly close servers, sockets, files and the like. These
+ * actions are called automatically when the process exits, or is interrupted with
+ * certain signals such as SIGINT from Ctrl-c.
  */
 
 export type ShutdownAction = () => void | Promise<void>;

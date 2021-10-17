@@ -132,7 +132,7 @@ const CreateProductInner: React.FC<CreateProductInnerProps> = ({
 };
 
 type CompanyFormInput = {
-  name: string;
+  companyName: string;
 };
 
 type CompanyFormProps = {
@@ -150,13 +150,15 @@ const CompanyForm = ({ companies }: CompanyFormProps) => {
     formState: { errors },
   } = useForm<CompanyFormInput>();
 
-  const onSubmit = ({ name }: CompanyFormInput) => {
-    if (companies.nodes.some((c) => name === c.name)) {
-      setError("name", { message: "Company by that name exist already" });
+  const onSubmit = ({ companyName }: CompanyFormInput) => {
+    if (companies.nodes.some((c) => companyName === c.name)) {
+      setError("companyName", {
+        message: "Company by that name exist already",
+      });
     } else {
-      createCompany({ variables: { name } })
+      createCompany({ variables: { companyName } })
         .then((response) => console.log(response))
-        .catch((error) => setError("name", { message: error.message }));
+        .catch((error) => setError("companyName", { message: error.message }));
     }
   };
 
@@ -166,11 +168,11 @@ const CompanyForm = ({ companies }: CompanyFormProps) => {
         label="Company name"
         id="name"
         placeholder="name"
-        {...register("name")}
+        {...register("companyName")}
       />
       <ErrorMessage
         errors={errors}
-        name="name"
+        name="companyName"
         render={({ message }) => <ErrorText>{message}</ErrorText>}
       />
       <Button type="submit">Add new company</Button>
