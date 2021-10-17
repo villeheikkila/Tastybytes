@@ -1,5 +1,5 @@
 # Global args, set before the first FROM, shared by all stages
-ARG PORT=5678
+ARG PORT=5688
 ARG NODE_ENV="production"
 ARG ROOT_URL="http://localhost:${PORT}"
 ARG TARGET="server"
