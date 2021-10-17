@@ -16,7 +16,6 @@
     "@pwa/common": "0.0.0",
     "@pwa/components": "0.0.0",
     "@pwa/graphql": "0.0.0",
-    "@radix-ui/colors": "^0.1.7",
     "@radix-ui/react-alert-dialog": "^0.1.1",
     "@radix-ui/react-avatar": "^0.1.1",
     "@radix-ui/react-dialog": "^0.1.1",

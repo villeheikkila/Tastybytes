@@ -1,4 +1,3 @@
-import { blackA } from "@radix-ui/colors";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { styled } from "./stitches.config";
 import React from "react";
@@ -39,7 +38,7 @@ const Input = styled("input", {
   "&[aria-invalid='true']": {
     outline: "1px solid red",
   },
-  boxShadow: `0 0 0 1px ${blackA.blackA9}`,
+  boxShadow: `0 0 0 1px $black`,
 });
 
 interface LabeledInputProps extends React.ComponentProps<typeof Input> {

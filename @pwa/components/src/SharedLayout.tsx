@@ -6,7 +6,6 @@ import {
   useLogoutMutation,
 } from "@pwa/graphql";
 import { paths } from "@pwa/common";
-import { blackA, violet } from "@radix-ui/colors";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -287,10 +286,10 @@ const IconButton = styled("button", {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  color: violet.violet11,
+  color: "$white",
   backgroundColor: "white",
-  boxShadow: `0 2px 10px ${blackA.blackA7}`,
-  "&:hover": { backgroundColor: violet.violet3 },
+  boxShadow: `0 2px 10px $black`,
+  "&:hover": { backgroundColor: "$turq" },
   "&:focus": { boxShadow: `0 0 0 2px black` },
 });
 

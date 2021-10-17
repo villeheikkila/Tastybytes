@@ -46,14 +46,14 @@ const ProductPageInner: FC<UserPageInnerProps> = ({ data }) => {
             <p>
               <b>{author && getDisplayName(author)}</b> has tasted{" "}
               <Link
-                href={`/c/${data?.brand?.company?.name}/${data.id}`}
+                href={`/company/${data?.brand?.company?.name}/${data.id}`}
               >{`${data?.brand?.name} - ${data.flavor}`}</Link>{" "}
               by{" "}
-              <Link href={`/c/${data?.brand?.company?.name}`}>
+              <Link href={`/company/${data?.brand?.company?.name}`}>
                 {data?.brand?.company?.name}
               </Link>
             </p>
-            {rating && <Stars rating={rating} />}s
+            {rating && <Stars rating={rating} />}
           </Card.Wrapper>
         ))}
       </Card.Container>

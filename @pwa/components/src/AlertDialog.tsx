@@ -1,4 +1,3 @@
-import { blackA, mauve } from "@radix-ui/colors";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { styled, keyframes } from "./stitches.config";
 import React from "react";
@@ -14,7 +13,7 @@ const contentShow = keyframes({
 });
 
 const StyledOverlay = styled(AlertDialogPrimitive.Overlay, {
-  backgroundColor: blackA.blackA9,
+  backgroundColor: "$black",
   position: "fixed",
   inset: 0,
   "@media (prefers-reduced-motion: no-preference)": {
@@ -56,14 +55,14 @@ const StyledContent = styled(AlertDialogPrimitive.Content, {
 
 const StyledTitle = styled(AlertDialogPrimitive.Title, {
   margin: 0,
-  color: mauve.mauve12,
+  color: "$white",
   fontSize: 17,
   fontWeight: 500,
 });
 
 const StyledDescription = styled(AlertDialogPrimitive.Description, {
   marginBottom: 20,
-  color: mauve.mauve11,
+  color: "$white",
   fontSize: 15,
   lineHeight: 1.5,
 });
