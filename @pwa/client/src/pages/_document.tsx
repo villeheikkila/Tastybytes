@@ -1,4 +1,4 @@
-import { getCssText } from "@pwa/common";
+import { getCssText } from "@pwa/components";
 
 import Document, {
   DocumentContext,

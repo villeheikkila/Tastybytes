@@ -1,4 +1,4 @@
-import { styled } from "@pwa/common";
+import { styled } from "./stitches.config";
 
 export const Label = styled("label", {
   display: "flex",

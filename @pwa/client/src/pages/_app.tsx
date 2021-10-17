@@ -1,5 +1,5 @@
 import { ApolloClient, ApolloProvider } from "@apollo/client";
-import { globalStyles } from "@pwa/common";
+import { globalStyles } from "@pwa/components";
 import { withApollo } from "@pwa/common";
 import { IdProvider } from "@radix-ui/react-id";
 import App from "next/app";

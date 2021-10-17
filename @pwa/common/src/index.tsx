@@ -4,4 +4,3 @@ export * from "./types";
 export * from "./utils";
 export * from "./withApollo";
 export * from "./paths"
-export * from "./stitches.config"

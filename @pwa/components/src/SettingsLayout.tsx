@@ -11,7 +11,7 @@ import {
   SharedLayoutProps,
 } from "./SharedLayout";
 import { StandardWidth } from "./StandardWidth";
-import { styled } from "@pwa/common";
+import { styled } from "./stitches.config";
 import { Warn } from "./Warn";
 
 interface PageSpec {

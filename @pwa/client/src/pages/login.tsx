@@ -8,7 +8,7 @@ import {
   SharedLayout,
   SharedLayoutChildProps,
 } from "@pwa/components";
-import { styled } from "@pwa/common";
+import { styled } from "@pwa/components";
 import { useLoginMutation, useSharedQuery } from "@pwa/graphql";
 import {
   extractError,

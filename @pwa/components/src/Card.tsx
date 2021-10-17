@@ -1,4 +1,4 @@
-import { styled } from "@pwa/common";
+import { styled } from "./stitches.config";
 
 const Wrapper = styled("div", {
   display: "flex",
