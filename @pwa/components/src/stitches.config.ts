@@ -80,6 +80,8 @@ export const globalStyles = globalCss({
   body: {
     lineHeight: "1",
     background: "$midnight",
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+
   },
   "ol, ul": {
     listStyle: "none",
@@ -112,7 +114,6 @@ export const globalStyles = globalCss({
     lineHeight: "15.4px",
   },
   a: {
-    fontFamily: "Muli",
     fontSize: "14px",
     fontStyle: "normal",
     fontVariant: "normal",
@@ -122,7 +123,6 @@ export const globalStyles = globalCss({
     color: "rgba(0, 153, 254, 1.00)",
   },
   p: {
-    fontFamily: "Muli",
     fontSize: "14px",
     fontStyle: "normal",
     fontVariant: "normal",
@@ -130,7 +130,6 @@ export const globalStyles = globalCss({
     lineHeight: "20px",
   },
   em: {
-    fontFamily: "Muli",
     fontSize: "14px",
     fontStyle: "normal",
     fontVariant: "normal",
@@ -138,7 +137,6 @@ export const globalStyles = globalCss({
     lineHeight: "20px",
   },
   label: {
-    fontFamily: "Muli",
     fontSize: "14px",
     fontStyle: "normal",
     fontVariant: "normal",
@@ -146,7 +144,6 @@ export const globalStyles = globalCss({
     lineHeight: "20px",
   },
   blockquote: {
-    fontFamily: "Muli",
     fontSize: "21px",
     fontStyle: "normal",
     fontVariant: "normal",
@@ -154,7 +151,6 @@ export const globalStyles = globalCss({
     lineHeight: "30px",
   },
   pre: {
-    fontFamily: "Muli",
     fontSize: "13px",
     fontStyle: "normal",
     fontVariant: "normal",
