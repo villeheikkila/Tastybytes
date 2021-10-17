@@ -1,7 +1,6 @@
 import { Button, Input, SharedLayout } from "@app/components";
 import { styled } from "@app/components/src/stitches.config";
 import { useSharedQuery, useVerifyEmailMutation } from "@app/graphql";
-import get from "lodash/get";
 import { NextPage } from "next";
 import React, { useEffect } from "react";
 
@@ -34,7 +33,7 @@ const VerifyPage: NextPage<VerifyPageProps> = (props) => {
         },
       })
         .then((result) => {
-          if (get(result, "data.verifyEmail.success")) {
+          if (result?.data?.verifyEmail?.success) {
             setState("SUCCESS");
           } else {
             setState("PENDING");
