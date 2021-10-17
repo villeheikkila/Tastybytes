@@ -1,4 +1,3 @@
-import { mauve, violet } from "@radix-ui/colors";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { styled, keyframes } from "./stitches.config";
 
@@ -54,7 +53,7 @@ const itemStyles = {
   padding: "1rem 1.2rem",
 
   "&[data-disabled]": {
-    color: mauve.mauve8,
+    color: "$white",
     pointerEvents: "none",
   },
 
@@ -84,8 +83,8 @@ const StyledRadioItem = styled(DropdownMenuPrimitive.RadioItem, {
 });
 const StyledTriggerItem = styled(DropdownMenuPrimitive.TriggerItem, {
   '&[data-state="open"]': {
-    backgroundColor: violet.violet4,
-    color: violet.violet11,
+    backgroundColor: "$darkGray",
+    color: "$white",
   },
   ...itemStyles,
 });
@@ -94,7 +93,7 @@ const StyledLabel = styled(DropdownMenuPrimitive.Label, {
   paddingLeft: 25,
   fontSize: 12,
   lineHeight: "25px",
-  color: mauve.mauve11,
+  color: "$white",
 });
 
 const StyledSeparator = styled(DropdownMenuPrimitive.Separator, {

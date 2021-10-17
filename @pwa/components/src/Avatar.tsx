@@ -1,4 +1,3 @@
-import { blackA, tomato, whiteA } from "@radix-ui/colors";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { styled } from "./stitches.config";
 import React from "react";
@@ -13,7 +12,7 @@ const StyledAvatar = styled(AvatarPrimitive.Root, {
   width: 45,
   height: 45,
   borderRadius: "100%",
-  backgroundColor: blackA.blackA3,
+  backgroundColor: "$black",
   variants: {
     status: {
       warn: {
@@ -24,7 +23,7 @@ const StyledAvatar = styled(AvatarPrimitive.Root, {
           height: "12px",
           borderRadius: "50%",
           position: "absolute",
-          backgroundColor: tomato.tomato10,
+          backgroundColor: "$red",
           right: "0px",
           top: "12px",
           boxShadow: "20px 20px 60px #161616 -20px -20px 60px #ffffff",
@@ -50,7 +49,7 @@ const StyledFallback = styled(AvatarPrimitive.Fallback, {
   alignItems: "center",
   justifyContent: "center",
   backgroundColor: "green",
-  color: whiteA.whiteA12,
+  color: "$white",
   fontSize: "0.8rem",
   textTransform: "uppercase",
   fontWeight: "bold",

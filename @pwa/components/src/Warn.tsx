@@ -1,4 +1,3 @@
-import { redA } from "@radix-ui/colors";
 import { styled } from "./stitches.config";
 import React from "react";
 
@@ -11,7 +10,7 @@ const Dot = styled("span", {
   height: "8px",
   width: "8px",
   borderRadius: "50%",
-  backgroundColor: redA.redA10,
+  backgroundColor: "$red",
 });
 
 const DotContainer = styled("div");

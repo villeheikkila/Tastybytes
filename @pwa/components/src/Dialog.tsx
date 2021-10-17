@@ -1,4 +1,3 @@
-import { blackA, mauve } from "@radix-ui/colors";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { styled, keyframes } from "./stitches.config";
 import React from "react";
@@ -14,7 +13,7 @@ const contentShow = keyframes({
 });
 
 const StyledOverlay = styled(DialogPrimitive.Overlay, {
-  backgroundColor: blackA.blackA9,
+  backgroundColor: "$black",
   position: "fixed",
   inset: 0,
   "@media (prefers-reduced-motion: no-preference)": {
@@ -54,13 +53,13 @@ const StyledContent = styled(DialogPrimitive.Content, {
 const StyledTitle = styled(DialogPrimitive.Title, {
   margin: 0,
   fontWeight: 500,
-  color: mauve.mauve12,
+  color: "$white",
   fontSize: 17,
 });
 
 const StyledDescription = styled(DialogPrimitive.Description, {
   margin: "10px 0 20px",
-  color: mauve.mauve11,
+  color: "$black",
   fontSize: 15,
   lineHeight: 1.5,
 });

@@ -41,10 +41,10 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ data }) => {
               </Link>{" "}
               has tasted{" "}
               <Link
-                href={`/c/${item?.brand?.company?.name}/${item?.id}`}
+                href={`/company/${item?.brand?.company?.name}/${item?.id}`}
               >{`${item?.brand?.name} - ${item?.flavor}`}</Link>{" "}
               by{" "}
-              <Link href={`/c/${item?.brand?.company?.name}`}>
+              <Link href={`/company/${item?.brand?.company?.name}`}>
                 {item?.brand?.company?.name}
               </Link>
             </p>

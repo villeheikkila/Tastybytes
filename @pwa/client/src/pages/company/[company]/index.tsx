@@ -45,7 +45,7 @@ const CompanyPageInner: FC<UserPageInnerProps> = ({ data }) => {
             <h3>{brand.node.name}</h3>
             {brand.node.items.edges.map((item) => (
               <div key={item.node.id}>
-                <Link href={`/c/${data.name}/${item.node.id}`}>
+                <Link href={`/company/${data.name}/${item.node.id}`}>
                   {item.node.flavor}
                 </Link>
               </div>
