@@ -2,7 +2,7 @@ node_modules
 **/dist
 /data/schema.graphql
 /data/schema.sql
-/@app/graphql/index.*
-/@app/client/.next
+/@pwa/graphql/index.*
+/@pwa/client/.next
 .next
 GRAPHILE_STARTER_LICENSE.md

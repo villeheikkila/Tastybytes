@@ -11,7 +11,7 @@ const isDev = process.env.NODE_ENV === "development";
 export default async function installSSR(app: Express) {
   const nextApp = next({
     dev: isDev,
-    dir: `${__dirname}/../../../../@app/client/src`,
+    dir: `${__dirname}/../../../../@pwa/client/src`,
     quiet: !isDev,
   });
   const handlerPromise = (async () => {
