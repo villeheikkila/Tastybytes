@@ -1,3 +1,3 @@
 module.exports = {
-  projects: ["<rootDir>/@pwa/*/jest.config.js"],
+  projects: ["<rootDir>/@api/*/jest.config.js"],
 };

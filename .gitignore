@@ -11,3 +11,4 @@ yarn-error.log
 old.sql
 .yarn/*
 .DS_Store
+.vscode
