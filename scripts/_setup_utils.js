@@ -144,53 +144,9 @@ exports.updateDotenv = function updateDotenv(add, answers) {
   }
 };
 
-exports.checkGit = async function checkGit() {
-  try {
-    const gitStat = await fsp.stat(`${__dirname}/../.git`);
-    if (!gitStat || !gitStat.isDirectory()) {
-      throw new Error("No .git folder found");
-    }
-  } catch (e) {
-    console.error();
-    console.error();
-    console.error();
-    console.error(
-      "ERROR: Graphile Starter must run inside of a git versioned folder. Please run the following:"
-    );
-    console.error();
-    console.error("  git init");
-    console.error("  git add .");
-    console.error("  git commit -m 'Graphile Starter base'");
-    console.error();
-    console.error(
-      "For more information, read https://github.com/graphile/starter#making-it-yours"
-    );
-    console.error();
-    console.error();
-    console.error();
-    process.exit(1);
-  }
-};
-
 exports.runMain = (main) => {
   main().catch((e) => {
     console.error(e);
     process.exit(1);
   });
-};
-
-exports.outro = (message) => {
-  console.log();
-  console.log();
-  console.log("____________________________________________________________");
-  console.log();
-  console.log();
-  console.log(message);
-  console.log();
-  console.log();
-  console.log("🙏 Please support our Open Source work:");
-  console.log("     https://graphile.org/sponsor");
-  console.log();
-  console.log("____________________________________________________________");
-  console.log();
 };
