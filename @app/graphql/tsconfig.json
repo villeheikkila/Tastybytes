@@ -6,7 +6,7 @@
     "outDir": ".",
     "tsBuildInfoFile": "tsconfig.tsbuildinfo",
     "declarationDir": ".",
-    "lib": ["es2018", "esnext.asynciterable"],
+    "lib": ["es2020", "esnext.asynciterable"],
     "target": "es2020",
     "module": "commonjs",
     "jsx": "react"

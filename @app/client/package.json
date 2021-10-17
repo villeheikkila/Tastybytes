@@ -7,11 +7,10 @@
     "test": "cross-env NODE_ENV=test NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" jest"
   },
   "dependencies": {
-    "@api/config": "0.0.0",
-    "@apollo/client": "^3.4.16",
     "@app/components": "0.0.0",
     "@app/graphql": "0.0.0",
     "@app/lib": "0.0.0",
+    "@apollo/client": "^3.4.16",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.15",
@@ -30,9 +29,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.17.4",
-    "slugify": "^1.6.1",
     "stitches": "^1.2.11",
-    "tls": "^0.0.1",
     "zod": "^3.9.8"
   },
   "devDependencies": {

@@ -24,14 +24,14 @@
     "@types/express-session": "^1.17.0",
     "@types/helmet": "^4.0.0",
     "@types/html-to-text": "^8.0.1",
-    "@types/lodash": "^4.14.172",
+    "@types/lodash": "^4.14.175",
     "@types/mjml": "^4.7.0",
     "@types/morgan": "^1.9.3",
     "@types/nodemailer": "^6.4.4",
     "@types/passport": "^1.0.7",
     "@types/passport-github2": "^1.2.5",
     "@types/pg": "^8.6.1",
-    "aws-sdk": "^2.983.0",
+    "aws-sdk": "^2.1009.0",
     "body-parser": "^1.19.0",
     "chalk": "^4.1.2",
     "connect-pg-simple": "^6.2.1",
@@ -42,19 +42,19 @@
     "graphile-build": "^4.12.0",
     "graphile-build-pg": "^4.12.1",
     "graphile-utils": "^4.12.1",
-    "graphile-worker": "^0.11.1",
+    "graphile-worker": "^0.11.4",
     "helmet": "^4.6.0",
     "html-to-text": "^8.0.0",
     "lodash": "^4.17.21",
-    "mjml": "^4.10.2",
+    "mjml": "^4.10.4",
     "morgan": "^1.10.0",
     "next": "^11.1.2",
-    "nodemailer": "^6.6.3",
-    "passport": "^0.4.1",
+    "nodemailer": "^6.7.0",
+    "passport": "^0.5.0",
     "passport-github2": "^0.1.12",
     "pg": "^8.7.1",
-    "postgraphile": "^4.12.3",
-    "source-map-support": "^0.5.19",
+    "postgraphile": "^4.12.4",
+    "source-map-support": "^0.5.20",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
@@ -66,7 +66,7 @@
     "ts-node": "^10.3.0"
   },
   "optionalDependencies": {
-    "bufferutil": "^4.0.3",
-    "utf-8-validate": "^5.0.5"
+    "bufferutil": "^4.0.5",
+    "utf-8-validate": "^5.0.7"
   }
 }
