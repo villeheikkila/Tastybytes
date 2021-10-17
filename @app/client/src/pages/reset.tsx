@@ -7,7 +7,6 @@ import {
 } from "@app/components";
 import { styled } from "@app/components/src/stitches.config";
 import { useResetPasswordMutation, useSharedQuery } from "@app/graphql";
-import get from "lodash/get";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -51,7 +50,7 @@ const ResetPage: NextPage<ResetPageProps> = ({ userId, token }) => {
               password: values.password,
             },
           });
-          if (get(result, "data.resetPassword.success")) {
+          if (result?.data?.resetPassword?.success) {
             setState(State.SUCCESS);
           } else {
             setState(State.PENDING);
