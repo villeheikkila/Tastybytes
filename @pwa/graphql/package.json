@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "main": "index.js",
   "types": "index.d.ts",
+  "license": "MIT",
   "scripts": {
     "build": "yarn codegen && tsc -b",
     "watch": "yarn codegen --watch",
