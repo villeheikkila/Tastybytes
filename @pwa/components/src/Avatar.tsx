@@ -1,6 +1,6 @@
-import { styled } from "@pwa/common";
 import { blackA, tomato, whiteA } from "@radix-ui/colors";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
+import { styled } from "./stitches.config";
 import React from "react";
 
 const StyledAvatar = styled(AvatarPrimitive.Root, {

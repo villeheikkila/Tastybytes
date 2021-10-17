@@ -1,6 +1,6 @@
 import { blackA, mauve } from "@radix-ui/colors";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { styled, keyframes } from "@pwa/common";
+import { styled, keyframes } from "./stitches.config";
 import React from "react";
 
 const overlayShow = keyframes({

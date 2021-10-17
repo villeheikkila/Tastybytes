@@ -1,6 +1,6 @@
 import { paths } from "@pwa/common";
 import { Card, Layout, SharedLayout } from "@pwa/components";
-import { styled } from "@pwa/common";
+import { styled } from "@pwa/components";
 import {
   FriendsQuery,
   FriendStatus,

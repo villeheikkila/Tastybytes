@@ -1,5 +1,5 @@
 import { Button, Input, SharedLayout } from "@pwa/components";
-import { styled } from "@pwa/common";
+import { styled } from "@pwa/components";
 import { useSharedQuery, useVerifyEmailMutation } from "@pwa/graphql";
 import { NextPage } from "next";
 import React, { useEffect } from "react";

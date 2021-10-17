@@ -6,7 +6,7 @@ import {
   Input,
   SharedLayout,
 } from "@pwa/components";
-import { styled } from "@pwa/common";
+import { styled } from "@pwa/components";
 import { useForgotPasswordMutation, useSharedQuery } from "@pwa/graphql";
 import { extractError, getCodeFromError } from "@pwa/common";
 import { ErrorMessage } from "@hookform/error-message";
