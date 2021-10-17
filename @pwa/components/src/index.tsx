@@ -20,4 +20,3 @@ export * from "./SpinPadded";
 export * from "./StandardWidth";
 export * from "./Stars";
 export * from "./Warn";
-export * from "./stitches.config";

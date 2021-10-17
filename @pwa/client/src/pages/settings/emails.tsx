@@ -7,7 +7,7 @@ import {
   Redirect,
   SettingsLayout,
 } from "@pwa/components";
-import { styled } from "@pwa/components";
+import { styled } from "@pwa/common";
 import {
   EmailsForm_UserEmailFragment,
   useAddEmailMutation,

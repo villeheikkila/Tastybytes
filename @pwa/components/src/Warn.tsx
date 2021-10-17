@@ -1,5 +1,5 @@
 import { redA } from "@radix-ui/colors";
-import { styled } from "@stitches/react";
+import { styled } from "@pwa/common";
 import React from "react";
 
 export interface WarnProps extends React.ComponentProps<typeof DotContainer> {

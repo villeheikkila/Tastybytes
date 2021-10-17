@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled } from "@pwa/common";
 
 const Root = styled("div", {
   display: "flex",

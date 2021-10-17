@@ -18,7 +18,7 @@ import { ErrorAlert, StandardWidth, Warn } from ".";
 import { Avatar } from "./Avatar";
 import { Dropdown } from "./Dropdown";
 import { Redirect } from "./Redirect";
-import { styled } from "./stitches.config";
+import { styled } from "@pwa/common";
 
 export interface SharedLayoutChildProps {
   error?: ApolloError | Error;

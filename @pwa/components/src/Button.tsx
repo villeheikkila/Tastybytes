@@ -1,4 +1,4 @@
-import { styled } from "./stitches.config";
+import { styled } from "@pwa/common";
 
 export const Button = styled("button", {
   backgroundColor: "#0099ff",

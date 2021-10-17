@@ -8,7 +8,7 @@ import {
   Redirect,
   SettingsLayout,
 } from "@pwa/components";
-import { styled } from "@pwa/components";
+import { styled } from "@pwa/common";
 import {
   ProfileSettingsForm_UserFragment,
   useSettingsProfileQuery,
