@@ -59,11 +59,11 @@
   },
   "devDependencies": {
     "@types/node": "^15.6.1",
-    "graphql": "^15.5.2",
-    "jest": "^27.1.0",
+    "graphql": "^15.6.1",
+    "jest": "^27.2.5",
     "mkdirp": "^1.0.4",
     "mock-req": "^0.2.0",
-    "ts-node": "^10.2.1"
+    "ts-node": "^10.3.0"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.3",
