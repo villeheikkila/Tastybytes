@@ -1,5 +1,5 @@
 overwrite: true
-schema: "../../data/schema.graphql"
+schema: "../../@api/data/schema.graphql"
 documents: "../client/src/**/*.graphql"
 config:
   avoidOptionals:

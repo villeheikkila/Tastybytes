@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-require("@app/config/env");
+require("@api/config/env");
 const { execSync, spawnSync: rawSpawnSync } = require("child_process");
 const concurrently = require("concurrently");
 

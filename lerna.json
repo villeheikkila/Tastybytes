@@ -1,5 +1,5 @@
 {
-  "packages": ["@app/*"],
+  "packages": ["@app/*", "@api/*"],
   "version": "0.0.0",
   "loglevel": "warn"
 }
