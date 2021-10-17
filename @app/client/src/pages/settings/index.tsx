@@ -70,17 +70,13 @@ const ProfileSettingsForm = ({
     setError: setFormError,
   } = useForm<ProfileSettingsFormValues>({
     defaultValues: {
-      firstName: user.firstName,
-      lastName: user.lastName,
+      firstName: user.firstName ?? undefined,
+      lastName: user.lastName ?? undefined,
       username: user.username,
     },
   });
 
-  const onSubmit = async ({
-    username,
-    firstName,
-    lastName,
-  }: ProfileSettingsFormValues) => {
+  const onSubmit = async (values: ProfileSettingsFormValues) => {
     setSuccess(false);
     setError(null);
     try {
@@ -88,9 +84,10 @@ const ProfileSettingsForm = ({
         variables: {
           id: user.id,
           patch: {
-            username,
-            firstName,
-            lastName,
+            username: values.username,
+            firstName: values.firstName ?? "",
+            lastName: values.lastName ?? "",
+            avatarUrl: "",
           },
         },
       });

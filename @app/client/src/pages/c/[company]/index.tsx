@@ -32,7 +32,7 @@ const CompanyPage = () => {
 };
 
 interface UserPageInnerProps {
-  data: BrandsByCompanyNameQuery["companyByName"];
+  data: NonNullable<BrandsByCompanyNameQuery["companyByName"]>;
 }
 
 const CompanyPageInner: FC<UserPageInnerProps> = ({ data }) => {

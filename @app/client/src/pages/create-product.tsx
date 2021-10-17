@@ -22,13 +22,19 @@ const CreateProductPage: NextPage = () => {
 
   return (
     <SharedLayout title="Activity" query={createItemProps}>
-      {data && <CreateProductInner data={data} />}
+      {data?.categories && data.companies && (
+        <CreateProductInner
+          categories={data.categories}
+          companies={data.companies}
+        />
+      )}
     </SharedLayout>
   );
 };
 
 interface CreateProductInnerProps {
-  data: CreateItemPropsQuery;
+  categories: NonNullable<CreateItemPropsQuery["categories"]>;
+  companies: NonNullable<CreateItemPropsQuery["companies"]>;
 }
 
 interface ProductFormInput {
@@ -36,7 +42,8 @@ interface ProductFormInput {
 }
 
 const CreateProductInner: React.FC<CreateProductInnerProps> = ({
-  data: { categories, companies },
+  categories,
+  companies,
 }) => {
   const [createProduct] = useCreateItemMutation();
   console.log("createProduct: ", createProduct);
@@ -126,7 +133,7 @@ const CreateProductInner: React.FC<CreateProductInnerProps> = ({
         <Button type="submit">Create</Button>
       </form>
       <h1>Companies</h1>
-      <CompanyForm companies={companies} />
+      {companies && <CompanyForm companies={companies} />}
     </Layout.Root>
   );
 };
@@ -136,7 +143,7 @@ type CompanyFormInput = {
 };
 
 type CompanyFormProps = {
-  companies: CreateItemPropsQuery["companies"];
+  companies: NonNullable<CreateItemPropsQuery["companies"]>;
 };
 
 const CompanyForm = ({ companies }: CompanyFormProps) => {

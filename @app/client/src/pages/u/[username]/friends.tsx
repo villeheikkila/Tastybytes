@@ -8,16 +8,6 @@ import {
   useFriendsQuery,
   useSendFriendRequestMutation,
 } from "@app/graphql";
-import {
-  faCheck,
-  faMinus,
-  faPlus,
-  faUserClock,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  FontAwesomeIcon,
-  FontAwesomeIconProps,
-} from "@fortawesome/react-fontawesome";
 import { greenA, redA } from "@radix-ui/colors";
 import { NextPage } from "next";
 import Link from "next/link";
@@ -35,7 +25,7 @@ const FriendsPage: NextPage = () => {
 
   return (
     <SharedLayout
-      title={`${query.data?.currentUser.username ?? username}`}
+      title={`${query.data?.currentUser?.username ?? username}`}
       titleHref={`/u/[username]`}
       titleHrefAs={`/u/${username}`}
       query={query}
@@ -46,7 +36,7 @@ const FriendsPage: NextPage = () => {
 };
 
 interface FriendsPageInnerProps {
-  data: FriendsQuery["publicUsers"];
+  data: NonNullable<FriendsQuery["publicUsers"]>;
 }
 
 const mutationOptions = {

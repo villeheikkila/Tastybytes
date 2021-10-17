@@ -44,7 +44,7 @@ const UserPageInner: FC<UserPageInnerProps> = ({ user }) => {
   return (
     <Layout.Root>
       <Layout.Header>
-        <h1>{getDisplayName(user)}</h1>
+        <h1>{user && getDisplayName(user)}</h1>
         <p>Total check-ins: {user?.authoredCheckIns.totalCount}</p>
       </Layout.Header>
       <Card.Container>
@@ -53,14 +53,14 @@ const UserPageInner: FC<UserPageInnerProps> = ({ user }) => {
             <p>
               <b>{getDisplayName(user)}</b> has tasted{" "}
               <Link
-                href={`/c/${item.brand.company.name}/${item.id}`}
-              >{`${item.brand.name} - ${item.flavor}`}</Link>{" "}
+                href={`/c/${item?.brand?.company?.name}/${item?.id}`}
+              >{`${item?.brand?.name} - ${item?.flavor}`}</Link>{" "}
               by{" "}
-              <Link href={`/c/${item.brand.company.name}`}>
-                {item.brand.company.name}
+              <Link href={`/c/${item?.brand?.company?.name}`}>
+                {item?.brand?.company?.name}
               </Link>
             </p>
-            <Stars rating={rating} />
+            {rating && <Stars rating={rating} />}
           </Card.Wrapper>
         ))}
       </Card.Container>
