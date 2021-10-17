@@ -3,17 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "gm": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" graphile-migrate",
+    "gm": "NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" graphile-migrate",
     "migrate": "yarn gm migrate",
     "watch": "yarn gm watch --shadow",
     "commit": "yarn gm commit",
     "uncommit": "yarn gm uncommit",
     "reset": "yarn gm reset",
     "dump": "yarn gm migrate && yarn gm reset --shadow --erase && yarn gm migrate --shadow --forceActions",
-    "test": "cross-env NODE_ENV=test NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" jest"
+    "test": "NODE_ENV=test NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" jest"
   },
   "dependencies": {
-    "cross-env": "^7.0.3",
     "graphile-migrate": "^1.2.0"
   },
   "devDependencies": {

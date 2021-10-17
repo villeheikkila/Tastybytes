@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -b",
-    "test": "cross-env NODE_ENV=test NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" jest"
+    "test": "NODE_ENV=test NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" jest"
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",
@@ -19,7 +19,6 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
-    "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "jest": "^27.2.5",
     "postgraphile": "^4.12.4",
