@@ -2,8 +2,6 @@
 const {
   yarnCmd,
   runMain,
-  checkGit,
-  outro,
   withDotenvUpdater,
   updateDotenv,
   readDotenv,
@@ -12,7 +10,6 @@ const {
 const inquirer = require("inquirer");
 
 runMain(async () => {
-  await checkGit();
   const config = (await readDotenv()) || {};
   const mergeAnswers = (cb) => (answers) => cb({ ...config, ...answers });
   const questions = [
@@ -69,7 +66,7 @@ runMain(async () => {
     console.log(`\
 ✅ Environment file setup success`);
   } else {
-    outro(`\
+    console.log(`\
 ✅ Environment file setup success
 
 🚀 The next step is to set up the database, run:

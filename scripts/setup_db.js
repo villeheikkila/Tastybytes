@@ -1,12 +1,5 @@
 #!/usr/bin/env node
-const {
-  yarnCmd,
-  runMain,
-  checkGit,
-  outro,
-  runSync,
-  projectName,
-} = require("./_setup_utils");
+const { yarnCmd, runMain, runSync, projectName } = require("./_setup_utils");
 const inquirer = require("inquirer");
 const dotenv = require("dotenv");
 const pg = require("pg");
@@ -14,8 +7,6 @@ const pg = require("pg");
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 runMain(async () => {
-  await checkGit();
-
   // Ensure server build has been run
   runSync(yarnCmd, ["server", "build"]);
 
@@ -128,7 +119,7 @@ runMain(async () => {
   runSync(yarnCmd, ["db", "reset", "--erase"]);
   runSync(yarnCmd, ["db", "reset", "--shadow", "--erase"]);
 
-  outro(`\
+  console.log(`\
 ✅ Setup success
 
 🚀 To get started, run:
