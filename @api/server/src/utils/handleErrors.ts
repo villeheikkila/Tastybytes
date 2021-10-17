@@ -1,5 +1,6 @@
 import { GraphQLError } from "graphql";
-import { camelCase } from "lodash";
+
+const camelCase = (s: string) => s.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_m, c) => c.toUpperCase());
 
 const isDev = process.env.NODE_ENV === "development";
 const isTest = process.env.NODE_ENV === "test";

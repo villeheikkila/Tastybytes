@@ -1,5 +1,4 @@
 import { Express } from "express";
-import { get } from "lodash";
 import passport from "passport";
 import { Strategy as GitHubStrategy } from "passport-github2";
 
@@ -55,8 +54,8 @@ export default async (app: Express) => {
         id: profile.id,
         displayName: profile.displayName || "",
         username: profile.username,
-        avatarUrl: get(profile, "photos.0.value"),
-        email: profile.email || get(profile, "emails.0.value"),
+        avatarUrl: profile?.photos[0]?.value,
+        email: profile.email || profile?.emails[0]?.value,
       }),
       ["token", "tokenSecret"]
     );
