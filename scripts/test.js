@@ -86,7 +86,7 @@ function main() {
       [
         {
           name: "jest",
-          command: `cross-env NODE_OPTIONS=\"--inspect=9876\" jest -i ${watchMode}`,
+          command: `NODE_OPTIONS=\"--inspect=9876\" jest -i ${watchMode}`,
           prefixColor: "greenBright",
         },
         {
