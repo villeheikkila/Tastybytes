@@ -7,9 +7,9 @@
     "test": "cross-env NODE_ENV=test NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" jest"
   },
   "dependencies": {
+    "@api/config": "0.0.0",
     "@apollo/client": "^3.4.10",
     "@app/components": "0.0.0",
-    "@api/config": "0.0.0",
     "@app/graphql": "0.0.0",
     "@app/lib": "0.0.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -33,7 +33,6 @@
     "slugify": "^1.6.0",
     "stitches": "^1.2.11",
     "tls": "^0.0.1",
-    "webpack": "^4.43.0",
     "zod": "^3.9.5"
   },
   "devDependencies": {

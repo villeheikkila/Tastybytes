@@ -18,30 +18,9 @@ if (!process.env.ROOT_URL) {
       poweredByHeader: false,
       distDir: `../.next`,
       trailingSlash: false,
-      webpack5: false,
       webpack(config, { webpack, dev, isServer }) {
         if (dev) config.devtool = "cheap-module-source-map";
-
-        const makeSafe = (externals) => {
-          if (Array.isArray(externals)) {
-            return externals.map((ext) => {
-              if (typeof ext === "function") {
-                return (context, request, callback) => {
-                  if (/^@app\//.test(request)) {
-                    callback();
-                  } else {
-                    return ext(context, request, callback);
-                  }
-                };
-              } else {
-                return ext;
-              }
-            });
-          }
-        };
-
-        const externals =
-          isServer && dev ? makeSafe(config.externals) : config.externals;
+        const externals = isServer && dev ? config.externals : null;
 
         return {
           ...config,
