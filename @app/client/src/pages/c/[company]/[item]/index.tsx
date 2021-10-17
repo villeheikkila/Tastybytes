@@ -30,7 +30,7 @@ const ProductPage = () => {
 };
 
 interface UserPageInnerProps {
-  data: ProductByIdQuery["item"];
+  data: NonNullable<ProductByIdQuery["item"]>;
 }
 
 const ProductPageInner: FC<UserPageInnerProps> = ({ data }) => {
@@ -38,7 +38,7 @@ const ProductPageInner: FC<UserPageInnerProps> = ({ data }) => {
     <Layout.Root>
       <Layout.Header>
         <h1>
-          {data?.brand?.company.name} {data?.brand?.name} {data.flavor}
+          {data?.brand?.company?.name} {data?.brand?.name} {data.flavor}
         </h1>
       </Layout.Header>
 
@@ -46,16 +46,16 @@ const ProductPageInner: FC<UserPageInnerProps> = ({ data }) => {
         {data.checkIns.nodes.map(({ id, author, rating }) => (
           <Card.Wrapper key={id}>
             <p>
-              <b>{getDisplayName(author)}</b> has tasted{" "}
+              <b>{author && getDisplayName(author)}</b> has tasted{" "}
               <Link
-                href={`/c/${data.brand.company.name}/${data.id}`}
-              >{`${data.brand.name} - ${data.flavor}`}</Link>{" "}
+                href={`/c/${data?.brand?.company?.name}/${data.id}`}
+              >{`${data?.brand?.name} - ${data.flavor}`}</Link>{" "}
               by{" "}
-              <Link href={`/c/${data.brand.company.name}`}>
-                {data.brand.company.name}
+              <Link href={`/c/${data?.brand?.company?.name}`}>
+                {data?.brand?.company?.name}
               </Link>
             </p>
-            <Stars rating={rating} />
+            {rating && <Stars rating={rating} />}s
           </Card.Wrapper>
         ))}
       </Card.Container>

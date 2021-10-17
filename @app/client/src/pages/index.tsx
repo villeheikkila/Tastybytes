@@ -23,7 +23,7 @@ const Home: NextPage = () => {
 };
 
 interface ActivityFeedProps {
-  data: ActivityFeedQuery["activityFeeds"];
+  data: NonNullable<ActivityFeedQuery["activityFeeds"]>;
 }
 
 const ActivityFeed: React.FC<ActivityFeedProps> = ({ data }) => {
@@ -36,19 +36,19 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({ data }) => {
         {data.nodes.map(({ id, item, rating, author }) => (
           <Card.Wrapper key={id}>
             <p>
-              <Link href={`/u/${author.username}`}>
-                {getDisplayName(author)}
+              <Link href={`/u/${author?.username}`}>
+                {author && getDisplayName(author)}
               </Link>{" "}
               has tasted{" "}
               <Link
-                href={`/c/${item.brand.company.name}/${item.id}`}
-              >{`${item.brand.name} - ${item.flavor}`}</Link>{" "}
+                href={`/c/${item?.brand?.company?.name}/${item?.id}`}
+              >{`${item?.brand?.name} - ${item?.flavor}`}</Link>{" "}
               by{" "}
-              <Link href={`/c/${item.brand.company.name}`}>
-                {item.brand.company.name}
+              <Link href={`/c/${item?.brand?.company?.name}`}>
+                {item?.brand?.company?.name}
               </Link>
             </p>
-            <Stars rating={rating} />
+            {rating && <Stars rating={rating} />}
           </Card.Wrapper>
         ))}
       </Card.Container>

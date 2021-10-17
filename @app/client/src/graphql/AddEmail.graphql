@@ -6,7 +6,6 @@ mutation AddEmail($email: String!) {
       id
       userEmails(first: 50) {
         nodes {
-          id
           ...EmailsForm_UserEmail
         }
       }

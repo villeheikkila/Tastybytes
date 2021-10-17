@@ -7,13 +7,14 @@
     "test": "cross-env NODE_ENV=test NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" jest"
   },
   "dependencies": {
+    "@apollo/client": "^3.4.16",
     "@app/components": "0.0.0",
     "@app/graphql": "0.0.0",
     "@app/lib": "0.0.0",
-    "@apollo/client": "^3.4.16",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.15",
+    "@next/bundle-analyzer": "^11.1.2",
     "@radix-ui/react-dropdown-menu": "^0.1.1",
     "@radix-ui/react-icons": "^1.0.3",
     "@radix-ui/react-tabs": "^0.1.1",
