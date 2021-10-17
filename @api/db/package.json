@@ -2,6 +2,7 @@
   "name": "@api/db",
   "private": true,
   "version": "0.0.0",
+  "license": "MIT",
   "scripts": {
     "gm": "NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" graphile-migrate",
     "migrate": "yarn gm migrate",
@@ -13,7 +14,8 @@
     "test": "NODE_ENV=test NODE_OPTIONS=\"$NODE_OPTIONS -r @api/config/env\" jest"
   },
   "dependencies": {
-    "graphile-migrate": "^1.2.0"
+    "graphile-migrate": "^1.2.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/pg": "^8.6.1",

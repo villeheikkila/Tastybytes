@@ -24,12 +24,12 @@
     "clean": "node ./scripts/clean.js",
     "reset": "yarn clean && node ./scripts/delete-env-file.js",
     "--shortcuts to run commands in workspaces--": "",
+    "db": "yarn workspace @api/db",
+    "server": "yarn workspace @api/server",
     "client": "yarn workspace @pwa/client",
     "components": "yarn workspace @pwa/components",
-    "db": "yarn workspace @api/db",
     "graphql": "yarn workspace @pwa/graphql",
-    "common": "yarn workspace @pwa/common",
-    "server": "yarn workspace @api/server"
+    "common": "yarn workspace @pwa/common"
   },
   "author": "Ville Heikkilä",
   "license": "MIT",
