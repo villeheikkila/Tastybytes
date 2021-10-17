@@ -29,9 +29,7 @@
     "db": "yarn workspace @api/db",
     "graphql": "yarn workspace @app/graphql",
     "lib": "yarn workspace @app/lib",
-    "server": "yarn workspace @api/server",
-    "docker": "yarn --cwd ./docker",
-    "docker-compose": "yarn --cwd ./docker compose"
+    "server": "yarn workspace @api/server"
   },
   "author": "Ville Heikkilä",
   "license": "MIT",

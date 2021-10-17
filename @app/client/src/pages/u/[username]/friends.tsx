@@ -5,7 +5,6 @@ import {
   FriendStatus,
   useAcceptFriendRequestMutation,
   useDeleteFriendMutation,
-  useDeleteFriendRequestMutation,
   useFriendsQuery,
   useSendFriendRequestMutation,
 } from "@app/graphql";
@@ -56,7 +55,6 @@ const mutationOptions = {
 
 const FriendsPageInner: FC<FriendsPageInnerProps> = ({ data }) => {
   const [sendFriendRequest] = useSendFriendRequestMutation(mutationOptions);
-  const [deleteFriendRequest] = useDeleteFriendRequestMutation(mutationOptions);
   const [acceptFriendRequest] = useAcceptFriendRequestMutation(mutationOptions);
   const [removeFriend] = useDeleteFriendMutation(mutationOptions);
 
@@ -65,19 +63,21 @@ const FriendsPageInner: FC<FriendsPageInnerProps> = ({ data }) => {
     status: FriendStatus
   ) => {
     try {
-      switch (status) {
-        case FriendStatus.Friend:
-          await removeFriend({ variables: { userId } });
-          break;
-        case FriendStatus.PendingReceived:
-          await acceptFriendRequest({ variables: { userId } });
-          break;
-        case FriendStatus.PendingSent:
-          await deleteFriendRequest({ variables: { userId } });
-          break;
-        case FriendStatus.None:
-          await sendFriendRequest({ variables: { userId } });
-          break;
+      switch (
+        status
+        // case FriendStatus.Friend:
+        //   await removeFriend({ variables: { userId } });
+        //   break;
+        // case FriendStatus.PendingReceived:
+        //   await acceptFriendRequest({ variables: { userId } });
+        //   break;
+        // case FriendStatus.PendingSent:
+        //   await deleteFriendRequest({ variables: { userId } });
+        //   break;
+        // case FriendStatus.None:
+        //   await sendFriendRequest({ variables: { userId } });
+        //   break;
+      ) {
       }
     } catch (error) {
       console.error(error);
@@ -97,13 +97,13 @@ const FriendsPageInner: FC<FriendsPageInnerProps> = ({ data }) => {
               <Link href={`/u/${user.username}`}>
                 <h2>{user.username}</h2>
               </Link>
-              <FriendStatusIcon
+              {/* <FriendStatusIcon
                 status={user.friendStatus}
                 size="2x"
                 onClick={() =>
                   handleFriendStatusChange(user.id, user.friendStatus)
                 }
-              />
+              /> */}
             </Flex>
           </Card.Wrapper>
         ))}
@@ -112,29 +112,29 @@ const FriendsPageInner: FC<FriendsPageInnerProps> = ({ data }) => {
   );
 };
 
-const FriendStatusIcon = ({
-  status,
-  ...props
-}: Omit<FontAwesomeIconProps, "icon" | "color"> & {
-  status: FriendStatus;
-}): JSX.Element => {
-  switch (status) {
-    case FriendStatus.Friend:
-      return <FontAwesomeIcon icon={faMinus} color={redA.redA11} {...props} />;
-    case FriendStatus.PendingReceived:
-      return (
-        <FontAwesomeIcon icon={faCheck} color={greenA.greenA8} {...props} />
-      );
-    case FriendStatus.PendingSent:
-      return (
-        <FontAwesomeIcon icon={faUserClock} color={greenA.greenA8} {...props} />
-      );
-    case FriendStatus.None:
-      return (
-        <FontAwesomeIcon icon={faPlus} color={greenA.greenA8} {...props} />
-      );
-  }
-};
+// const FriendStatusIcon = ({
+//   status,
+//   ...props
+// }: Omit<FontAwesomeIconProps, "icon" | "color"> & {
+//   status: FriendStatus;
+// }): JSX.Element => {
+//   switch (status) {
+//     case FriendStatus.Friend:
+//       return <FontAwesomeIcon icon={faMinus} color={redA.redA11} {...props} />;
+//     case FriendStatus.PendingReceived:
+//       return (
+//         <FontAwesomeIcon icon={faCheck} color={greenA.greenA8} {...props} />
+//       );
+//     case FriendStatus.PendingSent:
+//       return (
+//         <FontAwesomeIcon icon={faUserClock} color={greenA.greenA8} {...props} />
+//       );
+//     case FriendStatus.None:
+//       return (
+//         <FontAwesomeIcon icon={faPlus} color={greenA.greenA8} {...props} />
+//       );
+//   }
+// };
 const Flex = styled("div", {
   display: "flex",
   justifyContent: "space-between",
