@@ -2701,8 +2701,12 @@ type ForgotPasswordPayload {
 
 type Friend {
   accepted: Date
+  blockedBy: UUID
   sent: Date!
   status: FriendStatus!
+
+  """Reads a single `User` that is related to this `Friend`."""
+  userByBlockedBy: User
 
   """Reads a single `User` that is related to this `Friend`."""
   userByUserId1: User
@@ -2717,6 +2721,9 @@ type Friend {
 A condition to be used against `Friend` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input FriendCondition {
+  """Checks for equality with the object’s `blockedBy` field."""
+  blockedBy: UUID
+
   """Checks for equality with the object’s `userId1` field."""
   userId1: UUID
 
@@ -2726,6 +2733,7 @@ input FriendCondition {
 
 enum FriendStatus {
   ACCEPTED
+  BLOCKED
   PENDING
 }
 
@@ -2757,6 +2765,8 @@ type FriendsEdge {
 
 """Methods to use when ordering `Friend`."""
 enum FriendsOrderBy {
+  BLOCKED_BY_ASC
+  BLOCKED_BY_DESC
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
@@ -6010,6 +6020,35 @@ type User {
   firstName: String
 
   """Reads and enables pagination through a set of `Friend`."""
+  friendsByBlockedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FriendCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Friend`."""
+    orderBy: [FriendsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FriendsConnection!
+
+  """Reads and enables pagination through a set of `Friend`."""
   friendsByUserId1(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -6421,6 +6460,93 @@ type User {
   username: String!
 
   """Reads and enables pagination through a set of `User`."""
+  usersByFriendBlockedByAndUserId1(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserUsersByFriendBlockedByAndUserId1ManyToManyConnection!
+
+  """Reads and enables pagination through a set of `User`."""
+  usersByFriendBlockedByAndUserId2(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserUsersByFriendBlockedByAndUserId2ManyToManyConnection!
+
+  """Reads and enables pagination through a set of `User`."""
+  usersByFriendUserId1AndBlockedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserUsersByFriendUserId1AndBlockedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `User`."""
   usersByFriendUserId1AndUserId2(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -6448,6 +6574,35 @@ type User {
     """The method to use when ordering `User`."""
     orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserUsersByFriendUserId1AndUserId2ManyToManyConnection!
+
+  """Reads and enables pagination through a set of `User`."""
+  usersByFriendUserId2AndBlockedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserUsersByFriendUserId2AndBlockedByManyToManyConnection!
 
   """Reads and enables pagination through a set of `User`."""
   usersByFriendUserId2AndUserId1(
@@ -7467,6 +7622,171 @@ type UserTypesByItemUpdatedByAndTypeIdManyToManyEdge {
 }
 
 """A connection to a list of `User` values, with data from `Friend`."""
+type UserUsersByFriendBlockedByAndUserId1ManyToManyConnection {
+  """
+  A list of edges which contains the `User`, info from the `Friend`, and the cursor to aid in pagination.
+  """
+  edges: [UserUsersByFriendBlockedByAndUserId1ManyToManyEdge!]!
+
+  """A list of `User` objects."""
+  nodes: [User!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `User` edge in the connection, with data from `Friend`."""
+type UserUsersByFriendBlockedByAndUserId1ManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `Friend`."""
+  friendsByUserId1(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FriendCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Friend`."""
+    orderBy: [FriendsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FriendsConnection!
+
+  """The `User` at the end of the edge."""
+  node: User!
+}
+
+"""A connection to a list of `User` values, with data from `Friend`."""
+type UserUsersByFriendBlockedByAndUserId2ManyToManyConnection {
+  """
+  A list of edges which contains the `User`, info from the `Friend`, and the cursor to aid in pagination.
+  """
+  edges: [UserUsersByFriendBlockedByAndUserId2ManyToManyEdge!]!
+
+  """A list of `User` objects."""
+  nodes: [User!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `User` edge in the connection, with data from `Friend`."""
+type UserUsersByFriendBlockedByAndUserId2ManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `Friend`."""
+  friendsByUserId2(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FriendCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Friend`."""
+    orderBy: [FriendsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FriendsConnection!
+
+  """The `User` at the end of the edge."""
+  node: User!
+}
+
+"""A connection to a list of `User` values, with data from `Friend`."""
+type UserUsersByFriendUserId1AndBlockedByManyToManyConnection {
+  """
+  A list of edges which contains the `User`, info from the `Friend`, and the cursor to aid in pagination.
+  """
+  edges: [UserUsersByFriendUserId1AndBlockedByManyToManyEdge!]!
+
+  """A list of `User` objects."""
+  nodes: [User!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `User` edge in the connection, with data from `Friend`."""
+type UserUsersByFriendUserId1AndBlockedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `Friend`."""
+  friendsByBlockedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FriendCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Friend`."""
+    orderBy: [FriendsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FriendsConnection!
+
+  """The `User` at the end of the edge."""
+  node: User!
+}
+
+"""A connection to a list of `User` values, with data from `Friend`."""
 type UserUsersByFriendUserId1AndUserId2ManyToManyConnection {
   """
   A list of edges which contains the `User`, info from the `Friend`, and the cursor to aid in pagination.
@@ -7486,6 +7806,7 @@ type UserUsersByFriendUserId1AndUserId2ManyToManyConnection {
 """A `User` edge in the connection, with data from `Friend`."""
 type UserUsersByFriendUserId1AndUserId2ManyToManyEdge {
   accepted: Date
+  blockedBy: UUID
 
   """A cursor for use in pagination."""
   cursor: Cursor
@@ -7494,6 +7815,61 @@ type UserUsersByFriendUserId1AndUserId2ManyToManyEdge {
   node: User!
   sent: Date!
   status: FriendStatus!
+}
+
+"""A connection to a list of `User` values, with data from `Friend`."""
+type UserUsersByFriendUserId2AndBlockedByManyToManyConnection {
+  """
+  A list of edges which contains the `User`, info from the `Friend`, and the cursor to aid in pagination.
+  """
+  edges: [UserUsersByFriendUserId2AndBlockedByManyToManyEdge!]!
+
+  """A list of `User` objects."""
+  nodes: [User!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `User` edge in the connection, with data from `Friend`."""
+type UserUsersByFriendUserId2AndBlockedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `Friend`."""
+  friendsByBlockedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FriendCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Friend`."""
+    orderBy: [FriendsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FriendsConnection!
+
+  """The `User` at the end of the edge."""
+  node: User!
 }
 
 """A connection to a list of `User` values, with data from `Friend`."""
@@ -7516,6 +7892,7 @@ type UserUsersByFriendUserId2AndUserId1ManyToManyConnection {
 """A `User` edge in the connection, with data from `Friend`."""
 type UserUsersByFriendUserId2AndUserId1ManyToManyEdge {
   accepted: Date
+  blockedBy: UUID
 
   """A cursor for use in pagination."""
   cursor: Cursor
