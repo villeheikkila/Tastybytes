@@ -20,7 +20,7 @@ spawn(
     "--no-owner",
     "--exclude-schema=graphile_migrate",
     "--exclude-schema=graphile_worker",
-    "--file=../../data/schema.sql",
+    "--file=../../@api/data/schema.sql",
     connectionString,
   ],
   {

@@ -96,7 +96,8 @@ CREATE TYPE app_private.role AS ENUM (
 
 CREATE TYPE app_public.friend_status AS ENUM (
     'accepted',
-    'pending'
+    'pending',
+    'blocked'
 );
 
 
@@ -507,33 +508,32 @@ CREATE FUNCTION app_private.really_create_user(username public.citext, email tex
     SET search_path TO 'pg_catalog', 'public', 'pg_temp'
     AS $$
 declare
-  v_user app_public.users;
+  v_user     app_public.users;
   v_username citext = username;
 begin
   if password is not null then
     perform app_private.assert_valid_password(password);
   end if;
   if email is null then
-    raise exception 'Email is required' using errcode = 'MODAT';
+    raise exception 'email is required' using errcode = 'modat';
   end if;
 
-  -- Insert the new user
-  insert into app_public.users (username, name, avatar_url) values
-    (v_username, name, avatar_url)
-    returning * into v_user;
+  insert into app_public.users (username, name, avatar_url)
+  values (v_username, name, avatar_url)
+  returning * into v_user;
 
-	-- Add the user's email
   insert into app_public.user_emails (user_id, email, is_verified, is_primary)
   values (v_user.id, email, email_is_verified, email_is_verified);
 
-  -- Store the password
+  insert into app_public.user_settings (id)
+  values (v_user.id);
+
   if password is not null then
     update app_private.user_secrets
     set password_hash = crypt(password, gen_salt('bf'))
     where user_id = v_user.id;
   end if;
 
-  -- Refresh the user
   select * into v_user from app_public.users where id = v_user.id;
 
   return v_user;
@@ -843,10 +843,9 @@ CREATE FUNCTION app_private.tg__created() RETURNS trigger
     SET search_path TO 'pg_cata'
     AS $$
 begin
-  NEW.created_at = NOW();
-  NEW.created_by = app_public.current_user_id();
-  NEW.is_verified = app_public.current_user_is_privileged ();
-  return NEW;
+  new.created_by = app_public.current_user_id();
+  new.is_verified = app_public.current_user_is_privileged ();
+  return new;
 end;
 $$;
 
@@ -1815,6 +1814,26 @@ COMMENT ON FUNCTION app_public.resend_email_verification_code(email_id uuid) IS 
 
 
 --
+-- Name: tg__friend_status(); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.tg__friend_status() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+begin
+  if old.status = 'blocked' and
+     new.status = 'accepted' then
+    new.blocked_by = null;
+  elseif old.status in ('accepted', 'blocked') and
+         new.status = 'pending' then
+    raise exception 'friend status cannot be changed back to pending';
+  end if;
+  return new;
+end;
+$$;
+
+
+--
 -- Name: tg__graphql_subscription(); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -1959,7 +1978,14 @@ $$;
 CREATE FUNCTION app_public.users_check_in_statistics(u app_public.users) RETURNS TABLE(total_check_ins integer, unique_check_ins integer)
     LANGUAGE sql STABLE
     AS $$
-  SELECT count(*) as total_check_ins, count(distinct item_id) as unique_check_ins from app_public.check_ins where author_id = u.id;
+  SELECT
+    count(*) AS total_check_ins,
+    count(DISTINCT item_id) AS unique_check_ins
+  FROM
+    app_public.check_ins
+  WHERE
+    author_id = u.id;
+
 $$;
 
 
@@ -2136,6 +2162,7 @@ CREATE TABLE app_public.friends (
     status app_public.friend_status DEFAULT 'pending'::app_public.friend_status NOT NULL,
     sent date DEFAULT now() NOT NULL,
     accepted date,
+    blocked_by uuid,
     CONSTRAINT friends_check CHECK ((user_id_1 <> user_id_2))
 );
 
@@ -2971,6 +2998,13 @@ CREATE INDEX companies_name_idx ON app_public.companies USING btree (name);
 
 
 --
+-- Name: friends_blocked_by_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE INDEX friends_blocked_by_idx ON app_public.friends USING btree (blocked_by);
+
+
+--
 -- Name: friends_user_id_1_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -3125,6 +3159,13 @@ CREATE UNIQUE INDEX uniq_user_emails_verified_email ON app_public.user_emails US
 
 
 --
+-- Name: unique_friend_relation_idx; Type: INDEX; Schema: app_public; Owner: -
+--
+
+CREATE UNIQUE INDEX unique_friend_relation_idx ON app_public.friends USING btree (LEAST(user_id_1, user_id_2), GREATEST(user_id_1, user_id_2));
+
+
+--
 -- Name: user_authentications_user_id_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -3227,6 +3268,13 @@ CREATE TRIGGER _500_verify_account_on_verified AFTER INSERT OR UPDATE OF is_veri
 --
 
 CREATE TRIGGER _900_send_verification_email AFTER INSERT ON app_public.user_emails FOR EACH ROW WHEN ((new.is_verified IS FALSE)) EXECUTE FUNCTION app_private.tg__add_job('user_emails__send_verification');
+
+
+--
+-- Name: friends check_friendship_status; Type: TRIGGER; Schema: app_public; Owner: -
+--
+
+CREATE TRIGGER check_friendship_status BEFORE UPDATE ON app_public.friends FOR EACH ROW EXECUTE FUNCTION app_public.tg__friend_status();
 
 
 --
@@ -3363,6 +3411,14 @@ ALTER TABLE ONLY app_public.check_ins
 
 ALTER TABLE ONLY app_public.companies
     ADD CONSTRAINT companies_created_by_fkey FOREIGN KEY (created_by) REFERENCES app_public.users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: friends friends_blocked_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.friends
+    ADD CONSTRAINT friends_blocked_by_fkey FOREIGN KEY (blocked_by) REFERENCES app_public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -4303,6 +4359,14 @@ GRANT ALL ON FUNCTION app_public.request_account_deletion() TO tasted_visitor;
 
 REVOKE ALL ON FUNCTION app_public.resend_email_verification_code(email_id uuid) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.resend_email_verification_code(email_id uuid) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION tg__friend_status(); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.tg__friend_status() FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.tg__friend_status() TO tasted_visitor;
 
 
 --
