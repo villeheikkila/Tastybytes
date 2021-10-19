@@ -141,9 +141,14 @@ CREATE FUNCTION app_private.assert_valid_password(new_password text) RETURNS voi
     LANGUAGE plpgsql
     AS $$
 begin
-  -- TODO: add better assertions!
-  if length(new_password) < 8 then
-    raise exception 'Password is too weak' using errcode = 'WEAKP';
+  if (select new_password ~ '\d' = false) then
+    raise exception 'password must contain numbers' using errcode = 'WEAKP';
+  end if;
+  if (select new_password ~ '[a-zA-Z]' = false) then
+    raise exception 'password must contain letters' using errcode = 'WEAKP';
+  end if;
+  if length(new_password) <= 8 then
+    raise exception 'password must be at least 8 characters long' using errcode = 'WEAKP';
   end if;
 end;
 $$;
@@ -500,10 +505,10 @@ FROM check_ins i $$;
 
 
 --
--- Name: really_create_user(public.citext, text, boolean, text, text, text); Type: FUNCTION; Schema: app_private; Owner: -
+-- Name: really_create_user(public.citext, text, boolean, text, text, text, text); Type: FUNCTION; Schema: app_private; Owner: -
 --
 
-CREATE FUNCTION app_private.really_create_user(username public.citext, email text, email_is_verified boolean, name text, avatar_url text, password text DEFAULT NULL::text) RETURNS app_public.users
+CREATE FUNCTION app_private.really_create_user(username public.citext, email text, email_is_verified boolean, first_name text, last_name text, avatar_url text, password text DEFAULT NULL::text) RETURNS app_public.users
     LANGUAGE plpgsql
     SET search_path TO 'pg_catalog', 'public', 'pg_temp'
     AS $$
@@ -518,8 +523,8 @@ begin
     raise exception 'email is required' using errcode = 'modat';
   end if;
 
-  insert into app_public.users (username, name, avatar_url)
-  values (v_username, name, avatar_url)
+  insert into app_public.users (username, first_name, last_name, avatar_url)
+  values (v_username, first_name, last_name, avatar_url)
   returning * into v_user;
 
   insert into app_public.user_emails (user_id, email, is_verified, is_primary)
@@ -535,57 +540,6 @@ begin
   end if;
 
   select * into v_user from app_public.users where id = v_user.id;
-
-  return v_user;
-end;
-$$;
-
-
---
--- Name: FUNCTION really_create_user(username public.citext, email text, email_is_verified boolean, name text, avatar_url text, password text); Type: COMMENT; Schema: app_private; Owner: -
---
-
-COMMENT ON FUNCTION app_private.really_create_user(username public.citext, email text, email_is_verified boolean, name text, avatar_url text, password text) IS 'Creates a user account. All arguments are optional, it trusts the calling method to perform sanitisation.';
-
-
---
--- Name: really_create_user(public.citext, text, boolean, text, text, text, text); Type: FUNCTION; Schema: app_private; Owner: -
---
-
-CREATE FUNCTION app_private.really_create_user(username public.citext, email text, email_is_verified boolean, first_name text, last_name text, avatar_url text, password text DEFAULT NULL::text) RETURNS app_public.users
-    LANGUAGE plpgsql
-    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
-    AS $$
-declare
-  v_user app_public.users;
-  v_username citext = username;
-begin
-  if password is not null then
-    perform app_private.assert_valid_password(password);
-  end if;
-  if email is null then
-    raise exception 'Email is required' using errcode = 'MODAT';
-  end if;
-
-  -- Insert the new user
-  insert into app_public.users (username, first_name, last_name, avatar_url) values
-    (v_username, first_name, last_name, avatar_url)
-    returning * into v_user;
-
-	-- Add the user's email
-  insert into app_public.user_emails (user_id, email, is_verified, is_primary)
-  values (v_user.id, email, email_is_verified, email_is_verified);
-
-  -- Store the password
-  if password is not null then
-    update app_private.user_secrets
-    set password_hash = crypt(password, gen_salt('bf'))
-    where user_id = v_user.id;
-  end if;
-
-  -- Refresh the user
-  select * into v_user from app_public.users where id = v_user.id;
-
   return v_user;
 end;
 $$;
@@ -3426,7 +3380,7 @@ ALTER TABLE ONLY app_public.friends
 --
 
 ALTER TABLE ONLY app_public.friends
-    ADD CONSTRAINT friends_user_id_1_fkey FOREIGN KEY (user_id_1) REFERENCES app_public.users(id);
+    ADD CONSTRAINT friends_user_id_1_fkey FOREIGN KEY (user_id_1) REFERENCES app_public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -3434,7 +3388,7 @@ ALTER TABLE ONLY app_public.friends
 --
 
 ALTER TABLE ONLY app_public.friends
-    ADD CONSTRAINT friends_user_id_2_fkey FOREIGN KEY (user_id_2) REFERENCES app_public.users(id);
+    ADD CONSTRAINT friends_user_id_2_fkey FOREIGN KEY (user_id_2) REFERENCES app_public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -3994,13 +3948,6 @@ REVOKE ALL ON FUNCTION app_private.login(username public.citext, password text) 
 --
 
 REVOKE ALL ON PROCEDURE app_private.migrate_seed() FROM PUBLIC;
-
-
---
--- Name: FUNCTION really_create_user(username public.citext, email text, email_is_verified boolean, name text, avatar_url text, password text); Type: ACL; Schema: app_private; Owner: -
---
-
-REVOKE ALL ON FUNCTION app_private.really_create_user(username public.citext, email text, email_is_verified boolean, name text, avatar_url text, password text) FROM PUBLIC;
 
 
 --
