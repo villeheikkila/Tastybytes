@@ -1847,6 +1847,22 @@ COMMENT ON FUNCTION app_public.tg__graphql_subscription() IS 'This function enab
 
 
 --
+-- Name: tg__updated(); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.tg__updated() RETURNS trigger
+    LANGUAGE plpgsql
+    SET search_path TO 'pg_cata'
+    AS $$
+begin
+  new.updated_by = app_public.current_user_id();
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+
+--
 -- Name: tg_user_emails__forbid_if_verified(); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -3155,6 +3171,13 @@ CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON app_public.users FOR E
 
 
 --
+-- Name: items _100_updated_by; Type: TRIGGER; Schema: app_public; Owner: -
+--
+
+CREATE TRIGGER _100_updated_by BEFORE UPDATE ON app_public.items FOR EACH ROW EXECUTE FUNCTION app_public.tg__updated();
+
+
+--
 -- Name: user_emails _200_forbid_existing_email; Type: TRIGGER; Schema: app_public; Owner: -
 --
 
@@ -4322,6 +4345,14 @@ GRANT ALL ON FUNCTION app_public.tg__friend_status() TO tasted_visitor;
 
 REVOKE ALL ON FUNCTION app_public.tg__graphql_subscription() FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.tg__graphql_subscription() TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION tg__updated(); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.tg__updated() FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.tg__updated() TO tasted_visitor;
 
 
 --
