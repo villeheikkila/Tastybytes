@@ -96,7 +96,7 @@ const PassportLoginPlugin = makeExtendSchemaPlugin((build) => ({
         try {
           // Call our login function to find out if the username/password combination exists
           const {
-            rows: [details],
+            rows: [details],  
           } = await rootPgPool.query(
             `
             with new_user as (
