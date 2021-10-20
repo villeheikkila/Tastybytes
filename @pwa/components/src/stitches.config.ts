@@ -13,7 +13,7 @@ export const { styled, getCssText, keyframes } = createStitches({
       turq: "rgba(0, 245, 196, 1)",
       orange: "rgba(255, 135, 31, 1)",
       midnight: "rgba(24, 24, 24, 1.00)",
-      darkGray: "rgba(45, 46, 48, 1.00)"
+      darkGray: "rgba(45, 46, 48, 1.00)",
     },
     fonts: {
       sans: "Inter, sans-serif",
@@ -60,101 +60,25 @@ export const { styled, getCssText, keyframes } = createStitches({
 });
 
 export const globalStyles = globalCss({
-  "html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, main, menu, nav, output, ruby, section, summary, time, mark, audio, video":
-    {
-      margin: 0,
-      padding: 0,
-      border: 0,
-      fontSize: "100%",
-      font: "inherit",
-      boxSizing: "border-box",
-      color: "$white",
-    },
-  "article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section":
-    {
-      display: "block",
-    },
-  "*[hidden]": {
-    display: "none",
+  "*:where(:not(iframe, canvas, img, svg, video):not(svg *))": {
+    all: "unset",
+    display: "revert",
   },
+  "*, *::before, *::after": { boxSizing: "border-box" },
+  "ol, ul": { listStyle: "none" },
+  img: { maxWidth: "100%" },
+  table: { borderCollapse: "collapse" },
+  textarea: { whiteSpace: "revert" },
+  html: {
+    blockSize: "100%"
+  },  
   body: {
-    lineHeight: "1",
+    minBlockSize: "100%",
     background: "$midnight",
+    color: "$white",
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
-
-  },
-  "ol, ul": {
-    listStyle: "none",
-  },
-  "blockquote, q": {
-    quotes: "none",
-  },
-  "blockquote:before, blockquote:after, q:before, q:after": {
-    content: "",
-    // @ts-ignore
-    content: "none",
-  },
-  table: {
-    borderSpacing: 0,
   },
   h1: {
     fontFamily: "Muli",
-    fontSize: "24px",
-    fontStyle: "normal",
-    fontVariant: "normal",
-    fontWeight: 700,
-    lineHeight: "26.4px",
-  },
-  h3: {
-    fontFamily: "Muli",
-    fontSize: "14px",
-    fontStyle: "normal",
-    fontVariant: "normal",
-    fontWeight: 700,
-    lineHeight: "15.4px",
-  },
-  a: {
-    fontSize: "14px",
-    fontStyle: "normal",
-    fontVariant: "normal",
-    fontWeight: 500,
-    lineHeight: "20px",
-    textDecoration: "none",
-    color: "rgba(0, 153, 254, 1.00)",
-  },
-  p: {
-    fontSize: "14px",
-    fontStyle: "normal",
-    fontVariant: "normal",
-    fontWeight: 400,
-    lineHeight: "20px",
-  },
-  em: {
-    fontSize: "14px",
-    fontStyle: "normal",
-    fontVariant: "normal",
-    fontWeight: 600,
-    lineHeight: "20px",
-  },
-  label: {
-    fontSize: "14px",
-    fontStyle: "normal",
-    fontVariant: "normal",
-    fontWeight: 400,
-    lineHeight: "20px",
-  },
-  blockquote: {
-    fontSize: "21px",
-    fontStyle: "normal",
-    fontVariant: "normal",
-    fontWeight: 400,
-    lineHeight: "30px",
-  },
-  pre: {
-    fontSize: "13px",
-    fontStyle: "normal",
-    fontVariant: "normal",
-    fontWeight: 400,
-    lineHeight: "18.5714px",
   },
 });
