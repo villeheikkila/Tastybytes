@@ -43,7 +43,9 @@ const UserPageInner: FC<UserPageInnerProps> = ({ user }) => {
     <Layout.Root>
       <Layout.Header>
         <h1>{user && getDisplayName(user)}</h1>
-        <p>Total check-ins: {user?.authoredCheckIns.totalCount}</p>
+        <p>Unique check-ins: {user?.checkInStatistics.nodes[0].uniqueCheckIns}</p>
+        <p>Total check-ins: {user?.checkInStatistics.nodes[0].totalCheckIns}</p>
+
       </Layout.Header>
       <Card.Container>
         {user?.authoredCheckIns.nodes.map(({ id, item, rating }) => (
