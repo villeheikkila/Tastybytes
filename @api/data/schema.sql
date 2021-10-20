@@ -2314,6 +2314,23 @@ ALTER SEQUENCE app_public.companies_id_seq OWNED BY app_public.companies.id;
 
 
 --
+-- Name: current_user_friends; Type: VIEW; Schema: app_public; Owner: -
+--
+
+CREATE VIEW app_public.current_user_friends AS
+ SELECT u.first_name,
+    u.last_name,
+    u.username,
+    u.avatar_url,
+    f.status,
+    f.id,
+    u.id AS user_id
+   FROM (app_public.friends f
+     LEFT JOIN app_public.users u ON ((((f.user_id_2 = u.id) OR (f.user_id_1 = u.id)) AND (u.id <> app_public.current_user_id()))))
+  WHERE ((f.user_id_1 = app_public.current_user_id()) OR (f.user_id_2 = app_public.current_user_id()));
+
+
+--
 -- Name: friends_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
 --
 
@@ -4499,6 +4516,13 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.check_ins_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT,USAGE ON SEQUENCE app_public.companies_id_seq TO tasted_visitor;
+
+
+--
+-- Name: TABLE current_user_friends; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.current_user_friends TO tasted_visitor;
 
 
 --

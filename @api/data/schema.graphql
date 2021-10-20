@@ -2368,6 +2368,49 @@ type CreateUserEmailPayload {
   ): UserEmailsEdge
 }
 
+type CurrentUserFriend {
+  avatarUrl: String
+  firstName: String
+  id: Int
+  lastName: String
+  status: FriendStatus
+  userId: UUID
+  username: String
+}
+
+"""A connection to a list of `CurrentUserFriend` values."""
+type CurrentUserFriendsConnection {
+  """
+  A list of edges which contains the `CurrentUserFriend` and cursor to aid in pagination.
+  """
+  edges: [CurrentUserFriendsEdge!]!
+
+  """A list of `CurrentUserFriend` objects."""
+  nodes: [CurrentUserFriend!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `CurrentUserFriend` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `CurrentUserFriend` edge in the connection."""
+type CurrentUserFriendsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CurrentUserFriend` at the end of the edge."""
+  node: CurrentUserFriend!
+}
+
+"""Methods to use when ordering `CurrentUserFriend`."""
+enum CurrentUserFriendsOrderBy {
+  NATURAL
+}
+
 """A location in a connection that can be used for resuming pagination."""
 scalar Cursor
 
@@ -4210,6 +4253,30 @@ type Query {
 
   """The currently logged in user (or null if not logged in)."""
   currentUser: User
+
+  """Reads and enables pagination through a set of `CurrentUserFriend`."""
+  currentUserFriends(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CurrentUserFriend`."""
+    orderBy: [CurrentUserFriendsOrderBy!] = [NATURAL]
+  ): CurrentUserFriendsConnection
   currentUserIsPrivileged: Boolean
   friend(userId1: UUID!, userId2: UUID!): Friend
 

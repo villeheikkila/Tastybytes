@@ -1,0 +1,23 @@
+query CurrentUserFriends {
+  ...SharedLayout_Query
+  currentUserFriends {
+    nodes {
+        id
+      username
+      firstName
+      lastName
+      status
+      userId
+    }
+  }
+    publicUsers {
+    nodes {
+      id
+      username
+      firstName
+      lastName
+      avatarUrl
+      status
+    }
+  }
+}
