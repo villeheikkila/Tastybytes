@@ -186,6 +186,14 @@ export function SharedLayout({
                   <Dropdown.Separator />
                   <Dropdown.Item>
                     <Link
+                      href={`${paths.user(query.data?.currentUser?.username ?? "")}/friends`}
+                    >
+                      Friends
+                    </Link>
+                  </Dropdown.Item>
+                  <Dropdown.Separator />
+                  <Dropdown.Item>
+                    <Link
                       href="/settings"
                     >
                       Settings
@@ -273,6 +281,7 @@ const LogoText = styled("h1", {
   color: "white",
   fontWeight: "bold",
   alignText: "center",
+  fontFamily: "Muli",
 });
 
 const LogInLink = styled(Link, {});

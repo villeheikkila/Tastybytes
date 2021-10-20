@@ -78,7 +78,4 @@ export const globalStyles = globalCss({
     color: "$white",
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
   },
-  h1: {
-    fontFamily: "Muli",
-  },
 });
