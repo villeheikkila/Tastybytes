@@ -2133,6 +2133,7 @@ CREATE TABLE app_public.friends (
     sent date DEFAULT now() NOT NULL,
     accepted date,
     blocked_by uuid,
+    id integer NOT NULL,
     CONSTRAINT friends_check CHECK ((user_id_1 <> user_id_2))
 );
 
@@ -2310,6 +2311,26 @@ CREATE SEQUENCE app_public.companies_id_seq
 --
 
 ALTER SEQUENCE app_public.companies_id_seq OWNED BY app_public.companies.id;
+
+
+--
+-- Name: friends_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
+--
+
+CREATE SEQUENCE app_public.friends_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: friends_id_seq; Type: SEQUENCE OWNED BY; Schema: app_public; Owner: -
+--
+
+ALTER SEQUENCE app_public.friends_id_seq OWNED BY app_public.friends.id;
 
 
 --
@@ -2592,6 +2613,13 @@ ALTER TABLE ONLY app_public.check_ins ALTER COLUMN id SET DEFAULT nextval('app_p
 --
 
 ALTER TABLE ONLY app_public.companies ALTER COLUMN id SET DEFAULT nextval('app_public.companies_id_seq'::regclass);
+
+
+--
+-- Name: friends id; Type: DEFAULT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.friends ALTER COLUMN id SET DEFAULT nextval('app_public.friends_id_seq'::regclass);
 
 
 --
@@ -3203,6 +3231,20 @@ CREATE TRIGGER _500_audit_removed AFTER DELETE ON app_public.user_authentication
 --
 
 CREATE TRIGGER _500_audit_removed AFTER DELETE ON app_public.user_emails FOR EACH ROW EXECUTE FUNCTION app_private.tg__add_audit_job('removed_email', 'user_id', 'id', 'email');
+
+
+--
+-- Name: friends _500_gql_insert; Type: TRIGGER; Schema: app_public; Owner: -
+--
+
+CREATE TRIGGER _500_gql_insert AFTER INSERT ON app_public.friends FOR EACH ROW EXECUTE FUNCTION app_public.tg__graphql_subscription('friendRequestChange', 'graphql:user:$1', 'user_id_2');
+
+
+--
+-- Name: friends _500_gql_update; Type: TRIGGER; Schema: app_public; Owner: -
+--
+
+CREATE TRIGGER _500_gql_update AFTER UPDATE ON app_public.friends FOR EACH ROW EXECUTE FUNCTION app_public.tg__graphql_subscription('friendRequestChange', 'graphql:user:$1', 'id');
 
 
 --
@@ -4457,6 +4499,13 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.check_ins_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT,USAGE ON SEQUENCE app_public.companies_id_seq TO tasted_visitor;
+
+
+--
+-- Name: SEQUENCE friends_id_seq; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,USAGE ON SEQUENCE app_public.friends_id_seq TO tasted_visitor;
 
 
 --

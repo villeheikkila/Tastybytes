@@ -1,3 +1,7 @@
+--! Previous: sha1:04196a6c8d480bf54c238e1c882c3b472a162850
+--! Hash: sha1:e97d1fe9eec577a8af44ac1003941c8232c51df2
+
+--! split: 1-current.sql
 -- Enter migration here
 drop trigger _500_gql_insert on app_public.friends;
 

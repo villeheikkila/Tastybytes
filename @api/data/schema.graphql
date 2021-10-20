@@ -2702,6 +2702,7 @@ type ForgotPasswordPayload {
 type Friend {
   accepted: Date
   blockedBy: UUID
+  id: Int!
   sent: Date!
   status: FriendStatus!
 
@@ -2729,6 +2730,11 @@ input FriendCondition {
 
   """Checks for equality with the object’s `userId2` field."""
   userId2: UUID
+}
+
+type FriendRequestUpdatePayload {
+  event: String
+  friend: Friend
 }
 
 enum FriendStatus {
@@ -4539,6 +4545,7 @@ The root subscription type: contains realtime events you can subscribe to with t
 type Subscription {
   """Triggered when the logged in user's record is updated in some way."""
   currentUserUpdated: UserSubscriptionPayload
+  friendRequestChange: FriendRequestUpdatePayload
 }
 
 """Tag for an item or check-in"""
@@ -7810,6 +7817,7 @@ type UserUsersByFriendUserId1AndUserId2ManyToManyEdge {
 
   """A cursor for use in pagination."""
   cursor: Cursor
+  id: Int!
 
   """The `User` at the end of the edge."""
   node: User!
@@ -7896,6 +7904,7 @@ type UserUsersByFriendUserId2AndUserId1ManyToManyEdge {
 
   """A cursor for use in pagination."""
   cursor: Cursor
+  id: Int!
 
   """The `User` at the end of the edge."""
   node: User!
