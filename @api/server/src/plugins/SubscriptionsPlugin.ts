@@ -72,9 +72,20 @@ const SubscriptionsPlugin = makeExtendSchemaPlugin((build) => {
         event: String # Part of the NOTIFY payload
       }
 
+      type FriendRequestUpdatePayload {
+        friend: Friend
+        event: String
+      }
+
       extend type Subscription {
         """Triggered when the logged in user's record is updated in some way."""
         currentUserUpdated: UserSubscriptionPayload @pgSubscription(topic: ${embed(
+          currentUserTopicFromContext
+        )})
+      }
+
+      extend type Subscription {
+        friendRequestChange: FriendRequestUpdatePayload @pgSubscription(topic: ${embed(
           currentUserTopicFromContext
         )})
       }
@@ -82,6 +93,19 @@ const SubscriptionsPlugin = makeExtendSchemaPlugin((build) => {
     resolvers: {
       UserSubscriptionPayload: {
         user: recordByIdFromTable(build, sql.fragment`app_public.users`),
+      },
+      FriendRequestUpdatePayload: {
+        friend: async (event, _args, _context, resolveInfo) => {
+        const [row] = await resolveInfo.graphile.selectGraphQLResultFromTable(
+          sql.fragment`app_public.friends`,
+          (tableAlias, queryBuilder) => {
+            queryBuilder.where(
+              sql.fragment`${tableAlias}.id = ${sql.value(event.id)}`
+            );
+          }
+        )
+        return { data: row}
+        }
       },
     },
   };
@@ -91,6 +115,7 @@ const SubscriptionsPlugin = makeExtendSchemaPlugin((build) => {
 interface TgGraphQLSubscriptionPayload {
   event: string;
   subject: string | null;
+  id: number | string
 }
 
 /*
