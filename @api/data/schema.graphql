@@ -6092,6 +6092,25 @@ type User {
   country: String
   createdAt: Datetime!
   firstName: String
+  friends(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): UsersFriendsConnection!
 
   """Reads and enables pagination through a set of `Friend`."""
   friendsByBlockedBy(
@@ -8127,6 +8146,41 @@ type UsersEdge {
 
   """The `User` at the end of the edge."""
   node: User!
+}
+
+"""A `UsersFriendsRecord` edge in the connection."""
+type UsersFriendEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UsersFriendsRecord` at the end of the edge."""
+  node: UsersFriendsRecord!
+}
+
+"""A connection to a list of `UsersFriendsRecord` values."""
+type UsersFriendsConnection {
+  """
+  A list of edges which contains the `UsersFriendsRecord` and cursor to aid in pagination.
+  """
+  edges: [UsersFriendEdge!]!
+
+  """A list of `UsersFriendsRecord` objects."""
+  nodes: [UsersFriendsRecord!]!
+
+  """
+  The count of *all* `UsersFriendsRecord` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""The return type of our `friends` query."""
+type UsersFriendsRecord {
+  avatarUrl: String
+  currentUserStatus: FriendStatus
+  firstName: String
+  id: UUID
+  lastName: String
+  username: String
 }
 
 """Methods to use when ordering `User`."""
