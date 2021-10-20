@@ -1960,6 +1960,28 @@ $$;
 
 
 --
+-- Name: users_friends(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.users_friends(u app_public.users) RETURNS TABLE(id uuid, first_name text, last_name text, username text, avatar_url text, current_user_status app_public.friend_status)
+    LANGUAGE sql STABLE
+    AS $$
+with user_friends as (select urs.id, urs.first_name, urs.last_name, urs.username, urs.avatar_url
+                      from app_public.friends f
+                             left join app_public.users urs
+                                       on (f.user_id_2 = urs.id and f.user_id_1 = u.id) or
+                                          (f.user_id_1 = urs.id and f.user_id_2 = u.id)
+                      where f.user_id_1 = u.id
+                         or f.user_id_2 = u.id)
+select uf.*, f.status current_user_status
+from user_friends uf
+       left join app_public.friends f
+                 on (f.user_id_1 = uf.id and f.user_id_2 = app_public.current_user_id()) or
+                    (f.user_id_2 = uf.id and f.user_id_1 = app_public.current_user_id());
+$$;
+
+
+--
 -- Name: users_has_password(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -3839,6 +3861,13 @@ CREATE POLICY select_all ON app_public.companies FOR SELECT USING (true);
 
 
 --
+-- Name: friends select_all; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY select_all ON app_public.friends FOR SELECT USING (true);
+
+
+--
 -- Name: item_edit_suggestions select_all; Type: POLICY; Schema: app_public; Owner: -
 --
 
@@ -4444,6 +4473,14 @@ GRANT ALL ON FUNCTION app_public.tg_user_emails__verify_account_on_verified() TO
 
 REVOKE ALL ON FUNCTION app_public.users_check_in_statistics(u app_public.users) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.users_check_in_statistics(u app_public.users) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION users_friends(u app_public.users); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.users_friends(u app_public.users) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.users_friends(u app_public.users) TO tasted_visitor;
 
 
 --

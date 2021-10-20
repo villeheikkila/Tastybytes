@@ -1,3 +1,7 @@
+--! Previous: sha1:e020a5d2715bac503c2df87cc6f72a3bb9e075bd
+--! Hash: sha1:ef4922dee3fb235aa06b3c2624c56cf8bc0350c3
+
+--! split: 1-current.sql
 drop function app_public.users_friends(u app_public.users);
 
 create or replace function app_public.users_friends(u app_public.users)

@@ -1,5 +1,8 @@
-drop function app_public.users_friends(u app_public.users);
+--! Previous: sha1:d671f90037dca34b4e3cd3b48b6e647a951fad54
+--! Hash: sha1:0306c5afcec853c200fee83b56ef3e45cf3040eb
 
+--! split: 1-current.sql
+-- Enter migration here
 create or replace function app_public.users_friends(u app_public.users)
   returns table
           (
@@ -17,13 +20,13 @@ $$
 with user_friends as (select urs.id, urs.first_name, urs.last_name, urs.username, urs.avatar_url
                       from app_public.friends f
                              left join app_public.users urs
-                                       on (f.user_id_2 = urs.id and f.user_id_1 = u.id) or
+                                       on (f.user_id_2 = urs.id and f.user_id_1 = u.id) and
                                           (f.user_id_1 = urs.id and f.user_id_2 = u.id)
                       where f.user_id_1 = u.id
                          or f.user_id_2 = u.id)
 select uf.*, f.status current_user_status
 from user_friends uf
        left join app_public.friends f
-                 on (f.user_id_1 = uf.id and f.user_id_2 = app_public.current_user_id()) or
-                    (f.user_id_2 = uf.id and f.user_id_1 = app_public.current_user_id());
+                 on (f.user_id_1 = u.id and f.user_id_2 = app_public.current_user_id()) or
+                    (f.user_id_2 = u.id and f.user_id_1 = app_public.current_user_id());
 $$;
