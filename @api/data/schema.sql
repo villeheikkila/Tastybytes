@@ -1768,6 +1768,21 @@ COMMENT ON FUNCTION app_public.resend_email_verification_code(email_id uuid) IS 
 
 
 --
+-- Name: search_users(text); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.search_users(search text) RETURNS SETOF app_public.users
+    LANGUAGE sql STABLE
+    AS $$
+    select *
+    from app_public.users
+    where
+      username ilike ('%' || search || '%') or
+      concat(first_name, ' ', last_name) ilike ('%' || search || '%')
+  $$;
+
+
+--
 -- Name: tg__friend_status(); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -4417,6 +4432,14 @@ GRANT ALL ON FUNCTION app_public.request_account_deletion() TO tasted_visitor;
 
 REVOKE ALL ON FUNCTION app_public.resend_email_verification_code(email_id uuid) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.resend_email_verification_code(email_id uuid) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION search_users(search text); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.search_users(search text) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.search_users(search text) TO tasted_visitor;
 
 
 --

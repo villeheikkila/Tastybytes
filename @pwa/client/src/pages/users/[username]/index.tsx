@@ -45,7 +45,7 @@ const UserPageInner: FC<UserPageInnerProps> = ({ user }) => {
         <h1>{user && getDisplayName(user)}</h1>
         <p>Unique check-ins: {user?.checkInStatistics.nodes[0].uniqueCheckIns}</p>
         <p>Total check-ins: {user?.checkInStatistics.nodes[0].totalCheckIns}</p>
-        <Link href={`/user/${user?.username}/friends`}><p>Friends: {user?.friends.totalCount}</p></Link>
+        <Link href={`/users/${user?.username}/friends`}><p>Friends: {user?.friends.totalCount}</p></Link>
       </Layout.Header>
       <Card.Container>
         {user?.authoredCheckIns.nodes.map(({ id, item, rating }) => (

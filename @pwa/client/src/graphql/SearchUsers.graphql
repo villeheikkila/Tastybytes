@@ -1,13 +1,11 @@
-query Friends {
-  ...SharedLayout_Query
-  publicUsers {
+query SearchUsers($search: String!) {
+  searchUsers(search: $search) {
     nodes {
       id
       username
       firstName
       lastName
       avatarUrl
-      status
     }
   }
 }
