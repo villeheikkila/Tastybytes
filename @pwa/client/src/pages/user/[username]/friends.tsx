@@ -5,10 +5,12 @@ import { Card, Layout, SharedLayout } from "@pwa/components";
 import { styled } from "@pwa/components";
 import {
   CurrentUserFriendsQuery,
+  FriendsByUsernameQuery,
   FriendStatus,
   useAcceptFriendRequestMutation,
   useCurrentUserFriendsQuery,
   useDeleteFriendMutation,
+  useFriendsByUsernameQuery,
   useSendFriendRequestMutation,
 } from "@pwa/graphql";
 import { NextPage } from "next";
@@ -21,33 +23,30 @@ const parseSlug = z.string();
 
 const FriendsPage: NextPage = () => {
   const router = useRouter();
-  const query = useCurrentUserFriendsQuery();
   const username = parseSlug.parse(router.query.username);
-  const data = query.data?.currentUserFriends;
-  const users = query.data?.publicUsers;
-
-  console.log('data: ', data);
+  
+  const query = useFriendsByUsernameQuery({variables: {username}});
+  const data = query.data?.userByUsername;
 
   return (
     <SharedLayout
       title={`${query.data?.currentUser?.username ?? username}`}
       query={query}
     >
-      {data && users && <FriendsPageInner data={data} users={users} />}
+      {data && <FriendsPageInner data={data}  />}
     </SharedLayout>
   );
 };
 
 interface FriendsPageInnerProps {
-  data: NonNullable<CurrentUserFriendsQuery["currentUserFriends"]>;
-  users: NonNullable<CurrentUserFriendsQuery["publicUsers"]>;
+  data: NonNullable<FriendsByUsernameQuery["userByUsername"]>;
 }
 
 const mutationOptions = {
   refetchQueries: ["CurrentUserFriends"],
 };
 
-const FriendsPageInner: FC<FriendsPageInnerProps> = ({ data, users }) => {
+const FriendsPageInner: FC<FriendsPageInnerProps> = ({ data }) => {
   const [sendFriendRequest] = useSendFriendRequestMutation(mutationOptions);
   const [acceptFriendRequest] = useAcceptFriendRequestMutation(mutationOptions);
   const [removeFriend] = useDeleteFriendMutation(mutationOptions);
@@ -86,42 +85,23 @@ const FriendsPageInner: FC<FriendsPageInnerProps> = ({ data, users }) => {
         <h1>Friends</h1>
       </Layout.Header>
       <Card.Container>
-        {data.nodes.map((friend) => (
+        {data.friends.nodes.map((friend) => (
           <Card.Wrapper key={friend.id}>
             <Flex>
               <Link href={paths.user(friend?.username ?? "")}>
                 <h2>{friend.username}</h2>
               </Link>
               <FriendStatusIcon
-                status={friend.status}
+                status={friend.currentUserStatus}
                 size="2x"
                 onClick={() =>
-                  handleFriendStatusChange(friend.userId, friend.status, true)
+                  handleFriendStatusChange(friend.id, friend.currentUserStatus, true)
                 }
               />
             </Flex>
           </Card.Wrapper>
         ))}
         
-      </Card.Container>
-      <h1>Search Friends</h1>
-      <Card.Container>
-        {users.nodes.filter(({status}) => !status).map((user) => (
-          <Card.Wrapper key={user.id}>
-            <Flex>
-              <Link href={paths.user(user?.username ?? "")}>
-                <h2>{user.username}</h2>
-              </Link>
-              <FriendStatusIcon
-                status={user.status}
-                size="2x"
-                onClick={() =>
-                  handleFriendStatusChange(user.id, user.status, true)
-                }
-              />
-            </Flex>
-          </Card.Wrapper>
-        ))}
       </Card.Container>
     </Layout.Root>
   );

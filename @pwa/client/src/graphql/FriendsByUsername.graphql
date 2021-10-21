@@ -1,0 +1,25 @@
+query FriendsByUsername($username: String!) {
+  ...SharedLayout_Query
+  userByUsername(username: $username) {
+    id
+    username
+    firstName
+    lastName
+    checkInStatistics {
+      nodes {
+        totalCheckIns
+        uniqueCheckIns
+      }
+    }
+    friends {
+      nodes {
+        firstName
+        id
+        lastName
+        username
+        currentUserStatus
+      }
+      totalCount
+    }
+  }
+}
