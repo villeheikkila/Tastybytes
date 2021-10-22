@@ -6114,6 +6114,25 @@ type User {
   country: String
   createdAt: Datetime!
   firstName: String
+  friendStatus(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): UsersFriendStatusConnection!
   friends(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -8196,6 +8215,37 @@ type UsersFriendEdge {
   node: UsersFriendsRecord!
 }
 
+"""A connection to a list of `UsersFriendStatusRecord` values."""
+type UsersFriendStatusConnection {
+  """
+  A list of edges which contains the `UsersFriendStatusRecord` and cursor to aid in pagination.
+  """
+  edges: [UsersFriendStatusEdge!]!
+
+  """A list of `UsersFriendStatusRecord` objects."""
+  nodes: [UsersFriendStatusRecord!]!
+
+  """
+  The count of *all* `UsersFriendStatusRecord` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `UsersFriendStatusRecord` edge in the connection."""
+type UsersFriendStatusEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UsersFriendStatusRecord` at the end of the edge."""
+  node: UsersFriendStatusRecord!
+}
+
+"""The return type of our `friendStatus` query."""
+type UsersFriendStatusRecord {
+  isSender: Boolean
+  status: FriendStatus
+}
+
 """A connection to a list of `UsersFriendsRecord` values."""
 type UsersFriendsConnection {
   """
@@ -8215,10 +8265,11 @@ type UsersFriendsConnection {
 """The return type of our `friends` query."""
 type UsersFriendsRecord {
   avatarUrl: String
-  currentUserStatus: FriendStatus
   firstName: String
   id: UUID
+  isSender: Boolean
   lastName: String
+  status: FriendStatus
   username: String
 }
 

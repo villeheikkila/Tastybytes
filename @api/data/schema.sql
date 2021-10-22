@@ -884,29 +884,11 @@ CREATE FUNCTION app_public.accept_friend_request(user_id uuid) RETURNS void
     LANGUAGE plpgsql SECURITY DEFINER
     SET search_path TO 'pg_catalog', 'public', 'pg_temp'
     AS $$
-declare
-  v_current_status  app_public.friends;
-  v_current_user    uuid;
 begin
-  v_current_user := app_public.current_user_id();
-
-  if v_current_user is null then
-    raise exception 'You must log in to accept a friendship relation' using errcode = 'LOGIN';
-  end if;
-
-  select *
-  from app_public.friends
-  where (user_id_1 = v_current_user and user_id_2 = user_id)
-     or (user_id_1 = user_id and user_id_2 = v_current_user)
-  into v_current_status;
-
-  if exists(select 1 from v_current_status) = false then
-    raise exception 'No such friend request exists' using errcode = 'INVAL';
-  elseif (select status from v_current_status) = 'accepted' then
-    raise exception 'You are already friends' using errcode = 'INVAL';
-  end if;
-
-  update app_public.friends set (status) = ('accepted') where user_id = (select user_id_1 from v_current_status) and user_id_2 = (select user_id_2 from v_current_status);
+  update app_public.friends
+  set status = 'accepted'
+  where user_id_1 = user_id
+    and user_id_2 = app_public.current_user_id();
 end;
 $$;
 
@@ -1975,10 +1957,24 @@ $$;
 
 
 --
+-- Name: users_friend_status(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.users_friend_status(u app_public.users) RETURNS TABLE(status app_public.friend_status, is_sender boolean)
+    LANGUAGE sql STABLE
+    AS $$
+select status, case when (user_id_1 = app_public.current_user_id()) then true else false end as is_sender
+from app_public.friends
+where (user_id_1 = u.id and user_id_2 = app_public.current_user_id())
+   or (user_id_2 = u.id and user_id_1 = app_public.current_user_id())
+$$;
+
+
+--
 -- Name: users_friends(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
-CREATE FUNCTION app_public.users_friends(u app_public.users) RETURNS TABLE(id uuid, first_name text, last_name text, username text, avatar_url text, current_user_status app_public.friend_status)
+CREATE FUNCTION app_public.users_friends(u app_public.users) RETURNS TABLE(id uuid, first_name text, last_name text, username text, avatar_url text, status app_public.friend_status, is_sender boolean)
     LANGUAGE sql STABLE
     AS $$
 with user_friends as (select urs.id, urs.first_name, urs.last_name, urs.username, urs.avatar_url
@@ -1988,7 +1984,9 @@ with user_friends as (select urs.id, urs.first_name, urs.last_name, urs.username
                                           (f.user_id_1 = urs.id and f.user_id_2 = u.id)
                       where f.user_id_1 = u.id
                          or f.user_id_2 = u.id)
-select uf.*, f.status current_user_status
+select uf.*,
+       f.status                                                                         status,
+       case when (user_id_1 = app_public.current_user_id()) then true else false end as is_sender
 from user_friends uf
        left join app_public.friends f
                  on (f.user_id_1 = uf.id and f.user_id_2 = app_public.current_user_id()) or
@@ -4496,6 +4494,14 @@ GRANT ALL ON FUNCTION app_public.tg_user_emails__verify_account_on_verified() TO
 
 REVOKE ALL ON FUNCTION app_public.users_check_in_statistics(u app_public.users) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.users_check_in_statistics(u app_public.users) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION users_friend_status(u app_public.users); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.users_friend_status(u app_public.users) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.users_friend_status(u app_public.users) TO tasted_visitor;
 
 
 --

@@ -1,28 +1,20 @@
+import { paths, useFriendStatus } from "@pwa/common";
 import {
-  faCheck,
-  faMinus,
-  faPlus,
-  faUserClock,
-} from "@fortawesome/free-solid-svg-icons";
+  Button,
+  Card,
+  FriendStatusIcon,
+  Input,
+  Layout,
+  SharedLayout,
+  styled
+} from "@pwa/components";
 import {
-  FontAwesomeIcon,
-  FontAwesomeIconProps,
-} from "@fortawesome/react-fontawesome";
-import { Nullable, paths } from "@pwa/common";
-import { Card, Input, Layout, SharedLayout } from "@pwa/components";
-import { styled } from "@pwa/components";
-import {
-  FriendStatus,
-  SearchUsersQuery,
-  useAcceptFriendRequestMutation,
-  useDeleteFriendMutation,
   useSearchUsersLazyQuery,
-  useSendFriendRequestMutation,
-  useSharedQuery,
+  useSharedQuery
 } from "@pwa/graphql";
 import { NextPage } from "next";
 import Link from "next/link";
-import React, { FC } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 
 interface SearchFormInput {
@@ -31,7 +23,24 @@ interface SearchFormInput {
 
 const FriendsPage: NextPage = () => {
   const shared = useSharedQuery();
-  const [getUsers, { data }] = useSearchUsersLazyQuery();
+
+  return (
+    <SharedLayout
+      title={`${shared.data?.currentUser?.username}`}
+      query={shared}
+    >
+      <FriendsPageInner />
+    </SharedLayout>
+  );
+};
+
+const FriendsPageInner = () => {
+  const [getUsers, { data, refetch }] = useSearchUsersLazyQuery();
+  const { changeFriendStatus } = useFriendStatus({
+    refetchQueries: ["SearchUsers"],
+  });
+
+  const searchResults = data?.searchUsers;
 
   const {
     register,
@@ -40,15 +49,15 @@ const FriendsPage: NextPage = () => {
   } = useForm<SearchFormInput>();
 
   const onSubmit = async ({ search }: SearchFormInput) => {
-    await getUsers({ variables: { search } })
+    await getUsers({ variables: { search } });
   };
 
   return (
-    <SharedLayout
-      title={`${shared.data?.currentUser?.username}`}
-      query={shared}
-    >
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <Layout.Root>
+      <Layout.Header>
+        <h1>Search Users</h1>
+      </Layout.Header>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
           id="search"
           autoComplete="search"
@@ -59,73 +68,25 @@ const FriendsPage: NextPage = () => {
             min: 2,
           })}
         />
-          <button type="submit">Search</button>
-      </form>
-      {data?.searchUsers && <FriendsPageInner users={data.searchUsers} />}
-    </SharedLayout>
-  );
-};
-
-interface FriendsPageInnerProps {
-  users: NonNullable<SearchUsersQuery["searchUsers"]>;
-}
-
-const mutationOptions = {
-  refetchQueries: ["UserSearch"],
-};
-
-const FriendsPageInner: FC<FriendsPageInnerProps> = ({ users }) => {
-  const [sendFriendRequest] = useSendFriendRequestMutation(mutationOptions);
-  const [acceptFriendRequest] = useAcceptFriendRequestMutation(mutationOptions);
-  const [removeFriend] = useDeleteFriendMutation(mutationOptions);
-
-  const handleFriendStatusChange = async (
-    userId: string,
-    status: Nullable<FriendStatus>,
-    isSender: boolean
-  ) => {
-    try {
-      switch (status) {
-        case FriendStatus.Accepted:
-          await removeFriend({ variables: { userId } });
-          break;
-        case FriendStatus.Pending: {
-          if (isSender) {
-            await removeFriend({ variables: { userId } });
-          } else {
-            await acceptFriendRequest({ variables: { userId } });
-          }
-          break;
-        }
-        default:
-          await sendFriendRequest({ variables: { userId } });
-          break;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    console.log("userId: ", userId);
-  };
-
-  return (
-    <Layout.Root>
-      <Layout.Header>
-        <h1>Users</h1>
-      </Layout.Header>
+        <Button type="submit">Search</Button>
+      </Form>
       <Card.Container>
-        {users.nodes.map((friend) => (
-          <Card.Wrapper key={friend.id}>
+        {searchResults?.nodes.map((user) => (
+          <Card.Wrapper key={user.id}>
             <Flex>
-              <Link href={paths.user(friend?.username ?? "")}>
-                <h2>{friend.username}</h2>
+              <Link href={paths.user(user?.username ?? "")}>
+                <h2>{user.username}</h2>
               </Link>
-              {/* <FriendStatusIcon
-                status={friend.status}
+              <FriendStatusIcon
+                friendStatus={user.friendStatus.nodes[0]}
                 size="2x"
-                onClick={() =>
-                  handleFriendStatusChange(friend.id, friend.status, true)
-                }
-              /> */}
+                onClick={() => {
+                  changeFriendStatus(
+                    user.id,
+                    user.friendStatus.nodes[0]
+                  ).then(() => refetch && refetch());
+                }}
+              />
             </Flex>
           </Card.Wrapper>
         ))}
@@ -134,25 +95,17 @@ const FriendsPageInner: FC<FriendsPageInnerProps> = ({ users }) => {
   );
 };
 
-const FriendStatusIcon = ({
-  status,
-  ...props
-}: Omit<FontAwesomeIconProps, "icon" | "color"> & {
-  status: Nullable<FriendStatus>;
-}): JSX.Element => {
-  switch (status) {
-    case FriendStatus.Accepted:
-      return <FontAwesomeIcon icon={faMinus} color="red" {...props} />;
-    case FriendStatus.Pending:
-      return <FontAwesomeIcon icon={faUserClock} color="green" {...props} />;
-    default:
-      return <FontAwesomeIcon icon={faPlus} color="green" {...props} />;
-  }
-};
+
 const Flex = styled("div", {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+});
+
+const Form = styled("form", {
+  display: "flex",
+  alignItems: "center",
+  gap: "12px",
 });
 
 export default FriendsPage;
