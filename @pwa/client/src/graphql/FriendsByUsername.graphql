@@ -17,7 +17,8 @@ query FriendsByUsername($username: String!) {
         id
         lastName
         username
-        currentUserStatus
+        isSender
+        status
       }
       totalCount
     }

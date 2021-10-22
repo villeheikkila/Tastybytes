@@ -6,6 +6,12 @@ query SearchUsers($search: String!) {
       firstName
       lastName
       avatarUrl
+      friendStatus {
+        nodes {
+          isSender
+          status
+        }
+      }
     }
   }
 }
