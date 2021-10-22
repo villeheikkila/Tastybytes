@@ -12,8 +12,9 @@ import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import * as React from "react";
 import { useCallback } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
-import { ErrorAlert, StandardWidth, Warn } from ".";
+import { ErrorAlert, Input, StandardWidth } from ".";
 import { Avatar } from "./Avatar";
 import { Dropdown } from "./Dropdown";
 import { Redirect } from "./Redirect";
@@ -163,6 +164,8 @@ export function SharedLayout({
               <LogoText>maku</LogoText>
             </ProjectLogo>
           </Link>
+
+          <Navigation.MenuArea>
             {data && data.currentUser ? (
               <Dropdown.Menu>
                 <Dropdown.Trigger asChild>
@@ -210,6 +213,8 @@ export function SharedLayout({
                 Sign in
               </LogInLink>
             )}
+            <Search />
+            </Navigation.MenuArea>
         </Navigation.Content>
       </Navigation.Header>
       <Content>
@@ -229,6 +234,37 @@ export function SharedLayout({
       </Footer.Wrapper>
     </>
   );
+}
+
+type SearchFormInput = {
+  search: string;
+}
+
+export const Search = () => {
+  const router = useRouter()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SearchFormInput>();
+
+  return (
+      <form onSubmit={handleSubmit(({search}) => router.push(`/search?query=${search}`))}>
+        <Input
+          id="search"
+          autoComplete="search"
+          placeholder="Search..."
+          aria-invalid={errors.search ? "true" : "false"}
+          css={{width: "100%"}}
+          {...register("search", {
+            required: true,
+            min: 2,
+          })}
+        />
+        <button type="submit"></button>
+      </form>
+  )
 }
 
 const SquareButton = styled("button", {padding: "8px 24px", backgroundColor: "$darkGray", border: "1px solid #5f6368", color: "#e8eaed", borderRadius: "4px"})
@@ -252,10 +288,13 @@ const Navigation = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    width: "700px",
+    width: "900px",
     backgroundColor: "$midnight",
     padding: "12px",
   }),
+  MenuArea: styled("div", {
+    display: "flex", gap: "12px"
+  })
 };
 
 const Content = styled("div", {

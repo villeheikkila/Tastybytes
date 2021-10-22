@@ -1,0 +1,16 @@
+query SearchItems($search: String!) {
+  searchItems(search: $search) {
+    nodes {
+      flavor
+      id
+      brand {
+        id
+        name
+        company {
+          id
+          name
+        }
+      }
+    }
+  }
+}
