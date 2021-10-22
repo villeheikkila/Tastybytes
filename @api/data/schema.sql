@@ -1750,6 +1750,25 @@ COMMENT ON FUNCTION app_public.resend_email_verification_code(email_id uuid) IS 
 
 
 --
+-- Name: search_items(text); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.search_items(search text) RETURNS SETOF app_public.items
+    LANGUAGE sql STABLE
+    AS $$
+with search_agg as (
+  select i.id                   ,
+         to_tsvector(i.flavor) ||
+         to_tsvector(b.name) ||
+         to_tsvector(c.name) as document
+  from app_public.items i
+         join app_public.brands b on i.brand_id = b.id
+         join app_public.companies c on c.id = b.company_id
+  ) select i.*  from search_agg s left join app_public.items i on i.id = s.id where document @@ plainto_tsquery(search);
+$$;
+
+
+--
 -- Name: search_users(text); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -4430,6 +4449,14 @@ GRANT ALL ON FUNCTION app_public.request_account_deletion() TO tasted_visitor;
 
 REVOKE ALL ON FUNCTION app_public.resend_email_verification_code(email_id uuid) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.resend_email_verification_code(email_id uuid) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION search_items(search text); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.search_items(search text) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.search_items(search text) TO tasted_visitor;
 
 
 --
