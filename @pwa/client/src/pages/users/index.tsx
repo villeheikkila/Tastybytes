@@ -1,27 +1,26 @@
-import { paths, useFriendStatus } from "@pwa/common";
+import { parseSlug, paths, useFriendStatus } from "@pwa/common";
 import {
-  Button,
   Card,
   FriendStatusIcon,
-  Input,
   Layout,
   SharedLayout,
-  styled
+  styled,
+  SearchUsers,
 } from "@pwa/components";
-import {
-  useSearchUsersLazyQuery,
-  useSharedQuery
-} from "@pwa/graphql";
+import { useSearchUsersLazyQuery, useSharedQuery } from "@pwa/graphql";
 import { NextPage } from "next";
 import Link from "next/link";
-import React from "react";
-import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 
 interface SearchFormInput {
   search: string;
 }
 
 const FriendsPage: NextPage = () => {
+  const router = useRouter();
+  const initialSearchValue = parseSlug(router.query.search);
+
   const shared = useSharedQuery();
 
   return (
@@ -29,24 +28,26 @@ const FriendsPage: NextPage = () => {
       title={`${shared.data?.currentUser?.username}`}
       query={shared}
     >
-      <FriendsPageInner />
+      <FriendsPageInner initialSearchValue={initialSearchValue} />
     </SharedLayout>
   );
 };
 
-const FriendsPageInner = () => {
+const FriendsPageInner = ({
+  initialSearchValue,
+}: {
+  initialSearchValue: string;
+}) => {
   const [getUsers, { data, refetch }] = useSearchUsersLazyQuery();
   const { changeFriendStatus } = useFriendStatus({
     refetchQueries: ["SearchUsers"],
   });
 
-  const searchResults = data?.searchUsers;
+  useEffect(() => {
+    getUsers({ variables: { search: initialSearchValue } });
+  }, [])
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SearchFormInput>();
+  const searchResults = data?.searchUsers;
 
   const onSubmit = async ({ search }: SearchFormInput) => {
     await getUsers({ variables: { search } });
@@ -57,19 +58,7 @@ const FriendsPageInner = () => {
       <Layout.Header>
         <h1>Search Users</h1>
       </Layout.Header>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          id="search"
-          autoComplete="search"
-          placeholder="search"
-          aria-invalid={errors.search ? "true" : "false"}
-          {...register("search", {
-            required: true,
-            min: 2,
-          })}
-        />
-        <Button type="submit">Search</Button>
-      </Form>
+      <SearchUsers initialValue={initialSearchValue} onSubmit={onSubmit} />
       <Card.Container>
         {searchResults?.nodes.map((user) => (
           <Card.Wrapper key={user.id}>
@@ -81,10 +70,9 @@ const FriendsPageInner = () => {
                 friendStatus={user.friendStatus.nodes[0]}
                 size="2x"
                 onClick={() => {
-                  changeFriendStatus(
-                    user.id,
-                    user.friendStatus.nodes[0]
-                  ).then(() => refetch && refetch());
+                  changeFriendStatus(user.id, user.friendStatus.nodes[0]).then(
+                    () => refetch && refetch()
+                  );
                 }}
               />
             </Flex>
@@ -95,17 +83,10 @@ const FriendsPageInner = () => {
   );
 };
 
-
 const Flex = styled("div", {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-});
-
-const Form = styled("form", {
-  display: "flex",
-  alignItems: "center",
-  gap: "12px",
 });
 
 export default FriendsPage;

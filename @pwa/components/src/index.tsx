@@ -22,3 +22,4 @@ export * from "./Stars";
 export * from "./Warn";
 export * from "./stitches.config";
 export * from "./FriendStatusIcon"
+export * from "./SearchUsers"
