@@ -3,18 +3,15 @@ import {
   UserProfileByUsernameQuery,
   useUserProfileByUsernameQuery,
 } from "@pwa/graphql";
-import { getDisplayName, paths } from "@pwa/common";
+import { getDisplayName, parseSlug, paths } from "@pwa/common";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
-import { z } from "zod";
-
-const parseSlug = z.string();
 
 const UserPage: NextPage = () => {
   const router = useRouter();
-  const username = parseSlug.parse(router.query.username);
+  const username = parseSlug(router.query.username);
 
   const user = useUserProfileByUsernameQuery({
     variables: {

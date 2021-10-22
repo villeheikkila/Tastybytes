@@ -1,11 +1,11 @@
 import { paths, useFriendStatus } from "@pwa/common";
-import { Card, FriendStatusIcon, Layout, SharedLayout, styled } from "@pwa/components";
+import { Card, FriendStatusIcon, Layout, SearchUsers, SharedLayout, styled } from "@pwa/components";
 import {
   FriendsByUsernameQuery, useFriendsByUsernameQuery
 } from "@pwa/graphql";
 import { NextPage } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import router, { NextRouter, useRouter } from "next/router";
 import React, { FC } from "react";
 import { z } from "zod";
 
@@ -23,13 +23,14 @@ const FriendsPage: NextPage = () => {
       title={`${query.data?.currentUser?.username ?? username}`}
       query={query}
     >
-      {data && <FriendsPageInner data={data}  />}
+      {data && <FriendsPageInner data={data} router={router} />}
     </SharedLayout>
   );
 };
 
 interface FriendsPageInnerProps {
   data: NonNullable<FriendsByUsernameQuery["userByUsername"]>;
+  router: NextRouter
 }
 
 const FriendsPageInner: FC<FriendsPageInnerProps> = ({ data }) => {
@@ -42,6 +43,7 @@ const FriendsPageInner: FC<FriendsPageInnerProps> = ({ data }) => {
       <Layout.Header>
         <h1>Friends</h1>
       </Layout.Header>
+      <SearchUsers onSubmit={({search}) => router.push(`/users?search=${search}`)}/>
       <Card.Container>
         {data.friends.nodes.map((friend) => (
           <Card.Wrapper key={friend.id}>
