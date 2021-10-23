@@ -2946,6 +2946,7 @@ type Item {
   description: String
   flavor: String
   id: Int!
+  isTasted: Boolean
   isVerified: Boolean
 
   """Reads and enables pagination through a set of `ItemEditSuggestion`."""
