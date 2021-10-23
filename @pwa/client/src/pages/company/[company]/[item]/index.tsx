@@ -1,9 +1,19 @@
-import { Card, Layout, SharedLayout, Stars } from "@pwa/components";
+import {
+  Button,
+  Card,
+  Input,
+  Layout,
+  SharedLayout,
+  Stars,
+  StarSelector,
+  styled,
+} from "@pwa/components";
 import { ProductByIdQuery, useProductByIdQuery } from "@pwa/graphql";
 import { getDisplayName } from "@pwa/common";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
+import { useForm } from "react-hook-form";
 
 const ProductPage = () => {
   const router = useRouter();
@@ -18,10 +28,7 @@ const ProductPage = () => {
   const data = productById?.data?.item;
 
   return (
-    <SharedLayout
-      title={`${item}`}
-      query={productById}
-    >
+    <SharedLayout title={`${item}`} query={productById}>
       {data && <ProductPageInner data={data} />}
     </SharedLayout>
   );
@@ -38,6 +45,7 @@ const ProductPageInner: FC<UserPageInnerProps> = ({ data }) => {
         <h1>
           {data?.brand?.company?.name} {data?.brand?.name} {data.flavor}
         </h1>
+        <CheckIn />
       </Layout.Header>
 
       <Card.Container>
@@ -60,5 +68,50 @@ const ProductPageInner: FC<UserPageInnerProps> = ({ data }) => {
     </Layout.Root>
   );
 };
+
+type CheckInForm = {
+  review: string;
+};
+
+const CheckIn = () => {
+  const [show, setShow] = React.useState(true);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CheckInForm>();
+
+  const onSubmit = (value: CheckInForm) => {};
+
+  return (
+    <>
+      <div onClick={() => setShow(!show)}>Check-in</div>
+      {show && (
+        <div>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              id="review"
+              autoComplete="review"
+              placeholder="Review..."
+              aria-invalid={errors.review ? "true" : "false"}
+              css={{ width: "100%" }}
+              {...register("review", {
+                required: true,
+                min: 2,
+              })}
+            />
+            <StarSelector />
+            <Button type="submit" css={{ width: "10rem" }}>
+              Search
+            </Button>
+          </Form>
+        </div>
+      )}
+    </>
+  );
+};
+
+const Form = styled("form", {});
 
 export default ProductPage;
