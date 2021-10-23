@@ -1538,6 +1538,20 @@ COMMENT ON FUNCTION app_public.forgot_password(email public.citext) IS 'If you''
 
 
 --
+-- Name: items_is_tasted(app_public.items); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.items_is_tasted(i app_public.items) RETURNS boolean
+    LANGUAGE sql STABLE
+    AS $$
+select exists(select 1
+              from app_public.check_ins c
+              where c.author_id = app_public.current_user_id()
+                and c.item_id = i.id)::boolean
+$$;
+
+
+--
 -- Name: like_check_in(integer); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -4395,6 +4409,14 @@ GRANT ALL ON FUNCTION app_public.delete_friend(friend_id uuid) TO tasted_visitor
 
 REVOKE ALL ON FUNCTION app_public.forgot_password(email public.citext) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.forgot_password(email public.citext) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION items_is_tasted(i app_public.items); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.items_is_tasted(i app_public.items) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.items_is_tasted(i app_public.items) TO tasted_visitor;
 
 
 --

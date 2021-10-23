@@ -34,10 +34,7 @@ const FriendsPageInner = ({
 }: {
   initialSearchValue: string;
 }) => {
-  const [getUsers, { data, refetch }] = useSearchItemsLazyQuery();
-  const { changeFriendStatus } = useFriendStatus({
-    refetchQueries: ["SearchUsers"],
-  });
+  const [getUsers, { data }] = useSearchItemsLazyQuery();
 
   useEffect(() => {
     getUsers({ variables: { search: initialSearchValue } });
@@ -68,6 +65,7 @@ const FriendsPageInner = ({
               <Link href={`/company/${item?.brand?.company?.name ?? ""}/${item.id}`}>
                 <p>{item.flavor}</p>
               </Link>
+              {item.isTasted ?? "is tasted"}
             </Flex>
           </Card.Wrapper>
         ))}
