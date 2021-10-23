@@ -71,6 +71,11 @@ enum ActivityFeedsOrderBy {
   NATURAL
 }
 
+"""
+A floating point number that requires more precision than IEEE 754 binary 64
+"""
+scalar BigFloat
+
 type Brand {
   """Reads and enables pagination through a set of `Company`."""
   companiesByItemBrandIdAndManufacturerId(
@@ -2850,6 +2855,7 @@ type Item {
     """The method to use when ordering `ActivityFeed`."""
     orderBy: [ActivityFeedsOrderBy!] = [NATURAL]
   ): ActivityFeedsConnection!
+  averageRating: BigFloat
 
   """Reads a single `Brand` that is related to this `Item`."""
   brand: Brand
@@ -3014,6 +3020,7 @@ type Item {
     """The method to use when ordering `Type`."""
     orderBy: [TypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemTypesByItemEditSuggestionItemIdAndTypeIdManyToManyConnection!
+  uniqueCheckIns: Int
   updatedAt: Datetime!
   updatedBy: UUID
 

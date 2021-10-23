@@ -1538,6 +1538,17 @@ COMMENT ON FUNCTION app_public.forgot_password(email public.citext) IS 'If you''
 
 
 --
+-- Name: items_average_rating(app_public.items); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.items_average_rating(i app_public.items) RETURNS numeric
+    LANGUAGE sql STABLE
+    AS $$
+select avg(c.rating)::numeric(10,2) from app_public.check_ins c where c.item_id = i.id;
+$$;
+
+
+--
 -- Name: items_is_tasted(app_public.items); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -1548,6 +1559,17 @@ select exists(select 1
               from app_public.check_ins c
               where c.author_id = app_public.current_user_id()
                 and c.item_id = i.id)::boolean
+$$;
+
+
+--
+-- Name: items_unique_check_ins(app_public.items); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.items_unique_check_ins(i app_public.items) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(distinct c.author_id) from app_public.check_ins c where c.item_id = i.id;
 $$;
 
 
@@ -4412,11 +4434,27 @@ GRANT ALL ON FUNCTION app_public.forgot_password(email public.citext) TO tasted_
 
 
 --
+-- Name: FUNCTION items_average_rating(i app_public.items); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.items_average_rating(i app_public.items) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.items_average_rating(i app_public.items) TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION items_is_tasted(i app_public.items); Type: ACL; Schema: app_public; Owner: -
 --
 
 REVOKE ALL ON FUNCTION app_public.items_is_tasted(i app_public.items) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.items_is_tasted(i app_public.items) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION items_unique_check_ins(i app_public.items); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.items_unique_check_ins(i app_public.items) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.items_unique_check_ins(i app_public.items) TO tasted_visitor;
 
 
 --
