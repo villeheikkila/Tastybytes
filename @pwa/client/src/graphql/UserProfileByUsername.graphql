@@ -5,12 +5,8 @@ query UserProfileByUsername($username: String!) {
     username
     firstName
     lastName
-    checkInStatistics {
-      nodes {
-        totalCheckIns
-        uniqueCheckIns
-      }
-    }
+    totalCheckIns
+    uniqueCheckIns
     friends {
       totalCount
     }
