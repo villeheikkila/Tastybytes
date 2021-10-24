@@ -947,13 +947,89 @@ COMMENT ON FUNCTION app_public.change_password(old_password text, new_password t
 
 
 --
--- Name: checkinstatistics(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
+-- Name: companies; Type: TABLE; Schema: app_public; Owner: -
 --
 
-CREATE FUNCTION app_public.checkinstatistics(u app_public.users) RETURNS text
+CREATE TABLE app_public.companies (
+    id integer NOT NULL,
+    name text NOT NULL,
+    is_verified boolean DEFAULT false NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by uuid,
+    description app_public.long_text,
+    CONSTRAINT companies_name_check CHECK (((length(name) >= 2) AND (length(name) <= 56)))
+);
+
+
+--
+-- Name: companies_average_rating(app_public.companies); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.companies_average_rating(c app_public.companies) RETURNS integer
     LANGUAGE sql STABLE
     AS $$
-  SELECT 'dasda';
+with company_items_avg_by_user as (select ci.item_id, ci.author_id, avg(ci.rating) average from app_public.check_ins ci
+left join app_public.items i on ci.item_id = i.id
+left join app_public.brands b on i.brand_id = b.id
+left join app_public.companies co on b.company_id = co.id where co.id = c.id group by (ci.item_id, ci.author_id)) select avg(average) as average from company_items_avg_by_user;
+$$;
+
+
+--
+-- Name: companies_check_ins_past_month(app_public.companies); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.companies_check_ins_past_month(c app_public.companies) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1) from app_public.check_ins ci
+left join app_public.items i on ci.item_id = i.id
+left join app_public.brands b on i.brand_id = b.id
+left join app_public.companies co on b.company_id = co.id
+where co.id = c.id and ci.created_at >= current_date - interval '1 month';
+$$;
+
+
+--
+-- Name: companies_current_user_check_ins(app_public.companies); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.companies_current_user_check_ins(c app_public.companies) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1) from app_public.check_ins ci
+left join app_public.items i on ci.item_id = i.id
+left join app_public.brands b on i.brand_id = b.id
+left join app_public.companies co on b.company_id = co.id
+where co.id = c.id and author_id = app_public.current_user_id()
+$$;
+
+
+--
+-- Name: companies_total_check_ins(app_public.companies); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.companies_total_check_ins(c app_public.companies) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1) from app_public.check_ins ci
+left join app_public.items i on ci.item_id = i.id
+left join app_public.brands b on i.brand_id = b.id
+left join app_public.companies co on b.company_id = co.id
+where co.id = c.id
+$$;
+
+
+--
+-- Name: companies_total_items(app_public.companies); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.companies_total_items(c app_public.companies) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1) from app_public.items i
+left join app_public.brands b on i.brand_id = b.id
+where c.id = b.company_id;
 $$;
 
 
@@ -1173,20 +1249,6 @@ begin
   return v_comment;
 end;
 $$;
-
-
---
--- Name: companies; Type: TABLE; Schema: app_public; Owner: -
---
-
-CREATE TABLE app_public.companies (
-    id integer NOT NULL,
-    name text NOT NULL,
-    is_verified boolean DEFAULT false NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by uuid,
-    CONSTRAINT companies_name_check CHECK (((length(name) >= 2) AND (length(name) <= 56)))
-);
 
 
 --
@@ -1549,6 +1611,32 @@ $$;
 
 
 --
+-- Name: items_check_ins_past_month(app_public.items); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.items_check_ins_past_month(i app_public.items) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1)
+from app_public.check_ins
+where item_id = i.id and created_at >= current_date - interval '1 month';
+$$;
+
+
+--
+-- Name: items_current_user_check_ins(app_public.items); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.items_current_user_check_ins(i app_public.items) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1)
+from app_public.check_ins
+where item_id = i.id and author_id = app_public.current_user_id()
+$$;
+
+
+--
 -- Name: items_is_tasted(app_public.items); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -1559,6 +1647,19 @@ select exists(select 1
               from app_public.check_ins c
               where c.author_id = app_public.current_user_id()
                 and c.item_id = i.id)::boolean
+$$;
+
+
+--
+-- Name: items_total_check_ins(app_public.items); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.items_total_check_ins(i app_public.items) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1)
+from app_public.check_ins
+where item_id = i.id
 $$;
 
 
@@ -1994,24 +2095,6 @@ $$;
 
 
 --
--- Name: users_check_in_statistics(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
---
-
-CREATE FUNCTION app_public.users_check_in_statistics(u app_public.users) RETURNS TABLE(total_check_ins integer, unique_check_ins integer)
-    LANGUAGE sql STABLE
-    AS $$
-  SELECT
-    count(*) AS total_check_ins,
-    count(DISTINCT item_id) AS unique_check_ins
-  FROM
-    app_public.check_ins
-  WHERE
-    author_id = u.id;
-
-$$;
-
-
---
 -- Name: users_friend_status(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -2058,6 +2141,46 @@ CREATE FUNCTION app_public.users_has_password(u app_public.users) RETURNS boolea
     SET search_path TO 'pg_catalog', 'public', 'pg_temp'
     AS $$
   select (password_hash is not null) from app_private.user_secrets where user_secrets.user_id = u.id and u.id = app_public.current_user_id();
+$$;
+
+
+--
+-- Name: users_total_check_ins(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.users_total_check_ins(u app_public.users) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1)
+from app_public.check_ins
+where author_id = u.id;
+$$;
+
+
+--
+-- Name: users_total_friends(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.users_total_friends(u app_public.users) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1)
+from app_public.friends
+where (user_id_1 = u.id
+   or user_id_2 = u.id) and status = 'accepted';
+$$;
+
+
+--
+-- Name: users_unique_check_ins(app_public.users); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.users_unique_check_ins(u app_public.users) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(distinct item_id)
+from app_public.check_ins
+where author_id = u.id;
 $$;
 
 
@@ -4209,11 +4332,64 @@ GRANT ALL ON FUNCTION app_public.change_password(old_password text, new_password
 
 
 --
--- Name: FUNCTION checkinstatistics(u app_public.users); Type: ACL; Schema: app_public; Owner: -
+-- Name: TABLE companies; Type: ACL; Schema: app_public; Owner: -
 --
 
-REVOKE ALL ON FUNCTION app_public.checkinstatistics(u app_public.users) FROM PUBLIC;
-GRANT ALL ON FUNCTION app_public.checkinstatistics(u app_public.users) TO tasted_visitor;
+GRANT SELECT,DELETE ON TABLE app_public.companies TO tasted_visitor;
+
+
+--
+-- Name: COLUMN companies.name; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(name) ON TABLE app_public.companies TO tasted_visitor;
+
+
+--
+-- Name: COLUMN companies.is_verified; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT UPDATE(is_verified) ON TABLE app_public.companies TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION companies_average_rating(c app_public.companies); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.companies_average_rating(c app_public.companies) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.companies_average_rating(c app_public.companies) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION companies_check_ins_past_month(c app_public.companies); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.companies_check_ins_past_month(c app_public.companies) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.companies_check_ins_past_month(c app_public.companies) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION companies_current_user_check_ins(c app_public.companies); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.companies_current_user_check_ins(c app_public.companies) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.companies_current_user_check_ins(c app_public.companies) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION companies_total_check_ins(c app_public.companies); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.companies_total_check_ins(c app_public.companies) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.companies_total_check_ins(c app_public.companies) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION companies_total_items(c app_public.companies); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.companies_total_items(c app_public.companies) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.companies_total_items(c app_public.companies) TO tasted_visitor;
 
 
 --
@@ -4281,27 +4457,6 @@ GRANT ALL ON FUNCTION app_public.create_check_in(item_id integer, review text, r
 
 REVOKE ALL ON FUNCTION app_public.create_check_in_comment(target_check_in_id integer, comment text) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.create_check_in_comment(target_check_in_id integer, comment text) TO tasted_visitor;
-
-
---
--- Name: TABLE companies; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT,DELETE ON TABLE app_public.companies TO tasted_visitor;
-
-
---
--- Name: COLUMN companies.name; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT UPDATE(name) ON TABLE app_public.companies TO tasted_visitor;
-
-
---
--- Name: COLUMN companies.is_verified; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT UPDATE(is_verified) ON TABLE app_public.companies TO tasted_visitor;
 
 
 --
@@ -4442,11 +4597,35 @@ GRANT ALL ON FUNCTION app_public.items_average_rating(i app_public.items) TO tas
 
 
 --
+-- Name: FUNCTION items_check_ins_past_month(i app_public.items); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.items_check_ins_past_month(i app_public.items) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.items_check_ins_past_month(i app_public.items) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION items_current_user_check_ins(i app_public.items); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.items_current_user_check_ins(i app_public.items) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.items_current_user_check_ins(i app_public.items) TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION items_is_tasted(i app_public.items); Type: ACL; Schema: app_public; Owner: -
 --
 
 REVOKE ALL ON FUNCTION app_public.items_is_tasted(i app_public.items) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.items_is_tasted(i app_public.items) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION items_total_check_ins(i app_public.items); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.items_total_check_ins(i app_public.items) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.items_total_check_ins(i app_public.items) TO tasted_visitor;
 
 
 --
@@ -4576,14 +4755,6 @@ GRANT ALL ON FUNCTION app_public.tg_user_emails__verify_account_on_verified() TO
 
 
 --
--- Name: FUNCTION users_check_in_statistics(u app_public.users); Type: ACL; Schema: app_public; Owner: -
---
-
-REVOKE ALL ON FUNCTION app_public.users_check_in_statistics(u app_public.users) FROM PUBLIC;
-GRANT ALL ON FUNCTION app_public.users_check_in_statistics(u app_public.users) TO tasted_visitor;
-
-
---
 -- Name: FUNCTION users_friend_status(u app_public.users); Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -4605,6 +4776,30 @@ GRANT ALL ON FUNCTION app_public.users_friends(u app_public.users) TO tasted_vis
 
 REVOKE ALL ON FUNCTION app_public.users_has_password(u app_public.users) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.users_has_password(u app_public.users) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION users_total_check_ins(u app_public.users); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.users_total_check_ins(u app_public.users) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.users_total_check_ins(u app_public.users) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION users_total_friends(u app_public.users); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.users_total_friends(u app_public.users) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.users_total_friends(u app_public.users) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION users_unique_check_ins(u app_public.users); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.users_unique_check_ins(u app_public.users) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.users_unique_check_ins(u app_public.users) TO tasted_visitor;
 
 
 --

@@ -1131,6 +1131,8 @@ enum CompaniesOrderBy {
 }
 
 type Company {
+  averageRating: Int
+
   """Reads and enables pagination through a set of `Brand`."""
   brands(
     """Read all values in the set after (below) this cursor."""
@@ -1217,8 +1219,11 @@ type Company {
     """The method to use when ordering `Brand`."""
     orderBy: [BrandsOrderBy!] = [PRIMARY_KEY_ASC]
   ): CompanyBrandsByItemManufacturerIdAndBrandIdManyToManyConnection!
+  checkInsPastMonth: Int
   createdAt: Datetime!
   createdBy: UUID
+  currentUserCheckIns: Int
+  description: LongText
   id: Int!
   isVerified: Boolean!
 
@@ -1309,6 +1314,8 @@ type Company {
     orderBy: [ItemsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ItemsConnection!
   name: String!
+  totalCheckIns: Int
+  totalItems: Int
 
   """Reads and enables pagination through a set of `Type`."""
   typesByItemEditSuggestionManufacturerIdAndTypeId(
@@ -2918,6 +2925,7 @@ type Item {
     """The method to use when ordering `CheckIn`."""
     orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
   ): CheckInsConnection!
+  checkInsPastMonth: Int
 
   """Reads and enables pagination through a set of `Company`."""
   companiesByItemEditSuggestionItemIdAndManufacturerId(
@@ -2949,6 +2957,7 @@ type Item {
   ): ItemCompaniesByItemEditSuggestionItemIdAndManufacturerIdManyToManyConnection!
   createdAt: Datetime!
   createdBy: UUID
+  currentUserCheckIns: Int
   description: String
   flavor: String
   id: Int!
@@ -2987,6 +2996,7 @@ type Item {
   """Reads a single `Company` that is related to this `Item`."""
   manufacturer: Company
   manufacturerId: Int!
+  totalCheckIns: Int
 
   """Reads a single `Type` that is related to this `Item`."""
   type: Type
@@ -5977,25 +5987,6 @@ type User {
     """The method to use when ordering `Brand`."""
     orderBy: [BrandsOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserBrandsByItemUpdatedByAndBrandIdManyToManyConnection!
-  checkInStatistics(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-  ): UsersCheckInStatisticsConnection!
 
   """Reads and enables pagination through a set of `Company`."""
   companiesByBrandCreatedByAndCompanyId(
@@ -6453,6 +6444,8 @@ type User {
     """The method to use when ordering `Tag`."""
     orderBy: [TagsOrderBy!] = [PRIMARY_KEY_ASC]
   ): TagsConnection!
+  totalCheckIns: Int
+  totalFriends: Int
 
   """Reads and enables pagination through a set of `Type`."""
   typesByItemCreatedByAndTypeId(
@@ -6540,6 +6533,7 @@ type User {
     """The method to use when ordering `Type`."""
     orderBy: [TypesOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserTypesByItemUpdatedByAndTypeIdManyToManyConnection!
+  uniqueCheckIns: Int
   updatedAt: Datetime!
 
   """Reads and enables pagination through a set of `UserAuthentication`."""
@@ -8177,37 +8171,6 @@ type UserUsersByItemUpdatedByAndCreatedByManyToManyEdge {
 
   """The `User` at the end of the edge."""
   node: User!
-}
-
-"""A `UsersCheckInStatisticsRecord` edge in the connection."""
-type UsersCheckInStatisticEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `UsersCheckInStatisticsRecord` at the end of the edge."""
-  node: UsersCheckInStatisticsRecord!
-}
-
-"""A connection to a list of `UsersCheckInStatisticsRecord` values."""
-type UsersCheckInStatisticsConnection {
-  """
-  A list of edges which contains the `UsersCheckInStatisticsRecord` and cursor to aid in pagination.
-  """
-  edges: [UsersCheckInStatisticEdge!]!
-
-  """A list of `UsersCheckInStatisticsRecord` objects."""
-  nodes: [UsersCheckInStatisticsRecord!]!
-
-  """
-  The count of *all* `UsersCheckInStatisticsRecord` you could get from the connection.
-  """
-  totalCount: Int!
-}
-
-"""The return type of our `checkInStatistics` query."""
-type UsersCheckInStatisticsRecord {
-  totalCheckIns: Int
-  uniqueCheckIns: Int
 }
 
 """A connection to a list of `User` values."""
