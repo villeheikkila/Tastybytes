@@ -1921,6 +1921,21 @@ CREATE FUNCTION app_public.search_users(search text) RETURNS SETOF app_public.us
 
 
 --
+-- Name: stamp_liked_by(); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.stamp_liked_by() RETURNS trigger
+    LANGUAGE plpgsql
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+begin
+  NEW.liked_by = app_public.current_user_id();
+  return NEW;
+end;
+$$;
+
+
+--
 -- Name: tg__friend_status(); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -3545,6 +3560,13 @@ CREATE TRIGGER check_friendship_status BEFORE UPDATE ON app_public.friends FOR E
 
 
 --
+-- Name: company_likes stamp_liked_by_for_company_likes; Type: TRIGGER; Schema: app_public; Owner: -
+--
+
+CREATE TRIGGER stamp_liked_by_for_company_likes BEFORE INSERT ON app_public.company_likes FOR EACH ROW EXECUTE FUNCTION app_public.stamp_liked_by();
+
+
+--
 -- Name: sessions sessions_user_id_fkey; Type: FK CONSTRAINT; Schema: app_private; Owner: -
 --
 
@@ -4769,6 +4791,14 @@ GRANT ALL ON FUNCTION app_public.search_users(search text) TO tasted_visitor;
 
 
 --
+-- Name: FUNCTION stamp_liked_by(); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.stamp_liked_by() FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.stamp_liked_by() TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION tg__friend_status(); Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -4933,6 +4963,13 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.companies_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT ON TABLE app_public.company_likes TO tasted_visitor;
+
+
+--
+-- Name: COLUMN company_likes.id; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT INSERT(id) ON TABLE app_public.company_likes TO tasted_visitor;
 
 
 --
