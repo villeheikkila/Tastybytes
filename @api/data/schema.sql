@@ -2527,6 +2527,16 @@ ALTER SEQUENCE app_public.companies_id_seq OWNED BY app_public.companies.id;
 
 
 --
+-- Name: company_likes; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.company_likes (
+    id integer NOT NULL,
+    liked_by uuid NOT NULL
+);
+
+
+--
 -- Name: current_user_friends; Type: VIEW; Schema: app_public; Owner: -
 --
 
@@ -2998,6 +3008,14 @@ ALTER TABLE ONLY app_public.companies
 
 ALTER TABLE ONLY app_public.companies
     ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: company_likes company_likes_pkey; Type: CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.company_likes
+    ADD CONSTRAINT company_likes_pkey PRIMARY KEY (id, liked_by);
 
 
 --
@@ -3663,6 +3681,22 @@ ALTER TABLE ONLY app_public.companies
 
 
 --
+-- Name: company_likes company_likes_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.company_likes
+    ADD CONSTRAINT company_likes_id_fkey FOREIGN KEY (id) REFERENCES app_public.companies(id) ON DELETE CASCADE;
+
+
+--
+-- Name: company_likes company_likes_liked_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
+--
+
+ALTER TABLE ONLY app_public.company_likes
+    ADD CONSTRAINT company_likes_liked_by_fkey FOREIGN KEY (liked_by) REFERENCES app_public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: friends friends_blocked_by_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
 --
 
@@ -3906,6 +3940,13 @@ CREATE POLICY delete_own ON app_public.check_ins FOR DELETE USING ((author_id = 
 
 
 --
+-- Name: company_likes delete_own; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY delete_own ON app_public.company_likes FOR DELETE USING ((liked_by = app_public.current_user_id()));
+
+
+--
 -- Name: friends delete_own; Type: POLICY; Schema: app_public; Owner: -
 --
 
@@ -3954,6 +3995,13 @@ ALTER TABLE app_public.item_edit_suggestions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app_public.items ENABLE ROW LEVEL SECURITY;
 
 --
+-- Name: company_likes like_company; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY like_company ON app_public.company_likes FOR INSERT WITH CHECK ((liked_by = app_public.current_user_id()));
+
+
+--
 -- Name: tags logged_in_insert; Type: POLICY; Schema: app_public; Owner: -
 --
 
@@ -3979,6 +4027,13 @@ CREATE POLICY moderator_delete ON app_public.check_ins FOR DELETE USING (app_pub
 --
 
 CREATE POLICY moderator_delete ON app_public.companies FOR DELETE USING (app_public.current_user_is_privileged());
+
+
+--
+-- Name: company_likes moderator_delete; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY moderator_delete ON app_public.company_likes FOR DELETE USING (app_public.current_user_is_privileged());
 
 
 --
@@ -4049,6 +4104,13 @@ CREATE POLICY select_all ON app_public.categories FOR SELECT USING (true);
 --
 
 CREATE POLICY select_all ON app_public.companies FOR SELECT USING (true);
+
+
+--
+-- Name: company_likes select_all; Type: POLICY; Schema: app_public; Owner: -
+--
+
+CREATE POLICY select_all ON app_public.company_likes FOR SELECT USING (true);
 
 
 --
@@ -4864,6 +4926,13 @@ GRANT SELECT,USAGE ON SEQUENCE app_public.check_ins_id_seq TO tasted_visitor;
 --
 
 GRANT SELECT,USAGE ON SEQUENCE app_public.companies_id_seq TO tasted_visitor;
+
+
+--
+-- Name: TABLE company_likes; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT ON TABLE app_public.company_likes TO tasted_visitor;
 
 
 --
