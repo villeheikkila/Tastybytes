@@ -1220,6 +1220,35 @@ type Company {
     orderBy: [BrandsOrderBy!] = [PRIMARY_KEY_ASC]
   ): CompanyBrandsByItemManufacturerIdAndBrandIdManyToManyConnection!
   checkInsPastMonth: Int
+
+  """Reads and enables pagination through a set of `CompanyLike`."""
+  companyLikesById(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CompanyLikeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CompanyLike`."""
+    orderBy: [CompanyLikesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CompanyLikesConnection!
   createdAt: Datetime!
   createdBy: UUID
   currentUserCheckIns: Int
@@ -1676,6 +1705,57 @@ type CompanyItemsByItemEditSuggestionManufacturerIdAndItemIdManyToManyEdge {
 
   """The `Item` at the end of the edge."""
   node: Item!
+}
+
+type CompanyLike {
+  """Reads a single `Company` that is related to this `CompanyLike`."""
+  companyById: Company
+  id: Int!
+  likedBy: UUID!
+}
+
+"""
+A condition to be used against `CompanyLike` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input CompanyLikeCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+}
+
+"""A connection to a list of `CompanyLike` values."""
+type CompanyLikesConnection {
+  """
+  A list of edges which contains the `CompanyLike` and cursor to aid in pagination.
+  """
+  edges: [CompanyLikesEdge!]!
+
+  """A list of `CompanyLike` objects."""
+  nodes: [CompanyLike!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CompanyLike` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CompanyLike` edge in the connection."""
+type CompanyLikesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CompanyLike` at the end of the edge."""
+  node: CompanyLike!
+}
+
+"""Methods to use when ordering `CompanyLike`."""
+enum CompanyLikesOrderBy {
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
 }
 
 """
@@ -4268,6 +4348,36 @@ type Query {
   ): CompaniesConnection
   company(id: Int!): Company
   companyByName(name: String!): Company
+  companyLike(id: Int!, likedBy: UUID!): CompanyLike
+
+  """Reads and enables pagination through a set of `CompanyLike`."""
+  companyLikes(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CompanyLikeCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CompanyLike`."""
+    orderBy: [CompanyLikesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CompanyLikesConnection
 
   """The currently logged in user (or null if not logged in)."""
   currentUser: User

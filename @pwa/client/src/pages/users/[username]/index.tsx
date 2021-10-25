@@ -22,10 +22,7 @@ const UserPage: NextPage = () => {
   const data = user.data?.userByUsername;
 
   return (
-    <SharedLayout
-      title={`${data?.id ?? username}`}
-      query={user}
-    >
+    <SharedLayout title={`${data?.id ?? username}`} query={user}>
       {data && <UserPageInner user={data} />}
     </SharedLayout>
   );
@@ -40,9 +37,11 @@ const UserPageInner: FC<UserPageInnerProps> = ({ user }) => {
     <Layout.Root>
       <Layout.Header>
         <h1>{user && getDisplayName(user)}</h1>
-        <p>Unique check-ins: {user?.checkInStatistics.nodes[0].uniqueCheckIns}</p>
-        <p>Total check-ins: {user?.checkInStatistics.nodes[0].totalCheckIns}</p>
-        <Link href={`/users/${user?.username}/friends`}><p>Friends: {user?.friends.totalCount}</p></Link>
+        <p>Unique check-ins: {user?.uniqueCheckIns}</p>
+        <p>Total check-ins: {user?.totalCheckIns}</p>
+        <Link href={`/users/${user?.username}/friends`}>
+          <p>Friends: {user?.friends.totalCount}</p>
+        </Link>
       </Layout.Header>
       <Card.Container>
         {user?.authoredCheckIns.nodes.map(({ id, item, rating }) => (
