@@ -9,13 +9,15 @@
     "postinstall": "remix setup node",
     "start": "cross-env NODE_ENV=production tsnd server/index.ts",
     "start:dev": "cross-env NODE_ENV=development tsnd --respawn server/index.ts",
-    "codegen": "graphql-codegen --watch --config codegen.yml"
+    "codegen": "graphql-codegen --watch --config codegen.yml",
+    "watch": "concurrently \"npm run dev\" \"npm run start:dev \" \"npm run codegen \""
   },
   "dependencies": {
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
     "@remix-run/express": "^1.1.1",
     "@remix-run/react": "^1.1.1",
     "compression": "^1.7.4",
+    "concurrently": "^7.0.0",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "graphql-request": "^3.7.0",
