@@ -1,10 +1,11 @@
-const path = require("path");
-const express = require("express");
-const compression = require("compression");
-const morgan = require("morgan");
-const { createRequestHandler } = require("@remix-run/express");
-const { makePgSmartTagsFromFilePlugin } = require("postgraphile/plugins");
-const { resolve } = require("path");
+import path from "path";
+import express from "express"
+import compression from "compression"
+import morgan from "morgan"
+import { createRequestHandler } from "@remix-run/express"
+import { makePgSmartTagsFromFilePlugin } from "postgraphile/plugins"
+import { resolve } from "path"
+import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
 
 const { postgraphile } = require("postgraphile");
 
@@ -14,13 +15,9 @@ const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "server/build");
 
 app.use(compression());
-
-// You may want to be more aggressive with this caching
 app.use(express.static("public", { maxAge: "1h" }));
 
-const smartTagsPlugin = makePgSmartTagsFromFilePlugin(
-  // We're using JSONC for VSCode compatibility; also using an explicit file
-  // path keeps the tests happy.
+const SmartTagsPlugin = makePgSmartTagsFromFilePlugin(
   resolve(__dirname, "./postgraphile.tags.jsonc")
 );
 
@@ -33,7 +30,10 @@ app.use(
       watchPg: true,
       graphiql: true,
       enhanceGraphiql: true,
-      appendPlugins: [smartTagsPlugin],
+      allowExplain: true,
+      appendPlugins: [SmartTagsPlugin,PgSimplifyInflectorPlugin],
+      sortExport: true,
+      exportGqlSchemaPath: `${__dirname}/data/schema.graphql`,
     }
   )
 );
