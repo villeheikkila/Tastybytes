@@ -6,8 +6,7 @@ import { createRequestHandler } from "@remix-run/express"
 import { makePgSmartTagsFromFilePlugin } from "postgraphile/plugins"
 import { resolve } from "path"
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
-
-const { postgraphile } = require("postgraphile");
+import { postgraphile } from "postgraphile"
 
 const app = express();
 

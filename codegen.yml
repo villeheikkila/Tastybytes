@@ -1,0 +1,11 @@
+schema: http://localhost:3333/graphql
+documents: ./app/**/*.graphql
+generates:
+  ./app/generated/client.generated.ts:
+    config:
+      avoidOptionals: true
+      maybeValue: T
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request

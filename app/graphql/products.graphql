@@ -1,0 +1,14 @@
+query getCompanies {
+  companies {
+    nodes {
+      id
+      brands {
+        nodes {
+          id
+          name
+        }
+      }
+      name
+    }
+  }
+}
