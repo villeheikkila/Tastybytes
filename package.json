@@ -10,16 +10,19 @@
     "start": "cross-env NODE_ENV=production tsnd server/index.ts",
     "start:dev": "cross-env NODE_ENV=development tsnd --respawn server/index.ts",
     "codegen": "graphql-codegen --watch --config codegen.yml",
-    "watch": "concurrently \"npm run dev\" \"npm run start:dev \" \"npm run codegen \""
+    "watch": "concurrently \"npm run dev\" \"npm run start:dev \" \"npm run codegen \"",
+    "gm": "graphile-migrate"
   },
   "dependencies": {
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
     "@remix-run/express": "^1.1.1",
     "@remix-run/react": "^1.1.1",
+    "@stitches/react": "^1.2.6",
     "compression": "^1.7.4",
     "concurrently": "^7.0.0",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
+    "graphile-migrate": "^1.2.0",
     "graphql-request": "^3.7.0",
     "graphql-tag": "^2.12.6",
     "morgan": "^1.10.0",

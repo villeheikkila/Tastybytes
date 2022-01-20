@@ -475,6 +475,11 @@
   "resolved" "https://registry.npmjs.org/@graphile-contrib/pg-simplify-inflector/-/pg-simplify-inflector-6.1.0.tgz"
   "version" "6.1.0"
 
+"@graphile/logger@^0.2.0":
+  "integrity" "sha512-jjcWBokl9eb1gVJ85QmoaQ73CQ52xAaOCF29ukRbYNl6lY+ts0ErTaDYOBlejcbUs2OpaiqYLO5uDhyLFzWw4w=="
+  "resolved" "https://registry.npmjs.org/@graphile/logger/-/logger-0.2.0.tgz"
+  "version" "0.2.0"
+
 "@graphile/lru@4.11.0":
   "integrity" "sha512-Fakuk190EAKxWSa9YQyr/87g8mvAv8HBvk6yPCPuIoA3bYXF7n6kl0XSqKjSd5VfjEqhtnzQ6zJGzDf1Gv/tJg=="
   "resolved" "https://registry.npmjs.org/@graphile/lru/-/lru-4.11.0.tgz"
@@ -974,6 +979,11 @@
   "resolved" "https://registry.npmjs.org/@sindresorhus/is/-/is-4.3.0.tgz"
   "version" "4.3.0"
 
+"@stitches/react@^1.2.6":
+  "integrity" "sha512-gRVITYj8W4jJmoiVxWDv72yCvd12VvtUUAnTzs07EqmtvGCVgKZu3Dx0x5KVCcb0b6tfgvvNH2L84YrzdM4Mag=="
+  "resolved" "https://registry.npmjs.org/@stitches/react/-/react-1.2.6.tgz"
+  "version" "1.2.6"
+
 "@szmarczak/http-timer@^1.1.2":
   "integrity" "sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA=="
   "resolved" "https://registry.npmjs.org/@szmarczak/http-timer/-/http-timer-1.1.2.tgz"
@@ -1174,6 +1184,11 @@
   "integrity" "sha512-S/3xB4KzyFxYGCppyDt68yzBU9ysL88lSdIah4D6cptdcltc4NCPCAMc0+PCpg/lLIyC7IPvj2Z52OJWeIUkog=="
   "resolved" "https://registry.npmjs.org/@types/node/-/node-17.0.10.tgz"
   "version" "17.0.10"
+
+"@types/node@^14.6.0":
+  "integrity" "sha512-j11XSuRuAlft6vLDEX4RvhqC0KxNxx6QIyMXNb0vHHSNPXTPeiy3algESWmOOIzEtiEL0qiowPU3ewW9hHVa7Q=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-14.18.9.tgz"
+  "version" "14.18.9"
 
 "@types/normalize-package-data@^2.4.0":
   "integrity" "sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw=="
@@ -1779,6 +1794,14 @@
     "ansi-styles" "^3.2.1"
     "escape-string-regexp" "^1.0.5"
     "supports-color" "^5.3.0"
+
+"chalk@^3.0.0":
+  "integrity" "sha512-4D3B6Wf41KOYRFdszmDqMCGq5VV/uMAB273JILmO+3jAlh8X4qDtdtgCR3fxtbLEMzSx22QdhnDcJvu2u1fVwg=="
+  "resolved" "https://registry.npmjs.org/chalk/-/chalk-3.0.0.tgz"
+  "version" "3.0.0"
+  dependencies:
+    "ansi-styles" "^4.1.0"
+    "supports-color" "^7.1.0"
 
 "chalk@^4.0.0":
   "integrity" "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="
@@ -2983,6 +3006,24 @@
     "lru-cache" "^5.0.0"
     "pluralize" "^7.0.0"
     "semver" "^6.0.0"
+
+"graphile-migrate@^1.2.0":
+  "integrity" "sha512-GFEdmULjo+HEucS8ECdCYsup7IHY/pP9KOiHLwmA949c4lZUdGbwP6XXJ5Cp1I2lRk4s/1BV1mh54GIK1CBljw=="
+  "resolved" "https://registry.npmjs.org/graphile-migrate/-/graphile-migrate-1.2.0.tgz"
+  "version" "1.2.0"
+  dependencies:
+    "@graphile/logger" "^0.2.0"
+    "@types/json5" "^0.0.30"
+    "@types/node" "^14.6.0"
+    "@types/pg" ">=6 <9"
+    "chalk" "^3.0.0"
+    "chokidar" "^3.5.1"
+    "json5" "^2.1.2"
+    "pg" ">=6.5 <9"
+    "pg-connection-string" "^2.1.0"
+    "pg-minify" "^1.5.2"
+    "tslib" "^1.10.0"
+    "yargs" "^15.3.1"
 
 "graphile-utils@^4.12.2":
   "integrity" "sha512-2UcTWWMFLFkKwbDLqlN0mF5sxLqz9y0p7I3zNOJpXtHVjrHyp7oQZsWComPsit/PWIrIgtDUagP+HPkypBRrqA=="
@@ -4914,7 +4955,7 @@
     "estree-walker" "^3.0.0"
     "is-reference" "^3.0.0"
 
-"pg-connection-string@^2.0.0", "pg-connection-string@^2.5.0":
+"pg-connection-string@^2.0.0", "pg-connection-string@^2.1.0", "pg-connection-string@^2.5.0":
   "integrity" "sha512-r5o/V/ORTA6TmUnyWZR9nCj1klXCO2CEKNRlVuJptZe85QuhFayC7WeMic7ndayT5IRIR0S0xFxFi2ousartlQ=="
   "resolved" "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.5.0.tgz"
   "version" "2.5.0"
@@ -4923,6 +4964,11 @@
   "integrity" "sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw=="
   "resolved" "https://registry.npmjs.org/pg-int8/-/pg-int8-1.0.1.tgz"
   "version" "1.0.1"
+
+"pg-minify@^1.5.2":
+  "integrity" "sha512-1KdmFGGTP6jplJoI8MfvRlfvMiyBivMRP7/ffh4a11RUFJ7kC2J0ZHlipoKiH/1hz+DVgceon9U2qbaHpPeyPg=="
+  "resolved" "https://registry.npmjs.org/pg-minify/-/pg-minify-1.6.2.tgz"
+  "version" "1.6.2"
 
 "pg-pool@^3.4.1":
   "integrity" "sha512-TVHxR/gf3MeJRvchgNHxsYsTCHQ+4wm3VIHSS19z8NC0+gioEhq1okDY1sm/TYbfoP6JLFx01s0ShvZ3puP/iQ=="
@@ -4955,7 +5001,7 @@
     "postgres-date" "~1.0.4"
     "postgres-interval" "^1.1.0"
 
-"pg@>=6.1.0 <9", "pg@>=8.0":
+"pg@>=6.1.0 <9", "pg@>=6.5 <9", "pg@>=8.0":
   "integrity" "sha512-7bdYcv7V6U3KAtWjpQJJBww0UEsWuh4yQ/EjNf2HeO/NnvKjpvhEIe/A/TleP6wtmSKnUnghs5A9jUoK6iDdkA=="
   "resolved" "https://registry.npmjs.org/pg/-/pg-8.7.1.tgz"
   "version" "8.7.1"
@@ -5173,7 +5219,7 @@
   dependencies:
     "history" "^5.2.0"
 
-"react@^17.0.2", "react@>=16.8", "react@17.0.2":
+"react@^17.0.2", "react@>= 16.3.0", "react@>=16.8", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"
@@ -6032,6 +6078,11 @@
     "@types/strip-json-comments" "0.0.30"
     "strip-bom" "^3.0.0"
     "strip-json-comments" "^2.0.0"
+
+"tslib@^1.10.0":
+  "integrity" "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg=="
+  "resolved" "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
+  "version" "1.14.1"
 
 "tslib@^1.9.0":
   "integrity" "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg=="
