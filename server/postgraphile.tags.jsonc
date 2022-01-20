@@ -3,100 +3,11 @@
   "version": 1,
   "config": {
     "class": {
-      "app_public.users": {
+      "tasted_public.users": {
         "tags": {
           "omit": "all"
         },
         "description": "A user who can log in to the application."
-      },
-      "app_public.user_emails": {
-        "tags": {
-          "omit": "all"
-        },
-        "constraint": {
-          "user_emails_pkey": {
-            "tags": {
-              "omit": "all"
-            }
-          },
-          "user_emails_user_id_email_key": {
-            "tags": {
-              "omit": true
-            }
-          }
-        }
-      },
-      "app_public.user_authentications": {
-        "tags": {
-          "omit": "all",
-          "simpleCollections": "only"
-        },
-        "attribute": {
-          "details": {
-            "tags": {
-              "omit": true
-            }
-          }
-        },
-        "constraint": {
-          "uniq_user_authentications": {
-            "tags": {
-              "omit": true
-            }
-          },
-          "user_authentications_pkey": {
-            "tags": {
-              "omit": "all"
-            }
-          }
-        }
-      }
-    },
-    "procedure": {
-      "app_public.current_session_id": {
-        "tags": {
-          "omit": true
-        }
-      },
-      "app_public.current_user_friends": {
-        "tags": {
-          "omit": true
-        }
-      },
-      "app_public.current_user_id": {
-        "tags": {
-          "omit": true
-        }
-      },
-      "app_public.logout": {
-        "tags": {
-          "omit": true
-        }
-      },
-      "app_public.change_password": {
-        "tags": {
-          "resultFieldName": "success"
-        }
-      },
-      "app_public.request_account_deletion": {
-        "tags": {
-          "resultFieldName": "success"
-        }
-      },
-      "app_public.confirm_account_deletion": {
-        "tags": {
-          "resultFieldName": "success"
-        }
-      },
-      "app_public.resend_email_verification_code": {
-        "tags": {
-          "resultFieldName": "success"
-        }
-      },
-      "app_public.verify_email": {
-        "tags": {
-          "resultFieldName": "success"
-        }
       }
     }
   }

@@ -1,7 +1,7 @@
 schema: http://localhost:3333/graphql
 documents: ./app/**/*.graphql
 generates:
-  ./app/generated/client.generated.ts:
+  ./generated/client.ts:
     config:
       avoidOptionals: true
       maybeValue: T

@@ -17,7 +17,7 @@
     {
       "_": "command",
       "shadow": true,
-      "command": ""
+      "command": "ts-node scripts/database-dump"
     }
   ],
   "afterCurrent": [
