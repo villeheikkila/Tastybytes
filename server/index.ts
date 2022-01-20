@@ -32,7 +32,7 @@ app.use(
       allowExplain: true,
       appendPlugins: [SmartTagsPlugin,PgSimplifyInflectorPlugin],
       sortExport: true,
-      exportGqlSchemaPath: `${__dirname}/data/schema.graphql`,
+      exportGqlSchemaPath: `${__dirname}/generated/schema.graphql`,
     }
   )
 );

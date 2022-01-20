@@ -1,6 +1,7 @@
 import { useLoaderData } from "remix";
-import { sdk } from "~/api";
+import { sdk } from "~/api.server";
 import { GetCompaniesQuery } from "~/generated/client.generated";
+import { styled } from "~/stitches.config";
 
 export const loader = async (): Promise<GetCompaniesQuery> => {
   const companies = await sdk().getCompanies();
@@ -13,7 +14,9 @@ export default function Index() {
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Tasted</h1>
+      <H1>Tasted</H1>
     </div>
   );
 }
+
+const H1 = styled('h1', {fontWeight: "bold", color: "$red"})
