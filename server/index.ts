@@ -24,7 +24,7 @@ app.use(
   postgraphile(
     process.env.DATABASE_URL ||
       "postgres://tasted:cUssU1LEAoZqbhsR6vev64PJnhWJleAteCnzbx_X@localhost:5440/tasted",
-    "app_public",
+    "tasted_public",
     {
       watchPg: true,
       graphiql: true,
@@ -32,7 +32,7 @@ app.use(
       allowExplain: true,
       appendPlugins: [SmartTagsPlugin,PgSimplifyInflectorPlugin],
       sortExport: true,
-      exportGqlSchemaPath: `${__dirname}/generated/schema.graphql`,
+      exportGqlSchemaPath: `${__dirname}/../generated/schema.graphql`,
     }
   )
 );
