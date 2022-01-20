@@ -15,6 +15,7 @@ export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <H1>Tasted</H1>
+      {data.companies.nodes.map(company => <p>{company.name}</p>)}
     </div>
   );
 }

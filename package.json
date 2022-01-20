@@ -11,7 +11,7 @@
     "start:dev": "cross-env NODE_ENV=development tsnd --respawn server/index.ts",
     "codegen": "graphql-codegen --watch --config codegen.yml",
     "watch": "concurrently \"npm run dev\" \"npm run start:dev \" \"npm run codegen \"",
-    "gm": "graphile-migrate"
+    "gm": "NODE_OPTIONS=\"$NODE_OPTIONS -r ./scripts/source-env.js\" graphile-migrate"
   },
   "dependencies": {
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
@@ -21,6 +21,7 @@
     "compression": "^1.7.4",
     "concurrently": "^7.0.0",
     "cross-env": "^7.0.3",
+    "dotenv": "^14.2.0",
     "express": "^4.17.1",
     "graphile-migrate": "^1.2.0",
     "graphql-request": "^3.7.0",

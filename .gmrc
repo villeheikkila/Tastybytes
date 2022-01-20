@@ -10,7 +10,7 @@
     "!afterReset.sql",
     {
       "_": "command",
-      "command": ""
+      "command": "ts-node scripts/database-dump"
     }
   ],
   "afterAllMigrations": [
