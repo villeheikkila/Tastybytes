@@ -1,16 +1,14 @@
 import { useLoaderData } from "remix";
-import { sdk } from "~/api.server";
-import { GetCompaniesQuery } from "~/generated/client.generated";
+import SDK, { sdk } from "~/api.server";
 import { styled } from "~/stitches.config";
 
-export const loader = async (): Promise<GetCompaniesQuery> => {
+export const loader = async (): Promise<SDK.GetCompaniesQuery> => {
   const companies = await sdk().getCompanies();
   return companies;
 };
 
 export default function Index() {
-  const data = useLoaderData<GetCompaniesQuery>();
-  console.log('data: ', data);
+  const data = useLoaderData<SDK.GetCompaniesQuery>();
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
