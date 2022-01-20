@@ -88,11 +88,110 @@ CREATE DOMAIN tasted_public.long_text AS text
 
 
 --
+-- Name: medium_text; Type: DOMAIN; Schema: tasted_public; Owner: -
+--
+
+CREATE DOMAIN tasted_public.medium_text AS text
+	CONSTRAINT medium_text_check CHECK (((length(VALUE) >= 2) AND (length(VALUE) <= 128)));
+
+
+--
 -- Name: short_text; Type: DOMAIN; Schema: tasted_public; Owner: -
 --
 
 CREATE DOMAIN tasted_public.short_text AS text
 	CONSTRAINT short_text_check CHECK (((length(VALUE) >= 2) AND (length(VALUE) <= 56)));
+
+
+--
+-- Name: migrate_seed(); Type: PROCEDURE; Schema: tasted_private; Owner: -
+--
+
+CREATE PROCEDURE tasted_private.migrate_seed()
+    LANGUAGE sql
+    AS $$
+insert into tasted_public.companies (name)
+select distinct company as name
+from tasted_private.transferable_check_ins
+on conflict do nothing;
+insert into tasted_public.categories (name)
+select distinct category as name
+from tasted_private.transferable_check_ins
+on conflict do nothing;
+with types as (
+  select distinct category,
+                  style as name
+  from tasted_private.transferable_check_ins
+)
+insert
+into tasted_public.types (name, category)
+select name,
+       category
+from types
+on conflict do nothing;
+with brands as (
+  select distinct brand,
+                  company
+  from tasted_private.transferable_check_ins
+)
+insert
+into tasted_public.brands (name, company_id)
+select b.brand as name,
+       c.id    as company_id
+from brands b
+       left join tasted_public.companies c on b.company = c.name
+on conflict do nothing;
+with products as (
+  select b.id as brand_id,
+         p.flavor as name,
+         c.id as manufacturer_id,
+         t.id as type_id
+  from tasted_private.transferable_check_ins p
+         left join tasted_public.companies c on p.company = c.name
+         left join tasted_public.types t on p.style = t.name
+    and p.category = t.category
+         left join tasted_public.brands b on p.brand = b.name
+    and b.company_id = c.id
+)
+insert
+into tasted_public.products (name, brand_id, manufacturer_id, type_id)
+select name,
+       brand_id,
+       manufacturer_id,
+       type_id
+from products
+on conflict do nothing;
+with check_ins as (
+  select case
+           when length(p.rating) > 0 then (
+             replace(p.rating, ',', '.')::decimal * 2
+             )::integer
+           else null
+           end as rating,
+         i.id  as product_id
+  from tasted_private.transferable_check_ins p
+         left join tasted_public.companies c on p.company = c.name
+         left join tasted_public.brands b on b.company_id = c.id
+    and b.name = p.brand
+         left join tasted_public.categories k on k.name = p.category
+         left join tasted_public.types t on t.category = k.name
+    and p.style = t.name
+         left join tasted_public.products i on i.manufacturer_id = c.id
+    and b.id = i.brand_id
+    and i.name = p.flavor
+    and i.type_id = t.id
+)
+insert
+into tasted_public.check_ins (rating, product_id, author_id)
+select rating,
+       i.product_id as product_id,
+       (
+         select id
+         from tasted_public.users
+         where username = 'villeheikkila'
+       )         as author_id
+from check_ins i
+$$;
 
 
 --
@@ -116,12 +215,26 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: transferable_check_ins; Type: TABLE; Schema: tasted_private; Owner: -
+--
+
+CREATE TABLE tasted_private.transferable_check_ins (
+    company text,
+    brand text,
+    flavor text,
+    category text,
+    style text,
+    rating text
+);
+
+
+--
 -- Name: brands; Type: TABLE; Schema: tasted_public; Owner: -
 --
 
 CREATE TABLE tasted_public.brands (
     id integer NOT NULL,
-    name tasted_public.short_text,
+    name tasted_public.medium_text,
     company_id integer,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -160,18 +273,52 @@ CREATE TABLE tasted_public.categories (
 
 
 --
+-- Name: check_ins; Type: TABLE; Schema: tasted_public; Owner: -
+--
+
+CREATE TABLE tasted_public.check_ins (
+    id integer NOT NULL,
+    rating integer,
+    review text,
+    product_id integer NOT NULL,
+    author_id uuid NOT NULL,
+    check_in_date date,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT check_ins_rating CHECK (((rating >= 0) AND (rating <= 10))),
+    CONSTRAINT check_ins_review_check CHECK (((length(review) >= 1) AND (length(review) <= 1024)))
+);
+
+
+--
+-- Name: check_ins_id_seq; Type: SEQUENCE; Schema: tasted_public; Owner: -
+--
+
+CREATE SEQUENCE tasted_public.check_ins_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: check_ins_id_seq; Type: SEQUENCE OWNED BY; Schema: tasted_public; Owner: -
+--
+
+ALTER SEQUENCE tasted_public.check_ins_id_seq OWNED BY tasted_public.check_ins.id;
+
+
+--
 -- Name: companies; Type: TABLE; Schema: tasted_public; Owner: -
 --
 
 CREATE TABLE tasted_public.companies (
     id integer NOT NULL,
-    name text NOT NULL,
-    first_name tasted_public.short_text,
-    last_name tasted_public.short_text,
     is_verified boolean DEFAULT false NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by uuid,
-    CONSTRAINT companies_name_check CHECK (((length(name) >= 2) AND (length(name) <= 24)))
+    created_by uuid
 );
 
 
@@ -201,7 +348,7 @@ ALTER SEQUENCE tasted_public.companies_id_seq OWNED BY tasted_public.companies.i
 
 CREATE TABLE tasted_public.products (
     id integer NOT NULL,
-    name tasted_public.short_text,
+    name tasted_public.medium_text,
     brand_id integer NOT NULL,
     description tasted_public.long_text,
     type_id integer NOT NULL,
@@ -209,7 +356,8 @@ CREATE TABLE tasted_public.products (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     created_by uuid,
-    updated_by uuid
+    updated_by uuid,
+    manufacturer_id integer
 );
 
 
@@ -276,6 +424,8 @@ CREATE TABLE tasted_public.users (
     is_verified boolean DEFAULT false NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    first_name tasted_public.short_text,
+    last_name tasted_public.short_text,
     CONSTRAINT users_username_check CHECK (((length((username)::text) >= 2) AND (length((username)::text) <= 24) AND (username OPERATOR(public.~) '^[a-zA-Z]([_]?[a-zA-Z0-9])+$'::public.citext)))
 );
 
@@ -285,6 +435,13 @@ CREATE TABLE tasted_public.users (
 --
 
 ALTER TABLE ONLY tasted_public.brands ALTER COLUMN id SET DEFAULT nextval('tasted_public.brands_id_seq'::regclass);
+
+
+--
+-- Name: check_ins id; Type: DEFAULT; Schema: tasted_public; Owner: -
+--
+
+ALTER TABLE ONLY tasted_public.check_ins ALTER COLUMN id SET DEFAULT nextval('tasted_public.check_ins_id_seq'::regclass);
 
 
 --
@@ -333,11 +490,11 @@ ALTER TABLE ONLY tasted_public.categories
 
 
 --
--- Name: companies companies_name_key; Type: CONSTRAINT; Schema: tasted_public; Owner: -
+-- Name: check_ins check_ins_pkey; Type: CONSTRAINT; Schema: tasted_public; Owner: -
 --
 
-ALTER TABLE ONLY tasted_public.companies
-    ADD CONSTRAINT companies_name_key UNIQUE (name);
+ALTER TABLE ONLY tasted_public.check_ins
+    ADD CONSTRAINT check_ins_pkey PRIMARY KEY (id);
 
 
 --
@@ -428,6 +585,22 @@ ALTER TABLE ONLY tasted_public.brands
 
 
 --
+-- Name: check_ins check_ins_author_id_fkey; Type: FK CONSTRAINT; Schema: tasted_public; Owner: -
+--
+
+ALTER TABLE ONLY tasted_public.check_ins
+    ADD CONSTRAINT check_ins_author_id_fkey FOREIGN KEY (author_id) REFERENCES tasted_public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: check_ins check_ins_product_id_fkey; Type: FK CONSTRAINT; Schema: tasted_public; Owner: -
+--
+
+ALTER TABLE ONLY tasted_public.check_ins
+    ADD CONSTRAINT check_ins_product_id_fkey FOREIGN KEY (product_id) REFERENCES tasted_public.products(id) ON DELETE CASCADE;
+
+
+--
 -- Name: companies companies_created_by_fkey; Type: FK CONSTRAINT; Schema: tasted_public; Owner: -
 --
 
@@ -449,6 +622,14 @@ ALTER TABLE ONLY tasted_public.products
 
 ALTER TABLE ONLY tasted_public.products
     ADD CONSTRAINT products_created_by_fkey FOREIGN KEY (created_by) REFERENCES tasted_public.users(id) ON DELETE SET NULL;
+
+
+--
+-- Name: products products_manufacturer_id_fkey; Type: FK CONSTRAINT; Schema: tasted_public; Owner: -
+--
+
+ALTER TABLE ONLY tasted_public.products
+    ADD CONSTRAINT products_manufacturer_id_fkey FOREIGN KEY (manufacturer_id) REFERENCES tasted_public.companies(id) ON DELETE CASCADE;
 
 
 --
@@ -500,6 +681,13 @@ GRANT USAGE ON SCHEMA tasted_public TO tasted_visitor;
 
 
 --
+-- Name: PROCEDURE migrate_seed(); Type: ACL; Schema: tasted_private; Owner: -
+--
+
+REVOKE ALL ON PROCEDURE tasted_private.migrate_seed() FROM PUBLIC;
+
+
+--
 -- Name: FUNCTION tg__timestamps(); Type: ACL; Schema: tasted_private; Owner: -
 --
 
@@ -511,6 +699,13 @@ REVOKE ALL ON FUNCTION tasted_private.tg__timestamps() FROM PUBLIC;
 --
 
 GRANT SELECT,USAGE ON SEQUENCE tasted_public.brands_id_seq TO tasted_visitor;
+
+
+--
+-- Name: SEQUENCE check_ins_id_seq; Type: ACL; Schema: tasted_public; Owner: -
+--
+
+GRANT SELECT,USAGE ON SEQUENCE tasted_public.check_ins_id_seq TO tasted_visitor;
 
 
 --

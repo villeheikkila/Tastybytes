@@ -5,7 +5,7 @@ type Brand implements Node {
   createdAt: Datetime!
   createdBy: UUID
   id: Int!
-  name: ShortText
+  name: MediumText
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -67,7 +67,7 @@ input BrandCondition {
   id: Int
 
   """Checks for equality with the object’s `name` field."""
-  name: ShortText
+  name: MediumText
 
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
@@ -82,7 +82,7 @@ input BrandInput {
   createdAt: Datetime
   createdBy: UUID
   id: Int
-  name: ShortText
+  name: MediumText
   updatedAt: Datetime
   updatedBy: UUID
 }
@@ -95,7 +95,7 @@ input BrandPatch {
   createdAt: Datetime
   createdBy: UUID
   id: Int
-  name: ShortText
+  name: MediumText
   updatedAt: Datetime
   updatedBy: UUID
 }
@@ -241,6 +241,131 @@ input CategoryPatch {
   name: String
 }
 
+type CheckIn implements Node {
+  """Reads a single `User` that is related to this `CheckIn`."""
+  author: User
+  authorId: UUID!
+  checkInDate: Date
+  createdAt: Datetime!
+  id: Int!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  """Reads a single `Product` that is related to this `CheckIn`."""
+  product: Product
+  productId: Int!
+  rating: Int
+  review: String
+  updatedAt: Datetime!
+}
+
+"""
+A condition to be used against `CheckIn` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input CheckInCondition {
+  """Checks for equality with the object’s `authorId` field."""
+  authorId: UUID
+
+  """Checks for equality with the object’s `checkInDate` field."""
+  checkInDate: Date
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `productId` field."""
+  productId: Int
+
+  """Checks for equality with the object’s `rating` field."""
+  rating: Int
+
+  """Checks for equality with the object’s `review` field."""
+  review: String
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+}
+
+"""An input for mutations affecting `CheckIn`"""
+input CheckInInput {
+  authorId: UUID!
+  checkInDate: Date
+  createdAt: Datetime
+  id: Int
+  productId: Int!
+  rating: Int
+  review: String
+  updatedAt: Datetime
+}
+
+"""
+Represents an update to a `CheckIn`. Fields that are set will be updated.
+"""
+input CheckInPatch {
+  authorId: UUID
+  checkInDate: Date
+  createdAt: Datetime
+  id: Int
+  productId: Int
+  rating: Int
+  review: String
+  updatedAt: Datetime
+}
+
+"""A connection to a list of `CheckIn` values."""
+type CheckInsConnection {
+  """
+  A list of edges which contains the `CheckIn` and cursor to aid in pagination.
+  """
+  edges: [CheckInsEdge!]!
+
+  """A list of `CheckIn` objects."""
+  nodes: [CheckIn]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CheckIn` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `CheckIn` edge in the connection."""
+type CheckInsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CheckIn` at the end of the edge."""
+  node: CheckIn
+}
+
+"""Methods to use when ordering `CheckIn`."""
+enum CheckInsOrderBy {
+  AUTHOR_ID_ASC
+  AUTHOR_ID_DESC
+  CHECK_IN_DATE_ASC
+  CHECK_IN_DATE_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  PRODUCT_ID_ASC
+  PRODUCT_ID_DESC
+  RATING_ASC
+  RATING_DESC
+  REVIEW_ASC
+  REVIEW_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+}
+
 """A connection to a list of `Company` values."""
 type CompaniesConnection {
   """
@@ -273,14 +398,10 @@ enum CompaniesOrderBy {
   CREATED_AT_DESC
   CREATED_BY_ASC
   CREATED_BY_DESC
-  FIRST_NAME_ASC
-  FIRST_NAME_DESC
   ID_ASC
   ID_DESC
   IS_VERIFIED_ASC
   IS_VERIFIED_DESC
-  LAST_NAME_ASC
-  LAST_NAME_DESC
   NAME_ASC
   NAME_DESC
   NATURAL
@@ -319,16 +440,43 @@ type Company implements Node {
   ): BrandsConnection!
   createdAt: Datetime!
   createdBy: UUID
-  firstName: ShortText
   id: Int!
   isVerified: Boolean!
-  lastName: ShortText
-  name: String!
+  name: ShortText
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   nodeId: ID!
+
+  """Reads and enables pagination through a set of `Product`."""
+  productsByManufacturerId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProductCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Product`."""
+    orderBy: [ProductsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ProductsConnection!
 
   """Reads a single `User` that is related to this `Company`."""
   userByCreatedBy: User
@@ -344,31 +492,23 @@ input CompanyCondition {
   """Checks for equality with the object’s `createdBy` field."""
   createdBy: UUID
 
-  """Checks for equality with the object’s `firstName` field."""
-  firstName: ShortText
-
   """Checks for equality with the object’s `id` field."""
   id: Int
 
   """Checks for equality with the object’s `isVerified` field."""
   isVerified: Boolean
 
-  """Checks for equality with the object’s `lastName` field."""
-  lastName: ShortText
-
   """Checks for equality with the object’s `name` field."""
-  name: String
+  name: ShortText
 }
 
 """An input for mutations affecting `Company`"""
 input CompanyInput {
   createdAt: Datetime
   createdBy: UUID
-  firstName: ShortText
   id: Int
   isVerified: Boolean
-  lastName: ShortText
-  name: String!
+  name: ShortText
 }
 
 """
@@ -377,11 +517,9 @@ Represents an update to a `Company`. Fields that are set will be updated.
 input CompanyPatch {
   createdAt: Datetime
   createdBy: UUID
-  firstName: ShortText
   id: Int
   isVerified: Boolean
-  lastName: ShortText
-  name: String
+  name: ShortText
 }
 
 """All input for the create `Brand` mutation."""
@@ -463,6 +601,47 @@ type CreateCategoryPayload {
   query: Query
 }
 
+"""All input for the create `CheckIn` mutation."""
+input CreateCheckInInput {
+  """The `CheckIn` to be created by this mutation."""
+  checkIn: CheckInInput!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our create `CheckIn` mutation."""
+type CreateCheckInPayload {
+  """Reads a single `User` that is related to this `CheckIn`."""
+  author: User
+
+  """The `CheckIn` that was created by this mutation."""
+  checkIn: CheckIn
+
+  """An edge for our `CheckIn`. May be used by Relay 1."""
+  checkInEdge(
+    """The method to use when ordering `CheckIn`."""
+    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CheckInsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Product` that is related to this `CheckIn`."""
+  product: Product
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the create `Company` mutation."""
 input CreateCompanyInput {
   """
@@ -523,6 +702,9 @@ type CreateProductPayload {
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
+
+  """Reads a single `Company` that is related to this `Product`."""
+  manufacturer: Company
 
   """The `Product` that was created by this mutation."""
   product: Product
@@ -624,6 +806,9 @@ type CreateUserPayload {
 """A location in a connection that can be used for resuming pagination."""
 scalar Cursor
 
+"""The day, does not include a time."""
+scalar Date
+
 """
 A point in time as described by the [ISO
 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
@@ -638,7 +823,7 @@ input DeleteBrandByCompanyIdAndNameInput {
   """
   clientMutationId: String
   companyId: Int!
-  name: ShortText!
+  name: MediumText!
 }
 
 """All input for the `deleteBrandByNodeId` mutation."""
@@ -746,6 +931,60 @@ type DeleteCategoryPayload {
   query: Query
 }
 
+"""All input for the `deleteCheckInByNodeId` mutation."""
+input DeleteCheckInByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `CheckIn` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteCheckIn` mutation."""
+input DeleteCheckInInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+}
+
+"""The output of our delete `CheckIn` mutation."""
+type DeleteCheckInPayload {
+  """Reads a single `User` that is related to this `CheckIn`."""
+  author: User
+
+  """The `CheckIn` that was deleted by this mutation."""
+  checkIn: CheckIn
+
+  """An edge for our `CheckIn`. May be used by Relay 1."""
+  checkInEdge(
+    """The method to use when ordering `CheckIn`."""
+    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CheckInsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedCheckInNodeId: ID
+
+  """Reads a single `Product` that is related to this `CheckIn`."""
+  product: Product
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `deleteCompanyByName` mutation."""
 input DeleteCompanyByNameInput {
   """
@@ -753,7 +992,7 @@ input DeleteCompanyByNameInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  name: String!
+  name: ShortText!
 }
 
 """All input for the `deleteCompanyByNodeId` mutation."""
@@ -816,7 +1055,7 @@ input DeleteProductByNameAndBrandIdAndTypeIdInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  name: ShortText!
+  name: MediumText!
   typeId: Int!
 }
 
@@ -855,6 +1094,9 @@ type DeleteProductPayload {
   """
   clientMutationId: String
   deletedProductNodeId: ID
+
+  """Reads a single `Company` that is related to this `Product`."""
+  manufacturer: Company
 
   """The `Product` that was deleted by this mutation."""
   product: Product
@@ -1003,6 +1245,8 @@ type DeleteUserPayload {
 
 scalar LongText
 
+scalar MediumText
+
 """
 The root mutation type which contains root level fields which mutate data.
 """
@@ -1022,6 +1266,14 @@ type Mutation {
     """
     input: CreateCategoryInput!
   ): CreateCategoryPayload
+
+  """Creates a single `CheckIn`."""
+  createCheckIn(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateCheckInInput!
+  ): CreateCheckInPayload
 
   """Creates a single `Company`."""
   createCompany(
@@ -1094,6 +1346,22 @@ type Mutation {
     """
     input: DeleteCategoryByNodeIdInput!
   ): DeleteCategoryPayload
+
+  """Deletes a single `CheckIn` using a unique key."""
+  deleteCheckIn(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteCheckInInput!
+  ): DeleteCheckInPayload
+
+  """Deletes a single `CheckIn` using its globally unique id."""
+  deleteCheckInByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteCheckInByNodeIdInput!
+  ): DeleteCheckInPayload
 
   """Deletes a single `Company` using a unique key."""
   deleteCompany(
@@ -1231,6 +1499,22 @@ type Mutation {
     input: UpdateCategoryByNodeIdInput!
   ): UpdateCategoryPayload
 
+  """Updates a single `CheckIn` using a unique key and a patch."""
+  updateCheckIn(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateCheckInInput!
+  ): UpdateCheckInPayload
+
+  """Updates a single `CheckIn` using its globally unique id and a patch."""
+  updateCheckInByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateCheckInByNodeIdInput!
+  ): UpdateCheckInPayload
+
   """Updates a single `Company` using a unique key and a patch."""
   updateCompany(
     """
@@ -1355,12 +1639,45 @@ type Product implements Node {
   """Reads a single `Brand` that is related to this `Product`."""
   brand: Brand
   brandId: Int!
+
+  """Reads and enables pagination through a set of `CheckIn`."""
+  checkIns(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CheckInCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CheckIn`."""
+    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CheckInsConnection!
   createdAt: Datetime!
   createdBy: UUID
   description: LongText
   id: Int!
   isVerified: Boolean
-  name: ShortText
+
+  """Reads a single `Company` that is related to this `Product`."""
+  manufacturer: Company
+  manufacturerId: Int
+  name: MediumText
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -1402,8 +1719,11 @@ input ProductCondition {
   """Checks for equality with the object’s `isVerified` field."""
   isVerified: Boolean
 
+  """Checks for equality with the object’s `manufacturerId` field."""
+  manufacturerId: Int
+
   """Checks for equality with the object’s `name` field."""
-  name: ShortText
+  name: MediumText
 
   """Checks for equality with the object’s `typeId` field."""
   typeId: Int
@@ -1423,7 +1743,8 @@ input ProductInput {
   description: LongText
   id: Int
   isVerified: Boolean
-  name: ShortText
+  manufacturerId: Int
+  name: MediumText
   typeId: Int!
   updatedAt: Datetime
   updatedBy: UUID
@@ -1439,7 +1760,8 @@ input ProductPatch {
   description: LongText
   id: Int
   isVerified: Boolean
-  name: ShortText
+  manufacturerId: Int
+  name: MediumText
   typeId: Int
   updatedAt: Datetime
   updatedBy: UUID
@@ -1485,6 +1807,8 @@ enum ProductsOrderBy {
   ID_DESC
   IS_VERIFIED_ASC
   IS_VERIFIED_DESC
+  MANUFACTURER_ID_ASC
+  MANUFACTURER_ID_DESC
   NAME_ASC
   NAME_DESC
   NATURAL
@@ -1501,7 +1825,7 @@ enum ProductsOrderBy {
 """The root query type which gives access points into the data universe."""
 type Query implements Node {
   brand(id: Int!): Brand
-  brandByCompanyIdAndName(companyId: Int!, name: ShortText!): Brand
+  brandByCompanyIdAndName(companyId: Int!, name: MediumText!): Brand
 
   """Reads a single `Brand` using its globally unique `ID`."""
   brandByNodeId(
@@ -1573,6 +1897,42 @@ type Query implements Node {
     """The globally unique `ID` to be used in selecting a single `Category`."""
     nodeId: ID!
   ): Category
+  checkIn(id: Int!): CheckIn
+
+  """Reads a single `CheckIn` using its globally unique `ID`."""
+  checkInByNodeId(
+    """The globally unique `ID` to be used in selecting a single `CheckIn`."""
+    nodeId: ID!
+  ): CheckIn
+
+  """Reads and enables pagination through a set of `CheckIn`."""
+  checkIns(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CheckInCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CheckIn`."""
+    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CheckInsConnection
 
   """Reads and enables pagination through a set of `Company`."""
   companies(
@@ -1603,7 +1963,7 @@ type Query implements Node {
     orderBy: [CompaniesOrderBy!] = [PRIMARY_KEY_ASC]
   ): CompaniesConnection
   company(id: Int!): Company
-  companyByName(name: String!): Company
+  companyByName(name: ShortText!): Company
 
   """Reads a single `Company` using its globally unique `ID`."""
   companyByNodeId(
@@ -1622,7 +1982,7 @@ type Query implements Node {
   """
   nodeId: ID!
   product(id: Int!): Product
-  productByNameAndBrandIdAndTypeId(brandId: Int!, name: ShortText!, typeId: Int!): Product
+  productByNameAndBrandIdAndTypeId(brandId: Int!, name: MediumText!, typeId: Int!): Product
 
   """Reads a single `Product` using its globally unique `ID`."""
   productByNodeId(
@@ -1836,7 +2196,7 @@ input UpdateBrandByCompanyIdAndNameInput {
   """
   clientMutationId: String
   companyId: Int!
-  name: ShortText!
+  name: MediumText!
 
   """
   An object where the defined keys will be set on the `Brand` being updated.
@@ -1967,6 +2327,69 @@ type UpdateCategoryPayload {
   query: Query
 }
 
+"""All input for the `updateCheckInByNodeId` mutation."""
+input UpdateCheckInByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `CheckIn` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `CheckIn` being updated.
+  """
+  patch: CheckInPatch!
+}
+
+"""All input for the `updateCheckIn` mutation."""
+input UpdateCheckInInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `CheckIn` being updated.
+  """
+  patch: CheckInPatch!
+}
+
+"""The output of our update `CheckIn` mutation."""
+type UpdateCheckInPayload {
+  """Reads a single `User` that is related to this `CheckIn`."""
+  author: User
+
+  """The `CheckIn` that was updated by this mutation."""
+  checkIn: CheckIn
+
+  """An edge for our `CheckIn`. May be used by Relay 1."""
+  checkInEdge(
+    """The method to use when ordering `CheckIn`."""
+    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CheckInsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Product` that is related to this `CheckIn`."""
+  product: Product
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `updateCompanyByName` mutation."""
 input UpdateCompanyByNameInput {
   """
@@ -1974,7 +2397,7 @@ input UpdateCompanyByNameInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  name: String!
+  name: ShortText!
 
   """
   An object where the defined keys will be set on the `Company` being updated.
@@ -2051,7 +2474,7 @@ input UpdateProductByNameAndBrandIdAndTypeIdInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  name: ShortText!
+  name: MediumText!
 
   """
   An object where the defined keys will be set on the `Product` being updated.
@@ -2104,6 +2527,9 @@ type UpdateProductPayload {
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
+
+  """Reads a single `Company` that is related to this `Product`."""
+  manufacturer: Company
 
   """The `Product` that was updated by this mutation."""
   product: Product
@@ -2280,6 +2706,35 @@ type UpdateUserPayload {
 
 """A user who can log in to the application."""
 type User implements Node {
+  """Reads and enables pagination through a set of `CheckIn`."""
+  authoredCheckIns(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CheckInCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CheckIn`."""
+    orderBy: [CheckInsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CheckInsConnection!
+
   """Reads and enables pagination through a set of `Brand`."""
   brandsByCreatedBy(
     """Read all values in the set after (below) this cursor."""
@@ -2367,10 +2822,11 @@ type User implements Node {
     orderBy: [CompaniesOrderBy!] = [PRIMARY_KEY_ASC]
   ): CompaniesConnection!
   createdAt: Datetime!
+  firstName: ShortText
   id: UUID!
   isAdmin: Boolean!
   isVerified: Boolean!
-  name: String
+  lastName: ShortText
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -2441,9 +2897,11 @@ type User implements Node {
 """An input for mutations affecting `User`"""
 input UserInput {
   createdAt: Datetime
+  firstName: ShortText
   id: UUID
   isAdmin: Boolean
   isVerified: Boolean
+  lastName: ShortText
   name: String
   updatedAt: Datetime
   username: String!
@@ -2452,9 +2910,11 @@ input UserInput {
 """Represents an update to a `User`. Fields that are set will be updated."""
 input UserPatch {
   createdAt: Datetime
+  firstName: ShortText
   id: UUID
   isAdmin: Boolean
   isVerified: Boolean
+  lastName: ShortText
   name: String
   updatedAt: Datetime
   username: String
@@ -2473,12 +2933,16 @@ type UsersEdge {
 enum UsersOrderBy {
   CREATED_AT_ASC
   CREATED_AT_DESC
+  FIRST_NAME_ASC
+  FIRST_NAME_DESC
   ID_ASC
   ID_DESC
   IS_ADMIN_ASC
   IS_ADMIN_DESC
   IS_VERIFIED_ASC
   IS_VERIFIED_DESC
+  LAST_NAME_ASC
+  LAST_NAME_DESC
   NAME_ASC
   NAME_DESC
   NATURAL
