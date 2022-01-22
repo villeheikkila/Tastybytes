@@ -15,12 +15,15 @@ export type Scalars = {
   Float: number;
   /** A location in a connection that can be used for resuming pagination. */
   Cursor: any;
+  /** The day, does not include a time. */
+  Date: any;
   /**
    * A point in time as described by the [ISO
    * 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
    */
   Datetime: any;
   LongText: any;
+  MediumText: any;
   ShortText: any;
   /** A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122). */
   UUID: any;
@@ -34,7 +37,7 @@ export type Brand = Node & {
   createdAt: Scalars['Datetime'];
   createdBy: Maybe<Scalars['UUID']>;
   id: Scalars['Int'];
-  name: Maybe<Scalars['ShortText']>;
+  name: Maybe<Scalars['MediumText']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `Product`. */
@@ -69,7 +72,7 @@ export type BrandCondition = {
   /** Checks for equality with the object’s `id` field. */
   id: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `name` field. */
-  name: InputMaybe<Scalars['ShortText']>;
+  name: InputMaybe<Scalars['MediumText']>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `updatedBy` field. */
@@ -82,7 +85,7 @@ export type BrandInput = {
   createdAt: InputMaybe<Scalars['Datetime']>;
   createdBy: InputMaybe<Scalars['UUID']>;
   id: InputMaybe<Scalars['Int']>;
-  name: InputMaybe<Scalars['ShortText']>;
+  name: InputMaybe<Scalars['MediumText']>;
   updatedAt: InputMaybe<Scalars['Datetime']>;
   updatedBy: InputMaybe<Scalars['UUID']>;
 };
@@ -93,7 +96,7 @@ export type BrandPatch = {
   createdAt: InputMaybe<Scalars['Datetime']>;
   createdBy: InputMaybe<Scalars['UUID']>;
   id: InputMaybe<Scalars['Int']>;
-  name: InputMaybe<Scalars['ShortText']>;
+  name: InputMaybe<Scalars['MediumText']>;
   updatedAt: InputMaybe<Scalars['Datetime']>;
   updatedBy: InputMaybe<Scalars['UUID']>;
 };
@@ -211,6 +214,113 @@ export type CategoryPatch = {
   name: InputMaybe<Scalars['String']>;
 };
 
+export type CheckIn = Node & {
+  __typename?: 'CheckIn';
+  /** Reads a single `User` that is related to this `CheckIn`. */
+  author: Maybe<User>;
+  authorId: Scalars['UUID'];
+  checkInDate: Maybe<Scalars['Date']>;
+  createdAt: Scalars['Datetime'];
+  id: Scalars['Int'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads a single `Product` that is related to this `CheckIn`. */
+  product: Maybe<Product>;
+  productId: Scalars['Int'];
+  rating: Maybe<Scalars['Int']>;
+  review: Maybe<Scalars['String']>;
+  updatedAt: Scalars['Datetime'];
+};
+
+/** A condition to be used against `CheckIn` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type CheckInCondition = {
+  /** Checks for equality with the object’s `authorId` field. */
+  authorId: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `checkInDate` field. */
+  checkInDate: InputMaybe<Scalars['Date']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `id` field. */
+  id: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `productId` field. */
+  productId: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `rating` field. */
+  rating: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `review` field. */
+  review: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt: InputMaybe<Scalars['Datetime']>;
+};
+
+/** An input for mutations affecting `CheckIn` */
+export type CheckInInput = {
+  authorId: Scalars['UUID'];
+  checkInDate: InputMaybe<Scalars['Date']>;
+  createdAt: InputMaybe<Scalars['Datetime']>;
+  id: InputMaybe<Scalars['Int']>;
+  productId: Scalars['Int'];
+  rating: InputMaybe<Scalars['Int']>;
+  review: InputMaybe<Scalars['String']>;
+  updatedAt: InputMaybe<Scalars['Datetime']>;
+};
+
+/** Represents an update to a `CheckIn`. Fields that are set will be updated. */
+export type CheckInPatch = {
+  authorId: InputMaybe<Scalars['UUID']>;
+  checkInDate: InputMaybe<Scalars['Date']>;
+  createdAt: InputMaybe<Scalars['Datetime']>;
+  id: InputMaybe<Scalars['Int']>;
+  productId: InputMaybe<Scalars['Int']>;
+  rating: InputMaybe<Scalars['Int']>;
+  review: InputMaybe<Scalars['String']>;
+  updatedAt: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A connection to a list of `CheckIn` values. */
+export type CheckInsConnection = {
+  __typename?: 'CheckInsConnection';
+  /** A list of edges which contains the `CheckIn` and cursor to aid in pagination. */
+  edges: Array<CheckInsEdge>;
+  /** A list of `CheckIn` objects. */
+  nodes: Array<Maybe<CheckIn>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `CheckIn` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `CheckIn` edge in the connection. */
+export type CheckInsEdge = {
+  __typename?: 'CheckInsEdge';
+  /** A cursor for use in pagination. */
+  cursor: Maybe<Scalars['Cursor']>;
+  /** The `CheckIn` at the end of the edge. */
+  node: Maybe<CheckIn>;
+};
+
+/** Methods to use when ordering `CheckIn`. */
+export enum CheckInsOrderBy {
+  AuthorIdAsc = 'AUTHOR_ID_ASC',
+  AuthorIdDesc = 'AUTHOR_ID_DESC',
+  CheckInDateAsc = 'CHECK_IN_DATE_ASC',
+  CheckInDateDesc = 'CHECK_IN_DATE_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  ProductIdAsc = 'PRODUCT_ID_ASC',
+  ProductIdDesc = 'PRODUCT_ID_DESC',
+  RatingAsc = 'RATING_ASC',
+  RatingDesc = 'RATING_DESC',
+  ReviewAsc = 'REVIEW_ASC',
+  ReviewDesc = 'REVIEW_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
 /** A connection to a list of `Company` values. */
 export type CompaniesConnection = {
   __typename?: 'CompaniesConnection';
@@ -239,14 +349,10 @@ export enum CompaniesOrderBy {
   CreatedAtDesc = 'CREATED_AT_DESC',
   CreatedByAsc = 'CREATED_BY_ASC',
   CreatedByDesc = 'CREATED_BY_DESC',
-  FirstNameAsc = 'FIRST_NAME_ASC',
-  FirstNameDesc = 'FIRST_NAME_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   IsVerifiedAsc = 'IS_VERIFIED_ASC',
   IsVerifiedDesc = 'IS_VERIFIED_DESC',
-  LastNameAsc = 'LAST_NAME_ASC',
-  LastNameDesc = 'LAST_NAME_DESC',
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
@@ -260,13 +366,13 @@ export type Company = Node & {
   brands: BrandsConnection;
   createdAt: Scalars['Datetime'];
   createdBy: Maybe<Scalars['UUID']>;
-  firstName: Maybe<Scalars['ShortText']>;
   id: Scalars['Int'];
   isVerified: Scalars['Boolean'];
-  lastName: Maybe<Scalars['ShortText']>;
-  name: Scalars['String'];
+  name: Maybe<Scalars['MediumText']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** Reads and enables pagination through a set of `Product`. */
+  productsByManufacturerId: ProductsConnection;
   /** Reads a single `User` that is related to this `Company`. */
   userByCreatedBy: Maybe<User>;
 };
@@ -282,44 +388,47 @@ export type CompanyBrandsArgs = {
   orderBy?: InputMaybe<Array<BrandsOrderBy>>;
 };
 
+
+export type CompanyProductsByManufacturerIdArgs = {
+  after: InputMaybe<Scalars['Cursor']>;
+  before: InputMaybe<Scalars['Cursor']>;
+  condition: InputMaybe<ProductCondition>;
+  first: InputMaybe<Scalars['Int']>;
+  last: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<ProductsOrderBy>>;
+};
+
 /** A condition to be used against `Company` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type CompanyCondition = {
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `createdBy` field. */
   createdBy: InputMaybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `firstName` field. */
-  firstName: InputMaybe<Scalars['ShortText']>;
   /** Checks for equality with the object’s `id` field. */
   id: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `isVerified` field. */
   isVerified: InputMaybe<Scalars['Boolean']>;
-  /** Checks for equality with the object’s `lastName` field. */
-  lastName: InputMaybe<Scalars['ShortText']>;
   /** Checks for equality with the object’s `name` field. */
-  name: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['MediumText']>;
 };
 
 /** An input for mutations affecting `Company` */
 export type CompanyInput = {
   createdAt: InputMaybe<Scalars['Datetime']>;
   createdBy: InputMaybe<Scalars['UUID']>;
-  firstName: InputMaybe<Scalars['ShortText']>;
   id: InputMaybe<Scalars['Int']>;
   isVerified: InputMaybe<Scalars['Boolean']>;
-  lastName: InputMaybe<Scalars['ShortText']>;
-  name: Scalars['String'];
+  name: InputMaybe<Scalars['MediumText']>;
 };
 
 /** Represents an update to a `Company`. Fields that are set will be updated. */
 export type CompanyPatch = {
   createdAt: InputMaybe<Scalars['Datetime']>;
   createdBy: InputMaybe<Scalars['UUID']>;
-  firstName: InputMaybe<Scalars['ShortText']>;
   id: InputMaybe<Scalars['Int']>;
   isVerified: InputMaybe<Scalars['Boolean']>;
-  lastName: InputMaybe<Scalars['ShortText']>;
-  name: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['MediumText']>;
 };
 
 /** All input for the create `Brand` mutation. */
@@ -394,6 +503,43 @@ export type CreateCategoryPayloadCategoryEdgeArgs = {
   orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
 };
 
+/** All input for the create `CheckIn` mutation. */
+export type CreateCheckInInput = {
+  /** The `CheckIn` to be created by this mutation. */
+  checkIn: CheckInInput;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our create `CheckIn` mutation. */
+export type CreateCheckInPayload = {
+  __typename?: 'CreateCheckInPayload';
+  /** Reads a single `User` that is related to this `CheckIn`. */
+  author: Maybe<User>;
+  /** The `CheckIn` that was created by this mutation. */
+  checkIn: Maybe<CheckIn>;
+  /** An edge for our `CheckIn`. May be used by Relay 1. */
+  checkInEdge: Maybe<CheckInsEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId: Maybe<Scalars['String']>;
+  /** Reads a single `Product` that is related to this `CheckIn`. */
+  product: Maybe<Product>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query: Maybe<Query>;
+};
+
+
+/** The output of our create `CheckIn` mutation. */
+export type CreateCheckInPayloadCheckInEdgeArgs = {
+  orderBy?: InputMaybe<Array<CheckInsOrderBy>>;
+};
+
 /** All input for the create `Company` mutation. */
 export type CreateCompanyInput = {
   /**
@@ -450,6 +596,8 @@ export type CreateProductPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId: Maybe<Scalars['String']>;
+  /** Reads a single `Company` that is related to this `Product`. */
+  manufacturer: Maybe<Company>;
   /** The `Product` that was created by this mutation. */
   product: Maybe<Product>;
   /** An edge for our `Product`. May be used by Relay 1. */
@@ -546,7 +694,7 @@ export type DeleteBrandByCompanyIdAndNameInput = {
    */
   clientMutationId: InputMaybe<Scalars['String']>;
   companyId: Scalars['Int'];
-  name: Scalars['ShortText'];
+  name: Scalars['MediumText'];
 };
 
 /** All input for the `deleteBrandByNodeId` mutation. */
@@ -643,6 +791,54 @@ export type DeleteCategoryPayloadCategoryEdgeArgs = {
   orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
 };
 
+/** All input for the `deleteCheckInByNodeId` mutation. */
+export type DeleteCheckInByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `CheckIn` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteCheckIn` mutation. */
+export type DeleteCheckInInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId: InputMaybe<Scalars['String']>;
+  id: Scalars['Int'];
+};
+
+/** The output of our delete `CheckIn` mutation. */
+export type DeleteCheckInPayload = {
+  __typename?: 'DeleteCheckInPayload';
+  /** Reads a single `User` that is related to this `CheckIn`. */
+  author: Maybe<User>;
+  /** The `CheckIn` that was deleted by this mutation. */
+  checkIn: Maybe<CheckIn>;
+  /** An edge for our `CheckIn`. May be used by Relay 1. */
+  checkInEdge: Maybe<CheckInsEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId: Maybe<Scalars['String']>;
+  deletedCheckInNodeId: Maybe<Scalars['ID']>;
+  /** Reads a single `Product` that is related to this `CheckIn`. */
+  product: Maybe<Product>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query: Maybe<Query>;
+};
+
+
+/** The output of our delete `CheckIn` mutation. */
+export type DeleteCheckInPayloadCheckInEdgeArgs = {
+  orderBy?: InputMaybe<Array<CheckInsOrderBy>>;
+};
+
 /** All input for the `deleteCompanyByName` mutation. */
 export type DeleteCompanyByNameInput = {
   /**
@@ -650,7 +846,7 @@ export type DeleteCompanyByNameInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
+  name: Scalars['MediumText'];
 };
 
 /** All input for the `deleteCompanyByNodeId` mutation. */
@@ -707,7 +903,7 @@ export type DeleteProductByNameAndBrandIdAndTypeIdInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId: InputMaybe<Scalars['String']>;
-  name: Scalars['ShortText'];
+  name: Scalars['MediumText'];
   typeId: Scalars['Int'];
 };
 
@@ -743,6 +939,8 @@ export type DeleteProductPayload = {
    */
   clientMutationId: Maybe<Scalars['String']>;
   deletedProductNodeId: Maybe<Scalars['ID']>;
+  /** Reads a single `Company` that is related to this `Product`. */
+  manufacturer: Maybe<Company>;
   /** The `Product` that was deleted by this mutation. */
   product: Maybe<Product>;
   /** An edge for our `Product`. May be used by Relay 1. */
@@ -874,6 +1072,38 @@ export type DeleteUserPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
+/** All input for the `login` mutation. */
+export type LoginInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
+/** The output of our `login` mutation. */
+export type LoginPayload = {
+  __typename?: 'LoginPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query: Maybe<Query>;
+  user: Maybe<User>;
+  /** An edge for our `User`. May be used by Relay 1. */
+  userEdge: Maybe<UsersEdge>;
+};
+
+
+/** The output of our `login` mutation. */
+export type LoginPayloadUserEdgeArgs = {
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
+};
+
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
@@ -881,6 +1111,8 @@ export type Mutation = {
   createBrand: Maybe<CreateBrandPayload>;
   /** Creates a single `Category`. */
   createCategory: Maybe<CreateCategoryPayload>;
+  /** Creates a single `CheckIn`. */
+  createCheckIn: Maybe<CreateCheckInPayload>;
   /** Creates a single `Company`. */
   createCompany: Maybe<CreateCompanyPayload>;
   /** Creates a single `Product`. */
@@ -899,6 +1131,10 @@ export type Mutation = {
   deleteCategory: Maybe<DeleteCategoryPayload>;
   /** Deletes a single `Category` using its globally unique id. */
   deleteCategoryByNodeId: Maybe<DeleteCategoryPayload>;
+  /** Deletes a single `CheckIn` using a unique key. */
+  deleteCheckIn: Maybe<DeleteCheckInPayload>;
+  /** Deletes a single `CheckIn` using its globally unique id. */
+  deleteCheckInByNodeId: Maybe<DeleteCheckInPayload>;
   /** Deletes a single `Company` using a unique key. */
   deleteCompany: Maybe<DeleteCompanyPayload>;
   /** Deletes a single `Company` using a unique key. */
@@ -923,6 +1159,8 @@ export type Mutation = {
   deleteUserByNodeId: Maybe<DeleteUserPayload>;
   /** Deletes a single `User` using a unique key. */
   deleteUserByUsername: Maybe<DeleteUserPayload>;
+  login: Maybe<LoginPayload>;
+  register: Maybe<RegisterPayload>;
   /** Updates a single `Brand` using a unique key and a patch. */
   updateBrand: Maybe<UpdateBrandPayload>;
   /** Updates a single `Brand` using a unique key and a patch. */
@@ -933,6 +1171,10 @@ export type Mutation = {
   updateCategory: Maybe<UpdateCategoryPayload>;
   /** Updates a single `Category` using its globally unique id and a patch. */
   updateCategoryByNodeId: Maybe<UpdateCategoryPayload>;
+  /** Updates a single `CheckIn` using a unique key and a patch. */
+  updateCheckIn: Maybe<UpdateCheckInPayload>;
+  /** Updates a single `CheckIn` using its globally unique id and a patch. */
+  updateCheckInByNodeId: Maybe<UpdateCheckInPayload>;
   /** Updates a single `Company` using a unique key and a patch. */
   updateCompany: Maybe<UpdateCompanyPayload>;
   /** Updates a single `Company` using a unique key and a patch. */
@@ -969,6 +1211,12 @@ export type MutationCreateBrandArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateCategoryArgs = {
   input: CreateCategoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateCheckInArgs = {
+  input: CreateCheckInInput;
 };
 
 
@@ -1023,6 +1271,18 @@ export type MutationDeleteCategoryArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteCategoryByNodeIdArgs = {
   input: DeleteCategoryByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteCheckInArgs = {
+  input: DeleteCheckInInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteCheckInByNodeIdArgs = {
+  input: DeleteCheckInByNodeIdInput;
 };
 
 
@@ -1099,6 +1359,18 @@ export type MutationDeleteUserByUsernameArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationLoginArgs = {
+  input: LoginInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationRegisterArgs = {
+  input: RegisterInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateBrandArgs = {
   input: UpdateBrandInput;
 };
@@ -1125,6 +1397,18 @@ export type MutationUpdateCategoryArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateCategoryByNodeIdArgs = {
   input: UpdateCategoryByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateCheckInArgs = {
+  input: UpdateCheckInInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateCheckInByNodeIdArgs = {
+  input: UpdateCheckInByNodeIdInput;
 };
 
 
@@ -1223,12 +1507,17 @@ export type Product = Node & {
   /** Reads a single `Brand` that is related to this `Product`. */
   brand: Maybe<Brand>;
   brandId: Scalars['Int'];
+  /** Reads and enables pagination through a set of `CheckIn`. */
+  checkIns: CheckInsConnection;
   createdAt: Scalars['Datetime'];
   createdBy: Maybe<Scalars['UUID']>;
   description: Maybe<Scalars['LongText']>;
   id: Scalars['Int'];
   isVerified: Maybe<Scalars['Boolean']>;
-  name: Maybe<Scalars['ShortText']>;
+  /** Reads a single `Company` that is related to this `Product`. */
+  manufacturer: Maybe<Company>;
+  manufacturerId: Maybe<Scalars['Int']>;
+  name: Maybe<Scalars['MediumText']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   /** Reads a single `Type` that is related to this `Product`. */
@@ -1240,6 +1529,17 @@ export type Product = Node & {
   userByCreatedBy: Maybe<User>;
   /** Reads a single `User` that is related to this `Product`. */
   userByUpdatedBy: Maybe<User>;
+};
+
+
+export type ProductCheckInsArgs = {
+  after: InputMaybe<Scalars['Cursor']>;
+  before: InputMaybe<Scalars['Cursor']>;
+  condition: InputMaybe<CheckInCondition>;
+  first: InputMaybe<Scalars['Int']>;
+  last: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<CheckInsOrderBy>>;
 };
 
 /** A condition to be used against `Product` object types. All fields are tested for equality and combined with a logical ‘and.’ */
@@ -1256,8 +1556,10 @@ export type ProductCondition = {
   id: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `isVerified` field. */
   isVerified: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `manufacturerId` field. */
+  manufacturerId: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `name` field. */
-  name: InputMaybe<Scalars['ShortText']>;
+  name: InputMaybe<Scalars['MediumText']>;
   /** Checks for equality with the object’s `typeId` field. */
   typeId: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `updatedAt` field. */
@@ -1274,7 +1576,8 @@ export type ProductInput = {
   description: InputMaybe<Scalars['LongText']>;
   id: InputMaybe<Scalars['Int']>;
   isVerified: InputMaybe<Scalars['Boolean']>;
-  name: InputMaybe<Scalars['ShortText']>;
+  manufacturerId: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['MediumText']>;
   typeId: Scalars['Int'];
   updatedAt: InputMaybe<Scalars['Datetime']>;
   updatedBy: InputMaybe<Scalars['UUID']>;
@@ -1288,7 +1591,8 @@ export type ProductPatch = {
   description: InputMaybe<Scalars['LongText']>;
   id: InputMaybe<Scalars['Int']>;
   isVerified: InputMaybe<Scalars['Boolean']>;
-  name: InputMaybe<Scalars['ShortText']>;
+  manufacturerId: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['MediumText']>;
   typeId: InputMaybe<Scalars['Int']>;
   updatedAt: InputMaybe<Scalars['Datetime']>;
   updatedBy: InputMaybe<Scalars['UUID']>;
@@ -1330,6 +1634,8 @@ export enum ProductsOrderBy {
   IdDesc = 'ID_DESC',
   IsVerifiedAsc = 'IS_VERIFIED_ASC',
   IsVerifiedDesc = 'IS_VERIFIED_DESC',
+  ManufacturerIdAsc = 'MANUFACTURER_ID_ASC',
+  ManufacturerIdDesc = 'MANUFACTURER_ID_DESC',
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
@@ -1357,6 +1663,11 @@ export type Query = Node & {
   category: Maybe<Category>;
   /** Reads a single `Category` using its globally unique `ID`. */
   categoryByNodeId: Maybe<Category>;
+  checkIn: Maybe<CheckIn>;
+  /** Reads a single `CheckIn` using its globally unique `ID`. */
+  checkInByNodeId: Maybe<CheckIn>;
+  /** Reads and enables pagination through a set of `CheckIn`. */
+  checkIns: Maybe<CheckInsConnection>;
   /** Reads and enables pagination through a set of `Company`. */
   companies: Maybe<CompaniesConnection>;
   company: Maybe<Company>;
@@ -1400,7 +1711,7 @@ export type QueryBrandArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryBrandByCompanyIdAndNameArgs = {
   companyId: Scalars['Int'];
-  name: Scalars['ShortText'];
+  name: Scalars['MediumText'];
 };
 
 
@@ -1447,6 +1758,30 @@ export type QueryCategoryByNodeIdArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryCheckInArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCheckInByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCheckInsArgs = {
+  after: InputMaybe<Scalars['Cursor']>;
+  before: InputMaybe<Scalars['Cursor']>;
+  condition: InputMaybe<CheckInCondition>;
+  first: InputMaybe<Scalars['Int']>;
+  last: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<CheckInsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryCompaniesArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
@@ -1466,7 +1801,7 @@ export type QueryCompanyArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryCompanyByNameArgs = {
-  name: Scalars['String'];
+  name: Scalars['MediumText'];
 };
 
 
@@ -1491,7 +1826,7 @@ export type QueryProductArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryProductByNameAndBrandIdAndTypeIdArgs = {
   brandId: Scalars['Int'];
-  name: Scalars['ShortText'];
+  name: Scalars['MediumText'];
   typeId: Scalars['Int'];
 };
 
@@ -1560,6 +1895,38 @@ export type QueryUserByNodeIdArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryUserByUsernameArgs = {
   username: Scalars['String'];
+};
+
+/** All input for the `register` mutation. */
+export type RegisterInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId: InputMaybe<Scalars['String']>;
+  password: InputMaybe<Scalars['String']>;
+  username: Scalars['String'];
+};
+
+/** The output of our `register` mutation. */
+export type RegisterPayload = {
+  __typename?: 'RegisterPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query: Maybe<Query>;
+  user: Maybe<User>;
+  /** An edge for our `User`. May be used by Relay 1. */
+  userEdge: Maybe<UsersEdge>;
+};
+
+
+/** The output of our `register` mutation. */
+export type RegisterPayloadUserEdgeArgs = {
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
 export type Type = Node & {
@@ -1653,7 +2020,7 @@ export type UpdateBrandByCompanyIdAndNameInput = {
    */
   clientMutationId: InputMaybe<Scalars['String']>;
   companyId: Scalars['Int'];
-  name: Scalars['ShortText'];
+  name: Scalars['MediumText'];
   /** An object where the defined keys will be set on the `Brand` being updated. */
   patch: BrandPatch;
 };
@@ -1758,6 +2125,57 @@ export type UpdateCategoryPayloadCategoryEdgeArgs = {
   orderBy?: InputMaybe<Array<CategoriesOrderBy>>;
 };
 
+/** All input for the `updateCheckInByNodeId` mutation. */
+export type UpdateCheckInByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `CheckIn` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `CheckIn` being updated. */
+  patch: CheckInPatch;
+};
+
+/** All input for the `updateCheckIn` mutation. */
+export type UpdateCheckInInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId: InputMaybe<Scalars['String']>;
+  id: Scalars['Int'];
+  /** An object where the defined keys will be set on the `CheckIn` being updated. */
+  patch: CheckInPatch;
+};
+
+/** The output of our update `CheckIn` mutation. */
+export type UpdateCheckInPayload = {
+  __typename?: 'UpdateCheckInPayload';
+  /** Reads a single `User` that is related to this `CheckIn`. */
+  author: Maybe<User>;
+  /** The `CheckIn` that was updated by this mutation. */
+  checkIn: Maybe<CheckIn>;
+  /** An edge for our `CheckIn`. May be used by Relay 1. */
+  checkInEdge: Maybe<CheckInsEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId: Maybe<Scalars['String']>;
+  /** Reads a single `Product` that is related to this `CheckIn`. */
+  product: Maybe<Product>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query: Maybe<Query>;
+};
+
+
+/** The output of our update `CheckIn` mutation. */
+export type UpdateCheckInPayloadCheckInEdgeArgs = {
+  orderBy?: InputMaybe<Array<CheckInsOrderBy>>;
+};
+
 /** All input for the `updateCompanyByName` mutation. */
 export type UpdateCompanyByNameInput = {
   /**
@@ -1765,7 +2183,7 @@ export type UpdateCompanyByNameInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
+  name: Scalars['MediumText'];
   /** An object where the defined keys will be set on the `Company` being updated. */
   patch: CompanyPatch;
 };
@@ -1827,7 +2245,7 @@ export type UpdateProductByNameAndBrandIdAndTypeIdInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId: InputMaybe<Scalars['String']>;
-  name: Scalars['ShortText'];
+  name: Scalars['MediumText'];
   /** An object where the defined keys will be set on the `Product` being updated. */
   patch: ProductPatch;
   typeId: Scalars['Int'];
@@ -1868,6 +2286,8 @@ export type UpdateProductPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId: Maybe<Scalars['String']>;
+  /** Reads a single `Company` that is related to this `Product`. */
+  manufacturer: Maybe<Company>;
   /** The `Product` that was updated by this mutation. */
   product: Maybe<Product>;
   /** An edge for our `Product`. May be used by Relay 1. */
@@ -2012,6 +2432,8 @@ export type UpdateUserPayloadUserEdgeArgs = {
 /** A user who can log in to the application. */
 export type User = Node & {
   __typename?: 'User';
+  /** Reads and enables pagination through a set of `CheckIn`. */
+  authoredCheckIns: CheckInsConnection;
   /** Reads and enables pagination through a set of `Brand`. */
   brandsByCreatedBy: BrandsConnection;
   /** Reads and enables pagination through a set of `Brand`. */
@@ -2019,10 +2441,11 @@ export type User = Node & {
   /** Reads and enables pagination through a set of `Company`. */
   companiesByCreatedBy: CompaniesConnection;
   createdAt: Scalars['Datetime'];
+  firstName: Maybe<Scalars['ShortText']>;
   id: Scalars['UUID'];
   isAdmin: Scalars['Boolean'];
   isVerified: Scalars['Boolean'];
-  name: Maybe<Scalars['String']>;
+  lastName: Maybe<Scalars['ShortText']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `Product`. */
@@ -2031,6 +2454,18 @@ export type User = Node & {
   productsByUpdatedBy: ProductsConnection;
   updatedAt: Scalars['Datetime'];
   username: Scalars['String'];
+};
+
+
+/** A user who can log in to the application. */
+export type UserAuthoredCheckInsArgs = {
+  after: InputMaybe<Scalars['Cursor']>;
+  before: InputMaybe<Scalars['Cursor']>;
+  condition: InputMaybe<CheckInCondition>;
+  first: InputMaybe<Scalars['Int']>;
+  last: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<CheckInsOrderBy>>;
 };
 
 
@@ -2096,10 +2531,11 @@ export type UserProductsByUpdatedByArgs = {
 /** An input for mutations affecting `User` */
 export type UserInput = {
   createdAt: InputMaybe<Scalars['Datetime']>;
+  firstName: InputMaybe<Scalars['ShortText']>;
   id: InputMaybe<Scalars['UUID']>;
   isAdmin: InputMaybe<Scalars['Boolean']>;
   isVerified: InputMaybe<Scalars['Boolean']>;
-  name: InputMaybe<Scalars['String']>;
+  lastName: InputMaybe<Scalars['ShortText']>;
   updatedAt: InputMaybe<Scalars['Datetime']>;
   username: Scalars['String'];
 };
@@ -2107,10 +2543,11 @@ export type UserInput = {
 /** Represents an update to a `User`. Fields that are set will be updated. */
 export type UserPatch = {
   createdAt: InputMaybe<Scalars['Datetime']>;
+  firstName: InputMaybe<Scalars['ShortText']>;
   id: InputMaybe<Scalars['UUID']>;
   isAdmin: InputMaybe<Scalars['Boolean']>;
   isVerified: InputMaybe<Scalars['Boolean']>;
-  name: InputMaybe<Scalars['String']>;
+  lastName: InputMaybe<Scalars['ShortText']>;
   updatedAt: InputMaybe<Scalars['Datetime']>;
   username: InputMaybe<Scalars['String']>;
 };
@@ -2128,14 +2565,16 @@ export type UsersEdge = {
 export enum UsersOrderBy {
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
+  FirstNameAsc = 'FIRST_NAME_ASC',
+  FirstNameDesc = 'FIRST_NAME_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   IsAdminAsc = 'IS_ADMIN_ASC',
   IsAdminDesc = 'IS_ADMIN_DESC',
   IsVerifiedAsc = 'IS_VERIFIED_ASC',
   IsVerifiedDesc = 'IS_VERIFIED_DESC',
-  NameAsc = 'NAME_ASC',
-  NameDesc = 'NAME_DESC',
+  LastNameAsc = 'LAST_NAME_ASC',
+  LastNameDesc = 'LAST_NAME_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
@@ -2145,12 +2584,37 @@ export enum UsersOrderBy {
   UsernameDesc = 'USERNAME_DESC'
 }
 
+export type LoginMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginPayload', user: { __typename?: 'User', id: any } } };
+
 export type GetCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCompaniesQuery = { __typename?: 'Query', companies: { __typename?: 'CompaniesConnection', nodes: Array<{ __typename?: 'Company', id: number, name: string, brands: { __typename?: 'BrandsConnection', nodes: Array<{ __typename?: 'Brand', id: number, name: any }> } }> } };
+export type GetCompaniesQuery = { __typename?: 'Query', companies: { __typename?: 'CompaniesConnection', nodes: Array<{ __typename?: 'Company', id: number, name: any, brands: { __typename?: 'BrandsConnection', nodes: Array<{ __typename?: 'Brand', id: number, name: any }> } }> } };
+
+export type RegisterMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+}>;
 
 
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterPayload', user: { __typename?: 'User', id: any } } };
+
+
+export const LoginDocument = gql`
+    mutation login($username: String!, $password: String!) {
+  login(input: {username: $username, password: $password}) {
+    user {
+      id
+    }
+  }
+}
+    `;
 export const GetCompaniesDocument = gql`
     query getCompanies {
   companies {
@@ -2167,6 +2631,15 @@ export const GetCompaniesDocument = gql`
   }
 }
     `;
+export const RegisterDocument = gql`
+    mutation register($username: String!, $password: String!) {
+  register(input: {username: $username, password: $password}) {
+    user {
+      id
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -2175,8 +2648,14 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login');
+    },
     getCompanies(variables?: GetCompaniesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCompaniesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetCompaniesQuery>(GetCompaniesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCompanies');
+    },
+    register(variables: RegisterMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RegisterMutation>(RegisterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'register');
     }
   };
 }

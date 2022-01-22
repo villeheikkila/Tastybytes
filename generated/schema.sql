@@ -104,6 +104,27 @@ CREATE DOMAIN tasted_public.short_text AS text
 
 
 --
+-- Name: assert_valid_password(text); Type: FUNCTION; Schema: tasted_private; Owner: -
+--
+
+CREATE FUNCTION tasted_private.assert_valid_password(new_password text) RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+begin
+  if (select new_password ~ '\d' = false) then
+    raise exception 'password must contain numbers' using errcode = 'WEAKP';
+  end if;
+  if (select new_password ~ '[a-zA-Z]' = false) then
+    raise exception 'password must contain letters' using errcode = 'WEAKP';
+  end if;
+  if length(new_password) <= 8 then
+    raise exception 'password must be at least 8 characters long' using errcode = 'WEAKP';
+  end if;
+end;
+$$;
+
+
+--
 -- Name: migrate_seed(); Type: PROCEDURE; Schema: tasted_private; Owner: -
 --
 
@@ -194,6 +215,59 @@ from check_ins i
 $$;
 
 
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: users; Type: TABLE; Schema: tasted_public; Owner: -
+--
+
+CREATE TABLE tasted_public.users (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    username public.citext NOT NULL,
+    is_admin boolean DEFAULT false NOT NULL,
+    is_verified boolean DEFAULT false NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    first_name tasted_public.short_text,
+    last_name tasted_public.short_text,
+    CONSTRAINT users_username_check CHECK (((length((username)::text) >= 2) AND (length((username)::text) <= 24) AND (username OPERATOR(public.~) '^[a-zA-Z]([_]?[a-zA-Z0-9])+$'::public.citext)))
+);
+
+
+--
+-- Name: really_create_user(public.citext, text); Type: FUNCTION; Schema: tasted_private; Owner: -
+--
+
+CREATE FUNCTION tasted_private.really_create_user(username public.citext, password text DEFAULT NULL::text) RETURNS tasted_public.users
+    LANGUAGE plpgsql
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+declare
+  v_user     tasted_public.users;
+  v_username citext = username;
+begin
+  if password is not null then
+    perform tasted_private.assert_valid_password(password);
+  end if;
+
+  insert into tasted_public.users (username)
+  values (v_username, name)
+  returning * into v_user;
+
+  if password is not null then
+    update tasted_private.user_secrets
+    set password_hash = crypt(password, gen_salt('bf'))
+    where user_id = v_user.id;
+  end if;
+
+  select * into v_user from tasted_public.users where id = v_user.id;
+  return v_user;
+end;
+$$;
+
+
 --
 -- Name: tg__timestamps(); Type: FUNCTION; Schema: tasted_private; Owner: -
 --
@@ -210,9 +284,63 @@ end;
 $$;
 
 
-SET default_tablespace = '';
+--
+-- Name: login(public.citext, text); Type: FUNCTION; Schema: tasted_public; Owner: -
+--
 
-SET default_table_access_method = heap;
+CREATE FUNCTION tasted_public.login(username public.citext, password text) RETURNS tasted_public.users
+    LANGUAGE plpgsql STRICT
+    AS $$
+declare
+  v_user tasted_public.users;
+  v_user_secret tasted_private.user_secrets;
+begin
+  select users.*
+  into v_user
+  from tasted_public.users
+  where users.username = login.username;
+
+  if not (v_user is null) then
+    select *
+    into v_user_secret
+    from tasted_private.user_secrets
+    where user_secrets.user_id = v_user.id;
+
+    if v_user_secret.password_hash = crypt(password, v_user_secret.password_hash) then
+      return v_user;
+    else
+      return null;
+    end if;
+  else
+    return null;
+  end if;
+end;
+$$;
+
+
+--
+-- Name: register(public.citext, text); Type: FUNCTION; Schema: tasted_public; Owner: -
+--
+
+CREATE FUNCTION tasted_public.register(username public.citext, password text DEFAULT NULL::text) RETURNS tasted_public.users
+    LANGUAGE plpgsql STRICT
+    AS $$
+declare
+  v_user     tasted_public.users;
+  v_username citext = username;
+begin
+  perform tasted_private.assert_valid_password(password);
+  insert into tasted_public.users (username)
+  values (v_username)
+  returning * into v_user;
+  insert into tasted_private.user_secrets (user_id, password_hash)
+  values (v_user.id, crypt(password, gen_salt('bf')));
+
+  select * into v_user from tasted_public.users where id = v_user.id;
+  return v_user;
+end;
+$$;
+
 
 --
 -- Name: transferable_check_ins; Type: TABLE; Schema: tasted_private; Owner: -
@@ -225,6 +353,16 @@ CREATE TABLE tasted_private.transferable_check_ins (
     category text,
     style text,
     rating text
+);
+
+
+--
+-- Name: user_secrets; Type: TABLE; Schema: tasted_private; Owner: -
+--
+
+CREATE TABLE tasted_private.user_secrets (
+    user_id uuid NOT NULL,
+    password_hash text
 );
 
 
@@ -318,7 +456,8 @@ CREATE TABLE tasted_public.companies (
     id integer NOT NULL,
     is_verified boolean DEFAULT false NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by uuid
+    created_by uuid,
+    name tasted_public.medium_text
 );
 
 
@@ -413,24 +552,6 @@ ALTER SEQUENCE tasted_public.types_id_seq OWNED BY tasted_public.types.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: tasted_public; Owner: -
---
-
-CREATE TABLE tasted_public.users (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    username public.citext NOT NULL,
-    name text,
-    is_admin boolean DEFAULT false NOT NULL,
-    is_verified boolean DEFAULT false NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    first_name tasted_public.short_text,
-    last_name tasted_public.short_text,
-    CONSTRAINT users_username_check CHECK (((length((username)::text) >= 2) AND (length((username)::text) <= 24) AND (username OPERATOR(public.~) '^[a-zA-Z]([_]?[a-zA-Z0-9])+$'::public.citext)))
-);
-
-
---
 -- Name: brands id; Type: DEFAULT; Schema: tasted_public; Owner: -
 --
 
@@ -463,6 +584,14 @@ ALTER TABLE ONLY tasted_public.products ALTER COLUMN id SET DEFAULT nextval('tas
 --
 
 ALTER TABLE ONLY tasted_public.types ALTER COLUMN id SET DEFAULT nextval('tasted_public.types_id_seq'::regclass);
+
+
+--
+-- Name: user_secrets user_secrets_pkey; Type: CONSTRAINT; Schema: tasted_private; Owner: -
+--
+
+ALTER TABLE ONLY tasted_private.user_secrets
+    ADD CONSTRAINT user_secrets_pkey PRIMARY KEY (user_id);
 
 
 --
@@ -503,6 +632,14 @@ ALTER TABLE ONLY tasted_public.check_ins
 
 ALTER TABLE ONLY tasted_public.companies
     ADD CONSTRAINT companies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: companies company_name_key; Type: CONSTRAINT; Schema: tasted_public; Owner: -
+--
+
+ALTER TABLE ONLY tasted_public.companies
+    ADD CONSTRAINT company_name_key UNIQUE (name);
 
 
 --
@@ -558,6 +695,14 @@ ALTER TABLE ONLY tasted_public.users
 --
 
 CREATE TRIGGER _100_timestamps BEFORE INSERT OR UPDATE ON tasted_public.products FOR EACH ROW EXECUTE FUNCTION tasted_private.tg__timestamps();
+
+
+--
+-- Name: user_secrets user_secrets_user_id_fkey; Type: FK CONSTRAINT; Schema: tasted_private; Owner: -
+--
+
+ALTER TABLE ONLY tasted_private.user_secrets
+    ADD CONSTRAINT user_secrets_user_id_fkey FOREIGN KEY (user_id) REFERENCES tasted_public.users(id) ON DELETE CASCADE;
 
 
 --
@@ -681,6 +826,13 @@ GRANT USAGE ON SCHEMA tasted_public TO tasted_visitor;
 
 
 --
+-- Name: FUNCTION assert_valid_password(new_password text); Type: ACL; Schema: tasted_private; Owner: -
+--
+
+REVOKE ALL ON FUNCTION tasted_private.assert_valid_password(new_password text) FROM PUBLIC;
+
+
+--
 -- Name: PROCEDURE migrate_seed(); Type: ACL; Schema: tasted_private; Owner: -
 --
 
@@ -688,10 +840,33 @@ REVOKE ALL ON PROCEDURE tasted_private.migrate_seed() FROM PUBLIC;
 
 
 --
+-- Name: FUNCTION really_create_user(username public.citext, password text); Type: ACL; Schema: tasted_private; Owner: -
+--
+
+REVOKE ALL ON FUNCTION tasted_private.really_create_user(username public.citext, password text) FROM PUBLIC;
+
+
+--
 -- Name: FUNCTION tg__timestamps(); Type: ACL; Schema: tasted_private; Owner: -
 --
 
 REVOKE ALL ON FUNCTION tasted_private.tg__timestamps() FROM PUBLIC;
+
+
+--
+-- Name: FUNCTION login(username public.citext, password text); Type: ACL; Schema: tasted_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION tasted_public.login(username public.citext, password text) FROM PUBLIC;
+GRANT ALL ON FUNCTION tasted_public.login(username public.citext, password text) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION register(username public.citext, password text); Type: ACL; Schema: tasted_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION tasted_public.register(username public.citext, password text) FROM PUBLIC;
+GRANT ALL ON FUNCTION tasted_public.register(username public.citext, password text) TO tasted_visitor;
 
 
 --

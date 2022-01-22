@@ -442,7 +442,7 @@ type Company implements Node {
   createdBy: UUID
   id: Int!
   isVerified: Boolean!
-  name: ShortText
+  name: MediumText
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -499,7 +499,7 @@ input CompanyCondition {
   isVerified: Boolean
 
   """Checks for equality with the object’s `name` field."""
-  name: ShortText
+  name: MediumText
 }
 
 """An input for mutations affecting `Company`"""
@@ -508,7 +508,7 @@ input CompanyInput {
   createdBy: UUID
   id: Int
   isVerified: Boolean
-  name: ShortText
+  name: MediumText
 }
 
 """
@@ -519,7 +519,7 @@ input CompanyPatch {
   createdBy: UUID
   id: Int
   isVerified: Boolean
-  name: ShortText
+  name: MediumText
 }
 
 """All input for the create `Brand` mutation."""
@@ -992,7 +992,7 @@ input DeleteCompanyByNameInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  name: ShortText!
+  name: MediumText!
 }
 
 """All input for the `deleteCompanyByNodeId` mutation."""
@@ -1243,6 +1243,38 @@ type DeleteUserPayload {
   ): UsersEdge
 }
 
+"""All input for the `login` mutation."""
+input LoginInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  password: String!
+  username: String!
+}
+
+"""The output of our `login` mutation."""
+type LoginPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+  user: User
+
+  """An edge for our `User`. May be used by Relay 1."""
+  userEdge(
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UsersEdge
+}
+
 scalar LongText
 
 scalar MediumText
@@ -1458,6 +1490,18 @@ type Mutation {
     """
     input: DeleteUserByUsernameInput!
   ): DeleteUserPayload
+  login(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: LoginInput!
+  ): LoginPayload
+  register(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: RegisterInput!
+  ): RegisterPayload
 
   """Updates a single `Brand` using a unique key and a patch."""
   updateBrand(
@@ -1963,7 +2007,7 @@ type Query implements Node {
     orderBy: [CompaniesOrderBy!] = [PRIMARY_KEY_ASC]
   ): CompaniesConnection
   company(id: Int!): Company
-  companyByName(name: ShortText!): Company
+  companyByName(name: MediumText!): Company
 
   """Reads a single `Company` using its globally unique `ID`."""
   companyByNodeId(
@@ -2069,6 +2113,38 @@ type Query implements Node {
     nodeId: ID!
   ): User
   userByUsername(username: String!): User
+}
+
+"""All input for the `register` mutation."""
+input RegisterInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  password: String
+  username: String!
+}
+
+"""The output of our `register` mutation."""
+type RegisterPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+  user: User
+
+  """An edge for our `User`. May be used by Relay 1."""
+  userEdge(
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UsersEdge
 }
 
 scalar ShortText
@@ -2397,7 +2473,7 @@ input UpdateCompanyByNameInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  name: ShortText!
+  name: MediumText!
 
   """
   An object where the defined keys will be set on the `Company` being updated.
@@ -2902,7 +2978,6 @@ input UserInput {
   isAdmin: Boolean
   isVerified: Boolean
   lastName: ShortText
-  name: String
   updatedAt: Datetime
   username: String!
 }
@@ -2915,7 +2990,6 @@ input UserPatch {
   isAdmin: Boolean
   isVerified: Boolean
   lastName: ShortText
-  name: String
   updatedAt: Datetime
   username: String
 }
@@ -2943,8 +3017,6 @@ enum UsersOrderBy {
   IS_VERIFIED_DESC
   LAST_NAME_ASC
   LAST_NAME_DESC
-  NAME_ASC
-  NAME_DESC
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
