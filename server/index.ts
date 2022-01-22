@@ -8,9 +8,11 @@ import { resolve } from "path"
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
 import { postgraphile } from "postgraphile"
 
+const MODE = process.env.NODE_ENV || "development";
+require("dotenv").config({ path: `${__dirname}/../.env${MODE === "production" ? '.prod' : ''}` });
+
 const app = express();
 
-const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "server/build");
 
 app.use(compression());
@@ -22,11 +24,11 @@ const SmartTagsPlugin = makePgSmartTagsFromFilePlugin(
 
 app.use(
   postgraphile(
-    process.env.DATABASE_URL ||
-      "postgres://tasted:cUssU1LEAoZqbhsR6vev64PJnhWJleAteCnzbx_X@localhost:5440/tasted",
+    process.env.DATABASE_URL,
     "tasted_public",
     {
       watchPg: true,
+      ownerConnectionString: process.env.ROOT_DATABASE_URL,
       graphiql: true,
       enhanceGraphiql: true,
       allowExplain: true,
