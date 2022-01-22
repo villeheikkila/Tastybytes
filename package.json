@@ -1,18 +1,20 @@
 {
   "private": true,
-  "name": "remix-app-template",
+  "name": "tasted",
   "description": "",
   "license": "",
   "scripts": {
     "build": "remix build",
     "dev": "remix watch",
     "postinstall": "remix setup node",
-    "start": "cross-env NODE_ENV=production tsnd server/index.ts",
-    "start:dev": "cross-env NODE_ENV=development tsnd --respawn server/index.ts",
+    "start": "NODE_ENV=production ts-node-dev server/index.ts",
+    "start:dev": "NODE_ENV=development ts-node-dev --respawn server/index.ts",
     "codegen": "graphql-codegen --watch --config codegen.yml",
     "watch": "concurrently \"npm run dev\" \"npm run start:dev \" \"npm run codegen \"",
     "gm": "NODE_OPTIONS=\"$NODE_OPTIONS -r ./scripts/source-env.js\" graphile-migrate",
-    "reset": "ts-node ./scripts/database-create.ts"
+    "gmp": "NODE_ENV=production NODE_OPTIONS=\"$NODE_OPTIONS -r ./scripts/source-env.js\" graphile-migrate",
+    "reset": "ts-node ./scripts/database-create.ts",
+    "deploy": "fly deploy --remote-only"
   },
   "dependencies": {
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
