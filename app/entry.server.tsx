@@ -2,6 +2,7 @@ import ReactDOMServer from "react-dom/server";
 import type { EntryContext } from "remix";
 import { RemixServer } from "remix";
 import { getCssText } from "./stitches.config";
+import 'dotenv/config';
 
 export default function handleRequest(
   request: Request,

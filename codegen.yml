@@ -1,4 +1,4 @@
-schema: http://localhost:3333/graphql
+schema: http://localhost:5678/graphql
 documents: ./app/**/*.graphql
 generates:
   ./generated/sdk.ts:

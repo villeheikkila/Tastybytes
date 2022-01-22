@@ -1,7 +1,7 @@
 import * as SDK from "../generated/sdk";
 import { GraphQLClient } from "graphql-request";
 
-const client = new GraphQLClient("http://localhost:3333/graphql");
+const client = new GraphQLClient(process.env.GRAPHQL_URL as string);
 
 export const sdk = () => {
     return SDK.getSdk(client); 
