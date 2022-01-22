@@ -59,7 +59,7 @@ export const { styled, getCssText, keyframes } = createStitches({
   },
 });
 
-export const globalStyles = globalCss({
+export const globals = {
   "*:where(:not(iframe, canvas, img, svg, video):not(svg *))": {
     all: "unset",
     display: "revert",
@@ -78,4 +78,6 @@ export const globalStyles = globalCss({
     color: "$white",
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
   },
-});
+}
+
+export const globalStyles = globalCss(globals);
