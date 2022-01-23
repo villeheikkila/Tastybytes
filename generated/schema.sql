@@ -285,6 +285,76 @@ $$;
 
 
 --
+-- Name: companies; Type: TABLE; Schema: tasted_public; Owner: -
+--
+
+CREATE TABLE tasted_public.companies (
+    id integer NOT NULL,
+    is_verified boolean DEFAULT false NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by uuid,
+    name tasted_public.medium_text
+);
+
+
+--
+-- Name: companies_average_rating(tasted_public.companies); Type: FUNCTION; Schema: tasted_public; Owner: -
+--
+
+CREATE FUNCTION tasted_public.companies_average_rating(c tasted_public.companies) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+with company_items_avg_by_user as (select ci.product_id, ci.author_id, avg(ci.rating) average from tasted_public.check_ins ci
+left join tasted_public.products i on ci.product_id = i.id
+left join tasted_public.brands b on i.brand_id = b.id
+left join tasted_public.companies co on b.company_id = co.id where co.id = c.id group by (ci.product_id, ci.author_id)) select avg(average) as average from company_items_avg_by_user;
+$$;
+
+
+--
+-- Name: companies_check_ins_past_month(tasted_public.companies); Type: FUNCTION; Schema: tasted_public; Owner: -
+--
+
+CREATE FUNCTION tasted_public.companies_check_ins_past_month(c tasted_public.companies) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1) from tasted_public.check_ins ci
+left join tasted_public.products i on ci.product_id = i.id
+left join tasted_public.brands b on i.brand_id = b.id
+left join tasted_public.companies co on b.company_id = co.id
+where co.id = c.id and ci.created_at >= current_date - interval '1 month';
+$$;
+
+
+--
+-- Name: companies_total_check_ins(tasted_public.companies); Type: FUNCTION; Schema: tasted_public; Owner: -
+--
+
+CREATE FUNCTION tasted_public.companies_total_check_ins(c tasted_public.companies) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1) from tasted_public.check_ins ci
+left join tasted_public.products i on ci.product_id = i.id
+left join tasted_public.brands b on i.brand_id = b.id
+left join tasted_public.companies co on b.company_id = co.id
+where co.id = c.id
+$$;
+
+
+--
+-- Name: companies_total_items(tasted_public.companies); Type: FUNCTION; Schema: tasted_public; Owner: -
+--
+
+CREATE FUNCTION tasted_public.companies_total_items(c tasted_public.companies) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1) from tasted_public.products i
+left join tasted_public.brands b on i.brand_id = b.id
+where c.id = b.company_id;
+$$;
+
+
+--
 -- Name: login(public.citext, text); Type: FUNCTION; Schema: tasted_public; Owner: -
 --
 
@@ -319,6 +389,51 @@ $$;
 
 
 --
+-- Name: products; Type: TABLE; Schema: tasted_public; Owner: -
+--
+
+CREATE TABLE tasted_public.products (
+    id integer NOT NULL,
+    name tasted_public.medium_text,
+    brand_id integer NOT NULL,
+    description tasted_public.long_text,
+    type_id integer NOT NULL,
+    is_verified boolean DEFAULT false,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by uuid,
+    updated_by uuid,
+    manufacturer_id integer
+);
+
+
+--
+-- Name: products_check_ins_past_month(tasted_public.products); Type: FUNCTION; Schema: tasted_public; Owner: -
+--
+
+CREATE FUNCTION tasted_public.products_check_ins_past_month(i tasted_public.products) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1)
+from tasted_public.check_ins
+where product_id = i.id and created_at >= current_date - interval '1 month';
+$$;
+
+
+--
+-- Name: products_total_check_ins(tasted_public.products); Type: FUNCTION; Schema: tasted_public; Owner: -
+--
+
+CREATE FUNCTION tasted_public.products_total_check_ins(i tasted_public.products) RETURNS integer
+    LANGUAGE sql STABLE
+    AS $$
+select count(1)
+from tasted_public.check_ins
+where product_id = i.id
+$$;
+
+
+--
 -- Name: register(public.citext, text); Type: FUNCTION; Schema: tasted_public; Owner: -
 --
 
@@ -339,6 +454,25 @@ begin
   select * into v_user from tasted_public.users where id = v_user.id;
   return v_user;
 end;
+$$;
+
+
+--
+-- Name: search_products(text); Type: FUNCTION; Schema: tasted_public; Owner: -
+--
+
+CREATE FUNCTION tasted_public.search_products(search text) RETURNS SETOF tasted_public.products
+    LANGUAGE sql STABLE
+    AS $$
+with search_agg as (
+  select i.id                   ,
+         to_tsvector(i.name) ||
+         to_tsvector(b.name) ||
+         to_tsvector(c.name) as document
+  from tasted_public.products i
+         join tasted_public.brands b on i.brand_id = b.id
+         join tasted_public.companies c on c.id = b.company_id
+  ) select i.*  from search_agg s left join tasted_public.products i on i.id = s.id where document @@ plainto_tsquery(search);
 $$;
 
 
@@ -449,19 +583,6 @@ ALTER SEQUENCE tasted_public.check_ins_id_seq OWNED BY tasted_public.check_ins.i
 
 
 --
--- Name: companies; Type: TABLE; Schema: tasted_public; Owner: -
---
-
-CREATE TABLE tasted_public.companies (
-    id integer NOT NULL,
-    is_verified boolean DEFAULT false NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by uuid,
-    name tasted_public.medium_text
-);
-
-
---
 -- Name: companies_id_seq; Type: SEQUENCE; Schema: tasted_public; Owner: -
 --
 
@@ -479,25 +600,6 @@ CREATE SEQUENCE tasted_public.companies_id_seq
 --
 
 ALTER SEQUENCE tasted_public.companies_id_seq OWNED BY tasted_public.companies.id;
-
-
---
--- Name: products; Type: TABLE; Schema: tasted_public; Owner: -
---
-
-CREATE TABLE tasted_public.products (
-    id integer NOT NULL,
-    name tasted_public.medium_text,
-    brand_id integer NOT NULL,
-    description tasted_public.long_text,
-    type_id integer NOT NULL,
-    is_verified boolean DEFAULT false,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by uuid,
-    updated_by uuid,
-    manufacturer_id integer
-);
 
 
 --
@@ -672,6 +774,30 @@ ALTER TABLE ONLY tasted_public.types
 
 ALTER TABLE ONLY tasted_public.types
     ADD CONSTRAINT types_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: products unique_brand_name_type; Type: CONSTRAINT; Schema: tasted_public; Owner: -
+--
+
+ALTER TABLE ONLY tasted_public.products
+    ADD CONSTRAINT unique_brand_name_type UNIQUE (name, brand_id, type_id);
+
+
+--
+-- Name: brands unique_company_brand; Type: CONSTRAINT; Schema: tasted_public; Owner: -
+--
+
+ALTER TABLE ONLY tasted_public.brands
+    ADD CONSTRAINT unique_company_brand UNIQUE (name, company_id);
+
+
+--
+-- Name: companies unique_company_name; Type: CONSTRAINT; Schema: tasted_public; Owner: -
+--
+
+ALTER TABLE ONLY tasted_public.companies
+    ADD CONSTRAINT unique_company_name UNIQUE (name);
 
 
 --
@@ -854,6 +980,38 @@ REVOKE ALL ON FUNCTION tasted_private.tg__timestamps() FROM PUBLIC;
 
 
 --
+-- Name: FUNCTION companies_average_rating(c tasted_public.companies); Type: ACL; Schema: tasted_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION tasted_public.companies_average_rating(c tasted_public.companies) FROM PUBLIC;
+GRANT ALL ON FUNCTION tasted_public.companies_average_rating(c tasted_public.companies) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION companies_check_ins_past_month(c tasted_public.companies); Type: ACL; Schema: tasted_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION tasted_public.companies_check_ins_past_month(c tasted_public.companies) FROM PUBLIC;
+GRANT ALL ON FUNCTION tasted_public.companies_check_ins_past_month(c tasted_public.companies) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION companies_total_check_ins(c tasted_public.companies); Type: ACL; Schema: tasted_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION tasted_public.companies_total_check_ins(c tasted_public.companies) FROM PUBLIC;
+GRANT ALL ON FUNCTION tasted_public.companies_total_check_ins(c tasted_public.companies) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION companies_total_items(c tasted_public.companies); Type: ACL; Schema: tasted_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION tasted_public.companies_total_items(c tasted_public.companies) FROM PUBLIC;
+GRANT ALL ON FUNCTION tasted_public.companies_total_items(c tasted_public.companies) TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION login(username public.citext, password text); Type: ACL; Schema: tasted_public; Owner: -
 --
 
@@ -862,11 +1020,35 @@ GRANT ALL ON FUNCTION tasted_public.login(username public.citext, password text)
 
 
 --
+-- Name: FUNCTION products_check_ins_past_month(i tasted_public.products); Type: ACL; Schema: tasted_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION tasted_public.products_check_ins_past_month(i tasted_public.products) FROM PUBLIC;
+GRANT ALL ON FUNCTION tasted_public.products_check_ins_past_month(i tasted_public.products) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION products_total_check_ins(i tasted_public.products); Type: ACL; Schema: tasted_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION tasted_public.products_total_check_ins(i tasted_public.products) FROM PUBLIC;
+GRANT ALL ON FUNCTION tasted_public.products_total_check_ins(i tasted_public.products) TO tasted_visitor;
+
+
+--
 -- Name: FUNCTION register(username public.citext, password text); Type: ACL; Schema: tasted_public; Owner: -
 --
 
 REVOKE ALL ON FUNCTION tasted_public.register(username public.citext, password text) FROM PUBLIC;
 GRANT ALL ON FUNCTION tasted_public.register(username public.citext, password text) TO tasted_visitor;
+
+
+--
+-- Name: FUNCTION search_products(search text); Type: ACL; Schema: tasted_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION tasted_public.search_products(search text) FROM PUBLIC;
+GRANT ALL ON FUNCTION tasted_public.search_products(search text) TO tasted_visitor;
 
 
 --

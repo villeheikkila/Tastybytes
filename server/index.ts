@@ -7,6 +7,7 @@ import { makePgSmartTagsFromFilePlugin } from "postgraphile/plugins";
 import { resolve } from "path";
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
 import { postgraphile } from "postgraphile";
+import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
 
 const MODE = process.env.NODE_ENV || "development";
 require("dotenv").config({
@@ -31,7 +32,7 @@ app.use(
     graphiql: true,
     enhanceGraphiql: true,
     allowExplain: true,
-    appendPlugins: [SmartTagsPlugin, PgSimplifyInflectorPlugin],
+    appendPlugins: [SmartTagsPlugin, PgSimplifyInflectorPlugin, ConnectionFilterPlugin],
     sortExport: true,
     exportGqlSchemaPath: `${__dirname}/../generated/schema.graphql`,
   })
