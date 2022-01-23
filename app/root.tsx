@@ -20,7 +20,7 @@ export const meta: MetaFunction = () => {
   return { title: "Tasted" };
 };
 
-export let loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
   return user;
 };

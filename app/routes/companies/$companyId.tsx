@@ -2,16 +2,12 @@ import { Link, LoaderFunction, useLoaderData } from "remix";
 import SDK, { sdk } from "~/api.server";
 import { Card } from "~/components/card";
 import { Layout } from "~/components/layout";
-import { Stars } from "~/components/stars";
 import { Typography } from "~/components/typography";
-import { styled } from "~/stitches.config";
 import { paths } from "~/utils/paths";
 
 export const loader: LoaderFunction = async ({
   params,
 }): Promise<SDK.GetCompanyByIdQuery> => {
-  console.log("params.companyId: ", params.companyId);
-
   if (!params.companyId) {
     throw new Response("Not found.", { status: 404 });
   }
@@ -46,5 +42,3 @@ export default function Index() {
     </Layout.Root>
   );
 }
-
-const H1 = styled("h1", { fontWeight: "bold", color: "$red" });

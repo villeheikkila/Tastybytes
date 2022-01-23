@@ -11,14 +11,14 @@ import { Typography } from "~/components/typography";
 import { styled } from "~/stitches.config";
 import { createUserSession, login } from "~/utils/session.server";
 
-export let meta: MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return {
     title: "Tasted | Login",
     description: "Login to store your tasting notes!",
   };
 };
 
-export let headers: HeadersFunction = () => {
+export const headers: HeadersFunction = () => {
   return {
     "Cache-Control": `public, max-age=${60 * 10}, s-maxage=${
       60 * 60 * 24 * 30
@@ -44,18 +44,18 @@ type ActionData = {
   fields?: { username: string; password: string };
 };
 
-export let action: ActionFunction = async ({
+export const action: ActionFunction = async ({
   request,
 }): Promise<Response | ActionData> => {
-  let { loginType, username, password } = Object.fromEntries(
+  const { loginType, username, password } = Object.fromEntries(
     await request.formData()
   );
   if (typeof username !== "string" || typeof password !== "string") {
     return { formError: `Form not submitted correctly.` };
   }
 
-  let fields = { loginType, username, password };
-  let fieldErrors = {
+  const fields = { loginType, username, password };
+  const fieldErrors = {
     username: validateUsername(username),
     password: validatePassword(password),
   };
@@ -82,7 +82,7 @@ export default function Login() {
         <img color="white" src="/maku.svg" height={48} width={48} />
         <Typography.H1>Welcome to Tasted</Typography.H1>
         <p>
-          Don't have an account? <Link to={`/register`}>Sign up!</Link>
+          Don't have an account? <Link to="/register">Sign up!</Link>
         </p>
       </Header>
       <StyledForm

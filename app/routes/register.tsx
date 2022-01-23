@@ -10,14 +10,14 @@ import { Typography } from "~/components/typography";
 import { styled } from "~/stitches.config";
 import { createUserSession, register } from "~/utils/session.server";
 
-export let meta: MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return {
     title: "Tasted | Register",
     description: "Register to Tasted!",
   };
 };
 
-export let headers: HeadersFunction = () => {
+export const headers: HeadersFunction = () => {
   return {
     "Cache-Control": `public, max-age=${60 * 10}, s-maxage=${
       60 * 60 * 24 * 30
@@ -31,17 +31,17 @@ type ActionData = {
   fields?: { username: string; password: string };
 };
 
-export let action: ActionFunction = async ({
+export const action: ActionFunction = async ({
   request,
 }): Promise<Response | ActionData> => {
-  let { loginType, username, password } = Object.fromEntries(
+  const { loginType, username, password } = Object.fromEntries(
     await request.formData()
   );
   if (typeof username !== "string" || typeof password !== "string") {
     return { formError: `Form not submitted correctly.` };
   }
 
-  let fields = { loginType, username, password };
+  const fields = { loginType, username, password };
 
   const user = await register({ username, password });
 
