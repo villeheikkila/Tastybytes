@@ -1,6 +1,10 @@
 import {
-  ActionFunction, Form, HeadersFunction,
-  Link, MetaFunction, useActionData
+  ActionFunction,
+  Form,
+  HeadersFunction,
+  Link,
+  MetaFunction,
+  useActionData,
 } from "remix";
 import { styled } from "~/stitches.config";
 import { createUserSession, login } from "~/utils/session.server";
@@ -44,10 +48,7 @@ export let action: ActionFunction = async ({
   let { loginType, username, password } = Object.fromEntries(
     await request.formData()
   );
-  if (
-    typeof username !== "string" ||
-    typeof password !== "string"
-  ) {
+  if (typeof username !== "string" || typeof password !== "string") {
     return { formError: `Form not submitted correctly.` };
   }
 
@@ -59,7 +60,7 @@ export let action: ActionFunction = async ({
   if (Object.values(fieldErrors).some(Boolean)) return { fieldErrors, fields };
 
   const user = await login({ username, password });
-  console.log('user: ', user);
+  console.log("user: ", user);
 
   if (!user) {
     return {

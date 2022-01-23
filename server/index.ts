@@ -1,15 +1,17 @@
 import path from "path";
-import express from "express"
-import compression from "compression"
-import morgan from "morgan"
-import { createRequestHandler } from "@remix-run/express"
-import { makePgSmartTagsFromFilePlugin } from "postgraphile/plugins"
-import { resolve } from "path"
+import express from "express";
+import compression from "compression";
+import morgan from "morgan";
+import { createRequestHandler } from "@remix-run/express";
+import { makePgSmartTagsFromFilePlugin } from "postgraphile/plugins";
+import { resolve } from "path";
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
-import { postgraphile } from "postgraphile"
+import { postgraphile } from "postgraphile";
 
 const MODE = process.env.NODE_ENV || "development";
-require("dotenv").config({ path: `${__dirname}/../.env${MODE === "production" ? '.prod' : ''}` });
+require("dotenv").config({
+  path: `${__dirname}/../.env${MODE === "production" ? ".prod" : ""}`,
+});
 
 const app = express();
 
@@ -23,20 +25,16 @@ const SmartTagsPlugin = makePgSmartTagsFromFilePlugin(
 );
 
 app.use(
-  postgraphile(
-    process.env.DATABASE_URL,
-    "tasted_public",
-    {
-      watchPg: true,
-      ownerConnectionString: process.env.ROOT_DATABASE_URL,
-      graphiql: true,
-      enhanceGraphiql: true,
-      allowExplain: true,
-      appendPlugins: [SmartTagsPlugin,PgSimplifyInflectorPlugin],
-      sortExport: true,
-      exportGqlSchemaPath: `${__dirname}/../generated/schema.graphql`,
-    }
-  )
+  postgraphile(process.env.DATABASE_URL, "tasted_public", {
+    watchPg: true,
+    ownerConnectionString: process.env.ROOT_DATABASE_URL,
+    graphiql: true,
+    enhanceGraphiql: true,
+    allowExplain: true,
+    appendPlugins: [SmartTagsPlugin, PgSimplifyInflectorPlugin],
+    sortExport: true,
+    exportGqlSchemaPath: `${__dirname}/../generated/schema.graphql`,
+  })
 );
 
 // Remix fingerprints its assets so we can cache forever

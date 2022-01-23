@@ -4,7 +4,7 @@ import {
   HeadersFunction,
   Link,
   MetaFunction,
-  useActionData
+  useActionData,
 } from "remix";
 import { styled } from "~/stitches.config";
 import { createUserSession, register } from "~/utils/session.server";
