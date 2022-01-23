@@ -1,0 +1,33 @@
+query getProductById($productId: Int!) {
+  product(id: $productId) {
+    brand {
+      id
+      name
+      company {
+        name
+        id
+      }
+    }
+    checkIns {
+      nodes {
+        id
+        rating
+        review
+        author {
+          ...Basic_User
+        }
+      }
+    }
+    name
+    id
+    manufacturer {
+      id
+      name
+    }
+    type {
+      name
+      id
+      category
+    }
+  }
+}

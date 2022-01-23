@@ -16,12 +16,12 @@ export async function login({ username, password }: LoginForm) {
   return loginMutation.login.user
 }
 
-let sessionSecret = process.env.SESSION_SECRET;
+const sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret) {
   throw new Error("SESSION_SECRET must be set");
 }
 
-let { getSession, commitSession, destroySession } = createCookieSessionStorage({
+const { getSession, commitSession, destroySession } = createCookieSessionStorage({
   cookie: {
     name: "RJ_session",
     secure: true,
@@ -38,25 +38,25 @@ export function getUserSession(request: Request) {
 }
 
 export async function getUserId(request: Request) {
-  let session = await getUserSession(request);
-  let userId = session.get("userId");
+  const session = await getUserSession(request);
+  const userId = session.get("userId");
   if (!userId || typeof userId !== "string") return null;
   return userId;
 }
 
 export async function requireUserId(request: Request) {
-  let session = await getUserSession(request);
-  let userId = session.get("userId");
+  const session = await getUserSession(request);
+  const userId = session.get("userId");
   if (!userId || typeof userId !== "string") throw redirect("/login");
   return userId;
 }
 
 export async function getUser(request: Request) {
-  let userId = await getUserId(request);
+  const userId = await getUserId(request);
   if (typeof userId !== "string") return null;
 
   try {
-    let user = {}
+    const user = sdk().getUserById({userId: userId})
     return user;
   } catch {
     throw logout(request);
@@ -64,14 +64,14 @@ export async function getUser(request: Request) {
 }
 
 export async function logout(request: Request) {
-  let session = await getSession(request.headers.get("Cookie"));
+  const session = await getSession(request.headers.get("Cookie"));
   return redirect("/login", {
     headers: { "Set-Cookie": await destroySession(session) },
   });
 }
 
 export async function createUserSession(userId: string, redirectTo: string) {
-  let session = await getSession();
+  const session = await getSession();
   session.set("userId", userId);
   return redirect(redirectTo, {
     headers: { "Set-Cookie": await commitSession(session) },
