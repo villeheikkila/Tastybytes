@@ -2584,18 +2584,32 @@ export enum UsersOrderBy {
   UsernameDesc = 'USERNAME_DESC'
 }
 
+export type GetCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCompaniesQuery = { __typename?: 'Query', companies: { __typename?: 'CompaniesConnection', nodes: Array<{ __typename?: 'Company', id: number, name: any, brands: { __typename?: 'BrandsConnection', nodes: Array<{ __typename?: 'Brand', id: number, name: any }> } }> } };
+
+export type GetProductByIdQueryVariables = Exact<{
+  productId: Scalars['Int'];
+}>;
+
+
+export type GetProductByIdQuery = { __typename?: 'Query', product: { __typename?: 'Product', name: any, id: number, brand: { __typename?: 'Brand', id: number, name: any, company: { __typename?: 'Company', name: any, id: number } }, checkIns: { __typename?: 'CheckInsConnection', nodes: Array<{ __typename?: 'CheckIn', id: number, rating: number, review: string, author: { __typename?: 'User', id: any, username: string } }> }, manufacturer: { __typename?: 'Company', id: number, name: any }, type: { __typename?: 'Type', name: string, id: number, category: string } } };
+
+export type GetUserByIdQueryVariables = Exact<{
+  userId: Scalars['UUID'];
+}>;
+
+
+export type GetUserByIdQuery = { __typename?: 'Query', user: { __typename?: 'User', id: any, username: string } };
+
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginPayload', user: { __typename?: 'User', id: any } } };
-
-export type GetCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetCompaniesQuery = { __typename?: 'Query', companies: { __typename?: 'CompaniesConnection', nodes: Array<{ __typename?: 'Company', id: number, name: any, brands: { __typename?: 'BrandsConnection', nodes: Array<{ __typename?: 'Brand', id: number, name: any }> } }> } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginPayload', user: { __typename?: 'User', id: any, username: string } } };
 
 export type RegisterMutationVariables = Exact<{
   username: Scalars['String'];
@@ -2603,16 +2617,14 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterPayload', user: { __typename?: 'User', id: any } } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterPayload', user: { __typename?: 'User', id: any, username: string } } };
 
+export type Basic_UserFragment = { __typename?: 'User', id: any, username: string };
 
-export const LoginDocument = gql`
-    mutation login($username: String!, $password: String!) {
-  login(input: {username: $username, password: $password}) {
-    user {
-      id
-    }
-  }
+export const Basic_UserFragmentDoc = gql`
+    fragment Basic_User on User {
+  id
+  username
 }
     `;
 export const GetCompaniesDocument = gql`
@@ -2631,15 +2643,66 @@ export const GetCompaniesDocument = gql`
   }
 }
     `;
+export const GetProductByIdDocument = gql`
+    query getProductById($productId: Int!) {
+  product(id: $productId) {
+    brand {
+      id
+      name
+      company {
+        name
+        id
+      }
+    }
+    checkIns {
+      nodes {
+        id
+        rating
+        review
+        author {
+          ...Basic_User
+        }
+      }
+    }
+    name
+    id
+    manufacturer {
+      id
+      name
+    }
+    type {
+      name
+      id
+      category
+    }
+  }
+}
+    ${Basic_UserFragmentDoc}`;
+export const GetUserByIdDocument = gql`
+    query getUserById($userId: UUID!) {
+  user(id: $userId) {
+    ...Basic_User
+  }
+}
+    ${Basic_UserFragmentDoc}`;
+export const LoginDocument = gql`
+    mutation login($username: String!, $password: String!) {
+  login(input: {username: $username, password: $password}) {
+    user {
+      ...Basic_User
+    }
+  }
+}
+    ${Basic_UserFragmentDoc}`;
 export const RegisterDocument = gql`
     mutation register($username: String!, $password: String!) {
   register(input: {username: $username, password: $password}) {
     user {
-      id
+      ...Basic_User
     }
   }
 }
-    `;
+    ${Basic_UserFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -2648,11 +2711,17 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login');
-    },
     getCompanies(variables?: GetCompaniesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCompaniesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetCompaniesQuery>(GetCompaniesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCompanies');
+    },
+    getProductById(variables: GetProductByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProductByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProductByIdQuery>(GetProductByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductById');
+    },
+    getUserById(variables: GetUserByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUserByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserByIdQuery>(GetUserByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserById');
+    },
+    login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login');
     },
     register(variables: RegisterMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RegisterMutation>(RegisterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'register');

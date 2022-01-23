@@ -1,0 +1,5 @@
+query getUserById($userId: UUID!) {
+  user(id: $userId) {
+    ...Basic_User
+  }
+}

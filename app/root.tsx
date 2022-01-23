@@ -1,49 +1,100 @@
 import {
+  Form,
   Link,
   Links,
   LiveReload,
-  Meta, MetaFunction, Outlet,
+  LoaderFunction,
+  Meta,
+  MetaFunction,
+  Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
+  useCatch,
+  useLoaderData,
 } from "remix";
+import SDK from "./api.server";
 import { globals, styled } from "./stitches.config";
+import { getUser } from "./utils/session.server";
 
 export const meta: MetaFunction = () => {
   return { title: "Tasted" };
 };
 
+export let loader: LoaderFunction = async ({ request }) => {
+  const user = await getUser(request);
+  return user;
+};
+
 export default function App() {
+  return (
+    <Document title="Tasted">
+      <NavigationBar />
+      <Content>
+        <Outlet />
+      </Content>
+      <FooterBar />
+    </Document>
+  );
+}
+
+const FooterBar = () => (
+  <Footer.Wrapper>
+    <Footer.Content>
+      <p>
+        Copyright &copy; {new Date().getFullYear()} Ville Heikkilä. All rights
+        reserved.
+      </p>
+    </Footer.Content>
+  </Footer.Wrapper>
+);
+
+const NavigationBar = () => {
+  const data = useLoaderData<SDK.GetUserByIdQuery>();
+
+  return (
+    <Navigation.Header>
+      <Navigation.Content>
+        <Link to="/">
+          <ProjectLogo>
+            <img color="white" src="/maku.svg" height={32} width={32} />
+            <LogoText>Tasted</LogoText>
+          </ProjectLogo>
+        </Link>
+        {data?.user ? (
+          <div className="user-info">
+            <span>{data.user.username}</span>
+            <Form action="/logout" method="post">
+              <button type="submit" className="button">
+                Logout
+              </button>
+            </Form>
+          </div>
+        ) : (
+          <Link to="/login">Login</Link>
+        )}
+      </Navigation.Content>
+    </Navigation.Header>
+  );
+};
+
+function Document({
+  children,
+  title,
+}: {
+  children: React.ReactNode;
+  title?: string;
+}) {
   return (
     <HTML lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
+        {title ? <title>{title}</title> : null}
         <Links />
       </head>
       <body>
-      <Navigation.Header>
-        <Navigation.Content>
-          <Link to="/">
-            <ProjectLogo>
-              <img color="white" src="/maku.svg" height={32} width={32} />
-              <LogoText>Tasted</LogoText>
-            </ProjectLogo>
-          </Link>
-        </Navigation.Content>
-      </Navigation.Header>
-        <Content>
-          <Outlet />
-        </Content>
-        <Footer.Wrapper>
-        <Footer.Content>
-          <p>
-            Copyright &copy; {new Date().getFullYear()} Ville Heikkilä. All
-            rights reserved.
-          </p>
-        </Footer.Content>
-      </Footer.Wrapper>
-        <ScrollRestoration />
+        {children}
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
@@ -51,7 +102,34 @@ export default function App() {
   );
 }
 
-const HTML = styled("html", globals)
+export function CatchBoundary() {
+  const caught = useCatch();
+
+  return (
+    <Document title={`${caught.status} ${caught.statusText}`}>
+      <div className="error-container">
+        <h1>
+          {caught.status} {caught.statusText}
+        </h1>
+      </div>
+    </Document>
+  );
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+
+  return (
+    <Document title="Uh-oh!">
+      <div className="error-container">
+        <h1>App Error</h1>
+        <pre>{error.message}</pre>
+      </div>
+    </Document>
+  );
+}
+
+const HTML = styled("html", globals);
 
 const ProjectLogo = styled("div", {
   display: "flex",
@@ -71,7 +149,6 @@ const LogoText = styled("h1", {
   alignText: "center",
   fontFamily: "Muli",
 });
-
 
 const Navigation = {
   Header: styled("header", {
@@ -98,8 +175,9 @@ const Navigation = {
     padding: "12px",
   }),
   MenuArea: styled("div", {
-    display: "flex", gap: "12px"
-  })
+    display: "flex",
+    gap: "12px",
+  }),
 };
 
 const Content = styled("div", {
