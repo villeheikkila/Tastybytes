@@ -2,7 +2,7 @@ import ReactDOMServer from "react-dom/server";
 import type { EntryContext } from "remix";
 import { RemixServer } from "remix";
 import { getCssText } from "./stitches.config";
-import 'dotenv/config';
+import "dotenv/config";
 
 export default function handleRequest(
   request: Request,
@@ -12,13 +12,12 @@ export default function handleRequest(
 ) {
   const markup = ReactDOMServer.renderToString(
     <RemixServer context={remixContext} url={request.url} />
-  ).replace(/<\/head>/, `<style id="stitches">${getCssText()}</style></head>`)
-
+  ).replace(/<\/head>/, `<style id="stitches">${getCssText()}</style></head>`);
 
   responseHeaders.set("Content-Type", "text/html");
 
   return new Response("<!DOCTYPE html>" + markup, {
     status: responseStatusCode,
-    headers: responseHeaders
+    headers: responseHeaders,
   });
 }

@@ -1,6 +1,5 @@
-import 'dotenv/config';
+import "dotenv/config";
 import pg from "pg";
-
 
 const resetDatabase = async () => {
   const {
@@ -40,20 +39,14 @@ const resetDatabase = async () => {
       `GRANT ${DATABASE_VISITOR} TO ${DATABASE_AUTHENTICATOR};`
     );
 
-    await client.query(
-        `CREATE DATABASE ${DATABASE_NAME};`
-    );
-    await client.query(
-        `CREATE DATABASE ${DATABASE_NAME}_shadow;`
-    );
-    await client.query(
-        `CREATE DATABASE ${DATABASE_NAME}_test;`
-    );
+    await client.query(`CREATE DATABASE ${DATABASE_NAME};`);
+    await client.query(`CREATE DATABASE ${DATABASE_NAME}_shadow;`);
+    await client.query(`CREATE DATABASE ${DATABASE_NAME}_test;`);
   } finally {
     await client.release();
   }
 
   await pgPool.end();
-}
+};
 
-resetDatabase()
+resetDatabase();

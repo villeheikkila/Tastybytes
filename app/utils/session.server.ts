@@ -7,13 +7,13 @@ type LoginForm = {
 };
 
 export async function register({ username, password }: LoginForm) {
-  const registerMutation = await sdk().register({username, password})
-  return registerMutation.register.user
+  const registerMutation = await sdk().register({ username, password });
+  return registerMutation.register.user;
 }
 
 export async function login({ username, password }: LoginForm) {
-  const loginMutation = await sdk().login({username, password})
-  return loginMutation.login.user
+  const loginMutation = await sdk().login({ username, password });
+  return loginMutation.login.user;
 }
 
 const sessionSecret = process.env.SESSION_SECRET;
@@ -21,17 +21,18 @@ if (!sessionSecret) {
   throw new Error("SESSION_SECRET must be set");
 }
 
-const { getSession, commitSession, destroySession } = createCookieSessionStorage({
-  cookie: {
-    name: "RJ_session",
-    secure: true,
-    secrets: [sessionSecret],
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 30,
-    httpOnly: true,
-  },
-});
+const { getSession, commitSession, destroySession } =
+  createCookieSessionStorage({
+    cookie: {
+      name: "RJ_session",
+      secure: true,
+      secrets: [sessionSecret],
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+      httpOnly: true,
+    },
+  });
 
 export function getUserSession(request: Request) {
   return getSession(request.headers.get("Cookie"));
@@ -56,7 +57,7 @@ export async function getUser(request: Request) {
   if (typeof userId !== "string") return null;
 
   try {
-    const user = sdk().getUserById({userId: userId})
+    const user = sdk().getUserById({ userId: userId });
     return user;
   } catch {
     throw logout(request);
