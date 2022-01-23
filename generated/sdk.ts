@@ -2598,6 +2598,13 @@ export type GetCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetCompaniesQuery = { __typename?: 'Query', companies: { __typename?: 'CompaniesConnection', nodes: Array<{ __typename?: 'Company', id: number, name: any, brands: { __typename?: 'BrandsConnection', nodes: Array<{ __typename?: 'Brand', id: number, name: any }> } }> } };
 
+export type GetCompanyByIdQueryVariables = Exact<{
+  companyId: Scalars['Int'];
+}>;
+
+
+export type GetCompanyByIdQuery = { __typename?: 'Query', company: { __typename?: 'Company', id: number, name: any, brands: { __typename?: 'BrandsConnection', edges: Array<{ __typename?: 'BrandsEdge', node: { __typename?: 'Brand', id: number, name: any, products: { __typename?: 'ProductsConnection', edges: Array<{ __typename?: 'ProductsEdge', node: { __typename?: 'Product', id: number, name: any, manufacturer: { __typename?: 'Company', id: number, name: any }, type: { __typename?: 'Type', id: number, name: string, category: string } } }> } } }> } } };
+
 export type GetProductByIdQueryVariables = Exact<{
   productId: Scalars['Int'];
 }>;
@@ -2693,6 +2700,39 @@ export const GetCompaniesDocument = gql`
   }
 }
     `;
+export const GetCompanyByIdDocument = gql`
+    query getCompanyById($companyId: Int!) {
+  company(id: $companyId) {
+    id
+    name
+    brands {
+      edges {
+        node {
+          id
+          name
+          products {
+            edges {
+              node {
+                id
+                name
+                manufacturer {
+                  id
+                  name
+                }
+                type {
+                  id
+                  name
+                  category
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
 export const GetProductByIdDocument = gql`
     query getProductById($productId: Int!) {
   product(id: $productId) {
@@ -2766,6 +2806,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getCompanies(variables?: GetCompaniesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCompaniesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetCompaniesQuery>(GetCompaniesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCompanies');
+    },
+    getCompanyById(variables: GetCompanyByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCompanyByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCompanyByIdQuery>(GetCompanyByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCompanyById');
     },
     getProductById(variables: GetProductByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProductByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductByIdQuery>(GetProductByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductById');

@@ -30,9 +30,9 @@ export default function Index() {
               has tasted{" "}
               <Link
                 to={paths.products(product?.id)}
-              >{`${product?.brand?.name} - ${product?.name}`}</Link>{" "}
+              >{`${product?.brand?.name} - ${product.name}`}</Link>{" "}
               by{" "}
-              <Link to={`/company/${product?.brand?.company?.name}`}>
+              <Link to={paths.company(product.brand.company.id)}>
                 {product?.brand?.company?.name}
               </Link>
             </p>
