@@ -1,33 +1,45 @@
-import { Form, LoaderFunction, useLoaderData } from "remix";
+import { Link, LoaderFunction, useLoaderData } from "remix";
 import SDK, { sdk } from "~/api.server";
-import { styled } from "~/stitches.config";
-import { getUserId } from "~/utils/session.server";
+import { Card } from "~/components/card";
+import { Layout } from "~/components/layout";
+import { Stars } from "~/components/stars";
+import { Typography } from "~/components/typography";
+import { paths } from "~/utils/paths";
 
-export const loader: LoaderFunction = async ({
-  request,
-}): Promise<SDK.GetCompaniesQuery> => {
-  const userId = await getUserId(request);
-  console.log("userId: ", userId);
-  const companies = await sdk().getCompanies();
-  return companies;
-};
+export const loader: LoaderFunction =
+  async (): Promise<SDK.GetActivityFeedQuery> => {
+    const companies = await sdk().getActivityFeed();
+    return companies;
+  };
 
 export default function Index() {
-  const data = useLoaderData<SDK.GetCompaniesQuery>();
+  const data = useLoaderData<SDK.GetActivityFeedQuery>();
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <H1>Tasted</H1>
-      <Form action="/logout" method="post">
-        <button type="submit" className="button">
-          Logout
-        </button>
-      </Form>
-      {data.companies.nodes.map((company) => (
-        <p>{company.name}</p>
-      ))}
-    </div>
+    <Layout.Root>
+      <Layout.Header>
+        <Typography.H1>Activity Feed</Typography.H1>
+      </Layout.Header>
+      <Card.Container>
+        {data.checkIns.nodes.map(({ id, product, rating, author }) => (
+          <Card.Wrapper key={id}>
+            <p>
+              <Link to={paths.user(author?.username ?? "")}>
+                {author.username}
+              </Link>{" "}
+              has tasted{" "}
+              <Link
+                to={paths.products(product?.id)}
+              >{`${product?.brand?.name} - ${product?.name}`}</Link>{" "}
+              by{" "}
+              <Link to={`/company/${product?.brand?.company?.name}`}>
+                {product?.brand?.company?.name}
+              </Link>
+            </p>
+            {rating && <Stars rating={rating} />}
+          </Card.Wrapper>
+        ))}
+      </Card.Container>
+    </Layout.Root>
   );
 }
-
-const H1 = styled("h1", { fontWeight: "bold", color: "$red" });

@@ -2,10 +2,12 @@ import {
   ActionFunction,
   Form,
   HeadersFunction,
-  Link,
   MetaFunction,
   useActionData,
 } from "remix";
+import Input from "~/components/input";
+import Link from "~/components/link";
+import { Typography } from "~/components/typography";
 import { styled } from "~/stitches.config";
 import { createUserSession, login } from "~/utils/session.server";
 
@@ -78,7 +80,10 @@ export default function Login() {
     <Wrapper data-light="">
       <Header>
         <img color="white" src="/maku.svg" height={48} width={48} />
-        <H1>Welcome to Tasted</H1>
+        <Typography.H1>Welcome to Tasted</Typography.H1>
+        <p>
+          Don't have an account? <Link to={`/register`}>Sign up!</Link>
+        </p>
       </Header>
       <StyledForm
         method="post"
@@ -152,22 +157,6 @@ export const Button = styled("button", {
   },
 });
 
-export const Input = styled("input", {
-  backgroundColor: "#333333",
-  borderRadius: "10px",
-  color: "#bababa",
-  display: "inline-block",
-  padding: "0px 16px",
-  fontSize: "16px",
-  height: "40px",
-  border: "none",
-  "&:focus": { outline: "1px solid $blue" },
-  transition: "outline 0.4s ease 0s, color 0.2s ease 0s",
-  "&[aria-invalid='true']": {
-    outline: "1px solid red",
-  },
-});
-
 const Wrapper = styled("div", {
   display: "flex",
   flexDirection: "column",
@@ -188,7 +177,3 @@ const StyledForm = styled(Form, {
   flexDirection: "column",
   gap: "10px",
 });
-
-const H1 = styled("h1", { fontSize: "28px" });
-
-const StyledLink = styled(Link, { color: "rgba(0, 153, 254, 1.00)" });

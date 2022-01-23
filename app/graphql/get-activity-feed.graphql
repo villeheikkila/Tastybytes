@@ -1,0 +1,17 @@
+query getActivityFeed {
+  checkIns(first: 20) {
+    nodes {
+      id
+      rating
+      review
+      checkInDate
+      createdAt
+      author {
+        ...Basic_User
+      }
+      product {
+        ...Basic_Product
+      }
+    }
+  }
+}

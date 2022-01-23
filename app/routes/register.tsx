@@ -2,10 +2,11 @@ import {
   ActionFunction,
   Form,
   HeadersFunction,
-  Link,
   MetaFunction,
   useActionData,
 } from "remix";
+import Link from "~/components/link";
+import { Typography } from "~/components/typography";
 import { styled } from "~/stitches.config";
 import { createUserSession, register } from "~/utils/session.server";
 
@@ -60,9 +61,9 @@ export default function Register() {
     <Wrapper data-light="">
       <Header>
         <img color="white" src="/maku.svg" height={48} width={48} />
-        <H1>Create Account</H1>
+        <Typography.H1>Create Account</Typography.H1>
         <p>
-          Already have an account? <Link to={`/login`}>Sign in!</Link>
+          Already have an account? <Link to="/login">Sign in!</Link>
         </p>
       </Header>
       <StyledForm
@@ -173,7 +174,3 @@ const StyledForm = styled(Form, {
   flexDirection: "column",
   gap: "10px",
 });
-
-const H1 = styled("h1", { fontSize: "28px" });
-
-const StyledLink = styled(Link, { color: "rgba(0, 153, 254, 1.00)" });
