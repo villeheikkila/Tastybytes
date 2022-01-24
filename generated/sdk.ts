@@ -29,6 +29,32 @@ export type Scalars = {
   UUID: any;
 };
 
+/** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
+export type BooleanFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom: InputMaybe<Scalars['Boolean']>;
+  /** Equal to the specified value. */
+  equalTo: InputMaybe<Scalars['Boolean']>;
+  /** Greater than the specified value. */
+  greaterThan: InputMaybe<Scalars['Boolean']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo: InputMaybe<Scalars['Boolean']>;
+  /** Included in the specified list. */
+  in: InputMaybe<Array<Scalars['Boolean']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan: InputMaybe<Scalars['Boolean']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo: InputMaybe<Scalars['Boolean']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom: InputMaybe<Scalars['Boolean']>;
+  /** Not equal to the specified value. */
+  notEqualTo: InputMaybe<Scalars['Boolean']>;
+  /** Not included in the specified list. */
+  notIn: InputMaybe<Array<Scalars['Boolean']>>;
+};
+
 export type Brand = Node & {
   __typename?: 'Brand';
   /** Reads a single `Company` that is related to this `Brand`. */
@@ -55,6 +81,7 @@ export type BrandProductsArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<ProductCondition>;
+  filter: InputMaybe<ProductFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -77,6 +104,30 @@ export type BrandCondition = {
   updatedAt: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `updatedBy` field. */
   updatedBy: InputMaybe<Scalars['UUID']>;
+};
+
+/** A filter to be used against `Brand` object types. All fields are combined with a logical ‘and.’ */
+export type BrandFilter = {
+  /** Checks for all expressions in this list. */
+  and: InputMaybe<Array<BrandFilter>>;
+  /** Filter by the object’s `companyId` field. */
+  companyId: InputMaybe<IntFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `createdBy` field. */
+  createdBy: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `id` field. */
+  id: InputMaybe<IntFilter>;
+  /** Filter by the object’s `name` field. */
+  name: InputMaybe<MediumTextFilter>;
+  /** Negates the expression. */
+  not: InputMaybe<BrandFilter>;
+  /** Checks for any expressions in this list. */
+  or: InputMaybe<Array<BrandFilter>>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `updatedBy` field. */
+  updatedBy: InputMaybe<UuidFilter>;
 };
 
 /** An input for mutations affecting `Brand` */
@@ -189,6 +240,7 @@ export type CategoryTypesByCategoryArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<TypeCondition>;
+  filter: InputMaybe<TypeFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -202,6 +254,18 @@ export type CategoryTypesByCategoryArgs = {
 export type CategoryCondition = {
   /** Checks for equality with the object’s `name` field. */
   name: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `Category` object types. All fields are combined with a logical ‘and.’ */
+export type CategoryFilter = {
+  /** Checks for all expressions in this list. */
+  and: InputMaybe<Array<CategoryFilter>>;
+  /** Filter by the object’s `name` field. */
+  name: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not: InputMaybe<CategoryFilter>;
+  /** Checks for any expressions in this list. */
+  or: InputMaybe<Array<CategoryFilter>>;
 };
 
 /** An input for mutations affecting `Category` */
@@ -250,6 +314,32 @@ export type CheckInCondition = {
   review: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `CheckIn` object types. All fields are combined with a logical ‘and.’ */
+export type CheckInFilter = {
+  /** Checks for all expressions in this list. */
+  and: InputMaybe<Array<CheckInFilter>>;
+  /** Filter by the object’s `authorId` field. */
+  authorId: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `checkInDate` field. */
+  checkInDate: InputMaybe<DateFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id: InputMaybe<IntFilter>;
+  /** Negates the expression. */
+  not: InputMaybe<CheckInFilter>;
+  /** Checks for any expressions in this list. */
+  or: InputMaybe<Array<CheckInFilter>>;
+  /** Filter by the object’s `productId` field. */
+  productId: InputMaybe<IntFilter>;
+  /** Filter by the object’s `rating` field. */
+  rating: InputMaybe<IntFilter>;
+  /** Filter by the object’s `review` field. */
+  review: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt: InputMaybe<DatetimeFilter>;
 };
 
 /** An input for mutations affecting `CheckIn` */
@@ -362,8 +452,10 @@ export enum CompaniesOrderBy {
 
 export type Company = Node & {
   __typename?: 'Company';
+  averageRating: Maybe<Scalars['Int']>;
   /** Reads and enables pagination through a set of `Brand`. */
   brands: BrandsConnection;
+  checkInsPastMonth: Maybe<Scalars['Int']>;
   createdAt: Scalars['Datetime'];
   createdBy: Maybe<Scalars['UUID']>;
   id: Scalars['Int'];
@@ -373,6 +465,8 @@ export type Company = Node & {
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `Product`. */
   productsByManufacturerId: ProductsConnection;
+  totalCheckIns: Maybe<Scalars['Int']>;
+  totalItems: Maybe<Scalars['Int']>;
   /** Reads a single `User` that is related to this `Company`. */
   userByCreatedBy: Maybe<User>;
 };
@@ -382,6 +476,7 @@ export type CompanyBrandsArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<BrandCondition>;
+  filter: InputMaybe<BrandFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -393,6 +488,7 @@ export type CompanyProductsByManufacturerIdArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<ProductCondition>;
+  filter: InputMaybe<ProductFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -411,6 +507,34 @@ export type CompanyCondition = {
   isVerified: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `name` field. */
   name: InputMaybe<Scalars['MediumText']>;
+};
+
+/** A filter to be used against `Company` object types. All fields are combined with a logical ‘and.’ */
+export type CompanyFilter = {
+  /** Checks for all expressions in this list. */
+  and: InputMaybe<Array<CompanyFilter>>;
+  /** Filter by the object’s `averageRating` field. */
+  averageRating: InputMaybe<IntFilter>;
+  /** Filter by the object’s `checkInsPastMonth` field. */
+  checkInsPastMonth: InputMaybe<IntFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `createdBy` field. */
+  createdBy: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `id` field. */
+  id: InputMaybe<IntFilter>;
+  /** Filter by the object’s `isVerified` field. */
+  isVerified: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `name` field. */
+  name: InputMaybe<MediumTextFilter>;
+  /** Negates the expression. */
+  not: InputMaybe<CompanyFilter>;
+  /** Checks for any expressions in this list. */
+  or: InputMaybe<Array<CompanyFilter>>;
+  /** Filter by the object’s `totalCheckIns` field. */
+  totalCheckIns: InputMaybe<IntFilter>;
+  /** Filter by the object’s `totalItems` field. */
+  totalItems: InputMaybe<IntFilter>;
 };
 
 /** An input for mutations affecting `Company` */
@@ -686,8 +810,71 @@ export type CreateUserPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
+/** A filter to be used against Date fields. All fields are combined with a logical ‘and.’ */
+export type DateFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom: InputMaybe<Scalars['Date']>;
+  /** Equal to the specified value. */
+  equalTo: InputMaybe<Scalars['Date']>;
+  /** Greater than the specified value. */
+  greaterThan: InputMaybe<Scalars['Date']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo: InputMaybe<Scalars['Date']>;
+  /** Included in the specified list. */
+  in: InputMaybe<Array<Scalars['Date']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan: InputMaybe<Scalars['Date']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo: InputMaybe<Scalars['Date']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom: InputMaybe<Scalars['Date']>;
+  /** Not equal to the specified value. */
+  notEqualTo: InputMaybe<Scalars['Date']>;
+  /** Not included in the specified list. */
+  notIn: InputMaybe<Array<Scalars['Date']>>;
+};
+
+/** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
+export type DatetimeFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom: InputMaybe<Scalars['Datetime']>;
+  /** Equal to the specified value. */
+  equalTo: InputMaybe<Scalars['Datetime']>;
+  /** Greater than the specified value. */
+  greaterThan: InputMaybe<Scalars['Datetime']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo: InputMaybe<Scalars['Datetime']>;
+  /** Included in the specified list. */
+  in: InputMaybe<Array<Scalars['Datetime']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan: InputMaybe<Scalars['Datetime']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo: InputMaybe<Scalars['Datetime']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom: InputMaybe<Scalars['Datetime']>;
+  /** Not equal to the specified value. */
+  notEqualTo: InputMaybe<Scalars['Datetime']>;
+  /** Not included in the specified list. */
+  notIn: InputMaybe<Array<Scalars['Datetime']>>;
+};
+
 /** All input for the `deleteBrandByCompanyIdAndName` mutation. */
 export type DeleteBrandByCompanyIdAndNameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId: InputMaybe<Scalars['String']>;
+  companyId: Scalars['Int'];
+  name: Scalars['MediumText'];
+};
+
+/** All input for the `deleteBrandByNameAndCompanyId` mutation. */
+export type DeleteBrandByNameAndCompanyIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1072,6 +1259,32 @@ export type DeleteUserPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
+/** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
+export type IntFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom: InputMaybe<Scalars['Int']>;
+  /** Equal to the specified value. */
+  equalTo: InputMaybe<Scalars['Int']>;
+  /** Greater than the specified value. */
+  greaterThan: InputMaybe<Scalars['Int']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo: InputMaybe<Scalars['Int']>;
+  /** Included in the specified list. */
+  in: InputMaybe<Array<Scalars['Int']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan: InputMaybe<Scalars['Int']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo: InputMaybe<Scalars['Int']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom: InputMaybe<Scalars['Int']>;
+  /** Not equal to the specified value. */
+  notEqualTo: InputMaybe<Scalars['Int']>;
+  /** Not included in the specified list. */
+  notIn: InputMaybe<Array<Scalars['Int']>>;
+};
+
 /** All input for the `login` mutation. */
 export type LoginInput = {
   /**
@@ -1104,6 +1317,162 @@ export type LoginPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
+/** A filter to be used against LongText fields. All fields are combined with a logical ‘and.’ */
+export type LongTextFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom: InputMaybe<Scalars['LongText']>;
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Ends with the specified string (case-sensitive). */
+  endsWith: InputMaybe<Scalars['LongText']>;
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Equal to the specified value. */
+  equalTo: InputMaybe<Scalars['LongText']>;
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Greater than the specified value. */
+  greaterThan: InputMaybe<Scalars['LongText']>;
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo: InputMaybe<Scalars['LongText']>;
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Included in the specified list. */
+  in: InputMaybe<Array<Scalars['LongText']>>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive: InputMaybe<Array<Scalars['LongText']>>;
+  /** Contains the specified string (case-sensitive). */
+  includes: InputMaybe<Scalars['LongText']>;
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan: InputMaybe<Scalars['LongText']>;
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo: InputMaybe<Scalars['LongText']>;
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like: InputMaybe<Scalars['LongText']>;
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom: InputMaybe<Scalars['LongText']>;
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith: InputMaybe<Scalars['LongText']>;
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Not equal to the specified value. */
+  notEqualTo: InputMaybe<Scalars['LongText']>;
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Not included in the specified list. */
+  notIn: InputMaybe<Array<Scalars['LongText']>>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive: InputMaybe<Array<Scalars['LongText']>>;
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes: InputMaybe<Scalars['LongText']>;
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike: InputMaybe<Scalars['LongText']>;
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith: InputMaybe<Scalars['LongText']>;
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive: InputMaybe<Scalars['LongText']>;
+  /** Starts with the specified string (case-sensitive). */
+  startsWith: InputMaybe<Scalars['LongText']>;
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive: InputMaybe<Scalars['LongText']>;
+};
+
+/** A filter to be used against MediumText fields. All fields are combined with a logical ‘and.’ */
+export type MediumTextFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom: InputMaybe<Scalars['MediumText']>;
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Ends with the specified string (case-sensitive). */
+  endsWith: InputMaybe<Scalars['MediumText']>;
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Equal to the specified value. */
+  equalTo: InputMaybe<Scalars['MediumText']>;
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Greater than the specified value. */
+  greaterThan: InputMaybe<Scalars['MediumText']>;
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo: InputMaybe<Scalars['MediumText']>;
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Included in the specified list. */
+  in: InputMaybe<Array<Scalars['MediumText']>>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive: InputMaybe<Array<Scalars['MediumText']>>;
+  /** Contains the specified string (case-sensitive). */
+  includes: InputMaybe<Scalars['MediumText']>;
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan: InputMaybe<Scalars['MediumText']>;
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo: InputMaybe<Scalars['MediumText']>;
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like: InputMaybe<Scalars['MediumText']>;
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom: InputMaybe<Scalars['MediumText']>;
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith: InputMaybe<Scalars['MediumText']>;
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Not equal to the specified value. */
+  notEqualTo: InputMaybe<Scalars['MediumText']>;
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Not included in the specified list. */
+  notIn: InputMaybe<Array<Scalars['MediumText']>>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive: InputMaybe<Array<Scalars['MediumText']>>;
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes: InputMaybe<Scalars['MediumText']>;
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike: InputMaybe<Scalars['MediumText']>;
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith: InputMaybe<Scalars['MediumText']>;
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive: InputMaybe<Scalars['MediumText']>;
+  /** Starts with the specified string (case-sensitive). */
+  startsWith: InputMaybe<Scalars['MediumText']>;
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive: InputMaybe<Scalars['MediumText']>;
+};
+
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
@@ -1125,6 +1494,8 @@ export type Mutation = {
   deleteBrand: Maybe<DeleteBrandPayload>;
   /** Deletes a single `Brand` using a unique key. */
   deleteBrandByCompanyIdAndName: Maybe<DeleteBrandPayload>;
+  /** Deletes a single `Brand` using a unique key. */
+  deleteBrandByNameAndCompanyId: Maybe<DeleteBrandPayload>;
   /** Deletes a single `Brand` using its globally unique id. */
   deleteBrandByNodeId: Maybe<DeleteBrandPayload>;
   /** Deletes a single `Category` using a unique key. */
@@ -1165,6 +1536,8 @@ export type Mutation = {
   updateBrand: Maybe<UpdateBrandPayload>;
   /** Updates a single `Brand` using a unique key and a patch. */
   updateBrandByCompanyIdAndName: Maybe<UpdateBrandPayload>;
+  /** Updates a single `Brand` using a unique key and a patch. */
+  updateBrandByNameAndCompanyId: Maybe<UpdateBrandPayload>;
   /** Updates a single `Brand` using its globally unique id and a patch. */
   updateBrandByNodeId: Maybe<UpdateBrandPayload>;
   /** Updates a single `Category` using a unique key and a patch. */
@@ -1253,6 +1626,12 @@ export type MutationDeleteBrandArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteBrandByCompanyIdAndNameArgs = {
   input: DeleteBrandByCompanyIdAndNameInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteBrandByNameAndCompanyIdArgs = {
+  input: DeleteBrandByNameAndCompanyIdInput;
 };
 
 
@@ -1383,6 +1762,12 @@ export type MutationUpdateBrandByCompanyIdAndNameArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateBrandByNameAndCompanyIdArgs = {
+  input: UpdateBrandByNameAndCompanyIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateBrandByNodeIdArgs = {
   input: UpdateBrandByNodeIdInput;
 };
@@ -1509,6 +1894,7 @@ export type Product = Node & {
   brandId: Scalars['Int'];
   /** Reads and enables pagination through a set of `CheckIn`. */
   checkIns: CheckInsConnection;
+  checkInsPastMonth: Maybe<Scalars['Int']>;
   createdAt: Scalars['Datetime'];
   createdBy: Maybe<Scalars['UUID']>;
   description: Maybe<Scalars['LongText']>;
@@ -1520,6 +1906,7 @@ export type Product = Node & {
   name: Maybe<Scalars['MediumText']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  totalCheckIns: Maybe<Scalars['Int']>;
   /** Reads a single `Type` that is related to this `Product`. */
   type: Maybe<Type>;
   typeId: Scalars['Int'];
@@ -1536,6 +1923,7 @@ export type ProductCheckInsArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<CheckInCondition>;
+  filter: InputMaybe<CheckInFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -1566,6 +1954,42 @@ export type ProductCondition = {
   updatedAt: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `updatedBy` field. */
   updatedBy: InputMaybe<Scalars['UUID']>;
+};
+
+/** A filter to be used against `Product` object types. All fields are combined with a logical ‘and.’ */
+export type ProductFilter = {
+  /** Checks for all expressions in this list. */
+  and: InputMaybe<Array<ProductFilter>>;
+  /** Filter by the object’s `brandId` field. */
+  brandId: InputMaybe<IntFilter>;
+  /** Filter by the object’s `checkInsPastMonth` field. */
+  checkInsPastMonth: InputMaybe<IntFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `createdBy` field. */
+  createdBy: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `description` field. */
+  description: InputMaybe<LongTextFilter>;
+  /** Filter by the object’s `id` field. */
+  id: InputMaybe<IntFilter>;
+  /** Filter by the object’s `isVerified` field. */
+  isVerified: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `manufacturerId` field. */
+  manufacturerId: InputMaybe<IntFilter>;
+  /** Filter by the object’s `name` field. */
+  name: InputMaybe<MediumTextFilter>;
+  /** Negates the expression. */
+  not: InputMaybe<ProductFilter>;
+  /** Checks for any expressions in this list. */
+  or: InputMaybe<Array<ProductFilter>>;
+  /** Filter by the object’s `totalCheckIns` field. */
+  totalCheckIns: InputMaybe<IntFilter>;
+  /** Filter by the object’s `typeId` field. */
+  typeId: InputMaybe<IntFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `updatedBy` field. */
+  updatedBy: InputMaybe<UuidFilter>;
 };
 
 /** An input for mutations affecting `Product` */
@@ -1654,6 +2078,7 @@ export type Query = Node & {
   __typename?: 'Query';
   brand: Maybe<Brand>;
   brandByCompanyIdAndName: Maybe<Brand>;
+  brandByNameAndCompanyId: Maybe<Brand>;
   /** Reads a single `Brand` using its globally unique `ID`. */
   brandByNodeId: Maybe<Brand>;
   /** Reads and enables pagination through a set of `Brand`. */
@@ -1689,6 +2114,8 @@ export type Query = Node & {
    * which can only query top level fields if they are in a particular form.
    */
   query: Query;
+  /** Reads and enables pagination through a set of `Product`. */
+  searchProducts: Maybe<ProductsConnection>;
   type: Maybe<Type>;
   typeByNameAndCategory: Maybe<Type>;
   /** Reads a single `Type` using its globally unique `ID`. */
@@ -1699,6 +2126,8 @@ export type Query = Node & {
   /** Reads a single `User` using its globally unique `ID`. */
   userByNodeId: Maybe<User>;
   userByUsername: Maybe<User>;
+  /** Reads and enables pagination through a set of `User`. */
+  users: Maybe<UsersConnection>;
 };
 
 
@@ -1716,6 +2145,13 @@ export type QueryBrandByCompanyIdAndNameArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryBrandByNameAndCompanyIdArgs = {
+  companyId: Scalars['Int'];
+  name: Scalars['MediumText'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryBrandByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
@@ -1726,6 +2162,7 @@ export type QueryBrandsArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<BrandCondition>;
+  filter: InputMaybe<BrandFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -1738,6 +2175,7 @@ export type QueryCategoriesArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<CategoryCondition>;
+  filter: InputMaybe<CategoryFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -1774,6 +2212,7 @@ export type QueryCheckInsArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<CheckInCondition>;
+  filter: InputMaybe<CheckInFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -1786,6 +2225,7 @@ export type QueryCompaniesArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<CompanyCondition>;
+  filter: InputMaybe<CompanyFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -1842,10 +2282,23 @@ export type QueryProductsArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<ProductCondition>;
+  filter: InputMaybe<ProductFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<ProductsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySearchProductsArgs = {
+  after: InputMaybe<Scalars['Cursor']>;
+  before: InputMaybe<Scalars['Cursor']>;
+  filter: InputMaybe<ProductFilter>;
+  first: InputMaybe<Scalars['Int']>;
+  last: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  search: InputMaybe<Scalars['String']>;
 };
 
 
@@ -1873,6 +2326,7 @@ export type QueryTypesArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<TypeCondition>;
+  filter: InputMaybe<TypeFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -1895,6 +2349,19 @@ export type QueryUserByNodeIdArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryUserByUsernameArgs = {
   username: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUsersArgs = {
+  after: InputMaybe<Scalars['Cursor']>;
+  before: InputMaybe<Scalars['Cursor']>;
+  condition: InputMaybe<UserCondition>;
+  filter: InputMaybe<UserFilter>;
+  first: InputMaybe<Scalars['Int']>;
+  last: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
 /** All input for the `register` mutation. */
@@ -1929,6 +2396,162 @@ export type RegisterPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
+/** A filter to be used against ShortText fields. All fields are combined with a logical ‘and.’ */
+export type ShortTextFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom: InputMaybe<Scalars['ShortText']>;
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Ends with the specified string (case-sensitive). */
+  endsWith: InputMaybe<Scalars['ShortText']>;
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Equal to the specified value. */
+  equalTo: InputMaybe<Scalars['ShortText']>;
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Greater than the specified value. */
+  greaterThan: InputMaybe<Scalars['ShortText']>;
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo: InputMaybe<Scalars['ShortText']>;
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Included in the specified list. */
+  in: InputMaybe<Array<Scalars['ShortText']>>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive: InputMaybe<Array<Scalars['ShortText']>>;
+  /** Contains the specified string (case-sensitive). */
+  includes: InputMaybe<Scalars['ShortText']>;
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan: InputMaybe<Scalars['ShortText']>;
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo: InputMaybe<Scalars['ShortText']>;
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like: InputMaybe<Scalars['ShortText']>;
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom: InputMaybe<Scalars['ShortText']>;
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith: InputMaybe<Scalars['ShortText']>;
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Not equal to the specified value. */
+  notEqualTo: InputMaybe<Scalars['ShortText']>;
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Not included in the specified list. */
+  notIn: InputMaybe<Array<Scalars['ShortText']>>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive: InputMaybe<Array<Scalars['ShortText']>>;
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes: InputMaybe<Scalars['ShortText']>;
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike: InputMaybe<Scalars['ShortText']>;
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith: InputMaybe<Scalars['ShortText']>;
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive: InputMaybe<Scalars['ShortText']>;
+  /** Starts with the specified string (case-sensitive). */
+  startsWith: InputMaybe<Scalars['ShortText']>;
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive: InputMaybe<Scalars['ShortText']>;
+};
+
+/** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
+export type StringFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive: InputMaybe<Scalars['String']>;
+  /** Ends with the specified string (case-sensitive). */
+  endsWith: InputMaybe<Scalars['String']>;
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value. */
+  equalTo: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive: InputMaybe<Scalars['String']>;
+  /** Greater than the specified value. */
+  greaterThan: InputMaybe<Scalars['String']>;
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive: InputMaybe<Scalars['String']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo: InputMaybe<Scalars['String']>;
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive: InputMaybe<Scalars['String']>;
+  /** Included in the specified list. */
+  in: InputMaybe<Array<Scalars['String']>>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive: InputMaybe<Array<Scalars['String']>>;
+  /** Contains the specified string (case-sensitive). */
+  includes: InputMaybe<Scalars['String']>;
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive: InputMaybe<Scalars['String']>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan: InputMaybe<Scalars['String']>;
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive: InputMaybe<Scalars['String']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo: InputMaybe<Scalars['String']>;
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive: InputMaybe<Scalars['String']>;
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like: InputMaybe<Scalars['String']>;
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive: InputMaybe<Scalars['String']>;
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith: InputMaybe<Scalars['String']>;
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value. */
+  notEqualTo: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive: InputMaybe<Scalars['String']>;
+  /** Not included in the specified list. */
+  notIn: InputMaybe<Array<Scalars['String']>>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive: InputMaybe<Array<Scalars['String']>>;
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes: InputMaybe<Scalars['String']>;
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive: InputMaybe<Scalars['String']>;
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike: InputMaybe<Scalars['String']>;
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive: InputMaybe<Scalars['String']>;
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith: InputMaybe<Scalars['String']>;
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive: InputMaybe<Scalars['String']>;
+  /** Starts with the specified string (case-sensitive). */
+  startsWith: InputMaybe<Scalars['String']>;
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive: InputMaybe<Scalars['String']>;
+};
+
 export type Type = Node & {
   __typename?: 'Type';
   category: Scalars['String'];
@@ -1947,6 +2570,7 @@ export type TypeProductsArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<ProductCondition>;
+  filter: InputMaybe<ProductFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -1961,6 +2585,22 @@ export type TypeCondition = {
   id: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `name` field. */
   name: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `Type` object types. All fields are combined with a logical ‘and.’ */
+export type TypeFilter = {
+  /** Checks for all expressions in this list. */
+  and: InputMaybe<Array<TypeFilter>>;
+  /** Filter by the object’s `category` field. */
+  category: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id: InputMaybe<IntFilter>;
+  /** Filter by the object’s `name` field. */
+  name: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not: InputMaybe<TypeFilter>;
+  /** Checks for any expressions in this list. */
+  or: InputMaybe<Array<TypeFilter>>;
 };
 
 /** An input for mutations affecting `Type` */
@@ -2012,8 +2652,47 @@ export enum TypesOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
+/** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
+export type UuidFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom: InputMaybe<Scalars['UUID']>;
+  /** Equal to the specified value. */
+  equalTo: InputMaybe<Scalars['UUID']>;
+  /** Greater than the specified value. */
+  greaterThan: InputMaybe<Scalars['UUID']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo: InputMaybe<Scalars['UUID']>;
+  /** Included in the specified list. */
+  in: InputMaybe<Array<Scalars['UUID']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan: InputMaybe<Scalars['UUID']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo: InputMaybe<Scalars['UUID']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom: InputMaybe<Scalars['UUID']>;
+  /** Not equal to the specified value. */
+  notEqualTo: InputMaybe<Scalars['UUID']>;
+  /** Not included in the specified list. */
+  notIn: InputMaybe<Array<Scalars['UUID']>>;
+};
+
 /** All input for the `updateBrandByCompanyIdAndName` mutation. */
 export type UpdateBrandByCompanyIdAndNameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId: InputMaybe<Scalars['String']>;
+  companyId: Scalars['Int'];
+  name: Scalars['MediumText'];
+  /** An object where the defined keys will be set on the `Brand` being updated. */
+  patch: BrandPatch;
+};
+
+/** All input for the `updateBrandByNameAndCompanyId` mutation. */
+export type UpdateBrandByNameAndCompanyIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -2429,7 +3108,6 @@ export type UpdateUserPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
-/** A user who can log in to the application. */
 export type User = Node & {
   __typename?: 'User';
   /** Reads and enables pagination through a set of `CheckIn`. */
@@ -2457,11 +3135,11 @@ export type User = Node & {
 };
 
 
-/** A user who can log in to the application. */
 export type UserAuthoredCheckInsArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<CheckInCondition>;
+  filter: InputMaybe<CheckInFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -2469,11 +3147,11 @@ export type UserAuthoredCheckInsArgs = {
 };
 
 
-/** A user who can log in to the application. */
 export type UserBrandsByCreatedByArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<BrandCondition>;
+  filter: InputMaybe<BrandFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -2481,11 +3159,11 @@ export type UserBrandsByCreatedByArgs = {
 };
 
 
-/** A user who can log in to the application. */
 export type UserBrandsByUpdatedByArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<BrandCondition>;
+  filter: InputMaybe<BrandFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -2493,11 +3171,11 @@ export type UserBrandsByUpdatedByArgs = {
 };
 
 
-/** A user who can log in to the application. */
 export type UserCompaniesByCreatedByArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<CompanyCondition>;
+  filter: InputMaybe<CompanyFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -2505,11 +3183,11 @@ export type UserCompaniesByCreatedByArgs = {
 };
 
 
-/** A user who can log in to the application. */
 export type UserProductsByCreatedByArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<ProductCondition>;
+  filter: InputMaybe<ProductFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -2517,15 +3195,61 @@ export type UserProductsByCreatedByArgs = {
 };
 
 
-/** A user who can log in to the application. */
 export type UserProductsByUpdatedByArgs = {
   after: InputMaybe<Scalars['Cursor']>;
   before: InputMaybe<Scalars['Cursor']>;
   condition: InputMaybe<ProductCondition>;
+  filter: InputMaybe<ProductFilter>;
   first: InputMaybe<Scalars['Int']>;
   last: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<ProductsOrderBy>>;
+};
+
+/** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type UserCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `firstName` field. */
+  firstName: InputMaybe<Scalars['ShortText']>;
+  /** Checks for equality with the object’s `id` field. */
+  id: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `isAdmin` field. */
+  isAdmin: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `isVerified` field. */
+  isVerified: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `lastName` field. */
+  lastName: InputMaybe<Scalars['ShortText']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `username` field. */
+  username: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
+export type UserFilter = {
+  /** Checks for all expressions in this list. */
+  and: InputMaybe<Array<UserFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `firstName` field. */
+  firstName: InputMaybe<ShortTextFilter>;
+  /** Filter by the object’s `id` field. */
+  id: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `isAdmin` field. */
+  isAdmin: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `isVerified` field. */
+  isVerified: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `lastName` field. */
+  lastName: InputMaybe<ShortTextFilter>;
+  /** Negates the expression. */
+  not: InputMaybe<UserFilter>;
+  /** Checks for any expressions in this list. */
+  or: InputMaybe<Array<UserFilter>>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `username` field. */
+  username: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `User` */
@@ -2550,6 +3274,19 @@ export type UserPatch = {
   lastName: InputMaybe<Scalars['ShortText']>;
   updatedAt: InputMaybe<Scalars['Datetime']>;
   username: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `User` values. */
+export type UsersConnection = {
+  __typename?: 'UsersConnection';
+  /** A list of edges which contains the `User` and cursor to aid in pagination. */
+  edges: Array<UsersEdge>;
+  /** A list of `User` objects. */
+  nodes: Array<Maybe<User>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `User` you could get from the connection. */
+  totalCount: Scalars['Int'];
 };
 
 /** A `User` edge in the connection. */
@@ -2634,6 +3371,14 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterPayload', user: { __typename?: 'User', id: any, username: string } } };
+
+export type UpdateUserMutationVariables = Exact<{
+  id: Scalars['UUID'];
+  username: Scalars['String'];
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UpdateUserPayload', user: { __typename?: 'User', username: string, id: any } } };
 
 export const Basic_ProductFragmentDoc = gql`
     fragment Basic_Product on Product {
@@ -2793,6 +3538,16 @@ export const RegisterDocument = gql`
   }
 }
     ${Basic_UserFragmentDoc}`;
+export const UpdateUserDocument = gql`
+    mutation updateUser($id: UUID!, $username: String!) {
+  updateUser(input: {patch: {username: $username}, id: $id}) {
+    user {
+      username
+      id
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -2821,6 +3576,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     register(variables: RegisterMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RegisterMutation>(RegisterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'register');
+    },
+    updateUser(variables: UpdateUserMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateUserMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateUserMutation>(UpdateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateUser');
     }
   };
 }

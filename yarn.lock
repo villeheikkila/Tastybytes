@@ -7014,6 +7014,11 @@
   "resolved" "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   "version" "0.1.0"
 
+"zod@^3.11.6":
+  "integrity" "sha512-daZ80A81I3/9lIydI44motWe6n59kRBfNzTuS2bfzVh1nAXi667TOTWWtatxyG+fwgNUiagSj/CWZwRRbevJIg=="
+  "resolved" "https://registry.npmjs.org/zod/-/zod-3.11.6.tgz"
+  "version" "3.11.6"
+
 "zwitch@^2.0.0":
   "integrity" "sha512-JZxotl7SxAJH0j7dN4pxsTV6ZLXoLdGME+PsjkL/DaBrVryK9kTGq06GfKrwcSOqypP+fdXGoCHE36b99fWVoA=="
   "resolved" "https://registry.npmjs.org/zwitch/-/zwitch-2.0.2.tgz"

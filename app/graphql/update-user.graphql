@@ -1,0 +1,8 @@
+mutation updateUser($id: UUID!, $username: String!) {
+  updateUser(input: { patch: { username: $username }, id: $id }) {
+    user {
+      username
+      id
+    }
+  }
+}
