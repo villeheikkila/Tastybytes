@@ -13,7 +13,10 @@ import {
   useLoaderData,
 } from "remix";
 import SDK from "./api.server";
+import { Avatar } from "./components/avatar";
+import { Dropdown } from "./components/dropdown";
 import { globals, styled } from "./stitches.config";
+import { paths } from "./utils/paths";
 import { getUser } from "./utils/session.server";
 
 export const meta: MetaFunction = () => {
@@ -61,14 +64,7 @@ const NavigationBar = () => {
           </ProjectLogo>
         </Link>
         {data?.user ? (
-          <div className="user-info">
-            <span>{data.user.username}</span>
-            <Form action="/logout" method="post">
-              <button type="submit" className="button">
-                Logout
-              </button>
-            </Form>
-          </div>
+          <DropdownMenu user={data.user} />
         ) : (
           <Link to="/login">Login</Link>
         )}
@@ -76,6 +72,65 @@ const NavigationBar = () => {
     </Navigation.Header>
   );
 };
+
+const DropdownMenu: React.FC<{user: SDK.Basic_UserFragment}> = ({user}) => {
+  return (
+    <Dropdown.Menu>
+      <Dropdown.Trigger asChild>
+        <IconButton>
+          <Avatar
+            name={user.username}
+            status={undefined}
+          />
+        </IconButton>
+      </Dropdown.Trigger>
+
+      <Dropdown.Content sideOffset={-53}>
+        <Dropdown.Item>
+          <Link to={paths.user(user.username)}>
+            Profile
+          </Link>
+        </Dropdown.Item>
+        <Dropdown.Separator />
+        <Dropdown.Item>
+          <Link to="/settings">Settings</Link>
+        </Dropdown.Item>
+        <Dropdown.Separator />
+        <Dropdown.Item alignment="centered">
+            <Form action="/logout" method="post">
+              <SquareButton type="submit" className="button">
+                Logout
+              </SquareButton>
+            </Form>
+        </Dropdown.Item>
+      </Dropdown.Content>
+    </Dropdown.Menu>
+  );
+};
+
+const SquareButton = styled("button", {
+  padding: "8px 24px",
+  backgroundColor: "$darkGray",
+  border: "1px solid #5f6368",
+  color: "#e8eaed",
+  borderRadius: "4px",
+});
+
+const IconButton = styled("button", {
+  all: "unset",
+  fontFamily: "inherit",
+  borderRadius: "100%",
+  height: "42px",
+  width: "42px",
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "$white",
+  backgroundColor: "white",
+  boxShadow: `0 2px 10px $black`,
+  "&:hover": { backgroundColor: "$turq" },
+  "&:focus": { boxShadow: `0 0 0 2px black` },
+});
 
 function Document({
   children,
