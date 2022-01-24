@@ -95,10 +95,8 @@ const ErrorContainer = styled("div", {
 
 export default function Index() {
   const data = useLoaderData<SDK.GetUserByIdQuery>();
-  const transition = useTransition();
-
   const actionData = useActionData<SafeParseError>();
-  console.log("actionData: ", actionData);
+  const transition = useTransition();
 
   return (
     <Layout.Root>

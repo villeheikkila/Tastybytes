@@ -3356,6 +3356,13 @@ export type GetUserByIdQueryVariables = Exact<{
 
 export type GetUserByIdQuery = { __typename?: 'Query', user: { __typename?: 'User', firstName: any, lastName: any, id: any, username: string } };
 
+export type GetProfilePageByUsernameQueryVariables = Exact<{
+  username: Scalars['String'];
+}>;
+
+
+export type GetProfilePageByUsernameQuery = { __typename?: 'Query', userByUsername: { __typename?: 'User', id: any, username: string, firstName: any, lastName: any, authoredCheckIns: { __typename?: 'CheckInsConnection', totalCount: number, nodes: Array<{ __typename?: 'CheckIn', id: number, rating: number, review: string, checkInDate: any, createdAt: any, product: { __typename?: 'Product', id: number, name: any, brand: { __typename?: 'Brand', id: number, name: any, company: { __typename?: 'Company', id: number, name: any } }, manufacturer: { __typename?: 'Company', id: number, name: any }, type: { __typename?: 'Type', id: number, category: string, name: string } } }> } } };
+
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -3524,6 +3531,47 @@ export const GetUserByIdDocument = gql`
   }
 }
     ${Basic_UserFragmentDoc}`;
+export const GetProfilePageByUsernameDocument = gql`
+    query getProfilePageByUsername($username: String!) {
+  userByUsername(username: $username) {
+    id
+    username
+    firstName
+    lastName
+    authoredCheckIns {
+      totalCount
+      nodes {
+        id
+        rating
+        review
+        checkInDate
+        createdAt
+        product {
+          id
+          name
+          brand {
+            id
+            name
+            company {
+              id
+              name
+            }
+          }
+          manufacturer {
+            id
+            name
+          }
+          type {
+            id
+            category
+            name
+          }
+        }
+      }
+    }
+  }
+}
+    `;
 export const LoginDocument = gql`
     mutation login($username: String!, $password: String!) {
   login(input: {username: $username, password: $password}) {
@@ -3576,6 +3624,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getUserById(variables: GetUserByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUserByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetUserByIdQuery>(GetUserByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserById');
+    },
+    getProfilePageByUsername(variables: GetProfilePageByUsernameQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProfilePageByUsernameQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProfilePageByUsernameQuery>(GetProfilePageByUsernameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProfilePageByUsername');
     },
     login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login');
