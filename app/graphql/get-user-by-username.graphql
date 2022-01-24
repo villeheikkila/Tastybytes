@@ -1,0 +1,39 @@
+query getProfilePageByUsername($username: String!) {
+  userByUsername(username: $username) {
+    id
+    username
+    firstName
+    lastName
+    authoredCheckIns {
+      totalCount
+      nodes {
+        id
+        rating
+        review
+        checkInDate
+        createdAt
+        product {
+          id
+          name
+          brand {
+            id
+            name
+            company {
+              id
+              name
+            }
+          }
+          manufacturer {
+            id
+            name
+          }
+          type {
+            id
+            category
+            name
+          }
+        }
+      }
+    }
+  }
+}
