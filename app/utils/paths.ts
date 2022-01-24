@@ -3,4 +3,5 @@ export const paths = {
     company: (name: number) => `/companies/${name}`,
     products: (productId: number) => `/products/${productId}`,
     settings: "/settings",
+    logout: "/logout"
 }
