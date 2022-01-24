@@ -15,6 +15,10 @@ import { Typography } from "~/components/typography";
 import { styled } from "~/stitches.config";
 import { getUser, getUserId } from "~/utils/session.server";
 
+const codecs = {
+  shortText: z.string().min(2).max(54),
+};
+
 const UserForm = z.object({
   username: z
     .string({
@@ -26,6 +30,8 @@ const UserForm = z.object({
     .regex(/^[a-zA-Z]([_]?[a-zA-Z0-9])+$/, {
       message: "Username can only contain letters from a-ZA-Z and numbers 0-9",
     }),
+  firstName: codecs.shortText,
+  lastName: codecs.shortText,
 });
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -43,7 +49,12 @@ export const action: ActionFunction = async ({
 }): Promise<SafeParseError> => {
   const formData = await request.formData();
   const userId = await getUserId(request);
-  const parsedUser = UserForm.safeParse({ username: formData.get("username") });
+
+  const parsedUser = UserForm.safeParse({
+    username: formData.get("username"),
+    firstName: formData.get("firstName"),
+    lastName: formData.get("lastName"),
+  });
 
   if (parsedUser.success) {
     await sdk().updateUser({
@@ -53,18 +64,6 @@ export const action: ActionFunction = async ({
   }
 
   return parsedUser;
-};
-
-const getErrors = (
-  key: keyof z.infer<typeof UserForm>,
-  safeParseError?: SafeParseError
-) => {
-  if (!safeParseError) return;
-  if (safeParseError.success) {
-    return null;
-  } else {
-    return safeParseError.error.issues.filter(({ path }) => path.includes(key));
-  }
 };
 
 const Errors = ({
@@ -106,7 +105,7 @@ export default function Index() {
       <Layout.Header>
         <Typography.H1>Edit profile</Typography.H1>
       </Layout.Header>
-      <Form method="post">
+      <VerticalForm method="post">
         <label>
           Username
           <Input
@@ -116,10 +115,34 @@ export default function Index() {
           />
           <Errors name="username" safeParseError={actionData} />
         </label>
+        <label>
+          First Name
+          <Input
+            name="firstName"
+            type="text"
+            defaultValue={data.user.firstName}
+          />
+          <Errors name="username" safeParseError={actionData} />
+        </label>
+        <label>
+          Last Name
+          <Input
+            name="lastName"
+            type="text"
+            defaultValue={data.user.lastName}
+          />
+          <Errors name="username" safeParseError={actionData} />
+        </label>
         <button type="submit">
           {transition.submission ? "Saving..." : "Save"}
         </button>
-      </Form>
+      </VerticalForm>
     </Layout.Root>
   );
 }
+
+const VerticalForm = styled(Form, {
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.5rem",
+});

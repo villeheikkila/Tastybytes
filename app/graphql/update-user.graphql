@@ -1,5 +1,15 @@
-mutation updateUser($id: UUID!, $username: String!) {
-  updateUser(input: { patch: { username: $username }, id: $id }) {
+mutation updateUser(
+  $id: UUID!
+  $username: String!
+  $firstName: ShortText!
+  $lastName: ShortText!
+) {
+  updateUser(
+    input: {
+      patch: { username: $username, firstName: $firstName, lastName: $lastName }
+      id: $id
+    }
+  ) {
     user {
       username
       id
