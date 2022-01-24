@@ -73,35 +73,28 @@ const NavigationBar = () => {
   );
 };
 
-const DropdownMenu: React.FC<{user: SDK.Basic_UserFragment}> = ({user}) => {
+const DropdownMenu: React.FC<{ user: SDK.Basic_UserFragment }> = ({ user }) => {
   return (
     <Dropdown.Menu>
       <Dropdown.Trigger asChild>
         <IconButton>
-          <Avatar
-            name={user.username}
-            status={undefined}
-          />
+          <Avatar name={user.username} status={undefined} />
         </IconButton>
       </Dropdown.Trigger>
 
       <Dropdown.Content sideOffset={-53}>
         <Dropdown.Item>
-          <Link to={paths.user(user.username)}>
-            Profile
-          </Link>
+          <Link to={paths.user(user.username)}>Profile</Link>
         </Dropdown.Item>
         <Dropdown.Separator />
         <Dropdown.Item>
-          <Link to="/settings">Settings</Link>
+          <Link to={paths.settings}>Settings</Link>
         </Dropdown.Item>
         <Dropdown.Separator />
         <Dropdown.Item alignment="centered">
-            <Form action="/logout" method="post">
-              <SquareButton type="submit" className="button">
-                Logout
-              </SquareButton>
-            </Form>
+          <Form action={paths.logout} method="post">
+            <SquareButton type="submit">Logout</SquareButton>
+          </Form>
         </Dropdown.Item>
       </Dropdown.Content>
     </Dropdown.Menu>
@@ -162,7 +155,7 @@ export function CatchBoundary() {
 
   return (
     <Document title={`${caught.status} ${caught.statusText}`}>
-      <div className="error-container">
+      <div>
         <h1>
           {caught.status} {caught.statusText}
         </h1>
@@ -176,7 +169,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
   return (
     <Document title="Uh-oh!">
-      <div className="error-container">
+      <div>
         <h1>App Error</h1>
         <pre>{error.message}</pre>
       </div>

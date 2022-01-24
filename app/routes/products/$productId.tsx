@@ -34,7 +34,10 @@ export default function Index() {
         {product?.checkIns.nodes.map(({ id, author, rating }) => (
           <Card.Wrapper key={id}>
             <p>
-              <b>{author.username}</b> has tasted{" "}
+              <Link to={paths.user(author.username)}>
+                <b>{author.username}</b>
+              </Link>{" "}
+              has tasted{" "}
               <Link
                 to={paths.products(id)}
               >{`${product?.brand?.name} - ${product?.name}`}</Link>{" "}
