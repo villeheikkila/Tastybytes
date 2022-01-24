@@ -2846,6 +2846,40 @@ type Query implements Node {
     nodeId: ID!
   ): User
   userByUsername(username: String!): User
+
+  """Reads and enables pagination through a set of `User`."""
+  users(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UsersConnection
 }
 
 """All input for the `register` mutation."""
@@ -2881,6 +2915,138 @@ type RegisterPayload {
 }
 
 scalar ShortText
+
+"""
+A filter to be used against ShortText fields. All fields are combined with a logical ‘and.’
+"""
+input ShortTextFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: ShortText
+
+  """
+  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  distinctFromInsensitive: ShortText
+
+  """Ends with the specified string (case-sensitive)."""
+  endsWith: ShortText
+
+  """Ends with the specified string (case-insensitive)."""
+  endsWithInsensitive: ShortText
+
+  """Equal to the specified value."""
+  equalTo: ShortText
+
+  """Equal to the specified value (case-insensitive)."""
+  equalToInsensitive: ShortText
+
+  """Greater than the specified value."""
+  greaterThan: ShortText
+
+  """Greater than the specified value (case-insensitive)."""
+  greaterThanInsensitive: ShortText
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: ShortText
+
+  """Greater than or equal to the specified value (case-insensitive)."""
+  greaterThanOrEqualToInsensitive: ShortText
+
+  """Included in the specified list."""
+  in: [ShortText!]
+
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [ShortText!]
+
+  """Contains the specified string (case-sensitive)."""
+  includes: ShortText
+
+  """Contains the specified string (case-insensitive)."""
+  includesInsensitive: ShortText
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: ShortText
+
+  """Less than the specified value (case-insensitive)."""
+  lessThanInsensitive: ShortText
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: ShortText
+
+  """Less than or equal to the specified value (case-insensitive)."""
+  lessThanOrEqualToInsensitive: ShortText
+
+  """
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  like: ShortText
+
+  """
+  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  likeInsensitive: ShortText
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: ShortText
+
+  """
+  Equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  notDistinctFromInsensitive: ShortText
+
+  """Does not end with the specified string (case-sensitive)."""
+  notEndsWith: ShortText
+
+  """Does not end with the specified string (case-insensitive)."""
+  notEndsWithInsensitive: ShortText
+
+  """Not equal to the specified value."""
+  notEqualTo: ShortText
+
+  """Not equal to the specified value (case-insensitive)."""
+  notEqualToInsensitive: ShortText
+
+  """Not included in the specified list."""
+  notIn: [ShortText!]
+
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [ShortText!]
+
+  """Does not contain the specified string (case-sensitive)."""
+  notIncludes: ShortText
+
+  """Does not contain the specified string (case-insensitive)."""
+  notIncludesInsensitive: ShortText
+
+  """
+  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLike: ShortText
+
+  """
+  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLikeInsensitive: ShortText
+
+  """Does not start with the specified string (case-sensitive)."""
+  notStartsWith: ShortText
+
+  """Does not start with the specified string (case-insensitive)."""
+  notStartsWithInsensitive: ShortText
+
+  """Starts with the specified string (case-sensitive)."""
+  startsWith: ShortText
+
+  """Starts with the specified string (case-insensitive)."""
+  startsWithInsensitive: ShortText
+}
 
 """
 A filter to be used against String fields. All fields are combined with a logical ‘and.’
@@ -3731,7 +3897,6 @@ type UpdateUserPayload {
   ): UsersEdge
 }
 
-"""A user who can log in to the application."""
 type User implements Node {
   """Reads and enables pagination through a set of `CheckIn`."""
   authoredCheckIns(
@@ -3951,6 +4116,73 @@ type User implements Node {
   username: String!
 }
 
+"""
+A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input UserCondition {
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `firstName` field."""
+  firstName: ShortText
+
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `isAdmin` field."""
+  isAdmin: Boolean
+
+  """Checks for equality with the object’s `isVerified` field."""
+  isVerified: Boolean
+
+  """Checks for equality with the object’s `lastName` field."""
+  lastName: ShortText
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+
+  """Checks for equality with the object’s `username` field."""
+  username: String
+}
+
+"""
+A filter to be used against `User` object types. All fields are combined with a logical ‘and.’
+"""
+input UserFilter {
+  """Checks for all expressions in this list."""
+  and: [UserFilter!]
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `firstName` field."""
+  firstName: ShortTextFilter
+
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `isAdmin` field."""
+  isAdmin: BooleanFilter
+
+  """Filter by the object’s `isVerified` field."""
+  isVerified: BooleanFilter
+
+  """Filter by the object’s `lastName` field."""
+  lastName: ShortTextFilter
+
+  """Negates the expression."""
+  not: UserFilter
+
+  """Checks for any expressions in this list."""
+  or: [UserFilter!]
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Filter by the object’s `username` field."""
+  username: StringFilter
+}
+
 """An input for mutations affecting `User`"""
 input UserInput {
   createdAt: Datetime
@@ -3973,6 +4205,23 @@ input UserPatch {
   lastName: ShortText
   updatedAt: Datetime
   username: String
+}
+
+"""A connection to a list of `User` values."""
+type UsersConnection {
+  """
+  A list of edges which contains the `User` and cursor to aid in pagination.
+  """
+  edges: [UsersEdge!]!
+
+  """A list of `User` objects."""
+  nodes: [User]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `User` you could get from the connection."""
+  totalCount: Int!
 }
 
 """A `User` edge in the connection."""
