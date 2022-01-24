@@ -3354,7 +3354,7 @@ export type GetUserByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'Query', user: { __typename?: 'User', id: any, username: string } };
+export type GetUserByIdQuery = { __typename?: 'Query', user: { __typename?: 'User', firstName: any, lastName: any, id: any, username: string } };
 
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
@@ -3375,6 +3375,8 @@ export type RegisterMutation = { __typename?: 'Mutation', register: { __typename
 export type UpdateUserMutationVariables = Exact<{
   id: Scalars['UUID'];
   username: Scalars['String'];
+  firstName: Scalars['ShortText'];
+  lastName: Scalars['ShortText'];
 }>;
 
 
@@ -3517,6 +3519,8 @@ export const GetUserByIdDocument = gql`
     query getUserById($userId: UUID!) {
   user(id: $userId) {
     ...Basic_User
+    firstName
+    lastName
   }
 }
     ${Basic_UserFragmentDoc}`;
@@ -3539,8 +3543,10 @@ export const RegisterDocument = gql`
 }
     ${Basic_UserFragmentDoc}`;
 export const UpdateUserDocument = gql`
-    mutation updateUser($id: UUID!, $username: String!) {
-  updateUser(input: {patch: {username: $username}, id: $id}) {
+    mutation updateUser($id: UUID!, $username: String!, $firstName: ShortText!, $lastName: ShortText!) {
+  updateUser(
+    input: {patch: {username: $username, firstName: $firstName, lastName: $lastName}, id: $id}
+  ) {
     user {
       username
       id
