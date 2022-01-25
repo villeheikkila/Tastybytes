@@ -1,4 +1,6 @@
-import { Link, LoaderFunction, useLoaderData } from "remix";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import { Link, LoaderFunction, useLoaderData, useSearchParams } from "remix";
 import SDK, { sdk } from "~/api.server";
 import { Card } from "~/components/card";
 import { Layout } from "~/components/layout";
@@ -7,48 +9,69 @@ import { Typography } from "~/components/typography";
 import { getDisplayName } from "~/utils";
 import { paths } from "~/utils/paths";
 
+interface UserPageLoader {
+  profileData: SDK.GetProfilePageByUsernameQuery["userByUsername"];
+}
 export const loader: LoaderFunction = async ({
+  request,
   params,
-}): Promise<SDK.GetProfilePageByUsernameQuery> => {
+}): Promise<UserPageLoader> => {
   if (!params.username) {
     throw new Response("Not found.", { status: 404 });
   }
 
-  console.time("doSomething");
+  const url = new URL(request.url);
+  const cursor = url.searchParams.get("cursor");
 
-  const companies = await sdk().getProfilePageByUsername({
+  const profilePageData = await sdk().getProfilePageByUsername({
     username: params.username,
+    cursor: cursor,
+    includeBefore: !!cursor,
   });
-  console.timeEnd("doSomething");
 
-  return companies;
+  return {
+    profileData: profilePageData.userByUsername,
+  };
 };
 
 export default function Index() {
-  const { userByUsername: user } =
-    useLoaderData<SDK.GetProfilePageByUsernameQuery>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { profileData } = useLoaderData<UserPageLoader>();
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    const cursor = profileData?.authoredCheckIns.edges.at(-1)?.cursor;
+    if (!!cursor && searchParams.get("cursor") !== cursor) {
+      setSearchParams({ cursor });
+    }
+  }, [inView]);
 
   return (
     <Layout.Root>
       <Layout.Header>
-        <Typography.H1>{user && getDisplayName(user)}</Typography.H1>
+        <Typography.H1>
+          {profileData && getDisplayName(profileData)}
+        </Typography.H1>
       </Layout.Header>
       <Card.Container>
-        {user?.authoredCheckIns.nodes.map(({ id, product, rating }) => (
-          <Card.Wrapper key={id}>
-            <p>
-              <b>{getDisplayName(user)}</b> has tasted{" "}
-              <Link
-                to={paths.products(product.id)}
-              >{`${product?.brand?.name} - ${product?.name}`}</Link>{" "}
-              by{" "}
-              <Link to={paths.company(product.brand.company.id)}>
-                {product?.brand?.company?.name}
-              </Link>
-            </p>
-            {rating && <Stars rating={rating} />}
-          </Card.Wrapper>
-        ))}
+        {(profileData?.before?.edges ?? [])
+          .concat(profileData?.authoredCheckIns?.edges ?? [])
+          .map(({ node }) => (
+            <Card.Wrapper key={node?.id}>
+              <p>
+                <b>{getDisplayName(profileData)}</b> has tasted{" "}
+                <Link
+                  to={paths.products(node?.product?.id ?? 0)}
+                >{`${node?.product?.brand?.name} - ${node?.product?.name}`}</Link>{" "}
+                by{" "}
+                <Link to={paths.company(node?.product.brand.company.id)}>
+                  {node?.product?.brand?.company?.name}
+                </Link>
+              </p>
+              {node?.rating && <Stars rating={node?.rating} />}
+            </Card.Wrapper>
+          ))}
+        <div ref={ref} />
       </Card.Container>
     </Layout.Root>
   );

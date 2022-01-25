@@ -3368,10 +3368,22 @@ export type GetUserByIdQuery = { __typename?: 'Query', user?: { __typename?: 'Us
 
 export type GetProfilePageByUsernameQueryVariables = Exact<{
   username: Scalars['String'];
+  cursor?: InputMaybe<Scalars['Cursor']>;
+  includeBefore: Scalars['Boolean'];
 }>;
 
 
-export type GetProfilePageByUsernameQuery = { __typename?: 'Query', userByUsername?: { __typename?: 'User', id: any, username: string, firstName?: any, lastName?: any, authoredCheckIns: { __typename?: 'CheckInsConnection', totalCount: number, nodes: Array<{ __typename?: 'CheckIn', id: number, rating?: number, review?: string, checkInDate?: any, createdAt: any, product?: { __typename?: 'Product', id: number, name?: any, brand?: { __typename?: 'Brand', id: number, name?: any, company?: { __typename?: 'Company', id: number, name?: any } }, manufacturer?: { __typename?: 'Company', id: number, name?: any }, type?: { __typename?: 'Type', id: number, category: string, name: string } } }> } } };
+export type GetProfilePageByUsernameQuery = { __typename?: 'Query', userByUsername?: { __typename?: 'User', id: any, username: string, firstName?: any, lastName?: any, before: { __typename?: 'CheckInsConnection', pageInfo: { __typename?: 'PageInfo', endCursor?: any, hasNextPage: boolean }, edges: Array<{ __typename?: 'CheckInsEdge', cursor?: any, node?: { __typename?: 'CheckIn', id: number, rating?: number, review?: string, checkInDate?: any, createdAt: any, product?: { __typename?: 'Product', id: number, name?: any, brand?: { __typename?: 'Brand', id: number, name?: any, company?: { __typename?: 'Company', id: number, name?: any } }, manufacturer?: { __typename?: 'Company', id: number, name?: any }, type?: { __typename?: 'Type', id: number, category: string, name: string } } } }> }, authoredCheckIns: { __typename?: 'CheckInsConnection', pageInfo: { __typename?: 'PageInfo', endCursor?: any, hasNextPage: boolean }, edges: Array<{ __typename?: 'CheckInsEdge', cursor?: any, node?: { __typename?: 'CheckIn', id: number, rating?: number, review?: string, checkInDate?: any, createdAt: any, product?: { __typename?: 'Product', id: number, name?: any, brand?: { __typename?: 'Brand', id: number, name?: any, company?: { __typename?: 'Company', id: number, name?: any } }, manufacturer?: { __typename?: 'Company', id: number, name?: any }, type?: { __typename?: 'Type', id: number, category: string, name: string } } } }> } } };
+
+export type GetProfilePageByUsernameBeforeQueryVariables = Exact<{
+  username: Scalars['String'];
+  cursor?: InputMaybe<Scalars['Cursor']>;
+}>;
+
+
+export type GetProfilePageByUsernameBeforeQuery = { __typename?: 'Query', userByUsername?: { __typename?: 'User', id: any, username: string, firstName?: any, lastName?: any, authoredCheckIns: { __typename?: 'CheckInsConnection', pageInfo: { __typename?: 'PageInfo', endCursor?: any, hasNextPage: boolean }, edges: Array<{ __typename?: 'CheckInsEdge', cursor?: any, node?: { __typename?: 'CheckIn', id: number, rating?: number, review?: string, checkInDate?: any, createdAt: any, product?: { __typename?: 'Product', id: number, name?: any, brand?: { __typename?: 'Brand', id: number, name?: any, company?: { __typename?: 'Company', id: number, name?: any } }, manufacturer?: { __typename?: 'Company', id: number, name?: any }, type?: { __typename?: 'Type', id: number, category: string, name: string } } } }> } } };
+
+export type User_CheckInFragment = { __typename?: 'CheckIn', id: number, rating?: number, review?: string, checkInDate?: any, createdAt: any, product?: { __typename?: 'Product', id: number, name?: any, brand?: { __typename?: 'Brand', id: number, name?: any, company?: { __typename?: 'Company', id: number, name?: any } }, manufacturer?: { __typename?: 'Company', id: number, name?: any }, type?: { __typename?: 'Type', id: number, category: string, name: string } } };
 
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
@@ -3426,6 +3438,36 @@ export const Basic_UserFragmentDoc = gql`
     fragment Basic_User on User {
   id
   username
+}
+    `;
+export const User_CheckInFragmentDoc = gql`
+    fragment User_CheckIn on CheckIn {
+  id
+  rating
+  review
+  checkInDate
+  createdAt
+  product {
+    id
+    name
+    brand {
+      id
+      name
+      company {
+        id
+        name
+      }
+    }
+    manufacturer {
+      id
+      name
+    }
+    type {
+      id
+      category
+      name
+    }
+  }
 }
     `;
 export const CreateCheckInDocument = gql`
@@ -3555,46 +3597,61 @@ export const GetUserByIdDocument = gql`
 }
     ${Basic_UserFragmentDoc}`;
 export const GetProfilePageByUsernameDocument = gql`
-    query getProfilePageByUsername($username: String!) {
+    query getProfilePageByUsername($username: String!, $cursor: Cursor, $includeBefore: Boolean!) {
   userByUsername(username: $username) {
     id
     username
     firstName
     lastName
-    authoredCheckIns {
-      totalCount
-      nodes {
-        id
-        rating
-        review
-        checkInDate
-        createdAt
-        product {
-          id
-          name
-          brand {
-            id
-            name
-            company {
-              id
-              name
-            }
-          }
-          manufacturer {
-            id
-            name
-          }
-          type {
-            id
-            category
-            name
-          }
+    before: authoredCheckIns(before: $cursor) @include(if: $includeBefore) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ...User_CheckIn
         }
+        cursor
+      }
+    }
+    authoredCheckIns(after: $cursor, first: 30) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ...User_CheckIn
+        }
+        cursor
       }
     }
   }
 }
-    `;
+    ${User_CheckInFragmentDoc}`;
+export const GetProfilePageByUsernameBeforeDocument = gql`
+    query getProfilePageByUsernameBefore($username: String!, $cursor: Cursor) {
+  userByUsername(username: $username) {
+    id
+    username
+    firstName
+    lastName
+    authoredCheckIns(before: $cursor) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ...User_CheckIn
+        }
+        cursor
+      }
+    }
+  }
+}
+    ${User_CheckInFragmentDoc}`;
 export const LoginDocument = gql`
     mutation login($username: String!, $password: String!) {
   login(input: {username: $username, password: $password}) {
@@ -3653,6 +3710,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getProfilePageByUsername(variables: GetProfilePageByUsernameQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProfilePageByUsernameQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProfilePageByUsernameQuery>(GetProfilePageByUsernameDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProfilePageByUsername');
+    },
+    getProfilePageByUsernameBefore(variables: GetProfilePageByUsernameBeforeQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProfilePageByUsernameBeforeQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetProfilePageByUsernameBeforeQuery>(GetProfilePageByUsernameBeforeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProfilePageByUsernameBefore');
     },
     login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login');
