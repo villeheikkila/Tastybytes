@@ -874,6 +874,11 @@
   "resolved" "https://registry.npmjs.org/@iarna/toml/-/toml-2.2.5.tgz"
   "version" "2.2.5"
 
+"@mobily/ts-belt@^3.9.0":
+  "integrity" "sha512-DaBYO7kjPEhJb0ceHcnO8v3IRR3lhI1akX01ajwXDZ9tarHYD4xHcl8U0Co96fh3PWuXmjeFg3XVM4QB3fzibA=="
+  "resolved" "https://registry.npmjs.org/@mobily/ts-belt/-/ts-belt-3.9.0.tgz"
+  "version" "3.9.0"
+
 "@n1ru4l/graphql-live-query@^0.9.0":
   "integrity" "sha512-BTpWy1e+FxN82RnLz4x1+JcEewVdfmUhV1C6/XYD5AjS7PQp9QFF7K8bCD6gzPTr2l+prvqOyVueQhFJxB1vfg=="
   "resolved" "https://registry.npmjs.org/@n1ru4l/graphql-live-query/-/graphql-live-query-0.9.0.tgz"
@@ -3519,6 +3524,11 @@
     "@tootallnate/once" "2"
     "agent-base" "6"
     "debug" "4"
+
+"http-status-codes@^2.2.0":
+  "integrity" "sha512-feERVo9iWxvnejp3SEfm/+oNG517npqL2/PIA8ORjyOZjGC7TwCRQsZylciLS64i6pJ0wRYz3rkXLRwbtFa8Ng=="
+  "resolved" "https://registry.npmjs.org/http-status-codes/-/http-status-codes-2.2.0.tgz"
+  "version" "2.2.0"
 
 "http2-wrapper@^1.0.0-beta.5.2":
   "integrity" "sha512-V+23sDMr12Wnz7iTcDeJr3O6AIxlnvT/bmaAAAP/Xda35C90p9599p0F1eHR/N1KILWSoWVAiOMFjBBXaXSMxg=="

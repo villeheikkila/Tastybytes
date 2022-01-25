@@ -3,7 +3,6 @@ documents: ./app/**/*.graphql
 generates:
   ./generated/sdk.ts:
     config:
-      avoidOptionals: true
       maybeValue: T
     plugins:
       - typescript

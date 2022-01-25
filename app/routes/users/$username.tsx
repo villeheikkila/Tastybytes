@@ -14,9 +14,13 @@ export const loader: LoaderFunction = async ({
     throw new Response("Not found.", { status: 404 });
   }
 
+  console.time("doSomething");
+
   const companies = await sdk().getProfilePageByUsername({
     username: params.username,
   });
+  console.timeEnd("doSomething");
+
   return companies;
 };
 

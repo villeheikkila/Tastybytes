@@ -13,11 +13,8 @@ import Input from "~/components/input";
 import { Layout } from "~/components/layout";
 import { Typography } from "~/components/typography";
 import { styled } from "~/stitches.config";
+import Codecs from "~/utils/codecs";
 import { getUser, getUserId } from "~/utils/session.server";
-
-const codecs = {
-  shortText: z.string().min(2).max(54),
-};
 
 const UserForm = z.object({
   username: z
@@ -30,8 +27,8 @@ const UserForm = z.object({
     .regex(/^[a-zA-Z]([_]?[a-zA-Z0-9])+$/, {
       message: "Username can only contain letters from a-ZA-Z and numbers 0-9",
     }),
-  firstName: codecs.shortText,
-  lastName: codecs.shortText,
+  firstName: Codecs.shortText,
+  lastName: Codecs.shortText,
 });
 
 export const loader: LoaderFunction = async ({ request }) => {
