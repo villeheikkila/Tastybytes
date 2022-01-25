@@ -3401,6 +3401,13 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'RegisterPayload', user?: { __typename?: 'User', id: any, username: string } } };
 
+export type SearchProductsQueryVariables = Exact<{
+  searchTerm: Scalars['String'];
+}>;
+
+
+export type SearchProductsQuery = { __typename?: 'Query', searchProducts?: { __typename?: 'ProductsConnection', edges: Array<{ __typename?: 'ProductsEdge', cursor?: any, node?: { __typename?: 'Product', name?: any, id: number, brand?: { __typename?: 'Brand', name?: any, id: number, company?: { __typename?: 'Company', name?: any, id: number } }, type?: { __typename?: 'Type', category: string, id: number } } }> } };
+
 export type UpdateUserMutationVariables = Exact<{
   id: Scalars['UUID'];
   username: Scalars['String'];
@@ -3670,6 +3677,31 @@ export const RegisterDocument = gql`
   }
 }
     ${Basic_UserFragmentDoc}`;
+export const SearchProductsDocument = gql`
+    query searchProducts($searchTerm: String!) {
+  searchProducts(search: $searchTerm) {
+    edges {
+      cursor
+      node {
+        name
+        brand {
+          name
+          id
+          company {
+            name
+            id
+          }
+        }
+        id
+        type {
+          category
+          id
+        }
+      }
+    }
+  }
+}
+    `;
 export const UpdateUserDocument = gql`
     mutation updateUser($id: UUID!, $username: String!, $firstName: ShortText!, $lastName: ShortText!) {
   updateUser(
@@ -3719,6 +3751,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     register(variables: RegisterMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RegisterMutation>(RegisterDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'register');
+    },
+    searchProducts(variables: SearchProductsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SearchProductsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SearchProductsQuery>(SearchProductsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'searchProducts');
     },
     updateUser(variables: UpdateUserMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateUserMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateUserMutation>(UpdateUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateUser');
