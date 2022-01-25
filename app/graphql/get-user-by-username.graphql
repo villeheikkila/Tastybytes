@@ -1,39 +1,86 @@
-query getProfilePageByUsername($username: String!) {
+query getProfilePageByUsername(
+  $username: String!
+  $cursor: Cursor
+  $includeBefore: Boolean!
+) {
   userByUsername(username: $username) {
     id
     username
     firstName
     lastName
-    authoredCheckIns {
-      totalCount
-      nodes {
-        id
-        rating
-        review
-        checkInDate
-        createdAt
-        product {
-          id
-          name
-          brand {
-            id
-            name
-            company {
-              id
-              name
-            }
-          }
-          manufacturer {
-            id
-            name
-          }
-          type {
-            id
-            category
-            name
-          }
-        }
+    before: authoredCheckIns(before: $cursor) @include(if: $includeBefore) {
+      pageInfo {
+        endCursor
+        hasNextPage
       }
+      edges {
+        node {
+          ...User_CheckIn
+        }
+        cursor
+      }
+    }
+    authoredCheckIns(after: $cursor, first: 30) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ...User_CheckIn
+        }
+        cursor
+      }
+    }
+  }
+}
+
+query getProfilePageByUsernameBefore($username: String!, $cursor: Cursor) {
+  userByUsername(username: $username) {
+    id
+    username
+    firstName
+    lastName
+    authoredCheckIns(before: $cursor) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ...User_CheckIn
+        }
+        cursor
+      }
+    }
+  }
+}
+
+fragment User_CheckIn on CheckIn {
+  id
+  rating
+  review
+  checkInDate
+  createdAt
+  product {
+    id
+    name
+    brand {
+      id
+      name
+      company {
+        id
+        name
+      }
+    }
+    manufacturer {
+      id
+      name
+    }
+    type {
+      id
+      category
+      name
     }
   }
 }
