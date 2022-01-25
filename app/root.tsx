@@ -15,6 +15,7 @@ import {
 import SDK from "./api.server";
 import { Avatar } from "./components/avatar";
 import { Dropdown } from "./components/dropdown";
+import Input from "./components/input";
 import { globals, styled } from "./stitches.config";
 import { paths } from "./utils/paths";
 import { getUser } from "./utils/session.server";
@@ -63,6 +64,7 @@ const NavigationBar = () => {
             <LogoText>Tasted</LogoText>
           </ProjectLogo>
         </Link>
+        <Search />
         {data?.user ? (
           <DropdownMenu user={data.user} />
         ) : (
@@ -70,6 +72,15 @@ const NavigationBar = () => {
         )}
       </Navigation.Content>
     </Navigation.Header>
+  );
+};
+
+export const Search = () => {
+  return (
+    <form method="get" action="/search">
+      <Input id="search" name="term" type="text" placeholder="Search..." />
+      <button type="submit">Search</button>
+    </form>
   );
 };
 
