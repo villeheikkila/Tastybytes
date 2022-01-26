@@ -33,6 +33,7 @@
     "dotenv": "^14.2.0",
     "express": "^4.17.1",
     "graphile-migrate": "^1.2.0",
+    "graphile-worker": "^0.12.2",
     "graphql-request": "^3.7.0",
     "graphql-tag": "^2.12.6",
     "http-status-codes": "^2.2.0",

@@ -8,56 +8,71 @@ import { resolve } from "path";
 import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
 import { postgraphile } from "postgraphile";
 import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
+import { run } from "graphile-worker";
+import { taskList } from "./tasks/task-list";
 
 const MODE = process.env.NODE_ENV || "development";
+const BUILD_DIR = path.join(process.cwd(), "server/build");
+
 require("dotenv").config({
   path: `${__dirname}/../.env${MODE === "production" ? ".prod" : ""}`,
 });
 
-const app = express();
+const runApp = async () => {
+  const app = express();
 
-const BUILD_DIR = path.join(process.cwd(), "server/build");
+  await run({
+    connectionString: process.env.DATABASE_URL,
+    concurrency: 5,
+    noHandleSignals: false,
+    pollInterval: 1000,
+    taskList,
+  });
 
-app.use(compression());
-app.use(express.static("public", { maxAge: "1h" }));
+  app.use(compression());
+  app.use(express.static("public", { maxAge: "1h" }));
 
-const SmartTagsPlugin = makePgSmartTagsFromFilePlugin(
-  resolve(__dirname, "./postgraphile.tags.jsonc")
-);
+  const SmartTagsPlugin = makePgSmartTagsFromFilePlugin(
+    resolve(__dirname, "./postgraphile.tags.jsonc")
+  );
 
-app.use(
-  postgraphile(process.env.DATABASE_URL, "tasted_public", {
-    watchPg: true,
-    ownerConnectionString: process.env.ROOT_DATABASE_URL,
-    graphiql: true,
-    enhanceGraphiql: true,
-    allowExplain: true,
-    appendPlugins: [SmartTagsPlugin, PgSimplifyInflectorPlugin, ConnectionFilterPlugin],
-    sortExport: true,
-    exportGqlSchemaPath: `${__dirname}/../generated/schema.graphql`,
-  })
-);
+  app.use(
+    postgraphile(process.env.DATABASE_URL, "tasted_public", {
+      watchPg: true,
+      ownerConnectionString: process.env.ROOT_DATABASE_URL,
+      graphiql: true,
+      enhanceGraphiql: true,
+      allowExplain: true,
+      appendPlugins: [
+        SmartTagsPlugin,
+        PgSimplifyInflectorPlugin,
+        ConnectionFilterPlugin,
+      ],
+      sortExport: true,
+      exportGqlSchemaPath: `${__dirname}/../generated/schema.graphql`,
+    })
+  );
 
-// Remix fingerprints its assets so we can cache forever
-app.use(express.static("public/build", { immutable: true, maxAge: "1y" }));
+  // Remix fingerprints its assets so we can cache forever
+  app.use(express.static("public/build", { immutable: true, maxAge: "1y" }));
 
-app.use(morgan("tiny"));
-app.all(
-  "*",
-  MODE === "production"
-    ? createRequestHandler({ build: require("./build") })
-    : (req, res, next) => {
-        purgeRequireCache();
-        const build = require("./build");
-        return createRequestHandler({ build, mode: MODE })(req, res, next);
-      }
-);
+  app.use(morgan("tiny"));
+  app.all(
+    "*",
+    MODE === "production"
+      ? createRequestHandler({ build: require("./build") })
+      : (req, res, next) => {
+          purgeRequireCache();
+          const build = require("./build");
+          return createRequestHandler({ build, mode: MODE })(req, res, next);
+        }
+  );
 
-const port = process.env.PORT || 3333;
-app.listen(port, () => {
-  console.log(`Express server listening on port ${port}`);
-});
-
+  const port = process.env.PORT || 3333;
+  app.listen(port, () => {
+    console.log(`Express server listening on port ${port}`);
+  });
+};
 ////////////////////////////////////////////////////////////////////////////////
 function purgeRequireCache() {
   // purge require cache on requests for "server side HMR" this won't let
@@ -71,3 +86,7 @@ function purgeRequireCache() {
     }
   }
 }
+
+runApp().catch((e) => {
+  console.error(e);
+});
