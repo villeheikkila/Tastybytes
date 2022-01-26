@@ -41,10 +41,7 @@ export const loader: LoaderFunction = async ({
   const data = await sdk().getCreateItemProps();
   const url = new URL(request.url);
   const category = url.searchParams.get("category") ?? "";
-  const type = url.searchParams.get("type") ?? "";
   const company = url.searchParams.get("company") ?? "";
-
-  console.log("company: ", company);
 
   const types = data.categories?.nodes?.find((c) => c?.name === category)
     ?.typesByCategory.nodes;
