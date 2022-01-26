@@ -10,13 +10,10 @@ import { postgraphile } from "postgraphile";
 import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
 import { run } from "graphile-worker";
 import { taskList } from "./tasks/task-list";
+import Config from "./config";
 
 const MODE = process.env.NODE_ENV || "development";
 const BUILD_DIR = path.join(process.cwd(), "server/build");
-
-require("dotenv").config({
-  path: `${__dirname}/../.env${MODE === "production" ? ".prod" : ""}`,
-});
 
 const runApp = async () => {
   const app = express();
@@ -29,6 +26,8 @@ const runApp = async () => {
     taskList,
   });
 
+  console.log(Config);
+
   app.use(compression());
   app.use(express.static("public", { maxAge: "1h" }));
 
@@ -37,9 +36,9 @@ const runApp = async () => {
   );
 
   app.use(
-    postgraphile(process.env.DATABASE_URL, "tasted_public", {
+    postgraphile(Config.DATABASE_URL, "tasted_public", {
       watchPg: true,
-      ownerConnectionString: process.env.ROOT_DATABASE_URL,
+      ownerConnectionString: Config.ROOT_DATABASE_URL,
       graphiql: true,
       enhanceGraphiql: true,
       allowExplain: true,
