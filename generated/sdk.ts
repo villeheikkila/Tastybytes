@@ -3331,6 +3331,16 @@ export type CreateCheckInMutationVariables = Exact<{
 
 export type CreateCheckInMutation = { __typename?: 'Mutation', createCheckIn?: { __typename?: 'CreateCheckInPayload', product?: { __typename?: 'Product', id: number, description?: any, name?: any } } };
 
+export type CreateProductMutationVariables = Exact<{
+  manufacturerId: Scalars['Int'];
+  brandId: Scalars['Int'];
+  typeId: Scalars['Int'];
+  name: Scalars['MediumText'];
+}>;
+
+
+export type CreateProductMutation = { __typename?: 'Mutation', createProduct?: { __typename?: 'CreateProductPayload', product?: { __typename?: 'Product', id: number } } };
+
 export type Basic_ProductFragment = { __typename?: 'Product', id: number, name?: any, brand?: { __typename?: 'Brand', id: number, name?: any, company?: { __typename?: 'Company', id: number, name?: any } }, manufacturer?: { __typename?: 'Company', id: number, name?: any }, type?: { __typename?: 'Type', id: number, category: string, name: string } };
 
 export type Basic_UserFragment = { __typename?: 'User', id: any, username: string };
@@ -3351,6 +3361,11 @@ export type GetCompanyByIdQueryVariables = Exact<{
 
 
 export type GetCompanyByIdQuery = { __typename?: 'Query', company?: { __typename?: 'Company', id: number, name?: any, brands: { __typename?: 'BrandsConnection', edges: Array<{ __typename?: 'BrandsEdge', node?: { __typename?: 'Brand', id: number, name?: any, products: { __typename?: 'ProductsConnection', edges: Array<{ __typename?: 'ProductsEdge', node?: { __typename?: 'Product', id: number, name?: any, manufacturer?: { __typename?: 'Company', id: number, name?: any }, type?: { __typename?: 'Type', id: number, name: string, category: string } } }> } } }> } } };
+
+export type GetCreateItemPropsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCreateItemPropsQuery = { __typename?: 'Query', companies?: { __typename?: 'CompaniesConnection', nodes: Array<{ __typename?: 'Company', id: number, name?: any, brands: { __typename?: 'BrandsConnection', nodes: Array<{ __typename?: 'Brand', id: number, name?: any }> } }> }, categories?: { __typename?: 'CategoriesConnection', nodes: Array<{ __typename?: 'Category', name: string, typesByCategory: { __typename?: 'TypesConnection', nodes: Array<{ __typename?: 'Type', id: number, name: string }> } }> } };
 
 export type GetProductByIdQueryVariables = Exact<{
   productId: Scalars['Int'];
@@ -3490,6 +3505,17 @@ export const CreateCheckInDocument = gql`
   }
 }
     `;
+export const CreateProductDocument = gql`
+    mutation createProduct($manufacturerId: Int!, $brandId: Int!, $typeId: Int!, $name: MediumText!) {
+  createProduct(
+    input: {product: {manufacturerId: $manufacturerId, brandId: $brandId, typeId: $typeId, name: $name}}
+  ) {
+    product {
+      id
+    }
+  }
+}
+    `;
 export const GetActivityFeedDocument = gql`
     query getActivityFeed {
   checkIns(first: 20) {
@@ -3553,6 +3579,33 @@ export const GetCompanyByIdDocument = gql`
               }
             }
           }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetCreateItemPropsDocument = gql`
+    query getCreateItemProps {
+  companies {
+    nodes {
+      id
+      brands {
+        nodes {
+          id
+          name
+        }
+      }
+      name
+    }
+  }
+  categories {
+    nodes {
+      name
+      typesByCategory {
+        nodes {
+          id
+          name
         }
       }
     }
@@ -3725,6 +3778,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     createCheckIn(variables: CreateCheckInMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateCheckInMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateCheckInMutation>(CreateCheckInDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createCheckIn');
     },
+    createProduct(variables: CreateProductMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateProductMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateProductMutation>(CreateProductDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createProduct');
+    },
     getActivityFeed(variables?: GetActivityFeedQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetActivityFeedQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetActivityFeedQuery>(GetActivityFeedDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getActivityFeed');
     },
@@ -3733,6 +3789,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getCompanyById(variables: GetCompanyByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCompanyByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetCompanyByIdQuery>(GetCompanyByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCompanyById');
+    },
+    getCreateItemProps(variables?: GetCreateItemPropsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCreateItemPropsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCreateItemPropsQuery>(GetCreateItemPropsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCreateItemProps');
     },
     getProductById(variables: GetProductByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetProductByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductByIdQuery>(GetProductByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProductById');
