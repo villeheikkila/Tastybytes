@@ -1,0 +1,56 @@
+query GetCheckIns($username: String!, $cursor: Cursor) {
+  profilesCollection(filter: { username: { eq: "villeheikkila" } }) {
+    edges {
+      node {
+        id
+        username
+        check_insCollection(after: $cursor) {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
+          edges {
+            node {
+              ...CheckInNode
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+fragment CheckInNode on check_ins {
+  id
+  rating
+  review
+  products {
+    id
+    name
+    description
+    companies {
+      id
+      name
+    }
+    subcategories {
+      id
+      name
+      categories {
+        id
+        name
+      }
+    }
+    sub_brands {
+      id
+      name
+      brands {
+        id
+        name
+        companies {
+          id
+          name
+        }
+      }
+    }
+  }
+}
