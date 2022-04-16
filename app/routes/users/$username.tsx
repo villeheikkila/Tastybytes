@@ -2,6 +2,12 @@ import type { ActionFunction, LoaderFunction } from "remix";
 import { json, useLoaderData } from "remix";
 import { supabaseClient } from "~/supabase";
 
+export function headers() {
+  return {
+    "Cache-Control": "max-age=3600, s-maxage=4200",
+  };
+}
+
 type LoaderData = { email?: string; data: MaterializedCheckIn[] | null };
 
 export const action: ActionFunction = async ({ request }) => {};
