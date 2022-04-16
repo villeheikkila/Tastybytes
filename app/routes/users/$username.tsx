@@ -60,7 +60,7 @@ export default function Screen() {
                   <td>{row.subcategory}</td>
                   <td>{row.manufacturer}</td>
                   <td>{row.brand_owner}</td>
-                  <td>{row.brand_owner}</td>
+                  <td>{row.brand}</td>
                   <td>{row["sub-brand"]}</td>
                   <td>{row.name}</td>
                   <td>{row.description}</td>
