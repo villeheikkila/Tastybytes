@@ -1,5 +1,6 @@
 import type { ActionFunction, LoaderFunction } from "remix";
-import { json, useLoaderData } from "remix";
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { supabaseClient } from "~/supabase";
 
 export function headers() {
