@@ -1,6 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Session } from "@supabase/supabase-js";
-require('dotenv').config()
 
 declare global {
   namespace NodeJS {
