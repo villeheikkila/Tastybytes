@@ -1,56 +1,65 @@
 import { Col, Container, Row, Table, Tooltip } from "@nextui-org/react";
-import React, { useEffect } from "react";
-import { CheckInNodeFragment, useGetCheckInsQuery } from "../generated/graphql";
+import React, { useEffect, useState } from "react";
 import { IconButton } from "../components/icon-button";
 import { DeleteIcon } from "../components/icons/delete-icon";
 import { EditIcon } from "../components/icons/edit-icon";
-import { useInView } from "react-intersection-observer";
+import { useSupabaseClient } from "../hooks/useSupabase";
 
-export default function CheckInTable() {
-  const { ref, inView } = useInView();
-
-  const { loading, data, fetchMore } = useGetCheckInsQuery({
-    variables: { username: "villeheikkila" },
-    fetchPolicy: "cache-and-network",
-  });
-
-  const profile = data?.profilesCollection?.edges[0]?.node;
-
-  const fetchMoreRows = async (endCursor: string | undefined) => {
-    const res = await fetchMore({
-      variables: {
-        username: "villeheikkila",
-        afterCursor: endCursor,
-      },
-    });
-
-    console.log("res: ", res);
+interface Response {
+  id: number;
+  rating: number;
+  review: string;
+  products: {
+    id: number;
+    name: string;
+    description: string;
+    companies: {
+      id: number;
+      name: string;
+    };
+    subcategories: {
+      id: number;
+      name: string;
+      categories: {
+        id: number;
+        name: string;
+      };
+    };
+    sub_brands: {
+      id: number;
+      name: string;
+      brands: {
+        id: number;
+        name: string;
+        companies: {
+          id: number;
+          name: string;
+        };
+      };
+    };
   };
+}
+export default function CheckInTable() {
+  const client = useSupabaseClient();
+
+  const [data, setData] = useState<Response[]>();
+  console.log("data: ", data);
 
   useEffect(() => {
-    const pageInfo = profile?.check_insCollection?.pageInfo;
-    console.log("pageInfo: ", pageInfo);
+    const fe = async () => {
+      const { data, error } = await client
+        .from("check_ins")
+        .select(
+          `id, rating, review, products (id, name, description, companies (id, name), sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name)))`
+        )
+        .limit(2500);
+      console.log("data: ", data);
+      setData(data as unknown as Response[]);
+    };
+    fe();
+  }, []);
 
-    if (pageInfo?.hasNextPage) {
-      fetchMoreRows(pageInfo.endCursor);
-    }
-  }, [inView]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  const columns = [
-    { name: "Category", uid: "category" },
-    { name: "Manufacturer", uid: "manufacturer" },
-    { name: "Brand Owner", uid: "brand_owner" },
-    { name: "Brand", uid: "brand" },
-    { name: "Sub-brand", uid: "sub-brand" },
-    { name: "Flavour", uid: "flavour" },
-    { name: "Description", uid: "description" },
-    { name: "Rating", uid: "rating" },
-    { name: "Review", uid: "review" },
-  ];
+  if (!data) return null;
 
   const renderCell = (tastedRow: TastedRow, columnKey: React.Key) => {
     const cellValue = tastedRow[columnKey];
@@ -96,28 +105,39 @@ export default function CheckInTable() {
     }
   };
 
-  const mapToTastedRow = (row: CheckInNodeFragment): TastedRow => ({
+  const columns = [
+    { name: "Category", uid: "category" },
+    { name: "Subcategory", uid: "subcategory" },
+    { name: "Manufacturer", uid: "manufacturer" },
+    { name: "Brand Owner", uid: "brandOwner" },
+    { name: "Brand", uid: "brand" },
+    { name: "Sub-brand", uid: "subBrand" },
+    { name: "Flavour", uid: "flavour" },
+    { name: "Description", uid: "description" },
+    { name: "Rating", uid: "rating" },
+    { name: "Review", uid: "review" },
+  ];
+
+  const mapToTastedRow = (row: Response): TastedRow => ({
     id: row.id,
-    category: row.products?.subcategories?.categories?.name ?? "",
-    manufacturer: row.products?.companies?.name ?? "",
-    brandOwner: row.products?.sub_brands?.brands?.companies?.name ?? "",
-    brand: row.products?.sub_brands?.brands?.name ?? "",
-    subBrand: row.products?.sub_brands?.name ?? "",
-    flavour: row.products?.name ?? "",
-    description: row.products?.description ?? "",
-    rating: row.rating ?? null,
-    review: row.review ?? "",
+    category: row.products.subcategories.categories.name,
+    subcategory: row.products.subcategories.name,
+    manufacturer: row.products.companies.name,
+    brandOwner: row.products.sub_brands.brands.companies.name,
+    brand: row.products.sub_brands.brands.name,
+    subBrand: row.products.sub_brands.name,
+    flavour: row.products.name,
+    description: row.products.description,
+    rating: row.rating,
+    review: row.review,
   });
 
-  console.log("length", profile?.check_insCollection);
-  const mappedRows = profile?.check_insCollection?.edges.flatMap(({ node }) =>
-    node ? mapToTastedRow(node) : []
-  );
+  const mappedRows = data.map(mapToTastedRow);
+  console.log("mappedRows: ", mappedRows);
 
   return (
     <div>
       <Container fluid>
-        <Row>{profile?.username}</Row>
         {mappedRows && (
           <Table
             aria-label="Example table with custom cells"
@@ -149,7 +169,6 @@ export default function CheckInTable() {
             </Table.Body>
           </Table>
         )}
-        <div ref={ref} />
       </Container>
     </div>
   );
@@ -158,6 +177,7 @@ export default function CheckInTable() {
 export type TastedRow = {
   id: number;
   category: string;
+  subcategory: string;
   manufacturer: string;
   brandOwner: string;
   brand: string;
