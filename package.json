@@ -1,13 +1,11 @@
 {
   "private": true,
-  "name": "remix-app",
+  "name": "tasted",
   "description": "",
   "license": "",
   "scripts": {
     "build": "remix build",
-    "dev": "node -r dotenv/config node_modules/.bin/remix dev",
-    "postinstall": "remix setup node",
-    "start": "remix-serve build"
+    "dev": "remix dev"
   },
   "dependencies": {
     "@remix-run/node": "^1.4.0",
