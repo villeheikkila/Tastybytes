@@ -2,6 +2,7 @@ import type { ActionFunction, LoaderFunction } from "remix";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { supabaseClient } from "~/supabase";
+import { Stars } from "~/components/stars";
 
 export function headers() {
   return {
@@ -64,7 +65,9 @@ export default function Screen() {
                   <td>{row["sub-brand"]}</td>
                   <td>{row.name}</td>
                   <td>{row.description}</td>
-                  <td>{row.rating}</td>
+                  <td>
+                    <Stars rating={row.rating * 2} />
+                  </td>
                 </tr>
               ))}
             </tbody>

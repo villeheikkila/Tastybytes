@@ -9,17 +9,32 @@ import {
 
 export default function App() {
   return (
+    <Document title="tasted">
+      <Outlet />
+    </Document>
+  );
+}
+
+function Document({
+  children,
+  title,
+}: {
+  children: React.ReactNode;
+  title?: string;
+}) {
+  return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
+        {title ? <title>{title}</title> : null}
       </head>
       <body>
-        <Outlet />
-        <ScrollRestoration />
+        {children}
         <Scripts />
+        <ScrollRestoration />
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>

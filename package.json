@@ -20,7 +20,9 @@
     "react-dom": "^18.0.0",
     "remix": "^1.4.0",
     "remix-auth": "^3.2.1",
-    "remix-auth-supabase": "^3.1.0"
+    "remix-auth-supabase": "^3.1.0",
+    "remix-params-helper": "^0.4.9",
+    "zod": "^3.14.4"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.4.0",
