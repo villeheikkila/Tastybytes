@@ -5,7 +5,8 @@
   "license": "",
   "scripts": {
     "build": "remix build",
-    "dev": "remix dev"
+    "dev": "remix dev",
+    "update-types": "npx openapi-typescript https://iykihowuxxkqxobggkuk.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5a2lob3d1eHhrcXhvYmdna3VrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDg5ODc2NjUsImV4cCI6MTk2NDU2MzY2NX0.FD9Lf4Km2IwklnCuWBTCKB18mfZjPj8FA4YtEtHpe-o --output types/database/index.ts"
   },
   "dependencies": {
     "@remix-run/node": "^1.4.0",
