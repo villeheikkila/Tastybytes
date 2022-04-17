@@ -1,6 +1,7 @@
 import { renderToString } from "react-dom/server";
 import { RemixServer } from "@remix-run/react";
 import type { EntryContext } from "remix";
+import { getCssText, globalStyles } from "./stitches.config";
 
 export default function handleRequest(
   request: Request,
@@ -8,9 +9,11 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
+  globalStyles();
+
   const markup = renderToString(
     <RemixServer context={remixContext} url={request.url} />
-  );
+  ).replace(/<\/head>/, `<style id="stitches">${getCssText()}</style></head>`);
 
   responseHeaders.set("Content-Type", "text/html");
 
