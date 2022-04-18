@@ -6,6 +6,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import type { ActionFunction } from "remix";
+import { authenticator } from "./auth.server";
 import { Navigation } from "./components/navigation";
 import { styled } from "./stitches.config";
 
@@ -16,6 +18,10 @@ export default function App() {
     </Document>
   );
 }
+
+export const action: ActionFunction = async ({ request }) => {
+  await authenticator.logout(request, { redirectTo: "/login" });
+};
 
 function Document({
   children,

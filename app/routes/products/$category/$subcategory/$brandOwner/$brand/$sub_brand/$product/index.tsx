@@ -146,24 +146,6 @@ const findProduct = async (filter: {
   return response.data;
 };
 
-export const loader: LoaderFunction = async ({ request, params }) => {
-  const { success, data: decodedParams } = getParams(params, ParamsSchema);
-  if (success) {
-    const product = await findProduct(decodedParams);
-
-    if (product === null) {
-      throw Error("No product found!");
-    }
-
-    const { data: checkIns } = await supabaseClient
-      .from("check_ins")
-      .select("rating, review, product_id, profiles (id, username)")
-      .eq("product_id", product.id);
-
-    return json<LoaderData>({ product, checkIns });
-  }
-};
-
 export default function Screen() {
   const { checkIns, product } = useLoaderData<LoaderData>();
   // const actionData = useActionData();
