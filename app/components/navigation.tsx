@@ -1,4 +1,6 @@
+import type { ActionFunction } from "remix";
 import { Form } from "remix";
+import { authenticator } from "~/auth.server";
 import { styled } from "~/stitches.config";
 
 const Header = styled("header", {
@@ -9,12 +11,14 @@ const Header = styled("header", {
 
   height: "70px",
   width: "100%",
-
+  backdropFilter: "blur(20px)",
+  backgroundColor: "rgba(000, 000, 000, 0.5)",
   display: "flex",
   justifyContent: "center",
   alignContent: "center",
 
-  borderBottom: "1px solid #5f6368",
+  boxShadow: "0 8px 12px rgba(0, 0, 0, 0.25)",
+  border: "1px solid rgba(0, 0, 0, 0, 0.3)",
 });
 
 export const Navigation = () => {
@@ -31,7 +35,12 @@ export const Navigation = () => {
           />
           <LogoText>Tasted</LogoText>
         </ProjectLogo>
-        <Search />
+        <Flex>
+          <Search />
+          <Form method="post">
+            <button>Log Out</button>
+          </Form>
+        </Flex>
       </Content>
     </Header>
   );
@@ -46,17 +55,23 @@ export const Search = () => {
   );
 };
 
+const Flex = styled("div", {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "8px",
+});
+
 export const Content = styled("div", {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   width: "900px",
-  backgroundColor: "$midnight",
   padding: "12px",
 });
 
 export const Input = styled("input", {
-  backgroundColor: "#333333",
+  backdropFilter: "blur(20px)",
   borderRadius: "10px",
   color: "#bababa",
   display: "inline-block",
@@ -83,9 +98,8 @@ const ProjectLogo = styled("div", {
 });
 
 const LogoText = styled("h1", {
-  fontSize: "36px",
+  fontSize: "32px",
   color: "white",
-  fontWeight: "bold",
+  fontWeight: 700,
   alignText: "center",
-  fontFamily: "Muli",
 });
