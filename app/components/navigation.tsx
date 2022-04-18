@@ -1,4 +1,4 @@
-import { Form } from "remix";
+import { Form } from "@remix-run/react";
 import { styled } from "~/stitches.config";
 
 const Header = styled("header", {
