@@ -2,17 +2,16 @@ import { json } from "@remix-run/node";
 import {
   Form,
   Outlet,
-  useActionData,
   useCatch,
   useLoaderData,
   useTransition,
 } from "@remix-run/react";
 import type { ActionFunction, LoaderFunction } from "remix";
-import { getParams, getFormData } from "remix-params-helper";
+import { getFormData, getParams } from "remix-params-helper";
 import { z } from "zod";
+import { supabaseStrategy } from "~/auth.server";
 import { Stars } from "~/components/stars";
 import { supabaseClient } from "~/supabase";
-import { authenticator, sessionStorage, supabaseStrategy } from "~/auth.server";
 
 export function headers() {
   return {
