@@ -1,6 +1,4 @@
-import type { ActionFunction } from "remix";
 import { Form } from "remix";
-import { authenticator } from "~/auth.server";
 import { styled } from "~/stitches.config";
 
 const Header = styled("header", {
@@ -74,6 +72,7 @@ export const Input = styled("input", {
   backdropFilter: "blur(20px)",
   borderRadius: "10px",
   color: "#bababa",
+  backgroundColor: "rgba(45, 46, 48, 0.5)",
   display: "inline-block",
   padding: "0px 16px",
   fontSize: "16px",
