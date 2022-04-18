@@ -1,6 +1,6 @@
 import type { ActionFunction, LoaderFunction } from "remix";
 import { json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { supabaseClient } from "~/supabase";
 import { Stars } from "~/components/stars";
 import { getParams } from "remix-params-helper";
@@ -54,15 +54,24 @@ export default function Screen() {
       <h1>{user.username}</h1>
       {checkIns.map((checkIn) => (
         <Wrapper key={checkIn.id}>
-          {user.username} is tasting {checkIn.products.sub_brands.brands.name}{" "}
-          {checkIn.products.sub_brands.name} {checkIn.products.name} from{" "}
-          {checkIn.products.sub_brands.brands.companies.name}
+          <div>
+            {user.username} is tasting{" "}
+            <Link to={createProductLink(checkIn.products)}>
+              {checkIn.products.sub_brands.brands.name}{" "}
+              {checkIn.products.sub_brands.name} {checkIn.products.name}{" "}
+            </Link>
+            from {checkIn.products.sub_brands.brands.companies.name}
+          </div>
           <Stars rating={checkIn.rating} />
         </Wrapper>
       ))}
     </Container>
   );
 }
+
+const createProductLink = (product: any) => {
+  return `/products/${product.subcategories.categories.name}/${product.subcategories.name}/${product.sub_brands.brands.companies.name}/${product.sub_brands.brands.name}/${product.sub_brands.name}/${product.name}`;
+};
 
 const Wrapper = styled("div", {
   display: "flex",

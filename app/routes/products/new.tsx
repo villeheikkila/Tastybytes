@@ -7,7 +7,7 @@ import {
   useLoaderData,
   useSearchParams,
   useSubmit,
-} from "remix";
+} from "@remix-run/react";
 import { getParams } from "remix-params-helper";
 import { z } from "zod";
 import { styled } from "~/stitches.config";
