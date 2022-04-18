@@ -18,6 +18,10 @@ if (!process.env.SUPABASE_SERVICE_KEY) {
   throw new Error("SUPABASE_SERVICE_KEY is required");
 }
 
+if (!process.env.SUPABASE_ANON_KEY) {
+  throw new Error("SUPABASE_SERVICE_KEY is required");
+}
+
 // Supabase options example (build your own :))
 // https://supabase.com/docs/reference/javascript/initializing#with-additional-parameters
 
@@ -35,7 +39,7 @@ if (!process.env.SUPABASE_SERVICE_KEY) {
 
 export const supabaseClient = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_ANON_KEY
   // supabaseOptions
 );
 

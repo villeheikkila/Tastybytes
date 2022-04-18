@@ -6,6 +6,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { Navigation } from "./components/navigation";
+import { styled } from "./stitches.config";
 
 export default function App() {
   return (
@@ -32,7 +34,8 @@ function Document({
         {title ? <title>{title}</title> : null}
       </head>
       <body>
-        {children}
+        <Navigation />
+        <Content>{children}</Content>
         <Scripts />
         <ScrollRestoration />
         {process.env.NODE_ENV === "development" && <LiveReload />}
@@ -40,3 +43,10 @@ function Document({
     </html>
   );
 }
+
+const Content = styled("div", {
+  marginTop: "70px",
+  minHeight: "calc(100vh - 50px)",
+  display: "flex",
+  justifyContent: "center",
+});
