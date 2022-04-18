@@ -85,11 +85,11 @@ const CheckInFormSchema = z.object({
 });
 
 export const action: ActionFunction = async ({ request }) => {
-  const session = await sessionStorage.getSession(
-    request.headers.get("Cookie")
-  );
+  const session = await supabaseStrategy.checkSession(request);
+  if (!session) throw Error("User is not logged in!");
+  supabaseClient.auth.setAuth(session.access_token);
 
-  const authorId = session.data["sb:session"].user.id;
+  const authorId = session?.user?.id;
 
   const { success, data: checkInForm } = await getFormData(
     request,
@@ -170,7 +170,7 @@ export default function Screen() {
   const transition = useTransition();
 
   return (
-    <>
+    <div>
       <h1>
         {product.sub_brands.brands.companies.name}
         {product.sub_brands.brands.name} {product.sub_brands.name}
@@ -206,7 +206,7 @@ export default function Screen() {
           {checkIn.profiles.username} <Stars rating={checkIn.rating ?? 0} />
         </div>
       ))}
-    </>
+    </div>
   );
 }
 

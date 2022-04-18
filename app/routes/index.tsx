@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Link, Outlet } from "@remix-run/react";
 
 export default function Index() {
   return (
