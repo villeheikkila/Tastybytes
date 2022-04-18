@@ -1,9 +1,18 @@
-import { json, redirect } from "@remix-run/node";
-import { useCatch, useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
+import {
+  Form,
+  Outlet,
+  useActionData,
+  useCatch,
+  useLoaderData,
+  useTransition,
+} from "@remix-run/react";
 import type { ActionFunction, LoaderFunction } from "remix";
-import { getParams } from "remix-params-helper";
+import { getParams, getFormData } from "remix-params-helper";
 import { z } from "zod";
+import { Stars } from "~/components/stars";
 import { supabaseClient } from "~/supabase";
+import { authenticator, sessionStorage, supabaseStrategy } from "~/auth.server";
 
 export function headers() {
   return {
@@ -69,44 +78,97 @@ const ParamsSchema = z.object({
   product: z.string(),
 });
 
-export const action: ActionFunction = async ({ request, params }) => {};
+const CheckInFormSchema = z.object({
+  review: z.string().optional(),
+  rating: z.string().optional(),
+  productId: z.number(),
+});
+
+export const action: ActionFunction = async ({ request }) => {
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+
+  const authorId = session.data["sb:session"].user.id;
+
+  const { success, data: checkInForm } = await getFormData(
+    request,
+    CheckInFormSchema
+  );
+  if (success && authorId) {
+    console.log(checkInForm);
+
+    const { data, error } = await supabaseClient.from("check_ins").insert({
+      author_id: authorId,
+      product_id: checkInForm.productId,
+      rating: checkInForm.rating,
+      review: checkInForm.review,
+    });
+    console.log("error: ", error);
+
+    console.log("data: ", data);
+  }
+
+  return null;
+};
+
+const findProduct = async (filter: {
+  product: string;
+  brand: string;
+  sub_brand: string;
+  brandOwner: string;
+  subcategory: string;
+  category: string;
+}): Promise<Product> => {
+  const queryBuilder = supabaseClient
+    .from("products")
+    .select(
+      "id, name, subcategories!inner(id, name, categories!inner(id, name)), sub_brands!inner(id, name, brands!inner(id, name, companies!inner(id, name)))"
+    )
+    .eq("name", filter.product)
+    .eq("sub_brands.brands.name", filter.brand)
+    .eq("sub_brands.brands.companies.name", filter.brandOwner)
+    .eq("subcategories.name", filter.subcategory)
+    .eq("subcategories.categories.name", filter.category);
+
+  if (filter.sub_brand === "null") {
+    queryBuilder.is("sub_brands.name", null);
+  } else {
+    queryBuilder.eq("sub_brands.name", filter.sub_brand);
+  }
+
+  const response = await queryBuilder.single();
+
+  if (response.error) {
+    console.error(response.error);
+  }
+
+  return response.data;
+};
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const { success, data: decodedParams } = getParams(params, ParamsSchema);
-
   if (success) {
-    const { data: product, error } = await supabaseClient
-      .from("products")
-      .select(
-        "id, name, subcategories!inner(id, name, categories!inner(id, name)), sub_brands!inner(id, name, brands!inner(id, name, companies!inner(id, name)))"
-      )
-      .eq("name", decodedParams.product)
-      .eq("sub_brands.name", decodedParams.sub_brand)
-      .eq("sub_brands.brands.name", decodedParams.brand)
-      .eq("sub_brands.brands.companies.name", decodedParams.brandOwner)
-      .eq("subcategories.name", decodedParams.subcategory)
-      .eq("subcategories.categories.name", decodedParams.category)
-      .single();
+    const product = await findProduct(decodedParams);
 
     if (product === null) {
       throw Error("No product found!");
     }
-    console.log("products: ", product);
 
     const { data: checkIns } = await supabaseClient
       .from("check_ins")
       .select("rating, review, product_id, profiles (id, username)")
-      .eq("product_id", product!.id);
-    console.log("checkIns: ", checkIns);
+      .eq("product_id", product.id);
 
     return json<LoaderData>({ product, checkIns });
   }
-
-  return redirect("/");
 };
 
 export default function Screen() {
   const { checkIns, product } = useLoaderData<LoaderData>();
+  // const actionData = useActionData();
+  const transition = useTransition();
+
   return (
     <>
       <h1>
@@ -115,9 +177,33 @@ export default function Screen() {
         {product.name}
       </h1>
 
+      <div>
+        Add check-in!
+        <Form method="post">
+          <label>
+            Review
+            <input name="review" type="text" />
+          </label>
+          <label>
+            Rating
+            <input name="rating" type="number" />
+          </label>
+          <input
+            type="hidden"
+            id="productId"
+            name="productId"
+            value={product.id}
+          />
+          <button type="submit">
+            {transition.submission ? "Saving..." : "Save"}
+          </button>
+        </Form>
+      </div>
+      <Outlet />
+
       {checkIns?.map((checkIn) => (
         <div key={checkIn.id}>
-          {checkIn.profiles.username} {checkIn.rating}
+          {checkIn.profiles.username} <Stars rating={checkIn.rating ?? 0} />
         </div>
       ))}
     </>
