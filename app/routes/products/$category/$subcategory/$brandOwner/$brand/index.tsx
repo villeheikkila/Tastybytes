@@ -1,6 +1,6 @@
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Link, useCatch, useLoaderData } from "@remix-run/react";
-import type { ActionFunction, LoaderFunction } from "remix";
 import { getParams } from "remix-params-helper";
 import { z } from "zod";
 import { supabaseClient } from "~/supabase";

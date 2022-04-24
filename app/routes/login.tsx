@@ -1,8 +1,9 @@
-import type { ActionFunction, LoaderFunction } from "remix";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { authenticator, sessionStorage, supabaseStrategy } from "~/auth.server";
 import { styled } from "~/stitches.config";
+import { paths } from "~/utils";
 
 type LoaderData = {
   error: { message: string } | null;
@@ -17,7 +18,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const loader: LoaderFunction = async ({ request }) => {
   await supabaseStrategy.checkSession(request, {
-    successRedirect: "/private",
+    successRedirect: "/",
   });
 
   const session = await sessionStorage.getSession(
@@ -46,7 +47,7 @@ export default function Screen() {
         />
         <H1>Welcome to Tasted</H1>
         <p>
-          Don't have an account? <Link to="/register">Sign up!</Link>
+          Don't have an account? <Link to={paths.signUp}>Sign up!</Link>
         </p>
       </Header>
       <StyledForm method="post">

@@ -1,28 +1,25 @@
-import type { ActionFunction, LoaderFunction } from "remix";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
-import { supabaseClient } from "~/supabase";
-import { Stars } from "~/components/stars";
+import { Outlet, useFetcher, useLoaderData } from "@remix-run/react";
+import { useEffect } from "react";
 import { getParams } from "remix-params-helper";
 import { z } from "zod";
+import { Card } from "~/components/card";
 import { styled } from "~/stitches.config";
+import { supabaseClient } from "~/supabase";
 
-export function headers() {
-  return {
-    "Cache-Control": "max-age=3600, s-maxage=4200",
-  };
-}
-
-type LoaderData = { checkIns: any[]; user: any };
+type LoaderData = { user: any };
 
 export const action: ActionFunction = async ({ request }) => {};
 
 const ParamsSchema = z.object({
   username: z.string(),
+  page: z.string().optional(),
 });
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const { success, data: decodedParams } = getParams(params, ParamsSchema);
+  console.log("decodedParams: ", decodedParams);
 
   if (success) {
     const { data: user } = await supabaseClient
@@ -31,64 +28,30 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       .eq("username", decodedParams.username)
       .single();
 
-    const { data: checkIns, error } = await supabaseClient
-      .from("check_ins")
-      .select(
-        "rating, review, product_id, profiles (id, username), products (id, name, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name)))"
-      )
-      .eq("profiles.username", decodedParams.username)
-      .limit(10);
-    console.log("error: ", error);
-
-    return json<LoaderData>({ checkIns: checkIns ?? [], user });
+    return json<LoaderData>({ user });
   }
 
   return redirect("/");
 };
 
 export default function Screen() {
-  const { checkIns, user } = useLoaderData<LoaderData>();
+  const { user } = useLoaderData<LoaderData>();
+  const fetcher = useFetcher();
+
+  useEffect(() => {
+    const coo = fetcher.load(`./check-ins`);
+    console.log("coo: ", coo);
+  }, []);
 
   return (
     <Container>
-      <h1>{user.username}</h1>
-      {checkIns.map((checkIn) => (
-        <Wrapper key={checkIn.id}>
-          <div>
-            {user.username} is tasting{" "}
-            <Link to={createProductLink(checkIn.products)}>
-              {checkIn.products.sub_brands.brands.name}{" "}
-              {checkIn.products.sub_brands.name} {checkIn.products.name}{" "}
-            </Link>
-            from {checkIn.products.sub_brands.brands.companies.name}
-          </div>
-          <Stars rating={checkIn.rating} />
-        </Wrapper>
-      ))}
+      <Card.Container>
+        <h1>{user.username}</h1>
+      </Card.Container>
+      <Outlet />
     </Container>
   );
 }
-
-const createProductLink = (product: any) => {
-  return `/products/${product.subcategories.categories.name}/${product.subcategories.name}/${product.sub_brands.brands.companies.name}/${product.sub_brands.brands.name}/${product.sub_brands.name}/${product.name}`;
-};
-
-const Wrapper = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  gap: "4px",
-  borderRadius: 6,
-  padding: 24,
-  width: "min(95vw, 36rem)",
-  backdropFilter: "blur(20px)",
-  backgroundColor: "rgba(0, 0, 0, 0.8)",
-  boxShadow:
-    "hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
-  "@media (prefers-reduced-motion: no-preference)": {
-    animationDuration: "400ms",
-    animationTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-  },
-});
 
 const Container = styled("div", {
   marginTop: "20px",
@@ -96,8 +59,3 @@ const Container = styled("div", {
   flexDirection: "column",
   gap: "12px",
 });
-
-export const Card = {
-  Container,
-  Wrapper,
-};

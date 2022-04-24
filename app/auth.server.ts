@@ -10,7 +10,7 @@ export const sessionStorage = createCookieSessionStorage({
     httpOnly: true,
     path: '/',
     sameSite: 'lax',
-    secrets: ['s3cr3t'], // This should be an env variable
+    secrets: [process.env.SECRET as string], 
     secure: process.env.NODE_ENV === 'production',
   },
 })
