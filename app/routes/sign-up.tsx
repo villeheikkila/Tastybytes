@@ -1,6 +1,7 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, Link, useActionData } from "@remix-run/react";
+import { Form, Link, useActionData, useTransition } from "@remix-run/react";
 import { getFormData } from "remix-params-helper";
 import { z } from "zod";
 import { supabaseStrategy } from "~/auth.server";
@@ -33,7 +34,9 @@ export const action: ActionFunction = async ({ request }) => {
       password: signUpForm.password,
     });
 
-    console.log("s ", session);
+    if (!error) {
+      return redirect("/");
+    }
 
     return json({ errors: error });
   }
@@ -50,8 +53,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Screen() {
-  const ac = useActionData();
-  console.log("ac: ", ac);
+  const data = useActionData();
+  const transition = useTransition();
+
+  const isSubmitting = transition.state === "submitting";
+
   return (
     <Wrapper data-light="">
       <Header>
@@ -93,7 +99,8 @@ export default function Screen() {
           name="confirm"
           id="confirm-password"
         />
-        <Button>Sign Up</Button>
+        <Button disabled={isSubmitting}>Sign Up</Button>
+        {JSON.stringify(data?.errors)}
       </StyledForm>
     </Wrapper>
   );
@@ -115,6 +122,9 @@ export const Button = styled("button", {
   textAlign: "center",
   height: "40px",
   border: "none",
+  "&:disabled": {
+    backgroundColor: "$darkGray",
+  },
   variants: {
     variant: {
       warning: {
