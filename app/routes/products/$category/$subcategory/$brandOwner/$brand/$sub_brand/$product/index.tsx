@@ -1,3 +1,4 @@
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Form,
@@ -6,7 +7,6 @@ import {
   useLoaderData,
   useTransition,
 } from "@remix-run/react";
-import type { ActionFunction, LoaderFunction } from "remix";
 import { getFormData, getParams } from "remix-params-helper";
 import { z } from "zod";
 import { supabaseStrategy } from "~/auth.server";

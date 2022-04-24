@@ -18,6 +18,11 @@ export const { styled, getCssText, keyframes, globalCss } = createStitches({
     fonts: {
       sans: "Inter, sans-serif",
     },
+    media: {
+      bp1: '(min-width: 640px)',
+      bp2: '(min-width: 768px)',
+      bp3: '(min-width: 1024px)',
+    },
     fontSizes: {
       1: "12px",
       2: "14px",

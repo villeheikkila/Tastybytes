@@ -1,6 +1,5 @@
 import { A } from "@mobily/ts-belt";
 import React from "react";
-import type { ActionFunction, LoaderFunction } from "remix";
 import {
   Form,
   useActionData,
@@ -12,6 +11,7 @@ import { getParams } from "remix-params-helper";
 import { z } from "zod";
 import { styled } from "~/stitches.config";
 import { supabaseClient } from "~/supabase";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 
 const CreateProductProps = z.object({
   company: z.string().optional(),
