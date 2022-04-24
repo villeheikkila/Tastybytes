@@ -32,3 +32,9 @@ export interface Subcategory {
     sub_brands: SubBrand;
     subcategories: Subcategory;
   }
+
+  export interface Profile {
+    id: string;
+    username: string;
+    avatar_url: string
+  }
