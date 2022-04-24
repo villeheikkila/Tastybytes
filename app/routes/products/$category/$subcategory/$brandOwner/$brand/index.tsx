@@ -94,7 +94,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 };
 
 const createProductLink = (product: Product) => {
-  console.log("product: ", product);
   return `/products/${product.subcategories.categories.name}/${product.subcategories.name}/${product.sub_brands.brands.companies.name}/${product.sub_brands.brands.name}/${product.sub_brands.name}/${product.name}`;
 };
 
