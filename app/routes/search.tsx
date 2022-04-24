@@ -51,7 +51,7 @@ export default function Index() {
           <Link to={paths.product(result)} key={result.id}>
             <Card.Container>
               <h1>
-                {result.sub_brands.brands.companies.name}
+                {result.sub_brands.brands.companies.name}{" "}
                 {result.sub_brands.brands.name} {result.sub_brands.name}
                 {result.name}
               </h1>
