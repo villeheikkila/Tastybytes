@@ -17,10 +17,15 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   );
 
   if (success) {
+    const searchTerm = decodedParams.term;
+
     const { data: searchResultIds } = await supabaseClient
       .from("materialized_search_products")
       .select("id")
-      .textSearch("product_t", decodedParams.term);
+      .textSearch("product_t", `${searchTerm}`, {
+        type: "websearch",
+        config: "english",
+      });
 
     if (searchResultIds) {
       const { data: searchResults } = await supabaseClient
