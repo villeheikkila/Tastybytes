@@ -88,28 +88,27 @@ const CheckInFormSchema = z.object({
 
 export const action: ActionFunction = async ({ request }) => {
   const session = await authenticator.isAuthenticated(request);
-  if (!session) throw Error("User is not logged in!");
-  supabaseClient.auth.setAuth(session.access_token);
+  if (!session?.user) throw Error("User is not logged in!");
 
-  const authorId = session?.user?.id;
+  const {
+    success,
+    data: checkInForm,
+    errors,
+  } = await getFormData(request, CheckInFormSchema);
 
-  const { success, data: checkInForm } = await getFormData(
-    request,
-    CheckInFormSchema
-  );
-
-  console.log("checkInForm: ", checkInForm);
-
-  if (success && authorId) {
-    const { data, error } = await supabaseClient.from("check_ins").insert({
-      author_id: authorId,
+  if (success) {
+    supabaseClient.auth.setAuth(session.access_token);
+    const { error } = await supabaseClient.from("check_ins").insert({
+      author_id: session.user.id,
       product_id: checkInForm.productId,
       rating: checkInForm.rating,
       review: checkInForm.review,
     });
+
+    return json({ errors: error });
   }
 
-  return null;
+  return json({ errors: errors });
 };
 
 const findProduct = async (filter: {
@@ -228,7 +227,8 @@ export default function Screen() {
 
       {checkIns?.map((checkIn) => (
         <Card.Container key={checkIn.id}>
-          {checkIn.profiles.username} <Stars rating={checkIn.rating ?? 0} />
+          {checkIn.profiles.username ?? checkIn.profiles.id}{" "}
+          <Stars rating={checkIn.rating ?? 0} />
         </Card.Container>
       ))}
     </Container>

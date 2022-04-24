@@ -72,7 +72,7 @@ function Document({
 }
 
 const Content = styled("div", {
-  marginTop: "70px",
+  marginTop: "100px",
   minHeight: "calc(100vh - 50px)",
   display: "flex",
   justifyContent: "center",

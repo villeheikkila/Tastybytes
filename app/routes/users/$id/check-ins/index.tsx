@@ -132,7 +132,6 @@ const Wrapper = styled("div", {
 });
 
 const Container = styled("div", {
-  marginTop: "20px",
   display: "flex",
   flexDirection: "column",
   gap: "12px",
