@@ -56,8 +56,3 @@ export const authenticator = new Authenticator<Session>(sessionStorage, {
 
 authenticator.use(supabaseStrategy)
 
-
-interface SignInProps {
-email: string,
-password: string
-}

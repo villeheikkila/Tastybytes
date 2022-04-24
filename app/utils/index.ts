@@ -1,7 +1,7 @@
 import type { Product } from "~/types/custom";
 
 export const paths = {
-    user: (username: string) => `/users/${username}`,
+    user: (id: string) => `/users/${id}`,
     settings: "/settings",
     logout: "/logout",
     signUp: "/sign-up",

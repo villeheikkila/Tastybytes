@@ -110,7 +110,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ user }) => {
 
       <Dropdown.Content sideOffset={-53}>
         <Dropdown.Item>
-          <Link to={paths.user(user?.email ?? "")}>Profile</Link>
+          <Link to={paths.user(user?.id ?? "")}>Profile</Link>
         </Dropdown.Item>
         <Dropdown.Separator />
         <Dropdown.Item>
