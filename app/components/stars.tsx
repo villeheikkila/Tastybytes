@@ -7,11 +7,11 @@ export const Stars = ({ rating }: { rating: number }) => {
   return (
     <div>
       {Array.from({ length: fullStars }, (_, i) => (
-        <Star type="filled" />
+        <Star type="filled" key={`filled-${i}`} />
       ))}
       {halfStar && <Star type="half" />}
       {Array.from({ length: emptyStars }, (_, i) => (
-        <Star type="empty" />
+        <Star type="empty" key={`empty-${i}`} />
       ))}
     </div>
   );

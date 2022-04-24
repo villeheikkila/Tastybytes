@@ -1,6 +1,7 @@
 import { Form, Link } from "@remix-run/react";
 import type { User } from "@supabase/supabase-js";
 import { styled } from "~/stitches.config";
+import type { Profile } from "~/types/custom";
 import { paths } from "~/utils";
 import { Avatar } from "./avatar";
 import { Dropdown } from "./dropdown";
@@ -24,7 +25,7 @@ const Header = styled("header", {
 });
 
 interface NavigationProps {
-  user: User | null;
+  user: Profile | null;
 }
 
 export const Navigation = ({ user }: NavigationProps) => {
@@ -96,7 +97,7 @@ const SearchInput = styled("input", {
 const SearchButton = styled("button", {});
 
 interface DropdownMenuProps {
-  user: User | null;
+  user: Profile;
 }
 
 const DropdownMenu: React.FC<DropdownMenuProps> = ({ user }) => {
@@ -104,7 +105,11 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ user }) => {
     <Dropdown.Menu>
       <Dropdown.Trigger asChild>
         <IconButton>
-          <Avatar name={user?.email ?? ""} status={undefined} />
+          <Avatar
+            name={user.username}
+            status={undefined}
+            imageUrl={user.avatar_url}
+          />
         </IconButton>
       </Dropdown.Trigger>
 

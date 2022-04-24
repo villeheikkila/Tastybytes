@@ -11,12 +11,16 @@ import { useState } from "react";
 import { getFormData, getParams } from "remix-params-helper";
 import { z } from "zod";
 import { authenticator } from "~/auth.server";
+import { Avatar } from "~/components/avatar";
 import { Card } from "~/components/card";
 import { Input, Textarea } from "~/components/input";
 import { Star, Stars } from "~/components/stars";
 import { Button } from "~/routes/login";
 import { styled } from "~/stitches.config";
 import { supabaseClient } from "~/supabase";
+import type { Profile } from "~/types/custom";
+import { paths } from "~/utils";
+import { Configs } from "~/utils/configs";
 
 interface Category {
   id: number;
@@ -53,11 +57,6 @@ interface Product {
   subcategory: Subcategory;
 }
 
-interface Profile {
-  id: string;
-  username: string;
-}
-
 interface CheckIn {
   id: number;
   rating: number | null;
@@ -69,6 +68,7 @@ type LoaderData = {
   product: Product;
   checkIns: CheckIn[] | null;
   isAuthenticated: boolean;
+  supabaseUrl: string;
 };
 
 const ParamsSchema = z.object({
@@ -156,7 +156,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
     const { data: checkIns } = await supabaseClient
       .from("check_ins")
-      .select("rating, review, product_id, profiles (id, username)")
+      .select("rating, review, product_id, profiles (id, username, avatar_url)")
       .eq("product_id", product.id);
 
     const user = await authenticator.isAuthenticated(request);
@@ -165,14 +165,17 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       product,
       checkIns,
       isAuthenticated: !!user,
+      supabaseUrl: Configs.supabaseUrl,
     });
   }
 };
 
 export default function Screen() {
-  const { checkIns, product, isAuthenticated } = useLoaderData<LoaderData>();
+  const { checkIns, product, isAuthenticated, supabaseUrl } =
+    useLoaderData<LoaderData>();
   // const actionData = useActionData();
   const transition = useTransition();
+  console.log("checkIns: ", checkIns);
 
   const [stars, setStars] = useState<number | undefined>(); // replace with CSS
 
@@ -194,7 +197,11 @@ export default function Screen() {
             <Textarea name="review" placeholder="Review" />
             <div>
               {Array.from({ length: 5 }, (_, i) => (
-                <label id={(i + 1).toString()} onClick={() => setStars(i + 1)}>
+                <label
+                  id={(i + 1).toString()}
+                  onClick={() => setStars(i + 1)}
+                  key={i}
+                >
                   <input
                     type="radio"
                     name="rating"
@@ -227,6 +234,14 @@ export default function Screen() {
 
       {checkIns?.map((checkIn) => (
         <Card.Container key={checkIn.id}>
+          <Avatar
+            name={checkIn.profiles.username}
+            status={undefined}
+            imageUrl={paths.avatarUrl({
+              profilePic: checkIn.profiles.avatar_url,
+              supabaseUrl,
+            })}
+          />
           {checkIn.profiles.username ?? checkIn.profiles.id}{" "}
           <Stars rating={checkIn.rating ?? 0} />
         </Card.Container>

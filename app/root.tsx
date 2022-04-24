@@ -9,10 +9,13 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
-import type { User } from "@supabase/supabase-js";
 import { authenticator } from "./auth.server";
 import { Navigation } from "./components/navigation";
 import { styled } from "./stitches.config";
+import { supabaseClient } from "./supabase";
+import type { Profile } from "./types/custom";
+import { paths } from "./utils";
+import { Configs } from "./utils/configs";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await authenticator.isAuthenticated(request);
@@ -20,7 +23,29 @@ export const loader: LoaderFunction = async ({ request }) => {
   const hideNavigation =
     request.url.includes("/login") || request.url.includes("/sign-up");
 
-  return json({ user: session?.user ?? null, hideNavigation });
+  if (session) {
+    // TODO: Avoid loading this on every navigation
+    const { data: user } = await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", session?.user?.id)
+      .single();
+
+    return json({
+      user: user
+        ? {
+            ...user,
+            avatar_url: paths.avatarUrl({
+              profilePic: user.avatar_url,
+              supabaseUrl: Configs.supabaseUrl,
+            }),
+          }
+        : null,
+      hideNavigation,
+    });
+  }
+
+  return json({ user: null, hideNavigation });
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -29,7 +54,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function App() {
   const { user, hideNavigation } = useLoaderData<{
-    user: User | null;
+    user: Profile | null;
     hideNavigation: boolean;
   }>();
 
@@ -48,7 +73,7 @@ function Document({
 }: {
   children: React.ReactNode;
   title?: string;
-  user: User | null;
+  user: Profile | null;
   hideNavigation: boolean;
 }) {
   return (
@@ -72,7 +97,7 @@ function Document({
 }
 
 const Content = styled("div", {
-  marginTop: "100px",
+  marginTop: "80px",
   minHeight: "calc(100vh - 50px)",
   display: "flex",
   justifyContent: "center",
