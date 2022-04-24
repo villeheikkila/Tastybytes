@@ -9,8 +9,10 @@ import {
 } from "@remix-run/react";
 import { getFormData, getParams } from "remix-params-helper";
 import { z } from "zod";
-import { supabaseStrategy } from "~/auth.server";
+import { authenticator, supabaseStrategy } from "~/auth.server";
+import { Card } from "~/components/card";
 import { Stars } from "~/components/stars";
+import { styled } from "~/stitches.config";
 import { supabaseClient } from "~/supabase";
 
 export function headers() {
@@ -66,7 +68,11 @@ interface CheckIn {
   profiles: Profile;
 }
 
-type LoaderData = { product: Product; checkIns: CheckIn[] | null };
+type LoaderData = {
+  product: Product;
+  checkIns: CheckIn[] | null;
+  isAuthenticated: boolean;
+};
 
 const ParamsSchema = z.object({
   category: z.string(),
@@ -159,55 +165,73 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       .select("rating, review, product_id, profiles (id, username)")
       .eq("product_id", product.id);
 
-    return json<LoaderData>({ product, checkIns });
+    const user = await authenticator.isAuthenticated(request);
+    console.log("user: ", user);
+
+    return json<LoaderData>({
+      product,
+      checkIns,
+      isAuthenticated: !!user,
+    });
   }
 };
 
 export default function Screen() {
-  const { checkIns, product } = useLoaderData<LoaderData>();
+  const { checkIns, product, isAuthenticated } = useLoaderData<LoaderData>();
   // const actionData = useActionData();
   const transition = useTransition();
 
   return (
-    <div>
-      <h1>
-        {product.sub_brands.brands.companies.name}
-        {product.sub_brands.brands.name} {product.sub_brands.name}
-        {product.name}
-      </h1>
+    <Container>
+      <Card.Container>
+        <h1>
+          {product.sub_brands.brands.companies.name}
+          {product.sub_brands.brands.name} {product.sub_brands.name}
+          {product.name}
+        </h1>
+      </Card.Container>
 
-      <div>
-        Add check-in!
-        <Form method="post">
-          <label>
-            Review
-            <input name="review" type="text" />
-          </label>
-          <label>
-            Rating
-            <input name="rating" type="number" />
-          </label>
-          <input
-            type="hidden"
-            id="productId"
-            name="productId"
-            value={product.id}
-          />
-          <button type="submit">
-            {transition.submission ? "Saving..." : "Save"}
-          </button>
-        </Form>
-      </div>
+      {isAuthenticated && (
+        <div>
+          Add check-in!
+          <Form method="post">
+            <label>
+              Review
+              <input name="review" type="text" />
+            </label>
+            <label>
+              Rating
+              <input name="rating" type="number" />
+            </label>
+            <input
+              type="hidden"
+              id="productId"
+              name="productId"
+              value={product.id}
+            />
+            <button type="submit">
+              {transition.submission ? "Saving..." : "Save"}
+            </button>
+          </Form>
+        </div>
+      )}
+
       <Outlet />
 
       {checkIns?.map((checkIn) => (
-        <div key={checkIn.id}>
+        <Card.Container key={checkIn.id}>
           {checkIn.profiles.username} <Stars rating={checkIn.rating ?? 0} />
-        </div>
+        </Card.Container>
       ))}
-    </div>
+    </Container>
   );
 }
+
+const Container = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "1rem",
+});
 
 export function CatchBoundary() {
   const caught = useCatch();
