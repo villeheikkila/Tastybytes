@@ -21,20 +21,10 @@ export const loader: LoaderFunction = async ({ request }) => {
     successRedirect: "/",
   });
 
-  const session = await sessionStorage.getSession(
-    request.headers.get("Cookie")
-  );
-
-  const error = session.get(
-    authenticator.sessionErrorKey
-  ) as LoaderData["error"];
-
-  return json<LoaderData>({ error });
+  return null;
 };
 
 export default function Screen() {
-  const { error } = useLoaderData<LoaderData>();
-
   return (
     <Wrapper data-light="">
       <Header>
@@ -68,7 +58,6 @@ export default function Screen() {
           name="password"
           id="password"
         />
-        {error && <ErrorText role="alert">{error.message}</ErrorText>}
         <Button>Log In</Button>
       </StyledForm>
     </Wrapper>
