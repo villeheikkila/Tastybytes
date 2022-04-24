@@ -23,8 +23,9 @@ const slideLeftAndFade = keyframes({
 
 const StyledContent = styled(DropdownMenuPrimitive.Content, {
   minWidth: 240,
-  backgroundColor: "$darkGray",
-  borderRadius: "8px",
+  backdropFilter: "blur(20px)",
+  backgroundColor: "rgba(45, 46, 48, 0.8)",
+  borderRadius: "4px",
   boxShadow: "0 2px 10px rgb(0 0 0 / 20%)",
   "@media (prefers-reduced-motion: no-preference)": {
     animationDuration: "400ms",

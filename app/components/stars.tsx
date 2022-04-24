@@ -1,12 +1,18 @@
 import { styled } from "~/stitches.config";
 
 export const Stars = ({ rating }: { rating: number }) => {
+  const fullStars = Math.floor(rating / 2);
+  const halfStar = rating % 2 !== 0;
+  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
   return (
     <div>
-      {Array.from({ length: Math.floor(rating / 2) }, (_, i) => (
+      {Array.from({ length: fullStars }, (_, i) => (
         <Star type="filled" />
       ))}
-      {rating % 2 !== 0 && <Star type="half" />}
+      {halfStar && <Star type="half" />}
+      {Array.from({ length: emptyStars }, (_, i) => (
+        <Star type="empty" />
+      ))}
     </div>
   );
 };
