@@ -1,10 +1,9 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useTransition } from "@remix-run/react";
 import { getFormData } from "remix-params-helper";
 import { z } from "zod";
-import { supabaseStrategy } from "~/auth.server";
+import { authenticator, supabaseStrategy } from "~/auth.server";
 import { styled } from "~/stitches.config";
 import { supabaseClient } from "~/supabase";
 import { paths } from "~/utils";
@@ -29,7 +28,7 @@ export const action: ActionFunction = async ({ request }) => {
   );
 
   if (success) {
-    const { session, error } = await supabaseClient.auth.signUp({
+    const { error } = await supabaseClient.auth.signUp({
       email: signUpForm.email,
       password: signUpForm.password,
     });
@@ -45,7 +44,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  await supabaseStrategy.checkSession(request, {
+  await authenticator.isAuthenticated(request, {
     successRedirect: "/",
   });
 

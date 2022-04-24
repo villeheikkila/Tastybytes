@@ -1,13 +1,8 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
-import { authenticator, sessionStorage, supabaseStrategy } from "~/auth.server";
+import { Form, Link } from "@remix-run/react";
+import { authenticator, supabaseStrategy } from "~/auth.server";
 import { styled } from "~/stitches.config";
 import { paths } from "~/utils";
-
-type LoaderData = {
-  error: { message: string } | null;
-};
 
 export const action: ActionFunction = async ({ request }) => {
   await authenticator.authenticate("sb", request, {
