@@ -12,20 +12,21 @@ type LoaderData = { user: any };
 
 export const action: ActionFunction = async ({ request }) => {};
 
-const ParamsSchema = z.object({
-  username: z.string(),
-  page: z.string().optional(),
-});
-
 export const loader: LoaderFunction = async ({ request, params }) => {
-  const { success, data: decodedParams } = getParams(params, ParamsSchema);
-  console.log("decodedParams: ", decodedParams);
+  const { success, data: decodedParams } = getParams(
+    params,
+    z.object({
+      id: z.string(),
+    })
+  );
 
   if (success) {
+    console.log("decodedParams.id: ", decodedParams.id);
+
     const { data: user } = await supabaseClient
       .from("profiles")
-      .select("username")
-      .eq("username", decodedParams.username)
+      .select("*")
+      .eq("id", decodedParams.id)
       .single();
 
     return json<LoaderData>({ user });
@@ -36,6 +37,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export default function Screen() {
   const { user } = useLoaderData<LoaderData>();
+  console.log("user: ", user);
   const fetcher = useFetcher();
 
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function Screen() {
   return (
     <Container>
       <Card.Container>
-        <h1>{user.username}</h1>
+        <h1>{user?.username}</h1>
       </Card.Container>
       <Outlet />
     </Container>
