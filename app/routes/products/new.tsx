@@ -121,11 +121,6 @@ export default function Index() {
     (b) => b.id
   );
 
-  console.log(subBrands.filter((sb) => sb.brand_id === params.brandId));
-
-  const actionData = useActionData<ActionData>();
-  console.log("actionData: ", actionData);
-
   return (
     <Root>
       <Header>
@@ -227,8 +222,6 @@ const Header = styled("header", {
 });
 
 export function ErrorBoundary({ error }: { error: Error }) {
-  console.log("caught: ", error.message);
-
   return (
     <div>
       <h1>{JSON.stringify(error)}</h1>

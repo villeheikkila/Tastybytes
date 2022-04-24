@@ -21,8 +21,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   );
 
   if (success) {
-    console.log("decodedParams.id: ", decodedParams.id);
-
     const { data: user } = await supabaseClient
       .from("profiles")
       .select("*")
@@ -37,12 +35,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export default function Screen() {
   const { user } = useLoaderData<LoaderData>();
-  console.log("user: ", user);
   const fetcher = useFetcher();
 
   useEffect(() => {
-    const coo = fetcher.load(`./check-ins`);
-    console.log("coo: ", coo);
+    fetcher.load(`./check-ins`);
   }, []);
 
   return (

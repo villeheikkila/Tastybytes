@@ -7,11 +7,14 @@ import {
   useLoaderData,
   useTransition,
 } from "@remix-run/react";
+import { useState } from "react";
 import { getFormData, getParams } from "remix-params-helper";
 import { z } from "zod";
 import { authenticator } from "~/auth.server";
 import { Card } from "~/components/card";
-import { Stars } from "~/components/stars";
+import { Input, Textarea } from "~/components/input";
+import { Star, Stars } from "~/components/stars";
+import { Button } from "~/routes/login";
 import { styled } from "~/stitches.config";
 import { supabaseClient } from "~/supabase";
 
@@ -94,18 +97,16 @@ export const action: ActionFunction = async ({ request }) => {
     request,
     CheckInFormSchema
   );
-  if (success && authorId) {
-    console.log(checkInForm);
 
+  console.log("checkInForm: ", checkInForm);
+
+  if (success && authorId) {
     const { data, error } = await supabaseClient.from("check_ins").insert({
       author_id: authorId,
       product_id: checkInForm.productId,
       rating: checkInForm.rating,
       review: checkInForm.review,
     });
-    console.log("error: ", error);
-
-    console.log("data: ", data);
   }
 
   return null;
@@ -160,7 +161,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       .eq("product_id", product.id);
 
     const user = await authenticator.isAuthenticated(request);
-    console.log("user: ", user);
 
     return json<LoaderData>({
       product,
@@ -175,6 +175,8 @@ export default function Screen() {
   // const actionData = useActionData();
   const transition = useTransition();
 
+  const [stars, setStars] = useState<number | undefined>(); // replace with CSS
+
   return (
     <Container>
       <Card.Container>
@@ -186,28 +188,40 @@ export default function Screen() {
       </Card.Container>
 
       {isAuthenticated && (
-        <div>
-          Add check-in!
-          <Form method="post">
-            <label>
-              Review
-              <input name="review" type="text" />
-            </label>
-            <label>
-              Rating
-              <input name="rating" type="number" />
-            </label>
+        <Card.Container>
+          <CheckInForm method="post">
+            <H2>Add check-in!</H2>
+
+            <Textarea name="review" placeholder="Review" />
+            <div>
+              {Array.from({ length: 5 }, (_, i) => (
+                <label id={(i + 1).toString()} onClick={() => setStars(i + 1)}>
+                  <input
+                    type="radio"
+                    name="rating"
+                    id={(i + 1).toString()}
+                    value={i + 1}
+                  />
+                  <Star
+                    type={stars && stars >= i + 1 ? "filled" : "empty"}
+                    key={i}
+                  />
+                </label>
+              ))}
+            </div>
             <input
               type="hidden"
               id="productId"
               name="productId"
               value={product.id}
             />
-            <button type="submit">
-              {transition.submission ? "Saving..." : "Save"}
-            </button>
-          </Form>
-        </div>
+            <div>
+              <Button type="submit">
+                {transition.submission ? "Saving..." : "Check-in!"}
+              </Button>
+            </div>
+          </CheckInForm>
+        </Card.Container>
       )}
 
       <Outlet />
@@ -220,6 +234,13 @@ export default function Screen() {
     </Container>
   );
 }
+
+const H2 = styled("h2", { fontSize: "1.2rem" });
+const CheckInForm = styled(Form, {
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.5rem",
+});
 
 const Container = styled("div", {
   display: "flex",

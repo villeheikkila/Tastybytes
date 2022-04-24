@@ -22,7 +22,6 @@ export const action: ActionFunction = async ({ request }) => {
   );
 
   const file = formData.get("avatar");
-  console.log("file: ", file);
 
   if (file && session?.user?.id) {
     const { data, error } = await supabaseClient.storage
@@ -38,8 +37,6 @@ export const action: ActionFunction = async ({ request }) => {
         id: session?.user?.id,
         avatar_url: data.Key,
       });
-
-      console.log("error: ", error);
     }
   }
 

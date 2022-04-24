@@ -35,7 +35,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   );
 
   const { success, data: decodedParams } = getParams(params, ParamsSchema);
-  console.log("decodedParams: ", decodedParams);
 
   if (success) {
     const { from, to } = getPagination(searchParams.data?.page ?? 0, 10);
@@ -55,8 +54,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       .limit(10)
       .range(from, to);
 
-    console.log("error: ", error);
-
     return json<LoaderData>({ checkIns: checkIns ?? [], user });
   }
 
@@ -67,19 +64,15 @@ export default function Screen() {
   const { checkIns: initialCheckIns, user } = useLoaderData<LoaderData>();
   const [page, setPage] = useState(2);
   const fetcher = useFetcher();
-  console.log("fetcher: ", fetcher.state);
-  console.log("fetcher: ", fetcher.data);
+
   const { ref, inView, entry } = useInView();
   const [checkIns, setCheckIns] = useState(initialCheckIns);
   const [shouldFetch, setShouldFetch] = useState(true);
   const fetchers = useFetchers();
-  console.log("fetchers: ", fetchers);
 
   useEffect(() => {
     if (inView && shouldFetch) {
-      console.log("inView: ", inView);
-      const coo = fetcher.load(`./?page=${page}`);
-      console.log("coo: ", coo);
+      fetcher.load(`./?page=${page}`);
       setShouldFetch(false);
     }
   }, [inView, fetcher, page, shouldFetch]);
