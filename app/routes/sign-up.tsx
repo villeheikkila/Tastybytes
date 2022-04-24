@@ -3,7 +3,7 @@ import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useTransition } from "@remix-run/react";
 import { getFormData } from "remix-params-helper";
 import { z } from "zod";
-import { authenticator, supabaseStrategy } from "~/auth.server";
+import { authenticator } from "~/auth.server";
 import { styled } from "~/stitches.config";
 import { supabaseClient } from "~/supabase";
 import { paths } from "~/utils";
