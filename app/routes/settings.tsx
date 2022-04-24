@@ -4,11 +4,11 @@ import {
   unstable_parseMultipartFormData,
 } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
-import { authenticator, supabaseStrategy } from "~/auth.server";
+import { authenticator } from "~/auth.server";
 import { supabaseClient } from "~/supabase";
 
 export const action: ActionFunction = async ({ request }) => {
-  const session = await supabaseStrategy.checkSession(request);
+  const session = await authenticator.isAuthenticated(request);
   if (!session) throw Error("User is not logged in!");
   supabaseClient.auth.setAuth(session.access_token);
 

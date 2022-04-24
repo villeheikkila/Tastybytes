@@ -9,17 +9,11 @@ import {
 } from "@remix-run/react";
 import { getFormData, getParams } from "remix-params-helper";
 import { z } from "zod";
-import { authenticator, supabaseStrategy } from "~/auth.server";
+import { authenticator } from "~/auth.server";
 import { Card } from "~/components/card";
 import { Stars } from "~/components/stars";
 import { styled } from "~/stitches.config";
 import { supabaseClient } from "~/supabase";
-
-export function headers() {
-  return {
-    "Cache-Control": "max-age=3600, s-maxage=4200",
-  };
-}
 
 interface Category {
   id: number;
@@ -90,7 +84,7 @@ const CheckInFormSchema = z.object({
 });
 
 export const action: ActionFunction = async ({ request }) => {
-  const session = await supabaseStrategy.checkSession(request);
+  const session = await authenticator.isAuthenticated(request);
   if (!session) throw Error("User is not logged in!");
   supabaseClient.auth.setAuth(session.access_token);
 

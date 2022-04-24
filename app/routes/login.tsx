@@ -1,6 +1,6 @@
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
-import { authenticator, supabaseStrategy } from "~/auth.server";
+import { authenticator } from "~/auth.server";
 import { styled } from "~/stitches.config";
 import { paths } from "~/utils";
 
@@ -12,7 +12,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  await supabaseStrategy.checkSession(request, {
+  await authenticator.isAuthenticated(request, {
     successRedirect: "/",
   });
 

@@ -4,12 +4,6 @@ import { useLoaderData } from "@remix-run/react";
 import { supabaseClient } from "~/supabase";
 import { Stars } from "~/components/stars";
 
-export function headers() {
-  return {
-    "Cache-Control": "max-age=3600, s-maxage=4200",
-  };
-}
-
 type LoaderData = { email?: string; data: MaterializedCheckIn[] | null };
 
 export const action: ActionFunction = async ({ request }) => {};
