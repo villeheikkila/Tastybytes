@@ -1,8 +1,8 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { supabaseStrategy } from "~/auth.server";
+import { authenticator } from "~/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  await supabaseStrategy.checkSession(request, {
+  await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
 

@@ -5,12 +5,6 @@ import { getParams } from "remix-params-helper";
 import { z } from "zod";
 import { supabaseClient } from "~/supabase";
 
-export function headers() {
-  return {
-    "Cache-Control": "max-age=3600, s-maxage=4200",
-  };
-}
-
 interface Category {
   id: number;
   name: string;
