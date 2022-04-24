@@ -55,3 +55,21 @@ export const authenticator = new Authenticator<Session>(sessionStorage, {
 })
 
 authenticator.use(supabaseStrategy)
+
+
+interface SignInProps {
+email: string,
+password: string
+}
+
+export const signInUser = async ({
+  email,
+  password,
+}: SignInProps) => {
+  const {session, error} =
+    await supabaseClient.auth.signIn({
+      email,
+      password,
+    });
+  return { session, error };
+};
