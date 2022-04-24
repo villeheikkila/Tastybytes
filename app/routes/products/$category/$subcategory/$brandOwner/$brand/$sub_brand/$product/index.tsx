@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import {
   Form,
   Outlet,
+  useActionData,
   useCatch,
   useLoaderData,
   useTransition,
@@ -69,6 +70,7 @@ type LoaderData = {
   checkIns: CheckIn[] | null;
   isAuthenticated: boolean;
   supabaseUrl: string;
+  errors?: string;
 };
 
 const ParamsSchema = z.object({
@@ -154,7 +156,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       throw Error("No product found!");
     }
 
-    const { data: checkIns } = await supabaseClient
+    const { data: checkIns, error } = await supabaseClient
       .from("check_ins")
       .select("rating, review, product_id, profiles (id, username, avatar_url)")
       .eq("product_id", product.id);
@@ -166,6 +168,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       checkIns,
       isAuthenticated: !!user,
       supabaseUrl: Configs.supabaseUrl,
+      errors: error?.message,
     });
   }
 };
@@ -175,6 +178,8 @@ export default function Screen() {
     useLoaderData<LoaderData>();
   // const actionData = useActionData();
   const transition = useTransition();
+  const actionData = useActionData();
+  console.log("errors: ", actionData?.errors);
   console.log("checkIns: ", checkIns);
 
   const [stars, setStars] = useState<number | undefined>(); // replace with CSS
