@@ -18,7 +18,8 @@ import { supabaseClient } from "./supabase";
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await supabaseStrategy.checkSession(request);
 
-  const hideNavigation = request.url.includes("/login");
+  const hideNavigation =
+    request.url.includes("/login") || request.url.includes("/sign-up");
 
   if (session?.user?.id) {
     console.log("session?.user: ", session?.user);
