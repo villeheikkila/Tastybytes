@@ -1,4 +1,0 @@
-fragment Basic_User on User {
-  id
-  username
-}
