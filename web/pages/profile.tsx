@@ -4,8 +4,16 @@ import {
   supabaseServerClient,
   getUser,
 } from "@supabase/auth-helpers-nextjs";
-import Title from "@supabase/ui/dist/cjs/components/Typography/Title";
-
+import {
+  Page,
+  Navbar,
+  Block,
+  Button,
+  List,
+  ListItem,
+  Link,
+  BlockTitle,
+} from "konsta/react";
 import { Database } from "../generated/DatabaseDefinitions";
 
 export default function ProfilePage({
@@ -17,12 +25,25 @@ export default function ProfilePage({
 }) {
   console.log("data: ", data);
   return (
-    <>
-      <div>
-        {" "}
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      </div>
-    </>
+    <Page>
+      <Navbar title="My App" />
+
+      <Block strong>
+        <p>
+          Here is your Next.js & Konsta UI app. Let's see what we have here.
+        </p>
+      </Block>
+      <BlockTitle>Navigation</BlockTitle>
+      <List>
+        <ListItem href="/about/" title="About" />
+        <ListItem href="/form/" title="Form" />
+      </List>
+
+      <Block strong className="flex space-x-4">
+        <Button>Button 1</Button>
+        <Button>Button 2</Button>
+      </Block>
+    </Page>
   );
 }
 
