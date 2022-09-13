@@ -3,14 +3,17 @@ import {
   supabaseClient,
   supabaseServerClient,
   User,
-  withPageAuth
+  withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
 import { Block, Button, Navbar, Page } from "konsta/react";
 import { useRouter } from "next/router";
 import { Database } from "../generated/DatabaseDefinitions";
 import { getExportCSVByUsername } from "../utils/export-check-ins";
 
-
+const deleteMyAccount = async () => {
+  const response = await supabaseClient.rpc("delete_user");
+  console.log("response: ", response);
+};
 
 export default function ProfilePage({
   user,
@@ -36,16 +39,22 @@ export default function ProfilePage({
         >
           Sign out
         </Button>
+        <Button large onClick={() => getExportCSVByUsername(data.username)}>
+          Export
+        </Button>
         <Button
           large
-          onClick={() => getExportCSVByUsername(data.username)}
+          onClick={() =>
+            deleteMyAccount()
+              .then(() => supabaseClient.auth.signOut())
+              .then(() => router.push("/login"))
+          }
         >
-          Export Data
+          Delete Account
         </Button>
       </Block>
 
-      <Block>
-      </Block>
+      <Block></Block>
     </Page>
   );
 }
@@ -59,6 +68,6 @@ export const getServerSideProps = withPageAuth({
       .select("*")
       .match({ id: user.id })
       .limit(1);
-    return { props: { data: data?.[0] } };
+    return { props: { data: data?.[0] ?? null } };
   },
 });
