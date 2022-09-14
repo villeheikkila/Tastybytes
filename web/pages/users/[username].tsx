@@ -26,7 +26,8 @@ const UserProfile = ({ initialCheckIns, summary, username }: any) => {
   const [checkIns, setCheckIns] = useState<any>(initialCheckIns);
   const [page, setPage] = useState(1);
   const ref: any = useRef<HTMLDivElement>();
-  const inView = useInView(ref, "0px");
+  const inView = useInView(ref);
+  console.log("inView: ", inView);
 
   useEffect(() => {
     fetchCheckIns(username, page).then((d) => {
@@ -74,7 +75,7 @@ const UserProfile = ({ initialCheckIns, summary, username }: any) => {
             <p>{c.rating}</p>
           </Card>
         ))}
-        <div ref={ref} />
+        <div ref={ref}>Loading...</div>
       </Block>
     </Page>
   );
@@ -106,7 +107,8 @@ function useInView<T extends Element>(
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const username = context.params?.username;
-  console.log("username: ", username);
+
+  if (!username) throw Error("user doesn't exist");
 
   const { data: profile } = await supabaseClient
     .from("profiles")
@@ -114,8 +116,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     .eq("username", username)
     .single();
 
-  const initialCheckIns = await fetchCheckIns(username, 0);
-  const { data: summary, error: summaryError } = await supabaseClient
+  const initialCheckIns = await fetchCheckIns(String(username), 0);
+
+  const { data: summary } = await supabaseClient
     .rpc("get_profile_summary", { uid: profile?.id })
     .single();
 
