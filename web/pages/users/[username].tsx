@@ -26,7 +26,7 @@ const UserProfile = ({ initialCheckIns, summary, username }: any) => {
   const [checkIns, setCheckIns] = useState<any>(initialCheckIns);
   const [page, setPage] = useState(1);
   const ref: any = useRef<HTMLDivElement>();
-  const inView = useInView(ref, "100px");
+  const inView = useInView(ref, "0px");
 
   useEffect(() => {
     fetchCheckIns(username, page).then((d) => {
