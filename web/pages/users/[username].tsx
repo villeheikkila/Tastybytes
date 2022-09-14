@@ -1,11 +1,20 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Block, Card, Link, Page } from "konsta/react";
 import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
 
-const UserProfile = ({ checkIns, username }: any) => {
+const UserProfile = ({ checkIns, summary }: any) => {
+  console.log("summary: ", summary);
   return (
     <Page>
+      <Block strong inset>
+        <span>Total: {summary.totalCheckIns}</span>
+      </Block>
+      <Block strong inset>
+        <span>Unique: {summary.totalUnique}</span>
+      </Block>
+      <Block strong inset>
+        <span>Average: {summary.averageRating}</span>
+      </Block>
       <Block>
         {checkIns?.map((c: any) => (
           <Card
@@ -37,17 +46,29 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const username = context.params?.username;
   console.log("username: ", username);
 
+  const { data: profile } = await supabaseClient
+    .from("profiles")
+    .select("id")
+    .eq("username", username)
+    .single();
+
   const { data: checkIns, error } = await supabaseClient
     .from("check_ins")
     .select(
       "id, rating, review, created_at, product_id, profiles (id, username), products (id, name, sub-brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name)))"
     )
-    .eq("profiles.username", username)
+    .limit(10)
+    .eq("profiles.username", username);
+
+  const { data: summary, error: summaryError } = await supabaseClient
+    .rpc("get_profile_summary", { uid: profile?.id })
+    .single();
 
   return {
     props: {
       checkIns,
       username,
+      summary: summary,
     },
   };
 };
