@@ -1,13 +1,7 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Block, Card, Link } from "konsta/react";
 import { GetServerSideProps } from "next";
-import {
-  MutableRefObject,
-  RefObject,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import Layout from "../../components/layout";
 import { Database } from "../../generated/DatabaseDefinitions";
 
@@ -70,7 +64,6 @@ const UserProfile = ({ initialCheckIns, summary, username }: UserProfile) => {
   const [page, setPage] = useState(1);
   const ref = useRef<HTMLDivElement | null>(null);
   const inView = useInView(ref);
-  console.log("inView: ", inView);
 
   useEffect(() => {
     fetchCheckIns(username, page).then((d) => {
@@ -79,8 +72,6 @@ const UserProfile = ({ initialCheckIns, summary, username }: UserProfile) => {
     });
   }, [inView, username]);
 
-  console.log("inView: ", inView);
-  console.log("summary: ", summary);
   return (
     <Layout title={username} username={username}>
       <Block strong inset>
@@ -102,10 +93,10 @@ const UserProfile = ({ initialCheckIns, summary, username }: UserProfile) => {
             key={checkIn.id}
             header={
               <div className="-mx-4 -my-2 h-48 p-4 flex items-end  font-bold bg-cover bg-center">
-                {checkIn.products?.["sub-brands"].brands.companies.name}{" "}
-                {checkIn.products?.["sub-brands"].brands.name}{" "}
-                {checkIn.products?.["sub-brands"].name ?? ""}{" "}
-                {checkIn.products?.name}
+                {checkIn.products["sub-brands"].brands.companies.name}{" "}
+                {checkIn.products["sub-brands"].brands.name}{" "}
+                {checkIn.products["sub-brands"].name ?? ""}{" "}
+                {checkIn.products.name}
               </div>
             }
             footer={
@@ -125,11 +116,12 @@ const UserProfile = ({ initialCheckIns, summary, username }: UserProfile) => {
   );
 };
 
-function useInView<T extends Element>(
+function useInView(
   ref: MutableRefObject<HTMLDivElement | null>,
   rootMargin: string = "0px"
 ): boolean {
   const [isIntersecting, setIntersecting] = useState<boolean>(false);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -146,6 +138,7 @@ function useInView<T extends Element>(
       ref.current && observer.unobserve(ref.current);
     };
   }, []);
+
   return isIntersecting;
 }
 

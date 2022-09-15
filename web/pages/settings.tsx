@@ -12,8 +12,7 @@ import { Database } from "../generated/DatabaseDefinitions";
 import { getExportCSVByUsername } from "../utils/export-check-ins";
 
 const deleteMyAccount = async () => {
-  const response = await supabaseClient.rpc("delete_user");
-  console.log("response: ", response);
+  await supabaseClient.rpc("delete_user");
 };
 
 export default function Settings({
