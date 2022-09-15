@@ -1,9 +1,42 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { Block, Card, Link, Page } from "konsta/react";
+import { Block, Card, Link } from "konsta/react";
 import { GetServerSideProps } from "next";
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import {
+  MutableRefObject,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import Layout from "../../components/layout";
+import { Database } from "../../generated/DatabaseDefinitions";
 
-const fetchCheckIns = async (username: string, page: number) => {
+type CheckIn = Database["public"]["Tables"]["check_ins"]["Row"] & {
+  profiles: { id: number; username: string };
+  products: {
+    id: number;
+    name: string;
+    "sub-brands": {
+      id: number;
+      name: string;
+      brands: {
+        id: number;
+        name: string;
+        companies: { id: number; name: string | null };
+      };
+    };
+    subcategories: {
+      id: number;
+      name: string;
+      categories: { id: number; name: string };
+    };
+  };
+};
+
+const fetchCheckIns = async (
+  username: string,
+  page: number
+): Promise<CheckIn[]> => {
   const firstCheckIn = page * 15;
   const lastCheckIn = (page + 1) * 15 - 1;
 
@@ -22,10 +55,20 @@ const fetchCheckIns = async (username: string, page: number) => {
   return error ? [] : data;
 };
 
-const UserProfile = ({ initialCheckIns, summary, username }: any) => {
-  const [checkIns, setCheckIns] = useState<any>(initialCheckIns);
+interface UserProfile {
+  initialCheckIns: CheckIn[];
+  summary: {
+    totalCheckIns: number;
+    totalUnique: number;
+    averageRating: number;
+  };
+  username: string;
+}
+
+const UserProfile = ({ initialCheckIns, summary, username }: UserProfile) => {
+  const [checkIns, setCheckIns] = useState(initialCheckIns);
   const [page, setPage] = useState(1);
-  const ref: any = useRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement | null>(null);
   const inView = useInView(ref);
   console.log("inView: ", inView);
 
@@ -35,10 +78,11 @@ const UserProfile = ({ initialCheckIns, summary, username }: any) => {
       setPage((p) => p + 1);
     });
   }, [inView, username]);
+
   console.log("inView: ", inView);
   console.log("summary: ", summary);
   return (
-    <Page>
+    <Layout title={username} username={username}>
       <Block strong inset>
         <span>Total: {summary.totalCheckIns}</span>
       </Block>
@@ -51,17 +95,17 @@ const UserProfile = ({ initialCheckIns, summary, username }: any) => {
       <Block
         style={{
           height: "100vh",
-          backgroundColor: inView ? "#23cebd" : "#efefef",
         }}
       >
-        {checkIns?.map((c: any) => (
+        {checkIns.map((checkIn) => (
           <Card
-            key={c?.id}
+            key={checkIn.id}
             header={
               <div className="-mx-4 -my-2 h-48 p-4 flex items-end  font-bold bg-cover bg-center">
-                {c?.products?.["sub-brands"]?.brands?.companies?.name}{" "}
-                {c?.products?.["sub-brands"]?.brands?.name}{" "}
-                {c?.products?.["sub-brands"]?.name ?? ""} {c?.products?.name}
+                {checkIn.products?.["sub-brands"].brands.companies.name}{" "}
+                {checkIn.products?.["sub-brands"].brands.name}{" "}
+                {checkIn.products?.["sub-brands"].name ?? ""}{" "}
+                {checkIn.products?.name}
               </div>
             }
             footer={
@@ -70,19 +114,19 @@ const UserProfile = ({ initialCheckIns, summary, username }: any) => {
               </div>
             }
           >
-            <div className="text-gray-500 mb-3">{c?.created_at}</div>
-            <p>{c.review}</p>
-            <p>{c.rating}</p>
+            <div className="text-gray-500 mb-3">{checkIn.created_at}</div>
+            <p>{checkIn.review}</p>
+            <p>{checkIn.rating}</p>
           </Card>
         ))}
         <div ref={ref}>Loading...</div>
       </Block>
-    </Page>
+    </Layout>
   );
 };
 
 function useInView<T extends Element>(
-  ref: MutableRefObject<T>,
+  ref: MutableRefObject<HTMLDivElement | null>,
   rootMargin: string = "0px"
 ): boolean {
   const [isIntersecting, setIntersecting] = useState<boolean>(false);
@@ -99,7 +143,7 @@ function useInView<T extends Element>(
       observer.observe(ref.current);
     }
     return () => {
-      observer.unobserve(ref.current);
+      ref.current && observer.unobserve(ref.current);
     };
   }, []);
   return isIntersecting;

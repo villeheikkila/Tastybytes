@@ -1,19 +1,17 @@
 import {
   getUser,
   supabaseServerClient,
-  User,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
 import Layout from "../components/layout";
 import { Database } from "../generated/DatabaseDefinitions";
 
-export default function Activity({
+export default function Search({
   profile,
 }: {
-  user: User;
   profile: Database["public"]["Tables"]["profiles"]["Row"];
 }) {
-  return <Layout title="Activity" username={profile.username}></Layout>;
+  return <Layout title="Search" username={profile.username}></Layout>;
 }
 
 export const getServerSideProps = withPageAuth({
