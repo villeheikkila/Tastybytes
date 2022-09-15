@@ -9,36 +9,48 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      products: {
+      migration_table: {
         Row: {
-          name: string;
-          description: string | null;
-          created_at: string;
-          created_by: string;
           id: number;
-          "sub-brand_id": number;
-          subcategory_id: number;
-          manufacturer_id: number | null;
+          category: string | null;
+          subcategory: string | null;
+          manufacturer: string | null;
+          brand_owner: string | null;
+          brand: string | null;
+          "sub-brand": string | null;
+          flavour: string | null;
+          description: string | null;
+          rating: string | null;
+          location: string | null;
+          image: string | null;
         };
         Insert: {
-          name: string;
+          id: number;
+          category?: string | null;
+          subcategory?: string | null;
+          manufacturer?: string | null;
+          brand_owner?: string | null;
+          brand?: string | null;
+          "sub-brand"?: string | null;
+          flavour?: string | null;
           description?: string | null;
-          created_at?: string;
-          created_by: string;
-          id?: number;
-          "sub-brand_id": number;
-          subcategory_id: number;
-          manufacturer_id?: number | null;
+          rating?: string | null;
+          location?: string | null;
+          image?: string | null;
         };
         Update: {
-          name?: string;
-          description?: string | null;
-          created_at?: string;
-          created_by?: string;
           id?: number;
-          "sub-brand_id"?: number;
-          subcategory_id?: number;
-          manufacturer_id?: number | null;
+          category?: string | null;
+          subcategory?: string | null;
+          manufacturer?: string | null;
+          brand_owner?: string | null;
+          brand?: string | null;
+          "sub-brand"?: string | null;
+          flavour?: string | null;
+          description?: string | null;
+          rating?: string | null;
+          location?: string | null;
+          image?: string | null;
         };
       };
       check_in_reactions: {
@@ -64,27 +76,62 @@ export interface Database {
           check_in_id?: number | null;
         };
       };
+      products: {
+        Row: {
+          id: number;
+          name: string;
+          description: string | null;
+          created_at: string;
+          created_by: string | null;
+          "sub-brand_id": number;
+          manufacturer_id: number | null;
+          migration_id: number | null;
+          category_id: number;
+        };
+        Insert: {
+          id?: number;
+          name: string;
+          description?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          "sub-brand_id": number;
+          manufacturer_id?: number | null;
+          migration_id?: number | null;
+          category_id: number;
+        };
+        Update: {
+          id?: number;
+          name?: string;
+          description?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          "sub-brand_id"?: number;
+          manufacturer_id?: number | null;
+          migration_id?: number | null;
+          category_id?: number;
+        };
+      };
       brands: {
         Row: {
           id: number;
           name: string;
           brand_owner_id: number;
           created_at: string;
-          created_by: string;
+          created_by: string | null;
         };
         Insert: {
           id?: number;
           name: string;
           brand_owner_id: number;
-          created_at: string;
-          created_by: string;
+          created_at?: string;
+          created_by?: string | null;
         };
         Update: {
           id?: number;
           name?: string;
           brand_owner_id?: number;
           created_at?: string;
-          created_by?: string;
+          created_by?: string | null;
         };
       };
       reactions: {
@@ -107,47 +154,53 @@ export interface Database {
           name: string | null;
           brand_id: number;
           created_at: string;
-          created_by: string;
+          created_by: string | null;
         };
         Insert: {
           id?: number;
           name?: string | null;
           brand_id: number;
           created_at?: string;
-          created_by: string;
+          created_by?: string | null;
         };
         Update: {
           id?: number;
           name?: string | null;
           brand_id?: number;
           created_at?: string;
-          created_by?: string;
+          created_by?: string | null;
         };
       };
       check_ins: {
         Row: {
           id: number;
-          rating: string | null;
+          rating: number | null;
           review: string | null;
           created_at: string;
           created_by: string;
           product_id: number;
+          migration_id: number | null;
+          image_url: string | null;
         };
         Insert: {
           id?: number;
-          rating?: string | null;
+          rating?: number | null;
           review?: string | null;
           created_at?: string;
           created_by: string;
           product_id: number;
+          migration_id?: number | null;
+          image_url?: string | null;
         };
         Update: {
           id?: number;
-          rating?: string | null;
+          rating?: number | null;
           review?: string | null;
           created_at?: string;
           created_by?: string;
           product_id?: number;
+          migration_id?: number | null;
+          image_url?: string | null;
         };
       };
       profiles: {
@@ -156,38 +209,21 @@ export interface Database {
           first_name: string | null;
           last_name: string | null;
           username: string;
+          avatar_url: string | null;
         };
         Insert: {
           id: string;
           first_name?: string | null;
           last_name?: string | null;
           username: string;
+          avatar_url?: string | null;
         };
         Update: {
           id?: string;
           first_name?: string | null;
           last_name?: string | null;
           username?: string;
-        };
-      };
-      subcategories: {
-        Row: {
-          id: number;
-          name: string | null;
-          created_at: string;
-          created_by: string;
-        };
-        Insert: {
-          id?: number;
-          name?: string | null;
-          created_at?: string;
-          created_by: string;
-        };
-        Update: {
-          id?: number;
-          name?: string | null;
-          created_at?: string;
-          created_by?: string;
+          avatar_url?: string | null;
         };
       };
       check_in_comments: {
@@ -213,6 +249,69 @@ export interface Database {
           check_in_id?: number;
         };
       };
+      subcategories: {
+        Row: {
+          id: number;
+          name: string | null;
+          created_at: string;
+          created_by: string | null;
+          category_id: number;
+        };
+        Insert: {
+          id?: number;
+          name?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          category_id: number;
+        };
+        Update: {
+          id?: number;
+          name?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          category_id?: number;
+        };
+      };
+      products_subcategories: {
+        Row: {
+          product_id: number;
+          subcategory_id: number;
+          created_by: string | null;
+          created_at: string;
+        };
+        Insert: {
+          product_id?: number;
+          subcategory_id: number;
+          created_by?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          product_id?: number;
+          subcategory_id?: number;
+          created_by?: string | null;
+          created_at?: string;
+        };
+      };
+      companies: {
+        Row: {
+          id: number;
+          name: string;
+          created_at: string;
+          created_by: string | null;
+        };
+        Insert: {
+          id?: number;
+          name: string;
+          created_at?: string;
+          created_by?: string | null;
+        };
+        Update: {
+          id?: number;
+          name?: string;
+          created_at?: string;
+          created_by?: string | null;
+        };
+      };
       categories: {
         Row: {
           id: number;
@@ -227,32 +326,37 @@ export interface Database {
           name?: string;
         };
       };
-      companies: {
+    };
+    Views: {
+      csv_export: {
         Row: {
+          category: string | null;
+          subcategory: string | null;
+          manufacturer: string | null;
+          brand_owner: string | null;
+          brand: string | null;
+          "sub-brand": string | null;
           name: string | null;
-          id: number;
-          created_at: string;
-          created_by: string;
-        };
-        Insert: {
-          name?: string | null;
-          id?: number;
-          created_at?: string;
-          created_by: string;
-        };
-        Update: {
-          name?: string | null;
-          id?: number;
-          created_at?: string;
-          created_by?: string;
+          id: number | null;
+          reviews: string | null;
+          ratings: string | null;
+          username: string | null;
         };
       };
     };
-    Views: {
-      [_ in never]: never;
-    };
     Functions: {
-      [_ in never]: never;
+      migrate_data: {
+        Args: { IN: unknown };
+        Returns: undefined;
+      };
+      delete_user: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
+      get_profile_summary: {
+        Args: { uid: string };
+        Returns: Record<string, unknown>[];
+      };
     };
     Enums: {
       [_ in never]: never;

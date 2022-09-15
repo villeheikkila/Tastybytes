@@ -13,6 +13,7 @@
     "@supabase/auth-helpers-react": "^0.2.3",
     "@supabase/supabase-js": "^1.35.6",
     "@supabase/ui": "^0.36.5",
+    "framework7-icons": "^5.0.5",
     "konsta": "^0.11.1",
     "next": "12.3.0",
     "react": "18.2.0",
