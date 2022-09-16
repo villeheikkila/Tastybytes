@@ -148,6 +148,35 @@ export interface Database {
           name?: string;
         };
       };
+      friends: {
+        Row: {
+          id: number;
+          user_id_1: string;
+          user_id_2: string;
+          status: Database["public"]["Enums"]["friend_status"];
+          accepted_at: string | null;
+          blocked_by: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: number;
+          user_id_1: string;
+          user_id_2: string;
+          status?: Database["public"]["Enums"]["friend_status"];
+          accepted_at?: string | null;
+          blocked_by?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: number;
+          user_id_1?: string;
+          user_id_2?: string;
+          status?: Database["public"]["Enums"]["friend_status"];
+          accepted_at?: string | null;
+          blocked_by?: string | null;
+          created_at?: string;
+        };
+      };
       "sub-brands": {
         Row: {
           id: number;
@@ -357,9 +386,17 @@ export interface Database {
         Args: { uid: string };
         Returns: Record<string, unknown>[];
       };
+      accept_friend_request: {
+        Args: { user_id: string };
+        Returns: undefined;
+      };
+      get_friends: {
+        Args: Record<PropertyKey, never>;
+        Returns: unknown;
+      };
     };
     Enums: {
-      [_ in never]: never;
+      friend_status: "accepted" | "pending" | "blocked";
     };
   };
 }
