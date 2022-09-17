@@ -87,9 +87,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!username) throw Error("user doesn't exist");
 
   const profile = await API.profiles.getProfileByUsername(username);
+
   const [initialCheckIns, friends, summary] = await Promise.all([
     API.checkIns.fetchPaginated(profile.id, 0, client),
-    API.friends.getByUsername(profile.id, client),
+    API.friends.getByUsername(profile.username, client),
     API.profiles.getProfileSummaryById(profile.id, client),
   ]);
 

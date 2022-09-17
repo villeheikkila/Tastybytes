@@ -18,7 +18,7 @@ export const getByUsername = async (
   client = supabaseClient
 ): Promise<Profile[]> => {
   const { data: friends, error } = await client.rpc("get_friends_by_username", {
-    username,
+    p_username: username,
   });
   return error ? [] : friends;
 };
