@@ -1,79 +1,35 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
+import { supabaseServerClient } from "@supabase/auth-helpers-nextjs";
 import { Block, Card, Link } from "konsta/react";
 import { GetServerSideProps } from "next";
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { API } from "../../api";
+import { FetchCheckInsResult } from "../../api/check-ins";
+import { ProfileSummaryResult } from "../../api/profile";
 import Layout from "../../components/layout";
 import { Database } from "../../generated/DatabaseDefinitions";
-
-type CheckIn = Database["public"]["Tables"]["check_ins"]["Row"] & {
-  profiles: { id: number; username: string };
-  products: {
-    id: number;
-    name: string;
-    "sub-brands": {
-      id: number;
-      name: string;
-      brands: {
-        id: number;
-        name: string;
-        companies: { id: number; name: string | null };
-      };
-    };
-    subcategories: {
-      id: number;
-      name: string;
-      categories: { id: number; name: string };
-    };
-  };
-};
-
-const fetchCheckIns = async (
-  username: string,
-  page: number
-): Promise<CheckIn[]> => {
-  const firstCheckIn = page * 15;
-  const lastCheckIn = (page + 1) * 15 - 1;
-
-  const { data, error } = await supabaseClient
-    .from("check_ins")
-    .select(
-      "id, rating, review, created_at, product_id, profiles (id, username), products (id, name, sub-brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name)))"
-    )
-    .range(firstCheckIn, lastCheckIn)
-    .eq("profiles.username", username);
-
-  if (error) {
-    console.error(error);
-  }
-
-  return error ? [] : data;
-};
+import { useInView } from "../../utils/hooks";
 
 interface UserProfile {
-  initialCheckIns: CheckIn[];
-  summary: {
-    totalCheckIns: number;
-    totalUnique: number;
-    averageRating: number;
-  };
-  username: string;
+  initialCheckIns: FetchCheckInsResult[];
+  summary: ProfileSummaryResult;
+  profile: Database["public"]["Tables"]["profiles"]["Row"];
 }
 
-const UserProfile = ({ initialCheckIns, summary, username }: UserProfile) => {
+const UserProfile = ({ initialCheckIns, summary, profile }: UserProfile) => {
   const [checkIns, setCheckIns] = useState(initialCheckIns);
   const [page, setPage] = useState(1);
   const ref = useRef<HTMLDivElement | null>(null);
   const inView = useInView(ref);
 
   useEffect(() => {
-    fetchCheckIns(username, page).then((d) => {
+    API.checkIns.fetchPaginated(profile.id, page).then((d) => {
       setCheckIns(checkIns.concat(d));
       setPage((p) => p + 1);
     });
-  }, [inView, username]);
+  }, [inView, profile.id]);
 
   return (
-    <Layout title={username} username={username}>
+    <Layout title={profile.username} username={profile.username}>
       <Block strong inset>
         <span>Total: {summary.totalCheckIns}</span>
       </Block>
@@ -116,54 +72,23 @@ const UserProfile = ({ initialCheckIns, summary, username }: UserProfile) => {
   );
 };
 
-function useInView(
-  ref: MutableRefObject<HTMLDivElement | null>,
-  rootMargin: string = "0px"
-): boolean {
-  const [isIntersecting, setIntersecting] = useState<boolean>(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIntersecting(entry.isIntersecting);
-      },
-      {
-        rootMargin,
-      }
-    );
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-    return () => {
-      ref.current && observer.unobserve(ref.current);
-    };
-  }, []);
-
-  return isIntersecting;
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const username = context.params?.username;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const client = supabaseServerClient(ctx);
+  const username = ctx.params?.username ? String(ctx.params?.username) : null;
 
   if (!username) throw Error("user doesn't exist");
 
-  const { data: profile } = await supabaseClient
-    .from("profiles")
-    .select("id")
-    .eq("username", username)
-    .single();
-
-  const initialCheckIns = await fetchCheckIns(String(username), 0);
-
-  const { data: summary } = await supabaseClient
-    .rpc("get_profile_summary", { uid: profile?.id })
-    .single();
+  const profile = await API.profiles.getProfileByUsername(username);
+  const [initialCheckIns, summary] = await Promise.all([
+    API.checkIns.fetchPaginated(profile.id, 0, client),
+    API.profiles.getProfileSummaryById(profile.id, client),
+  ]);
 
   return {
     props: {
       initialCheckIns,
-      username,
-      summary: summary,
+      summary,
+      profile,
     },
   };
 };

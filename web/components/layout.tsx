@@ -1,5 +1,6 @@
 import {
   Icon,
+  Link,
   Navbar,
   NavbarBackLink,
   Page,
@@ -11,6 +12,7 @@ import {
   PersonAltCircle,
   Search,
   ListDash,
+  Person2Alt,
 } from "framework7-icons/react";
 import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
@@ -32,6 +34,11 @@ export const Layout: React.FC<{
       <Navbar
         title={title}
         left={<NavbarBackLink onClick={() => router.back()} />}
+        right={
+          <Link>
+            <Person2Alt onClick={() => router.push(`/friends`)} />
+          </Link>
+        }
       />
 
       <main>{children}</main>
