@@ -5,6 +5,7 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { API } from "../api";
@@ -73,4 +74,23 @@ export const ProfileProvider = ({ children }: PropsWithChildren) => {
       {children}
     </ProfileContext.Provider>
   );
+};
+
+export const useInfinityScroll = <T,>(
+  fetcher: (page: number) => Promise<T[]>,
+  initialValues = [] as T[] // Hardcoded to be the size of one page
+) => {
+  const [items, setItems] = useState<T[]>(initialValues);
+  const [page, setPage] = useState(initialValues ? 1 : 0);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const inView = useInView(ref);
+
+  useEffect(() => {
+    fetcher(page).then((i) => {
+      setItems(items.concat(i));
+      setPage((p) => p + 1);
+    });
+  }, [inView]);
+
+  return [items, ref] as const;
 };

@@ -27,24 +27,22 @@ export type FetchCheckInsResult =
 
 const PAGE_SIZE = 15;
 
-export const fetchPaginated = async (
-  createdBy: string,
-  page = 0,
-  client = supabaseClient
-): Promise<FetchCheckInsResult[]> => {
-  const firstCheckIn = page * PAGE_SIZE;
-  const lastCheckIn = (page + 1) * PAGE_SIZE - 1;
+export const createFetchById =
+  (createdBy: string) =>
+  async (page = 0, client = supabaseClient): Promise<FetchCheckInsResult[]> => {
+    const firstCheckIn = page * PAGE_SIZE;
+    const lastCheckIn = (page + 1) * PAGE_SIZE - 1;
 
-  const { data, error } = await client
-    .from("check_ins")
-    .select(
-      "id, rating, review, created_at, product_id, created_by, profiles (id, username), products (id, name, sub-brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name)))"
-    )
-    .range(firstCheckIn, lastCheckIn)
-    .eq("created_by", createdBy);
+    const { data, error } = await client
+      .from("check_ins")
+      .select(
+        "id, rating, review, created_at, product_id, created_by, profiles (id, username), products (id, name, sub-brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name)))"
+      )
+      .range(firstCheckIn, lastCheckIn)
+      .eq("created_by", createdBy);
 
-  return error ? [] : data;
-};
+    return error ? [] : data;
+  };
 
 export const getActivityFeed = async (
   page = 0,
