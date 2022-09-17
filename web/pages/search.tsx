@@ -1,8 +1,5 @@
-import {
-  getUser,
-  supabaseServerClient,
-  withPageAuth,
-} from "@supabase/auth-helpers-nextjs";
+import { withPageAuth } from "@supabase/auth-helpers-nextjs";
+import { API } from "../api";
 import Layout from "../components/layout";
 import { Database } from "../generated/DatabaseDefinitions";
 
@@ -17,13 +14,7 @@ export default function Search({
 export const getServerSideProps = withPageAuth({
   redirectTo: "/login",
   async getServerSideProps(ctx) {
-    const { user } = await getUser(ctx);
-    const { data: profile } = await supabaseServerClient(ctx)
-      .from("profiles")
-      .select("*")
-      .match({ id: user.id })
-      .single();
-
-    return { props: { profile, user } };
+    const props = await API.profiles.getUserByCtx(ctx);
+    return { props };
   },
 });
