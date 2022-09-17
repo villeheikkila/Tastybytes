@@ -10,13 +10,13 @@ import {
 } from "react";
 import { API } from "../api";
 import { Profile } from "../api/profile";
+import { Database } from "../generated/DatabaseDefinitions";
 
 export function useInView(
   ref: MutableRefObject<HTMLDivElement | null>,
   rootMargin: string = "0px"
 ): boolean {
   const [isIntersecting, setIntersecting] = useState<boolean>(false);
-  console.log("isIntersecting: ", isIntersecting);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -63,9 +63,10 @@ export const ProfileProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (userId) {
-      API.profiles
-        .getProfileById(userId)
-        .then((profile) => setProfile(profile));
+      API.profiles.getProfileById(userId).then((profile) => {
+        setProfile(profile);
+        modifyColorScheme(profile.color_scheme);
+      });
     }
   }, [userId]); // TODO: Update when profile object is updated
 
@@ -93,4 +94,24 @@ export const useInfinityScroll = <T,>(
   }, [inView]);
 
   return [items, ref] as const;
+};
+
+const modifyColorScheme = (
+  colorScheme: Database["public"]["Enums"]["color_scheme"]
+) => {
+  switch (colorScheme) {
+    case "dark": {
+      document.documentElement.classList.toggle("dark");
+    }
+    case "light": {
+      document.documentElement.classList.remove("dark");
+    }
+    case "system": {
+      if (
+        globalThis?.window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        document.documentElement.classList.toggle("dark");
+      }
+    }
+  }
 };
