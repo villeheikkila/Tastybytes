@@ -4,15 +4,18 @@ import {
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
 import {
-  Block,
   BlockTitle,
   List,
   ListButton,
   ListInput,
   ListItem,
+  Radio,
+  Toggle,
 } from "konsta/react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { API } from "../api";
+import { Profile } from "../api/profile";
 import Layout from "../components/layout";
 import { Database } from "../generated/DatabaseDefinitions";
 
@@ -21,9 +24,12 @@ export default function Settings({
   profile,
 }: {
   user: User;
-  profile: Database["public"]["Tables"]["profiles"]["Row"];
+  profile: Profile;
 }) {
   const router = useRouter();
+  const [theme, setTheme] = useState<
+    Database["public"]["Enums"]["color_scheme"]
+  >(profile.color_scheme);
 
   return (
     <Layout title="Settings">
@@ -53,6 +59,43 @@ export default function Settings({
           type="email"
           placeholder="Your e-mail"
           value={user.email}
+        />
+      </List>
+
+      <BlockTitle>Theme</BlockTitle>
+      <List strong inset>
+        <ListItem
+          label
+          title="Light Theme"
+          media={
+            <Radio
+              onChange={() => setTheme("light")}
+              component="div"
+              checked={theme === "light"}
+            />
+          }
+        />
+        <ListItem
+          label
+          title="Dark Theme"
+          media={
+            <Radio
+              onChange={() => setTheme("dark")}
+              component="div"
+              checked={theme === "dark"}
+            />
+          }
+        />
+        <ListItem
+          label
+          title="System Theme"
+          media={
+            <Radio
+              onChange={() => setTheme("system")}
+              component="div"
+              checked={theme === "system"}
+            />
+          }
         />
       </List>
 
