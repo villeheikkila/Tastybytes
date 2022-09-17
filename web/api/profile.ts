@@ -20,9 +20,10 @@ export const search = async (searchTerm: string): Promise<Profile[]> => {
 };
 
 export const getProfileByUsername = async (
-  username: string
+  username: string,
+  client = supabaseClient
 ): Promise<Profile> => {
-  const { data: profile, error } = await supabaseClient
+  const { data: profile, error } = await client
     .from("profiles")
     .select("*")
     .eq("username", username)
