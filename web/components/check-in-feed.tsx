@@ -1,36 +1,16 @@
-import { withPageAuth } from "@supabase/auth-helpers-nextjs";
-import { useUser } from "@supabase/ui/dist/cjs/components/Auth/UserContext";
 import { Block, Card } from "konsta/react";
 import { useEffect, useRef, useState } from "react";
-import { API } from "../api";
 import { FetchCheckInsResult } from "../api/check-ins";
-import Layout from "../components/layout";
-import { useInView } from "../utils/hooks";
+import { useInfinityScroll, useInView } from "../utils/hooks";
 
-export default function Activity() {
-  return (
-    <Layout title="Activity">
-      <CheckInsFeed fetcher={API.checkIns.getActivityFeed} />
-    </Layout>
-  );
-}
-
-const CheckInsFeed = ({
+export const CheckInsFeed = ({
   fetcher,
+  initialCheckIns = [],
 }: {
   fetcher: (page: number) => Promise<FetchCheckInsResult[]>;
+  initialCheckIns?: FetchCheckInsResult[];
 }) => {
-  const [checkIns, setCheckIns] = useState<FetchCheckInsResult[]>([]);
-  const [page, setPage] = useState(1);
-  const ref = useRef<HTMLDivElement | null>(null);
-  const inView = useInView(ref);
-
-  useEffect(() => {
-    fetcher(page).then((d) => {
-      setCheckIns(checkIns.concat(d));
-      setPage((p) => p + 1);
-    });
-  }, [inView]);
+  const [checkIns, ref] = useInfinityScroll(fetcher, initialCheckIns);
 
   return (
     <Block
@@ -60,7 +40,3 @@ const CheckInsFeed = ({
     </Block>
   );
 };
-
-export const getServerSideProps = withPageAuth({
-  redirectTo: "/login",
-});
