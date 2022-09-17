@@ -3,7 +3,14 @@ import {
   User,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
-import { Block, List, ListButton } from "konsta/react";
+import {
+  Block,
+  BlockTitle,
+  List,
+  ListButton,
+  ListInput,
+  ListItem,
+} from "konsta/react";
 import { useRouter } from "next/router";
 import { API } from "../api";
 import Layout from "../components/layout";
@@ -20,9 +27,36 @@ export default function Settings({
 
   return (
     <Layout title="Settings">
-      <Block strong>{user.email}</Block>
+      <BlockTitle>Profile</BlockTitle>
 
-      <List inset>
+      <List strongIos insetIos>
+        <ListInput
+          label="First Name"
+          type="text"
+          placeholder="Your first name"
+          value={profile.first_name}
+        />
+        <ListInput
+          label="Last Name"
+          type="text"
+          placeholder="Your first name"
+          value={profile.last_name}
+        />
+        <ListInput
+          label="Username"
+          type="text"
+          placeholder="Your first name"
+          value={profile.username}
+        />
+        <ListInput
+          label="Email"
+          type="email"
+          placeholder="Your e-mail"
+          value={user.email}
+        />
+      </List>
+
+      <List inset strong>
         <ListButton
           onClick={() => API.checkIns.getExportCSVByUsername(profile.username)}
         >
@@ -36,7 +70,7 @@ export default function Settings({
           Sign Out
         </ListButton>
       </List>
-      <List inset>
+      <List inset strong>
         <ListButton
           onClick={() =>
             API.profiles
