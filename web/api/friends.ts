@@ -1,10 +1,6 @@
-import {
-  supabaseClient,
-  supabaseServerClient,
-} from "@supabase/auth-helpers-nextjs";
-import { GetServerSidePropsContext, PreviewData } from "next";
-import { ParsedUrlQuery } from "querystring";
+import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "../generated/DatabaseDefinitions";
+import { Profile } from "./profile";
 
 export const acceptFriendRequest = async (
   searchTerm: string
@@ -17,11 +13,12 @@ export const acceptFriendRequest = async (
   return error ? [] : profiles;
 };
 
-export const getByCtx = async (
-  ctx: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
-): Promise<Array<Database["public"]["Tables"]["profiles"]["Row"]> | null> => {
-  const { data: friends, error } = await supabaseServerClient(ctx).rpc(
-    "get_friends"
-  );
-  return error ? null : friends;
+export const getByUsername = async (
+  username: string,
+  client = supabaseClient
+): Promise<Profile[]> => {
+  const { data: friends, error } = await client.rpc("get_friends_by_username", {
+    username,
+  });
+  return error ? [] : friends;
 };

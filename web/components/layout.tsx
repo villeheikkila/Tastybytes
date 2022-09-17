@@ -1,4 +1,11 @@
 import {
+  Gear,
+  ListDash,
+  Person2Alt,
+  PersonAltCircle,
+  Search,
+} from "framework7-icons/react";
+import {
   Icon,
   Link,
   Navbar,
@@ -7,23 +14,18 @@ import {
   Tabbar,
   TabbarLink,
 } from "konsta/react";
-import {
-  Gear,
-  PersonAltCircle,
-  Search,
-  ListDash,
-  Person2Alt,
-} from "framework7-icons/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
-import Head from "next/head";
+import { useProfile } from "../utils/hooks";
+import { paths } from "../utils/paths";
 
 export const Layout: React.FC<{
   title: string;
-  username: string;
   children?: ReactNode;
-}> = ({ children, title, username }) => {
+}> = ({ children, title }) => {
   const router = useRouter();
+  const profile = useProfile();
   const pageTitle = `Tasted - ${title}`;
 
   return (
@@ -35,34 +37,42 @@ export const Layout: React.FC<{
         title={title}
         left={<NavbarBackLink onClick={() => router.back()} />}
         right={
-          <Link>
-            <Person2Alt onClick={() => router.push(`/friends`)} />
-          </Link>
+          profile && (
+            <Link>
+              <Person2Alt
+                onClick={() =>
+                  router.push(paths.user.friends(profile.username))
+                }
+              />
+            </Link>
+          )
         }
       />
 
       <main>{children}</main>
       <Tabbar labels={true} className="left-0 bottom-0 fixed">
         <TabbarLink
-          onClick={() => router.push("/")}
+          onClick={() => router.push(paths.activity)}
           icon={<Icon ios={<ListDash className="w-7 h-7" />} />}
           label="Activity"
         />
         <TabbarLink
-          onClick={() => router.push("/search")}
+          onClick={() => router.push(paths.search)}
           icon={<Icon ios={<Search className="w-7 h-7" />} />}
           label="Search"
         />
         <TabbarLink
-          onClick={() => router.push("/settings")}
+          onClick={() => router.push(paths.settings)}
           icon={<Icon ios={<Gear className="w-7 h-7" />} />}
           label="Settings"
         />
-        <TabbarLink
-          onClick={() => router.push(`/users/${username}`)}
-          icon={<Icon ios={<PersonAltCircle className="w-7 h-7" />} />}
-          label="Profile"
-        />
+        {profile && (
+          <TabbarLink
+            onClick={() => router.push(paths.user.root(profile.username))}
+            icon={<Icon ios={<PersonAltCircle className="w-7 h-7" />} />}
+            label="Profile"
+          />
+        )}
       </Tabbar>
     </Page>
   );

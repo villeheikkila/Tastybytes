@@ -1,21 +1,28 @@
 import { supabaseServerClient } from "@supabase/auth-helpers-nextjs";
-import { Block, Card, Link } from "konsta/react";
+import { Block, Card } from "konsta/react";
 import { GetServerSideProps } from "next";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { API } from "../../api";
-import { FetchCheckInsResult } from "../../api/check-ins";
-import { ProfileSummaryResult } from "../../api/profile";
-import Layout from "../../components/layout";
-import { Database } from "../../generated/DatabaseDefinitions";
-import { useInView } from "../../utils/hooks";
+import { API } from "../../../api";
+import { FetchCheckInsResult } from "../../../api/check-ins";
+import { Profile, ProfileSummaryResult } from "../../../api/profile";
+import Layout from "../../../components/layout";
+import { useInView } from "../../../utils/hooks";
+import { paths } from "../../../utils/paths";
 
 interface UserProfile {
   initialCheckIns: FetchCheckInsResult[];
   summary: ProfileSummaryResult;
-  profile: Database["public"]["Tables"]["profiles"]["Row"];
+  friends: Profile[];
+  profile: Profile;
 }
 
-const UserProfile = ({ initialCheckIns, summary, profile }: UserProfile) => {
+const UserProfile = ({
+  initialCheckIns,
+  friends,
+  summary,
+  profile,
+}: UserProfile) => {
   const [checkIns, setCheckIns] = useState(initialCheckIns);
   const [page, setPage] = useState(1);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -29,7 +36,7 @@ const UserProfile = ({ initialCheckIns, summary, profile }: UserProfile) => {
   }, [inView, profile.id]);
 
   return (
-    <Layout title={profile.username} username={profile.username}>
+    <Layout title={profile.username}>
       <Block strong inset>
         <span>Total: {summary.totalCheckIns}</span>
       </Block>
@@ -39,6 +46,12 @@ const UserProfile = ({ initialCheckIns, summary, profile }: UserProfile) => {
       <Block strong inset>
         <span>Average: {summary.averageRating}</span>
       </Block>
+      <Block strong inset>
+        <Link href={paths.user.friends(profile.username)}>
+          <span>Friends ({friends.length})</span>
+        </Link>
+      </Block>
+
       <Block
         style={{
           height: "100vh",
@@ -55,11 +68,7 @@ const UserProfile = ({ initialCheckIns, summary, profile }: UserProfile) => {
                 {checkIn.products.name}
               </div>
             }
-            footer={
-              <div className="flex justify-between">
-                <Link>Like</Link>
-              </div>
-            }
+            footer={<div className="flex justify-between"></div>}
           >
             <div className="text-gray-500 mb-3">{checkIn.created_at}</div>
             <p>{checkIn.review}</p>
@@ -75,12 +84,12 @@ const UserProfile = ({ initialCheckIns, summary, profile }: UserProfile) => {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const client = supabaseServerClient(ctx);
   const username = ctx.params?.username ? String(ctx.params?.username) : null;
-
   if (!username) throw Error("user doesn't exist");
 
   const profile = await API.profiles.getProfileByUsername(username);
-  const [initialCheckIns, summary] = await Promise.all([
+  const [initialCheckIns, friends, summary] = await Promise.all([
     API.checkIns.fetchPaginated(profile.id, 0, client),
+    API.friends.getByUsername(profile.id, client),
     API.profiles.getProfileSummaryById(profile.id, client),
   ]);
 
@@ -89,6 +98,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       initialCheckIns,
       summary,
       profile,
+      friends,
     },
   };
 };

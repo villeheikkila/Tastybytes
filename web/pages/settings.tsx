@@ -19,7 +19,7 @@ export default function Settings({
   const router = useRouter();
 
   return (
-    <Layout title="Settings" username={profile.username}>
+    <Layout title="Settings">
       <Block strong>{user.email}</Block>
 
       <List inset>
@@ -40,7 +40,7 @@ export default function Settings({
         <ListButton
           onClick={() =>
             API.profiles
-              .deleteCurrentUserAccount()
+              .deleteCurrentUser()
               .then(() => supabaseClient.auth.signOut())
               .then(() => router.push("/login"))
           }
