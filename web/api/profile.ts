@@ -8,9 +8,9 @@ import { GetServerSidePropsContext, PreviewData } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { Database } from "../generated/DatabaseDefinitions";
 
-export const search = async (
-  searchTerm: string
-): Promise<Array<Database["public"]["Tables"]["profiles"]["Row"]>> => {
+export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+
+export const search = async (searchTerm: string): Promise<Profile[]> => {
   const { data: profiles, error } = await supabaseClient
     .from("profiles")
     .select()
@@ -21,11 +21,21 @@ export const search = async (
 
 export const getProfileByUsername = async (
   username: string
-): Promise<Database["public"]["Tables"]["profiles"]["Row"]> => {
+): Promise<Profile> => {
   const { data: profile, error } = await supabaseClient
     .from("profiles")
-    .select("id")
+    .select("*")
     .eq("username", username)
+    .single();
+
+  return error ? null : profile;
+};
+
+export const getProfileById = async (id: string): Promise<Profile> => {
+  const { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id", id)
     .single();
 
   return error ? null : profile;
@@ -50,8 +60,9 @@ export const getProfileSummaryById = async (
 
 export type UserByCtxReturn = {
   user: User;
-  profile: Database["public"]["Tables"]["profiles"]["Row"];
+  profile: Profile;
 };
+
 export const getUserByCtx = async (
   ctx: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
 ): Promise<UserByCtxReturn> => {
@@ -65,4 +76,4 @@ export const getUserByCtx = async (
   return { user, profile: profile };
 };
 
-export const deleteCurrentUserAccount = () => supabaseClient.rpc("delete_user");
+export const deleteCurrentUser = () => supabaseClient.rpc("delete_user");

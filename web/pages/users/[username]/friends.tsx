@@ -1,21 +1,23 @@
 import { User, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import { BlockTitle, List, ListInput, ListItem } from "konsta/react";
+import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
-import { API } from "../api";
-import Layout from "../components/layout";
-import { Database } from "../generated/DatabaseDefinitions";
-import { useDebounce } from "../utils/hooks";
+import { API } from "../../../api";
+import { Profile } from "../../../api/profile";
+import Layout from "../../../components/layout";
+import { Database } from "../../../generated/DatabaseDefinitions";
+import { useDebounce } from "../../../utils/hooks";
 
 export default function Friends({
-  friends,
   profile,
+  friends,
 }: {
-  user: User;
-  profile: Database["public"]["Tables"]["profiles"]["Row"];
-  friends: Array<Database["public"]["Tables"]["profiles"]["Row"]>;
+  profile: Profile;
+  friends: Profile[];
 }) {
   return (
-    <Layout title="Friends" username={profile.username}>
+    <Layout title="Friends">
+      <BlockTitle>{profile.username}</BlockTitle>
       <List>
         {friends?.map((friend) => (
           <ListItem
@@ -68,14 +70,14 @@ const SearchUsers = () => {
     </>
   );
 };
-export const getServerSideProps = withPageAuth({
-  redirectTo: "/login",
-  async getServerSideProps(ctx) {
-    const [{ profile, user }, friends] = await Promise.all([
-      API.profiles.getUserByCtx(ctx),
-      API.friends.getByCtx(ctx),
-    ]);
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const username = ctx.params?.username ? String(ctx.params?.username) : null;
+  if (!username) throw Error("user doesn't exist");
 
-    return { props: { profile, user, friends } };
-  },
-});
+  const [profile, friends] = await Promise.all([
+    API.profiles.getProfileByUsername(username),
+    API.friends.getByUsername(username),
+  ]);
+
+  return { props: { profile, friends } };
+};
