@@ -14,14 +14,12 @@ import {
   ListInput,
   ListItem,
   Radio,
-  Toggle,
 } from "konsta/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { API } from "../client";
 import { Profile } from "../client/profile";
 import Layout from "../components/layout";
-import { Database } from "../generated/DatabaseDefinitions";
 import { modifyColorScheme } from "../utils/hooks";
 
 enum Sheets {
