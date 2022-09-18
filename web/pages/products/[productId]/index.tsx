@@ -1,9 +1,9 @@
 import { supabaseServerClient } from "@supabase/auth-helpers-nextjs";
 import { BlockTitle } from "konsta/react";
 import { GetServerSideProps } from "next";
-import { API } from "../../../api";
-import { FetchCheckInsResult } from "../../../api/check-ins";
-import { ProductJoined } from "../../../api/products";
+import { API } from "../../../client";
+import { FetchCheckInsResult } from "../../../client/check-ins";
+import { ProductJoined } from "../../../client/products";
 import { CheckInsFeed } from "../../../components/check-in-feed";
 import Layout from "../../../components/layout";
 import { constructProductName } from "../../../utils";

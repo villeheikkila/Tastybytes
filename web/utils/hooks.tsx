@@ -8,8 +8,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { API } from "../api";
-import { Profile } from "../api/profile";
+import { API } from "../client";
+import { Profile } from "../client/profile";
 import { Database } from "../generated/DatabaseDefinitions";
 
 export function useInView(

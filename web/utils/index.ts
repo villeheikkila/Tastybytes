@@ -1,4 +1,4 @@
-import { ProductJoined } from "../api/products";
+import { ProductJoined } from "../client/products";
 
 export const constructProductName = (p: ProductJoined) =>
   [p["sub-brands"].brands.name, p["sub-brands"].name, p.name]

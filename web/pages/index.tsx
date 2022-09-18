@@ -2,8 +2,8 @@ import { withPageAuth } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/ui/dist/cjs/components/Auth/UserContext";
 import { Block, Card } from "konsta/react";
 import { useEffect, useRef, useState } from "react";
-import { API } from "../api";
-import { FetchCheckInsResult } from "../api/check-ins";
+import { API } from "../client";
+import { FetchCheckInsResult } from "../client/check-ins";
 import Layout from "../components/layout";
 import { useInView } from "../utils/hooks";
 
