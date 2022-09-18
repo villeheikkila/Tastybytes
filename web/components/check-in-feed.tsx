@@ -2,6 +2,7 @@ import { Block, Card } from "konsta/react";
 import { useEffect, useRef, useState } from "react";
 import { FetchCheckInsResult } from "../api/check-ins";
 import { useInfinityScroll, useInView } from "../utils/hooks";
+import { Stars } from "./stars";
 
 export const CheckInsFeed = ({
   fetcher,
@@ -29,7 +30,11 @@ export const CheckInsFeed = ({
               {checkIn.products.name}
             </div>
           }
-          footer={<div className="flex justify-between"></div>}
+          footer={
+            <div className="flex justify-between">
+              {checkIn.rating ? <Stars rating={checkIn.rating} /> : "Unrated"}
+            </div>
+          }
         >
           <div className="text-gray-500 mb-3">{checkIn.created_at}</div>
           <p>{checkIn.review}</p>
