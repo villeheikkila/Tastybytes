@@ -1,5 +1,5 @@
 import { Block, Card } from "konsta/react";
-import { FetchCheckInsResult } from "../api/check-ins";
+import { FetchCheckInsResult } from "../client/check-ins";
 import { useInfinityScroll } from "../utils/hooks";
 import { Stars } from "./stars";
 
