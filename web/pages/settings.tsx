@@ -4,6 +4,10 @@ import {
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
 import {
+  Actions,
+  ActionsButton,
+  ActionsGroup,
+  ActionsLabel,
   BlockTitle,
   List,
   ListButton,
@@ -18,18 +22,36 @@ import { API } from "../api";
 import { Profile } from "../api/profile";
 import Layout from "../components/layout";
 import { Database } from "../generated/DatabaseDefinitions";
+import { modifyColorScheme } from "../utils/hooks";
+
+enum Sheets {
+  DeleteAccount = "delete-account",
+}
 
 export default function Settings({
   user,
-  profile,
+  profile: initialProfile,
 }: {
   user: User;
   profile: Profile;
 }) {
   const router = useRouter();
-  const [theme, setTheme] = useState<
-    Database["public"]["Enums"]["color_scheme"]
-  >(profile.color_scheme);
+  const [profile, setProfile] = useState(initialProfile);
+  const [email, setEmail] = useState(user.email);
+  const [activeSheet, setActiveSheet] = useState<Sheets.DeleteAccount | null>(
+    null
+  );
+
+  const updateProfile = (update: Partial<Profile>) => {
+    API.profiles.update(profile.id, update).then((updatedProfile) => {
+      setProfile(updatedProfile);
+      modifyColorScheme(updatedProfile.color_scheme);
+    });
+  };
+
+  const updateEmail = (email: string) => {
+    API.profiles.updateEmail(email).then((v) => console.log(v));
+  };
 
   return (
     <Layout title="Settings">
@@ -41,24 +63,44 @@ export default function Settings({
           type="text"
           placeholder="Your first name"
           value={profile.first_name}
+          onChange={(event: any) =>
+            setProfile((p) => ({ ...p, first_name: event.target.value }))
+          }
+          onBlur={(event: any) =>
+            updateProfile({ first_name: event.target.value })
+          }
         />
         <ListInput
           label="Last Name"
+          value={profile.last_name}
+          onChange={(event: any) =>
+            setProfile((p) => ({ ...p, last_name: event.target.value }))
+          }
           type="text"
           placeholder="Your first name"
-          value={profile.last_name}
+          onBlur={(event: any) =>
+            updateProfile({ last_name: event.target.value })
+          }
         />
         <ListInput
           label="Username"
           type="text"
           placeholder="Your first name"
           value={profile.username}
+          onChange={(event: any) =>
+            setProfile((p) => ({ ...p, username: event.target.value }))
+          }
+          onBlur={(event: any) =>
+            updateProfile({ username: event.target.value })
+          }
         />
         <ListInput
           label="Email"
           type="email"
           placeholder="Your e-mail"
-          value={user.email}
+          value={email}
+          onChange={(event: any) => setEmail(event.target.value)}
+          onBlur={(event: any) => updateEmail(event.target.value)}
         />
       </List>
 
@@ -69,9 +111,9 @@ export default function Settings({
           title="Light Theme"
           media={
             <Radio
-              onChange={() => setTheme("light")}
+              onChange={() => updateProfile({ color_scheme: "light" })}
               component="div"
-              checked={theme === "light"}
+              checked={profile.color_scheme === "light"}
             />
           }
         />
@@ -80,9 +122,9 @@ export default function Settings({
           title="Dark Theme"
           media={
             <Radio
-              onChange={() => setTheme("dark")}
+              onChange={() => updateProfile({ color_scheme: "dark" })}
               component="div"
-              checked={theme === "dark"}
+              checked={profile.color_scheme === "dark"}
             />
           }
         />
@@ -91,9 +133,9 @@ export default function Settings({
           title="System Theme"
           media={
             <Radio
-              onChange={() => setTheme("system")}
+              onChange={() => updateProfile({ color_scheme: "system" })}
               component="div"
-              checked={theme === "system"}
+              checked={profile.color_scheme === "system"}
             />
           }
         />
@@ -114,17 +156,36 @@ export default function Settings({
         </ListButton>
       </List>
       <List inset strong>
-        <ListButton
-          onClick={() =>
-            API.profiles
-              .deleteCurrentUser()
-              .then(() => supabaseClient.auth.signOut())
-              .then(() => router.push("/login"))
-          }
-        >
-          Delete Account
+        <ListButton onClick={() => setActiveSheet(Sheets.DeleteAccount)}>
+          <strong className="text-red-600">Delete Account</strong>
         </ListButton>
       </List>
+
+      <Actions
+        opened={activeSheet === Sheets.DeleteAccount}
+        onBackdropClick={() => setActiveSheet(null)}
+      >
+        <ActionsGroup>
+          <ActionsLabel>
+            Are you sure you want to permanently delete your account? All data
+            will be lost.
+          </ActionsLabel>
+          <ActionsButton
+            className="text-red-600"
+            onClick={() =>
+              API.profiles
+                .deleteCurrentUser()
+                .then(() => supabaseClient.auth.signOut())
+                .then(() => router.push("/login"))
+            }
+          >
+            Delete Account
+          </ActionsButton>
+          <ActionsButton onClick={() => setActiveSheet(null)} bold>
+            Cancel
+          </ActionsButton>
+        </ActionsGroup>
+      </Actions>
     </Layout>
   );
 }
@@ -132,7 +193,7 @@ export default function Settings({
 export const getServerSideProps = withPageAuth({
   redirectTo: "/login",
   async getServerSideProps(ctx) {
-    const props = await API.profiles.getUserByCtx(ctx);
+    const props = await API.profiles.gerByContext(ctx);
     return { props };
   },
 });

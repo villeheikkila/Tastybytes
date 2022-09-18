@@ -19,7 +19,7 @@ export const search = async (searchTerm: string): Promise<Profile[]> => {
   return error ? [] : profiles;
 };
 
-export const getProfileByUsername = async (
+export const getByUsername = async (
   username: string,
   client = supabaseClient
 ): Promise<Profile> => {
@@ -48,7 +48,7 @@ export type ProfileSummaryResult = {
   averageRating: number;
 };
 
-export const getProfileSummaryById = async (
+export const getSummaryById = async (
   uid: string,
   client = supabaseClient
 ): Promise<ProfileSummaryResult | null> => {
@@ -64,7 +64,7 @@ export type UserByCtxReturn = {
   profile: Profile;
 };
 
-export const getUserByCtx = async (
+export const gerByContext = async (
   ctx: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
 ): Promise<UserByCtxReturn> => {
   const { user } = await getUser(ctx);
@@ -74,7 +74,26 @@ export const getUserByCtx = async (
     .match({ id: user.id })
     .single();
 
-  return { user, profile: profile };
+  return { user, profile };
+};
+
+export const update = async (
+  userId: string,
+  updatedUser: Partial<Omit<Profile, "fts">>
+): Promise<Profile> => {
+  const { data: profile } = await supabaseClient
+    .from("profiles")
+    .update(updatedUser, { returning: "representation" })
+    .match({ id: userId })
+    .single();
+
+  return profile;
+};
+
+export const updateEmail = async (email: string) => {
+  return await supabaseClient.auth.update({
+    email,
+  });
 };
 
 export const deleteCurrentUser = () => supabaseClient.rpc("delete_user");
