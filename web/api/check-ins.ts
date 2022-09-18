@@ -44,6 +44,23 @@ export const createFetchById =
     return error ? [] : data;
   };
 
+export const createFetchByProductId =
+  (productId: number) =>
+  async (page = 0, client = supabaseClient): Promise<FetchCheckInsResult[]> => {
+    const firstCheckIn = page * PAGE_SIZE;
+    const lastCheckIn = (page + 1) * PAGE_SIZE - 1;
+
+    const { data, error } = await client
+      .from("check_ins")
+      .select(
+        "id, rating, review, created_at, product_id, created_by, profiles (id, username), products (id, name, sub-brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name)))"
+      )
+      .range(firstCheckIn, lastCheckIn)
+      .eq("product_id", productId);
+
+    return error ? [] : data;
+  };
+
 export const getActivityFeed = async (
   page = 0,
   client = supabaseClient

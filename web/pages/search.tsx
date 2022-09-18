@@ -1,19 +1,22 @@
 import { List, ListInput, ListItem } from "konsta/react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { API } from "../api";
-import { SearchProduct } from "../api/products";
+import { ProductJoined } from "../api/products";
 import Layout from "../components/layout";
-import { useDebounce, useInfinityScroll } from "../utils/hooks";
+import { constructProductName } from "../utils";
+import { useDebounce } from "../utils/hooks";
+import { paths } from "../utils/paths";
 
 export default function Search() {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce<string>(searchTerm, 200);
-  const [products, setProducts] = useState<SearchProduct[]>([]);
+  const [products, setProducts] = useState<ProductJoined[]>([]);
 
   useEffect(() => {
-    API.products
-      .searchProducts(debouncedSearchTerm)
-      .then((p) => setProducts(p));
+    API.products.search(debouncedSearchTerm).then((p) => setProducts(p));
   }, [debouncedSearchTerm]);
 
   return (
@@ -25,22 +28,17 @@ export default function Search() {
           onChange={(v: any) => setSearchTerm(v.target.value)}
         />
 
-        {products.map((p) => (
+        {products.map((product) => (
           <ListItem
-            key={p.id}
+            key={product.id}
             link
-            header={p["sub-brands"].brands.companies.name}
-            title={constructProductName(p)}
-            footer={p.description}
-            href={`/users/${p.name}`}
+            header={product["sub-brands"].brands.companies.name}
+            title={constructProductName(product)}
+            footer={product.description}
+            onClick={() => router.push(paths.products.root(product.id))}
           />
         ))}
       </List>
     </Layout>
   );
 }
-
-const constructProductName = (p: SearchProduct) =>
-  [p["sub-brands"].brands.name, p["sub-brands"].name, p.name]
-    .flatMap((p) => (p === undefined || p === null || p === "" ? [] : p))
-    .join(" ");

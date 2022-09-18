@@ -51,11 +51,13 @@ export const Layout: React.FC<{
 
       <main>{children}</main>
       <Tabbar labels={true} className="left-0 bottom-0 fixed">
-        <TabbarLink
-          onClick={() => router.push(paths.activity)}
-          icon={<Icon ios={<ListDash className="w-7 h-7" />} />}
-          label="Activity"
-        />
+        {profile && (
+          <TabbarLink
+            onClick={() => router.push(paths.activity)}
+            icon={<Icon ios={<ListDash className="w-7 h-7" />} />}
+            label="Activity"
+          />
+        )}
         <TabbarLink
           onClick={() => router.push(paths.search)}
           icon={<Icon ios={<Search className="w-7 h-7" />} />}

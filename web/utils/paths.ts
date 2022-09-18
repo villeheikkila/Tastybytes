@@ -1,6 +1,7 @@
 const userBase = "/users";
+const productBase = "/products";
 
-const createUrl = (...parts: string[]) => parts.join("/");
+const createUrl = (...parts: (string | number)[]) => parts.join("/");
 
 export const paths = {
   activity: "/",
@@ -9,5 +10,8 @@ export const paths = {
   user: {
     root: (username: string) => createUrl(userBase, username),
     friends: (username: string) => createUrl(userBase, username, "friends"),
+  },
+  products: {
+    root: (productId: number) => createUrl(productBase, productId),
   },
 };
