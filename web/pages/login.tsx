@@ -1,20 +1,24 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useUser } from "@supabase/auth-helpers-react";
 import { Auth } from "@supabase/ui";
 import { Navbar, Page } from "konsta/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const LoginPage = () => {
-  const { user } = useUser();
-  console.log("user: ", user);
   const router = useRouter();
 
   useEffect(() => {
-    if (user?.id) {
-      router.push("/");
-    }
-  }, [user?.id, router]);
+    const { data: listener } = supabaseClient.auth.onAuthStateChange(
+      async (_event, session) => {
+        if (session) {
+          router.push("/");
+        }
+      }
+    );
+    return () => {
+      listener?.unsubscribe();
+    };
+  }, []);
 
   return (
     <Page>
