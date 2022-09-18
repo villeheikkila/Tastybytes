@@ -51,12 +51,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const client = supabaseServerClient(ctx);
   const username = String(ctx.params?.username);
 
-  const profile = await API.profiles.getProfileByUsername(username);
+  const profile = await API.profiles.getByUsername(username);
 
   const [initialCheckIns, friends, summary] = await Promise.all([
     API.checkIns.createFetchById(profile.id)(0, client),
     API.friends.getByUsername(profile.username, client),
-    API.profiles.getProfileSummaryById(profile.id, client),
+    API.profiles.getSummaryById(profile.id, client),
   ]);
 
   return {

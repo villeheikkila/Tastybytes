@@ -74,7 +74,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const username = String(ctx.params?.username);
 
   const [profile, friends] = await Promise.all([
-    API.profiles.getProfileByUsername(username, client),
+    API.profiles.getByUsername(username, client),
     API.friends.getByUsername(username, client),
   ]);
 

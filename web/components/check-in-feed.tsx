@@ -1,7 +1,6 @@
 import { Block, Card } from "konsta/react";
-import { useEffect, useRef, useState } from "react";
 import { FetchCheckInsResult } from "../api/check-ins";
-import { useInfinityScroll, useInView } from "../utils/hooks";
+import { useInfinityScroll } from "../utils/hooks";
 import { Stars } from "./stars";
 
 export const CheckInsFeed = ({

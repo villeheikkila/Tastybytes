@@ -96,7 +96,7 @@ export const useInfinityScroll = <T,>(
   return [items, ref] as const;
 };
 
-const modifyColorScheme = (
+export const modifyColorScheme = (
   colorScheme: Database["public"]["Enums"]["color_scheme"]
 ) => {
   switch (colorScheme) {
