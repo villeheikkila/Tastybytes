@@ -63,11 +63,13 @@ export const Layout: React.FC<{
           icon={<Icon ios={<Search className="w-7 h-7" />} />}
           label="Search"
         />
-        <TabbarLink
-          onClick={() => router.push(paths.settings)}
-          icon={<Icon ios={<Gear className="w-7 h-7" />} />}
-          label="Settings"
-        />
+        {profile && (
+          <TabbarLink
+            onClick={() => router.push(paths.settings)}
+            icon={<Icon ios={<Gear className="w-7 h-7" />} />}
+            label="Settings"
+          />
+        )}
         {profile && (
           <TabbarLink
             onClick={() => router.push(paths.user.root(profile.username))}
