@@ -49,8 +49,7 @@ const UserProfile = ({
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const client = supabaseServerClient(ctx);
-  const username = ctx.params?.username ? String(ctx.params?.username) : null;
-  if (!username) throw Error("user doesn't exist");
+  const username = String(ctx.params?.username);
 
   const profile = await API.profiles.getProfileByUsername(username);
 
