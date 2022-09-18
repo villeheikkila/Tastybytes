@@ -7,6 +7,7 @@ import { useEffect } from "react";
 
 const LoginPage = () => {
   const { user } = useUser();
+  console.log("user: ", user);
   const router = useRouter();
 
   useEffect(() => {
