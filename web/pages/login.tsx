@@ -9,7 +9,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     const { data: listener } = supabaseClient.auth.onAuthStateChange(
-      async (_event, session) => {
+      async (_event, session) => {  
         if (session) {
           router.push("/");
         }
