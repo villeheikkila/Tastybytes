@@ -2,8 +2,8 @@ import Foundation
 import Supabase
 
 class API {
-    static var supabaseKey = ProcessInfo.processInfo.environment["SUPABASE_API_KEY"].unsafelyUnwrapped
-    static var supabaseURL = URL(string: ProcessInfo.processInfo.environment["SUPABASE_URL"].unsafelyUnwrapped)
+    static var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRta3Z1cW9vY3RvbHZoZHN1Ym90Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjUzODg1MTQsImV4cCI6MTk4MDk2NDUxNH0.KmVr-_SLfU86G5CUfaR6plT4wdgab1DHpOpFmLtJlu8"
+    static var supabaseURL = URL(string: "https://dmkvuqooctolvhdsubot.supabase.co")
     static var supabase = SupabaseClient(supabaseURL: API.supabaseURL.unsafelyUnwrapped, supabaseKey: API.supabaseKey)
 }
     

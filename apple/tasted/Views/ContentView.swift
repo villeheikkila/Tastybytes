@@ -7,7 +7,6 @@ struct ContentView: View {
             AuthView(supabaseClient: API.supabase, loadingContent: ProgressView.init) { session in
                 NavigationView {
                     NavigationBarView(user: session.user)
-                        .navigationBarTitle("Tasted")
                         .navigationBarItems(leading:
                                                 NavigationLink(destination: FriendsView()) {
                             Image(systemName: "person.2").imageScale(.large)
