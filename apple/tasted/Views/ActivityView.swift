@@ -1,4 +1,5 @@
 import SwiftUI
+import CachedAsyncImage
 
 struct SimpleCheckIn {
     let name: String
@@ -10,33 +11,39 @@ struct SimpleCheckIn {
 }
 
 struct ActivityView: View {
+    @StateObject private var model = ActivityViewModel()
+
     var body: some View {
         ScrollView {
-            ProductCard(simpleCheckIn: SimpleCheckIn(name: "Mango", subBrandName: "Zero", brandName: "Coca Cola", companyName: "Coca Cola Company", rating: 3.5, creator: "Ville Heikkilä"))
-            ProductCard(simpleCheckIn: SimpleCheckIn(name: "Mango", subBrandName: "Zero", brandName: "Coca Cola", companyName: "Coca Cola Company", rating: 3.5, creator: "Ville Heikkilä"))
-            ProductCard(simpleCheckIn: SimpleCheckIn(name: "Mango", subBrandName: "Zero", brandName: "Coca Cola", companyName: "Coca Cola Company", rating: 3.5, creator: "Ville Heikkilä"))
-            ProductCard(simpleCheckIn: SimpleCheckIn(name: "Mango", subBrandName: "Zero", brandName: "Coca Cola", companyName: "Coca Cola Company", rating: 3.5, creator: "Ville Heikkilä"))
+            ForEach(model.checkIns, id: \.id) { checkIn in
+                ProductCardView(checkIn: checkIn)
+            }
+        }.task() {
+            model.getActivityFeed()
         }
     }
 }
 
-struct ProductCard: View {
-    var simpleCheckIn: SimpleCheckIn
+struct ProductCardView: View {
+    var checkIn: CheckInResponse
+    @StateObject private var model = ProductCardViewModel()
+
 
     var body: some View {
         HStack {
             VStack {
                 HStack {
-                    AsyncImage(url: URL(string: "https://cdn-icons-png.flaticon.com/512/194/194938.png")) { image in
-                        image.resizable()
-                    } placeholder: {
-                        ProgressView()
+                    if let avatarUrL = checkIn.profiles.avatar_url {
+                        CachedAsyncImage(url: getAvatarURL(avatarUrl: avatarUrL)) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .clipShape(Circle())
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 30, height: 30)
                     }
-                    .clipShape(Circle())
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 30, height: 30)
-
-                    Text(simpleCheckIn.creator)
+                    Text(checkIn.profiles.username)
                         .font(.system(size: 12, weight: .bold, design: .default))
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -47,19 +54,24 @@ struct ProductCard: View {
                     VStack(alignment: .leading) {
                         Spacer()
 
-                        Text(simpleCheckIn.brandName)
+                        Text(checkIn.products.sub_brands.brands.name)
                             .font(.system(size: 18, weight: .bold, design: .default))
                             .foregroundColor(.white)
-                        Text("\(simpleCheckIn.subBrandName) \(simpleCheckIn.name)")
+                        if (checkIn.products.sub_brands.name != "") {
+                            Text(checkIn.products.sub_brands.name)
+                                .font(.system(size: 24, weight: .bold, design: .default))
+                                .foregroundColor(.white)
+                        }
+                        Text(checkIn.products.name)
                             .font(.system(size: 24, weight: .bold, design: .default))
                             .foregroundColor(.white)
-                        Text(simpleCheckIn.companyName)
+                        Text(checkIn.products.sub_brands.brands.companies.name)
                             .font(.system(size: 16, weight: .bold, design: .default))
                             .foregroundColor(.gray)
 
                         Spacer()
                         HStack {
-                            RatingView(rating: simpleCheckIn.rating)
+                            RatingView(rating: checkIn.rating ?? 0)
                                 .padding(.bottom, 10)
                         }
                     }
@@ -67,11 +79,6 @@ struct ProductCard: View {
 
                     Spacer()
 
-                    Image(systemName: "wineglass")
-                        .resizable()
-                        .foregroundColor(.white)
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 100, height: 80)
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 .background(Color(.darkGray))
@@ -80,10 +87,17 @@ struct ProductCard: View {
                 .padding(.trailing, 5)
 
                 HStack {
-                    Text("2022-01-01").font(.system(size: 12, weight: .medium, design: .default))
+                    if let createdAt = checkIn.created_at {
+                        Text(createdAt).font(.system(size: 12, weight: .medium, design: .default))
+                    }
                     Spacer()
-                    Button {} label: {
-                        Text("5").font(.system(size: 14, weight: .bold, design: .default)).foregroundColor(.black)
+                    ForEach(checkIn.check_in_reactions, id: \.id) {
+                        reaction in MiniAvatar(avatarUrl: reaction.profiles.avatar_url)
+                    }
+                    Button {
+                        model.reactToCheckIn(checkInId: checkIn.id)
+                    } label: {
+                        Text("\(checkIn.check_in_reactions.count)").font(.system(size: 14, weight: .bold, design: .default)).foregroundColor(.black)
                         Image(systemName: "hand.thumbsup.fill").frame(alignment: .leading).foregroundColor(Color(.systemYellow))
                     }
                 }.padding(.trailing, 8).padding(.leading, 8).padding(.bottom, 8)
@@ -96,20 +110,63 @@ struct ProductCard: View {
     }
 }
 
-struct RatingView: View {
-    var rating: Double
 
+struct MiniAvatar: View {
+    let avatarUrl: String?
+    
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(0 ..< 5, id: \.self) { pos in
-                if pos < Int(rating) {
-                    Image(systemName: "star.fill").foregroundColor(Color(.yellow)).opacity(1.0)
-                } else if Int(rating.rounded(.towardZero)) == pos && rating.truncatingRemainder(dividingBy: 1) == 0.5 {
-                    Image(systemName: "star.leadinghalf.filled").foregroundColor(Color(.yellow)).opacity(1.0)
-                } else {
-                    Image(systemName: "star").foregroundColor(Color(.white)).opacity(0.4)
+        if let avatarUrL = avatarUrl {
+            CachedAsyncImage(url: getAvatarURL(avatarUrl: avatarUrL)) { image in
+                image.resizable()
+            } placeholder: {
+                ProgressView()
+            }
+            .clipShape(Circle())
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 24, height: 24)
+        } else {
+            Text("HEI")
+        }
+    }
+}
+
+extension ActivityView {
+    @MainActor class ActivityViewModel: ObservableObject {
+        @Published var checkIns = [CheckInResponse]()
+
+        func getActivityFeed() {
+            Task {
+                let response = try await API.supabase.database
+                    .rpc(fn: "fnc__get_activity_feed")
+                    .select(columns: "id, rating, review, created_at, profiles (id, username, avatar_url), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, avatar_url))")
+                    .limit(count: 2)
+                    .execute()
+
+                let result = try response.decoded(to: [CheckInResponse].self)
+    
+                DispatchQueue.main.async {
+                    self.checkIns = result
                 }
             }
         }
     }
 }
+
+extension ProductCardView {
+    @MainActor class ProductCardViewModel: ObservableObject {
+        struct CheckInReactionRequest: Encodable {
+            let check_in_id: Int
+            let created_by: UUID
+        }
+        
+        func reactToCheckIn(checkInId: Int) {
+            let query = API.supabase.database.from("check_in_reactions")
+                .insert(values: CheckInReactionRequest(check_in_id: checkInId, created_by: getCurrentUserIdUUID()))
+            
+            Task {
+                try await query.execute()
+            }
+        }
+    }
+}
+

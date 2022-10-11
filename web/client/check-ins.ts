@@ -69,7 +69,7 @@ export const getActivityFeed = async (
   const lastCheckIn = (page + 1) * PAGE_SIZE - 1;
 
   const { data, error } = await client
-    .rpc("get_activity_feed")
+    .rpc("fnc__get_activity_feed")
     .select(
       "id, rating, review, created_at, product_id, created_by, profiles (id, username), products (id, name, sub-brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name)))"
     )

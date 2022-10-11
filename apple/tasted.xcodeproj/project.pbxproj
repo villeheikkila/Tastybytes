@@ -21,6 +21,10 @@
 		5C25349628EDA58700A78780 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25349528EDA58700A78780 /* API.swift */; };
 		5C25349A28EDA68400A78780 /* CompanyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25349928EDA68400A78780 /* CompanyView.swift */; };
 		5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE914D28F45DE7005A6043 /* Utils.swift */; };
+		5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB562E28F596A200F13A1E /* ChipView.swift */; };
+		5CFB563128F5974100F13A1E /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563028F5974100F13A1E /* Supabase.swift */; };
+		5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563228F597ED00F13A1E /* RatingView.swift */; };
+		5CFB563628F5A76600F13A1E /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFB563528F5A76600F13A1E /* CachedAsyncImage */; };
 		5CFEE57728ED69B100A8DD66 /* tastedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57628ED69B100A8DD66 /* tastedApp.swift */; };
 		5CFEE57928ED69B100A8DD66 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57828ED69B100A8DD66 /* ContentView.swift */; };
 		5CFEE57B28ED69B200A8DD66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */; };
@@ -41,6 +45,9 @@
 		5C25349528EDA58700A78780 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		5C25349928EDA68400A78780 /* CompanyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyView.swift; sourceTree = "<group>"; };
 		5CCE914D28F45DE7005A6043 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		5CFB562E28F596A200F13A1E /* ChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipView.swift; sourceTree = "<group>"; };
+		5CFB563028F5974100F13A1E /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
+		5CFB563228F597ED00F13A1E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		5CFEE57328ED69B100A8DD66 /* tasted.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tasted.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CFEE57628ED69B100A8DD66 /* tastedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tastedApp.swift; sourceTree = "<group>"; };
 		5CFEE57828ED69B100A8DD66 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -54,6 +61,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C08B6E028ED7956009218D7 /* Supabase in Frameworks */,
+				5CFB563628F5A76600F13A1E /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +95,7 @@
 			children = (
 				5C08B6E128ED7B05009218D7 /* Company.swift */,
 				5C11ECBF28EF434700CCDE6A /* Profile.swift */,
+				5CFB563028F5974100F13A1E /* Supabase.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -97,6 +106,15 @@
 				5CCE914D28F45DE7005A6043 /* Utils.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		5CFB562D28F5969300F13A1E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				5CFB562E28F596A200F13A1E /* ChipView.swift */,
+				5CFB563228F597ED00F13A1E /* RatingView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		5CFEE56A28ED69B100A8DD66 = {
@@ -120,6 +138,7 @@
 		5CFEE57528ED69B100A8DD66 /* tasted */ = {
 			isa = PBXGroup;
 			children = (
+				5CFB562D28F5969300F13A1E /* Components */,
 				5CCE914C28F45DD7005A6043 /* Utils */,
 				5C11ECBE28EF433700CCDE6A /* Models */,
 				5C11ECB428EEEF8400CCDE6A /* Views */,
@@ -158,6 +177,7 @@
 			name = tasted;
 			packageProductDependencies = (
 				5C08B6DF28ED7956009218D7 /* Supabase */,
+				5CFB563528F5A76600F13A1E /* CachedAsyncImage */,
 			);
 			productName = tasted;
 			productReference = 5CFEE57328ED69B100A8DD66 /* tasted.app */;
@@ -189,6 +209,7 @@
 			mainGroup = 5CFEE56A28ED69B100A8DD66;
 			packageReferences = (
 				5CFEE58628ED6BAD00A8DD66 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				5CFB563428F5A76600F13A1E /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 			);
 			productRefGroup = 5CFEE57428ED69B100A8DD66 /* Products */;
 			projectDirPath = "";
@@ -219,6 +240,7 @@
 			files = (
 				5C11ECBB28EEF24700CCDE6A /* ActivityView.swift in Sources */,
 				5CFEE57928ED69B100A8DD66 /* ContentView.swift in Sources */,
+				5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* tastedApp.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
 				5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */,
@@ -230,6 +252,8 @@
 				5C11ECB128EECCAB00CCDE6A /* Environment+Session.swift in Sources */,
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5C11ECAF28EECC8500CCDE6A /* AuthView.swift in Sources */,
+				5CFB563128F5974100F13A1E /* Supabase.swift in Sources */,
+				5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */,
 				5C25349628EDA58700A78780 /* API.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +461,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5CFB563428F5A76600F13A1E /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		5CFEE58628ED6BAD00A8DD66 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/supabase-community/supabase-swift";
@@ -452,6 +484,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5CFEE58628ED6BAD00A8DD66 /* XCRemoteSwiftPackageReference "supabase-swift" */;
 			productName = Supabase;
+		};
+		5CFB563528F5A76600F13A1E /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5CFB563428F5A76600F13A1E /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
