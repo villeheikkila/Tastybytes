@@ -13,12 +13,20 @@ struct ActivityView: View {
     @StateObject private var model = ActivityViewModel()
 
     var body: some View {
-        ScrollView {
-            ForEach(model.checkIns, id: \.id) { checkIn in
-                CheckInCardView(checkIn: checkIn)
+        NavigationStack {
+            
+            ScrollView {
+                ForEach(model.checkIns, id: \.id) { checkIn in
+                    NavigationLink(value: checkIn) {
+                        CheckInCardView(checkIn: checkIn)
+                    }
+                }.navigationDestination(for: CheckInResponse.self) { checkIn in
+                    CheckInPageView(checkIn: checkIn)
+                }
+                
+            }.task {
+                model.getActivityFeed()
             }
-        }.task {
-            model.getActivityFeed()
         }
     }
 }

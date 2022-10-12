@@ -42,7 +42,7 @@ struct ProductPageView: View {
                 CheckInCardView(checkIn: checkIn)
             }
         }.task {
-            model.getInitialData(productId: product.id)
+            model.getInitialData(productId: product.id  )
         }
     }
 }
