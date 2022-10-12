@@ -2,23 +2,14 @@ import CachedAsyncImage
 import GoTrue
 import SwiftUI
 
-struct ProductCardView: View {
+struct CheckInCardView: View {
     let checkIn: CheckInResponse
     
     var body: some View {
         HStack {
             VStack {
                 HStack {
-                    if let avatarUrL = checkIn.profiles.avatar_url {
-                        CachedAsyncImage(url: getAvatarURL(avatarUrl: avatarUrL)) { image in
-                            image.resizable()
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .clipShape(Circle())
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 30, height: 30)
-                    }
+                    Avatar(avatarUrl: checkIn.profiles.avatar_url, size: 30)
                     Text(checkIn.profiles.username)
                         .font(.system(size: 12, weight: .bold, design: .default))
                         .foregroundColor(.black)
@@ -71,13 +62,19 @@ struct ProductCardView: View {
                     Spacer()
                     ReactionsView(checkInId: checkIn.id, checkInReactions: checkIn.check_in_reactions)
 
-                }.padding(.trailing, 8).padding(.leading, 8).padding(.bottom, 8)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .cornerRadius(10)
-            }.background(Color(.tertiarySystemBackground)).cornerRadius(10)
-                .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
+                }
+                .padding(.trailing, 8)
+                .padding(.leading, 8)
+                .padding(.bottom, 8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .cornerRadius(10)
+            }
+            .background(Color(.tertiarySystemBackground))
+            .cornerRadius(10)
+            .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
 
-        }.padding(.all, 10)
+        }
+        .padding(.all, 10)
     }
 }
 
@@ -93,7 +90,7 @@ struct ReactionsView: View {
     var body: some View {
         HStack {
             ForEach(checkInReactions, id: \.id) {
-                reaction in MiniAvatar(avatarUrl: reaction.profiles.avatar_url)
+                reaction in Avatar(avatarUrl: reaction.profiles.avatar_url, size: 24)
             }
             
             Button {
@@ -142,22 +139,5 @@ struct ReactionsView: View {
     struct CheckInReactionRequest: Encodable {
         let check_in_id: Int
         let created_by: UUID
-    }
-}
-
-extension ProductCardView {
-    @MainActor class ProductCardViewModel: ObservableObject {
-        @Published var checkIn: CheckInResponse
-        private var currentUserUUID: UUID
-
-        struct CheckInReactionRequest: Encodable {
-            let check_in_id: Int
-            let created_by: UUID
-        }
-
-        init(checkIn: CheckInResponse) {
-            self.checkIn = checkIn
-            self.currentUserUUID = getCurrentUserIdUUID()
-        }
     }
 }

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct CategoryResponse: Identifiable, Codable {
     let id: Int
     let name: String
@@ -63,5 +62,23 @@ struct CheckInResponse: Identifiable, Codable {
     let created_at: String?
     let profiles: ProfileResponse
     let products: ProductResponse
-    var check_in_reactions: [CheckInReactionResponse]
+    let check_in_reactions: [CheckInReactionResponse]
+}
+
+struct ProfileSummary: Codable {
+    let total_check_ins: Int
+    let unique_check_ins: Int
+    let average_rating: Double?
+    let unrated: Int
+    let rating_0: Int
+    let rating_1: Int
+    let rating_2: Int
+    let rating_3: Int
+    let rating_4: Int
+    let rating_5: Int
+    let rating_6: Int
+    let rating_7: Int
+    let rating_8: Int
+    let rating_9: Int
+    let rating_10: Int
 }

@@ -18,16 +18,15 @@ extension View {
     }
 }
 
-
 class CurrentProfile: ObservableObject {
     @Published var currentProfile: Profile = Profile(id: UUID(), first_name: nil, last_name: nil, username: "", avatar_url: nil)
-    
+
     init() {
         Task {
             getProfile()
         }
     }
-    
+
     func getProfile() {
         let query = API.supabase.database
             .from("profiles")
@@ -36,12 +35,11 @@ class CurrentProfile: ObservableObject {
             .limit(count: 1)
             .single()
 
-        
         Task {
             let decodedProfile = try await query
                 .execute()
                 .decoded(to: Profile.self)
-        
+
             DispatchQueue.main.async {
                 self.currentProfile = decodedProfile
             }
@@ -56,20 +54,16 @@ struct ContentView: View {
         UserProviderView(supabaseClient: API.supabase) {
             AuthView(supabaseClient: API.supabase, loadingContent: ProgressView.init) { session in
                 NavigationView {
-                    NavigationBarView(user: session.user)
+                    NavigationBarView()
                         .navigationBarItems(leading:
-                                                NavigationLink(destination: FriendsView()) {
-                            Image(systemName: "person.2").imageScale(.large)
-                            
-                            
-                        },
-                                            trailing:  NavigationLink(destination: SettingsView(user: session.user)) {
-                            Image(systemName: "gear").imageScale(.large)
-                        }
-                                            
-                        )
-                }
+                            NavigationLink(destination: FriendsView()) {
+                                Image(systemName: "person.2").imageScale(.large)
 
+                            },
+                            trailing: NavigationLink(destination: SettingsView(user: session.user)) {
+                                Image(systemName: "gear").imageScale(.large)
+                            })
+                }
             }
             .environmentObject(profile)
         }
@@ -77,21 +71,19 @@ struct ContentView: View {
 }
 
 struct NavigationBarView: View {
-    let user: User
-
     var body: some View {
         TabView {
             ActivityView()
-            .tabItem {
-                Image(systemName: "list.star")
-                Text("Activity")
-            }
+                .tabItem {
+                    Image(systemName: "list.star")
+                    Text("Activity")
+                }
             SearchView()
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("Search")
                 }
-            ProfileView(user:user)
+            ProfileView(userId: getCurrentUserIdUUID())
                 .tabItem {
                     Image(systemName: "person.fill")
                     Text("Profile")
