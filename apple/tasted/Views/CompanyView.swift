@@ -56,7 +56,6 @@ extension CompanyView {
                     .decoded(to: [Company].self)[0]
                 
                 if let company = addedCompany {
-                    print(company)
                     DispatchQueue.main.async {
                         self.companies.append(company)
                     }
