@@ -47,27 +47,35 @@ class CurrentProfile: ObservableObject {
     }
 }
 
-struct ContentView: View {
+struct RouterView: View {
     @StateObject private var profile = CurrentProfile()
 
     var body: some View {
         UserProviderView(supabaseClient: API.supabase) {
             AuthView(supabaseClient: API.supabase, loadingContent: ProgressView.init) { session in
-                NavigationView {
+                NavigationStack {
                     NavigationBarView()
                         .navigationBarItems(leading:
                             NavigationLink(destination: FriendsView()) {
                                 Image(systemName: "person.2").imageScale(.large)
 
                             },
-                            trailing: NavigationLink(destination: SettingsView(user: session.user)) {
+                            trailing: NavigationLink(destination: SettingsView()) {
                                 Image(systemName: "gear").imageScale(.large)
                             })
+
                 }
+
             }
             .environmentObject(profile)
         }
     }
+}
+
+enum Route: Hashable {
+    case product(ProductResponse)
+    case profile(ProfileResponse)
+    case checkIn(CheckInResponse)
 }
 
 struct NavigationBarView: View {
@@ -89,12 +97,21 @@ struct NavigationBarView: View {
                     Text("Profile")
                 }
         }
+        .navigationDestination(for: CheckInResponse.self) { checkIn in
+            CheckInPageView(checkIn: checkIn)
+        }
+        .navigationDestination(for: ProfileResponse.self) { profile in
+            ProfileView(userId: profile.id )
+        }
+        .navigationDestination(for: ProductResponse.self) { product in
+            ProductPageView(product: product)
+        }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct RouterView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        RouterView()
     }
 }
 

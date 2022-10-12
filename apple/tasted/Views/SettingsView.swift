@@ -4,7 +4,6 @@ import SupabaseStorage
 import SwiftUI
 
 struct SettingsView: View {
-    let user: User
     @StateObject private var model = SettingsViewModel()
     @State private var showingImagePicker = false
     @State private var selectedItem: PhotosPickerItem? = nil
@@ -66,7 +65,7 @@ struct SettingsView: View {
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
 
-                if model.email != user.email {
+                if model.email != API.supabase.auth.session?.user.email {
                     Button("Send Verification Link", action: { model.sendEmailVerificationLink() })
                 }
 

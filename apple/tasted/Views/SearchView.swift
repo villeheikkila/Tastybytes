@@ -3,11 +3,11 @@ import SwiftUI
 struct SearchView: View {
     @State private var products = [ProductResponse]()
     @StateObject private var model = SearchViewModel()
-
     @State private var searchText = ""
 
     var body: some View {
-        NavigationStack {
+        // TODO: NavigationView should be removed
+        NavigationView {
             List {
                 ForEach(model.products, id: \.id) { product in
                     NavigationLink(value: product) {
@@ -18,13 +18,9 @@ struct SearchView: View {
             .searchable(text: $model.searchText)
             .navigationTitle("Products")
             .onSubmit(of: .search, model.searchProducts)
-            .navigationDestination(for: ProductResponse.self) { product in
-                ProductPageView(product: product)
-            }
         }
     }
 }
-
 
 struct ProductListItemView: View {
     let product: ProductResponse
