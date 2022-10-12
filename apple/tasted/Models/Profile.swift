@@ -1,7 +1,7 @@
 import Foundation
 
-struct Profile: Identifiable, Codable {
-    let id: UUID
+public struct Profile: Identifiable, Codable {
+    public let id: UUID
     let first_name: String?
     let last_name: String?
     let username: String

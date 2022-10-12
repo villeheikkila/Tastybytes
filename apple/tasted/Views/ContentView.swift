@@ -1,7 +1,57 @@
 import GoTrue
 import SwiftUI
 
+private enum ProfileEnvironmentKey: EnvironmentKey {
+    static var defaultValue: Profile?
+}
+
+extension EnvironmentValues {
+    public var profile: Profile? {
+        get { self[ProfileEnvironmentKey.self] }
+        set { self[ProfileEnvironmentKey.self] = newValue }
+    }
+}
+
+extension View {
+    public func withProfile(_ profile: Profile?) -> some View {
+        environment(\.profile, profile)
+    }
+}
+
+
+class CurrentProfile: ObservableObject {
+    @Published var currentProfile: Profile = Profile(id: UUID(), first_name: nil, last_name: nil, username: "", avatar_url: nil)
+    
+    init() {
+        Task {
+            getProfile()
+        }
+    }
+    
+    func getProfile() {
+        let query = API.supabase.database
+            .from("profiles")
+            .select(columns: "*", count: .exact)
+            .eq(column: "id", value: API.supabase.auth.session?.user.id.uuidString ?? "")
+            .limit(count: 1)
+            .single()
+
+        
+        Task {
+            let decodedProfile = try await query
+                .execute()
+                .decoded(to: Profile.self)
+        
+            DispatchQueue.main.async {
+                self.currentProfile = decodedProfile
+            }
+        }
+    }
+}
+
 struct ContentView: View {
+    @StateObject private var profile = CurrentProfile()
+
     var body: some View {
         UserProviderView(supabaseClient: API.supabase) {
             AuthView(supabaseClient: API.supabase, loadingContent: ProgressView.init) { session in
@@ -19,14 +69,16 @@ struct ContentView: View {
                                             
                         )
                 }
+
             }
+            .environmentObject(profile)
         }
     }
 }
 
 struct NavigationBarView: View {
     let user: User
-    
+
     var body: some View {
         TabView {
             ActivityView()
@@ -47,7 +99,6 @@ struct NavigationBarView: View {
         }
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

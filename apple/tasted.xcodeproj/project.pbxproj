@@ -21,6 +21,8 @@
 		5C25349628EDA58700A78780 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25349528EDA58700A78780 /* API.swift */; };
 		5C25349A28EDA68400A78780 /* CompanyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25349928EDA68400A78780 /* CompanyView.swift */; };
 		5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE914D28F45DE7005A6043 /* Utils.swift */; };
+		5CD10A3928F6A1CA0001CFC2 /* MiniAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3828F6A1CA0001CFC2 /* MiniAvatarView.swift */; };
+		5CD10A3B28F6A1FE0001CFC2 /* ProductCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3A28F6A1FE0001CFC2 /* ProductCardView.swift */; };
 		5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB562E28F596A200F13A1E /* ChipView.swift */; };
 		5CFB563128F5974100F13A1E /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563028F5974100F13A1E /* Supabase.swift */; };
 		5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563228F597ED00F13A1E /* RatingView.swift */; };
@@ -45,6 +47,8 @@
 		5C25349528EDA58700A78780 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		5C25349928EDA68400A78780 /* CompanyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyView.swift; sourceTree = "<group>"; };
 		5CCE914D28F45DE7005A6043 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		5CD10A3828F6A1CA0001CFC2 /* MiniAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniAvatarView.swift; sourceTree = "<group>"; };
+		5CD10A3A28F6A1FE0001CFC2 /* ProductCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCardView.swift; sourceTree = "<group>"; };
 		5CFB562E28F596A200F13A1E /* ChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipView.swift; sourceTree = "<group>"; };
 		5CFB563028F5974100F13A1E /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
 		5CFB563228F597ED00F13A1E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
@@ -113,6 +117,8 @@
 			children = (
 				5CFB562E28F596A200F13A1E /* ChipView.swift */,
 				5CFB563228F597ED00F13A1E /* RatingView.swift */,
+				5CD10A3828F6A1CA0001CFC2 /* MiniAvatarView.swift */,
+				5CD10A3A28F6A1FE0001CFC2 /* ProductCardView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -248,10 +254,12 @@
 				5C11ECBD28EEF30600CCDE6A /* SearchView.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsView.swift in Sources */,
 				5C11ECB628EEEFB300CCDE6A /* SettingsView.swift in Sources */,
+				5CD10A3928F6A1CA0001CFC2 /* MiniAvatarView.swift in Sources */,
 				5C25349A28EDA68400A78780 /* CompanyView.swift in Sources */,
 				5C11ECB128EECCAB00CCDE6A /* Environment+Session.swift in Sources */,
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5C11ECAF28EECC8500CCDE6A /* AuthView.swift in Sources */,
+				5CD10A3B28F6A1FE0001CFC2 /* ProductCardView.swift in Sources */,
 				5CFB563128F5974100F13A1E /* Supabase.swift in Sources */,
 				5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */,
 				5C25349628EDA58700A78780 /* API.swift in Sources */,
