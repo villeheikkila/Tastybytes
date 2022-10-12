@@ -17,12 +17,12 @@
 		5C11ECBB28EEF24700CCDE6A /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECBA28EEF24700CCDE6A /* ActivityView.swift */; };
 		5C11ECBD28EEF30600CCDE6A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECBC28EEF30600CCDE6A /* SearchView.swift */; };
 		5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECBF28EF434700CCDE6A /* Profile.swift */; };
-		5C11ECC228EF768A00CCDE6A /* .xcconfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5C11ECC128EF768A00CCDE6A /* .xcconfig.xcconfig */; };
 		5C25349628EDA58700A78780 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25349528EDA58700A78780 /* API.swift */; };
 		5C25349A28EDA68400A78780 /* CompanyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25349928EDA68400A78780 /* CompanyView.swift */; };
 		5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE914D28F45DE7005A6043 /* Utils.swift */; };
 		5CD10A3928F6A1CA0001CFC2 /* MiniAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3828F6A1CA0001CFC2 /* MiniAvatarView.swift */; };
 		5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */; };
+		5CD10A3D28F75B7A0001CFC2 /* ProductPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3C28F75B7A0001CFC2 /* ProductPageView.swift */; };
 		5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB562E28F596A200F13A1E /* ChipView.swift */; };
 		5CFB563128F5974100F13A1E /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563028F5974100F13A1E /* Supabase.swift */; };
 		5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563228F597ED00F13A1E /* RatingView.swift */; };
@@ -49,6 +49,7 @@
 		5CCE914D28F45DE7005A6043 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		5CD10A3828F6A1CA0001CFC2 /* MiniAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniAvatarView.swift; sourceTree = "<group>"; };
 		5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardView.swift; sourceTree = "<group>"; };
+		5CD10A3C28F75B7A0001CFC2 /* ProductPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPageView.swift; sourceTree = "<group>"; };
 		5CFB562E28F596A200F13A1E /* ChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipView.swift; sourceTree = "<group>"; };
 		5CFB563028F5974100F13A1E /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
 		5CFB563228F597ED00F13A1E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
@@ -90,6 +91,7 @@
 				5C11ECB828EEF16000CCDE6A /* ProfileView.swift */,
 				5C11ECBA28EEF24700CCDE6A /* ActivityView.swift */,
 				5C11ECBC28EEF30600CCDE6A /* SearchView.swift */,
+				5CD10A3C28F75B7A0001CFC2 /* ProductPageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -197,7 +199,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1400;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					5CFEE57228ED69B100A8DD66 = {
 						CreatedOnToolsVersion = 14.0;
@@ -232,7 +234,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CFEE57E28ED69B200A8DD66 /* Preview Assets.xcassets in Resources */,
-				5C11ECC228EF768A00CCDE6A /* .xcconfig.xcconfig in Resources */,
 				5CFEE57B28ED69B200A8DD66 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,6 +250,7 @@
 				5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* tastedApp.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
+				5CD10A3D28F75B7A0001CFC2 /* ProductPageView.swift in Sources */,
 				5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileView.swift in Sources */,
 				5C11ECBD28EEF30600CCDE6A /* SearchView.swift in Sources */,

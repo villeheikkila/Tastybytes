@@ -25,27 +25,64 @@ struct ProfileView: View {
 
             }.padding(.leading, 20).padding(.trailing, 20)
 
-            List {
-                Chart {
-                    BarMark(
-                        y: .value("Value", 5)
-                    )
-                    BarMark(
-                        y: .value("Value", 4)
-                    )
-                    BarMark(
-                        y: .value("Value", 7)
-                    )
-                }
-                .frame(height: 250)
+            Chart {
+                BarMark(
+                    x: .value("Rating", "0"),
+                    y: .value("Value", model.profileSummary?.rating_0 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "0.5"),
+                    y: .value("Value", model.profileSummary?.rating_1 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "1"),
+                    y: .value("Value", model.profileSummary?.rating_2 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "1.5"),
+                    y: .value("Value", model.profileSummary?.rating_3 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "2"),
+                    y: .value("Value", model.profileSummary?.rating_4 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "2.5"),
+                    y: .value("Value", model.profileSummary?.rating_5 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "3"),
+                    y: .value("Value", model.profileSummary?.rating_6 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "3.5"),
+                    y: .value("Value", model.profileSummary?.rating_7 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "4"),
+                    y: .value("Value", model.profileSummary?.rating_8 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "4.5"),
+                    y: .value("Value", model.profileSummary?.rating_9 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "5"),
+                    y: .value("Value", model.profileSummary?.rating_10 ?? 0)
+                )
             }
-            
+            .chartLegend(.hidden)
+            .chartYAxis(.hidden)
+            .frame(height: 100)
+            .padding(.leading, 10)
+            .padding(.trailing, 10)
+
             HStack {
                 VStack {
                     Text("Unrated").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
                     Text(String(model.profileSummary?.unrated ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
                 }
-                VStack {
+                VStack {
                     Text("Average").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
                     Text(String(model.profileSummary?.average_rating ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
                 }
