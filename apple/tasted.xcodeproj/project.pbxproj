@@ -29,7 +29,7 @@
 		5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563228F597ED00F13A1E /* RatingView.swift */; };
 		5CFB563628F5A76600F13A1E /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFB563528F5A76600F13A1E /* CachedAsyncImage */; };
 		5CFEE57728ED69B100A8DD66 /* tastedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57628ED69B100A8DD66 /* tastedApp.swift */; };
-		5CFEE57928ED69B100A8DD66 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57828ED69B100A8DD66 /* ContentView.swift */; };
+		5CFEE57928ED69B100A8DD66 /* RouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57828ED69B100A8DD66 /* RouterView.swift */; };
 		5CFEE57B28ED69B200A8DD66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */; };
 		5CFEE57E28ED69B200A8DD66 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEE57D28ED69B200A8DD66 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -57,7 +57,7 @@
 		5CFB563228F597ED00F13A1E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		5CFEE57328ED69B100A8DD66 /* tasted.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tasted.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CFEE57628ED69B100A8DD66 /* tastedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tastedApp.swift; sourceTree = "<group>"; };
-		5CFEE57828ED69B100A8DD66 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5CFEE57828ED69B100A8DD66 /* RouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterView.swift; sourceTree = "<group>"; };
 		5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5CFEE57D28ED69B200A8DD66 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,7 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				5C25349928EDA68400A78780 /* CompanyView.swift */,
-				5CFEE57828ED69B100A8DD66 /* ContentView.swift */,
+				5CFEE57828ED69B100A8DD66 /* RouterView.swift */,
 				5C11ECB528EEEFB300CCDE6A /* SettingsView.swift */,
 				5C11ECB228EEEDEF00CCDE6A /* FriendsView.swift */,
 				5C11ECAE28EECC8500CCDE6A /* AuthView.swift */,
@@ -249,7 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C11ECBB28EEF24700CCDE6A /* ActivityView.swift in Sources */,
-				5CFEE57928ED69B100A8DD66 /* ContentView.swift in Sources */,
+				5CFEE57928ED69B100A8DD66 /* RouterView.swift in Sources */,
 				5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* tastedApp.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
