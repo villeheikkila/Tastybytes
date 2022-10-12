@@ -15,7 +15,7 @@ struct ActivityView: View {
     var body: some View {
         ScrollView {
             ForEach(model.checkIns, id: \.id) { checkIn in
-                ProductCardView(checkIn: checkIn)
+                CheckInCardView(checkIn: checkIn)
             }
         }.task {
             model.getActivityFeed()

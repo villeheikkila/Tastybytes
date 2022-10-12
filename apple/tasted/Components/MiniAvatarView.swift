@@ -1,8 +1,9 @@
-import SwiftUI
 import CachedAsyncImage
+import SwiftUI
 
-struct MiniAvatar: View {
+struct Avatar: View {
     let avatarUrl: String?
+    let size: CGFloat
 
     var body: some View {
         if let avatarUrL = avatarUrl {
@@ -13,9 +14,12 @@ struct MiniAvatar: View {
             }
             .clipShape(Circle())
             .aspectRatio(contentMode: .fill)
-            .frame(width: 24, height: 24)
+            .frame(width: size, height: size)
         } else {
-            Text("HEI")
+            Image(systemName: "person.fill")
+                .clipShape(Circle())
+                .aspectRatio(contentMode: .fill)
+                .frame(width: size, height: size)
         }
     }
 }
