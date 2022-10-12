@@ -10,7 +10,7 @@ import Foundation
 struct CategoryResponse: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
-    
+
     static func == (lhs: CategoryResponse, rhs: CategoryResponse) -> Bool {
         return lhs.id == rhs.id
     }
@@ -20,7 +20,7 @@ struct SubcategoryResponse: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
     let categories: CategoryResponse
-    
+
     static func == (lhs: SubcategoryResponse, rhs: SubcategoryResponse) -> Bool {
         return lhs.id == rhs.id
     }
@@ -29,7 +29,7 @@ struct SubcategoryResponse: Identifiable, Codable, Hashable {
 struct CompanyResponse: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
-    
+
     static func == (lhs: CompanyResponse, rhs: CompanyResponse) -> Bool {
         return lhs.id == rhs.id
     }
@@ -39,7 +39,7 @@ struct BrandResponse: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
     let companies: CompanyResponse
-    
+
     static func == (lhs: BrandResponse, rhs: BrandResponse) -> Bool {
         return lhs.id == rhs.id
     }
@@ -49,7 +49,7 @@ struct SubBrandResponse: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
     let brands: BrandResponse
-    
+
     static func == (lhs: SubBrandResponse, rhs: SubBrandResponse) -> Bool {
         return lhs.id == rhs.id
     }
@@ -61,25 +61,33 @@ struct ProductResponse: Hashable, Identifiable, Codable {
     let description: String
     let sub_brands: SubBrandResponse
     let subcategories: [SubcategoryResponse]
-    
+
     static func == (lhs: ProductResponse, rhs: ProductResponse) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-struct ProfileResponse: Identifiable, Codable {
+struct ProfileResponse: Identifiable, Codable, Hashable {
     let id: UUID
     let username: String
     let avatar_url: String?
+
+    static func == (lhs: ProfileResponse, rhs: ProfileResponse) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
-struct CheckInReactionResponse: Identifiable, Codable {
+struct CheckInReactionResponse: Identifiable, Codable, Hashable {
     let id: Int
     let created_by: UUID
     let profiles: ProfileResponse
+
+    static func == (lhs: CheckInReactionResponse, rhs: CheckInReactionResponse) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
-struct CheckInResponse: Identifiable, Codable {
+struct CheckInResponse: Identifiable, Codable, Hashable {
     let id: Int
     let rating: Double?
     let review: String?
@@ -87,6 +95,22 @@ struct CheckInResponse: Identifiable, Codable {
     let profiles: ProfileResponse
     let products: ProductResponse
     let check_in_reactions: [CheckInReactionResponse]
+
+    static func == (lhs: CheckInResponse, rhs: CheckInResponse) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+struct CheckInCommentResponse: Identifiable, Codable, Hashable {
+    let id: Int
+    let content: String
+    let created_at: String
+    let profiles: ProfileResponse
+    
+    
+    static func == (lhs: CheckInCommentResponse, rhs: CheckInCommentResponse) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 struct ProfileSummary: Codable {
