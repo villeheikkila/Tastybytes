@@ -50,11 +50,12 @@ struct ProfileResponse: Identifiable, Codable {
     let avatar_url: String?
 }
 
-struct CheckInReaction: Identifiable, Codable {
+struct CheckInReactionResponse: Identifiable, Codable {
     let id: Int
     let created_by: UUID
     let profiles: ProfileResponse
 }
+
 struct CheckInResponse: Identifiable, Codable {
     let id: Int
     let rating: Double?
@@ -62,5 +63,5 @@ struct CheckInResponse: Identifiable, Codable {
     let created_at: String?
     let profiles: ProfileResponse
     let products: ProductResponse
-    let check_in_reactions: [CheckInReaction]
+    var check_in_reactions: [CheckInReactionResponse]
 }

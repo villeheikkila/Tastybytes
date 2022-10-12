@@ -24,8 +24,6 @@ func printData(data: Data) {
 func getAvatarURL(avatarUrl: String) -> URL {
     let bucketId = "avatars"
     let urlString = "\(API.supabaseURLString)/storage/v1/object/public/\(bucketId)/\(avatarUrl)"
-    print(urlString)
-
     guard let url = URL(string: urlString) else { fatalError("Invalid URL") }
 
     return url
