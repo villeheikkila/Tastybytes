@@ -52,20 +52,12 @@ struct RouterView: View {
 
     var body: some View {
         UserProviderView(supabaseClient: API.supabase) {
-            AuthView(supabaseClient: API.supabase, loadingContent: ProgressView.init) { session in
+            AuthView(supabaseClient: API.supabase, loadingContent: ProgressView.init) { _ in
                 NavigationStack {
-                    NavigationBarView()
-                        .navigationBarItems(leading:
-                            NavigationLink(destination: FriendsView()) {
-                                Image(systemName: "person.2").imageScale(.large)
-
-                            },
-                            trailing: NavigationLink(destination: SettingsView()) {
-                                Image(systemName: "gear").imageScale(.large)
-                            })
-
+                    AddNavigation {
+                        Tabbar()
+                    }
                 }
-
             }
             .environmentObject(profile)
         }
@@ -76,9 +68,53 @@ enum Route: Hashable {
     case product(ProductResponse)
     case profile(ProfileResponse)
     case checkIn(CheckInResponse)
+    case settings
+    case friends
+    case activity
 }
 
-struct NavigationBarView: View {
+struct AddNavigation<Content: View>: View {
+    var content: () -> Content
+
+    var body: some View {
+        content()
+            .navigationBarItems(leading:
+                NavigationLink(value: Route.friends) {
+                    Image(systemName: "person.2").imageScale(.large)
+
+                },
+                trailing: NavigationLink(value: Route.settings) {
+                    Image(systemName: "gear").imageScale(.large)
+                })
+            .navigationDestination(for: CheckInResponse.self) { checkIn in
+                CheckInPageView(checkIn: checkIn)
+            }
+            .navigationDestination(for: ProfileResponse.self) { profile in
+                ProfileView(userId: profile.id)
+            }
+            .navigationDestination(for: ProductResponse.self) { product in
+                ProductPageView(product: product)
+            }
+            .navigationDestination(for: Route.self) { route in
+                switch route {
+                case .friends:
+                    FriendsView()
+                case .settings:
+                    SettingsView()
+                case .activity:
+                    ActivityView()
+                case let .checkIn(checkIn):
+                    CheckInPageView(checkIn: checkIn)
+                case let .profile(profile):
+                    ProfileView(userId: profile.id)
+                case let .product(product):
+                    ProductPageView(product: product)
+                }
+            }
+    }
+}
+
+struct Tabbar: View {
     var body: some View {
         TabView {
             ActivityView()
@@ -97,29 +133,11 @@ struct NavigationBarView: View {
                     Text("Profile")
                 }
         }
-        .navigationDestination(for: CheckInResponse.self) { checkIn in
-            CheckInPageView(checkIn: checkIn)
-        }
-        .navigationDestination(for: ProfileResponse.self) { profile in
-            ProfileView(userId: profile.id )
-        }
-        .navigationDestination(for: ProductResponse.self) { product in
-            ProductPageView(product: product)
-        }
     }
 }
 
 struct RouterView_Previews: PreviewProvider {
     static var previews: some View {
         RouterView()
-    }
-}
-
-extension Encodable {
-    func jsonFormatted() -> String {
-        let encoder = JSONEncoder.goTrue
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try! encoder.encode(self)
-        return String(data: data, encoding: .utf8)!
     }
 }
