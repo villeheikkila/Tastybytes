@@ -7,40 +7,64 @@
 
 import Foundation
 
-struct CategoryResponse: Identifiable, Codable {
+struct CategoryResponse: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
+    
+    static func == (lhs: CategoryResponse, rhs: CategoryResponse) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
-struct SubcategoryResponse: Identifiable, Codable {
+struct SubcategoryResponse: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
     let categories: CategoryResponse
+    
+    static func == (lhs: SubcategoryResponse, rhs: SubcategoryResponse) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
-struct CompanyResponse: Identifiable, Codable {
+struct CompanyResponse: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
+    
+    static func == (lhs: CompanyResponse, rhs: CompanyResponse) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
-struct BrandResponse: Identifiable, Codable {
+struct BrandResponse: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
     let companies: CompanyResponse
+    
+    static func == (lhs: BrandResponse, rhs: BrandResponse) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
-struct SubBrandResponse: Identifiable, Codable {
+struct SubBrandResponse: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
     let brands: BrandResponse
+    
+    static func == (lhs: SubBrandResponse, rhs: SubBrandResponse) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
-struct ProductResponse: Identifiable, Codable {
+struct ProductResponse: Hashable, Identifiable, Codable {
     let id: Int
     let name: String
     let description: String
     let sub_brands: SubBrandResponse
     let subcategories: [SubcategoryResponse]
+    
+    static func == (lhs: ProductResponse, rhs: ProductResponse) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 struct ProfileResponse: Identifiable, Codable {
