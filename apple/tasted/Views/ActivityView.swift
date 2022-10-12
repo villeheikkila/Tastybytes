@@ -20,12 +20,19 @@ struct ActivityView: View {
                     NavigationLink(value: checkIn) {
                         CheckInCardView(checkIn: checkIn)
                     }
-                }.navigationDestination(for: CheckInResponse.self) { checkIn in
-                    CheckInPageView(checkIn: checkIn)
                 }
+                
                 
             }.task {
                 model.getActivityFeed()
+            }.navigationDestination(for: CheckInResponse.self) { checkIn in
+                CheckInPageView(checkIn: checkIn)
+            }
+            .navigationDestination(for: ProfileResponse.self) { profile in
+                ProfileView(userId: profile.id )
+            }
+            .navigationDestination(for: ProductResponse.self) { product in
+                ProductPageView(product: product)
             }
         }
     }
@@ -39,7 +46,7 @@ extension ActivityView {
             let query = API.supabase.database
                 .rpc(fn: "fnc__get_activity_feed")
                 .select(columns: "id, rating, review, created_at, profiles (id, username, avatar_url), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, avatar_url))")
-                .limit(count: 2)
+                .limit(count: 5)
             
             Task {
                 let checkIns = try await query.execute().decoded(to: [CheckInResponse].self)
