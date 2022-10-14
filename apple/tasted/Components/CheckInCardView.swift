@@ -3,7 +3,7 @@ import GoTrue
 import SwiftUI
 
 struct CheckInCardView: View {
-    let checkIn: CheckInResponse
+    let checkIn: CheckIn
 
     var body: some View {
         NavigationLink(value: checkIn) {
@@ -11,7 +11,7 @@ struct CheckInCardView: View {
                 VStack {
                     NavigationLink(value: checkIn.profiles) {
                         HStack {
-                            Avatar(avatarUrl: checkIn.profiles.avatar_url, size: 30, id: checkIn.profiles.id)
+                            Avatar(avatarUrl: checkIn.profiles.avatarUrl, size: 30, id: checkIn.profiles.id)
                             Text(checkIn.profiles.username)
                                 .font(.system(size: 12, weight: .bold, design: .default))
                                 .foregroundColor(.primary)
@@ -29,18 +29,18 @@ struct CheckInCardView: View {
                             
                             NavigationLink(value: checkIn.products) {
                                 VStack(alignment: .leading) {
-                                    Text(checkIn.products.sub_brands.brands.name)
+                                    Text(checkIn.products.subBrand.brands.name)
                                         .font(.system(size: 18, weight: .bold, design: .default))
                                         .foregroundColor(.primary)
-                                    if checkIn.products.sub_brands.name != "" {
-                                        Text(checkIn.products.sub_brands.name)
+                                    if checkIn.products.subBrand.name != "" {
+                                        Text(checkIn.products.subBrand.name)
                                             .font(.system(size: 24, weight: .bold, design: .default))
                                             .foregroundColor(.primary)
                                     }
                                     Text(checkIn.products.name)
                                         .font(.system(size: 24, weight: .bold, design: .default))
                                         .foregroundColor(.primary)
-                                    Text(checkIn.products.sub_brands.brands.companies.name)
+                                    Text(checkIn.products.subBrand.brands.companies.name)
                                         .font(.system(size: 16, weight: .bold, design: .default))
                                         .foregroundColor(.secondary)
                                 }
@@ -66,11 +66,9 @@ struct CheckInCardView: View {
                     .padding(.trailing, 5)
                     
                     HStack {
-                        if let createdAt = checkIn.created_at {
-                            Text(createdAt).font(.system(size: 12, weight: .medium, design: .default))
-                        }
+                        Text(checkIn.createdAt).font(.system(size: 12, weight: .medium, design: .default))
                         Spacer()
-                        ReactionsView(checkInId: checkIn.id, checkInReactions: checkIn.check_in_reactions)
+                        ReactionsView(checkInId: checkIn.id, checkInReactions: checkIn.checkInReactions)
                     }
                     .padding(.trailing, 8)
                     .padding(.leading, 8)
@@ -90,9 +88,9 @@ struct CheckInCardView: View {
 
 struct ReactionsView: View {
     let checkInId: Int
-    @State var checkInReactions: [CheckInReactionResponse]
+    @State var checkInReactions: [CheckInReaction]
 
-    init(checkInId: Int, checkInReactions: [CheckInReactionResponse]) {
+    init(checkInId: Int, checkInReactions: [CheckInReaction]) {
         _checkInReactions = State(initialValue: checkInReactions)
         self.checkInId = checkInId
     }
@@ -100,11 +98,11 @@ struct ReactionsView: View {
     var body: some View {
         HStack {
             ForEach(checkInReactions, id: \.id) {
-                reaction in Avatar(avatarUrl: reaction.profiles.avatar_url, size: 24, id: reaction.profiles.id)
+                reaction in Avatar(avatarUrl: reaction.profiles.avatarUrl, size: 24, id: reaction.profiles.id)
             }
 
             Button {
-                if let existingReaction = checkInReactions.first(where: { $0.created_by == getCurrentUserIdUUID() }) {
+                if let existingReaction = checkInReactions.first(where: { $0.createdBy == getCurrentUserIdUUID() }) {
                     removeReaction(reactionId: existingReaction.id)
                 } else {
                     reactToCheckIn()
@@ -124,7 +122,7 @@ struct ReactionsView: View {
             .single()
 
         Task {
-            let checkInReaction = try await query.execute().decoded(to: CheckInReactionResponse.self)
+            let checkInReaction = try await query.execute().decoded(to: CheckInReaction.self)
             DispatchQueue.main.async {
                 self.checkInReactions.append(checkInReaction)
             }
@@ -139,7 +137,7 @@ struct ReactionsView: View {
             try await query.execute()
 
             DispatchQueue.main.async {
-                self.checkInReactions.removeAll(where: { $0.created_by == getCurrentUserIdUUID() })
+                self.checkInReactions.removeAll(where: { $0.createdBy == getCurrentUserIdUUID() })
             }
         }
     }

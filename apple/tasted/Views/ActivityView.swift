@@ -27,7 +27,7 @@ struct ActivityView: View {
 
 extension ActivityView {
     class ActivityViewModel: ObservableObject {
-        @Published var checkIns = [CheckInResponse]()
+        @Published var checkIns = [CheckIn]()
         @Published var isLoading = false
         let pageSize = 5
         var page = 0
@@ -59,7 +59,7 @@ extension ActivityView {
                     self.isLoading = true
                 }
 
-                let checkIns = try await query.execute().decoded(to: [CheckInResponse].self)
+                let checkIns = try await query.execute().decoded(to: [CheckIn].self)
 
                 DispatchQueue.main.async {
                     self.checkIns.append(contentsOf: checkIns)

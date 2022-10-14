@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProductPageView: View {
-    let product: ProductResponse
+    let product: Product
     @StateObject private var model = ProductPageViewViewModel()
     @State private var showingSheet = false
 
@@ -46,7 +46,7 @@ struct GrowingButton: ButtonStyle {
 
 extension ProductPageView {
     @MainActor class ProductPageViewViewModel: ObservableObject {
-        @Published var checkIns = [CheckInResponse]()
+        @Published var checkIns = [CheckIn]()
 
         @Published var isLoading = false
         let pageSize = 5
@@ -71,7 +71,7 @@ extension ProductPageView {
                     self.isLoading = true
                 }
 
-                let checkIns = try await query.execute().decoded(to: [CheckInResponse].self)
+                let checkIns = try await query.execute().decoded(to: [CheckIn].self)
 
                 DispatchQueue.main.async {
                     self.checkIns.append(contentsOf: checkIns)
@@ -82,7 +82,7 @@ extension ProductPageView {
         }
         
         
-        func appendNewCheckIn(newCheckIn: CheckInResponse) {
+        func appendNewCheckIn(newCheckIn: CheckIn) {
             DispatchQueue.main.async {
                 self.checkIns.insert(newCheckIn, at: 0)
             }

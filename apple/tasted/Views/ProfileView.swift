@@ -13,13 +13,13 @@ struct ProfileView: View {
 
                 VStack {
                     Text("Check-ins").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-                    Text(String(model.profileSummary?.total_check_ins ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
+                    Text(String(model.profileSummary?.totalCheckIns ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
                 }
-                Avatar(avatarUrl: model.profile?.avatar_url, size: 100, id: userId)
+                Avatar(avatarUrl: model.profile?.avatarUrl, size: 100, id: userId)
 
                 VStack {
                     Text("Unique").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-                    Text(String(model.profileSummary?.unique_check_ins ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
+                    Text(String(model.profileSummary?.uniqueCheckIns ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
                 }
                 Spacer()
 
@@ -28,47 +28,47 @@ struct ProfileView: View {
             Chart {
                 BarMark(
                     x: .value("Rating", "0"),
-                    y: .value("Value", model.profileSummary?.rating_0 ?? 0)
+                    y: .value("Value", model.profileSummary?.rating0 ?? 0)
                 )
                 BarMark(
                     x: .value("Rating", "0.5"),
-                    y: .value("Value", model.profileSummary?.rating_1 ?? 0)
+                    y: .value("Value", model.profileSummary?.rating1 ?? 0)
                 )
                 BarMark(
                     x: .value("Rating", "1"),
-                    y: .value("Value", model.profileSummary?.rating_2 ?? 0)
+                    y: .value("Value", model.profileSummary?.rating2 ?? 0)
                 )
                 BarMark(
                     x: .value("Rating", "1.5"),
-                    y: .value("Value", model.profileSummary?.rating_3 ?? 0)
+                    y: .value("Value", model.profileSummary?.rating3 ?? 0)
                 )
                 BarMark(
                     x: .value("Rating", "2"),
-                    y: .value("Value", model.profileSummary?.rating_4 ?? 0)
+                    y: .value("Value", model.profileSummary?.rating4 ?? 0)
                 )
                 BarMark(
                     x: .value("Rating", "2.5"),
-                    y: .value("Value", model.profileSummary?.rating_5 ?? 0)
+                    y: .value("Value", model.profileSummary?.rating5 ?? 0)
                 )
                 BarMark(
                     x: .value("Rating", "3"),
-                    y: .value("Value", model.profileSummary?.rating_6 ?? 0)
+                    y: .value("Value", model.profileSummary?.rating6 ?? 0)
                 )
                 BarMark(
                     x: .value("Rating", "3.5"),
-                    y: .value("Value", model.profileSummary?.rating_7 ?? 0)
+                    y: .value("Value", model.profileSummary?.rating7  ?? 0)
                 )
                 BarMark(
                     x: .value("Rating", "4"),
-                    y: .value("Value", model.profileSummary?.rating_8 ?? 0)
+                    y: .value("Value", model.profileSummary?.rating8 ?? 0)
                 )
                 BarMark(
                     x: .value("Rating", "4.5"),
-                    y: .value("Value", model.profileSummary?.rating_9 ?? 0)
+                    y: .value("Value", model.profileSummary?.rating9 ?? 0)
                 )
                 BarMark(
                     x: .value("Rating", "5"),
-                    y: .value("Value", model.profileSummary?.rating_10 ?? 0)
+                    y: .value("Value", model.profileSummary?.rating10 ?? 0)
                 )
             }
             .chartLegend(.hidden)
@@ -84,7 +84,7 @@ struct ProfileView: View {
                 }
                 VStack {
                     Text("Average").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-                    Text(String(model.profileSummary?.average_rating ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
+                    Text(String(model.profileSummary?.averageRating ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
                 }
             }
             
@@ -101,7 +101,7 @@ struct ProfileView: View {
 
 extension ProfileView {
     @MainActor class ProfileViewModel: ObservableObject {
-        @Published var checkIns = [CheckInResponse]()
+        @Published var checkIns = [CheckIn]()
         @Published var profile: Profile?
         @Published var profileSummary: ProfileSummary?
         @Published var isLoading = false
@@ -131,7 +131,7 @@ extension ProfileView {
                     self.isLoading = true
                 }
 
-                let checkIns = try await query.execute().decoded(to: [CheckInResponse].self)
+                let checkIns = try await query.execute().decoded(to: [CheckIn].self)
 
                 DispatchQueue.main.async {
                     self.checkIns.append(contentsOf: checkIns)

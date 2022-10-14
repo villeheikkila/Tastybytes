@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var products = [ProductResponse]()
+    @State private var products = [Product]()
     @StateObject private var model = SearchViewModel()
     @State private var searchText = ""
 
@@ -23,7 +23,7 @@ struct SearchView: View {
 }
 
 struct ProductListItemView: View {
-    let product: ProductResponse
+    let product: Product
 
     @State private var searchText = ""
 
@@ -31,16 +31,16 @@ struct ProductListItemView: View {
         VStack(alignment: .leading, spacing: 3) {
             Text(product.subcategories[0].categories.name).font(.system(size: 12, weight: .bold, design: .default))
             HStack {
-                Text(product.sub_brands.brands.name).font(.headline)
+                Text(product.subBrand.brands.name).font(.headline)
                     .font(.system(size: 18, weight: .bold, design: .default))
 
-                if product.sub_brands.name != "" {
-                    Text(product.sub_brands.name).font(.headline)
+                if product.subBrand.name != "" {
+                    Text(product.subBrand.name).font(.headline)
                         .font(.system(size: 18, weight: .bold, design: .default))
                 }
                 Text(product.name).font(.headline).font(.system(size: 18, weight: .bold, design: .default))
             }
-            Text(product.sub_brands.brands.companies.name).font(.system(size: 12, design: .default))
+            Text(product.subBrand.brands.companies.name).font(.system(size: 12, design: .default))
             HStack {
                 ForEach(product.subcategories, id: \.id) { subcategory in
                     ChipView(title: subcategory.name)
@@ -53,7 +53,7 @@ struct ProductListItemView: View {
 extension SearchView {
     class SearchViewModel: ObservableObject {
         @Published var searchText: String = ""
-        @Published var products = [ProductResponse]()
+        @Published var products = [Product]()
 
         struct SearchProductsParams: Codable {
             let p_search_term: String
@@ -64,7 +64,7 @@ extension SearchView {
             let productSearchQuery = API.supabase.database.rpc(fn: "fnc__search_products", params: SearchProductsParams(p_search_term: partialSearch))
                 .select(columns: "id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))")
             Task {
-                let searchResults = try await  productSearchQuery.execute().decoded(to: [ProductResponse].self)
+                let searchResults = try await  productSearchQuery.execute().decoded(to: [Product].self)
                 
                 DispatchQueue.main.async {
                     self.products = searchResults
