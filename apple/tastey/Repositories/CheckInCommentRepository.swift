@@ -1,11 +1,12 @@
 
 
 struct SupabaseCheckInCommentRepository {
+    private let database = Supabase.client.database
     private let tableName = "check_in_comments"
     private let joinedWithProfile = "id, content, created_at, profiles (id, username, avatar_url))"
     
     func insert(newCheckInComment: NewCheckInComment) async throws -> CheckInComment {
-        return try await Supabase.client.database
+        return try await database
             .from(tableName)
             .insert(values: newCheckInComment, returning: .representation)
             .select(columns: joinedWithProfile)
@@ -16,7 +17,7 @@ struct SupabaseCheckInCommentRepository {
     }
     
     func update(id: Int, updateCheckInComment: UpdateCheckInComment) async throws -> CheckInComment {
-        return try await Supabase.client.database
+        return try await database
             .from(tableName)
             .update(values: updateCheckInComment, returning: .representation)
             .eq(column: "id", value: id)
@@ -27,7 +28,7 @@ struct SupabaseCheckInCommentRepository {
     }
     
     func loadByCheckInId(id: Int) async throws -> [CheckInComment] {
-        return try await Supabase.client.database
+        return try await database
             .from(tableName)
             .select(columns: joinedWithProfile)
             .eq(column: "check_in_id", value: id)
@@ -37,7 +38,7 @@ struct SupabaseCheckInCommentRepository {
     }
     
     func deleteById(id: Int) async throws -> Void {
-        try await Supabase.client.database
+        try await database
             .from(tableName)
             .delete()
             .eq(column: "id", value: id)

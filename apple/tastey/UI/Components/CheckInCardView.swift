@@ -9,10 +9,10 @@ struct CheckInCardView: View {
         NavigationLink(value: checkIn) {
             HStack {
                 VStack {
-                    NavigationLink(value: checkIn.profiles) {
+                    NavigationLink(value: checkIn.profile) {
                         HStack {
-                            Avatar(avatarUrl: checkIn.profiles.getAvatarURL(), size: 30, id: checkIn.profiles.id)
-                            Text(checkIn.profiles.username)
+                            AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 30, id: checkIn.profile.id)
+                            Text(checkIn.profile.username)
                                 .font(.system(size: 12, weight: .bold, design: .default))
                                 .foregroundColor(.primary)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -27,20 +27,20 @@ struct CheckInCardView: View {
                         VStack(alignment: .leading) {
                             Spacer()
                             
-                            NavigationLink(value: checkIn.products) {
+                            NavigationLink(value: checkIn.product) {
                                 VStack(alignment: .leading) {
-                                    Text(checkIn.products.subBrand.brands.name)
+                                    Text(checkIn.product.subBrand.brand.name)
                                         .font(.system(size: 18, weight: .bold, design: .default))
                                         .foregroundColor(.primary)
-                                    if checkIn.products.subBrand.name != "" {
-                                        Text(checkIn.products.subBrand.name)
+                                    if checkIn.product.subBrand.name != "" {
+                                        Text(checkIn.product.subBrand.name)
                                             .font(.system(size: 24, weight: .bold, design: .default))
                                             .foregroundColor(.primary)
                                     }
-                                    Text(checkIn.products.name)
+                                    Text(checkIn.product.name)
                                         .font(.system(size: 24, weight: .bold, design: .default))
                                         .foregroundColor(.primary)
-                                    Text(checkIn.products.subBrand.brands.companies.name)
+                                    Text(checkIn.product.subBrand.brand.company.name)
                                         .font(.system(size: 16, weight: .bold, design: .default))
                                         .foregroundColor(.secondary)
                                 }

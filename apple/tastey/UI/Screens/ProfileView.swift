@@ -15,7 +15,7 @@ struct ProfileView: View {
                     Text("Check-ins").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
                     Text(String(model.profileSummary?.totalCheckIns ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
                 }
-                Avatar(avatarUrl: model.profile?.getAvatarURL(), size: 100, id: userId)
+                AvatarView(avatarUrl: model.profile?.getAvatarURL(), size: 100, id: userId)
 
                 VStack {
                     Text("Unique").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)

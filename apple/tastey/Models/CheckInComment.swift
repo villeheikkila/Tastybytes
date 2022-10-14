@@ -4,7 +4,7 @@ struct CheckInComment: Identifiable, Hashable {
     let id: Int
     var content: String
     let createdAt: String
-    let profiles: Profile
+    let profile: Profile
         
     static func == (lhs: CheckInComment, rhs: CheckInComment) -> Bool {
         return lhs.id == rhs.id
@@ -16,7 +16,7 @@ extension CheckInComment: Decodable {
         case id
         case content
         case createdAt = "created_at"
-        case profiles
+        case profile = "profiles"
     }
     
     init(from decoder: Decoder) throws {
@@ -24,7 +24,7 @@ extension CheckInComment: Decodable {
         id = try values.decode(Int.self, forKey: .id)
         content = try values.decode(String.self, forKey: .content)
         createdAt = try values.decode(String.self, forKey: .createdAt)
-        profiles = try values.decode(Profile.self, forKey: .profiles)
+        profile = try values.decode(Profile.self, forKey: .profile)
     }
 }
 
