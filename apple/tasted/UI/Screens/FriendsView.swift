@@ -1,4 +1,4 @@
-import Foundation
+gimport Foundation
 import SwiftUI
 
 struct FriendsView: View {
