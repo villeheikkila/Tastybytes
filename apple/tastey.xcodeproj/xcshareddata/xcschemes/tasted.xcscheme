@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5CFEE57228ED69B100A8DD66"
-               BuildableName = "tasted.app"
-               BlueprintName = "tasted"
-               ReferencedContainer = "container:tasted.xcodeproj">
+               BuildableName = "tastey.app"
+               BlueprintName = "tastey"
+               ReferencedContainer = "container:tastey.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,14 +45,14 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5CFEE57228ED69B100A8DD66"
-            BuildableName = "tasted.app"
-            BlueprintName = "tasted"
-            ReferencedContainer = "container:tasted.xcodeproj">
+            BuildableName = "tastey.app"
+            BlueprintName = "tastey"
+            ReferencedContainer = "container:tastey.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "SUPABASE_API_KEY"
+            key = "SUPABASE_ANON"
             value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRta3Z1cW9vY3RvbHZoZHN1Ym90Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjUzODg1MTQsImV4cCI6MTk4MDk2NDUxNH0.KmVr-_SLfU86G5CUfaR6plT4wdgab1DHpOpFmLtJlu8"
             isEnabled = "YES">
          </EnvironmentVariable>
@@ -74,9 +74,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5CFEE57228ED69B100A8DD66"
-            BuildableName = "tasted.app"
-            BlueprintName = "tasted"
-            ReferencedContainer = "container:tasted.xcodeproj">
+            BuildableName = "tastey.app"
+            BlueprintName = "tastey"
+            ReferencedContainer = "container:tastey.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
