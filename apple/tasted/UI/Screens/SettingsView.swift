@@ -1,6 +1,4 @@
-import GoTrue
 import PhotosUI
-import SupabaseStorage
 import SwiftUI
 
 struct SettingsView: View {
@@ -39,19 +37,13 @@ struct SettingsView: View {
             }
 
             Section {
-                TextField("Username", text: $model.username) { _ in
-                    model.updateProfile()
-                }
-                .autocapitalization(.none)
-                .disableAutocorrection(true)
+                TextField("Username", text: $model.username)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                TextField("First Name", text: $model.firstName)
+                TextField("Last Name", text: $model.lastName)
+                Button("Update", action: { model.updateProfile() })
 
-                TextField("First Name", text: $model.firstName) { _ in
-                    model.updateProfile()
-                }
-
-                TextField("Last Name", text: $model.lastName) { _ in
-                    model.updateProfile()
-                }
             } header: {
                 Text("Profile")
             } footer: {
@@ -107,70 +99,46 @@ extension SettingsView {
 
         func getInitialValues() {
             Task {
-                let response = try? await API.supabase.database
-                    .from("profiles")
-                    .select(columns: "*", count: .exact)
-                    .eq(column: "id", value: API.supabase.auth.session?.user.id.uuidString ?? "")
-                    .limit(count: 1)
-                    .single()
-                    .execute()
+                let profile = try await SupabaseProfileRepository().loadProfileById(id: getCurrentUserIdUUID())
 
-                if let result = response {
-                    if let profile = try? result.decoded(to: Profile.self) {
-                        if let url = profile.avatarUrl != nil
-                            ? URL(
-                                string:
-                                "https://dmkvuqooctolvhdsubot.supabase.co/storage/v1/object/public/avatars/\(profile.avatarUrl!)"
-                            ) : nil {
-                            print(url)
-                            getData(from: url) { data, _, error in
-                                guard let data = data, error == nil else { return }
-                                DispatchQueue.main.async {
-                                    self.avatarImage = UIImage(data: data)
-                                }
-                            }
-                        }
-
+                if let url = profile.avatarUrl != nil
+                    ? URL(
+                        string:
+                        "https://dmkvuqooctolvhdsubot.supabase.co/storage/v1/object/public/avatars/\(profile.avatarUrl!)"
+                    ) : nil {
+                    print(url)
+                    getData(from: url) { data, _, error in
+                        guard let data = data, error == nil else { return }
                         DispatchQueue.main.async {
-                            self.username = profile.username
-                            self.lastName = profile.lastName ?? ""
-                            self.firstName = profile.firstName ?? ""
-                            self.email = API.supabase.auth.session?.user.email ?? ""
+                            self.avatarImage = UIImage(data: data)
                         }
                     }
-                } else {
-                    print("Couldn't fetch profile")
-                    return
+                }
+
+                DispatchQueue.main.async {
+                    self.username = profile.username
+                    self.lastName = profile.lastName ?? ""
+                    self.firstName = profile.firstName ?? ""
+                    self.email = API.supabase.auth.session?.user.email ?? ""
                 }
             }
         }
 
-        // TODO: Do not update before values have changed
         func updateProfile() {
-            let query = API.supabase.database.from("profiles")
-                .update(
-                    values: ProfileUpdate(
-                        username: username,
-                        first_name: firstName.isEmpty ? nil : firstName,
-                        last_name: lastName.isEmpty ? nil : lastName),
-                    returning: .representation
-                )
-                .eq(column: "id", value: API.supabase.auth.session?.user.id.uuidString ?? "")
+            let update = ProfileUpdate(
+                username: username,
+                firstName: firstName,
+                lastName: lastName)
 
             Task {
-                try? await query.execute()
+                try await SupabaseProfileRepository().updateProfile(id: getCurrentUserIdUUID(),
+                                                                    update: update)
             }
         }
 
         func exportData() {
             Task {
-                let response = try await API.supabase.database.rpc(fn: "fnc__export_data").csv()
-                    .execute()
-
-                guard let csvText = String(data: response.data, encoding: String.Encoding.utf8) else {
-                    return
-                }
-
+                let csvText = try await SupabaseProfileRepository().currentUserExport()
                 if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
                     do {
                         try csvText.write(
@@ -186,44 +154,36 @@ extension SettingsView {
         // TODO: Do not log out on email change
         func sendEmailVerificationLink() {
             Task {
-                try? await API.supabase.auth.update(user: UserAttributes(email: email))
+                try? await SupabaseProfileRepository().sendEmailVerification(email: email)
             }
         }
 
         func logOut() {
             Task {
-                try await API.supabase.auth.signOut()
+                try await SupabaseProfileRepository().logOut()
             }
         }
 
         func deleteCurrentAccount() {
             Task {
-                try await API.supabase.database.rpc(fn: "fnc__delete_current_user").execute()
-                try await API.supabase.auth.signOut()
+                try await SupabaseProfileRepository().deleteCurrentAccount()
+                try await SupabaseProfileRepository().logOut()
             }
         }
 
         func uploadAvatar(newAvatar: PhotosPickerItem?) {
             Task {
-                if let imageData = try? await newAvatar?.loadTransferable(type: Data.self),
-                   let image = UIImage(data: imageData), let data = image.jpegData(compressionQuality: 0.5) {
-                    let file = File(
-                        name: "avatar.jpeg", data: data, fileName: "avatar.jpeg", contentType: "image/jpeg")
-
-                    API.supabase.storage
-                        .from(id: "avatars")
-                        .upload(
-                            path: "\(getCurrentUserId())/avatar.jpeg", file: file, fileOptions: nil,
-                            completion: { result in
-                                switch result {
-                                case .success:
-                                    DispatchQueue.main.async {
-                                        self.avatarImage = image
-                                    }
-                                case let .failure(error):
-                                    print(error.localizedDescription)
-                                }
-                            })
+                if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
+                   let image = UIImage(data: imageData),
+                   let data = image.jpegData(compressionQuality: 0.5) {
+                    try await SupabaseProfileRepository().uploadAvatar(id: getCurrentUserIdUUID(), data: data, completion: { result in switch result {
+                    case .success:
+                        DispatchQueue.main.async {
+                            self.avatarImage = image
+                        }
+                    case let .failure(error):
+                        print(error.localizedDescription)
+                    }})
                 }
             }
         }

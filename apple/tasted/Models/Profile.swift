@@ -32,9 +32,17 @@ extension Profile: Decodable {
 }
 
 struct ProfileUpdate: Encodable {
-    let username: String
+    let username: String?
     let first_name: String?
     let last_name: String?
+    
+    init (username: String?, firstName: String?, lastName: String?) {
+        self.username = username
+        self.first_name = (firstName == nil || firstName?.isEmpty == true) ? nil : firstName
+        self.last_name = (lastName == nil || lastName?.isEmpty == true) ? nil : lastName
+    }
 }
 
-
+enum ProfileError: Error {
+    case csvExportFailure
+}
