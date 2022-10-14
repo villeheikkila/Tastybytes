@@ -37,16 +37,10 @@ extension CheckInPageView {
     @MainActor class CheckInPageViewModel: ObservableObject {
         @Published var checkInComments = [CheckInComment]()
         @Published var comment = ""
-        
-        func getCheckInCommets(checkInId: Int) {
-            let checkInCommentsQuery = API.supabase.database
-                .from("check_in_comments")
-                .select(columns: "id, content, created_at, profiles (id, username, avatar_url)")
-                .eq(column: "check_in_id", value: checkInId)
-                .order(column: "created_at")
 
+        func getCheckInCommets(checkInId: Int) {
             Task {
-                let checkIns = try await checkInCommentsQuery.execute().decoded(to: [CheckInComment].self)
+                let checkIns = try await SupabaseCheckInCommentRepository().loadByCheckInId(id: checkInId)
                 DispatchQueue.main.async {
                     self.checkInComments = checkIns
                 }
@@ -54,14 +48,8 @@ extension CheckInPageView {
         }
 
         func deleteComment(commentId: Int) {
-            let deleteCheckInCommentQuery = API.supabase.database
-                .from("check_in_comments")
-                .delete()
-                .eq(column: "id", value: commentId)
-
             Task {
-                try await deleteCheckInCommentQuery.execute()
-
+                try await SupabaseCheckInCommentRepository().deleteById(id: commentId)
                 DispatchQueue.main.async {
                     self.checkInComments.removeAll(where: {
                         $0.id == commentId
@@ -70,22 +58,11 @@ extension CheckInPageView {
             }
         }
 
-        struct CheckInCommentRequest: Encodable {
-            let content: String
-            let created_by: String
-            let check_in_id: Int
-        }
-
         func sendComment(checkInId: Int) {
-            let sendCheckInCommentsQuery = API.supabase.database
-                .from("check_in_comments")
-                .insert(values: CheckInCommentRequest(content: comment, created_by: getCurrentUserId(), check_in_id: checkInId), returning: .representation)
-                .select(columns: "id, content, created_at, profiles (id, username, avatar_url))")
-                .limit(count: 1)
-                .single()
+            let newCheckInComment = NewCheckInComment(content: comment, createdBy: SupabaseAuthRepository().getCurrentUserId(), checkInId: checkInId)
 
             Task {
-                let newCheckInComment = try await sendCheckInCommentsQuery.execute().decoded(to: CheckInComment.self)
+                let newCheckInComment = try await SupabaseCheckInCommentRepository().insert(newCheckInComment: newCheckInComment)
                 DispatchQueue.main.async {
                     self.checkInComments.append(newCheckInComment)
                     self.comment = ""
@@ -93,24 +70,17 @@ extension CheckInPageView {
             }
         }
 
-        struct EditCheckInCommentRequest: Encodable {
-            let content: String
-        }
-
         func editComment(commentId: Int, content: String) {
-            let editCheckInCommentQuery = API.supabase.database
-                .from("check_in_comments")
-                .update(values: EditCheckInCommentRequest(content: content))
-                .eq(column: "id", value: commentId)
+            let updateCheckInComment = UpdateCheckInComment(content: comment)
 
             Task {
-                try await editCheckInCommentQuery.execute()
-                
-                if let position = self.checkInComments.firstIndex(where: {$0.id == commentId}) {
+                let updated = try await SupabaseCheckInCommentRepository().update(id: commentId, updateCheckInComment: updateCheckInComment)
+
+                if let position = self.checkInComments.firstIndex(where: { $0.id == commentId }) {
                     self.checkInComments.remove(at: position)
                     var updatedComment = self.checkInComments[position]
-                    updatedComment.content = content
-                    
+                    updatedComment.content = updated.content
+
                     DispatchQueue.main.async {
                         self.checkInComments.insert(contentsOf: [updatedComment], at: position)
                     }
@@ -130,7 +100,7 @@ struct CommentItemView: View {
         CollapsibleView(
             content: {
                 HStack {
-                    Avatar(avatarUrl: comment.profiles.avatarUrl, size: 32, id: comment.profiles.id)
+                    Avatar(avatarUrl: comment.profiles.getAvatarURL(), size: 32, id: comment.profiles.id)
                     VStack(alignment: .leading) {
                         Text(comment.profiles.username).font(.system(size: 12, weight: .medium, design: .default))
                         Text(comment.content).font(.system(size: 14, weight: .light, design: .default))

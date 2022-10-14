@@ -5,10 +5,10 @@ private enum ProfileEnvironmentKey: EnvironmentKey {
     static var defaultValue: Profile?
 }
 
-struct RouterView: View {
+struct RootView: View {
     var body: some View {
-        UserProviderView(supabaseClient: API.supabase) {
-            AuthView(supabaseClient: API.supabase, loadingContent: ProgressView.init) { _ in
+        UserProviderView(supabaseClient: Supabase.client) {
+            AuthView(supabaseClient: Supabase.client, loadingContent: ProgressView.init) { _ in
                 NavigationStack {
                     AddNavigation {
                         Tabbar()
@@ -82,7 +82,7 @@ struct Tabbar: View {
                     Image(systemName: "magnifyingglass")
                     Text("Search")
                 }
-            ProfileView(userId: getCurrentUserIdUUID())
+            ProfileView(userId: SupabaseAuthRepository().getCurrentUserId())
                 .tabItem {
                     Image(systemName: "person.fill")
                     Text("Profile")
@@ -93,6 +93,6 @@ struct Tabbar: View {
 
 struct RouterView_Previews: PreviewProvider {
     static var previews: some View {
-        RouterView()
+        RootView()
     }
 }

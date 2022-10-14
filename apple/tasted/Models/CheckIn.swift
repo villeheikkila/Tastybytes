@@ -1,3 +1,5 @@
+import Foundation
+
 struct CheckIn: Identifiable, Hashable {
     let id: Int
     let rating: Double?
@@ -34,4 +36,19 @@ extension CheckIn: Decodable {
         products = try values.decode(Product.self, forKey: .products)
         checkInReactions = try values.decode([CheckInReaction].self, forKey: .checkInReactions)
     }
+}
+
+struct NewCheckIn: Encodable {
+    let product_id: Int
+    let created_by: String
+    let rating: Int?
+    let review: String?
+    
+    init (productId: Int, createdBy: UUID, rating: Int?, review: String?) {
+        self.rating = rating
+        self.review = review
+        self.product_id = productId
+        self.created_by = createdBy.uuidString.lowercased()
+    }
+    
 }

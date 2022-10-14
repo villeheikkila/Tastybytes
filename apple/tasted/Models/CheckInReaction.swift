@@ -25,3 +25,14 @@ extension CheckInReaction: Decodable {
         profiles = try values.decode(Profile.self, forKey: .profiles)
     }
 }
+
+
+struct NewCheckInReaction: Encodable {
+    let check_in_id: Int
+    let created_by: UUID
+    
+    init(checkInId: Int, createdBy: UUID) {
+        self.check_in_id = checkInId
+        self.created_by = createdBy
+    }
+}

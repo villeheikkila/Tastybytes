@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ReactionsView: View {
     let checkInId: Int
+    let currentUserId = SupabaseAuthRepository().getCurrentUserId()
     @State var checkInReactions: [CheckInReaction]
 
     init(checkInId: Int, checkInReactions: [CheckInReaction]) {
@@ -12,11 +13,11 @@ struct ReactionsView: View {
     var body: some View {
         HStack {
             ForEach(checkInReactions, id: \.id) {
-                reaction in Avatar(avatarUrl: reaction.profiles.avatarUrl, size: 24, id: reaction.profiles.id)
+                reaction in Avatar(avatarUrl: reaction.profiles.getAvatarURL(), size: 24, id: reaction.profiles.id)
             }
 
             Button {
-                if let existingReaction = checkInReactions.first(where: { $0.createdBy == getCurrentUserIdUUID() }) {
+                if let existingReaction = checkInReactions.first(where: { $0.createdBy == currentUserId }) {
                     removeReaction(reactionId: existingReaction.id)
                 } else {
                     reactToCheckIn()
@@ -29,14 +30,10 @@ struct ReactionsView: View {
     }
 
     func reactToCheckIn() {
-        let query = API.supabase.database.from("check_in_reactions")
-            .insert(values: CheckInReactionRequest(check_in_id: checkInId, created_by: getCurrentUserIdUUID()), returning: .representation)
-            .select(columns: "id, created_by, profiles (id, username, avatar_url)")
-            .limit(count: 1)
-            .single()
+        let newCheckInReaction = NewCheckInReaction(checkInId: checkInId, createdBy: currentUserId)
 
         Task {
-            let checkInReaction = try await query.execute().decoded(to: CheckInReaction.self)
+            let checkInReaction = try await SupabaseCheckInReactionsRepository().insert(newCheckInReaction: newCheckInReaction)
             DispatchQueue.main.async {
                 self.checkInReactions.append(checkInReaction)
             }
@@ -44,20 +41,12 @@ struct ReactionsView: View {
     }
 
     func removeReaction(reactionId: Int) {
-        let query = API.supabase.database.from("check_in_reactions")
-            .delete().eq(column: "id", value: reactionId)
-
         Task {
-            try await query.execute()
+            try await SupabaseCheckInReactionsRepository().deleteById(id: reactionId)
 
             DispatchQueue.main.async {
-                self.checkInReactions.removeAll(where: { $0.createdBy == getCurrentUserIdUUID() })
+                self.checkInReactions.removeAll(where: { $0.createdBy == currentUserId })
             }
         }
-    }
-
-    struct CheckInReactionRequest: Encodable {
-        let check_in_id: Int
-        let created_by: UUID
     }
 }

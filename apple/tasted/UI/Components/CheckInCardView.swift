@@ -11,7 +11,7 @@ struct CheckInCardView: View {
                 VStack {
                     NavigationLink(value: checkIn.profiles) {
                         HStack {
-                            Avatar(avatarUrl: checkIn.profiles.avatarUrl, size: 30, id: checkIn.profiles.id)
+                            Avatar(avatarUrl: checkIn.profiles.getAvatarURL(), size: 30, id: checkIn.profiles.id)
                             Text(checkIn.profiles.username)
                                 .font(.system(size: 12, weight: .bold, design: .default))
                                 .foregroundColor(.primary)

@@ -48,18 +48,12 @@ extension ActivityView {
 
         func fetchActivityFeedItems() {
             let (from, to) = getPagination(page: page, size: pageSize)
-
-            let query = API.supabase.database
-                .rpc(fn: "fnc__get_activity_feed")
-                .select(columns: "id, rating, review, created_at, profiles (id, username, avatar_url), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, avatar_url))")
-                .range(from: from, to: to)
-
             Task {
                 DispatchQueue.main.async {
                     self.isLoading = true
                 }
 
-                let checkIns = try await query.execute().decoded(to: [CheckIn].self)
+                let checkIns = try await SupabaseCheckInRepository().loadCurrentUserActivityFeed(from: from, to: to)
 
                 DispatchQueue.main.async {
                     self.checkIns.append(contentsOf: checkIns)
