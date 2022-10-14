@@ -1,7 +1,7 @@
 import CachedAsyncImage
 import SwiftUI
 
-struct Avatar: View {
+struct AvatarView: View {
     let avatarUrl: URL?
     let size: CGFloat
     let id: UUID
