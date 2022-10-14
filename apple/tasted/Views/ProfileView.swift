@@ -15,7 +15,7 @@ struct ProfileView: View {
                     Text("Check-ins").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
                     Text(String(model.profileSummary?.total_check_ins ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
                 }
-                Avatar(avatarUrl: model.profile?.avatar_url, size: 100)
+                Avatar(avatarUrl: model.profile?.avatar_url, size: 100, id: userId)
 
                 VStack {
                     Text("Unique").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
@@ -87,12 +87,14 @@ struct ProfileView: View {
                     Text(String(model.profileSummary?.average_rating ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
                 }
             }
-
-            ForEach(model.checkIns, id: \.id) { checkIn in
-                CheckInCardView(checkIn: checkIn)
-            }
-        }.task {
-            model.getInitialData(userId: userId)
+            
+            InfiniteScroll(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(userId: userId) },
+                           refresh: {
+                model.refreshCheckIns()
+            },
+                           content: {
+                CheckInCardView(checkIn: $0)
+            })
         }
     }
 }
@@ -102,16 +104,45 @@ extension ProfileView {
         @Published var checkIns = [CheckInResponse]()
         @Published var profile: Profile?
         @Published var profileSummary: ProfileSummary?
+        @Published var isLoading = false
+        let pageSize = 1
+        var page = 0
+
+        func refreshCheckIns() {
+            // TODO: Implement fetching of new items
+        }
+
+        func fetchMoreCheckIns(userId: UUID) {
+            let (from, to) = getPagination(page: page, size: pageSize)
+            
+            if isLoading {
+                return
+            }
+
+            let query = API.supabase.database
+                .from("check_ins")
+                .select(columns: "id, rating, review, created_at, profiles (id, username, avatar_url), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, avatar_url))")
+                .eq(column: "created_by", value: userId.uuidString.lowercased())
+                .order(column: "created_at")
+                .range(from: from, to: to)
+
+            Task {
+                DispatchQueue.main.async {
+                    self.isLoading = true
+                }
+
+                let checkIns = try await query.execute().decoded(to: [CheckInResponse].self)
+
+                DispatchQueue.main.async {
+                    self.checkIns.append(contentsOf: checkIns)
+                    self.page += 1
+                    self.isLoading = false
+                }
+            }
+        }
 
         func getInitialData(userId: UUID) {
             let id = userId.uuidString.lowercased()
-
-            let checkInQuery = API.supabase.database
-                .from("check_ins")
-                .select(columns: "id, rating, review, created_at, profiles (id, username, avatar_url), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, avatar_url))")
-                .eq(column: "created_by", value: id)
-                .order(column: "created_at")
-                .limit(count: 5)
 
             let profileQuery = API.supabase.database
                 .from("profiles")
@@ -130,13 +161,6 @@ extension ProfileView {
                 let profile = try await profileQuery.execute().decoded(to: Profile.self)
                 DispatchQueue.main.async {
                     self.profile = profile
-                }
-            }
-
-            Task {
-                let checkIns = try await checkInQuery.execute().decoded(to: [CheckInResponse].self)
-                DispatchQueue.main.async {
-                    self.checkIns = checkIns
                 }
             }
 

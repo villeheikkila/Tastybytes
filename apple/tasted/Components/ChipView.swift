@@ -12,11 +12,11 @@ struct ChipView: View {
             Text(title).font(.system(size: 8, weight: .bold, design: .default))
         }.padding(.all, 3)
             .foregroundColor(.white)
-            .background(Color.blue)
+            .background(Color(.systemBlue))
             .cornerRadius(20)
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(Color.blue, lineWidth: 1.5)
+                    .stroke(Color(.systemBlue), lineWidth: 1.5)
             )
     }
 }

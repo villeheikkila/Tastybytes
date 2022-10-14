@@ -232,25 +232,3 @@ struct SignInOrSignUpView: View {
     }
   }
 }
-
-@ViewBuilder
-func LoadingView() -> some View {
-  if #available(iOS 14.0, *) {
-    ProgressView()
-  } else {
-    Text("Loading...")
-  }
-}
-
-#if DEBUG
-  struct AuthView_Preview: PreviewProvider {
-    static var previews: some View {
-      AuthView(
-        supabaseClient: .init(supabaseURL: URL(fileURLWithPath: ""), supabaseKey: ""),
-        loadingContent: LoadingView
-      ) { session in
-        Text("Preview")
-      }
-    }
-  }
-#endif

@@ -24,6 +24,11 @@
 		5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */; };
 		5CD10A3D28F75B7A0001CFC2 /* ProductPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3C28F75B7A0001CFC2 /* ProductPageView.swift */; };
 		5CD10A3F28F760520001CFC2 /* CheckInPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3E28F760520001CFC2 /* CheckInPage.swift */; };
+		5CD10A4128F80B4F0001CFC2 /* CollapsibleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4028F80B4F0001CFC2 /* CollapsibleView.swift */; };
+		5CD10A4328F82E000001CFC2 /* InfiniteScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */; };
+		5CD10A4528F952030001CFC2 /* AddCheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4428F952030001CFC2 /* AddCheckInView.swift */; };
+		5CD10A4728F9522D0001CFC2 /* RatingPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4628F9522D0001CFC2 /* RatingPicker.swift */; };
+		5CD10A4928F956AC0001CFC2 /* ProductCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */; };
 		5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB562E28F596A200F13A1E /* ChipView.swift */; };
 		5CFB563128F5974100F13A1E /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563028F5974100F13A1E /* Supabase.swift */; };
 		5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563228F597ED00F13A1E /* RatingView.swift */; };
@@ -52,6 +57,11 @@
 		5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardView.swift; sourceTree = "<group>"; };
 		5CD10A3C28F75B7A0001CFC2 /* ProductPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPageView.swift; sourceTree = "<group>"; };
 		5CD10A3E28F760520001CFC2 /* CheckInPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInPage.swift; sourceTree = "<group>"; };
+		5CD10A4028F80B4F0001CFC2 /* CollapsibleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleView.swift; sourceTree = "<group>"; };
+		5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScroll.swift; sourceTree = "<group>"; };
+		5CD10A4428F952030001CFC2 /* AddCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCheckInView.swift; sourceTree = "<group>"; };
+		5CD10A4628F9522D0001CFC2 /* RatingPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPicker.swift; sourceTree = "<group>"; };
+		5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCardView.swift; sourceTree = "<group>"; };
 		5CFB562E28F596A200F13A1E /* ChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipView.swift; sourceTree = "<group>"; };
 		5CFB563028F5974100F13A1E /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
 		5CFB563228F597ED00F13A1E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
@@ -124,6 +134,11 @@
 				5CFB563228F597ED00F13A1E /* RatingView.swift */,
 				5CD10A3828F6A1CA0001CFC2 /* MiniAvatarView.swift */,
 				5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */,
+				5CD10A4028F80B4F0001CFC2 /* CollapsibleView.swift */,
+				5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */,
+				5CD10A4428F952030001CFC2 /* AddCheckInView.swift */,
+				5CD10A4628F9522D0001CFC2 /* RatingPicker.swift */,
+				5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -249,8 +264,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C11ECBB28EEF24700CCDE6A /* ActivityView.swift in Sources */,
+				5CD10A4128F80B4F0001CFC2 /* CollapsibleView.swift in Sources */,
 				5CFEE57928ED69B100A8DD66 /* RouterView.swift in Sources */,
 				5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */,
+				5CD10A4328F82E000001CFC2 /* InfiniteScroll.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* tastedApp.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
 				5CD10A3D28F75B7A0001CFC2 /* ProductPageView.swift in Sources */,
@@ -259,15 +276,18 @@
 				5C11ECBD28EEF30600CCDE6A /* SearchView.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsView.swift in Sources */,
 				5C11ECB628EEEFB300CCDE6A /* SettingsView.swift in Sources */,
+				5CD10A4728F9522D0001CFC2 /* RatingPicker.swift in Sources */,
 				5CD10A3928F6A1CA0001CFC2 /* MiniAvatarView.swift in Sources */,
 				5C25349A28EDA68400A78780 /* CompanyView.swift in Sources */,
 				5CD10A3F28F760520001CFC2 /* CheckInPage.swift in Sources */,
+				5CD10A4528F952030001CFC2 /* AddCheckInView.swift in Sources */,
 				5C11ECB128EECCAB00CCDE6A /* Environment+Session.swift in Sources */,
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5C11ECAF28EECC8500CCDE6A /* AuthView.swift in Sources */,
 				5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */,
 				5CFB563128F5974100F13A1E /* Supabase.swift in Sources */,
 				5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */,
+				5CD10A4928F956AC0001CFC2 /* ProductCardView.swift in Sources */,
 				5C25349628EDA58700A78780 /* API.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -325,7 +345,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -379,7 +399,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

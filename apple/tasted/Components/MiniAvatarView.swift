@@ -4,6 +4,7 @@ import SwiftUI
 struct Avatar: View {
     let avatarUrl: String?
     let size: CGFloat
+    let id: UUID
 
     var body: some View {
         if let avatarUrL = avatarUrl {
@@ -20,6 +21,9 @@ struct Avatar: View {
                 .clipShape(Circle())
                 .aspectRatio(contentMode: .fill)
                 .frame(width: size, height: size)
+                .foregroundColor(getConsistentColor(seed: id.uuidString))
         }
     }
 }
+
+

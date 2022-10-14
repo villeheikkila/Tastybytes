@@ -60,14 +60,14 @@ extension SearchView {
         }
 
         func searchProducts() {
+            let partialSearch = "%\(searchText)%"
+            let productSearchQuery = API.supabase.database.rpc(fn: "fnc__search_products", params: SearchProductsParams(p_search_term: partialSearch))
+                .select(columns: "id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))")
             Task {
-                let response = try await API.supabase.database.rpc(fn: "fnc__search_products", params: SearchProductsParams(p_search_term: searchText))
-                    .select(columns: "id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))").execute()
-
-                let result = try response.decoded(to: [ProductResponse].self)
-
+                let searchResults = try await  productSearchQuery.execute().decoded(to: [ProductResponse].self)
+                
                 DispatchQueue.main.async {
-                    self.products = result
+                    self.products = searchResults
                 }
             }
         }

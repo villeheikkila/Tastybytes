@@ -95,6 +95,7 @@ struct CheckInResponse: Identifiable, Codable, Hashable {
     let profiles: ProfileResponse
     let products: ProductResponse
     let check_in_reactions: [CheckInReactionResponse]
+    var page: String?
 
     static func == (lhs: CheckInResponse, rhs: CheckInResponse) -> Bool {
         return lhs.id == rhs.id
@@ -103,10 +104,9 @@ struct CheckInResponse: Identifiable, Codable, Hashable {
 
 struct CheckInCommentResponse: Identifiable, Codable, Hashable {
     let id: Int
-    let content: String
+    var content: String
     let created_at: String
     let profiles: ProfileResponse
-    
     
     static func == (lhs: CheckInCommentResponse, rhs: CheckInCommentResponse) -> Bool {
         return lhs.id == rhs.id
