@@ -19,7 +19,7 @@ func getCurrentUserIdUUID() -> UUID {
 }
 
 func printData(data: Data) {
-    print(String(data: data, encoding: String.Encoding.utf8) ?? "")
+    print("DATA: ", String(data: data, encoding: String.Encoding.utf8) ?? "")
 }
 
 func getAvatarURL(avatarUrl: String) -> URL {
