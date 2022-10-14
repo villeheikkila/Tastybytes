@@ -4,12 +4,12 @@ struct NewCompany: Codable {
     let name: String
 }
 
-struct Company: Identifiable, Codable {
-    let id: Int?
+struct Company: Identifiable, Decodable, Hashable {
+    let id: Int
     let name: String
-    let created_at: String?
-    let created_by: String?
-    let logo_url: String?
-}
 
+    static func == (lhs: Company, rhs: Company) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
 

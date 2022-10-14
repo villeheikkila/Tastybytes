@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct AddCheckInView: View {
-    let product: ProductResponse
+    let product: Product
     @State var review: String = ""
     @State var rating: Int? = nil
     @Environment(\.dismiss) var dismiss
-    let onCreation: ((_ checkIn: CheckInResponse) -> Void)
+    let onCreation: ((_ checkIn: CheckIn) -> Void)
 
 
     var body: some View {
@@ -44,7 +44,7 @@ struct AddCheckInView: View {
             .single()
 
         Task {
-            let newCheckIn = try await addCheckInQuery.execute().decoded(to: CheckInResponse.self)
+            let newCheckIn = try await addCheckInQuery.execute().decoded(to: CheckIn.self)
             onCreation(newCheckIn)
             dismiss()
         }

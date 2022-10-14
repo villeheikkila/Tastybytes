@@ -29,8 +29,16 @@
 		5CD10A4528F952030001CFC2 /* AddCheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4428F952030001CFC2 /* AddCheckInView.swift */; };
 		5CD10A4728F9522D0001CFC2 /* RatingPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4628F9522D0001CFC2 /* RatingPicker.swift */; };
 		5CD10A4928F956AC0001CFC2 /* ProductCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */; };
+		5CD10A4B28F980860001CFC2 /* CheckInComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4A28F980860001CFC2 /* CheckInComment.swift */; };
+		5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4C28F985D00001CFC2 /* CheckIn.swift */; };
+		5CD10A4F28F98C0B0001CFC2 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4E28F98C0B0001CFC2 /* Category.swift */; };
+		5CD10A5128F98C8C0001CFC2 /* Subcategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5028F98C8C0001CFC2 /* Subcategory.swift */; };
+		5CD10A5328F98CFC0001CFC2 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5228F98CFC0001CFC2 /* Brand.swift */; };
+		5CD10A5528F98D220001CFC2 /* SubBrand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5428F98D220001CFC2 /* SubBrand.swift */; };
+		5CD10A5728F98D490001CFC2 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5628F98D490001CFC2 /* Product.swift */; };
+		5CD10A5928F98D8A0001CFC2 /* CheckInReaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */; };
 		5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB562E28F596A200F13A1E /* ChipView.swift */; };
-		5CFB563128F5974100F13A1E /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563028F5974100F13A1E /* Supabase.swift */; };
+		5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563028F5974100F13A1E /* ProfileSummary.swift */; };
 		5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563228F597ED00F13A1E /* RatingView.swift */; };
 		5CFB563628F5A76600F13A1E /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFB563528F5A76600F13A1E /* CachedAsyncImage */; };
 		5CFEE57728ED69B100A8DD66 /* tastedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57628ED69B100A8DD66 /* tastedApp.swift */; };
@@ -62,8 +70,16 @@
 		5CD10A4428F952030001CFC2 /* AddCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCheckInView.swift; sourceTree = "<group>"; };
 		5CD10A4628F9522D0001CFC2 /* RatingPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPicker.swift; sourceTree = "<group>"; };
 		5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCardView.swift; sourceTree = "<group>"; };
+		5CD10A4A28F980860001CFC2 /* CheckInComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInComment.swift; sourceTree = "<group>"; };
+		5CD10A4C28F985D00001CFC2 /* CheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckIn.swift; sourceTree = "<group>"; };
+		5CD10A4E28F98C0B0001CFC2 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		5CD10A5028F98C8C0001CFC2 /* Subcategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subcategory.swift; sourceTree = "<group>"; };
+		5CD10A5228F98CFC0001CFC2 /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
+		5CD10A5428F98D220001CFC2 /* SubBrand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrand.swift; sourceTree = "<group>"; };
+		5CD10A5628F98D490001CFC2 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInReaction.swift; sourceTree = "<group>"; };
 		5CFB562E28F596A200F13A1E /* ChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipView.swift; sourceTree = "<group>"; };
-		5CFB563028F5974100F13A1E /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
+		5CFB563028F5974100F13A1E /* ProfileSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummary.swift; sourceTree = "<group>"; };
 		5CFB563228F597ED00F13A1E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		5CFEE57328ED69B100A8DD66 /* tasted.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tasted.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CFEE57628ED69B100A8DD66 /* tastedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tastedApp.swift; sourceTree = "<group>"; };
@@ -114,7 +130,15 @@
 			children = (
 				5C08B6E128ED7B05009218D7 /* Company.swift */,
 				5C11ECBF28EF434700CCDE6A /* Profile.swift */,
-				5CFB563028F5974100F13A1E /* Supabase.swift */,
+				5CFB563028F5974100F13A1E /* ProfileSummary.swift */,
+				5CD10A4A28F980860001CFC2 /* CheckInComment.swift */,
+				5CD10A4C28F985D00001CFC2 /* CheckIn.swift */,
+				5CD10A4E28F98C0B0001CFC2 /* Category.swift */,
+				5CD10A5028F98C8C0001CFC2 /* Subcategory.swift */,
+				5CD10A5228F98CFC0001CFC2 /* Brand.swift */,
+				5CD10A5428F98D220001CFC2 /* SubBrand.swift */,
+				5CD10A5628F98D490001CFC2 /* Product.swift */,
+				5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -268,15 +292,20 @@
 				5CFEE57928ED69B100A8DD66 /* RouterView.swift in Sources */,
 				5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */,
 				5CD10A4328F82E000001CFC2 /* InfiniteScroll.swift in Sources */,
+				5CD10A5728F98D490001CFC2 /* Product.swift in Sources */,
+				5CD10A5328F98CFC0001CFC2 /* Brand.swift in Sources */,
+				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* tastedApp.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
 				5CD10A3D28F75B7A0001CFC2 /* ProductPageView.swift in Sources */,
 				5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */,
+				5CD10A4B28F980860001CFC2 /* CheckInComment.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileView.swift in Sources */,
 				5C11ECBD28EEF30600CCDE6A /* SearchView.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsView.swift in Sources */,
 				5C11ECB628EEEFB300CCDE6A /* SettingsView.swift in Sources */,
 				5CD10A4728F9522D0001CFC2 /* RatingPicker.swift in Sources */,
+				5CD10A5928F98D8A0001CFC2 /* CheckInReaction.swift in Sources */,
 				5CD10A3928F6A1CA0001CFC2 /* MiniAvatarView.swift in Sources */,
 				5C25349A28EDA68400A78780 /* CompanyView.swift in Sources */,
 				5CD10A3F28F760520001CFC2 /* CheckInPage.swift in Sources */,
@@ -285,7 +314,10 @@
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5C11ECAF28EECC8500CCDE6A /* AuthView.swift in Sources */,
 				5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */,
-				5CFB563128F5974100F13A1E /* Supabase.swift in Sources */,
+				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
+				5CD10A5528F98D220001CFC2 /* SubBrand.swift in Sources */,
+				5CD10A4F28F98C0B0001CFC2 /* Category.swift in Sources */,
+				5CD10A5128F98C8C0001CFC2 /* Subcategory.swift in Sources */,
 				5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */,
 				5CD10A4928F956AC0001CFC2 /* ProductCardView.swift in Sources */,
 				5C25349628EDA58700A78780 /* API.swift in Sources */,

@@ -1,22 +1,22 @@
 import SwiftUI
 
 struct ProductCardView: View {
-    let product: ProductResponse
+    let product: Product
 
     var body: some View {
         VStack {
-            Text(product.sub_brands.brands.name)
+            Text(product.subBrand.brands.name)
                 .font(.system(size: 18, weight: .bold, design: .default))
                 .foregroundColor(.white)
-            if product.sub_brands.name != "" {
-                Text(product.sub_brands.name)
+            if product.subBrand.name != "" {
+                Text(product.subBrand.name)
                     .font(.system(size: 24, weight: .bold, design: .default))
                     .foregroundColor(.primary)
             }
             Text(product.name)
                 .font(.system(size: 24, weight: .bold, design: .default))
                 .foregroundColor(.primary)
-            Text(product.sub_brands.brands.companies.name)
+            Text(product.subBrand.brands.companies.name)
                 .font(.system(size: 16, weight: .bold, design: .default))
                 .foregroundColor(.secondary)
         }

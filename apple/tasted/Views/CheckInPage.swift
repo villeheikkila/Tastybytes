@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CheckInPageView: View {
-    let checkIn: CheckInResponse
+    let checkIn: CheckIn
     @StateObject private var model = CheckInPageViewModel()
 
     var body: some View {
@@ -35,7 +35,7 @@ struct CheckInPageView: View {
 
 extension CheckInPageView {
     @MainActor class CheckInPageViewModel: ObservableObject {
-        @Published var checkInComments = [CheckInCommentResponse]()
+        @Published var checkInComments = [CheckInComment]()
         @Published var comment = ""
         
         func getCheckInCommets(checkInId: Int) {
@@ -46,7 +46,7 @@ extension CheckInPageView {
                 .order(column: "created_at")
 
             Task {
-                let checkIns = try await checkInCommentsQuery.execute().decoded(to: [CheckInCommentResponse].self)
+                let checkIns = try await checkInCommentsQuery.execute().decoded(to: [CheckInComment].self)
                 DispatchQueue.main.async {
                     self.checkInComments = checkIns
                 }
@@ -85,7 +85,7 @@ extension CheckInPageView {
                 .single()
 
             Task {
-                let newCheckInComment = try await sendCheckInCommentsQuery.execute().decoded(to: CheckInCommentResponse.self)
+                let newCheckInComment = try await sendCheckInCommentsQuery.execute().decoded(to: CheckInComment.self)
                 DispatchQueue.main.async {
                     self.checkInComments.append(newCheckInComment)
                     self.comment = ""
@@ -121,7 +121,7 @@ extension CheckInPageView {
 }
 
 struct CommentItemView: View {
-    let comment: CheckInCommentResponse
+    let comment: CheckInComment
     @State var content: String
     let deleteComment: (_ commentId: Int) -> Void
     let editComment: (_ commentId: Int, _ content: String) -> Void
@@ -130,11 +130,12 @@ struct CommentItemView: View {
         CollapsibleView(
             content: {
                 HStack {
-                    Avatar(avatarUrl: comment.profiles.avatar_url, size: 32, id: comment.profiles.id)
+                    Avatar(avatarUrl: comment.profiles.avatarUrl, size: 32, id: comment.profiles.id)
                     VStack(alignment: .leading) {
                         Text(comment.profiles.username).font(.system(size: 12, weight: .medium, design: .default))
                         Text(comment.content).font(.system(size: 14, weight: .light, design: .default))
                     }
+                    Text(comment.createdAt)
                 }
             },
             expandedContent: {

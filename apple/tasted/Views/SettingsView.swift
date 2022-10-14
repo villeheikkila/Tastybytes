@@ -117,10 +117,10 @@ extension SettingsView {
 
                 if let result = response {
                     if let profile = try? result.decoded(to: Profile.self) {
-                        if let url = profile.avatar_url != nil
+                        if let url = profile.avatarUrl != nil
                             ? URL(
                                 string:
-                                "https://dmkvuqooctolvhdsubot.supabase.co/storage/v1/object/public/avatars/\(profile.avatar_url!)"
+                                "https://dmkvuqooctolvhdsubot.supabase.co/storage/v1/object/public/avatars/\(profile.avatarUrl!)"
                             ) : nil {
                             print(url)
                             getData(from: url) { data, _, error in
@@ -133,8 +133,8 @@ extension SettingsView {
 
                         DispatchQueue.main.async {
                             self.username = profile.username
-                            self.lastName = profile.last_name ?? ""
-                            self.firstName = profile.first_name ?? ""
+                            self.lastName = profile.lastName ?? ""
+                            self.firstName = profile.firstName ?? ""
                             self.email = API.supabase.auth.session?.user.email ?? ""
                         }
                     }
