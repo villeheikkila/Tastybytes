@@ -3,6 +3,8 @@ import GoTrue
 import SupabaseStorage
 
 struct SupabaseAuthRepository {
+    let auth = Supabase.client.auth
+    
     func getCurrentUserId() -> UUID {
         guard let user = Supabase.client.auth.session?.user.id else { fatalError("User session is missing! This function should only be called in views where user session is already active.)") }
         return user

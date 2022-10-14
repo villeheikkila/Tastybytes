@@ -100,9 +100,9 @@ struct CommentItemView: View {
         CollapsibleView(
             content: {
                 HStack {
-                    Avatar(avatarUrl: comment.profiles.getAvatarURL(), size: 32, id: comment.profiles.id)
+                    AvatarView(avatarUrl: comment.profile.getAvatarURL(), size: 32, id: comment.profile.id)
                     VStack(alignment: .leading) {
-                        Text(comment.profiles.username).font(.system(size: 12, weight: .medium, design: .default))
+                        Text(comment.profile.username).font(.system(size: 12, weight: .medium, design: .default))
                         Text(comment.content).font(.system(size: 14, weight: .light, design: .default))
                     }
                     Text(comment.createdAt)

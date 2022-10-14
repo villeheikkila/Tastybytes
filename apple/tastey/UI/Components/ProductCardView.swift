@@ -5,7 +5,7 @@ struct ProductCardView: View {
 
     var body: some View {
         VStack {
-            Text(product.subBrand.brands.name)
+            Text(product.subBrand.brand.name)
                 .font(.system(size: 18, weight: .bold, design: .default))
                 .foregroundColor(.white)
             if product.subBrand.name != "" {
@@ -16,7 +16,7 @@ struct ProductCardView: View {
             Text(product.name)
                 .font(.system(size: 24, weight: .bold, design: .default))
                 .foregroundColor(.primary)
-            Text(product.subBrand.brands.companies.name)
+            Text(product.subBrand.brand.company.name)
                 .font(.system(size: 16, weight: .bold, design: .default))
                 .foregroundColor(.secondary)
         }

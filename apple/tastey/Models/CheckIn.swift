@@ -5,8 +5,8 @@ struct CheckIn: Identifiable, Hashable {
     let rating: Double?
     let review: String?
     let createdAt: String
-    let profiles: Profile
-    let products: Product
+    let profile: Profile
+    let product: Product
     let checkInReactions: [CheckInReaction]
     
     static func == (lhs: CheckIn, rhs: CheckIn) -> Bool {
@@ -20,8 +20,8 @@ extension CheckIn: Decodable {
         case rating
         case review
         case createdAt = "created_at"
-        case profiles
-        case products
+        case profile = "profiles"
+        case product = "products"
         case checkInReactions = "check_in_reactions"
         
     }
@@ -32,8 +32,8 @@ extension CheckIn: Decodable {
         rating = try values.decodeIfPresent(Double.self, forKey: .rating)
         review = try values.decodeIfPresent(String.self, forKey: .review)
         createdAt = try values.decode(String.self, forKey: .createdAt)
-        profiles = try values.decode(Profile.self, forKey: .profiles)
-        products = try values.decode(Product.self, forKey: .products)
+        profile = try values.decode(Profile.self, forKey: .profile)
+        product = try values.decode(Product.self, forKey: .product)
         checkInReactions = try values.decode([CheckInReaction].self, forKey: .checkInReactions)
     }
 }

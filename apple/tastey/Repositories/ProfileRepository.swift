@@ -3,11 +3,12 @@ import GoTrue
 import SupabaseStorage
 
 struct SupabaseProfileRepository {
+    private let database = Supabase.client.database
     private let tableName = "profiles"
     private let saved = "id, username, first_name, last_name, avatar_url"
     
     func loadProfileById(id: UUID) async throws -> Profile {
-        return try await Supabase.client.database
+        return try await database
             .from(tableName)
             .select(columns: saved)
             .eq(column: "id", value: id.uuidString.lowercased())
@@ -18,7 +19,8 @@ struct SupabaseProfileRepository {
     }
     
     func updateProfile(id: UUID, update: ProfileUpdate) async throws -> Profile {
-        return try await Supabase.client.database.from(tableName)
+        return try await database
+            .from(tableName)
             .update(
                 values: update,
                 returning: .representation
@@ -31,11 +33,45 @@ struct SupabaseProfileRepository {
     }
     
     func currentUserExport() async throws -> String {
-        let response =  try await Supabase.client.database.rpc(fn: "fnc__export_data").csv().execute()
+        let response =  try await database
+            .rpc(fn: "fnc__export_data")
+            .csv()
+            .execute()
+        
         guard let csv = String(data: response.data, encoding: String.Encoding.utf8) else {
             throw ProfileError.csvExportFailure
         }
+        
         return csv
+    }
+    
+    func search(searchTerm: String) async throws -> [Profile] {
+        struct SearchProfilesParams: Encodable {
+            let p_search_term: String
+            
+            init(searchTerm: String) {
+                self.p_search_term = "%\(searchTerm)%"
+            }
+        }
+        return try await database
+            .rpc(fn: "fnc__search_profiles", params: SearchProfilesParams(searchTerm: searchTerm))
+            .select(columns: saved)
+            .execute()
+            .decoded(to: [Profile].self)
+    }
+    
+    func loadFriendsByUsername(username: String) async throws -> [Profile] {
+        struct GetFriendsByUsernamParams: Codable {
+            let p_username: String
+            init(username: String) {
+                self.p_username = username
+            }
+        }
+        return try await database
+            .rpc(fn: "fnc__get_friends_by_username", params: GetFriendsByUsernamParams(username: username))
+            .select(columns: saved)
+            .execute()
+            .decoded(to: [Profile].self)
     }
     
     func uploadAvatar(id: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws -> Void {
@@ -50,7 +86,9 @@ struct SupabaseProfileRepository {
     }
     
     func deleteCurrentAccount() async throws -> Void {
-        try await Supabase.client.database.rpc(fn: "fnc__delete_current_user").execute()
+        try await database
+            .rpc(fn: "fnc__delete_current_user")
+            .execute()
     }
 }
 

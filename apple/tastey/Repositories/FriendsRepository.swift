@@ -1,21 +1,32 @@
 import Foundation
+import PostgREST
 
-struct SupabaseProductRepository {
-    private let joined = "id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))"
+struct SupabaseFriendsRepository {
+    private let database = Supabase.client.database
+    private let tableName = "friends"
+    private let savedLimited = "id, user_id_1, user_id_2, status"
+    private let joined = "id, status, sender:user_id_1 (id, username, first_name, last_name, avatar_url), receiver:user_id_2 (id, username, first_name, last_name, avatar_url)"
     
-    
-    func search(searchTerm: String) async throws -> [Product] {
-        struct SearchProductsParams: Codable {
-            let p_search_term: String
-            init(searchTerm: String) {
-                self.p_search_term = "%\(searchTerm)%"
-            }
-        }
-        
-        return try await Supabase.client.database.rpc(fn: "fnc__search_products", params: SearchProductsParams(searchTerm: searchTerm))
+    func loadByUserId(userId: UUID) async throws -> [Friend] {
+        return try await database
+            .from(tableName)
             .select(columns: joined)
+            .or(filters: "user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
             .execute()
-            .decoded(to: [Product].self)
+            .decoded(to: [Friend].self)
     }
+    
+    func insert(newFriend: NewFriend) async throws -> Friend {
+        return try await database
+            .from(tableName)
+            .insert(values: newFriend, returning: .representation)
+            .select(columns: savedLimited)
+            .single()
+            .execute()
+            .decoded(to: Friend.self)
+    }
+    
 }
+    
+
 
