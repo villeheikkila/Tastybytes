@@ -59,19 +59,12 @@ extension ProductPageView {
         func fetchMoreCheckIns(productId: Int) {
             let (from, to) = getPagination(page: page, size: pageSize)
 
-            let query = API.supabase.database
-                .from("check_ins")
-                .select(columns: "id, rating, review, created_at, profiles (id, username, avatar_url), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, avatar_url))")
-                .eq(column: "product_id", value: productId)
-                .order(column: "created_at", ascending: false)
-                .range(from: from, to: to)
-
             Task {
                 DispatchQueue.main.async {
                     self.isLoading = true
                 }
 
-                let checkIns = try await query.execute().decoded(to: [CheckIn].self)
+                let checkIns = try await SupabaseCheckInRepository().loadByProductId(id: productId, from: from, to: to)
 
                 DispatchQueue.main.async {
                     self.checkIns.append(contentsOf: checkIns)

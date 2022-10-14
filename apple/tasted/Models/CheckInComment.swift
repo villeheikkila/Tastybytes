@@ -1,3 +1,5 @@
+import Foundation
+
 struct CheckInComment: Identifiable, Hashable {
     let id: Int
     var content: String
@@ -24,4 +26,21 @@ extension CheckInComment: Decodable {
         createdAt = try values.decode(String.self, forKey: .createdAt)
         profiles = try values.decode(Profile.self, forKey: .profiles)
     }
+}
+
+
+struct NewCheckInComment: Encodable {
+    let content: String
+    let created_by: String
+    let check_in_id: Int
+    
+    init(content: String, createdBy: UUID, checkInId: Int) {
+        self.content = content
+        self.created_by = createdBy.uuidString
+        self.check_in_id = checkInId
+    }
+}
+
+struct UpdateCheckInComment: Encodable {
+    let content: String
 }

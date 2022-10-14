@@ -2,13 +2,13 @@ import CachedAsyncImage
 import SwiftUI
 
 struct Avatar: View {
-    let avatarUrl: String?
+    let avatarUrl: URL?
     let size: CGFloat
     let id: UUID
 
     var body: some View {
         if let avatarUrL = avatarUrl {
-            CachedAsyncImage(url: getAvatarURL(avatarUrl: avatarUrL)) { image in
+            CachedAsyncImage(url: avatarUrl) { image in
                 image.resizable()
             } placeholder: {
                 ProgressView()

@@ -12,7 +12,7 @@ struct tastedApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RouterView()
+            RootView()
         }
     }
 }

@@ -6,6 +6,17 @@ struct Profile: Identifiable, Hashable {
     let firstName: String?
     let lastName: String?
     let avatarUrl: String?
+    
+    func getAvatarURL() -> URL? {
+        if let avatarUrl = avatarUrl {
+            let bucketId = "avatars"
+            let urlString = "\(Supabase.urlString)/storage/v1/object/public/\(bucketId)/\(avatarUrl)"
+            guard let url = URL(string: urlString) else { fatalError("Invalid URL") }
+            return url
+        } else {
+            return nil
+        }
+    }
 
     static func == (lhs: Profile, rhs: Profile) -> Bool {
         return lhs.id == rhs.id

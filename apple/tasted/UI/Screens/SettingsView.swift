@@ -1,5 +1,6 @@
 import PhotosUI
 import SwiftUI
+import GoTrue
 
 struct SettingsView: View {
     @StateObject private var model = SettingsViewModel()
@@ -57,7 +58,7 @@ struct SettingsView: View {
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
 
-                if model.email != API.supabase.auth.session?.user.email {
+                if model.email != model.user?.email {
                     Button("Send Verification Link", action: { model.sendEmailVerificationLink() })
                 }
 
@@ -96,10 +97,12 @@ extension SettingsView {
         @Published var lastName = ""
         @Published var email = ""
         @Published var avatarImage: UIImage?
-
+        @Published var user: User?
+        
         func getInitialValues() {
             Task {
-                let profile = try await SupabaseProfileRepository().loadProfileById(id: getCurrentUserIdUUID())
+                let user = SupabaseAuthRepository().getCurrentUser()
+                let profile = try await SupabaseProfileRepository().loadProfileById(id: SupabaseAuthRepository().getCurrentUserId())
 
                 if let url = profile.avatarUrl != nil
                     ? URL(
@@ -119,7 +122,8 @@ extension SettingsView {
                     self.username = profile.username
                     self.lastName = profile.lastName ?? ""
                     self.firstName = profile.firstName ?? ""
-                    self.email = API.supabase.auth.session?.user.email ?? ""
+                    self.email = user.email ?? ""
+                    self.user = user
                 }
             }
         }
@@ -131,7 +135,7 @@ extension SettingsView {
                 lastName: lastName)
 
             Task {
-                try await SupabaseProfileRepository().updateProfile(id: getCurrentUserIdUUID(),
+                try await SupabaseProfileRepository().updateProfile(id: SupabaseAuthRepository().getCurrentUserId(),
                                                                     update: update)
             }
         }
@@ -154,20 +158,20 @@ extension SettingsView {
         // TODO: Do not log out on email change
         func sendEmailVerificationLink() {
             Task {
-                try? await SupabaseProfileRepository().sendEmailVerification(email: email)
+                try? await SupabaseAuthRepository().sendEmailVerification(email: email)
             }
         }
 
         func logOut() {
             Task {
-                try await SupabaseProfileRepository().logOut()
+                try await SupabaseAuthRepository().logOut()
             }
         }
 
         func deleteCurrentAccount() {
             Task {
                 try await SupabaseProfileRepository().deleteCurrentAccount()
-                try await SupabaseProfileRepository().logOut()
+                try await SupabaseAuthRepository().logOut()
             }
         }
 
@@ -176,7 +180,7 @@ extension SettingsView {
                 if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
                    let image = UIImage(data: imageData),
                    let data = image.jpegData(compressionQuality: 0.5) {
-                    try await SupabaseProfileRepository().uploadAvatar(id: getCurrentUserIdUUID(), data: data, completion: { result in switch result {
+                    try await SupabaseProfileRepository().uploadAvatar(id: SupabaseAuthRepository().getCurrentUserId(), data: data, completion: { result in switch result {
                     case .success:
                         DispatchQueue.main.async {
                             self.avatarImage = image
