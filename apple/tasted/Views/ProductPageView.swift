@@ -3,47 +3,44 @@ import SwiftUI
 struct ProductPageView: View {
     let product: ProductResponse
     @StateObject private var model = ProductPageViewViewModel()
+    @State private var showingSheet = false
 
-        
     var body: some View {
         ScrollView {
-            HStack(alignment: .center) {
-                VStack(alignment: .leading) {
-                    Spacer()
-                    
-                    Text(product.sub_brands.brands.name)
-                        .font(.system(size: 18, weight: .bold, design: .default))
-                        .foregroundColor(.white)
-                    if product.sub_brands.name != "" {
-                        Text(product.sub_brands.name)
-                            .font(.system(size: 24, weight: .bold, design: .default))
-                            .foregroundColor(.white)
+            VStack {
+                ProductCardView(product: product)
+
+                Button(action: {
+                    showingSheet.toggle()
+                }) {
+                    Text("Check-in!").font(.system(size: 14, weight: .bold, design: .default))
+                }.buttonStyle(GrowingButton())
+                    .sheet(isPresented: $showingSheet) {
+                        AddCheckInView(product: product, onCreation: {
+                            model.appendNewCheckIn(newCheckIn: $0)
+                        })
                     }
-                    Text(product.name)
-                        .font(.system(size: 24, weight: .bold, design: .default))
-                        .foregroundColor(.white)
-                    Text(product.sub_brands.brands.companies.name)
-                        .font(.system(size: 16, weight: .bold, design: .default))
-                        .foregroundColor(.gray)
-                    
-                }
-                .padding(.all, 10)
-                
-                Spacer()
             }
-            .frame(maxWidth: .infinity, alignment: .center)
-            .background(Color(.darkGray))
-            .cornerRadius(5)
-            .padding(.leading, 5)
-            .padding(.trailing, 5)
             
-            
-            ForEach(model.checkIns, id: \.id) { checkIn in
-                CheckInCardView(checkIn: checkIn)
-            }
-        }.task {
-            model.getInitialData(productId: product.id  )
+            InfiniteScroll(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(productId: product.id) }, refresh: { model.refreshCheckIns() },
+                           content: {
+                CheckInCardView(checkIn: $0)
+            })
         }
+    }
+}
+
+
+
+struct GrowingButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding()
+            .background(.blue)
+            .foregroundColor(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            .scaleEffect(configuration.isPressed ? 1.2 : 1)
+            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
     }
 }
 
@@ -51,20 +48,45 @@ extension ProductPageView {
     @MainActor class ProductPageViewViewModel: ObservableObject {
         @Published var checkIns = [CheckInResponse]()
 
-        func getInitialData(productId: Int) {
-            let checkInQuery = API.supabase.database
+        @Published var isLoading = false
+        let pageSize = 5
+        var page = 0
+
+        func refreshCheckIns() {
+            // TODO: Implement fetching of new items
+        }
+
+        func fetchMoreCheckIns(productId: Int) {
+            let (from, to) = getPagination(page: page, size: pageSize)
+
+            let query = API.supabase.database
                 .from("check_ins")
                 .select(columns: "id, rating, review, created_at, profiles (id, username, avatar_url), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, avatar_url))")
                 .eq(column: "product_id", value: productId)
-                .order(column: "created_at")
-                .limit(count: 5)
+                .order(column: "created_at", ascending: false)
+                .range(from: from, to: to)
 
             Task {
-                let checkIns = try await checkInQuery.execute().decoded(to: [CheckInResponse].self)
                 DispatchQueue.main.async {
-                    self.checkIns = checkIns
+                    self.isLoading = true
+                }
+
+                let checkIns = try await query.execute().decoded(to: [CheckInResponse].self)
+
+                DispatchQueue.main.async {
+                    self.checkIns.append(contentsOf: checkIns)
+                    self.page += 1
+                    self.isLoading = false
                 }
             }
+        }
+        
+        
+        func appendNewCheckIn(newCheckIn: CheckInResponse) {
+            DispatchQueue.main.async {
+                self.checkIns.insert(newCheckIn, at: 0)
+            }
+            
         }
     }
 }
