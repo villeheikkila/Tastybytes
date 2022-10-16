@@ -1,12 +1,10 @@
+import AlertToast
 import Foundation
 import SwiftUI
-import AlertToast
 
 struct FriendsScreenView: View {
     @StateObject private var model = FriendsViewModel()
     @State private var searchText = ""
-    @State private var showingSheet = false
-    @State private var showToast = false
 
     var body: some View {
         VStack {
@@ -23,36 +21,35 @@ struct FriendsScreenView: View {
             .task {
                 model.loadFriends(userId: SupabaseAuthRepository().getCurrentUserId())
             }.navigationTitle("Friends")
-                .navigationBarTitleDisplayMode(.inline)
-            
+            .navigationBarTitleDisplayMode(.inline)
+
             Spacer()
-            
+
             Button(action: {
-                showingSheet.toggle()
+                model.showUserSearchSheet.toggle()
             }) {
                 Text("Find users")
             }
-            .sheet(isPresented: $showingSheet) {
+            .sheet(isPresented: $model.showUserSearchSheet) {
                 UserSearchView(actions: { id in
                     HStack {
-                        if (!model.friends.contains(where: { $0.containsUser(userId: id)})) {
+                        if !model.friends.contains(where: { $0.containsUser(userId: id) }) {
                             Button(action: { model.sendFriendRequest(receiver: id) }) {
                                 Image(systemName: "person.badge.plus")
                                     .imageScale(.large)
                             }
                         }
                     }
-                    .toast(isPresenting: $showToast){
-                        AlertToast(type: .regular, title: "Friend Request Sent!")
-                    }
-                    
-                    
+
                     .errorAlert(error: $model.modalError)
                 }).presentationDetents([.medium])
-
             }
-            
-        }.errorAlert(error: $model.error)
+
+        }
+        .errorAlert(error: $model.error)
+        .toast(isPresenting: $model.showToast, duration: 2, tapToDismiss: true) {
+            AlertToast(type: .complete(.green), title: "Friend Request Sent!")
+        }
     }
 }
 
@@ -61,9 +58,11 @@ extension FriendsScreenView {
         @Published var searchText: String = ""
         @Published var products = [Profile]()
         @Published var friends = [Friend]()
+        @Published var showToast = false
+        @Published var showUserSearchSheet = false
+
         @Published var error: Error?
         @Published var modalError: Error?
-
 
         func sendFriendRequest(receiver: UUID) {
             let newFriend = NewFriend(sender: SupabaseAuthRepository().getCurrentUserId(), receiver: receiver, status: .pending)
@@ -73,16 +72,17 @@ extension FriendsScreenView {
                     let newFriend = try await SupabaseFriendsRepository().insert(newFriend: newFriend)
                     DispatchQueue.main.async {
                         self.friends.append(newFriend)
-                    }}
-                catch {
+                        self.showToast = true
+                        self.showUserSearchSheet = false
+                    }
+                } catch {
                     DispatchQueue.main.async {
                         self.modalError = error
                     }
                 }
-                
             }
         }
-        
+
         func updateFriendRequest(id: Int, newStatus: FriendStatus) {
             let friend = friends.first(where: { $0.id == id })
             if let friend = friend {
@@ -90,9 +90,9 @@ extension FriendsScreenView {
                 Task {
                     do {
                         let updatedFriend = try await SupabaseFriendsRepository().updateStatus(id: id, friendUpdate: friendUpdate)
-                            DispatchQueue.main.async {
-                                self.friends.removeAll(where: { $0.id == updatedFriend.id })
-                            }
+                        DispatchQueue.main.async {
+                            self.friends.removeAll(where: { $0.id == updatedFriend.id })
+                        }
                         DispatchQueue.main.async {
                             self.friends.append(updatedFriend)
                         }
@@ -130,7 +130,8 @@ extension FriendsScreenView {
                 } catch {
                     DispatchQueue.main.async {
                         self.error = error
-                    }                }
+                    }
+                }
             }
         }
     }
@@ -149,8 +150,8 @@ struct FriendListItem: View {
          onBlock: @escaping (_ id: Int) -> Void,
          onDelete: @escaping (_ id: Int) -> Void) {
         self.friend = friend
-        self.profile = friend.getFriend(userId: SupabaseAuthRepository().getCurrentUserId())
-        self.currentUser = SupabaseAuthRepository().getCurrentUserId()
+        profile = friend.getFriend(userId: SupabaseAuthRepository().getCurrentUserId())
+        currentUser = SupabaseAuthRepository().getCurrentUserId()
         self.onAccept = onAccept
         self.onBlock = onBlock
         self.onDelete = onDelete
@@ -205,5 +206,3 @@ struct FriendListItem: View {
         }.padding(.all, 10)
     }
 }
-
-
