@@ -32,8 +32,8 @@ struct CheckInCardView: View {
                                     Text(checkIn.product.subBrand.brand.name)
                                         .font(.system(size: 18, weight: .bold, design: .default))
                                         .foregroundColor(.primary)
-                                    if checkIn.product.subBrand.name != "" {
-                                        Text(checkIn.product.subBrand.name)
+                                    if let subBrandName = checkIn.product.subBrand.name {
+                                        Text(subBrandName)
                                             .font(.system(size: 24, weight: .bold, design: .default))
                                             .foregroundColor(.primary)
                                     }

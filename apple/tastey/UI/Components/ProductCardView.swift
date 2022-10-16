@@ -8,8 +8,8 @@ struct ProductCardView: View {
             Text(product.subBrand.brand.name)
                 .font(.system(size: 18, weight: .bold, design: .default))
                 .foregroundColor(.white)
-            if product.subBrand.name != "" {
-                Text(product.subBrand.name)
+            if let subBrandName = product.subBrand.name {
+                Text(subBrandName)
                     .font(.system(size: 24, weight: .bold, design: .default))
                     .foregroundColor(.primary)
             }

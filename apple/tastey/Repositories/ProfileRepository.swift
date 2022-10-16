@@ -46,16 +46,11 @@ struct SupabaseProfileRepository {
     }
     
     func search(searchTerm: String) async throws -> [Profile] {
-        struct SearchProfilesParams: Encodable {
-            let p_search_term: String
-            
-            init(searchTerm: String) {
-                self.p_search_term = "%\(searchTerm)%"
-            }
-        }
         return try await database
-            .rpc(fn: "fnc__search_profiles", params: SearchProfilesParams(searchTerm: searchTerm))
+            .from(tableName)
             .select(columns: saved)
+            .ilike(column: "search", value: "%\(searchTerm)%")
+            .not(column: "id", operator: .eq, value: SupabaseAuthRepository().getCurrentUserId().uuidString)
             .execute()
             .decoded(to: [Profile].self)
     }

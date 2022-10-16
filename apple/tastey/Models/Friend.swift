@@ -5,6 +5,7 @@ struct Friend: Identifiable {
     let sender: Profile
     let receiver: Profile
     let status: FriendStatus
+    let blockedBy: UUID?
     
     func getFriend(userId: UUID) -> Profile {
         if (sender.id == userId) {
@@ -12,6 +13,18 @@ struct Friend: Identifiable {
         } else {
             return sender
         }
+    }
+    
+    func isPending(userId: UUID) -> Bool {
+        return self.receiver.id == userId && self.status == FriendStatus.pending
+    }
+    
+    func isBlocked(userId: UUID) -> Bool {
+        return self.blockedBy != nil && self.blockedBy != userId
+    }
+    
+    func containsUser(userId: UUID) -> Bool {
+        return sender.id == userId || receiver.id == userId
     }
 }
 
@@ -21,6 +34,7 @@ extension Friend: Decodable {
         case sender
         case receiver
         case status
+        case blockedBy = "blocked_by"
     }
     
     init(from decoder: Decoder) throws {
@@ -29,19 +43,43 @@ extension Friend: Decodable {
         sender = try values.decode(Profile.self, forKey: .sender)
         receiver = try values.decode(Profile.self, forKey: .receiver)
         status = try values.decode(FriendStatus.self, forKey: .status)
+        blockedBy = try values.decodeIfPresent(UUID.self, forKey: .blockedBy)
     }
 }
 
 struct NewFriend: Encodable {
     let user_id_1: UUID
     let user_id_2: UUID
-    
-    init(sender: UUID, receiver: UUID) {
+    let status: String
+    init(sender: UUID, receiver: UUID, status: FriendStatus) {
         self.user_id_1 = sender
         self.user_id_2 = receiver
+        self.status = FriendStatus.pending.rawValue
     }
 }
 
 enum FriendStatus: String, Codable{
     case pending, accepted, blocked
+}
+
+struct NewFriendState: Encodable {
+    let status: String
+    
+    init(status: FriendStatus) {
+        self.status = status.rawValue
+        print("status",self.status)
+    }
+}
+
+struct FriendUpdate: Encodable {
+    let user_id_1: UUID
+    let user_id_2: UUID
+    let status: String
+    
+    
+    init(user_id_1: UUID, user_id_2: UUID, status: FriendStatus) {
+        self.user_id_1 = user_id_1
+        self.user_id_2 = user_id_2
+        self.status = status.rawValue
+    }
 }

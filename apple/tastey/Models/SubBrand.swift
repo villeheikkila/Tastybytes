@@ -1,7 +1,7 @@
 
 struct SubBrand: Identifiable, Hashable {
     let id: Int
-    let name: String
+    let name: String?
     let brand: Brand
 
     static func == (lhs: SubBrand, rhs: SubBrand) -> Bool {
@@ -19,7 +19,7 @@ extension SubBrand: Decodable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
-        name = try values.decode(String.self, forKey: .name)
+        name = try values.decodeIfPresent(String.self, forKey: .name)
         brand = try values.decode(Brand.self, forKey: .brand)
     }
 }
