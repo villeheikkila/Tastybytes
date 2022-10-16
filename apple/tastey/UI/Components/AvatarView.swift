@@ -7,8 +7,8 @@ struct AvatarView: View {
     let id: UUID
 
     var body: some View {
-        if let avatarUrL = avatarUrl {
-            CachedAsyncImage(url: avatarUrl) { image in
+        if let url = avatarUrl {
+            CachedAsyncImage(url: url) { image in
                 image.resizable()
             } placeholder: {
                 ProgressView()

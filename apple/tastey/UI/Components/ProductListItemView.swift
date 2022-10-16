@@ -12,8 +12,8 @@ struct ProductListItemView: View {
                 Text(product.subBrand.brand.name).font(.headline)
                     .font(.system(size: 18, weight: .bold, design: .default))
 
-                if product.subBrand.name != "" {
-                    Text(product.subBrand.name).font(.headline)
+                if let subBrandName = product.subBrand.name {
+                    Text(subBrandName).font(.headline)
                         .font(.system(size: 18, weight: .bold, design: .default))
                 }
                 Text(product.name).font(.headline).font(.system(size: 18, weight: .bold, design: .default))
