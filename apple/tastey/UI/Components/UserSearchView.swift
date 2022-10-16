@@ -7,23 +7,25 @@ struct UserSearchView<Actions: View>: View {
     let actions: (_ userId: UUID) -> Actions
 
     var body: some View {
-        VStack {
-            HStack {
-                TextField("Name", text: $searchText)
-                Button("Search") {
-                    searchUsers()
-                }
-            }
-            VStack {
+
+        NavigationStack {
+            List {
                 ForEach(searchResults, id: \.id) { profile in
-                    HStack {
-                        AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
-                        Text(profile.username)
-                        Spacer()
-                        self.actions(profile.id)
-                    }
+                        HStack {
+                            NavigationLink(value: profile) {
+                                
+                                AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
+                                Text(profile.username)
+                            }
+                            Spacer()
+                            HStack {
+                                self.actions(profile.id)
+                            }
+                        }
                 }
-            }
+            }.searchable(text: $searchText)
+                .onSubmit(of: .search, searchUsers)
+            
         }
     }
     

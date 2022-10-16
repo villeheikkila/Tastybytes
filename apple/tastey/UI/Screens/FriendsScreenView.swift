@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 import AlertToast
 
-struct FriendsView: View {
+struct FriendsScreenView: View {
     @StateObject private var model = FriendsViewModel()
     @State private var searchText = ""
     @State private var showingSheet = false
@@ -12,7 +12,7 @@ struct FriendsView: View {
         VStack {
             VStack {
                 VStack {
-                    ForEach(model.friends, id: \.id) { friend in
+                    ForEach(model.friends, id: \.self) { friend in
                         FriendListItem(friend: friend,
                                        onAccept: { id in model.updateFriendRequest(id: id, newStatus: .accepted) },
                                        onBlock: { id in model.updateFriendRequest(id: id, newStatus: .blocked) },
@@ -37,7 +37,7 @@ struct FriendsView: View {
                     HStack {
                         if (!model.friends.contains(where: { $0.containsUser(userId: id)})) {
                             Button(action: { model.sendFriendRequest(receiver: id) }) {
-                                Label("Send Friend Request", systemImage: "person.badge.plus")
+                                Image(systemName: "person.badge.plus")
                                     .imageScale(.large)
                             }
                         }
@@ -48,14 +48,15 @@ struct FriendsView: View {
                     
                     
                     .errorAlert(error: $model.modalError)
-                })
+                }).presentationDetents([.medium])
+
             }
             
         }.errorAlert(error: $model.error)
     }
 }
 
-extension FriendsView {
+extension FriendsScreenView {
     class FriendsViewModel: ObservableObject {
         @Published var searchText: String = ""
         @Published var products = [Profile]()
@@ -86,11 +87,15 @@ extension FriendsView {
             let friend = friends.first(where: { $0.id == id })
             if let friend = friend {
                 let friendUpdate = FriendUpdate(user_id_1: friend.sender.id, user_id_2: friend.receiver.id, status: newStatus)
-                print(friendUpdate)
                 Task {
                     do {
-                        let newFriend = try await SupabaseFriendsRepository().updateStatus(id: id, friendUpdate: friendUpdate)
-                        self.friends
+                        let updatedFriend = try await SupabaseFriendsRepository().updateStatus(id: id, friendUpdate: friendUpdate)
+                            DispatchQueue.main.async {
+                                self.friends.removeAll(where: { $0.id == updatedFriend.id })
+                            }
+                        DispatchQueue.main.async {
+                            self.friends.append(updatedFriend)
+                        }
                     } catch {
                         DispatchQueue.main.async {
                             self.error = error
@@ -159,6 +164,10 @@ struct FriendListItem: View {
                         HStack {
                             AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
                             Text(profile.username)
+                            Spacer()
+                            if friend.status == FriendStatus.pending {
+                                Text(friend.status.rawValue.capitalized)
+                            }
                         }
                     }
                 },
@@ -179,7 +188,7 @@ struct FriendListItem: View {
                         }
                         Spacer()
 
-                        if friend.status == FriendStatus.pending {
+                        if friend.isPending(userId: currentUser) {
                             Button(action: {
                                 onBlock(friend.id)
                             }) {
