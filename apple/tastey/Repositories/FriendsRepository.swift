@@ -28,15 +28,14 @@ struct SupabaseFriendsRepository {
     }
     
     func updateStatus(id: Int, friendUpdate: FriendUpdate) async throws -> Friend {
-         let r = try await database
+         return try await database
             .from(tableName)
             .update(values: friendUpdate, returning: .representation)
             .eq(column: "id", value: id)
             .select(columns: joined)
             .single()
             .execute()
-        printData(data: r.data)
-            return try   r.decoded(to: Friend.self)
+            .decoded(to: Friend.self)
     }
     
     func delete(id: Int) async throws -> Void {

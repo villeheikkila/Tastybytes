@@ -33,14 +33,6 @@ struct AddNavigation<Content: View>: View {
 
     var body: some View {
         content()
-            .navigationBarItems(leading:
-                NavigationLink(value: Route.friends) {
-                    Image(systemName: "person.2").imageScale(.large)
-
-                },
-                trailing: NavigationLink(value: Route.settings) {
-                    Image(systemName: "gear").imageScale(.large)
-                })
             .navigationDestination(for: CheckIn.self) { checkIn in
                 CheckInPageView(checkIn: checkIn)
             }
@@ -53,7 +45,7 @@ struct AddNavigation<Content: View>: View {
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .friends:
-                    FriendsView()
+                    FriendsScreenView()
                 case .settings:
                     SettingsView()
                 case .activity:
@@ -87,7 +79,14 @@ struct Tabbar: View {
                     Image(systemName: "person.fill")
                     Text("Profile")
                 }
-        }
+        }.navigationBarItems(leading:
+            NavigationLink(value: Route.friends) {
+                Image(systemName: "person.2").imageScale(.large)
+
+            },
+            trailing: NavigationLink(value: Route.settings) {
+                Image(systemName: "gear").imageScale(.large)
+            })
     }
 }
 
