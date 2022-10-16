@@ -23,8 +23,10 @@ struct UserSearchView<Actions: View>: View {
                             }
                         }
                 }
-            }.searchable(text: $searchText)
-                .onSubmit(of: .search, searchUsers)
+            }
+            .navigationTitle("Search users")
+            .searchable(text: $searchText)
+            .onSubmit(of: .search, searchUsers)
             
         }
     }
