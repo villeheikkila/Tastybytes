@@ -38,6 +38,7 @@ struct CompanySearchView: View {
                 case .add:
                     Section {
                         TextField("Name", text: $companyName)
+                            .limitInputLength(value: $companyName, length: 24)
                         Button("Create") {
                             createNewCompany()
                         }

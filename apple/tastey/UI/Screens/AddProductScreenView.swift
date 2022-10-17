@@ -103,7 +103,9 @@ struct AddProductScreenView: View {
 
                 Section {
                     TextField("Flavor", text: $name)
+                        .limitInputLength(value: $name, length: 24)
                     TextField("Description", text: $description)
+                        .limitInputLength(value: $description, length: 24)
 
                 } header: {
                     Text("Product")

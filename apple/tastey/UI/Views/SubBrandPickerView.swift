@@ -22,6 +22,7 @@ struct SubBrandPickerView: View {
                                 
                 Section {
                     TextField("Name", text: $subBrandName)
+                        .limitInputLength(value: $subBrandName, length: 24)
                     Button("Create") {
                         createNewSubBrand()
                     }
