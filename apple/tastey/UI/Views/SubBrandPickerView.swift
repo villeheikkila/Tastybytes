@@ -5,7 +5,7 @@ struct SubBrandPickerView: View {
     @State var searchText = ""
     @State var subBrandName = ""
     @Environment(\.dismiss) var dismiss
-
+    
     let onSelect: (_ company: SubBrand, _ createdNew: Bool) -> Void
 
     var body: some View {
@@ -26,6 +26,7 @@ struct SubBrandPickerView: View {
                     Button("Create") {
                         createNewSubBrand()
                     }
+                    .disabled(!validateStringLenght(str: subBrandName, type: .normal))
                 } header: {
                     Text("Add new sub-brand for \(brandWithSubBrands.name)")
                 }

@@ -36,8 +36,7 @@ struct AddProductScreenView: View {
             brandOwner != nil,
             brand != nil,
             subBrand != nil,
-            name != "",
-
+            validateStringLenght(str: name, type: .normal),
         ].allSatisfy({ $0 })
     }
 

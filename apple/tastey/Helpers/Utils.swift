@@ -32,3 +32,18 @@ func getConsistentColor(seed: String) -> Color {
     let b = CGFloat(drand48())
     return Color(red: r, green: g, blue: b)
 }
+
+enum StrinLenghtType {
+    case normal
+    case long
+}
+
+func validateStringLenght(str: String, type: StrinLenghtType) -> Bool {
+    switch type {
+    case .normal:
+        return str.count > 2 && str.count <= 24
+    case .long:
+        return str.count > 2 && str.count <= 48
+    }
+    
+}

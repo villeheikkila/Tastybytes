@@ -24,7 +24,7 @@ struct BrandSearchView: View {
                         .limitInputLength(value: $brandName, length: 24)
                     Button("Create") {
                         createNewBrand()
-                    }
+                    }.disabled(!validateStringLenght(str: brandName, type: .normal))
                 } header: {
                     Text("Add new brand for \(brandOwner.name)")
                 }

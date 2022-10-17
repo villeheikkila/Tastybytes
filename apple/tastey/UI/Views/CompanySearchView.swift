@@ -42,6 +42,7 @@ struct CompanySearchView: View {
                         Button("Create") {
                             createNewCompany()
                         }
+                        .disabled(!validateStringLenght(str: companyName, type: .normal))
                     } header: {
                         Text("Add new company")
                     }
