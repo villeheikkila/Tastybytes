@@ -5,6 +5,7 @@ struct BrandSearchView: View {
     @State var searchText = ""
     @State var brandsWithSubBrands = [BrandJoinedWithSubBrands]()
     @State var brandName = ""
+    @Environment(\.dismiss) var dismiss
 
     let onSelect: (_ company: BrandJoinedWithSubBrands, _ createdNew: Bool) -> Void
 
@@ -27,8 +28,12 @@ struct BrandSearchView: View {
                     Text("Add new brand for \(brandOwner.name)")
                 }
             }
-            .navigationTitle("Brands")
-
+            .navigationTitle("Search companies")
+            .navigationBarItems(trailing: Button(action: {
+                dismiss()
+            }) {
+                Text("Cancel").bold()
+            })
             
         }.task {
             loadBrands()

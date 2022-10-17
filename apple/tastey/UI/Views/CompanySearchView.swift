@@ -6,6 +6,7 @@ struct CompanySearchView: View {
     @State var searchResults = [Company]()
     @State var status: Status? = nil
     @State var companyName = ""
+    @Environment(\.dismiss) var dismiss
 
     let onSelect: (_ company: Company, _ createdNew: Bool) -> Void
     
@@ -48,6 +49,11 @@ struct CompanySearchView: View {
                 }
             }
             .navigationTitle("Search companies")
+            .navigationBarItems(trailing: Button(action: {
+                dismiss()
+            }) {
+                Text("Cancel").bold()
+            })
             .searchable(text: $searchText)
             .onSubmit(of: .search, searchUsers)
         }

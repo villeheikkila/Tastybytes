@@ -56,6 +56,7 @@
 		5CED433028FD6EBC003F8194 /* BrandRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432F28FD6EBC003F8194 /* BrandRepository.swift */; };
 		5CED433228FD76BB003F8194 /* SubBrandPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED433128FD76BB003F8194 /* SubBrandPickerView.swift */; };
 		5CED433428FDA357003F8194 /* SubBrandRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED433328FDA357003F8194 /* SubBrandRepository.swift */; };
+		5CED433628FDA8B9003F8194 /* SubcategoryPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED433528FDA8B9003F8194 /* SubcategoryPickerView.swift */; };
 		5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB562E28F596A200F13A1E /* ChipView.swift */; };
 		5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563028F5974100F13A1E /* ProfileSummary.swift */; };
 		5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563228F597ED00F13A1E /* RatingView.swift */; };
@@ -115,6 +116,7 @@
 		5CED432F28FD6EBC003F8194 /* BrandRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandRepository.swift; sourceTree = "<group>"; };
 		5CED433128FD76BB003F8194 /* SubBrandPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandPickerView.swift; sourceTree = "<group>"; };
 		5CED433328FDA357003F8194 /* SubBrandRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandRepository.swift; sourceTree = "<group>"; };
+		5CED433528FDA8B9003F8194 /* SubcategoryPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubcategoryPickerView.swift; sourceTree = "<group>"; };
 		5CFB562E28F596A200F13A1E /* ChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipView.swift; sourceTree = "<group>"; };
 		5CFB563028F5974100F13A1E /* ProfileSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummary.swift; sourceTree = "<group>"; };
 		5CFB563228F597ED00F13A1E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				5CED432B28FD69DE003F8194 /* CompanySearchView.swift */,
 				5CED432D28FD6EA7003F8194 /* BrandSearchView.swift */,
 				5CED433128FD76BB003F8194 /* SubBrandPickerView.swift */,
+				5CED433528FDA8B9003F8194 /* SubcategoryPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -418,6 +421,7 @@
 				5CD10A5128F98C8C0001CFC2 /* Subcategory.swift in Sources */,
 				5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */,
 				5CB1C24D28F9C087000B0EB4 /* AuthRepository.swift in Sources */,
+				5CED433628FDA8B9003F8194 /* SubcategoryPickerView.swift in Sources */,
 				5CD10A4928F956AC0001CFC2 /* ProductCardView.swift in Sources */,
 				5C25349628EDA58700A78780 /* Supabase.swift in Sources */,
 				5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */,
