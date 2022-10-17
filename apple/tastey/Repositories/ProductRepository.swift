@@ -2,6 +2,7 @@ import Foundation
 
 struct SupabaseProductRepository {
     private let database = Supabase.client.database
+    private let tableName = "companies"
     private let joined = "id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))"
     
     
@@ -18,5 +19,15 @@ struct SupabaseProductRepository {
             .select(columns: joined)
             .execute()
             .decoded(to: [Product].self)
+    }
+    
+    func createProduct(newProductParams: NewProductParams) async throws -> Product {
+        return try await database
+            .rpc(fn: "fnc__create_product", params: newProductParams)
+            .select(columns: joined)
+            .limit(count: 1)
+            .single()
+            .execute()
+            .decoded(to: Product.self)
     }
 }

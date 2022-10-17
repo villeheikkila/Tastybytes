@@ -7,7 +7,7 @@ struct CheckInComment: Identifiable, Hashable {
     let profile: Profile
         
     static func == (lhs: CheckInComment, rhs: CheckInComment) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.content == rhs.content
     }
 }
 
@@ -42,5 +42,6 @@ struct NewCheckInComment: Encodable {
 }
 
 struct UpdateCheckInComment: Encodable {
+    let id: Int
     let content: String
 }

@@ -11,10 +11,10 @@ struct CheckInPageView: View {
             ScrollView {
                 VStack(spacing: 10) {
                     ForEach(model.checkInComments.reversed(), id: \.id) {
-                        comment in CommentItemView(comment: comment, content: comment.content, deleteComment: { id in
+                        comment in CommentItemView(comment: comment, content: comment.content, onDelete: { id in
                             model.deleteComment(commentId: id)
-                        }, editComment: {
-                            id, content in model.editComment(commentId: id, content: content)
+                        }, onUpdate: {
+                            updatedComment in model.editComment(updateCheckInComment: updatedComment)
                         })
                     }
                 }.padding(.leading, 15)
@@ -70,19 +70,15 @@ extension CheckInPageView {
             }
         }
 
-        func editComment(commentId: Int, content: String) {
-            let updateCheckInComment = UpdateCheckInComment(content: comment)
-
+        func editComment(updateCheckInComment: UpdateCheckInComment) {
             Task {
-                let updated = try await SupabaseCheckInCommentRepository().update(id: commentId, updateCheckInComment: updateCheckInComment)
+                let updatedComment = try await SupabaseCheckInCommentRepository().update( updateCheckInComment: updateCheckInComment)
 
-                if let position = self.checkInComments.firstIndex(where: { $0.id == commentId }) {
-                    self.checkInComments.remove(at: position)
-                    var updatedComment = self.checkInComments[position]
-                    updatedComment.content = updated.content
+                if let at = self.checkInComments.firstIndex(where: { $0.id == updateCheckInComment.id }) {
 
                     DispatchQueue.main.async {
-                        self.checkInComments.insert(contentsOf: [updatedComment], at: position)
+                        self.checkInComments.remove(at: at)
+                        self.checkInComments.insert(updatedComment, at: at)
                     }
                 }
             }
@@ -93,12 +89,24 @@ extension CheckInPageView {
 struct CommentItemView: View {
     let comment: CheckInComment
     @State var content: String
-    let deleteComment: (_ commentId: Int) -> Void
-    let editComment: (_ commentId: Int, _ content: String) -> Void
+    @State var showEditCommentPrompt = false
+    let onDelete: (_ commentId: Int) -> Void
+    let onUpdate: (_ update: UpdateCheckInComment) -> Void
+    
+    var updateComment: () -> Void {
+        return {
+            guard !content.isEmpty else {
+                return
+            }
 
+            let updatedComment = UpdateCheckInComment(id: comment.id, content: content)
+            onUpdate(updatedComment)
+            content = ""
+        }
+    }
+    
     var body: some View {
-        CollapsibleView(
-            content: {
+
                 HStack {
                     AvatarView(avatarUrl: comment.profile.getAvatarURL(), size: 32, id: comment.profile.id)
                     VStack(alignment: .leading) {
@@ -107,48 +115,27 @@ struct CommentItemView: View {
                     }
                     Text(comment.createdAt)
                 }
-            },
-            expandedContent: {
-                HStack(spacing: 10) {
-                    EditCommentPropmptView(content: comment.content, editComment: {
-                        editedComment in
-                        editComment(comment.id, editedComment)
-                    })
-
-                    Button(action: {
-                        deleteComment(comment.id)
-                    }) {
-                        Image(systemName: "trash.fill")
-                            .imageScale(.large)
-                    }
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity)
+        .contextMenu {
+            Button {
+                self.showEditCommentPrompt = true
+            } label: {
+                Label("Edit Comment", systemImage: "pencil")
             }
-        )
-        .frame(maxWidth: .infinity)
-    }
-}
-
-struct EditCommentPropmptView: View {
-    @State private var presentAlert = false
-    @State var content: String
-    let editComment: (_ content: String) -> Void
-
-    var body: some View {
-        Button(action: {
-            presentAlert = true
-
-        }) {
-            Image(systemName: "pencil")
-                .imageScale(.large)
+            
+            Button {
+                onDelete(comment.id)
+            } label: {
+                Label("Delete Comment", systemImage: "trash.fill")
+            }
         }
-        .alert("Edit Comment", isPresented: $presentAlert, actions: {
+        .frame(maxWidth: .infinity)
+        .alert("Edit Comment", isPresented: $showEditCommentPrompt, actions: {
             TextField("TextField", text: $content)
             Button("Cancel", role: .cancel, action: {})
             Button("Edit", action: {
-                editComment(content)
+                updateComment()
             })
         })
+        
     }
 }

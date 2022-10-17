@@ -1,14 +1,23 @@
-struct Subcategory: Identifiable, Hashable {
+struct Subcategory: Identifiable, Hashable, Decodable {
     let id: Int
     let name: String
-    let category: Category
-
+    
     static func == (lhs: Subcategory, rhs: Subcategory) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-extension Subcategory: Decodable {
+struct SubcategoryJoinedWithCategory: Identifiable, Hashable {
+    let id: Int
+    let name: String
+    let category: Category
+
+    static func == (lhs: SubcategoryJoinedWithCategory, rhs: SubcategoryJoinedWithCategory) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+extension SubcategoryJoinedWithCategory: Decodable {
     enum CodingKeys: String, CodingKey {
         case id
         case name

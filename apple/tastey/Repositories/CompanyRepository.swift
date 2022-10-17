@@ -20,5 +20,14 @@ struct SupabaseCompanyRepository {
             .execute()
             .decoded(to: Company.self)
     }
+    
+    func search(searchTerm: String) async throws -> [Company] {
+        return try await database
+            .from(tableName)
+            .select(columns: saved)
+            .ilike(column: "name", value: "%\(searchTerm)%")
+            .execute()
+            .decoded(to: [Company].self)
+    }
 }
 

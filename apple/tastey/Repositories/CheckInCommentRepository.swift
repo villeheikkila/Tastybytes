@@ -16,11 +16,11 @@ struct SupabaseCheckInCommentRepository {
             .decoded(to: CheckInComment.self)
     }
     
-    func update(id: Int, updateCheckInComment: UpdateCheckInComment) async throws -> CheckInComment {
+    func update(updateCheckInComment: UpdateCheckInComment) async throws -> CheckInComment {
         return try await database
             .from(tableName)
             .update(values: updateCheckInComment, returning: .representation)
-            .eq(column: "id", value: id)
+            .eq(column: "id", value: updateCheckInComment.id)
             .select(columns: joinedWithProfile)
             .single()
             .execute()
