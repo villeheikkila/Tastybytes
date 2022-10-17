@@ -21,6 +21,7 @@ struct BrandSearchView: View {
                                 
                 Section {
                     TextField("Name", text: $brandName)
+                        .limitInputLength(value: $brandName, length: 24)
                     Button("Create") {
                         createNewBrand()
                     }
