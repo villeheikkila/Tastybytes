@@ -1,4 +1,4 @@
-enum CategoryName: String, CaseIterable, Decodable, Identifiable {
+enum CategoryName: String, CaseIterable, Decodable, Identifiable, Equatable {
     var id: Self { self }
     case chips
     case candy

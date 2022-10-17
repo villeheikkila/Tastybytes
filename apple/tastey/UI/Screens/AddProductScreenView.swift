@@ -20,10 +20,6 @@ struct AddProductScreenView: View {
     func getSubcategoriesForCategory() -> [Subcategory]? {
         return categories.first(where: { $0.name == category })?.subcategories
     }
-    
-    func setCategory(category: CategoryName) {
-        
-    }
 
     func setBrand(brand: BrandJoinedWithSubBrands) {
         self.brand = brand
@@ -67,6 +63,9 @@ struct AddProductScreenView: View {
                             ForEach(categories.map { $0.name }) { category in
                                 Text(category.rawValue.capitalized).tag(category)
                             }
+                        }
+                        .onChange(of: category) { _ in
+                            self.subcategories.removeAll()
                         }
                     }
 
