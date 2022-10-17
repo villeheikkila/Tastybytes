@@ -4,6 +4,7 @@ struct SubBrandPickerView: View {
     let brandWithSubBrands: BrandJoinedWithSubBrands
     @State var searchText = ""
     @State var subBrandName = ""
+    @Environment(\.dismiss) var dismiss
 
     let onSelect: (_ company: SubBrand, _ createdNew: Bool) -> Void
 
@@ -29,7 +30,11 @@ struct SubBrandPickerView: View {
                 }
             }
             .navigationTitle("Sub-brands")
-
+            .navigationBarItems(trailing: Button(action: {
+                dismiss()
+            }) {
+                Text("Cancel").bold()
+            })
             
         }
     }

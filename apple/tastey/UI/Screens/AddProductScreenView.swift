@@ -1,5 +1,5 @@
-import SwiftUI
 import AlertToast
+import SwiftUI
 
 struct AddProductScreenView: View {
     @State var categories = [CategoryJoinedWithSubcategories]()
@@ -19,6 +19,10 @@ struct AddProductScreenView: View {
 
     func getSubcategoriesForCategory() -> [Subcategory]? {
         return categories.first(where: { $0.name == category })?.subcategories
+    }
+    
+    func setCategory(category: CategoryName) {
+        
     }
 
     func setBrand(brand: BrandJoinedWithSubBrands) {
@@ -40,7 +44,7 @@ struct AddProductScreenView: View {
 
         ].allSatisfy({ $0 })
     }
-    
+
     func getToastText() -> String {
         switch toastType {
         case .createdCompany:
@@ -117,9 +121,9 @@ struct AddProductScreenView: View {
                     SubcategoryPicker(availableSubcategories: subcategoriesForCategory, subcategories: $subcategories)
                 }
             case .brandOwner:
-                CompanySearchView(onSelect: { (company, createdNew) in
+                CompanySearchView(onSelect: { company, createdNew in
                     self.brandOwner = company
-                    if (createdNew) {
+                    if createdNew {
                         self.toastType = ToastType.createdCompany
                         self.showToast = true
                     }
@@ -127,25 +131,25 @@ struct AddProductScreenView: View {
                 })
             case .brand:
                 if let brandOwner = brandOwner {
-                    BrandSearchView(brandOwner: brandOwner, onSelect: { (brand, createdNew) in
-                        if (createdNew) {
+                    BrandSearchView(brandOwner: brandOwner, onSelect: { brand, createdNew in
+                        if createdNew {
                             self.toastType = ToastType.createdBrand
                             self.showToast = true
                         }
                         self.setBrand(brand: brand)
                     })
                 }
-                
+
             case .subBrand:
                 if let brand = brand {
-                    SubBrandPickerView(brandWithSubBrands: brand, onSelect: { (subBrand, createdNew) in
-                        if (createdNew) {
+                    SubBrandPickerView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
+                        if createdNew {
                             self.toastType = ToastType.createdSubBrand
                             self.showToast = true
                         }
                         self.subBrand = subBrand
                         dismissSheet()
-                        
+
                     })
                 }
             }
@@ -192,45 +196,11 @@ extension AddProductScreenView {
         case brand
         case subBrand
     }
-    
+
     enum ToastType: Identifiable {
         var id: Self { self }
         case createdCompany
         case createdBrand
         case createdSubBrand
-    }
-}
-
-struct SubcategoryPicker: View {
-    let availableSubcategories: [Subcategory]
-    @Binding var subcategories: [Subcategory]
-
-    var body: some View {
-        NavigationView {
-            List(availableSubcategories, id: \.self) { subcategory in
-                ZStack {
-                    Button(action: { self.subcategories.append(subcategory)
-                    }) {
-                        HStack {
-                            Text(subcategory.name)
-                            Spacer()
-                            if subcategories.contains(where: { $0.id == subcategory.id }) {
-                                Button(action: {
-                                    self.subcategories.removeAll(where: { $0.id == subcategory.id })
-                                }) {
-                                    Image(systemName: "checkmark")
-                                }
-                            }
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            }
-        }.navigationBarTitle(Text("Subcategories"), displayMode: .inline)
-            .navigationBarItems(trailing: Button(action: {
-                print("Dismissing sheet view...")
-            }) {
-                Text("Done").bold()
-            })
     }
 }
