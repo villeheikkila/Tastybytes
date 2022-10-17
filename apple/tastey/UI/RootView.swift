@@ -26,6 +26,7 @@ enum Route: Hashable {
     case settings
     case friends
     case activity
+    case addProduct
 }
 
 struct AddNavigation<Content: View>: View {
@@ -50,6 +51,8 @@ struct AddNavigation<Content: View>: View {
                     SettingsView()
                 case .activity:
                     ActivityView()
+                case .addProduct:
+                    AddProductScreenView()
                 case let .checkIn(checkIn):
                     CheckInPageView(checkIn: checkIn)
                 case let .profile(profile):
@@ -69,7 +72,7 @@ struct Tabbar: View {
                     Image(systemName: "list.star")
                     Text("Activity")
                 }
-            SearchView()
+            SearchScreenView()
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("Search")

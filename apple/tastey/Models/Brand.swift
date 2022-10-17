@@ -1,15 +1,34 @@
 
-struct Brand: Identifiable, Hashable {
+struct BrandJoinedWithSubBrands: Identifiable, Hashable, Decodable {
+    let id: Int
+    let name: String
+    let subBrands: [SubBrand]
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case subBrands = "sub_brands"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(Int.self, forKey: .id)
+        name = try values.decode(String.self, forKey: .name)
+        subBrands = try values.decode([SubBrand].self, forKey: .subBrands)
+    }
+}
+
+struct BrandJoinedWithCompany: Identifiable, Hashable {
     let id: Int
     let name: String
     let company: Company
 
-    static func == (lhs: Brand, rhs: Brand) -> Bool {
+    static func == (lhs: BrandJoinedWithCompany, rhs: BrandJoinedWithCompany) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-extension Brand: Decodable {
+extension BrandJoinedWithCompany: Decodable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
