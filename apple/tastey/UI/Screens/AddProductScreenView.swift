@@ -3,6 +3,7 @@ import SwiftUI
 struct AddProductScreenView: View {
     @State var categories = [CategoryJoinedWithSubcategories]()
     @State var activeSheet: Sheet?
+    @EnvironmentObject var navigator: Navigator
 
     // New product values
     @State var category: CategoryName = CategoryName.beverage
@@ -42,7 +43,7 @@ struct AddProductScreenView: View {
             List {
                 Section {
                     if categories.count > 0 {
-                        Picker("Main category", selection: $category) {
+                        Picker("Category", selection: $category) {
                             ForEach(categories.map { $0.name }) { category in
                                 Text(category.rawValue.capitalized).tag(category)
                             }
@@ -51,11 +52,13 @@ struct AddProductScreenView: View {
                     
                     Button(action: { self.activeSheet = Sheet.subcategories }) {
                         HStack {
-                            Text("Subcategories")
-                            Spacer()
-                            HStack { ForEach(subcategories) { subcategory in
-                                ChipView(title: subcategory.name)
-                            }}
+                            if subcategories.count == 0 {
+                                Text("Subcategories")
+                            } else {
+                                HStack { ForEach(subcategories) { subcategory in
+                                    ChipView(title: subcategory.name)
+                                }}
+                            }
                         }
                     }
                 }
@@ -66,7 +69,7 @@ struct AddProductScreenView: View {
                 Section {
                     Button(action: { self.activeSheet = Sheet.brandOwner }) {
                         HStack {
-                            Text(brandOwner?.name ?? "Brand owner")
+                            Text(brandOwner?.name ?? "Owner")
                             Spacer()
                         }
                     }
@@ -97,6 +100,7 @@ struct AddProductScreenView: View {
                 
                 Button("Create Product", action: { createProduct() })
                     .disabled(!isValid())
+                
 
             }
             
@@ -152,8 +156,7 @@ struct AddProductScreenView: View {
             Task {
                 do {
                     let newProduct = try await SupabaseProductRepository().createProduct(newProductParams: newProductParams )
-                    
-                    print(newProduct)
+                    navigator.navigateTo(destination: newProduct, resetStack: true)
                 } catch {
                     print("error: \(error)")
                 }

@@ -1,21 +1,39 @@
 import GoTrue
 import SwiftUI
 
-private enum ProfileEnvironmentKey: EnvironmentKey {
-    static var defaultValue: Profile?
+class Navigator: ObservableObject {
+    @Published var path = NavigationPath()
+
+    func gotoHomePage() {
+        path.removeLast(path.count)
+        path.append(Route.activity)
+    }
+    
+    func tapOnSecondPage() {
+        path.removeLast()
+    }
+    
+    func navigateTo(destination: some Hashable, resetStack: Bool) {
+        if resetStack {
+            path.removeLast(path.count)
+        }
+        path.append(destination)
+    }
 }
 
 struct RootView: View {
+    @StateObject var navigator = Navigator()
+    
     var body: some View {
         UserProviderView(supabaseClient: Supabase.client) {
             AuthView(supabaseClient: Supabase.client, loadingContent: ProgressView.init) { _ in
-                NavigationStack {
+                NavigationStack(path: $navigator.path) {
                     AddNavigation {
                         Tabbar()
                     }
                 }
             }
-        }
+        }.environmentObject(navigator)
     }
 }
 
