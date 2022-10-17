@@ -42,3 +42,13 @@ extension BrandJoinedWithCompany: Decodable {
         company = try values.decode(Company.self, forKey: .company)
     }
 }
+
+struct NewBrand: Encodable {
+    let name: String
+    let brand_owner_id: Int
+    
+    init(name: String, brandOwnerId: Int) {
+        self.name = name
+        self.brand_owner_id = brandOwnerId
+    }
+}

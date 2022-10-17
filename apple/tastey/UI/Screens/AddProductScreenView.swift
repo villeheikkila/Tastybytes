@@ -1,9 +1,12 @@
 import SwiftUI
+import AlertToast
 
 struct AddProductScreenView: View {
     @State var categories = [CategoryJoinedWithSubcategories]()
     @State var activeSheet: Sheet?
     @EnvironmentObject var navigator: Navigator
+    @State var showToast = false
+    @State var toastType: ToastType?
 
     // New product values
     @State var category: CategoryName = CategoryName.beverage
@@ -17,27 +20,40 @@ struct AddProductScreenView: View {
     func getSubcategoriesForCategory() -> [Subcategory]? {
         return categories.first(where: { $0.name == category })?.subcategories
     }
-    
-    func setBrand(brand: BrandJoinedWithSubBrands) -> Void {
+
+    func setBrand(brand: BrandJoinedWithSubBrands) {
         self.brand = brand
-        self.subBrand = nil
+        subBrand = nil
         dismissSheet()
     }
-    
-    func dismissSheet() -> Void {
-        self.activeSheet = nil
+
+    func dismissSheet() {
+        activeSheet = nil
     }
-    
+
     func isValid() -> Bool {
         return [
             brandOwner != nil,
             brand != nil,
             subBrand != nil,
             name != "",
-            
-        ].allSatisfy({$0})
+
+        ].allSatisfy({ $0 })
     }
     
+    func getToastText() -> String {
+        switch toastType {
+        case .createdCompany:
+            return "New Company Created!"
+        case .createdBrand:
+            return "New Brand Created!"
+        case .createdSubBrand:
+            return "New Sub-brand Created!"
+        case .none:
+            return ""
+        }
+    }
+
     var body: some View {
         VStack {
             List {
@@ -49,7 +65,7 @@ struct AddProductScreenView: View {
                             }
                         }
                     }
-                    
+
                     Button(action: { self.activeSheet = Sheet.subcategories }) {
                         HStack {
                             if subcategories.count == 0 {
@@ -63,33 +79,25 @@ struct AddProductScreenView: View {
                     }
                 }
             header: {
-                Text("Category")
-            }.headerProminence(.increased)
-                
+                    Text("Category")
+                }.headerProminence(.increased)
+
                 Section {
                     Button(action: { self.activeSheet = Sheet.brandOwner }) {
-                        HStack {
-                            Text(brandOwner?.name ?? "Owner")
-                            Spacer()
-                        }
+                        Text(brandOwner?.name ?? "Owner")
                     }
                     Button(action: { self.activeSheet = Sheet.brand }) {
-                        HStack {
-                            Text(brand?.name ?? "Brand")
-                            Spacer()
-                        }
+                        Text(brand?.name ?? "Brand")
                     }.disabled(brandOwner == nil)
+
                     Button(action: { self.activeSheet = Sheet.subBrand }) {
-                        HStack {
-                            Text(subBrand?.name ?? "Sub-brand")
-                            Spacer()
-                        }
+                        Text(subBrand?.name ?? "Sub-brand")
                     }.disabled(brand == nil)
-                    
+
                 } header: {
                     Text("Brand")
                 }.headerProminence(.increased)
-                
+
                 Section {
                     TextField("Flavor", text: $name)
                     TextField("Description", text: $description)
@@ -97,14 +105,11 @@ struct AddProductScreenView: View {
                 } header: {
                     Text("Product")
                 }.headerProminence(.increased)
-                
+
                 Button("Create Product", action: { createProduct() })
                     .disabled(!isValid())
-                
-
             }
-            
-            
+
         }.sheet(item: $activeSheet) { sheet in
             switch sheet {
             case .subcategories:
@@ -112,27 +117,41 @@ struct AddProductScreenView: View {
                     SubcategoryPicker(availableSubcategories: subcategoriesForCategory, subcategories: $subcategories)
                 }
             case .brandOwner:
-                CompanySearchView(onSelect: { company in
+                CompanySearchView(onSelect: { (company, createdNew) in
                     self.brandOwner = company
+                    if (createdNew) {
+                        self.toastType = ToastType.createdCompany
+                        self.showToast = true
+                    }
                     dismissSheet()
                 })
             case .brand:
                 if let brandOwner = brandOwner {
-                    BrandSearchView(brandOwner: brandOwner, onSelect: { brand in
+                    BrandSearchView(brandOwner: brandOwner, onSelect: { (brand, createdNew) in
+                        if (createdNew) {
+                            self.toastType = ToastType.createdBrand
+                            self.showToast = true
+                        }
                         self.setBrand(brand: brand)
                     })
                 }
                 
             case .subBrand:
-                if let subBrands = brand?.subBrands {
-                    SubBrandPickerView(subBrands: subBrands, onSelect: { subBrand in
+                if let brand = brand {
+                    SubBrandPickerView(brandWithSubBrands: brand, onSelect: { (subBrand, createdNew) in
+                        if (createdNew) {
+                            self.toastType = ToastType.createdSubBrand
+                            self.showToast = true
+                        }
                         self.subBrand = subBrand
                         dismissSheet()
                         
                     })
+                }
             }
-            }
-            
+        }
+        .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
+            AlertToast(type: .complete(.green), title: getToastText())
         }
         .task {
             loadCategories()
@@ -149,13 +168,13 @@ struct AddProductScreenView: View {
             }
         }
     }
-    
+
     func createProduct() {
-        if let subBrandId = subBrand?.id, let categoryId = categories.first(where: { $0.name == category})?.id {
+        if let subBrandId = subBrand?.id, let categoryId = categories.first(where: { $0.name == category })?.id {
             let newProductParams = NewProductParams(name: name, description: description, categoryId: categoryId, subBrandId: subBrandId, subCategoryIds: subcategories.map { $0.id })
             Task {
                 do {
-                    let newProduct = try await SupabaseProductRepository().createProduct(newProductParams: newProductParams )
+                    let newProduct = try await SupabaseProductRepository().createProduct(newProductParams: newProductParams)
                     navigator.navigateTo(destination: newProduct, resetStack: true)
                 } catch {
                     print("error: \(error)")
@@ -172,6 +191,13 @@ extension AddProductScreenView {
         case brandOwner
         case brand
         case subBrand
+    }
+    
+    enum ToastType: Identifiable {
+        var id: Self { self }
+        case createdCompany
+        case createdBrand
+        case createdSubBrand
     }
 }
 

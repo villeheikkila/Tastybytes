@@ -5,10 +5,9 @@ struct CompanySearchView: View {
     @State var searchText: String = ""
     @State var searchResults = [Company]()
     @State var status: Status? = nil
-    @State var showToast = false
     @State var companyName = ""
 
-    let onSelect: (_ company: Company) -> Void
+    let onSelect: (_ company: Company, _ createdNew: Bool) -> Void
     
     func onAdd() {
         self.companyName = searchText
@@ -19,7 +18,7 @@ struct CompanySearchView: View {
         NavigationStack {
             List {
                 ForEach(searchResults, id: \.id) { company in
-                    Button(action: { self.onSelect(company) }) {
+                    Button(action: { self.onSelect(company, false) }) {
                         Text(company.name)
                     }
                 }
@@ -51,9 +50,6 @@ struct CompanySearchView: View {
             .navigationTitle("Search companies")
             .searchable(text: $searchText)
             .onSubmit(of: .search, searchUsers)
-            .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
-                AlertToast(type: .complete(.green), title: "Company Created!")
-            }
         }
     }
 
@@ -78,8 +74,7 @@ struct CompanySearchView: View {
                 let newCompany = try await SupabaseCompanyRepository().insert(newCompany: newCompany)
 
                 DispatchQueue.main.async {
-                    self.searchResults.append(newCompany)
-                    self.showToast = true
+                    onSelect(newCompany, true)
                 }
             } catch {
                 print("error: \(error.localizedDescription)")
