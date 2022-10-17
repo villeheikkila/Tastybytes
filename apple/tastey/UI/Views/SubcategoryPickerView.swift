@@ -4,7 +4,7 @@ import AlertToast
 struct SubcategoryPicker: View {
     let availableSubcategories: [Subcategory]
     @Binding var subcategories: [Subcategory]
-    @State var showToast = false
+    @State var showToast = false 
     @Environment(\.dismiss) var dismiss
     let maxSubcategories = 4
     
@@ -37,7 +37,7 @@ struct SubcategoryPicker: View {
                 .navigationBarItems(trailing: Button(action: {
                     dismiss()
                 }) {
-                    Text("Cancel").bold()
+                    Text("Done").bold()
                 })
                 .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
                     AlertToast(type: .error(.red), title: "You can only add \(maxSubcategories) subcategories")
