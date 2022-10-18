@@ -127,10 +127,6 @@ extension ProfileView {
 
         func fetchMoreCheckIns(userId: UUID) {
             let (from, to) = getPagination(page: page, size: pageSize)
-            
-            print("page ", page)
-            print("from ", from)
-            print("to ", to)
 
             Task {
                 DispatchQueue.main.async {

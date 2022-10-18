@@ -34,14 +34,6 @@ extension ActivityView {
         let pageSize = 5
         var page = 0
 
-        struct ActivityFeedRequest: Encodable {
-            let p_created_after: String
-
-            init(createdAter: String) {
-                p_created_after = createdAter
-            }
-        }
-
         func refresh() {
             page = 0
             checkIns = []
@@ -54,6 +46,7 @@ extension ActivityView {
                 DispatchQueue.main.async {
                     self.isLoading = true
                 }
+            
 
                 do {
                     let checkIns = try await SupabaseCheckInRepository().loadCurrentUserActivityFeed(from: from, to: to)

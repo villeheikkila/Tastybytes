@@ -3,7 +3,7 @@ import Foundation
 struct CheckInComment: Identifiable, Hashable {
     let id: Int
     var content: String
-    let createdAt: String
+    let createdAt: Date
     let profile: Profile
         
     static func == (lhs: CheckInComment, rhs: CheckInComment) -> Bool {
@@ -23,7 +23,7 @@ extension CheckInComment: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
         content = try values.decode(String.self, forKey: .content)
-        createdAt = try values.decode(String.self, forKey: .createdAt)
+        createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
         profile = try values.decode(Profile.self, forKey: .profile)
     }
 }

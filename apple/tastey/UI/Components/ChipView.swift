@@ -3,6 +3,8 @@ import SwiftUI
 struct ChipView: View {
     let title: String
     let systemName: String? = nil
+    var cornerRadius: CGFloat = 20
+    
 
     var body: some View {
         HStack {
@@ -13,10 +15,6 @@ struct ChipView: View {
         }.padding(.all, 3)
             .foregroundColor(.white)
             .background(Color(.systemBlue))
-            .cornerRadius(20)
-            .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(Color(.systemBlue), lineWidth: 1.5)
-            )
+            .cornerRadius(cornerRadius)
     }
 }

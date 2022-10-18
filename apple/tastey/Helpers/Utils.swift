@@ -13,10 +13,10 @@ func printData(data: Data) {
 }
 
 func getPagination(page: Int, size: Int) -> (Int, Int) {
-      let limit = size + 1
-      let from = page * limit
-      let to = from + size
-      return (from, to)
+    let limit = size + 1
+    let from = page * limit
+    let to = from + size
+    return (from, to)
 }
 
 func getConsistentColor(seed: String) -> Color {
@@ -45,5 +45,19 @@ func validateStringLenght(str: String, type: StrinLenghtType) -> Bool {
     case .long:
         return str.count > 2 && str.count <= 48
     }
-    
+}
+
+enum DateParsingError: Error {
+    case failure
+}
+
+let formatter = ISO8601DateFormatter()
+
+func parseDate(from: String) throws -> Date {
+    formatter.formatOptions = [
+        .withInternetDateTime,
+        .withFractionalSeconds,
+    ]
+    guard let date = formatter.date(from: from) else { throw DateParsingError.failure }
+    return date
 }

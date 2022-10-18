@@ -5,10 +5,12 @@ struct CheckInPageView: View {
     @StateObject private var model = CheckInPageViewModel()
 
     var body: some View {
-        VStack {
-            CheckInCardView(checkIn: checkIn)
-
             ScrollView {
+                CheckInCardView(checkIn: checkIn)
+                    .task {
+                        model.getCheckInCommets(checkInId: checkIn.id)
+                    }
+
                 VStack(spacing: 10) {
                     ForEach(model.checkInComments.reversed(), id: \.id) {
                         comment in CommentItemView(comment: comment, content: comment.content, onDelete: { id in
@@ -17,8 +19,8 @@ struct CheckInPageView: View {
                             updatedComment in model.editComment(updateCheckInComment: updatedComment)
                         })
                     }
-                }.padding(.leading, 15)
-                    .padding(.trailing, 15)
+                }
+                .padding([.leading, .trailing], 15)
             }
 
             HStack {
@@ -26,12 +28,11 @@ struct CheckInPageView: View {
                 Button(action: { model.sendComment(checkInId: checkIn.id) }) {
                     Image(systemName: "paperplane.fill")
                 }
-            }.padding(.all, 10)
-        }.task {
-            model.getCheckInCommets(checkInId: checkIn.id)
+            }
+            .padding(.all, 10)
+            
         }
     }
-}
 
 extension CheckInPageView {
     @MainActor class CheckInPageViewModel: ObservableObject {
@@ -72,10 +73,9 @@ extension CheckInPageView {
 
         func editComment(updateCheckInComment: UpdateCheckInComment) {
             Task {
-                let updatedComment = try await SupabaseCheckInCommentRepository().update( updateCheckInComment: updateCheckInComment)
+                let updatedComment = try await SupabaseCheckInCommentRepository().update(updateCheckInComment: updateCheckInComment)
 
                 if let at = self.checkInComments.firstIndex(where: { $0.id == updateCheckInComment.id }) {
-
                     DispatchQueue.main.async {
                         self.checkInComments.remove(at: at)
                         self.checkInComments.insert(updatedComment, at: at)
@@ -92,7 +92,7 @@ struct CommentItemView: View {
     @State var showEditCommentPrompt = false
     let onDelete: (_ commentId: Int) -> Void
     let onUpdate: (_ update: UpdateCheckInComment) -> Void
-    
+
     var updateComment: () -> Void {
         return {
             guard !content.isEmpty else {
@@ -104,24 +104,27 @@ struct CommentItemView: View {
             content = ""
         }
     }
-    
-    var body: some View {
 
+    var body: some View {
+        HStack {
+            AvatarView(avatarUrl: comment.profile.getAvatarURL(), size: 32, id: comment.profile.id)
+            VStack(alignment: .leading) {
                 HStack {
-                    AvatarView(avatarUrl: comment.profile.getAvatarURL(), size: 32, id: comment.profile.id)
-                    VStack(alignment: .leading) {
-                        Text(comment.profile.username).font(.system(size: 12, weight: .medium, design: .default))
-                        Text(comment.content).font(.system(size: 14, weight: .light, design: .default))
-                    }
-                    Text(comment.createdAt)
+                    Text(comment.profile.username).font(.system(size: 12, weight: .medium, design: .default))
+                    Spacer()
+                    Text(comment.createdAt.formatted()).font(.system(size: 8, weight: .medium, design: .default))
                 }
+                Text(comment.content).font(.system(size: 14, weight: .light, design: .default))
+            }
+            Spacer()
+        }
         .contextMenu {
             Button {
                 self.showEditCommentPrompt = true
             } label: {
                 Label("Edit Comment", systemImage: "pencil")
             }
-            
+
             Button {
                 onDelete(comment.id)
             } label: {
@@ -136,6 +139,5 @@ struct CommentItemView: View {
                 updateComment()
             })
         })
-        
     }
 }

@@ -66,7 +66,7 @@ extension FriendsScreenView {
 
         func sendFriendRequest(receiver: UUID) {
             let newFriend = NewFriend(sender: SupabaseAuthRepository().getCurrentUserId(), receiver: receiver, status: .pending)
-            print(newFriend)
+
             Task {
                 do {
                     let newFriend = try await SupabaseFriendsRepository().insert(newFriend: newFriend)
