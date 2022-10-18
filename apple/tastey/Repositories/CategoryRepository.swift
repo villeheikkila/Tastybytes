@@ -14,4 +14,15 @@ struct SupabaseCategoryRepository {
             .execute()
             .decoded(to: [CategoryJoinedWithSubcategories].self)
     }
+    
+    func loadServingStyles(categoryId: Int) async throws -> CategoryJoinedWithServingStyles {
+        return try await database
+            .from("categories")
+            .select(columns: "id, name, serving_styles (id, name)")
+            .eq(column: "id", value: categoryId)
+            .limit(count: 1)
+            .single()
+            .execute()
+            .decoded(to: CategoryJoinedWithServingStyles.self)
+    }
 }

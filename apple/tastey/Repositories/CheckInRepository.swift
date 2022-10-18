@@ -37,6 +37,16 @@ struct SupabaseCheckInRepository {
             .decoded(to: [CheckIn].self)
     }
     
+    func createCheckIn(newCheckInParams: NewCheckInParams) async throws -> CheckIn {
+        return try await database
+            .rpc(fn: "fnc__create_check_in", params: newCheckInParams)
+            .select(columns: checkInJoined)
+            .limit(count: 1)
+            .single()
+            .execute()
+            .decoded(to: CheckIn.self)
+    }
+    
     func insert(newCheckIn: NewCheckIn) async throws -> CheckIn {
         return try await database
             .from(tableName)

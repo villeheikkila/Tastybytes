@@ -4,7 +4,7 @@ struct UserSearchView<Actions: View>: View {
     @State var searchText: String = ""
     @State var searchResults = [Profile]()
 
-    let actions: (_ userId: UUID) -> Actions
+    let actions: (_ profile: Profile) -> Actions
 
     var body: some View {
 
@@ -19,7 +19,7 @@ struct UserSearchView<Actions: View>: View {
                             }
                             Spacer()
                             HStack {
-                                self.actions(profile.id)
+                                self.actions(profile)
                             }
                         }
                 }

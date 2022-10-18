@@ -17,6 +17,16 @@ struct SupabaseFriendsRepository {
             .decoded(to: [Friend].self)
     }
     
+    func loadAcceptedByUserId(userId: UUID) async throws -> [Friend] {
+        return try await database
+            .from(tableName)
+            .select(columns: joined)
+            .or(filters: "user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
+            .eq(column: "status", value: FriendStatus.accepted.rawValue)
+            .execute()
+            .decoded(to: [Friend].self)
+    }
+    
     func insert(newFriend: NewFriend) async throws -> Friend {
         return try await database
             .from(tableName)

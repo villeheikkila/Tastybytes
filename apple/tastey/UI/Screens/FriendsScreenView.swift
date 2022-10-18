@@ -31,10 +31,10 @@ struct FriendsScreenView: View {
                 Text("Find users")
             }
             .sheet(isPresented: $model.showUserSearchSheet) {
-                UserSearchView(actions: { id in
+                UserSearchView(actions: { profile in
                     HStack {
-                        if !model.friends.contains(where: { $0.containsUser(userId: id) }) {
-                            Button(action: { model.sendFriendRequest(receiver: id) }) {
+                        if !model.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
+                            Button(action: { model.sendFriendRequest(receiver: profile.id) }) {
                                 Image(systemName: "person.badge.plus")
                                     .imageScale(.large)
                             }
