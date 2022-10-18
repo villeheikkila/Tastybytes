@@ -5,6 +5,10 @@ struct Product: Identifiable {
     let subBrand: SubBrandJoinedWithBrand
     let subcategories: [SubcategoryJoinedWithCategory]
     
+    func getCategory() -> CategoryName? {
+        return subcategories.first?.category.name
+    }
+    
     func getDisplayName(_ part: ProductNameParts) -> String {
         switch part {
         case .brandOwner:
