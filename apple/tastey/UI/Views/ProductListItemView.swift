@@ -6,24 +6,23 @@ struct ProductListItemView: View {
     @State private var searchText = ""
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(product.subcategories.first?.name ?? "").font(.system(size: 12, weight: .bold, design: .default))
-            HStack {
-                Text(product.subBrand.brand.name).font(.headline)
-                    .font(.system(size: 18, weight: .bold, design: .default))
-
-                if let subBrandName = product.subBrand.name {
-                    Text(subBrandName).font(.headline)
-                        .font(.system(size: 18, weight: .bold, design: .default))
-                }
-                Text(product.name).font(.headline).font(.system(size: 18, weight: .bold, design: .default))
+        VStack(alignment: .leading, spacing: 5) {
+            if let categoryName = product.getCategory() {
+                Text(categoryName.rawValue.capitalized).font(.system(size: 12, weight: .bold, design: .default))
             }
-            Text(product.subBrand.brand.company.name).font(.system(size: 12, design: .default))
+            Text(product.getDisplayName(.fullName))
+                .font(.system(size: 16, weight: .bold, design: .default))
+                .foregroundColor(.primary)
+
+            Text(product.getDisplayName(.brandOwner))
+                .font(.system(size: 14, weight: .bold, design: .default))
+                .foregroundColor(.secondary)
+
             HStack {
                 ForEach(product.subcategories, id: \.id) { subcategory in
-                    ChipView(title: subcategory.name)
+                    ChipView(title: subcategory.name, cornerRadius: 5)
                 }
-            }.padding(.top, 5)
+            }
         }
     }
 }

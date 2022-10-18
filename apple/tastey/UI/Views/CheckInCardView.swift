@@ -4,7 +4,7 @@ import SwiftUI
 
 struct CheckInCardView: View {
     let checkIn: CheckIn
-
+    
     var body: some View {
         HStack {
             VStack {
