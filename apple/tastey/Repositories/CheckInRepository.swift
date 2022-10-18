@@ -20,7 +20,7 @@ struct SupabaseCheckInRepository {
             .from(tableName)
             .select(columns: checkInJoined)
             .eq(column: "created_by", value: id.uuidString.lowercased())
-            .order(column: "created_at")
+            .order(column: "id", ascending: false)
             .range(from: from, to: to)
             .execute()
             .decoded(to: [CheckIn].self)

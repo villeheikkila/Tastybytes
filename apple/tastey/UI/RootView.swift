@@ -30,7 +30,14 @@ struct RootView: View {
                 NavigationStack(path: $navigator.path) {
                     AddNavigation {
                         Tabbar()
-                    }
+                    }.navigationBarItems(leading:
+                                            NavigationLink(value: Route.friends) {
+                                                Image(systemName: "person.2").imageScale(.large)
+
+                                            },
+                                            trailing: NavigationLink(value: Route.settings) {
+                                                Image(systemName: "gear").imageScale(.large)
+                                            })
                 }
             }
         }
@@ -102,14 +109,7 @@ struct Tabbar: View {
                     Image(systemName: "person.fill")
                     Text("Profile")
                 }
-        }.navigationBarItems(leading:
-            NavigationLink(value: Route.friends) {
-                Image(systemName: "person.2").imageScale(.large)
-
-            },
-            trailing: NavigationLink(value: Route.settings) {
-                Image(systemName: "gear").imageScale(.large)
-            })
+        }
     }
 }
 

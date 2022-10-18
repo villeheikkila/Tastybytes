@@ -1,32 +1,6 @@
 import Foundation
 
-struct CheckInTaggedProfile: Decodable {
-    let profile: Profile
-    
-    enum CodingKeys: String, CodingKey {
-        case profile = "profiles"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        profile = try values.decode(Profile.self, forKey: .profile)
-    }
-}
-
-struct CheckInFlavors: Decodable {
-    let flavor: Flavor
-    
-    enum CodingKeys: String, CodingKey {
-        case flavor = "flavors"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        flavor = try values.decode(Flavor.self, forKey: .flavor)
-    }
-}
-
-struct CheckIn: Identifiable, Hashable {
+struct CheckIn: Identifiable {
     let id: Int
     let rating: Double?
     let review: String?
@@ -37,7 +11,9 @@ struct CheckIn: Identifiable, Hashable {
     let taggedProfiles: [Profile]
     let flavors: [Flavor]
     let variant: ProductVariant?
-    
+}
+
+extension CheckIn: Hashable {
     static func == (lhs: CheckIn, rhs: CheckIn) -> Bool {
         return lhs.id == rhs.id
     }
@@ -108,3 +84,28 @@ struct NewCheckInParams: Encodable {
     
 }
 
+struct CheckInTaggedProfile: Decodable {
+    let profile: Profile
+    
+    enum CodingKeys: String, CodingKey {
+        case profile = "profiles"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        profile = try values.decode(Profile.self, forKey: .profile)
+    }
+}
+
+struct CheckInFlavors: Decodable {
+    let flavor: Flavor
+    
+    enum CodingKeys: String, CodingKey {
+        case flavor = "flavors"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        flavor = try values.decode(Flavor.self, forKey: .flavor)
+    }
+}

@@ -21,16 +21,18 @@ struct ProductPageView: View {
                         })
                     }
             }
-            
+
             InfiniteScroll(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(productId: product.id) }, refresh: { model.refreshCheckIns() },
                            content: {
-                CheckInCardView(checkIn: $0)
-            })
+                               CheckInCardView(checkIn: $0)
+                           },
+                           header: {
+                               EmptyView()
+                           }
+            )
         }
     }
 }
-
-
 
 struct GrowingButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
@@ -73,13 +75,11 @@ extension ProductPageView {
                 }
             }
         }
-        
-        
+
         func appendNewCheckIn(newCheckIn: CheckIn) {
             DispatchQueue.main.async {
                 self.checkIns.insert(newCheckIn, at: 0)
             }
-            
         }
     }
 }
