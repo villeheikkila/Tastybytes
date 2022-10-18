@@ -5,6 +5,12 @@ import SwiftUI
 struct CheckInCardView: View {
     let checkIn: CheckIn
     
+    var onDelete: ((_ checkIn: CheckIn) -> Void)?
+    
+    func isOwnedByCurrentUser() -> Bool {
+        return checkIn.profile.id == SupabaseAuthRepository().getCurrentUserId()
+    }
+    
     var body: some View {
         HStack {
             VStack {
@@ -20,8 +26,23 @@ struct CheckInCardView: View {
             .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
         }
         .padding(.all, 10)
+        .contextMenu {
+            if (isOwnedByCurrentUser()) {
+                Button(action: {}) {
+                    Label("Edit", systemImage: "pencil")
+                }
+                
+                Button(action: {
+                    if let onDelete = onDelete {
+                        onDelete(checkIn)
+                    }
+                }) {
+                    Label("Delete", systemImage: "trash.fill")
+                }
+            }
+        }
     }
-
+    
     var header: some View {
         NavigationLink(value: checkIn.profile) {
             HStack {
@@ -35,25 +56,25 @@ struct CheckInCardView: View {
             .padding([.trailing, .leading, .top], 10)
         }
     }
-
+    
     var productSection: some View {
         NavigationLink(value: checkIn.product) {
             VStack(alignment: .leading) {
                 Text(checkIn.product.getDisplayName(.fullName))
                     .font(.system(size: 18, weight: .bold, design: .default))
                     .foregroundColor(.primary)
-
+                
                 HStack {
                     Text(checkIn.product.getDisplayName(.brandOwner))
                         .font(.system(size: 16, weight: .bold, design: .default))
                         .foregroundColor(.secondary)
-
+                    
                     if let manufacturerName = checkIn.variant?.manufacturer.name {
                         Text("(\(manufacturerName))")
                             .font(.system(size: 16, weight: .bold, design: .default))
                             .foregroundColor(.secondary)
                     }
-
+                    
                     Spacer()
                 }
             }
@@ -62,7 +83,7 @@ struct CheckInCardView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding([.trailing, .leading], 5)
     }
-
+    
     var checkInSection: some View {
         NavigationLink(value: checkIn) {
             VStack(spacing: 8) {
@@ -70,12 +91,12 @@ struct CheckInCardView: View {
                     if let rating = checkIn.rating {
                         RatingView(rating: rating)
                     }
-
+                    
                     if let review = checkIn.review {
                         Text(review)
                             .fontWeight(.medium)
                     }
-
+                    
                     if let flavors = checkIn.flavors {
                         HStack {
                             ForEach(flavors) { flavor in
@@ -88,7 +109,7 @@ struct CheckInCardView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color(.secondarySystemBackground))
                 .cornerRadius(5)
-
+                
                 if checkIn.taggedProfiles.count > 0 {
                     VStack {
                         HStack {
@@ -111,7 +132,7 @@ struct CheckInCardView: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
-
+    
     var footer: some View {
         HStack {
             NavigationLink(value: checkIn) {

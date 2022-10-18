@@ -47,15 +47,12 @@ struct SupabaseCheckInRepository {
             .decoded(to: CheckIn.self)
     }
     
-    func insert(newCheckIn: NewCheckIn) async throws -> CheckIn {
-        return try await database
+    func deleteById(id: Int) async throws -> Void {
+        try await database
             .from(tableName)
-            .insert(values: newCheckIn, returning: .representation)
-            .select(columns: checkInJoined)
-            .limit(count: 1)
-            .single()
+            .delete()
+            .eq(column: "id", value: id)
             .execute()
-            .decoded(to: CheckIn.self)
     }
     
     func getSummaryByProfileId(id: UUID) async throws -> ProfileSummary {

@@ -9,7 +9,9 @@ struct ProductPageView: View {
         ZStack(alignment: .bottom) {
             InfiniteScroll(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(productId: product.id) }, refresh: { model.refresh(productId: product.id) },
                            content: {
-                               CheckInCardView(checkIn: $0)
+                CheckInCardView(checkIn: $0, onDelete: {
+                    deletedCheckIn in model.deleteCheckIn(id: deletedCheckIn.id)
+                })
                            },
                            header: {
                                ProductCardView(product: product)
@@ -54,6 +56,17 @@ extension ProductPageView {
             page = 0
             checkIns = []
             fetchMoreCheckIns(productId: productId)
+        }
+        
+        func deleteCheckIn(id: Int) {
+            Task {
+                do {
+                    try await SupabaseCheckInRepository().deleteById(id: id)
+                    self.checkIns.removeAll(where: { $0.id == id})
+                } catch {
+                    print("error: \(error)")
+                }
+            }
         }
         
         func fetchMoreCheckIns(productId: Int) {
