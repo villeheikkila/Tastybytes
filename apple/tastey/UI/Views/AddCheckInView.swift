@@ -12,6 +12,9 @@ struct AddCheckInView: View {
 
     @State var friends = [Profile]()
     @State var taggedFriends = [Profile]()
+    
+    @State var availableFlavors = [Flavor]()
+    @State var pickedFlavors = [Flavor]()
 
     @Environment(\.dismiss) var dismiss
     let onCreation: (_ checkIn: CheckIn) -> Void
@@ -23,6 +26,19 @@ struct AddCheckInView: View {
                 Section {
                     TextField("How was it?", text: $review)
                     RatingPicker(rating: $rating)
+                    Button(action: {
+                        self.activeSheet = Sheet.flavors
+                    }) {
+                        HStack {
+                            if (pickedFlavors.count != 0) {
+                                ForEach(pickedFlavors, id: \.self) {
+                                    flavor in ChipView(title: flavor.name)
+                                }
+                            } else {
+                                Text("Flavors")
+                            }
+                        }
+                    }
                 } header: {
                     Text("Review")
                 }.headerProminence(.increased)
@@ -73,6 +89,8 @@ struct AddCheckInView: View {
                 switch sheet {
                 case .friends:
                     FriendPickerView(friends: friends, taggedFriends: $taggedFriends)
+                case .flavors:
+                    FlavorPickerView(availableFlavors: $availableFlavors, pickedFlavors: $pickedFlavors)
                 case .manufacturer:
                     CompanySearchView(onSelect: { company, createdNew in
                         self.manufacturer = company
@@ -88,8 +106,9 @@ struct AddCheckInView: View {
             let friendIds = friends.map { $0.id }
             let servingStyleId = servingStyles.first(where: {$0.name == servingStyle})?.id
             let manufacturerId = manufacturer?.id
+            let flavorIds = pickedFlavors.map { $0.id }
             
-            let newCheckParams = NewCheckInParams(productId: product.id, rating: rating, review: review, manufacturerId: manufacturerId, servingStyleId: servingStyleId, friendIds: friendIds)
+            let newCheckParams = NewCheckInParams(productId: product.id, rating: rating, review: review, manufacturerId: manufacturerId, servingStyleId: servingStyleId, friendIds: friendIds, flavorIds: flavorIds)
                         
             Task {
                 do {
@@ -108,9 +127,7 @@ struct AddCheckInView: View {
         let currentUserId = SupabaseAuthRepository().getCurrentUserId()
         Task {
             let acceptedFriends = try await SupabaseFriendsRepository().loadAcceptedByUserId(userId: currentUserId)
-            
             self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId)}
-            print(self.friends)
         }
         
         Task {
@@ -130,6 +147,7 @@ struct AddCheckInView: View {
             var id: Self { self }
             case manufacturer
             case friends
+            case flavors
         }
 
 }

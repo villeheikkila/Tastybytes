@@ -4,7 +4,7 @@ import Foundation
 struct SupabaseCheckInRepository {
     private let database = Supabase.client.database
     private let tableName = "check_ins"
-    private let checkInJoined = "id, rating, review, created_at, profiles (id, username, avatar_url), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, avatar_url))"
+    private let checkInJoined = "id, rating, review, created_at, serving_styles (id, name), profiles (id, username, avatar_url), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, avatar_url)), check_in_flavors (flavors (id, name)), check_in_tagged_profiles (profiles (id, username, avatar_url)), product_variants (id, companies (id, name))"
     
     func loadCurrentUserActivityFeed(from: Int, to: Int) async throws -> [CheckIn] {
         return try await database

@@ -53,14 +53,25 @@ extension ActivityView {
                     self.isLoading = true
                 }
 
-                let checkIns = try await SupabaseCheckInRepository().loadCurrentUserActivityFeed(from: from, to: to)
+                do {
+                    let checkIns = try await SupabaseCheckInRepository().loadCurrentUserActivityFeed(from: from, to: to)
+                    
+                    DispatchQueue.main.async {
+                        self.checkIns.append(contentsOf: checkIns)
+                        self.page += 1
+                        self.isLoading = false
+                    }
+                } catch {
+                        print("error: \(error)")
 
-                DispatchQueue.main.async {
-                    self.checkIns.append(contentsOf: checkIns)
-                    self.page += 1
-                    self.isLoading = false
+                    
+                    
+                    
+                    
+                
+                    }
                 }
             }
         }
     }
-}
+
