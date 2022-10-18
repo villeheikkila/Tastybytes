@@ -26,14 +26,16 @@ struct RootView: View {
     
     var body: some View {
         UserProviderView(supabaseClient: Supabase.client) {
-            AuthView(supabaseClient: Supabase.client, loadingContent: ProgressView.init) { _ in
+            AuthView(loadingContent: ProgressView.init) { _ in
                 NavigationStack(path: $navigator.path) {
                     AddNavigation {
                         Tabbar()
                     }
                 }
             }
-        }.environmentObject(navigator)
+        }
+        .environmentObject(navigator)
+        
     }
 }
 

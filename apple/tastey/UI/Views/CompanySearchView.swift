@@ -19,7 +19,11 @@ struct CompanySearchView: View {
         NavigationStack {
             List {
                 ForEach(searchResults, id: \.id) { company in
-                    Button(action: { self.onSelect(company, false) }) {
+                    Button(action: {
+                        self.onSelect(company, false)
+                        dismiss()
+                        
+                    }) {
                         Text(company.name)
                     }
                 }
@@ -57,11 +61,11 @@ struct CompanySearchView: View {
                 Text("Cancel").bold()
             })
             .searchable(text: $searchText)
-            .onSubmit(of: .search, searchUsers)
+            .onSubmit(of: .search, searchCompanies)
         }
     }
 
-    func searchUsers() {
+    func searchCompanies() {
         Task {
             do {
                 let searchResults = try await SupabaseCompanyRepository().search(searchTerm: searchText)
@@ -83,6 +87,7 @@ struct CompanySearchView: View {
 
                 DispatchQueue.main.async {
                     onSelect(newCompany, true)
+                    dismiss()
                 }
             } catch {
                 print("error: \(error.localizedDescription)")

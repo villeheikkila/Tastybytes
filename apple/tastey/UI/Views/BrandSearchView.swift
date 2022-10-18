@@ -29,7 +29,7 @@ struct BrandSearchView: View {
                     Text("Add new brand for \(brandOwner.name)")
                 }
             }
-            .navigationTitle("Search companies")
+            .navigationTitle("Add brand name")
             .navigationBarItems(trailing: Button(action: {
                 dismiss()
             }) {

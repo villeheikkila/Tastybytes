@@ -1,12 +1,13 @@
+import AlertToast
+import GoTrue
 import PhotosUI
 import SwiftUI
-import GoTrue
 
 struct SettingsView: View {
     @StateObject private var model = SettingsViewModel()
     @State private var showingImagePicker = false
     @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var showDeleteConfirmation: Bool = false
+    @State private var showDeleteConfirmation = false
 
     func ImageWithDefault() -> Image {
         guard let image = model.avatarImage else {
@@ -43,8 +44,10 @@ struct SettingsView: View {
                     .disableAutocorrection(true)
                 TextField("First Name", text: $model.firstName)
                 TextField("Last Name", text: $model.lastName)
-                Button("Update", action: { model.updateProfile() })
 
+                if model.profileHasChanged() {
+                    Button("Update", action: { model.updateProfile() })
+                }
             } header: {
                 Text("Profile")
             } footer: {
@@ -58,7 +61,7 @@ struct SettingsView: View {
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
 
-                if model.email != model.user?.email {
+                if model.emailHasChanged() {
                     Button("Send Verification Link", action: { model.sendEmailVerificationLink() })
                 }
 
@@ -87,29 +90,82 @@ struct SettingsView: View {
         }.task {
             model.getInitialValues()
         }
+        .toast(isPresenting: $model.showToast, duration: 1, tapToDismiss: true) {
+            switch model.toast {
+            case .profileUpdated:
+                return AlertToast(type: .complete(.green), title: "Profile updated!")
+            case .exported:
+                return AlertToast(type: .complete(.green), title: "Data was exported as CSV")
+            case .exportError:
+                return AlertToast(type: .error(.red), title: "Error occured while trying to export data")
+            case .none:
+                return AlertToast(type: .error(.red), title: "")
+            }
+        }
+        .fileExporter(isPresented: $model.showingExporter,
+                      document: model.csvExport,
+                      contentType: UTType.commaSeparatedText,
+                      defaultFilename: "tasty_export.csv") { result in
+            switch result {
+            case .success(_):
+                model.showToast(type: .exported)
+            case .failure(_):
+                model.showToast(type: .exportError)
+            }
+        }
     }
 }
 
 extension SettingsView {
+    enum Toast {
+        case profileUpdated
+        case exported
+        case exportError
+    }
+
     @MainActor class SettingsViewModel: ObservableObject {
+        // Profile values
         @Published var username = ""
         @Published var firstName = ""
         @Published var lastName = ""
-        @Published var email = ""
         @Published var avatarImage: UIImage?
-        @Published var user: User?
+
+        // User values
+        @Published var email = ""
+
+        @Published var csvExport: CSVFile?
+
+        @Published var showingExporter = false
+
+        @Published var showToast = false
+        @Published var toast: Toast?
+
+        var profile: Profile?
+        var user: User?
+
+        func profileHasChanged() -> Bool {
+            return ![
+                username == profile?.username,
+                firstName == profile?.firstName,
+                lastName == profile?.lastName
+            ].allSatisfy({ $0 })
+        }
+
+        func emailHasChanged() -> Bool {
+            return email != user?.email
+        }
         
+        func showToast(type: Toast) {
+            self.toast = type
+            self.showToast = true
+        }
+
         func getInitialValues() {
             Task {
                 let user = SupabaseAuthRepository().getCurrentUser()
                 let profile = try await SupabaseProfileRepository().loadProfileById(id: SupabaseAuthRepository().getCurrentUserId())
 
-                if let url = profile.avatarUrl != nil
-                    ? URL(
-                        string:
-                        "https://dmkvuqooctolvhdsubot.supabase.co/storage/v1/object/public/avatars/\(profile.avatarUrl!)"
-                    ) : nil {
-                    print(url)
+                if let url = profile.getAvatarURL() {
                     getData(from: url) { data, _, error in
                         guard let data = data, error == nil else { return }
                         DispatchQueue.main.async {
@@ -119,11 +175,13 @@ extension SettingsView {
                 }
 
                 DispatchQueue.main.async {
+                    self.profile = profile
+                    self.user = user
+
                     self.username = profile.username
                     self.lastName = profile.lastName ?? ""
                     self.firstName = profile.firstName ?? ""
                     self.email = user.email ?? ""
-                    self.user = user
                 }
             }
         }
@@ -137,28 +195,26 @@ extension SettingsView {
             Task {
                 try await SupabaseProfileRepository().updateProfile(id: SupabaseAuthRepository().getCurrentUserId(),
                                                                     update: update)
+                self.toast = Toast.profileUpdated
+                self.showToast = true
             }
         }
 
         func exportData() {
+            let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            let destinationUrl = docsUrl?.appendingPathComponent("tasted_export.csv")
+
             Task {
                 let csvText = try await SupabaseProfileRepository().currentUserExport()
-                if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                    do {
-                        try csvText.write(
-                            to: dir.appendingPathComponent("tasted_export.csv"), atomically: false,
-                            encoding: .utf8)
-                    } catch {
-                        print("Error")
-                    }
-                }
+                self.csvExport = CSVFile(initialText: csvText)
+                self.showingExporter = true
             }
         }
 
         // TODO: Do not log out on email change
         func sendEmailVerificationLink() {
             Task {
-                try? await SupabaseAuthRepository().sendEmailVerification(email: email)
+                try await SupabaseAuthRepository().sendEmailVerification(email: email)
             }
         }
 
@@ -170,8 +226,12 @@ extension SettingsView {
 
         func deleteCurrentAccount() {
             Task {
-                try await SupabaseProfileRepository().deleteCurrentAccount()
-                try await SupabaseAuthRepository().logOut()
+                do {
+                    try await SupabaseProfileRepository().deleteCurrentAccount()
+                    try await SupabaseAuthRepository().logOut()
+                } catch {
+                    print("error \(error)")
+                }
             }
         }
 
@@ -195,5 +255,26 @@ extension SettingsView {
         func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
             URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
         }
+    }
+}
+
+struct CSVFile: FileDocument {
+    static var readableContentTypes = [UTType.commaSeparatedText]
+    static var writableContentTypes = UTType.commaSeparatedText
+    var text = ""
+
+    init(initialText: String = "") {
+        text = initialText
+    }
+
+    init(configuration: ReadConfiguration) throws {
+        if let data = configuration.file.regularFileContents {
+            text = String(decoding: data, as: UTF8.self)
+        }
+    }
+
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        let data = Data(text.utf8)
+        return FileWrapper(regularFileWithContents: data)
     }
 }

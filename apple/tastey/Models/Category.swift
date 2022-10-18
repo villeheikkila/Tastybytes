@@ -68,3 +68,28 @@ struct CategoryJoinedWithSubcategories: Identifiable, Decodable, Hashable {
         return lhs.id == rhs.id
     }
 }
+
+struct CategoryJoinedWithServingStyles: Decodable, Identifiable, Equatable {
+    let id: Int
+    let name: CategoryName
+    let servingStyles: [ServingStyle]
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case servingStyles = "serving_styles"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(Int.self, forKey: .id)
+        name = try values.decode(CategoryName.self, forKey: .name)
+        servingStyles = try values.decode([ServingStyle].self, forKey: .servingStyles)
+    }
+    
+    static func == (lhs: CategoryJoinedWithServingStyles, rhs: CategoryJoinedWithServingStyles) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+}
+

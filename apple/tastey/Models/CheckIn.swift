@@ -52,3 +52,23 @@ struct NewCheckIn: Encodable {
     }
     
 }
+
+struct NewCheckInParams: Encodable {
+    let p_product_id: Int
+    let p_rating: Int?
+    let p_review: String?
+    let p_manufacturer_id: Int?
+    let p_serving_style_id: Int?
+    let p_friend_ids: [String]?
+    
+    init (productId: Int, rating: Int?, review: String?, manufacturerId: Int?, servingStyleId: Int?, friendIds: [UUID]) {
+        self.p_product_id = productId
+        self.p_rating = rating
+        self.p_review = review
+        self.p_manufacturer_id = manufacturerId
+        self.p_serving_style_id = servingStyleId
+        self.p_friend_ids = friendIds.map { $0.uuidString.lowercased() }
+    }
+    
+}
+
