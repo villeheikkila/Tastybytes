@@ -9,55 +9,17 @@ struct CheckInCardView: View {
         NavigationLink(value: checkIn) {
             HStack {
                 VStack {
-                    NavigationLink(value: checkIn.profile) {
-                        HStack {
-                            AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 30, id: checkIn.profile.id)
-                            Text(checkIn.profile.username)
-                                .font(.system(size: 12, weight: .bold, design: .default))
-                                .foregroundColor(.primary)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .cornerRadius(10)
-                        .padding(.trailing, 10)
-                        .padding(.leading, 10)
-                        .padding(.top, 10)
-                    }
+                   header
 
                     HStack(alignment: .center) {
                         VStack(alignment: .leading) {
                             Spacer()
-
-                            NavigationLink(value: checkIn.product) {
-                                VStack(alignment: .leading) {
-                                    Text(checkIn.product.subBrand.brand.name)
-                                        .font(.system(size: 18, weight: .bold, design: .default))
-                                        .foregroundColor(.primary)
-                                    if let subBrandName = checkIn.product.subBrand.name {
-                                        Text(subBrandName)
-                                            .font(.system(size: 24, weight: .bold, design: .default))
-                                            .foregroundColor(.primary)
-                                    }
-                                    Text(checkIn.product.name)
-                                        .font(.system(size: 24, weight: .bold, design: .default))
-                                        .foregroundColor(.primary)
-                                    HStack {
-                                        Text(checkIn.product.subBrand.brand.company.name)
-                                            .font(.system(size: 16, weight: .bold, design: .default))
-                                            .foregroundColor(.secondary)
-
-                                        if let manufacturerName = checkIn.variant?.manufacturer.name {
-                                            Text("(\(manufacturerName))")
-                                                .font(.system(size: 16, weight: .bold, design: .default))
-                                                .foregroundColor(.secondary)
-                                        }
-                                    }
-                                }
-                            }
+                            
+                            productSection
 
                             Spacer()
-                            if let review = checkIn.review {
-                                Text(review).foregroundColor(.primary)
-                            }
+                            
+
                             if let flavors = checkIn.flavors {
                                 HStack {
                                     ForEach(flavors) { flavor in
@@ -65,9 +27,14 @@ struct CheckInCardView: View {
                                     }
                                 }
                             }
+                            
                             HStack {
                                 RatingView(rating: checkIn.rating ?? 0)
                                     .padding(.bottom, 10)
+                            }
+                            
+                            if let review = checkIn.review {
+                                Text(review).foregroundColor(.primary)
                             }
 
                             if checkIn.taggedProfiles.count > 0 {
@@ -97,17 +64,9 @@ struct CheckInCardView: View {
                     .cornerRadius(5)
                     .padding(.leading, 5)
                     .padding(.trailing, 5)
+                    
+                    footer
 
-                    HStack {
-                        Text(checkIn.createdAt).font(.system(size: 12, weight: .medium, design: .default))
-                        Spacer()
-                        ReactionsView(checkInId: checkIn.id, checkInReactions: checkIn.checkInReactions)
-                    }
-                    .padding(.trailing, 8)
-                    .padding(.leading, 8)
-                    .padding(.bottom, 8)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .cornerRadius(10)
                 }
                 .background(Color(.tertiarySystemBackground))
                 .cornerRadius(10)
@@ -117,5 +76,58 @@ struct CheckInCardView: View {
         }
         .buttonStyle(PlainButtonStyle())
 
+    }
+    
+    var header: some View {
+        NavigationLink(value: checkIn.profile) {
+            HStack {
+                AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 30, id: checkIn.profile.id)
+                Text(checkIn.profile.username)
+                    .font(.system(size: 12, weight: .bold, design: .default))
+                    .foregroundColor(.primary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .cornerRadius(10)
+            .padding(.trailing, 10)
+            .padding(.leading, 10)
+            .padding(.top, 10)
+        }
+    }
+    
+    var footer: some View {
+        HStack {
+            Text(checkIn.createdAt).font(.system(size: 12, weight: .medium, design: .default))
+            Spacer()
+            ReactionsView(checkInId: checkIn.id, checkInReactions: checkIn.checkInReactions)
+        }
+        .padding(.trailing, 8)
+        .padding(.leading, 8)
+        .padding(.bottom, 8)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .cornerRadius(10)
+    }
+
+    
+    var productSection: some View {
+        NavigationLink(value: checkIn.product) {
+            VStack(alignment: .leading) {
+                    Text(checkIn.product.getDisplayName(.fullName))
+                        .font(.system(size: 18, weight: .bold, design: .default))
+                        .foregroundColor(.primary)
+            
+                
+                HStack {
+                    Text(checkIn.product.getDisplayName(.brandOwner))
+                        .font(.system(size: 16, weight: .bold, design: .default))
+                        .foregroundColor(.secondary)
+
+                    if let manufacturerName = checkIn.variant?.manufacturer.name {
+                        Text("(\(manufacturerName))")
+                            .font(.system(size: 16, weight: .bold, design: .default))
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+        }
     }
 }
