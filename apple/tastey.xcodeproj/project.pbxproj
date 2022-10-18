@@ -21,6 +21,10 @@
 		5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B828FA07CF00AED6F1 /* Friend.swift */; };
 		5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1728FED0E00055CFD2 /* ServingStyle.swift */; };
 		5C919E1A28FEE2DE0055CFD2 /* FriendPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1928FEE2DE0055CFD2 /* FriendPickerView.swift */; };
+		5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1B28FEFEA50055CFD2 /* FlavorRepository.swift */; };
+		5C919E1E28FF01480055CFD2 /* Flavor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1D28FF01480055CFD2 /* Flavor.swift */; };
+		5C919E2028FF024A0055CFD2 /* FlavorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1F28FF024A0055CFD2 /* FlavorPickerView.swift */; };
+		5C919E2228FF0CF60055CFD2 /* ProductVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E2128FF0CF60055CFD2 /* ProductVariant.swift */; };
 		5CB1C24128F99E1C000B0EB4 /* ProductListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24028F99E1C000B0EB4 /* ProductListItemView.swift */; };
 		5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */; };
 		5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */; };
@@ -84,6 +88,10 @@
 		5C7DC2B828FA07CF00AED6F1 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		5C919E1728FED0E00055CFD2 /* ServingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyle.swift; sourceTree = "<group>"; };
 		5C919E1928FEE2DE0055CFD2 /* FriendPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPickerView.swift; sourceTree = "<group>"; };
+		5C919E1B28FEFEA50055CFD2 /* FlavorRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorRepository.swift; sourceTree = "<group>"; };
+		5C919E1D28FF01480055CFD2 /* Flavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flavor.swift; sourceTree = "<group>"; };
+		5C919E1F28FF024A0055CFD2 /* FlavorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorPickerView.swift; sourceTree = "<group>"; };
+		5C919E2128FF0CF60055CFD2 /* ProductVariant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductVariant.swift; sourceTree = "<group>"; };
 		5CB1C24028F99E1C000B0EB4 /* ProductListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListItemView.swift; sourceTree = "<group>"; };
 		5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsView.swift; sourceTree = "<group>"; };
 		5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInRepository.swift; sourceTree = "<group>"; };
@@ -159,6 +167,7 @@
 				5C11ECBF28EF434700CCDE6A /* Profile.swift */,
 				5CFB563028F5974100F13A1E /* ProfileSummary.swift */,
 				5CD10A4A28F980860001CFC2 /* CheckInComment.swift */,
+				5C919E2128FF0CF60055CFD2 /* ProductVariant.swift */,
 				5CD10A4C28F985D00001CFC2 /* CheckIn.swift */,
 				5CD10A4E28F98C0B0001CFC2 /* Category.swift */,
 				5CD10A5028F98C8C0001CFC2 /* Subcategory.swift */,
@@ -168,6 +177,7 @@
 				5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */,
 				5C7DC2B828FA07CF00AED6F1 /* Friend.swift */,
 				5C919E1728FED0E00055CFD2 /* ServingStyle.swift */,
+				5C919E1D28FF01480055CFD2 /* Flavor.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -196,6 +206,7 @@
 				5CED432928FD4E17003F8194 /* CategoryRepository.swift */,
 				5CED432F28FD6EBC003F8194 /* BrandRepository.swift */,
 				5CED433328FDA357003F8194 /* SubBrandRepository.swift */,
+				5C919E1B28FEFEA50055CFD2 /* FlavorRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -254,6 +265,7 @@
 				5CED433128FD76BB003F8194 /* SubBrandPickerView.swift */,
 				5CED433528FDA8B9003F8194 /* SubcategoryPickerView.swift */,
 				5C919E1928FEE2DE0055CFD2 /* FriendPickerView.swift */,
+				5C919E1F28FF024A0055CFD2 /* FlavorPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -387,6 +399,7 @@
 				5CED432C28FD69DE003F8194 /* CompanySearchView.swift in Sources */,
 				5CD10A5728F98D490001CFC2 /* Product.swift in Sources */,
 				5CD10A5328F98CFC0001CFC2 /* Brand.swift in Sources */,
+				5C919E1E28FF01480055CFD2 /* Flavor.swift in Sources */,
 				5C919E1A28FEE2DE0055CFD2 /* FriendPickerView.swift in Sources */,
 				5CB1C24728F9B551000B0EB4 /* CheckInCommentRepository.swift in Sources */,
 				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,
@@ -399,10 +412,12 @@
 				5CD10A3D28F75B7A0001CFC2 /* ProductScreenView.swift in Sources */,
 				5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */,
 				5CD10A4B28F980860001CFC2 /* CheckInComment.swift in Sources */,
+				5C919E2028FF024A0055CFD2 /* FlavorPickerView.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileScreenView.swift in Sources */,
 				5CD10A5C28F998BF0001CFC2 /* ProfileRepository.swift in Sources */,
 				5C11ECBD28EEF30600CCDE6A /* SearchScreenView.swift in Sources */,
 				5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */,
+				5C919E2228FF0CF60055CFD2 /* ProductVariant.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsScreenView.swift in Sources */,
 				5CED433428FDA357003F8194 /* SubBrandRepository.swift in Sources */,
 				5CB1C24928F9BBAA000B0EB4 /* CheckInReactionRepository.swift in Sources */,
@@ -421,6 +436,7 @@
 				5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */,
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5C11ECAF28EECC8500CCDE6A /* AuthScreenView.swift in Sources */,
+				5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */,
 				5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */,
 				5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */,
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,

@@ -22,11 +22,11 @@ struct CheckInCardView: View {
                         .padding(.leading, 10)
                         .padding(.top, 10)
                     }
-                    
+
                     HStack(alignment: .center) {
                         VStack(alignment: .leading) {
                             Spacer()
-                            
+
                             NavigationLink(value: checkIn.product) {
                                 VStack(alignment: .leading) {
                                     Text(checkIn.product.subBrand.brand.name)
@@ -40,23 +40,56 @@ struct CheckInCardView: View {
                                     Text(checkIn.product.name)
                                         .font(.system(size: 24, weight: .bold, design: .default))
                                         .foregroundColor(.primary)
-                                    Text(checkIn.product.subBrand.brand.company.name)
-                                        .font(.system(size: 16, weight: .bold, design: .default))
-                                        .foregroundColor(.secondary)
+                                    HStack {
+                                        Text(checkIn.product.subBrand.brand.company.name)
+                                            .font(.system(size: 16, weight: .bold, design: .default))
+                                            .foregroundColor(.secondary)
+
+                                        if let manufacturerName = checkIn.variant?.manufacturer.name {
+                                            Text("(\(manufacturerName))")
+                                                .font(.system(size: 16, weight: .bold, design: .default))
+                                                .foregroundColor(.secondary)
+                                        }
+                                    }
                                 }
                             }
-                            
+
                             Spacer()
                             if let review = checkIn.review {
                                 Text(review).foregroundColor(.primary)
+                            }
+                            if let flavors = checkIn.flavors {
+                                HStack {
+                                    ForEach(flavors) { flavor in
+                                        ChipView(title: flavor.name)
+                                    }
+                                }
                             }
                             HStack {
                                 RatingView(rating: checkIn.rating ?? 0)
                                     .padding(.bottom, 10)
                             }
+
+                            if checkIn.taggedProfiles.count > 0 {
+                                VStack {
+                                    HStack {
+                                        Text(verbatim: "Tagged friends").font(.subheadline).fontWeight(.medium)
+                                        Spacer()
+                                    }
+                                    HStack{
+                                        ForEach(checkIn.taggedProfiles, id: \.id) {
+                                            taggedProfile in
+                                            NavigationLink(value: taggedProfile) {
+                                                AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 32, id: taggedProfile.id)
+                                            }
+                                        }
+                                        Spacer()
+                                    }
+                                }
+                            }
                         }
                         .padding(.all, 10)
-                        
+
                         Spacer()
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -64,7 +97,7 @@ struct CheckInCardView: View {
                     .cornerRadius(5)
                     .padding(.leading, 5)
                     .padding(.trailing, 5)
-                    
+
                     HStack {
                         Text(checkIn.createdAt).font(.system(size: 12, weight: .medium, design: .default))
                         Spacer()
@@ -81,7 +114,8 @@ struct CheckInCardView: View {
                 .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
             }
             .padding(.all, 10)
-            .frame(height: 280)
         }
+        .buttonStyle(PlainButtonStyle())
+
     }
 }
