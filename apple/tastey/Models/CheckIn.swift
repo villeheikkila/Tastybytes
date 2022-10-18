@@ -4,13 +4,17 @@ struct CheckIn: Identifiable {
     let id: Int
     let rating: Double?
     let review: String?
-    let createdAt: String
+    let createdAt: Date
     let profile: Profile
     let product: Product
     let checkInReactions: [CheckInReaction]
     let taggedProfiles: [Profile]
     let flavors: [Flavor]
     let variant: ProductVariant?
+    
+    func isEmpty() -> Bool {
+        return [rating == nil, (review == nil || review == ""), flavors.count == 0].allSatisfy { $0 }
+    }
 }
 
 extension CheckIn: Hashable {
@@ -38,13 +42,14 @@ extension CheckIn: Decodable {
         id = try values.decode(Int.self, forKey: .id)
         rating = try values.decodeIfPresent(Double.self, forKey: .rating)
         review = try values.decodeIfPresent(String.self, forKey: .review)
-        createdAt = try values.decode(String.self, forKey: .createdAt)
+        createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
         profile = try values.decode(Profile.self, forKey: .profile)
         product = try values.decode(Product.self, forKey: .product)
         checkInReactions = try values.decode([CheckInReaction].self, forKey: .checkInReactions)
         taggedProfiles = try values.decode([CheckInTaggedProfile].self, forKey: .taggedProfiles).compactMap { $0.profile }
         flavors = try values.decode([CheckInFlavors].self, forKey: .flavors).compactMap { $0.flavor }
         variant = try values.decodeIfPresent(ProductVariant.self, forKey: .variant)
+
     }
 }
 

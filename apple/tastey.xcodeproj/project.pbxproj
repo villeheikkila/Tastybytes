@@ -245,6 +245,7 @@
 				5CFB562E28F596A200F13A1E /* ChipView.swift */,
 				5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */,
 				5CFB563228F597ED00F13A1E /* RatingView.swift */,
+				5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -252,7 +253,6 @@
 		5CFB562D28F5969300F13A1E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */,
 				5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */,
 				5CD10A4628F9522D0001CFC2 /* RatingPicker.swift */,
 				5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */,

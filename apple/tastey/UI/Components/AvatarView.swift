@@ -19,6 +19,7 @@ struct AvatarView: View {
         } else {
             Image(systemName: "person.fill")
                 .resizable()
+                .padding(.all, size / 5)
                 .clipShape(Circle())
                 .aspectRatio(contentMode: .fill)
                 .frame(width: size, height: size)

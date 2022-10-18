@@ -5,20 +5,15 @@ struct ProductCardView: View {
 
     var body: some View {
         VStack {
-            Text(product.subBrand.brand.name)
+            Text(product.getDisplayName(.fullName))
                 .font(.system(size: 18, weight: .bold, design: .default))
-                .foregroundColor(.white)
-            if let subBrandName = product.subBrand.name {
-                Text(subBrandName)
-                    .font(.system(size: 24, weight: .bold, design: .default))
-                    .foregroundColor(.primary)
-            }
-            Text(product.name)
-                .font(.system(size: 24, weight: .bold, design: .default))
                 .foregroundColor(.primary)
-            Text(product.subBrand.brand.company.name)
-                .font(.system(size: 16, weight: .bold, design: .default))
-                .foregroundColor(.secondary)
+
+            HStack {
+                Text(product.getDisplayName(.brandOwner))
+                    .font(.system(size: 16, weight: .bold, design: .default))
+                    .foregroundColor(.secondary)
+            }
         }
         .padding(.all, 10)
         .frame(maxWidth: .infinity, alignment: .center)

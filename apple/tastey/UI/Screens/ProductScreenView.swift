@@ -6,31 +6,27 @@ struct ProductPageView: View {
     @State private var showingSheet = false
 
     var body: some View {
-        ScrollView {
-            VStack {
-                ProductCardView(product: product)
-
-                Button(action: {
-                    showingSheet.toggle()
-                }) {
-                    Text("Check-in!").font(.system(size: 14, weight: .bold, design: .default))
-                }.buttonStyle(GrowingButton())
-                    .sheet(isPresented: $showingSheet) {
-                        AddCheckInView(product: product, onCreation: {
-                            model.appendNewCheckIn(newCheckIn: $0)
-                        })
-                    }
-            }
-
-            InfiniteScroll(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(productId: product.id) }, refresh: { model.refreshCheckIns() },
+        ZStack(alignment: .bottom) {
+            InfiniteScroll(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(productId: product.id) }, refresh: { model.refresh(productId: product.id) },
                            content: {
                                CheckInCardView(checkIn: $0)
                            },
                            header: {
-                               EmptyView()
+                               ProductCardView(product: product)
                            }
             )
         }
+
+        Button(action: {
+            showingSheet.toggle()
+        }) {
+            Text("Check-in!").font(.system(size: 14, weight: .bold, design: .default))
+        }.buttonStyle(GrowingButton())
+            .sheet(isPresented: $showingSheet) {
+                AddCheckInView(product: product, onCreation: {
+                    model.appendNewCheckIn(newCheckIn: $0)
+                })
+            }
     }
 }
 
@@ -54,10 +50,12 @@ extension ProductPageView {
         let pageSize = 5
         var page = 0
 
-        func refreshCheckIns() {
-            // TODO: Implement fetching of new items
+        func refresh(productId: Int) {
+            page = 0
+            checkIns = []
+            fetchMoreCheckIns(productId: productId)
         }
-
+        
         func fetchMoreCheckIns(productId: Int) {
             let (from, to) = getPagination(page: page, size: pageSize)
 
