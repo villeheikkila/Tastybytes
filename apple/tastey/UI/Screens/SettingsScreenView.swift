@@ -53,6 +53,13 @@ struct SettingsView: View {
             } footer: {
                 Text("These values are used in your personal page and can be seen by other users.")
             }.headerProminence(.increased)
+            
+            Section {
+                Toggle("Use name instead of username", isOn: $model.showFullName)
+                    .onChange(of: [self.model.showFullName].publisher.first()) { _ in
+                        model.updateDisplaySettings()
+               }
+            }
 
             Section {
                 TextField("Email", text: $model.email)
@@ -70,9 +77,9 @@ struct SettingsView: View {
             } footer: {
                 Text("Email is only used for login and is not shown for other users.")
             }.headerProminence(.increased)
-
+            
             Section {
-                Button("Log out", action: { model.logOut() })
+                Button("Log Out", action: { model.logOut() })
             }
 
             Section {
@@ -129,6 +136,7 @@ extension SettingsView {
         @Published var firstName = ""
         @Published var lastName = ""
         @Published var avatarImage: UIImage?
+        @Published var showFullName: Bool = false
 
         // User values
         @Published var email = ""
@@ -147,7 +155,7 @@ extension SettingsView {
             return ![
                 username == profile?.username,
                 firstName == profile?.firstName,
-                lastName == profile?.lastName
+                lastName == profile?.lastName,
             ].allSatisfy({ $0 })
         }
 
@@ -164,7 +172,7 @@ extension SettingsView {
             Task {
                 let user = SupabaseAuthRepository().getCurrentUser()
                 let profile = try await SupabaseProfileRepository().loadProfileById(id: SupabaseAuthRepository().getCurrentUserId())
-
+                print(profile)
                 if let url = profile.getAvatarURL() {
                     getData(from: url) { data, _, error in
                         guard let data = data, error == nil else { return }
@@ -181,6 +189,7 @@ extension SettingsView {
                     self.username = profile.username
                     self.lastName = profile.lastName ?? ""
                     self.firstName = profile.firstName ?? ""
+                    self.showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
                     self.email = user.email ?? ""
                 }
             }
@@ -190,7 +199,8 @@ extension SettingsView {
             let update = ProfileUpdate(
                 username: username,
                 firstName: firstName,
-                lastName: lastName)
+                lastName: lastName
+            )
 
             Task {
                 try await SupabaseProfileRepository().updateProfile(id: SupabaseAuthRepository().getCurrentUserId(),
@@ -199,11 +209,19 @@ extension SettingsView {
                 self.showToast = true
             }
         }
+        
+        func updateDisplaySettings() {
+            let update = ProfileUpdate(
+                showFullName: showFullName
+            )
 
+            Task {
+                try await SupabaseProfileRepository().updateProfile(id: SupabaseAuthRepository().getCurrentUserId(),
+                                                                    update: update)
+            }
+        }
+        
         func exportData() {
-            let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-            let destinationUrl = docsUrl?.appendingPathComponent("tasted_export.csv")
-
             Task {
                 let csvText = try await SupabaseProfileRepository().currentUserExport()
                 self.csvExport = CSVFile(initialText: csvText)

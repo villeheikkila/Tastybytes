@@ -1,9 +1,11 @@
 import Foundation
 
-struct ProductVariant: Identifiable, Hashable {
+struct ProductVariant: Identifiable {
     let id: Int
     let manufacturer: Company
-    
+}
+
+extension ProductVariant: Hashable {
     static func == (lhs: ProductVariant, rhs: ProductVariant) -> Bool {
         return lhs.id == rhs.id
     }

@@ -8,15 +8,13 @@ struct FriendsScreenView: View {
 
     var body: some View {
         VStack {
-            VStack {
-                VStack {
+            List {
                     ForEach(model.friends, id: \.self) { friend in
                         FriendListItem(friend: friend,
                                        onAccept: { id in model.updateFriendRequest(id: id, newStatus: .accepted) },
                                        onBlock: { id in model.updateFriendRequest(id: id, newStatus: .blocked) },
                                        onDelete: { id in model.removeFriendRequest(id: id) })
                     }
-                }
             }
             .task {
                 model.loadFriends(userId: SupabaseAuthRepository().getCurrentUserId())
@@ -65,7 +63,7 @@ extension FriendsScreenView {
         @Published var modalError: Error?
 
         func sendFriendRequest(receiver: UUID) {
-            let newFriend = NewFriend(sender: SupabaseAuthRepository().getCurrentUserId(), receiver: receiver, status: .pending)
+            let newFriend = NewFriend(receiver: receiver, status: .pending)
 
             Task {
                 do {
@@ -162,12 +160,19 @@ struct FriendListItem: View {
             CollapsibleView(
                 content: {
                     NavigationLink(value: profile) {
-                        HStack {
+                        HStack(alignment: .center) {
                             AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
-                            Text(profile.username)
-                            Spacer()
-                            if friend.status == FriendStatus.pending {
-                                Text(friend.status.rawValue.capitalized)
+                            VStack {
+                                HStack {
+                                    Text(profile.username)
+                                    Spacer()
+                                }
+                                if friend.status == FriendStatus.pending {
+                                    HStack {
+                                        Text(friend.status.rawValue.capitalized).font(.footnote)
+                                        Spacer()
+                                    }
+                                }
                             }
                         }
                     }

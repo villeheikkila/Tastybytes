@@ -3,7 +3,7 @@ import Foundation
 struct SupabaseCheckInReactionsRepository {
     private let database = Supabase.client.database
     private let tableName = "check_in_reactions"
-    private let joinedWithProfile = "id, created_by, profiles (id, username, avatar_url)"
+    private let joinedWithProfile = "id, profiles (id, username, avatar_url, name_display)"
     
     func insert(newCheckInReaction: NewCheckInReaction) async throws -> CheckInReaction {
         return try await database

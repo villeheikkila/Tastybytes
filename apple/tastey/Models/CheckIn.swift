@@ -2,7 +2,7 @@ import Foundation
 
 struct CheckIn: Identifiable {
     let id: Int
-    let rating: Double?
+    let rating: Int?
     let review: String?
     let createdAt: Date
     let profile: Profile
@@ -40,7 +40,7 @@ extension CheckIn: Decodable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
-        rating = try values.decodeIfPresent(Double.self, forKey: .rating)
+        rating = try values.decodeIfPresent(Int.self, forKey: .rating)
         review = try values.decodeIfPresent(String.self, forKey: .review)
         createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
         profile = try values.decode(Profile.self, forKey: .profile)
@@ -51,21 +51,6 @@ extension CheckIn: Decodable {
         variant = try values.decodeIfPresent(ProductVariant.self, forKey: .variant)
 
     }
-}
-
-struct NewCheckIn: Encodable {
-    let product_id: Int
-    let created_by: String
-    let rating: Int?
-    let review: String?
-    
-    init (productId: Int, createdBy: UUID, rating: Int?, review: String?) {
-        self.rating = rating
-        self.review = review
-        self.product_id = productId
-        self.created_by = createdBy.uuidString.lowercased()
-    }
-    
 }
 
 struct NewCheckInParams: Encodable {
@@ -86,7 +71,6 @@ struct NewCheckInParams: Encodable {
         self.p_friend_ids = friendIds.map { $0.uuidString.lowercased() }
         self.p_flavor_ids = flavorIds
     }
-    
 }
 
 struct CheckInTaggedProfile: Decodable {

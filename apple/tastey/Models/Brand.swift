@@ -1,9 +1,17 @@
 
-struct BrandJoinedWithSubBrands: Identifiable, Hashable, Decodable {
+struct BrandJoinedWithSubBrands: Identifiable {
     let id: Int
     let name: String
     let subBrands: [SubBrand]
-    
+}
+
+extension BrandJoinedWithSubBrands: Hashable {
+    static func == (lhs: BrandJoinedWithSubBrands, rhs: BrandJoinedWithSubBrands) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+extension BrandJoinedWithSubBrands: Decodable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -18,11 +26,13 @@ struct BrandJoinedWithSubBrands: Identifiable, Hashable, Decodable {
     }
 }
 
-struct BrandJoinedWithCompany: Identifiable, Hashable {
+struct BrandJoinedWithCompany: Identifiable {
     let id: Int
     let name: String
     let company: Company
+}
 
+extension BrandJoinedWithCompany: Hashable {
     static func == (lhs: BrandJoinedWithCompany, rhs: BrandJoinedWithCompany) -> Bool {
         return lhs.id == rhs.id
     }

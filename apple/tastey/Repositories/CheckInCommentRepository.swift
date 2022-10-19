@@ -3,7 +3,7 @@
 struct SupabaseCheckInCommentRepository {
     private let database = Supabase.client.database
     private let tableName = "check_in_comments"
-    private let joinedWithProfile = "id, content, created_at, profiles (id, username, avatar_url))"
+    private let joinedWithProfile = "id, content, created_at, profiles (id, username, avatar_url, name_display))"
     
     func insert(newCheckInComment: NewCheckInComment) async throws -> CheckInComment {
         return try await database

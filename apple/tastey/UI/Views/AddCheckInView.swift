@@ -116,8 +116,13 @@ struct AddCheckInView: View {
         let servingStyleId = servingStyles.first(where: { $0.name == servingStyle })?.id
         let manufacturerId = manufacturer?.id
         let flavorIds = pickedFlavors.map { $0.id }
+        var ratingDoubled: Int? = nil
+        
+        if let rating = rating {
+            ratingDoubled = Int(rating * 2)
+        }
 
-        let newCheckParams = NewCheckInParams(productId: product.id, rating: rating, review: review, manufacturerId: manufacturerId, servingStyleId: servingStyleId, friendIds: friendIds, flavorIds: flavorIds)
+        let newCheckParams = NewCheckInParams(productId: product.id, rating: ratingDoubled, review: review, manufacturerId: manufacturerId, servingStyleId: servingStyleId, friendIds: friendIds, flavorIds: flavorIds)
 
         Task {
             do {
