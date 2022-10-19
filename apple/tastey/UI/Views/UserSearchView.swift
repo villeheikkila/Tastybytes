@@ -14,7 +14,7 @@ struct UserSearchView<Actions: View>: View {
                         HStack {
                                 
                                 AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
-                                Text(profile.username)
+                                Text(profile.getPreferedName())
                             
                             Spacer()
                             HStack {
