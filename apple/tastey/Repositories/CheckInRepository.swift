@@ -31,7 +31,7 @@ struct SupabaseCheckInRepository {
             .from(tableName)
             .select(columns: checkInJoined)
             .eq(column: "product_id", value: id)
-            .order(column: "created_at")
+            .order(column: "created_at", ascending: false)
             .range(from: from, to: to)
             .execute()
             .decoded(to: [CheckIn].self)

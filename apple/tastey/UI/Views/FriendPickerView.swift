@@ -2,7 +2,7 @@ import AlertToast
 import SwiftUI
 
 struct FriendPickerView: View {
-    let friends: [Profile]
+    @State var friends = [Profile]()
     @Binding var taggedFriends: [Profile]
     @State var showToast = false
     @Environment(\.dismiss) var dismiss
@@ -31,6 +31,16 @@ struct FriendPickerView: View {
                 }) {
                     Text("Done").bold()
                 })
+        }.task {
+            loadFriends()
+        }
+    }
+    
+    func loadFriends() {
+        let currentUserId = SupabaseAuthRepository().getCurrentUserId()
+        Task {
+            let acceptedFriends = try await SupabaseFriendsRepository().loadAcceptedByUserId(userId: currentUserId)
+            self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }
         }
     }
 }
