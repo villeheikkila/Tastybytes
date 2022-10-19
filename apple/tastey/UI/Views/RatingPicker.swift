@@ -13,7 +13,7 @@ struct RatingPicker: View {
     
     var body: some View {
         HStack {
-            ForEach(1...6, id: \.self) { number in
+            ForEach(1...5, id: \.self) { number in
                 image(for: number)
                     .imageScale(.large)
                     .foregroundColor(number > rating ?? 0 ? Color.gray : Color.yellow)

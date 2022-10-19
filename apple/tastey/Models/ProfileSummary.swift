@@ -14,6 +14,10 @@ struct ProfileSummary {
     let rating8: Int
     let rating9: Int
     let rating10: Int
+    
+    func getFormattedAverageRating() -> String {
+        return String(format: "%.2f", averageRating ?? "")
+    }
 }
 
 
@@ -40,7 +44,7 @@ extension ProfileSummary: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         totalCheckIns = try values.decode(Int.self, forKey: .totalCheckIns)
         uniqueCheckIns = try values.decode(Int.self, forKey: .uniqueCheckIns)
-        averageRating = try values.decode(Double.self, forKey: .averageRating)
+        averageRating = try values.decode(Double.self, forKey: .averageRating) / 2
         unrated = try values.decode(Int.self, forKey: .unrated)
         rating0 = try values.decode(Int.self, forKey: .rating0)
         rating1 = try values.decode(Int.self, forKey: .rating1)

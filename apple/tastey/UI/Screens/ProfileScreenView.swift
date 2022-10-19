@@ -20,22 +20,35 @@ struct ProfileView: View {
                                ratingChart
                                ratingSummary
                            }
-                       })
+        })
     }
 
     var profileSummary: some View {
         HStack(alignment: .center, spacing: 20) {
+            Spacer()
+
             VStack {
                 Text("Check-ins").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
                 Text(String(model.profileSummary?.totalCheckIns ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
             }
+            
 
-            AvatarView(avatarUrl: model.profile?.getAvatarURL(), size: 80, id: userId)
+            VStack(alignment: .center) {
+                Text(model.profile?.getPreferedName() ?? "")
+                    .font(.system(size: 16, weight: .bold, design: .default))
+                    .lineLimit(1)
+                    .font(.system(size: 500))
+                    .minimumScaleFactor(0.01)
+                AvatarView(avatarUrl: model.profile?.getAvatarURL(), size: 80, id: userId)
+            }
 
+            
             VStack {
                 Text("Unique").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
                 Text(String(model.profileSummary?.uniqueCheckIns ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
             }
+            
+            Spacer()
         }
         .task {
             model.getProfileData(userId: userId)
@@ -104,7 +117,7 @@ struct ProfileView: View {
             }
             VStack {
                 Text("Average").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-                Text(String(model.profileSummary?.averageRating ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
+                Text(String(model.profileSummary?.getFormattedAverageRating() ?? "")).font(.system(size: 16, weight: .bold, design: .default))
             }
         }
     }
@@ -128,6 +141,7 @@ extension ProfileView {
         func onCheckInDelete(checkIn: CheckIn) {
             self.checkIns.removeAll(where: {$0.id == checkIn.id})
         }
+        
         func fetchMoreCheckIns(userId: UUID) {
             let (from, to) = getPagination(page: page, size: pageSize)
 

@@ -13,11 +13,11 @@ struct ReactionsView: View {
     var body: some View {
         HStack {
             ForEach(checkInReactions, id: \.id) {
-                reaction in AvatarView(avatarUrl: reaction.profiles.getAvatarURL(), size: 24, id: reaction.profiles.id)
+                reaction in AvatarView(avatarUrl: reaction.profile.getAvatarURL(), size: 24, id: reaction.profile.id)
             }
 
             Button {
-                if let existingReaction = checkInReactions.first(where: { $0.createdBy == currentUserId }) {
+                if let existingReaction = checkInReactions.first(where: { $0.profile.id == currentUserId }) {
                     removeReaction(reactionId: existingReaction.id)
                 } else {
                     reactToCheckIn()
@@ -30,7 +30,7 @@ struct ReactionsView: View {
     }
 
     func reactToCheckIn() {
-        let newCheckInReaction = NewCheckInReaction(checkInId: checkInId, createdBy: currentUserId)
+        let newCheckInReaction = NewCheckInReaction(checkInId: checkInId)
 
         Task {
             let checkInReaction = try await SupabaseCheckInReactionsRepository().insert(newCheckInReaction: newCheckInReaction)
@@ -45,7 +45,7 @@ struct ReactionsView: View {
             try await SupabaseCheckInReactionsRepository().deleteById(id: reactionId)
 
             DispatchQueue.main.async {
-                self.checkInReactions.removeAll(where: { $0.createdBy == currentUserId })
+                self.checkInReactions.removeAll(where: { $0.profile.id == currentUserId })
             }
         }
     }

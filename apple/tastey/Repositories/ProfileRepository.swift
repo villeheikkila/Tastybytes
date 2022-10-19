@@ -5,7 +5,7 @@ import SupabaseStorage
 struct SupabaseProfileRepository {
     private let database = Supabase.client.database
     private let tableName = "profiles"
-    private let saved = "id, username, first_name, last_name, avatar_url"
+    private let saved = "id, username, first_name, last_name, avatar_url, name_display"
     
     func loadProfileById(id: UUID) async throws -> Profile {
         return try await database

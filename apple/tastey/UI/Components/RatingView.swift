@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct RatingView: View {
-    var rating: Double
+    let rating: Double
+    
+    init(rating: Int) {
+        self.rating = Double(rating) / 2
+    }
 
     var body: some View {
         HStack(spacing: 0) {

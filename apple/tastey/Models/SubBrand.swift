@@ -4,11 +4,13 @@ struct SubBrand: Identifiable, Hashable, Decodable {
     let name: String?
 }
 
-struct SubBrandJoinedWithBrand: Identifiable, Hashable {
+struct SubBrandJoinedWithBrand: Identifiable {
     let id: Int
     let name: String?
     let brand: BrandJoinedWithCompany
+}
 
+extension SubBrandJoinedWithBrand: Hashable {
     static func == (lhs: SubBrandJoinedWithBrand, rhs: SubBrandJoinedWithBrand) -> Bool {
         return lhs.id == rhs.id
     }

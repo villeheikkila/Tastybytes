@@ -46,7 +46,7 @@ struct CheckInCardView: View {
         NavigationLink(value: checkIn.profile) {
             HStack {
                 AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 30, id: checkIn.profile.id)
-                Text(checkIn.profile.username)
+                Text(checkIn.profile.getPreferedName())
                     .font(.system(size: 12, weight: .bold, design: .default))
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -153,7 +153,6 @@ extension CheckInCardView {
         func delete(checkIn: CheckIn, onDelete: @escaping  (_ checkIn: CheckIn) -> Void) {
             Task {
                 try await SupabaseCheckInRepository().deleteById(id: checkIn.id)
-                print("HEI")
                 onDelete(checkIn)
             }
         }

@@ -63,7 +63,7 @@ extension CheckInPageView {
         }
 
         func sendComment(checkInId: Int) {
-            let newCheckInComment = NewCheckInComment(content: comment, createdBy: SupabaseAuthRepository().getCurrentUserId(), checkInId: checkInId)
+            let newCheckInComment = NewCheckInComment(content: comment, checkInId: checkInId)
 
             Task {
                 let newCheckInComment = try await SupabaseCheckInCommentRepository().insert(newCheckInComment: newCheckInComment)

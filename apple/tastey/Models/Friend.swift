@@ -1,6 +1,6 @@
 import Foundation
 
-struct Friend: Identifiable, Hashable {
+struct Friend: Identifiable {
     let id: Int
     let sender: Profile
     let receiver: Profile
@@ -26,7 +26,13 @@ struct Friend: Identifiable, Hashable {
     func containsUser(userId: UUID) -> Bool {
         return sender.id == userId || receiver.id == userId
     }
-    
+}
+
+enum FriendStatus: String, Codable{
+    case pending, accepted, blocked
+}
+
+extension Friend: Hashable {
     static func == (lhs: Friend, rhs: Friend) -> Bool {
         return lhs.id == rhs.id && lhs.status == rhs.status
     }
@@ -52,26 +58,11 @@ extension Friend: Decodable {
 }
 
 struct NewFriend: Encodable {
-    let user_id_1: UUID
     let user_id_2: UUID
     let status: String
-    init(sender: UUID, receiver: UUID, status: FriendStatus) {
-        self.user_id_1 = sender
+    init(receiver: UUID, status: FriendStatus) {
         self.user_id_2 = receiver
         self.status = FriendStatus.pending.rawValue
-    }
-}
-
-enum FriendStatus: String, Codable{
-    case pending, accepted, blocked
-}
-
-struct NewFriendState: Encodable {
-    let status: String
-    
-    init(status: FriendStatus) {
-        self.status = status.rawValue
-        print("status",self.status)
     }
 }
 
