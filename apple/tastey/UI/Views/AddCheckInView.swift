@@ -10,7 +10,6 @@ struct AddCheckInView: View {
     @State var servingStyles = [ServingStyle]()
     @State var servingStyle = ServingStyleName.none
 
-    @State var friends = [Profile]()
     @State var taggedFriends = [Profile]()
 
     @State var availableFlavors = [Flavor]()
@@ -68,7 +67,7 @@ struct AddCheckInView: View {
                                     friend in
                                     HStack {
                                         AvatarView(avatarUrl: friend.getAvatarURL(), size: 24, id: friend.id)
-                                        Text(friend.username)
+                                        Text(friend.getPreferedName())
                                     }.padding(.all, 3)
                                         .foregroundColor(.white)
                                         .background(Color(.systemBlue))
@@ -112,7 +111,7 @@ struct AddCheckInView: View {
     }
 
     func createCheckIn() {
-        let friendIds = friends.map { $0.id }
+        let friendIds = taggedFriends.map { $0.id }
         let servingStyleId = servingStyles.first(where: { $0.name == servingStyle })?.id
         let manufacturerId = manufacturer?.id
         let flavorIds = pickedFlavors.map { $0.id }

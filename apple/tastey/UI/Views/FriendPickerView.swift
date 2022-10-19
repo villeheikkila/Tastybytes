@@ -15,7 +15,7 @@ struct FriendPickerView: View {
                 }) {
                     HStack {
                         AvatarView(avatarUrl: friend.getAvatarURL(), size: 32, id: friend.id)
-                        Text(friend.username)
+                        Text(friend.getPreferedName())
                         
                         Spacer()
                         if taggedFriends.contains(where: { $0.id == friend.id }) {
