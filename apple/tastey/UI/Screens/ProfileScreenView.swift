@@ -12,7 +12,7 @@ struct ProfileView: View {
                            model.refresh(userId: userId)
                        },
                        content: {
-                           CheckInCardView(checkIn: $0)
+            CheckInCardView(checkIn: $0, onDelete: {checkIn in model.onCheckInDelete(checkIn: checkIn)})
                        },
                        header: {
                            VStack(spacing: 20) {
@@ -125,6 +125,9 @@ extension ProfileView {
             fetchMoreCheckIns(userId: userId)
         }
 
+        func onCheckInDelete(checkIn: CheckIn) {
+            self.checkIns.removeAll(where: {$0.id == checkIn.id})
+        }
         func fetchMoreCheckIns(userId: UUID) {
             let (from, to) = getPagination(page: page, size: pageSize)
 

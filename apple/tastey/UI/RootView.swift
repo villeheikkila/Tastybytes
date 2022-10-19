@@ -9,6 +9,10 @@ class Navigator: ObservableObject {
         path.append(Route.activity)
     }
     
+    func removeLast() {
+        path.removeLast()
+    }
+    
     func tapOnSecondPage() {
         path.removeLast()
     }

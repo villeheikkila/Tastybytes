@@ -4,8 +4,9 @@ import SwiftUI
 
 struct CheckInCardView: View {
     let checkIn: CheckIn
+    @StateObject var viewModel = CheckInCardViewModel()
     
-    var onDelete: ((_ checkIn: CheckIn) -> Void)?
+    let onDelete: (_ checkIn: CheckIn) -> Void
     
     func isOwnedByCurrentUser() -> Bool {
         return checkIn.profile.id == SupabaseAuthRepository().getCurrentUserId()
@@ -33,16 +34,14 @@ struct CheckInCardView: View {
                 }
                 
                 Button(action: {
-                    if let onDelete = onDelete {
-                        onDelete(checkIn)
-                    }
+                    viewModel.delete(checkIn: checkIn, onDelete: onDelete)
                 }) {
                     Label("Delete", systemImage: "trash.fill")
                 }
             }
         }
     }
-    
+
     var header: some View {
         NavigationLink(value: checkIn.profile) {
             HStack {
@@ -56,25 +55,25 @@ struct CheckInCardView: View {
             .padding([.trailing, .leading, .top], 10)
         }
     }
-    
+
     var productSection: some View {
         NavigationLink(value: checkIn.product) {
             VStack(alignment: .leading) {
                 Text(checkIn.product.getDisplayName(.fullName))
                     .font(.system(size: 18, weight: .bold, design: .default))
                     .foregroundColor(.primary)
-                
+
                 HStack {
                     Text(checkIn.product.getDisplayName(.brandOwner))
                         .font(.system(size: 16, weight: .bold, design: .default))
                         .foregroundColor(.secondary)
-                    
+
                     if let manufacturerName = checkIn.variant?.manufacturer.name {
                         Text("(\(manufacturerName))")
                             .font(.system(size: 16, weight: .bold, design: .default))
                             .foregroundColor(.secondary)
                     }
-                    
+
                     Spacer()
                 }
             }
@@ -83,7 +82,7 @@ struct CheckInCardView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding([.trailing, .leading], 5)
     }
-    
+
     var checkInSection: some View {
         NavigationLink(value: checkIn) {
             VStack(spacing: 8) {
@@ -91,12 +90,12 @@ struct CheckInCardView: View {
                     if let rating = checkIn.rating {
                         RatingView(rating: rating)
                     }
-                    
+
                     if let review = checkIn.review {
                         Text(review)
                             .fontWeight(.medium)
                     }
-                    
+
                     if let flavors = checkIn.flavors {
                         HStack {
                             ForEach(flavors) { flavor in
@@ -109,7 +108,7 @@ struct CheckInCardView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color(.secondarySystemBackground))
                 .cornerRadius(5)
-                
+
                 if checkIn.taggedProfiles.count > 0 {
                     VStack {
                         HStack {
@@ -132,7 +131,7 @@ struct CheckInCardView: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
-    
+
     var footer: some View {
         HStack {
             NavigationLink(value: checkIn) {
@@ -146,5 +145,17 @@ struct CheckInCardView: View {
         .frame(height: 24)
         .padding([.trailing, .leading, .bottom], 10)
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+extension CheckInCardView {
+    @MainActor class CheckInCardViewModel: ObservableObject {
+        func delete(checkIn: CheckIn, onDelete: @escaping  (_ checkIn: CheckIn) -> Void) {
+            Task {
+                try await SupabaseCheckInRepository().deleteById(id: checkIn.id)
+                print("HEI")
+                onDelete(checkIn)
+            }
+        }
     }
 }

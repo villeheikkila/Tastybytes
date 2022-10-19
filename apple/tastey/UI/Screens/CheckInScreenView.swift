@@ -3,10 +3,13 @@ import SwiftUI
 struct CheckInPageView: View {
     let checkIn: CheckIn
     @StateObject private var model = CheckInPageViewModel()
+    @EnvironmentObject private var navigator: Navigator
 
     var body: some View {
             ScrollView {
-                CheckInCardView(checkIn: checkIn)
+                CheckInCardView(checkIn: checkIn, onDelete: {
+                    _ in  navigator.removeLast()  
+                })
                     .task {
                         model.getCheckInCommets(checkInId: checkIn.id)
                     }
