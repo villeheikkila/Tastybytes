@@ -5,7 +5,7 @@ struct SupabaseFriendsRepository {
     private let database = Supabase.client.database
     private let tableName = "friends"
     private let savedLimited = "id, user_id_1, user_id_2, status"
-    private let joined = "id, status, sender:user_id_1 (id, username, first_name, last_name, avatar_url), receiver:user_id_2 (id, username, first_name, last_name, avatar_url)"
+    private let joined = "id, status, sender:user_id_1 (id, username, first_name, last_name, avatar_url, name_display), receiver:user_id_2 (id, username, first_name, last_name, avatar_url, name_display)"
     
     func loadByUserId(userId: UUID) async throws -> [Friend] {
         return try await database

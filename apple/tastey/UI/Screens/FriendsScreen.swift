@@ -8,7 +8,7 @@ struct FriendsScreenView: View {
 
     var body: some View {
         VStack {
-            List {
+            VStack {
                     ForEach(model.friends, id: \.self) { friend in
                         FriendListItem(friend: friend,
                                        onAccept: { id in model.updateFriendRequest(id: id, newStatus: .accepted) },
@@ -16,10 +16,11 @@ struct FriendsScreenView: View {
                                        onDelete: { id in model.removeFriendRequest(id: id) })
                     }
             }
+            .navigationTitle("Friends")
+            .navigationBarTitleDisplayMode(.inline)
             .task {
                 model.loadFriends(userId: SupabaseAuthRepository().getCurrentUserId())
-            }.navigationTitle("Friends")
-            .navigationBarTitleDisplayMode(.inline)
+            }
 
             Spacer()
 
@@ -58,13 +59,13 @@ extension FriendsScreenView {
         @Published var friends = [Friend]()
         @Published var showToast = false
         @Published var showUserSearchSheet = false
-
+        
         @Published var error: Error?
         @Published var modalError: Error?
-
+        
         func sendFriendRequest(receiver: UUID) {
             let newFriend = NewFriend(receiver: receiver, status: .pending)
-
+            
             Task {
                 do {
                     let newFriend = try await SupabaseFriendsRepository().insert(newFriend: newFriend)
@@ -80,7 +81,7 @@ extension FriendsScreenView {
                 }
             }
         }
-
+        
         func updateFriendRequest(id: Int, newStatus: FriendStatus) {
             let friend = friends.first(where: { $0.id == id })
             if let friend = friend {
@@ -102,7 +103,7 @@ extension FriendsScreenView {
                 }
             }
         }
-
+        
         func removeFriendRequest(id: Int) {
             Task {
                 do {
@@ -117,7 +118,7 @@ extension FriendsScreenView {
                 }
             }
         }
-
+        
         func loadFriends(userId: UUID) {
             Task {
                 do {
@@ -159,19 +160,17 @@ struct FriendListItem: View {
         HStack {
             CollapsibleView(
                 content: {
-                    NavigationLink(value: profile) {
-                        HStack(alignment: .center) {
-                            AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
-                            VStack {
+                    HStack(alignment: .center) {
+                        AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
+                        VStack {
+                            HStack {
+                                Text(profile.username)
+                                Spacer()
+                            }
+                            if friend.status == FriendStatus.pending {
                                 HStack {
-                                    Text(profile.username)
+                                    Text(friend.status.rawValue.capitalized).font(.footnote)
                                     Spacer()
-                                }
-                                if friend.status == FriendStatus.pending {
-                                    HStack {
-                                        Text(friend.status.rawValue.capitalized).font(.footnote)
-                                        Spacer()
-                                    }
                                 }
                             }
                         }
@@ -193,7 +192,7 @@ struct FriendListItem: View {
                             Label("Delete", systemImage: "person.badge.minus").imageScale(.large)
                         }
                         Spacer()
-
+                        
                         if friend.isPending(userId: currentUser) {
                             Button(action: {
                                 onBlock(friend.id)
@@ -208,6 +207,11 @@ struct FriendListItem: View {
                 }
             )
             .frame(maxWidth: .infinity)
-        }.padding(.all, 10)
+        }
+        .padding(.all, 10)
+            .background(Color(.tertiarySystemBackground))
+            .cornerRadius(10)
+            .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
+            .padding([.leading, .trailing], 10)
     }
 }
