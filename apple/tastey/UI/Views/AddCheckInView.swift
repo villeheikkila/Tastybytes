@@ -85,7 +85,7 @@ struct AddCheckInView: View {
                 .sheet(item: $activeSheet) { sheet in
                     switch sheet {
                     case .friends:
-                        FriendPickerView(friends: friends, taggedFriends: $taggedFriends)
+                        FriendPickerView(taggedFriends: $taggedFriends)
                     case .flavors:
                         FlavorPickerView(availableFlavors: $availableFlavors, pickedFlavors: $pickedFlavors)
                     case .manufacturer:
@@ -124,6 +124,7 @@ struct AddCheckInView: View {
 
         let newCheckParams = NewCheckInParams(productId: product.id, rating: ratingDoubled, review: review, manufacturerId: manufacturerId, servingStyleId: servingStyleId, friendIds: friendIds, flavorIds: flavorIds)
 
+        print(newCheckParams    )
         Task {
             do {
                 let newCheckIn = try await SupabaseCheckInRepository().createCheckIn(newCheckInParams: newCheckParams)
@@ -136,12 +137,6 @@ struct AddCheckInView: View {
     }
 
     func loadInitialData(product: Product) {
-        let currentUserId = SupabaseAuthRepository().getCurrentUserId()
-        Task {
-            let acceptedFriends = try await SupabaseFriendsRepository().loadAcceptedByUserId(userId: currentUserId)
-            self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }
-        }
-
         Task {
             if let categoryId = product.subcategories.first?.category.id {
                 do {
