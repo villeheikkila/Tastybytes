@@ -63,7 +63,7 @@ extension ProductPageView {
                 do {
                     try await SupabaseCheckInRepository().deleteById(id: id)
                     self.checkIns.removeAll(where: { $0.id == id})
-                } catch {
+                } catch {
                     print("error: \(error)")
                 }
             }

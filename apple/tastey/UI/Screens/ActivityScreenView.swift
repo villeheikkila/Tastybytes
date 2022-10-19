@@ -20,7 +20,8 @@ struct ActivityView: View {
             model.refresh()
         }, content: {
             content in
-            CheckInCardView(checkIn: content)
+            CheckInCardView(checkIn: content, onDelete: {
+                checkIn in model.onCheckInDelete(checkIn: checkIn) } )
         }, header: {
             EmptyView()
         })
@@ -38,6 +39,10 @@ extension ActivityView {
             page = 0
             checkIns = []
             fetchActivityFeedItems()
+        }
+        
+        func onCheckInDelete(checkIn: CheckIn) {
+            self.checkIns.removeAll(where: {$0.id == checkIn.id})
         }
 
         func fetchActivityFeedItems() {
