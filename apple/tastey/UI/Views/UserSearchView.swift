@@ -12,11 +12,10 @@ struct UserSearchView<Actions: View>: View {
             List {
                 ForEach(searchResults, id: \.id) { profile in
                         HStack {
-                            NavigationLink(value: profile) {
                                 
                                 AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
                                 Text(profile.username)
-                            }
+                            
                             Spacer()
                             HStack {
                                 self.actions(profile)
