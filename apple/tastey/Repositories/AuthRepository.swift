@@ -1,6 +1,7 @@
 import Foundation
 import GoTrue
 import SupabaseStorage
+import Supabase
 
 protocol AuthRepository {
     func getCurrentUserId() -> UUID
@@ -10,23 +11,34 @@ protocol AuthRepository {
 }
 
 struct SupabaseAuthRepository: AuthRepository {
-    let auth = Supabase.client.auth
+    let client: SupabaseClient
     
     func getCurrentUserId() -> UUID {
-        guard let user = Supabase.client.auth.session?.user.id else { fatalError("User session is missing! This function should only be called in views where user session is already active.)") }
+        guard let user = client
+            .auth
+            .session?
+            .user
+            .id else { fatalError("User session is missing! This function should only be called in views where user session is already active.)") }
         return user
     }
     
     func getCurrentUser() -> User {
-        guard let user = Supabase.client.auth.session?.user else { fatalError("User session is missing! This function should only be called in views where user session is already active.)") }
+        guard let user = client
+            .auth
+            .session?
+            .user else { fatalError("User session is missing! This function should only be called in views where user session is already active.)") }
         return user
     }
 
     func logOut() async throws -> Void {
-        try await Supabase.client.auth.signOut()
+        try await client
+            .auth
+            .signOut()
     }
 
     func sendEmailVerification(email: String) async throws -> Void {
-        try await Supabase.client.auth.update(user: UserAttributes(email: email))
+        try await client
+            .auth
+            .update(user: UserAttributes(email: email))
     }
 }

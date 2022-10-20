@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ReactionsView: View {
     let checkInId: Int
-    let currentUserId = SupabaseAuthRepository().getCurrentUserId()
+    let currentUserId = repository.auth.getCurrentUserId()
     @State var checkInReactions: [CheckInReaction]
 
     init(checkInId: Int, checkInReactions: [CheckInReaction]) {
@@ -33,7 +33,7 @@ struct ReactionsView: View {
         let newCheckInReaction = NewCheckInReaction(checkInId: checkInId)
 
         Task {
-            let checkInReaction = try await SupabaseCheckInReactionsRepository().insert(newCheckInReaction: newCheckInReaction)
+            let checkInReaction = try await repository.checkInReactions.insert(newCheckInReaction: newCheckInReaction)
             DispatchQueue.main.async {
                 self.checkInReactions.append(checkInReaction)
             }
@@ -42,7 +42,7 @@ struct ReactionsView: View {
 
     func removeReaction(reactionId: Int) {
         Task {
-            try await SupabaseCheckInReactionsRepository().deleteById(id: reactionId)
+            try await repository.checkInReactions.delete(id: reactionId)
 
             DispatchQueue.main.async {
                 self.checkInReactions.removeAll(where: { $0.profile.id == currentUserId })

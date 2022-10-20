@@ -61,7 +61,7 @@ extension ProductPageView {
         func deleteCheckIn(id: Int) {
             Task {
                 do {
-                    try await SupabaseCheckInRepository().deleteById(id: id)
+                    try await repository.checkIn.delete(id: id)
                     self.checkIns.removeAll(where: { $0.id == id})
                 } catch {
                     print("error: \(error)")
@@ -77,7 +77,7 @@ extension ProductPageView {
                     self.isLoading = true
                 }
 
-                let checkIns = try await SupabaseCheckInRepository().loadByProductId(id: productId, from: from, to: to)
+                let checkIns = try await repository.checkIn.getByProductId(id: productId, from: from, to: to)
 
                 DispatchQueue.main.async {
                     self.checkIns.append(contentsOf: checkIns)

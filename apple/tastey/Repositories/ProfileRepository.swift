@@ -1,24 +1,25 @@
 import Foundation
 import GoTrue
 import SupabaseStorage
+import Supabase
 
 protocol ProfileRepository {
-    func loadProfileById(id: UUID) async throws -> Profile
-    func updateProfile(id: UUID, update: ProfileUpdate) async throws -> Profile
+    func getById(id: UUID) async throws -> Profile
+    func update(id: UUID, update: ProfileUpdate) async throws -> Profile
     func currentUserExport() async throws -> String
-    func search(searchTerm: String) async throws -> [Profile]
-    func loadFriendsByUsername(username: String) async throws -> [Profile]
+    func search(searchTerm: String, currentUserId: UUID) async throws -> [Profile]
     func uploadAvatar(id: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws -> Void
     func deleteCurrentAccount() async throws -> Void
 }
 
 struct SupabaseProfileRepository: ProfileRepository {
-    private let database = Supabase.client.database
+    let client: SupabaseClient
     private let tableName = "profiles"
     private let saved = "id, username, first_name, last_name, avatar_url, name_display"
     
-    func loadProfileById(id: UUID) async throws -> Profile {
-        return try await database
+    func getById(id: UUID) async throws -> Profile {
+        return try await client
+            .database
             .from(tableName)
             .select(columns: saved)
             .eq(column: "id", value: id.uuidString.lowercased())
@@ -28,8 +29,9 @@ struct SupabaseProfileRepository: ProfileRepository {
             .decoded(to: Profile.self)
     }
     
-    func updateProfile(id: UUID, update: ProfileUpdate) async throws -> Profile {
-        return try await database
+    func update(id: UUID, update: ProfileUpdate) async throws -> Profile {
+        return try await client
+            .database
             .from(tableName)
             .update(
                 values: update,
@@ -43,7 +45,8 @@ struct SupabaseProfileRepository: ProfileRepository {
     }
     
     func currentUserExport() async throws -> String {
-        let response =  try await database
+        let response =  try await client
+            .database
             .rpc(fn: "fnc__export_data")
             .csv()
             .execute()
@@ -55,26 +58,13 @@ struct SupabaseProfileRepository: ProfileRepository {
         return csv
     }
     
-    func search(searchTerm: String) async throws -> [Profile] {
-        return try await database
+    func search(searchTerm: String, currentUserId: UUID) async throws -> [Profile] {
+        return try await client
+            .database
             .from(tableName)
             .select(columns: saved)
             .ilike(column: "search", value: "%\(searchTerm)%")
-            .not(column: "id", operator: .eq, value: SupabaseAuthRepository().getCurrentUserId().uuidString)
-            .execute()
-            .decoded(to: [Profile].self)
-    }
-    
-    func loadFriendsByUsername(username: String) async throws -> [Profile] {
-        struct GetFriendsByUsernamParams: Codable {
-            let p_username: String
-            init(username: String) {
-                self.p_username = username
-            }
-        }
-        return try await database
-            .rpc(fn: "fnc__get_friends_by_username", params: GetFriendsByUsernamParams(username: username))
-            .select(columns: saved)
+            .not(column: "id", operator: .eq, value: currentUserId.uuidString)
             .execute()
             .decoded(to: [Profile].self)
     }
@@ -83,7 +73,8 @@ struct SupabaseProfileRepository: ProfileRepository {
         let file = File(
             name: "avatar.jpeg", data: data, fileName: "avatar.jpeg", contentType: "image/jpeg")
                 
-        Supabase.client.storage
+        client
+            .storage
             .from(id: "avatars")
             .upload(
                 path: "\(id.uuidString.lowercased())/avatar.jpeg", file: file, fileOptions: nil,
@@ -91,7 +82,8 @@ struct SupabaseProfileRepository: ProfileRepository {
     }
     
     func deleteCurrentAccount() async throws -> Void {
-        try await database
+        try await client
+            .database
             .rpc(fn: "fnc__delete_current_user")
             .execute()
     }

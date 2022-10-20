@@ -68,7 +68,7 @@ struct CompanySearchView: View {
     func searchCompanies() {
         Task {
             do {
-                let searchResults = try await SupabaseCompanyRepository().search(searchTerm: searchText)
+                let searchResults = try await repository.company.search(searchTerm: searchText)
                 DispatchQueue.main.async {
                     self.searchResults = searchResults
                     self.status = Status.searched
@@ -83,7 +83,7 @@ struct CompanySearchView: View {
         let newCompany = NewCompany(name: companyName)
         Task {
             do {
-                let newCompany = try await SupabaseCompanyRepository().insert(newCompany: newCompany)
+                let newCompany = try await repository.company.insert(newCompany: newCompany)
 
                 DispatchQueue.main.async {
                     onSelect(newCompany, true)

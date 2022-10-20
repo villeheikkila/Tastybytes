@@ -37,9 +37,9 @@ struct FriendPickerView: View {
     }
     
     func loadFriends() {
-        let currentUserId = SupabaseAuthRepository().getCurrentUserId()
+        let currentUserId = repository.auth.getCurrentUserId()
         Task {
-            let acceptedFriends = try await SupabaseFriendsRepository().loadAcceptedByUserId(userId: currentUserId)
+            let acceptedFriends = try await repository.friend.getAcceptedByUserId(userId: currentUserId)
             self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }
         }
     }

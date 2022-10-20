@@ -1,21 +1,23 @@
 import Foundation
+import Supabase
 
 protocol CheckInRepository {
-    func loadCurrentUserActivityFeed(from: Int, to: Int) async throws -> [CheckIn]
-    func loadByProfileId(id: UUID, from: Int, to: Int) async throws -> [CheckIn]
-    func loadByProductId(id: Int, from: Int, to: Int) async throws -> [CheckIn]
-    func createCheckIn(newCheckInParams: NewCheckInParams) async throws -> CheckIn
-    func deleteById(id: Int) async throws -> Void
+    func getActivityFeed(from: Int, to: Int) async throws -> [CheckIn]
+    func getByProfileId(id: UUID, from: Int, to: Int) async throws -> [CheckIn]
+    func getByProductId(id: Int, from: Int, to: Int) async throws -> [CheckIn]
+    func create(newCheckInParams: NewCheckInParams) async throws -> CheckIn
+    func delete(id: Int) async throws -> Void
     func getSummaryByProfileId(id: UUID) async throws -> ProfileSummary
 }
 
 struct SupabaseCheckInRepository: CheckInRepository {
-    private let database = Supabase.client.database
+    let client: SupabaseClient
     private let tableName = "check_ins"
     private let checkInJoined = "id, rating, review, created_at, serving_styles (id, name), profiles (id, username, first_name, last_name, avatar_url, name_display), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, first_name, last_name, avatar_url, name_display)), check_in_flavors (flavors (id, name)), check_in_tagged_profiles (profiles (id, username, first_name, last_name, avatar_url, name_display)), product_variants (id, companies (id, name))"
     
-    func loadCurrentUserActivityFeed(from: Int, to: Int) async throws -> [CheckIn] {
-        return try await database
+    func getActivityFeed(from: Int, to: Int) async throws -> [CheckIn] {
+        return try await client
+            .database
             .rpc(fn: "fnc__get_activity_feed")
             .select(columns: checkInJoined)
             .range(from: from, to: to)
@@ -23,8 +25,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .decoded(to: [CheckIn].self)
     }
     
-    func loadByProfileId(id: UUID, from: Int, to: Int) async throws -> [CheckIn] {
-        return try await database
+    func getByProfileId(id: UUID, from: Int, to: Int) async throws -> [CheckIn] {
+        return try await client
+            .database
             .from(tableName)
             .select(columns: checkInJoined)
             .eq(column: "created_by", value: id.uuidString.lowercased())
@@ -34,8 +37,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .decoded(to: [CheckIn].self)
     }
     
-    func loadByProductId(id: Int, from: Int, to: Int) async throws -> [CheckIn] {
-        return try await database
+    func getByProductId(id: Int, from: Int, to: Int) async throws -> [CheckIn] {
+        return try await client
+            .database
             .from(tableName)
             .select(columns: checkInJoined)
             .eq(column: "product_id", value: id)
@@ -45,8 +49,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .decoded(to: [CheckIn].self)
     }
     
-    func createCheckIn(newCheckInParams: NewCheckInParams) async throws -> CheckIn {
-        return try await database
+    func create(newCheckInParams: NewCheckInParams) async throws -> CheckIn {
+        return try await client
+            .database
             .rpc(fn: "fnc__create_check_in", params: newCheckInParams)
             .select(columns: checkInJoined)
             .limit(count: 1)
@@ -55,8 +60,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .decoded(to: CheckIn.self)
     }
     
-    func deleteById(id: Int) async throws -> Void {
-        try await database
+    func delete(id: Int) async throws -> Void {
+        try await client
+            .database
             .from(tableName)
             .delete()
             .eq(column: "id", value: id)
@@ -68,7 +74,8 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let p_uid: String
         }
         
-        return try await database
+        return try await client
+            .database
             .rpc(fn: "fnc__get_profile_summary", params: GetProfileSummaryParams(p_uid: id.uuidString))
             .select()
             .limit(count: 1)

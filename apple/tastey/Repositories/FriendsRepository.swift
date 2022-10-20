@@ -1,22 +1,24 @@
 import Foundation
 import PostgREST
+import Supabase
 
 protocol FriendRepository {
-    func loadByUserId(userId: UUID) async throws -> [Friend]
-    func loadAcceptedByUserId(userId: UUID) async throws -> [Friend]
+    func getByUserId(userId: UUID) async throws -> [Friend]
+    func getAcceptedByUserId(userId: UUID) async throws -> [Friend]
     func insert(newFriend: NewFriend) async throws -> Friend
-    func updateStatus(id: Int, friendUpdate: FriendUpdate) async throws -> Friend
+    func update(id: Int, friendUpdate: FriendUpdate) async throws -> Friend
     func delete(id: Int) async throws -> Void
 }
 
 struct SupabaseFriendsRepository: FriendRepository {
-    private let database = Supabase.client.database
+    let client: SupabaseClient
     private let tableName = "friends"
     private let savedLimited = "id, user_id_1, user_id_2, status"
     private let joined = "id, status, sender:user_id_1 (id, username, first_name, last_name, avatar_url, name_display), receiver:user_id_2 (id, username, first_name, last_name, avatar_url, name_display)"
     
-    func loadByUserId(userId: UUID) async throws -> [Friend] {
-        return try await database
+    func getByUserId(userId: UUID) async throws -> [Friend] {
+        return try await client
+            .database
             .from(tableName)
             .select(columns: joined)
             .or(filters: "user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
@@ -25,8 +27,9 @@ struct SupabaseFriendsRepository: FriendRepository {
             .decoded(to: [Friend].self)
     }
     
-    func loadAcceptedByUserId(userId: UUID) async throws -> [Friend] {
-        return try await database
+    func getAcceptedByUserId(userId: UUID) async throws -> [Friend] {
+        return try await client
+            .database
             .from(tableName)
             .select(columns: joined)
             .or(filters: "user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
@@ -36,7 +39,8 @@ struct SupabaseFriendsRepository: FriendRepository {
     }
     
     func insert(newFriend: NewFriend) async throws -> Friend {
-        return try await database
+        return try await client
+            .database
             .from(tableName)
             .insert(values: newFriend, returning: .representation)
             .select(columns: joined)
@@ -45,8 +49,9 @@ struct SupabaseFriendsRepository: FriendRepository {
             .decoded(to: Friend.self)
     }
     
-    func updateStatus(id: Int, friendUpdate: FriendUpdate) async throws -> Friend {
-         return try await database
+    func update(id: Int, friendUpdate: FriendUpdate) async throws -> Friend {
+         return try await client
+            .database
             .from(tableName)
             .update(values: friendUpdate, returning: .representation)
             .eq(column: "id", value: id)
@@ -57,7 +62,8 @@ struct SupabaseFriendsRepository: FriendRepository {
     }
     
     func delete(id: Int) async throws -> Void {
-        try await database
+        try await client
+            .database
             .from(tableName)
             .delete()
             .eq(column: "id", value: id)

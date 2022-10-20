@@ -44,7 +44,7 @@ extension CheckInPageView {
 
         func getCheckInCommets(checkInId: Int) {
             Task {
-                let checkIns = try await SupabaseCheckInCommentRepository().loadByCheckInId(id: checkInId)
+                let checkIns = try await repository.checkInComment.getByCheckInId(id: checkInId)
                 DispatchQueue.main.async {
                     self.checkInComments = checkIns
                 }
@@ -53,7 +53,7 @@ extension CheckInPageView {
 
         func deleteComment(commentId: Int) {
             Task {
-                try await SupabaseCheckInCommentRepository().deleteById(id: commentId)
+                try await repository.checkInComment.deleteById(id: commentId)
                 DispatchQueue.main.async {
                     self.checkInComments.removeAll(where: {
                         $0.id == commentId
@@ -66,7 +66,7 @@ extension CheckInPageView {
             let newCheckInComment = NewCheckInComment(content: comment, checkInId: checkInId)
 
             Task {
-                let newCheckInComment = try await SupabaseCheckInCommentRepository().insert(newCheckInComment: newCheckInComment)
+                let newCheckInComment = try await  repository.checkInComment.insert(newCheckInComment: newCheckInComment)
                 DispatchQueue.main.async {
                     self.checkInComments.append(newCheckInComment)
                     self.comment = ""
@@ -76,7 +76,7 @@ extension CheckInPageView {
 
         func editComment(updateCheckInComment: UpdateCheckInComment) {
             Task {
-                let updatedComment = try await SupabaseCheckInCommentRepository().update(updateCheckInComment: updateCheckInComment)
+                let updatedComment = try await  repository.checkInComment.update(updateCheckInComment: updateCheckInComment)
 
                 if let at = self.checkInComments.firstIndex(where: { $0.id == updateCheckInComment.id }) {
                     DispatchQueue.main.async {

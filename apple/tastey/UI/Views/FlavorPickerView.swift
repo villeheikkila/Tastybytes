@@ -50,7 +50,7 @@ struct FlavorPickerView: View {
         if (availableFlavors.count == 0) {
             Task {
                 do {
-                    let flavors = try await SupabaseFlavorRepository().loadAll()
+                    let flavors = try await repository.flavor.getAll()
                     self.availableFlavors = flavors
                 } catch {
                     print("error while loading flavors: \(error)")

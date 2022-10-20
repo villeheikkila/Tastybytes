@@ -162,7 +162,7 @@ extension ProfileView {
                     self.isLoading = true
                 }
 
-                let checkIns = try await SupabaseCheckInRepository().loadByProfileId(id: userId, from: from, to: to)
+                let checkIns = try await repository.checkIn.getByProfileId(id: userId, from: from, to: to)
 
                 DispatchQueue.main.async {
                     self.checkIns.append(contentsOf: checkIns)
@@ -174,7 +174,7 @@ extension ProfileView {
 
         func getProfileData(userId: UUID) {
             Task {
-                let profile = try await SupabaseProfileRepository().loadProfileById(id: userId)
+                let profile = try await repository.profile.getById(id: userId)
                 DispatchQueue.main.async {
                     self.profile = profile
                 }
@@ -182,7 +182,7 @@ extension ProfileView {
 
             Task {
                 do {
-                    let summary = try await SupabaseCheckInRepository().getSummaryByProfileId(id: userId)
+                    let summary = try await repository.checkIn.getSummaryByProfileId(id: userId)
                     DispatchQueue.main.async {
                         self.profileSummary = summary
                     }

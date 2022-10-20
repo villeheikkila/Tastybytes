@@ -45,7 +45,7 @@ struct SubBrandPickerView: View {
         let newSubBrand = SubBrandNew(name: subBrandName, brandId: brandWithSubBrands.id)
         Task {
             do {
-                let newSubBrand = try await SupabaseSubBrandRepository().insert(newSubBrand: newSubBrand)
+                let newSubBrand = try await repository.subBrand.insert(newSubBrand: newSubBrand)
                 
                 DispatchQueue.main.async {
                     onSelect(newSubBrand, true)

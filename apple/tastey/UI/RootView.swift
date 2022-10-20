@@ -111,7 +111,7 @@ struct Tabbar: View {
                     Image(systemName: "magnifyingglass")
                     Text("Search")
                 }
-            ProfileView(userId: SupabaseAuthRepository().getCurrentUserId())
+            ProfileView(userId: repository.auth.getCurrentUserId())
                 .tabItem {
                     Image(systemName: "person.fill")
                     Text("Profile")

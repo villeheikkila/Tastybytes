@@ -126,7 +126,7 @@ struct AddCheckInView: View {
         print(newCheckParams    )
         Task {
             do {
-                let newCheckIn = try await SupabaseCheckInRepository().createCheckIn(newCheckInParams: newCheckParams)
+                let newCheckIn = try await repository.checkIn.create(newCheckInParams: newCheckParams)
                 onCreation(newCheckIn)
                 dismiss()
             } catch {
@@ -139,7 +139,7 @@ struct AddCheckInView: View {
         Task {
             if let categoryId = product.subcategories.first?.category.id {
                 do {
-                    let categoryServingStyles = try await SupabaseCategoryRepository().loadServingStyles(categoryId: categoryId)
+                    let categoryServingStyles = try await repository.category.getServingStylesByCategory(categoryId: categoryId)
                     self.servingStyles = categoryServingStyles.servingStyles
                 } catch {
                     print("error: \(error)")
