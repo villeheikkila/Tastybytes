@@ -35,7 +35,7 @@ struct RootView: View {
                     AddNavigation {
                         Tabbar()
                     }.navigationBarItems(leading:
-                                            NavigationLink(value: Route.friends) {
+                                            NavigationLink(value: Route.currentUserFriends) {
                                                 Image(systemName: "person.2").imageScale(.large)
 
                                             },
@@ -55,7 +55,8 @@ enum Route: Hashable {
     case profile(Profile)
     case checkIn(CheckIn)
     case settings
-    case friends
+    case currentUserFriends
+    case friends(Profile)
     case activity
     case addProduct
 }
@@ -76,7 +77,7 @@ struct AddNavigation<Content: View>: View {
             }
             .navigationDestination(for: Route.self) { route in
                 switch route {
-                case .friends:
+                case .currentUserFriends:
                     FriendsScreenView()
                 case .settings:
                     SettingsView()
@@ -90,6 +91,8 @@ struct AddNavigation<Content: View>: View {
                     ProfileView(userId: profile.id)
                 case let .product(product):
                     ProductPageView(product: product)
+                case let .friends(profile):
+                    FriendsScreenView(profile: profile)
                 }
             }
     }

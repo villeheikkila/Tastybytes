@@ -3,46 +3,69 @@ import Foundation
 import SwiftUI
 
 struct FriendsScreenView: View {
+    private let profileId: UUID
+    private let isCurrentUser: Bool
     @StateObject private var model = FriendsViewModel()
-    @State private var searchText = ""
+    
+    init (profile: Profile? = nil) {
+        if let profile = profile {
+            self.profileId = profile.id
+            print(self.profileId)
+        } else {
+            self.profileId = SupabaseAuthRepository().getCurrentUserId()
+        }
+        self.isCurrentUser = self.profileId == SupabaseAuthRepository().getCurrentUserId()
+
+    }
+    
+    var addFriendButton: some View {
+        HStack {
+            if isCurrentUser {
+                Button(action: { model.showUserSearchSheet.toggle() }) {
+                    Image(systemName: "plus").imageScale(.large)
+                }
+            }
+        }
+    }
 
     var body: some View {
-        VStack {
+        ScrollView {
             VStack {
                 ForEach(model.friends, id: \.self) { friend in
-                    FriendListItem(friend: friend,
-                                   onAccept: { id in model.updateFriendRequest(id: id, newStatus: .accepted) },
-                                   onBlock: { id in model.updateFriendRequest(id: id, newStatus: .blocked) },
-                                   onDelete: { id in model.removeFriendRequest(id: id) })
+                    if isCurrentUser {
+                        FriendListItem(friend: friend,
+                                       onAccept: { id in model.updateFriendRequest(id: id, newStatus: .accepted) },
+                                       onBlock: { id in model.updateFriendRequest(id: id, newStatus: .blocked) },
+                                       onDelete: { id in model.removeFriendRequest(id: id) })
+                    } else {
+                        FriendListItemSimple(profile: friend.getFriend(userId: profileId))
+                    }
                 }
             }
             .navigationTitle("Friends")
             .navigationBarTitleDisplayMode(.inline)
-            .task {
-                model.loadFriends(userId: SupabaseAuthRepository().getCurrentUserId())
-            }
-
-            Spacer()
-
-            Button(action: {
-                model.showUserSearchSheet.toggle()
-            }) {
-                Text("Find users")
-            }
-            .sheet(isPresented: $model.showUserSearchSheet) {
-                UserSearchView(actions: { profile in
-                    HStack {
-                        if !model.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
-                            Button(action: { model.sendFriendRequest(receiver: profile.id) }) {
-                                Image(systemName: "person.badge.plus")
-                                    .imageScale(.large)
-                            }
+        }
+        .refreshable {
+            model.loadFriends(userId: profileId)
+        }
+        .task {
+            model.loadFriends(userId: profileId)
+        }
+        .navigationBarItems(
+            trailing: addFriendButton)
+        .sheet(isPresented: $model.showUserSearchSheet) {
+            UserSearchView(actions: { profile in
+                HStack {
+                    if !model.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
+                        Button(action: { model.sendFriendRequest(receiver: profile.id) }) {
+                            Image(systemName: "person.badge.plus")
+                                .imageScale(.large)
                         }
                     }
+                }
 
-                    .errorAlert(error: $model.modalError)
-                }).presentationDetents([.medium])
-            }
+                .errorAlert(error: $model.modalError)
+            }).presentationDetents([.medium])
         }
         .errorAlert(error: $model.error)
         .toast(isPresenting: $model.showToast, duration: 2, tapToDismiss: true) {
@@ -132,6 +155,27 @@ extension FriendsScreenView {
                 }
             }
         }
+    }
+}
+
+struct FriendListItemSimple: View {
+    let profile: Profile
+
+    var body: some View {
+        HStack(alignment: .center) {
+            AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
+            VStack {
+                HStack {
+                    Text(profile.getPreferedName())
+                    Spacer()
+                }
+            }
+        }
+        .padding(.all, 10)
+        .background(Color(.tertiarySystemBackground))
+        .cornerRadius(10)
+        .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
+        .padding([.leading, .trailing], 10)
     }
 }
 
