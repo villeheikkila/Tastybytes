@@ -23,7 +23,10 @@ struct ReactionsView: View {
                     reactToCheckIn()
                 }
             } label: {
-                Text("\(checkInReactions.count)").font(.system(size: 14, weight: .bold, design: .default)).foregroundColor(.primary)
+                Text("\(checkInReactions.count)")
+                    .font(.system(size: 14, weight: .bold, design: .default))
+                    .foregroundColor(.primary)
+                
                 Image(systemName: "hand.thumbsup.fill").frame(alignment: .leading).foregroundColor(Color(.systemYellow))
             }
         }

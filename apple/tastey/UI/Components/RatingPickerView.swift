@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct RatingPicker: View {
+struct RatingPickerView: View {
     @Binding var rating: Int?
 
     func image(for number: Int) -> Image {

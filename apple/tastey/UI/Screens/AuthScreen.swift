@@ -3,51 +3,6 @@ import GoTrue
 import Supabase
 import SwiftUI
 
-private enum UserEnvironmentKey: EnvironmentKey {
-    static var defaultValue: User?
-}
-
-extension EnvironmentValues {
-    public var user: User? {
-        get { self[UserEnvironmentKey.self] }
-        set { self[UserEnvironmentKey.self] = newValue }
-    }
-}
-
-extension View {
-    public func withUser(_ user: User?) -> some View {
-        environment(\.user, user)
-    }
-}
-
-public struct UserProviderView<RootView: View>: View {
-    let supabaseClient: SupabaseClient
-    let rootView: () -> RootView
-
-    @State private var user: User?
-
-    public init(
-        supabaseClient: SupabaseClient,
-        @ViewBuilder rootView: @escaping () -> RootView
-    ) {
-        self.supabaseClient = supabaseClient
-        self.rootView = rootView
-    }
-
-    public var body: some View {
-        rootView()
-            .withUser(user)
-            .task {
-                let session = supabaseClient.auth.session
-                user = session?.user
-
-                for await _ in supabaseClient.auth.authEventChange.values {
-                    user = supabaseClient.auth.session?.user
-                }
-            }
-    }
-}
-
 public struct AuthView<AuthenticatedContent: View, LoadingContent: View>: View {
     private let supabaseClient: SupabaseClient
     private let magicLinkEnabled: Bool
@@ -57,10 +12,11 @@ public struct AuthView<AuthenticatedContent: View, LoadingContent: View>: View {
     @State private var authEvent: AuthChangeEvent?
 
     public init(
+        supabaseClient: SupabaseClient,
         @ViewBuilder loadingContent: @escaping () -> LoadingContent,
         @ViewBuilder authenticatedContent: @escaping (Session) -> AuthenticatedContent
     ) {
-        self.supabaseClient = Supabase.client
+        self.supabaseClient = supabaseClient
         self.magicLinkEnabled = false
         self.loadingContent = loadingContent
         self.authenticatedContent = authenticatedContent

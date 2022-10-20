@@ -25,7 +25,7 @@ struct AddCheckInView: View {
                 Form {
                     Section {
                         TextField("How was it?", text: $review)
-                        RatingPicker(rating: $rating)
+                        RatingPickerView(rating: $rating)
                         Button(action: {
                             self.activeSheet = Sheet.flavors
                         }) {
