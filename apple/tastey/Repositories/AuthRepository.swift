@@ -5,7 +5,7 @@ import Supabase
 
 protocol AuthRepository {
     func getCurrentUserId() -> UUID
-    func getCurrentUser() -> User
+    func getCurrentUser() -> User?
     func logOut() async throws -> Void
     func sendEmailVerification(email: String) async throws -> Void
 }
@@ -22,12 +22,11 @@ struct SupabaseAuthRepository: AuthRepository {
         return user
     }
     
-    func getCurrentUser() -> User {
-        guard let user = client
+    func getCurrentUser() -> User? {
+        return client
             .auth
             .session?
-            .user else { fatalError("User session is missing! This function should only be called in views where user session is already active.)") }
-        return user
+            .user
     }
 
     func logOut() async throws -> Void {

@@ -3,25 +3,14 @@ import Foundation
 import SwiftUI
 
 struct FriendsScreenView: View {
-    private let profileId: UUID
-    private let isCurrentUser: Bool
-    @StateObject private var model = FriendsViewModel()
-    
-    init (profile: Profile? = nil) {
-        if let profile = profile {
-            self.profileId = profile.id
-            print(self.profileId)
-        } else {
-            self.profileId = repository.auth.getCurrentUserId()
-        }
-        self.isCurrentUser = self.profileId == repository.auth.getCurrentUserId()
+    var profile: Profile
 
-    }
+    @StateObject private var viewModel = ViewModel()
     
     var addFriendButton: some View {
         HStack {
-            if isCurrentUser {
-                Button(action: { model.showUserSearchSheet.toggle() }) {
+            if profile.isCurrentUser() {
+                Button(action: { viewModel.showUserSearchSheet.toggle() }) {
                     Image(systemName: "plus").imageScale(.large)
                 }
             }
@@ -31,14 +20,14 @@ struct FriendsScreenView: View {
     var body: some View {
         ScrollView {
             VStack {
-                ForEach(model.friends, id: \.self) { friend in
-                    if isCurrentUser {
+                ForEach(viewModel.friends, id: \.self) { friend in
+                    if profile.isCurrentUser() {
                         FriendListItem(friend: friend,
-                                       onAccept: { id in model.updateFriendRequest(id: id, newStatus: .accepted) },
-                                       onBlock: { id in model.updateFriendRequest(id: id, newStatus: .blocked) },
-                                       onDelete: { id in model.removeFriendRequest(id: id) })
+                                       onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
+                                       onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
+                                       onDelete: { id in viewModel.removeFriendRequest(id: id) })
                     } else {
-                        FriendListItemSimple(profile: friend.getFriend(userId: profileId))
+                        FriendListItemSimple(profile: friend.getFriend(userId: profile.id))
                     }
                 }
             }
@@ -46,36 +35,36 @@ struct FriendsScreenView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .refreshable {
-            model.loadFriends(userId: profileId)
+            viewModel.loadFriends(userId: profile.id)
         }
         .task {
-            model.loadFriends(userId: profileId)
+            viewModel.loadFriends(userId: profile.id)
         }
         .navigationBarItems(
             trailing: addFriendButton)
-        .sheet(isPresented: $model.showUserSearchSheet) {
+        .sheet(isPresented: $viewModel.showUserSearchSheet) {
             UserSearchView(actions: { profile in
                 HStack {
-                    if !model.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
-                        Button(action: { model.sendFriendRequest(receiver: profile.id) }) {
+                    if !viewModel.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
+                        Button(action: { viewModel.sendFriendRequest(receiver: profile.id) }) {
                             Image(systemName: "person.badge.plus")
                                 .imageScale(.large)
                         }
                     }
                 }
 
-                .errorAlert(error: $model.modalError)
+                .errorAlert(error: $viewModel.modalError)
             }).presentationDetents([.medium])
         }
-        .errorAlert(error: $model.error)
-        .toast(isPresenting: $model.showToast, duration: 2, tapToDismiss: true) {
+        .errorAlert(error: $viewModel.error)
+        .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
             AlertToast(type: .complete(.green), title: "Friend Request Sent!")
         }
     }
 }
 
 extension FriendsScreenView {
-    class FriendsViewModel: ObservableObject {
+   @MainActor class ViewModel: ObservableObject {
         @Published var searchText: String = ""
         @Published var products = [Profile]()
         @Published var friends = [Friend]()
@@ -147,6 +136,7 @@ extension FriendsScreenView {
                     let friends = try await repository.friend.getByUserId(userId: userId)
                     DispatchQueue.main.async {
                         self.friends = friends
+                        print(friends)
                     }
                 } catch {
                     DispatchQueue.main.async {

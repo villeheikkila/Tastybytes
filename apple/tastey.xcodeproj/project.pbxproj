@@ -26,6 +26,9 @@
 		5C919E2028FF024A0055CFD2 /* FlavorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1F28FF024A0055CFD2 /* FlavorPickerView.swift */; };
 		5C919E2228FF0CF60055CFD2 /* ProductVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E2128FF0CF60055CFD2 /* ProductVariant.swift */; };
 		5C989DAB2901AAD500BBC5A7 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C989DAA2901AAD500BBC5A7 /* Repository.swift */; };
+		5C989DAF2901B8A400BBC5A7 /* UserProviderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C989DAE2901B8A400BBC5A7 /* UserProviderView.swift */; };
+		5C989DBA2901D2C700BBC5A7 /* ProfileProviderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C989DB92901D2C700BBC5A7 /* ProfileProviderView.swift */; };
+		5C989DBE2901EA6200BBC5A7 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C989DBD2901EA6200BBC5A7 /* NavigationView.swift */; };
 		5CB1C24128F99E1C000B0EB4 /* ProductListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24028F99E1C000B0EB4 /* ProductListItemView.swift */; };
 		5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */; };
 		5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */; };
@@ -39,10 +42,9 @@
 		5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */; };
 		5CD10A3D28F75B7A0001CFC2 /* ProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3C28F75B7A0001CFC2 /* ProductScreen.swift */; };
 		5CD10A3F28F760520001CFC2 /* CheckInScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3E28F760520001CFC2 /* CheckInScreen.swift */; };
-		5CD10A4128F80B4F0001CFC2 /* CollapsibleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4028F80B4F0001CFC2 /* CollapsibleView.swift */; };
 		5CD10A4328F82E000001CFC2 /* InfiniteScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */; };
 		5CD10A4528F952030001CFC2 /* AddCheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4428F952030001CFC2 /* AddCheckInView.swift */; };
-		5CD10A4728F9522D0001CFC2 /* RatingPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4628F9522D0001CFC2 /* RatingPicker.swift */; };
+		5CD10A4728F9522D0001CFC2 /* RatingPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4628F9522D0001CFC2 /* RatingPickerView.swift */; };
 		5CD10A4928F956AC0001CFC2 /* ProductCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */; };
 		5CD10A4B28F980860001CFC2 /* CheckInComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4A28F980860001CFC2 /* CheckInComment.swift */; };
 		5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4C28F985D00001CFC2 /* CheckIn.swift */; };
@@ -94,6 +96,9 @@
 		5C919E1F28FF024A0055CFD2 /* FlavorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorPickerView.swift; sourceTree = "<group>"; };
 		5C919E2128FF0CF60055CFD2 /* ProductVariant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductVariant.swift; sourceTree = "<group>"; };
 		5C989DAA2901AAD500BBC5A7 /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		5C989DAE2901B8A400BBC5A7 /* UserProviderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProviderView.swift; sourceTree = "<group>"; };
+		5C989DB92901D2C700BBC5A7 /* ProfileProviderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileProviderView.swift; sourceTree = "<group>"; };
+		5C989DBD2901EA6200BBC5A7 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		5CB1C24028F99E1C000B0EB4 /* ProductListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListItemView.swift; sourceTree = "<group>"; };
 		5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsView.swift; sourceTree = "<group>"; };
 		5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInRepository.swift; sourceTree = "<group>"; };
@@ -107,10 +112,9 @@
 		5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardView.swift; sourceTree = "<group>"; };
 		5CD10A3C28F75B7A0001CFC2 /* ProductScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductScreen.swift; sourceTree = "<group>"; };
 		5CD10A3E28F760520001CFC2 /* CheckInScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInScreen.swift; sourceTree = "<group>"; };
-		5CD10A4028F80B4F0001CFC2 /* CollapsibleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleView.swift; sourceTree = "<group>"; };
 		5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScroll.swift; sourceTree = "<group>"; };
 		5CD10A4428F952030001CFC2 /* AddCheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCheckInView.swift; sourceTree = "<group>"; };
-		5CD10A4628F9522D0001CFC2 /* RatingPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPicker.swift; sourceTree = "<group>"; };
+		5CD10A4628F9522D0001CFC2 /* RatingPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPickerView.swift; sourceTree = "<group>"; };
 		5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCardView.swift; sourceTree = "<group>"; };
 		5CD10A4A28F980860001CFC2 /* CheckInComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInComment.swift; sourceTree = "<group>"; };
 		5CD10A4C28F985D00001CFC2 /* CheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckIn.swift; sourceTree = "<group>"; };
@@ -184,6 +188,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		5C989DAC2901B88700BBC5A7 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				5C989DAE2901B8A400BBC5A7 /* UserProviderView.swift */,
+				5C989DB92901D2C700BBC5A7 /* ProfileProviderView.swift */,
+			);
+			path = Providers;
+			sourceTree = "<group>";
+		};
 		5CCE914C28F45DD7005A6043 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,8 +230,9 @@
 		5CD10A5D28F99CDF0001CFC2 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				5CFEE57628ED69B100A8DD66 /* Main.swift */,
+				5C989DAC2901B88700BBC5A7 /* Providers */,
 				5CED432628FD3440003F8194 /* Components */,
-				5CFEE57828ED69B100A8DD66 /* RootView.swift */,
 				5CFB562D28F5969300F13A1E /* Views */,
 				5CD10A5F28F99CF60001CFC2 /* Screens */,
 			);
@@ -244,11 +258,11 @@
 		5CED432628FD3440003F8194 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				5CD10A4028F80B4F0001CFC2 /* CollapsibleView.swift */,
 				5CFB562E28F596A200F13A1E /* ChipView.swift */,
 				5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */,
 				5CFB563228F597ED00F13A1E /* RatingView.swift */,
 				5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */,
+				5CD10A4628F9522D0001CFC2 /* RatingPickerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -257,7 +271,6 @@
 			isa = PBXGroup;
 			children = (
 				5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */,
-				5CD10A4628F9522D0001CFC2 /* RatingPicker.swift */,
 				5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */,
 				5CB1C24028F99E1C000B0EB4 /* ProductListItemView.swift */,
 				5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */,
@@ -269,6 +282,8 @@
 				5CED433528FDA8B9003F8194 /* SubcategoryPickerView.swift */,
 				5C919E1928FEE2DE0055CFD2 /* FriendPickerView.swift */,
 				5C919E1F28FF024A0055CFD2 /* FlavorPickerView.swift */,
+				5C989DBD2901EA6200BBC5A7 /* NavigationView.swift */,
+				5CFEE57828ED69B100A8DD66 /* RootView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -298,7 +313,6 @@
 				5CD10A5A28F9988C0001CFC2 /* Repositories */,
 				5CCE914C28F45DD7005A6043 /* Helpers */,
 				5C11ECBE28EF433700CCDE6A /* Models */,
-				5CFEE57628ED69B100A8DD66 /* Main.swift */,
 				5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */,
 				5CFEE57C28ED69B200A8DD66 /* Preview Content */,
 			);
@@ -394,7 +408,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C11ECBB28EEF24700CCDE6A /* ActivityScreen.swift in Sources */,
-				5CD10A4128F80B4F0001CFC2 /* CollapsibleView.swift in Sources */,
 				5CFEE57928ED69B100A8DD66 /* RootView.swift in Sources */,
 				5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */,
 				5CD10A4328F82E000001CFC2 /* InfiniteScroll.swift in Sources */,
@@ -410,6 +423,7 @@
 				5CED432028FAB5F5003F8194 /* ViewExtensions.swift in Sources */,
 				5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* Main.swift in Sources */,
+				5C989DAF2901B8A400BBC5A7 /* UserProviderView.swift in Sources */,
 				5CB1C24B28F9BE4F000B0EB4 /* ProductRepository.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
 				5CD10A3D28F75B7A0001CFC2 /* ProductScreen.swift in Sources */,
@@ -417,6 +431,7 @@
 				5CD10A4B28F980860001CFC2 /* CheckInComment.swift in Sources */,
 				5C919E2028FF024A0055CFD2 /* FlavorPickerView.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileScreen.swift in Sources */,
+				5C989DBE2901EA6200BBC5A7 /* NavigationView.swift in Sources */,
 				5CD10A5C28F998BF0001CFC2 /* ProfileRepository.swift in Sources */,
 				5C11ECBD28EEF30600CCDE6A /* SearchScreen.swift in Sources */,
 				5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */,
@@ -425,7 +440,8 @@
 				5CED433428FDA357003F8194 /* SubBrandRepository.swift in Sources */,
 				5CB1C24928F9BBAA000B0EB4 /* CheckInReactionRepository.swift in Sources */,
 				5C11ECB628EEEFB300CCDE6A /* SettingsScreen.swift in Sources */,
-				5CD10A4728F9522D0001CFC2 /* RatingPicker.swift in Sources */,
+				5C989DBA2901D2C700BBC5A7 /* ProfileProviderView.swift in Sources */,
+				5CD10A4728F9522D0001CFC2 /* RatingPickerView.swift in Sources */,
 				5CED432828FD417E003F8194 /* AddProductScreen.swift in Sources */,
 				5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */,
 				5CED433228FD76BB003F8194 /* SubBrandPickerView.swift in Sources */,

@@ -8,7 +8,7 @@ struct ProfileView: View {
     
 
     var body: some View {
-        InfiniteScroll(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(userId: userId) },
+        InfiniteScrollView(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(userId: userId) },
                        refresh: {
                            model.refresh(userId: userId)
                        },

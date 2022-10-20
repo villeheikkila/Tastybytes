@@ -1,5 +1,25 @@
-import GoTrue
+import Foundation
 import SwiftUI
+
+struct NavigationStackView: View {
+    @StateObject var navigator = Navigator()
+
+    var body: some View {
+        NavigationStack(path: $navigator.path) {
+            AddRoutesView {
+                TabbarView()
+            }
+            .navigationBarItems(leading:
+                NavigationLink(value: Route.currentUserFriends) {
+                    Image(systemName: "person.2").imageScale(.large)
+
+                },
+                trailing: NavigationLink(value: Route.settings) {
+                    Image(systemName: "gear").imageScale(.large)
+                })
+        }.environmentObject(navigator)
+    }
+}
 
 class Navigator: ObservableObject {
     @Published var path = NavigationPath()
@@ -8,45 +28,20 @@ class Navigator: ObservableObject {
         path.removeLast(path.count)
         path.append(Route.activity)
     }
-    
+
     func removeLast() {
         path.removeLast()
     }
-    
+
     func tapOnSecondPage() {
         path.removeLast()
     }
-    
+
     func navigateTo(destination: some Hashable, resetStack: Bool) {
         if resetStack {
             path.removeLast(path.count)
         }
         path.append(destination)
-    }
-}
-
-struct RootView: View {
-    @StateObject var navigator = Navigator()
-    
-    var body: some View {
-        UserProviderView(supabaseClient: Supabase.client) {
-            AuthView(loadingContent: ProgressView.init) { _ in
-                NavigationStack(path: $navigator.path) {
-                    AddNavigation {
-                        Tabbar()
-                    }.navigationBarItems(leading:
-                                            NavigationLink(value: Route.currentUserFriends) {
-                                                Image(systemName: "person.2").imageScale(.large)
-
-                                            },
-                                            trailing: NavigationLink(value: Route.settings) {
-                                                Image(systemName: "gear").imageScale(.large)
-                                            })
-                }
-            }
-        }
-        .environmentObject(navigator)
-        
     }
 }
 
@@ -61,7 +56,7 @@ enum Route: Hashable {
     case addProduct
 }
 
-struct AddNavigation<Content: View>: View {
+struct AddRoutesView<Content: View>: View {
     var content: () -> Content
 
     var body: some View {
@@ -78,7 +73,9 @@ struct AddNavigation<Content: View>: View {
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .currentUserFriends:
-                    FriendsScreenView()
+                    WithProfile {
+                        profile in FriendsScreenView(profile: profile)
+                    }
                 case .settings:
                     SettingsView()
                 case .activity:
@@ -98,7 +95,7 @@ struct AddNavigation<Content: View>: View {
     }
 }
 
-struct Tabbar: View {
+struct TabbarView: View {
     var body: some View {
         TabView {
             ActivityView()
@@ -117,11 +114,5 @@ struct Tabbar: View {
                     Text("Profile")
                 }
         }
-    }
-}
-
-struct RouterView_Previews: PreviewProvider {
-    static var previews: some View {
-        RootView()
     }
 }

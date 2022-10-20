@@ -1,7 +1,7 @@
 import SwiftUI
 
 
-struct InfiniteScroll<Data, Content, Header>: View
+struct InfiniteScrollView<Data, Content, Header>: View
 where Data: RandomAccessCollection, Data.Element: Hashable, Data.Element: Identifiable, Content: View, Header: View {
     @Binding var data: Data
     @Binding var isLoading: Bool

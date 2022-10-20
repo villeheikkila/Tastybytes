@@ -190,7 +190,7 @@ extension SettingsView {
                     self.lastName = profile.lastName ?? ""
                     self.firstName = profile.firstName ?? ""
                     self.showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
-                    self.email = user.email ?? ""
+                    self.email = user?.email ?? ""
                 }
             }
         }

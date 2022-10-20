@@ -8,6 +8,10 @@ struct Profile: Identifiable {
     let avatarUrl: String?
     let nameDisplay: NameDisplay
 
+
+}
+
+extension Profile {
     func getPreferedName() -> String {
         switch nameDisplay {
         case .username:
@@ -32,6 +36,11 @@ struct Profile: Identifiable {
         } else {
             return nil
         }
+    }
+    
+    func isCurrentUser() -> Bool {
+        let currentUserId = repository.auth.getCurrentUserId()
+        return currentUserId == self.id
     }
 }
 

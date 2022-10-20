@@ -1,5 +1,5 @@
 import Supabase
-
+import SwiftUI
 let repository = SupabaseRepository(Supabase.client)
 
 protocol Repository {

@@ -7,7 +7,7 @@ struct ProductPageView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            InfiniteScroll(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(productId: product.id) }, refresh: { model.refresh(productId: product.id) },
+            InfiniteScrollView(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(productId: product.id) }, refresh: { model.refresh(productId: product.id) },
                            content: {
                 CheckInCardView(checkIn: $0, onDelete: {
                     deletedCheckIn in model.deleteCheckIn(id: deletedCheckIn.id)

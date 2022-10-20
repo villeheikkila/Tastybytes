@@ -14,7 +14,7 @@ struct ActivityView: View {
     @State var isLoading: Bool = true
 
     var body: some View {
-        InfiniteScroll(data: $model.checkIns, isLoading: $model.isLoading, loadMore: {
+        InfiniteScrollView(data: $model.checkIns, isLoading: $model.isLoading, loadMore: {
             model.fetchActivityFeedItems()
         }, refresh: {
             model.refresh()
