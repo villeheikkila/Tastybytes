@@ -1,6 +1,11 @@
 import Foundation
 
-struct SupabaseBrandRepository {
+protocol BrandRepository {
+    func loadByBrandOwnerId(brandOwnerId: Int) async throws -> [BrandJoinedWithSubBrands]
+    func insert(newBrand: NewBrand) async throws -> BrandJoinedWithSubBrands
+}
+
+struct SupabaseBrandRepository: BrandRepository {
     private let database = Supabase.client.database
     private let tableName = "brands"
     private let joinedWithSubBrands = "id, name, sub_brands (id, name)"

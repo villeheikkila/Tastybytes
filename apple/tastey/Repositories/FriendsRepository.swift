@@ -1,7 +1,15 @@
 import Foundation
 import PostgREST
 
-struct SupabaseFriendsRepository {
+protocol FriendRepository {
+    func loadByUserId(userId: UUID) async throws -> [Friend]
+    func loadAcceptedByUserId(userId: UUID) async throws -> [Friend]
+    func insert(newFriend: NewFriend) async throws -> Friend
+    func updateStatus(id: Int, friendUpdate: FriendUpdate) async throws -> Friend
+    func delete(id: Int) async throws -> Void
+}
+
+struct SupabaseFriendsRepository: FriendRepository {
     private let database = Supabase.client.database
     private let tableName = "friends"
     private let savedLimited = "id, user_id_1, user_id_2, status"

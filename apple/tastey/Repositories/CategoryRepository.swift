@@ -1,6 +1,11 @@
 import Foundation
 
-struct SupabaseCategoryRepository {
+protocol CategoryRepository {
+    func loadAllWithSubcategories() async throws -> [CategoryJoinedWithSubcategories]
+    func loadServingStyles(categoryId: Int) async throws -> CategoryJoinedWithServingStyles
+}
+
+struct SupabaseCategoryRepository: CategoryRepository {
     private let database = Supabase.client.database
     private let categories = "categories"
     private let joinedWithSubcategories = "id, name, subcategories (id, name)"

@@ -2,7 +2,14 @@ import Foundation
 import GoTrue
 import SupabaseStorage
 
-struct SupabaseAuthRepository {
+protocol AuthRepository {
+    func getCurrentUserId() -> UUID
+    func getCurrentUser() -> User
+    func logOut() async throws -> Void
+    func sendEmailVerification(email: String) async throws -> Void
+}
+
+struct SupabaseAuthRepository: AuthRepository {
     let auth = Supabase.client.auth
     
     func getCurrentUserId() -> UUID {
@@ -15,11 +22,11 @@ struct SupabaseAuthRepository {
         return user
     }
 
-    func logOut() async throws {
+    func logOut() async throws -> Void {
         try await Supabase.client.auth.signOut()
     }
 
-    func sendEmailVerification(email: String) async throws {
+    func sendEmailVerification(email: String) async throws -> Void {
         try await Supabase.client.auth.update(user: UserAttributes(email: email))
     }
 }
