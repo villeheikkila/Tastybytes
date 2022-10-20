@@ -4,7 +4,7 @@ import SwiftUI
 
 struct CheckInCardView: View {
     let checkIn: CheckIn
-    @StateObject var viewModel = CheckInCardViewModel()
+    @StateObject var viewModel = ViewModel()
     
     let onDelete: (_ checkIn: CheckIn) -> Void
     
@@ -149,7 +149,7 @@ struct CheckInCardView: View {
 }
 
 extension CheckInCardView {
-    @MainActor class CheckInCardViewModel: ObservableObject {
+    @MainActor class ViewModel: ObservableObject {
         func delete(checkIn: CheckIn, onDelete: @escaping  (_ checkIn: CheckIn) -> Void) {
             Task {
                 try await repository.checkIn.delete(id: checkIn.id)

@@ -4,30 +4,19 @@ import SwiftUI
 
 struct FriendsScreenView: View {
     var profile: Profile
-
     @StateObject private var viewModel = ViewModel()
-    
-    var addFriendButton: some View {
-        HStack {
-            if profile.isCurrentUser() {
-                Button(action: { viewModel.showUserSearchSheet.toggle() }) {
-                    Image(systemName: "plus").imageScale(.large)
-                }
-            }
-        }
-    }
 
     var body: some View {
         ScrollView {
             VStack {
                 ForEach(viewModel.friends, id: \.self) { friend in
                     if profile.isCurrentUser() {
-                        FriendListItem(friend: friend,
+                        FriendListItemView(friend: friend,
                                        onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
                                        onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
                                        onDelete: { id in viewModel.removeFriendRequest(id: id) })
                     } else {
-                        FriendListItemSimple(profile: friend.getFriend(userId: profile.id))
+                        FriendListItemSimpleView(profile: friend.getFriend(userId: profile.id))
                     }
                 }
             }
@@ -59,6 +48,16 @@ struct FriendsScreenView: View {
         .errorAlert(error: $viewModel.error)
         .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
             AlertToast(type: .complete(.green), title: "Friend Request Sent!")
+        }
+    }
+    
+    var addFriendButton: some View {
+        HStack {
+            if profile.isCurrentUser() {
+                Button(action: { viewModel.showUserSearchSheet.toggle() }) {
+                    Image(systemName: "plus").imageScale(.large)
+                }
+            }
         }
     }
 }
@@ -136,7 +135,6 @@ extension FriendsScreenView {
                     let friends = try await repository.friend.getByUserId(userId: userId)
                     DispatchQueue.main.async {
                         self.friends = friends
-                        print(friends)
                     }
                 } catch {
                     DispatchQueue.main.async {
@@ -148,7 +146,7 @@ extension FriendsScreenView {
     }
 }
 
-struct FriendListItemSimple: View {
+struct FriendListItemSimpleView: View {
     let profile: Profile
 
     var body: some View {
@@ -169,7 +167,7 @@ struct FriendListItemSimple: View {
     }
 }
 
-struct FriendListItem: View {
+struct FriendListItemView: View {
     let friend: Friend
     let profile: Profile
     let currentUser: UUID
@@ -202,7 +200,7 @@ struct FriendListItem: View {
                     if friend.isPending(userId: currentUser) {
                         HStack(alignment: .center) {
                             Button(action: {
-                                onDelete(friend.id)
+                                    onDelete(friend.id)
                             }) {
                                 Image(systemName: "person.fill.xmark").imageScale(.large)
                             }

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CheckInPageView: View {
     let checkIn: CheckIn
-    @StateObject private var model = CheckInPageViewModel()
+    @StateObject private var viewModel = ViewModel()
     @EnvironmentObject private var navigator: Navigator
 
     var body: some View {
@@ -11,15 +11,15 @@ struct CheckInPageView: View {
                     _ in  navigator.removeLast()  
                 })
                     .task {
-                        model.getCheckInCommets(checkInId: checkIn.id)
+                        viewModel.getCheckInCommets(checkInId: checkIn.id)
                     }
 
                 VStack(spacing: 10) {
-                    ForEach(model.checkInComments.reversed(), id: \.id) {
+                    ForEach(viewModel.checkInComments.reversed(), id: \.id) {
                         comment in CommentItemView(comment: comment, content: comment.content, onDelete: { id in
-                            model.deleteComment(commentId: id)
+                            viewModel.deleteComment(commentId: id)
                         }, onUpdate: {
-                            updatedComment in model.editComment(updateCheckInComment: updatedComment)
+                            updatedComment in viewModel.editComment(updateCheckInComment: updatedComment)
                         })
                     }
                 }
@@ -27,8 +27,8 @@ struct CheckInPageView: View {
             }
 
             HStack {
-                TextField("Leave a comment!", text: $model.comment)
-                Button(action: { model.sendComment(checkInId: checkIn.id) }) {
+                TextField("Leave a comment!", text: $viewModel.comment)
+                Button(action: { viewModel.sendComment(checkInId: checkIn.id) }) {
                     Image(systemName: "paperplane.fill")
                 }
             }
@@ -38,7 +38,7 @@ struct CheckInPageView: View {
     }
 
 extension CheckInPageView {
-    @MainActor class CheckInPageViewModel: ObservableObject {
+    @MainActor class ViewModel: ObservableObject {
         @Published var checkInComments = [CheckInComment]()
         @Published var comment = ""
 

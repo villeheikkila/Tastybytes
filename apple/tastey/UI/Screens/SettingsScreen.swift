@@ -4,101 +4,26 @@ import PhotosUI
 import SwiftUI
 
 struct SettingsView: View {
-    @StateObject private var model = SettingsViewModel()
+    @StateObject private var viewModel = ViewModel()
     @State private var showingImagePicker = false
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var showDeleteConfirmation = false
-
-    func ImageWithDefault() -> Image {
-        guard let image = model.avatarImage else {
-            return Image(systemName: "person.fill")
-        }
-        return Image(uiImage: image)
-    }
+    @EnvironmentObject var currentProfile: CurrentProfile
+    @Environment(\.colorScheme) var initialColorScheme
 
     var body: some View {
         Form {
-            PhotosPicker(
-                selection: $selectedItem,
-                matching: .images,
-                photoLibrary: .shared()
-            ) {
-                ImageWithDefault()
-                    .resizable()
-                    .clipShape(Circle())
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 120, height: 120, alignment: .top)
-                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                    .shadow(radius: 4)
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-            .listRowBackground(Color(UIColor.systemGroupedBackground))
-            .padding(.top, 0)
-            .onChange(of: selectedItem) { newValue in
-                model.uploadAvatar(newAvatar: newValue)
-            }
-
-            Section {
-                TextField("Username", text: $model.username)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
-                TextField("First Name", text: $model.firstName)
-                TextField("Last Name", text: $model.lastName)
-
-                if model.profileHasChanged() {
-                    Button("Update", action: { model.updateProfile() })
-                }
-            } header: {
-                Text("Profile")
-            } footer: {
-                Text("These values are used in your personal page and can be seen by other users.")
-            }.headerProminence(.increased)
-            
-            Section {
-                Toggle("Use name instead of username", isOn: $model.showFullName)
-                    .onChange(of: [self.model.showFullName].publisher.first()) { _ in
-                        model.updateDisplaySettings()
-               }
-            }
-
-            Section {
-                TextField("Email", text: $model.email)
-                    .keyboardType(.emailAddress)
-                    .textContentType(.emailAddress)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
-
-                if model.emailHasChanged() {
-                    Button("Send Verification Link", action: { model.sendEmailVerificationLink() })
-                }
-
-            } header: {
-                Text("Account")
-            } footer: {
-                Text("Email is only used for login and is not shown for other users.")
-            }.headerProminence(.increased)
-            
-            Section {
-                Button("Log Out", action: { model.logOut() })
-            }
-
-            Section {
-                Button("Export", action: { model.exportData() })
-                Button("Delete Account", role: .destructive, action: {
-                    showDeleteConfirmation = true
-                })
-                .confirmationDialog(
-                    "Are you sure you want to permanently delete your account? All data will be lost.",
-                    isPresented: $showDeleteConfirmation
-                ) {
-                    Button("Delete Account", role: .destructive, action: { model.deleteCurrentAccount() })
-                }
-            }
+            avatarPicker
+            profileSection
+            emailSection
+            displaySettings
+            logOutSection
+            accountDeletionSection
         }.task {
-            model.getInitialValues()
+            viewModel.getInitialValues(initialColorScheme: initialColorScheme)
         }
-        .toast(isPresenting: $model.showToast, duration: 1, tapToDismiss: true) {
-            switch model.toast {
+        .toast(isPresenting: $viewModel.showToast, duration: 1, tapToDismiss: true) {
+            switch viewModel.toast {
             case .profileUpdated:
                 return AlertToast(type: .complete(.green), title: "Profile updated!")
             case .exported:
@@ -109,15 +34,118 @@ struct SettingsView: View {
                 return AlertToast(type: .error(.red), title: "")
             }
         }
-        .fileExporter(isPresented: $model.showingExporter,
-                      document: model.csvExport,
-                      contentType: UTType.commaSeparatedText,
-                      defaultFilename: "tasty_export.csv") { result in
+    }
+
+    func ImageWithDefault() -> Image {
+        guard let image = viewModel.avatarImage else {
+            return Image(systemName: "person.fill")
+        }
+        return Image(uiImage: image)
+    }
+
+    var avatarPicker: some View {
+        PhotosPicker(
+            selection: $selectedItem,
+            matching: .images,
+            photoLibrary: .shared()
+        ) {
+            ImageWithDefault()
+                .resizable()
+                .clipShape(Circle())
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 120, height: 120, alignment: .top)
+                .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                .shadow(radius: 4)
+        }
+        .frame(maxWidth: .infinity, alignment: .center)
+        .listRowBackground(Color(UIColor.systemGroupedBackground))
+        .padding(.top, 0)
+        .onChange(of: selectedItem) { newValue in
+            viewModel.uploadAvatar(newAvatar: newValue)
+        }
+    }
+
+    var profileSection: some View {
+        Section {
+            TextField("Username", text: $viewModel.username)
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+            TextField("First Name", text: $viewModel.firstName)
+            TextField("Last Name", text: $viewModel.lastName)
+
+            if viewModel.profileHasChanged() {
+                Button("Update", action: { viewModel.updateProfile() })
+            }
+        } header: {
+            Text("Profile")
+        } footer: {
+            Text("These values are used in your personal page and can be seen by other users.")
+        }
+        .headerProminence(.increased)
+    }
+
+    var emailSection: some View {
+        Section {
+            TextField("Email", text: $viewModel.email)
+                .keyboardType(.emailAddress)
+                .textContentType(.emailAddress)
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+
+            if viewModel.emailHasChanged() {
+                Button("Send Verification Link", action: { viewModel.sendEmailVerificationLink() })
+            }
+
+        } header: {
+            Text("Account")
+        } footer: {
+            Text("Email is only used for login and is not shown for other users.")
+        }.headerProminence(.increased)
+    }
+
+    var displaySettings: some View {
+        Section {
+            Toggle("Use Name Instead of Username", isOn: $viewModel.showFullName)
+                .onChange(of: [self.viewModel.showFullName].publisher.first()) { _ in
+                    viewModel.updateDisplaySettings()
+                }
+            Toggle("Use System Color Scheme", isOn: $viewModel.isSystemColor).onChange(of: [self.viewModel.isSystemColor].publisher.first()) { _ in
+                viewModel.updateColorScheme({currentProfile.refresh()})
+            }
+            Toggle("Use Dark Mode", isOn: $viewModel.isDarkMode).onChange(of: [self.viewModel.isDarkMode].publisher.first()) { _ in
+                viewModel.updateColorScheme({currentProfile.refresh()})
+            }.disabled(viewModel.isSystemColor)
+        }
+    }
+
+    var logOutSection: some View {
+        Section {
+            Button("Log Out", action: { viewModel.logOut() })
+        }
+    }
+
+    var accountDeletionSection: some View {
+        Section {
+            Button("Export", action: { viewModel.exportData() })
+            Button("Delete Account", role: .destructive, action: {
+                showDeleteConfirmation = true
+            })
+            .confirmationDialog(
+                "Are you sure you want to permanently delete your account? All data will be lost.",
+                isPresented: $showDeleteConfirmation
+            ) {
+                Button("Delete Account", role: .destructive, action: { viewModel.deleteCurrentAccount() })
+            }
+        }
+        .fileExporter(isPresented: $viewModel.showingExporter,
+                       document: viewModel.csvExport,
+                       contentType: UTType.commaSeparatedText,
+                       defaultFilename: "tasty_export.csv") { result in
             switch result {
-            case .success(_):
-                model.showToast(type: .exported)
-            case .failure(_):
-                model.showToast(type: .exportError)
+            case .success:
+                viewModel.showToast(type: .exported)
+            case .failure:
+                viewModel.showToast(type: .exportError)
             }
         }
     }
@@ -130,13 +158,15 @@ extension SettingsView {
         case exportError
     }
 
-    @MainActor class SettingsViewModel: ObservableObject {
+    @MainActor class ViewModel: ObservableObject {
         // Profile values
         @Published var username = ""
         @Published var firstName = ""
         @Published var lastName = ""
         @Published var avatarImage: UIImage?
-        @Published var showFullName: Bool = false
+        @Published var showFullName = false
+        @Published var isSystemColor = false
+        @Published var isDarkMode = false
 
         // User values
         @Published var email = ""
@@ -147,6 +177,7 @@ extension SettingsView {
 
         @Published var showToast = false
         @Published var toast: Toast?
+        var initialColorScheme: ColorScheme? = nil
 
         var profile: Profile?
         var user: User?
@@ -162,17 +193,17 @@ extension SettingsView {
         func emailHasChanged() -> Bool {
             return email != user?.email
         }
-        
+
         func showToast(type: Toast) {
-            self.toast = type
-            self.showToast = true
+            toast = type
+            showToast = true
         }
 
-        func getInitialValues() {
+        func getInitialValues(initialColorScheme: ColorScheme) {
+            self.initialColorScheme = initialColorScheme
             Task {
                 let user = repository.auth.getCurrentUser()
                 let profile = try await repository.profile.getById(id: repository.auth.getCurrentUserId())
-                print(profile)
                 if let url = profile.getAvatarURL() {
                     getData(from: url) { data, _, error in
                         guard let data = data, error == nil else { return }
@@ -183,44 +214,81 @@ extension SettingsView {
                 }
 
                 DispatchQueue.main.async {
-                    self.profile = profile
                     self.user = user
-
-                    self.username = profile.username
-                    self.lastName = profile.lastName ?? ""
-                    self.firstName = profile.firstName ?? ""
-                    self.showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
                     self.email = user?.email ?? ""
+                }
+
+                self.updateFormValues(profile: profile)
+            }
+        }
+
+        func updateFormValues(profile: Profile) {
+            DispatchQueue.main.async {
+                self.profile = profile
+                self.username = profile.username
+                self.lastName = profile.lastName ?? ""
+                self.firstName = profile.firstName ?? ""
+                self.showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
+                switch profile.colorScheme {
+                case .light:
+                    self.isDarkMode = false
+                    self.isSystemColor = false
+                case .dark:
+                    self.isDarkMode = true
+                    self.isSystemColor = false
+                case .system:
+                    self.isDarkMode = self.initialColorScheme == ColorScheme.dark
+                    self.isSystemColor = true
+                default:
+                    self.isDarkMode = self.initialColorScheme == ColorScheme.dark
+                    
                 }
             }
         }
 
         func updateProfile() {
-            let update = ProfileUpdate(
+            let update = Profile.Update(
                 username: username,
                 firstName: firstName,
                 lastName: lastName
             )
 
             Task {
-                try await repository.profile.update(id: repository.auth.getCurrentUserId(),
-                                                                    update: update)
+                let profile = try await repository.profile.update(id: repository.auth.getCurrentUserId(),
+                                                                  update: update)
+
+                self.updateFormValues(profile: profile)
                 self.toast = Toast.profileUpdated
                 self.showToast = true
             }
         }
-        
+
         func updateDisplaySettings() {
-            let update = ProfileUpdate(
+            let update = Profile.Update(
                 showFullName: showFullName
             )
 
             Task {
                 try await repository.profile.update(id: repository.auth.getCurrentUserId(),
-                                                                    update: update)
+                                                    update: update)
             }
         }
-        
+
+        func updateColorScheme(_ onChange: @escaping () -> Void) {
+            if (isSystemColor) {
+                self.isDarkMode = initialColorScheme == ColorScheme.dark
+            }
+            let update = Profile.Update(
+                isDarkMode: isDarkMode, isSystemColor: isSystemColor
+            )
+
+            Task {
+                try await repository.profile.update(id: repository.auth.getCurrentUserId(),
+                                                    update: update)
+                onChange()
+            }
+        }
+
         func exportData() {
             Task {
                 let csvText = try await repository.profile.currentUserExport()

@@ -65,7 +65,7 @@ struct AddRoutesView<Content: View>: View {
                 CheckInPageView(checkIn: checkIn)
             }
             .navigationDestination(for: Profile.self) { profile in
-                ProfileView(userId: profile.id)
+                ProfileView(profile: profile)
             }
             .navigationDestination(for: Product.self) { product in
                 ProductPageView(product: product)
@@ -85,7 +85,7 @@ struct AddRoutesView<Content: View>: View {
                 case let .checkIn(checkIn):
                     CheckInPageView(checkIn: checkIn)
                 case let .profile(profile):
-                    ProfileView(userId: profile.id)
+                    ProfileView(profile: profile)
                 case let .product(product):
                     ProductPageView(product: product)
                 case let .friends(profile):
@@ -108,7 +108,10 @@ struct TabbarView: View {
                     Image(systemName: "magnifyingglass")
                     Text("Search")
                 }
-            ProfileView(userId: repository.auth.getCurrentUserId())
+            WithProfile {
+             profile in
+                ProfileView(profile: profile)
+            }
                 .tabItem {
                     Image(systemName: "person.fill")
                     Text("Profile")

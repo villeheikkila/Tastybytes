@@ -123,7 +123,6 @@ struct AddCheckInView: View {
 
         let newCheckParams = NewCheckInParams(productId: product.id, rating: ratingDoubled, review: review, manufacturerId: manufacturerId, servingStyleId: servingStyleId, friendIds: friendIds, flavorIds: flavorIds)
 
-        print(newCheckParams    )
         Task {
             do {
                 let newCheckIn = try await repository.checkIn.create(newCheckInParams: newCheckParams)

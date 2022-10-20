@@ -1,10 +1,3 @@
-//
-//  Utils.swift
-//  tasted
-//
-//  Created by Ville Heikkilä on 10.10.2022.
-//
-
 import Foundation
 import SwiftUI
 
@@ -51,13 +44,15 @@ enum DateParsingError: Error {
     case failure
 }
 
-let formatter = ISO8601DateFormatter()
 
 func parseDate(from: String) throws -> Date {
+    let formatter = ISO8601DateFormatter()
+
     formatter.formatOptions = [
         .withInternetDateTime,
         .withFractionalSeconds,
     ]
+    
     guard let date = formatter.date(from: from) else { throw DateParsingError.failure }
     return date
 }

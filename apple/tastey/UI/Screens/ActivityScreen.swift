@@ -10,18 +10,17 @@ struct SimpleCheckIn {
 }
 
 struct ActivityView: View {
-    @StateObject private var model = ActivityViewModel()
-    @State var isLoading: Bool = true
+    @StateObject private var viewModel = ViewModel()
 
     var body: some View {
-        InfiniteScrollView(data: $model.checkIns, isLoading: $model.isLoading, loadMore: {
-            model.fetchActivityFeedItems()
+        InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, loadMore: {
+            viewModel.fetchActivityFeedItems()
         }, refresh: {
-            model.refresh()
+            viewModel.refresh()
         }, content: {
             content in
             CheckInCardView(checkIn: content, onDelete: {
-                checkIn in model.onCheckInDelete(checkIn: checkIn) } )
+                checkIn in viewModel.onCheckInDelete(checkIn: checkIn) } )
         }, header: {
             EmptyView()
         })
@@ -29,7 +28,7 @@ struct ActivityView: View {
 }
 
 extension ActivityView {
-    class ActivityViewModel: ObservableObject {
+    class ViewModel: ObservableObject {
         @Published var checkIns = [CheckIn]()
         @Published var isLoading = false
         let pageSize = 5
@@ -52,7 +51,6 @@ extension ActivityView {
                     self.isLoading = true
                 }
             
-
                 do {
                     let checkIns = try await repository.checkIn.getActivityFeed(from: from, to: to)
 
