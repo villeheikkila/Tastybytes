@@ -5,6 +5,7 @@ import SwiftUI
 struct ProfileView: View {
     @StateObject private var model = ProfileViewModel()
     let userId: UUID
+    
 
     var body: some View {
         InfiniteScroll(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(userId: userId) },
@@ -19,6 +20,7 @@ struct ProfileView: View {
                                profileSummary
                                ratingChart
                                ratingSummary
+                               sheets
                            }
         })
     }
@@ -118,6 +120,16 @@ struct ProfileView: View {
             VStack {
                 Text("Average").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
                 Text(String(model.profileSummary?.getFormattedAverageRating() ?? "")).font(.system(size: 16, weight: .bold, design: .default))
+            }
+        }
+    }
+    
+    var sheets: some View {
+        VStack {
+            if let profile = model.profile  {
+                NavigationLink(value: Route.friends(profile)) {
+                    Text("Friends")
+                }
             }
         }
     }
