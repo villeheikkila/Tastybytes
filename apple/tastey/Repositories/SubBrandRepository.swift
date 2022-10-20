@@ -1,6 +1,10 @@
 import Foundation
 
-struct SupabaseSubBrandRepository {
+protocol SubBrandRepository {
+    func insert(newSubBrand: SubBrandNew) async throws -> SubBrand
+}
+
+struct SupabaseSubBrandRepository: SubBrandRepository {
     private let database = Supabase.client.database
     private let tableName = "sub_brands"
     private let saved = "id, name"

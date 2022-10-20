@@ -2,7 +2,17 @@ import Foundation
 import GoTrue
 import SupabaseStorage
 
-struct SupabaseProfileRepository {
+protocol ProfileRepository {
+    func loadProfileById(id: UUID) async throws -> Profile
+    func updateProfile(id: UUID, update: ProfileUpdate) async throws -> Profile
+    func currentUserExport() async throws -> String
+    func search(searchTerm: String) async throws -> [Profile]
+    func loadFriendsByUsername(username: String) async throws -> [Profile]
+    func uploadAvatar(id: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws -> Void
+    func deleteCurrentAccount() async throws -> Void
+}
+
+struct SupabaseProfileRepository: ProfileRepository {
     private let database = Supabase.client.database
     private let tableName = "profiles"
     private let saved = "id, username, first_name, last_name, avatar_url, name_display"

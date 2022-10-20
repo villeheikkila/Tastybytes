@@ -1,4 +1,9 @@
-struct SupabaseCompanyRepository {
+protocol CompanyRepository {
+    func insert(newCompany: NewCompany) async throws -> Company
+    func search(searchTerm: String) async throws -> [Company]
+}
+
+struct SupabaseCompanyRepository: CompanyRepository {
     private let database = Supabase.client.database
     private let tableName = "companies"
     private let saved = "id, name"

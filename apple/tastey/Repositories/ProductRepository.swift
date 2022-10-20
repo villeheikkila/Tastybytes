@@ -1,6 +1,11 @@
 import Foundation
 
-struct SupabaseProductRepository {
+protocol ProductRepository {
+    func search(searchTerm: String) async throws -> [Product]
+    func createProduct(newProductParams: NewProductParams) async throws -> Product
+}
+
+struct SupabaseProductRepository: ProductRepository {
     private let database = Supabase.client.database
     private let tableName = "companies"
     private let joined = "id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))"

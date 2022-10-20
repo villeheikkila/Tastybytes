@@ -1,7 +1,11 @@
 import Foundation
 import PostgREST
 
-struct SupabaseFlavorRepository {
+protocol FlavorRepository {
+    func loadAll() async throws -> [Flavor]
+}
+
+struct SupabaseFlavorRepository: FlavorRepository {
     private let database = Supabase.client.database
     private let tableName = "flavors"
     private let saved = "id, name"
