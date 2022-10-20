@@ -1,12 +1,13 @@
 import Foundation
+import Supabase
 
 protocol ProductRepository {
     func search(searchTerm: String) async throws -> [Product]
-    func createProduct(newProductParams: NewProductParams) async throws -> Product
+    func create(newProductParams: NewProductParams) async throws -> Product
 }
 
 struct SupabaseProductRepository: ProductRepository {
-    private let database = Supabase.client.database
+    let client: SupabaseClient
     private let tableName = "companies"
     private let joined = "id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))"
     
@@ -19,15 +20,17 @@ struct SupabaseProductRepository: ProductRepository {
             }
         }
         
-        return try await database
+        return try await client
+            .database
             .rpc(fn: "fnc__search_products", params: SearchProductsParams(searchTerm: searchTerm))
             .select(columns: joined)
             .execute()
             .decoded(to: [Product].self)
     }
     
-    func createProduct(newProductParams: NewProductParams) async throws -> Product {
-        return try await database
+    func create(newProductParams: NewProductParams) async throws -> Product {
+        return try await client
+            .database
             .rpc(fn: "fnc__create_product", params: newProductParams)
             .select(columns: joined)
             .limit(count: 1)

@@ -1,15 +1,18 @@
+import Supabase
+
 protocol CompanyRepository {
     func insert(newCompany: NewCompany) async throws -> Company
     func search(searchTerm: String) async throws -> [Company]
 }
 
 struct SupabaseCompanyRepository: CompanyRepository {
-    private let database = Supabase.client.database
+    let client: SupabaseClient
     private let tableName = "companies"
     private let saved = "id, name"
     
     func insert(newCompany: NewCompany) async throws -> Company {
-        return try await database
+        return try await client
+            .database
             .from(tableName)
             .insert(values: newCompany, returning: .representation)
             .select(columns: saved)
@@ -19,7 +22,8 @@ struct SupabaseCompanyRepository: CompanyRepository {
     }
     
     func search(searchTerm: String) async throws -> [Company] {
-        return try await database
+        return try await client
+            .database
             .from(tableName)
             .select(columns: saved)
             .ilike(column: "name", value: "%\(searchTerm)%")

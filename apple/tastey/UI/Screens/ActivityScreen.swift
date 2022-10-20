@@ -54,7 +54,7 @@ extension ActivityView {
             
 
                 do {
-                    let checkIns = try await SupabaseCheckInRepository().loadCurrentUserActivityFeed(from: from, to: to)
+                    let checkIns = try await repository.checkIn.getActivityFeed(from: from, to: to)
 
                     DispatchQueue.main.async {
                         self.checkIns.append(contentsOf: checkIns)

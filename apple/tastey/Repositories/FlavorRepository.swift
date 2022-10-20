@@ -1,17 +1,19 @@
 import Foundation
 import PostgREST
+import Supabase
 
 protocol FlavorRepository {
-    func loadAll() async throws -> [Flavor]
+    func getAll() async throws -> [Flavor]
 }
 
 struct SupabaseFlavorRepository: FlavorRepository {
-    private let database = Supabase.client.database
+    let client: SupabaseClient
     private let tableName = "flavors"
     private let saved = "id, name"
     
-    func loadAll() async throws -> [Flavor] {
-        return try await database
+    func getAll() async throws -> [Flavor] {
+        return try await client
+            .database
             .from(tableName)
             .select(columns: saved)
             .execute()

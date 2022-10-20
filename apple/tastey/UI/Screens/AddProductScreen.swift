@@ -165,7 +165,7 @@ struct AddProductScreenView: View {
     func loadCategories() {
         Task {
             do {
-                let categories = try await SupabaseCategoryRepository().loadAllWithSubcategories()
+                let categories = try await repository.category.getAllWithSubcategories()
                 self.categories = categories
             } catch {
                 print("error: \(error)")
@@ -178,7 +178,7 @@ struct AddProductScreenView: View {
             let newProductParams = NewProductParams(name: name, description: description, categoryId: categoryId, subBrandId: subBrandId, subCategoryIds: subcategories.map { $0.id })
             Task {
                 do {
-                    let newProduct = try await SupabaseProductRepository().createProduct(newProductParams: newProductParams)
+                    let newProduct = try await repository.product.create(newProductParams: newProductParams)
                     navigator.navigateTo(destination: newProduct, resetStack: true)
                 } catch {
                     print("error: \(error)")

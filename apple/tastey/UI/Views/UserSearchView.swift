@@ -33,7 +33,8 @@ struct UserSearchView<Actions: View>: View {
     func searchUsers() {
         Task {
             do {
-                let searchResults = try await SupabaseProfileRepository().search(searchTerm: searchText)
+                let currentUserId = repository.auth.getCurrentUserId()
+                let searchResults = try await repository.profile.search(searchTerm: searchText, currentUserId: currentUserId)
                 DispatchQueue.main.async {
                     self.searchResults = searchResults
                 }

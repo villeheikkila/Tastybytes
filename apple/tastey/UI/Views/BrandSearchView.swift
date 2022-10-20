@@ -44,7 +44,7 @@ struct BrandSearchView: View {
     func loadBrands() {
         Task {
             do {
-                let brandsWithSubBrands = try await SupabaseBrandRepository().loadByBrandOwnerId(brandOwnerId: brandOwner.id)
+                let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id)
                 DispatchQueue.main.async {
                     self.brandsWithSubBrands = brandsWithSubBrands
                 }
@@ -58,7 +58,7 @@ struct BrandSearchView: View {
         let newBrand = NewBrand(name: brandName, brandOwnerId: brandOwner.id)
         Task {
             do {
-                let brandWithSubBrands = try await SupabaseBrandRepository().insert(newBrand: newBrand)
+                let brandWithSubBrands = try await repository.brand.insert(newBrand: newBrand)
                 DispatchQueue.main.async {
                     onSelect(brandWithSubBrands, true)
                 }

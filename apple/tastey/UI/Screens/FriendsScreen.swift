@@ -12,9 +12,9 @@ struct FriendsScreenView: View {
             self.profileId = profile.id
             print(self.profileId)
         } else {
-            self.profileId = SupabaseAuthRepository().getCurrentUserId()
+            self.profileId = repository.auth.getCurrentUserId()
         }
-        self.isCurrentUser = self.profileId == SupabaseAuthRepository().getCurrentUserId()
+        self.isCurrentUser = self.profileId == repository.auth.getCurrentUserId()
 
     }
     
@@ -90,7 +90,7 @@ extension FriendsScreenView {
 
             Task {
                 do {
-                    let newFriend = try await SupabaseFriendsRepository().insert(newFriend: newFriend)
+                    let newFriend = try await repository.friend.insert(newFriend: newFriend)
                     DispatchQueue.main.async {
                         self.friends.append(newFriend)
                         self.showToast = true
@@ -110,7 +110,7 @@ extension FriendsScreenView {
                 let friendUpdate = FriendUpdate(user_id_1: friend.sender.id, user_id_2: friend.receiver.id, status: newStatus)
                 Task {
                     do {
-                        let updatedFriend = try await SupabaseFriendsRepository().updateStatus(id: id, friendUpdate: friendUpdate)
+                        let updatedFriend = try await repository.friend.update(id: id, friendUpdate: friendUpdate)
                         DispatchQueue.main.async {
                             self.friends.removeAll(where: { $0.id == updatedFriend.id })
                         }
@@ -129,7 +129,7 @@ extension FriendsScreenView {
         func removeFriendRequest(id: Int) {
             Task {
                 do {
-                    try await SupabaseFriendsRepository().delete(id: id)
+                    try await repository.friend.delete(id: id)
                     DispatchQueue.main.async {
                         self.friends.removeAll(where: { $0.id == id })
                     }
@@ -144,7 +144,7 @@ extension FriendsScreenView {
         func loadFriends(userId: UUID) {
             Task {
                 do {
-                    let friends = try await SupabaseFriendsRepository().loadByUserId(userId: userId)
+                    let friends = try await repository.friend.getByUserId(userId: userId)
                     DispatchQueue.main.async {
                         self.friends = friends
                     }
@@ -192,8 +192,8 @@ struct FriendListItem: View {
          onBlock: @escaping (_ id: Int) -> Void,
          onDelete: @escaping (_ id: Int) -> Void) {
         self.friend = friend
-        profile = friend.getFriend(userId: SupabaseAuthRepository().getCurrentUserId())
-        currentUser = SupabaseAuthRepository().getCurrentUserId()
+        profile = friend.getFriend(userId: repository.auth.getCurrentUserId())
+        currentUser = repository.auth.getCurrentUserId()
         self.onAccept = onAccept
         self.onBlock = onBlock
         self.onDelete = onDelete

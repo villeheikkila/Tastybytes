@@ -170,8 +170,8 @@ extension SettingsView {
 
         func getInitialValues() {
             Task {
-                let user = SupabaseAuthRepository().getCurrentUser()
-                let profile = try await SupabaseProfileRepository().loadProfileById(id: SupabaseAuthRepository().getCurrentUserId())
+                let user = repository.auth.getCurrentUser()
+                let profile = try await repository.profile.getById(id: repository.auth.getCurrentUserId())
                 print(profile)
                 if let url = profile.getAvatarURL() {
                     getData(from: url) { data, _, error in
@@ -203,7 +203,7 @@ extension SettingsView {
             )
 
             Task {
-                try await SupabaseProfileRepository().updateProfile(id: SupabaseAuthRepository().getCurrentUserId(),
+                try await repository.profile.update(id: repository.auth.getCurrentUserId(),
                                                                     update: update)
                 self.toast = Toast.profileUpdated
                 self.showToast = true
@@ -216,14 +216,14 @@ extension SettingsView {
             )
 
             Task {
-                try await SupabaseProfileRepository().updateProfile(id: SupabaseAuthRepository().getCurrentUserId(),
+                try await repository.profile.update(id: repository.auth.getCurrentUserId(),
                                                                     update: update)
             }
         }
         
         func exportData() {
             Task {
-                let csvText = try await SupabaseProfileRepository().currentUserExport()
+                let csvText = try await repository.profile.currentUserExport()
                 self.csvExport = CSVFile(initialText: csvText)
                 self.showingExporter = true
             }
@@ -232,21 +232,21 @@ extension SettingsView {
         // TODO: Do not log out on email change
         func sendEmailVerificationLink() {
             Task {
-                try await SupabaseAuthRepository().sendEmailVerification(email: email)
+                try await repository.auth.sendEmailVerification(email: email)
             }
         }
 
         func logOut() {
             Task {
-                try await SupabaseAuthRepository().logOut()
+                try await repository.auth.logOut()
             }
         }
 
         func deleteCurrentAccount() {
             Task {
                 do {
-                    try await SupabaseProfileRepository().deleteCurrentAccount()
-                    try await SupabaseAuthRepository().logOut()
+                    try await repository.profile.deleteCurrentAccount()
+                    try await repository.auth.logOut()
                 } catch {
                     print("error \(error)")
                 }
@@ -258,7 +258,7 @@ extension SettingsView {
                 if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
                    let image = UIImage(data: imageData),
                    let data = image.jpegData(compressionQuality: 0.5) {
-                    try await SupabaseProfileRepository().uploadAvatar(id: SupabaseAuthRepository().getCurrentUserId(), data: data, completion: { result in switch result {
+                    try await repository.profile.uploadAvatar(id: repository.auth.getCurrentUserId(), data: data, completion: { result in switch result {
                     case .success:
                         DispatchQueue.main.async {
                             self.avatarImage = image

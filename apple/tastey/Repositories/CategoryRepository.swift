@@ -1,18 +1,20 @@
 import Foundation
+import Supabase
 
 protocol CategoryRepository {
-    func loadAllWithSubcategories() async throws -> [CategoryJoinedWithSubcategories]
-    func loadServingStyles(categoryId: Int) async throws -> CategoryJoinedWithServingStyles
+    func getAllWithSubcategories() async throws -> [CategoryJoinedWithSubcategories]
+    func getServingStylesByCategory(categoryId: Int) async throws -> CategoryJoinedWithServingStyles
 }
 
 struct SupabaseCategoryRepository: CategoryRepository {
-    private let database = Supabase.client.database
+    let client: SupabaseClient
     private let categories = "categories"
     private let joinedWithSubcategories = "id, name, subcategories (id, name)"
     
     
-    func loadAllWithSubcategories() async throws -> [CategoryJoinedWithSubcategories] {
-        return try await database
+    func getAllWithSubcategories() async throws -> [CategoryJoinedWithSubcategories] {
+        return try await client
+            .database
             .from(categories)
             .select(columns: joinedWithSubcategories)
             .order(column: "name")
@@ -20,8 +22,9 @@ struct SupabaseCategoryRepository: CategoryRepository {
             .decoded(to: [CategoryJoinedWithSubcategories].self)
     }
     
-    func loadServingStyles(categoryId: Int) async throws -> CategoryJoinedWithServingStyles {
-        return try await database
+    func getServingStylesByCategory(categoryId: Int) async throws -> CategoryJoinedWithServingStyles {
+        return try await client
+            .database
             .from("categories")
             .select(columns: "id, name, serving_styles (id, name)")
             .eq(column: "id", value: categoryId)

@@ -9,7 +9,7 @@ struct CheckInCardView: View {
     let onDelete: (_ checkIn: CheckIn) -> Void
     
     func isOwnedByCurrentUser() -> Bool {
-        return checkIn.profile.id == SupabaseAuthRepository().getCurrentUserId()
+        return checkIn.profile.id == repository.auth.getCurrentUserId()
     }
     
     var body: some View {
@@ -152,7 +152,7 @@ extension CheckInCardView {
     @MainActor class CheckInCardViewModel: ObservableObject {
         func delete(checkIn: CheckIn, onDelete: @escaping  (_ checkIn: CheckIn) -> Void) {
             Task {
-                try await SupabaseCheckInRepository().deleteById(id: checkIn.id)
+                try await repository.checkIn.delete(id: checkIn.id)
                 onDelete(checkIn)
             }
         }

@@ -1,9 +1,12 @@
-let supabaseRepository = SupabaseRepository()
+import Supabase
+
+let repository = SupabaseRepository(Supabase.client)
 
 protocol Repository {
     var profile: ProfileRepository { get }
     var checkIn: CheckInRepository { get }
     var checkInComment: CheckInCommentRepository { get }
+    var checkInReactions: CheckInReactionsRepository { get }
     var product: ProductRepository { get }
     var auth: AuthRepository { get }
     var company: CompanyRepository { get }
@@ -18,6 +21,7 @@ class SupabaseRepository: Repository {
     let profile: ProfileRepository
     let checkIn: CheckInRepository
     let checkInComment: CheckInCommentRepository
+    let checkInReactions: CheckInReactionsRepository
     let product: ProductRepository
     let auth: AuthRepository
     let company: CompanyRepository
@@ -27,17 +31,18 @@ class SupabaseRepository: Repository {
     let subBrand: SubBrandRepository
     let flavor: FlavorRepository
         
-    init() {
-        self.profile = SupabaseProfileRepository()
-        self.checkIn = SupabaseCheckInRepository()
-        self.checkInComment = SupabaseCheckInCommentRepository()
-        self.product = SupabaseProductRepository()
-        self.auth = SupabaseAuthRepository()
-        self.company = SupabaseCompanyRepository()
-        self.friend = SupabaseFriendsRepository()
-        self.category = SupabaseCategoryRepository()
-        self.brand = SupabaseBrandRepository()
-        self.subBrand = SupabaseSubBrandRepository()
-        self.flavor = SupabaseFlavorRepository()
+    init(_ client: SupabaseClient) {
+        self.profile = SupabaseProfileRepository(client: client)
+        self.checkIn = SupabaseCheckInRepository(client: client)
+        self.checkInComment = SupabaseCheckInCommentRepository(client: client)
+        self.checkInReactions = SupabaseCheckInReactionsRepository(client: client)
+        self.product = SupabaseProductRepository(client: client)
+        self.auth = SupabaseAuthRepository(client: client)
+        self.company = SupabaseCompanyRepository(client: client)
+        self.friend = SupabaseFriendsRepository(client: client)
+        self.category = SupabaseCategoryRepository(client: client)
+        self.brand = SupabaseBrandRepository(client: client)
+        self.subBrand = SupabaseSubBrandRepository(client: client)
+        self.flavor = SupabaseFlavorRepository(client: client)
     }
 }

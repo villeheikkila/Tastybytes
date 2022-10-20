@@ -36,7 +36,7 @@ extension SearchScreenView {
         
         func searchProducts() {
             Task {
-                let searchResults = try await SupabaseProductRepository().search(searchTerm: searchText)
+                let searchResults = try await repository.product.search(searchTerm: searchText)
                 DispatchQueue.main.async {
                     self.products = searchResults
                     self.isSearched = true
