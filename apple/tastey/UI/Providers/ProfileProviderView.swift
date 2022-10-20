@@ -15,6 +15,21 @@ class CurrentProfile: ObservableObject {
             }
         }
     }
+    
+    func refresh() {
+        if let id = profile?.id {
+            Task {
+                do {
+                    let currentUserProfile = try await repository.profile.getById(id: id)
+                    DispatchQueue.main.async {
+                        self.profile = currentUserProfile
+                    }
+                } catch {
+                    print("error while loading profile: \(error)")
+                }
+            }
+        }
+    }
 }
 
 public struct CurrentProfileProviderView<RootView: View>: View {
@@ -29,10 +44,23 @@ public struct CurrentProfileProviderView<RootView: View>: View {
         self.rootView = rootView
         self.userId = userId
     }
+    
+    func getColorScheme(colorScheme: Profile.ColorScheme?) -> ColorScheme? {
+        if let colorScheme = colorScheme {
+            switch colorScheme {
+            case Profile.ColorScheme.dark: return SwiftUI.ColorScheme.dark
+            case Profile.ColorScheme.light: return SwiftUI.ColorScheme.light
+            case Profile.ColorScheme.system: return nil
+            }
+        } else {
+            return nil
+        }
+    }
 
     public var body: some View {
         rootView()
             .environmentObject(currentProfile)
+            .preferredColorScheme(getColorScheme(colorScheme: currentProfile.profile?.colorScheme))
             .task {
                 currentProfile.get(id: repository.auth.getCurrentUserId())
             }

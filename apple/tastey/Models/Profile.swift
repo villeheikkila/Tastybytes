@@ -7,8 +7,7 @@ struct Profile: Identifiable {
     let lastName: String?
     let avatarUrl: String?
     let nameDisplay: NameDisplay
-
-
+    let colorScheme: ColorScheme?
 }
 
 extension Profile {
@@ -57,6 +56,14 @@ extension Profile: Hashable {
     }
 }
 
+extension Profile {
+    enum ColorScheme: String, CaseIterable, Decodable, Equatable {
+        case system
+        case light
+        case dark
+    }
+}
+
 extension Profile: Decodable {
     enum CodingKeys: String, CodingKey {
         case id
@@ -65,6 +72,7 @@ extension Profile: Decodable {
         case lastName = "last_name"
         case avatarUrl = "avatar_url"
         case nameDisplay = "name_display"
+        case colorScheme = "color_scheme"
     }
 
     init(from decoder: Decoder) throws {
@@ -75,23 +83,37 @@ extension Profile: Decodable {
         lastName = try values.decodeIfPresent(String.self, forKey: .lastName)
         avatarUrl = try values.decodeIfPresent(String.self, forKey: .avatarUrl)
         nameDisplay = try values.decode(NameDisplay.self, forKey: .nameDisplay)
+        colorScheme = try values.decodeIfPresent(ColorScheme.self, forKey: .colorScheme)
     }
 }
 
-struct ProfileUpdate: Encodable {
-    var username: String?
-    var first_name: String?
-    var last_name: String?
-    var name_display: String?
-
-    init(showFullName: Bool) {
-        name_display = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
-    }
-
-    init(username: String?, firstName: String?, lastName: String?) {
-        self.username = username
-        first_name = (firstName == nil || firstName?.isEmpty == true) ? nil : firstName
-        last_name = (lastName == nil || lastName?.isEmpty == true) ? nil : lastName
+extension Profile {
+    struct Update: Encodable {
+        var username: String?
+        var first_name: String?
+        var last_name: String?
+        var name_display: String?
+        var color_scheme: String?
+        
+        init(showFullName: Bool) {
+            name_display = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
+        }
+        
+        init(isDarkMode: Bool, isSystemColor: Bool) {
+            if isSystemColor {
+                color_scheme = ColorScheme.system.rawValue
+            } else if isDarkMode {
+                color_scheme = ColorScheme.dark.rawValue
+            } else {
+                color_scheme = ColorScheme.light.rawValue
+            }
+        }
+        
+        init(username: String?, firstName: String?, lastName: String?) {
+            self.username = username
+            first_name = (firstName == nil || firstName?.isEmpty == true) ? nil : firstName
+            last_name = (lastName == nil || lastName?.isEmpty == true) ? nil : lastName
+        }
     }
 }
 

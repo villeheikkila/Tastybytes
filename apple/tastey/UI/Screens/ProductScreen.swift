@@ -2,33 +2,33 @@ import SwiftUI
 
 struct ProductPageView: View {
     let product: Product
-    @StateObject private var model = ProductPageViewViewModel()
-    @State private var showingSheet = false
+    @StateObject private var viewModel = ViewModel()
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            InfiniteScrollView(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(productId: product.id) }, refresh: { model.refresh(productId: product.id) },
-                           content: {
-                CheckInCardView(checkIn: $0, onDelete: {
-                    deletedCheckIn in model.deleteCheckIn(id: deletedCheckIn.id)
-                })
-                           },
-                           header: {
-                               ProductCardView(product: product)
-                           }
+            InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, loadMore: { viewModel.fetchMoreCheckIns(productId: product.id) }, refresh: { viewModel.refresh(productId: product.id) },
+                               content: {
+                                   CheckInCardView(checkIn: $0, onDelete: {
+                                       deletedCheckIn in viewModel.deleteCheckIn(id: deletedCheckIn.id)
+                                   })
+                               },
+                               header: {
+                                   ProductCardView(product: product)
+                               }
             )
         }
 
         Button(action: {
-            showingSheet.toggle()
+            viewModel.showingSheet.toggle()
         }) {
             Text("Check-in!").font(.system(size: 14, weight: .bold, design: .default))
-        }.buttonStyle(GrowingButton())
-            .sheet(isPresented: $showingSheet) {
-                AddCheckInView(product: product, onCreation: {
-                    model.appendNewCheckIn(newCheckIn: $0)
-                })
-            }
+        }
+        .buttonStyle(GrowingButton())
+        .sheet(isPresented: $viewModel.showingSheet) {
+            AddCheckInView(product: product, onCreation: {
+                viewModel.appendNewCheckIn(newCheckIn: $0)
+            })
+        }
     }
 }
 
@@ -45,10 +45,11 @@ struct GrowingButton: ButtonStyle {
 }
 
 extension ProductPageView {
-    @MainActor class ProductPageViewViewModel: ObservableObject {
+    @MainActor class ViewModel: ObservableObject {
         @Published var checkIns = [CheckIn]()
-
         @Published var isLoading = false
+        @Published var showingSheet = false
+
         let pageSize = 5
         var page = 0
 
@@ -57,18 +58,18 @@ extension ProductPageView {
             checkIns = []
             fetchMoreCheckIns(productId: productId)
         }
-        
+
         func deleteCheckIn(id: Int) {
             Task {
                 do {
                     try await repository.checkIn.delete(id: id)
-                    self.checkIns.removeAll(where: { $0.id == id})
+                    self.checkIns.removeAll(where: { $0.id == id })
                 } catch {
                     print("error: \(error)")
                 }
             }
         }
-        
+
         func fetchMoreCheckIns(productId: Int) {
             let (from, to) = getPagination(page: page, size: pageSize)
 

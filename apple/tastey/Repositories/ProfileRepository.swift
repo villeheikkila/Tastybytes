@@ -5,7 +5,7 @@ import Supabase
 
 protocol ProfileRepository {
     func getById(id: UUID) async throws -> Profile
-    func update(id: UUID, update: ProfileUpdate) async throws -> Profile
+    func update(id: UUID, update: Profile.Update) async throws -> Profile
     func currentUserExport() async throws -> String
     func search(searchTerm: String, currentUserId: UUID) async throws -> [Profile]
     func uploadAvatar(id: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws -> Void
@@ -21,7 +21,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         return try await client
             .database
             .from(tableName)
-            .select(columns: saved)
+            .select(columns: "\(saved), color_scheme")
             .eq(column: "id", value: id.uuidString.lowercased())
             .limit(count: 1)
             .single()
@@ -29,7 +29,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             .decoded(to: Profile.self)
     }
     
-    func update(id: UUID, update: ProfileUpdate) async throws -> Profile {
+    func update(id: UUID, update: Profile.Update) async throws -> Profile {
         return try await client
             .database
             .from(tableName)

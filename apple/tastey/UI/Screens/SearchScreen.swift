@@ -1,39 +1,40 @@
 import SwiftUI
 
 struct SearchScreenView: View {
-    @State private var products = [Product]()
-    @StateObject private var model = SearchViewModel()
+    @StateObject private var viewModel = ViewModel()
 
     var body: some View {
         NavigationView {
             List {
-                ForEach(model.products, id: \.self) { product in
+                ForEach(viewModel.products, id: \.self) { product in
                     NavigationLink(value: product) {
                         ProductListItemView(product: product)
                     }
                 }
-                if (model.isSearched) {
+                if viewModel.isSearched {
                     Section {
-                        NavigationLink("Add new", value: Route.addProduct).fontWeight(.medium)
+                        NavigationLink("Add new", value: Route.addProduct)
+                            .fontWeight(.medium)
                     } header: {
                         Text("Didn't find a product you were looking for?")
-                    }.textCase(nil)
+                    }
+                    .textCase(nil)
                 }
             }
-            .searchable(text: $model.searchText)
+            .searchable(text: $viewModel.searchText)
             .navigationTitle("Products")
-            .onSubmit(of: .search, model.searchProducts)
+            .onSubmit(of: .search, viewModel.searchProducts)
             .listStyle(InsetGroupedListStyle())
         }
     }
 }
 
 extension SearchScreenView {
-    class SearchViewModel: ObservableObject {
+    class ViewModel: ObservableObject {
         @Published var searchText: String = ""
         @Published var products = [Product]()
         @Published var isSearched = false
-        
+
         func searchProducts() {
             Task {
                 let searchResults = try await repository.product.search(searchTerm: searchText)

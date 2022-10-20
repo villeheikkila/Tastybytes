@@ -3,26 +3,25 @@ import GoTrue
 import SwiftUI
 
 struct ProfileView: View {
-    @StateObject private var model = ProfileViewModel()
-    let userId: UUID
-    
+    let profile: Profile
+    @StateObject private var viewModel = ViewModel()
 
     var body: some View {
-        InfiniteScrollView(data: $model.checkIns, isLoading: $model.isLoading, loadMore: { model.fetchMoreCheckIns(userId: userId) },
-                       refresh: {
-                           model.refresh(userId: userId)
-                       },
-                       content: {
-            CheckInCardView(checkIn: $0, onDelete: {checkIn in model.onCheckInDelete(checkIn: checkIn)})
-                       },
-                       header: {
-                           VStack(spacing: 20) {
-                               profileSummary
-                               ratingChart
-                               ratingSummary
-                               sheets
-                           }
-        })
+        InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, loadMore: { viewModel.fetchMoreCheckIns(userId: profile.id) },
+                           refresh: {
+                               viewModel.refresh(userId: profile.id)
+                           },
+                           content: {
+                               CheckInCardView(checkIn: $0, onDelete: { checkIn in viewModel.onCheckInDelete(checkIn: checkIn) })
+                           },
+                           header: {
+                               VStack(spacing: 20) {
+                                   profileSummary
+                                   ratingChart
+                                   ratingSummary
+                                   sheets
+                               }
+                           })
     }
 
     var profileSummary: some View {
@@ -30,30 +29,32 @@ struct ProfileView: View {
             Spacer()
 
             VStack {
-                Text("Check-ins").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-                Text(String(model.profileSummary?.totalCheckIns ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
+                Text("Check-ins")
+                    .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
+                Text(String(viewModel.profileSummary?.totalCheckIns ?? 0))
+                    .font(.system(size: 16, weight: .bold, design: .default))
             }
-            
 
             VStack(alignment: .center) {
-                Text(model.profile?.getPreferedName() ?? "")
+                Text(profile.getPreferedName())
                     .font(.system(size: 16, weight: .bold, design: .default))
                     .lineLimit(1)
                     .font(.system(size: 500))
                     .minimumScaleFactor(0.01)
-                AvatarView(avatarUrl: model.profile?.getAvatarURL(), size: 80, id: userId)
+                AvatarView(avatarUrl: profile.getAvatarURL(), size: 80, id: profile.id)
             }
 
-            
             VStack {
-                Text("Unique").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-                Text(String(model.profileSummary?.uniqueCheckIns ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
+                Text("Unique")
+                    .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
+                Text(String(viewModel.profileSummary?.uniqueCheckIns ?? 0))
+                    .font(.system(size: 16, weight: .bold, design: .default))
             }
-            
+
             Spacer()
         }
         .task {
-            model.getProfileData(userId: userId)
+            viewModel.getProfileData(userId: profile.id)
         }
     }
 
@@ -61,84 +62,83 @@ struct ProfileView: View {
         Chart {
             LineMark(
                 x: .value("Rating", "0"),
-                y: .value("Value", model.profileSummary?.rating0 ?? 0)
+                y: .value("Value", viewModel.profileSummary?.rating0 ?? 0)
             )
             LineMark(
                 x: .value("Rating", "0.5"),
-                y: .value("Value", model.profileSummary?.rating1 ?? 0)
+                y: .value("Value", viewModel.profileSummary?.rating1 ?? 0)
             )
             LineMark(
                 x: .value("Rating", "1"),
-                y: .value("Value", model.profileSummary?.rating2 ?? 0)
+                y: .value("Value", viewModel.profileSummary?.rating2 ?? 0)
             )
             LineMark(
                 x: .value("Rating", "1.5"),
-                y: .value("Value", model.profileSummary?.rating3 ?? 0)
+                y: .value("Value", viewModel.profileSummary?.rating3 ?? 0)
             )
             LineMark(
                 x: .value("Rating", "2"),
-                y: .value("Value", model.profileSummary?.rating4 ?? 0)
+                y: .value("Value", viewModel.profileSummary?.rating4 ?? 0)
             )
             LineMark(
                 x: .value("Rating", "2.5"),
-                y: .value("Value", model.profileSummary?.rating5 ?? 0)
+                y: .value("Value", viewModel.profileSummary?.rating5 ?? 0)
             )
             LineMark(
                 x: .value("Rating", "3"),
-                y: .value("Value", model.profileSummary?.rating6 ?? 0)
+                y: .value("Value", viewModel.profileSummary?.rating6 ?? 0)
             )
             LineMark(
                 x: .value("Rating", "3.5"),
-                y: .value("Value", model.profileSummary?.rating7 ?? 0)
+                y: .value("Value", viewModel.profileSummary?.rating7 ?? 0)
             )
             LineMark(
                 x: .value("Rating", "4"),
-                y: .value("Value", model.profileSummary?.rating8 ?? 0)
+                y: .value("Value", viewModel.profileSummary?.rating8 ?? 0)
             )
             LineMark(
                 x: .value("Rating", "4.5"),
-                y: .value("Value", model.profileSummary?.rating9 ?? 0)
+                y: .value("Value", viewModel.profileSummary?.rating9 ?? 0)
             )
             LineMark(
                 x: .value("Rating", "5"),
-                y: .value("Value", model.profileSummary?.rating10 ?? 0)
+                y: .value("Value", viewModel.profileSummary?.rating10 ?? 0)
             )
         }
         .chartLegend(.hidden)
         .chartYAxis(.hidden)
         .frame(height: 100)
-        .padding(.leading, 10)
-        .padding(.trailing, 10)
+        .padding([.leading, .trailing], 10)
     }
 
     var ratingSummary: some View {
         HStack {
             VStack {
-                Text("Unrated").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-                Text(String(model.profileSummary?.unrated ?? 0)).font(.system(size: 16, weight: .bold, design: .default))
+                Text("Unrated")
+                    .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
+                Text(String(viewModel.profileSummary?.unrated ?? 0))
+                    .font(.system(size: 16, weight: .bold, design: .default))
             }
             VStack {
                 Text("Average").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-                Text(String(model.profileSummary?.getFormattedAverageRating() ?? "")).font(.system(size: 16, weight: .bold, design: .default))
+                Text(String(viewModel.profileSummary?.getFormattedAverageRating() ?? ""))
+                    .font(.system(size: 16, weight: .bold, design: .default))
             }
         }
     }
-    
+
     var sheets: some View {
         VStack {
-            if let profile = model.profile  {
-                NavigationLink(value: Route.friends(profile)) {
-                    Text("Friends")
-                }
+            NavigationLink(value: Route.friends(profile)) {
+                Text("Friends")
             }
         }
     }
 }
 
 extension ProfileView {
-    @MainActor class ProfileViewModel: ObservableObject {
+    @MainActor class ViewModel: ObservableObject {
         @Published var checkIns = [CheckIn]()
-        @Published var profile: Profile?
         @Published var profileSummary: ProfileSummary?
         @Published var isLoading = false
         let pageSize = 10
@@ -151,9 +151,9 @@ extension ProfileView {
         }
 
         func onCheckInDelete(checkIn: CheckIn) {
-            self.checkIns.removeAll(where: {$0.id == checkIn.id})
+            checkIns.removeAll(where: { $0.id == checkIn.id })
         }
-        
+
         func fetchMoreCheckIns(userId: UUID) {
             let (from, to) = getPagination(page: page, size: pageSize)
 
@@ -173,13 +173,6 @@ extension ProfileView {
         }
 
         func getProfileData(userId: UUID) {
-            Task {
-                let profile = try await repository.profile.getById(id: userId)
-                DispatchQueue.main.async {
-                    self.profile = profile
-                }
-            }
-
             Task {
                 do {
                     let summary = try await repository.checkIn.getSummaryByProfileId(id: userId)
