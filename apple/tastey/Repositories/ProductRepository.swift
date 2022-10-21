@@ -16,7 +16,7 @@ struct SupabaseProductRepository: ProductRepository {
         struct SearchProductsParams: Encodable {
             let p_search_term: String
             init(searchTerm: String) {
-                self.p_search_term = "%\(searchTerm)%"
+                self.p_search_term = "%\(searchTerm.trimmingCharacters(in: .whitespacesAndNewlines))%"
             }
         }
         
