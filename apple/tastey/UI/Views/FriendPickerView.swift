@@ -1,17 +1,27 @@
 import AlertToast
 import SwiftUI
 
+
+
 struct FriendPickerView: View {
     @State var friends = [Profile]()
     @Binding var taggedFriends: [Profile]
     @State var showToast = false
     @Environment(\.dismiss) var dismiss
     
+    func toggleFriend(friend: Profile) {
+        if taggedFriends.contains(friend) {
+            taggedFriends.remove(object: friend)
+        } else {
+            taggedFriends.append(friend)
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             List(friends, id: \.self) { friend in
                 Button(action: {
-                    taggedFriends.append(friend)
+                    toggleFriend(friend: friend)
                 }) {
                     HStack {
                         AvatarView(avatarUrl: friend.getAvatarURL(), size: 32, id: friend.id)
