@@ -94,18 +94,19 @@ struct AddCheckInView: View {
                     }
                 }
                 .navigationBarItems(
-                    leading: Button(action: {createCheckIn()}) {
-                        Text("Check-in!").bold()
-                    },
-                    trailing: Button(action: {
+                    leading: Button(action: {
                         dismiss()
                     }) {
                         Text("Cancel")
                             .bold()
-                    })
-                .task {
-                    loadInitialData(product: product)
-                }
+                    },
+                trailing: Button(action: { createCheckIn() }) {
+                    Text("Check-in!")
+                        .bold()
+                })
+                    .task {
+                        loadInitialData(product: product)
+                    }
             }
         }
     }
@@ -115,8 +116,8 @@ struct AddCheckInView: View {
         let servingStyleId = servingStyles.first(where: { $0.name == servingStyle })?.id
         let manufacturerId = manufacturer?.id
         let flavorIds = pickedFlavors.map { $0.id }
-        var ratingDoubled: Int? = nil
-        
+        var ratingDoubled: Int?
+
         if let rating = rating {
             ratingDoubled = Int(rating * 2)
         }
