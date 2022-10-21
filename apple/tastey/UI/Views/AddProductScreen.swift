@@ -2,9 +2,9 @@ import AlertToast
 import SwiftUI
 
 struct AddProductScreenView: View {
+    @EnvironmentObject var navigator: Navigator
     @State var categories = [CategoryJoinedWithSubcategories]()
     @State var activeSheet: Sheet?
-    @EnvironmentObject var navigator: Navigator
     @State var showToast = false
     @State var toastType: ToastType?
 
@@ -32,12 +32,7 @@ struct AddProductScreenView: View {
     }
 
     func isValid() -> Bool {
-        return [
-            brandOwner != nil,
-            brand != nil,
-            subBrand != nil,
-            validateStringLenght(str: name, type: .normal),
-        ].allSatisfy({ $0 })
+        return brandOwner != nil && brand != nil && subBrand != nil && validateStringLenght(str: name, type: .normal)
     }
 
     func getToastText() -> String {
@@ -60,7 +55,7 @@ struct AddProductScreenView: View {
                     if categories.count > 0 {
                         Picker("Category", selection: $category) {
                             ForEach(categories.map { $0.name }) { category in
-                                Text(category.rawValue.capitalized).tag(category)
+                                Text(category.getName).tag(category)
                             }
                         }
                         .onChange(of: category) { _ in
@@ -81,34 +76,44 @@ struct AddProductScreenView: View {
                     }
                 }
             header: {
-                    Text("Category")
+                Text("Category")
                 }.headerProminence(.increased)
 
                 Section {
-                    Button(action: { self.activeSheet = Sheet.brandOwner }) {
+                    Button(action: {
+                        self.activeSheet = Sheet.brandOwner
+                    }) {
                         Text(brandOwner?.name ?? "Owner")
                     }
-                    Button(action: { self.activeSheet = Sheet.brand }) {
+                    Button(action: {
+                        self.activeSheet = Sheet.brand
+                    }) {
                         Text(brand?.name ?? "Brand")
-                    }.disabled(brandOwner == nil)
+                    }
+                    .disabled(brandOwner == nil)
 
-                    Button(action: { self.activeSheet = Sheet.subBrand }) {
+                    Button(action: {
+                        self.activeSheet = Sheet.subBrand
+                    }) {
                         Text(subBrand?.name ?? "Sub-brand")
-                    }.disabled(brand == nil)
+                    }
+                    .disabled(brand == nil)
 
                 } header: {
                     Text("Brand")
-                }.headerProminence(.increased)
+                }
+                .headerProminence(.increased)
 
                 Section {
                     TextField("Flavor", text: $name)
                         .limitInputLength(value: $name, length: 24)
-                    TextField("Description", text: $description)
+                    TextField("Description (optional)", text: $description)
                         .limitInputLength(value: $description, length: 24)
 
                 } header: {
                     Text("Product")
-                }.headerProminence(.increased)
+                }
+                .headerProminence(.increased)
 
                 Button("Create Product", action: { createProduct() })
                     .disabled(!isValid())

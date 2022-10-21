@@ -28,6 +28,12 @@ enum CategoryName: String, CaseIterable, Decodable, Equatable {
     case noodles
     case tea
     case coffee
+    
+    var getName: String {
+        get {
+            return self.rawValue.replacingOccurrences(of: "_", with: " ").capitalized
+        }
+    }
 }
 
 extension CategoryName: Identifiable {

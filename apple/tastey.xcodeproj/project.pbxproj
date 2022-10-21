@@ -273,7 +273,6 @@
 				5C11ECBC28EEF30600CCDE6A /* SearchScreen.swift */,
 				5CD10A3C28F75B7A0001CFC2 /* ProductScreen.swift */,
 				5CD10A3E28F760520001CFC2 /* CheckInScreen.swift */,
-				5CED432728FD417E003F8194 /* AddProductScreen.swift */,
 				5C12B4362902CA04001EE549 /* NotificationView.swift */,
 			);
 			path = Screens;
@@ -313,6 +312,7 @@
 				5C12B4302902A29A001EE549 /* DeleteAccountView.swift */,
 				5C12B4322902A4C9001EE549 /* BlockedUsersView.swift */,
 				5C12B4342902C9D0001EE549 /* TabbarView.swift */,
+				5CED432728FD417E003F8194 /* AddProductScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
