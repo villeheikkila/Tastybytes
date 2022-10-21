@@ -8,6 +8,7 @@ struct Profile: Identifiable {
     let avatarUrl: String?
     let nameDisplay: NameDisplay
     let colorScheme: ColorScheme?
+    let notifications: [Notification]?
 }
 
 extension Profile {
@@ -73,6 +74,7 @@ extension Profile: Decodable {
         case avatarUrl = "avatar_url"
         case nameDisplay = "name_display"
         case colorScheme = "color_scheme"
+        case notification = "notifications"
     }
 
     init(from decoder: Decoder) throws {
@@ -84,6 +86,7 @@ extension Profile: Decodable {
         avatarUrl = try values.decodeIfPresent(String.self, forKey: .avatarUrl)
         nameDisplay = try values.decode(NameDisplay.self, forKey: .nameDisplay)
         colorScheme = try values.decodeIfPresent(ColorScheme.self, forKey: .colorScheme)
+        notifications = try values.decodeIfPresent([Notification].self, forKey: .notification)
     }
 }
 

@@ -20,6 +20,9 @@
 		5C12B42F2902A191001EE549 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B42E2902A190001EE549 /* ProfileSettingsView.swift */; };
 		5C12B4312902A29A001EE549 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4302902A29A001EE549 /* DeleteAccountView.swift */; };
 		5C12B4332902A4C9001EE549 /* BlockedUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4322902A4C9001EE549 /* BlockedUsersView.swift */; };
+		5C12B4352902C9D0001EE549 /* TabbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4342902C9D0001EE549 /* TabbarView.swift */; };
+		5C12B4372902CA04001EE549 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4362902CA04001EE549 /* NotificationView.swift */; };
+		5C12B4392902CAF3001EE549 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4382902CAF3001EE549 /* Notification.swift */; };
 		5C25349628EDA58700A78780 /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25349528EDA58700A78780 /* Supabase.swift */; };
 		5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */; };
 		5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B828FA07CF00AED6F1 /* Friend.swift */; };
@@ -94,6 +97,9 @@
 		5C12B42E2902A190001EE549 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		5C12B4302902A29A001EE549 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		5C12B4322902A4C9001EE549 /* BlockedUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersView.swift; sourceTree = "<group>"; };
+		5C12B4342902C9D0001EE549 /* TabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarView.swift; sourceTree = "<group>"; };
+		5C12B4362902CA04001EE549 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		5C12B4382902CAF3001EE549 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		5C25349528EDA58700A78780 /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
 		5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsRepository.swift; sourceTree = "<group>"; };
 		5C7DC2B828FA07CF00AED6F1 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
@@ -192,6 +198,7 @@
 				5C7DC2B828FA07CF00AED6F1 /* Friend.swift */,
 				5C919E1728FED0E00055CFD2 /* ServingStyle.swift */,
 				5C919E1D28FF01480055CFD2 /* Flavor.swift */,
+				5C12B4382902CAF3001EE549 /* Notification.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -259,6 +266,7 @@
 				5CD10A3C28F75B7A0001CFC2 /* ProductScreen.swift */,
 				5CD10A3E28F760520001CFC2 /* CheckInScreen.swift */,
 				5CED432728FD417E003F8194 /* AddProductScreen.swift */,
+				5C12B4362902CA04001EE549 /* NotificationView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -296,6 +304,7 @@
 				5C12B42E2902A190001EE549 /* ProfileSettingsView.swift */,
 				5C12B4302902A29A001EE549 /* DeleteAccountView.swift */,
 				5C12B4322902A4C9001EE549 /* BlockedUsersView.swift */,
+				5C12B4342902C9D0001EE549 /* TabbarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -442,8 +451,10 @@
 				5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */,
 				5CD10A4B28F980860001CFC2 /* CheckInComment.swift in Sources */,
 				5C919E2028FF024A0055CFD2 /* FlavorPickerView.swift in Sources */,
+				5C12B4372902CA04001EE549 /* NotificationView.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileScreen.swift in Sources */,
 				5C989DBE2901EA6200BBC5A7 /* NavigationView.swift in Sources */,
+				5C12B4392902CAF3001EE549 /* Notification.swift in Sources */,
 				5CD10A5C28F998BF0001CFC2 /* ProfileRepository.swift in Sources */,
 				5C11ECBD28EEF30600CCDE6A /* SearchScreen.swift in Sources */,
 				5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */,
@@ -484,6 +495,7 @@
 				5CED433628FDA8B9003F8194 /* SubcategoryPickerView.swift in Sources */,
 				5CD10A4928F956AC0001CFC2 /* ProductCardView.swift in Sources */,
 				5C25349628EDA58700A78780 /* Supabase.swift in Sources */,
+				5C12B4352902C9D0001EE549 /* TabbarView.swift in Sources */,
 				5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
