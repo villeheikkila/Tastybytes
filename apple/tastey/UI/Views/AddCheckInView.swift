@@ -30,19 +30,18 @@ struct AddCheckInView: View {
                         Button(action: {
                             self.activeSheet = Sheet.flavors
                         }) {
-                            HStack {
-                                if pickedFlavors.count != 0 {
-                                    ForEach(pickedFlavors, id: \.self) {
-                                        flavor in ChipView(title: flavor.name)
-                                    }
-                                } else {
-                                    Text("Flavors")
+                            if pickedFlavors.count != 0 {
+                                WrappingHStack(pickedFlavors, id: \.self) {
+                                    flavor in ChipView(title: flavor.name.capitalized).padding(3)
                                 }
+                            } else {
+                                Text("Flavors")
                             }
                         }
                     } header: {
                         Text("Review")
-                    }.headerProminence(.increased)
+                    }
+                    .headerProminence(.increased)
 
                     Section {
                         if servingStyles.count > 0 {
@@ -66,7 +65,7 @@ struct AddCheckInView: View {
                             } else {
                                 WrappingHStack(taggedFriends, id: \.self) {
                                     friend in
-                                        AvatarView(avatarUrl: friend.getAvatarURL(), size: 24, id: friend.id)
+                                    AvatarView(avatarUrl: friend.getAvatarURL(), size: 24, id: friend.id)
                                 }
                             }
                         }
