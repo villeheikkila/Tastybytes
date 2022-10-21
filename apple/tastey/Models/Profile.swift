@@ -22,9 +22,17 @@ extension Profile {
     }
 
     func getFullName() -> String {
-        return [firstName, lastName]
-            .compactMap({ $0 })
-            .joined(separator: " ")
+        if let firstName = firstName, let lastName = lastName {
+            let trimmedFirstName = firstName.trimmingCharacters(in: .whitespacesAndNewlines)
+            let trimmedLastName = lastName.trimmingCharacters(in: .whitespacesAndNewlines)
+            let formattedFullName = [trimmedFirstName, trimmedLastName]
+                .compactMap({ $0 })
+                .joined(separator: " ")
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            return formattedFullName.isEmpty ? username : formattedFullName
+        } else {
+            return username
+        }
     }
 
     func getAvatarURL() -> URL? {
@@ -37,10 +45,10 @@ extension Profile {
             return nil
         }
     }
-    
+
     func isCurrentUser() -> Bool {
         let currentUserId = repository.auth.getCurrentUserId()
-        return currentUserId == self.id
+        return currentUserId == id
     }
 }
 
@@ -97,11 +105,11 @@ extension Profile {
         var last_name: String?
         var name_display: String?
         var color_scheme: String?
-        
+
         init(showFullName: Bool) {
             name_display = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
         }
-        
+
         init(isDarkMode: Bool, isSystemColor: Bool) {
             if isSystemColor {
                 color_scheme = ColorScheme.system.rawValue
@@ -111,11 +119,11 @@ extension Profile {
                 color_scheme = ColorScheme.light.rawValue
             }
         }
-        
+
         init(username: String?, firstName: String?, lastName: String?) {
             self.username = username
-            first_name = (firstName == nil || firstName?.isEmpty == true) ? nil : firstName
-            last_name = (lastName == nil || lastName?.isEmpty == true) ? nil : lastName
+            first_name = firstName
+            last_name = lastName
         }
     }
 }
