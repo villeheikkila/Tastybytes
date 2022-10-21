@@ -7,15 +7,23 @@ struct FlavorPickerView: View {
     @State var showToast = false
     @State var searchText = ""
     @Environment(\.dismiss) var dismiss
+    
+    func toggleFlavor(_ flavor: Flavor) {
+        if pickedFlavors.contains(flavor) {
+            pickedFlavors.remove(object: flavor)
+        } else {
+            pickedFlavors.append(flavor)
+        }
+    }
 
     var body: some View {
         NavigationStack {
             List(filteredFlavors, id: \.self) { flavor in
                 Button(action: {
-                    pickedFlavors.append(flavor)
+                    toggleFlavor(flavor)
                 }) {
                     HStack {
-                        Text(flavor.name)
+                        Text(flavor.name.capitalized)
                         
                         Spacer()
                         if pickedFlavors.contains(where: { $0.id == flavor.id }) {
