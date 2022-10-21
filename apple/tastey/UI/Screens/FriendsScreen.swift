@@ -102,8 +102,10 @@ extension FriendsScreenView {
                         DispatchQueue.main.async {
                             self.friends.removeAll(where: { $0.id == updatedFriend.id })
                         }
-                        DispatchQueue.main.async {
-                            self.friends.append(updatedFriend)
+                        if updatedFriend.status != FriendStatus.blocked {
+                            DispatchQueue.main.async {
+                                self.friends.append(updatedFriend)
+                            }
                         }
                     } catch {
                         DispatchQueue.main.async {
@@ -132,7 +134,7 @@ extension FriendsScreenView {
         func loadFriends(userId: UUID) {
             Task {
                 do {
-                    let friends = try await repository.friend.getByUserId(userId: userId)
+                    let friends = try await repository.friend.getByUserId(userId: userId, status: .none)
                     DispatchQueue.main.async {
                         self.friends = friends
                     }

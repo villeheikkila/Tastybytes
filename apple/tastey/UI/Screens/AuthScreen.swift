@@ -210,6 +210,7 @@ struct SignInOrSignUpView: View {
                     .disableAutocorrection(true)
             }
             .focused($focusedField, equals: .email)
+            .padding()
             .padding(5)
             .background(Color(.systemGray6))
             .cornerRadius(12)
@@ -227,6 +228,7 @@ struct SignInOrSignUpView: View {
                     .disableAutocorrection(true)
             }
             .focused($focusedField, equals: .password)
+            .padding()
             .padding(5)
             .background(Color(.systemGray6))
             .cornerRadius(12)
