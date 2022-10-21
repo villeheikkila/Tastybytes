@@ -43,7 +43,8 @@ struct FriendsScreenView: View {
                 }
 
                 .errorAlert(error: $viewModel.modalError)
-            }).presentationDetents([.medium])
+            })
+            .presentationDetents([.medium])
         }
         .errorAlert(error: $viewModel.error)
         .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {

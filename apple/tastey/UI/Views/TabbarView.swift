@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct TabbarView: View {
+    @EnvironmentObject var currentProfile: CurrentProfile
+    
     var body: some View {
         WithProfile {
             profile in
@@ -15,11 +17,12 @@ struct TabbarView: View {
                         Image(systemName: "magnifyingglass")
                         Text("Search")
                     }
-                NotificationView(profile: profile)
+                NotificationView()
                     .tabItem {
                         Image(systemName: "bell")
                         Text("Notifications")
-                    }.badge(profile.notifications?.count ?? 0)
+                    }
+                    .badge(currentProfile.notifications.count)
                 ProfileView(profile: profile)
                     .tabItem {
                         Image(systemName: "person.fill")

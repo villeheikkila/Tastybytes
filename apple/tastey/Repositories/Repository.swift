@@ -15,6 +15,7 @@ protocol Repository {
     var brand: BrandRepository { get }
     var subBrand: SubBrandRepository { get }
     var flavor: FlavorRepository { get }
+    var notification: NotificationRepository { get }
 }
 
 class SupabaseRepository: Repository {
@@ -30,8 +31,10 @@ class SupabaseRepository: Repository {
     let brand: BrandRepository
     let subBrand: SubBrandRepository
     let flavor: FlavorRepository
+    let notification: NotificationRepository
         
     init(_ client: SupabaseClient) {
+        client.realtime.connect()
         self.profile = SupabaseProfileRepository(client: client)
         self.checkIn = SupabaseCheckInRepository(client: client)
         self.checkInComment = SupabaseCheckInCommentRepository(client: client)
@@ -44,5 +47,6 @@ class SupabaseRepository: Repository {
         self.brand = SupabaseBrandRepository(client: client)
         self.subBrand = SupabaseSubBrandRepository(client: client)
         self.flavor = SupabaseFlavorRepository(client: client)
+        self.notification = SupabaseNotificationRepository(client: client)
     }
 }
