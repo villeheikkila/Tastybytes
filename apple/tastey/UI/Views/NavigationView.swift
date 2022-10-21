@@ -94,28 +94,3 @@ struct AddRoutesView<Content: View>: View {
             }
     }
 }
-
-struct TabbarView: View {
-    var body: some View {
-        TabView {
-            ActivityView()
-                .tabItem {
-                    Image(systemName: "list.star")
-                    Text("Activity")
-                }
-            SearchScreenView()
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search")
-                }
-            WithProfile {
-             profile in
-                ProfileView(profile: profile)
-            }
-                .tabItem {
-                    Image(systemName: "person.fill")
-                    Text("Profile")
-                }
-        }
-    }
-}

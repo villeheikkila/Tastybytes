@@ -8,9 +8,11 @@ struct PreferencesMenuView: View {
             NavigationLink(destination: ProfileSettingsView()) {
                 Text("Profile")
             }
+            
             NavigationLink(destination: ApplicationSettingsView()) {
                 Text("Application")
             }
+            
             NavigationLink(destination: BlockedUsersView()) {
                 Text("Blocked Users")
             }

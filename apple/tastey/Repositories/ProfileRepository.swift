@@ -21,7 +21,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         return try await client
             .database
             .from(tableName)
-            .select(columns: "\(saved), color_scheme")
+            .select(columns: "\(saved), color_scheme, notifications (id, message, created_at)")
             .eq(column: "id", value: id.uuidString.lowercased())
             .limit(count: 1)
             .single()
