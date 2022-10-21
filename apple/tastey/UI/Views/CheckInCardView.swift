@@ -1,6 +1,7 @@
 import CachedAsyncImage
 import GoTrue
 import SwiftUI
+import WrappingHStack
 
 struct CheckInCardView: View {
     let checkIn: CheckIn
@@ -114,10 +115,9 @@ struct CheckInCardView: View {
                     }
 
                     if let flavors = checkIn.flavors {
-                        HStack {
-                            ForEach(flavors) { flavor in
-                                ChipView(title: flavor.name, cornerRadius: 5)
-                            }
+                        WrappingHStack(flavors, id: \.self) {
+                            flavor in
+                            ChipView(title: flavor.name, cornerRadius: 5).padding(.all, 2)
                         }
                     }
                 }
