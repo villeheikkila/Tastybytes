@@ -8,7 +8,7 @@ struct AvatarView: View {
 
     var body: some View {
         if let url = avatarUrl {
-            CachedAsyncImage(url: url) { image in
+            CachedAsyncImage(url: url, urlCache: .imageCache) { image in
                 image.resizable()
             } placeholder: {
                 ProgressView()
