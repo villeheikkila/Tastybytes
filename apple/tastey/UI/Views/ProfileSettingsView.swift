@@ -86,6 +86,8 @@ struct ProfileSettingsView: View {
                 .onChange(of: [self.viewModel.showFullName].publisher.first()) { _ in
                     viewModel.updateDisplaySettings()
                 }
+        } footer: {
+            Text("This only takes effect if both first name and last name are provided.")
         }
     }
     
@@ -105,7 +107,8 @@ struct ProfileSettingsView: View {
             Text("Account")
         } footer: {
             Text("Email is only used for login and is not shown for other users.")
-        }.headerProminence(.increased)
+        }
+        .headerProminence(.increased)
     }
 }
 
