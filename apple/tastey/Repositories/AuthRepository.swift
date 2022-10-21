@@ -18,7 +18,7 @@ struct SupabaseAuthRepository: AuthRepository {
             .auth
             .session?
             .user
-            .id else { fatalError("User session is missing! This function should only be called in views where user session is already active.)") }
+            .id else { return UUID() } // TODO: Come up with a better way to handle this returning nil on logout
         return user
     }
     
