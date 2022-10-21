@@ -1,6 +1,6 @@
 struct Product: Identifiable {
     let id: Int
-    let name: String?
+    let name: String
     let description: String?
     let subBrand: SubBrandJoinedWithBrand
     let subcategories: [SubcategoryJoinedWithCategory]
@@ -46,7 +46,7 @@ extension Product: Decodable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(Int.self, forKey: .id)
-        self.name = try values.decodeIfPresent(String.self, forKey: .name)
+        self.name = try values.decode(String.self, forKey: .name)
         self.description = try values.decodeIfPresent(String.self, forKey: .description)
         self.subBrand = try values.decode(SubBrandJoinedWithBrand.self, forKey: .subBrand)
         self.subcategories = try values.decode([SubcategoryJoinedWithCategory].self, forKey: .subcategories)
