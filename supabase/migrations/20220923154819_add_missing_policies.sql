@@ -197,7 +197,7 @@ on "public"."friends"
 as permissive
 for delete
 to public
-using ((((user_id_1 = auth.uid()) OR (user_id_2 = auth.uid())) AND ((status <> 'blocked'::friend_status) OR (blocked_by = auth.uid()))));
+using ((((user_id_1 = auth.uid()) OR (user_id_2 = auth.uid())) AND ((status <> 'blocked'::enum__friend_status) OR (blocked_by = auth.uid()))));
 
 
 create policy "Enable update for both sides of friend status unless blocked"
@@ -205,7 +205,7 @@ on "public"."friends"
 as permissive
 for update
 to public
-using ((((user_id_1 = auth.uid()) AND ((status <> 'blocked'::friend_status) OR (blocked_by = auth.uid()))) OR ((user_id_2 = auth.uid()) AND ((status <> 'blocked'::friend_status) OR (blocked_by = auth.uid())))));
+using ((((user_id_1 = auth.uid()) AND ((status <> 'blocked'::enum__friend_status) OR (blocked_by = auth.uid()))) OR ((user_id_2 = auth.uid()) AND ((status <> 'blocked'::enum__friend_status) OR (blocked_by = auth.uid())))));
 
 
 

@@ -894,7 +894,7 @@ on "public"."friends"
 as permissive
 for select
 to public
-using (((status <> 'blocked'::friend_status) OR (blocked_by = auth.uid())));
+using (((status <> 'blocked'::enum__friend_status) OR (blocked_by = auth.uid())));
 
 
 create policy "Enable update for both sides of friend status unless blocked"
