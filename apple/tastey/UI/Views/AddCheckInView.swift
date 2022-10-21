@@ -1,4 +1,5 @@
 import SwiftUI
+import WrappingHStack
 
 struct AddCheckInView: View {
     let product: Product
@@ -63,19 +64,9 @@ struct AddCheckInView: View {
                             if taggedFriends.count == 0 {
                                 Text("Tag friends")
                             } else {
-                                ForEach(taggedFriends, id: \.id) {
+                                WrappingHStack(taggedFriends, id: \.self) {
                                     friend in
-                                    HStack {
                                         AvatarView(avatarUrl: friend.getAvatarURL(), size: 24, id: friend.id)
-                                        Text(friend.getPreferedName())
-                                    }.padding(.all, 3)
-                                        .foregroundColor(.white)
-                                        .background(Color(.systemBlue))
-                                        .cornerRadius(20)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 20)
-                                                .stroke(Color(.systemBlue), lineWidth: 1.5)
-                                        )
                                 }
                             }
                         }
@@ -100,13 +91,13 @@ struct AddCheckInView: View {
                         Text("Cancel")
                             .bold()
                     },
-                trailing: Button(action: { createCheckIn() }) {
-                    Text("Check-in!")
-                        .bold()
-                })
-                    .task {
-                        loadInitialData(product: product)
-                    }
+                    trailing: Button(action: { createCheckIn() }) {
+                        Text("Check-in!")
+                            .bold()
+                    })
+                .task {
+                    loadInitialData(product: product)
+                }
             }
         }
     }
