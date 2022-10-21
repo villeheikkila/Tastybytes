@@ -79,3 +79,6 @@ struct CSVFile: FileDocument {
     }
 }
 
+struct DecodableId: Decodable {
+    let id: Int
+}
