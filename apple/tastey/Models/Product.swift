@@ -1,7 +1,7 @@
 struct Product: Identifiable {
     let id: Int
-    let name: String
-    let description: String
+    let name: String?
+    let description: String?
     let subBrand: SubBrandJoinedWithBrand
     let subcategories: [SubcategoryJoinedWithCategory]
     
@@ -46,8 +46,8 @@ extension Product: Decodable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(Int.self, forKey: .id)
-        self.name = try values.decode(String.self, forKey: .name)
-        self.description = try values.decode(String.self, forKey: .description)
+        self.name = try values.decodeIfPresent(String.self, forKey: .name)
+        self.description = try values.decodeIfPresent(String.self, forKey: .description)
         self.subBrand = try values.decode(SubBrandJoinedWithBrand.self, forKey: .subBrand)
         self.subcategories = try values.decode([SubcategoryJoinedWithCategory].self, forKey: .subcategories)
     }
@@ -57,17 +57,18 @@ struct NewProductParams: Encodable {
     let p_name: String
     let p_description: String?
     let p_category_id: Int
-    let p_sub_brand_id: Int
+    let p_brand_id: Int
     let p_sub_category_ids: [Int]
+    let p_sub_brand_id: Int?
     
     
-    init(name: String, description: String?, categoryId: Int, subBrandId: Int, subCategoryIds: [Int]) {
+    init(name: String, description: String?, categoryId: Int, brandId: Int, subBrandId: Int?, subCategoryIds: [Int]) {
         self.p_name = name
         self.p_description = description
         self.p_category_id = categoryId
         self.p_sub_brand_id = subBrandId
         self.p_sub_category_ids = subCategoryIds
-        
+        self.p_brand_id = brandId
     }
     
 }

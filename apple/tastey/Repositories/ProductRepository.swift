@@ -28,14 +28,30 @@ struct SupabaseProductRepository: ProductRepository {
             .decoded(to: [Product].self)
     }
     
-    func create(newProductParams: NewProductParams) async throws -> Product {
+    func getProductById(id: Int) async throws -> Product {
         return try await client
             .database
-            .rpc(fn: "fnc__create_product", params: newProductParams)
+            .from("products")
             .select(columns: joined)
+            .eq(column: "id", value: id)
             .limit(count: 1)
             .single()
             .execute()
             .decoded(to: Product.self)
+    }
+    
+    func create(newProductParams: NewProductParams) async throws -> Product {
+        let product = try await client
+            .database
+            .rpc(fn: "fnc__create_product", params: newProductParams)
+            .select(columns: "id")
+            .limit(count: 1)
+            .single()
+            .execute()
+            .decoded(to: DecodableId.self)
+        /**
+         TODO: Investigate if it is possible to somehow join sub_brands immediately after it has been created as part of the fnc__create_product function. 22.10.2022
+         */
+        return try await getProductById(id: product.id)
     }
 }

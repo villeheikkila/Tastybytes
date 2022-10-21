@@ -16,6 +16,7 @@ struct AddProductScreenView: View {
     @State var subBrand: SubBrand?
     @State var name: String = ""
     @State var description: String = ""
+    @State var hasSubBrand = false
 
     func getSubcategoriesForCategory() -> [Subcategory]? {
         return categories.first(where: { $0.name == category })?.subcategories
@@ -32,7 +33,7 @@ struct AddProductScreenView: View {
     }
 
     func isValid() -> Bool {
-        return brandOwner != nil && brand != nil && subBrand != nil && validateStringLenght(str: name, type: .normal)
+        return brandOwner != nil && brand != nil && validateStringLenght(str: name, type: .normal)
     }
 
     func getToastText() -> String {
@@ -83,21 +84,30 @@ struct AddProductScreenView: View {
                     Button(action: {
                         self.activeSheet = Sheet.brandOwner
                     }) {
-                        Text(brandOwner?.name ?? "Owner")
+                        Text(brandOwner?.name ?? "Company")
                     }
-                    Button(action: {
-                        self.activeSheet = Sheet.brand
-                    }) {
-                        Text(brand?.name ?? "Brand")
+                    
+                    if brandOwner != nil {
+                        Button(action: {
+                            self.activeSheet = Sheet.brand
+                        }) {
+                            Text(brand?.name ?? "Brand")
+                        }
+                        .disabled(brandOwner == nil)
                     }
-                    .disabled(brandOwner == nil)
 
-                    Button(action: {
-                        self.activeSheet = Sheet.subBrand
-                    }) {
-                        Text(subBrand?.name ?? "Sub-brand")
+                    if brand != nil {
+                        Toggle("Has sub-brand?", isOn: $hasSubBrand)
                     }
-                    .disabled(brand == nil)
+                    
+                    if hasSubBrand {
+                        Button(action: {
+                            self.activeSheet = Sheet.subBrand
+                        }) {
+                            Text(subBrand?.name ?? "Sub-brand")
+                        }
+                        .disabled(brand == nil)
+                    }
 
                 } header: {
                     Text("Brand")
@@ -179,8 +189,9 @@ struct AddProductScreenView: View {
     }
 
     func createProduct() {
-        if let subBrandId = subBrand?.id, let categoryId = categories.first(where: { $0.name == category })?.id {
-            let newProductParams = NewProductParams(name: name, description: description, categoryId: categoryId, subBrandId: subBrandId, subCategoryIds: subcategories.map { $0.id })
+        print("name \(name)")
+        if let categoryId = categories.first(where: { $0.name == category })?.id, let brandId = brand?.id {
+            let newProductParams = NewProductParams(name: name, description: description, categoryId: categoryId, brandId: brandId, subBrandId: subBrand?.id, subCategoryIds: subcategories.map { $0.id })
             Task {
                 do {
                     let newProduct = try await repository.product.create(newProductParams: newProductParams)
