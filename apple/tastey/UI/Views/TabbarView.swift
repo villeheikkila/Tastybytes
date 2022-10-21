@@ -7,7 +7,7 @@ struct TabbarView: View {
         WithProfile {
             profile in
             TabView {
-                ActivityView()
+                ActivityView(profile: profile)
                     .tabItem {
                         Image(systemName: "list.star")
                         Text("Activity")

@@ -7,7 +7,9 @@ struct CheckInPageView: View {
 
     var body: some View {
             ScrollView {
-                CheckInCardView(checkIn: checkIn, onDelete: {
+                CheckInCardView(checkIn: checkIn,
+                                loadedFrom: .checkIn,
+                                onDelete: {
                     _ in  navigator.removeLast()  
                 })
                     .task {
