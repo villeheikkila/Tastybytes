@@ -10,6 +10,7 @@ struct SimpleCheckIn {
 }
 
 struct ActivityView: View {
+    let profile: Profile
     @StateObject private var viewModel = ViewModel()
 
     var body: some View {
@@ -19,7 +20,9 @@ struct ActivityView: View {
             viewModel.refresh()
         }, content: {
             content in
-            CheckInCardView(checkIn: content, onDelete: {
+            CheckInCardView(checkIn: content,
+                            loadedFrom: .activity(profile),
+                            onDelete: {
                 checkIn in viewModel.onCheckInDelete(checkIn: checkIn) } )
         }, header: {
             EmptyView()

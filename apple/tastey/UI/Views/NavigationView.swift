@@ -26,7 +26,6 @@ class Navigator: ObservableObject {
 
     func gotoHomePage() {
         path.removeLast(path.count)
-        path.append(Route.activity)
     }
 
     func removeLast() {
@@ -52,7 +51,7 @@ enum Route: Hashable {
     case settings
     case currentUserFriends
     case friends(Profile)
-    case activity
+    case activity(Profile)
     case addProduct
 }
 
@@ -78,8 +77,8 @@ struct AddRoutesView<Content: View>: View {
                     }
                 case .settings:
                     PreferencesMenuView()
-                case .activity:
-                    ActivityView()
+                case let .activity(profile):
+                    ActivityView(profile: profile)
                 case .addProduct:
                     AddProductScreenView()
                 case let .checkIn(checkIn):

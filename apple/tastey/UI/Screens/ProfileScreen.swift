@@ -12,7 +12,9 @@ struct ProfileView: View {
                                viewModel.refresh(userId: profile.id)
                            },
                            content: {
-                               CheckInCardView(checkIn: $0, onDelete: { checkIn in viewModel.onCheckInDelete(checkIn: checkIn) })
+                               CheckInCardView(checkIn: $0,
+                                               loadedFrom: .profile(profile),
+                                               onDelete: { checkIn in viewModel.onCheckInDelete(checkIn: checkIn) })
                            },
                            header: {
                                VStack(spacing: 20) {

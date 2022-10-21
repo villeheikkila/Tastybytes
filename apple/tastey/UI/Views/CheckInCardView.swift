@@ -4,12 +4,26 @@ import SwiftUI
 
 struct CheckInCardView: View {
     let checkIn: CheckIn
+    let loadedFrom: LoadedFrom
     @StateObject var viewModel = ViewModel()
     
     let onDelete: (_ checkIn: CheckIn) -> Void
     
     func isOwnedByCurrentUser() -> Bool {
         return checkIn.profile.id == repository.auth.getCurrentUserId()
+    }
+    
+    func avoidStackingCheckInPage() -> Bool {
+        var isCurrentProfile: Bool
+        
+        switch loadedFrom {
+        case let .profile(profile):
+            isCurrentProfile = profile.id == checkIn.profile.id
+        default:
+            isCurrentProfile = false
+        }
+        
+        return isCurrentProfile
     }
     
     var body: some View {
@@ -54,6 +68,7 @@ struct CheckInCardView: View {
             }
             .padding([.trailing, .leading, .top], 10)
         }
+        .disabled(avoidStackingCheckInPage())
     }
 
     var productSection: some View {
@@ -79,6 +94,8 @@ struct CheckInCardView: View {
             }
             .padding([.trailing, .leading], 10)
         }
+        .disabled(loadedFrom == LoadedFrom.product)
+        .buttonStyle(.plain)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding([.trailing, .leading], 5)
     }
@@ -129,6 +146,7 @@ struct CheckInCardView: View {
             }
             .padding([.trailing, .leading], 10)
         }
+        .disabled(loadedFrom == LoadedFrom.checkIn)
         .buttonStyle(PlainButtonStyle())
     }
 
@@ -149,6 +167,12 @@ struct CheckInCardView: View {
 }
 
 extension CheckInCardView {
+    enum LoadedFrom: Equatable {
+        case checkIn
+        case product
+        case profile(Profile)
+        case activity(Profile)
+    }
     @MainActor class ViewModel: ObservableObject {
         func delete(checkIn: CheckIn, onDelete: @escaping  (_ checkIn: CheckIn) -> Void) {
             Task {

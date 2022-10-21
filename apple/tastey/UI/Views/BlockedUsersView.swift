@@ -51,7 +51,6 @@ extension BlockedUsersView {
                Task {
                    do {
                        let blockedUsers = try await repository.friend.getByUserId(userId: userId, status: .blocked)
-                       print(blockedUsers)
                        DispatchQueue.main.async {
                            self.blockedUsers = blockedUsers
                        }
