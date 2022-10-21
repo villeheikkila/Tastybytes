@@ -2,6 +2,7 @@ import Foundation
 import GoTrue
 import SupabaseStorage
 import Supabase
+import Realtime
 
 protocol ProfileRepository {
     func getById(id: UUID) async throws -> Profile
@@ -10,6 +11,7 @@ protocol ProfileRepository {
     func search(searchTerm: String, currentUserId: UUID) async throws -> [Profile]
     func uploadAvatar(id: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws -> Void
     func deleteCurrentAccount() async throws -> Void
+    func notificationChannel() -> Channel
 }
 
 struct SupabaseProfileRepository: ProfileRepository {
@@ -86,6 +88,12 @@ struct SupabaseProfileRepository: ProfileRepository {
             .database
             .rpc(fn: "fnc__delete_current_user")
             .execute()
+    }
+    
+    func notificationChannel() -> Channel {
+         return client
+            .realtime
+            .channel(.table("notifications", schema: "public"))
     }
 }
 

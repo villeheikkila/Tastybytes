@@ -1,7 +1,26 @@
 import SwiftUI
+import Realtime
 
 class CurrentProfile: ObservableObject {
-    @Published  var profile: Profile?
+    @Published var profile: Profile?
+    @Published private(set) var notifaction: [Notification] = []
+    @Published var notifications = [Notification]()
+
+    func deleteNotifications(notification: Notification) {
+        Task {
+            do {
+                try await repository.notification.delete(id: notification.id)
+                
+                DispatchQueue.main.async {
+                    self.notifications.removeAll(where: { $0.id == notification.id })
+                }
+            }
+            catch {
+                print("error while removing notification: \(error)")
+            }
+        }
+    }
+    
 
     func get(id: UUID) {
         Task {
@@ -9,20 +28,23 @@ class CurrentProfile: ObservableObject {
                 let currentUserProfile = try await repository.profile.getById(id: id)
                 DispatchQueue.main.async {
                     self.profile = currentUserProfile
+                    self.notifications = currentUserProfile.notifications ?? []
                 }
             } catch {
                 print("error while loading profile: \(error)")
             }
         }
     }
-    
+
     func refresh() {
         if let id = profile?.id {
+
             Task {
                 do {
                     let currentUserProfile = try await repository.profile.getById(id: id)
                     DispatchQueue.main.async {
                         self.profile = currentUserProfile
+                        self.notifications = currentUserProfile.notifications ?? []
                     }
                 } catch {
                     print("error while loading profile: \(error)")
@@ -44,7 +66,7 @@ public struct CurrentProfileProviderView<RootView: View>: View {
         self.rootView = rootView
         self.userId = userId
     }
-    
+
     func getColorScheme(colorScheme: Profile.ColorScheme?) -> ColorScheme? {
         if let colorScheme = colorScheme {
             switch colorScheme {
@@ -69,7 +91,7 @@ public struct CurrentProfileProviderView<RootView: View>: View {
 
 struct WithProfile<Content: View>: View {
     @EnvironmentObject var currentProfile: CurrentProfile
-    
+
     let content: (_ profile: Profile) -> Content
 
     public init(
