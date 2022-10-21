@@ -11,11 +11,15 @@
 		5C08B6E228ED7B05009218D7 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C08B6E128ED7B05009218D7 /* Company.swift */; };
 		5C11ECAF28EECC8500CCDE6A /* AuthScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECAE28EECC8500CCDE6A /* AuthScreen.swift */; };
 		5C11ECB328EEEDEF00CCDE6A /* FriendsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB228EEEDEF00CCDE6A /* FriendsScreen.swift */; };
-		5C11ECB628EEEFB300CCDE6A /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB528EEEFB300CCDE6A /* SettingsScreen.swift */; };
+		5C11ECB628EEEFB300CCDE6A /* PreferencesMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB528EEEFB300CCDE6A /* PreferencesMenuView.swift */; };
 		5C11ECB928EEF16000CCDE6A /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB828EEF16000CCDE6A /* ProfileScreen.swift */; };
 		5C11ECBB28EEF24700CCDE6A /* ActivityScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECBA28EEF24700CCDE6A /* ActivityScreen.swift */; };
 		5C11ECBD28EEF30600CCDE6A /* SearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECBC28EEF30600CCDE6A /* SearchScreen.swift */; };
 		5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECBF28EF434700CCDE6A /* Profile.swift */; };
+		5C12B42D2902A12A001EE549 /* ApplicationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B42C2902A12A001EE549 /* ApplicationSettingsView.swift */; };
+		5C12B42F2902A191001EE549 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B42E2902A190001EE549 /* ProfileSettingsView.swift */; };
+		5C12B4312902A29A001EE549 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4302902A29A001EE549 /* DeleteAccountView.swift */; };
+		5C12B4332902A4C9001EE549 /* BlockedUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4322902A4C9001EE549 /* BlockedUsersView.swift */; };
 		5C25349628EDA58700A78780 /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25349528EDA58700A78780 /* Supabase.swift */; };
 		5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */; };
 		5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B828FA07CF00AED6F1 /* Friend.swift */; };
@@ -80,12 +84,16 @@
 		5C08B6E128ED7B05009218D7 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		5C11ECAE28EECC8500CCDE6A /* AuthScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthScreen.swift; sourceTree = "<group>"; };
 		5C11ECB228EEEDEF00CCDE6A /* FriendsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsScreen.swift; sourceTree = "<group>"; };
-		5C11ECB528EEEFB300CCDE6A /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		5C11ECB528EEEFB300CCDE6A /* PreferencesMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesMenuView.swift; sourceTree = "<group>"; };
 		5C11ECB828EEF16000CCDE6A /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
 		5C11ECBA28EEF24700CCDE6A /* ActivityScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityScreen.swift; sourceTree = "<group>"; };
 		5C11ECBC28EEF30600CCDE6A /* SearchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreen.swift; sourceTree = "<group>"; };
 		5C11ECBF28EF434700CCDE6A /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		5C11ECC128EF768A00CCDE6A /* .xcconfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = .xcconfig.xcconfig; sourceTree = "<group>"; };
+		5C12B42C2902A12A001EE549 /* ApplicationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationSettingsView.swift; sourceTree = "<group>"; };
+		5C12B42E2902A190001EE549 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
+		5C12B4302902A29A001EE549 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
+		5C12B4322902A4C9001EE549 /* BlockedUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersView.swift; sourceTree = "<group>"; };
 		5C25349528EDA58700A78780 /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
 		5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsRepository.swift; sourceTree = "<group>"; };
 		5C7DC2B828FA07CF00AED6F1 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
@@ -242,7 +250,7 @@
 		5CD10A5F28F99CF60001CFC2 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				5C11ECB528EEEFB300CCDE6A /* SettingsScreen.swift */,
+				5C11ECB528EEEFB300CCDE6A /* PreferencesMenuView.swift */,
 				5C11ECB228EEEDEF00CCDE6A /* FriendsScreen.swift */,
 				5C11ECAE28EECC8500CCDE6A /* AuthScreen.swift */,
 				5C11ECB828EEF16000CCDE6A /* ProfileScreen.swift */,
@@ -284,6 +292,10 @@
 				5C919E1F28FF024A0055CFD2 /* FlavorPickerView.swift */,
 				5C989DBD2901EA6200BBC5A7 /* NavigationView.swift */,
 				5CFEE57828ED69B100A8DD66 /* RootView.swift */,
+				5C12B42C2902A12A001EE549 /* ApplicationSettingsView.swift */,
+				5C12B42E2902A190001EE549 /* ProfileSettingsView.swift */,
+				5C12B4302902A29A001EE549 /* DeleteAccountView.swift */,
+				5C12B4322902A4C9001EE549 /* BlockedUsersView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -439,10 +451,11 @@
 				5C11ECB328EEEDEF00CCDE6A /* FriendsScreen.swift in Sources */,
 				5CED433428FDA357003F8194 /* SubBrandRepository.swift in Sources */,
 				5CB1C24928F9BBAA000B0EB4 /* CheckInReactionRepository.swift in Sources */,
-				5C11ECB628EEEFB300CCDE6A /* SettingsScreen.swift in Sources */,
+				5C11ECB628EEEFB300CCDE6A /* PreferencesMenuView.swift in Sources */,
 				5C989DBA2901D2C700BBC5A7 /* ProfileProviderView.swift in Sources */,
 				5CD10A4728F9522D0001CFC2 /* RatingPickerView.swift in Sources */,
 				5CED432828FD417E003F8194 /* AddProductScreen.swift in Sources */,
+				5C12B4312902A29A001EE549 /* DeleteAccountView.swift in Sources */,
 				5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */,
 				5CED433228FD76BB003F8194 /* SubBrandPickerView.swift in Sources */,
 				5CED432E28FD6EA7003F8194 /* BrandSearchView.swift in Sources */,
@@ -456,13 +469,16 @@
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5C11ECAF28EECC8500CCDE6A /* AuthScreen.swift in Sources */,
 				5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */,
+				5C12B42F2902A191001EE549 /* ProfileSettingsView.swift in Sources */,
 				5C989DAB2901AAD500BBC5A7 /* Repository.swift in Sources */,
 				5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */,
 				5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */,
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
 				5CD10A5528F98D220001CFC2 /* SubBrand.swift in Sources */,
+				5C12B4332902A4C9001EE549 /* BlockedUsersView.swift in Sources */,
 				5CD10A4F28F98C0B0001CFC2 /* Category.swift in Sources */,
 				5CD10A5128F98C8C0001CFC2 /* Subcategory.swift in Sources */,
+				5C12B42D2902A12A001EE549 /* ApplicationSettingsView.swift in Sources */,
 				5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */,
 				5CB1C24D28F9C087000B0EB4 /* AuthRepository.swift in Sources */,
 				5CED433628FDA8B9003F8194 /* SubcategoryPickerView.swift in Sources */,

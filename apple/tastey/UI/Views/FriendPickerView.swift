@@ -6,7 +6,7 @@ struct FriendPickerView: View {
     @Binding var taggedFriends: [Profile]
     @State var showToast = false
     @Environment(\.dismiss) var dismiss
-
+    
     var body: some View {
         NavigationStack {
             List(friends, id: \.self) { friend in
@@ -22,15 +22,15 @@ struct FriendPickerView: View {
                             Image(systemName: "checkmark")
                         }
                     }
-
+                    
                 }
             }
             .navigationTitle("Friends")
-                .navigationBarItems(trailing: Button(action: {
-                    dismiss()
-                }) {
-                    Text("Done").bold()
-                })
+            .navigationBarItems(trailing: Button(action: {
+                dismiss()
+            }) {
+                Text("Done").bold()
+            })
         }.task {
             loadFriends()
         }
@@ -39,7 +39,7 @@ struct FriendPickerView: View {
     func loadFriends() {
         let currentUserId = repository.auth.getCurrentUserId()
         Task {
-            let acceptedFriends = try await repository.friend.getAcceptedByUserId(userId: currentUserId)
+            let acceptedFriends = try await repository.friend.getByUserId(userId: currentUserId, status: .accepted)
             self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }
         }
     }

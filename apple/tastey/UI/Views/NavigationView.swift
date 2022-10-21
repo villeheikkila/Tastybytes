@@ -77,7 +77,7 @@ struct AddRoutesView<Content: View>: View {
                         profile in FriendsScreenView(profile: profile)
                     }
                 case .settings:
-                    SettingsView()
+                    PreferencesMenuView()
                 case .activity:
                     ActivityView()
                 case .addProduct:

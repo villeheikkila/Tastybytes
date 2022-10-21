@@ -7,7 +7,7 @@ struct Friend: Identifiable {
     let status: FriendStatus
     let blockedBy: UUID?
     
-    func getFriend(userId: UUID) -> Profile {
+    func getFriend(userId: UUID?) -> Profile {
         if (sender.id == userId) {
             return receiver
         } else {
