@@ -23,7 +23,7 @@ DROP INDEX IF EXISTS "public"."products_migration_id_key";
 DROP PROCEDURE IF EXISTS "public"."fnc__migrate_data" (IN _creator uuid);
 
 ALTER TABLE "public"."migration_table"
-   DROP CONSTRAINT "migration_table_pkey";
+   DROP CONSTRAINT "migration_table_pkey";   
 
 DROP TABLE "public"."migration_table";
 
