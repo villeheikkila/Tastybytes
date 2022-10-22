@@ -1,12 +1,13 @@
-import SwiftUI
-import Foundation
 import AlertToast
+import Foundation
+import SwiftUI
 
 struct LocalizedAlertError: LocalizedError {
     let underlyingError: LocalizedError
     var errorDescription: String? {
         underlyingError.errorDescription
     }
+
     var recoverySuggestion: String? {
         underlyingError.recoverySuggestion
     }
@@ -31,19 +32,30 @@ extension View {
 }
 
 struct TextFieldLimitModifer: ViewModifier {
-@Binding var value: String
-var length: Int
+    @Binding var value: String
+    var length: Int
 
-func body(content: Content) -> some View {
-    content
-        .onReceive(value.publisher.collect()) {
-            value = String($0.prefix(length))
-        }
-}
+    func body(content: Content) -> some View {
+        content
+            .onReceive(value.publisher.collect()) {
+                value = String($0.prefix(length))
+            }
+    }
 }
 
 extension View {
-func limitInputLength(value: Binding<String>, length: Int) -> some View {
-    self.modifier(TextFieldLimitModifer(value: value, length: length))
+    func limitInputLength(value: Binding<String>, length: Int) -> some View {
+        modifier(TextFieldLimitModifer(value: value, length: length))
+    }
 }
+
+public extension View {
+    func fullBackground(imageName: String) -> some View {
+       return background(
+                Image(imageName)
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+       )
+    }
 }

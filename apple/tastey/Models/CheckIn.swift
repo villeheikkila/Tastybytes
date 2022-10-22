@@ -4,6 +4,7 @@ struct CheckIn: Identifiable {
     let id: Int
     let rating: Int?
     let review: String?
+    let imageUrl: String?
     let createdAt: Date
     let profile: Profile
     let product: Product
@@ -15,6 +16,19 @@ struct CheckIn: Identifiable {
     func isEmpty() -> Bool {
         return [rating == nil, (review == nil || review == ""), flavors.count == 0].allSatisfy { $0 }
     }
+    
+    func getImageUrl() -> URL? {
+        if let imageUrl = imageUrl {
+            let bucketId = "migrated"
+            let urlString = "\(Supabase.urlString)/storage/v1/object/public/\(bucketId)/\(imageUrl).jpeg"
+            print(urlString)
+            guard let url = URL(string: urlString) else { return nil }
+            return url
+        } else {
+            return nil
+        }
+    }
+
 }
 
 extension CheckIn: Hashable {
@@ -28,6 +42,7 @@ extension CheckIn: Decodable {
         case id
         case rating
         case review
+        case imageUrl = "image_url"
         case createdAt = "created_at"
         case profile = "profiles"
         case product = "products"
@@ -42,6 +57,7 @@ extension CheckIn: Decodable {
         id = try values.decode(Int.self, forKey: .id)
         rating = try values.decodeIfPresent(Int.self, forKey: .rating)
         review = try values.decodeIfPresent(String.self, forKey: .review)
+        imageUrl = try values.decodeIfPresent(String.self, forKey: .imageUrl)
         createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
         profile = try values.decode(Profile.self, forKey: .profile)
         product = try values.decode(Product.self, forKey: .product)

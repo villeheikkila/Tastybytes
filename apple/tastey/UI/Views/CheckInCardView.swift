@@ -1,7 +1,8 @@
-import CachedAsyncImage
+
 import GoTrue
 import SwiftUI
 import WrappingHStack
+import CachedAsyncImage
 
 struct CheckInCardView: View {
     let checkIn: CheckIn
@@ -37,10 +38,13 @@ struct CheckInCardView: View {
                 }
                 footer
             }
-            .background(Color(.tertiarySystemBackground))
+            .background(Color(.tertiarySystemBackground).opacity(0.4))
+            .background(.ultraThinMaterial)
             .cornerRadius(10)
             .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
         }
+        .clipped()
+        .cornerRadius(10)
         .padding(.all, 10)
         .contextMenu {
             if (isOwnedByCurrentUser()) {
@@ -70,6 +74,22 @@ struct CheckInCardView: View {
             .padding([.trailing, .leading, .top], 10)
         }
         .disabled(avoidStackingCheckInPage())
+    }
+    
+    var backgroundImage: some View {
+        HStack {
+            if let imageUrl = checkIn.getImageUrl() {
+                CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    EmptyView()
+                }
+            } else {
+                EmptyView()
+            }
+        }
     }
 
     var productSection: some View {
