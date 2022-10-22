@@ -26,6 +26,7 @@ class CurrentProfile: ObservableObject {
         Task {
             do {
                 let currentUserProfile = try await repository.profile.getById(id: id)
+                print(currentUserProfile)
                 DispatchQueue.main.async {
                     self.profile = currentUserProfile
                     self.notifications = currentUserProfile.notifications ?? []
@@ -50,6 +51,15 @@ class CurrentProfile: ObservableObject {
                     print("error while loading profile: \(error)")
                 }
             }
+        }
+    }
+    
+    func hasPermission(_ permission: PermissionName) -> Bool {
+        if let roles = profile?.roles {
+            let permissions = roles.flatMap { $0.permissions }
+            return permissions.contains(where: { $0.name == permission})
+        } else {
+            return false
         }
     }
 }

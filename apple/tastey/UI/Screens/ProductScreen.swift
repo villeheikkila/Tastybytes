@@ -3,19 +3,29 @@ import SwiftUI
 struct ProductPageView: View {
     let product: Product
     @StateObject private var viewModel = ViewModel()
+    @EnvironmentObject var currentProfile: CurrentProfile
 
     var body: some View {
         ZStack(alignment: .bottom) {
             InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, loadMore: { viewModel.fetchMoreCheckIns(productId: product.id) }, refresh: { viewModel.refresh(productId: product.id) },
                                content: {
-                CheckInCardView(checkIn: $0,
-                                loadedFrom: .product,
-                                onDelete: {
-                                       deletedCheckIn in viewModel.deleteCheckIn(id: deletedCheckIn.id)
-                                   })
+                                   CheckInCardView(checkIn: $0,
+                                                   loadedFrom: .product,
+                                                   onDelete: {
+                                                       deletedCheckIn in viewModel.deleteCheckIn(id: deletedCheckIn.id)
+                                                   })
                                },
                                header: {
                                    ProductCardView(product: product)
+                                        .contextMenu {
+                                            if currentProfile.hasPermission(.canDeleteProducts) {
+                                           Button(action: {
+                                               print("HEI")
+                                           }) {
+                                               Label("Delete", systemImage: "trash.fill")
+                                           }
+                                       }
+                                   }
                                }
             )
         }

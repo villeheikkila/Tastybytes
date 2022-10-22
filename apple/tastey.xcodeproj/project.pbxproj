@@ -27,6 +27,8 @@
 		5C25349628EDA58700A78780 /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25349528EDA58700A78780 /* Supabase.swift */; };
 		5C25AEB229031B9D00793607 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 5C25AEB129031B9D00793607 /* WrappingHStack */; };
 		5C25AEB429031F9C00793607 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB329031F9C00793607 /* Extensions.swift */; };
+		5C25AEB62903FBDE00793607 /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB52903FBDE00793607 /* Role.swift */; };
+		5C25AEB82904038000793607 /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB72904038000793607 /* Permission.swift */; };
 		5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */; };
 		5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B828FA07CF00AED6F1 /* Friend.swift */; };
 		5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1728FED0E00055CFD2 /* ServingStyle.swift */; };
@@ -106,6 +108,8 @@
 		5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRepository.swift; sourceTree = "<group>"; };
 		5C25349528EDA58700A78780 /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
 		5C25AEB329031F9C00793607 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		5C25AEB52903FBDE00793607 /* Role.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
+		5C25AEB72904038000793607 /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
 		5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsRepository.swift; sourceTree = "<group>"; };
 		5C7DC2B828FA07CF00AED6F1 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		5C919E1728FED0E00055CFD2 /* ServingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyle.swift; sourceTree = "<group>"; };
@@ -194,6 +198,7 @@
 				5CFB563028F5974100F13A1E /* ProfileSummary.swift */,
 				5CD10A4A28F980860001CFC2 /* CheckInComment.swift */,
 				5C919E2128FF0CF60055CFD2 /* ProductVariant.swift */,
+				5C25AEB52903FBDE00793607 /* Role.swift */,
 				5CD10A4C28F985D00001CFC2 /* CheckIn.swift */,
 				5CD10A4E28F98C0B0001CFC2 /* Category.swift */,
 				5CD10A5028F98C8C0001CFC2 /* Subcategory.swift */,
@@ -205,6 +210,7 @@
 				5C919E1728FED0E00055CFD2 /* ServingStyle.swift */,
 				5C919E1D28FF01480055CFD2 /* Flavor.swift */,
 				5C12B4382902CAF3001EE549 /* Notification.swift */,
+				5C25AEB72904038000793607 /* Permission.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -461,6 +467,7 @@
 				5CD10A3D28F75B7A0001CFC2 /* ProductScreen.swift in Sources */,
 				5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */,
 				5CD10A4B28F980860001CFC2 /* CheckInComment.swift in Sources */,
+				5C25AEB62903FBDE00793607 /* Role.swift in Sources */,
 				5C919E2028FF024A0055CFD2 /* FlavorPickerView.swift in Sources */,
 				5C12B4372902CA04001EE549 /* NotificationView.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileScreen.swift in Sources */,
@@ -487,6 +494,7 @@
 				5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */,
 				5CD10A3F28F760520001CFC2 /* CheckInScreen.swift in Sources */,
 				5CD10A4528F952030001CFC2 /* AddCheckInView.swift in Sources */,
+				5C25AEB82904038000793607 /* Permission.swift in Sources */,
 				5CED432A28FD4E17003F8194 /* CategoryRepository.swift in Sources */,
 				5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */,
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
