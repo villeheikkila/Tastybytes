@@ -3,12 +3,13 @@ import Supabase
 
 protocol ProductRepository {
     func search(searchTerm: String) async throws -> [Product]
+    func delete(id: Int) async throws -> Void
     func create(newProductParams: NewProductParams) async throws -> Product
 }
 
 struct SupabaseProductRepository: ProductRepository {
     let client: SupabaseClient
-    private let tableName = "companies"
+    private let tableName = "products"
     private let joined = "id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))"
     
     
@@ -38,6 +39,15 @@ struct SupabaseProductRepository: ProductRepository {
             .single()
             .execute()
             .decoded(to: Product.self)
+    }
+    
+    func delete(id: Int) async throws -> Void {
+        try await client
+            .database
+            .from(tableName)
+            .delete()
+            .eq(column: "id", value: id)
+            .execute()
     }
     
     func create(newProductParams: NewProductParams) async throws -> Product {

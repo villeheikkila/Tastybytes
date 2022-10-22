@@ -19,10 +19,10 @@ struct ProductPageView: View {
                                    ProductCardView(product: product)
                                         .contextMenu {
                                             if currentProfile.hasPermission(.canDeleteProducts) {
-                                           Button(action: {
-                                               print("HEI")
+                                                Button(action: {
+                                               viewModel.deleteProduct(product)
                                            }) {
-                                               Label("Delete", systemImage: "trash.fill")
+                                               Label("Delete", systemImage: "trash.fill").foregroundColor(.red)
                                            }
                                        }
                                    }
@@ -78,6 +78,17 @@ extension ProductPageView {
                     self.checkIns.removeAll(where: { $0.id == id })
                 } catch {
                     print("error: \(error)")
+                }
+            }
+        }
+        
+        func deleteProduct(_ product: Product) {
+            Task {
+                do {
+                    try await repository.product.delete(id: product.id)
+                    print("deleted!")
+                } catch {
+                    print("error \(error)")
                 }
             }
         }
