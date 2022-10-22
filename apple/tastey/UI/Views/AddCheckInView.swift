@@ -118,7 +118,9 @@ struct AddCheckInView: View {
             do {
                 let newCheckIn = try await repository.checkIn.create(newCheckInParams: newCheckParams)
                 onCreation(newCheckIn)
-                dismiss()
+                DispatchQueue.main.async {
+                    dismiss().self
+                }
             } catch {
                 print("error: \(error)")
             }
