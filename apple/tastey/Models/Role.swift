@@ -1,0 +1,26 @@
+struct Role: Identifiable {
+    let id: Int
+    let name: String
+    let permissions: [Permission]
+}
+
+extension Role: Hashable {
+    static func == (lhs: Role, rhs: Role) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+extension Role: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case permissions = "permissions"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(Int.self, forKey: .id)
+        name = try values.decode(String.self, forKey: .name)
+        permissions = try values.decode([Permission].self, forKey: .permissions)
+    }
+}
