@@ -31,7 +31,7 @@ class CurrentProfile: ObservableObject {
                     self.notifications = currentUserProfile.notifications ?? []
                 }
             } catch {
-                print("error while loading profile: \(error)")
+                print("error while loading profile: \(error.localizedDescription)")
             }
         }
     }

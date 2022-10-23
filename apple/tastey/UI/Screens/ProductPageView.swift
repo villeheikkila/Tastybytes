@@ -86,7 +86,6 @@ extension ProductPageView {
             Task {
                 do {
                     try await repository.product.delete(id: product.id)
-                    print("deleted!")
                 } catch {
                     print("error \(error)")
                 }

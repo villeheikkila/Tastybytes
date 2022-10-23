@@ -11,6 +11,8 @@ extension Permission: Hashable {
 
 enum PermissionName: String, Decodable, Equatable {
     case canDeleteProducts = "can_delete_products"
+    case canDeleteCompanies = "can_delete_companies"
+    case canDeleteBrands = "can_delete_brands"
     
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
