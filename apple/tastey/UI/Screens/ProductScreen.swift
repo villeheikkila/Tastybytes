@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProductPageView: View {
-    let product: Product
+    let product: ProductJoined
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
 
@@ -82,7 +82,7 @@ extension ProductPageView {
             }
         }
         
-        func deleteProduct(_ product: Product) {
+        func deleteProduct(_ product: ProductJoined) {
             Task {
                 do {
                     try await repository.product.delete(id: product.id)

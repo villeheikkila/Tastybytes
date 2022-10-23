@@ -45,7 +45,7 @@ class Navigator: ObservableObject {
 }
 
 enum Route: Hashable {
-    case product(Product)
+    case product(ProductJoined)
     case profile(Profile)
     case checkIn(CheckIn)
     case companies(Company)
@@ -67,7 +67,7 @@ struct AddRoutesView<Content: View>: View {
             .navigationDestination(for: Profile.self) { profile in
                 ProfileView(profile: profile)
             }
-            .navigationDestination(for: Product.self) { product in
+            .navigationDestination(for: ProductJoined.self) { product in
                 ProductPageView(product: product)
             }
             .navigationDestination(for: Company.self) { company in

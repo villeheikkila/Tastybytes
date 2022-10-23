@@ -1,8 +1,6 @@
 struct Subcategory: Identifiable, Decodable {
     let id: Int
     let name: String
-    
-
 }
 
 extension Subcategory: Hashable {

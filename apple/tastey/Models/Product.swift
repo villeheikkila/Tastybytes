@@ -1,4 +1,14 @@
-struct Product: Identifiable {
+struct Product: Identifiable, Decodable, Hashable {
+    let id: Int
+    let name: String
+    let description: String?
+    
+    static func == (lhs: Product, rhs: Product) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+struct ProductJoined: Identifiable {
     let id: Int
     let name: String
     let description: String?
@@ -12,7 +22,7 @@ struct Product: Identifiable {
     func getDisplayName(_ part: ProductNameParts) -> String {
         switch part {
         case .brandOwner:
-            return subBrand.brand.company.name
+            return subBrand.brand.brandOwner.name
         case .fullName:
             return [subBrand.brand.name, subBrand.name, name]
                 .compactMap({ $0 })
@@ -21,20 +31,20 @@ struct Product: Identifiable {
     }
 }
 
-extension Product {
+extension ProductJoined {
     enum ProductNameParts {
         case brandOwner
         case fullName
     }
 }
 
-extension Product: Hashable {
-    static func == (lhs: Product, rhs: Product) -> Bool {
+extension ProductJoined: Hashable {
+    static func == (lhs: ProductJoined, rhs: ProductJoined) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-extension Product: Decodable {
+extension ProductJoined: Decodable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -49,6 +59,42 @@ extension Product: Decodable {
         self.name = try values.decode(String.self, forKey: .name)
         self.description = try values.decodeIfPresent(String.self, forKey: .description)
         self.subBrand = try values.decode(SubBrandJoinedWithBrand.self, forKey: .subBrand)
+        self.subcategories = try values.decode([SubcategoryJoinedWithCategory].self, forKey: .subcategories)
+    }
+}
+
+extension ProductJoined {
+    init(company: Company, product: ProductJoinedCategory, subBrand: SubBrandJoinedProduct, brand: BrandJoinedSubBrandsJoinedProduct) {
+        self.id = product.id
+        self.name = product.name
+        self.description = product.name
+        self.subBrand = SubBrandJoinedWithBrand(id: subBrand.id, name: subBrand.name, brand: BrandJoinedWithCompany(id: brand.id, name: brand.name, brandOwner: company))
+        self.subcategories = product.subcategories
+    }
+}
+
+struct ProductJoinedCategory: Identifiable, Decodable, Hashable {
+    let id: Int
+    let name: String
+    let description: String?
+    let subcategories: [SubcategoryJoinedWithCategory]
+    
+    static func == (lhs: ProductJoinedCategory, rhs: ProductJoinedCategory) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case description
+        case subcategories
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try values.decode(Int.self, forKey: .id)
+        self.name = try values.decode(String.self, forKey: .name)
+        self.description = try values.decodeIfPresent(String.self, forKey: .description)
         self.subcategories = try values.decode([SubcategoryJoinedWithCategory].self, forKey: .subcategories)
     }
 }

@@ -41,3 +41,23 @@ extension SubBrandJoinedWithBrand: Decodable {
         brand = try values.decode(BrandJoinedWithCompany.self, forKey: .brand)
     }
 }
+
+struct SubBrandJoinedProduct: Identifiable, Hashable, Decodable {
+    let id: Int
+    let name: String?
+    let products: [ProductJoinedCategory]
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case products
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(Int.self, forKey: .id)
+        name = try values.decodeIfPresent(String.self, forKey: .name)
+        products = try values.decode([ProductJoinedCategory].self, forKey: .products)
+    }
+}
+

@@ -2,7 +2,7 @@ import SwiftUI
 import WrappingHStack
 
 struct AddCheckInView: View {
-    let product: Product
+    let product: ProductJoined
     @State var activeSheet: Sheet?
     @State var review: String = ""
     @State var rating: Int? = nil
@@ -127,7 +127,7 @@ struct AddCheckInView: View {
         }
     }
 
-    func loadInitialData(product: Product) {
+    func loadInitialData(product: ProductJoined) {
         Task {
             if let categoryId = product.subcategories.first?.category.id {
                 do {

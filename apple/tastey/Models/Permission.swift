@@ -15,7 +15,6 @@ enum PermissionName: String, Decodable, Equatable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let rawString = try container.decode(String.self)
-        print(rawString)
         if let permission = PermissionName(rawValue: rawString) {
             self = permission
         } else {

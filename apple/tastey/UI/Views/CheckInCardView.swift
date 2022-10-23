@@ -100,9 +100,11 @@ struct CheckInCardView: View {
                     .foregroundColor(.primary)
 
                 HStack {
-                    Text(checkIn.product.getDisplayName(.brandOwner))
-                        .font(.system(size: 16, weight: .bold, design: .default))
-                        .foregroundColor(.secondary)
+                    NavigationLink(value: checkIn.product.subBrand.brand.brandOwner) {
+                        Text(checkIn.product.getDisplayName(.brandOwner))
+                            .font(.system(size: 16, weight: .bold, design: .default))
+                            .foregroundColor(.secondary)
+                    }
 
                     if let manufacturerName = checkIn.variant?.manufacturer.name {
                         Text("(\(manufacturerName))")

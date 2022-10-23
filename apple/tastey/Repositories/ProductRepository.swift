@@ -2,9 +2,9 @@ import Foundation
 import Supabase
 
 protocol ProductRepository {
-    func search(searchTerm: String) async throws -> [Product]
+    func search(searchTerm: String) async throws -> [ProductJoined]
     func delete(id: Int) async throws -> Void
-    func create(newProductParams: NewProductParams) async throws -> Product
+    func create(newProductParams: NewProductParams) async throws -> ProductJoined
 }
 
 struct SupabaseProductRepository: ProductRepository {
@@ -13,7 +13,7 @@ struct SupabaseProductRepository: ProductRepository {
     private let joined = "id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))"
     
     
-    func search(searchTerm: String) async throws -> [Product] {
+    func search(searchTerm: String) async throws -> [ProductJoined] {
         struct SearchProductsParams: Encodable {
             let p_search_term: String
             init(searchTerm: String) {
@@ -26,10 +26,10 @@ struct SupabaseProductRepository: ProductRepository {
             .rpc(fn: "fnc__search_products", params: SearchProductsParams(searchTerm: searchTerm))
             .select(columns: joined)
             .execute()
-            .decoded(to: [Product].self)
+            .decoded(to: [ProductJoined].self)
     }
-    
-    func getProductById(id: Int) async throws -> Product {
+
+    func getProductById(id: Int) async throws -> ProductJoined {
         return try await client
             .database
             .from("products")
@@ -38,7 +38,7 @@ struct SupabaseProductRepository: ProductRepository {
             .limit(count: 1)
             .single()
             .execute()
-            .decoded(to: Product.self)
+            .decoded(to: ProductJoined.self)
     }
     
     func delete(id: Int) async throws -> Void {
@@ -50,7 +50,7 @@ struct SupabaseProductRepository: ProductRepository {
             .execute()
     }
     
-    func create(newProductParams: NewProductParams) async throws -> Product {
+    func create(newProductParams: NewProductParams) async throws -> ProductJoined {
         let product = try await client
             .database
             .rpc(fn: "fnc__create_product", params: newProductParams)

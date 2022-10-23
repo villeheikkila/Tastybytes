@@ -82,3 +82,7 @@ struct CSVFile: FileDocument {
 struct DecodableId: Decodable {
     let id: Int
 }
+
+func joinOptionalStrings(_ arr: [String?]) -> String {
+    return arr.compactMap({ $0 }).joined(separator: " ")
+}

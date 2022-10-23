@@ -87,7 +87,7 @@ struct SearchScreenView: View {
 extension SearchScreenView {
     class ViewModel: ObservableObject {
         @Published var searchTerm: String = ""
-        @Published var products = [Product]()
+        @Published var products = [ProductJoined]()
         @Published var profiles = [Profile]()
         @Published var companies = [Company]()
 
