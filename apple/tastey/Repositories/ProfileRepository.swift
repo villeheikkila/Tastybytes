@@ -21,7 +21,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     private let fullSaved = "id, username, first_name, last_name, avatar_url, name_display, color_scheme, notifications (id, message, created_at), roles (id, name, permissions (id, name))"
 
     func getById(id: UUID) async throws -> Profile {
-        let d =  try await client
+        return try await client
             .database
             .from(tableName)
             .select(columns: fullSaved)
@@ -29,9 +29,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             .limit(count: 1)
             .single()
             .execute()
-        
-        printData(data: d.data)
-            return try d.decoded(to: Profile.self)
+            .decoded(to: Profile.self)
     }
     
     func update(id: UUID, update: Profile.Update) async throws -> Profile {

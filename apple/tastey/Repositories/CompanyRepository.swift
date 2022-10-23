@@ -1,6 +1,7 @@
 import Supabase
 
 protocol CompanyRepository {
+    func getById(id: Int) async throws -> Company
     func insert(newCompany: NewCompany) async throws -> Company
     func search(searchTerm: String) async throws -> [Company]
 }
@@ -9,6 +10,18 @@ struct SupabaseCompanyRepository: CompanyRepository {
     let client: SupabaseClient
     private let tableName = "companies"
     private let saved = "id, name"
+    
+    func getById(id: Int) async throws -> Company {
+        return try await client
+            .database
+            .from(tableName)
+            .select(columns: saved)
+            .eq(column: "id", value: id)
+            .limit(count: 1)
+            .single()
+            .execute()
+            .decoded(to: Company.self)
+    }
     
     func insert(newCompany: NewCompany) async throws -> Company {
         return try await client

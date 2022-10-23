@@ -48,6 +48,7 @@ enum Route: Hashable {
     case product(Product)
     case profile(Profile)
     case checkIn(CheckIn)
+    case companies(Company)
     case settings
     case currentUserFriends
     case friends(Profile)
@@ -69,8 +70,13 @@ struct AddRoutesView<Content: View>: View {
             .navigationDestination(for: Product.self) { product in
                 ProductPageView(product: product)
             }
+            .navigationDestination(for: Company.self) { company in
+                CompanyPageView(company: company)
+            }
             .navigationDestination(for: Route.self) { route in
                 switch route {
+                case let .companies(company):
+                    CompanyPageView(company: company)
                 case .currentUserFriends:
                     WithProfile {
                         profile in FriendsScreenView(profile: profile)

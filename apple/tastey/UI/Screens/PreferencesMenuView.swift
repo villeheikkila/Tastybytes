@@ -21,10 +21,11 @@ struct PreferencesMenuView: View {
                 Text("Delete Account")
             }
 
-            Section {
+            Section{
                 Button("Log Out", action: { viewModel.logOut() }).fontWeight(.bold)
             }
         }
+        .listStyle(.grouped)
         .navigationTitle("Preferences")
         .navigationBarTitleDisplayMode(.inline)
     }
