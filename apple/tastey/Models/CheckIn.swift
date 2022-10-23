@@ -7,7 +7,7 @@ struct CheckIn: Identifiable {
     let imageUrl: String?
     let createdAt: Date
     let profile: Profile
-    let product: Product
+    let product: ProductJoined
     let checkInReactions: [CheckInReaction]
     let taggedProfiles: [Profile]
     let flavors: [Flavor]
@@ -21,7 +21,6 @@ struct CheckIn: Identifiable {
         if let imageUrl = imageUrl {
             let bucketId = "migrated"
             let urlString = "\(Supabase.urlString)/storage/v1/object/public/\(bucketId)/\(imageUrl).jpeg"
-            print(urlString)
             guard let url = URL(string: urlString) else { return nil }
             return url
         } else {
@@ -60,7 +59,7 @@ extension CheckIn: Decodable {
         imageUrl = try values.decodeIfPresent(String.self, forKey: .imageUrl)
         createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
         profile = try values.decode(Profile.self, forKey: .profile)
-        product = try values.decode(Product.self, forKey: .product)
+        product = try values.decode(ProductJoined.self, forKey: .product)
         checkInReactions = try values.decode([CheckInReaction].self, forKey: .checkInReactions)
         taggedProfiles = try values.decode([CheckInTaggedProfile].self, forKey: .taggedProfiles).compactMap { $0.profile }
         flavors = try values.decode([CheckInFlavors].self, forKey: .flavors).compactMap { $0.flavor }

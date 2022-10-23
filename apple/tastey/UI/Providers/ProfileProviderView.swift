@@ -26,7 +26,6 @@ class CurrentProfile: ObservableObject {
         Task {
             do {
                 let currentUserProfile = try await repository.profile.getById(id: id)
-                print(currentUserProfile)
                 DispatchQueue.main.async {
                     self.profile = currentUserProfile
                     self.notifications = currentUserProfile.notifications ?? []
