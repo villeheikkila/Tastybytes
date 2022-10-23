@@ -3,6 +3,7 @@ import Supabase
 protocol CompanyRepository {
     func getById(id: Int) async throws -> CompanyJoined
     func insert(newCompany: NewCompany) async throws -> Company
+    func delete(id: Int) async throws -> Void
     func search(searchTerm: String) async throws -> [Company]
 }
 
@@ -13,7 +14,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
     private let joined = "id, name, companies (id, name), brands (id, name, sub_brands (id, name, products (id, name, description, subcategories (id, name, categories (id, name)))))"
     
     func getById(id: Int) async throws -> CompanyJoined {
-        let d = try await client
+        return try await client
             .database
             .from(tableName)
             .select(columns: joined)
@@ -21,9 +22,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .limit(count: 1)
             .single()
             .execute()
-            
-        printData(data: d.data)
-        return try d.decoded(to: CompanyJoined.self)
+            .decoded(to: CompanyJoined.self)
     }
     
     func insert(newCompany: NewCompany) async throws -> Company {
@@ -35,6 +34,15 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .single()
             .execute()
             .decoded(to: Company.self)
+    }
+    
+    func delete(id: Int) async throws -> Void {
+        try await client
+            .database
+            .from(tableName)
+            .delete()
+            .eq(column: "id", value: id)
+            .execute()
     }
     
     func search(searchTerm: String) async throws -> [Company] {

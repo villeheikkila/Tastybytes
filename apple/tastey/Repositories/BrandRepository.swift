@@ -4,6 +4,7 @@ import Supabase
 protocol BrandRepository {
     func getByBrandOwnerId(brandOwnerId: Int) async throws -> [BrandJoinedWithSubBrands]
     func insert(newBrand: NewBrand) async throws -> BrandJoinedWithSubBrands
+    func delete(id: Int) async throws -> Void
 }
 
 struct SupabaseBrandRepository: BrandRepository {
@@ -32,5 +33,14 @@ struct SupabaseBrandRepository: BrandRepository {
             .single()
             .execute()
             .decoded(to: BrandJoinedWithSubBrands.self)
+    }
+    
+    func delete(id: Int) async throws -> Void {
+        try await client
+            .database
+            .from(tableName)
+            .delete()
+            .eq(column: "id", value: id)
+            .execute()
     }
 }
