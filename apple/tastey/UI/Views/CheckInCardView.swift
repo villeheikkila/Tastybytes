@@ -106,10 +106,12 @@ struct CheckInCardView: View {
                             .foregroundColor(.secondary)
                     }
 
-                    if let manufacturerName = checkIn.variant?.manufacturer.name {
-                        Text("(\(manufacturerName))")
-                            .font(.system(size: 16, weight: .bold, design: .default))
-                            .foregroundColor(.secondary)
+                    if let manufacturer = checkIn.variant?.manufacturer {
+                        NavigationLink(value: manufacturer) {
+                            Text("(\(manufacturer.name))")
+                                .font(.system(size: 16, weight: .bold, design: .default))
+                                .foregroundColor(.secondary)
+                        }
                     }
 
                     Spacer()
