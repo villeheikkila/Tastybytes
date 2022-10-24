@@ -157,7 +157,7 @@ struct FriendListItemSimpleView: View {
             AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
             VStack {
                 HStack {
-                    Text(profile.getPreferedName())
+                    Text(profile.getPreferredName())
                     Spacer()
                 }
             }
@@ -195,7 +195,7 @@ struct FriendListItemView: View {
             AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
             VStack {
                 HStack {
-                    Text(profile.getPreferedName())
+                    Text(profile.getPreferredName())
                     if friend.status == FriendStatus.pending {
                         Text("(\(friend.status.rawValue.capitalized))").font(.footnote)
                     }

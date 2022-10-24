@@ -13,7 +13,7 @@ struct Profile: Identifiable {
 }
 
 extension Profile {
-    func getPreferedName() -> String {
+    func getPreferredName() -> String {
         switch nameDisplay {
         case .username:
             return username

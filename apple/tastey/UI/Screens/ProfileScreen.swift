@@ -38,7 +38,7 @@ struct ProfileView: View {
             }
 
             VStack(alignment: .center) {
-                Text(profile.getPreferedName())
+                Text(profile.getPreferredName())
                     .font(.system(size: 16, weight: .bold, design: .default))
                     .lineLimit(1)
                     .font(.system(size: 500))

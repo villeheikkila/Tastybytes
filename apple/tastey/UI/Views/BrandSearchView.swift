@@ -21,10 +21,9 @@ struct BrandSearchView: View {
                                 
                 Section {
                     TextField("Name", text: $brandName)
-                        .limitInputLength(value: $brandName, length: 24)
                     Button("Create") {
                         createNewBrand()
-                    }.disabled(!validateStringLenght(str: brandName, type: .normal))
+                    }.disabled(!validateStringLength(str: brandName, type: .normal))
                 } header: {
                     Text("Add new brand for \(brandOwner.name)")
                 }

@@ -2,23 +2,15 @@ import SwiftUI
 import AlertToast
 
 struct CompanySearchView: View {
-    @State var searchText: String = ""
-    @State var searchResults = [Company]()
-    @State var status: Status? = nil
-    @State var companyName = ""
+    @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
 
     let onSelect: (_ company: Company, _ createdNew: Bool) -> Void
-    
-    func onAdd() {
-        self.companyName = searchText
-        self.status = Status.add
-    }
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(searchResults, id: \.id) { company in
+                ForEach(viewModel.searchResults, id: \.id) { company in
                     Button(action: {
                         self.onSelect(company, false)
                         dismiss()
@@ -28,11 +20,11 @@ struct CompanySearchView: View {
                     }
                 }
 
-                switch status {
+                switch viewModel.status {
                 case .searched:
                     Section {
                         Button(action: {
-                            onAdd()
+                            viewModel.onAdd()
                         }) {
                             Text("Add")
                         }
@@ -41,12 +33,14 @@ struct CompanySearchView: View {
                     }.textCase(nil)
                 case .add:
                     Section {
-                        TextField("Name", text: $companyName)
-                            .limitInputLength(value: $companyName, length: 24)
+                        TextField("Name", text: $viewModel.companyName)
                         Button("Create") {
-                            createNewCompany()
+                            viewModel.createNewCompany(onSuccess: {
+                                company in self.onSelect(company, true)
+                                dismiss()
+                            })
                         }
-                        .disabled(!validateStringLenght(str: companyName, type: .normal))
+                        .disabled(!validateStringLength(str: viewModel.companyName, type: .normal))
                     } header: {
                         Text("Add new company")
                     }
@@ -60,45 +54,55 @@ struct CompanySearchView: View {
             }) {
                 Text("Cancel").bold()
             })
-            .searchable(text: $searchText)
-            .onSubmit(of: .search, searchCompanies)
+            .searchable(text: $viewModel.searchText)
+            .onSubmit(of: .search, { viewModel.searchCompanies() })
         }
     }
 
-    func searchCompanies() {
-        Task {
-            do {
-                let searchResults = try await repository.company.search(searchTerm: searchText)
-                DispatchQueue.main.async {
-                    self.searchResults = searchResults
-                    self.status = Status.searched
-                }
-            } catch {
-                print("error: \(error.localizedDescription)")
-            }
-        }
-    }
 
-    func createNewCompany() {
-        let newCompany = NewCompany(name: companyName)
-        Task {
-            do {
-                let newCompany = try await repository.company.insert(newCompany: newCompany)
-
-                DispatchQueue.main.async {
-                    onSelect(newCompany, true)
-                    dismiss()
-                }
-            } catch {
-                print("error: \(error.localizedDescription)")
-            }
-        }
-    }
 }
 
 extension CompanySearchView {
     enum Status {
         case add
         case searched
+    }
+    
+    @MainActor class ViewModel: ObservableObject {
+        @Published var searchText: String = ""
+        @Published var searchResults = [Company]()
+        @Published var status: Status? = nil
+        @Published var companyName = ""
+        
+        func onAdd() {
+            self.companyName = searchText
+            self.status = Status.add
+        }
+        
+        func searchCompanies() {
+            Task {
+                do {
+                    let searchResults = try await repository.company.search(searchTerm: searchText)
+                    DispatchQueue.main.async {
+                        self.searchResults = searchResults
+                        self.status = Status.searched
+                    }
+                } catch {
+                    print("error: \(error.localizedDescription)")
+                }
+            }
+        }
+
+        func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) {
+            let newCompany = NewCompany(name: companyName)
+            Task {
+                do {
+                    let newCompany = try await repository.company.insert(newCompany: newCompany)
+                    onSuccess(newCompany)
+                } catch {
+                    print("error: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }

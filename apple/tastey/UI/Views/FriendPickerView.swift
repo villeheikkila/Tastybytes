@@ -4,9 +4,8 @@ import SwiftUI
 
 
 struct FriendPickerView: View {
-    @State var friends = [Profile]()
     @Binding var taggedFriends: [Profile]
-    @State var showToast = false
+    @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
     
     func toggleFriend(friend: Profile) {
@@ -19,16 +18,15 @@ struct FriendPickerView: View {
     
     var body: some View {
         NavigationStack {
-            List(friends, id: \.self) { friend in
+            List(viewModel.friends, id: \.self) { friend in
                 Button(action: {
                     toggleFriend(friend: friend)
                 }) {
                     HStack {
                         AvatarView(avatarUrl: friend.getAvatarURL(), size: 32, id: friend.id)
-                        Text(friend.getPreferedName())
-                        
+                        Text(friend.getPreferredName())
                         Spacer()
-                        if taggedFriends.contains(where: { $0.id == friend.id }) {
+                        if taggedFriends.contains(friend) {
                             Image(systemName: "checkmark")
                         }
                     }
@@ -42,15 +40,23 @@ struct FriendPickerView: View {
                 Text("Done").bold()
             })
         }.task {
-            loadFriends()
+            viewModel.loadFriends()
         }
     }
     
-    func loadFriends() {
-        let currentUserId = repository.auth.getCurrentUserId()
-        Task {
-            let acceptedFriends = try await repository.friend.getByUserId(userId: currentUserId, status: .accepted)
-            self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }
+
+}
+
+extension FriendPickerView {
+    @MainActor class ViewModel: ObservableObject {
+        @Published var friends = [Profile]()
+
+        func loadFriends() {
+            let currentUserId = repository.auth.getCurrentUserId()
+            Task {
+                let acceptedFriends = try await repository.friend.getByUserId(userId: currentUserId, status: .accepted)
+                self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }
+            }
         }
     }
 }

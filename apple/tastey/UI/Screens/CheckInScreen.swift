@@ -115,7 +115,7 @@ struct CommentItemView: View {
             AvatarView(avatarUrl: comment.profile.getAvatarURL(), size: 32, id: comment.profile.id)
             VStack(alignment: .leading) {
                 HStack {
-                    Text(comment.profile.getPreferedName()).font(.system(size: 12, weight: .medium, design: .default))
+                    Text(comment.profile.getPreferredName()).font(.system(size: 12, weight: .medium, design: .default))
                     Spacer()
                     Text(comment.createdAt.formatted()).font(.system(size: 8, weight: .medium, design: .default))
                 }

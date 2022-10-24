@@ -21,11 +21,10 @@ struct SubBrandPickerView: View {
                                 
                 Section {
                     TextField("Name", text: $viewModel.subBrandName)
-                        .limitInputLength(value: $viewModel.subBrandName, length: 24)
                     Button("Create") {
                         viewModel.createNewSubBrand(brandWithSubBrands, onSelect)
                     }
-                    .disabled(!validateStringLenght(str: viewModel.subBrandName, type: .normal))
+                    .disabled(!validateStringLength(str: viewModel.subBrandName, type: .normal))
                 } header: {
                     Text("Add new sub-brand for \(brandWithSubBrands.name)")
                 }

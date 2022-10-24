@@ -33,7 +33,7 @@ struct AddProductScreenView: View {
     }
 
     func isValid() -> Bool {
-        return brandOwner != nil && brand != nil && validateStringLenght(str: name, type: .normal)
+        return brandOwner != nil && brand != nil && validateStringLength(str: name, type: .normal)
     }
 
     func getToastText() -> String {
@@ -116,10 +116,7 @@ struct AddProductScreenView: View {
 
                 Section {
                     TextField("Flavor", text: $name)
-                        .limitInputLength(value: $name, length: 24)
                     TextField("Description (optional)", text: $description)
-                        .limitInputLength(value: $description, length: 24)
-
                 } header: {
                     Text("Product")
                 }
