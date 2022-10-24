@@ -96,13 +96,15 @@ struct CheckInCardView: View {
                         Text(checkIn.product.getDisplayName(.brandOwner))
                             .font(.system(size: 16, weight: .bold, design: .default))
                             .foregroundColor(.secondary)
+                            .lineLimit(nil)
                     }
 
-                    if let manufacturer = checkIn.variant?.manufacturer {
+                    if let manufacturer = checkIn.variant?.manufacturer, manufacturer.id != checkIn.product.subBrand.brand.brandOwner.id {
                         NavigationLink(value: manufacturer) {
                             Text("(\(manufacturer.name))")
                                 .font(.system(size: 16, weight: .bold, design: .default))
                                 .foregroundColor(.secondary)
+                                .lineLimit(nil)
                         }
                     }
 
