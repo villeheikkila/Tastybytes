@@ -1,5 +1,0 @@
-mutation DeleteFriend($userId: UUID!) {
-  deleteFriend(input: { friendId: $userId }) {
-    clientMutationId
-  }
-}

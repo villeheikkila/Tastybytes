@@ -1,7 +1,0 @@
-node_modules
-**/dist
-/@api/data/schema.graphql
-/@api/data/schema.sql
-/@pwa/graphql/*
-/@pwa/client/.next
-.next

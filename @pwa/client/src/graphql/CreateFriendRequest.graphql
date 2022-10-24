@@ -1,5 +1,0 @@
-mutation SendFriendRequest($userId: UUID!) {
-  createFriendRequest(input: { userId: $userId }) {
-    clientMutationId
-  }
-}
