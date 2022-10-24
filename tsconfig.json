@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "noEmitOnError": false,
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "lib": ["dom", "es2020"],
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "removeComments": false,
+    "strict": true,
+    "strictNullChecks": true,
+    "importHelpers": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "preserveWatchOutput": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "useUnknownInCatchVariables": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noEmit": true,
+    "declaration": true,
+    "declarationMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@pwa/*": ["@pwa/*"],
+      "@api/*": ["@api/*"]
+    }
+  },
+  "exclude": [],
+  "include": [],
+  "references": [
+    { "path": "@pwa/components" },
+    { "path": "@pwa/graphql" },
+    { "path": "@api/server" },
+    { "path": "@api/config" }
+  ]
+}

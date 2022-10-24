@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": ".",
+    "outDir": ".",
+    "tsBuildInfoFile": "tsconfig.tsbuildinfo",
+    "declarationDir": ".",
+    "lib": ["es2020", "esnext.asynciterable"],
+    "target": "es2020",
+    "module": "commonjs",
+    "jsx": "react"
+  },
+  "include": ["index.tsx"]
+}

@@ -1,0 +1,15 @@
+.docker
+.env
+.git
+.github
+.vscode
+
+
+*Dockerfile*
+*docker-compose*
+
+**/.DS_Store
+**/.next
+**/node_modules
+**/dist
+**/__tests__

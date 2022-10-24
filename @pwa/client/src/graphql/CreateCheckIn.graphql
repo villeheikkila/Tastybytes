@@ -1,0 +1,9 @@
+mutation CreateCheckIn($itemId: Int!, $rating: Int, $review: String) {
+  createCheckIn(input: { itemId: $itemId, rating: $rating, review: $review }) {
+    checkIn {
+      id
+      rating
+      review
+    }
+  }
+}

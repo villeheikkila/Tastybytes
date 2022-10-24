@@ -1,0 +1,16 @@
+fragment SharedLayout_Query on Query {
+  currentUser {
+    id
+    ...SharedLayout_User
+  }
+}
+
+fragment SharedLayout_User on User {
+  id
+  firstName
+  lastName
+  username
+  avatarUrl
+  isAdmin
+  isVerified
+}

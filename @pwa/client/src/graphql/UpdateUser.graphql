@@ -1,0 +1,11 @@
+mutation UpdateUser($id: UUID!, $patch: UserPatch!) {
+  updateUser(input: { id: $id, patch: $patch }) {
+    clientMutationId
+    user {
+      id
+      firstName
+      lastName
+      username
+    }
+  }
+}
