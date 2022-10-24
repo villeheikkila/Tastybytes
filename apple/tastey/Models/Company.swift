@@ -6,11 +6,9 @@ struct Company: Identifiable {
     let logoUrl: String?
     
     func getLogoUrl() -> URL? {
-        print(logoUrl)
         if let logoUrl = logoUrl {
             let bucketId = "logos"
             let urlString = "\(Supabase.urlString)/storage/v1/object/public/\(bucketId)/\(logoUrl)"
-            print(urlString)
             guard let url = URL(string: urlString) else { return nil }
             return url
         } else {

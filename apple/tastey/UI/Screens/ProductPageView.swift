@@ -91,10 +91,8 @@ extension ProductPageView {
         }
         
         func loadProductSummary(_ product: ProductJoined) {
-            print("HEI")
             Task {
                 let summary = try await repository.product.getSummaryById(id: product.id)
-                print(summary)
                 DispatchQueue.main.async {
                     self.productSummary = summary
                 }
