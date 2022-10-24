@@ -44,13 +44,13 @@ struct FriendPickerView: View {
         }
     }
     
-
+    
 }
 
 extension FriendPickerView {
     @MainActor class ViewModel: ObservableObject {
         @Published var friends = [Profile]()
-
+        
         func loadFriends() {
             let currentUserId = repository.auth.getCurrentUserId()
             Task {

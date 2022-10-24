@@ -5,7 +5,7 @@ class CurrentProfile: ObservableObject {
     @Published var profile: Profile?
     @Published private(set) var notifaction: [Notification] = []
     @Published var notifications = [Notification]()
-
+    
     func deleteNotifications(notification: Notification) {
         Task {
             do {
@@ -21,7 +21,7 @@ class CurrentProfile: ObservableObject {
         }
     }
     
-
+    
     func get(id: UUID) {
         Task {
             do {
@@ -35,7 +35,7 @@ class CurrentProfile: ObservableObject {
             }
         }
     }
-
+    
     func refresh() {
         if let id = profile?.id {
             Task {
@@ -66,7 +66,7 @@ public struct CurrentProfileProviderView<RootView: View>: View {
     @StateObject var currentProfile = CurrentProfile()
     let userId: UUID
     let rootView: () -> RootView
-
+    
     public init(
         userId: UUID,
         @ViewBuilder rootView: @escaping () -> RootView
@@ -74,7 +74,7 @@ public struct CurrentProfileProviderView<RootView: View>: View {
         self.rootView = rootView
         self.userId = userId
     }
-
+    
     func getColorScheme(colorScheme: Profile.ColorScheme?) -> ColorScheme? {
         if let colorScheme = colorScheme {
             switch colorScheme {
@@ -86,7 +86,7 @@ public struct CurrentProfileProviderView<RootView: View>: View {
             return nil
         }
     }
-
+    
     public var body: some View {
         rootView()
             .environmentObject(currentProfile)
@@ -99,15 +99,15 @@ public struct CurrentProfileProviderView<RootView: View>: View {
 
 struct WithProfile<Content: View>: View {
     @EnvironmentObject var currentProfile: CurrentProfile
-
+    
     let content: (_ profile: Profile) -> Content
-
+    
     public init(
         @ViewBuilder content: @escaping (Profile) -> Content
     ) {
         self.content = content
     }
-
+    
     var body: some View {
         VStack {
             if let profile = currentProfile.profile {

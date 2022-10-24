@@ -21,7 +21,7 @@ extension Profile {
             return getFullName()
         }
     }
-
+    
     func getFullName() -> String {
         if let firstName = firstName, let lastName = lastName {
             let trimmedFirstName = firstName.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -35,7 +35,7 @@ extension Profile {
             return username
         }
     }
-
+    
     func getAvatarURL() -> URL? {
         if let avatarUrl = avatarUrl {
             let bucketId = "avatars"
@@ -46,7 +46,7 @@ extension Profile {
             return nil
         }
     }
-
+    
     func isCurrentUser() -> Bool {
         let currentUserId = repository.auth.getCurrentUserId()
         return currentUserId == id
@@ -86,7 +86,7 @@ extension Profile: Decodable {
         case notification = "notifications"
         case roles = "roles"
     }
-
+    
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(UUID.self, forKey: .id)
@@ -108,11 +108,11 @@ extension Profile {
         var last_name: String?
         var name_display: String?
         var color_scheme: String?
-
+        
         init(showFullName: Bool) {
             name_display = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
         }
-
+        
         init(isDarkMode: Bool, isSystemColor: Bool) {
             if isSystemColor {
                 color_scheme = ColorScheme.system.rawValue
@@ -122,7 +122,7 @@ extension Profile {
                 color_scheme = ColorScheme.light.rawValue
             }
         }
-
+        
         init(username: String?, firstName: String?, lastName: String?) {
             self.username = username
             first_name = firstName

@@ -3,39 +3,39 @@ import SwiftUI
 
 struct NavigationStackView: View {
     @StateObject var navigator = Navigator()
-
+    
     var body: some View {
         NavigationStack(path: $navigator.path) {
             AddRoutesView {
                 TabbarView()
             }
             .navigationBarItems(leading:
-                NavigationLink(value: Route.currentUserFriends) {
-                    Image(systemName: "person.2").imageScale(.large)
-
-                },
-                trailing: NavigationLink(value: Route.settings) {
-                    Image(systemName: "gear").imageScale(.large)
-                })
+                                    NavigationLink(value: Route.currentUserFriends) {
+                Image(systemName: "person.2").imageScale(.large)
+                
+            },
+                                trailing: NavigationLink(value: Route.settings) {
+                Image(systemName: "gear").imageScale(.large)
+            })
         }.environmentObject(navigator)
     }
 }
 
 class Navigator: ObservableObject {
     @Published var path = NavigationPath()
-
+    
     func gotoHomePage() {
         path.removeLast(path.count)
     }
-
+    
     func removeLast() {
         path.removeLast()
     }
-
+    
     func tapOnSecondPage() {
         path.removeLast()
     }
-
+    
     func navigateTo(destination: some Hashable, resetStack: Bool) {
         if resetStack {
             path.removeLast(path.count)
@@ -58,7 +58,7 @@ enum Route: Hashable {
 
 struct AddRoutesView<Content: View>: View {
     var content: () -> Content
-
+    
     var body: some View {
         content()
             .navigationDestination(for: CheckIn.self) { checkIn in

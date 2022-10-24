@@ -2,7 +2,7 @@ import SwiftUI
 
 struct RatingPickerView: View {
     @Binding var rating: Int?
-
+    
     func image(for number: Int) -> Image {
         if number > rating ?? 0 {
             return Image(systemName: "star")

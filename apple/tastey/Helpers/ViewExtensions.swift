@@ -7,11 +7,11 @@ struct LocalizedAlertError: LocalizedError {
     var errorDescription: String? {
         underlyingError.errorDescription
     }
-
+    
     var recoverySuggestion: String? {
         underlyingError.recoverySuggestion
     }
-
+    
     init?(error: Error?) {
         guard let localizedError = error as? LocalizedError else { return nil }
         underlyingError = localizedError
@@ -33,11 +33,11 @@ extension View {
 
 public extension View {
     func fullBackground(imageName: String) -> some View {
-       return background(
-                Image(imageName)
-                    .resizable()
-                    .scaledToFill()
-                    .edgesIgnoringSafeArea(.all)
-       )
+        return background(
+            Image(imageName)
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
+        )
     }
 }

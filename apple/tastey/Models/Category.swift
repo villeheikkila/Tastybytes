@@ -45,7 +45,7 @@ extension Category: Decodable {
         case id
         case name
     }
-
+    
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
@@ -71,7 +71,7 @@ extension CategoryJoinedWithSubcategories: Decodable {
         case name
         case subcategories
     }
-
+    
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
@@ -98,7 +98,7 @@ extension CategoryJoinedWithServingStyles: Decodable {
         case name
         case servingStyles = "serving_styles"
     }
-
+    
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)

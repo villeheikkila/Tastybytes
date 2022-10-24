@@ -29,7 +29,7 @@ struct SupabaseProductRepository: ProductRepository {
             .execute()
             .decoded(to: [ProductJoined].self)
     }
-
+    
     func getProductById(id: Int) async throws -> ProductJoined {
         return try await client
             .database

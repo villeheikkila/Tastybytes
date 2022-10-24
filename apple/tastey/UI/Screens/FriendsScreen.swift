@@ -5,16 +5,16 @@ import SwiftUI
 struct FriendsScreenView: View {
     var profile: Profile
     @StateObject private var viewModel = ViewModel()
-
+    
     var body: some View {
         ScrollView {
             VStack {
                 ForEach(viewModel.friends, id: \.self) { friend in
                     if profile.isCurrentUser() {
                         FriendListItemView(friend: friend,
-                                       onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
-                                       onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
-                                       onDelete: { id in viewModel.removeFriendRequest(id: id) })
+                                           onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
+                                           onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
+                                           onDelete: { id in viewModel.removeFriendRequest(id: id) })
                     } else {
                         FriendListItemSimpleView(profile: friend.getFriend(userId: profile.id))
                     }
@@ -41,7 +41,7 @@ struct FriendsScreenView: View {
                         }
                     }
                 }
-
+                
                 .errorAlert(error: $viewModel.modalError)
             })
             .presentationDetents([.medium])
@@ -64,19 +64,19 @@ struct FriendsScreenView: View {
 }
 
 extension FriendsScreenView {
-   @MainActor class ViewModel: ObservableObject {
+    @MainActor class ViewModel: ObservableObject {
         @Published var searchText: String = ""
         @Published var products = [Profile]()
         @Published var friends = [Friend]()
         @Published var showToast = false
         @Published var showUserSearchSheet = false
-
+        
         @Published var error: Error?
         @Published var modalError: Error?
-
+        
         func sendFriendRequest(receiver: UUID) {
             let newFriend = NewFriend(receiver: receiver, status: .pending)
-
+            
             Task {
                 do {
                     let newFriend = try await repository.friend.insert(newFriend: newFriend)
@@ -92,7 +92,7 @@ extension FriendsScreenView {
                 }
             }
         }
-
+        
         func updateFriendRequest(id: Int, newStatus: FriendStatus) {
             let friend = friends.first(where: { $0.id == id })
             if let friend = friend {
@@ -116,7 +116,7 @@ extension FriendsScreenView {
                 }
             }
         }
-
+        
         func removeFriendRequest(id: Int) {
             Task {
                 do {
@@ -131,7 +131,7 @@ extension FriendsScreenView {
                 }
             }
         }
-
+        
         func loadFriends(userId: UUID) {
             Task {
                 do {
@@ -151,7 +151,7 @@ extension FriendsScreenView {
 
 struct FriendListItemSimpleView: View {
     let profile: Profile
-
+    
     var body: some View {
         HStack(alignment: .center) {
             AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
@@ -177,7 +177,7 @@ struct FriendListItemView: View {
     let onAccept: (_ id: Int) -> Void
     let onBlock: (_ id: Int) -> Void
     let onDelete: (_ id: Int) -> Void
-
+    
     init(friend: Friend,
          onAccept: @escaping (_ id: Int) -> Void,
          onBlock: @escaping (_ id: Int) -> Void,
@@ -189,7 +189,7 @@ struct FriendListItemView: View {
         self.onBlock = onBlock
         self.onDelete = onDelete
     }
-
+    
     var body: some View {
         HStack(alignment: .center) {
             AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
@@ -203,11 +203,11 @@ struct FriendListItemView: View {
                     if friend.isPending(userId: currentUser) {
                         HStack(alignment: .center) {
                             Button(action: {
-                                    onDelete(friend.id)
+                                onDelete(friend.id)
                             }) {
                                 Image(systemName: "person.fill.xmark").imageScale(.large)
                             }
-
+                            
                             Button(action: {
                                 onAccept(friend.id)
                             }) {
@@ -224,7 +224,7 @@ struct FriendListItemView: View {
             }) {
                 Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
             }
-
+            
             Button(action: {
                 onBlock(friend.id)
             }) {

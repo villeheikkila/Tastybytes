@@ -22,9 +22,9 @@ extension View {
 public struct UserProviderView<RootView: View>: View {
     let supabaseClient: SupabaseClient
     let rootView: () -> RootView
-
+    
     @State private var user: User?
-
+    
     public init(
         supabaseClient: SupabaseClient,
         @ViewBuilder rootView: @escaping () -> RootView
@@ -32,14 +32,14 @@ public struct UserProviderView<RootView: View>: View {
         self.supabaseClient = supabaseClient
         self.rootView = rootView
     }
-
+    
     public var body: some View {
         rootView()
             .withUser(user)
             .task {
                 let session = supabaseClient.auth.session
                 user = session?.user
-
+                
                 for await _ in supabaseClient.auth.authEventChange.values {
                     user = supabaseClient.auth.session?.user
                 }

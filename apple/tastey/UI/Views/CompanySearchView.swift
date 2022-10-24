@@ -4,9 +4,9 @@ import AlertToast
 struct CompanySearchView: View {
     @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
-
+    
     let onSelect: (_ company: Company, _ createdNew: Bool) -> Void
-
+    
     var body: some View {
         NavigationStack {
             List {
@@ -19,7 +19,7 @@ struct CompanySearchView: View {
                         Text(company.name)
                     }
                 }
-
+                
                 switch viewModel.status {
                 case .searched:
                     Section {
@@ -58,8 +58,8 @@ struct CompanySearchView: View {
             .onSubmit(of: .search, { viewModel.searchCompanies() })
         }
     }
-
-
+    
+    
 }
 
 extension CompanySearchView {
@@ -92,7 +92,7 @@ extension CompanySearchView {
                 }
             }
         }
-
+        
         func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) {
             let newCompany = NewCompany(name: companyName)
             Task {

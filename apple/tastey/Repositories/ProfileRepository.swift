@@ -19,7 +19,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     private let tableName = "profiles"
     private let saved = "id, username, first_name, last_name, avatar_url, name_display"
     private let fullSaved = "id, username, first_name, last_name, avatar_url, name_display, color_scheme, notifications (id, message, created_at), roles (id, name, permissions (id, name))"
-
+    
     func getById(id: UUID) async throws -> Profile {
         return try await client
             .database
@@ -75,7 +75,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     func uploadAvatar(id: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws -> Void {
         let file = File(
             name: "avatar.jpeg", data: data, fileName: "avatar.jpeg", contentType: "image/jpeg")
-                
+        
         client
             .storage
             .from(id: "avatars")
@@ -92,7 +92,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     }
     
     func notificationChannel() -> Channel {
-         return client
+        return client
             .realtime
             .channel(.table("notifications", schema: "public"))
     }

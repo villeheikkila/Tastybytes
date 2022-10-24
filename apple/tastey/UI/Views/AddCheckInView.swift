@@ -7,18 +7,18 @@ struct AddCheckInView: View {
     @State var review: String = ""
     @State var rating: Int? = nil
     @State var manufacturer: Company? = nil
-
+    
     @State var servingStyles = [ServingStyle]()
     @State var servingStyle = ServingStyleName.none
-
+    
     @State var taggedFriends = [Profile]()
-
+    
     @State var availableFlavors = [Flavor]()
     @State var pickedFlavors = [Flavor]()
-
+    
     @Environment(\.dismiss) var dismiss
     let onCreation: (_ checkIn: CheckIn) -> Void
-
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -42,7 +42,7 @@ struct AddCheckInView: View {
                         Text("Review")
                     }
                     .headerProminence(.increased)
-
+                    
                     Section {
                         if servingStyles.count > 0 {
                             Picker("Serving Style", selection: $servingStyle) {
@@ -52,12 +52,12 @@ struct AddCheckInView: View {
                                 }
                             }
                         }
-
+                        
                         Button(action: { self.activeSheet = Sheet.manufacturer }) {
                             Text(manufacturer?.name ?? "Manufactured by")
                         }
                     }
-
+                    
                     Section {
                         Button(action: { self.activeSheet = Sheet.friends }) {
                             if taggedFriends.count == 0 {
@@ -100,20 +100,20 @@ struct AddCheckInView: View {
             }
         }
     }
-
+    
     func createCheckIn() {
         let friendIds = taggedFriends.map { $0.id }
         let servingStyleId = servingStyles.first(where: { $0.name == servingStyle })?.id
         let manufacturerId = manufacturer?.id
         let flavorIds = pickedFlavors.map { $0.id }
         var ratingDoubled: Int?
-
+        
         if let rating = rating {
             ratingDoubled = Int(rating * 2)
         }
-
+        
         let newCheckParams = NewCheckInParams(productId: product.id, rating: ratingDoubled, review: review, manufacturerId: manufacturerId, servingStyleId: servingStyleId, friendIds: friendIds, flavorIds: flavorIds)
-
+        
         Task {
             do {
                 let newCheckIn = try await repository.checkIn.create(newCheckInParams: newCheckParams)
@@ -126,7 +126,7 @@ struct AddCheckInView: View {
             }
         }
     }
-
+    
     func loadInitialData(product: ProductJoined) {
         Task {
             if let categoryId = product.subcategories.first?.category.id {
@@ -139,7 +139,7 @@ struct AddCheckInView: View {
             }
         }
     }
-
+    
     enum Sheet: Identifiable {
         var id: Self { self }
         case manufacturer

@@ -6,11 +6,11 @@ struct BrandSearchView: View {
     @State var brandsWithSubBrands = [BrandJoinedWithSubBrands]()
     @State var brandName = ""
     @Environment(\.dismiss) var dismiss
-
+    
     let onSelect: (_ company: BrandJoinedWithSubBrands, _ createdNew: Bool) -> Void
-
+    
     var body: some View {
-
+        
         NavigationStack {
             List {
                 ForEach(brandsWithSubBrands, id: \.self) { brand in
@@ -18,7 +18,7 @@ struct BrandSearchView: View {
                         Text(brand.name)
                     }
                 }
-                                
+                
                 Section {
                     TextField("Name", text: $brandName)
                     Button("Create") {

@@ -10,7 +10,7 @@ struct RatingView: View {
     init(rating: Double) {
         self.rating = rating / 2
     }
-
+    
     var body: some View {
         HStack(spacing: 0) {
             ForEach(0 ..< 5, id: \.self) { pos in

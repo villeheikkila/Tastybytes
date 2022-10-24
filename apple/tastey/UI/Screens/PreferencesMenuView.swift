@@ -20,7 +20,7 @@ struct PreferencesMenuView: View {
             NavigationLink(destination: DeleteAccountView()) {
                 Text("Delete Account")
             }
-
+            
             Section{
                 Button("Log Out", action: { viewModel.logOut() }).fontWeight(.bold)
             }

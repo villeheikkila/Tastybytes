@@ -7,7 +7,7 @@ struct SubcategoryPicker: View {
     @State var showToast = false
     @Environment(\.dismiss) var dismiss
     let maxSubcategories = 4
-
+    
     func toggleSubcategory(subcategory: Subcategory) {
         if subcategories.contains(where: { $0.id == subcategory.id }) {
             subcategories.removeAll(where: { $0.id == subcategory.id })
@@ -17,7 +17,7 @@ struct SubcategoryPicker: View {
             showToast = true
         }
     }
-
+    
     var body: some View {
         NavigationStack {
             List(availableSubcategories, id: \.self) { subcategory in

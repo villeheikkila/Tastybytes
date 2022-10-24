@@ -9,7 +9,7 @@ where Data: RandomAccessCollection, Data.Element: Hashable, Data.Element: Identi
     let content: (Data.Element) -> Content
     let header: (() -> Header)
     let refresh: (() -> Void)?
-
+    
     init(data: Binding<Data>,
          isLoading: Binding<Bool>,
          loadMore: @escaping () -> Void,
@@ -23,7 +23,7 @@ where Data: RandomAccessCollection, Data.Element: Hashable, Data.Element: Identi
         self.content = content
         self.refresh = refresh
     }
-
+    
     var body: some View {
         ScrollView() {
             header()

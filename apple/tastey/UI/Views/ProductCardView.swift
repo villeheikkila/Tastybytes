@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProductCardView: View {
     let product: ProductJoined
-
+    
     var body: some View {
         VStack {
             HStack {
@@ -13,7 +13,7 @@ struct ProductCardView: View {
                     ChipView(title: subcategory.name, cornerRadius: 5)
                 }
             }
-
+            
             Text(product.getDisplayName(.fullName))
                 .font(.system(size: 18, weight: .bold, design: .default))
                 .foregroundColor(.primary)

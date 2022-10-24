@@ -27,7 +27,7 @@ struct CheckIn: Identifiable {
             return nil
         }
     }
-
+    
 }
 
 extension CheckIn: Hashable {
@@ -64,7 +64,7 @@ extension CheckIn: Decodable {
         taggedProfiles = try values.decode([CheckInTaggedProfile].self, forKey: .taggedProfiles).compactMap { $0.profile }
         flavors = try values.decode([CheckInFlavors].self, forKey: .flavors).compactMap { $0.flavor }
         variant = try values.decodeIfPresent(ProductVariant.self, forKey: .variant)
-
+        
     }
 }
 

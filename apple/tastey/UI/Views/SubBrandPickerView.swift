@@ -3,12 +3,12 @@ import SwiftUI
 struct SubBrandPickerView: View {
     let brandWithSubBrands: BrandJoinedWithSubBrands
     let onSelect: (_ company: SubBrand, _ createdNew: Bool) -> Void
-
+    
     @StateObject private var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
-
+    
     var body: some View {
-
+        
         NavigationStack {
             List {
                 ForEach(brandWithSubBrands.subBrands, id: \.self) { subBrand in
@@ -18,7 +18,7 @@ struct SubBrandPickerView: View {
                         }
                     }
                 }
-                                
+                
                 Section {
                     TextField("Name", text: $viewModel.subBrandName)
                     Button("Create") {

@@ -5,7 +5,7 @@ struct ChipView: View {
     let systemName: String? = nil
     var cornerRadius: CGFloat = 15
     
-
+    
     var body: some View {
         HStack {
             if let systemName = systemName {

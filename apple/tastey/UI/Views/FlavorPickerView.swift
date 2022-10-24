@@ -15,7 +15,7 @@ struct FlavorPickerView: View {
             pickedFlavors.append(flavor)
         }
     }
-
+    
     var body: some View {
         NavigationStack {
             List(filteredFlavors, id: \.self) { flavor in
@@ -30,19 +30,19 @@ struct FlavorPickerView: View {
                             Image(systemName: "checkmark")
                         }
                     }
-
+                    
                 }
             }
             .navigationTitle("Flavors")
-                .navigationBarItems(trailing: Button(action: {
-                    dismiss()
-                }) {
-                    Text("Done").bold()
-                })
-                .task {
-                    loadFlavors()
-                }
-                .searchable(text: $searchText)
+            .navigationBarItems(trailing: Button(action: {
+                dismiss()
+            }) {
+                Text("Done").bold()
+            })
+            .task {
+                loadFlavors()
+            }
+            .searchable(text: $searchText)
         }
     }
     

@@ -14,7 +14,7 @@ struct SupabaseFriendsRepository: FriendRepository {
     private let tableName = "friends"
     private let savedLimited = "id, user_id_1, user_id_2, status"
     private let joined = "id, status, sender:user_id_1 (id, username, first_name, last_name, avatar_url, name_display), receiver:user_id_2 (id, username, first_name, last_name, avatar_url, name_display)"
-
+    
     func getByUserId(userId: UUID, status: FriendStatus? = nil) async throws -> [Friend] {
         var queryBuilder = client
             .database
@@ -32,7 +32,7 @@ struct SupabaseFriendsRepository: FriendRepository {
             .execute()
             .decoded(to: [Friend].self)
     }
-
+    
     func insert(newFriend: NewFriend) async throws -> Friend {
         return try await client
             .database
@@ -45,7 +45,7 @@ struct SupabaseFriendsRepository: FriendRepository {
     }
     
     func update(id: Int, friendUpdate: FriendUpdate) async throws -> Friend {
-         return try await client
+        return try await client
             .database
             .from(tableName)
             .update(values: friendUpdate, returning: .representation)
@@ -68,6 +68,6 @@ struct SupabaseFriendsRepository: FriendRepository {
     }
     
 }
-    
+
 
 
