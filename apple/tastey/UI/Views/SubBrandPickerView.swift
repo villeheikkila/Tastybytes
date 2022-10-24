@@ -2,11 +2,10 @@ import SwiftUI
 
 struct SubBrandPickerView: View {
     let brandWithSubBrands: BrandJoinedWithSubBrands
-    @State var searchText = ""
-    @State var subBrandName = ""
-    @Environment(\.dismiss) var dismiss
-    
     let onSelect: (_ company: SubBrand, _ createdNew: Bool) -> Void
+
+    @StateObject private var viewModel = ViewModel()
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
 
@@ -21,12 +20,12 @@ struct SubBrandPickerView: View {
                 }
                                 
                 Section {
-                    TextField("Name", text: $subBrandName)
-                        .limitInputLength(value: $subBrandName, length: 24)
+                    TextField("Name", text: $viewModel.subBrandName)
+                        .limitInputLength(value: $viewModel.subBrandName, length: 24)
                     Button("Create") {
-                        createNewSubBrand()
+                        viewModel.createNewSubBrand(brandWithSubBrands, onSelect)
                     }
-                    .disabled(!validateStringLenght(str: subBrandName, type: .normal))
+                    .disabled(!validateStringLenght(str: viewModel.subBrandName, type: .normal))
                 } header: {
                     Text("Add new sub-brand for \(brandWithSubBrands.name)")
                 }
@@ -40,18 +39,24 @@ struct SubBrandPickerView: View {
             
         }
     }
-    
-    func createNewSubBrand() {
-        let newSubBrand = SubBrandNew(name: subBrandName, brandId: brandWithSubBrands.id)
-        Task {
-            do {
-                let newSubBrand = try await repository.subBrand.insert(newSubBrand: newSubBrand)
-                
-                DispatchQueue.main.async {
-                    onSelect(newSubBrand, true)
+}
+
+extension SubBrandPickerView {
+    @MainActor class ViewModel: ObservableObject {
+        @Published var subBrandName = ""
+        
+        func createNewSubBrand(_ brand: BrandJoinedWithSubBrands, _ onSelect: @escaping (_ subBrand: SubBrand,  _ createdNew: Bool) -> Void) {
+            let newSubBrand = SubBrandNew(name: subBrandName, brandId: brand.id)
+            Task {
+                do {
+                    let newSubBrand = try await repository.subBrand.insert(newSubBrand: newSubBrand)
+                    
+                    DispatchQueue.main.async {
+                        onSelect(newSubBrand, true)
+                    }
+                } catch {
+                    print("error: \(error.localizedDescription)")
                 }
-            } catch {
-                print("error: \(error.localizedDescription)")
             }
         }
     }

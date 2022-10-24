@@ -1,56 +1,65 @@
 import SwiftUI
 
 struct ReactionsView: View {
-    let checkInId: Int
+    let checkIn: CheckIn
     let currentUserId = repository.auth.getCurrentUserId()
-    @State var checkInReactions: [CheckInReaction]
-
-    init(checkInId: Int, checkInReactions: [CheckInReaction]) {
-        _checkInReactions = State(initialValue: checkInReactions)
-        self.checkInId = checkInId
-    }
+    @StateObject private var viewModel = ViewModel()
 
     var body: some View {
         HStack {
-            ForEach(checkInReactions, id: \.id) {
+            ForEach(viewModel.checkInReactions, id: \.id) {
                 reaction in AvatarView(avatarUrl: reaction.profile.getAvatarURL(), size: 24, id: reaction.profile.id)
             }
 
             Button {
-                if let existingReaction = checkInReactions.first(where: { $0.profile.id == currentUserId }) {
-                    removeReaction(reactionId: existingReaction.id)
+                if let existingReaction = viewModel.checkInReactions.first(where: { $0.profile.id == currentUserId }) {
+                    viewModel.removeReaction(reactionId: existingReaction.id)
                 } else {
-                    reactToCheckIn()
+                    viewModel.reactToCheckIn(checkIn)
                 }
             } label: {
-                Text("\(checkInReactions.count)")
+                Text("\(viewModel.checkInReactions.count)")
                     .font(.system(size: 14, weight: .bold, design: .default))
                     .foregroundColor(.primary)
-                
+
                 Image(systemName: "hand.thumbsup.fill")
                     .frame(height: 24, alignment: .leading)
                     .foregroundColor(Color(.systemYellow))
             }
+        }.task {
+            viewModel.loadInitialReactions(checkIn)
         }
     }
+}
 
-    func reactToCheckIn() {
-        let newCheckInReaction = NewCheckInReaction(checkInId: checkInId)
+extension ReactionsView {
+    @MainActor class ViewModel: ObservableObject {
+        @Published var checkInReactions = [CheckInReaction]()
 
-        Task {
-            let checkInReaction = try await repository.checkInReactions.insert(newCheckInReaction: newCheckInReaction)
+        func loadInitialReactions(_ checkIn: CheckIn) {
             DispatchQueue.main.async {
-                self.checkInReactions.append(checkInReaction)
+                self.checkInReactions = checkIn.checkInReactions
             }
         }
-    }
 
-    func removeReaction(reactionId: Int) {
-        Task {
-            try await repository.checkInReactions.delete(id: reactionId)
+        func reactToCheckIn(_ checkIn: CheckIn) {
+            let newCheckInReaction = NewCheckInReaction(checkInId: checkIn.id)
 
-            DispatchQueue.main.async {
-                self.checkInReactions.removeAll(where: { $0.profile.id == currentUserId })
+            Task {
+                let checkInReaction = try await repository.checkInReactions.insert(newCheckInReaction: newCheckInReaction)
+                DispatchQueue.main.async {
+                    self.checkInReactions.append(checkInReaction)
+                }
+            }
+        }
+
+        func removeReaction(reactionId: Int) {
+            Task {
+                try await repository.checkInReactions.delete(id: reactionId)
+
+                DispatchQueue.main.async {
+                    self.checkInReactions.removeAll(where: { $0.id == reactionId })
+                }
             }
         }
     }
