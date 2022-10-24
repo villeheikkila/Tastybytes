@@ -160,7 +160,7 @@ struct CheckInCardView: View {
             }
         }
         .disabled(loadedFrom == LoadedFrom.checkIn)
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
     }
 
     var footer: some View {
@@ -168,9 +168,11 @@ struct CheckInCardView: View {
             NavigationLink(value: checkIn) {
                 Text(checkIn.createdAt.formatted())
                     .font(.system(size: 12, weight: .medium, design: .default))
+                    
                 Spacer()
             }
             .buttonStyle(.plain)
+            .disabled(loadedFrom == LoadedFrom.checkIn)
             Spacer()
             ReactionsView(checkIn: checkIn)
         }
