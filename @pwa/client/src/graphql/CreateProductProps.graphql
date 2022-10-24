@@ -1,0 +1,26 @@
+query CreateItemProps {
+  ...SharedLayout_Query
+  companies {
+    nodes {
+      id
+      brands {
+        nodes {
+          id
+          name
+        }
+      }
+      name
+    }
+  }
+  categories {
+    nodes {
+      name
+      typesByCategory {
+        nodes {
+          id
+          name
+        }
+      }
+    }
+  }
+}

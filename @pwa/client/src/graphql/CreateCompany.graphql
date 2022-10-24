@@ -1,0 +1,9 @@
+mutation CreateCompany($companyName: String!) {
+  createCompany(input: { companyName: $companyName }) {
+    company {
+      id
+      name
+      isVerified
+    }
+  }
+}

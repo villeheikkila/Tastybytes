@@ -1,0 +1,39 @@
+query ActivityFeed {
+  ...SharedLayout_Query
+  activityFeeds(first: 20) {
+    nodes {
+      id
+      rating
+      review
+      checkInDate
+      createdAt
+      author {
+        id
+        username
+        firstName
+        lastName
+      }
+      item {
+        id
+        flavor
+        brand {
+          id
+          name
+          company {
+            id
+            name
+          }
+        }
+        manufacturer {
+          id
+          name
+        }
+        type {
+          id
+          category
+          name
+        }
+      }
+    }
+  }
+}

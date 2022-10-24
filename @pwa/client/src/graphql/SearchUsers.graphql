@@ -1,0 +1,17 @@
+query SearchUsers($search: String!) {
+  searchUsers(search: $search) {
+    nodes {
+      id
+      username
+      firstName
+      lastName
+      avatarUrl
+      friendStatus {
+        nodes {
+          isSender
+          status
+        }
+      }
+    }
+  }
+}

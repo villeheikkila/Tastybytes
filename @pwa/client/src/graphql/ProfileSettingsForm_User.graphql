@@ -1,0 +1,7 @@
+fragment ProfileSettingsForm_User on User {
+  id
+  firstName
+  lastName
+  username
+  avatarUrl
+}
