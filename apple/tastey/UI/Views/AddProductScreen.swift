@@ -3,201 +3,143 @@ import SwiftUI
 
 struct AddProductScreenView: View {
     @EnvironmentObject var navigator: Navigator
-    @State var categories = [CategoryJoinedWithSubcategories]()
-    @State var activeSheet: Sheet?
-    @State var showToast = false
-    @State var toastType: ToastType?
-    
-    // New product values
-    @State var category: CategoryName = CategoryName.beverage
-    @State var subcategories: [Subcategory] = []
-    @State var brandOwner: Company?
-    @State var brand: BrandJoinedWithSubBrands?
-    @State var subBrand: SubBrand?
-    @State var name: String = ""
-    @State var description: String = ""
-    @State var hasSubBrand = false
-    
-    func getSubcategoriesForCategory() -> [Subcategory]? {
-        return categories.first(where: { $0.name == category })?.subcategories
-    }
-    
-    func setBrand(brand: BrandJoinedWithSubBrands) {
-        self.brand = brand
-        subBrand = nil
-        dismissSheet()
-    }
-    
-    func dismissSheet() {
-        activeSheet = nil
-    }
-    
-    func isValid() -> Bool {
-        return brandOwner != nil && brand != nil && validateStringLength(str: name, type: .normal)
-    }
-    
-    func getToastText() -> String {
-        switch toastType {
-        case .createdCompany:
-            return "New Company Created!"
-        case .createdBrand:
-            return "New Brand Created!"
-        case .createdSubBrand:
-            return "New Sub-brand Created!"
-        case .none:
-            return ""
-        }
-    }
-    
+    @StateObject var viewModel = ViewModel()
+
     var body: some View {
         VStack {
             List {
-                Section {
-                    if categories.count > 0 {
-                        Picker("Category", selection: $category) {
-                            ForEach(categories.map { $0.name }) { category in
-                                Text(category.getName).tag(category)
-                            }
-                        }
-                        .onChange(of: category) { _ in
-                            self.subcategories.removeAll()
-                        }
-                    }
-                    
-                    Button(action: { self.activeSheet = Sheet.subcategories }) {
-                        HStack {
-                            if subcategories.count == 0 {
-                                Text("Subcategories")
-                            } else {
-                                HStack { ForEach(subcategories) { subcategory in
-                                    ChipView(title: subcategory.name)
-                                }}
-                            }
-                        }
-                    }
-                }
-            header: {
-                Text("Category")
-            }.headerProminence(.increased)
-                
-                Section {
-                    Button(action: {
-                        self.activeSheet = Sheet.brandOwner
-                    }) {
-                        Text(brandOwner?.name ?? "Company")
-                    }
-                    
-                    if brandOwner != nil {
-                        Button(action: {
-                            self.activeSheet = Sheet.brand
-                        }) {
-                            Text(brand?.name ?? "Brand")
-                        }
-                        .disabled(brandOwner == nil)
-                    }
-                    
-                    if brand != nil {
-                        Toggle("Has sub-brand?", isOn: $hasSubBrand)
-                    }
-                    
-                    if hasSubBrand {
-                        Button(action: {
-                            self.activeSheet = Sheet.subBrand
-                        }) {
-                            Text(subBrand?.name ?? "Sub-brand")
-                        }
-                        .disabled(brand == nil)
-                    }
-                    
-                } header: {
-                    Text("Brand")
-                }
-                .headerProminence(.increased)
-                
-                Section {
-                    TextField("Flavor", text: $name)
-                    TextField("Description (optional)", text: $description)
-                } header: {
-                    Text("Product")
-                }
-                .headerProminence(.increased)
-                
-                Button("Create Product", action: { createProduct() })
-                    .disabled(!isValid())
+                categorySection
+                brandSection
+                productSection
+
+                Button("Create Product", action: { viewModel.createProduct(onCreation: {
+                    product in navigator.navigateTo(destination: product, resetStack: true)
+                }) }).disabled(!viewModel.isValid())
             }
-            
-        }.sheet(item: $activeSheet) { sheet in
+
+        }.sheet(item: $viewModel.activeSheet) { sheet in
             switch sheet {
             case .subcategories:
-                if let subcategoriesForCategory = getSubcategoriesForCategory() {
-                    SubcategoryPicker(availableSubcategories: subcategoriesForCategory, subcategories: $subcategories)
+                if let subcategoriesForCategory = viewModel.getSubcategoriesForCategory() {
+                    SubcategoryPicker(availableSubcategories: subcategoriesForCategory, subcategories: $viewModel.subcategories)
                 }
             case .brandOwner:
                 CompanySearchView(onSelect: { company, createdNew in
-                    self.brandOwner = company
+                    viewModel.brandOwner = company
                     if createdNew {
-                        self.toastType = ToastType.createdCompany
-                        self.showToast = true
+                        viewModel.toastType = ToastType.createdCompany
+                        viewModel.showToast = true
                     }
-                    dismissSheet()
+                    viewModel.dismissSheet()
                 })
             case .brand:
-                if let brandOwner = brandOwner {
+                if let brandOwner = viewModel.brandOwner {
                     BrandSearchView(brandOwner: brandOwner, onSelect: { brand, createdNew in
                         if createdNew {
-                            self.toastType = ToastType.createdBrand
-                            self.showToast = true
+                            viewModel.toastType = ToastType.createdBrand
+                            viewModel.showToast = true
                         }
-                        self.setBrand(brand: brand)
+                        viewModel.setBrand(brand: brand)
                     })
                 }
-                
+
             case .subBrand:
-                if let brand = brand {
+                if let brand = viewModel.brand {
                     SubBrandPickerView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
                         if createdNew {
-                            self.toastType = ToastType.createdSubBrand
-                            self.showToast = true
+                            viewModel.toastType = ToastType.createdSubBrand
+                            viewModel.showToast = true
                         }
-                        self.subBrand = subBrand
-                        dismissSheet()
-                        
+                        viewModel.subBrand = subBrand
+                        viewModel.dismissSheet()
+
                     })
                 }
             }
         }
-        .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
-            AlertToast(type: .complete(.green), title: getToastText())
+        .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
+            AlertToast(type: .complete(.green), title: viewModel.getToastText())
         }
         .task {
-            loadCategories()
+            viewModel.loadCategories()
         }
     }
-    
-    func loadCategories() {
-        Task {
-            do {
-                let categories = try await repository.category.getAllWithSubcategories()
-                self.categories = categories
-            } catch {
-                print("error: \(error)")
+
+    var categorySection: some View {
+        Section {
+            if viewModel.categories.count > 0 {
+                Picker("Category", selection: $viewModel.category) {
+                    ForEach(viewModel.categories.map { $0.name }) { category in
+                        Text(category.getName).tag(category)
+                    }
+                }
+                .onChange(of: viewModel.category) { _ in
+                    viewModel.subcategories.removeAll()
+                }
             }
-        }
-    }
-    
-    func createProduct() {
-        print("name \(name)")
-        if let categoryId = categories.first(where: { $0.name == category })?.id, let brandId = brand?.id {
-            let newProductParams = NewProductParams(name: name, description: description, categoryId: categoryId, brandId: brandId, subBrandId: subBrand?.id, subCategoryIds: subcategories.map { $0.id })
-            Task {
-                do {
-                    let newProduct = try await repository.product.create(newProductParams: newProductParams)
-                    navigator.navigateTo(destination: newProduct, resetStack: true)
-                } catch {
-                    print("error: \(error)")
+
+            Button(action: { viewModel.activeSheet = Sheet.subcategories }) {
+                HStack {
+                    if viewModel.subcategories.count == 0 {
+                        Text("Subcategories")
+                    } else {
+                        HStack { ForEach(viewModel.subcategories) { subcategory in
+                            ChipView(title: subcategory.name)
+                        }}
+                    }
                 }
             }
         }
+        header: {
+                Text("Category")
+            }
+            .headerProminence(.increased)
+    }
+
+    var brandSection: some View {
+        Section {
+            Button(action: {
+                viewModel.activeSheet = Sheet.brandOwner
+            }) {
+                Text(viewModel.brandOwner?.name ?? "Company")
+            }
+
+            if viewModel.brandOwner != nil {
+                Button(action: {
+                    viewModel.activeSheet = Sheet.brand
+                }) {
+                    Text(viewModel.brand?.name ?? "Brand")
+                }
+                .disabled(viewModel.brandOwner == nil)
+            }
+
+            if viewModel.brand != nil {
+                Toggle("Has sub-brand?", isOn: $viewModel.hasSubBrand)
+            }
+
+            if viewModel.hasSubBrand {
+                Button(action: {
+                    viewModel.activeSheet = Sheet.subBrand
+                }) {
+                    Text(viewModel.subBrand?.name ?? "Sub-brand")
+                }
+                .disabled(viewModel.brand == nil)
+            }
+
+        } header: {
+            Text("Brand")
+        }
+        .headerProminence(.increased)
+    }
+
+    var productSection: some View {
+        Section {
+            TextField("Flavor", text: $viewModel.name)
+            TextField("Description (optional)", text: $viewModel.description)
+        } header: {
+            Text("Product")
+        }
+        .headerProminence(.increased)
     }
 }
 
@@ -209,11 +151,83 @@ extension AddProductScreenView {
         case brand
         case subBrand
     }
-    
+
     enum ToastType: Identifiable {
         var id: Self { self }
         case createdCompany
         case createdBrand
         case createdSubBrand
+    }
+
+    @MainActor class ViewModel: ObservableObject {
+        @Published var categories = [CategoryJoinedWithSubcategories]()
+        @Published var activeSheet: Sheet?
+        @Published var showToast = false
+        @Published var toastType: ToastType?
+
+        @Published var category: CategoryName = CategoryName.beverage
+        @Published var subcategories: [Subcategory] = []
+        @Published var brandOwner: Company?
+        @Published var brand: BrandJoinedWithSubBrands?
+        @Published var subBrand: SubBrand?
+        @Published var name: String = ""
+        @Published var description: String = ""
+        @Published var hasSubBrand = false
+
+        func getSubcategoriesForCategory() -> [Subcategory]? {
+            return categories.first(where: { $0.name == category })?.subcategories
+        }
+
+        func setBrand(brand: BrandJoinedWithSubBrands) {
+            self.brand = brand
+            subBrand = nil
+            dismissSheet()
+        }
+
+        func dismissSheet() {
+            activeSheet = nil
+        }
+
+        func isValid() -> Bool {
+            return brandOwner != nil && brand != nil && validateStringLength(str: name, type: .normal)
+        }
+
+        func getToastText() -> String {
+            switch toastType {
+            case .createdCompany:
+                return "New Company Created!"
+            case .createdBrand:
+                return "New Brand Created!"
+            case .createdSubBrand:
+                return "New Sub-brand Created!"
+            case .none:
+                return ""
+            }
+        }
+
+        func loadCategories() {
+            Task {
+                do {
+                    let categories = try await repository.category.getAllWithSubcategories()
+                    self.categories = categories
+                } catch {
+                    print("error: \(error)")
+                }
+            }
+        }
+
+        func createProduct(onCreation: @escaping (_ product: ProductJoined) -> Void) {
+            if let categoryId = categories.first(where: { $0.name == category })?.id, let brandId = brand?.id {
+                let newProductParams = NewProductParams(name: name, description: description, categoryId: categoryId, brandId: brandId, subBrandId: subBrand?.id, subCategoryIds: subcategories.map { $0.id })
+                Task {
+                    do {
+                        let newProduct = try await repository.product.create(newProductParams: newProductParams)
+                        onCreation(newProduct)
+                    } catch {
+                        print("error: \(error)")
+                    }
+                }
+            }
+        }
     }
 }

@@ -59,7 +59,9 @@ struct FlavorPickerView: View {
             Task {
                 do {
                     let flavors = try await repository.flavor.getAll()
-                    self.availableFlavors = flavors
+                    DispatchQueue.main.async {
+                        self.availableFlavors = flavors
+                    }
                 } catch {
                     print("error while loading flavors: \(error)")
                 }
