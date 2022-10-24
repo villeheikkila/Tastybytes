@@ -32,6 +32,7 @@ class CurrentProfile: ObservableObject {
                 }
             } catch {
                 print("error while loading profile: \(error.localizedDescription)")
+                try await repository.auth.logOut()
             }
         }
     }
