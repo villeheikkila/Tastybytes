@@ -1,3 +1,4 @@
+import CachedAsyncImage
 import SwiftUI
 
 struct CompanyPageView: View {
@@ -13,20 +14,57 @@ struct CompanyPageView: View {
 
     var body: some View {
         List {
-            HStack {
-                Text(company.name)
-                Spacer()
-            }
-            .contextMenu {
-                if currentProfile.hasPermission(.canDeleteCompanies) {
-                    Button(action: {
-                        showDeleteCompanyConfirmationDialog.toggle()
-                    }) {
-                        Label("Delete", systemImage: "trash.fill")
-                            .foregroundColor(.red)
+            HStack(spacing: 20) {
+                if let logoUrl = company.getLogoUrl() {
+                    CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+                        image.resizable()
+                    } placeholder: {
+                        Image(systemName: "photo")
+                    }
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 52, height: 52)
+                }
+                VStack(spacing: 10) {
+                    HStack {
+                        Text(company.name)
+                            .font(.title3)
+                            .fontWeight(.medium)
+                        Spacer()
+                    }
+
+                    if let checkIns = viewModel.companySummary?.totalCheckIns {
+                        HStack {
+                            Text("Check-ins:")
+                            Spacer()
+                            Text(String(checkIns))
+                        }
+                    }
+                    if let averageRating = viewModel.companySummary?.averageRating {
+                        HStack {
+                            Text("Average:")
+                            Spacer()
+                            RatingView(rating: averageRating)
+                        }
+                    }
+                    if let currentUserAverageRating = viewModel.companySummary?.currentUserAverageRating {
+                        HStack {
+                            Text("Your rating:")
+                            Spacer()
+                            RatingView(rating: currentUserAverageRating)
+                        }
+                    }
+                }.contextMenu {
+                    if currentProfile.hasPermission(.canDeleteCompanies) {
+                        Button(action: {
+                            showDeleteCompanyConfirmationDialog.toggle()
+                        }) {
+                            Label("Delete", systemImage: "trash.fill")
+                                .foregroundColor(.red)
+                        }
                     }
                 }
             }
+            .padding(.all, 10)
 
             if let companyJoined = viewModel.companyJoined {
                 ForEach(companyJoined.brands, id: \.id) { brand in
@@ -37,8 +75,8 @@ struct CompanyPageView: View {
                                 product in
                                 NavigationLink(value: ProductJoined(company: company, product: product, subBrand: subBrand, brand: brand)) {
                                     HStack {
-                                        Text(joinOptionalStrings([brand.name, subBrand.name]))
-                                        Text(product.name)
+                                        Text(joinOptionalStrings([brand.name, subBrand.name, product.name]))
+                                            .lineLimit(nil)
                                         Spacer()
                                     }
                                 }
@@ -46,7 +84,7 @@ struct CompanyPageView: View {
                         }
                     } header: {
                         HStack {
-                            Text(brand.name)
+                            Text("\(brand.name) (\(brand.getNumberOfProducts()))")
                             Spacer()
                             if currentProfile.hasPermission(.canDeleteBrands) {
                                 Button(action: {
@@ -59,16 +97,15 @@ struct CompanyPageView: View {
                     }
                     .headerProminence(.increased)
                     .confirmationDialog("delete_brand",
-                        isPresented: $showDeleteBrandConfirmationDialog
+                                        isPresented: $showDeleteBrandConfirmationDialog
                     ) {
                         Button("Delete Brand", role: .destructive, action: { viewModel.deleteBrand(brand) })
                     }
-                    
                 }
             }
         }
         .confirmationDialog("delete_company",
-            isPresented: $showDeleteCompanyConfirmationDialog
+                            isPresented: $showDeleteCompanyConfirmationDialog
         ) {
             Button("Delete Company", role: .destructive, action: { viewModel.deleteCompany(company) })
         }
@@ -76,12 +113,12 @@ struct CompanyPageView: View {
             viewModel.getInitialData(company.id)
         }
     }
-
 }
 
 extension CompanyPageView {
     @MainActor class ViewModel: ObservableObject {
         @Published var companyJoined: CompanyJoined?
+        @Published var companySummary: CompanySummary?
 
         func getInitialData(_ companyId: Int) {
             Task {
@@ -89,6 +126,17 @@ extension CompanyPageView {
                     let company = try await repository.company.getById(id: companyId)
                     DispatchQueue.main.async {
                         self.companyJoined = company
+                    }
+                } catch {
+                    print("error: \(error)")
+                }
+            }
+
+            Task {
+                do {
+                    let summary = try await repository.company.getSummaryById(id: companyId)
+                    DispatchQueue.main.async {
+                        self.companySummary = summary
                     }
                 } catch {
                     print("error: \(error)")
@@ -105,7 +153,7 @@ extension CompanyPageView {
                 }
             }
         }
-        
+
         func deleteBrand(_ brand: BrandJoinedSubBrandsJoinedProduct) {
             Task {
                 do {

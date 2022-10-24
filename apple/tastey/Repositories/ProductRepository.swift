@@ -5,6 +5,7 @@ protocol ProductRepository {
     func search(searchTerm: String) async throws -> [ProductJoined]
     func delete(id: Int) async throws -> Void
     func create(newProductParams: NewProductParams) async throws -> ProductJoined
+    func getSummaryById(id: Int) async throws -> ProductSummary
 }
 
 struct SupabaseProductRepository: ProductRepository {
@@ -63,5 +64,16 @@ struct SupabaseProductRepository: ProductRepository {
          TODO: Investigate if it is possible to somehow join sub_brands immediately after it has been created as part of the fnc__create_product function. 22.10.2022
          */
         return try await getProductById(id: product.id)
+    }
+    
+    func getSummaryById(id: Int) async throws -> ProductSummary {
+        return try await client
+            .database
+            .rpc(fn: "fnc__get_product_summary", params: GetProductSummaryParams(id: id))
+            .select()
+            .limit(count: 1)
+            .single()
+            .execute()
+            .decoded(to: ProductSummary.self)
     }
 }

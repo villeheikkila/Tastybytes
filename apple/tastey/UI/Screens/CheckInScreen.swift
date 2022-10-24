@@ -125,18 +125,21 @@ struct CommentItemView: View {
         }
         .contextMenu {
             Button {
-                self.showEditCommentPrompt = true
+                withAnimation {
+                    self.showEditCommentPrompt = true
+                }
             } label: {
                 Label("Edit Comment", systemImage: "pencil")
             }
 
             Button {
-                onDelete(comment.id)
+                withAnimation {
+                    onDelete(comment.id)
+                }
             } label: {
                 Label("Delete Comment", systemImage: "trash.fill")
             }
         }
-        .frame(maxWidth: .infinity)
         .alert("Edit Comment", isPresented: $showEditCommentPrompt, actions: {
             TextField("TextField", text: $content)
             Button("Cancel", role: .cancel, action: {})

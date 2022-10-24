@@ -1,35 +1,35 @@
 
+import CachedAsyncImage
 import GoTrue
 import SwiftUI
 import WrappingHStack
-import CachedAsyncImage
 
 struct CheckInCardView: View {
     let checkIn: CheckIn
     let loadedFrom: LoadedFrom
     @StateObject var viewModel = ViewModel()
-    
+
     let onDelete: (_ checkIn: CheckIn) -> Void
-    
+
     func isOwnedByCurrentUser() -> Bool {
         return checkIn.profile.id == repository.auth.getCurrentUserId()
     }
-    
+
     func avoidStackingCheckInPage() -> Bool {
         var isCurrentProfile: Bool
-        
+
         switch loadedFrom {
         case let .profile(profile):
             isCurrentProfile = profile.id == checkIn.profile.id
         default:
             isCurrentProfile = false
         }
-        
+
         return isCurrentProfile
     }
-    
+
     var body: some View {
-        HStack {
+        CardView {
             VStack {
                 header
                 productSection
@@ -38,20 +38,14 @@ struct CheckInCardView: View {
                 }
                 footer
             }
-            .background(Color(.tertiarySystemBackground).opacity(0.4))
-            .background(.ultraThinMaterial)
-            .cornerRadius(10)
-            .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
+            .padding(.all, 10)
         }
-        .clipped()
-        .cornerRadius(10)
-        .padding(.all, 10)
         .contextMenu {
-            if (isOwnedByCurrentUser()) {
+            if isOwnedByCurrentUser() {
                 Button(action: {}) {
                     Label("Edit", systemImage: "pencil")
                 }
-                
+
                 Button(action: {
                     viewModel.delete(checkIn: checkIn, onDelete: onDelete)
                 }) {
@@ -68,14 +62,12 @@ struct CheckInCardView: View {
                 Text(checkIn.profile.getPreferedName())
                     .font(.system(size: 12, weight: .bold, design: .default))
                     .foregroundColor(.primary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
             }
-            .padding([.trailing, .leading, .top], 10)
         }
         .disabled(avoidStackingCheckInPage())
     }
-    
+
     var backgroundImage: some View {
         HStack {
             if let imageUrl = checkIn.getImageUrl() {
@@ -117,12 +109,9 @@ struct CheckInCardView: View {
                     Spacer()
                 }
             }
-            .padding([.trailing, .leading], 10)
         }
         .disabled(loadedFrom == LoadedFrom.product)
         .buttonStyle(.plain)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding([.trailing, .leading], 5)
     }
 
     var checkInSection: some View {
@@ -146,7 +135,6 @@ struct CheckInCardView: View {
                     }
                 }
                 .padding(.all, 10)
-                .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color(.secondarySystemBackground))
                 .cornerRadius(5)
 
@@ -168,7 +156,6 @@ struct CheckInCardView: View {
                     }
                 }
             }
-            .padding([.trailing, .leading], 10)
         }
         .disabled(loadedFrom == LoadedFrom.checkIn)
         .buttonStyle(PlainButtonStyle())
@@ -181,12 +168,10 @@ struct CheckInCardView: View {
                     .font(.system(size: 12, weight: .medium, design: .default))
                 Spacer()
             }
-            .buttonStyle(PlainButtonStyle())
+            .buttonStyle(.plain)
+            Spacer()
             ReactionsView(checkInId: checkIn.id, checkInReactions: checkIn.checkInReactions)
         }
-        .frame(height: 24)
-        .padding([.trailing, .leading, .bottom], 10)
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -197,8 +182,9 @@ extension CheckInCardView {
         case profile(Profile)
         case activity(Profile)
     }
+
     @MainActor class ViewModel: ObservableObject {
-        func delete(checkIn: CheckIn, onDelete: @escaping  (_ checkIn: CheckIn) -> Void) {
+        func delete(checkIn: CheckIn, onDelete: @escaping (_ checkIn: CheckIn) -> Void) {
             Task {
                 try await repository.checkIn.delete(id: checkIn.id)
                 onDelete(checkIn)

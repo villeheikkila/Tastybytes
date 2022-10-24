@@ -5,13 +5,14 @@ protocol CompanyRepository {
     func insert(newCompany: NewCompany) async throws -> Company
     func delete(id: Int) async throws -> Void
     func search(searchTerm: String) async throws -> [Company]
+    func getSummaryById(id: Int) async throws -> CompanySummary
 }
 
 struct SupabaseCompanyRepository: CompanyRepository {
     let client: SupabaseClient
     private let tableName = "companies"
-    private let saved = "id, name"
-    private let joined = "id, name, companies (id, name), brands (id, name, sub_brands (id, name, products (id, name, description, subcategories (id, name, categories (id, name)))))"
+    private let saved = "id, name, logo_url"
+    private let joined = "id, name, logo_url, companies (id, name), brands (id, name, sub_brands (id, name, products (id, name, description, subcategories (id, name, categories (id, name)))))"
     
     func getById(id: Int) async throws -> CompanyJoined {
         return try await client
@@ -53,6 +54,17 @@ struct SupabaseCompanyRepository: CompanyRepository {
             .ilike(column: "name", value: "%\(searchTerm)%")
             .execute()
             .decoded(to: [Company].self)
+    }
+    
+    func getSummaryById(id: Int) async throws -> CompanySummary {
+        return try await client
+            .database
+            .rpc(fn: "fnc__get_company_summary", params: GetCompanySummaryParams(id: id))
+            .select()
+            .limit(count: 1)
+            .single()
+            .execute()
+            .decoded(to: CompanySummary.self)
     }
 }
 
