@@ -5,19 +5,23 @@ import SwiftUI
 struct FriendsScreenView: View {
     var profile: Profile
     @StateObject private var viewModel = ViewModel()
+    @EnvironmentObject var currentProfile: CurrentProfile
     
     var body: some View {
         ScrollView {
             VStack {
                 ForEach(viewModel.friends, id: \.self) { friend in
-                    if profile.isCurrentUser() {
-                        FriendListItemView(friend: friend,
-                                           onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
-                                           onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
-                                           onDelete: { id in viewModel.removeFriendRequest(id: id) })
-                    } else {
-                        FriendListItemSimpleView(profile: friend.getFriend(userId: profile.id))
+                    NavigationLink(value: friend.getFriend(userId: currentProfile.profile?.id)) {
+                        if profile.isCurrentUser() {
+                            FriendListItemView(friend: friend,
+                                               onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
+                                               onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
+                                               onDelete: { id in viewModel.removeFriendRequest(id: id) })
+                        } else {
+                            FriendListItemSimpleView(profile: friend.getFriend(userId: profile.id))
+                        }
                     }
+                    .buttonStyle(.plain)
                 }
             }
             .navigationTitle("Friends")
