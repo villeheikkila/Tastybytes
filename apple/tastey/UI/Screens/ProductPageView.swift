@@ -16,26 +16,56 @@ struct ProductPageView: View {
                                                    })
                                },
                                header: {
-                                   ProductCardView(product: product)
-                                        .contextMenu {
-                                            if currentProfile.hasPermission(.canDeleteProducts) {
-                                                Button(action: {
-                                               viewModel.deleteProduct(product)
-                                           }) {
-                                               Label("Delete", systemImage: "trash.fill").foregroundColor(.red)
+                                   VStack {
+                                       ProductCardView(product: product)
+                                           .contextMenu {
+                                               if currentProfile.hasPermission(.canDeleteProducts) {
+                                                   Button(action: {
+                                                       viewModel.deleteProduct(product)
+                                                   }) {
+                                                       Label("Delete", systemImage: "trash.fill")
+                                                           .foregroundColor(.red)
+                                                   }
+                                               }
                                            }
-                                       }
+
+                                       VStack(spacing: 10) {
+                                           if let checkIns = viewModel.productSummary?.totalCheckIns {
+                                               HStack {
+                                                   Text("Check-ins:")
+                                                   Spacer()
+                                                   Text(String(checkIns))
+                                               }
+                                           }
+                                           if let averageRating = viewModel.productSummary?.averageRating {
+                                               HStack {
+                                                   Text("Average:")
+                                                   Spacer()
+                                                   RatingView(rating: averageRating)
+                                               }
+                                           }
+                                           if let currentUserAverageRating = viewModel.productSummary?.currentUserAverageRating {
+                                               HStack {
+                                                   Text("Your rating:")
+                                                   Spacer()
+                                                   RatingView(rating: currentUserAverageRating)
+                                               }
+                                           }
+                                       }.padding(.all, 10)
                                    }
                                }
             )
         }
-
-        Button(action: {
-            viewModel.showingSheet.toggle()
-        }) {
-            Text("Check-in!").font(.system(size: 14, weight: .bold, design: .default))
+        .task {
+            viewModel.loadProductSummary(product)
         }
-        .buttonStyle(GrowingButton())
+        .navigationBarItems(
+            trailing: Button(action: {
+                viewModel.showingSheet.toggle()
+            }) {
+                Text("Add Check-in")
+                    .bold()
+            })
         .sheet(isPresented: $viewModel.showingSheet) {
             AddCheckInView(product: product, onCreation: {
                 viewModel.appendNewCheckIn(newCheckIn: $0)
@@ -61,6 +91,7 @@ extension ProductPageView {
         @Published var checkIns = [CheckIn]()
         @Published var isLoading = false
         @Published var showingSheet = false
+        @Published var productSummary: ProductSummary?
 
         let pageSize = 5
         var page = 0
@@ -69,6 +100,17 @@ extension ProductPageView {
             page = 0
             checkIns = []
             fetchMoreCheckIns(productId: productId)
+        }
+
+        func loadProductSummary(_ product: ProductJoined) {
+            print("HEI")
+            Task {
+                let summary = try await repository.product.getSummaryById(id: product.id)
+                print(summary)
+                DispatchQueue.main.async {
+                    self.productSummary = summary
+                }
+            }
         }
 
         func deleteCheckIn(id: Int) {
@@ -81,7 +123,7 @@ extension ProductPageView {
                 }
             }
         }
-        
+
         func deleteProduct(_ product: ProductJoined) {
             Task {
                 do {

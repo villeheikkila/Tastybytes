@@ -13,7 +13,7 @@ protocol CheckInRepository {
 struct SupabaseCheckInRepository: CheckInRepository {
     let client: SupabaseClient
     private let tableName = "check_ins"
-    private let checkInJoined = "id, rating, review, image_url, created_at, serving_styles (id, name), profiles (id, username, first_name, last_name, avatar_url, name_display), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, first_name, last_name, avatar_url, name_display)), check_in_flavors (flavors (id, name)), check_in_tagged_profiles (profiles (id, username, first_name, last_name, avatar_url, name_display)), product_variants (id, companies (id, name))"
+    private let checkInJoined = "id, rating, review, image_url, created_at, serving_styles (id, name), profiles (id, username, first_name, last_name, avatar_url, name_display), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name, logo_url))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, first_name, last_name, avatar_url, name_display)), check_in_flavors (flavors (id, name)), check_in_tagged_profiles (profiles (id, username, first_name, last_name, avatar_url, name_display)), product_variants (id, companies (id, name, logo_url))"
     
     func getActivityFeed(from: Int, to: Int) async throws -> [CheckIn] {
         return try await client
@@ -70,13 +70,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
     }
     
     func getSummaryByProfileId(id: UUID) async throws -> ProfileSummary {
-        struct GetProfileSummaryParams: Encodable {
-            let p_uid: String
-        }
-        
         return try await client
             .database
-            .rpc(fn: "fnc__get_profile_summary", params: GetProfileSummaryParams(p_uid: id.uuidString))
+            .rpc(fn: "fnc__get_profile_summary", params: GetProfileSummaryParams(profileId: id))
             .select()
             .limit(count: 1)
             .single()

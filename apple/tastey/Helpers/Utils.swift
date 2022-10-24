@@ -86,3 +86,8 @@ struct DecodableId: Decodable {
 func joinOptionalStrings(_ arr: [String?]) -> String {
     return arr.compactMap({ $0 }).joined(separator: " ")
 }
+
+func formatRating(_ rating: Double?) -> String {
+    return String(format: "%.2f", rating ?? "")
+}
+

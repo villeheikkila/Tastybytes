@@ -66,6 +66,10 @@ struct BrandJoinedSubBrandsJoinedProduct: Identifiable {
     let id: Int
     let name: String
     let subBrands: [SubBrandJoinedProduct]
+    
+    func getNumberOfProducts() -> Int {
+        return subBrands.flatMap { $0.products }.count
+    }
 }
 
 extension BrandJoinedSubBrandsJoinedProduct: Hashable {

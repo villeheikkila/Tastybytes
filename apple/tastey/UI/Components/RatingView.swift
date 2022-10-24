@@ -6,6 +6,10 @@ struct RatingView: View {
     init(rating: Int) {
         self.rating = Double(rating) / 2
     }
+    
+    init(rating: Double) {
+        self.rating = rating / 2
+    }
 
     var body: some View {
         HStack(spacing: 0) {

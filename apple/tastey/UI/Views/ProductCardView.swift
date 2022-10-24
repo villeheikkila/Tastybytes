@@ -26,7 +26,6 @@ struct ProductCardView: View {
             }
         }
         .padding(.all, 10)
-        .frame(maxWidth: .infinity, alignment: .center)
         .cornerRadius(5)
     }
 }

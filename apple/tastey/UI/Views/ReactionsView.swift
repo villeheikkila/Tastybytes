@@ -27,7 +27,9 @@ struct ReactionsView: View {
                     .font(.system(size: 14, weight: .bold, design: .default))
                     .foregroundColor(.primary)
                 
-                Image(systemName: "hand.thumbsup.fill").frame(alignment: .leading).foregroundColor(Color(.systemYellow))
+                Image(systemName: "hand.thumbsup.fill")
+                    .frame(height: 24, alignment: .leading)
+                    .foregroundColor(Color(.systemYellow))
             }
         }
     }

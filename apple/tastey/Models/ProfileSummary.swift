@@ -1,3 +1,5 @@
+import Foundation
+
 struct ProfileSummary {
     let totalCheckIns: Int
     let uniqueCheckIns: Int
@@ -57,5 +59,13 @@ extension ProfileSummary: Decodable {
         rating8 = try values.decode(Int.self, forKey: .rating8)
         rating9 = try values.decode(Int.self, forKey: .rating9)
         rating10 = try values.decode(Int.self, forKey: .rating10)
+    }
+}
+
+struct GetProfileSummaryParams: Encodable {
+    let p_uid: String
+    
+    init(profileId: UUID) {
+        p_uid = profileId.uuidString
     }
 }
