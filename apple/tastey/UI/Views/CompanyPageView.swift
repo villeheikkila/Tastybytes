@@ -4,6 +4,7 @@ import SwiftUI
 struct CompanyPageView: View {
     let company: Company
     @EnvironmentObject var currentProfile: CurrentProfile
+    @EnvironmentObject var navigator: Navigator
     @StateObject private var viewModel = ViewModel()
     @State private var showDeleteCompanyConfirmationDialog = false
     @State private var showDeleteBrandConfirmationDialog = false
@@ -107,7 +108,9 @@ struct CompanyPageView: View {
         .confirmationDialog("delete_company",
                             isPresented: $showDeleteCompanyConfirmationDialog
         ) {
-            Button("Delete Company", role: .destructive, action: { viewModel.deleteCompany(company) })
+            Button("Delete Company", role: .destructive, action: { viewModel.deleteCompany(company, onDelete: {
+                navigator.gotoHomePage()
+            }) })
         }
         .task {
             viewModel.getInitialData(company.id)
@@ -144,12 +147,13 @@ extension CompanyPageView {
             }
         }
         
-        func deleteCompany(_ company: Company) {
+        func deleteCompany(_ company: Company, onDelete: @escaping () -> Void) {
             Task {
                 do {
                     try await repository.company.delete(id: company.id)
+                    onDelete()
                 } catch {
-                    print(error)
+                    print("error while trying to delete company \(error)")
                 }
             }
         }
@@ -158,6 +162,13 @@ extension CompanyPageView {
             Task {
                 do {
                     try await repository.brand.delete(id: brand.id)
+                    // TODO: Do not refetch the company on deletion
+                    if let companyJoined = companyJoined {
+                        let company = try await repository.company.getById(id: companyJoined.id)
+                        DispatchQueue.main.async {
+                            self.companyJoined = company
+                        }
+                    }
                 } catch {
                     print(error)
                 }
