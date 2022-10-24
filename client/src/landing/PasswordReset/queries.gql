@@ -1,0 +1,3 @@
+mutation PasswordReset($token: String!, $password: String!) {
+  resetPassword(token: $token, password: $password)
+}

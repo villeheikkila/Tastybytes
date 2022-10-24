@@ -1,0 +1,91 @@
+version: "3.7"
+
+services:
+  client:
+    container_name: client
+    stdin_open: true
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 3030:3000
+    networks:
+      - default
+    restart: unless-stopped
+    volumes:
+      - ./client:/client
+      - ./shared:/client/shared
+    environment:
+      CHOKIDAR_USEPOLLING: 1
+      REACT_APP_ENVIRONMENT: ${REACT_APP_ENVIRONMENT}
+
+  api:
+    container_name: api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    networks:
+      - default
+    depends_on:
+      - db
+      - redis
+    restart: always
+    volumes:
+      - ./api:/api
+      - ./shared:/api/shared
+    links:
+      - redis:redis
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      DATABASE_HOST: db
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+      RECAPTCHA_SECRET_KEY: ${RECAPTCHA_SECRET_KEY}
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+      EMAIL_SENDER: ${EMAIL_SENDER}
+      DOMAIN: ${DOMAIN}
+      AWS_S3_ACCESS_KEY: ${AWS_S3_ACCESS_KEY}
+      AWS_S3_SECRET_ACCESS_KEY: ${AWS_S3_SECRET_ACCESS_KEY}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
+      NODE_ENV: "development"
+      RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY}
+      CHOKIDAR_USEPOLLING: 1
+
+  db:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    networks:
+      - default
+    ports:
+      - 5433:5432
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      PGDATA: /var/lib/postgresql/data
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    volumes:
+      - ./redis:/data
+    ports:
+      - 6379:6379
+    networks:
+      - default
+
+networks:
+  default:
+
+volumes:
+  redis:
