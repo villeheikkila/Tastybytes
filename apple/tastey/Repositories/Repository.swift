@@ -32,7 +32,7 @@ class SupabaseRepository: Repository {
     let subBrand: SubBrandRepository
     let flavor: FlavorRepository
     let notification: NotificationRepository
-        
+    
     init(_ client: SupabaseClient) {
         client.realtime.connect()
         self.profile = SupabaseProfileRepository(client: client)

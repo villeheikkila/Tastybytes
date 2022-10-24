@@ -7,7 +7,7 @@ struct AddProductScreenView: View {
     @State var activeSheet: Sheet?
     @State var showToast = false
     @State var toastType: ToastType?
-
+    
     // New product values
     @State var category: CategoryName = CategoryName.beverage
     @State var subcategories: [Subcategory] = []
@@ -17,25 +17,25 @@ struct AddProductScreenView: View {
     @State var name: String = ""
     @State var description: String = ""
     @State var hasSubBrand = false
-
+    
     func getSubcategoriesForCategory() -> [Subcategory]? {
         return categories.first(where: { $0.name == category })?.subcategories
     }
-
+    
     func setBrand(brand: BrandJoinedWithSubBrands) {
         self.brand = brand
         subBrand = nil
         dismissSheet()
     }
-
+    
     func dismissSheet() {
         activeSheet = nil
     }
-
+    
     func isValid() -> Bool {
         return brandOwner != nil && brand != nil && validateStringLength(str: name, type: .normal)
     }
-
+    
     func getToastText() -> String {
         switch toastType {
         case .createdCompany:
@@ -48,7 +48,7 @@ struct AddProductScreenView: View {
             return ""
         }
     }
-
+    
     var body: some View {
         VStack {
             List {
@@ -63,7 +63,7 @@ struct AddProductScreenView: View {
                             self.subcategories.removeAll()
                         }
                     }
-
+                    
                     Button(action: { self.activeSheet = Sheet.subcategories }) {
                         HStack {
                             if subcategories.count == 0 {
@@ -78,8 +78,8 @@ struct AddProductScreenView: View {
                 }
             header: {
                 Text("Category")
-                }.headerProminence(.increased)
-
+            }.headerProminence(.increased)
+                
                 Section {
                     Button(action: {
                         self.activeSheet = Sheet.brandOwner
@@ -95,7 +95,7 @@ struct AddProductScreenView: View {
                         }
                         .disabled(brandOwner == nil)
                     }
-
+                    
                     if brand != nil {
                         Toggle("Has sub-brand?", isOn: $hasSubBrand)
                     }
@@ -108,12 +108,12 @@ struct AddProductScreenView: View {
                         }
                         .disabled(brand == nil)
                     }
-
+                    
                 } header: {
                     Text("Brand")
                 }
                 .headerProminence(.increased)
-
+                
                 Section {
                     TextField("Flavor", text: $name)
                     TextField("Description (optional)", text: $description)
@@ -121,11 +121,11 @@ struct AddProductScreenView: View {
                     Text("Product")
                 }
                 .headerProminence(.increased)
-
+                
                 Button("Create Product", action: { createProduct() })
                     .disabled(!isValid())
             }
-
+            
         }.sheet(item: $activeSheet) { sheet in
             switch sheet {
             case .subcategories:
@@ -151,7 +151,7 @@ struct AddProductScreenView: View {
                         self.setBrand(brand: brand)
                     })
                 }
-
+                
             case .subBrand:
                 if let brand = brand {
                     SubBrandPickerView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
@@ -161,7 +161,7 @@ struct AddProductScreenView: View {
                         }
                         self.subBrand = subBrand
                         dismissSheet()
-
+                        
                     })
                 }
             }
@@ -173,7 +173,7 @@ struct AddProductScreenView: View {
             loadCategories()
         }
     }
-
+    
     func loadCategories() {
         Task {
             do {
@@ -184,7 +184,7 @@ struct AddProductScreenView: View {
             }
         }
     }
-
+    
     func createProduct() {
         print("name \(name)")
         if let categoryId = categories.first(where: { $0.name == category })?.id, let brandId = brand?.id {
@@ -209,7 +209,7 @@ extension AddProductScreenView {
         case brand
         case subBrand
     }
-
+    
     enum ToastType: Identifiable {
         var id: Self { self }
         case createdCompany

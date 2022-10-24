@@ -28,13 +28,13 @@ struct SupabaseAuthRepository: AuthRepository {
             .session?
             .user
     }
-
+    
     func logOut() async throws -> Void {
         try await client
             .auth
             .signOut()
     }
-
+    
     func sendEmailVerification(email: String) async throws -> Void {
         try await client
             .auth

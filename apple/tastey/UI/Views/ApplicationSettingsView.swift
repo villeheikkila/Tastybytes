@@ -4,7 +4,7 @@ struct ApplicationSettingsView: View {
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
     @Environment(\.colorScheme) var systemColorScheme
-
+    
     var body: some View {
         Form {
             Section {
@@ -30,13 +30,13 @@ extension ApplicationSettingsView {
         case exported
         case exportError
     }
-
+    
     @MainActor class ViewModel: ObservableObject {
         @Published var isSystemColor = false
         @Published var isDarkMode = false
         var initialColorScheme: ColorScheme? = nil
         
-
+        
         func setInitialValues(systemColorScheme: ColorScheme, userColorScheme: Profile.ColorScheme?) {
             self.initialColorScheme = systemColorScheme
             
@@ -57,7 +57,7 @@ extension ApplicationSettingsView {
                 }
             }
         }
-
+        
         func updateColorScheme(_ onChange: @escaping () -> Void) {
             if (isSystemColor) {
                 self.isDarkMode = initialColorScheme == ColorScheme.dark
@@ -65,10 +65,10 @@ extension ApplicationSettingsView {
             let update = Profile.Update(
                 isDarkMode: isDarkMode, isSystemColor: isSystemColor
             )
-
+            
             Task {
                 _ = try await repository.profile.update(id: repository.auth.getCurrentUserId(),
-                                                    update: update)
+                                                        update: update)
                 onChange()
             }
         }

@@ -17,7 +17,7 @@ struct Company: Identifiable {
             return nil
         }
     }
-
+    
 }
 
 extension Company: Hashable {
@@ -32,7 +32,7 @@ extension Company: Decodable {
         case name
         case logoUrl = "logo_url"
     }
-
+    
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
@@ -67,7 +67,7 @@ extension CompanyJoined: Decodable {
         case brands
         case logoUrl
     }
-
+    
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)

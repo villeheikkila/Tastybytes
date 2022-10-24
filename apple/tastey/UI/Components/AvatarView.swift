@@ -5,7 +5,7 @@ struct AvatarView: View {
     let avatarUrl: URL?
     let size: CGFloat
     let id: UUID
-
+    
     var body: some View {
         if let url = avatarUrl {
             CachedAsyncImage(url: url, urlCache: .imageCache) { image in

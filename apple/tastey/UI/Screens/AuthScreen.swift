@@ -8,9 +8,9 @@ public struct AuthView<AuthenticatedContent: View, LoadingContent: View>: View {
     private let magicLinkEnabled: Bool
     private let loadingContent: () -> LoadingContent
     private let authenticatedContent: (Session) -> AuthenticatedContent
-
+    
     @State private var authEvent: AuthChangeEvent?
-
+    
     public init(
         supabaseClient: SupabaseClient,
         @ViewBuilder loadingContent: @escaping () -> LoadingContent,
@@ -21,7 +21,7 @@ public struct AuthView<AuthenticatedContent: View, LoadingContent: View>: View {
         self.loadingContent = loadingContent
         self.authenticatedContent = authenticatedContent
     }
-
+    
     public var body: some View {
         Group {
             switch (authEvent, supabaseClient.auth.session) {
@@ -51,12 +51,12 @@ public struct AuthView<AuthenticatedContent: View, LoadingContent: View>: View {
 
 struct SignInOrSignUpView: View {
     let supabaseClient: SupabaseClient
-
+    
     enum ResultStatus {
         case idle
         case loading
         case result(Result<Void, Error>)
-
+        
         var isLoading: Bool {
             if case .loading = self {
                 return true
@@ -64,11 +64,11 @@ struct SignInOrSignUpView: View {
             return false
         }
     }
-
+    
     enum Mode {
         case signIn, signUp, magicLink, forgotPassword
     }
-
+    
     enum Toast {
         case confirmationEmailSent
         case error(String)
@@ -83,28 +83,28 @@ struct SignInOrSignUpView: View {
         self.activeToast = type
         self.showToast = true
     }
-
-
+    
+    
     let magicLinkEnabled: Bool
-
+    
     @State var email = ""
     @State var password = ""
-
+    
     @State var mode: Mode = .signIn
     @State var status = ResultStatus.idle
-
+    
     @State var showToast = false
     @State var activeToast: Toast? = nil
     @FocusState private var focusedField: Field?
-
-
+    
+    
     var body: some View { VStack {
         VStack(spacing: 20) {
             Spacer()
-
+            
             VStack(alignment: .center) {
                 Text("tastey").font(.title).fontWeight(.bold)
-
+                
                 Image("app-icon")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -115,10 +115,10 @@ struct SignInOrSignUpView: View {
             }
             
             Spacer()
-
-
+            
+            
             emailTextField
-
+            
             if mode == .signIn || mode == .signUp {
                 passwordTextField
             }
@@ -133,7 +133,7 @@ struct SignInOrSignUpView: View {
                                 Text("Submitting...").bold()
                             }
                         }
-
+                        
                         Text(primaryButtonText).bold()
                     }
                     .foregroundColor(.white)
@@ -144,39 +144,39 @@ struct SignInOrSignUpView: View {
                     )
                 }
                 .disabled(status.isLoading)
-
+                
                 if mode == .forgotPassword {
                     HStack {
                         Button("Go back to sign in") {
                             withAnimation { mode = .signIn }
                         }
-
+                        
                         Spacer()
                     }
                 }
-
+                
                 if magicLinkEnabled, mode == .signIn {
                     Button("Sign in with magic link") {
                         withAnimation { mode = .magicLink }
                     }
                 }
-
+                
                 if mode == .signIn || mode == .signUp {
                     Button(
                         mode == .signIn
-                            ? "Don't have an account? Sign up"
-                            : "Do you have an account? Sign in"
+                        ? "Don't have an account? Sign up"
+                        : "Do you have an account? Sign in"
                     ) {
                         withAnimation { mode = mode == .signIn ? .signUp : .signIn }
                     }
                 }
-
+                
                 if mode == .signIn {
                     Button("Forgot your password?") {
                         withAnimation { mode = .forgotPassword }
                     }
                 }
-
+                
                 if mode == .magicLink {
                     Button("Sign in with password") {
                         withAnimation { mode = .signIn }
@@ -198,7 +198,7 @@ struct SignInOrSignUpView: View {
         }
     }
     }
-
+    
     var emailTextField: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -217,7 +217,7 @@ struct SignInOrSignUpView: View {
             .padding(.vertical, 5)
         }
     }
-
+    
     var passwordTextField: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -235,7 +235,7 @@ struct SignInOrSignUpView: View {
             .padding(.vertical, 5)
         }
     }
-
+    
     var primaryButtonText: String {
         switch mode {
         case .signIn: return "Sign in"
@@ -244,18 +244,18 @@ struct SignInOrSignUpView: View {
         case .forgotPassword: return "Send reset password instructions"
         }
     }
-
+    
     private func primaryActionTapped() {
         Task {
             status = .loading
-
+            
             do {
                 switch mode {
                 case .signIn:
                     _ = try await supabaseClient.auth.signIn(email: email, password: password)
                 case .signUp:
                     _ =
-                        try await supabaseClient.auth.signUp(email: email, password: password)
+                    try await supabaseClient.auth.signUp(email: email, password: password)
                     self.activeToast = Toast.confirmationEmailSent
                     self.showToast = true
                 case .magicLink:

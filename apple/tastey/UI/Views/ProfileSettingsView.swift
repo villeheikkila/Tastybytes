@@ -2,12 +2,9 @@ import AlertToast
 import GoTrue
 import PhotosUI
 import SwiftUI
-                           
+
 struct ProfileSettingsView: View {
     @StateObject private var viewModel = ViewModel()
-    @State private var showingImagePicker = false
-    @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var showDeleteConfirmation = false
     @EnvironmentObject var currentProfile: CurrentProfile
     @Environment(\.colorScheme) var initialColorScheme
     
@@ -41,7 +38,7 @@ struct ProfileSettingsView: View {
     
     var avatarPicker: some View {
         PhotosPicker(
-            selection: $selectedItem,
+            selection: $viewModel.selectedItem,
             matching: .images,
             photoLibrary: .shared()
         ) {
@@ -56,7 +53,7 @@ struct ProfileSettingsView: View {
         .frame(maxWidth: .infinity, alignment: .center)
         .listRowBackground(Color(UIColor.systemGroupedBackground))
         .padding(.top, 0)
-        .onChange(of: selectedItem) { newValue in
+        .onChange(of: viewModel.selectedItem) { newValue in
             viewModel.uploadAvatar(newAvatar: newValue)
         }
     }
@@ -116,8 +113,10 @@ extension ProfileSettingsView {
     enum Toast {
         case profileUpdated
     }
-
+    
     @MainActor class ViewModel: ObservableObject {
+        @Published var selectedItem: PhotosPickerItem? = nil
+        
         // Profile values
         @Published var username = ""
         @Published var firstName = ""
@@ -128,10 +127,10 @@ extension ProfileSettingsView {
         @Published var email = ""
         @Published var showToast = false
         @Published var toast: Toast?
-
+        
         var profile: Profile?
         var user: User?
-
+        
         func profileHasChanged() -> Bool {
             return ![
                 username == profile?.username,
@@ -139,16 +138,16 @@ extension ProfileSettingsView {
                 lastName == profile?.lastName,
             ].allSatisfy({ $0 })
         }
-
+        
         func emailHasChanged() -> Bool {
             return email != user?.email
         }
-
+        
         func showToast(type: Toast) {
             toast = type
             showToast = true
         }
-
+        
         func getInitialValues(initialColorScheme: ColorScheme) {
             Task {
                 let user = repository.auth.getCurrentUser()
@@ -161,16 +160,16 @@ extension ProfileSettingsView {
                         }
                     }
                 }
-
+                
                 DispatchQueue.main.async {
                     self.user = user
                     self.email = user?.email ?? ""
                 }
-
+                
                 self.updateFormValues(profile: profile)
             }
         }
-
+        
         func updateFormValues(profile: Profile) {
             DispatchQueue.main.async {
                 self.profile = profile
@@ -180,42 +179,42 @@ extension ProfileSettingsView {
                 self.showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
             }
         }
-
+        
         func updateProfile() {
             let update = Profile.Update(
                 username: username,
                 firstName: firstName,
                 lastName: lastName
             )
-
+            
             Task {
                 let profile = try await repository.profile.update(id: repository.auth.getCurrentUserId(),
                                                                   update: update)
-
+                
                 self.updateFormValues(profile: profile)
                 self.toast = Toast.profileUpdated
                 self.showToast = true
             }
         }
-
+        
         func updateDisplaySettings() {
             let update = Profile.Update(
                 showFullName: showFullName
             )
-
+            
             Task {
                 try await repository.profile.update(id: repository.auth.getCurrentUserId(),
                                                     update: update)
             }
         }
-
+        
         // TODO: Do not log out on email change
         func sendEmailVerificationLink() {
             Task {
                 try await repository.auth.sendEmailVerification(email: email)
             }
         }
-
+        
         func uploadAvatar(newAvatar: PhotosPickerItem?) {
             Task {
                 if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
@@ -232,7 +231,7 @@ extension ProfileSettingsView {
                 }
             }
         }
-
+        
         func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
             URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
         }

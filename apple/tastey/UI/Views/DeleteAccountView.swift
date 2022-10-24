@@ -7,7 +7,7 @@ struct DeleteAccountView: View {
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
     @Environment(\.colorScheme) var initialColorScheme
-
+    
     var body: some View {
         Form {
             Section {
@@ -57,24 +57,24 @@ extension DeleteAccountView {
         case exported
         case exportError
     }
-
+    
     @MainActor class ViewModel: ObservableObject {
         @Published var csvExport: CSVFile?
         @Published var showingExporter = false
         @Published var showToast = false
         @Published var toast: Toast?
         @Published var showDeleteConfirmation = false
-
+        
         var initialColorScheme: ColorScheme?
-
+        
         var profile: Profile?
         var user: User?
-
+        
         func showToast(type: Toast) {
             toast = type
             showToast = true
         }
-
+        
         func exportData() {
             Task {
                 let csvText = try await repository.profile.currentUserExport()
@@ -82,7 +82,7 @@ extension DeleteAccountView {
                 self.showingExporter = true
             }
         }
-
+        
         func deleteCurrentAccount() {
             Task {
                 do {

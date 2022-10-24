@@ -7,11 +7,11 @@ struct CompanyPageView: View {
     @StateObject private var viewModel = ViewModel()
     @State private var showDeleteCompanyConfirmationDialog = false
     @State private var showDeleteBrandConfirmationDialog = false
-
+    
     func getProductJoined(product: ProductJoinedCategory, subBrand: SubBrand, brand: BrandJoinedSubBrandsJoinedProduct) -> ProductJoined {
         return ProductJoined(id: product.id, name: product.name, description: product.name, subBrand: SubBrandJoinedWithBrand(id: subBrand.id, name: subBrand.name, brand: BrandJoinedWithCompany(id: brand.id, name: brand.name, brandOwner: company)), subcategories: product.subcategories)
     }
-
+    
     var body: some View {
         List {
             HStack(spacing: 20) {
@@ -31,7 +31,7 @@ struct CompanyPageView: View {
                             .fontWeight(.medium)
                         Spacer()
                     }
-
+                    
                     if let checkIns = viewModel.companySummary?.totalCheckIns {
                         HStack {
                             Text("Check-ins:")
@@ -65,7 +65,7 @@ struct CompanyPageView: View {
                 }
             }
             .padding(.all, 10)
-
+            
             if let companyJoined = viewModel.companyJoined {
                 ForEach(companyJoined.brands, id: \.id) { brand in
                     Section {
@@ -119,7 +119,7 @@ extension CompanyPageView {
     @MainActor class ViewModel: ObservableObject {
         @Published var companyJoined: CompanyJoined?
         @Published var companySummary: CompanySummary?
-
+        
         func getInitialData(_ companyId: Int) {
             Task {
                 do {
@@ -131,7 +131,7 @@ extension CompanyPageView {
                     print("error: \(error)")
                 }
             }
-
+            
             Task {
                 do {
                     let summary = try await repository.company.getSummaryById(id: companyId)
@@ -143,7 +143,7 @@ extension CompanyPageView {
                 }
             }
         }
-
+        
         func deleteCompany(_ company: Company) {
             Task {
                 do {
@@ -153,7 +153,7 @@ extension CompanyPageView {
                 }
             }
         }
-
+        
         func deleteBrand(_ brand: BrandJoinedSubBrandsJoinedProduct) {
             Task {
                 do {

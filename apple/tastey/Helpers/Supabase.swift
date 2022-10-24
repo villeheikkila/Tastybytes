@@ -11,4 +11,4 @@ class Supabase {
         supabaseKey: Supabase.supabaseKey
     )
 }
-    
+

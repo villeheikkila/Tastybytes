@@ -20,6 +20,6 @@ struct SupabaseFlavorRepository: FlavorRepository {
             .decoded(to: [Flavor].self)
     }
 }
-    
+
 
 

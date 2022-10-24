@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CardView<Content: View>: View {
     var content: () -> Content
-
+    
     var body: some View {
         HStack {
             content()
