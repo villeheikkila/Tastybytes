@@ -126,7 +126,6 @@ extension ProfileSettingsView {
         @Published var showFullName = false
         // User values
         @Published var email = ""
-        @Published var showingExporter = false
         @Published var showToast = false
         @Published var toast: Toast?
 

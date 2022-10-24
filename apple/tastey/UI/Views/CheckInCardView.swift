@@ -59,7 +59,7 @@ struct CheckInCardView: View {
         NavigationLink(value: checkIn.profile) {
             HStack {
                 AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 30, id: checkIn.profile.id)
-                Text(checkIn.profile.getPreferedName())
+                Text(checkIn.profile.getPreferredName())
                     .font(.system(size: 12, weight: .bold, design: .default))
                     .foregroundColor(.primary)
                 Spacer()

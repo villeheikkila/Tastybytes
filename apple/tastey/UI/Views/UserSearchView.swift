@@ -4,14 +4,14 @@ struct UserSearchView<Actions: View>: View {
     @StateObject var viewModel = ViewModel()
     
     let actions: (_ profile: Profile) -> Actions
-
+    
     var body: some View {
         NavigationStack {
             List {
                 ForEach(viewModel.searchResults, id: \.id) { profile in
                     HStack {
                         AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
-                        Text(profile.getPreferedName())
+                        Text(profile.getPreferredName())
                         Spacer()
                         HStack {
                             self.actions(profile)
@@ -21,21 +21,7 @@ struct UserSearchView<Actions: View>: View {
             }
             .navigationTitle("Search users")
             .searchable(text: $viewModel.searchText)
-            .onSubmit(of: .search, searchUsers)
-        }
-    }
-
-    func searchUsers() {
-        Task {
-            do {
-                let currentUserId = repository.auth.getCurrentUserId()
-                let searchResults = try await repository.profile.search(searchTerm: viewModel.searchText, currentUserId: currentUserId)
-                DispatchQueue.main.async {
-                    viewModel.searchResults = searchResults
-                }
-            } catch {
-                print("error: \(error.localizedDescription)")
-            }
+            .onSubmit(of: .search, { viewModel.searchUsers() })
         }
     }
 }
