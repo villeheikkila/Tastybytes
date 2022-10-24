@@ -1,0 +1,69 @@
+type User {
+  id: ID! @id
+  email: String @unique
+  firstName: String!
+  lastName: String!
+  password: String!
+  admin: Boolean!
+  avatarId: String
+  avatarColor: String
+  colorScheme: Int
+  checkins: [Checkin!]! @relation(name: "CheckInAuthor", onDelete: CASCADE)
+  friends: [User!]!
+  friendRequest: [FriendRequest] @relation(name: "FriendRequestReceiver" onDelete: CASCADE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  }
+
+type Product {
+  id: ID! @id
+  name: String!
+  company: Company!
+  avatarId: String
+  checkins: [Checkin!]! @relation(name: "CheckInProduct", onDelete: CASCADE)
+  category: [Category] 
+  subCategory: [SubCategory] 
+  imageId: String
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  }
+
+type Checkin {
+    id: ID! @id
+    rating: Int!
+    comment: String
+    image: String
+    author: User! @relation(name: "CheckInAuthor", onDelete: SET_NULL)
+    product: Product! @relation(name: "CheckInProduct", onDelete: SET_NULL)
+    createdAt: DateTime! @createdAt
+    updatedAt: DateTime! @updatedAt
+}
+
+type Company {
+  id: ID! @id
+  name: String! @unique
+  products: [Product]
+}
+
+
+type Category {
+  id: ID! @id
+  name: String! @unique
+  color: String
+  subCategory: [SubCategory] 
+  products: [Product] 
+}
+
+type SubCategory {
+    id: ID! @id
+    category: Category!  
+    name: String! @unique
+    products: [Product]
+}
+
+type FriendRequest {
+    id: ID! @id
+    sender: [User!]! @relation(name: "FriendRequestSender")
+    receiver: [User!]! @relation(name: "FriendRequestReceiver")
+    message: String
+}
