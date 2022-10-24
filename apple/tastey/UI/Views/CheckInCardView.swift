@@ -170,7 +170,7 @@ struct CheckInCardView: View {
             }
             .buttonStyle(.plain)
             Spacer()
-            ReactionsView(checkInId: checkIn.id, checkInReactions: checkIn.checkInReactions)
+            ReactionsView(checkIn: checkIn)
         }
     }
 }

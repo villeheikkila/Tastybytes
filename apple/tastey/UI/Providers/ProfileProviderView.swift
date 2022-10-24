@@ -38,7 +38,6 @@ class CurrentProfile: ObservableObject {
 
     func refresh() {
         if let id = profile?.id {
-
             Task {
                 do {
                     let currentUserProfile = try await repository.profile.getById(id: id)
