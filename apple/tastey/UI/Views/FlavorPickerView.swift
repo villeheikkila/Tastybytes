@@ -26,7 +26,7 @@ struct FlavorPickerView: View {
                         Text(flavor.name.capitalized)
                         
                         Spacer()
-                        if pickedFlavors.contains(where: { $0.id == flavor.id }) {
+                        if pickedFlavors.contains(flavor) {
                             Image(systemName: "checkmark")
                         }
                     }
