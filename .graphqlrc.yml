@@ -1,0 +1,2 @@
+schema: ./shared/schema.gql
+documents: "client/src/**/*.{gql,js,ts,jsx,tsx"

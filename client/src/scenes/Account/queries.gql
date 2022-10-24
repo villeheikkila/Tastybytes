@@ -1,0 +1,18 @@
+query CurrentAccount {
+  currentAccount {
+    username
+    email
+    avatarUri
+  }
+}
+
+query LogOut {
+  logOut
+}
+
+mutation UploadProfilePicture($picture: Upload!) {
+  uploadProfilePicture(picture: $picture) {
+    filename
+    avatarUri
+  }
+}

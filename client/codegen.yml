@@ -1,0 +1,34 @@
+schema: shared/graphql.schema.json
+documents: "src/**/*.gql"
+overwrite: true
+
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+
+generates:
+  src/types.ts:
+    documents: "src/queries/**/**.gql"
+    plugins:
+      - typescript
+    config:
+      avoidOptionals: true
+      maybeValue: T
+
+  src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .hooks.tsx
+      baseTypesPath: types.ts
+    plugins:
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHOC: false
+      withComponent: false
+      withHooks: true
+      maybeValue: T
+      preResolveTypes: false
+      skipTypeNameForRoot: true
+      skipTypename: true
+      withRefetchFn: true
