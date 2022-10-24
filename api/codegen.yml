@@ -1,6 +1,0 @@
-overwrite: true
-schema: './shared/schema.gql'
-generates:
-  ./shared/graphql.schema.json:
-    plugins:
-      - 'introspection'
