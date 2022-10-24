@@ -9,8 +9,8 @@ struct SubcategoryPicker: View {
     let maxSubcategories = 4
     
     func toggleSubcategory(subcategory: Subcategory) {
-        if subcategories.contains(where: { $0.id == subcategory.id }) {
-            subcategories.removeAll(where: { $0.id == subcategory.id })
+        if subcategories.contains(subcategory) {
+            subcategories.remove(object: subcategory)
         } else if subcategories.count < maxSubcategories {
             subcategories.append(subcategory)
         } else {
@@ -27,7 +27,7 @@ struct SubcategoryPicker: View {
                     HStack {
                         Text(subcategory.name)
                         Spacer()
-                        if subcategories.contains(where: { $0.id == subcategory.id }) {
+                        if subcategories.contains(subcategory) {
                             Image(systemName: "checkmark")
                         }
                     }
