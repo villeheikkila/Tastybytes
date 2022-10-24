@@ -1,7 +1,0 @@
-query LogIn($account: LogInInput!) {
-  logIn(account: $account)
-}
-
-query RequestAccountVerification($username: String!) {
-  requestAccountVerification(username: $username)
-}
