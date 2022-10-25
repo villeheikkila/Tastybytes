@@ -1,7 +1,7 @@
 import AlertToast
 import SwiftUI
 
-struct AddProductScreenView: View {
+struct ProductSheetView: View {
     @EnvironmentObject var navigator: Navigator
     @StateObject var viewModel = ViewModel()
 
@@ -145,7 +145,7 @@ struct AddProductScreenView: View {
     }
 }
 
-extension AddProductScreenView {
+extension ProductSheetView {
     enum Sheet: Identifiable {
         var id: Self { self }
         case subcategories
