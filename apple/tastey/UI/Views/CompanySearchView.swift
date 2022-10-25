@@ -14,7 +14,6 @@ struct CompanySearchView: View {
                     Button(action: {
                         self.onSelect(company, false)
                         dismiss()
-                        
                     }) {
                         Text(company.name)
                     }
@@ -24,7 +23,7 @@ struct CompanySearchView: View {
                 case .searched:
                     Section {
                         Button(action: {
-                            viewModel.onAdd()
+                            viewModel.createNew()
                         }) {
                             Text("Add")
                         }
@@ -74,9 +73,11 @@ extension CompanySearchView {
         @Published var status: Status? = nil
         @Published var companyName = ""
         
-        func onAdd() {
-            self.companyName = searchText
-            self.status = Status.add
+        func createNew() {
+            DispatchQueue.main.async {
+                self.companyName = self.searchText
+                self.status = Status.add
+            }
         }
         
         func searchCompanies() {
