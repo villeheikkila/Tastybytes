@@ -3,6 +3,11 @@ struct SubBrand: Identifiable, Hashable, Decodable {
     let id: Int
     let name: String?
     
+    init(id: Int, name: String?) {
+        self.id = id
+        self.name = name
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -19,6 +24,10 @@ struct SubBrandJoinedWithBrand: Identifiable {
     let id: Int
     let name: String?
     let brand: BrandJoinedWithCompany
+    
+    func getSubBrand() -> SubBrand {
+        return SubBrand(id: id, name: name)
+    }
 }
 
 extension SubBrandJoinedWithBrand: Hashable {

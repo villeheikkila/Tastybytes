@@ -13,6 +13,10 @@ struct SubcategoryJoinedWithCategory: Identifiable {
     let id: Int
     let name: String
     let category: Category
+    
+    func getSubcategory() -> Subcategory {
+        return Subcategory(id: id, name: name)
+    }
 }
 
 extension SubcategoryJoinedWithCategory: Hashable {

@@ -72,7 +72,7 @@
 		5CED432028FAB5F5003F8194 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED431F28FAB5F5003F8194 /* ViewExtensions.swift */; };
 		5CED432228FAC01C003F8194 /* UserSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432128FAC01C003F8194 /* UserSearchView.swift */; };
 		5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5CED432428FBF6B0003F8194 /* AlertToast */; };
-		5CED432828FD417E003F8194 /* AddProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432728FD417E003F8194 /* AddProductScreen.swift */; };
+		5CED432828FD417E003F8194 /* ProductSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432728FD417E003F8194 /* ProductSheetView.swift */; };
 		5CED432A28FD4E17003F8194 /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432928FD4E17003F8194 /* CategoryRepository.swift */; };
 		5CED432C28FD69DE003F8194 /* CompanySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432B28FD69DE003F8194 /* CompanySearchView.swift */; };
 		5CED432E28FD6EA7003F8194 /* BrandSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432D28FD6EA7003F8194 /* BrandSearchView.swift */; };
@@ -88,6 +88,7 @@
 		5CFEE57928ED69B100A8DD66 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57828ED69B100A8DD66 /* RootView.swift */; };
 		5CFEE57B28ED69B200A8DD66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */; };
 		5CFEE57E28ED69B200A8DD66 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEE57D28ED69B200A8DD66 /* Preview Assets.xcassets */; };
+		5CFF4D732908718600BBA1F6 /* ToastProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFF4D722908718600BBA1F6 /* ToastProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -154,7 +155,7 @@
 		5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
 		5CED431F28FAB5F5003F8194 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		5CED432128FAC01C003F8194 /* UserSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchView.swift; sourceTree = "<group>"; };
-		5CED432728FD417E003F8194 /* AddProductScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductScreen.swift; sourceTree = "<group>"; };
+		5CED432728FD417E003F8194 /* ProductSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSheetView.swift; sourceTree = "<group>"; };
 		5CED432928FD4E17003F8194 /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
 		5CED432B28FD69DE003F8194 /* CompanySearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanySearchView.swift; sourceTree = "<group>"; };
 		5CED432D28FD6EA7003F8194 /* BrandSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSearchView.swift; sourceTree = "<group>"; };
@@ -170,6 +171,7 @@
 		5CFEE57828ED69B100A8DD66 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5CFEE57D28ED69B200A8DD66 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5CFF4D722908718600BBA1F6 /* ToastProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +226,7 @@
 			children = (
 				5C989DAE2901B8A400BBC5A7 /* UserProviderView.swift */,
 				5C989DB92901D2C700BBC5A7 /* ProfileProviderView.swift */,
+				5CFF4D722908718600BBA1F6 /* ToastProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -303,13 +306,12 @@
 		5CFB562D28F5969300F13A1E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				5CD10A4428F952030001CFC2 /* CheckInSheetView.swift */,
-				5CED432728FD417E003F8194 /* AddProductScreen.swift */,
 				5C12B42C2902A12A001EE549 /* ApplicationSettingsView.swift */,
 				5C12B4322902A4C9001EE549 /* BlockedUsersView.swift */,
 				5CED432D28FD6EA7003F8194 /* BrandSearchView.swift */,
 				5CC49475290589E700D269A2 /* CardView.swift */,
 				5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */,
+				5CD10A4428F952030001CFC2 /* CheckInSheetView.swift */,
 				5C25AEB929053B7E00793607 /* CompanyPageView.swift */,
 				5CED432B28FD69DE003F8194 /* CompanySearchView.swift */,
 				5C12B4302902A29A001EE549 /* DeleteAccountView.swift */,
@@ -318,6 +320,7 @@
 				5C989DBD2901EA6200BBC5A7 /* NavigationView.swift */,
 				5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */,
 				5CB1C24028F99E1C000B0EB4 /* ProductListItemView.swift */,
+				5CED432728FD417E003F8194 /* ProductSheetView.swift */,
 				5C12B42E2902A190001EE549 /* ProfileSettingsView.swift */,
 				5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */,
 				5CFEE57828ED69B100A8DD66 /* RootView.swift */,
@@ -490,7 +493,7 @@
 				5C989DBA2901D2C700BBC5A7 /* ProfileProviderView.swift in Sources */,
 				5CD10A4728F9522D0001CFC2 /* RatingPickerView.swift in Sources */,
 				5C25AEB429031F9C00793607 /* Extensions.swift in Sources */,
-				5CED432828FD417E003F8194 /* AddProductScreen.swift in Sources */,
+				5CED432828FD417E003F8194 /* ProductSheetView.swift in Sources */,
 				5C25AEBA29053B7E00793607 /* CompanyPageView.swift in Sources */,
 				5C12B4312902A29A001EE549 /* DeleteAccountView.swift in Sources */,
 				5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */,
@@ -506,6 +509,7 @@
 				5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */,
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5C11ECAF28EECC8500CCDE6A /* AuthScreen.swift in Sources */,
+				5CFF4D732908718600BBA1F6 /* ToastProvider.swift in Sources */,
 				5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */,
 				5C12B42F2902A191001EE549 /* ProfileSettingsView.swift in Sources */,
 				5C989DAB2901AAD500BBC5A7 /* Repository.swift in Sources */,

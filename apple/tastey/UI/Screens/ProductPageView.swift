@@ -27,7 +27,7 @@ struct ProductPageView: View {
                                                    }
                                                }
                                                Button(action: {
-                                                   viewModel.toggleEditSuggestionSheet()
+                                                   viewModel.setActiveSheet(.editSuggestion)
                                                }) {
                                                    Label("Edit Suggestion", systemImage: "square.and.pencil")
                                                        .foregroundColor(.red)
@@ -66,15 +66,20 @@ struct ProductPageView: View {
         }
         .navigationBarItems(
             trailing: Button(action: {
-                viewModel.showingSheet.toggle()
+                viewModel.setActiveSheet(.checkIn)
             }) {
                 Text("Check-in")
                     .bold()
             })
-        .sheet(isPresented: $viewModel.showingSheet) {
-            CheckInSheetView(product: product, onCreation: {
-                viewModel.appendNewCheckIn(newCheckIn: $0)
-            })
+        .sheet(item: $viewModel.activeSheet) { sheet in
+            switch sheet {
+            case .checkIn:
+                CheckInSheetView(product: product, onCreation: {
+                    viewModel.appendNewCheckIn(newCheckIn: $0)
+                })
+            case .editSuggestion:
+                ProductSheetView(initialProduct: product)
+            }
         }
         .confirmationDialog("delete_company",
                             isPresented: $viewModel.showDeleteProductConfirmationDialog
@@ -86,10 +91,16 @@ struct ProductPageView: View {
 }
 
 extension ProductPageView {
+    enum Sheet: Identifiable {
+        var id: Self { self }
+        case checkIn
+        case editSuggestion
+    }
+    
     @MainActor class ViewModel: ObservableObject {
         @Published var checkIns = [CheckIn]()
         @Published var isLoading = false
-        @Published var showingSheet = false
+        @Published var activeSheet: Sheet?
         @Published var productSummary: ProductSummary?
         @Published var showDeleteProductConfirmationDialog = false
         @Published var showEditSuggestionSheet = false
@@ -103,9 +114,9 @@ extension ProductPageView {
             fetchMoreCheckIns(productId: productId)
         }
         
-        func toggleEditSuggestionSheet() {
+        func setActiveSheet(_ sheet: Sheet) {
             DispatchQueue.main.async {
-                self.showEditSuggestionSheet.toggle()
+                self.activeSheet = sheet
             }
         }
         
