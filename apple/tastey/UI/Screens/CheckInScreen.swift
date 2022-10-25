@@ -1,9 +1,15 @@
 import SwiftUI
 
 struct CheckInPageView: View {
-    let checkIn: CheckIn
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject private var navigator: Navigator
+    
+    @State var checkIn: CheckIn
+
+    init(checkIn: CheckIn) {
+        _checkIn = State(initialValue: checkIn)
+    }
+    
     
     var body: some View {
         ScrollView {
@@ -11,6 +17,8 @@ struct CheckInPageView: View {
                             loadedFrom: .checkIn,
                             onDelete: {
                 _ in  navigator.removeLast()  
+            }, onUpdate: { updatedCheckIn in
+                self.checkIn = updatedCheckIn
             })
             .task {
                 viewModel.getCheckInCommets(checkInId: checkIn.id)
@@ -51,6 +59,10 @@ extension CheckInPageView {
                     self.checkInComments = checkIns
                 }
             }
+        }
+        
+        func update(_ checkIn: CheckIn) {
+            print(checkIn)
         }
         
         func deleteComment(commentId: Int) {

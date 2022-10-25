@@ -7,9 +7,9 @@ import WrappingHStack
 struct CheckInCardView: View {
     let checkIn: CheckIn
     let loadedFrom: LoadedFrom
-    @StateObject var viewModel = ViewModel()
-
     let onDelete: (_ checkIn: CheckIn) -> Void
+    let onUpdate: (_ checkIn: CheckIn) -> Void
+    @StateObject var viewModel = ViewModel()
 
     func isOwnedByCurrentUser() -> Bool {
         return checkIn.profile.id == repository.auth.getCurrentUserId()
@@ -40,9 +40,16 @@ struct CheckInCardView: View {
             }
             .padding(.all, 10)
         }
+        .sheet(isPresented: $viewModel.showingSheet) {
+            CheckInSheetView(checkIn: checkIn, onUpdate: {
+                updatedCheckIn in onUpdate(updatedCheckIn)
+            })
+        }
         .contextMenu {
             if isOwnedByCurrentUser() {
-                Button(action: {}) {
+                Button(action: {
+                    viewModel.toggleSheet()
+                }) {
                     Label("Edit", systemImage: "pencil")
                 }
 
@@ -188,6 +195,14 @@ extension CheckInCardView {
     }
 
     @MainActor class ViewModel: ObservableObject {
+        @Published var showingSheet = false
+        
+        func toggleSheet() {
+            DispatchQueue.main.async {
+                self.showingSheet.toggle()
+            }
+        }
+
         func delete(checkIn: CheckIn, onDelete: @escaping (_ checkIn: CheckIn) -> Void) {
             Task {
                 try await repository.checkIn.delete(id: checkIn.id)

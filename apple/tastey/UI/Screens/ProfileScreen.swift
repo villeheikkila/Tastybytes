@@ -14,7 +14,9 @@ struct ProfileView: View {
                            content: {
             CheckInCardView(checkIn: $0,
                             loadedFrom: .profile(profile),
-                            onDelete: { checkIn in viewModel.onCheckInDelete(checkIn: checkIn) })
+                            onDelete: {checkIn in viewModel.onCheckInDelete(checkIn: checkIn)
+            },
+                            onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn)})
         },
                            header: {
             VStack(spacing: 20) {
@@ -152,8 +154,17 @@ extension ProfileView {
             fetchMoreCheckIns(userId: userId)
         }
         
+        func onCheckInUpdate(checkIn: CheckIn) {
+            if let index = checkIns.firstIndex(of: checkIn) {
+                DispatchQueue.main.async {
+                    self.checkIns[index] = checkIn
+                }
+            }
+        }
         func onCheckInDelete(checkIn: CheckIn) {
-            checkIns.removeAll(where: { $0.id == checkIn.id })
+            DispatchQueue.main.async {
+                self.checkIns.removeAll(where: { $0.id == checkIn.id })
+            }
         }
         
         func fetchMoreCheckIns(userId: UUID) {

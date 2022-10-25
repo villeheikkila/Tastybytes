@@ -6,6 +6,7 @@ protocol CheckInRepository {
     func getByProfileId(id: UUID, from: Int, to: Int) async throws -> [CheckIn]
     func getByProductId(id: Int, from: Int, to: Int) async throws -> [CheckIn]
     func create(newCheckInParams: NewCheckInParams) async throws -> CheckIn
+    func update(updateCheckInParams: UpdateCheckInParams) async throws -> CheckIn
     func delete(id: Int) async throws -> Void
     func getSummaryByProfileId(id: UUID) async throws -> ProfileSummary
 }
@@ -59,6 +60,18 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .execute()
             .decoded(to: CheckIn.self)
     }
+    
+    func update(updateCheckInParams: UpdateCheckInParams) async throws -> CheckIn {
+        return try await client
+            .database
+            .rpc(fn: "fnc__update_check_in", params: updateCheckInParams)
+            .select(columns: checkInJoined)
+            .limit(count: 1)
+            .single()
+            .execute()
+            .decoded(to: CheckIn.self)
+    }
+    
     
     func delete(id: Int) async throws -> Void {
         try await client

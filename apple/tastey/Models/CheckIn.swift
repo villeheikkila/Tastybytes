@@ -12,6 +12,7 @@ struct CheckIn: Identifiable {
     let taggedProfiles: [Profile]
     let flavors: [Flavor]
     let variant: ProductVariant?
+    let servingStyle: ServingStyle?
     
     func isEmpty() -> Bool {
         return [rating == nil, (review == nil || review == ""), flavors.count == 0].allSatisfy { $0 }
@@ -49,6 +50,7 @@ extension CheckIn: Decodable {
         case taggedProfiles = "check_in_tagged_profiles"
         case flavors = "check_in_flavors"
         case variant = "product_variants"
+        case servingStyle = "serving_styles"
     }
     
     init(from decoder: Decoder) throws {
@@ -64,7 +66,7 @@ extension CheckIn: Decodable {
         taggedProfiles = try values.decode([CheckInTaggedProfile].self, forKey: .taggedProfiles).compactMap { $0.profile }
         flavors = try values.decode([CheckInFlavors].self, forKey: .flavors).compactMap { $0.flavor }
         variant = try values.decodeIfPresent(ProductVariant.self, forKey: .variant)
-        
+        servingStyle = try values.decodeIfPresent(ServingStyle.self, forKey: .servingStyle)
     }
 }
 
@@ -78,6 +80,28 @@ struct NewCheckInParams: Encodable {
     let p_flavor_ids: [Int]?
     
     init (productId: Int, rating: Int?, review: String?, manufacturerId: Int?, servingStyleId: Int?, friendIds: [UUID], flavorIds: [Int]?) {
+        self.p_product_id = productId
+        self.p_rating = rating
+        self.p_review = review
+        self.p_manufacturer_id = manufacturerId
+        self.p_serving_style_id = servingStyleId
+        self.p_friend_ids = friendIds.map { $0.uuidString.lowercased() }
+        self.p_flavor_ids = flavorIds
+    }
+}
+
+struct UpdateCheckInParams: Encodable  {
+    let p_check_in_id: Int
+    let p_product_id: Int
+    let p_rating: Int?
+    let p_review: String?
+    let p_manufacturer_id: Int?
+    let p_serving_style_id: Int?
+    let p_friend_ids: [String]?
+    let p_flavor_ids: [Int]?
+    
+    init (id: Int, productId: Int, rating: Int?, review: String?, manufacturerId: Int?, servingStyleId: Int?, friendIds: [UUID], flavorIds: [Int]?) {
+        self.p_check_in_id = id
         self.p_product_id = productId
         self.p_rating = rating
         self.p_review = review
