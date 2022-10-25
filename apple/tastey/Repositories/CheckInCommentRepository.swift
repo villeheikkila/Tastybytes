@@ -1,7 +1,7 @@
 import Supabase
 
 protocol CheckInCommentRepository {
-    func insert(newCheckInComment: NewCheckInComment) async throws -> CheckInComment
+    func insert(newCheckInComment: NewCheckInComment) async -> Result<CheckInComment, Error>
     func update(updateCheckInComment: UpdateCheckInComment) async throws -> CheckInComment
     func getByCheckInId(id: Int) async throws -> [CheckInComment]
     func deleteById(id: Int) async throws -> Void
@@ -12,16 +12,22 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     private let tableName = "check_in_comments"
     private let joinedWithProfile = "id, content, created_at, profiles (id, username, avatar_url, name_display))"
     
-    func insert(newCheckInComment: NewCheckInComment) async throws -> CheckInComment {
-        return try await client
-            .database
-            .from(tableName)
-            .insert(values: newCheckInComment, returning: .representation)
-            .select(columns: joinedWithProfile)
-            .limit(count: 1)
-            .single()
-            .execute()
-            .decoded(to: CheckInComment.self)
+    func insert(newCheckInComment: NewCheckInComment) async -> Result<CheckInComment, Error> {
+        do {
+            let result = try await client
+                .database
+                .from(tableName)
+                .insert(values: newCheckInComment, returning: .representation)
+                .select(columns: joinedWithProfile)
+                .limit(count: 1)
+                .single()
+                .execute()
+                .decoded(to: CheckInComment.self)
+            return .success(result)
+        } catch {
+            return .failure(error)
+        }
+
     }
     
     func update(updateCheckInComment: UpdateCheckInComment) async throws -> CheckInComment {

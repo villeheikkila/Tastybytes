@@ -4,6 +4,11 @@ import SwiftUI
 struct ProductSheetView: View {
     @EnvironmentObject var navigator: Navigator
     @StateObject var viewModel = ViewModel()
+    let initialProduct: ProductJoined?
+
+    init(initialProduct: ProductJoined? = nil) {
+        self.initialProduct = initialProduct
+    }
 
     var body: some View {
         VStack {
@@ -59,6 +64,9 @@ struct ProductSheetView: View {
         }
         .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
             AlertToast(type: .complete(.green), title: viewModel.getToastText())
+        }
+        .task {
+            viewModel.loadInitialProduct(initialProduct)
         }
         .task {
             viewModel.loadCategories()
@@ -181,11 +189,13 @@ extension ProductSheetView {
         }
 
         func setBrand(brand: BrandJoinedWithSubBrands) {
-            self.brand = brand
-            subBrand = nil
-            dismissSheet()
+            DispatchQueue.main.async {
+                self.brand = brand
+                self.subBrand = nil
+                self.activeSheet = nil
+            }
         }
-        
+
         func setToast(_ toast: Toast) {
             DispatchQueue.main.async {
                 self.activeToast = toast
@@ -206,7 +216,9 @@ extension ProductSheetView {
         }
 
         func dismissSheet() {
-            activeSheet = nil
+            DispatchQueue.main.async {
+                self.activeSheet = nil
+            }
         }
 
         func isValid() -> Bool {
@@ -223,6 +235,21 @@ extension ProductSheetView {
                 return "New Sub-brand Created!"
             case .none:
                 return ""
+            }
+        }
+
+        func loadInitialProduct(_ initialProduct: ProductJoined?) {
+            guard let initialProduct = initialProduct else { return }
+
+            DispatchQueue.main.async {
+                self.category = initialProduct.getCategory() ?? CategoryName.beverage
+                self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
+                self.brandOwner = initialProduct.subBrand.brand.brandOwner
+                self.brand = BrandJoinedWithSubBrands(id: initialProduct.subBrand.brand.id, name: initialProduct.subBrand.brand.name, subBrands: []) // TODO: Fetch sub-brands
+                self.subBrand = initialProduct.subBrand.getSubBrand()
+                self.name = initialProduct.name
+                self.description = initialProduct.description ?? ""
+                self.hasSubBrand = initialProduct.subBrand.name != nil
             }
         }
 
@@ -244,6 +271,20 @@ extension ProductSheetView {
                     do {
                         let newProduct = try await repository.product.create(newProductParams: newProductParams)
                         onCreation(newProduct)
+                    } catch {
+                        print("error: \(error)")
+                    }
+                }
+            }
+        }
+
+        func createProductEditSuggestion(onComplete: @escaping () -> Void) {
+            if let categoryId = categories.first(where: { $0.name == category })?.id, let brandId = brand?.id {
+                let newProductParams = NewProductParams(name: name, description: description, categoryId: categoryId, brandId: brandId, subBrandId: subBrand?.id, subCategoryIds: subcategories.map { $0.id })
+                Task {
+                    do {
+                        try await repository.product.create(newProductParams: newProductParams)
+                        onComplete()
                     } catch {
                         print("error: \(error)")
                     }

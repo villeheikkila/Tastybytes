@@ -10,6 +10,7 @@ struct RootView: View {
                     NavigationStackView()
                 }
             }
+            
         }
     }
 }
