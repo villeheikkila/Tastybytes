@@ -4,54 +4,55 @@ struct ProductPageView: View {
     let product: ProductJoined
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
-    
+
     var body: some View {
         ZStack(alignment: .bottom) {
             InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, loadMore: { viewModel.fetchMoreCheckIns(productId: product.id) }, refresh: { viewModel.refresh(productId: product.id) },
                                content: {
-                CheckInCardView(checkIn: $0,
-                                loadedFrom: .product,
-                                onDelete: { checkIn in viewModel.deleteCheckIn(checkIn) },
-                                onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn) })},
-        header: {
-            VStack {
-                ProductCardView(product: product)
-                    .contextMenu {
-                        if currentProfile.hasPermission(.canDeleteProducts) {
-                            Button(action: {
-                                viewModel.deleteProduct(product)
-                            }) {
-                                Label("Delete", systemImage: "trash.fill")
-                                    .foregroundColor(.red)
-                            }
-                        }
-                    }
-                
-                VStack(spacing: 10) {
-                    if let checkIns = viewModel.productSummary?.totalCheckIns {
-                        HStack {
-                            Text("Check-ins:")
-                            Spacer()
-                            Text(String(checkIns))
-                        }
-                    }
-                    if let averageRating = viewModel.productSummary?.averageRating {
-                        HStack {
-                            Text("Average:")
-                            Spacer()
-                            RatingView(rating: averageRating)
-                        }
-                    }
-                    if let currentUserAverageRating = viewModel.productSummary?.currentUserAverageRating {
-                        HStack {
-                            Text("Your rating:")
-                            Spacer()
-                            RatingView(rating: currentUserAverageRating)
-                        }
-                    }
-                }.padding(.all, 10)
-            }
-        }
+                                   CheckInCardView(checkIn: $0,
+                                                   loadedFrom: .product,
+                                                   onDelete: { checkIn in viewModel.deleteCheckIn(checkIn) },
+                                                   onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn) })
+                               },
+                               header: {
+                                   VStack {
+                                       ProductCardView(product: product)
+                                           .contextMenu {
+                                               if currentProfile.hasPermission(.canDeleteProducts) {
+                                                   Button(action: {
+                                                       viewModel.showDeleteConfirmation()
+                                                   }) {
+                                                       Label("Delete", systemImage: "trash.fill")
+                                                           .foregroundColor(.red)
+                                                   }
+                                               }
+                                           }
+
+                                       VStack(spacing: 10) {
+                                           if let checkIns = viewModel.productSummary?.totalCheckIns {
+                                               HStack {
+                                                   Text("Check-ins:")
+                                                   Spacer()
+                                                   Text(String(checkIns))
+                                               }
+                                           }
+                                           if let averageRating = viewModel.productSummary?.averageRating {
+                                               HStack {
+                                                   Text("Average:")
+                                                   Spacer()
+                                                   RatingView(rating: averageRating)
+                                               }
+                                           }
+                                           if let currentUserAverageRating = viewModel.productSummary?.currentUserAverageRating {
+                                               HStack {
+                                                   Text("Your rating:")
+                                                   Spacer()
+                                                   RatingView(rating: currentUserAverageRating)
+                                               }
+                                           }
+                                       }.padding(.all, 10)
+                                   }
+                               }
             )
         }
         .task {
@@ -69,6 +70,12 @@ struct ProductPageView: View {
                 viewModel.appendNewCheckIn(newCheckIn: $0)
             })
         }
+        .confirmationDialog("delete_company",
+                            isPresented: $viewModel.showDeleteProductConfirmationDialog
+        ) {
+            Button("Delete Product", role: .destructive, action: { viewModel.deleteProduct(product)
+            })
+        }
     }
 }
 
@@ -78,16 +85,23 @@ extension ProductPageView {
         @Published var isLoading = false
         @Published var showingSheet = false
         @Published var productSummary: ProductSummary?
-        
+        @Published var showDeleteProductConfirmationDialog = false
+
         let pageSize = 5
         var page = 0
-        
+
         func refresh(productId: Int) {
             page = 0
             checkIns = []
             fetchMoreCheckIns(productId: productId)
         }
         
+        func showDeleteConfirmation() {
+            DispatchQueue.main.async {
+                self.showDeleteProductConfirmationDialog.toggle()
+            }
+        }
+
         func loadProductSummary(_ product: ProductJoined) {
             Task {
                 let summary = try await repository.product.getSummaryById(id: product.id)
@@ -96,7 +110,7 @@ extension ProductPageView {
                 }
             }
         }
-        
+
         func deleteCheckIn(_ checkIn: CheckIn) {
             Task {
                 do {
@@ -107,7 +121,7 @@ extension ProductPageView {
                 }
             }
         }
-        
+
         func deleteProduct(_ product: ProductJoined) {
             Task {
                 do {
@@ -117,7 +131,7 @@ extension ProductPageView {
                 }
             }
         }
-        
+
         func onCheckInUpdate(_ checkIn: CheckIn) {
             if let index = checkIns.firstIndex(of: checkIn) {
                 DispatchQueue.main.async {
@@ -125,17 +139,17 @@ extension ProductPageView {
                 }
             }
         }
-        
+
         func fetchMoreCheckIns(productId: Int) {
             let (from, to) = getPagination(page: page, size: pageSize)
-            
+
             Task {
                 DispatchQueue.main.async {
                     self.isLoading = true
                 }
-                
+
                 let checkIns = try await repository.checkIn.getByProductId(id: productId, from: from, to: to)
-                
+
                 DispatchQueue.main.async {
                     self.checkIns.append(contentsOf: checkIns)
                     self.page += 1
@@ -143,13 +157,13 @@ extension ProductPageView {
                 }
             }
         }
-        
+
         func appendNewCheckIn(newCheckIn: CheckIn) {
             DispatchQueue.main.async {
                 self.checkIns.insert(newCheckIn, at: 0)
             }
         }
-        
+
         func updateCheckIn(updatedCheckIn: CheckIn) {
             DispatchQueue.main.async {
                 self.checkIns.insert(updatedCheckIn, at: 0)

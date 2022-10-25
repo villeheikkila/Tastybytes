@@ -12,9 +12,12 @@ struct AddProductScreenView: View {
                 brandSection
                 productSection
 
-                Button("Create Product", action: { viewModel.createProduct(onCreation: {
-                    product in navigator.navigateTo(destination: product, resetStack: true)
-                }) }).disabled(!viewModel.isValid())
+                Button("Create Product", action: {
+                    viewModel.createProduct(onCreation: {
+                        product in navigator.navigateTo(destination: product, resetStack: true)
+                    })
+                })
+                .disabled(!viewModel.isValid())
             }
 
         }.sheet(item: $viewModel.activeSheet) { sheet in
@@ -25,10 +28,9 @@ struct AddProductScreenView: View {
                 }
             case .brandOwner:
                 CompanySearchView(onSelect: { company, createdNew in
-                    viewModel.brandOwner = company
+                    viewModel.setBrandOwner(company)
                     if createdNew {
-                        viewModel.toastType = ToastType.createdCompany
-                        viewModel.showToast = true
+                        viewModel.setToast(.createdCompany)
                     }
                     viewModel.dismissSheet()
                 })
@@ -36,8 +38,7 @@ struct AddProductScreenView: View {
                 if let brandOwner = viewModel.brandOwner {
                     BrandSearchView(brandOwner: brandOwner, onSelect: { brand, createdNew in
                         if createdNew {
-                            viewModel.toastType = ToastType.createdBrand
-                            viewModel.showToast = true
+                            viewModel.setToast(.createdSubBrand)
                         }
                         viewModel.setBrand(brand: brand)
                     })
@@ -47,10 +48,9 @@ struct AddProductScreenView: View {
                 if let brand = viewModel.brand {
                     SubBrandPickerView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
                         if createdNew {
-                            viewModel.toastType = ToastType.createdSubBrand
-                            viewModel.showToast = true
+                            viewModel.setToast(.createdSubBrand)
+                            viewModel.subBrand = subBrand
                         }
-                        viewModel.subBrand = subBrand
                         viewModel.dismissSheet()
 
                     })
@@ -78,7 +78,9 @@ struct AddProductScreenView: View {
                 }
             }
 
-            Button(action: { viewModel.activeSheet = Sheet.subcategories }) {
+            Button(action: {
+                viewModel.setActiveSheet(.subcategories)
+            }) {
                 HStack {
                     if viewModel.subcategories.count == 0 {
                         Text("Subcategories")
@@ -91,22 +93,22 @@ struct AddProductScreenView: View {
             }
         }
         header: {
-                Text("Category")
-            }
-            .headerProminence(.increased)
+            Text("Category")
+        }
+        .headerProminence(.increased)
     }
 
     var brandSection: some View {
         Section {
             Button(action: {
-                viewModel.activeSheet = Sheet.brandOwner
+                viewModel.setActiveSheet(.brandOwner)
             }) {
                 Text(viewModel.brandOwner?.name ?? "Company")
             }
 
             if viewModel.brandOwner != nil {
                 Button(action: {
-                    viewModel.activeSheet = Sheet.brand
+                    viewModel.setActiveSheet(.brand)
                 }) {
                     Text(viewModel.brand?.name ?? "Brand")
                 }
@@ -152,7 +154,7 @@ extension AddProductScreenView {
         case subBrand
     }
 
-    enum ToastType: Identifiable {
+    enum Toast: Identifiable {
         var id: Self { self }
         case createdCompany
         case createdBrand
@@ -162,8 +164,8 @@ extension AddProductScreenView {
     @MainActor class ViewModel: ObservableObject {
         @Published var categories = [CategoryJoinedWithSubcategories]()
         @Published var activeSheet: Sheet?
+        @Published var activeToast: Toast?
         @Published var showToast = false
-        @Published var toastType: ToastType?
 
         @Published var category: CategoryName = CategoryName.beverage
         @Published var subcategories: [Subcategory] = []
@@ -183,6 +185,25 @@ extension AddProductScreenView {
             subBrand = nil
             dismissSheet()
         }
+        
+        func setToast(_ toast: Toast) {
+            DispatchQueue.main.async {
+                self.activeToast = toast
+                self.showToast = true
+            }
+        }
+
+        func setActiveSheet(_ sheet: Sheet) {
+            DispatchQueue.main.async {
+                self.activeSheet = sheet
+            }
+        }
+
+        func setBrandOwner(_ brandOwner: Company) {
+            DispatchQueue.main.async {
+                self.brandOwner = brandOwner
+            }
+        }
 
         func dismissSheet() {
             activeSheet = nil
@@ -193,7 +214,7 @@ extension AddProductScreenView {
         }
 
         func getToastText() -> String {
-            switch toastType {
+            switch activeToast {
             case .createdCompany:
                 return "New Company Created!"
             case .createdBrand:
