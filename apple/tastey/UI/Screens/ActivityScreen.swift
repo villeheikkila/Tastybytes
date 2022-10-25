@@ -22,8 +22,9 @@ struct ActivityView: View {
             content in
             CheckInCardView(checkIn: content,
                             loadedFrom: .activity(profile),
-                            onDelete: {
-                checkIn in viewModel.onCheckInDelete(checkIn: checkIn) } )
+                            onDelete: viewModel.onCheckInDelete,
+                            onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn) }
+            )
         }, header: {
             EmptyView()
         })
@@ -44,7 +45,17 @@ extension ActivityView {
         }
         
         func onCheckInDelete(checkIn: CheckIn) {
-            self.checkIns.removeAll(where: {$0.id == checkIn.id})
+            DispatchQueue.main.async {
+                self.checkIns.remove(object: checkIn)
+            }
+        }
+        
+        func onCheckInUpdate(checkIn: CheckIn) {
+            if let index = checkIns.firstIndex(of: checkIn) {
+                DispatchQueue.main.async {
+                    self.checkIns[index] = checkIn
+                }
+            }
         }
         
         func fetchActivityFeedItems() {
