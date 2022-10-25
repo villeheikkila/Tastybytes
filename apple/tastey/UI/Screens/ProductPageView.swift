@@ -26,6 +26,12 @@ struct ProductPageView: View {
                                                            .foregroundColor(.red)
                                                    }
                                                }
+                                               Button(action: {
+                                                   viewModel.toggleEditSuggestionSheet()
+                                               }) {
+                                                   Label("Edit Suggestion", systemImage: "square.and.pencil")
+                                                       .foregroundColor(.red)
+                                               }
                                            }
 
                                        VStack(spacing: 10) {
@@ -86,6 +92,7 @@ extension ProductPageView {
         @Published var showingSheet = false
         @Published var productSummary: ProductSummary?
         @Published var showDeleteProductConfirmationDialog = false
+        @Published var showEditSuggestionSheet = false
 
         let pageSize = 5
         var page = 0
@@ -94,6 +101,12 @@ extension ProductPageView {
             page = 0
             checkIns = []
             fetchMoreCheckIns(productId: productId)
+        }
+        
+        func toggleEditSuggestionSheet() {
+            DispatchQueue.main.async {
+                self.showEditSuggestionSheet.toggle()
+            }
         }
         
         func showDeleteConfirmation() {

@@ -1,27 +1,24 @@
 import SwiftUI
 
 struct CheckInPageView: View {
+    let checkIn: CheckIn
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject private var navigator: Navigator
     
-    @State var checkIn: CheckIn
-
-    init(checkIn: CheckIn) {
-        _checkIn = State(initialValue: checkIn)
-    }
-    
-    
     var body: some View {
         ScrollView {
-            CheckInCardView(checkIn: checkIn,
+            CheckInCardView(checkIn: viewModel.checkIn ?? checkIn,
                             loadedFrom: .checkIn,
                             onDelete: {
                 _ in  navigator.removeLast()  
             }, onUpdate: { updatedCheckIn in
-                self.checkIn = updatedCheckIn
+                viewModel.setCheckIn(updatedCheckIn)
             })
             .task {
-                viewModel.getCheckInCommets(checkInId: checkIn.id)
+                viewModel.setCheckIn(checkIn)
+            }
+            .task {
+                viewModel.loadCheckInComments(checkIn)
             }
             
             VStack(spacing: 10) {
@@ -40,7 +37,7 @@ struct CheckInPageView: View {
             TextField("Leave a comment!", text: $viewModel.comment)
             Button(action: { viewModel.sendComment(checkInId: checkIn.id) }) {
                 Image(systemName: "paperplane.fill")
-            }
+            }.disabled(viewModel.isInvalidComment())
         }
         .padding(.all, 10)
         
@@ -49,12 +46,23 @@ struct CheckInPageView: View {
 
 extension CheckInPageView {
     @MainActor class ViewModel: ObservableObject {
+        @Published var checkIn: CheckIn?
         @Published var checkInComments = [CheckInComment]()
         @Published var comment = ""
         
-        func getCheckInCommets(checkInId: Int) {
+        func setCheckIn(_ checkIn: CheckIn) {
+            DispatchQueue.main.async {
+                self.checkIn = checkIn
+            }
+        }
+        
+        func isInvalidComment() -> Bool {
+            return comment.isEmpty
+        }
+        
+        func loadCheckInComments(_ checkIn: CheckIn) {
             Task {
-                let checkIns = try await repository.checkInComment.getByCheckInId(id: checkInId)
+                let checkIns = try await repository.checkInComment.getByCheckInId(id: checkIn.id)
                 DispatchQueue.main.async {
                     self.checkInComments = checkIns
                 }

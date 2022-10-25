@@ -86,7 +86,7 @@ struct AddRoutesView<Content: View>: View {
                 case let .activity(profile):
                     ActivityView(profile: profile)
                 case .addProduct:
-                    AddProductScreenView()
+                    ProductSheetView()
                 case let .checkIn(checkIn):
                     CheckInPageView(checkIn: checkIn)
                 case let .profile(profile):
