@@ -119,6 +119,26 @@ struct NewProductParams: Encodable {
     
 }
 
+struct NewProductEditSuggestionParams: Encodable {
+    let p_product_id: Int
+    let p_name: String
+    let p_description: String?
+    let p_category_id: Int
+    let p_sub_category_ids: [Int]
+    let p_sub_brand_id: Int?
+    
+    
+    init(productId: Int, name: String, description: String?, categoryId: Int, subBrandId: Int?, subCategoryIds: [Int]) {
+        self.p_product_id = productId
+        self.p_name = name
+        self.p_description = description
+        self.p_category_id = categoryId
+        self.p_sub_brand_id = subBrandId
+        self.p_sub_category_ids = subCategoryIds
+    }
+    
+}
+
 struct ProductSummary {
     let totalCheckIns: Int
     let averageRating: Double?
