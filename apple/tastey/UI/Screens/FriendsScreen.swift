@@ -84,13 +84,13 @@ extension FriendsScreenView {
             Task {
                 do {
                     let newFriend = try await repository.friend.insert(newFriend: newFriend)
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.friends.append(newFriend)
                         self.showToast = true
                         self.showUserSearchSheet = false
                     }
                 } catch {
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.modalError = error
                     }
                 }
@@ -104,16 +104,16 @@ extension FriendsScreenView {
                 Task {
                     do {
                         let updatedFriend = try await repository.friend.update(id: id, friendUpdate: friendUpdate)
-                        DispatchQueue.main.async {
+                        await MainActor.run {
                             self.friends.removeAll(where: { $0.id == updatedFriend.id })
                         }
                         if updatedFriend.status != FriendStatus.blocked {
-                            DispatchQueue.main.async {
+                            await MainActor.run {
                                 self.friends.append(updatedFriend)
                             }
                         }
                     } catch {
-                        DispatchQueue.main.async {
+                        await MainActor.run {
                             self.error = error
                         }
                     }
@@ -125,11 +125,11 @@ extension FriendsScreenView {
             Task {
                 do {
                     try await repository.friend.delete(id: id)
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.friends.removeAll(where: { $0.id == id })
                     }
                 } catch {
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.error = error
                     }
                 }
@@ -140,11 +140,11 @@ extension FriendsScreenView {
             Task {
                 do {
                     let friends = try await repository.friend.getByUserId(userId: userId, status: .none)
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.friends = friends
                     }
                 } catch {
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.error = error
                     }
                 }

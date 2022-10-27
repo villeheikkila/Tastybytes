@@ -175,7 +175,7 @@ struct CheckInCardView: View {
             NavigationLink(value: checkIn) {
                 Text(checkIn.createdAt.formatted())
                     .font(.system(size: 12, weight: .medium, design: .default))
-                    
+
                 Spacer()
             }
             .buttonStyle(.plain)
@@ -196,11 +196,9 @@ extension CheckInCardView {
 
     @MainActor class ViewModel: ObservableObject {
         @Published var showingSheet = false
-        
+
         func toggleSheet() {
-            DispatchQueue.main.async {
-                self.showingSheet.toggle()
-            }
+            showingSheet.toggle()
         }
 
         func delete(checkIn: CheckIn, onDelete: @escaping (_ checkIn: CheckIn) -> Void) {

@@ -91,3 +91,6 @@ func formatRating(_ rating: Double?) -> String {
     return String(format: "%.2f", rating ?? "")
 }
 
+func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+    URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+}

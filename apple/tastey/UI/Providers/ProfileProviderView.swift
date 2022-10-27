@@ -11,7 +11,7 @@ class CurrentProfile: ObservableObject {
             do {
                 try await repository.notification.delete(id: notification.id)
                 
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.notifications.removeAll(where: { $0.id == notification.id })
                 }
             }
@@ -26,7 +26,7 @@ class CurrentProfile: ObservableObject {
         Task {
             do {
                 let currentUserProfile = try await repository.profile.getById(id: id)
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.profile = currentUserProfile
                     self.notifications = currentUserProfile.notifications ?? []
                 }
@@ -42,7 +42,7 @@ class CurrentProfile: ObservableObject {
             Task {
                 do {
                     let currentUserProfile = try await repository.profile.getById(id: id)
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.profile = currentUserProfile
                         self.notifications = currentUserProfile.notifications ?? []
                     }

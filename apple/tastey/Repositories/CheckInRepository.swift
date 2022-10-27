@@ -1,5 +1,6 @@
 import Foundation
 import Supabase
+import SupabaseStorage
 
 protocol CheckInRepository {
     func getActivityFeed(from: Int, to: Int) async throws -> [CheckIn]
@@ -91,6 +92,19 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .single()
             .execute()
             .decoded(to: ProfileSummary.self)
+    }
+    
+    func uploadCheckInImage(id: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws -> Void {
+        let uniqueName = UUID().uuidString
+        let file = File(
+            name: "\(uniqueName).jpeg", data: data, fileName: "\(uniqueName)jpeg", contentType: "image/jpeg")
+        
+        client
+            .storage
+            .from(id: "avatars")
+            .upload(
+                path: "\(id.uuidString.lowercased())/\(uniqueName).jpeg", file: file, fileOptions: nil,
+                completion: completion)
     }
 }
 

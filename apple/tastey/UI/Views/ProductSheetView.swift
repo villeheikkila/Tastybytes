@@ -5,22 +5,22 @@ struct ProductSheetView: View {
     @EnvironmentObject var navigator: Navigator
     @StateObject var viewModel = ViewModel()
     let initialProduct: ProductJoined?
-    
+
     init(initialProduct: ProductJoined? = nil) {
         self.initialProduct = initialProduct
     }
-    
+
     var body: some View {
         VStack {
             List {
                 categorySection
                 brandSection
                 productSection
-                
-                Button(initialProduct == nil ? "Create Product" : "Send edit suggestion" , action: {
+
+                Button(initialProduct == nil ? "Create Product" : "Send edit suggestion", action: {
                     if let initialProduct = initialProduct {
                         viewModel.createProductEditSuggestion(product: initialProduct, onComplete: {
-                             print("hei")
+                            print("hei")
                         })
 
                     } else {
@@ -31,7 +31,7 @@ struct ProductSheetView: View {
                 })
                 .disabled(!viewModel.isValid())
             }
-            
+
         }.sheet(item: $viewModel.activeSheet) { sheet in
             switch sheet {
             case .subcategories:
@@ -55,7 +55,7 @@ struct ProductSheetView: View {
                         viewModel.setBrand(brand: brand)
                     })
                 }
-                
+
             case .subBrand:
                 if let brand = viewModel.brand {
                     SubBrandPickerView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
@@ -64,7 +64,7 @@ struct ProductSheetView: View {
                             viewModel.subBrand = subBrand
                         }
                         viewModel.dismissSheet()
-                        
+
                     })
                 }
             }
@@ -79,7 +79,7 @@ struct ProductSheetView: View {
             viewModel.loadCategories()
         }
     }
-    
+
     var categorySection: some View {
         Section {
             if viewModel.categories.count > 0 {
@@ -92,7 +92,7 @@ struct ProductSheetView: View {
                     viewModel.subcategories.removeAll()
                 }
             }
-            
+
             Button(action: {
                 viewModel.setActiveSheet(.subcategories)
             }) {
@@ -108,11 +108,11 @@ struct ProductSheetView: View {
             }
         }
     header: {
-        Text("Category")
+            Text("Category")
+        }
+        .headerProminence(.increased)
     }
-    .headerProminence(.increased)
-    }
-    
+
     var brandSection: some View {
         Section {
             Button(action: {
@@ -120,7 +120,7 @@ struct ProductSheetView: View {
             }) {
                 Text(viewModel.brandOwner?.name ?? "Company")
             }
-            
+
             if viewModel.brandOwner != nil {
                 Button(action: {
                     viewModel.setActiveSheet(.brand)
@@ -129,11 +129,11 @@ struct ProductSheetView: View {
                 }
                 .disabled(viewModel.brandOwner == nil)
             }
-            
+
             if viewModel.brand != nil {
                 Toggle("Has sub-brand?", isOn: $viewModel.hasSubBrand)
             }
-            
+
             if viewModel.hasSubBrand {
                 Button(action: {
                     viewModel.setActiveSheet(.subBrand)
@@ -142,13 +142,13 @@ struct ProductSheetView: View {
                 }
                 .disabled(viewModel.brand == nil)
             }
-            
+
         } header: {
             Text("Brand")
         }
         .headerProminence(.increased)
     }
-    
+
     var productSection: some View {
         Section {
             TextField("Flavor", text: $viewModel.name)
@@ -168,20 +168,20 @@ extension ProductSheetView {
         case brand
         case subBrand
     }
-    
+
     enum Toast: Identifiable {
         var id: Self { self }
         case createdCompany
         case createdBrand
         case createdSubBrand
     }
-    
+
     @MainActor class ViewModel: ObservableObject {
         @Published var categories = [CategoryJoinedWithSubcategories]()
         @Published var activeSheet: Sheet?
         @Published var activeToast: Toast?
         @Published var showToast = false
-        
+
         @Published var category: CategoryName = CategoryName.beverage
         @Published var subcategories: [Subcategory] = []
         @Published var brandOwner: Company?
@@ -190,48 +190,38 @@ extension ProductSheetView {
         @Published var name: String = ""
         @Published var description: String = ""
         @Published var hasSubBrand = false
-        
+
         func getSubcategoriesForCategory() -> [Subcategory]? {
             return categories.first(where: { $0.name == category })?.subcategories
         }
-        
+
         func setBrand(brand: BrandJoinedWithSubBrands) {
-            DispatchQueue.main.async {
-                self.brand = brand
-                self.subBrand = nil
-                self.activeSheet = nil
-            }
+            self.brand = brand
+            subBrand = nil
+            activeSheet = nil
         }
-        
+
         func setToast(_ toast: Toast) {
-            DispatchQueue.main.async {
-                self.activeToast = toast
-                self.showToast = true
-            }
+            activeToast = toast
+            showToast = true
         }
-        
+
         func setActiveSheet(_ sheet: Sheet) {
-            DispatchQueue.main.async {
-                self.activeSheet = sheet
-            }
+            activeSheet = sheet
         }
-        
+
         func setBrandOwner(_ brandOwner: Company) {
-            DispatchQueue.main.async {
-                self.brandOwner = brandOwner
-            }
+            self.brandOwner = brandOwner
         }
-        
+
         func dismissSheet() {
-            DispatchQueue.main.async {
-                self.activeSheet = nil
-            }
+            activeSheet = nil
         }
-        
+
         func isValid() -> Bool {
             return brandOwner != nil && brand != nil && validateStringLength(str: name, type: .normal)
         }
-        
+
         func getToastText() -> String {
             switch activeToast {
             case .createdCompany:
@@ -244,22 +234,20 @@ extension ProductSheetView {
                 return ""
             }
         }
-        
+
         func loadInitialProduct(_ initialProduct: ProductJoined?) {
             guard let initialProduct = initialProduct else { return }
-            
-            DispatchQueue.main.async {
-                self.category = initialProduct.getCategory() ?? CategoryName.beverage
-                self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
-                self.brandOwner = initialProduct.subBrand.brand.brandOwner
-                self.brand = BrandJoinedWithSubBrands(id: initialProduct.subBrand.brand.id, name: initialProduct.subBrand.brand.name, subBrands: []) // TODO: Fetch sub-brands
-                self.subBrand = initialProduct.subBrand.getSubBrand()
-                self.name = initialProduct.name
-                self.description = initialProduct.description ?? ""
-                self.hasSubBrand = initialProduct.subBrand.name != nil
-            }
+
+            category = initialProduct.getCategory() ?? CategoryName.beverage
+            subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
+            brandOwner = initialProduct.subBrand.brand.brandOwner
+            brand = BrandJoinedWithSubBrands(id: initialProduct.subBrand.brand.id, name: initialProduct.subBrand.brand.name, subBrands: []) // TODO: Fetch sub-brands
+            subBrand = initialProduct.subBrand.getSubBrand()
+            name = initialProduct.name
+            description = initialProduct.description ?? ""
+            hasSubBrand = initialProduct.subBrand.name != nil
         }
-        
+
         func loadCategories() {
             Task {
                 do {
@@ -270,7 +258,7 @@ extension ProductSheetView {
                 }
             }
         }
-        
+
         func createProduct(onCreation: @escaping (_ product: ProductJoined) -> Void) {
             if let categoryId = categories.first(where: { $0.name == category })?.id, let brandId = brand?.id {
                 let newProductParams = NewProductParams(name: name, description: description, categoryId: categoryId, brandId: brandId, subBrandId: subBrand?.id, subCategoryIds: subcategories.map { $0.id })
@@ -284,7 +272,7 @@ extension ProductSheetView {
                 }
             }
         }
-        
+
         func createProductEditSuggestion(product: ProductJoined, onComplete: @escaping () -> Void) {
             print(product)
             if let subBrand = subBrand {
@@ -292,14 +280,14 @@ extension ProductSheetView {
                 print(productEditSuggestionParams)
                 Task {
                     let result = await repository.product.createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams)
-                    
+
                     switch result {
                     case let .success(data):
                         print(data)
                     case let .failure(error):
                         print(error)
                     }
-                    
+
                     onComplete()
                 }
             }

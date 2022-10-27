@@ -36,7 +36,7 @@ extension UserSearchView {
                 do {
                     let currentUserId = repository.auth.getCurrentUserId()
                     let searchResults = try await repository.profile.search(searchTerm: searchText, currentUserId: currentUserId)                    
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.searchResults = searchResults
                     }
                 } catch {

@@ -53,7 +53,7 @@ extension BrandSearchView {
             Task {
                 do {
                     let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id)
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.brandsWithSubBrands = brandsWithSubBrands
                     }
                 } catch {

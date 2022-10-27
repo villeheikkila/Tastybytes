@@ -96,7 +96,7 @@ extension ProductPageView {
         case checkIn
         case editSuggestion
     }
-    
+
     @MainActor class ViewModel: ObservableObject {
         @Published var checkIns = [CheckIn]()
         @Published var isLoading = false
@@ -113,23 +113,19 @@ extension ProductPageView {
             checkIns = []
             fetchMoreCheckIns(productId: productId)
         }
-        
+
         func setActiveSheet(_ sheet: Sheet) {
-            DispatchQueue.main.async {
-                self.activeSheet = sheet
-            }
+            activeSheet = sheet
         }
-        
+
         func showDeleteConfirmation() {
-            DispatchQueue.main.async {
-                self.showDeleteProductConfirmationDialog.toggle()
-            }
+            showDeleteProductConfirmationDialog.toggle()
         }
 
         func loadProductSummary(_ product: ProductJoined) {
             Task {
                 let summary = try await repository.product.getSummaryById(id: product.id)
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.productSummary = summary
                 }
             }
@@ -158,9 +154,7 @@ extension ProductPageView {
 
         func onCheckInUpdate(_ checkIn: CheckIn) {
             if let index = checkIns.firstIndex(of: checkIn) {
-                DispatchQueue.main.async {
-                    self.checkIns[index] = checkIn
-                }
+                checkIns[index] = checkIn
             }
         }
 
@@ -168,13 +162,13 @@ extension ProductPageView {
             let (from, to) = getPagination(page: page, size: pageSize)
 
             Task {
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.isLoading = true
                 }
 
                 let checkIns = try await repository.checkIn.getByProductId(id: productId, from: from, to: to)
 
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.checkIns.append(contentsOf: checkIns)
                     self.page += 1
                     self.isLoading = false
@@ -183,15 +177,11 @@ extension ProductPageView {
         }
 
         func appendNewCheckIn(newCheckIn: CheckIn) {
-            DispatchQueue.main.async {
-                self.checkIns.insert(newCheckIn, at: 0)
-            }
+            checkIns.insert(newCheckIn, at: 0)
         }
 
         func updateCheckIn(updatedCheckIn: CheckIn) {
-            DispatchQueue.main.async {
-                self.checkIns.insert(updatedCheckIn, at: 0)
-            }
+            checkIns.insert(updatedCheckIn, at: 0)
         }
     }
 }

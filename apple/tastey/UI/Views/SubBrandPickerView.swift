@@ -50,7 +50,7 @@ extension SubBrandPickerView {
                 do {
                     let newSubBrand = try await repository.subBrand.insert(newSubBrand: newSubBrand)
                     
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         onSelect(newSubBrand, true)
                     }
                 } catch {

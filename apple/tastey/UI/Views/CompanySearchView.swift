@@ -1,12 +1,12 @@
-import SwiftUI
 import AlertToast
+import SwiftUI
 
 struct CompanySearchView: View {
     @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
-    
+    @State var companyName = ""
     let onSelect: (_ company: Company, _ createdNew: Bool) -> Void
-    
+
     var body: some View {
         NavigationStack {
             List {
@@ -18,7 +18,7 @@ struct CompanySearchView: View {
                         Text(company.name)
                     }
                 }
-                
+
                 switch viewModel.status {
                 case .searched:
                     Section {
@@ -57,8 +57,6 @@ struct CompanySearchView: View {
             .onSubmit(of: .search, { viewModel.searchCompanies() })
         }
     }
-    
-    
 }
 
 extension CompanySearchView {
@@ -66,25 +64,25 @@ extension CompanySearchView {
         case add
         case searched
     }
-    
+
     @MainActor class ViewModel: ObservableObject {
         @Published var searchText: String = ""
         @Published var searchResults = [Company]()
         @Published var status: Status? = nil
         @Published var companyName = ""
-        
+
         func createNew() {
             DispatchQueue.main.async {
                 self.companyName = self.searchText
                 self.status = Status.add
             }
         }
-        
+
         func searchCompanies() {
             Task {
                 do {
                     let searchResults = try await repository.company.search(searchTerm: searchText)
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.searchResults = searchResults
                         self.status = Status.searched
                     }
@@ -93,7 +91,7 @@ extension CompanySearchView {
                 }
             }
         }
-        
+
         func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) {
             let newCompany = NewCompany(name: companyName)
             Task {

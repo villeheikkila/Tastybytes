@@ -59,9 +59,7 @@ extension CheckInPageView {
         @Published var showToast = false
         
         func setCheckIn(_ checkIn: CheckIn) {
-            DispatchQueue.main.async {
-                self.checkIn = checkIn
-            }
+            self.checkIn = checkIn
         }
         
         func isInvalidComment() -> Bool {
@@ -71,7 +69,7 @@ extension CheckInPageView {
         func loadCheckInComments(_ checkIn: CheckIn) {
             Task {
                 let checkIns = try await repository.checkInComment.getByCheckInId(id: checkIn.id)
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.checkInComments = checkIns
                 }
             }
@@ -80,7 +78,7 @@ extension CheckInPageView {
         func deleteComment(_ comment: CheckInComment) {
             Task {
                 try await repository.checkInComment.deleteById(id: comment.id)
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.checkInComments.remove(object: comment)
                 }
             }
@@ -93,13 +91,13 @@ extension CheckInPageView {
                 let result = await repository.checkInComment.insert(newCheckInComment: newCheckInComment)
                     switch result {
                         case let .success(newCheckInComment):
-                        DispatchQueue.main.async {
+                        await MainActor.run {
                             self.checkInComments.append(newCheckInComment)
                             self.comment = ""
                         }
                     case let .failure(error):
                         print(error)
-                        DispatchQueue.main.async {
+                        await MainActor.run {
                             self.showToast = true
                         }
                     }
@@ -111,7 +109,7 @@ extension CheckInPageView {
                 let updatedComment = try await  repository.checkInComment.update(updateCheckInComment: updateCheckInComment)
                 
                 if let at = self.checkInComments.firstIndex(where: { $0.id == updateCheckInComment.id }) {
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.checkInComments.remove(at: at)
                         self.checkInComments.insert(updatedComment, at: at)
                     }

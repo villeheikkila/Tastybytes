@@ -63,9 +63,22 @@ struct CompanyPageView: View {
                                 .foregroundColor(.red)
                         }
                     }
+                    
+                    Button(action: {
+                        viewModel.setActiveSheet(.editSuggestion)
+                    }) {
+                        Label("Edit Suggestion", systemImage: "pencil")
+                    }
+                    
                 }
             }
             .padding(.all, 10)
+            .sheet(item: $viewModel.activeSheet) { sheet in
+                switch sheet {
+                case .editSuggestion:
+                    companyEditSuggestion
+                }
+            }
             
             if let companyJoined = viewModel.companyJoined {
                 ForEach(companyJoined.brands, id: \.id) { brand in
@@ -116,18 +129,48 @@ struct CompanyPageView: View {
             viewModel.getInitialData(company.id)
         }
     }
+    
+    var companyEditSuggestion: some View {
+        Form {
+            Section {
+                TextField("Name", text: $viewModel.newCompanyNameSuggestion)
+                Button("Send edit suggestion") {
+                    viewModel.sendCompanyEditSuggestion()
+                }
+                .disabled(!validateStringLength(str: viewModel.newCompanyNameSuggestion, type: .normal))
+            } header: {
+                Text("What should the company be called?")
+            }
+        }
+    }
 }
 
 extension CompanyPageView {
+    enum Sheet: Identifiable {
+        var id: Self { self }
+        case editSuggestion
+    }
+    
     @MainActor class ViewModel: ObservableObject {
         @Published var companyJoined: CompanyJoined?
         @Published var companySummary: CompanySummary?
+        @Published var activeSheet: Sheet?
+        
+        @Published var newCompanyNameSuggestion = ""
+        
+        func setActiveSheet(_ sheet: Sheet) {
+                self.activeSheet = sheet
+        }
+        
+        func sendCompanyEditSuggestion() {
+            
+        }
         
         func getInitialData(_ companyId: Int) {
             Task {
                 do {
                     let company = try await repository.company.getById(id: companyId)
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.companyJoined = company
                     }
                 } catch {
@@ -138,7 +181,7 @@ extension CompanyPageView {
             Task {
                 do {
                     let summary = try await repository.company.getSummaryById(id: companyId)
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.companySummary = summary
                     }
                 } catch {
@@ -165,7 +208,7 @@ extension CompanyPageView {
                     // TODO: Do not refetch the company on deletion
                     if let companyJoined = companyJoined {
                         let company = try await repository.company.getById(id: companyJoined.id)
-                        DispatchQueue.main.async {
+                        await MainActor.run {
                             self.companyJoined = company
                         }
                     }
