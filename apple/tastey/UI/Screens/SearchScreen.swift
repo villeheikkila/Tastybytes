@@ -8,7 +8,7 @@ enum SearchScope: String, CaseIterable {
 
 struct SearchScreenView: View {
     @StateObject private var viewModel = ViewModel()
-    
+
     var body: some View {
         NavigationView {
             List {
@@ -50,7 +50,7 @@ struct SearchScreenView: View {
             .listStyle(InsetGroupedListStyle())
         }
     }
-    
+
     var profileResults: some View {
         ForEach(viewModel.profiles, id: \.self) { profile in
             NavigationLink(value: profile) {
@@ -66,7 +66,7 @@ struct SearchScreenView: View {
             }
         }
     }
-    
+
     var companyResults: some View {
         ForEach(viewModel.companies, id: \.self) { company in
             NavigationLink(value: company) {
@@ -74,7 +74,7 @@ struct SearchScreenView: View {
             }
         }
     }
-    
+
     var productResults: some View {
         ForEach(viewModel.products, id: \.self) { product in
             NavigationLink(value: product) {
@@ -90,47 +90,45 @@ extension SearchScreenView {
         @Published var products = [ProductJoined]()
         @Published var profiles = [Profile]()
         @Published var companies = [Company]()
-        
+
         @Published var isSearched = false
         @Published var searchScope: SearchScope = .products
-        
+
         func resetSearch() {
-            DispatchQueue.main.async {
-                self.profiles = []
-                self.products = []
-                self.companies = []
-            }
+            profiles = []
+            products = []
+            companies = []
         }
-        
+
         func searchProducts() {
             Task {
                 let searchResults = try await repository.product.search(searchTerm: searchTerm)
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.products = searchResults
                     self.isSearched = true
                 }
             }
         }
-        
+
         func searchProfiles() {
             let currentUserId = repository.auth.getCurrentUserId()
             Task {
                 let searchResults = try await repository.profile.search(searchTerm: searchTerm, currentUserId: currentUserId)
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.profiles = searchResults
                 }
             }
         }
-        
+
         func searchCompanies() {
             Task {
                 let searchResults = try await repository.company.search(searchTerm: searchTerm)
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.companies = searchResults
                 }
             }
         }
-        
+
         func search() {
             switch searchScope {
             case .products:

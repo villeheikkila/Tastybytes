@@ -48,13 +48,11 @@ extension FlavorPickerView {
         
         func toggleFlavor(_ flavor: Flavor) {
             if pickedFlavors.contains(flavor) {
-                DispatchQueue.main.async {
                     self.pickedFlavors.remove(object: flavor)
-                }
+                
             } else {
-                DispatchQueue.main.async {
                     self.pickedFlavors.append(flavor)
-                }
+                
             }
         }
         
@@ -67,15 +65,14 @@ extension FlavorPickerView {
         }
         
         func loadFlavors(_ initialFlavors: [Flavor]) {
-            DispatchQueue.main.async {
                 self.pickedFlavors = initialFlavors
-            }
+            
             
             if (availableFlavors.count == 0) {
                 Task {
                     do {
                         let flavors = try await repository.flavor.getAll()
-                        DispatchQueue.main.async {
+                        await MainActor.run {
                             self.availableFlavors = flavors
                         }
                     } catch {

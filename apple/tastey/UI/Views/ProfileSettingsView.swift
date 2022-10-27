@@ -7,7 +7,7 @@ struct ProfileSettingsView: View {
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
     @Environment(\.colorScheme) var initialColorScheme
-    
+
     var body: some View {
         Form {
             avatarPicker
@@ -28,14 +28,14 @@ struct ProfileSettingsView: View {
             }
         }
     }
-    
+
     func ImageWithDefault() -> Image {
         guard let image = viewModel.avatarImage else {
             return Image(systemName: "person.fill")
         }
         return Image(uiImage: image)
     }
-    
+
     var avatarPicker: some View {
         PhotosPicker(
             selection: $viewModel.selectedItem,
@@ -57,7 +57,7 @@ struct ProfileSettingsView: View {
             viewModel.uploadAvatar(newAvatar: newValue)
         }
     }
-    
+
     var profileSection: some View {
         Section {
             TextField("Username", text: $viewModel.username)
@@ -65,7 +65,7 @@ struct ProfileSettingsView: View {
                 .disableAutocorrection(true)
             TextField("First Name", text: $viewModel.firstName)
             TextField("Last Name", text: $viewModel.lastName)
-            
+
             if viewModel.profileHasChanged() {
                 Button("Update", action: { viewModel.updateProfile() })
             }
@@ -76,7 +76,7 @@ struct ProfileSettingsView: View {
         }
         .headerProminence(.increased)
     }
-    
+
     var profileDisplaySettings: some View {
         Section {
             Toggle("Use Name Instead of Username", isOn: $viewModel.showFullName)
@@ -87,7 +87,7 @@ struct ProfileSettingsView: View {
             Text("This only takes effect if both first name and last name are provided.")
         }
     }
-    
+
     var emailSection: some View {
         Section {
             TextField("Email", text: $viewModel.email)
@@ -95,11 +95,11 @@ struct ProfileSettingsView: View {
                 .textContentType(.emailAddress)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
-            
+
             if viewModel.emailHasChanged() {
                 Button("Send Verification Link", action: { viewModel.sendEmailVerificationLink() })
             }
-            
+
         } header: {
             Text("Account")
         } footer: {
@@ -113,10 +113,10 @@ extension ProfileSettingsView {
     enum Toast {
         case profileUpdated
     }
-    
+
     @MainActor class ViewModel: ObservableObject {
         @Published var selectedItem: PhotosPickerItem? = nil
-        
+
         // Profile values
         @Published var username = ""
         @Published var firstName = ""
@@ -127,10 +127,10 @@ extension ProfileSettingsView {
         @Published var email = ""
         @Published var showToast = false
         @Published var toast: Toast?
-        
+
         var profile: Profile?
         var user: User?
-        
+
         func profileHasChanged() -> Bool {
             return ![
                 username == profile?.username,
@@ -138,16 +138,16 @@ extension ProfileSettingsView {
                 lastName == profile?.lastName,
             ].allSatisfy({ $0 })
         }
-        
+
         func emailHasChanged() -> Bool {
             return email != user?.email
         }
-        
+
         func showToast(type: Toast) {
             toast = type
             showToast = true
         }
-        
+
         func getInitialValues(initialColorScheme: ColorScheme) {
             Task {
                 let user = repository.auth.getCurrentUser()
@@ -160,61 +160,59 @@ extension ProfileSettingsView {
                         }
                     }
                 }
-                
-                DispatchQueue.main.async {
+
+                await MainActor.run {
                     self.user = user
                     self.email = user?.email ?? ""
                 }
-                
+
                 self.updateFormValues(profile: profile)
             }
         }
-        
+
         func updateFormValues(profile: Profile) {
-            DispatchQueue.main.async {
-                self.profile = profile
-                self.username = profile.username
-                self.lastName = profile.lastName ?? ""
-                self.firstName = profile.firstName ?? ""
-                self.showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
-            }
+            self.profile = profile
+            username = profile.username
+            lastName = profile.lastName ?? ""
+            firstName = profile.firstName ?? ""
+            showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
         }
-        
+
         func updateProfile() {
             let update = Profile.Update(
                 username: username,
                 firstName: firstName,
                 lastName: lastName
             )
-            
+
             Task {
                 let profile = try await repository.profile.update(id: repository.auth.getCurrentUserId(),
                                                                   update: update)
-                
+
                 self.updateFormValues(profile: profile)
                 self.toast = Toast.profileUpdated
                 self.showToast = true
             }
         }
-        
+
         func updateDisplaySettings() {
             let update = Profile.Update(
                 showFullName: showFullName
             )
-            
+
             Task {
                 try await repository.profile.update(id: repository.auth.getCurrentUserId(),
                                                     update: update)
             }
         }
-        
+
         // TODO: Do not log out on email change
         func sendEmailVerificationLink() {
             Task {
                 try await repository.auth.sendEmailVerification(email: email)
             }
         }
-        
+
         func uploadAvatar(newAvatar: PhotosPickerItem?) {
             Task {
                 if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
@@ -230,10 +228,6 @@ extension ProfileSettingsView {
                     }})
                 }
             }
-        }
-        
-        func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
-            URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
         }
     }
 }

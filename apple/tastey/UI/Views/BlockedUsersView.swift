@@ -35,11 +35,11 @@ extension BlockedUsersView {
             Task {
                 do {
                     try await repository.friend.delete(id: id)
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.blockedUsers.removeAll(where: { $0.id == id })
                     }
                 } catch {
-                    DispatchQueue.main.async {
+                    await MainActor.run {
                         self.error = error
                     }
                 }
@@ -51,11 +51,11 @@ extension BlockedUsersView {
                 Task {
                     do {
                         let blockedUsers = try await repository.friend.getByUserId(userId: userId, status: .blocked)
-                        DispatchQueue.main.async {
+                        await MainActor.run {
                             self.blockedUsers = blockedUsers
                         }
                     } catch {
-                        DispatchQueue.main.async {
+                        await MainActor.run {
                             self.error = error
                         }
                     }
