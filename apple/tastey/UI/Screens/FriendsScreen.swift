@@ -6,22 +6,20 @@ struct FriendsScreenView: View {
     var profile: Profile
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
-    
+
     var body: some View {
         ScrollView {
             VStack {
                 ForEach(viewModel.friends, id: \.self) { friend in
-                    NavigationLink(value: friend.getFriend(userId: currentProfile.profile?.id)) {
-                        if profile.isCurrentUser() {
-                            FriendListItemView(friend: friend,
-                                               onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
-                                               onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
-                                               onDelete: { id in viewModel.removeFriendRequest(id: id) })
-                        } else {
-                            FriendListItemSimpleView(profile: friend.getFriend(userId: profile.id))
-                        }
+                    if let profile = currentProfile.profile, profile.isCurrentUser() {
+                        FriendListItemView(friend: friend,
+                                           currentUser: profile,
+                                           onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
+                                           onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
+                                           onDelete: { id in viewModel.removeFriendRequest(id: id) })
+                    } else {
+                        FriendListItemSimpleView(profile: friend.getFriend(userId: profile.id))
                     }
-                    .buttonStyle(.plain)
                 }
             }
             .navigationTitle("Friends")
@@ -45,7 +43,7 @@ struct FriendsScreenView: View {
                         }
                     }
                 }
-                
+
                 .errorAlert(error: $viewModel.modalError)
             })
             .presentationDetents([.medium])
@@ -55,7 +53,7 @@ struct FriendsScreenView: View {
             AlertToast(type: .complete(.green), title: "Friend Request Sent!")
         }
     }
-    
+
     var addFriendButton: some View {
         HStack {
             if profile.isCurrentUser() {
@@ -74,13 +72,13 @@ extension FriendsScreenView {
         @Published var friends = [Friend]()
         @Published var showToast = false
         @Published var showUserSearchSheet = false
-        
+
         @Published var error: Error?
         @Published var modalError: Error?
-        
+
         func sendFriendRequest(receiver: UUID) {
             let newFriend = NewFriend(receiver: receiver, status: .pending)
-            
+
             Task {
                 do {
                     let newFriend = try await repository.friend.insert(newFriend: newFriend)
@@ -96,10 +94,9 @@ extension FriendsScreenView {
                 }
             }
         }
-        
+
         func updateFriendRequest(id: Int, newStatus: FriendStatus) {
-            let friend = friends.first(where: { $0.id == id })
-            if let friend = friend {
+            if let friend = friends.first(where: { $0.id == id }) {
                 let friendUpdate = FriendUpdate(user_id_1: friend.sender.id, user_id_2: friend.receiver.id, status: newStatus)
                 Task {
                     do {
@@ -120,7 +117,7 @@ extension FriendsScreenView {
                 }
             }
         }
-        
+
         func removeFriendRequest(id: Int) {
             Task {
                 do {
@@ -135,7 +132,7 @@ extension FriendsScreenView {
                 }
             }
         }
-        
+
         func loadFriends(userId: UUID) {
             Task {
                 do {
@@ -155,15 +152,14 @@ extension FriendsScreenView {
 
 struct FriendListItemSimpleView: View {
     let profile: Profile
-    
+
     var body: some View {
-        HStack(alignment: .center) {
-            AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
-            VStack {
-                HStack {
-                    Text(profile.getPreferredName())
-                    Spacer()
-                }
+        NavigationLink(value: profile) {
+            HStack(alignment: .center) {
+                AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
+                Text(profile.getPreferredName())
+                    .foregroundColor(.primary)
+                Spacer()
             }
         }
         .padding(.all, 10)
@@ -177,45 +173,53 @@ struct FriendListItemSimpleView: View {
 struct FriendListItemView: View {
     let friend: Friend
     let profile: Profile
-    let currentUser: UUID
+    let currentUser: Profile
     let onAccept: (_ id: Int) -> Void
     let onBlock: (_ id: Int) -> Void
     let onDelete: (_ id: Int) -> Void
-    
+
     init(friend: Friend,
+         currentUser: Profile,
          onAccept: @escaping (_ id: Int) -> Void,
          onBlock: @escaping (_ id: Int) -> Void,
          onDelete: @escaping (_ id: Int) -> Void) {
         self.friend = friend
         profile = friend.getFriend(userId: repository.auth.getCurrentUserId())
-        currentUser = repository.auth.getCurrentUserId()
+        self.currentUser = currentUser
         self.onAccept = onAccept
         self.onBlock = onBlock
         self.onDelete = onDelete
     }
-    
+
     var body: some View {
-        HStack(alignment: .center) {
-            AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
-            VStack {
-                HStack {
-                    Text(profile.getPreferredName())
-                    if friend.status == FriendStatus.pending {
-                        Text("(\(friend.status.rawValue.capitalized))").font(.footnote)
-                    }
-                    Spacer()
-                    if friend.isPending(userId: currentUser) {
-                        HStack(alignment: .center) {
-                            Button(action: {
-                                onDelete(friend.id)
-                            }) {
-                                Image(systemName: "person.fill.xmark").imageScale(.large)
-                            }
-                            
-                            Button(action: {
-                                onAccept(friend.id)
-                            }) {
-                                Image(systemName: "person.badge.plus").imageScale(.large)
+        NavigationLink(value: friend.getFriend(userId: currentUser.id)) {
+            HStack(alignment: .center) {
+                AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
+                VStack {
+                    HStack {
+                        Text(profile.getPreferredName())
+                            .foregroundColor(.primary)
+                        if friend.status == FriendStatus.pending {
+                            Text("(\(friend.status.rawValue.capitalized))")
+                                .font(.footnote)
+                                .foregroundColor(.primary)
+                        }
+                        Spacer()
+                        if friend.isPending(userId: currentUser.id) {
+                            HStack(alignment: .center) {
+                                Button(action: {
+                                    onDelete(friend.id)
+                                }) {
+                                    Image(systemName: "person.fill.xmark")
+                                        .imageScale(.large)
+                                }
+
+                                Button(action: {
+                                    onAccept(friend.id)
+                                }) {
+                                    Image(systemName: "person.badge.plus")
+                                        .imageScale(.large)
+                                }
                             }
                         }
                     }
@@ -228,7 +232,7 @@ struct FriendListItemView: View {
             }) {
                 Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
             }
-            
+
             Button(action: {
                 onBlock(friend.id)
             }) {
