@@ -10,7 +10,8 @@ struct CheckInCardView: View {
     let onDelete: (_ checkIn: CheckIn) -> Void
     let onUpdate: (_ checkIn: CheckIn) -> Void
     @StateObject var viewModel = ViewModel()
-
+    @State var showDeleteCheckInConfirmationDialog = false
+    
     func isOwnedByCurrentUser() -> Bool {
         return checkIn.profile.id == repository.auth.getCurrentUserId()
     }
@@ -54,11 +55,18 @@ struct CheckInCardView: View {
                 }
 
                 Button(action: {
-                    viewModel.delete(checkIn: checkIn, onDelete: onDelete)
+                    showDeleteCheckInConfirmationDialog.toggle()
                 }) {
                     Label("Delete", systemImage: "trash.fill")
                 }
             }
+        }
+        .confirmationDialog("delete_check_in",
+                            isPresented: $showDeleteCheckInConfirmationDialog
+        ) {
+            Button("Permanently delete the check-in", role: .destructive, action: {
+                    viewModel.delete(checkIn: checkIn, onDelete: onDelete)
+            })
         }
     }
 
