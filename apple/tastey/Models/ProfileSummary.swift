@@ -46,7 +46,7 @@ extension ProfileSummary: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         totalCheckIns = try values.decode(Int.self, forKey: .totalCheckIns)
         uniqueCheckIns = try values.decode(Int.self, forKey: .uniqueCheckIns)
-        averageRating = try values.decode(Double.self, forKey: .averageRating) / 2
+        averageRating = try values.decodeIfPresent(Double.self, forKey: .averageRating)
         unrated = try values.decode(Int.self, forKey: .unrated)
         rating0 = try values.decode(Int.self, forKey: .rating0)
         rating1 = try values.decode(Int.self, forKey: .rating1)

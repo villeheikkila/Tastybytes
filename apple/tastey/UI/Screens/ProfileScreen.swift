@@ -119,13 +119,16 @@ struct ProfileView: View {
         HStack {
             VStack {
                 Text("Unrated")
-                    .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
+                    .font(.system(size: 12, weight: .medium, design: .default))
+                    .textCase(.uppercase)
                 Text(String(viewModel.profileSummary?.unrated ?? 0))
                     .font(.system(size: 16, weight: .bold, design: .default))
             }
             VStack {
-                Text("Average").font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-                Text(String(viewModel.profileSummary?.getFormattedAverageRating() ?? ""))
+                Text("Average")
+                    .font(.system(size: 12, weight: .medium, design: .default))
+                    .textCase(.uppercase)
+                Text(String(viewModel.profileSummary?.getFormattedAverageRating() ?? "-"))
                     .font(.system(size: 16, weight: .bold, design: .default))
             }
         }
@@ -161,7 +164,7 @@ extension ProfileView {
         }
 
         func onCheckInDelete(checkIn: CheckIn) {
-            checkIns.removeAll(where: { $0.id == checkIn.id })
+            checkIns.remove(object: checkIn)
         }
 
         func fetchMoreCheckIns(userId: UUID) {

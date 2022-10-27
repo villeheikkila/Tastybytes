@@ -6,17 +6,24 @@ struct FriendsScreenView: View {
     var profile: Profile
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
+    @State var friendToBeRemoved: Friend?
+    @State var showRemoveFriendConfirmation = false
 
     var body: some View {
         ScrollView {
             VStack {
                 ForEach(viewModel.friends, id: \.self) { friend in
-                    if let profile = currentProfile.profile, profile.isCurrentUser() {
-                        FriendListItemView(friend: friend,
-                                           currentUser: profile,
-                                           onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
-                                           onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
-                                           onDelete: { id in viewModel.removeFriendRequest(id: id) })
+                    if profile.isCurrentUser() {
+                        if let profile = currentProfile.profile {
+                            FriendListItemView(friend: friend,
+                                               currentUser: profile,
+                                               onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
+                                               onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
+                                               onDelete: { friend in
+                                                   friendToBeRemoved = friend
+                                                   showRemoveFriendConfirmation = true
+                                               })
+                        }
                     } else {
                         FriendListItemSimpleView(profile: friend.getFriend(userId: profile.id))
                     }
@@ -26,10 +33,10 @@ struct FriendsScreenView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .refreshable {
-            viewModel.loadFriends(userId: profile.id)
+            viewModel.loadFriends(userId: profile.id, currentUser: currentProfile.profile)
         }
         .task {
-            viewModel.loadFriends(userId: profile.id)
+            viewModel.loadFriends(userId: profile.id, currentUser: currentProfile.profile)
         }
         .navigationBarItems(
             trailing: addFriendButton)
@@ -49,6 +56,15 @@ struct FriendsScreenView: View {
             .presentationDetents([.medium])
         }
         .errorAlert(error: $viewModel.error)
+        .confirmationDialog("delete_friend",
+                            isPresented: $showRemoveFriendConfirmation
+        ) {
+            Button("Remove \(friendToBeRemoved?.getFriend(userId: currentProfile.profile?.id).getPreferredName() ?? "??")", role: .destructive, action: {
+                if let friend = friendToBeRemoved {
+                    viewModel.removeFriendRequest(friend)
+                }
+            })
+        }
         .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
             AlertToast(type: .complete(.green), title: "Friend Request Sent!")
         }
@@ -118,12 +134,12 @@ extension FriendsScreenView {
             }
         }
 
-        func removeFriendRequest(id: Int) {
+        func removeFriendRequest(_ friend: Friend) {
             Task {
                 do {
-                    try await repository.friend.delete(id: id)
+                    try await repository.friend.delete(id: friend.id)
                     await MainActor.run {
-                        self.friends.removeAll(where: { $0.id == id })
+                        self.friends.remove(object: friend)
                     }
                 } catch {
                     await MainActor.run {
@@ -133,10 +149,12 @@ extension FriendsScreenView {
             }
         }
 
-        func loadFriends(userId: UUID) {
+        func loadFriends(userId: UUID, currentUser: Profile?) {
             Task {
                 do {
-                    let friends = try await repository.friend.getByUserId(userId: userId, status: .none)
+                    let friends = try await repository.friend.getByUserId(userId: userId, status: currentUser?.id == userId ? .none : FriendStatus.accepted)
+
+                    print(friends)
                     await MainActor.run {
                         self.friends = friends
                     }
@@ -176,15 +194,15 @@ struct FriendListItemView: View {
     let currentUser: Profile
     let onAccept: (_ id: Int) -> Void
     let onBlock: (_ id: Int) -> Void
-    let onDelete: (_ id: Int) -> Void
+    let onDelete: (_ friend: Friend) -> Void
 
     init(friend: Friend,
          currentUser: Profile,
          onAccept: @escaping (_ id: Int) -> Void,
          onBlock: @escaping (_ id: Int) -> Void,
-         onDelete: @escaping (_ id: Int) -> Void) {
+         onDelete: @escaping (_ friend: Friend) -> Void) {
         self.friend = friend
-        profile = friend.getFriend(userId: repository.auth.getCurrentUserId())
+        profile = friend.getFriend(userId: currentUser.id)
         self.currentUser = currentUser
         self.onAccept = onAccept
         self.onBlock = onBlock
@@ -208,7 +226,7 @@ struct FriendListItemView: View {
                         if friend.isPending(userId: currentUser.id) {
                             HStack(alignment: .center) {
                                 Button(action: {
-                                    onDelete(friend.id)
+                                    onDelete(friend)
                                 }) {
                                     Image(systemName: "person.fill.xmark")
                                         .imageScale(.large)
@@ -228,7 +246,7 @@ struct FriendListItemView: View {
         }
         .contextMenu {
             Button(action: {
-                onDelete(friend.id)
+                onDelete(friend)
             }) {
                 Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
             }

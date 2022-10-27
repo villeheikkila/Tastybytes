@@ -46,7 +46,7 @@ struct ProductPageView: View {
                                                HStack {
                                                    Text("Average:")
                                                    Spacer()
-                                                   RatingView(rating: averageRating)
+                                                   RatingView(rating: averageRating / 2)
                                                }
                                            }
                                            if let currentUserAverageRating = viewModel.productSummary?.currentUserAverageRating {
