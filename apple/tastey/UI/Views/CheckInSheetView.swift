@@ -263,16 +263,16 @@ extension CheckInSheetView {
             Task {
                 do {
                     let newCheckIn = try await repository.checkIn.create(newCheckInParams: newCheckParams)
-                    onCreation(newCheckIn)
                     
                     if let data = image?.jpegData(compressionQuality: 0.5) {
-                        try await repository.profile.uploadAvatar(id: repository.auth.getCurrentUserId(), data: data, completion: { result in switch result {
+                        try await repository.checkIn.uploadImage(id: repository.auth.getCurrentUserId(), data: data, completion: { result in switch result {
                         case .success:
                             print("success!")
                         case let .failure(error):
                             print(error.localizedDescription)
                         }})
                     }
+
                 } catch {
                     print("error: \(error)")
                 }
