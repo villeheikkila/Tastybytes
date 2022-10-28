@@ -264,8 +264,8 @@ extension CheckInSheetView {
                 do {
                     let newCheckIn = try await repository.checkIn.create(newCheckInParams: newCheckParams)
                     
-                    if let data = image?.jpegData(compressionQuality: 0.5) {
-                        try await repository.checkIn.uploadImage(id: repository.auth.getCurrentUserId(), data: data, completion: { result in switch result {
+                    if let data = image?.jpegData(compressionQuality: 0.3) {
+                        try await repository.checkIn.uploadImage(id: newCheckIn.id, profileId: repository.auth.getCurrentUserId(), data: data, completion: { result in switch result {
                         case .success:
                             print("success!")
                         case let .failure(error):

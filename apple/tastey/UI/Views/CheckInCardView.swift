@@ -134,20 +134,36 @@ struct CheckInCardView: View {
     var checkInSection: some View {
         NavigationLink(value: checkIn) {
             VStack(spacing: 8) {
-                VStack(alignment: .leading, spacing: 8) {
-                    if let rating = checkIn.rating {
-                        RatingView(rating: rating)
+                HStack {
+                    VStack(alignment: .leading, spacing: 8) {
+                        if let rating = checkIn.rating {
+                            RatingView(rating: rating)
+                        }
+                        
+                        if let review = checkIn.review {
+                            Text(review)
+                                .fontWeight(.medium)
+                        }
+                        
+                        if let flavors = checkIn.flavors {
+                            WrappingHStack(flavors, id: \.self) {
+                                flavor in
+                                ChipView(title: flavor.name.capitalized, cornerRadius: 5).padding(.all, 2)
+                            }
+                        }
                     }
-
-                    if let review = checkIn.review {
-                        Text(review)
-                            .fontWeight(.medium)
-                    }
-
-                    if let flavors = checkIn.flavors {
-                        WrappingHStack(flavors, id: \.self) {
-                            flavor in
-                            ChipView(title: flavor.name.capitalized, cornerRadius: 5).padding(.all, 2)
+                    
+                    HStack {
+                        if let imageUrl = checkIn.getImageUrl() {
+                            CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                            } placeholder: {
+                                EmptyView()
+                            }
+                        } else {
+                            EmptyView()
                         }
                     }
                 }
