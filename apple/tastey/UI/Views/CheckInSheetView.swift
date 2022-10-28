@@ -37,7 +37,7 @@ struct CheckInSheetView: View {
                 photoPicker
                 Form {
                     Section {
-                        TextField("How was it?", text: $viewModel.review)
+                        TextField("How was it?", text: $viewModel.review, axis: .vertical)
                         RatingPickerView(rating: $viewModel.rating)
                         Button(action: {
                             viewModel.activateSheet(.flavors)
