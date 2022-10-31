@@ -162,7 +162,7 @@ struct CheckInSheetView: View {
         .listRowBackground(Color(UIColor.systemGroupedBackground))
         .padding(.top, 0)
         .onChange(of: viewModel.selectedItem) { newValue in
-            viewModel.uploadImage(pickedImage: newValue)
+            viewModel.setImage(pickedImage: newValue)
         }
     }
 }
@@ -213,7 +213,7 @@ extension CheckInSheetView {
             manufacturer = company
         }
 
-        func uploadImage(pickedImage: PhotosPickerItem?) {
+        func setImage(pickedImage: PhotosPickerItem?) {
             Task {
                 if let imageData = try await pickedImage?.loadTransferable(type: Data.self),
                    let image = UIImage(data: imageData) {
@@ -269,6 +269,7 @@ extension CheckInSheetView {
                         case .success:
                             print("success!")
                         case let .failure(error):
+                            print("errpr!!! \(error)")
                             print(error.localizedDescription)
                         }})
                     }

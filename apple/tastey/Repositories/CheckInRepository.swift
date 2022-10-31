@@ -97,7 +97,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
     
     func uploadImage(id: Int, profileId: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws -> Void {
         let file = File(
-            name: String(id), data: data, fileName: "\(id).jpeg", contentType: "image/jpeg")
+            name: "\(id).jpeg", data: data, fileName: "\(id).jpeg", contentType: "image/jpeg")
         
         client
             .storage
