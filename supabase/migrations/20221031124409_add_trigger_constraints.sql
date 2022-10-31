@@ -229,9 +229,6 @@ CREATE TRIGGER stamp_created_by
     FOR EACH ROW
     EXECUTE FUNCTION public.tg__stamp_created_by ();
 
-ALTER TABLE IF EXISTS public.check_ins
-    ALTER COLUMN rating DROP NOT NULL;
-
 CREATE TRIGGER check_verification
     BEFORE INSERT OR UPDATE ON public.check_ins
     FOR EACH ROW
