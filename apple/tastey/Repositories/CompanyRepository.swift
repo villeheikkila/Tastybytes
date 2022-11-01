@@ -38,14 +38,12 @@ struct SupabaseCompanyRepository: CompanyRepository {
     }
     
     func delete(id: Int) async throws -> Void {
-        let d = try await client
+       try await client
             .database
             .from(tableName)
             .delete()
             .eq(column: "id", value: id)
             .execute()
-        
-        print(d)
     }
     
     func search(searchTerm: String) async throws -> [Company] {

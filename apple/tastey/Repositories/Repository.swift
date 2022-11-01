@@ -1,6 +1,7 @@
 import Supabase
 import SwiftUI
-let repository = SupabaseRepository(Supabase.client)
+
+let repository = SupabaseRepository(SupabaseConfig.client)
 
 protocol Repository {
     var profile: ProfileRepository { get }
@@ -34,7 +35,6 @@ class SupabaseRepository: Repository {
     let notification: NotificationRepository
     
     init(_ client: SupabaseClient) {
-        client.realtime.connect()
         self.profile = SupabaseProfileRepository(client: client)
         self.checkIn = SupabaseCheckInRepository(client: client)
         self.checkInComment = SupabaseCheckInCommentRepository(client: client)

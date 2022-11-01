@@ -21,7 +21,7 @@ struct CheckIn: Identifiable {
     func getImageUrl() -> URL? {
         if let imageUrl = imageUrl {
             let bucketId = "check-ins"
-            let urlString = "\(Supabase.urlString)/storage/v1/object/public/\(bucketId)/\(profile.id.uuidString.lowercased())/\(imageUrl).jpeg"
+            let urlString = "\(SupabaseConfig.urlString)/storage/v1/object/public/\(bucketId)/\(profile.id.uuidString.lowercased())/\(imageUrl).jpeg"
             guard let url = URL(string: urlString) else { return nil }
             return url
         } else {

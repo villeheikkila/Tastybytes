@@ -6,6 +6,8 @@ class CurrentProfile: ObservableObject {
     @Published private(set) var notifaction: [Notification] = []
     @Published var notifications = [Notification]()
     
+    
+    
     func deleteNotifications(notification: Notification) {
         Task {
             do {
