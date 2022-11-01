@@ -207,7 +207,9 @@ extension ProductSheetView {
         }
 
         func setActiveSheet(_ sheet: Sheet) {
-            activeSheet = sheet
+            DispatchQueue.main.async {
+                self.activeSheet = sheet
+            }
         }
 
         func setBrandOwner(_ brandOwner: Company) {

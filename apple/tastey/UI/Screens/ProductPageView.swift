@@ -179,9 +179,5 @@ extension ProductPageView {
         func appendNewCheckIn(newCheckIn: CheckIn) {
             checkIns.insert(newCheckIn, at: 0)
         }
-
-        func updateCheckIn(updatedCheckIn: CheckIn) {
-            checkIns.insert(updatedCheckIn, at: 0)
-        }
     }
 }

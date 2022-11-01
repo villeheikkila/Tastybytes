@@ -1,38 +1,36 @@
 import AlertToast
 import SwiftUI
 
-
-
 struct FriendPickerView: View {
     @Binding var taggedFriends: [Profile]
     @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
-    
+
     func toggleFriend(friend: Profile) {
-        if taggedFriends.contains(friend) {
-            taggedFriends.remove(object: friend)
-        } else {
-            taggedFriends.append(friend)
+        DispatchQueue.main.async {
+            if taggedFriends.contains(friend) {
+                self.taggedFriends.remove(object: friend)
+            } else {
+                self.taggedFriends.append(friend)
+            }
         }
     }
-    
+
     var body: some View {
         NavigationStack {
             List(viewModel.friends, id: \.self) { friend in
                 Button(action: {
                     toggleFriend(friend: friend)
                 }) {
-                    HStack {
-                        AvatarView(avatarUrl: friend.getAvatarURL(), size: 32, id: friend.id)
-                        Text(friend.getPreferredName())
-                        Spacer()
-                        if taggedFriends.contains(friend) {
-                            Image(systemName: "checkmark")
-                        }
+                    AvatarView(avatarUrl: friend.getAvatarURL(), size: 32, id: friend.id)
+                    Text(friend.getPreferredName())
+                    Spacer()
+                    if taggedFriends.contains(friend) {
+                        Image(systemName: "checkmark")
                     }
-                    
                 }
             }
+            .buttonStyle(.plain)
             .navigationTitle("Friends")
             .navigationBarItems(trailing: Button(action: {
                 dismiss()
@@ -43,14 +41,12 @@ struct FriendPickerView: View {
             viewModel.loadFriends()
         }
     }
-    
-    
 }
 
 extension FriendPickerView {
     @MainActor class ViewModel: ObservableObject {
         @Published var friends = [Profile]()
-        
+
         func loadFriends() {
             let currentUserId = repository.auth.getCurrentUserId()
             Task {

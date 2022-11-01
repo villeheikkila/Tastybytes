@@ -17,7 +17,7 @@ struct TabbarView: View {
                         Image(systemName: "magnifyingglass")
                         Text("Search")
                     }
-                NotificationView()
+                NotificationPageView()
                     .tabItem {
                         Image(systemName: "bell")
                         Text("Notifications")

@@ -141,7 +141,7 @@ struct CheckInSheetView: View {
             }
         }
     }
-    
+
     var photoPicker: some View {
         PhotosPicker(
             selection: $viewModel.selectedItem,
@@ -202,15 +202,21 @@ extension CheckInSheetView {
         }
 
         func activateSheet(_ sheet: Sheet) {
-            activeSheet = sheet
+            DispatchQueue.main.async {
+                self.activeSheet = sheet
+            }
         }
 
         func setFlavors(_ flavors: [Flavor]) {
-            pickedFlavors = flavors
+            DispatchQueue.main.async {
+                self.pickedFlavors = flavors
+            }
         }
 
         func setManufacturer(_ company: Company) {
-            manufacturer = company
+            DispatchQueue.main.async {
+                self.manufacturer = company
+            }
         }
 
         func setImage(pickedImage: PhotosPickerItem?) {
@@ -248,22 +254,12 @@ extension CheckInSheetView {
         }
 
         func createCheckIn(_ product: ProductJoined, _ onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
-            let friendIds = taggedFriends.map { $0.id }
-            let servingStyleId = servingStyles.first(where: { $0.name == servingStyle })?.id
-            let manufacturerId = manufacturer?.id
-            let flavorIds = pickedFlavors.map { $0.id }
-            var ratingDoubled: Int?
-
-            if let rating = rating {
-                ratingDoubled = Int(rating * 2)
-            }
-
-            let newCheckParams = NewCheckInParams(productId: product.id, rating: ratingDoubled, review: review, manufacturerId: manufacturerId, servingStyleId: servingStyleId, friendIds: friendIds, flavorIds: flavorIds)
+            let newCheckParams = NewCheckInParams(product: product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyles.first(where: { $0.name == servingStyle }), manufacturer: manufacturer, flavors: pickedFlavors, rating: rating)
 
             Task {
                 do {
                     let newCheckIn = try await repository.checkIn.create(newCheckInParams: newCheckParams)
-                    
+
                     if let data = image?.jpegData(compressionQuality: 0.3) {
                         try await repository.checkIn.uploadImage(id: newCheckIn.id, profileId: repository.auth.getCurrentUserId(), data: data, completion: { result in switch result {
                         case .success:
@@ -274,11 +270,13 @@ extension CheckInSheetView {
                         }})
                     }
 
+                    onCreation(newCheckIn)
+
                 } catch {
                     print("error: \(error)")
                 }
             }
-        }   
+        }
 
         func loadInitialData(product: ProductJoined) {
             Task {

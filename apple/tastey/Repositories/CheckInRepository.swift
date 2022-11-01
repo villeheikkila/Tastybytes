@@ -52,15 +52,29 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .decoded(to: [CheckIn].self)
     }
     
-    func create(newCheckInParams: NewCheckInParams) async throws -> CheckIn {
+    func getById(id: Int) async throws -> CheckIn {
         return try await client
             .database
-            .rpc(fn: "fnc__create_check_in", params: newCheckInParams)
+            .from(tableName)
             .select(columns: checkInJoined)
+            .eq(column: "id", value: id)
             .limit(count: 1)
             .single()
             .execute()
             .decoded(to: CheckIn.self)
+    }
+    
+    func create(newCheckInParams: NewCheckInParams) async throws -> CheckIn {
+        let createdCheckIn = try await client
+            .database
+            .rpc(fn: "fnc__create_check_in", params: newCheckInParams)
+            .select(columns: "id")
+            .limit(count: 1)
+            .single()
+            .execute()
+            .decoded(to: DecodableId.self)
+        
+        return try await getById(id: createdCheckIn.id)
     }
     
     func update(updateCheckInParams: UpdateCheckInParams) async throws -> CheckIn {

@@ -21,6 +21,10 @@ struct ProductJoined: Identifiable {
     
     func getDisplayName(_ part: ProductNameParts) -> String {
         switch part {
+        case .full:
+            return [subBrand.brand.brandOwner.name, subBrand.brand.name, subBrand.name, name]
+                .compactMap({ $0 })
+                .joined(separator: " ")
         case .brandOwner:
             return subBrand.brand.brandOwner.name
         case .fullName:
@@ -35,6 +39,7 @@ extension ProductJoined {
     enum ProductNameParts {
         case brandOwner
         case fullName
+        case full
     }
 }
 
