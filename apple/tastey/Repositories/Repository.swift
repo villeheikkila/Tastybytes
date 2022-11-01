@@ -1,7 +1,12 @@
 import Supabase
 import SwiftUI
 
-let repository = SupabaseRepository(SupabaseConfig.client)
+let supabaseClient = SupabaseClient(
+    supabaseURL: Config.supabaseUrl,
+    supabaseKey: Config.supabaseKey
+)
+
+let repository = SupabaseRepository(supabaseClient)
 
 protocol Repository {
     var profile: ProfileRepository { get }

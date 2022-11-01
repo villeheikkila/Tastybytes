@@ -20,16 +20,13 @@ extension View {
 }
 
 public struct UserProviderView<RootView: View>: View {
-    let supabaseClient: SupabaseClient
     let rootView: () -> RootView
     
     @State private var user: User?
     
     public init(
-        supabaseClient: SupabaseClient,
         @ViewBuilder rootView: @escaping () -> RootView
     ) {
-        self.supabaseClient = supabaseClient
         self.rootView = rootView
     }
     
