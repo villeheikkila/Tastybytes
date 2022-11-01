@@ -1,7 +1,7 @@
 import AlertToast
 import SwiftUI
 
-struct SubcategoryPicker: View {
+struct SubcategorySheetView: View {
     let availableSubcategories: [Subcategory]
     @Binding var subcategories: [Subcategory]
     @State var showToast = false

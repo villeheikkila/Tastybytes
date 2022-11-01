@@ -1,7 +1,7 @@
 import AlertToast
 import SwiftUI
 
-struct FlavorPickerView: View {
+struct FlavorSheetView: View {
     let initialFlavors: [Flavor]
     let onComplete: (_ selectedFlavors: [Flavor]) -> Void
     @StateObject var viewModel = ViewModel()
@@ -39,7 +39,7 @@ struct FlavorPickerView: View {
 
 }
 
-extension FlavorPickerView {
+extension FlavorSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var availableFlavors = [Flavor]()
         @Published var pickedFlavors = [Flavor]()

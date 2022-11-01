@@ -5,8 +5,8 @@ import SwiftUI
 struct RootView: View {
 
     var body: some View {
-        UserProviderView() {
-            AuthView(loadingContent: ProgressView.init) { session in
+        UserProviderView {
+            AuthScreenView { session in
                 CurrentProfileProviderView(userId: session.user.id) {
                     NavigationStackView()
                 }

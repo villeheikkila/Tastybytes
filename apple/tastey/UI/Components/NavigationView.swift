@@ -62,37 +62,37 @@ struct AddRoutesView<Content: View>: View {
     var body: some View {
         content()
             .navigationDestination(for: CheckIn.self) { checkIn in
-                CheckInPageView(checkIn: checkIn)
+                CheckInScreenView(checkIn: checkIn)
             }
             .navigationDestination(for: Profile.self) { profile in
-                ProfileView(profile: profile)
+                ProfileScreenView(profile: profile)
             }
             .navigationDestination(for: ProductJoined.self) { product in
-                ProductPageView(product: product)
+                ProductScreenView(product: product)
             }
             .navigationDestination(for: Company.self) { company in
-                CompanyPageView(company: company)
+                CompanyScreenView(company: company)
             }
             .navigationDestination(for: Route.self) { route in
                 switch route {
                 case let .companies(company):
-                    CompanyPageView(company: company)
+                    CompanyScreenView(company: company)
                 case .currentUserFriends:
                     WithProfile {
                         profile in FriendsScreenView(profile: profile)
                     }
                 case .settings:
-                    PreferencesMenuView()
+                    PreferencesScreenView()
                 case let .activity(profile):
-                    ActivityView(profile: profile)
+                    ActivityScreenView(profile: profile)
                 case .addProduct:
                     ProductSheetView()
                 case let .checkIn(checkIn):
-                    CheckInPageView(checkIn: checkIn)
+                    CheckInScreenView(checkIn: checkIn)
                 case let .profile(profile):
-                    ProfileView(profile: profile)
+                    ProfileScreenView(profile: profile)
                 case let .product(product):
-                    ProductPageView(product: product)
+                    ProductScreenView(product: product)
                 case let .friends(profile):
                     FriendsScreenView(profile: profile)
                 }

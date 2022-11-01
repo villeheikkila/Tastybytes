@@ -9,7 +9,7 @@ struct SimpleCheckIn {
     let creator: String
 }
 
-struct ActivityView: View {
+struct ActivityScreenView: View {
     let profile: Profile
     @StateObject private var viewModel = ViewModel()
 
@@ -31,7 +31,7 @@ struct ActivityView: View {
     }
 }
 
-extension ActivityView {
+extension ActivityScreenView {
     class ViewModel: ObservableObject {
         @Published var checkIns = [CheckIn]()
         @Published var isLoading = false

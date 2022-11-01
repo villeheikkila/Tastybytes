@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ProductPageView: View {
+struct ProductScreenView: View {
     let product: ProductJoined
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
@@ -90,7 +90,7 @@ struct ProductPageView: View {
     }
 }
 
-extension ProductPageView {
+extension ProductScreenView {
     enum Sheet: Identifiable {
         var id: Self { self }
         case checkIn

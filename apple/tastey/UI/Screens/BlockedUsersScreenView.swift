@@ -2,7 +2,7 @@ import AlertToast
 import Foundation
 import SwiftUI
 
-struct BlockedUsersView: View {
+struct BlockedUsersScreenView: View {
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
     
@@ -25,7 +25,7 @@ struct BlockedUsersView: View {
     }
 }
 
-extension BlockedUsersView {
+extension BlockedUsersScreenView {
     @MainActor class ViewModel: ObservableObject {
         @Published var blockedUsers = [Friend]()
         @Published var error: Error?

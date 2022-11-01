@@ -1,7 +1,7 @@
 import SwiftUI
 import AlertToast
 
-struct CheckInPageView: View {
+struct CheckInScreenView: View {
     let checkIn: CheckIn
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject private var navigator: Navigator
@@ -51,7 +51,7 @@ struct CheckInPageView: View {
     }
 }
 
-extension CheckInPageView {
+extension CheckInScreenView {
     @MainActor class ViewModel: ObservableObject {
         @Published var checkIn: CheckIn?
         @Published var checkInComments = [CheckInComment]()

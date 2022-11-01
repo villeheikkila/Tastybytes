@@ -3,7 +3,7 @@ import GoTrue
 import PhotosUI
 import SwiftUI
 
-struct DeleteAccountView: View {
+struct DeleteAccountScreenView: View {
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
     @Environment(\.colorScheme) var initialColorScheme
@@ -52,7 +52,7 @@ struct DeleteAccountView: View {
     }
 }
 
-extension DeleteAccountView {
+extension DeleteAccountScreenView {
     enum Toast {
         case exported
         case exportError

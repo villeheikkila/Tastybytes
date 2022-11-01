@@ -1,7 +1,7 @@
 import AlertToast
 import SwiftUI
 
-struct FriendPickerView: View {
+struct FriendSheetView: View {
     @Binding var taggedFriends: [Profile]
     @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
@@ -43,7 +43,7 @@ struct FriendPickerView: View {
     }
 }
 
-extension FriendPickerView {
+extension FriendSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var friends = [Profile]()
 

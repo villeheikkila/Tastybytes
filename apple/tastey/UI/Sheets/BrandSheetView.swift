@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct BrandSearchView: View {
+struct BrandSheetView: View {
     let brandOwner: Company
     @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
@@ -43,7 +43,7 @@ struct BrandSearchView: View {
     }
 }
 
-extension BrandSearchView {
+extension BrandSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var searchText = ""
         @Published var brandsWithSubBrands = [BrandJoinedWithSubBrands]()
