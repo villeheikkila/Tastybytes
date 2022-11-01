@@ -2,7 +2,7 @@ import Charts
 import GoTrue
 import SwiftUI
 
-struct ProfileView: View {
+struct ProfileScreenView: View {
     let profile: Profile
     @StateObject private var viewModel = ViewModel()
 
@@ -143,7 +143,7 @@ struct ProfileView: View {
     }
 }
 
-extension ProfileView {
+extension ProfileScreenView {
     @MainActor class ViewModel: ObservableObject {
         @Published var checkIns = [CheckIn]()
         @Published var profileSummary: ProfileSummary?

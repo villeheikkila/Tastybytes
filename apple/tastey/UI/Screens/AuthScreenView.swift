@@ -3,19 +3,16 @@ import GoTrue
 import Supabase
 import SwiftUI
 
-public struct AuthView<AuthenticatedContent: View, LoadingContent: View>: View {
+public struct AuthScreenView<AuthenticatedContent: View>: View {
     private let magicLinkEnabled: Bool
-    private let loadingContent: () -> LoadingContent
     private let authenticatedContent: (Session) -> AuthenticatedContent
     
     @State private var authEvent: AuthChangeEvent?
     
     public init(
-        @ViewBuilder loadingContent: @escaping () -> LoadingContent,
         @ViewBuilder authenticatedContent: @escaping (Session) -> AuthenticatedContent
     ) {
         self.magicLinkEnabled = false
-        self.loadingContent = loadingContent
         self.authenticatedContent = authenticatedContent
     }
     
@@ -25,10 +22,9 @@ public struct AuthView<AuthenticatedContent: View, LoadingContent: View>: View {
             case let (.signedIn, session?):
                 authenticatedContent(session)
             case (nil, _):
-                loadingContent()
+                ProgressView()
             default:
                 SignInOrSignUpView(
-                    supabaseClient: supabaseClient,
                     magicLinkEnabled: magicLinkEnabled
                 )
             }
@@ -47,8 +43,6 @@ public struct AuthView<AuthenticatedContent: View, LoadingContent: View>: View {
 }
 
 struct SignInOrSignUpView: View {
-    let supabaseClient: SupabaseClient
-    
     enum ResultStatus {
         case idle
         case loading

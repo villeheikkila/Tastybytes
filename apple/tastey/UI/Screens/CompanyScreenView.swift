@@ -1,7 +1,7 @@
 import CachedAsyncImage
 import SwiftUI
 
-struct CompanyPageView: View {
+struct CompanyScreenView: View {
     let company: Company
     @EnvironmentObject var currentProfile: CurrentProfile
     @EnvironmentObject var navigator: Navigator
@@ -145,7 +145,7 @@ struct CompanyPageView: View {
     }
 }
 
-extension CompanyPageView {
+extension CompanyScreenView {
     enum Sheet: Identifiable {
         var id: Self { self }
         case editSuggestion

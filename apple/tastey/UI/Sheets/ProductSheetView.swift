@@ -36,10 +36,10 @@ struct ProductSheetView: View {
             switch sheet {
             case .subcategories:
                 if let subcategoriesForCategory = viewModel.getSubcategoriesForCategory() {
-                    SubcategoryPicker(availableSubcategories: subcategoriesForCategory, subcategories: $viewModel.subcategories)
+                    SubcategorySheetView(availableSubcategories: subcategoriesForCategory, subcategories: $viewModel.subcategories)
                 }
             case .brandOwner:
-                CompanySearchView(onSelect: { company, createdNew in
+                CompanySheetView(onSelect: { company, createdNew in
                     viewModel.setBrandOwner(company)
                     if createdNew {
                         viewModel.setToast(.createdCompany)
@@ -48,7 +48,7 @@ struct ProductSheetView: View {
                 })
             case .brand:
                 if let brandOwner = viewModel.brandOwner {
-                    BrandSearchView(brandOwner: brandOwner, onSelect: { brand, createdNew in
+                    BrandSheetView(brandOwner: brandOwner, onSelect: { brand, createdNew in
                         if createdNew {
                             viewModel.setToast(.createdSubBrand)
                         }
@@ -58,7 +58,7 @@ struct ProductSheetView: View {
 
             case .subBrand:
                 if let brand = viewModel.brand {
-                    SubBrandPickerView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
+                    SubBrandSheetView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
                         if createdNew {
                             viewModel.setToast(.createdSubBrand)
                             viewModel.subBrand = subBrand

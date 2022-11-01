@@ -1,7 +1,7 @@
 import AlertToast
 import SwiftUI
 
-struct CompanySearchView: View {
+struct CompanySheetView: View {
     @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
     @State var companyName = ""
@@ -59,7 +59,7 @@ struct CompanySearchView: View {
     }
 }
 
-extension CompanySearchView {
+extension CompanySheetView {
     enum Status {
         case add
         case searched

@@ -41,7 +41,7 @@ struct FriendsScreenView: View {
         .navigationBarItems(
             trailing: addFriendButton)
         .sheet(isPresented: $viewModel.showUserSearchSheet) {
-            UserSearchView(actions: { profile in
+            UserSheetView(actions: { profile in
                 HStack {
                     if !viewModel.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
                         Button(action: { viewModel.sendFriendRequest(receiver: profile.id) }) {

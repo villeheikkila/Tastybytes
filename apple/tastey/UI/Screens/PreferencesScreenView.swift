@@ -1,23 +1,23 @@
 import SwiftUI
 
-struct PreferencesMenuView: View {
+struct PreferencesScreenView: View {
     @StateObject var viewModel = ViewModel()
     
     var body: some View {
         List {
-            NavigationLink(destination: ProfileSettingsView()) {
+            NavigationLink(destination: ProfileSettingsScreenView()) {
                 Text("Profile")
             }
             
-            NavigationLink(destination: ApplicationSettingsView()) {
+            NavigationLink(destination: ApplicationSettingsScreenView()) {
                 Text("Application")
             }
             
-            NavigationLink(destination: BlockedUsersView()) {
+            NavigationLink(destination: BlockedUsersScreenView()) {
                 Text("Blocked Users")
             }
             
-            NavigationLink(destination: DeleteAccountView()) {
+            NavigationLink(destination: DeleteAccountScreenView()) {
                 Text("Delete Account")
             }
             
@@ -31,7 +31,7 @@ struct PreferencesMenuView: View {
     }
 }
 
-extension PreferencesMenuView {
+extension PreferencesScreenView {
     @MainActor class ViewModel: ObservableObject {
         func logOut() {
             Task {

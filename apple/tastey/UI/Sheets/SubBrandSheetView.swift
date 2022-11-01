@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SubBrandPickerView: View {
+struct SubBrandSheetView: View {
     let brandWithSubBrands: BrandJoinedWithSubBrands
     let onSelect: (_ company: SubBrand, _ createdNew: Bool) -> Void
     
@@ -40,7 +40,7 @@ struct SubBrandPickerView: View {
     }
 }
 
-extension SubBrandPickerView {
+extension SubBrandSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var subBrandName = ""
         

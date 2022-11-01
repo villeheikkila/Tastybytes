@@ -3,7 +3,7 @@ import GoTrue
 import PhotosUI
 import SwiftUI
 
-struct ProfileSettingsView: View {
+struct ProfileSettingsScreenView: View {
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
     @Environment(\.colorScheme) var initialColorScheme
@@ -109,7 +109,7 @@ struct ProfileSettingsView: View {
     }
 }
 
-extension ProfileSettingsView {
+extension ProfileSettingsScreenView {
     enum Toast {
         case profileUpdated
     }

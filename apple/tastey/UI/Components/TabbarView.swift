@@ -7,7 +7,7 @@ struct TabbarView: View {
         WithProfile {
             profile in
             TabView {
-                ActivityView(profile: profile)
+                ActivityScreenView(profile: profile)
                     .tabItem {
                         Image(systemName: "list.star")
                         Text("Activity")
@@ -17,13 +17,13 @@ struct TabbarView: View {
                         Image(systemName: "magnifyingglass")
                         Text("Search")
                     }
-                NotificationPageView()
+                NotificationScreenView()
                     .tabItem {
                         Image(systemName: "bell")
                         Text("Notifications")
                     }
                     .badge(currentProfile.notifications.count)
-                ProfileView(profile: profile)
+                ProfileScreenView(profile: profile)
                     .tabItem {
                         Image(systemName: "person.fill")
                         Text("Profile")

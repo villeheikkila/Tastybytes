@@ -90,13 +90,13 @@ struct CheckInSheetView: View {
                 .sheet(item: $viewModel.activeSheet) { sheet in
                     switch sheet {
                     case .friends:
-                        FriendPickerView(taggedFriends: $viewModel.taggedFriends)
+                        FriendSheetView(taggedFriends: $viewModel.taggedFriends)
                     case .flavors:
-                        FlavorPickerView(initialFlavors: viewModel.pickedFlavors, onComplete: {
+                        FlavorSheetView(initialFlavors: viewModel.pickedFlavors, onComplete: {
                             pickedFlavors in viewModel.setFlavors(pickedFlavors)
                         })
                     case .manufacturer:
-                        CompanySearchView(onSelect: { company, _ in
+                        CompanySheetView(onSelect: { company, _ in
                             viewModel.setManufacturer(company)
                         })
                     }

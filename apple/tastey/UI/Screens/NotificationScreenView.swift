@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct NotificationPageView: View {
+struct NotificationScreenView: View {
     @EnvironmentObject var currentProfile: CurrentProfile
 
     var body: some View {

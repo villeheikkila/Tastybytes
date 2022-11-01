@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ApplicationSettingsView: View {
+struct ApplicationSettingsScreenView: View {
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
     @Environment(\.colorScheme) var systemColorScheme
@@ -24,7 +24,7 @@ struct ApplicationSettingsView: View {
     }
 }
 
-extension ApplicationSettingsView {
+extension ApplicationSettingsScreenView {
     enum Toast {
         case profileUpdated
         case exported

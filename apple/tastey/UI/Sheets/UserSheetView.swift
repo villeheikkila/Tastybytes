@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct UserSearchView<Actions: View>: View {
+struct UserSheetView<Actions: View>: View {
     @StateObject var viewModel = ViewModel()
     
     let actions: (_ profile: Profile) -> Actions
@@ -26,7 +26,7 @@ struct UserSearchView<Actions: View>: View {
     }
 }
 
-extension UserSearchView {
+extension UserSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var searchText: String = ""
         @Published var searchResults = [Profile]()
