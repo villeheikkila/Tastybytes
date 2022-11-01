@@ -5,8 +5,8 @@ import SwiftUI
 struct RootView: View {
 
     var body: some View {
-        UserProviderView(supabaseClient: SupabaseConfig.client) {
-            AuthView(supabaseClient: SupabaseConfig.client, loadingContent: ProgressView.init) { session in
+        UserProviderView() {
+            AuthView(loadingContent: ProgressView.init) { session in
                 CurrentProfileProviderView(userId: session.user.id) {
                     NavigationStackView()
                 }

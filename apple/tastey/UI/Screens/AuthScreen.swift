@@ -4,7 +4,6 @@ import Supabase
 import SwiftUI
 
 public struct AuthView<AuthenticatedContent: View, LoadingContent: View>: View {
-    private let supabaseClient: SupabaseClient
     private let magicLinkEnabled: Bool
     private let loadingContent: () -> LoadingContent
     private let authenticatedContent: (Session) -> AuthenticatedContent
@@ -12,11 +11,9 @@ public struct AuthView<AuthenticatedContent: View, LoadingContent: View>: View {
     @State private var authEvent: AuthChangeEvent?
     
     public init(
-        supabaseClient: SupabaseClient,
         @ViewBuilder loadingContent: @escaping () -> LoadingContent,
         @ViewBuilder authenticatedContent: @escaping (Session) -> AuthenticatedContent
     ) {
-        self.supabaseClient = supabaseClient
         self.magicLinkEnabled = false
         self.loadingContent = loadingContent
         self.authenticatedContent = authenticatedContent
