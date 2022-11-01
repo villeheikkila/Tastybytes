@@ -21,7 +21,7 @@
 		5C12B4312902A29A001EE549 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4302902A29A001EE549 /* DeleteAccountView.swift */; };
 		5C12B4332902A4C9001EE549 /* BlockedUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4322902A4C9001EE549 /* BlockedUsersView.swift */; };
 		5C12B4352902C9D0001EE549 /* TabbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4342902C9D0001EE549 /* TabbarView.swift */; };
-		5C12B4372902CA04001EE549 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4362902CA04001EE549 /* NotificationView.swift */; };
+		5C12B4372902CA04001EE549 /* NotificationPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4362902CA04001EE549 /* NotificationPageView.swift */; };
 		5C12B4392902CAF3001EE549 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4382902CAF3001EE549 /* Notification.swift */; };
 		5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */; };
 		5C25349628EDA58700A78780 /* Supabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25349528EDA58700A78780 /* Supabase.swift */; };
@@ -55,7 +55,7 @@
 		5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */; };
 		5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */; };
 		5CD10A3D28F75B7A0001CFC2 /* ProductPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3C28F75B7A0001CFC2 /* ProductPageView.swift */; };
-		5CD10A3F28F760520001CFC2 /* CheckInScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3E28F760520001CFC2 /* CheckInScreen.swift */; };
+		5CD10A3F28F760520001CFC2 /* CheckInPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3E28F760520001CFC2 /* CheckInPageView.swift */; };
 		5CD10A4328F82E000001CFC2 /* InfiniteScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */; };
 		5CD10A4528F952030001CFC2 /* CheckInSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4428F952030001CFC2 /* CheckInSheetView.swift */; };
 		5CD10A4728F9522D0001CFC2 /* RatingPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4628F9522D0001CFC2 /* RatingPickerView.swift */; };
@@ -106,7 +106,7 @@
 		5C12B4302902A29A001EE549 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		5C12B4322902A4C9001EE549 /* BlockedUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersView.swift; sourceTree = "<group>"; };
 		5C12B4342902C9D0001EE549 /* TabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarView.swift; sourceTree = "<group>"; };
-		5C12B4362902CA04001EE549 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		5C12B4362902CA04001EE549 /* NotificationPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPageView.swift; sourceTree = "<group>"; };
 		5C12B4382902CAF3001EE549 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRepository.swift; sourceTree = "<group>"; };
 		5C25349528EDA58700A78780 /* Supabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Supabase.swift; sourceTree = "<group>"; };
@@ -139,7 +139,7 @@
 		5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardView.swift; sourceTree = "<group>"; };
 		5CD10A3C28F75B7A0001CFC2 /* ProductPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPageView.swift; sourceTree = "<group>"; };
-		5CD10A3E28F760520001CFC2 /* CheckInScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInScreen.swift; sourceTree = "<group>"; };
+		5CD10A3E28F760520001CFC2 /* CheckInPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInPageView.swift; sourceTree = "<group>"; };
 		5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScroll.swift; sourceTree = "<group>"; };
 		5CD10A4428F952030001CFC2 /* CheckInSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInSheetView.swift; sourceTree = "<group>"; };
 		5CD10A4628F9522D0001CFC2 /* RatingPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPickerView.swift; sourceTree = "<group>"; };
@@ -285,8 +285,8 @@
 				5C11ECBA28EEF24700CCDE6A /* ActivityScreen.swift */,
 				5C11ECBC28EEF30600CCDE6A /* SearchScreen.swift */,
 				5CD10A3C28F75B7A0001CFC2 /* ProductPageView.swift */,
-				5CD10A3E28F760520001CFC2 /* CheckInScreen.swift */,
-				5C12B4362902CA04001EE549 /* NotificationView.swift */,
+				5CD10A3E28F760520001CFC2 /* CheckInPageView.swift */,
+				5C12B4362902CA04001EE549 /* NotificationPageView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -478,7 +478,7 @@
 				5CD10A4B28F980860001CFC2 /* CheckInComment.swift in Sources */,
 				5C25AEB62903FBDE00793607 /* Role.swift in Sources */,
 				5C919E2028FF024A0055CFD2 /* FlavorPickerView.swift in Sources */,
-				5C12B4372902CA04001EE549 /* NotificationView.swift in Sources */,
+				5C12B4372902CA04001EE549 /* NotificationPageView.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileScreen.swift in Sources */,
 				5C989DBE2901EA6200BBC5A7 /* NavigationView.swift in Sources */,
 				5C12B4392902CAF3001EE549 /* Notification.swift in Sources */,
@@ -502,7 +502,7 @@
 				5CD10A5928F98D8A0001CFC2 /* CheckInReaction.swift in Sources */,
 				5CED433028FD6EBC003F8194 /* BrandRepository.swift in Sources */,
 				5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */,
-				5CD10A3F28F760520001CFC2 /* CheckInScreen.swift in Sources */,
+				5CD10A3F28F760520001CFC2 /* CheckInPageView.swift in Sources */,
 				5CD10A4528F952030001CFC2 /* CheckInSheetView.swift in Sources */,
 				5C25AEB82904038000793607 /* Permission.swift in Sources */,
 				5CED432A28FD4E17003F8194 /* CategoryRepository.swift in Sources */,

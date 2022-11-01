@@ -9,12 +9,14 @@ struct SubcategoryPicker: View {
     let maxSubcategories = 4
     
     func toggleSubcategory(subcategory: Subcategory) {
-        if subcategories.contains(subcategory) {
-            subcategories.remove(object: subcategory)
-        } else if subcategories.count < maxSubcategories {
-            subcategories.append(subcategory)
-        } else {
-            showToast = true
+        DispatchQueue.main.async {
+            if subcategories.contains(subcategory) {
+                self.subcategories.remove(object: subcategory)
+            } else if subcategories.count < maxSubcategories {
+                self.subcategories.append(subcategory)
+            } else {
+                showToast = true
+            }
         }
     }
     

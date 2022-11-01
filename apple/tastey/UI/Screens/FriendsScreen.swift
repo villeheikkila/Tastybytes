@@ -94,6 +94,7 @@ extension FriendsScreenView {
 
         func sendFriendRequest(receiver: UUID) {
             let newFriend = NewFriend(receiver: receiver, status: .pending)
+            print(newFriend)
 
             Task {
                 do {
@@ -105,6 +106,7 @@ extension FriendsScreenView {
                     }
                 } catch {
                     await MainActor.run {
+                        print(error)
                         self.modalError = error
                     }
                 }

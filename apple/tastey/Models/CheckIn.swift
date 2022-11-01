@@ -88,6 +88,16 @@ struct NewCheckInParams: Encodable {
         self.p_friend_ids = friendIds.map { $0.uuidString.lowercased() }
         self.p_flavor_ids = flavorIds
     }
+    
+    init(product: ProductJoined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Int?) {
+        self.p_product_id = product.id
+        self.p_review = review
+        self.p_manufacturer_id = manufacturer?.id ?? nil
+        self.p_serving_style_id = servingStyle?.id ?? nil
+        self.p_friend_ids = taggedFriends.map { $0.id.uuidString }
+        self.p_flavor_ids = flavors.map { $0.id }
+        self.p_rating = rating
+    }
 }
 
 struct UpdateCheckInParams: Encodable  {
@@ -137,3 +147,27 @@ struct CheckInFlavors: Decodable {
         flavor = try values.decode(Flavor.self, forKey: .flavor)
     }
 }
+
+struct CheckInNotification: Identifiable, Hashable, Decodable {
+    let id: Int
+    let profile: Profile
+    let product: ProductJoined
+    
+    static func == (lhs: CheckInNotification, rhs: CheckInNotification) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case profile = "profiles"
+        case product = "products"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(Int.self, forKey: .id)
+        profile = try values.decode(Profile.self, forKey: .profile)
+        product = try values.decode(ProductJoined.self, forKey: .product)
+    }
+}
+
