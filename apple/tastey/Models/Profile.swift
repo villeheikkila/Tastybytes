@@ -39,7 +39,7 @@ extension Profile {
     func getAvatarURL() -> URL? {
         if let avatarUrl = avatarUrl {
             let bucketId = "avatars"
-            let urlString = "\(Supabase.urlString)/storage/v1/object/public/\(bucketId)/\(avatarUrl)"
+            let urlString = "\(SupabaseConfig.urlString)/storage/v1/object/public/\(bucketId)/\(avatarUrl)"
             guard let url = URL(string: urlString) else { return nil }
             return url
         } else {

@@ -196,9 +196,11 @@ extension ProductSheetView {
         }
 
         func setBrand(brand: BrandJoinedWithSubBrands) {
-            self.brand = brand
-            subBrand = nil
-            activeSheet = nil
+            DispatchQueue.main.async {
+                self.brand = brand
+                self.subBrand = brand.subBrands.first(where: { $0.name == nil } )
+                self.activeSheet = nil
+            }
         }
 
         func setToast(_ toast: Toast) {
@@ -213,11 +215,15 @@ extension ProductSheetView {
         }
 
         func setBrandOwner(_ brandOwner: Company) {
-            self.brandOwner = brandOwner
+            DispatchQueue.main.async {
+                self.brandOwner = brandOwner
+            }
         }
 
         func dismissSheet() {
-            activeSheet = nil
+            DispatchQueue.main.async {
+                self.activeSheet = nil
+            }
         }
 
         func isValid() -> Bool {
