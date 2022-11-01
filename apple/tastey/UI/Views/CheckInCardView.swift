@@ -64,7 +64,7 @@ struct CheckInCardView: View {
         .confirmationDialog("delete_check_in",
                             isPresented: $showDeleteCheckInConfirmationDialog
         ) {
-            Button("Permanently delete the check-in", role: .destructive, action: {
+            Button("Delete the check-in", role: .destructive, action: {
                     viewModel.delete(checkIn: checkIn, onDelete: onDelete)
             })
         }
