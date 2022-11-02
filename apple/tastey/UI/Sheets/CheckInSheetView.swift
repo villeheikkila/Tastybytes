@@ -1,4 +1,3 @@
-import CachedAsyncImage
 import PhotosUI
 import SwiftUI
 import WrappingHStack
@@ -184,7 +183,7 @@ extension CheckInSheetView {
         @Published var selectedItem: PhotosPickerItem? = nil
         @Published var activeSheet: Sheet?
         @Published var review: String = ""
-        @Published var rating: Int? = nil
+        @Published var rating: Double = 0
         @Published var manufacturer: Company? = nil
         @Published var servingStyles = [ServingStyle]()
         @Published var servingStyle = ServingStyleName.none
@@ -194,7 +193,7 @@ extension CheckInSheetView {
 
         func loadFromCheckIn(checkIn: CheckIn) {
             review = checkIn.review ?? ""
-            rating = checkIn.rating
+            rating = checkIn.rating ?? 0
             manufacturer = checkIn.variant?.manufacturer
             servingStyle = checkIn.servingStyle?.name ?? ServingStyleName.none
             taggedFriends = checkIn.taggedProfiles
@@ -235,13 +234,8 @@ extension CheckInSheetView {
             let servingStyleId = servingStyles.first(where: { $0.name == servingStyle })?.id
             let manufacturerId = manufacturer?.id
             let flavorIds = pickedFlavors.map { $0.id }
-            var ratingDoubled: Int?
-
-            if let rating = rating {
-                ratingDoubled = Int(rating * 2)
-            }
-
-            let updateCheckInParams = UpdateCheckInParams(id: checkIn.id, productId: checkIn.product.id, rating: ratingDoubled, review: review, manufacturerId: manufacturerId, servingStyleId: servingStyleId, friendIds: friendIds, flavorIds: flavorIds)
+ 
+            let updateCheckInParams = UpdateCheckInParams(id: checkIn.id, productId: checkIn.product.id, rating: rating, review: review, manufacturerId: manufacturerId, servingStyleId: servingStyleId, friendIds: friendIds, flavorIds: flavorIds)
 
             Task {
                 do {

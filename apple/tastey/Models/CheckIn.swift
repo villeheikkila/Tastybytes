@@ -2,7 +2,7 @@ import Foundation
 
 struct CheckIn: Identifiable {
     let id: Int
-    let rating: Int?
+    let rating: Double?
     let review: String?
     let imageUrl: String?
     let createdAt: Date
@@ -21,8 +21,9 @@ struct CheckIn: Identifiable {
     func getImageUrl() -> URL? {
         if let imageUrl = imageUrl {
             let bucketId = "check-ins"
-            let urlString = "\(Config.supabaseUrl)/storage/v1/object/public/\(bucketId)/\(profile.id.uuidString.lowercased())/\(imageUrl).jpeg"
-            guard let url = URL(string: urlString) else { return nil }
+            let urlString = "\(Config.supabaseUrl)/storage/v1/object/public/\(bucketId)/\(profile.id.uuidString.lowercased())/\(imageUrl)"
+            
+            guard let url = URL(string: urlString) else { return nil }            
             return url
         } else {
             return nil
@@ -56,7 +57,7 @@ extension CheckIn: Decodable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
-        rating = try values.decodeIfPresent(Int.self, forKey: .rating)
+        rating = try values.decodeIfPresent(Double.self, forKey: .rating)
         review = try values.decodeIfPresent(String.self, forKey: .review)
         imageUrl = try values.decodeIfPresent(String.self, forKey: .imageUrl)
         createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
@@ -72,14 +73,14 @@ extension CheckIn: Decodable {
 
 struct NewCheckInParams: Encodable {
     let p_product_id: Int
-    let p_rating: Int?
+    let p_rating: Double?
     let p_review: String?
     let p_manufacturer_id: Int?
     let p_serving_style_id: Int?
     let p_friend_ids: [String]?
     let p_flavor_ids: [Int]?
     
-    init (productId: Int, rating: Int?, review: String?, manufacturerId: Int?, servingStyleId: Int?, friendIds: [UUID], flavorIds: [Int]?) {
+    init (productId: Int, rating: Double?, review: String?, manufacturerId: Int?, servingStyleId: Int?, friendIds: [UUID], flavorIds: [Int]?) {
         self.p_product_id = productId
         self.p_rating = rating
         self.p_review = review
@@ -89,7 +90,7 @@ struct NewCheckInParams: Encodable {
         self.p_flavor_ids = flavorIds
     }
     
-    init(product: ProductJoined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Int?) {
+    init(product: ProductJoined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Double) {
         self.p_product_id = product.id
         self.p_review = review
         self.p_manufacturer_id = manufacturer?.id ?? nil
@@ -103,14 +104,14 @@ struct NewCheckInParams: Encodable {
 struct UpdateCheckInParams: Encodable  {
     let p_check_in_id: Int
     let p_product_id: Int
-    let p_rating: Int?
+    let p_rating: Double
     let p_review: String?
     let p_manufacturer_id: Int?
     let p_serving_style_id: Int?
     let p_friend_ids: [String]?
     let p_flavor_ids: [Int]?
     
-    init (id: Int, productId: Int, rating: Int?, review: String?, manufacturerId: Int?, servingStyleId: Int?, friendIds: [UUID], flavorIds: [Int]?) {
+    init (id: Int, productId: Int, rating: Double, review: String?, manufacturerId: Int?, servingStyleId: Int?, friendIds: [UUID], flavorIds: [Int]?) {
         self.p_check_in_id = id
         self.p_product_id = productId
         self.p_rating = rating

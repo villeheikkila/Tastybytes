@@ -5,7 +5,6 @@ struct ProfileSummary {
     let uniqueCheckIns: Int
     let averageRating: Double?
     let unrated: Int
-    let rating0: Int
     let rating1: Int
     let rating2: Int
     let rating3: Int
@@ -29,7 +28,6 @@ extension ProfileSummary: Decodable {
         case uniqueCheckIns = "unique_check_ins"
         case averageRating = "average_rating"
         case unrated
-        case rating0 = "rating_0"
         case rating1 = "rating_1"
         case rating2 = "rating_2"
         case rating3 = "rating_3"
@@ -48,7 +46,6 @@ extension ProfileSummary: Decodable {
         uniqueCheckIns = try values.decode(Int.self, forKey: .uniqueCheckIns)
         averageRating = try values.decodeIfPresent(Double.self, forKey: .averageRating)
         unrated = try values.decode(Int.self, forKey: .unrated)
-        rating0 = try values.decode(Int.self, forKey: .rating0)
         rating1 = try values.decode(Int.self, forKey: .rating1)
         rating2 = try values.decode(Int.self, forKey: .rating2)
         rating3 = try values.decode(Int.self, forKey: .rating3)
