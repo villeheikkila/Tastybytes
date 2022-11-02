@@ -3,7 +3,7 @@ import SwiftUI
 
 let supabaseClient = SupabaseClient(
     supabaseURL: Config.supabaseUrl,
-    supabaseKey: Config.supabaseKey
+    supabaseKey: Config.supabaseAnonKey
 )
 
 let repository = SupabaseRepository(supabaseClient)
