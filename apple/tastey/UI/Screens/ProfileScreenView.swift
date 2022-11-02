@@ -65,10 +65,6 @@ struct ProfileScreenView: View {
     var ratingChart: some View {
         Chart {
             LineMark(
-                x: .value("Rating", "0"),
-                y: .value("Value", viewModel.profileSummary?.rating0 ?? 0)
-            )
-            LineMark(
                 x: .value("Rating", "0.5"),
                 y: .value("Value", viewModel.profileSummary?.rating1 ?? 0)
             )

@@ -78,6 +78,17 @@ struct CheckInCardView: View {
                     .font(.system(size: 12, weight: .bold, design: .default))
                     .foregroundColor(.primary)
                 Spacer()
+                if let imageUrl = checkIn.getImageUrl() {
+                    CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+                        image.resizable()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                } else {
+                    EmptyView()
+                }
             }
         }
         .disabled(avoidStackingCheckInPage())
@@ -152,20 +163,6 @@ struct CheckInCardView: View {
                             }
                         }
                     }
-                    
-                    HStack {
-                        if let imageUrl = checkIn.getImageUrl() {
-                            CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                            } placeholder: {
-                                EmptyView()
-                            }
-                        } else {
-                            EmptyView()
-                        }
-                    }
                 }
                 .padding(.all, 10)
                 .background(Color(.secondarySystemBackground))
@@ -174,7 +171,9 @@ struct CheckInCardView: View {
                 if checkIn.taggedProfiles.count > 0 {
                     VStack {
                         HStack {
-                            Text(verbatim: "Tagged friends").font(.subheadline).fontWeight(.medium)
+                            Text(verbatim: "Tagged friends")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
                             Spacer()
                         }
                         HStack {

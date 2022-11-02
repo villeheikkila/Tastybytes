@@ -78,12 +78,12 @@ public struct CurrentProfileProviderView<RootView: View>: View {
         self.userId = userId
     }
     
-    func getColorScheme(colorScheme: Profile.ColorScheme?) -> ColorScheme? {
+    func getColorScheme(colorScheme: ProfileSettings.ColorScheme?) -> ColorScheme? {
         if let colorScheme = colorScheme {
             switch colorScheme {
-            case Profile.ColorScheme.dark: return SwiftUI.ColorScheme.dark
-            case Profile.ColorScheme.light: return SwiftUI.ColorScheme.light
-            case Profile.ColorScheme.system: return nil
+            case ProfileSettings.ColorScheme.dark: return SwiftUI.ColorScheme.dark
+            case ProfileSettings.ColorScheme.light: return SwiftUI.ColorScheme.light
+            case ProfileSettings.ColorScheme.system: return nil
             }
         } else {
             return nil
@@ -93,10 +93,10 @@ public struct CurrentProfileProviderView<RootView: View>: View {
     public var body: some View {
         rootView()
             .environmentObject(currentProfile)
-            .preferredColorScheme(getColorScheme(colorScheme: currentProfile.profile?.colorScheme))
             .task {
                 currentProfile.get(id: repository.auth.getCurrentUserId())
             }
+            .preferredColorScheme(getColorScheme(colorScheme: currentProfile.profile?.settings?.colorScheme))
     }
 }
 
