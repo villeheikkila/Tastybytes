@@ -10,7 +10,7 @@ protocol CheckInRepository {
     func update(updateCheckInParams: UpdateCheckInParams) async throws -> CheckIn
     func delete(id: Int) async throws -> Void
     func getSummaryByProfileId(id: UUID) async throws -> ProfileSummary
-    func uploadImage(id: Int, profileId: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws
+    func uploadImage(id: Int, profileId: UUID, data: Data) async throws -> Void
 }
 
 struct SupabaseCheckInRepository: CheckInRepository {
@@ -109,16 +109,16 @@ struct SupabaseCheckInRepository: CheckInRepository {
             .decoded(to: ProfileSummary.self)
     }
     
-    func uploadImage(id: Int, profileId: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws -> Void {
+    func uploadImage(id: Int, profileId: UUID, data: Data) async throws -> Void {
         let file = File(
             name: "\(id).jpeg", data: data, fileName: "\(id).jpeg", contentType: "image/jpeg")
         
-        client
+        _ = try await client
             .storage
             .from(id: "check-ins")
             .upload(
-                path: "\(profileId.uuidString.lowercased())/\(id).jpeg", file: file, fileOptions: nil,
-                completion: completion)
+                path: "\(profileId.uuidString.lowercased())/\(id).jpeg", file: file, fileOptions: nil
+            )
     }
 }
 

@@ -218,14 +218,11 @@ extension ProfileSettingsScreenView {
                 if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
                    let image = UIImage(data: imageData),
                    let data = image.jpegData(compressionQuality: 0.5) {
-                    try await repository.profile.uploadAvatar(id: repository.auth.getCurrentUserId(), data: data, completion: { result in switch result {
-                    case .success:
-                        DispatchQueue.main.async {
-                            self.avatarImage = image
-                        }
-                    case let .failure(error):
-                        print(error.localizedDescription)
-                    }})
+                    _ = try await repository.profile.uploadAvatar(id: repository.auth.getCurrentUserId(), data: data)
+
+                    DispatchQueue.main.async {
+                        self.avatarImage = image
+                    }
                 }
             }
         }
