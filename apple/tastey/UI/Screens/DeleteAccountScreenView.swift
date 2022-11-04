@@ -82,7 +82,7 @@ extension DeleteAccountScreenView {
                     print(csvText)
                     self.csvExport = CSVFile(initialText: csvText)
                     self.showingExporter = true
-                } catch {
+                } catch {
                     print(error)
                 }
             }
