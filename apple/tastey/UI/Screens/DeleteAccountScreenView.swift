@@ -77,9 +77,14 @@ extension DeleteAccountScreenView {
         
         func exportData() {
             Task {
-                let csvText = try await repository.profile.currentUserExport()
-                self.csvExport = CSVFile(initialText: csvText)
-                self.showingExporter = true
+                do {
+                    let csvText = try await repository.profile.currentUserExport()
+                    print(csvText)
+                    self.csvExport = CSVFile(initialText: csvText)
+                    self.showingExporter = true
+                } catch {
+                    print(error)
+                }
             }
         }
         
