@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Flight-School/AnyCodable",
       "state" : {
-        "revision" : "56901f2af3625b38924d488b612e95fe8846ee9b",
-        "version" : "0.6.6"
+        "revision" : "862808b2070cd908cb04f9aafe7de83d35f81b05",
+        "version" : "0.6.7"
       }
     },
     {
@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Get",
       "state" : {
-        "revision" : "a9475786258c8df3d052359288ceed2d62025606",
-        "version" : "2.1.2"
+        "revision" : "7209fdb015686fd90918b2037cb2039206405bd3",
+        "version" : "2.1.5"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/gotrue-swift",
       "state" : {
-        "revision" : "5947f9c2deac0b0dadbc04609fd05619e77bcfd4",
-        "version" : "0.0.8"
+        "revision" : "32719c3487d144a0fd76b9cd7bc5606c1fc720b7",
+        "version" : "0.0.9"
       }
     },
     {
@@ -59,17 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/realtime-swift.git",
       "state" : {
-        "revision" : "2b55564e1a724ca62067b0dc76e5e69439c30b76",
-        "version" : "0.0.1"
-      }
-    },
-    {
-      "identity" : "starscream",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/daltoniam/Starscream.git",
-      "state" : {
-        "revision" : "e6b65c6d9077ea48b4a7bdda8994a1d3c6969c8d",
-        "version" : "3.1.1"
+        "revision" : "0b985c687fe963f6bd818ff77a35c27247b98bb4",
+        "version" : "0.0.2"
       }
     },
     {
@@ -77,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/storage-swift.git",
       "state" : {
-        "revision" : "ebb1ee7370ec0d50bcfb38ce05279e1475aebbf8",
-        "version" : "0.0.2"
+        "revision" : "04703e499ca258899d7ad45717efe75b8ddc09ab",
+        "version" : "0.1.0"
       }
     },
     {
@@ -86,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/supabase-swift",
       "state" : {
-        "revision" : "9ee90b961db4f979f3b1be4a059d065a5a1e2cda",
-        "version" : "0.0.9"
+        "revision" : "169ea4140473e0d9de5433ce25b051e56c3f6767",
+        "version" : "0.0.11"
       }
     },
     {
@@ -97,15 +88,6 @@
       "state" : {
         "revision" : "3ebddfe9e9232218bada99ab6d6b3ca1fd94f112",
         "version" : "0.0.2"
-      }
-    },
-    {
-      "identity" : "swift-nio-zlib-support",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-nio-zlib-support.git",
-      "state" : {
-        "revision" : "37760e9a52030bb9011972c5213c3350fa9d41fd",
-        "version" : "1.0.0"
       }
     },
     {
@@ -131,8 +113,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/dkk/WrappingHStack.git",
       "state" : {
-        "revision" : "52eaad02c6a621b9bb5cd56acde94f802ef669f0",
-        "version" : "2.2.4"
+        "revision" : "8bcb4043281607dff3531459bafb39c694690381",
+        "version" : "2.2.5"
       }
     },
     {
@@ -140,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
-        "revision" : "30314f1ece684dd60679d598a9b89107557b67d9",
-        "version" : "0.4.1"
+        "revision" : "16e6409ee82e1b81390bdffbf217b9c08ab32784",
+        "version" : "0.5.0"
       }
     }
   ],

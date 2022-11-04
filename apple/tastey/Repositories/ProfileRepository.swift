@@ -9,7 +9,7 @@ protocol ProfileRepository {
     func update(id: UUID, update: Profile.Update) async throws -> Profile
     func currentUserExport() async throws -> String
     func search(searchTerm: String, currentUserId: UUID) async throws -> [Profile]
-    func uploadAvatar(id: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws -> Void
+    func uploadAvatar(id: UUID, data: Data) async throws -> Void
     func deleteCurrentAccount() async throws -> Void
     func notificationChannel() -> Channel
     func updateSettings(id: UUID, update: ProfileSettings.Update) async throws -> ProfileSettings
@@ -92,16 +92,15 @@ struct SupabaseProfileRepository: ProfileRepository {
             .decoded(to: [Profile].self)
     }
     
-    func uploadAvatar(id: UUID, data: Data, completion: @escaping (Result<Any, Error>) -> Void) async throws -> Void {
+    func uploadAvatar(id: UUID, data: Data) async throws -> Void {
         let file = File(
             name: "avatar.jpeg", data: data, fileName: "avatar.jpeg", contentType: "image/jpeg")
         
-        client
+        _ = try await client
             .storage
             .from(id: "avatars")
             .upload(
-                path: "\(id.uuidString.lowercased())/avatar.jpeg", file: file, fileOptions: nil,
-                completion: completion)
+                path: "\(id.uuidString.lowercased())/avatar.jpeg", file: file, fileOptions: nil)
     }
     
     func deleteCurrentAccount() async throws -> Void {
