@@ -50,6 +50,9 @@
 		5CB1C24B28F9BE4F000B0EB4 /* ProductRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24A28F9BE4F000B0EB4 /* ProductRepository.swift */; };
 		5CB1C24D28F9C087000B0EB4 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24C28F9C087000B0EB4 /* AuthRepository.swift */; };
 		5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24E28F9C52E000B0EB4 /* CompanyRepository.swift */; };
+		5CC2FE8F29196A5D002BDF83 /* LocationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE8E29196A5D002BDF83 /* LocationSearchView.swift */; };
+		5CC2FE912919774A002BDF83 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE902919774A002BDF83 /* Location.swift */; };
+		5CC2FE9429197D9F002BDF83 /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9329197D9F002BDF83 /* LocationSearchService.swift */; };
 		5CC49476290589E700D269A2 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC49475290589E700D269A2 /* CardView.swift */; };
 		5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE914D28F45DE7005A6043 /* Utils.swift */; };
 		5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */; };
@@ -135,6 +138,9 @@
 		5CB1C24A28F9BE4F000B0EB4 /* ProductRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRepository.swift; sourceTree = "<group>"; };
 		5CB1C24C28F9C087000B0EB4 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
 		5CB1C24E28F9C52E000B0EB4 /* CompanyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyRepository.swift; sourceTree = "<group>"; };
+		5CC2FE8E29196A5D002BDF83 /* LocationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchView.swift; sourceTree = "<group>"; };
+		5CC2FE902919774A002BDF83 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		5CC2FE9329197D9F002BDF83 /* LocationSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchService.swift; sourceTree = "<group>"; };
 		5CC49475290589E700D269A2 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		5CCE914D28F45DE7005A6043 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
@@ -218,6 +224,7 @@
 				5C919E1D28FF01480055CFD2 /* Flavor.swift */,
 				5C12B4382902CAF3001EE549 /* Notification.swift */,
 				5C25AEB72904038000793607 /* Permission.swift */,
+				5CC2FE902919774A002BDF83 /* Location.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -241,6 +248,7 @@
 				5CED432128FAC01C003F8194 /* UserSheetView.swift */,
 				5C919E1928FEE2DE0055CFD2 /* FriendSheetView.swift */,
 				5C919E1F28FF024A0055CFD2 /* FlavorSheetView.swift */,
+				5CC2FE8E29196A5D002BDF83 /* LocationSearchView.swift */,
 				5CED432D28FD6EA7003F8194 /* BrandSheetView.swift */,
 			);
 			path = Sheets;
@@ -254,6 +262,14 @@
 				5CFF4D722908718600BBA1F6 /* ToastProvider.swift */,
 			);
 			path = Providers;
+			sourceTree = "<group>";
+		};
+		5CC2FE9229197D8A002BDF83 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5CC2FE9329197D9F002BDF83 /* LocationSearchService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		5CCE914C28F45DD7005A6043 /* Helpers */ = {
@@ -291,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				5CFEE57628ED69B100A8DD66 /* Main.swift */,
+				5CC2FE9229197D8A002BDF83 /* Services */,
 				5C46E8652911E2CD0008F142 /* Sheets */,
 				5C989DAC2901B88700BBC5A7 /* Providers */,
 				5CED432628FD3440003F8194 /* Primitives */,
@@ -473,6 +490,7 @@
 			files = (
 				5C11ECBB28EEF24700CCDE6A /* ActivityScreenView.swift in Sources */,
 				5CFEE57928ED69B100A8DD66 /* RootView.swift in Sources */,
+				5CC2FE9429197D9F002BDF83 /* LocationSearchService.swift in Sources */,
 				5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */,
 				5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */,
 				5CD10A4328F82E000001CFC2 /* InfiniteScroll.swift in Sources */,
@@ -485,6 +503,7 @@
 				5CB1C24728F9B551000B0EB4 /* CheckInCommentRepository.swift in Sources */,
 				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,
 				5CB1C24128F99E1C000B0EB4 /* ProductListItemView.swift in Sources */,
+				5CC2FE8F29196A5D002BDF83 /* LocationSearchView.swift in Sources */,
 				5CED432028FAB5F5003F8194 /* ViewExtensions.swift in Sources */,
 				5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* Main.swift in Sources */,
@@ -528,6 +547,7 @@
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5C11ECAF28EECC8500CCDE6A /* AuthScreenView.swift in Sources */,
 				5CFF4D732908718600BBA1F6 /* ToastProvider.swift in Sources */,
+				5CC2FE912919774A002BDF83 /* Location.swift in Sources */,
 				5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */,
 				5C12B42F2902A191001EE549 /* ProfileSettingsScreenView.swift in Sources */,
 				5C46E8642911D9FD0008F142 /* Config.swift in Sources */,

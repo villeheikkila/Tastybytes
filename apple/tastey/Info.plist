@@ -4,5 +4,11 @@
 <dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>The location is used for the location search during check-ins</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>The location is used for the location search during check-ins</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>The location is used for the location search during check-ins</string>
 </dict>
 </plist>
