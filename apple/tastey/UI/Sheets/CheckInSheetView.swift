@@ -92,8 +92,10 @@ struct CheckInSheetView: View {
                         if let location = viewModel.location {
                             HStack {
                                 Text(location.name)
-                                Text(location.title)
-                                    .foregroundColor(.secondary)
+                                if let title = location.title {
+                                    Text(title)
+                                        .foregroundColor(.secondary)
+                                }
                             }
                         } else {
                             Text("Location")
@@ -217,6 +219,7 @@ extension CheckInSheetView {
             servingStyle = checkIn.servingStyle?.name ?? ServingStyleName.none
             taggedFriends = checkIn.taggedProfiles
             pickedFlavors = checkIn.flavors
+            location = checkIn.location
         }
 
         func activateSheet(_ sheet: Sheet) {
@@ -255,12 +258,7 @@ extension CheckInSheetView {
         }
 
         func updateCheckIn(_ checkIn: CheckIn, _ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) {
-            let friendIds = taggedFriends.map { $0.id }
-            let servingStyleId = servingStyles.first(where: { $0.name == servingStyle })?.id
-            let manufacturerId = manufacturer?.id
-            let flavorIds = pickedFlavors.map { $0.id }
- 
-            let updateCheckInParams = UpdateCheckInParams(id: checkIn.id, productId: checkIn.product.id, rating: rating, review: review, manufacturerId: manufacturerId, servingStyleId: servingStyleId, friendIds: friendIds, flavorIds: flavorIds)
+            let updateCheckInParams = UpdateCheckInParams(checkIn: checkIn, product: checkIn.product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyles.first(where: { $0.name == servingStyle }), manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
 
             Task {
                 do {
@@ -273,7 +271,7 @@ extension CheckInSheetView {
         }
 
         func createCheckIn(_ product: ProductJoined, _ onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
-            let newCheckParams = NewCheckInParams(product: product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyles.first(where: { $0.name == servingStyle }), manufacturer: manufacturer, flavors: pickedFlavors, rating: rating)
+            let newCheckParams = NewCheckInParams(product: product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyles.first(where: { $0.name == servingStyle }), manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
 
             Task {
                 do {

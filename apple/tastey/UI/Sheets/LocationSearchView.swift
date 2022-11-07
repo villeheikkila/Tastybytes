@@ -7,20 +7,24 @@ struct LocationSearchView: View {
     @StateObject private var viewModel = ViewModel()
     @StateObject var locationManager = LocationManager()
     @Environment(\.dismiss) var dismiss
-    
+
     var onSelect: (_ location: Location) -> Void
 
     var body: some View {
         NavigationStack {
-            List(viewModel.viewData, id: \.self) { item in
+            List(viewModel.viewData, id: \.self) { location in
                 Button(action: {
-                    onSelect(item)
-                    dismiss()
+                    viewModel.storeLocation(location, onSuccess: {
+                        savedLocation in onSelect(savedLocation)
+                        dismiss()
+                    })
                 }) {
                     VStack(alignment: .leading) {
-                        Text(item.name)
-                        Text(item.title)
-                            .foregroundColor(.secondary)
+                        Text(location.name)
+                        if let title = location.title {
+                            Text(title)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
             }
@@ -48,7 +52,19 @@ extension LocationSearchView {
                 searchForLocation(text: searchText)
             }
         }
-        
+
+        func storeLocation(_ location: Location, onSuccess: @escaping (_ savedLocation: Location) -> Void) {
+            Task {
+                switch try await repository.location.insert(location: location) {
+                case let .success(savedLocation):
+                    print(savedLocation)
+                    onSuccess(savedLocation)
+                case let .failure(error):
+                    print(error)
+                }
+            }
+        }
+
         func setInitialLocation(_ location: CLLocation?) {
             let latitude = location?.coordinate.latitude ?? 60.1699
             let longitutde = location?.coordinate.longitude ?? 24.9384
