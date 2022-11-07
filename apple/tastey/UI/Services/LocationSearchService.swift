@@ -6,7 +6,7 @@ import CoreLocation
 final class LocationSearchService {
     let localSearchPublisher = PassthroughSubject<[MKMapItem], Never>()
     private var center = CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
-    private let radius: CLLocationDistance = 200000
+    private let radius: CLLocationDistance = 2000
     
     func setCenter(in center: CLLocationCoordinate2D) {
         self.center = center

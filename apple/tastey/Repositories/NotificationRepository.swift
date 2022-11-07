@@ -1,8 +1,5 @@
 import Foundation
-import GoTrue
-import SupabaseStorage
 import Supabase
-import Realtime
 
 protocol NotificationRepository {
     func delete(id: Int) async throws -> Void
@@ -20,6 +17,5 @@ struct SupabaseNotificationRepository: NotificationRepository {
             .eq(column: "id", value: id)
             .execute()
     }
-    
 }
 

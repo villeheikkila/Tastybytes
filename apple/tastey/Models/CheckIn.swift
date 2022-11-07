@@ -13,6 +13,7 @@ struct CheckIn: Identifiable {
     let flavors: [Flavor]
     let variant: ProductVariant?
     let servingStyle: ServingStyle?
+    let location: Location?
     
     func isEmpty() -> Bool {
         return [rating == nil, (review == nil || review == ""), flavors.count == 0].allSatisfy { $0 }
@@ -52,6 +53,7 @@ extension CheckIn: Decodable {
         case flavors = "check_in_flavors"
         case variant = "product_variants"
         case servingStyle = "serving_styles"
+        case location = "locations"
     }
     
     init(from decoder: Decoder) throws {
@@ -68,6 +70,7 @@ extension CheckIn: Decodable {
         flavors = try values.decode([CheckInFlavors].self, forKey: .flavors).compactMap { $0.flavor }
         variant = try values.decodeIfPresent(ProductVariant.self, forKey: .variant)
         servingStyle = try values.decodeIfPresent(ServingStyle.self, forKey: .servingStyle)
+        location = try values.decodeIfPresent(Location.self, forKey: .location)
     }
 }
 
@@ -79,8 +82,9 @@ struct NewCheckInParams: Encodable {
     let p_serving_style_id: Int?
     let p_friend_ids: [String]?
     let p_flavor_ids: [Int]?
-    
-    init (productId: Int, rating: Double?, review: String?, manufacturerId: Int?, servingStyleId: Int?, friendIds: [UUID], flavorIds: [Int]?) {
+    let p_location_id: String?
+
+    init (productId: Int, rating: Double?, review: String?, manufacturerId: Int?, servingStyleId: Int?, friendIds: [UUID], flavorIds: [Int]?, locationId: UUID?) {
         self.p_product_id = productId
         self.p_rating = rating
         self.p_review = review
@@ -88,9 +92,10 @@ struct NewCheckInParams: Encodable {
         self.p_serving_style_id = servingStyleId
         self.p_friend_ids = friendIds.map { $0.uuidString.lowercased() }
         self.p_flavor_ids = flavorIds
+        self.p_location_id = locationId?.uuidString
     }
     
-    init(product: ProductJoined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Double) {
+    init(product: ProductJoined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Double, location: Location?) {
         self.p_product_id = product.id
         self.p_review = review
         self.p_manufacturer_id = manufacturer?.id ?? nil
@@ -98,6 +103,7 @@ struct NewCheckInParams: Encodable {
         self.p_friend_ids = taggedFriends.map { $0.id.uuidString }
         self.p_flavor_ids = flavors.map { $0.id }
         self.p_rating = rating
+        self.p_location_id = location?.id.uuidString
     }
 }
 
@@ -110,16 +116,18 @@ struct UpdateCheckInParams: Encodable  {
     let p_serving_style_id: Int?
     let p_friend_ids: [String]?
     let p_flavor_ids: [Int]?
+    let p_location_id: String?
     
-    init (id: Int, productId: Int, rating: Double, review: String?, manufacturerId: Int?, servingStyleId: Int?, friendIds: [UUID], flavorIds: [Int]?) {
-        self.p_check_in_id = id
-        self.p_product_id = productId
-        self.p_rating = rating
+    init(checkIn: CheckIn, product: ProductJoined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Double, location: Location?) {
+        self.p_check_in_id = checkIn.id
+        self.p_product_id = product.id
         self.p_review = review
-        self.p_manufacturer_id = manufacturerId
-        self.p_serving_style_id = servingStyleId
-        self.p_friend_ids = friendIds.map { $0.uuidString.lowercased() }
-        self.p_flavor_ids = flavorIds
+        self.p_manufacturer_id = manufacturer?.id ?? nil
+        self.p_serving_style_id = servingStyle?.id ?? nil
+        self.p_friend_ids = taggedFriends.map { $0.id.uuidString }
+        self.p_flavor_ids = flavors.map { $0.id }
+        self.p_rating = rating
+        self.p_location_id = location?.id.uuidString
     }
 }
 

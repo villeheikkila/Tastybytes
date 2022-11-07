@@ -257,7 +257,11 @@ struct CheckInCardView_Previews: PreviewProvider {
 
     static let subBrand = SubBrandJoinedWithBrand(id: 0, name: "Zero", brand: brand)
     
-    static let checkIn = CheckIn(id: 0, rating: 2.5, review: "Pretty Good!", imageUrl: "IMG_3155.jpeg", createdAt: Date(), profile: profile, product: product, checkInReactions: checkInReactions, taggedProfiles: [profile], flavors: flavors, variant: variant , servingStyle: servingStyle)
+    static let country = Country(countryCode: "FI", name: "Finland", emoji: "🇫🇮")
+    
+    static let location = Location(id: UUID(), name: "McDonalds", title: "Mäkkäri", location: nil, countryCode: "FI", country: country)
+    
+    static let checkIn = CheckIn(id: 0, rating: 2.5, review: "Pretty Good!", imageUrl: "IMG_3155.jpeg", createdAt: Date(), profile: profile, product: product, checkInReactions: checkInReactions, taggedProfiles: [profile], flavors: flavors, variant: variant , servingStyle: servingStyle, location: location)
                                                    
     static var previews: some View {
         CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn, onDelete: { _ in print("delete")}, onUpdate: { _ in print("update") })
