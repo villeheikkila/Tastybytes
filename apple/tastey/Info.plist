@@ -10,5 +10,9 @@
 	<string>The location is used for the location search during check-ins</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>The location is used for the location search during check-ins</string>
+	<key>SUPABASE_URL</key>
+	<string>${SUPABASE_URL}</string>
+	<key>SUPABASE_ANON_KEY</key>
+	<string>${SUPABASE_ANON_KEY}</string>
 </dict>
 </plist>

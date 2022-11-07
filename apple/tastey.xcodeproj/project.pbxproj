@@ -54,6 +54,9 @@
 		5CC2FE912919774A002BDF83 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE902919774A002BDF83 /* Location.swift */; };
 		5CC2FE9429197D9F002BDF83 /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9329197D9F002BDF83 /* LocationSearchService.swift */; };
 		5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */; };
+		5CC2FE982919CB19002BDF83 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE972919CB19002BDF83 /* Country.swift */; };
+		5CC2FE9B2919D5A7002BDF83 /* Production.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */; };
+		5CC2FE9D2919D5BA002BDF83 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */; };
 		5CC49476290589E700D269A2 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC49475290589E700D269A2 /* CardView.swift */; };
 		5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE914D28F45DE7005A6043 /* Utils.swift */; };
 		5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */; };
@@ -143,6 +146,9 @@
 		5CC2FE902919774A002BDF83 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		5CC2FE9329197D9F002BDF83 /* LocationSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchService.swift; sourceTree = "<group>"; };
 		5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRepository.swift; sourceTree = "<group>"; };
+		5CC2FE972919CB19002BDF83 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
+		5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
 		5CC49475290589E700D269A2 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		5CCE914D28F45DE7005A6043 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
@@ -227,6 +233,7 @@
 				5C12B4382902CAF3001EE549 /* Notification.swift */,
 				5C25AEB72904038000793607 /* Permission.swift */,
 				5CC2FE902919774A002BDF83 /* Location.swift */,
+				5CC2FE972919CB19002BDF83 /* Country.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -371,6 +378,8 @@
 		5CFEE56A28ED69B100A8DD66 = {
 			isa = PBXGroup;
 			children = (
+				5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */,
+				5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */,
 				5C11ECC128EF768A00CCDE6A /* .xcconfig.xcconfig */,
 				5CFEE57528ED69B100A8DD66 /* tastey */,
 				5CFEE57428ED69B100A8DD66 /* Products */,
@@ -481,6 +490,8 @@
 			files = (
 				5CFEE57E28ED69B200A8DD66 /* Preview Assets.xcassets in Resources */,
 				5CFEE57B28ED69B200A8DD66 /* Assets.xcassets in Resources */,
+				5CC2FE9D2919D5BA002BDF83 /* Development.xcconfig in Resources */,
+				5CC2FE9B2919D5A7002BDF83 /* Production.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,6 +566,7 @@
 				5C12B42F2902A191001EE549 /* ProfileSettingsScreenView.swift in Sources */,
 				5C46E8642911D9FD0008F142 /* Config.swift in Sources */,
 				5C989DAB2901AAD500BBC5A7 /* Repository.swift in Sources */,
+				5CC2FE982919CB19002BDF83 /* Country.swift in Sources */,
 				5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */,
 				5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */,
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
@@ -695,6 +707,7 @@
 		};
 		5CFEE58228ED69B200A8DD66 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -730,6 +743,7 @@
 		};
 		5CFEE58328ED69B200A8DD66 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
