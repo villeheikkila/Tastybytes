@@ -85,6 +85,20 @@ struct CheckInSheetView: View {
                             }
                         }
                     }
+                    
+                    Button(action: {
+                        viewModel.activateSheet(.location)
+                    }) {
+                        if let location = viewModel.location {
+                            HStack {
+                                Text(location.name)
+                                Text(location.title)
+                                    .foregroundColor(.secondary)
+                            }
+                        } else {
+                            Text("Location")
+                        }
+                    }
                 }
                 .sheet(item: $viewModel.activeSheet) { sheet in
                     switch sheet {
@@ -93,6 +107,10 @@ struct CheckInSheetView: View {
                     case .flavors:
                         FlavorSheetView(initialFlavors: viewModel.pickedFlavors, onComplete: {
                             pickedFlavors in viewModel.setFlavors(pickedFlavors)
+                        })
+                    case .location:
+                        LocationSearchView(onSelect: {
+                            location in viewModel.setLocation(location)
                         })
                     case .manufacturer:
                         CompanySheetView(onSelect: { company, _ in
@@ -116,7 +134,6 @@ struct CheckInSheetView: View {
                                     onCreation(newCheckIn)
                                 })
                             }
-
                         case .update:
                             if let existingCheckIn = existingCheckIn, let onUpdate = onUpdate {
                                 viewModel.updateCheckIn(existingCheckIn, {
@@ -177,6 +194,7 @@ extension CheckInSheetView {
         case manufacturer
         case friends
         case flavors
+        case location
     }
 
     @MainActor class ViewModel: ObservableObject {
@@ -189,6 +207,7 @@ extension CheckInSheetView {
         @Published var servingStyle = ServingStyleName.none
         @Published var taggedFriends = [Profile]()
         @Published var pickedFlavors = [Flavor]()
+        @Published var location: Location?
         @Published var image: UIImage?
 
         func loadFromCheckIn(checkIn: CheckIn) {
@@ -209,6 +228,12 @@ extension CheckInSheetView {
         func setFlavors(_ flavors: [Flavor]) {
             DispatchQueue.main.async {
                 self.pickedFlavors = flavors
+            }
+        }
+        
+        func setLocation(_ location: Location) {
+            DispatchQueue.main.async {
+                self.location = location
             }
         }
 

@@ -94,7 +94,7 @@ struct SignInOrSignUpView: View {
             Spacer()
             
             VStack(alignment: .center) {
-                Text("tastey").font(.title).fontWeight(.bold)
+                Text("TasteNotes").font(.title).fontWeight(.bold)
                 
                 Image("app-icon")
                     .resizable()

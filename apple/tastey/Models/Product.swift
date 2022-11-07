@@ -95,6 +95,13 @@ struct ProductJoinedCategory: Identifiable, Decodable, Hashable {
         case subcategories
     }
     
+    init(id: Int, name: String, description: String?, subcategories: [SubcategoryJoinedWithCategory]) {
+        self.id = id
+        self.name = name
+        self.description = description
+        self.subcategories = subcategories
+    }
+    
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(Int.self, forKey: .id)

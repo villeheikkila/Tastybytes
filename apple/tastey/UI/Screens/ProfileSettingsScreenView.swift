@@ -17,7 +17,7 @@ struct ProfileSettingsScreenView: View {
         }
         .navigationTitle("Profile")
         .task {
-            viewModel.getInitialValues(initialColorScheme: initialColorScheme)
+            viewModel.getInitialValues(profile: currentProfile.profile)
         }
         .toast(isPresenting: $viewModel.showToast, duration: 1, tapToDismiss: true) {
             switch viewModel.toast {
@@ -148,16 +148,24 @@ extension ProfileSettingsScreenView {
             showToast = true
         }
 
-        func getInitialValues(initialColorScheme: ColorScheme) {
+        func getInitialValues(profile: Profile?) {
+            if let profile = profile {
+                DispatchQueue.main.async {
+                    self.updateFormValues(profile: profile)
+                }
+            } else {
+                Task {
+                    let fetchedProfile = try await repository.profile.getById(id: repository.auth.getCurrentUserId())
+                    self.updateFormValues(profile: fetchedProfile)
+                }
+            }
             Task {
                 let user = repository.auth.getCurrentUser()
-                let profile = try await repository.profile.getById(id: repository.auth.getCurrentUserId())
-                if let url = profile.getAvatarURL() {
-                    getData(from: url) { data, _, error in
-                        guard let data = data, error == nil else { return }
-                        DispatchQueue.main.async {
-                            self.avatarImage = UIImage(data: data)
-                        }
+
+                if let url = profile?.getAvatarURL() {
+                    let (data, _) = try await  URLSession.shared.data(from: url)
+                    DispatchQueue.main.async {
+                        self.avatarImage = UIImage(data: data)
                     }
                 }
 
@@ -165,8 +173,6 @@ extension ProfileSettingsScreenView {
                     self.user = user
                     self.email = user?.email ?? ""
                 }
-
-                self.updateFormValues(profile: profile)
             }
         }
 
