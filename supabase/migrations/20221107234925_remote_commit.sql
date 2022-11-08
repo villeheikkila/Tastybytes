@@ -30,14 +30,9 @@ begin
 end;
 $BODY$;
 
-ALTER FUNCTION public.tg__set_check_in_image_on_upload()
-    OWNER TO postgres_temporary_object_holder;
-
 GRANT EXECUTE ON FUNCTION public.tg__set_check_in_image_on_upload() TO authenticated;
 
 GRANT EXECUTE ON FUNCTION public.tg__set_check_in_image_on_upload() TO PUBLIC;
-
-GRANT EXECUTE ON FUNCTION public.tg__set_check_in_image_on_upload() TO postgres_temporary_object_holder;
 
 GRANT EXECUTE ON FUNCTION public.tg__set_check_in_image_on_upload() TO postgres;
 
@@ -60,9 +55,6 @@ begin
 end;
 $BODY$;
 
-ALTER FUNCTION public.tg__set_avatar_on_upload()
-    OWNER TO postgres_temporary_object_holder;
-
 REVOKE ALL ON FUNCTION public.tg__set_avatar_on_upload() FROM postgres;
 
 REVOKE ALL ON FUNCTION public.tg__set_avatar_on_upload() FROM supabase_admin;
@@ -77,9 +69,6 @@ GRANT EXECUTE ON FUNCTION public.tg__set_avatar_on_upload() TO authenticated;
 
 
 GRANT EXECUTE ON FUNCTION public.tg__set_avatar_on_upload() TO PUBLIC;
-
-
-GRANT EXECUTE ON FUNCTION public.tg__set_avatar_on_upload() TO postgres_temporary_object_holder;
 
 
 GRANT EXECUTE ON FUNCTION public.tg__set_avatar_on_upload() TO postgres;

@@ -177,3 +177,37 @@ extension ProfileSettings {
         }
     }
 }
+
+extension Profile {
+    struct PushNotificationToken: Identifiable, Codable, Hashable {
+        var id: String { firebaseRegistrationToken }
+        let firebaseRegistrationToken: String
+        let updatedAt: Date
+        
+        init(firebaseRegistrationToken: String) {
+            self.firebaseRegistrationToken = firebaseRegistrationToken
+            self.updatedAt = Date()
+        }
+        
+        static func == (lhs: PushNotificationToken, rhs: PushNotificationToken) -> Bool {
+            return lhs.firebaseRegistrationToken == rhs.firebaseRegistrationToken
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case firebaseRegistrationToken = "firebase_registration_token"
+            case updatedAt = "updated_at"
+        }
+        
+        init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            firebaseRegistrationToken = try values.decode(String.self, forKey: .firebaseRegistrationToken)
+            updatedAt = try parseDate(from: try values.decode(String.self, forKey: .updatedAt))
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(firebaseRegistrationToken, forKey: .firebaseRegistrationToken)
+            try container.encode(updatedAt, forKey: .updatedAt)
+        }
+    }
+}
