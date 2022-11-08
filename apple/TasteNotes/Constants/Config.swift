@@ -21,7 +21,6 @@ public enum Config {
     guard let rootURLstring = Config.infoDictionary[Keys.Plist.supabaseUrl] as? String else {
       fatalError("Supabase URL not set in plist for this environment")
     }
-      print("rootURLstring \(rootURLstring)")
     guard let url = URL(string: rootURLstring) else {
       fatalError("Supabase URL is invalid")
     }

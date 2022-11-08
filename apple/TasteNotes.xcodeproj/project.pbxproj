@@ -181,7 +181,7 @@
 		5CFB562E28F596A200F13A1E /* ChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipView.swift; sourceTree = "<group>"; };
 		5CFB563028F5974100F13A1E /* ProfileSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummary.swift; sourceTree = "<group>"; };
 		5CFB563228F597ED00F13A1E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
-		5CFEE57328ED69B100A8DD66 /* tastey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tastey.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5CFEE57328ED69B100A8DD66 /* TasteNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TasteNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CFEE57628ED69B100A8DD66 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		5CFEE57828ED69B100A8DD66 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -381,7 +381,7 @@
 				5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */,
 				5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */,
 				5C11ECC128EF768A00CCDE6A /* .xcconfig.xcconfig */,
-				5CFEE57528ED69B100A8DD66 /* tastey */,
+				5CFEE57528ED69B100A8DD66 /* TasteNotes */,
 				5CFEE57428ED69B100A8DD66 /* Products */,
 				5C08B6DE28ED7956009218D7 /* Frameworks */,
 			);
@@ -390,12 +390,12 @@
 		5CFEE57428ED69B100A8DD66 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5CFEE57328ED69B100A8DD66 /* tastey.app */,
+				5CFEE57328ED69B100A8DD66 /* TasteNotes.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5CFEE57528ED69B100A8DD66 /* tastey */ = {
+		5CFEE57528ED69B100A8DD66 /* TasteNotes */ = {
 			isa = PBXGroup;
 			children = (
 				5C46E8662911E5860008F142 /* Info.plist */,
@@ -407,7 +407,7 @@
 				5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */,
 				5CFEE57C28ED69B200A8DD66 /* Preview Content */,
 			);
-			path = tastey;
+			path = TasteNotes;
 			sourceTree = "<group>";
 		};
 		5CFEE57C28ED69B200A8DD66 /* Preview Content */ = {
@@ -421,9 +421,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5CFEE57228ED69B100A8DD66 /* tastey */ = {
+		5CFEE57228ED69B100A8DD66 /* TasteNotes */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5CFEE58128ED69B200A8DD66 /* Build configuration list for PBXNativeTarget "tastey" */;
+			buildConfigurationList = 5CFEE58128ED69B200A8DD66 /* Build configuration list for PBXNativeTarget "TasteNotes" */;
 			buildPhases = (
 				5CFEE56F28ED69B100A8DD66 /* Sources */,
 				5CFEE57028ED69B100A8DD66 /* Frameworks */,
@@ -433,7 +433,7 @@
 			);
 			dependencies = (
 			);
-			name = tastey;
+			name = TasteNotes;
 			packageProductDependencies = (
 				5C08B6DF28ED7956009218D7 /* Supabase */,
 				5CFB563528F5A76600F13A1E /* CachedAsyncImage */,
@@ -441,7 +441,7 @@
 				5C25AEB129031B9D00793607 /* WrappingHStack */,
 			);
 			productName = tasted;
-			productReference = 5CFEE57328ED69B100A8DD66 /* tastey.app */;
+			productReference = 5CFEE57328ED69B100A8DD66 /* TasteNotes.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -459,7 +459,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5CFEE56E28ED69B100A8DD66 /* Build configuration list for PBXProject "tastey" */;
+			buildConfigurationList = 5CFEE56E28ED69B100A8DD66 /* Build configuration list for PBXProject "TasteNotes" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -478,7 +478,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5CFEE57228ED69B100A8DD66 /* tastey */,
+				5CFEE57228ED69B100A8DD66 /* TasteNotes */,
 			);
 		};
 /* End PBXProject section */
@@ -711,20 +711,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"tastey/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"TasteNotes/Preview Content\"";
 				DEVELOPMENT_TEAM = J9S7QG9SVR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = tastey/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = tastey;
+				INFOPLIST_FILE = TasteNotes/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TasteNotes;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The location is used for the location search during check-ins";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "The location is used for the location search during check-ins";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The location is used for the location search during check-ins";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -747,20 +751,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"tastey/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"TasteNotes/Preview Content\"";
 				DEVELOPMENT_TEAM = J9S7QG9SVR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = tastey/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = tastey;
+				INFOPLIST_FILE = TasteNotes/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TasteNotes;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The location is used for the location search during check-ins";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "The location is used for the location search during check-ins";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The location is used for the location search during check-ins";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -780,7 +788,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5CFEE56E28ED69B100A8DD66 /* Build configuration list for PBXProject "tastey" */ = {
+		5CFEE56E28ED69B100A8DD66 /* Build configuration list for PBXProject "TasteNotes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5CFEE57F28ED69B200A8DD66 /* Debug */,
@@ -789,7 +797,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5CFEE58128ED69B200A8DD66 /* Build configuration list for PBXNativeTarget "tastey" */ = {
+		5CFEE58128ED69B200A8DD66 /* Build configuration list for PBXNativeTarget "TasteNotes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5CFEE58228ED69B200A8DD66 /* Debug */,
