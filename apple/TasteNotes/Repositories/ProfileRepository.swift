@@ -10,8 +10,8 @@ protocol ProfileRepository {
     func currentUserExport() async throws -> String
     func search(searchTerm: String, currentUserId: UUID) async throws -> [Profile]
     func uploadAvatar(id: UUID, data: Data) async throws -> Void
+    func uploadPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<Bool, Error>
     func deleteCurrentAccount() async throws -> Void
-    func notificationChannel() -> Channel
     func updateSettings(id: UUID, update: ProfileSettings.Update) async throws -> ProfileSettings
 }
 
@@ -67,6 +67,23 @@ struct SupabaseProfileRepository: ProfileRepository {
             .decoded(to: ProfileSettings.self)
     }
     
+    func uploadPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<Bool, Error> {
+        do {
+            let response = try await client
+                .database
+                .from("profile_push_notification_tokens")
+                .upsert(
+                    values: token,
+                    ignoreDuplicates: true
+                )
+                .execute()
+            print(response)
+            return .success(true)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
     func currentUserExport() async throws -> String {
         let response =  try await client
             .database
@@ -108,12 +125,6 @@ struct SupabaseProfileRepository: ProfileRepository {
             .database
             .rpc(fn: "fnc__delete_current_user")
             .execute()
-    }
-    
-    func notificationChannel() -> Channel {
-        return client
-            .realtime
-            .channel(.table("notifications", schema: "public"))
     }
 }
 

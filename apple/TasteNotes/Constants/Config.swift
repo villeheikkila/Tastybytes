@@ -13,7 +13,6 @@ public enum Config {
     guard let dict = Bundle.main.infoDictionary else {
       fatalError("Plist file not found")
     }
-      print(dict)
     return dict
   }()
 
