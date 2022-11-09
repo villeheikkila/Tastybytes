@@ -53,5 +53,3 @@ DerivedData/
 .netrc
 
 GoogleService-Info.plist
-Development.xcconfig
-Production.xcconfig
