@@ -71,13 +71,8 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let response = try await client
                 .database
-                .from("profile_push_notification_tokens")
-                .upsert(
-                    values: token,
-                    ignoreDuplicates: true
-                )
+                .rpc(fn: "fnc__upsert_push_notification_token", params: token)
                 .execute()
-            print(response)
             return .success(true)
         } catch {
             return .failure(error)

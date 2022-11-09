@@ -182,11 +182,9 @@ extension Profile {
     struct PushNotificationToken: Identifiable, Codable, Hashable {
         var id: String { firebaseRegistrationToken }
         let firebaseRegistrationToken: String
-        let updatedAt: Date
         
         init(firebaseRegistrationToken: String) {
             self.firebaseRegistrationToken = firebaseRegistrationToken
-            self.updatedAt = Date()
         }
         
         static func == (lhs: PushNotificationToken, rhs: PushNotificationToken) -> Bool {
@@ -194,20 +192,17 @@ extension Profile {
         }
         
         enum CodingKeys: String, CodingKey {
-            case firebaseRegistrationToken = "firebase_registration_token"
-            case updatedAt = "updated_at"
+            case firebaseRegistrationToken = "p_push_notification_token"
         }
         
         init(from decoder: Decoder) throws {
             let values = try decoder.container(keyedBy: CodingKeys.self)
             firebaseRegistrationToken = try values.decode(String.self, forKey: .firebaseRegistrationToken)
-            updatedAt = try parseDate(from: try values.decode(String.self, forKey: .updatedAt))
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(firebaseRegistrationToken, forKey: .firebaseRegistrationToken)
-            try container.encode(updatedAt, forKey: .updatedAt)
         }
     }
 }
