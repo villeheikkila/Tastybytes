@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 14.1
--- Dumped by pg_dump version 14.5 (Debian 14.5-1.pgdg110+1)
+-- Dumped by pg_dump version 14.5 (Debian 14.5-2.pgdg110+2)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -15,6 +15,20 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Name: pg_cron; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS "pg_cron" WITH SCHEMA "extensions";
+
+
+--
+-- Name: pg_net; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS "pg_net" WITH SCHEMA "extensions";
+
 
 --
 -- Name: pgsodium; Type: EXTENSION; Schema: -; Owner: -
@@ -577,6 +591,77 @@ $$;
 ALTER FUNCTION "public"."fnc__get_activity_feed"("p_created_after" "date") OWNER TO "postgres";
 
 --
+-- Name: fnc__get_check_in_reaction_notification(bigint); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."fnc__get_check_in_reaction_notification"("p_check_in_reaction_id" bigint) RETURNS "jsonb"
+    LANGUAGE "plpgsql"
+    AS $$
+declare
+  v_title text;
+  v_body  text;
+begin
+  select '' into v_title;
+  select concat(fnc__get_preferred_name(p.id), ' reacted to your check-in of ', b.name, ' ', case
+                                                                                               when sb.name is not null
+                                                                                                 then
+                                                                                                 concat(sb.name, ' ')
+                                                                                               else
+                                                                                                 ''
+    end, b.name, ' from ', bo.name)
+  from check_in_reactions cir
+         left join check_ins c on cir.check_in_id = c.id
+         left join profiles p on p.id = c.created_by
+         left join products pr on c.product_id = pr.id
+         left join sub_brands sb on sb.id = pr.sub_brand_id
+         left join brands b on sb.brand_id = b.id
+         left join companies bo on b.brand_owner_id = bo.id
+  where cir.id = p_check_in_reaction_id
+  into v_body;
+
+  return jsonb_build_object('notification', jsonb_build_object('title', v_title, 'body', v_body));
+end;
+$$;
+
+
+ALTER FUNCTION "public"."fnc__get_check_in_reaction_notification"("p_check_in_reaction_id" bigint) OWNER TO "postgres";
+
+--
+-- Name: fnc__get_check_in_tag_notification(bigint); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."fnc__get_check_in_tag_notification"("p_check_in_tag" bigint) RETURNS "jsonb"
+    LANGUAGE "plpgsql"
+    AS $$
+declare
+  v_title text;
+  v_body  text;
+begin
+  select '' into v_title;
+  select concat(fnc__get_preferred_name(p.id), 'tagged you in a check-in of ', b.name, ' ', case
+                                                                                              when sb.name is not null
+                                                                                                then
+                                                                                                concat(sb.name, ' ')
+                                                                                              else
+                                                                                                ''
+    end, b.name, ' from ', bo.name)
+  from check_ins c
+         left join profiles p on p.id = c.created_by
+         left join products pr on c.product_id = pr.id
+         left join sub_brands sb on sb.id = pr.sub_brand_id
+         left join brands b on sb.brand_id = b.id
+         left join companies bo on b.brand_owner_id = bo.id
+  where c.id = p_check_in_tag
+  into v_body;
+
+  return jsonb_build_object('notification', jsonb_build_object('title', v_title, 'body', v_body));
+end;
+$$;
+
+
+ALTER FUNCTION "public"."fnc__get_check_in_tag_notification"("p_check_in_tag" bigint) OWNER TO "postgres";
+
+--
 -- Name: fnc__get_company_summary(integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -598,6 +683,77 @@ $$;
 
 
 ALTER FUNCTION "public"."fnc__get_company_summary"("p_company_id" integer) OWNER TO "postgres";
+
+--
+-- Name: fnc__get_edge_function_authorization_header(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."fnc__get_edge_function_authorization_header"() RETURNS "jsonb"
+    LANGUAGE "sql" SECURITY DEFINER
+    AS $$
+select concat('{ "Authorization": "Bearer ', supabase_anon_key, '" }')::jsonb from secrets limit 1;
+$$;
+
+
+ALTER FUNCTION "public"."fnc__get_edge_function_authorization_header"() OWNER TO "postgres";
+
+--
+-- Name: fnc__get_edge_function_url("text"); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."fnc__get_edge_function_url"("p_function_name" "text") RETURNS "text"
+    LANGUAGE "sql" SECURITY DEFINER
+    AS $$
+select concat('https://', project_id, '.functions.supabase.co', '/', p_function_name) from secrets limit 1;
+$$;
+
+
+ALTER FUNCTION "public"."fnc__get_edge_function_url"("p_function_name" "text") OWNER TO "postgres";
+
+--
+-- Name: fnc__get_friend_request_notification(bigint); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."fnc__get_friend_request_notification"("p_friend_id" bigint) RETURNS "jsonb"
+    LANGUAGE "plpgsql"
+    AS $$
+declare
+  v_title text;
+  v_body  text;
+begin
+    select '' into v_title;
+    select concat(fnc__get_preferred_name(p.id), ' sent you a friend request!')
+    from friends f
+           left join profiles p on p.id = f.user_id_1
+    where id = p_friend_id
+    into v_body;
+
+  return jsonb_build_object('notification', jsonb_build_object('title', v_title, 'body', v_body));
+end;
+$$;
+
+
+ALTER FUNCTION "public"."fnc__get_friend_request_notification"("p_friend_id" bigint) OWNER TO "postgres";
+
+--
+-- Name: fnc__get_preferred_name("uuid"); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."fnc__get_preferred_name"("p_profile_id" "uuid") RETURNS "text"
+    LANGUAGE "sql"
+    AS $$
+select case
+         when name_display = 'full_name' then
+            first_name || ' ' || last_name
+         else
+           username
+         end
+from profiles
+where id = p_profile_id;
+$$;
+
+
+ALTER FUNCTION "public"."fnc__get_preferred_name"("p_profile_id" "uuid") OWNER TO "postgres";
 
 --
 -- Name: fnc__get_product_summary(integer); Type: FUNCTION; Schema: public; Owner: postgres
@@ -650,6 +806,44 @@ $$;
 ALTER FUNCTION "public"."fnc__get_profile_summary"("p_uid" "uuid") OWNER TO "postgres";
 
 --
+-- Name: fnc__get_push_notification_request("uuid", "jsonb"); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."fnc__get_push_notification_request"("p_receiver_id" "uuid", "p_notification" "jsonb") RETURNS TABLE("url" "text", "headers" "jsonb", "body" "jsonb")
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$
+declare
+  v_url                   text;
+  v_headers               jsonb;
+  v_receiver_device_token text;
+  v_body                  jsonb;
+begin
+  select concat('https://fcm.googleapis.com/v1/projects/', firebase_project_id, '/messages:send')
+  from secrets v_url
+  into v_url;
+
+  select concat('{ "Content-Type": "application/json", "Authorization": "Bearer ', firebase_access_token, '" }')::jsonb
+  from secrets
+  into v_headers;
+
+  select firebase_registration_token
+  from profile_push_notification_tokens
+  where created_by = p_receiver_id
+  into v_receiver_device_token;
+
+  select jsonb_build_object('message',
+                            jsonb_build_object('token', v_receiver_device_token) || p_notification)
+  into
+    v_body;
+
+  return query (select v_url url, v_headers headers, v_body body);
+end
+$$;
+
+
+ALTER FUNCTION "public"."fnc__get_push_notification_request"("p_receiver_id" "uuid", "p_notification" "jsonb") OWNER TO "postgres";
+
+--
 -- Name: fnc__has_permission("uuid", "text"); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -685,6 +879,50 @@ $$;
 
 
 ALTER FUNCTION "public"."fnc__merge_products"("p_product_id" bigint, "p_to_product_id" bigint) OWNER TO "postgres";
+
+--
+-- Name: fnc__post_request("text", "jsonb", "jsonb"); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."fnc__post_request"("url" "text", "headers" "jsonb", "body" "jsonb") RETURNS bigint
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$
+declare
+  v_response_id           bigint;
+begin
+  select net.http_post(
+           url := url,
+           headers := headers,
+           body := body
+           ) request_id
+  into v_response_id;
+
+  return v_response_id;
+end
+$$;
+
+
+ALTER FUNCTION "public"."fnc__post_request"("url" "text", "headers" "jsonb", "body" "jsonb") OWNER TO "postgres";
+
+--
+-- Name: fnc__refresh_firebase_access_token(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."fnc__refresh_firebase_access_token"() RETURNS "void"
+    LANGUAGE "plpgsql"
+    AS $$
+declare
+  v_url text;
+  v_headers jsonb;
+begin
+  select fnc__get_edge_function_url('get-fcm-access-token') into v_url;
+  select fnc__get_edge_function_authorization_header() into v_headers;
+  perform net.http_get(v_url, headers := v_headers);
+  end;
+$$;
+
+
+ALTER FUNCTION "public"."fnc__refresh_firebase_access_token"() OWNER TO "postgres";
 
 --
 -- Name: fnc__search_products("text"); Type: FUNCTION; Schema: public; Owner: postgres
@@ -741,6 +979,101 @@ $$;
 
 
 ALTER FUNCTION "public"."fnc__search_profiles"("p_search_term" "text") OWNER TO "postgres";
+
+--
+-- Name: fnc__send_push_notification("uuid", "jsonb"); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb") RETURNS bigint
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$
+declare
+  v_url                   text;
+  v_headers               jsonb;
+  v_receiver_device_token text;
+  v_body                  jsonb;
+  v_response_id           bigint;
+begin
+  select concat('https://fcm.googleapis.com/v1/projects/', firebase_project_id, '/messages:send')
+  from secrets v_url
+  into v_url;
+
+  select concat('{ "Content-Type": "application/json", "Authorization": "Bearer ', firebase_access_token, '" }')::jsonb
+  from secrets
+  into v_headers;
+
+  select firebase_registration_token
+  from profile_push_notification_tokens
+  where created_by = p_receiver_id
+  into v_receiver_device_token;
+
+  select jsonb_build_object('message',
+                            jsonb_build_object('token', v_receiver_device_token, 'notification', p_notification))
+  into
+    v_body;
+
+  select net.http_post(
+           url := v_url,
+           headers := v_headers,
+           body := v_body
+           ) request_id
+  into v_response_id;
+
+  return v_response_id;
+end
+$$;
+
+
+ALTER FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb") OWNER TO "postgres";
+
+--
+-- Name: fnc__send_push_notification("uuid", "text", "text"); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text") RETURNS bigint
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$
+declare
+  v_url                   text;
+  v_headers               jsonb;
+  v_receiver_device_token text;
+  v_body                  jsonb;
+  v_response_id           bigint;
+begin
+  select concat('https://fcm.googleapis.com/v1/projects/', firebase_project_id, '/messages:send')
+  from secrets v_url
+  into v_url;
+
+  select concat('{ "Content-Type": "application/json", "Authorization": "Bearer ', firebase_access_token, '" }')::jsonb
+  from secrets
+  into v_headers;
+
+  select firebase_registration_token
+  from profile_push_notification_tokens
+  where created_by = p_receiver_id
+  into v_receiver_device_token;
+
+  select concat('{"message":{
+   "notification":{
+     "title":"', p_title, '",
+     "body":"', p_body, '"
+   },
+   "token":"',v_receiver_device_token,'"}}')::jsonb
+  into v_body;
+
+  select net.http_post(
+           url := v_url,
+           headers := v_headers,
+           body := v_body
+           ) request_id
+  into v_response_id;
+
+  return v_response_id;
+end
+$$;
+
+
+ALTER FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text") OWNER TO "postgres";
 
 --
 -- Name: fnc__update_check_in(bigint, bigint, integer, "text", bigint, bigint, "uuid"[], bigint[], "uuid"); Type: FUNCTION; Schema: public; Owner: postgres
@@ -833,30 +1166,17 @@ $$;
 ALTER FUNCTION "public"."fnc__update_check_in"("p_check_in_id" bigint, "p_product_id" bigint, "p_rating" integer, "p_review" "text", "p_manufacturer_id" bigint, "p_serving_style_id" bigint, "p_friend_ids" "uuid"[], "p_flavor_ids" bigint[], "p_location_id" "uuid") OWNER TO "postgres";
 
 --
--- Name: profile_push_notification_tokens; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE "public"."profile_push_notification_tokens" (
-    "firebase_registration_token" "text" NOT NULL,
-    "created_by" "uuid" NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL
-);
-
-
-ALTER TABLE "public"."profile_push_notification_tokens" OWNER TO "postgres";
-
---
 -- Name: fnc__upsert_push_notification_token("text"); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION "public"."fnc__upsert_push_notification_token"("p_push_notification_token" "text") RETURNS SETOF "public"."profile_push_notification_tokens"
-    LANGUAGE "sql"
+CREATE FUNCTION "public"."fnc__upsert_push_notification_token"("p_push_notification_token" "text") RETURNS "void"
+    LANGUAGE "sql" SECURITY DEFINER
     AS $$
-insert into profile_push_notification_tokens (firebase_registration_token, created_by)
-values (p_push_notification_token, auth.uid())
-on conflict (firebase_registration_token) do update set updated_at = now()
-returning *;
+    INSERT INTO profile_push_notification_tokens (firebase_registration_token, created_by)
+        VALUES (p_push_notification_token, auth.uid ())
+    ON CONFLICT (firebase_registration_token)
+        DO UPDATE SET
+            updated_at = now();
 $$;
 
 
@@ -1257,6 +1577,37 @@ $$;
 
 
 ALTER FUNCTION "public"."tg__send_friend_request_notification"() OWNER TO "postgres";
+
+--
+-- Name: tg__send_push_notification(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "public"."tg__send_push_notification"() RETURNS "trigger"
+    LANGUAGE "plpgsql"
+    SET "search_path" TO 'public'
+    AS $$
+declare
+  v_notification jsonb;
+begin
+  if new.friend_request_id is not null then
+    select fnc__get_friend_request_notification(new.friend_request_id) into v_notification;
+  elseif new.check_in_reaction_id is not null then
+    select fnc__get_check_in_reaction_notification(new.check_in_reaction_id) into v_notification;
+  elseif new.tagged_in_check_in_id is not null then
+   select fnc__get_check_in_tag_notification(new.tagged_in_check_in_id) into v_notification;
+  else
+    select jsonb_build_object('notification', jsonb_build_object('title', '', 'body', new.message)) into v_notification;
+  end if;
+
+  perform fnc__post_request(url, headers, body)
+  from fnc__get_push_notification_request(new.profile_id, v_notification);
+  
+  return new;
+end;
+$$;
+
+
+ALTER FUNCTION "public"."tg__send_push_notification"() OWNER TO "postgres";
 
 --
 -- Name: tg__send_tagged_in_check_in_notification(); Type: FUNCTION; Schema: public; Owner: postgres
@@ -1988,6 +2339,20 @@ ALTER TABLE "public"."products_subcategories" ALTER COLUMN "product_id" ADD GENE
 
 
 --
+-- Name: profile_push_notification_tokens; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."profile_push_notification_tokens" (
+    "firebase_registration_token" "text" NOT NULL,
+    "created_by" "uuid" NOT NULL,
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL
+);
+
+
+ALTER TABLE "public"."profile_push_notification_tokens" OWNER TO "postgres";
+
+--
 -- Name: profile_settings; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2051,6 +2416,20 @@ CREATE TABLE "public"."roles_permissions" (
 
 
 ALTER TABLE "public"."roles_permissions" OWNER TO "postgres";
+
+--
+-- Name: secrets; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "public"."secrets" (
+    "firebase_access_token" "text",
+    "supabase_anon_key" "text" NOT NULL,
+    "project_id" "text" NOT NULL,
+    "firebase_project_id" "text"
+);
+
+
+ALTER TABLE "public"."secrets" OWNER TO "postgres";
 
 --
 -- Name: serving_styles; Type: TABLE; Schema: public; Owner: postgres
@@ -2536,6 +2915,14 @@ ALTER TABLE ONLY "public"."roles"
 
 
 --
+-- Name: secrets secrets_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "public"."secrets"
+    ADD CONSTRAINT "secrets_pk" PRIMARY KEY ("supabase_anon_key");
+
+
+--
 -- Name: serving_styles serving_styles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2632,6 +3019,11 @@ CREATE INDEX "sub_brand_name_idx" ON "public"."sub_brands" USING "gist" ("name" 
 
 CREATE TRIGGER "add_options_for_profile" AFTER INSERT ON "public"."profiles" FOR EACH ROW EXECUTE FUNCTION "public"."tg__create_profile_settings"();
 
+create trigger clean_up
+  after insert
+  on auth.users
+  for each row
+execute procedure public.tg__create_profile_for_new_user();
 
 --
 -- Name: friends check_if_insert_or_update_is_allowed; Type: TRIGGER; Schema: public; Owner: postgres
@@ -2813,6 +3205,13 @@ CREATE TRIGGER "send_notification_on_insert" AFTER INSERT ON "public"."check_in_
 --
 
 CREATE TRIGGER "send_notification_on_insert" AFTER INSERT ON "public"."friends" FOR EACH ROW EXECUTE FUNCTION "public"."tg__send_friend_request_notification"();
+
+
+--
+-- Name: notifications send_push_notification; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "send_push_notification" AFTER INSERT ON "public"."notifications" FOR EACH ROW EXECUTE FUNCTION "public"."tg__send_push_notification"();
 
 
 --
@@ -3444,6 +3843,32 @@ ALTER TABLE ONLY "public"."subcategories"
 
 
 --
+-- Name: job cron_job_policy; Type: POLICY; Schema: cron; Owner: supabase_admin
+--
+
+-- CREATE POLICY "cron_job_policy" ON "cron"."job" USING (("username" = CURRENT_USER));
+
+
+--
+-- Name: job_run_details cron_job_run_details_policy; Type: POLICY; Schema: cron; Owner: supabase_admin
+--
+
+-- CREATE POLICY "cron_job_run_details_policy" ON "cron"."job_run_details" USING (("username" = CURRENT_USER));
+
+
+--
+-- Name: job; Type: ROW SECURITY; Schema: cron; Owner: supabase_admin
+--
+
+ALTER TABLE "cron"."job" ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: job_run_details; Type: ROW SECURITY; Schema: cron; Owner: supabase_admin
+--
+
+ALTER TABLE "cron"."job_run_details" ENABLE ROW LEVEL SECURITY;
+
+--
 -- Name: brand_edit_suggestions Allow deleting for users with permission; Type: POLICY; Schema: public; Owner: postgres
 --
 
@@ -3833,6 +4258,13 @@ CREATE POLICY "Enable read access for all users" ON "public"."company_edit_sugge
 
 
 --
+-- Name: countries Enable read access for all users; Type: POLICY; Schema: public; Owner: postgres
+--
+
+CREATE POLICY "Enable read access for all users" ON "public"."countries" FOR SELECT USING (true);
+
+
+--
 -- Name: flavors Enable read access for all users; Type: POLICY; Schema: public; Owner: postgres
 --
 
@@ -4130,6 +4562,12 @@ ALTER TABLE "public"."companies" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."company_edit_suggestions" ENABLE ROW LEVEL SECURITY;
 
 --
+-- Name: countries; Type: ROW SECURITY; Schema: public; Owner: postgres
+--
+
+ALTER TABLE "public"."countries" ENABLE ROW LEVEL SECURITY;
+
+--
 -- Name: flavors; Type: ROW SECURITY; Schema: public; Owner: postgres
 --
 
@@ -4190,6 +4628,12 @@ ALTER TABLE "public"."products" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."products_subcategories" ENABLE ROW LEVEL SECURITY;
 
 --
+-- Name: profile_push_notification_tokens; Type: ROW SECURITY; Schema: public; Owner: postgres
+--
+
+ALTER TABLE "public"."profile_push_notification_tokens" ENABLE ROW LEVEL SECURITY;
+
+--
 -- Name: profile_settings; Type: ROW SECURITY; Schema: public; Owner: postgres
 --
 
@@ -4220,6 +4664,12 @@ ALTER TABLE "public"."roles" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."roles_permissions" ENABLE ROW LEVEL SECURITY;
 
 --
+-- Name: secrets; Type: ROW SECURITY; Schema: public; Owner: postgres
+--
+
+ALTER TABLE "public"."secrets" ENABLE ROW LEVEL SECURITY;
+
+--
 -- Name: serving_styles; Type: ROW SECURITY; Schema: public; Owner: postgres
 --
 
@@ -4242,6 +4692,16 @@ ALTER TABLE "public"."sub_brands" ENABLE ROW LEVEL SECURITY;
 --
 
 ALTER TABLE "public"."subcategories" ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: SCHEMA "net"; Type: ACL; Schema: -; Owner: supabase_admin
+--
+
+GRANT USAGE ON SCHEMA "net" TO "supabase_functions_admin";
+GRANT USAGE ON SCHEMA "net" TO "anon";
+GRANT USAGE ON SCHEMA "net" TO "authenticated";
+GRANT USAGE ON SCHEMA "net" TO "service_role";
+
 
 --
 -- Name: SCHEMA "public"; Type: ACL; Schema: -; Owner: postgres
@@ -4331,6 +4791,41 @@ GRANT ALL ON FUNCTION "public"."citext"(character) TO "service_role";
 GRANT ALL ON FUNCTION "public"."citext"("inet") TO "anon";
 GRANT ALL ON FUNCTION "public"."citext"("inet") TO "authenticated";
 GRANT ALL ON FUNCTION "public"."citext"("inet") TO "service_role";
+
+
+--
+-- Name: FUNCTION "job_cache_invalidate"(); Type: ACL; Schema: cron; Owner: supabase_admin
+--
+
+GRANT ALL ON FUNCTION "cron"."job_cache_invalidate"() TO "postgres" WITH GRANT OPTION;
+
+
+--
+-- Name: FUNCTION "schedule"("schedule" "text", "command" "text"); Type: ACL; Schema: cron; Owner: supabase_admin
+--
+
+GRANT ALL ON FUNCTION "cron"."schedule"("schedule" "text", "command" "text") TO "postgres" WITH GRANT OPTION;
+
+
+--
+-- Name: FUNCTION "schedule"("job_name" "text", "schedule" "text", "command" "text"); Type: ACL; Schema: cron; Owner: supabase_admin
+--
+
+GRANT ALL ON FUNCTION "cron"."schedule"("job_name" "text", "schedule" "text", "command" "text") TO "postgres" WITH GRANT OPTION;
+
+
+--
+-- Name: FUNCTION "unschedule"("job_id" bigint); Type: ACL; Schema: cron; Owner: supabase_admin
+--
+
+GRANT ALL ON FUNCTION "cron"."unschedule"("job_id" bigint) TO "postgres" WITH GRANT OPTION;
+
+
+--
+-- Name: FUNCTION "unschedule"("job_name" "name"); Type: ACL; Schema: cron; Owner: supabase_admin
+--
+
+GRANT ALL ON FUNCTION "cron"."unschedule"("job_name" "name") TO "postgres" WITH GRANT OPTION;
 
 
 --
@@ -4719,6 +5214,42 @@ GRANT ALL ON FUNCTION "extensions"."verify"("token" "text", "secret" "text", "al
 
 
 --
+-- Name: FUNCTION "http_collect_response"("request_id" bigint, "async" boolean); Type: ACL; Schema: net; Owner: supabase_admin
+--
+
+REVOKE ALL ON FUNCTION "net"."http_collect_response"("request_id" bigint, "async" boolean) FROM PUBLIC;
+GRANT ALL ON FUNCTION "net"."http_collect_response"("request_id" bigint, "async" boolean) TO "supabase_functions_admin";
+GRANT ALL ON FUNCTION "net"."http_collect_response"("request_id" bigint, "async" boolean) TO "postgres";
+GRANT ALL ON FUNCTION "net"."http_collect_response"("request_id" bigint, "async" boolean) TO "anon";
+GRANT ALL ON FUNCTION "net"."http_collect_response"("request_id" bigint, "async" boolean) TO "authenticated";
+GRANT ALL ON FUNCTION "net"."http_collect_response"("request_id" bigint, "async" boolean) TO "service_role";
+
+
+--
+-- Name: FUNCTION "http_get"("url" "text", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer); Type: ACL; Schema: net; Owner: supabase_admin
+--
+
+REVOKE ALL ON FUNCTION "net"."http_get"("url" "text", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) FROM PUBLIC;
+GRANT ALL ON FUNCTION "net"."http_get"("url" "text", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) TO "supabase_functions_admin";
+GRANT ALL ON FUNCTION "net"."http_get"("url" "text", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) TO "postgres";
+GRANT ALL ON FUNCTION "net"."http_get"("url" "text", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) TO "anon";
+GRANT ALL ON FUNCTION "net"."http_get"("url" "text", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) TO "authenticated";
+GRANT ALL ON FUNCTION "net"."http_get"("url" "text", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) TO "service_role";
+
+
+--
+-- Name: FUNCTION "http_post"("url" "text", "body" "jsonb", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer); Type: ACL; Schema: net; Owner: supabase_admin
+--
+
+REVOKE ALL ON FUNCTION "net"."http_post"("url" "text", "body" "jsonb", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) FROM PUBLIC;
+GRANT ALL ON FUNCTION "net"."http_post"("url" "text", "body" "jsonb", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) TO "supabase_functions_admin";
+GRANT ALL ON FUNCTION "net"."http_post"("url" "text", "body" "jsonb", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) TO "postgres";
+GRANT ALL ON FUNCTION "net"."http_post"("url" "text", "body" "jsonb", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) TO "anon";
+GRANT ALL ON FUNCTION "net"."http_post"("url" "text", "body" "jsonb", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) TO "authenticated";
+GRANT ALL ON FUNCTION "net"."http_post"("url" "text", "body" "jsonb", "params" "jsonb", "headers" "jsonb", "timeout_milliseconds" integer) TO "service_role";
+
+
+--
 -- Name: SEQUENCE "key_key_id_seq"; Type: ACL; Schema: pgsodium; Owner: postgres
 --
 
@@ -4979,11 +5510,65 @@ GRANT ALL ON FUNCTION "public"."fnc__get_activity_feed"("p_created_after" "date"
 
 
 --
+-- Name: FUNCTION "fnc__get_check_in_reaction_notification"("p_check_in_reaction_id" bigint); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."fnc__get_check_in_reaction_notification"("p_check_in_reaction_id" bigint) TO "anon";
+GRANT ALL ON FUNCTION "public"."fnc__get_check_in_reaction_notification"("p_check_in_reaction_id" bigint) TO "authenticated";
+GRANT ALL ON FUNCTION "public"."fnc__get_check_in_reaction_notification"("p_check_in_reaction_id" bigint) TO "service_role";
+
+
+--
+-- Name: FUNCTION "fnc__get_check_in_tag_notification"("p_check_in_tag" bigint); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."fnc__get_check_in_tag_notification"("p_check_in_tag" bigint) TO "anon";
+GRANT ALL ON FUNCTION "public"."fnc__get_check_in_tag_notification"("p_check_in_tag" bigint) TO "authenticated";
+GRANT ALL ON FUNCTION "public"."fnc__get_check_in_tag_notification"("p_check_in_tag" bigint) TO "service_role";
+
+
+--
 -- Name: FUNCTION "fnc__get_company_summary"("p_company_id" integer); Type: ACL; Schema: public; Owner: postgres
 --
 
 GRANT ALL ON FUNCTION "public"."fnc__get_company_summary"("p_company_id" integer) TO "authenticated";
 GRANT ALL ON FUNCTION "public"."fnc__get_company_summary"("p_company_id" integer) TO "service_role";
+
+
+--
+-- Name: FUNCTION "fnc__get_edge_function_authorization_header"(); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."fnc__get_edge_function_authorization_header"() TO "anon";
+GRANT ALL ON FUNCTION "public"."fnc__get_edge_function_authorization_header"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."fnc__get_edge_function_authorization_header"() TO "service_role";
+
+
+--
+-- Name: FUNCTION "fnc__get_edge_function_url"("p_function_name" "text"); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."fnc__get_edge_function_url"("p_function_name" "text") TO "anon";
+GRANT ALL ON FUNCTION "public"."fnc__get_edge_function_url"("p_function_name" "text") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."fnc__get_edge_function_url"("p_function_name" "text") TO "service_role";
+
+
+--
+-- Name: FUNCTION "fnc__get_friend_request_notification"("p_friend_id" bigint); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."fnc__get_friend_request_notification"("p_friend_id" bigint) TO "anon";
+GRANT ALL ON FUNCTION "public"."fnc__get_friend_request_notification"("p_friend_id" bigint) TO "authenticated";
+GRANT ALL ON FUNCTION "public"."fnc__get_friend_request_notification"("p_friend_id" bigint) TO "service_role";
+
+
+--
+-- Name: FUNCTION "fnc__get_preferred_name"("p_profile_id" "uuid"); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."fnc__get_preferred_name"("p_profile_id" "uuid") TO "anon";
+GRANT ALL ON FUNCTION "public"."fnc__get_preferred_name"("p_profile_id" "uuid") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."fnc__get_preferred_name"("p_profile_id" "uuid") TO "service_role";
 
 
 --
@@ -5003,6 +5588,15 @@ GRANT ALL ON FUNCTION "public"."fnc__get_profile_summary"("p_uid" "uuid") TO "se
 
 
 --
+-- Name: FUNCTION "fnc__get_push_notification_request"("p_receiver_id" "uuid", "p_notification" "jsonb"); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."fnc__get_push_notification_request"("p_receiver_id" "uuid", "p_notification" "jsonb") TO "anon";
+GRANT ALL ON FUNCTION "public"."fnc__get_push_notification_request"("p_receiver_id" "uuid", "p_notification" "jsonb") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."fnc__get_push_notification_request"("p_receiver_id" "uuid", "p_notification" "jsonb") TO "service_role";
+
+
+--
 -- Name: FUNCTION "fnc__has_permission"("p_uid" "uuid", "p_permission_name" "text"); Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -5016,6 +5610,24 @@ GRANT ALL ON FUNCTION "public"."fnc__has_permission"("p_uid" "uuid", "p_permissi
 
 GRANT ALL ON FUNCTION "public"."fnc__merge_products"("p_product_id" bigint, "p_to_product_id" bigint) TO "authenticated";
 GRANT ALL ON FUNCTION "public"."fnc__merge_products"("p_product_id" bigint, "p_to_product_id" bigint) TO "service_role";
+
+
+--
+-- Name: FUNCTION "fnc__post_request"("url" "text", "headers" "jsonb", "body" "jsonb"); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."fnc__post_request"("url" "text", "headers" "jsonb", "body" "jsonb") TO "anon";
+GRANT ALL ON FUNCTION "public"."fnc__post_request"("url" "text", "headers" "jsonb", "body" "jsonb") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."fnc__post_request"("url" "text", "headers" "jsonb", "body" "jsonb") TO "service_role";
+
+
+--
+-- Name: FUNCTION "fnc__refresh_firebase_access_token"(); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."fnc__refresh_firebase_access_token"() TO "anon";
+GRANT ALL ON FUNCTION "public"."fnc__refresh_firebase_access_token"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."fnc__refresh_firebase_access_token"() TO "service_role";
 
 
 --
@@ -5045,21 +5657,30 @@ GRANT ALL ON FUNCTION "public"."fnc__search_profiles"("p_search_term" "text") TO
 
 
 --
+-- Name: FUNCTION "fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb"); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb") TO "anon";
+GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb") TO "service_role";
+
+
+--
+-- Name: FUNCTION "fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text"); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text") TO "anon";
+GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text") TO "service_role";
+
+
+--
 -- Name: FUNCTION "fnc__update_check_in"("p_check_in_id" bigint, "p_product_id" bigint, "p_rating" integer, "p_review" "text", "p_manufacturer_id" bigint, "p_serving_style_id" bigint, "p_friend_ids" "uuid"[], "p_flavor_ids" bigint[], "p_location_id" "uuid"); Type: ACL; Schema: public; Owner: postgres
 --
 
 GRANT ALL ON FUNCTION "public"."fnc__update_check_in"("p_check_in_id" bigint, "p_product_id" bigint, "p_rating" integer, "p_review" "text", "p_manufacturer_id" bigint, "p_serving_style_id" bigint, "p_friend_ids" "uuid"[], "p_flavor_ids" bigint[], "p_location_id" "uuid") TO "anon";
 GRANT ALL ON FUNCTION "public"."fnc__update_check_in"("p_check_in_id" bigint, "p_product_id" bigint, "p_rating" integer, "p_review" "text", "p_manufacturer_id" bigint, "p_serving_style_id" bigint, "p_friend_ids" "uuid"[], "p_flavor_ids" bigint[], "p_location_id" "uuid") TO "authenticated";
 GRANT ALL ON FUNCTION "public"."fnc__update_check_in"("p_check_in_id" bigint, "p_product_id" bigint, "p_rating" integer, "p_review" "text", "p_manufacturer_id" bigint, "p_serving_style_id" bigint, "p_friend_ids" "uuid"[], "p_flavor_ids" bigint[], "p_location_id" "uuid") TO "service_role";
-
-
---
--- Name: TABLE "profile_push_notification_tokens"; Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT ALL ON TABLE "public"."profile_push_notification_tokens" TO "anon";
-GRANT ALL ON TABLE "public"."profile_push_notification_tokens" TO "authenticated";
-GRANT ALL ON TABLE "public"."profile_push_notification_tokens" TO "service_role";
 
 
 --
@@ -5616,6 +6237,15 @@ GRANT ALL ON FUNCTION "public"."tg__send_friend_request_notification"() TO "serv
 
 
 --
+-- Name: FUNCTION "tg__send_push_notification"(); Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON FUNCTION "public"."tg__send_push_notification"() TO "anon";
+GRANT ALL ON FUNCTION "public"."tg__send_push_notification"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."tg__send_push_notification"() TO "service_role";
+
+
+--
 -- Name: FUNCTION "tg__send_tagged_in_check_in_notification"(); Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -5754,6 +6384,20 @@ GRANT ALL ON FUNCTION "public"."max"("public"."citext") TO "service_role";
 GRANT ALL ON FUNCTION "public"."min"("public"."citext") TO "anon";
 GRANT ALL ON FUNCTION "public"."min"("public"."citext") TO "authenticated";
 GRANT ALL ON FUNCTION "public"."min"("public"."citext") TO "service_role";
+
+
+--
+-- Name: SEQUENCE "jobid_seq"; Type: ACL; Schema: cron; Owner: supabase_admin
+--
+
+GRANT ALL ON SEQUENCE "cron"."jobid_seq" TO "postgres" WITH GRANT OPTION;
+
+
+--
+-- Name: SEQUENCE "runid_seq"; Type: ACL; Schema: cron; Owner: supabase_admin
+--
+
+GRANT ALL ON SEQUENCE "cron"."runid_seq" TO "postgres" WITH GRANT OPTION;
 
 
 --
@@ -6093,6 +6737,15 @@ GRANT ALL ON SEQUENCE "public"."products_subcategories_product_id_seq" TO "servi
 
 
 --
+-- Name: TABLE "profile_push_notification_tokens"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON TABLE "public"."profile_push_notification_tokens" TO "anon";
+GRANT ALL ON TABLE "public"."profile_push_notification_tokens" TO "authenticated";
+GRANT ALL ON TABLE "public"."profile_push_notification_tokens" TO "service_role";
+
+
+--
 -- Name: TABLE "profile_settings"; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -6135,6 +6788,15 @@ GRANT ALL ON SEQUENCE "public"."roles_id_seq" TO "service_role";
 GRANT ALL ON TABLE "public"."roles_permissions" TO "anon";
 GRANT ALL ON TABLE "public"."roles_permissions" TO "authenticated";
 GRANT ALL ON TABLE "public"."roles_permissions" TO "service_role";
+
+
+--
+-- Name: TABLE "secrets"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON TABLE "public"."secrets" TO "anon";
+GRANT ALL ON TABLE "public"."secrets" TO "authenticated";
+GRANT ALL ON TABLE "public"."secrets" TO "service_role";
 
 
 --
@@ -6207,6 +6869,27 @@ GRANT ALL ON TABLE "public"."subcategories" TO "service_role";
 GRANT ALL ON SEQUENCE "public"."subcategories_id_seq" TO "anon";
 GRANT ALL ON SEQUENCE "public"."subcategories_id_seq" TO "authenticated";
 GRANT ALL ON SEQUENCE "public"."subcategories_id_seq" TO "service_role";
+
+
+--
+-- Name: DEFAULT PRIVILEGES FOR SEQUENCES; Type: DEFAULT ACL; Schema: cron; Owner: supabase_admin
+--
+
+-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin" IN SCHEMA "cron" GRANT ALL ON SEQUENCES  TO "postgres" WITH GRANT OPTION;
+
+
+--
+-- Name: DEFAULT PRIVILEGES FOR FUNCTIONS; Type: DEFAULT ACL; Schema: cron; Owner: supabase_admin
+--
+
+-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin" IN SCHEMA "cron" GRANT ALL ON FUNCTIONS  TO "postgres" WITH GRANT OPTION;
+
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: cron; Owner: supabase_admin
+--
+
+-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin" IN SCHEMA "cron" GRANT ALL ON TABLES  TO "postgres" WITH GRANT OPTION;
 
 
 --
