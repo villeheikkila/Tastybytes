@@ -84,20 +84,10 @@ struct NewCheckInParams: Encodable {
     let p_flavor_ids: [Int]?
     let p_location_id: String?
 
-    init (productId: Int, rating: Double?, review: String?, manufacturerId: Int?, servingStyleId: Int?, friendIds: [UUID], flavorIds: [Int]?, locationId: UUID?) {
-        self.p_product_id = productId
-        self.p_rating = rating
-        self.p_review = review
-        self.p_manufacturer_id = manufacturerId
-        self.p_serving_style_id = servingStyleId
-        self.p_friend_ids = friendIds.map { $0.uuidString.lowercased() }
-        self.p_flavor_ids = flavorIds
-        self.p_location_id = locationId?.uuidString
-    }
     
     init(product: ProductJoined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Double, location: Location?) {
         self.p_product_id = product.id
-        self.p_review = review
+        self.p_review = review == "" ? nil : review
         self.p_manufacturer_id = manufacturer?.id ?? nil
         self.p_serving_style_id = servingStyle?.id ?? nil
         self.p_friend_ids = taggedFriends.map { $0.id.uuidString }
