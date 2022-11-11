@@ -24,7 +24,6 @@
 		5C12B4372902CA04001EE549 /* NotificationScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4362902CA04001EE549 /* NotificationScreenView.swift */; };
 		5C12B4392902CAF3001EE549 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4382902CAF3001EE549 /* Notification.swift */; };
 		5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */; };
-		5C13F217291A7AA400599892 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C13F216291A7AA400599892 /* GoogleService-Info.plist */; };
 		5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 5C13F21A291A7C3A00599892 /* FirebaseMessaging */; };
 		5C13F21D291A7FEB00599892 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C13F21C291A7FEB00599892 /* AppDelegate.swift */; };
 		5C25AEB229031B9D00793607 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 5C25AEB129031B9D00793607 /* WrappingHStack */; };
@@ -79,6 +78,7 @@
 		5CD10A5728F98D490001CFC2 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5628F98D490001CFC2 /* Product.swift */; };
 		5CD10A5928F98D8A0001CFC2 /* CheckInReaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */; };
 		5CD10A5C28F998BF0001CFC2 /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */; };
+		5CE9008A291FCA10003DE697 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5CE90089291FCA10003DE697 /* GoogleService-Info.plist */; };
 		5CED432028FAB5F5003F8194 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED431F28FAB5F5003F8194 /* ViewExtensions.swift */; };
 		5CED432228FAC01C003F8194 /* UserSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432128FAC01C003F8194 /* UserSheetView.swift */; };
 		5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5CED432428FBF6B0003F8194 /* AlertToast */; };
@@ -119,8 +119,6 @@
 		5C12B4362902CA04001EE549 /* NotificationScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScreenView.swift; sourceTree = "<group>"; };
 		5C12B4382902CAF3001EE549 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRepository.swift; sourceTree = "<group>"; };
-		5C13F216291A7AA400599892 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		5C13F218291A7AAD00599892 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5C13F21C291A7FEB00599892 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C13F21E291A8D8E00599892 /* TasteNotesDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TasteNotesDebug.entitlements; sourceTree = "<group>"; };
 		5C25AEB329031F9C00793607 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -175,6 +173,7 @@
 		5CD10A5628F98D490001CFC2 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInReaction.swift; sourceTree = "<group>"; };
 		5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
+		5CE90089291FCA10003DE697 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5CED431F28FAB5F5003F8194 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		5CED432128FAC01C003F8194 /* UserSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSheetView.swift; sourceTree = "<group>"; };
 		5CED432728FD417E003F8194 /* ProductSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSheetView.swift; sourceTree = "<group>"; };
@@ -389,8 +388,8 @@
 			children = (
 				5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */,
 				5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */,
+				5CE90089291FCA10003DE697 /* GoogleService-Info.plist */,
 				5C11ECC128EF768A00CCDE6A /* .xcconfig.xcconfig */,
-				5C13F216291A7AA400599892 /* GoogleService-Info.plist */,
 				5CFEE57528ED69B100A8DD66 /* TasteNotes */,
 				5CFEE57428ED69B100A8DD66 /* Products */,
 				5C08B6DE28ED7956009218D7 /* Frameworks */,
@@ -409,7 +408,6 @@
 			isa = PBXGroup;
 			children = (
 				5C13F21E291A8D8E00599892 /* TasteNotesDebug.entitlements */,
-				5C13F218291A7AAD00599892 /* GoogleService-Info.plist */,
 				5C46E8662911E5860008F142 /* Info.plist */,
 				5C46E8622911D9F00008F142 /* Constants */,
 				5CD10A5D28F99CDF0001CFC2 /* UI */,
@@ -504,7 +502,7 @@
 			files = (
 				5CFEE57E28ED69B200A8DD66 /* Preview Assets.xcassets in Resources */,
 				5CFEE57B28ED69B200A8DD66 /* Assets.xcassets in Resources */,
-				5C13F217291A7AA400599892 /* GoogleService-Info.plist in Resources */,
+				5CE9008A291FCA10003DE697 /* GoogleService-Info.plist in Resources */,
 				5CC2FE9D2919D5BA002BDF83 /* Development.xcconfig in Resources */,
 				5CC2FE9B2919D5A7002BDF83 /* Production.xcconfig in Resources */,
 			);
