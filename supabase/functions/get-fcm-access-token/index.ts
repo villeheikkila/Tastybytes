@@ -30,8 +30,8 @@ serve(async () => {
     await adminSupabaseClient.from("secrets").upsert({
       "supabase_anon_key": Deno.env.get("SUPABASE_ANON_KEY"),
       "firebase_access_token": accessToken,
-      "supabase_url": Deno.env.get("SUPABASE_URL"),
       "firebase_project_id": serviceAccountCredentials?.project_id,
+      "project_id": "dmkvuqooctolvhdsubot",
     });
 
     return new Response(null, { status: 200 });
