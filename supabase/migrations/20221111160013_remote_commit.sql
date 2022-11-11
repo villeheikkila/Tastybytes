@@ -981,101 +981,6 @@ $$;
 ALTER FUNCTION "public"."fnc__search_profiles"("p_search_term" "text") OWNER TO "postgres";
 
 --
--- Name: fnc__send_push_notification("uuid", "jsonb"); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb") RETURNS bigint
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    AS $$
-declare
-  v_url                   text;
-  v_headers               jsonb;
-  v_receiver_device_token text;
-  v_body                  jsonb;
-  v_response_id           bigint;
-begin
-  select concat('https://fcm.googleapis.com/v1/projects/', firebase_project_id, '/messages:send')
-  from secrets v_url
-  into v_url;
-
-  select concat('{ "Content-Type": "application/json", "Authorization": "Bearer ', firebase_access_token, '" }')::jsonb
-  from secrets
-  into v_headers;
-
-  select firebase_registration_token
-  from profile_push_notification_tokens
-  where created_by = p_receiver_id
-  into v_receiver_device_token;
-
-  select jsonb_build_object('message',
-                            jsonb_build_object('token', v_receiver_device_token, 'notification', p_notification))
-  into
-    v_body;
-
-  select net.http_post(
-           url := v_url,
-           headers := v_headers,
-           body := v_body
-           ) request_id
-  into v_response_id;
-
-  return v_response_id;
-end
-$$;
-
-
-ALTER FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb") OWNER TO "postgres";
-
---
--- Name: fnc__send_push_notification("uuid", "text", "text"); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text") RETURNS bigint
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    AS $$
-declare
-  v_url                   text;
-  v_headers               jsonb;
-  v_receiver_device_token text;
-  v_body                  jsonb;
-  v_response_id           bigint;
-begin
-  select concat('https://fcm.googleapis.com/v1/projects/', firebase_project_id, '/messages:send')
-  from secrets v_url
-  into v_url;
-
-  select concat('{ "Content-Type": "application/json", "Authorization": "Bearer ', firebase_access_token, '" }')::jsonb
-  from secrets
-  into v_headers;
-
-  select firebase_registration_token
-  from profile_push_notification_tokens
-  where created_by = p_receiver_id
-  into v_receiver_device_token;
-
-  select concat('{"message":{
-   "notification":{
-     "title":"', p_title, '",
-     "body":"', p_body, '"
-   },
-   "token":"',v_receiver_device_token,'"}}')::jsonb
-  into v_body;
-
-  select net.http_post(
-           url := v_url,
-           headers := v_headers,
-           body := v_body
-           ) request_id
-  into v_response_id;
-
-  return v_response_id;
-end
-$$;
-
-
-ALTER FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text") OWNER TO "postgres";
-
---
 -- Name: fnc__update_check_in(bigint, bigint, integer, "text", bigint, bigint, "uuid"[], bigint[], "uuid"); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -1336,7 +1241,7 @@ CREATE FUNCTION "public"."tg__create_profile_settings"() RETURNS "trigger"
     LANGUAGE "plpgsql" SECURITY DEFINER
     SET "search_path" TO 'public'
     AS $$
-begin
+begin 
     insert
     into public.profile_settings (id)
     values (new.id);
@@ -5654,25 +5559,6 @@ GRANT ALL ON TABLE "public"."profiles" TO "service_role";
 GRANT ALL ON FUNCTION "public"."fnc__search_profiles"("p_search_term" "text") TO "anon";
 GRANT ALL ON FUNCTION "public"."fnc__search_profiles"("p_search_term" "text") TO "authenticated";
 GRANT ALL ON FUNCTION "public"."fnc__search_profiles"("p_search_term" "text") TO "service_role";
-
-
---
--- Name: FUNCTION "fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb"); Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb") TO "anon";
-GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb") TO "authenticated";
-GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_notification" "jsonb") TO "service_role";
-
-
---
--- Name: FUNCTION "fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text"); Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text") TO "anon";
-GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text") TO "authenticated";
-GRANT ALL ON FUNCTION "public"."fnc__send_push_notification"("p_receiver_id" "uuid", "p_title" "text", "p_body" "text") TO "service_role";
-
 
 --
 -- Name: FUNCTION "fnc__update_check_in"("p_check_in_id" bigint, "p_product_id" bigint, "p_rating" integer, "p_review" "text", "p_manufacturer_id" bigint, "p_serving_style_id" bigint, "p_friend_ids" "uuid"[], "p_flavor_ids" bigint[], "p_location_id" "uuid"); Type: ACL; Schema: public; Owner: postgres
