@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TabbarView: View {
     @EnvironmentObject var currentProfile: CurrentProfile
-    
+
     var body: some View {
         WithProfile {
             profile in
