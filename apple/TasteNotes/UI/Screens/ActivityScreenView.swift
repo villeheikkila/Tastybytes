@@ -12,9 +12,14 @@ struct SimpleCheckIn {
 struct ActivityScreenView: View {
     let profile: Profile
     @StateObject private var viewModel = ViewModel()
+    @EnvironmentObject private var splashScreenManager: SplashScreenManager
 
     var body: some View {
-        InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, loadMore: {
+        InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, initialLoad: {
+            viewModel.loadAndDismissSplashScreen(splashScreenState: splashScreenManager.state, dismissSplashScreen: {
+                splashScreenManager.dismiss()
+            })
+        }, loadMore: {
             viewModel.fetchActivityFeedItems()
         }, refresh: {
             viewModel.refresh()
@@ -51,6 +56,33 @@ extension ActivityScreenView {
         func onCheckInUpdate(checkIn: CheckIn) {
             if let index = checkIns.firstIndex(of: checkIn) {
                 checkIns[index] = checkIn
+            }
+        }
+        
+        func loadAndDismissSplashScreen(splashScreenState: SplashScreenState, dismissSplashScreen: @escaping () -> Void) {
+            let (from, to) = getPagination(page: page, size: pageSize)
+            
+            Task {
+                do {
+                    await MainActor.run {
+                        self.isLoading = true
+                    }
+                    
+                    let checkIns = try await repository.checkIn.getActivityFeed(from: from, to: to)
+                    
+                    await MainActor.run {
+                        self.checkIns.append(contentsOf: checkIns)
+                        self.page += 1
+                        
+                        if splashScreenState != .finished {
+                            dismissSplashScreen()
+                        } else {
+                            self.isLoading = false
+                        }
+                    }
+                } catch {
+                    print("error: \(error)")
+                }
             }
         }
 

@@ -3,6 +3,7 @@ import SwiftUI
 
 struct NavigationStackView: View {
     @StateObject var navigator = Navigator()
+
     
     var body: some View {
         NavigationStack(path: $navigator.path) {

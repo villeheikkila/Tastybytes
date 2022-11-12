@@ -5,6 +5,7 @@ struct InfiniteScrollView<Data, Content, Header>: View
 where Data: RandomAccessCollection, Data.Element: Hashable, Data.Element: Identifiable, Content: View, Header: View {
     @Binding var data: Data
     @Binding var isLoading: Bool
+    let initialLoad: () -> Void
     let loadMore: () -> Void
     let content: (Data.Element) -> Content
     let header: (() -> Header)
@@ -12,12 +13,14 @@ where Data: RandomAccessCollection, Data.Element: Hashable, Data.Element: Identi
     
     init(data: Binding<Data>,
          isLoading: Binding<Bool>,
+         initialLoad: (() -> Void)? = nil,
          loadMore: @escaping () -> Void,
          refresh: @escaping () -> Void,
          @ViewBuilder content: @escaping (Data.Element) -> Content,
          @ViewBuilder header: @escaping () -> Header) {
         _data = data
         _isLoading = isLoading
+        self.initialLoad = initialLoad ?? loadMore
         self.loadMore = loadMore
         self.header = header
         self.content = content
@@ -50,7 +53,7 @@ where Data: RandomAccessCollection, Data.Element: Hashable, Data.Element: Identi
             }
         }
         .task {
-            loadMore()
+            initialLoad()
         }
     }
 }

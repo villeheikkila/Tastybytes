@@ -4,15 +4,13 @@ import Supabase
 import SwiftUI
 
 public struct AuthScreenView<AuthenticatedContent: View>: View {
-    private let magicLinkEnabled: Bool
     private let authenticatedContent: (Session) -> AuthenticatedContent
-    
+
     @State private var authEvent: AuthChangeEvent?
     
     public init(
         @ViewBuilder authenticatedContent: @escaping (Session) -> AuthenticatedContent
     ) {
-        self.magicLinkEnabled = false
         self.authenticatedContent = authenticatedContent
     }
     
@@ -24,9 +22,7 @@ public struct AuthScreenView<AuthenticatedContent: View>: View {
             case (nil, _):
                 ProgressView()
             default:
-                SignInOrSignUpView(
-                    magicLinkEnabled: magicLinkEnabled
-                )
+                SignInOrSignUpView()
             }
         }
         .onOpenURL { url in
@@ -43,6 +39,8 @@ public struct AuthScreenView<AuthenticatedContent: View>: View {
 }
 
 struct SignInOrSignUpView: View {
+    @EnvironmentObject private var splashScreenManager: SplashScreenManager
+
     enum ResultStatus {
         case idle
         case loading
@@ -74,9 +72,6 @@ struct SignInOrSignUpView: View {
         self.activeToast = type
         self.showToast = true
     }
-    
-    
-    let magicLinkEnabled: Bool
     
     @State var email = ""
     @State var password = ""
@@ -146,7 +141,7 @@ struct SignInOrSignUpView: View {
                     }
                 }
                 
-                if magicLinkEnabled, mode == .signIn {
+                if false, mode == .signIn {
                     Button("Sign in with magic link") {
                         withAnimation { mode = .magicLink }
                     }
@@ -177,6 +172,9 @@ struct SignInOrSignUpView: View {
         }
         .padding(40)
         Spacer()
+    }
+    .task {
+        splashScreenManager.dismiss()
     }
     .toast(isPresenting: $showToast, duration: 1, tapToDismiss: true) {
         switch activeToast {
