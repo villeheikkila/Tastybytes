@@ -81,6 +81,7 @@
 		5CE9008A291FCA10003DE697 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5CE90089291FCA10003DE697 /* GoogleService-Info.plist */; };
 		5CE9008C291FCB71003DE697 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008B291FCB71003DE697 /* SplashScreenView.swift */; };
 		5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */; };
+		5CE90091292101C8003DE697 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE90090292101C8003DE697 /* AboutView.swift */; };
 		5CED432028FAB5F5003F8194 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED431F28FAB5F5003F8194 /* ViewExtensions.swift */; };
 		5CED432228FAC01C003F8194 /* UserSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432128FAC01C003F8194 /* UserSheetView.swift */; };
 		5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5CED432428FBF6B0003F8194 /* AlertToast */; };
@@ -179,6 +180,7 @@
 		5CE9008B291FCB71003DE697 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenManager.swift; sourceTree = "<group>"; };
 		5CE9008F291FE7C1003DE697 /* TasteNotesRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TasteNotesRelease.entitlements; sourceTree = "<group>"; };
+		5CE90090292101C8003DE697 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		5CED431F28FAB5F5003F8194 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		5CED432128FAC01C003F8194 /* UserSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSheetView.swift; sourceTree = "<group>"; };
 		5CED432728FD417E003F8194 /* ProductSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSheetView.swift; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 				5CD10A3E28F760520001CFC2 /* CheckInScreenView.swift */,
 				5C12B4362902CA04001EE549 /* NotificationScreenView.swift */,
 				5CE9008B291FCB71003DE697 /* SplashScreenView.swift */,
+				5CE90090292101C8003DE697 /* AboutView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -542,6 +545,7 @@
 				5CB1C24128F99E1C000B0EB4 /* ProductListItemView.swift in Sources */,
 				5CC2FE8F29196A5D002BDF83 /* LocationSearchView.swift in Sources */,
 				5CED432028FAB5F5003F8194 /* ViewExtensions.swift in Sources */,
+				5CE90091292101C8003DE697 /* AboutView.swift in Sources */,
 				5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* Main.swift in Sources */,
 				5C989DAF2901B8A400BBC5A7 /* UserProviderView.swift in Sources */,

@@ -4,29 +4,41 @@ struct PreferencesScreenView: View {
     @StateObject var viewModel = ViewModel()
     
     var body: some View {
+        
         List {
-            NavigationLink(destination: ProfileSettingsScreenView()) {
-                Text("Profile")
+            Section {
+                NavigationLink(destination: ProfileSettingsScreenView()) {
+                    Label("Profile", systemImage: "person.crop.circle")
+                }
+                
+                NavigationLink(destination: ApplicationSettingsScreenView()) {
+                    Label("Application", systemImage: "gear")
+                }
+                
+                NavigationLink(destination: BlockedUsersScreenView()) {
+                    Label("Blocked Users", systemImage: "person.fill.xmark")
+                }
+                
+                NavigationLink(destination: DeleteAccountScreenView()) {
+                    Label("Delete Account", systemImage: "person.crop.circle.badge.minus")
+                }
             }
             
-            NavigationLink(destination: ApplicationSettingsScreenView()) {
-                Text("Application")
-            }
-            
-            NavigationLink(destination: BlockedUsersScreenView()) {
-                Text("Blocked Users")
-            }
-            
-            NavigationLink(destination: DeleteAccountScreenView()) {
-                Text("Delete Account")
+            Section {
+                NavigationLink(destination: AboutScreenView()) {
+                    Label("About", systemImage: "info.circle")
+                }
             }
             
             Section{
-                Button("Log Out", action: { viewModel.logOut() }).fontWeight(.bold)
+                Button(action: { viewModel.logOut() }) {
+                    Label("Log Out", systemImage: "arrow.uturn.left")
+                        .fontWeight(.medium)
+                }
             }
         }
-        .listStyle(.grouped)
-        .navigationTitle("Preferences")
+        .listStyle(.automatic)
+        .navigationBarTitle("Preferences")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

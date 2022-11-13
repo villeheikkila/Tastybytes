@@ -23,7 +23,7 @@ struct NavigationStackView: View {
             guard let scheme = url.scheme, scheme == "tastenotes" else { return }
             print(scheme)
             guard let info = url.host else { return }
-            print(info)
+            print(url)
         }
     }
 }
