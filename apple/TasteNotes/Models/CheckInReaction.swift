@@ -11,13 +11,36 @@ extension CheckInReaction: Hashable {
     }
 }
 
+extension CheckInReaction {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "check_in_reactions"
+        let saved = "id"
+
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .joinedProfileCheckIn(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.saved(true)), CheckIn.getQuery(.joined(true))), withTableName)
+        case let .joinedProfile(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.saved(true))), withTableName)
+        }
+        
+    }
+
+    enum QueryType {
+        case tableName
+        case joinedProfile(_ withTableName: Bool)
+        case joinedProfileCheckIn(_ withTableName: Bool)
+    }
+}
+
 extension CheckInReaction: Decodable {
     enum CodingKeys: String, CodingKey {
         case id
         case content
         case profile = "profiles"
     }
-    
+
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
@@ -40,11 +63,10 @@ extension CheckInReactionWithCheckIn: Hashable {
 extension CheckInReactionWithCheckIn: Decodable {
     enum CodingKeys: String, CodingKey {
         case id
-        case content
         case profile = "profiles"
         case checkIn = "check_ins"
     }
-    
+
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
@@ -53,12 +75,10 @@ extension CheckInReactionWithCheckIn: Decodable {
     }
 }
 
-
-
 struct NewCheckInReaction: Encodable {
     let check_in_id: Int
-    
+
     init(checkInId: Int) {
-        self.check_in_id = checkInId
+        check_in_id = checkInId
     }
 }

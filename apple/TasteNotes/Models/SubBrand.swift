@@ -51,6 +51,23 @@ extension SubBrandJoinedWithBrand: Decodable {
     }
 }
 
+extension SubBrandJoinedWithBrand {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "sub_brands"
+        let saved = "id, name"
+        
+        switch queryType {
+        case let .joinedBrand(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, BrandJoinedWithCompany.getQuery(.joined(true))), withTableName)
+        }
+    }
+    
+    enum QueryType {
+        case joinedBrand(_ withTableName: Bool)
+    }
+}
+
+
 struct SubBrandJoinedProduct: Identifiable, Hashable, Decodable {
     let id: Int
     let name: String?

@@ -1,11 +1,11 @@
-import SwiftUI
 import AlertToast
+import SwiftUI
 
 struct CheckInScreenView: View {
     let checkIn: CheckIn
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject private var navigator: Navigator
-    
+
     var body: some View {
         VStack {
             ScrollView {
@@ -16,20 +16,20 @@ struct CheckInScreenView: View {
                 CheckInCardView(checkIn: viewModel.checkIn ?? checkIn,
                                 loadedFrom: .checkIn,
                                 onDelete: {
-                    _ in  navigator.removeLast()
-                }, onUpdate: { updatedCheckIn in
-                    viewModel.setCheckIn(updatedCheckIn)
-                })
-                .task {
-                    viewModel.setCheckIn(checkIn)
-                }
-                .task {
-                    viewModel.loadCheckInComments(checkIn)
-                }
-                
+                                    _ in navigator.removeLast()
+                                }, onUpdate: { updatedCheckIn in
+                                    viewModel.setCheckIn(updatedCheckIn)
+                                })
+                                .task {
+                                    viewModel.setCheckIn(checkIn)
+                                }
+                                .task {
+                                    viewModel.loadCheckInComments(checkIn)
+                                }
+
                 VStack(spacing: 10) {
                     ForEach(viewModel.checkInComments.reversed(), id: \.id) {
-                        comment in CommentItemView(comment: comment, content: comment.content, onDelete: { id in
+                        comment in CommentItemView(comment: comment, content: comment.content, onDelete: { _ in
                             viewModel.deleteComment(comment)
                         }, onUpdate: {
                             updatedComment in viewModel.editComment(updateCheckInComment: updatedComment)
@@ -38,7 +38,7 @@ struct CheckInScreenView: View {
                 }
                 .padding([.leading, .trailing], 15)
             }
-            
+
             HStack {
                 TextField("Leave a comment!", text: $viewModel.comment)
                 Button(action: { viewModel.sendComment(checkInId: checkIn.id) }) {
@@ -46,7 +46,6 @@ struct CheckInScreenView: View {
                 }.disabled(viewModel.isInvalidComment())
             }
             .padding(.all, 10)
-            
         }
     }
 }
@@ -57,15 +56,15 @@ extension CheckInScreenView {
         @Published var checkInComments = [CheckInComment]()
         @Published var comment = ""
         @Published var showToast = false
-        
+
         func setCheckIn(_ checkIn: CheckIn) {
             self.checkIn = checkIn
         }
-        
+
         func isInvalidComment() -> Bool {
             return comment.isEmpty
         }
-        
+
         func loadCheckInComments(_ checkIn: CheckIn) {
             Task {
                 let checkIns = try await repository.checkInComment.getByCheckInId(id: checkIn.id)
@@ -74,7 +73,7 @@ extension CheckInScreenView {
                 }
             }
         }
-        
+
         func deleteComment(_ comment: CheckInComment) {
             Task {
                 try await repository.checkInComment.deleteById(id: comment.id)
@@ -83,36 +82,38 @@ extension CheckInScreenView {
                 }
             }
         }
-        
+
         func sendComment(checkInId: Int) {
             let newCheckInComment = NewCheckInComment(content: comment, checkInId: checkInId)
-            
+
             Task {
                 let result = await repository.checkInComment.insert(newCheckInComment: newCheckInComment)
-                    switch result {
-                        case let .success(newCheckInComment):
-                        await MainActor.run {
-                            self.checkInComments.append(newCheckInComment)
-                            self.comment = ""
-                        }
-                    case let .failure(error):
-                        print(error)
-                        await MainActor.run {
-                            self.showToast = true
-                        }
+                switch result {
+                case let .success(newCheckInComment):
+                    await MainActor.run {
+                        self.checkInComments.append(newCheckInComment)
+                        self.comment = ""
                     }
+                case let .failure(error):
+                    print(error)
+                    await MainActor.run {
+                        self.showToast = true
+                    }
+                }
             }
         }
-        
+
         func editComment(updateCheckInComment: UpdateCheckInComment) {
             Task {
-                let updatedComment = try await  repository.checkInComment.update(updateCheckInComment: updateCheckInComment)
-                
-                if let at = self.checkInComments.firstIndex(where: { $0.id == updateCheckInComment.id }) {
-                    await MainActor.run {
-                        self.checkInComments.remove(at: at)
-                        self.checkInComments.insert(updatedComment, at: at)
+                switch await repository.checkInComment.update(updateCheckInComment: updateCheckInComment) {
+                case let .success(updatedComment):
+                    DispatchQueue.main.async {
+                        if let index = self.checkInComments.firstIndex(of: updatedComment) {
+                            self.checkInComments[index] = updatedComment
+                        }
                     }
+                case let .failure(error):
+                    print(error.localizedDescription)
                 }
             }
         }
@@ -125,19 +126,19 @@ struct CommentItemView: View {
     @State var showEditCommentPrompt = false
     let onDelete: (_ commentId: Int) -> Void
     let onUpdate: (_ update: UpdateCheckInComment) -> Void
-    
+
     var updateComment: () -> Void {
         return {
             guard !content.isEmpty else {
                 return
             }
-            
+
             let updatedComment = UpdateCheckInComment(id: comment.id, content: content)
             onUpdate(updatedComment)
             content = ""
         }
     }
-    
+
     var body: some View {
         HStack {
             AvatarView(avatarUrl: comment.profile.getAvatarURL(), size: 32, id: comment.profile.id)
@@ -159,7 +160,7 @@ struct CommentItemView: View {
             } label: {
                 Label("Edit Comment", systemImage: "pencil")
             }
-            
+
             Button {
                 withAnimation {
                     onDelete(comment.id)

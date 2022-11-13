@@ -3,26 +3,6 @@ import Realtime
 
 class CurrentProfile: ObservableObject {
     @Published var profile: Profile?
-    @Published private(set) var notifaction: [Notification] = []
-    @Published var notifications = [Notification]()
-    
-    
-    
-    func deleteNotifications(notification: Notification) {
-        Task {
-            do {
-                try await repository.notification.delete(id: notification.id)
-                
-                await MainActor.run {
-                    self.notifications.removeAll(where: { $0.id == notification.id })
-                }
-            }
-            catch {
-                print("error while removing notification: \(error)")
-            }
-        }
-    }
-    
     
     func get(id: UUID) {
         Task {
@@ -30,7 +10,6 @@ class CurrentProfile: ObservableObject {
                 let currentUserProfile = try await repository.profile.getById(id: id)
                 await MainActor.run {
                     self.profile = currentUserProfile
-                    self.notifications = currentUserProfile.notifications ?? []
                 }
             } catch {
                 print("error while loading profile: \(error.localizedDescription)")
@@ -46,7 +25,6 @@ class CurrentProfile: ObservableObject {
                     let currentUserProfile = try await repository.profile.getById(id: id)
                     await MainActor.run {
                         self.profile = currentUserProfile
-                        self.notifications = currentUserProfile.notifications ?? []
                     }
                 } catch {
                     print("error while loading profile: \(error)")
@@ -67,6 +45,8 @@ class CurrentProfile: ObservableObject {
 
 public struct CurrentProfileProviderView<RootView: View>: View {
     @StateObject var currentProfile = CurrentProfile()
+    @StateObject var notificationManager = NotificationManager()
+
     let userId: UUID
     let rootView: () -> RootView
     
@@ -93,8 +73,10 @@ public struct CurrentProfileProviderView<RootView: View>: View {
     public var body: some View {
         rootView()
             .environmentObject(currentProfile)
+            .environmentObject(notificationManager)
             .task {
                 currentProfile.get(id: repository.auth.getCurrentUserId())
+                notificationManager.getAll()
             }
             .preferredColorScheme(getColorScheme(colorScheme: currentProfile.profile?.settings?.colorScheme))
     }

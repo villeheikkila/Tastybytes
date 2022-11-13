@@ -130,7 +130,7 @@ extension AppDelegate: MessagingDelegate {
         if let fcmToken = fcmToken {
             Task {
                 switch await repository.profile.uploadPushNotificationToken(token: Profile.PushNotificationToken(firebaseRegistrationToken: fcmToken)) {
-                case .success(_):
+                case .success():
                     break
                 case let .failure(error):
                     print("Couldn't save FCM (\(String(describing: fcmToken))): \(error)")

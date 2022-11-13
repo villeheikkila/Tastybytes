@@ -9,6 +9,22 @@ extension Subcategory: Hashable {
     }
 }
 
+extension Subcategory {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "subcategories"
+        let saved = "id, name"
+        
+        switch queryType {
+        case let .joinedCategory(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, Category.getQuery(.saved(true))), withTableName)
+        }
+    }
+    
+    enum QueryType {
+        case joinedCategory(_ withTableName: Bool)
+    }
+}
+
 struct SubcategoryJoinedWithCategory: Identifiable {
     let id: Int
     let name: String

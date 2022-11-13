@@ -18,6 +18,30 @@ struct Company: Identifiable {
     
 }
 
+extension Company {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "companies"
+        let saved = "id, name, logo_url"
+        let owner = "companies (id, name)"
+        let joined = "id, name, logo_url, companies (id, name), brands (id, name, sub_brands (id, name, products (id, name, description, subcategories (id, name, categories (id, name)))))"
+        
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .saved(withTableName):
+            return queryWithTableName(tableName, saved, withTableName)
+        case let .joinedBrandSubcategoriesOwner(withTableName):
+            return queryWithTableName(tableName, saved, withTableName)
+        }
+    }
+    
+    enum QueryType {
+        case tableName
+        case saved(_ withTableName: Bool)
+        case joinedBrandSubcategoriesOwner(_ withTableName: Bool)
+    }
+}
+
 extension Company: Hashable {
     static func == (lhs: Company, rhs: Company) -> Bool {
         return lhs.id == rhs.id

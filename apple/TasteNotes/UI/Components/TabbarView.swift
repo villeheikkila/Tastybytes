@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TabbarView: View {
     @EnvironmentObject var currentProfile: CurrentProfile
+    @EnvironmentObject var notificationManager: NotificationManager
 
     var body: some View {
         WithProfile {
@@ -22,7 +23,7 @@ struct TabbarView: View {
                         Image(systemName: "bell")
                         Text("Notifications")
                     }
-                    .badge(currentProfile.notifications.count)
+                    .badge(notificationManager.notifications.count)
                 ProfileScreenView(profile: profile)
                     .tabItem {
                         Image(systemName: "person.fill")

@@ -38,6 +38,22 @@ extension Friend: Hashable {
     }
 }
 
+extension Friend {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "friends"
+        let joined = "id, status, sender:user_id_1 (\(Profile.getQuery(.saved(false)))), receiver:user_id_2 (\(Profile.getQuery(.saved(false))))"
+
+        switch queryType {
+        case let .joined(withTableName):
+            return queryWithTableName(tableName, joined, withTableName)
+        }
+    }
+
+    enum QueryType {
+        case joined(_ withTableName: Bool)
+    }
+}
+
 extension Friend: Decodable {
     enum CodingKeys: String, CodingKey {
         case id

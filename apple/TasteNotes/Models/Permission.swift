@@ -9,6 +9,26 @@ extension Permission: Hashable {
     }
 }
 
+extension Permission {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "permissions"
+        let saved = "id, name"
+
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .saved(withTableName):
+            return queryWithTableName(tableName, saved, withTableName)
+        }
+    }
+    
+    enum QueryType {
+        case tableName
+        case saved(_ withTableName: Bool)
+    }
+}
+
+
 enum PermissionName: String, Decodable, Equatable {
     case canDeleteProducts = "can_delete_products"
     case canDeleteCompanies = "can_delete_companies"

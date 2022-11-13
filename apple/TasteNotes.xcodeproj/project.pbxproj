@@ -82,6 +82,7 @@
 		5CE9008C291FCB71003DE697 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008B291FCB71003DE697 /* SplashScreenView.swift */; };
 		5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */; };
 		5CE90091292101C8003DE697 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE90090292101C8003DE697 /* AboutView.swift */; };
+		5CE9009329211AC9003DE697 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9009229211AC9003DE697 /* NotificationManager.swift */; };
 		5CED432028FAB5F5003F8194 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED431F28FAB5F5003F8194 /* ViewExtensions.swift */; };
 		5CED432228FAC01C003F8194 /* UserSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED432128FAC01C003F8194 /* UserSheetView.swift */; };
 		5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 5CED432428FBF6B0003F8194 /* AlertToast */; };
@@ -181,6 +182,7 @@
 		5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenManager.swift; sourceTree = "<group>"; };
 		5CE9008F291FE7C1003DE697 /* TasteNotesRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TasteNotesRelease.entitlements; sourceTree = "<group>"; };
 		5CE90090292101C8003DE697 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		5CE9009229211AC9003DE697 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		5CED431F28FAB5F5003F8194 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		5CED432128FAC01C003F8194 /* UserSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSheetView.swift; sourceTree = "<group>"; };
 		5CED432728FD417E003F8194 /* ProductSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSheetView.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				5C989DAE2901B8A400BBC5A7 /* UserProviderView.swift */,
 				5C989DB92901D2C700BBC5A7 /* ProfileProviderView.swift */,
 				5CFF4D722908718600BBA1F6 /* ToastProvider.swift */,
+				5CE9009229211AC9003DE697 /* NotificationManager.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -586,6 +589,7 @@
 				5CED432A28FD4E17003F8194 /* CategoryRepository.swift in Sources */,
 				5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */,
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
+				5CE9009329211AC9003DE697 /* NotificationManager.swift in Sources */,
 				5C11ECAF28EECC8500CCDE6A /* AuthScreenView.swift in Sources */,
 				5CFF4D732908718600BBA1F6 /* ToastProvider.swift in Sources */,
 				5CC2FE912919774A002BDF83 /* Location.swift in Sources */,

@@ -14,7 +14,7 @@ struct CheckIn: Identifiable {
     let variant: ProductVariant?
     let servingStyle: ServingStyle?
     let location: Location?
-    
+
     func isEmpty() -> Bool {
         return [rating == nil, (review == nil || review == ""), flavors.count == 0].allSatisfy { $0 }
     }
@@ -31,6 +31,28 @@ struct CheckIn: Identifiable {
         }
     }
     
+}
+
+extension CheckIn {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "check_ins"
+        let saved = "id, rating, review, image_url, created_at"
+        let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.saved(true))))"
+        let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
+        let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
+        
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .joined(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.saved(true)), Product.getQuery(.joinedBrandSubcategories(true)), CheckInReaction.getQuery(.joinedProfile(true)), checkInTaggedProfilesJoined, checkInFlavorsJoined, productVariantJoined, ServingStyle.getQuery(.saved(true))), withTableName)
+        }
+    }
+    
+    enum QueryType {
+        case tableName
+        case joined(_ withTableName: Bool)
+    }
 }
 
 extension CheckIn: Hashable {
