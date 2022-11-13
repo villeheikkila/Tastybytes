@@ -16,8 +16,10 @@ struct ActivityScreenView: View {
 
     var body: some View {
         InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, initialLoad: {
-            viewModel.loadAndDismissSplashScreen(splashScreenState: splashScreenManager.state, dismissSplashScreen: {
-                splashScreenManager.dismiss()
+            viewModel.fetchActivityFeedItems(onComplete: {
+                if splashScreenManager.state != .finished {
+                    splashScreenManager.dismiss()
+                }
             })
         }, loadMore: {
             viewModel.fetchActivityFeedItems()
@@ -40,7 +42,7 @@ extension ActivityScreenView {
     class ViewModel: ObservableObject {
         @Published var checkIns = [CheckIn]()
         @Published var isLoading = false
-        let pageSize = 5
+        let pageSize = 10
         var page = 0
 
         func refresh() {
@@ -58,35 +60,8 @@ extension ActivityScreenView {
                 checkIns[index] = checkIn
             }
         }
-        
-        func loadAndDismissSplashScreen(splashScreenState: SplashScreenState, dismissSplashScreen: @escaping () -> Void) {
-            let (from, to) = getPagination(page: page, size: pageSize)
-            
-            Task {
-                do {
-                    await MainActor.run {
-                        self.isLoading = true
-                    }
-                    
-                    let checkIns = try await repository.checkIn.getActivityFeed(from: from, to: to)
-                    
-                    await MainActor.run {
-                        self.checkIns.append(contentsOf: checkIns)
-                        self.page += 1
-                        
-                        if splashScreenState != .finished {
-                            dismissSplashScreen()
-                        } else {
-                            self.isLoading = false
-                        }
-                    }
-                } catch {
-                    print("error: \(error)")
-                }
-            }
-        }
 
-        func fetchActivityFeedItems() {
+        func fetchActivityFeedItems(onComplete: (() -> Void)? = nil) {
             let (from, to) = getPagination(page: page, size: pageSize)
             Task {
                 await MainActor.run {
@@ -100,6 +75,10 @@ extension ActivityScreenView {
                         self.checkIns.append(contentsOf: checkIns)
                         self.page += 1
                         self.isLoading = false
+                    }
+                    
+                    if let onComplete = onComplete {
+                        onComplete()
                     }
                 } catch {
                     print("error: \(error)")
