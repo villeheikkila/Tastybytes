@@ -31,7 +31,7 @@ where Data: RandomAccessCollection, Data.Element: Hashable, Data.Element: Identi
         ScrollView() {
             header()
             LazyVStack {
-                ForEach(data, id: \.id) { item in
+                ForEach(data, id: \.self) { item in
                     content(item)
                         .onAppear {
                             if item == data.last && isLoading != true {
@@ -39,7 +39,6 @@ where Data: RandomAccessCollection, Data.Element: Hashable, Data.Element: Identi
                             }
                         }
                 }
-                
             }
             
             if isLoading {

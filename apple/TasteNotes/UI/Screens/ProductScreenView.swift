@@ -105,7 +105,7 @@ extension ProductScreenView {
         @Published var showDeleteProductConfirmationDialog = false
         @Published var showEditSuggestionSheet = false
 
-        let pageSize = 5
+        let pageSize = 10
         var page = 0
 
         func refresh(productId: Int) {
