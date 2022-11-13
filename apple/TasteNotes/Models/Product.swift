@@ -2,9 +2,31 @@ struct Product: Identifiable, Decodable, Hashable {
     let id: Int
     let name: String
     let description: String?
-    
+
     static func == (lhs: Product, rhs: Product) -> Bool {
         return lhs.id == rhs.id
+    }
+}
+
+extension Product {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "products"
+        let saved = "id, name, description"
+        
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .saved(withTableName):
+            return queryWithTableName(tableName, saved, withTableName)
+        case let .joinedBrandSubcategories(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, SubBrandJoinedWithBrand.getQuery(.joinedBrand(true)), Subcategory.getQuery(.joinedCategory(true))), withTableName)
+        }
+    }
+
+    enum QueryType {
+        case tableName
+        case saved(_ withTableName: Bool)
+        case joinedBrandSubcategories(_ withTableName: Bool)
     }
 }
 
@@ -14,11 +36,11 @@ struct ProductJoined: Identifiable {
     let description: String?
     let subBrand: SubBrandJoinedWithBrand
     let subcategories: [SubcategoryJoinedWithCategory]
-    
+
     func getCategory() -> CategoryName? {
         return subcategories.first?.category.name
     }
-    
+
     func getDisplayName(_ part: ProductNameParts) -> String {
         switch part {
         case .full:
@@ -57,24 +79,24 @@ extension ProductJoined: Decodable {
         case subBrand = "sub_brands"
         case subcategories
     }
-    
+
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try values.decode(Int.self, forKey: .id)
-        self.name = try values.decode(String.self, forKey: .name)
-        self.description = try values.decodeIfPresent(String.self, forKey: .description)
-        self.subBrand = try values.decode(SubBrandJoinedWithBrand.self, forKey: .subBrand)
-        self.subcategories = try values.decode([SubcategoryJoinedWithCategory].self, forKey: .subcategories)
+        id = try values.decode(Int.self, forKey: .id)
+        name = try values.decode(String.self, forKey: .name)
+        description = try values.decodeIfPresent(String.self, forKey: .description)
+        subBrand = try values.decode(SubBrandJoinedWithBrand.self, forKey: .subBrand)
+        subcategories = try values.decode([SubcategoryJoinedWithCategory].self, forKey: .subcategories)
     }
 }
 
 extension ProductJoined {
     init(company: Company, product: ProductJoinedCategory, subBrand: SubBrandJoinedProduct, brand: BrandJoinedSubBrandsJoinedProduct) {
-        self.id = product.id
-        self.name = product.name
-        self.description = product.name
+        id = product.id
+        name = product.name
+        description = product.name
         self.subBrand = SubBrandJoinedWithBrand(id: subBrand.id, name: subBrand.name, brand: BrandJoinedWithCompany(id: brand.id, name: brand.name, brandOwner: company))
-        self.subcategories = product.subcategories
+        subcategories = product.subcategories
     }
 }
 
@@ -83,31 +105,31 @@ struct ProductJoinedCategory: Identifiable, Decodable, Hashable {
     let name: String
     let description: String?
     let subcategories: [SubcategoryJoinedWithCategory]
-    
+
     static func == (lhs: ProductJoinedCategory, rhs: ProductJoinedCategory) -> Bool {
         return lhs.id == rhs.id
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case name
         case description
         case subcategories
     }
-    
+
     init(id: Int, name: String, description: String?, subcategories: [SubcategoryJoinedWithCategory]) {
         self.id = id
         self.name = name
         self.description = description
         self.subcategories = subcategories
     }
-    
+
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try values.decode(Int.self, forKey: .id)
-        self.name = try values.decode(String.self, forKey: .name)
-        self.description = try values.decodeIfPresent(String.self, forKey: .description)
-        self.subcategories = try values.decode([SubcategoryJoinedWithCategory].self, forKey: .subcategories)
+        id = try values.decode(Int.self, forKey: .id)
+        name = try values.decode(String.self, forKey: .name)
+        description = try values.decodeIfPresent(String.self, forKey: .description)
+        subcategories = try values.decode([SubcategoryJoinedWithCategory].self, forKey: .subcategories)
     }
 }
 
@@ -118,17 +140,15 @@ struct NewProductParams: Encodable {
     let p_brand_id: Int
     let p_sub_category_ids: [Int]
     let p_sub_brand_id: Int?
-    
-    
+
     init(name: String, description: String?, categoryId: Int, brandId: Int, subBrandId: Int?, subCategoryIds: [Int]) {
-        self.p_name = name
-        self.p_description = description
-        self.p_category_id = categoryId
-        self.p_sub_brand_id = subBrandId
-        self.p_sub_category_ids = subCategoryIds
-        self.p_brand_id = brandId
+        p_name = name
+        p_description = description
+        p_category_id = categoryId
+        p_sub_brand_id = subBrandId
+        p_sub_category_ids = subCategoryIds
+        p_brand_id = brandId
     }
-    
 }
 
 struct NewProductEditSuggestionParams: Encodable {
@@ -138,17 +158,15 @@ struct NewProductEditSuggestionParams: Encodable {
     let p_category_id: Int
     let p_sub_category_ids: [Int]
     let p_sub_brand_id: Int?
-    
-    
+
     init(productId: Int, name: String, description: String?, categoryId: Int, subBrandId: Int?, subCategoryIds: [Int]) {
-        self.p_product_id = productId
-        self.p_name = name
-        self.p_description = description
-        self.p_category_id = categoryId
-        self.p_sub_brand_id = subBrandId
-        self.p_sub_category_ids = subCategoryIds
+        p_product_id = productId
+        p_name = name
+        p_description = description
+        p_category_id = categoryId
+        p_sub_brand_id = subBrandId
+        p_sub_category_ids = subCategoryIds
     }
-    
 }
 
 struct ProductSummary {
@@ -159,7 +177,7 @@ struct ProductSummary {
 
 struct GetProductSummaryParams: Encodable {
     let p_product_id: Int
-    
+
     init(id: Int) {
         p_product_id = id
     }
@@ -171,7 +189,7 @@ extension ProductSummary: Decodable {
         case averageRating = "average_rating"
         case currentUserAverageRating = "current_user_average_rating"
     }
-    
+
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         totalCheckIns = try values.decode(Int.self, forKey: .totalCheckIns)

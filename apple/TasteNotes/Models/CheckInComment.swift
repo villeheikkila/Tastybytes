@@ -30,6 +30,25 @@ extension CheckInComment: Decodable {
     }
 }
 
+extension CheckInComment {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "check_in_comments"
+        let saved = "id, content, created_at"
+        
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .joinedProfile(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.saved(true))), withTableName)
+        }
+    }
+    
+    enum QueryType {
+        case tableName
+        case joinedProfile(_ withTableName: Bool)
+    }
+}
+
 struct NewCheckInComment: Encodable {
     let content: String
     let check_in_id: Int

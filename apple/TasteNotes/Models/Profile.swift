@@ -13,6 +13,28 @@ struct Profile: Identifiable {
 }
 
 extension Profile {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "profiles"
+        let saved = "id, username, first_name, last_name, avatar_url, name_display"
+
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .saved(withTableName):
+            return queryWithTableName(tableName, saved, withTableName)
+        case let .extended(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, ProfileSettings.getQuery(.saved(true)), Role.getQuery(.joined(true))), withTableName)
+        }
+    }
+    
+    enum QueryType {
+        case tableName
+        case saved(_ withTableName: Bool)
+        case extended(_ withTableName: Bool)
+    }
+}
+
+extension Profile {
     func getPreferredName() -> String {
         switch nameDisplay {
         case .username:
@@ -143,6 +165,25 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
         sendTaggedCheckInNotifications = try values.decode(Bool.self, forKey: .sendTaggedCheckInNotifications)
         sendFriendRequestNotifications = try values.decode(Bool.self, forKey: .sendFriendRequestNotifications)
 
+    }
+}
+
+extension ProfileSettings {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "profile_settings"
+        let saved = "id, color_scheme, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications"
+
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .saved(withTableName):
+            return queryWithTableName(tableName, saved, withTableName)
+        }
+    }
+    
+    enum QueryType {
+        case tableName
+        case saved(_ withTableName: Bool)
     }
 }
 

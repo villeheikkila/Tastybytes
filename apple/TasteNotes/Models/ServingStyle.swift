@@ -1,3 +1,8 @@
+struct ServingStyle: Identifiable {
+    let id: Int
+    let name: ServingStyleName
+}
+
 enum ServingStyleName: String, CaseIterable, Decodable, Identifiable, Equatable {
     var id: Self { self }
     case bottle
@@ -5,10 +10,23 @@ enum ServingStyleName: String, CaseIterable, Decodable, Identifiable, Equatable 
     case none
 }
 
+extension ServingStyle {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "serving_styles"
+        let saved = "id, name"
 
-struct ServingStyle: Identifiable {
-    let id: Int
-    let name: ServingStyleName
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .saved(withTableName):
+            return queryWithTableName(tableName, saved, withTableName)
+        }
+    }
+    
+    enum QueryType {
+        case tableName
+        case saved(_ withTableName: Bool)
+    }
 }
 
 extension ServingStyle: Decodable {

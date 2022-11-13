@@ -15,8 +15,8 @@ protocol CheckInRepository {
 
 struct SupabaseCheckInRepository: CheckInRepository {
     let client: SupabaseClient
-    private let tableName = "check_ins"
-    private let checkInJoined = "id, rating, review, image_url, created_at, serving_styles (id, name), profiles (id, username, first_name, last_name, avatar_url, name_display), products (id, name, description, sub_brands (id, name, brands (id, name, companies (id, name, logo_url))), subcategories (id, name, categories (id, name))), check_in_reactions (id, created_by, profiles (id, username, first_name, last_name, avatar_url, name_display)), check_in_flavors (flavors (id, name)), check_in_tagged_profiles (profiles (id, username, first_name, last_name, avatar_url, name_display)), product_variants (id, companies (id, name, logo_url)), locations (id, name, title, longitude, latitude, country_code, countries (country_code, name, emoji))"
+    private let tableName = CheckIn.getQuery(.tableName)
+    private let checkInJoined = CheckIn.getQuery(.joined(false))
     
     func getActivityFeed(from: Int, to: Int) async throws -> [CheckIn] {
         return try await client

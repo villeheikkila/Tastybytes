@@ -8,15 +8,14 @@ protocol CheckInReactionsRepository {
 
 struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
     let client: SupabaseClient
-    private let tableName = "check_in_reactions"
-    private let joinedWithProfile = "id, profiles (id, username, avatar_url, name_display)"
+    private let tableName = CheckInReaction.getQuery(.tableName)
     
     func insert(newCheckInReaction: NewCheckInReaction) async throws -> CheckInReaction {
         return try await client
             .database
             .from(tableName)
             .insert(values: newCheckInReaction, returning: .representation)
-            .select(columns: joinedWithProfile)
+            .select(columns: CheckInReaction.getQuery(.joinedProfile(false)))
             .limit(count: 1)
             .single()
             .execute()

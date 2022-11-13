@@ -87,6 +87,15 @@ func joinOptionalStrings(_ arr: [String?]) -> String {
     return arr.compactMap({ $0 }).joined(separator: " ")
 }
 
+
 func formatRating(_ rating: Double?) -> String {
     return String(format: "%.2f", rating ?? "")
+}
+
+func queryWithTableName(_ tableName: String, _ query: String, _ withTableName: Bool) -> String {
+    return withTableName ? "\(tableName) (\(query))" : query
+}
+
+func joinWithComma(_ arr: String...) -> String {
+    return arr.joined(separator: ", ")
 }

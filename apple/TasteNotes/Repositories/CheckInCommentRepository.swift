@@ -2,15 +2,15 @@ import Supabase
 
 protocol CheckInCommentRepository {
     func insert(newCheckInComment: NewCheckInComment) async -> Result<CheckInComment, Error>
-    func update(updateCheckInComment: UpdateCheckInComment) async throws -> CheckInComment
+    func update(updateCheckInComment: UpdateCheckInComment) async -> Result<CheckInComment, Error>
     func getByCheckInId(id: Int) async throws -> [CheckInComment]
     func deleteById(id: Int) async throws -> Void
 }
 
 struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     let client: SupabaseClient
-    private let tableName = "check_in_comments"
-    private let joinedWithProfile = "id, content, created_at, profiles (id, username, avatar_url, name_display))"
+    private let tableName = CheckInComment.getQuery(.tableName)
+    private let joinedWithProfile = CheckInComment.getQuery(.joinedProfile(false))
     
     func insert(newCheckInComment: NewCheckInComment) async -> Result<CheckInComment, Error> {
         do {
@@ -30,16 +30,23 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
 
     }
     
-    func update(updateCheckInComment: UpdateCheckInComment) async throws -> CheckInComment {
-        return try await client
-            .database
-            .from(tableName)
-            .update(values: updateCheckInComment, returning: .representation)
-            .eq(column: "id", value: updateCheckInComment.id)
-            .select(columns: joinedWithProfile)
-            .single()
-            .execute()
-            .decoded(to: CheckInComment.self)
+    func update(updateCheckInComment: UpdateCheckInComment) async -> Result<CheckInComment, Error> {
+        do {
+            let response = try await client
+                .database
+                .from(tableName)
+                .update(values: updateCheckInComment, returning: .representation)
+                .eq(column: "id", value: updateCheckInComment.id)
+                .select(columns: joinedWithProfile)
+                .single()
+                .execute()
+                .decoded(to: CheckInComment.self)
+            
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+        
     }
     
     func getByCheckInId(id: Int) async throws -> [CheckInComment] {

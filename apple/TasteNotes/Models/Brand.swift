@@ -52,6 +52,26 @@ extension BrandJoinedWithCompany: Decodable {
     }
 }
 
+extension BrandJoinedWithCompany {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "brands"
+        let saved = "id, name"
+        
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .joined(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, Company.getQuery(.saved(true))), withTableName)
+        }
+    }
+    
+    enum QueryType {
+        case tableName
+        case joined(_ withTableName: Bool)
+    }
+}
+
+
 struct NewBrand: Encodable {
     let name: String
     let brand_owner_id: Int

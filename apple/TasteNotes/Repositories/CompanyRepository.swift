@@ -10,8 +10,8 @@ protocol CompanyRepository {
 
 struct SupabaseCompanyRepository: CompanyRepository {
     let client: SupabaseClient
-    private let tableName = "companies"
-    private let saved = "id, name, logo_url"
+    private let tableName = Company.getQuery(.tableName)
+    private let saved = Company.getQuery(.saved(false))
     private let joined = "id, name, logo_url, companies (id, name), brands (id, name, sub_brands (id, name, products (id, name, description, subcategories (id, name, categories (id, name)))))"
     
     func getById(id: Int) async throws -> CompanyJoined {

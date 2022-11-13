@@ -11,8 +11,8 @@ protocol ProductRepository {
 
 struct SupabaseProductRepository: ProductRepository {
     let client: SupabaseClient
-    private let tableName = "products"
-    private let joined = "id, name, description, sub_brands (id, name, brands (id, name, companies (id, name))), subcategories (id, name, categories (id, name))"
+    private let tableName = Product.getQuery(.tableName)
+    private let joined = Product.getQuery(.joinedBrandSubcategories(false))
     
     
     func search(searchTerm: String) async throws -> [ProductJoined] {
