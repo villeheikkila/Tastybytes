@@ -68,20 +68,19 @@ extension ActivityScreenView {
                     self.isLoading = true
                 }
 
-                do {
-                    let checkIns = try await repository.checkIn.getActivityFeed(from: from, to: to)
-
+                switch await repository.checkIn.getActivityFeed(from: from, to: to) {
+                case let .success(checkIns):
                     await MainActor.run {
                         self.checkIns.append(contentsOf: checkIns)
                         self.page += 1
                         self.isLoading = false
                     }
-                    
+
                     if let onComplete = onComplete {
                         onComplete()
                     }
-                } catch {
-                    print("error: \(error)")
+                case let .failure(error):
+                    print(error)
                 }
             }
         }

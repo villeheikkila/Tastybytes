@@ -171,12 +171,15 @@ extension ProfileScreenView {
                     self.isLoading = true
                 }
 
-                let checkIns = try await repository.checkIn.getByProfileId(id: userId, from: from, to: to)
-
-                await MainActor.run {
-                    self.checkIns.append(contentsOf: checkIns)
-                    self.page += 1
-                    self.isLoading = false
+                switch await repository.checkIn.getByProfileId(id: userId, from: from, to: to) {
+                case let .success(checkIns):
+                    await MainActor.run {
+                        self.checkIns.append(contentsOf: checkIns)
+                        self.page += 1
+                        self.isLoading = false
+                    }
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
@@ -184,12 +187,14 @@ extension ProfileScreenView {
         func getProfileData(userId: UUID) {
             Task {
                 do {
-                    let summary = try await repository.checkIn.getSummaryByProfileId(id: userId)
-                    await MainActor.run {
-                        self.profileSummary = summary
+                    switch await repository.checkIn.getSummaryByProfileId(id: userId) {
+                    case let .success(summary):
+                        await MainActor.run {
+                            self.profileSummary = summary
+                        }
+                    case let .failure(error):
+                        print(error)
                     }
-                } catch {
-                    print("error: \(error)")
                 }
             }
         }

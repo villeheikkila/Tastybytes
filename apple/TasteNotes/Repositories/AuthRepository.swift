@@ -6,8 +6,8 @@ import Supabase
 protocol AuthRepository {
     func getCurrentUserId() -> UUID
     func getCurrentUser() -> User?
-    func logOut() async throws -> Void
-    func sendEmailVerification(email: String) async throws -> Void
+    func logOut() async -> Result<Void, Error>
+    func sendEmailVerification(email: String) async -> Result<Void, Error>
 }
 
 struct SupabaseAuthRepository: AuthRepository {
@@ -29,15 +29,27 @@ struct SupabaseAuthRepository: AuthRepository {
             .user
     }
     
-    func logOut() async throws -> Void {
-        try await client
-            .auth
-            .signOut()
+    func logOut() async -> Result<Void, Error> {
+        do {
+            try await client
+                .auth
+                .signOut()
+            
+            return .success(Void())
+        } catch {
+            return .failure(error)
+        }
     }
     
-    func sendEmailVerification(email: String) async throws -> Void {
-        try await client
-            .auth
-            .update(user: UserAttributes(email: email))
+    func sendEmailVerification(email: String) async -> Result<Void, Error> {
+        do {
+            try await client
+                .auth
+                .update(user: UserAttributes(email: email))
+            
+            return .success(Void())
+        } catch {
+            return .failure(error)
+        }
     }
 }

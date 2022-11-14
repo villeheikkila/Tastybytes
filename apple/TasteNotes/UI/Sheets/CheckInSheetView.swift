@@ -85,7 +85,7 @@ struct CheckInSheetView: View {
                             }
                         }
                     }
-                    
+
                     Button(action: {
                         viewModel.activateSheet(.location)
                     }) {
@@ -233,7 +233,7 @@ extension CheckInSheetView {
                 self.pickedFlavors = flavors
             }
         }
-        
+
         func setLocation(_ location: Location) {
             DispatchQueue.main.async {
                 self.location = location
@@ -261,10 +261,10 @@ extension CheckInSheetView {
             let updateCheckInParams = UpdateCheckInParams(checkIn: checkIn, product: checkIn.product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyles.first(where: { $0.name == servingStyle }), manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
 
             Task {
-                do {
-                    let updatedCheckIn = try await repository.checkIn.update(updateCheckInParams: updateCheckInParams)
+                switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
+                case let .success(updatedCheckIn):
                     onUpdate(updatedCheckIn)
-                } catch {
+                case let .failure(error):
                     print(error)
                 }
             }
@@ -274,32 +274,32 @@ extension CheckInSheetView {
             let newCheckParams = NewCheckInParams(product: product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyles.first(where: { $0.name == servingStyle }), manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
 
             Task {
-                do {
-                    let newCheckIn = try await repository.checkIn.create(newCheckInParams: newCheckParams)
-
+                switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
+                case let .success(newCheckIn):
                     if let data = image?.jpegData(compressionQuality: 0.3) {
-                       _ = try await repository.checkIn.uploadImage(id: newCheckIn.id, profileId: repository.auth.getCurrentUserId(), data: data)
+                        switch await repository.checkIn.uploadImage(id: newCheckIn.id, profileId: repository.auth.getCurrentUserId(), data: data) {
+                        default:
+                            break
+                        }
                     }
 
                     onCreation(newCheckIn)
-
-                } catch {
-                    print("error: \(error)")
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
 
         func loadInitialData(product: ProductJoined) {
-            Task {
-                if let categoryId = product.subcategories.first?.category.id {
-                    do {
-                        let categoryServingStyles = try await repository.category.getServingStylesByCategory(categoryId: categoryId)
-
+            if let categoryId = product.subcategories.first?.category.id {
+                Task {
+                    switch await repository.category.getServingStylesByCategory(categoryId: categoryId) {
+                    case let .success(categoryServingStyles):
                         await MainActor.run {
                             self.servingStyles = categoryServingStyles.servingStyles
                         }
-                    } catch {
-                        print("error: \(error)")
+                    case let .failure(error):
+                        print(error)
                     }
                 }
             }

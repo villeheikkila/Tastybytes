@@ -6,8 +6,7 @@ struct FlavorSheetView: View {
     let onComplete: (_ selectedFlavors: [Flavor]) -> Void
     @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
-    
-    
+
     var body: some View {
         NavigationStack {
             List(viewModel.filteredFlavors, id: \.self) { flavor in
@@ -36,7 +35,6 @@ struct FlavorSheetView: View {
             .searchable(text: $viewModel.searchText)
         }
     }
-
 }
 
 extension FlavorSheetView {
@@ -45,17 +43,16 @@ extension FlavorSheetView {
         @Published var pickedFlavors = [Flavor]()
         @Published var showToast = false
         @Published var searchText = ""
-        
+
         func toggleFlavor(_ flavor: Flavor) {
             if pickedFlavors.contains(flavor) {
-                    self.pickedFlavors.remove(object: flavor)
-                
+                pickedFlavors.remove(object: flavor)
+
             } else {
-                    self.pickedFlavors.append(flavor)
-                
+                pickedFlavors.append(flavor)
             }
         }
-        
+
         var filteredFlavors: [Flavor] {
             if searchText.isEmpty {
                 return availableFlavors
@@ -63,20 +60,19 @@ extension FlavorSheetView {
                 return availableFlavors.filter { $0.name.lowercased().contains(searchText.lowercased()) }
             }
         }
-        
+
         func loadFlavors(_ initialFlavors: [Flavor]) {
-                self.pickedFlavors = initialFlavors
-            
-            
-            if (availableFlavors.count == 0) {
+            pickedFlavors = initialFlavors
+
+            if availableFlavors.count == 0 {
                 Task {
-                    do {
-                        let flavors = try await repository.flavor.getAll()
+                    switch await repository.flavor.getAll() {
+                    case let .success(flavors):
                         await MainActor.run {
                             self.availableFlavors = flavors
                         }
-                    } catch {
-                        print("error while loading flavors: \(error)")
+                    case let .failure(error):
+                        print(error)
                     }
                 }
             }

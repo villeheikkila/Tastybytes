@@ -124,9 +124,13 @@ extension ProductScreenView {
 
         func loadProductSummary(_ product: ProductJoined) {
             Task {
-                let summary = try await repository.product.getSummaryById(id: product.id)
-                await MainActor.run {
-                    self.productSummary = summary
+                switch await repository.product.getSummaryById(id: product.id) {
+                case let .success(summary):
+                    await MainActor.run {
+                        self.productSummary = summary
+                    }
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
@@ -144,10 +148,11 @@ extension ProductScreenView {
 
         func deleteProduct(_ product: ProductJoined) {
             Task {
-                do {
-                    try await repository.product.delete(id: product.id)
-                } catch {
-                    print("error \(error)")
+                switch await repository.product.delete(id: product.id) {
+                case .success():
+                    print("TODO HANDLE THIS!!")
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
@@ -166,12 +171,15 @@ extension ProductScreenView {
                     self.isLoading = true
                 }
 
-                let checkIns = try await repository.checkIn.getByProductId(id: productId, from: from, to: to)
-
-                await MainActor.run {
-                    self.checkIns.append(contentsOf: checkIns)
-                    self.page += 1
-                    self.isLoading = false
+                switch await repository.checkIn.getByProductId(id: productId, from: from, to: to) {
+                case let .success(checkIns):
+                    await MainActor.run {
+                        self.checkIns.append(contentsOf: checkIns)
+                        self.page += 1
+                        self.isLoading = false
+                    }
+                case let .failure(error):
+                    print(error)
                 }
             }
         }

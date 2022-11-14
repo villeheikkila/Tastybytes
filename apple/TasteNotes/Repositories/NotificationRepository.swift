@@ -8,8 +8,8 @@ protocol NotificationRepository {
 
 struct SupabaseNotificationRepository: NotificationRepository {
     let client: SupabaseClient
-    
-    func getAll() async ->  Result<[Notification], Error> {
+
+    func getAll() async -> Result<[Notification], Error> {
         do {
             let response = try await client
                 .database
@@ -17,13 +17,13 @@ struct SupabaseNotificationRepository: NotificationRepository {
                 .select(columns: Notification.getQuery(.joined))
                 .execute()
                 .decoded(to: [Notification].self)
-            
+
             return .success(response)
         } catch {
             return .failure(error)
         }
     }
-    
+
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
@@ -32,11 +32,10 @@ struct SupabaseNotificationRepository: NotificationRepository {
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
-            
-            return .success(Void())
+
+            return .success(())
         } catch {
             return .failure(error)
         }
     }
 }
-

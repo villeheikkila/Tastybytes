@@ -5,7 +5,7 @@ import SwiftUI
 struct BlockedUsersScreenView: View {
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
-    
+
     var body: some View {
         List {
             if viewModel.blockedUsers.isEmpty {
@@ -29,32 +29,31 @@ extension BlockedUsersScreenView {
     @MainActor class ViewModel: ObservableObject {
         @Published var blockedUsers = [Friend]()
         @Published var error: Error?
-        
-        
+
         func unblockUser(id: Int) {
             Task {
-                do {
-                    try await repository.friend.delete(id: id)
+                switch await repository.friend.delete(id: id) {
+                case .success():
                     await MainActor.run {
                         self.blockedUsers.removeAll(where: { $0.id == id })
                     }
-                } catch {
+                case let .failure(error):
                     await MainActor.run {
                         self.error = error
                     }
                 }
             }
         }
-        
+
         func loadBlockedUsers(currentProfile: Profile?) {
             if let userId = currentProfile?.id {
                 Task {
-                    do {
-                        let blockedUsers = try await repository.friend.getByUserId(userId: userId, status: .blocked)
+                    switch await repository.friend.getByUserId(userId: userId, status: .blocked) {
+                    case let .success(blockedUsers):
                         await MainActor.run {
                             self.blockedUsers = blockedUsers
                         }
-                    } catch {
+                    case let .failure(error):
                         await MainActor.run {
                             self.error = error
                         }
@@ -68,7 +67,7 @@ extension BlockedUsersScreenView {
 struct BlockedUserListItemView: View {
     let profile: Profile
     let onUnblockUser: () -> Void
-    
+
     var body: some View {
         HStack(alignment: .center) {
             AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)

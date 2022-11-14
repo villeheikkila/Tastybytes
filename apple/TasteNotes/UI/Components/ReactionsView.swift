@@ -41,22 +41,28 @@ extension ReactionsView {
         }
 
         func reactToCheckIn(_ checkIn: CheckIn) {
-            let newCheckInReaction = NewCheckInReaction(checkInId: checkIn.id)
-
             Task {
-                let checkInReaction = try await repository.checkInReactions.insert(newCheckInReaction: newCheckInReaction)
-                await MainActor.run {
-                    self.checkInReactions.append(checkInReaction)
+                switch await repository.checkInReactions.insert(newCheckInReaction: NewCheckInReaction(checkInId: checkIn.id)) {
+                case let .success(checkInReaction):
+                    await MainActor.run {
+                        self.checkInReactions.append(checkInReaction)
+                    }
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
 
         func removeReaction(reactionId: Int) {
             Task {
-                try await repository.checkInReactions.delete(id: reactionId)
+                switch await repository.checkInReactions.delete(id: reactionId) {
+                case .success():
+                    await MainActor.run {
+                        self.checkInReactions.removeAll(where: { $0.id == reactionId })
+                    }
 
-                await MainActor.run {
-                    self.checkInReactions.removeAll(where: { $0.id == reactionId })
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
