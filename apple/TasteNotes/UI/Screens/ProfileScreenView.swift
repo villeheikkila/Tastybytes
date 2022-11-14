@@ -186,15 +186,13 @@ extension ProfileScreenView {
 
         func getProfileData(userId: UUID) {
             Task {
-                do {
-                    switch await repository.checkIn.getSummaryByProfileId(id: userId) {
-                    case let .success(summary):
-                        await MainActor.run {
-                            self.profileSummary = summary
-                        }
-                    case let .failure(error):
-                        print(error)
+                switch await repository.checkIn.getSummaryByProfileId(id: userId) {
+                case let .success(summary):
+                    await MainActor.run {
+                        self.profileSummary = summary
                     }
+                case let .failure(error):
+                    print(error)
                 }
             }
         }

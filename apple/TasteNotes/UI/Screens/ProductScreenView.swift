@@ -137,11 +137,11 @@ extension ProductScreenView {
 
         func deleteCheckIn(_ checkIn: CheckIn) {
             Task {
-                do {
-                    try await repository.checkIn.delete(id: checkIn.id)
+                switch await repository.checkIn.delete(id: checkIn.id) {
+                case .success():
                     self.checkIns.remove(object: checkIn)
-                } catch {
-                    print("error: \(error)")
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
