@@ -8,15 +8,12 @@ protocol CategoryRepository {
 
 struct SupabaseCategoryRepository: CategoryRepository {
     let client: SupabaseClient
-    private let categories = "categories"
-    private let joinedWithSubcategories = "id, name, subcategories (id, name)"
-    
     
     func getAllWithSubcategories() async throws -> [CategoryJoinedWithSubcategories] {
         return try await client
             .database
-            .from(categories)
-            .select(columns: joinedWithSubcategories)
+            .from(Category.getQuery(.tableName))
+            .select(columns: Category.getQuery(.joinedSubcategories(false)))
             .order(column: "name")
             .execute()
             .decoded(to: [CategoryJoinedWithSubcategories].self)
@@ -25,8 +22,8 @@ struct SupabaseCategoryRepository: CategoryRepository {
     func getServingStylesByCategory(categoryId: Int) async throws -> CategoryJoinedWithServingStyles {
         return try await client
             .database
-            .from("categories")
-            .select(columns: "id, name, serving_styles (id, name)")
+            .from(Category.getQuery(.tableName))
+            .select(columns: Category.getQuery(.joinedServingStyles(false)))
             .eq(column: "id", value: categoryId)
             .limit(count: 1)
             .single()

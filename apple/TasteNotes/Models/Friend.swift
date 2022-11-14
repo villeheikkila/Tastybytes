@@ -44,12 +44,15 @@ extension Friend {
         let joined = "id, status, sender:user_id_1 (\(Profile.getQuery(.saved(false)))), receiver:user_id_2 (\(Profile.getQuery(.saved(false))))"
 
         switch queryType {
+        case .tableName:
+            return tableName
         case let .joined(withTableName):
             return queryWithTableName(tableName, joined, withTableName)
         }
     }
 
     enum QueryType {
+        case tableName
         case joined(_ withTableName: Bool)
     }
 }

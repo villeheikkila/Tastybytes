@@ -8,12 +8,11 @@ protocol CheckInReactionsRepository {
 
 struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
     let client: SupabaseClient
-    private let tableName = CheckInReaction.getQuery(.tableName)
     
     func insert(newCheckInReaction: NewCheckInReaction) async throws -> CheckInReaction {
         return try await client
             .database
-            .from(tableName)
+            .from(CheckInReaction.getQuery(.tableName))
             .insert(values: newCheckInReaction, returning: .representation)
             .select(columns: CheckInReaction.getQuery(.joinedProfile(false)))
             .limit(count: 1)
@@ -25,7 +24,7 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
     func delete(id: Int) async throws {
         try await client
             .database
-            .from(tableName)
+            .from(CheckInReaction.getQuery(.tableName))
             .delete().eq(column: "id", value: id)
             .execute()
     }

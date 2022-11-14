@@ -34,7 +34,7 @@ struct SupabaseProductRepository: ProductRepository {
     func getProductById(id: Int) async throws -> ProductJoined {
         return try await client
             .database
-            .from("products")
+            .from(tableName)
             .select(columns: joined)
             .eq(column: "id", value: id)
             .limit(count: 1)

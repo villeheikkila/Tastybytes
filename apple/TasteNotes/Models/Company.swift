@@ -22,8 +22,7 @@ extension Company {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "companies"
         let saved = "id, name, logo_url"
-        let owner = "companies (id, name)"
-        let joined = "id, name, logo_url, companies (id, name), brands (id, name, sub_brands (id, name, products (id, name, description, subcategories (id, name, categories (id, name)))))"
+        let owner = queryWithTableName(tableName, saved, true)
         
         switch queryType {
         case .tableName:
@@ -31,7 +30,7 @@ extension Company {
         case let .saved(withTableName):
             return queryWithTableName(tableName, saved, withTableName)
         case let .joinedBrandSubcategoriesOwner(withTableName):
-            return queryWithTableName(tableName, saved, withTableName)
+            return queryWithTableName(tableName, joinWithComma(saved, owner, Brand.getQuery(.joined(true))), withTableName)
         }
     }
     

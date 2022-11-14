@@ -8,14 +8,12 @@ protocol FlavorRepository {
 
 struct SupabaseFlavorRepository: FlavorRepository {
     let client: SupabaseClient
-    private let tableName = "flavors"
-    private let saved = "id, name"
     
     func getAll() async throws -> [Flavor] {
         return try await client
             .database
-            .from(tableName)
-            .select(columns: saved)
+            .from(Flavor.getQuery(.tableName))
+            .select(columns: Flavor.getQuery(.saved(false)))
             .execute()
             .decoded(to: [Flavor].self)
     }

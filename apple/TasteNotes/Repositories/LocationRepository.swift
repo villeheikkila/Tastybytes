@@ -7,16 +7,14 @@ protocol LocationRepository {
 
 struct SupabaseLocationRepository: LocationRepository {
     let client: SupabaseClient
-    private let tableName = "locations"
-    private let saved = "id, name, title, longitude, latitude, country_code, countries (country_code, name, emoji)"
-    
+
     func insert(location: Location) async throws -> Result<Location, Error> {
         do {
             let result =  try await client
                 .database
-                .from(tableName)
+                .from(Location.getQuery(.tableName))
                 .insert(values: location, returning: .representation)
-                .select(columns: saved)
+                .select(columns: Location.getQuery(.joined(false)))
                 .single()
                 .execute()
                 .decoded(to: Location.self)

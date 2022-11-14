@@ -11,9 +11,8 @@ protocol FriendRepository {
 
 struct SupabaseFriendsRepository: FriendRepository {
     let client: SupabaseClient
-    private let tableName = "friends"
-    private let savedLimited = "id, user_id_1, user_id_2, status"
-    private let joined = "id, status, sender:user_id_1 (id, username, first_name, last_name, avatar_url, name_display), receiver:user_id_2 (id, username, first_name, last_name, avatar_url, name_display)"
+    private let tableName = Friend.getQuery(.tableName)
+    private let joined = Friend.getQuery(.joined(false))
     
     func getByUserId(userId: UUID, status: FriendStatus? = nil) async throws -> [Friend] {
         var queryBuilder = client
@@ -62,7 +61,7 @@ struct SupabaseFriendsRepository: FriendRepository {
             .from(tableName)
             .delete()
             .eq(column: "id", value: id)
-            .select(columns: savedLimited)
+            .select()
             .single()
             .execute()
     }
