@@ -28,6 +28,25 @@ struct Location: Identifiable {
     }
 }
 
+extension Location {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "locations"
+        let saved = "id, name, title, longitude, latitude, country_code"
+        
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .joined(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, Country.getQuery(.saved(true))), withTableName)
+        }
+    }
+
+    enum QueryType {
+        case tableName
+        case joined(_ withTableName: Bool)
+    }
+}
+
 extension Location: Hashable {
     static func == (lhs: Location, rhs: Location) -> Bool {
         return lhs.id == rhs.id

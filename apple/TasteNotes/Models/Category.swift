@@ -65,13 +65,22 @@ extension Category {
         let saved = "id, name"
         
         switch queryType {
+        case .tableName:
+            return tableName
         case let .saved(withTableName):
             return queryWithTableName(tableName, saved, withTableName)
+        case let .joinedSubcategories(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, Subcategory.getQuery(.saved(true))), withTableName)
+        case let .joinedServingStyles(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, ServingStyle.getQuery(.saved(true))), withTableName)
         }
     }
     
     enum QueryType {
+        case tableName
         case saved(_ withTableName: Bool)
+        case joinedSubcategories(_ withTableName: Bool)
+        case joinedServingStyles(_ withTableName: Bool)
     }
 }
 

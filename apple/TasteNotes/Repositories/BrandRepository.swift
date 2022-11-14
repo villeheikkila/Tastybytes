@@ -9,15 +9,12 @@ protocol BrandRepository {
 
 struct SupabaseBrandRepository: BrandRepository {
     let client: SupabaseClient
-    private let tableName = "brands"
-    private let joinedWithSubBrands = "id, name, sub_brands (id, name)"
-    
     
     func getByBrandOwnerId(brandOwnerId: Int) async throws -> [BrandJoinedWithSubBrands] {
         return try await client
             .database
-            .from(tableName)
-            .select(columns: joinedWithSubBrands)
+            .from(Brand.getQuery(.tableName))
+            .select(columns: Brand.getQuery(.joinedSubBrands(false)))
             .eq(column: "brand_owner_id", value: brandOwnerId)
             .order(column: "name")
             .execute()
@@ -27,9 +24,9 @@ struct SupabaseBrandRepository: BrandRepository {
     func insert(newBrand: NewBrand) async throws -> BrandJoinedWithSubBrands {
         return try await client
             .database
-            .from(tableName)
+            .from(Brand.getQuery(.tableName))
             .insert(values: newBrand, returning: .representation)
-            .select(columns: joinedWithSubBrands)
+            .select(columns: Brand.getQuery(.joinedSubBrands(false)))
             .single()
             .execute()
             .decoded(to: BrandJoinedWithSubBrands.self)
@@ -38,7 +35,7 @@ struct SupabaseBrandRepository: BrandRepository {
     func delete(id: Int) async throws -> Void {
         try await client
             .database
-            .from(tableName)
+            .from(Brand.getQuery(.tableName))
             .delete()
             .eq(column: "id", value: id)
             .execute()

@@ -20,6 +20,31 @@ struct SubBrand: Identifiable, Hashable, Decodable {
     }
 }
 
+extension SubBrand {
+    static func getQuery(_ queryType: QueryType) -> String {
+        let tableName = "sub_brands"
+        let saved = "id, name"
+                
+        switch queryType {
+        case .tableName:
+            return tableName
+        case let .saved(withTableName):
+            return queryWithTableName(tableName, saved, withTableName)
+        case let .joined(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, Product.getQuery(.joinedBrandSubcategories(true))), withTableName)
+        case let .joinedBrand(withTableName):
+            return queryWithTableName(tableName, joinWithComma(saved, Brand.getQuery(.joinedCompany(true))), withTableName)
+        }
+    }
+    
+    enum QueryType {
+        case tableName
+        case saved(_ withTableName: Bool)
+        case joined(_ withTableName: Bool)
+        case joinedBrand(_ withTableName: Bool)
+    }
+}
+
 struct SubBrandJoinedWithBrand: Identifiable {
     let id: Int
     let name: String?
@@ -50,23 +75,6 @@ extension SubBrandJoinedWithBrand: Decodable {
         brand = try values.decode(BrandJoinedWithCompany.self, forKey: .brand)
     }
 }
-
-extension SubBrandJoinedWithBrand {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "sub_brands"
-        let saved = "id, name"
-        
-        switch queryType {
-        case let .joinedBrand(withTableName):
-            return queryWithTableName(tableName, joinWithComma(saved, BrandJoinedWithCompany.getQuery(.joined(true))), withTableName)
-        }
-    }
-    
-    enum QueryType {
-        case joinedBrand(_ withTableName: Bool)
-    }
-}
-
 
 struct SubBrandJoinedProduct: Identifiable, Hashable, Decodable {
     let id: Int

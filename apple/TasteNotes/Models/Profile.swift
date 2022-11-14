@@ -89,7 +89,7 @@ extension Profile: Hashable {
 }
 
 extension Profile: Decodable {
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case username
         case firstName = "first_name"

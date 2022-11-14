@@ -19,7 +19,7 @@ extension Product {
         case let .saved(withTableName):
             return queryWithTableName(tableName, saved, withTableName)
         case let .joinedBrandSubcategories(withTableName):
-            return queryWithTableName(tableName, joinWithComma(saved, SubBrandJoinedWithBrand.getQuery(.joinedBrand(true)), Subcategory.getQuery(.joinedCategory(true))), withTableName)
+            return queryWithTableName(tableName, joinWithComma(saved, SubBrand.getQuery(.joinedBrand(true)), Subcategory.getQuery(.joinedCategory(true))), withTableName)
         }
     }
 

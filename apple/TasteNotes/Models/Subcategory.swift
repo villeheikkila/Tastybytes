@@ -15,12 +15,18 @@ extension Subcategory {
         let saved = "id, name"
         
         switch queryType {
+        case .tableName:
+            return tableName
+        case let .saved(withTableName):
+            return queryWithTableName(tableName, saved, withTableName)
         case let .joinedCategory(withTableName):
             return queryWithTableName(tableName, joinWithComma(saved, Category.getQuery(.saved(true))), withTableName)
         }
     }
     
     enum QueryType {
+        case tableName
+        case saved(_ withTableName: Bool)
         case joinedCategory(_ withTableName: Bool)
     }
 }
