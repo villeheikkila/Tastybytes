@@ -168,23 +168,23 @@ extension CompanyScreenView {
         
         func getInitialData(_ companyId: Int) {
             Task {
-                do {
-                    let company = try await repository.company.getById(id: companyId)
+                switch await repository.company.getById(id: companyId) {
+                case let .success(company):
                     await MainActor.run {
                         self.companyJoined = company
                     }
-                } catch {
-                    print("error: \(error)")
+                case let .failure(error):
+                    print(error)
                 }
             }
             
             Task {
-                do {
-                    let summary = try await repository.company.getSummaryById(id: companyId)
+                switch await repository.company.getSummaryById(id: companyId) {
+                case let .success(summary):
                     await MainActor.run {
                         self.companySummary = summary
                     }
-                } catch {
+                case let .failure(error):
                     print("error: \(error)")
                 }
             }
@@ -192,27 +192,31 @@ extension CompanyScreenView {
         
         func deleteCompany(_ company: Company, onDelete: @escaping () -> Void) {
             Task {
-                do {
-                    try await repository.company.delete(id: company.id)
+                switch await repository.company.delete(id: company.id) {
+                case .success():
                     onDelete()
-                } catch {
-                    print("error while trying to delete company \(error)")
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
         
         func deleteBrand(_ brand: BrandJoinedSubBrandsJoinedProduct) {
             Task {
-                do {
-                    try await repository.brand.delete(id: brand.id)
+                switch await repository.brand.delete(id: brand.id) {
+                case .success():
                     // TODO: Do not refetch the company on deletion
                     if let companyJoined = companyJoined {
-                        let company = try await repository.company.getById(id: companyJoined.id)
-                        await MainActor.run {
-                            self.companyJoined = company
+                        switch await repository.company.getById(id: companyJoined.id) {
+                        case let .success(company):
+                            await MainActor.run {
+                                self.companyJoined = company
+                            }
+                        case let .failure(error):
+                            print(error)
                         }
                     }
-                } catch {
+                case let .failure(error):
                     print(error)
                 }
             }

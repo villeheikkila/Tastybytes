@@ -17,7 +17,7 @@ struct ApplicationSettingsScreenView: View {
             } header: {
                 Text("Color Scheme")
             }
-            
+
             Section {
                 Toggle("Reactions", isOn: $viewModel.reactionNotifications).onChange(of: [self.viewModel.reactionNotifications].publisher.first()) { _ in
                     viewModel.updateNotificationSettings()
@@ -58,30 +58,33 @@ extension ApplicationSettingsScreenView {
 
         func setInitialValues(systemColorScheme: ColorScheme, profile: Profile?) {
             Task {
-                let currentUserProfile = try await repository.profile.getById(id: repository.auth.getCurrentUserId())
-                
-                initialColorScheme = systemColorScheme
-                
-                await MainActor.run {
-                    switch profile?.settings?.colorScheme {
-                    case .light:
-                        self.isDarkMode = false
-                        self.isSystemColor = false
-                    case .dark:
-                        self.isDarkMode = true
-                        self.isSystemColor = false
-                    case .system:
-                        self.isDarkMode = initialColorScheme == ColorScheme.dark
-                        self.isSystemColor = true
-                    default:
-                        self.isDarkMode = initialColorScheme == ColorScheme.dark
+                switch await repository.profile.getById(id: repository.auth.getCurrentUserId()) {
+                case let .success(currentUserProfile):
+                    await MainActor.run {
+                        switch profile?.settings?.colorScheme {
+                        case .light:
+                            self.isDarkMode = false
+                            self.isSystemColor = false
+                        case .dark:
+                            self.isDarkMode = true
+                            self.isSystemColor = false
+                        case .system:
+                            self.isDarkMode = initialColorScheme == ColorScheme.dark
+                            self.isSystemColor = true
+                        default:
+                            self.isDarkMode = initialColorScheme == ColorScheme.dark
+                        }
+
+                        if let settings = currentUserProfile.settings {
+                            self.reactionNotifications = settings.sendReactionNotifications
+                            self.friendRequestNotifications = settings.sendFriendRequestNotifications
+                            self.checkInTagNotifications = settings.sendTaggedCheckInNotifications
+                        }
+
+                        initialColorScheme = systemColorScheme
                     }
-                    
-                    if let settings = currentUserProfile.settings  {
-                        self.reactionNotifications = settings.sendReactionNotifications
-                        self.friendRequestNotifications = settings.sendFriendRequestNotifications
-                        self.checkInTagNotifications = settings.sendTaggedCheckInNotifications
-                    }
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
@@ -93,20 +96,20 @@ extension ApplicationSettingsScreenView {
             let update = ProfileSettings.Update(
                 isDarkMode: isDarkMode, isSystemColor: isSystemColor
             )
-            
+
             Task {
-                _ = try await repository.profile.updateSettings(id: repository.auth.getCurrentUserId(),
+                _ = await repository.profile.updateSettings(id: repository.auth.getCurrentUserId(),
                                                                 update: update)
                 onChange()
             }
         }
-        
+
         func updateNotificationSettings() {
             let update = ProfileSettings.Update(sendReactionNotifications: reactionNotifications, sendTaggedCheckInNotifications: friendRequestNotifications, sendFriendRequestNotifications: checkInTagNotifications
             )
 
             Task {
-                _ = try await repository.profile.updateSettings(id: repository.auth.getCurrentUserId(),
+                _ = await repository.profile.updateSettings(id: repository.auth.getCurrentUserId(),
                                                                 update: update)
             }
         }

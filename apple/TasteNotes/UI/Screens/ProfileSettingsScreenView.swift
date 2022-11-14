@@ -155,10 +155,15 @@ extension ProfileSettingsScreenView {
                 }
             } else {
                 Task {
-                    let fetchedProfile = try await repository.profile.getById(id: repository.auth.getCurrentUserId())
-                    self.updateFormValues(profile: fetchedProfile)
+                    switch await repository.profile.getById(id: repository.auth.getCurrentUserId()) {
+                    case let .success(fetchedProfile):
+                        self.updateFormValues(profile: fetchedProfile)
+                    case let .failure(error):
+                        print(error)
+                    }
                 }
             }
+            
             Task {
                 let user = repository.auth.getCurrentUser()
 
@@ -192,12 +197,18 @@ extension ProfileSettingsScreenView {
             )
 
             Task {
-                let profile = try await repository.profile.update(id: repository.auth.getCurrentUserId(),
-                                                                  update: update)
-
-                self.updateFormValues(profile: profile)
-                self.toast = Toast.profileUpdated
-                self.showToast = true
+               switch await repository.profile.update(id: repository.auth.getCurrentUserId(),
+                                                      update: update) {
+               case let .success(profile):
+                   await MainActor.run {
+                       self.updateFormValues(profile: profile)
+                       self.toast = Toast.profileUpdated
+                       self.showToast = true
+                   }
+                   
+               case let .failure(error):
+                   print(error)
+               }
             }
         }
 
@@ -207,7 +218,7 @@ extension ProfileSettingsScreenView {
             )
 
             Task {
-                try await repository.profile.update(id: repository.auth.getCurrentUserId(),
+                _ = await repository.profile.update(id: repository.auth.getCurrentUserId(),
                                                     update: update)
             }
         }
@@ -215,7 +226,7 @@ extension ProfileSettingsScreenView {
         // TODO: Do not log out on email change
         func sendEmailVerificationLink() {
             Task {
-                try await repository.auth.sendEmailVerification(email: email)
+                _ = await repository.auth.sendEmailVerification(email: email)
             }
         }
 
@@ -224,7 +235,7 @@ extension ProfileSettingsScreenView {
                 if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
                    let image = UIImage(data: imageData),
                    let data = image.jpegData(compressionQuality: 0.5) {
-                    _ = try await repository.profile.uploadAvatar(id: repository.auth.getCurrentUserId(), data: data)
+                    _ = await repository.profile.uploadAvatar(id: repository.auth.getCurrentUserId(), data: data)
 
                     DispatchQueue.main.async {
                         self.avatarImage = image

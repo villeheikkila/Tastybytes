@@ -102,10 +102,14 @@ extension SearchScreenView {
 
         func searchProducts() {
             Task {
-                let searchResults = try await repository.product.search(searchTerm: searchTerm)
-                await MainActor.run {
-                    self.products = searchResults
-                    self.isSearched = true
+                switch await repository.product.search(searchTerm: searchTerm) {
+                case let .success(searchResults):
+                    await MainActor.run {
+                        self.products = searchResults
+                        self.isSearched = true
+                    }
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
@@ -113,18 +117,28 @@ extension SearchScreenView {
         func searchProfiles() {
             let currentUserId = repository.auth.getCurrentUserId()
             Task {
-                let searchResults = try await repository.profile.search(searchTerm: searchTerm, currentUserId: currentUserId)
-                await MainActor.run {
-                    self.profiles = searchResults
+                switch await repository.profile.search(searchTerm: searchTerm, currentUserId: currentUserId) {
+                case let .success(searchResults):
+                    await MainActor.run {
+                        self.profiles = searchResults
+                    }
+                case let .failure(error):
+                    print(error)
                 }
+
             }
         }
 
         func searchCompanies() {
             Task {
-                let searchResults = try await repository.company.search(searchTerm: searchTerm)
-                await MainActor.run {
-                    self.companies = searchResults
+                switch await repository.company.search(searchTerm: searchTerm) {
+                case let .success(searchResults):
+                    await MainActor.run {
+                        self.companies = searchResults
+                    }
+
+                case let .failure(error):
+                    print(error)
                 }
             }
         }

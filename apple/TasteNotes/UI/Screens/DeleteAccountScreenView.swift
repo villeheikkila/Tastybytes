@@ -77,12 +77,13 @@ extension DeleteAccountScreenView {
         
         func exportData() {
             Task {
-                do {
-                    let csvText = try await repository.profile.currentUserExport()
-                    print(csvText)
-                    self.csvExport = CSVFile(initialText: csvText)
-                    self.showingExporter = true
-                } catch {
+                switch await repository.profile.currentUserExport() {
+                case let .success(csvText):
+                    await MainActor.run {
+                        self.csvExport = CSVFile(initialText: csvText)
+                        self.showingExporter = true
+                    }
+                case let .failure(error):
                     print(error)
                 }
             }
@@ -90,11 +91,12 @@ extension DeleteAccountScreenView {
         
         func deleteCurrentAccount() {
             Task {
-                do {
-                    try await repository.profile.deleteCurrentAccount()
-                    try await repository.auth.logOut()
-                } catch {
-                    print("error \(error)")
+                switch await repository.profile.deleteCurrentAccount() {
+                case .success():
+                    _ = await repository.profile.deleteCurrentAccount()
+                    _ = await repository.auth.logOut()
+                case let .failure(error):
+                    print(error)
                 }
             }
         }

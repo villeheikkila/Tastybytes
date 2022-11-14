@@ -45,16 +45,14 @@ extension SubBrandSheetView {
         @Published var subBrandName = ""
         
         func createNewSubBrand(_ brand: BrandJoinedWithSubBrands, _ onSelect: @escaping (_ subBrand: SubBrand,  _ createdNew: Bool) -> Void) {
-            let newSubBrand = SubBrandNew(name: subBrandName, brandId: brand.id)
             Task {
-                do {
-                    let newSubBrand = try await repository.subBrand.insert(newSubBrand: newSubBrand)
-                    
+                switch await repository.subBrand.insert(newSubBrand: SubBrandNew(name: subBrandName, brandId: brand.id)) {
+                case let .success(newSubBrand):
                     await MainActor.run {
                         onSelect(newSubBrand, true)
                     }
-                } catch {
-                    print("error: \(error.localizedDescription)")
+                case let .failure(error):
+                    print(error)
                 }
             }
         }

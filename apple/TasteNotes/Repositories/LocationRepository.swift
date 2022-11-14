@@ -2,13 +2,13 @@ import Foundation
 import Supabase
 
 protocol LocationRepository {
-    func insert(location: Location) async throws -> Result<Location, Error>
+    func insert(location: Location) async -> Result<Location, Error>
 }
 
 struct SupabaseLocationRepository: LocationRepository {
     let client: SupabaseClient
 
-    func insert(location: Location) async throws -> Result<Location, Error> {
+    func insert(location: Location) async -> Result<Location, Error> {
         do {
             let result =  try await client
                 .database

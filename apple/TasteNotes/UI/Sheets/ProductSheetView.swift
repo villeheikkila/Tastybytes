@@ -198,7 +198,7 @@ extension ProductSheetView {
         func setBrand(brand: BrandJoinedWithSubBrands) {
             DispatchQueue.main.async {
                 self.brand = brand
-                self.subBrand = brand.subBrands.first(where: { $0.name == nil } )
+                self.subBrand = brand.subBrands.first(where: { $0.name == nil })
                 self.activeSheet = nil
             }
         }
@@ -258,11 +258,13 @@ extension ProductSheetView {
 
         func loadCategories() {
             Task {
-                do {
-                    let categories = try await repository.category.getAllWithSubcategories()
-                    self.categories = categories
-                } catch {
-                    print("error: \(error)")
+                switch await repository.category.getAllWithSubcategories() {
+                case let .success(categories):
+                    await MainActor.run {
+                        self.categories = categories
+                    }
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
@@ -271,31 +273,28 @@ extension ProductSheetView {
             if let categoryId = categories.first(where: { $0.name == category })?.id, let brandId = brand?.id {
                 let newProductParams = NewProductParams(name: name, description: description, categoryId: categoryId, brandId: brandId, subBrandId: subBrand?.id, subCategoryIds: subcategories.map { $0.id })
                 Task {
-                    do {
-                        let newProduct = try await repository.product.create(newProductParams: newProductParams)
+                    switch await repository.product.create(newProductParams: newProductParams) {
+                    case let .success(newProduct):
                         onCreation(newProduct)
-                    } catch {
-                        print("error: \(error)")
+                    case let .failure(error):
+                        print(error)
                     }
                 }
             }
         }
 
         func createProductEditSuggestion(product: ProductJoined, onComplete: @escaping () -> Void) {
-            print(product)
             if let subBrand = subBrand {
                 let productEditSuggestionParams = NewProductEditSuggestionParams(productId: product.id, name: name, description: description, categoryId: product.subcategories.first!.category.id, subBrandId: subBrand.id, subCategoryIds: subcategories.map { $0.id })
                 print(productEditSuggestionParams)
                 Task {
-                    let result = await repository.product.createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams)
-
-                    switch result {
+                    switch await repository.product.createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams) {
                     case let .success(data):
                         print(data)
+                        onComplete()
                     case let .failure(error):
                         print(error)
                     }
-
                     onComplete()
                 }
             }

@@ -80,14 +80,14 @@ extension CompanySheetView {
 
         func searchCompanies() {
             Task {
-                do {
-                    let searchResults = try await repository.company.search(searchTerm: searchText)
+                switch await repository.company.search(searchTerm: searchText) {
+                case let .success(searchResults):
                     await MainActor.run {
                         self.searchResults = searchResults
                         self.status = Status.searched
                     }
-                } catch {
-                    print("error: \(error.localizedDescription)")
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
@@ -95,11 +95,11 @@ extension CompanySheetView {
         func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) {
             let newCompany = NewCompany(name: companyName)
             Task {
-                do {
-                    let newCompany = try await repository.company.insert(newCompany: newCompany)
+                switch await repository.company.insert(newCompany: newCompany) {
+                case let .success(newCompany):
                     onSuccess(newCompany)
-                } catch {
-                    print("error: \(error.localizedDescription)")
+                case let .failure(error):
+                    print(error)
                 }
             }
         }

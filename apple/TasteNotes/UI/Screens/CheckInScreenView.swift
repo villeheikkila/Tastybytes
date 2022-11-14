@@ -67,19 +67,28 @@ extension CheckInScreenView {
 
         func loadCheckInComments(_ checkIn: CheckIn) {
             Task {
-                let checkIns = try await repository.checkInComment.getByCheckInId(id: checkIn.id)
-                await MainActor.run {
-                    self.checkInComments = checkIns
+                switch await repository.checkInComment.getByCheckInId(id: checkIn.id) {
+                case let .success(checkIns):
+                    await MainActor.run {
+                        self.checkInComments = checkIns
+                    }
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
 
         func deleteComment(_ comment: CheckInComment) {
             Task {
-                try await repository.checkInComment.deleteById(id: comment.id)
-                await MainActor.run {
-                    self.checkInComments.remove(object: comment)
+                switch await repository.checkInComment.deleteById(id: comment.id) {
+                case .success():
+                    await MainActor.run {
+                        self.checkInComments.remove(object: comment)
+                    }
+                case let .failure(error):
+                    print(error)
                 }
+
             }
         }
 

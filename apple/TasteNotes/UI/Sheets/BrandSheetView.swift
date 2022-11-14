@@ -51,25 +51,24 @@ extension BrandSheetView {
 
         func loadBrands(_ brandOwner: Company) {
             Task {
-                do {
-                    let brandsWithSubBrands = try await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id)
+                switch await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id) {
+                case let .success(brandsWithSubBrands):
                     await MainActor.run {
                         self.brandsWithSubBrands = brandsWithSubBrands
                     }
-                } catch {
-                    print("error: \(error.localizedDescription)")
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
 
         func createNewBrand(_ brandOwner: Company, _ onCreation: @escaping (_ brand: BrandJoinedWithSubBrands) -> Void) {
-            let newBrand = NewBrand(name: brandName, brandOwnerId: brandOwner.id)
             Task {
-                do {
-                    let brandWithSubBrands = try await repository.brand.insert(newBrand: newBrand)
+                switch await repository.brand.insert(newBrand: NewBrand(name: brandName, brandOwnerId: brandOwner.id)) {
+                case let .success(brandWithSubBrands):
                     onCreation(brandWithSubBrands)
-                } catch {
-                    print("error: \(error.localizedDescription)")
+                case let .failure(error):
+                    print(error)
                 }
             }
         }

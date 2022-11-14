@@ -50,8 +50,12 @@ extension FriendSheetView {
         func loadFriends() {
             let currentUserId = repository.auth.getCurrentUserId()
             Task {
-                let acceptedFriends = try await repository.friend.getByUserId(userId: currentUserId, status: .accepted)
-                self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }
+                switch await repository.friend.getByUserId(userId: currentUserId, status: .accepted) {
+                case let .success(acceptedFriends):
+                    self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }
+                case let .failure(error):
+                    print(error)
+                }
             }
         }
     }

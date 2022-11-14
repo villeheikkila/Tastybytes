@@ -97,14 +97,14 @@ extension FriendsScreenView {
             print(newFriend)
 
             Task {
-                do {
-                    let newFriend = try await repository.friend.insert(newFriend: newFriend)
+                switch await repository.friend.insert(newFriend: newFriend) {
+                case let .success(newFriend):
                     await MainActor.run {
                         self.friends.append(newFriend)
                         self.showToast = true
                         self.showUserSearchSheet = false
                     }
-                } catch {
+                case let .failure(error):
                     await MainActor.run {
                         print(error)
                         self.modalError = error
@@ -117,8 +117,8 @@ extension FriendsScreenView {
             if let friend = friends.first(where: { $0.id == id }) {
                 let friendUpdate = FriendUpdate(user_id_1: friend.sender.id, user_id_2: friend.receiver.id, status: newStatus)
                 Task {
-                    do {
-                        let updatedFriend = try await repository.friend.update(id: id, friendUpdate: friendUpdate)
+                    switch await repository.friend.update(id: id, friendUpdate: friendUpdate) {
+                    case let .success(updatedFriend):
                         await MainActor.run {
                             self.friends.removeAll(where: { $0.id == updatedFriend.id })
                         }
@@ -127,7 +127,7 @@ extension FriendsScreenView {
                                 self.friends.append(updatedFriend)
                             }
                         }
-                    } catch {
+                    case let .failure(error):
                         await MainActor.run {
                             self.error = error
                         }
@@ -138,12 +138,12 @@ extension FriendsScreenView {
 
         func removeFriendRequest(_ friend: Friend) {
             Task {
-                do {
-                    try await repository.friend.delete(id: friend.id)
+                switch await repository.friend.delete(id: friend.id) {
+                case .success():
                     await MainActor.run {
                         self.friends.remove(object: friend)
                     }
-                } catch {
+                case let .failure(error):
                     await MainActor.run {
                         self.error = error
                     }
@@ -153,14 +153,12 @@ extension FriendsScreenView {
 
         func loadFriends(userId: UUID, currentUser: Profile?) {
             Task {
-                do {
-                    let friends = try await repository.friend.getByUserId(userId: userId, status: currentUser?.id == userId ? .none : FriendStatus.accepted)
-
-                    print(friends)
+                switch await repository.friend.getByUserId(userId: userId, status: currentUser?.id == userId ? .none : FriendStatus.accepted) {
+                case let .success(friends):
                     await MainActor.run {
                         self.friends = friends
                     }
-                } catch {
+                case let .failure(error):
                     await MainActor.run {
                         self.error = error
                     }

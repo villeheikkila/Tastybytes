@@ -2,9 +2,9 @@ import SwiftUI
 
 struct UserSheetView<Actions: View>: View {
     @StateObject var viewModel = ViewModel()
-    
+
     let actions: (_ profile: Profile) -> Actions
-    
+
     var body: some View {
         NavigationStack {
             List {
@@ -30,17 +30,17 @@ extension UserSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var searchText: String = ""
         @Published var searchResults = [Profile]()
-        
+
         func searchUsers() {
             Task {
-                do {
-                    let currentUserId = repository.auth.getCurrentUserId()
-                    let searchResults = try await repository.profile.search(searchTerm: searchText, currentUserId: currentUserId)                    
+                let currentUserId = repository.auth.getCurrentUserId()
+                switch await repository.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
+                case let .success(searchResults):
                     await MainActor.run {
                         self.searchResults = searchResults
                     }
-                } catch {
-                    print("error: \(error.localizedDescription)")
+                case let .failure(error):
+                    print(error)
                 }
             }
         }
