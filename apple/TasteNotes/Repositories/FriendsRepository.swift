@@ -11,15 +11,13 @@ protocol FriendRepository {
 
 struct SupabaseFriendsRepository: FriendRepository {
     let client: SupabaseClient
-    private let tableName = Friend.getQuery(.tableName)
-    private let joined = Friend.getQuery(.joined(false))
 
     func getByUserId(userId: UUID, status: FriendStatus?) async -> Result<[Friend], Error> {
         do {
             var queryBuilder = client
                 .database
-                .from(tableName)
-                .select(columns: joined)
+                .from(Friend.getQuery(.tableName))
+                .select(columns: Friend.getQuery(.joined(false)))
                 .or(filters: "user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
 
             if let status = status {
@@ -42,9 +40,9 @@ struct SupabaseFriendsRepository: FriendRepository {
         do {
             let response = try await client
                 .database
-                .from(tableName)
+                .from(Friend.getQuery(.tableName))
                 .insert(values: newFriend, returning: .representation)
-                .select(columns: joined)
+                .select(columns: Friend.getQuery(.joined(false)))
                 .single()
                 .execute()
                 .decoded(to: Friend.self)
@@ -59,10 +57,10 @@ struct SupabaseFriendsRepository: FriendRepository {
         do {
             let response = try await client
                 .database
-                .from(tableName)
+                .from(Friend.getQuery(.tableName))
                 .update(values: friendUpdate, returning: .representation)
                 .eq(column: "id", value: id)
-                .select(columns: joined)
+                .select(columns: Friend.getQuery(.joined(false)))
                 .single()
                 .execute()
                 .decoded(to: Friend.self)
@@ -77,7 +75,7 @@ struct SupabaseFriendsRepository: FriendRepository {
         do {
             try await client
                 .database
-                .from(tableName)
+                .from(Friend.getQuery(.tableName))
                 .delete()
                 .eq(column: "id", value: id)
                 .select()

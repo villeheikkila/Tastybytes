@@ -18,6 +18,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
                 .order(column: "name")
                 .execute()
                 .decoded(to: [CategoryJoinedWithSubcategories].self)
+            
             return .success(response)
         } catch {
             return .failure(error)
@@ -35,6 +36,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
                 .single()
                 .execute()
                 .decoded(to: CategoryJoinedWithServingStyles.self)
+            
             return .success(response)
         } catch {
             return .failure(error)

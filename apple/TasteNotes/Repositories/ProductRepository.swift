@@ -11,8 +11,6 @@ protocol ProductRepository {
 
 struct SupabaseProductRepository: ProductRepository {
     let client: SupabaseClient
-    private let tableName = Product.getQuery(.tableName)
-    private let joined = Product.getQuery(.joinedBrandSubcategories(false))
 
     func search(searchTerm: String) async -> Result<[ProductJoined], Error> {
         struct SearchProductsParams: Encodable {
@@ -21,15 +19,15 @@ struct SupabaseProductRepository: ProductRepository {
                 p_search_term = "%\(searchTerm.trimmingCharacters(in: .whitespacesAndNewlines))%"
             }
         }
-        
+
         do {
             let response = try await client
                 .database
                 .rpc(fn: "fnc__search_products", params: SearchProductsParams(searchTerm: searchTerm))
-                .select(columns: joined)
+                .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
                 .execute()
                 .decoded(to: [ProductJoined].self)
-            
+
             return .success(response)
         } catch {
             return .failure(error)
@@ -39,8 +37,8 @@ struct SupabaseProductRepository: ProductRepository {
     func getProductById(id: Int) async throws -> ProductJoined {
         return try await client
             .database
-            .from(tableName)
-            .select(columns: joined)
+            .from(Product.getQuery(.tableName))
+            .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
             .eq(column: "id", value: id)
             .limit(count: 1)
             .single()
@@ -52,7 +50,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             try await client
                 .database
-                .from(tableName)
+                .from(Product.getQuery(.tableName))
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()

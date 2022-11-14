@@ -18,6 +18,7 @@ struct SupabaseLocationRepository: LocationRepository {
                 .single()
                 .execute()
                 .decoded(to: Location.self)
+            
             return .success(result)
         } catch {
            return .failure(error)

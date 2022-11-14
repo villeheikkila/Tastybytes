@@ -1,8 +1,8 @@
 import Foundation
 import GoTrue
-import SupabaseStorage
-import Supabase
 import Realtime
+import Supabase
+import SupabaseStorage
 
 protocol ProfileRepository {
     func getById(id: UUID) async -> Result<Profile, Error>
@@ -15,51 +15,48 @@ protocol ProfileRepository {
     func updateSettings(id: UUID, update: ProfileSettings.Update) async -> Result<ProfileSettings, Error>
 }
 
-
 struct SupabaseProfileRepository: ProfileRepository {
     let client: SupabaseClient
-    private let tableName = Profile.getQuery(.tableName)
-    private let saved = Profile.getQuery(.saved(false))
 
-    func getById(id: UUID) async -> Result<Profile, Error>{
+    func getById(id: UUID) async -> Result<Profile, Error> {
         do {
             let response = try await client
                 .database
-                .from(tableName)
+                .from(Profile.getQuery(.tableName))
                 .select(columns: Profile.getQuery(.extended(false)))
                 .eq(column: "id", value: id.uuidString.lowercased())
                 .limit(count: 1)
                 .single()
                 .execute()
                 .decoded(to: Profile.self)
-            
+
             return .success(response)
         } catch {
             return .failure(error)
         }
     }
-    
+
     func update(id: UUID, update: Profile.Update) async -> Result<Profile, Error> {
         do {
             let response = try await client
                 .database
-                .from(tableName)
+                .from(Profile.getQuery(.tableName))
                 .update(
                     values: update,
                     returning: .representation
                 )
                 .eq(column: "id", value: id.uuidString.lowercased())
-                .select(columns: saved)
+                .select(columns: Profile.getQuery(.saved(false)))
                 .single()
                 .execute()
                 .decoded(to: Profile.self)
-            
+
             return .success(response)
         } catch {
             return .failure(error)
         }
     }
-    
+
     func updateSettings(id: UUID, update: ProfileSettings.Update) async -> Result<ProfileSettings, Error> {
         do {
             let response = try await client
@@ -74,88 +71,88 @@ struct SupabaseProfileRepository: ProfileRepository {
                 .single()
                 .execute()
                 .decoded(to: ProfileSettings.self)
-            
+
             return .success(response)
         } catch {
             return .failure(error)
         }
     }
-    
+
     func uploadPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<Void, Error> {
         do {
             try await client
                 .database
                 .rpc(fn: "fnc__upsert_push_notification_token", params: token)
                 .execute()
-            return .success(Void())
+            
+            return .success(())
         } catch {
             return .failure(error)
         }
     }
-    
+
     func currentUserExport() async -> Result<String, Error> {
         do {
-            let response =  try await client
+            let response = try await client
                 .database
                 .rpc(fn: "fnc__export_data")
                 .csv()
                 .execute()
-            
+
             guard let csv = String(data: response.data, encoding: String.Encoding.utf8) else {
                 throw ProfileError.csvExportFailure
             }
-            
+
             return .success(csv)
         } catch {
             return .failure(error)
         }
     }
-    
+
     func search(searchTerm: String, currentUserId: UUID) async -> Result<[Profile], Error> {
         do {
             let response = try await client
                 .database
-                .from(tableName)
-                .select(columns: saved)
+                .from(Profile.getQuery(.tableName))
+                .select(columns: Profile.getQuery(.saved(false)))
                 .ilike(column: "search", value: "%\(searchTerm)%")
                 .not(column: "id", operator: .eq, value: currentUserId.uuidString)
                 .execute()
                 .decoded(to: [Profile].self)
-            
+
             return .success(response)
         } catch {
             return .failure(error)
         }
     }
-    
+
     func uploadAvatar(id: UUID, data: Data) async -> Result<Void, Error> {
         do {
             let file = File(
                 name: "avatar.jpeg", data: data, fileName: "avatar.jpeg", contentType: "image/jpeg")
-            
+
             _ = try await client
                 .storage
                 .from(id: "avatars")
                 .upload(
                     path: "\(id.uuidString.lowercased())/avatar.jpeg", file: file, fileOptions: nil)
-            
-            return .success(Void())
+
+            return .success(())
         } catch {
             return .failure(error)
         }
     }
-    
+
     func deleteCurrentAccount() async -> Result<Void, Error> {
         do {
             try await client
                 .database
                 .rpc(fn: "fnc__delete_current_user")
                 .execute()
-            
-            return .success(Void())
+
+            return .success(())
         } catch {
             return .failure(error)
         }
     }
 }
-

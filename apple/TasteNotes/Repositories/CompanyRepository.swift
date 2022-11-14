@@ -10,16 +10,13 @@ protocol CompanyRepository {
 
 struct SupabaseCompanyRepository: CompanyRepository {
     let client: SupabaseClient
-    private let tableName = Company.getQuery(.tableName)
-    private let saved = Company.getQuery(.saved(false))
-    private let joined = Company.getQuery(.joinedBrandSubcategoriesOwner(false))
 
     func getById(id: Int) async -> Result<CompanyJoined, Error> {
         do {
             let response = try await client
                 .database
-                .from(tableName)
-                .select(columns: joined)
+                .from(Company.getQuery(.tableName))
+                .select(columns: Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
                 .eq(column: "id", value: id)
                 .limit(count: 1)
                 .single()
@@ -36,9 +33,9 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             let response = try await client
                 .database
-                .from(tableName)
+                .from(Company.getQuery(.tableName))
                 .insert(values: newCompany, returning: .representation)
-                .select(columns: saved)
+                .select(columns: Company.getQuery(.saved(false)))
                 .single()
                 .execute()
                 .decoded(to: Company.self)
@@ -53,7 +50,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             try await client
                 .database
-                .from(tableName)
+                .from(Company.getQuery(.tableName))
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
@@ -68,8 +65,8 @@ struct SupabaseCompanyRepository: CompanyRepository {
         do {
             let response = try await client
                 .database
-                .from(tableName)
-                .select(columns: saved)
+                .from(Company.getQuery(.tableName))
+                .select(columns: Company.getQuery(.saved(false)))
                 .ilike(column: "name", value: "%\(searchTerm)%")
                 .execute()
                 .decoded(to: [Company].self)

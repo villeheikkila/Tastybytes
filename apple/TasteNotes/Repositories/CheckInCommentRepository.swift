@@ -9,20 +9,19 @@ protocol CheckInCommentRepository {
 
 struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     let client: SupabaseClient
-    private let tableName = CheckInComment.getQuery(.tableName)
-    private let joinedWithProfile = CheckInComment.getQuery(.joinedProfile(false))
 
     func insert(newCheckInComment: NewCheckInComment) async -> Result<CheckInComment, Error> {
         do {
             let result = try await client
                 .database
-                .from(tableName)
+                .from(CheckInComment.getQuery(.tableName))
                 .insert(values: newCheckInComment, returning: .representation)
-                .select(columns: joinedWithProfile)
+                .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
                 .limit(count: 1)
                 .single()
                 .execute()
                 .decoded(to: CheckInComment.self)
+            
             return .success(result)
         } catch {
             return .failure(error)
@@ -33,10 +32,10 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         do {
             let response = try await client
                 .database
-                .from(tableName)
+                .from(CheckInComment.getQuery(.tableName))
                 .update(values: updateCheckInComment, returning: .representation)
                 .eq(column: "id", value: updateCheckInComment.id)
-                .select(columns: joinedWithProfile)
+                .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
                 .single()
                 .execute()
                 .decoded(to: CheckInComment.self)
@@ -51,8 +50,8 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         do {
             let response = try await client
                 .database
-                .from(tableName)
-                .select(columns: joinedWithProfile)
+                .from(CheckInComment.getQuery(.tableName))
+                .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
                 .eq(column: "check_in_id", value: id)
                 .order(column: "created_at")
                 .execute()
@@ -68,7 +67,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         do {
             try await client
                 .database
-                .from(tableName)
+                .from(CheckInComment.getQuery(.tableName))
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
