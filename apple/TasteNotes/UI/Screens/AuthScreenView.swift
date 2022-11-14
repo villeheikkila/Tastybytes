@@ -141,7 +141,7 @@ struct SignInOrSignUpView: View {
                     }
                 }
                 
-                if false, mode == .signIn {
+                if mode == .signIn {
                     Button("Sign in with magic link") {
                         withAnimation { mode = .magicLink }
                     }

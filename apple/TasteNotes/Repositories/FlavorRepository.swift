@@ -17,6 +17,7 @@ struct SupabaseFlavorRepository: FlavorRepository {
                 .select(columns: Flavor.getQuery(.saved(false)))
                 .execute()
                 .decoded(to: [Flavor].self)
+            
             return .success(response)
         } catch {
             return .failure(error)

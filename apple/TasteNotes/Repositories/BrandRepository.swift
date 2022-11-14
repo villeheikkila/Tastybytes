@@ -20,6 +20,7 @@ struct SupabaseBrandRepository: BrandRepository {
                 .order(column: "name")
                 .execute()
                 .decoded(to: [BrandJoinedWithSubBrands].self)
+            
             return .success(response)
         } catch {
             return .failure(error)
@@ -51,6 +52,7 @@ struct SupabaseBrandRepository: BrandRepository {
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
+            
             return .success(())
         } catch {
             return .failure(error)

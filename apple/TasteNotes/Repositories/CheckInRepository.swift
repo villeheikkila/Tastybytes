@@ -15,19 +15,17 @@ protocol CheckInRepository {
 
 struct SupabaseCheckInRepository: CheckInRepository {
     let client: SupabaseClient
-    private let tableName = CheckIn.getQuery(.tableName)
-    private let checkInJoined = CheckIn.getQuery(.joined(false))
 
     func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
             let response = try await client
                 .database
                 .rpc(fn: "fnc__get_activity_feed")
-                .select(columns: checkInJoined)
+                .select(columns: CheckIn.getQuery(.joined(false)))
                 .range(from: from, to: to)
                 .execute()
                 .decoded(to: [CheckIn].self)
-            
+
             return .success(response)
         } catch {
             return .failure(error)
@@ -38,14 +36,14 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response = try await client
                 .database
-                .from(tableName)
-                .select(columns: checkInJoined)
+                .from(CheckIn.getQuery(.tableName))
+                .select(columns: CheckIn.getQuery(.joined(false)))
                 .eq(column: "created_by", value: id.uuidString.lowercased())
                 .order(column: "id", ascending: false)
                 .range(from: from, to: to)
                 .execute()
                 .decoded(to: [CheckIn].self)
-            
+
             return .success(response)
         } catch {
             return .failure(error)
@@ -56,14 +54,14 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response = try await client
                 .database
-                .from(tableName)
-                .select(columns: checkInJoined)
+                .from(CheckIn.getQuery(.tableName))
+                .select(columns: CheckIn.getQuery(.joined(false)))
                 .eq(column: "product_id", value: id)
                 .order(column: "created_at", ascending: false)
                 .range(from: from, to: to)
                 .execute()
                 .decoded(to: [CheckIn].self)
-            
+
             return .success(response)
         } catch {
             return .failure(error)
@@ -74,14 +72,14 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response = try await client
                 .database
-                .from(tableName)
-                .select(columns: checkInJoined)
+                .from(CheckIn.getQuery(.tableName))
+                .select(columns: CheckIn.getQuery(.joined(false)))
                 .eq(column: "id", value: id)
                 .limit(count: 1)
                 .single()
                 .execute()
                 .decoded(to: CheckIn.self)
-            
+
             return .success(response)
         } catch {
             return .failure(error)
@@ -98,7 +96,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .single()
                 .execute()
                 .decoded(to: DecodableId.self)
-            
+
             return await getById(id: createdCheckIn.id)
         } catch {
             return .failure(error)
@@ -110,7 +108,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
             let response = try await client
                 .database
                 .rpc(fn: "fnc__update_check_in", params: updateCheckInParams)
-                .select(columns: checkInJoined)
+                .select(columns: CheckIn.getQuery(.joined(false)))
                 .limit(count: 1)
                 .single()
                 .execute()
@@ -126,7 +124,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             try await client
                 .database
-                .from(tableName)
+                .from(CheckIn.getQuery(.tableName))
                 .delete()
                 .eq(column: "id", value: id)
                 .execute()
@@ -165,6 +163,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .upload(
                     path: "\(profileId.uuidString.lowercased())/\(id).jpeg", file: file, fileOptions: nil
                 )
+
             return .success(())
         } catch {
             return .failure(error)
