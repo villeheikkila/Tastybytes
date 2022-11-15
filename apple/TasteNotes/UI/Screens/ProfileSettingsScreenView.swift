@@ -128,19 +128,14 @@ extension ProfileSettingsScreenView {
             return email != user?.email
         }
 
-
-        func getInitialValues(profile: Profile.Extended?) {
-            if let profile = profile {
-                DispatchQueue.main.async {
-                    self.updateFormValues(profile: profile)
-                }
+        func getInitialValues(profile: Profile.Extended) {
+            DispatchQueue.main.async {
+                self.updateFormValues(profile: profile)
             }
-            
-            Task {
-                let user = repository.auth.getCurrentUser()
 
-                if let profileId = profile?.id, let url = getAvatarURL(id: profileId, avatarUrl: profile?.avatarUrl) {
-                    let (data, _) = try await  URLSession.shared.data(from: url)
+            Task {
+                if let url = getAvatarURL(id: profile.id, avatarUrl: profile.avatarUrl) {
+                    let (data, _) = try await URLSession.shared.data(from: url)
                     DispatchQueue.main.async {
                         self.avatarImage = UIImage(data: data)
                     }
@@ -169,17 +164,17 @@ extension ProfileSettingsScreenView {
             )
 
             Task {
-               switch await repository.profile.update(id: repository.auth.getCurrentUserId(),
-                                                      update: update) {
-               case let .success(profile):
-                   await MainActor.run {
-                       self.updateFormValues(profile: profile)
-                       onSuccess()
-                   }
-                   
-               case let .failure(error):
-                   print(error)
-               }
+                switch await repository.profile.update(id: repository.auth.getCurrentUserId(),
+                                                       update: update) {
+                case let .success(profile):
+                    await MainActor.run {
+                        self.updateFormValues(profile: profile)
+                        onSuccess()
+                    }
+
+                case let .failure(error):
+                    print(error)
+                }
             }
         }
 

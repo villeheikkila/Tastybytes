@@ -47,9 +47,11 @@ extension ActivityScreenView {
         var page = 0
 
         func refresh() {
-            page = 0
-            checkIns = []
-            fetchActivityFeedItems()
+            DispatchQueue.main.async {
+                self.page = 0
+                self.checkIns = []
+                self.fetchActivityFeedItems()
+            }
         }
 
         func onCheckInDelete(checkIn: CheckIn) {

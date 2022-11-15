@@ -57,7 +57,7 @@ extension CheckIn {
 
 extension CheckIn: Hashable {
     static func == (lhs: CheckIn, rhs: CheckIn) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.profile.preferredName == rhs.profile.preferredName
     }
 }
 
