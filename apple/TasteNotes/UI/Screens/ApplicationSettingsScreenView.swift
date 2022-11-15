@@ -2,17 +2,17 @@ import SwiftUI
 
 struct ApplicationSettingsScreenView: View {
     @StateObject private var viewModel = ViewModel()
-    @EnvironmentObject var currentProfile: CurrentProfile
+    @EnvironmentObject var profileManager: ProfileManager
     @Environment(\.colorScheme) var systemColorScheme
 
     var body: some View {
         Form {
             Section {
                 Toggle("Use System Color Scheme", isOn: $viewModel.isSystemColor).onChange(of: [self.viewModel.isSystemColor].publisher.first()) { _ in
-                    viewModel.updateColorScheme({ currentProfile.refresh() })
+                    viewModel.updateColorScheme({ profileManager.refresh() })
                 }
                 Toggle("Use Dark Mode", isOn: $viewModel.isDarkMode).onChange(of: [self.viewModel.isDarkMode].publisher.first()) { _ in
-                    viewModel.updateColorScheme({ currentProfile.refresh() })
+                    viewModel.updateColorScheme({ profileManager.refresh() })
                 }.disabled(viewModel.isSystemColor)
             } header: {
                 Text("Color Scheme")
@@ -35,7 +35,7 @@ struct ApplicationSettingsScreenView: View {
         .navigationTitle("Application")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            viewModel.setInitialValues(systemColorScheme: systemColorScheme, profile: currentProfile.profile)
+            viewModel.setInitialValues(systemColorScheme: systemColorScheme, profile: profileManager.get())
         }
     }
 }
@@ -71,8 +71,6 @@ extension ApplicationSettingsScreenView {
                         case .system:
                             self.isDarkMode = initialColorScheme == ColorScheme.dark
                             self.isSystemColor = true
-                        default:
-                            self.isDarkMode = initialColorScheme == ColorScheme.dark
                         }
 
                         self.reactionNotifications = profile.settings.sendReactionNotifications
@@ -96,9 +94,13 @@ extension ApplicationSettingsScreenView {
             )
 
             Task {
-                _ = await repository.profile.updateSettings(id: repository.auth.getCurrentUserId(),
-                                                            update: update)
-                onChange()
+                switch await repository.profile.updateSettings(id: repository.auth.getCurrentUserId(),
+                                                               update: update) {
+                case .success(_):
+                    onChange()
+                case let .failure(error):
+                    print(error)
+                }
             }
         }
 

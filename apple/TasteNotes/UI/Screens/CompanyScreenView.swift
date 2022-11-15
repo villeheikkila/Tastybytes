@@ -3,7 +3,7 @@ import SwiftUI
 
 struct CompanyScreenView: View {
     let company: Company
-    @EnvironmentObject var currentProfile: CurrentProfile
+    @EnvironmentObject var profileManager: ProfileManager
     @EnvironmentObject var routeManager: RouteManager
     @StateObject private var viewModel = ViewModel()
     @State private var showDeleteCompanyConfirmationDialog = false
@@ -55,7 +55,7 @@ struct CompanyScreenView: View {
                         }
                     }
                 }.contextMenu {
-                    if currentProfile.hasPermission(.canDeleteCompanies) {
+                    if profileManager.hasPermission(.canDeleteCompanies) {
                         Button(action: {
                             showDeleteCompanyConfirmationDialog.toggle()
                         }) {
@@ -100,7 +100,7 @@ struct CompanyScreenView: View {
                         HStack {
                             Text("\(brand.name) (\(brand.getNumberOfProducts()))")
                             Spacer()
-                            if currentProfile.hasPermission(.canDeleteBrands) {
+                            if profileManager.hasPermission(.canDeleteBrands) {
                                 Button(action: {
                                     showDeleteBrandConfirmationDialog.toggle()
                                 }) {

@@ -144,7 +144,7 @@ enum ProfileError: Error {
 
 struct ProfileSettings: Identifiable, Decodable, Hashable {
     let id: UUID
-    let colorScheme: ColorScheme?
+    let colorScheme: ColorScheme
     let sendReactionNotifications: Bool
     let sendTaggedCheckInNotifications: Bool
     let sendFriendRequestNotifications: Bool
@@ -164,7 +164,7 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(UUID.self, forKey: .id)
-        colorScheme = try values.decodeIfPresent(ColorScheme.self, forKey: .colorScheme)
+        colorScheme = try values.decode(ColorScheme.self, forKey: .colorScheme)
         sendReactionNotifications = try values.decode(Bool.self, forKey: .sendReactionNotifications)
         sendTaggedCheckInNotifications = try values.decode(Bool.self, forKey: .sendTaggedCheckInNotifications)
         sendFriendRequestNotifications = try values.decode(Bool.self, forKey: .sendFriendRequestNotifications)

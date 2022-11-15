@@ -4,7 +4,7 @@ import SwiftUI
 struct FriendsScreenView: View {
     var profile: Profile
     @StateObject private var viewModel = ViewModel()
-    @EnvironmentObject var currentProfile: CurrentProfile
+    @EnvironmentObject var profileManager: ProfileManager
     @EnvironmentObject var toastManager: ToastManager
     @State var friendToBeRemoved: Friend?
     @State var showRemoveFriendConfirmation = false
@@ -14,16 +14,14 @@ struct FriendsScreenView: View {
             VStack {
                 ForEach(viewModel.friends, id: \.self) { friend in
                     if profile.isCurrentUser() {
-                        if let profile = currentProfile.profile?.getProfile() {
-                            FriendListItemView(friend: friend,
-                                               currentUser: profile,
-                                               onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
-                                               onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
-                                               onDelete: { friend in
-                                                   friendToBeRemoved = friend
-                                                   showRemoveFriendConfirmation = true
-                                               })
-                        }
+                        FriendListItemView(friend: friend,
+                                           currentUser: profileManager.getProfile(),
+                                           onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
+                                           onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
+                                           onDelete: { friend in
+                                               friendToBeRemoved = friend
+                                               showRemoveFriendConfirmation = true
+                                           })
                     } else {
                         FriendListItemSimpleView(profile: friend.getFriend(userId: profile.id))
                     }
@@ -33,10 +31,10 @@ struct FriendsScreenView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .refreshable {
-            viewModel.loadFriends(userId: profile.id, currentUser: currentProfile.profile?.getProfile())
+            viewModel.loadFriends(userId: profile.id, currentUser: profileManager.getProfile())
         }
         .task {
-            viewModel.loadFriends(userId: profile.id, currentUser: currentProfile.profile?.getProfile())
+            viewModel.loadFriends(userId: profile.id, currentUser: profileManager.getProfile())
         }
         .navigationBarItems(
             trailing: addFriendButton)
@@ -61,7 +59,7 @@ struct FriendsScreenView: View {
         .confirmationDialog("delete_friend",
                             isPresented: $showRemoveFriendConfirmation
         ) {
-            Button("Remove \(friendToBeRemoved?.getFriend(userId: currentProfile.profile?.id).preferredName ?? "??")", role: .destructive, action: {
+            Button("Remove \(friendToBeRemoved?.getFriend(userId: profileManager.getId()).preferredName ?? "??")", role: .destructive, action: {
                 if let friend = friendToBeRemoved {
                     viewModel.removeFriendRequest(friend)
                 }

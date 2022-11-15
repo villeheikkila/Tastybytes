@@ -4,7 +4,7 @@ import SwiftUI
 
 struct ProfileSettingsScreenView: View {
     @StateObject private var viewModel = ViewModel()
-    @EnvironmentObject var currentProfile: CurrentProfile
+    @EnvironmentObject var profileManager: ProfileManager
     @EnvironmentObject var toastManager: ToastManager
     @Environment(\.colorScheme) var initialColorScheme
 
@@ -17,7 +17,7 @@ struct ProfileSettingsScreenView: View {
         }
         .navigationTitle("Profile")
         .task {
-            viewModel.getInitialValues(profile: currentProfile.profile)
+            viewModel.getInitialValues(profile: profileManager.get())
         }
     }
 

@@ -3,7 +3,7 @@ import SwiftUI
 struct ProductScreenView: View {
     let product: ProductJoined
     @StateObject private var viewModel = ViewModel()
-    @EnvironmentObject var currentProfile: CurrentProfile
+    @EnvironmentObject var profileManager: ProfileManager
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -18,7 +18,7 @@ struct ProductScreenView: View {
                                    VStack {
                                        ProductCardView(product: product)
                                            .contextMenu {
-                                               if currentProfile.hasPermission(.canDeleteProducts) {
+                                               if profileManager.hasPermission(.canDeleteProducts) {
                                                    Button(action: {
                                                        viewModel.showDeleteConfirmation()
                                                    }) {
