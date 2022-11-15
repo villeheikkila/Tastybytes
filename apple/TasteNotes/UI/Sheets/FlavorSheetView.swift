@@ -1,4 +1,3 @@
-import AlertToast
 import SwiftUI
 
 struct FlavorSheetView: View {
@@ -41,7 +40,6 @@ extension FlavorSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var availableFlavors = [Flavor]()
         @Published var pickedFlavors = [Flavor]()
-        @Published var showToast = false
         @Published var searchText = ""
 
         func toggleFlavor(_ flavor: Flavor) {

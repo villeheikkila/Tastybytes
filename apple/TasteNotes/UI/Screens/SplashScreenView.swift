@@ -15,8 +15,10 @@ struct SplashScreenView: View {
             Color(.systemBackground)
                 .ignoresSafeArea()
             VStack {
-                Image(systemName: "takeoutbag.and.cup.and.straw")
-                    .font(.system(size: 100))
+                Image("app-icon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 120, height: 120)
                     .scaleEffect(size)
                     .opacity(opacity)
 

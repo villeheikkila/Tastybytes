@@ -55,7 +55,7 @@ extension LocationSearchView {
 
         func storeLocation(_ location: Location, onSuccess: @escaping (_ savedLocation: Location) -> Void) {
             Task {
-                switch try await repository.location.insert(location: location) {
+                switch await repository.location.insert(location: location) {
                 case let .success(savedLocation):
                     print(savedLocation)
                     onSuccess(savedLocation)

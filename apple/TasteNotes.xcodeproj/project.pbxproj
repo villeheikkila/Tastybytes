@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		5C08B6E028ED7956009218D7 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 5C08B6DF28ED7956009218D7 /* Supabase */; };
 		5C08B6E228ED7B05009218D7 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C08B6E128ED7B05009218D7 /* Company.swift */; };
+		5C0E36482922F21B0072EFBD /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E36472922F21B0072EFBD /* ToastManager.swift */; };
+		5C0E364A2922F8C60072EFBD /* RouteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E36492922F8C60072EFBD /* RouteManager.swift */; };
+		5C0E364C292308080072EFBD /* SignInOrSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E364B292308080072EFBD /* SignInOrSignUpView.swift */; };
 		5C11ECAF28EECC8500CCDE6A /* AuthScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECAE28EECC8500CCDE6A /* AuthScreenView.swift */; };
 		5C11ECB328EEEDEF00CCDE6A /* FriendsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB228EEEDEF00CCDE6A /* FriendsScreenView.swift */; };
 		5C11ECB628EEEFB300CCDE6A /* PreferencesScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB528EEEFB300CCDE6A /* PreferencesScreenView.swift */; };
@@ -102,11 +105,13 @@
 		5CFEE57928ED69B100A8DD66 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57828ED69B100A8DD66 /* RootView.swift */; };
 		5CFEE57B28ED69B200A8DD66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */; };
 		5CFEE57E28ED69B200A8DD66 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEE57D28ED69B200A8DD66 /* Preview Assets.xcassets */; };
-		5CFF4D732908718600BBA1F6 /* ToastProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFF4D722908718600BBA1F6 /* ToastProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5C08B6E128ED7B05009218D7 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
+		5C0E36472922F21B0072EFBD /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
+		5C0E36492922F8C60072EFBD /* RouteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteManager.swift; sourceTree = "<group>"; };
+		5C0E364B292308080072EFBD /* SignInOrSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInOrSignUpView.swift; sourceTree = "<group>"; };
 		5C11ECAE28EECC8500CCDE6A /* AuthScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthScreenView.swift; sourceTree = "<group>"; };
 		5C11ECB228EEEDEF00CCDE6A /* FriendsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsScreenView.swift; sourceTree = "<group>"; };
 		5C11ECB528EEEFB300CCDE6A /* PreferencesScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesScreenView.swift; sourceTree = "<group>"; };
@@ -201,7 +206,6 @@
 		5CFEE57828ED69B100A8DD66 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5CFEE57D28ED69B200A8DD66 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		5CFF4D722908718600BBA1F6 /* ToastProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -284,7 +288,6 @@
 			children = (
 				5C989DAE2901B8A400BBC5A7 /* UserProviderView.swift */,
 				5C989DB92901D2C700BBC5A7 /* ProfileProviderView.swift */,
-				5CFF4D722908718600BBA1F6 /* ToastProvider.swift */,
 				5CE9009229211AC9003DE697 /* NotificationManager.swift */,
 			);
 			path = Providers;
@@ -295,6 +298,8 @@
 			children = (
 				5CC2FE9329197D9F002BDF83 /* LocationSearchService.swift */,
 				5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */,
+				5C0E36472922F21B0072EFBD /* ToastManager.swift */,
+				5C0E36492922F8C60072EFBD /* RouteManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -365,6 +370,7 @@
 				5C12B4362902CA04001EE549 /* NotificationScreenView.swift */,
 				5CE9008B291FCB71003DE697 /* SplashScreenView.swift */,
 				5CE90090292101C8003DE697 /* AboutView.swift */,
+				5C0E364B292308080072EFBD /* SignInOrSignUpView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -580,7 +586,9 @@
 				5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */,
 				5CED433228FD76BB003F8194 /* SubBrandSheetView.swift in Sources */,
 				5CED432E28FD6EA7003F8194 /* BrandSheetView.swift in Sources */,
+				5C0E364A2922F8C60072EFBD /* RouteManager.swift in Sources */,
 				5CD10A5928F98D8A0001CFC2 /* CheckInReaction.swift in Sources */,
+				5C0E364C292308080072EFBD /* SignInOrSignUpView.swift in Sources */,
 				5CED433028FD6EBC003F8194 /* BrandRepository.swift in Sources */,
 				5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */,
 				5CD10A3F28F760520001CFC2 /* CheckInScreenView.swift in Sources */,
@@ -591,7 +599,6 @@
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5CE9009329211AC9003DE697 /* NotificationManager.swift in Sources */,
 				5C11ECAF28EECC8500CCDE6A /* AuthScreenView.swift in Sources */,
-				5CFF4D732908718600BBA1F6 /* ToastProvider.swift in Sources */,
 				5CC2FE912919774A002BDF83 /* Location.swift in Sources */,
 				5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */,
 				5C12B42F2902A191001EE549 /* ProfileSettingsScreenView.swift in Sources */,
@@ -607,6 +614,7 @@
 				5CC49476290589E700D269A2 /* CardView.swift in Sources */,
 				5CD10A4F28F98C0B0001CFC2 /* Category.swift in Sources */,
 				5CD10A5128F98C8C0001CFC2 /* Subcategory.swift in Sources */,
+				5C0E36482922F21B0072EFBD /* ToastManager.swift in Sources */,
 				5C12B42D2902A12A001EE549 /* ApplicationSettingsScreenView.swift in Sources */,
 				5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */,
 				5CB1C24D28F9C087000B0EB4 /* AuthRepository.swift in Sources */,

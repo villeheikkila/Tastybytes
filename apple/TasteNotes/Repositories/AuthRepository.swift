@@ -8,6 +8,10 @@ protocol AuthRepository {
     func getCurrentUser() -> User?
     func logOut() async -> Result<Void, Error>
     func sendEmailVerification(email: String) async -> Result<Void, Error>
+    func sendMagicLink(email: String) async -> Result<Void, Error>
+    func signUp(email: String, password: String) async -> Result<Void, Error>
+    func signIn(email: String, password: String) async -> Result<Void, Error>
+    func sendPasswordResetEmail(email: String) async -> Result<Void, Error>
 }
 
 struct SupabaseAuthRepository: AuthRepository {
@@ -37,6 +41,55 @@ struct SupabaseAuthRepository: AuthRepository {
             
             return .success(Void())
         } catch {
+            return .failure(error)
+        }
+    }
+    
+    func sendMagicLink(email: String) async -> Result<Void, Error> {
+        do {
+            try await client
+                .auth
+                .signIn(email: email)
+            
+            return .success(Void())
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func signUp(email: String, password: String) async -> Result<Void, Error> {
+        do {
+            try await client
+                .auth
+                .signUp(email: email, password: password)
+            
+            return .success(Void())
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func signIn(email: String, password: String) async -> Result<Void, Error> {
+        do {
+            try await client
+                .auth
+                .signIn(email: email, password: password)
+            
+            return .success(Void())
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func sendPasswordResetEmail(email: String) async -> Result<Void, Error> {
+        do {
+            try await client
+                .auth
+                .resetPasswordForEmail(email)
+            
+            return .success(Void())
+        }
+        catch {
             return .failure(error)
         }
     }

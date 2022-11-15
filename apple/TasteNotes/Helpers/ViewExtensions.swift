@@ -1,5 +1,3 @@
-import AlertToast
-import Foundation
 import SwiftUI
 
 struct LocalizedAlertError: LocalizedError {
