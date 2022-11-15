@@ -144,9 +144,9 @@ extension FriendsScreenView {
             }
         }
 
-        func loadFriends(userId: UUID, currentUser: Profile?) {
+        func loadFriends(userId: UUID, currentUser: Profile) {
             Task {
-                switch await repository.friend.getByUserId(userId: userId, status: currentUser?.id == userId ? .none : FriendStatus.accepted) {
+                switch await repository.friend.getByUserId(userId: userId, status: currentUser.id == userId ? .none : FriendStatus.accepted) {
                 case let .success(friends):
                     await MainActor.run {
                         self.friends = friends
