@@ -22,9 +22,8 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let response = try await client
                 .database
-                .from(Profile.getQuery(.tableName))
+                .rpc(fn: "fnc__get_current_profile")
                 .select(columns: Profile.getQuery(.extended(false)))
-                .eq(column: "id", value: repository.auth.getCurrentUserId().uuidString.lowercased())
                 .limit(count: 1)
                 .single()
                 .execute()
