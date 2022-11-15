@@ -1,22 +1,17 @@
-import AlertToast
 import SwiftUI
 
 struct CheckInScreenView: View {
     let checkIn: CheckIn
     @StateObject private var viewModel = ViewModel()
-    @EnvironmentObject private var navigator: Navigator
+    @EnvironmentObject private var routeManager: RouteManager
 
     var body: some View {
         VStack {
             ScrollView {
-                HStack {}
-                    .toast(isPresenting: $viewModel.showToast, duration: 1, tapToDismiss: true) {
-                        AlertToast(type: .error(.green), title: "moi")
-                    }
                 CheckInCardView(checkIn: viewModel.checkIn ?? checkIn,
                                 loadedFrom: .checkIn,
                                 onDelete: {
-                                    _ in navigator.removeLast()
+                                    _ in routeManager.removeLast()
                                 }, onUpdate: { updatedCheckIn in
                                     viewModel.setCheckIn(updatedCheckIn)
                                 })
@@ -55,7 +50,6 @@ extension CheckInScreenView {
         @Published var checkIn: CheckIn?
         @Published var checkInComments = [CheckInComment]()
         @Published var comment = ""
-        @Published var showToast = false
 
         func setCheckIn(_ checkIn: CheckIn) {
             self.checkIn = checkIn
@@ -105,9 +99,6 @@ extension CheckInScreenView {
                     }
                 case let .failure(error):
                     print(error)
-                    await MainActor.run {
-                        self.showToast = true
-                    }
                 }
             }
         }

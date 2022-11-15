@@ -3,8 +3,8 @@ import SwiftUI
 
 class CurrentProfile: ObservableObject {
     @Published var profile: Profile?
-
-    func get(id: UUID) {
+    
+    func get(id: UUID) {        
         Task {
             switch await repository.profile.getById(id: id) {
             case let .success(currentUserProfile):

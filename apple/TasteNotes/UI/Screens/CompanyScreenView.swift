@@ -4,7 +4,7 @@ import SwiftUI
 struct CompanyScreenView: View {
     let company: Company
     @EnvironmentObject var currentProfile: CurrentProfile
-    @EnvironmentObject var navigator: Navigator
+    @EnvironmentObject var routeManager: RouteManager
     @StateObject private var viewModel = ViewModel()
     @State private var showDeleteCompanyConfirmationDialog = false
     @State private var showDeleteBrandConfirmationDialog = false
@@ -122,7 +122,7 @@ struct CompanyScreenView: View {
                             isPresented: $showDeleteCompanyConfirmationDialog
         ) {
             Button("Delete Company", role: .destructive, action: { viewModel.deleteCompany(company, onDelete: {
-                navigator.gotoHomePage()
+                routeManager.gotoHomePage()
             }) })
         }
         .task {

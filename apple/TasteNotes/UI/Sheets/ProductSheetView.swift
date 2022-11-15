@@ -1,8 +1,8 @@
-import AlertToast
 import SwiftUI
 
 struct ProductSheetView: View {
-    @EnvironmentObject var navigator: Navigator
+    @EnvironmentObject var routeManager: RouteManager
+    @EnvironmentObject var toastManager: ToastManager
     @StateObject var viewModel = ViewModel()
     let initialProduct: ProductJoined?
 
@@ -25,14 +25,15 @@ struct ProductSheetView: View {
 
                     } else {
                         viewModel.createProduct(onCreation: {
-                            product in navigator.navigateTo(destination: product, resetStack: true)
+                            product in routeManager.navigateTo(destination: product, resetStack: true)
                         })
                     }
                 })
                 .disabled(!viewModel.isValid())
             }
 
-        }.sheet(item: $viewModel.activeSheet) { sheet in
+        }
+        .sheet(item: $viewModel.activeSheet) { sheet in
             switch sheet {
             case .subcategories:
                 if let subcategoriesForCategory = viewModel.getSubcategoriesForCategory() {
@@ -42,7 +43,7 @@ struct ProductSheetView: View {
                 CompanySheetView(onSelect: { company, createdNew in
                     viewModel.setBrandOwner(company)
                     if createdNew {
-                        viewModel.setToast(.createdCompany)
+                        toastManager.toggle(.success(viewModel.getToastText(.createdCompany)))
                     }
                     viewModel.dismissSheet()
                 })
@@ -50,7 +51,7 @@ struct ProductSheetView: View {
                 if let brandOwner = viewModel.brandOwner {
                     BrandSheetView(brandOwner: brandOwner, onSelect: { brand, createdNew in
                         if createdNew {
-                            viewModel.setToast(.createdSubBrand)
+                            toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
                         }
                         viewModel.setBrand(brand: brand)
                     })
@@ -60,7 +61,7 @@ struct ProductSheetView: View {
                 if let brand = viewModel.brand {
                     SubBrandSheetView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
                         if createdNew {
-                            viewModel.setToast(.createdSubBrand)
+                            toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
                             viewModel.subBrand = subBrand
                         }
                         viewModel.dismissSheet()
@@ -68,9 +69,6 @@ struct ProductSheetView: View {
                     })
                 }
             }
-        }
-        .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
-            AlertToast(type: .complete(.green), title: viewModel.getToastText())
         }
         .task {
             viewModel.loadInitialProduct(initialProduct)
@@ -179,9 +177,6 @@ extension ProductSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var categories = [CategoryJoinedWithSubcategories]()
         @Published var activeSheet: Sheet?
-        @Published var activeToast: Toast?
-        @Published var showToast = false
-
         @Published var category: CategoryName = CategoryName.beverage
         @Published var subcategories: [Subcategory] = []
         @Published var brandOwner: Company?
@@ -201,11 +196,6 @@ extension ProductSheetView {
                 self.subBrand = brand.subBrands.first(where: { $0.name == nil })
                 self.activeSheet = nil
             }
-        }
-
-        func setToast(_ toast: Toast) {
-            activeToast = toast
-            showToast = true
         }
 
         func setActiveSheet(_ sheet: Sheet) {
@@ -230,16 +220,14 @@ extension ProductSheetView {
             return brandOwner != nil && brand != nil && validateStringLength(str: name, type: .normal)
         }
 
-        func getToastText() -> String {
-            switch activeToast {
+        func getToastText(_ toast: Toast) -> String {
+            switch toast {
             case .createdCompany:
                 return "New Company Created!"
             case .createdBrand:
                 return "New Brand Created!"
             case .createdSubBrand:
                 return "New Sub-brand Created!"
-            case .none:
-                return ""
             }
         }
 

@@ -118,25 +118,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: MessagingDelegate {
     // [START refresh_token]
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        print("(\(String(describing: fcmToken)))")
-
         let dataDict: [String: String] = ["token": fcmToken ?? ""]
         NotificationCenter.default.post(
             name: FirebaseMessaging.Notification.Name("FCMToken"),
             object: nil,
             userInfo: dataDict
         )
-        
-        if let fcmToken = fcmToken {
-            Task {
-                switch await repository.profile.uploadPushNotificationToken(token: Profile.PushNotificationToken(firebaseRegistrationToken: fcmToken)) {
-                case .success():
-                    break
-                case let .failure(error):
-                    print("Couldn't save FCM (\(String(describing: fcmToken))): \(error)")
-                }
-            }
-        }
     }
 
     // [END refresh_token]

@@ -224,8 +224,12 @@ extension CheckInCardView {
 
         func delete(checkIn: CheckIn, onDelete: @escaping (_ checkIn: CheckIn) -> Void) {
             Task {
-                try await repository.checkIn.delete(id: checkIn.id)
-                onDelete(checkIn)
+                switch await repository.checkIn.delete(id: checkIn.id) {
+                case .success():
+                    onDelete(checkIn)
+                case let .failure(error):
+                    print(error)
+                }
             }
         }
     }

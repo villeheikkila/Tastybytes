@@ -1,11 +1,12 @@
 import Foundation
 import SwiftUI
+import FirebaseMessaging
 
 struct NavigationStackView: View {
-    @StateObject var navigator = Navigator()
+    @StateObject var routeManager = RouteManager()
 
     var body: some View {
-        NavigationStack(path: $navigator.path) {
+        NavigationStack(path: $routeManager.path) {
             AddRoutesView {
                 TabbarView()
             }
@@ -18,36 +19,29 @@ struct NavigationStackView: View {
                     Image(systemName: "gear").imageScale(.large)
                 })
         }
-        .environmentObject(navigator)
+        .environmentObject(routeManager)
         .onOpenURL { url in
             guard let scheme = url.scheme, scheme == "tastenotes" else { return }
             print(scheme)
             guard let info = url.host else { return }
             print(url)
         }
-    }
-}
-
-class Navigator: ObservableObject {
-    @Published var path = NavigationPath()
-
-    func gotoHomePage() {
-        path = NavigationPath()
-    }
-
-    func removeLast() {
-        path.removeLast()
-    }
-
-    func tapOnSecondPage() {
-        path.removeLast()
-    }
-
-    func navigateTo(destination: some Hashable, resetStack: Bool) {
-        if resetStack {
-            path.removeLast(path.count)
+        .task {
+            Messaging.messaging().token { token, error in
+                if let error = error {
+                    print("Error fetching FCM registration token: \(error)")
+                } else if let token = token {
+                    Task {
+                        switch await repository.profile.uploadPushNotificationToken(token: Profile.PushNotificationToken(firebaseRegistrationToken: token)) {
+                        case .success():
+                            break
+                        case let .failure(error):
+                            print("Couldn't save FCM (\(String(describing: token))): \(error)")
+                        }
+                    }
+                }
+            }
         }
-        path.append(destination)
     }
 }
 

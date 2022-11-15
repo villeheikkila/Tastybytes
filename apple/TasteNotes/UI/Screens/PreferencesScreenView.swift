@@ -47,7 +47,7 @@ extension PreferencesScreenView {
     @MainActor class ViewModel: ObservableObject {
         func logOut() {
             Task {
-                try await repository.auth.logOut()
+                await repository.auth.logOut()
             }
         }
     }
