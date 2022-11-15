@@ -66,7 +66,7 @@ struct SupabaseProfileRepository: ProfileRepository {
                     returning: .representation
                 )
                 .eq(column: "id", value: id.uuidString.lowercased())
-                .select(columns: Profile.getQuery(.minimal(false)))
+                .select(columns: ProfileSettings.getQuery(.saved(false)))
                 .single()
                 .execute()
                 .decoded(to: ProfileSettings.self)

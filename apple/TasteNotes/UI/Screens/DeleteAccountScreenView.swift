@@ -4,7 +4,7 @@ import SwiftUI
 
 struct DeleteAccountScreenView: View {
     @StateObject private var viewModel = ViewModel()
-    @EnvironmentObject var currentProfile: CurrentProfile
+    @EnvironmentObject var profileManager: ProfileManager
     @EnvironmentObject var toastManager: ToastManager
     
     var body: some View {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SignInOrSignUpView: View {
+struct AuthenticationScreenView: View {
     @EnvironmentObject private var splashScreenManager: SplashScreenManager
     @EnvironmentObject private var toastManager: ToastManager
     @FocusState private var focusedField: Field?
@@ -192,7 +192,7 @@ struct SignInOrSignUpView: View {
     }
 }
 
-extension SignInOrSignUpView {
+extension AuthenticationScreenView {
     enum Mode {
         case signIn, signUp, magicLink, forgotPassword
     }
