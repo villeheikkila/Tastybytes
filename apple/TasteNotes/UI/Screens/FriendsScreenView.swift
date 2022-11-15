@@ -1,4 +1,3 @@
-import AlertToast
 import Foundation
 import SwiftUI
 
@@ -6,6 +5,7 @@ struct FriendsScreenView: View {
     var profile: Profile
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
+    @EnvironmentObject var toastManager: ToastManager
     @State var friendToBeRemoved: Friend?
     @State var showRemoveFriendConfirmation = false
 
@@ -44,7 +44,9 @@ struct FriendsScreenView: View {
             UserSheetView(actions: { profile in
                 HStack {
                     if !viewModel.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
-                        Button(action: { viewModel.sendFriendRequest(receiver: profile.id) }) {
+                        Button(action: { viewModel.sendFriendRequest(receiver: profile.id, onSuccess: {
+                            toastManager.toggle(.success("Friend Request Sent!"))
+                        }) }) {
                             Image(systemName: "person.badge.plus")
                                 .imageScale(.large)
                         }
@@ -65,9 +67,6 @@ struct FriendsScreenView: View {
                 }
             })
         }
-        .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
-            AlertToast(type: .complete(.green), title: "Friend Request Sent!")
-        }
     }
 
     var addFriendButton: some View {
@@ -86,23 +85,19 @@ extension FriendsScreenView {
         @Published var searchText: String = ""
         @Published var products = [Profile]()
         @Published var friends = [Friend]()
-        @Published var showToast = false
         @Published var showUserSearchSheet = false
 
         @Published var error: Error?
         @Published var modalError: Error?
 
-        func sendFriendRequest(receiver: UUID) {
-            let newFriend = NewFriend(receiver: receiver, status: .pending)
-            print(newFriend)
-
+        func sendFriendRequest(receiver: UUID, onSuccess: @escaping () -> Void) {
             Task {
-                switch await repository.friend.insert(newFriend: newFriend) {
+                switch await repository.friend.insert(newFriend: NewFriend(receiver: receiver, status: .pending)) {
                 case let .success(newFriend):
                     await MainActor.run {
                         self.friends.append(newFriend)
-                        self.showToast = true
                         self.showUserSearchSheet = false
+                        onSuccess()
                     }
                 case let .failure(error):
                     await MainActor.run {
