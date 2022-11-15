@@ -76,9 +76,9 @@ extension CheckInReactionWithCheckIn: Decodable {
 }
 
 struct NewCheckInReaction: Encodable {
-    let check_in_id: Int
+    let p_check_in_id: Int
 
     init(checkInId: Int) {
-        check_in_id = checkInId
+        p_check_in_id = checkInId
     }
 }

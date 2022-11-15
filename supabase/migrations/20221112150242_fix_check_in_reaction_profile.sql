@@ -31,4 +31,5 @@ end;
 $function$
 ;
 
+alter table "public"."notifications" add column "seen_at" timestamp with time zone;
 

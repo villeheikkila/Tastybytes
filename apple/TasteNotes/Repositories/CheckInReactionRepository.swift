@@ -13,8 +13,7 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
         do {
             let response = try await client
                 .database
-                .from(CheckInReaction.getQuery(.tableName))
-                .insert(values: newCheckInReaction, returning: .representation)
+                .rpc(fn: "fnc__create_check_in_reaction", params: newCheckInReaction)
                 .select(columns: CheckInReaction.getQuery(.joinedProfile(false)))
                 .limit(count: 1)
                 .single()
@@ -28,11 +27,17 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
     }
     
     func delete(id: Int) async -> Result<Void, Error> {
+        struct DeleteCheckInReaction: Encodable {
+            let p_check_in_reaction_id: Int
+            
+            init(id: Int) {
+                self.p_check_in_reaction_id = id
+            }
+        }
         do {
              try await client
                 .database
-                .from(CheckInReaction.getQuery(.tableName))
-                .delete().eq(column: "id", value: id)
+                .rpc(fn: "fnc__soft_delete_check_in_reaction", params: DeleteCheckInReaction(id: id))
                 .execute()
             
             return .success(Void()) }
