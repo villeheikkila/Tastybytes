@@ -1,4 +1,3 @@
-import AlertToast
 import GoTrue
 import Supabase
 import SwiftUI

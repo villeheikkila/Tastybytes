@@ -1,4 +1,3 @@
-import AlertToast
 import GoTrue
 import PhotosUI
 import SwiftUI
@@ -6,6 +5,7 @@ import SwiftUI
 struct ProfileSettingsScreenView: View {
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var currentProfile: CurrentProfile
+    @EnvironmentObject var toastManager: ToastManager
     @Environment(\.colorScheme) var initialColorScheme
 
     var body: some View {
@@ -18,14 +18,6 @@ struct ProfileSettingsScreenView: View {
         .navigationTitle("Profile")
         .task {
             viewModel.getInitialValues(profile: currentProfile.profile)
-        }
-        .toast(isPresenting: $viewModel.showToast, duration: 1, tapToDismiss: true) {
-            switch viewModel.toast {
-            case .profileUpdated:
-                return AlertToast(type: .complete(.green), title: "Profile updated!")
-            case .none:
-                return AlertToast(type: .error(.red), title: "")
-            }
         }
     }
 
@@ -67,7 +59,9 @@ struct ProfileSettingsScreenView: View {
             TextField("Last Name", text: $viewModel.lastName)
 
             if viewModel.profileHasChanged() {
-                Button("Update", action: { viewModel.updateProfile() })
+                Button("Update", action: { viewModel.updateProfile(onSuccess: {
+                    toastManager.toggle(.success("Profile updated!"))
+                }) })
             }
         } header: {
             Text("Profile")
@@ -110,23 +104,14 @@ struct ProfileSettingsScreenView: View {
 }
 
 extension ProfileSettingsScreenView {
-    enum Toast {
-        case profileUpdated
-    }
-
     @MainActor class ViewModel: ObservableObject {
         @Published var selectedItem: PhotosPickerItem? = nil
-
-        // Profile values
         @Published var username = ""
         @Published var firstName = ""
         @Published var lastName = ""
         @Published var avatarImage: UIImage?
         @Published var showFullName = false
-        // User values
         @Published var email = ""
-        @Published var showToast = false
-        @Published var toast: Toast?
 
         var profile: Profile?
         var user: User?
@@ -143,10 +128,6 @@ extension ProfileSettingsScreenView {
             return email != user?.email
         }
 
-        func showToast(type: Toast) {
-            toast = type
-            showToast = true
-        }
 
         func getInitialValues(profile: Profile?) {
             if let profile = profile {
@@ -189,7 +170,7 @@ extension ProfileSettingsScreenView {
             showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
         }
 
-        func updateProfile() {
+        func updateProfile(onSuccess: @escaping () -> Void) {
             let update = Profile.Update(
                 username: username,
                 firstName: firstName,
@@ -202,8 +183,7 @@ extension ProfileSettingsScreenView {
                case let .success(profile):
                    await MainActor.run {
                        self.updateFormValues(profile: profile)
-                       self.toast = Toast.profileUpdated
-                       self.showToast = true
+                       onSuccess()
                    }
                    
                case let .failure(error):

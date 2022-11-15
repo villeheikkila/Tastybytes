@@ -19,6 +19,7 @@ final class NotificationManager: ObservableObject {
     
     func deleteFromIndex(at: IndexSet) {
         if let index = at.first {
+            print(notifaction[index])
             DispatchQueue.main.async {
                 self.notifications.remove(at: index)
             }
