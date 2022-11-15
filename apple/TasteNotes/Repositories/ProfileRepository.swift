@@ -5,8 +5,8 @@ import Supabase
 import SupabaseStorage
 
 protocol ProfileRepository {
-    func getById(id: UUID) async -> Result<Profile, Error>
-    func update(id: UUID, update: Profile.Update) async -> Result<Profile, Error>
+    func getCurrentUser() async -> Result<Profile.Extended, Error>
+    func update(id: UUID, update: Profile.Update) async -> Result<Profile.Extended, Error>
     func currentUserExport() async -> Result<String, Error>
     func search(searchTerm: String, currentUserId: UUID) async -> Result<[Profile], Error>
     func uploadAvatar(id: UUID, data: Data) async -> Result<Void, Error>
@@ -18,17 +18,17 @@ protocol ProfileRepository {
 struct SupabaseProfileRepository: ProfileRepository {
     let client: SupabaseClient
 
-    func getById(id: UUID) async -> Result<Profile, Error> {
+    func getCurrentUser() async -> Result<Profile.Extended, Error> {
         do {
             let response = try await client
                 .database
                 .from(Profile.getQuery(.tableName))
                 .select(columns: Profile.getQuery(.extended(false)))
-                .eq(column: "id", value: id.uuidString.lowercased())
+                .eq(column: "id", value: repository.auth.getCurrentUserId().uuidString.lowercased())
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: Profile.self)
+                .decoded(to: Profile.Extended.self)
 
             return .success(response)
         } catch {
@@ -36,7 +36,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    func update(id: UUID, update: Profile.Update) async -> Result<Profile, Error> {
+    func update(id: UUID, update: Profile.Update) async -> Result<Profile.Extended, Error> {
         do {
             let response = try await client
                 .database
@@ -46,10 +46,10 @@ struct SupabaseProfileRepository: ProfileRepository {
                     returning: .representation
                 )
                 .eq(column: "id", value: id.uuidString.lowercased())
-                .select(columns: Profile.getQuery(.saved(false)))
+                .select(columns: Profile.getQuery(.extended(false)))
                 .single()
                 .execute()
-                .decoded(to: Profile.self)
+                .decoded(to: Profile.Extended.self)
 
             return .success(response)
         } catch {
@@ -67,7 +67,7 @@ struct SupabaseProfileRepository: ProfileRepository {
                     returning: .representation
                 )
                 .eq(column: "id", value: id.uuidString.lowercased())
-                .select(columns: Profile.getQuery(.saved(false)))
+                .select(columns: Profile.getQuery(.minimal(false)))
                 .single()
                 .execute()
                 .decoded(to: ProfileSettings.self)
@@ -114,7 +114,7 @@ struct SupabaseProfileRepository: ProfileRepository {
             let response = try await client
                 .database
                 .from(Profile.getQuery(.tableName))
-                .select(columns: Profile.getQuery(.saved(false)))
+                .select(columns: Profile.getQuery(.minimal(false)))
                 .ilike(column: "search", value: "%\(searchTerm)%")
                 .not(column: "id", operator: .eq, value: currentUserId.uuidString)
                 .execute()

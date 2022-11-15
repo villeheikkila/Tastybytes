@@ -11,7 +11,7 @@ struct UserSheetView<Actions: View>: View {
                 ForEach(viewModel.searchResults, id: \.id) { profile in
                     HStack {
                         AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
-                        Text(profile.getPreferredName())
+                        Text(profile.preferredName)
                         Spacer()
                         HStack {
                             self.actions(profile)

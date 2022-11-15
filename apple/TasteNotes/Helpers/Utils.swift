@@ -99,3 +99,14 @@ func queryWithTableName(_ tableName: String, _ query: String, _ withTableName: B
 func joinWithComma(_ arr: String...) -> String {
     return arr.joined(separator: ", ")
 }
+
+func getAvatarURL(id: UUID, avatarUrl: String?) -> URL? {
+    if let avatarUrl = avatarUrl {
+        let bucketId = "avatars"
+        let urlString = "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(id.uuidString.lowercased())/\(avatarUrl)"
+        guard let url = URL(string: urlString) else { return nil }
+        return url
+    } else {
+        return nil
+    }
+}

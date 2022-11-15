@@ -22,7 +22,7 @@ struct FriendSheetView: View {
                     toggleFriend(friend: friend)
                 }) {
                     AvatarView(avatarUrl: friend.getAvatarURL(), size: 32, id: friend.id)
-                    Text(friend.getPreferredName())
+                    Text(friend.preferredName)
                     Spacer()
                     if taggedFriends.contains(friend) {
                         Image(systemName: "checkmark")

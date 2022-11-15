@@ -2,26 +2,36 @@ import Foundation
 
 struct Profile: Identifiable {
     let id: UUID
-    let username: String
-    let firstName: String?
-    let lastName: String?
+    let preferredName: String
     let avatarUrl: String?
-    let nameDisplay: NameDisplay
-    let notifications: [Notification]?
-    let roles: [Role]?
-    let settings: ProfileSettings?
+}
+
+extension Profile: Decodable {
+    enum CodingKeys: String, CodingKey, CaseIterable {
+        case id
+        case preferredName  = "preferred_name"
+        case avatarUrl = "avatar_url"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(UUID.self, forKey: .id)
+        preferredName = try values.decode(String.self, forKey: .preferredName)
+        avatarUrl = try values.decodeIfPresent(String.self, forKey: .avatarUrl)
+    }
 }
 
 extension Profile {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "profiles"
-        let saved = "id, username, first_name, last_name, avatar_url, name_display"
+        let minimal = "id, preferred_name, avatar_url"
+        let saved = "id, preferred_name, username, first_name, last_name, avatar_url, name_display"
 
         switch queryType {
         case .tableName:
             return tableName
-        case let .saved(withTableName):
-            return queryWithTableName(tableName, saved, withTableName)
+        case let .minimal(withTableName):
+            return queryWithTableName(tableName, minimal, withTableName)
         case let .extended(withTableName):
             return queryWithTableName(tableName, joinWithComma(saved, ProfileSettings.getQuery(.saved(true)), Role.getQuery(.joined(true))), withTableName)
         }
@@ -29,33 +39,59 @@ extension Profile {
     
     enum QueryType {
         case tableName
-        case saved(_ withTableName: Bool)
+        case minimal(_ withTableName: Bool)
         case extended(_ withTableName: Bool)
     }
 }
 
 extension Profile {
-    func getPreferredName() -> String {
-        switch nameDisplay {
-        case .username:
-            return username
-        case .fullName:
-            return getFullName()
+    struct Extended: Identifiable, Decodable {
+        let id: UUID
+        let username: String
+        let firstName: String?
+        let lastName: String?
+        let avatarUrl: String?
+        let preferredName: String
+        let nameDisplay: NameDisplay
+        let roles: [Role]
+        let settings: ProfileSettings
+        
+        func getProfile() -> Profile {
+            return Profile.init(id: id, preferredName: preferredName, avatarUrl: avatarUrl)
+        }
+        
+        enum CodingKeys: String, CodingKey, CaseIterable {
+            case id
+            case username
+            case preferredName  = "preferred_name"
+            case firstName = "first_name"
+            case lastName = "last_name"
+            case avatarUrl = "avatar_url"
+            case nameDisplay = "name_display"
+            case notification = "notifications"
+            case roles = "roles"
+            case settings = "profile_settings"
+        }
+        
+        init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            id = try values.decode(UUID.self, forKey: .id)
+            username = try values.decode(String.self, forKey: .username)
+            preferredName = try values.decode(String.self, forKey: .preferredName)
+            firstName = try values.decodeIfPresent(String.self, forKey: .firstName)
+            lastName = try values.decodeIfPresent(String.self, forKey: .lastName)
+            avatarUrl = try values.decodeIfPresent(String.self, forKey: .avatarUrl)
+            nameDisplay = try values.decode(NameDisplay.self, forKey: .nameDisplay)
+            roles = try values.decode([Role].self, forKey: .roles)
+            settings = try values.decode([ProfileSettings].self, forKey: .settings).first! // TODO: Fix this when PostgREST 10 is used by Supabase
         }
     }
-    
-    func getFullName() -> String {
-        if let firstName = firstName, let lastName = lastName {
-            let trimmedFirstName = firstName.trimmingCharacters(in: .whitespacesAndNewlines)
-            let trimmedLastName = lastName.trimmingCharacters(in: .whitespacesAndNewlines)
-            let formattedFullName = [trimmedFirstName, trimmedLastName]
-                .compactMap({ $0 })
-                .joined(separator: " ")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            return formattedFullName.isEmpty ? username : formattedFullName
-        } else {
-            return username
-        }
+}
+
+extension Profile {
+    func isCurrentUser() -> Bool {
+        let currentUserId = repository.auth.getCurrentUserId()
+        return currentUserId == id
     }
     
     func getAvatarURL() -> URL? {
@@ -67,11 +103,6 @@ extension Profile {
         } else {
             return nil
         }
-    }
-    
-    func isCurrentUser() -> Bool {
-        let currentUserId = repository.auth.getCurrentUserId()
-        return currentUserId == id
     }
 }
 
@@ -85,33 +116,6 @@ extension Profile {
 extension Profile: Hashable {
     static func == (lhs: Profile, rhs: Profile) -> Bool {
         return lhs.id == rhs.id
-    }
-}
-
-extension Profile: Decodable {
-    enum CodingKeys: String, CodingKey, CaseIterable {
-        case id
-        case username
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case avatarUrl = "avatar_url"
-        case nameDisplay = "name_display"
-        case notification = "notifications"
-        case roles = "roles"
-        case settings = "profile_settings"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(UUID.self, forKey: .id)
-        username = try values.decode(String.self, forKey: .username)
-        firstName = try values.decodeIfPresent(String.self, forKey: .firstName)
-        lastName = try values.decodeIfPresent(String.self, forKey: .lastName)
-        avatarUrl = try values.decodeIfPresent(String.self, forKey: .avatarUrl)
-        nameDisplay = try values.decode(NameDisplay.self, forKey: .nameDisplay)
-        notifications = try values.decodeIfPresent([Notification].self, forKey: .notification)
-        roles = try values.decodeIfPresent([Role].self, forKey: .roles)
-        settings = try values.decodeIfPresent([ProfileSettings].self, forKey: .settings)?.first
     }
 }
 

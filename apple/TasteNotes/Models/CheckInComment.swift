@@ -39,7 +39,7 @@ extension CheckInComment {
         case .tableName:
             return tableName
         case let .joinedProfile(withTableName):
-            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.saved(true))), withTableName)
+            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.minimal(true))), withTableName)
         }
     }
     
