@@ -56,12 +56,12 @@ extension ApplicationSettingsScreenView {
 
         var initialColorScheme: ColorScheme?
 
-        func setInitialValues(systemColorScheme: ColorScheme, profile: Profile?) {
+        func setInitialValues(systemColorScheme: ColorScheme, profile: Profile.Extended?) {
             Task {
-                switch await repository.profile.getById(id: repository.auth.getCurrentUserId()) {
-                case let .success(currentUserProfile):
+                switch await repository.profile.getCurrentUser() {
+                case let .success(profile):
                     await MainActor.run {
-                        switch profile?.settings?.colorScheme {
+                        switch profile.settings.colorScheme {
                         case .light:
                             self.isDarkMode = false
                             self.isSystemColor = false
@@ -75,11 +75,9 @@ extension ApplicationSettingsScreenView {
                             self.isDarkMode = initialColorScheme == ColorScheme.dark
                         }
 
-                        if let settings = currentUserProfile.settings {
-                            self.reactionNotifications = settings.sendReactionNotifications
-                            self.friendRequestNotifications = settings.sendFriendRequestNotifications
-                            self.checkInTagNotifications = settings.sendTaggedCheckInNotifications
-                        }
+                        self.reactionNotifications = profile.settings.sendReactionNotifications
+                        self.friendRequestNotifications = profile.settings.sendFriendRequestNotifications
+                        self.checkInTagNotifications = profile.settings.sendTaggedCheckInNotifications
 
                         initialColorScheme = systemColorScheme
                     }
@@ -99,7 +97,7 @@ extension ApplicationSettingsScreenView {
 
             Task {
                 _ = await repository.profile.updateSettings(id: repository.auth.getCurrentUserId(),
-                                                                update: update)
+                                                            update: update)
                 onChange()
             }
         }
@@ -110,7 +108,7 @@ extension ApplicationSettingsScreenView {
 
             Task {
                 _ = await repository.profile.updateSettings(id: repository.auth.getCurrentUserId(),
-                                                                update: update)
+                                                            update: update)
             }
         }
     }

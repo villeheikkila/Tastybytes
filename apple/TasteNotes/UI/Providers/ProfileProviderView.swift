@@ -2,11 +2,12 @@ import Realtime
 import SwiftUI
 
 class CurrentProfile: ObservableObject {
-    @Published var profile: Profile?
+    @Published var profile: Profile.Extended?
     
-    func get(id: UUID) {        
+
+    func get(id: UUID) {
         Task {
-            switch await repository.profile.getById(id: id) {
+            switch await repository.profile.getCurrentUser() {
             case let .success(currentUserProfile):
                 await MainActor.run {
                     self.profile = currentUserProfile
@@ -19,16 +20,14 @@ class CurrentProfile: ObservableObject {
     }
 
     func refresh() {
-        if let id = profile?.id {
-            Task {
-                switch await repository.profile.getById(id: id) {
-                case let .success(currentUserProfile):
-                    await MainActor.run {
-                        self.profile = currentUserProfile
-                    }
-                case let .failure(error):
-                    print("error while loading profile: \(error)")
+        Task {
+            switch await repository.profile.getCurrentUser() {
+            case let .success(currentUserProfile):
+                await MainActor.run {
+                    self.profile = currentUserProfile
                 }
+            case let .failure(error):
+                print("error while loading profile: \(error)")
             }
         }
     }
@@ -75,10 +74,10 @@ public struct CurrentProfileProviderView<RootView: View>: View {
             .environmentObject(currentProfile)
             .environmentObject(notificationManager)
             .task {
-                currentProfile.get(id: repository.auth.getCurrentUserId())
+                currentProfile.get(id: userId)
                 notificationManager.getAll()
             }
-            .preferredColorScheme(getColorScheme(colorScheme: currentProfile.profile?.settings?.colorScheme))
+            .preferredColorScheme(getColorScheme(colorScheme: currentProfile.profile?.settings.colorScheme))
     }
 }
 
@@ -95,7 +94,7 @@ struct WithProfile<Content: View>: View {
 
     var body: some View {
         VStack {
-            if let profile = currentProfile.profile {
+            if let profile = currentProfile.profile?.getProfile() {
                 content(profile)
             } else {
                 EmptyView()

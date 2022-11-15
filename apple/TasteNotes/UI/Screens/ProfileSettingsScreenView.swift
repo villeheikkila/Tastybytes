@@ -113,7 +113,7 @@ extension ProfileSettingsScreenView {
         @Published var showFullName = false
         @Published var email = ""
 
-        var profile: Profile?
+        var profile: Profile.Extended?
         var user: User?
 
         func profileHasChanged() -> Bool {
@@ -129,26 +129,17 @@ extension ProfileSettingsScreenView {
         }
 
 
-        func getInitialValues(profile: Profile?) {
+        func getInitialValues(profile: Profile.Extended?) {
             if let profile = profile {
                 DispatchQueue.main.async {
                     self.updateFormValues(profile: profile)
-                }
-            } else {
-                Task {
-                    switch await repository.profile.getById(id: repository.auth.getCurrentUserId()) {
-                    case let .success(fetchedProfile):
-                        self.updateFormValues(profile: fetchedProfile)
-                    case let .failure(error):
-                        print(error)
-                    }
                 }
             }
             
             Task {
                 let user = repository.auth.getCurrentUser()
 
-                if let url = profile?.getAvatarURL() {
+                if let profileId = profile?.id, let url = getAvatarURL(id: profileId, avatarUrl: profile?.avatarUrl) {
                     let (data, _) = try await  URLSession.shared.data(from: url)
                     DispatchQueue.main.async {
                         self.avatarImage = UIImage(data: data)
@@ -162,7 +153,7 @@ extension ProfileSettingsScreenView {
             }
         }
 
-        func updateFormValues(profile: Profile) {
+        func updateFormValues(profile: Profile.Extended) {
             self.profile = profile
             username = profile.username
             lastName = profile.lastName ?? ""

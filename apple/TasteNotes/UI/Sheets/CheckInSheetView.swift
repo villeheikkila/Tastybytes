@@ -3,6 +3,9 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInSheetView: View {
+    @StateObject var viewModel = ViewModel()
+    @Environment(\.dismiss) var dismiss
+    
     let product: ProductJoined
     let onCreation: ((_ checkIn: CheckIn) -> Void)?
     let onUpdate: ((_ checkIn: CheckIn) -> Void)?
@@ -25,9 +28,6 @@ struct CheckInSheetView: View {
         self.onUpdate = onUpdate
         action = Action.update
     }
-
-    @StateObject var viewModel = ViewModel()
-    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationStack {

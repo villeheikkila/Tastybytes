@@ -20,9 +20,9 @@ extension CheckInReaction {
         case .tableName:
             return tableName
         case let .joinedProfileCheckIn(withTableName):
-            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.saved(true)), CheckIn.getQuery(.joined(true))), withTableName)
+            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.minimal(true)), CheckIn.getQuery(.joined(true))), withTableName)
         case let .joinedProfile(withTableName):
-            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.saved(true))), withTableName)
+            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.minimal(true))), withTableName)
         }
         
     }

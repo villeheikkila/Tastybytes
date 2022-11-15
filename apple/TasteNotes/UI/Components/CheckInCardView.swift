@@ -82,7 +82,7 @@ struct CheckInCardView: View {
         NavigationLink(value: checkIn.profile) {
             HStack {
                 AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 30, id: checkIn.profile.id)
-                Text(checkIn.profile.getPreferredName())
+                Text(checkIn.profile.preferredName)
                     .font(.system(size: 12, weight: .bold, design: .default))
                     .foregroundColor(.primary)
                 Spacer()
@@ -241,7 +241,7 @@ struct CheckInCardView_Previews: PreviewProvider {
 
     static let product = ProductJoined(id: 0, name: "Coca Cola", description: "Original Taste", subBrand: subBrand, subcategories: subcategories)
     
-    static let profile = Profile(id: UUID(uuidString: "82c34cc0-4795-4478-99ad-38003fdb65fd") ?? UUID(), username: "villeheikkila", firstName: "Ville", lastName: "Heikkilä", avatarUrl: "avatar.jpeg", nameDisplay: .fullName, notifications: nil, roles: nil, settings: nil)
+    static let profile = Profile(id: UUID(uuidString: "82c34cc0-4795-4478-99ad-38003fdb65fd") ?? UUID(), preferredName: "villeheikkila", avatarUrl: "avatar.jpeg")
 
     static let servingStyle = ServingStyle(id: 0, name: .bottle)
 

@@ -18,7 +18,7 @@ struct BlockedUsersScreenView: View {
         .navigationTitle("Blocked Users")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            viewModel.loadBlockedUsers(currentProfile: currentProfile.profile)
+            viewModel.loadBlockedUsers(userId: currentProfile.profile?.id)
         }
     }
 }
@@ -43,8 +43,8 @@ extension BlockedUsersScreenView {
             }
         }
 
-        func loadBlockedUsers(currentProfile: Profile?) {
-            if let userId = currentProfile?.id {
+        func loadBlockedUsers(userId: UUID?) {
+            if let userId = userId {
                 Task {
                     switch await repository.friend.getByUserId(userId: userId, status: .blocked) {
                     case let .success(blockedUsers):
@@ -71,7 +71,7 @@ struct BlockedUserListItemView: View {
             AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
             VStack {
                 HStack {
-                    Text(profile.getPreferredName())
+                    Text(profile.preferredName)
                     Spacer()
                     Button(action: {
                         onUnblockUser()

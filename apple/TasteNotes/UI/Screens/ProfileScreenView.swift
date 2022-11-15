@@ -40,7 +40,7 @@ struct ProfileScreenView: View {
             }
 
             VStack(alignment: .center) {
-                Text(profile.getPreferredName())
+                Text(profile.preferredName)
                     .font(.system(size: 16, weight: .bold, design: .default))
                     .lineLimit(1)
                     .font(.system(size: 500))

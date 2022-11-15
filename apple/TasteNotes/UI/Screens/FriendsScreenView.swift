@@ -14,7 +14,7 @@ struct FriendsScreenView: View {
             VStack {
                 ForEach(viewModel.friends, id: \.self) { friend in
                     if profile.isCurrentUser() {
-                        if let profile = currentProfile.profile {
+                        if let profile = currentProfile.profile?.getProfile() {
                             FriendListItemView(friend: friend,
                                                currentUser: profile,
                                                onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
@@ -33,10 +33,10 @@ struct FriendsScreenView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
         .refreshable {
-            viewModel.loadFriends(userId: profile.id, currentUser: currentProfile.profile)
+            viewModel.loadFriends(userId: profile.id, currentUser: currentProfile.profile?.getProfile())
         }
         .task {
-            viewModel.loadFriends(userId: profile.id, currentUser: currentProfile.profile)
+            viewModel.loadFriends(userId: profile.id, currentUser: currentProfile.profile?.getProfile())
         }
         .navigationBarItems(
             trailing: addFriendButton)
@@ -61,7 +61,7 @@ struct FriendsScreenView: View {
         .confirmationDialog("delete_friend",
                             isPresented: $showRemoveFriendConfirmation
         ) {
-            Button("Remove \(friendToBeRemoved?.getFriend(userId: currentProfile.profile?.id).getPreferredName() ?? "??")", role: .destructive, action: {
+            Button("Remove \(friendToBeRemoved?.getFriend(userId: currentProfile.profile?.id).preferredName ?? "??")", role: .destructive, action: {
                 if let friend = friendToBeRemoved {
                     viewModel.removeFriendRequest(friend)
                 }
@@ -170,7 +170,7 @@ struct FriendListItemSimpleView: View {
         NavigationLink(value: profile) {
             HStack(alignment: .center) {
                 AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
-                Text(profile.getPreferredName())
+                Text(profile.preferredName)
                     .foregroundColor(.primary)
                 Spacer()
             }
@@ -210,7 +210,7 @@ struct FriendListItemView: View {
                 AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
                 VStack {
                     HStack {
-                        Text(profile.getPreferredName())
+                        Text(profile.preferredName)
                             .foregroundColor(.primary)
                         if friend.status == FriendStatus.pending {
                             Text("(\(friend.status.rawValue.capitalized))")

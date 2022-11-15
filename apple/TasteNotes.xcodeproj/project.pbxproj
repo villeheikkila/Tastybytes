@@ -288,7 +288,6 @@
 			children = (
 				5C989DAE2901B8A400BBC5A7 /* UserProviderView.swift */,
 				5C989DB92901D2C700BBC5A7 /* ProfileProviderView.swift */,
-				5CE9009229211AC9003DE697 /* NotificationManager.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -300,6 +299,7 @@
 				5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */,
 				5C0E36472922F21B0072EFBD /* ToastManager.swift */,
 				5C0E36492922F8C60072EFBD /* RouteManager.swift */,
+				5CE9009229211AC9003DE697 /* NotificationManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
