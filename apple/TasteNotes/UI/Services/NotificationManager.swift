@@ -1,6 +1,7 @@
 import SwiftUI
+import FirebaseMessaging
 
-final class NotificationManager: ObservableObject {
+final class NotificationManager: NSObject, ObservableObject {
     @Published private(set) var notifications = [Notification]()
 
     func getAll() {
@@ -14,6 +15,10 @@ final class NotificationManager: ObservableObject {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    func test() {
+        print("HEI!!")
     }
 
     func markAllFriendRequestsAsRead() {
@@ -124,4 +129,25 @@ final class NotificationManager: ObservableObject {
             }
         }
     }
+}
+
+extension NotificationManager: UNUserNotificationCenterDelegate {
+    @MainActor
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification) async
+        -> UNNotificationPresentationOptions {
+        let userInfo = notification.request.content.userInfo
+        print(userInfo)
+        self.getAll()
+        return [[.sound]]
+    }
+
+    @MainActor
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse) async {
+        let userInfo = response.notification.request.content.userInfo
+        print(userInfo)
+        self.test()
+    }
+
 }
