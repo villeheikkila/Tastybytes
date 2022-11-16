@@ -5,7 +5,7 @@ import SwiftUI
 struct AuthenticatedContentView: View {
     @StateObject var routeManager = RouteManager()
     @StateObject var profileManager = ProfileManager()
-    @StateObject var notificationManager = NotificationManager()
+    @EnvironmentObject var notificationManager: NotificationManager
 
     var body: some View {
         NavigationStack(path: $routeManager.path) {
@@ -49,7 +49,6 @@ struct AuthenticatedContentView: View {
         }
         .environmentObject(routeManager)
         .environmentObject(profileManager)
-        .environmentObject(notificationManager)
         .preferredColorScheme(profileManager.colorScheme)
         .task {
             profileManager.refresh()

@@ -5,6 +5,11 @@ struct Main: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var splashScreenManager = SplashScreenManager()
     @StateObject var toastManager = ToastManager()
+    private let notificationManager = NotificationManager()
+    
+    init() {
+          UNUserNotificationCenter.current().delegate = notificationManager
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -19,6 +24,7 @@ struct Main: App {
             }
             .environmentObject(splashScreenManager)
             .environmentObject(toastManager)
+            .environmentObject(notificationManager)
         }
     }
 }
