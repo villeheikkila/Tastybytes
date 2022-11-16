@@ -26,12 +26,11 @@ struct NotificationScreenView: View {
                     }
                 }
                 .onDelete(perform: notificationManager.deleteFromIndex)
-                .refreshable {
-                    notificationManager.getAll()
-                }
-
             }
-            .navigationBarTitle("Notifications")
+            .refreshable {
+                notificationManager.getAll()
+            }
+            .navigationTitle("Notifications")
         }
 
     }
