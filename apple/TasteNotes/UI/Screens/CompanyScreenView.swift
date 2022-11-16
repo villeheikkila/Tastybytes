@@ -168,7 +168,7 @@ extension CompanyScreenView {
         
         func getInitialData(_ companyId: Int) {
             Task {
-                switch await repository.company.getById(id: companyId) {
+                switch await repository.company.getJoinedById(id: companyId) {
                 case let .success(company):
                     await MainActor.run {
                         self.companyJoined = company
@@ -207,7 +207,7 @@ extension CompanyScreenView {
                 case .success():
                     // TODO: Do not refetch the company on deletion
                     if let companyJoined = companyJoined {
-                        switch await repository.company.getById(id: companyJoined.id) {
+                        switch await repository.company.getJoinedById(id: companyJoined.id) {
                         case let .success(company):
                             await MainActor.run {
                                 self.companyJoined = company

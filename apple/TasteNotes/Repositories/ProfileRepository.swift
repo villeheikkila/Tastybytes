@@ -5,6 +5,7 @@ import Supabase
 import SupabaseStorage
 
 protocol ProfileRepository {
+    func getById(id: UUID) async -> Result<Profile, Error>
     func getCurrentUser() async -> Result<Profile.Extended, Error>
     func update(id: UUID, update: Profile.Update) async -> Result<Profile.Extended, Error>
     func currentUserExport() async -> Result<String, Error>
@@ -17,6 +18,24 @@ protocol ProfileRepository {
 
 struct SupabaseProfileRepository: ProfileRepository {
     let client: SupabaseClient
+    
+    func getById(id: UUID) async -> Result<Profile, Error> {
+        do {
+            let response = try await client
+                .database
+                .from(Profile.getQuery(.tableName))
+                .select(columns: Profile.getQuery(.minimal(false)))
+                .eq(column: "id", value: id.uuidString.lowercased())
+                .limit(count: 1)
+                .single()
+                .execute()
+                .decoded(to: Profile.self)
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
 
     func getCurrentUser() async -> Result<Profile.Extended, Error> {
         do {

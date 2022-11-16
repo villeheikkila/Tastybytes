@@ -4,6 +4,7 @@ import SupabaseStorage
 
 protocol CheckInRepository {
     func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error>
+    func getById(id: Int) async -> Result<CheckIn, Error>
     func getByProfileId(id: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error>
     func getByProductId(id: Int, from: Int, to: Int) async -> Result<[CheckIn], Error>
     func create(newCheckInParams: NewCheckInParams) async -> Result<CheckIn, Error>
