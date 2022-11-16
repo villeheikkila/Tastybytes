@@ -12,12 +12,16 @@ struct NotificationScreenView: View {
                         switch notification.content {
                         case let .message(message):
                             MessageNotificationView(message: message)
+                                .onTapGesture {
+                                    notificationManager.markAsRead(notification)
+                                }
                         case let .friendRequest(friendRequest):
                             FriendRequestNotificationView(friend: friendRequest)
                         case let .taggedCheckIn(taggedCheckIn):
                             TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
                         case let .checkInReaction(checkInReaction):
                             CheckInReactionNotificationView(checkInReaction: checkInReaction)
+
                         default:
                             EmptyView()
                         }
@@ -28,6 +32,7 @@ struct NotificationScreenView: View {
                 .refreshable {
                     notificationManager.getAll()
                 }
+
             }
             .navigationBarTitle("Notifications")
         }

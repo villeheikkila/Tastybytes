@@ -6,6 +6,7 @@ struct FriendsScreenView: View {
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var profileManager: ProfileManager
     @EnvironmentObject var toastManager: ToastManager
+    @EnvironmentObject var noficationManager: NotificationManager
     @State var friendToBeRemoved: Friend?
     @State var showRemoveFriendConfirmation = false
 
@@ -13,7 +14,7 @@ struct FriendsScreenView: View {
         ScrollView {
             VStack {
                 ForEach(viewModel.friends, id: \.self) { friend in
-                    if profile.isCurrentUser() {
+                    if profile == profileManager.getProfile() {
                         FriendListItemView(friend: friend,
                                            currentUser: profileManager.getProfile(),
                                            onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
@@ -35,6 +36,11 @@ struct FriendsScreenView: View {
         }
         .task {
             viewModel.loadFriends(userId: profile.id, currentUser: profileManager.getProfile())
+        }
+        .task {
+            if profile == profileManager.getProfile() {
+                noficationManager.markAllFriendRequestsAsRead()
+            }
         }
         .navigationBarItems(
             trailing: addFriendButton)
@@ -69,7 +75,7 @@ struct FriendsScreenView: View {
 
     var addFriendButton: some View {
         HStack {
-            if profile.isCurrentUser() {
+            if profile == profileManager.getProfile() {
                 Button(action: { viewModel.showUserSearchSheet.toggle() }) {
                     Image(systemName: "plus").imageScale(.large)
                 }
