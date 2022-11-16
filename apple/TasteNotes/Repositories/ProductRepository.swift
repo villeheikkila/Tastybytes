@@ -3,6 +3,7 @@ import Supabase
 
 protocol ProductRepository {
     func search(searchTerm: String) async -> Result<[ProductJoined], Error>
+    func getById(id: Int) async -> Result<ProductJoined, Error>
     func delete(id: Int) async -> Result<Void, Error>
     func create(newProductParams: NewProductParams) async -> Result<ProductJoined, Error>
     func getSummaryById(id: Int) async -> Result<ProductSummary, Error>
@@ -34,16 +35,22 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    func getProductById(id: Int) async throws -> ProductJoined {
-        return try await client
-            .database
-            .from(Product.getQuery(.tableName))
-            .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
-            .eq(column: "id", value: id)
-            .limit(count: 1)
-            .single()
-            .execute()
-            .decoded(to: ProductJoined.self)
+    func getById(id: Int) async -> Result<ProductJoined, Error> {
+        do {
+            let response = try await client
+                .database
+                .from(Product.getQuery(.tableName))
+                .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
+                .eq(column: "id", value: id)
+                .limit(count: 1)
+                .single()
+                .execute()
+                .decoded(to: ProductJoined.self)
+            
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
     }
 
     func delete(id: Int) async -> Result<Void, Error> {
@@ -74,9 +81,13 @@ struct SupabaseProductRepository: ProductRepository {
             /**
              TODO: Investigate if it is possible to somehow join sub_brands immediately after it has been created as part of the fnc__create_product function. 22.10.2022
              */
-            let response = try await getProductById(id: product.id)
-
-            return .success(response)
+        
+            switch await getById(id: product.id) {
+            case let .success(response):
+                return .success(response)
+            case let .failure(error):
+                return .failure(error)
+            }
         } catch {
             return .failure(error)
         }

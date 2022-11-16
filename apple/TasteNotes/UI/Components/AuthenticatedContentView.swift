@@ -55,10 +55,9 @@ struct AuthenticatedContentView: View {
             notificationManager.getAll()
         }
         .onOpenURL { url in
-            guard let scheme = url.scheme, scheme == "tastenotes" else { return }
-            print(scheme)
-            guard let info = url.host else { return }
-            print(url)
+            if let detailPage = url.detailPage {
+                routeManager.fetchAndNavigateTo(detailPage)
+            }
         }
         .task {
             Messaging.messaging().token { token, error in
