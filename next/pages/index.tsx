@@ -5,19 +5,20 @@ import Image from "next/image";
 import { useEffect } from "react";
 
 export default function Home() {
-  const supabaseClient = useSupabaseClient()
-  
+  const supabaseClient = useSupabaseClient();
+
   useEffect(() => {
- 
-    const { data: listener } = supabaseClient.auth.onAuthStateChange((event, session) => {
-      console.log(event)
-    });
+    const { data: listener } = supabaseClient.auth.onAuthStateChange(
+      (event, session) => {
+        console.log(event);
+      }
+    );
 
     return () => {
       listener?.subscription.unsubscribe();
     };
   }, []);
-  
+
   return (
     <Page>
       <Head>
@@ -39,6 +40,6 @@ export default function Home() {
           </div>
         </header>
       </main>
-      </Page>
+    </Page>
   );
 }
