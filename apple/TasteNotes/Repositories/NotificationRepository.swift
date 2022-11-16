@@ -5,6 +5,7 @@ protocol NotificationRepository {
     func getAll() async -> Result<[Notification], Error>
     func markRead(id: Int) async -> Result<Notification, Error>
     func markAllFriendRequestsAsRead() async -> Result<[Notification], Error>
+    func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Notification], Error>
     func delete(id: Int) async -> Result<Void, Error>
 }
 
@@ -48,6 +49,21 @@ struct SupabaseNotificationRepository: NotificationRepository {
             let response = try await client
                 .database
                 .rpc(fn: "fnc__mark_friend_request_notification_as_read")
+                .select(columns: Notification.getQuery(.joined))
+                .execute()
+                .decoded(to: [Notification].self)
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Notification], Error> {
+        do {
+            let response = try await client
+                .database
+                .rpc(fn: "fnc__mark_check_in_notification_as_read", params: Notification.MarkCheckInReadRequest(checkInId: checkInId))
                 .select(columns: Notification.getQuery(.joined))
                 .execute()
                 .decoded(to: [Notification].self)

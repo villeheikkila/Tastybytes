@@ -191,4 +191,3 @@ struct CheckInNotification: Identifiable, Hashable, Decodable {
         product = try values.decode(ProductJoined.self, forKey: .product)
     }
 }
-

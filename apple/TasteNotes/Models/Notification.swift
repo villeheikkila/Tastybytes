@@ -23,7 +23,7 @@ extension Notification {
         case .tableName:
             return tableName
         case .joined:
-            return joinWithComma(saved, CheckInReaction.getQuery(.joinedProfileCheckIn(true)), CheckIn.getQuery(.joined(true)), Friend.getQuery(.joined(true)))
+            return joinWithComma(saved, CheckInReaction.getQuery(.joinedProfileCheckIn(true)),  CheckInTaggedProfiles.getQuery(.joined(true)), Friend.getQuery(.joined(true)))
         }
     }
 
@@ -46,7 +46,7 @@ extension Notification: Decodable {
         case createdAt = "created_at"
         case seenAt = "seen_at"
         case friendRequest = "friends"
-        case taggedCheckIn = "check_ins"
+        case taggedCheckIn = "check_in_tagged_profiles"
         case checkInReaction = "check_in_reactions"
     }
 
@@ -63,15 +63,15 @@ extension Notification: Decodable {
         
         let message = try values.decodeIfPresent(String.self, forKey: .message)
         let friendRequest = try values.decodeIfPresent(Friend.self, forKey: .friendRequest)
-        let taggedCheckIn = try values.decodeIfPresent(CheckIn.self, forKey: .taggedCheckIn)
+        let taggedCheckIn = try values.decodeIfPresent(CheckInTaggedProfiles.self, forKey: .taggedCheckIn)
         let checkInReaction = try values.decodeIfPresent(CheckInReactionWithCheckIn.self, forKey: .checkInReaction)
 
         if let message = message {
             content = NotificationContent.message(message)
         } else if let friendRequest = friendRequest {
             content = NotificationContent.friendRequest(friendRequest)
-        } else if let taggedCheckIn = taggedCheckIn {
-            content = NotificationContent.taggedCheckIn(taggedCheckIn)
+        } else if let checkIn = taggedCheckIn?.checkIn {
+            content = NotificationContent.taggedCheckIn(checkIn)
         } else if let checkInReaction = checkInReaction {
             content = NotificationContent.checkInReaction(checkInReaction)
         } else {
@@ -81,11 +81,56 @@ extension Notification: Decodable {
 }
 
 extension Notification {
+    struct CheckInTaggedProfiles: Identifiable, Decodable {
+        let id: Int
+        let checkIn: CheckIn
+        
+        static func == (lhs: CheckInTaggedProfiles, rhs: CheckInTaggedProfiles) -> Bool {
+            return lhs.id == rhs.id
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case id
+            case checkIn = "check_ins"
+        }
+
+        init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            id = try values.decode(Int.self, forKey: .id)
+            checkIn = try values.decode(CheckIn.self, forKey: .checkIn)
+        }
+        
+        static func getQuery(_ queryType: QueryType) -> String {
+            let tableName = "check_in_tagged_profiles"
+            let saved = "id"
+            
+            switch queryType {
+            case .tableName:
+                return tableName
+            case let .joined(withTableName):
+                return queryWithTableName(tableName, joinWithComma(saved, CheckIn.getQuery(.joined(true))), withTableName)
+            }
+        }
+
+        enum QueryType {
+            case tableName
+            case joined(_ withTableName: Bool)
+        }
+    }
+    
     struct MarkReadRequest: Encodable {
         let p_notification_id: Int
         
         init(id: Int) {
             self.p_notification_id = id
+        }
+    }
+    
+    struct MarkCheckInReadRequest: Encodable {
+        let p_check_in_id: Int
+        
+        init(checkInId: Int) {
+            self.p_check_in_id = checkInId
         }
     }
 }

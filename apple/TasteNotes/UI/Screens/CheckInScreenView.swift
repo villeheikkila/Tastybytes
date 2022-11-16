@@ -4,6 +4,7 @@ struct CheckInScreenView: View {
     let checkIn: CheckIn
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject private var routeManager: RouteManager
+    @EnvironmentObject private var notificationManager: NotificationManager
 
     var body: some View {
         VStack {
@@ -41,6 +42,9 @@ struct CheckInScreenView: View {
                 }.disabled(viewModel.isInvalidComment())
             }
             .padding(.all, 10)
+        }
+        .task {
+            notificationManager.markCheckInAsRead(checkIn: checkIn)
         }
     }
 }
