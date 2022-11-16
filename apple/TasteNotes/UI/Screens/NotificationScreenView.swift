@@ -21,9 +21,6 @@ struct NotificationScreenView: View {
                             TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
                         case let .checkInReaction(checkInReaction):
                             CheckInReactionNotificationView(checkInReaction: checkInReaction)
-
-                        default:
-                            EmptyView()
                         }
                         Spacer()
                     }
