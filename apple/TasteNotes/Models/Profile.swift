@@ -89,11 +89,6 @@ extension Profile {
 }
 
 extension Profile {
-    func isCurrentUser() -> Bool {
-        let currentUserId = repository.auth.getCurrentUserId()
-        return currentUserId == id
-    }
-    
     func getAvatarURL() -> URL? {
         if let avatarUrl = avatarUrl {
             let bucketId = "avatars"

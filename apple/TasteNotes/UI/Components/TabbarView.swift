@@ -21,7 +21,11 @@ struct TabbarView: View {
                     Image(systemName: "bell")
                     Text("Notifications")
                 }
-                .badge(notificationManager.notifications.count)
+                .badge(notificationManager
+                    .notifications
+                    .filter { $0.seenAt == nil }
+                    .count
+                )
             ProfileScreenView(profile: profile)
                 .tabItem {
                     Image(systemName: "person.fill")

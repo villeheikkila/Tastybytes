@@ -10,13 +10,14 @@ enum NotificationContent: Hashable {
 struct Notification: Identifiable {
     let id: Int
     let createdAt: Date
-    let content: NotificationContent?
+    let seenAt: Date?
+    let content: NotificationContent
 }
 
 extension Notification {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "notifications"
-        let saved = "id, message, created_at"
+        let saved = "id, message, created_at, seen_at"
         
         switch queryType {
         case .tableName:
@@ -43,6 +44,7 @@ extension Notification: Decodable {
         case id
         case message
         case createdAt = "created_at"
+        case seenAt = "seen_at"
         case friendRequest = "friends"
         case taggedCheckIn = "check_ins"
         case checkInReaction = "check_in_reactions"
@@ -52,6 +54,13 @@ extension Notification: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
         createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
+        
+        if let date = try values.decodeIfPresent(String.self, forKey: .seenAt) {
+            seenAt = try parseDate(from: date)
+        } else {
+            seenAt = nil
+        }
+        
         let message = try values.decodeIfPresent(String.self, forKey: .message)
         let friendRequest = try values.decodeIfPresent(Friend.self, forKey: .friendRequest)
         let taggedCheckIn = try values.decodeIfPresent(CheckIn.self, forKey: .taggedCheckIn)
@@ -66,7 +75,17 @@ extension Notification: Decodable {
         } else if let checkInReaction = checkInReaction {
             content = NotificationContent.checkInReaction(checkInReaction)
         } else {
-            content = nil
+            content = NotificationContent.message("No content")
+        }
+    }
+}
+
+extension Notification {
+    struct MarkReadRequest: Encodable {
+        let p_notification_id: Int
+        
+        init(id: Int) {
+            self.p_notification_id = id
         }
     }
 }
