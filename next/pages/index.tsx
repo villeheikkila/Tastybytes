@@ -1,8 +1,23 @@
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Navbar, Page } from "konsta/react";
 import Head from "next/head";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function Home() {
+  const supabaseClient = useSupabaseClient()
+  
+  useEffect(() => {
+ 
+    const { data: listener } = supabaseClient.auth.onAuthStateChange((event, session) => {
+      console.log(event)
+    });
+
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
+  }, []);
+  
   return (
     <Page>
       <Head>
@@ -11,16 +26,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="grid h-screen place-items-center">
-        <header >
-          <span>
+      <main className="h-screen">
+        <header className="flex justify-center m-20">
+          <div className="flex flex-col text-center gap-6">
             <Image
               src="/ramune.png"
               alt="TasteNotes logo"
-              width={240}
-              height={240}
+              width={200}
+              height={200}
             />
-          </span>
+            <h1 className="text-4xl font-bold">TasteNotes</h1>
+          </div>
         </header>
       </main>
       </Page>
