@@ -55,6 +55,8 @@ struct CompanyScreenView: View {
                         }
                     }
                 }.contextMenu {
+                    ShareLink("Share", item: createLinkToScreen(.company(id: company.id)))
+                    
                     if profileManager.hasPermission(.canDeleteCompanies) {
                         Button(action: {
                             showDeleteCompanyConfirmationDialog.toggle()

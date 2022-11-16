@@ -60,6 +60,9 @@ struct ProfileScreenView: View {
         .task {
             viewModel.getProfileData(userId: profile.id)
         }
+        .contextMenu {
+            ShareLink("Share", item: createLinkToScreen(.profile(id: profile.id)))
+        }
     }
 
     var ratingChart: some View {

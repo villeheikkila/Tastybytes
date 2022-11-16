@@ -13,7 +13,8 @@ struct CheckInScreenView: View {
                                 loadedFrom: .checkIn,
                                 onDelete: {
                                     _ in routeManager.removeLast()
-                                }, onUpdate: { updatedCheckIn in
+                                },
+                                onUpdate: { updatedCheckIn in
                                     viewModel.setCheckIn(updatedCheckIn)
                                 })
                                 .task {
@@ -22,7 +23,7 @@ struct CheckInScreenView: View {
                                 .task {
                                     viewModel.loadCheckInComments(checkIn)
                                 }
-
+                
                 VStack(spacing: 10) {
                     ForEach(viewModel.checkInComments.reversed(), id: \.id) {
                         comment in CommentItemView(comment: comment, content: comment.content, onDelete: { _ in

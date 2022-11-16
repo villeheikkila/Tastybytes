@@ -11,7 +11,7 @@ struct CheckInCardView: View {
     let onUpdate: (_ checkIn: CheckIn) -> Void
     @StateObject var viewModel = ViewModel()
     @State var showDeleteCheckInConfirmationDialog = false
-    
+
     func isOwnedByCurrentUser() -> Bool {
         return checkIn.profile.id == repository.auth.getCurrentUserId()
     }
@@ -55,6 +55,8 @@ struct CheckInCardView: View {
             })
         }
         .contextMenu {
+            ShareLink("Share", item: createLinkToScreen(.checkIn(id: checkIn.id)))
+
             if isOwnedByCurrentUser() {
                 Button(action: {
                     viewModel.toggleSheet()

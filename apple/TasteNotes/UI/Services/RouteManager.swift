@@ -71,6 +71,20 @@ enum HostIdentifier: Hashable {
     case checkins, products, profiles, companies
 }
 
+func createLinkToScreen(_ destination: FetchAndNavigateToDestination) -> URL {
+    switch destination {
+    case let .profile(id):
+        return URL(string: "\(Config.baseUrl)/\(HostIdentifier.profiles)/\(id)")!
+    case let .checkIn(id):
+        return URL(string: "\(Config.baseUrl)/\(HostIdentifier.checkins)/\(id)")!
+    case let .product(id):
+        return URL(string: "\(Config.baseUrl)/\(HostIdentifier.products)/\(id)")!
+    case let .company(id):
+        return URL(string: "\(Config.baseUrl)/\(HostIdentifier.companies)/\(id)")!
+    }
+    
+}
+
 extension URL {
     var isDeepLink: Bool {
         return scheme == "tastenotes"
