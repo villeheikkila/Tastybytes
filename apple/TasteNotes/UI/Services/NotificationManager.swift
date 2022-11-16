@@ -25,7 +25,7 @@ final class NotificationManager: ObservableObject {
                 return false
             }
         })
-        
+
         if containsFriendRequests {
             Task {
                 switch await repository.notification.markAllFriendRequestsAsRead() {
@@ -58,7 +58,7 @@ final class NotificationManager: ObservableObject {
                 return false
             }
         })
-        
+
         if containsCheckIn {
             Task {
                 switch await repository.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id) {
@@ -97,9 +97,17 @@ final class NotificationManager: ObservableObject {
 
     func deleteFromIndex(at: IndexSet) {
         if let index = at.first {
-            print(at.first)
-            DispatchQueue.main.async {
-                self.notifications.remove(at: index)
+            Task {
+                switch await repository.notification.delete(id: notifications[index].id) {
+                case .success(_):
+                    await MainActor.run {
+                        DispatchQueue.main.async {
+                            self.notifications.remove(at: index)
+                        }
+                    }
+                case let .failure(error):
+                    print(error.localizedDescription)
+                }
             }
         }
     }
