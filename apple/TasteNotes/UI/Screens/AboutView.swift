@@ -1,10 +1,3 @@
-//
-//  AboutView.swift
-//  TasteNotes
-//
-//  Created by Ville Heikkilä on 13.11.2022.
-//
-
 import SwiftUI
 
 struct AboutScreenView: View {

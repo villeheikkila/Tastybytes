@@ -13,6 +13,8 @@
 		5C0E364A2922F8C60072EFBD /* RouteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E36492922F8C60072EFBD /* RouteManager.swift */; };
 		5C0E364C292308080072EFBD /* AuthenticationScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E364B292308080072EFBD /* AuthenticationScreenView.swift */; };
 		5C0E364E2923C8CD0072EFBD /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E364D2923C8CD0072EFBD /* ProfileManager.swift */; };
+		5C0E36502925A9640072EFBD /* BarcodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E364F2925A9640072EFBD /* BarcodeScannerView.swift */; };
+		5C0E3652292679630072EFBD /* BarcodeScannerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E3651292679630072EFBD /* BarcodeScannerSheet.swift */; };
 		5C11ECB328EEEDEF00CCDE6A /* FriendsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB228EEEDEF00CCDE6A /* FriendsScreenView.swift */; };
 		5C11ECB628EEEFB300CCDE6A /* PreferencesScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB528EEEFB300CCDE6A /* PreferencesScreenView.swift */; };
 		5C11ECB928EEF16000CCDE6A /* ProfileScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB828EEF16000CCDE6A /* ProfileScreenView.swift */; };
@@ -112,6 +114,8 @@
 		5C0E36492922F8C60072EFBD /* RouteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteManager.swift; sourceTree = "<group>"; };
 		5C0E364B292308080072EFBD /* AuthenticationScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationScreenView.swift; sourceTree = "<group>"; };
 		5C0E364D2923C8CD0072EFBD /* ProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
+		5C0E364F2925A9640072EFBD /* BarcodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerView.swift; sourceTree = "<group>"; };
+		5C0E3651292679630072EFBD /* BarcodeScannerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerSheet.swift; sourceTree = "<group>"; };
 		5C11ECB228EEEDEF00CCDE6A /* FriendsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsScreenView.swift; sourceTree = "<group>"; };
 		5C11ECB528EEEFB300CCDE6A /* PreferencesScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesScreenView.swift; sourceTree = "<group>"; };
 		5C11ECB828EEF16000CCDE6A /* ProfileScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenView.swift; sourceTree = "<group>"; };
@@ -275,6 +279,7 @@
 				5CED432128FAC01C003F8194 /* UserSheetView.swift */,
 				5C919E1928FEE2DE0055CFD2 /* FriendSheetView.swift */,
 				5C919E1F28FF024A0055CFD2 /* FlavorSheetView.swift */,
+				5C0E3651292679630072EFBD /* BarcodeScannerSheet.swift */,
 				5CC2FE8E29196A5D002BDF83 /* LocationSearchView.swift */,
 				5CED432D28FD6EA7003F8194 /* BrandSheetView.swift */,
 			);
@@ -381,6 +386,7 @@
 				5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */,
 				5CC49475290589E700D269A2 /* CardView.swift */,
 				5CD10A4628F9522D0001CFC2 /* RatingPickerView.swift */,
+				5C0E364F2925A9640072EFBD /* BarcodeScannerView.swift */,
 			);
 			path = Primitives;
 			sourceTree = "<group>";
@@ -547,6 +553,7 @@
 				5C919E1E28FF01480055CFD2 /* Flavor.swift in Sources */,
 				5C919E1A28FEE2DE0055CFD2 /* FriendSheetView.swift in Sources */,
 				5CB1C24728F9B551000B0EB4 /* CheckInCommentRepository.swift in Sources */,
+				5C0E3652292679630072EFBD /* BarcodeScannerSheet.swift in Sources */,
 				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,
 				5CB1C24128F99E1C000B0EB4 /* ProductListItemView.swift in Sources */,
 				5CC2FE8F29196A5D002BDF83 /* LocationSearchView.swift in Sources */,
@@ -606,6 +613,7 @@
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
 				5CD10A5528F98D220001CFC2 /* SubBrand.swift in Sources */,
 				5C12B4332902A4C9001EE549 /* BlockedUsersScreenView.swift in Sources */,
+				5C0E36502925A9640072EFBD /* BarcodeScannerView.swift in Sources */,
 				5CC49476290589E700D269A2 /* CardView.swift in Sources */,
 				5CD10A4F28F98C0B0001CFC2 /* Category.swift in Sources */,
 				5CD10A5128F98C8C0001CFC2 /* Subcategory.swift in Sources */,

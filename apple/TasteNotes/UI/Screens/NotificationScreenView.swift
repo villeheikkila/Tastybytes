@@ -4,35 +4,28 @@ struct NotificationScreenView: View {
     @EnvironmentObject var notificationManager: NotificationManager
 
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(notificationManager.notifications) {
-                    notification in
-                    HStack {
-                        switch notification.content {
-                        case let .message(message):
-                            MessageNotificationView(message: message)
-                                .onTapGesture {
-                                    notificationManager.markAsRead(notification)
-                                }
-                        case let .friendRequest(friendRequest):
-                            FriendRequestNotificationView(friend: friendRequest)
-                        case let .taggedCheckIn(taggedCheckIn):
-                            TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
-                        case let .checkInReaction(checkInReaction):
-                            CheckInReactionNotificationView(checkInReaction: checkInReaction)
-                        }
-                        Spacer()
+        List {
+            ForEach(notificationManager.notifications) {
+                notification in
+                HStack {
+                    switch notification.content {
+                    case let .message(message):
+                        MessageNotificationView(message: message)
+                            .onTapGesture {
+                                notificationManager.markAsRead(notification)
+                            }
+                    case let .friendRequest(friendRequest):
+                        FriendRequestNotificationView(friend: friendRequest)
+                    case let .taggedCheckIn(taggedCheckIn):
+                        TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
+                    case let .checkInReaction(checkInReaction):
+                        CheckInReactionNotificationView(checkInReaction: checkInReaction)
                     }
+                    Spacer()
                 }
-                .onDelete(perform: notificationManager.deleteFromIndex)
             }
-            .refreshable {
-                notificationManager.getAll()
-            }
-            .navigationTitle("Notifications")
+            .onDelete(perform: notificationManager.deleteFromIndex)
         }
-
     }
 }
 
@@ -82,7 +75,7 @@ struct CheckInReactionNotificationView: View {
             HStack {
                 AvatarView(avatarUrl: checkInReaction.profile.getAvatarURL(), size: 32, id: checkInReaction.profile.id)
                 Text("\(checkInReaction.profile.preferredName) reacted to your check-in of \(checkInReaction.checkIn.product.getDisplayName(.full))")
-                
+
                 Spacer()
             }
         }
