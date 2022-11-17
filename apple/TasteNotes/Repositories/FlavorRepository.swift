@@ -15,6 +15,7 @@ struct SupabaseFlavorRepository: FlavorRepository {
                 .database
                 .from(Flavor.getQuery(.tableName))
                 .select(columns: Flavor.getQuery(.saved(false)))
+                .order(column: "name")
                 .execute()
                 .decoded(to: [Flavor].self)
             

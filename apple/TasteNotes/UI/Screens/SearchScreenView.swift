@@ -8,6 +8,7 @@ enum SearchScope: String, CaseIterable {
 
 struct SearchScreenView: View {
     @StateObject private var viewModel = ViewModel()
+    @Binding var showBarcodeScanner: Bool
 
     var body: some View {
         NavigationView {
@@ -30,6 +31,7 @@ struct SearchScreenView: View {
                     profileResults
                 }
             }
+            .listStyle(InsetGroupedListStyle())
             .searchable(text: $viewModel.searchTerm)
             .searchScopes($viewModel.searchScope) {
                 Text("Products").tag(SearchScope.products)
@@ -45,10 +47,15 @@ struct SearchScreenView: View {
                     viewModel.resetSearch()
                 }
             })
-            .navigationTitle("Search")
             .onSubmit(of: .search, viewModel.search)
-            .listStyle(InsetGroupedListStyle())
         }
+        .sheet(isPresented: $showBarcodeScanner) {
+            BarcodeScannerSheetView(onComplete: {
+                code in print(code)
+            })
+            .presentationDetents([.medium])
+        }
+
     }
 
     var profileResults: some View {

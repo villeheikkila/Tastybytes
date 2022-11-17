@@ -5,12 +5,13 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInCardView: View {
+    @StateObject var viewModel = ViewModel()
+    @State var showDeleteCheckInConfirmationDialog = false
+
     let checkIn: CheckIn
     let loadedFrom: LoadedFrom
     let onDelete: (_ checkIn: CheckIn) -> Void
     let onUpdate: (_ checkIn: CheckIn) -> Void
-    @StateObject var viewModel = ViewModel()
-    @State var showDeleteCheckInConfirmationDialog = false
 
     func isOwnedByCurrentUser() -> Bool {
         return checkIn.profile.id == repository.auth.getCurrentUserId()

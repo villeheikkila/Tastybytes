@@ -31,5 +31,7 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera is used for scanning QR codes</string>
 </dict>
 </plist>

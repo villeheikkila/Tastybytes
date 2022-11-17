@@ -17,8 +17,23 @@ final class NotificationManager: NSObject, ObservableObject {
         }
     }
     
-    func test() {
-        print("HEI!!")
+    func deleteAll() {
+        DispatchQueue.main.async {
+            self.notifications = [Notification]()
+        }
+    }
+    
+    func markAllAsRead() {
+        DispatchQueue.main.async {
+            self.notifications = self.notifications.map {
+                n in
+                if n.seenAt == nil {
+                    return Notification(id: n.id, createdAt: n.createdAt, seenAt: Date(), content: n.content)
+                } else {
+                    return n
+                }
+            }
+        }
     }
 
     func markAllFriendRequestsAsRead() {
@@ -147,7 +162,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse) async {
         let userInfo = response.notification.request.content.userInfo
         print(userInfo)
-        self.test()
     }
 
 }
