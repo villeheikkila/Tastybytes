@@ -4,40 +4,27 @@ struct TabbarView: View {
     let profile: Profile
     @EnvironmentObject var notificationManager: NotificationManager
     @State var selection = Tab.activity
-    @State var showBarcodeScanner: Bool = false
-
+    
+    // The initialize the view model for search page here because searchable needs to be a direct child of NavigationStack
+    // TODO: Investigate if there is a better way to do this (created: 17.11.2022)
+    @StateObject private var searchScreenViewModel = SearchScreenViewModel()
 
     var body: some View {
         TabView(selection: $selection) {
-            ActivityScreenView(profile: profile)
-                .tabItem {
-                    Image(systemName: "list.star")
-                    Text("Activity")
+            activityScreen
+            searchScreen
+            notificationScreen
+            profileScreen
+        }
+        .if(selection == Tab.search) { view in
+            view
+                .searchable(text: $searchScreenViewModel.searchTerm)
+                .searchScopes($searchScreenViewModel.searchScope) {
+                    Text("Products").tag(SearchScope.products)
+                    Text("Companies").tag(SearchScope.companies)
+                    Text("Users").tag(SearchScope.users)
                 }
-                .tag(Tab.activity)
-            SearchScreenView(showBarcodeScanner: $showBarcodeScanner)
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search")
-                }
-                .tag(Tab.search)
-            NotificationScreenView()
-                .tabItem {
-                    Image(systemName: "bell")
-                    Text("Notifications")
-                }
-                .badge(notificationManager
-                    .notifications
-                    .filter { $0.seenAt == nil }
-                    .count
-                )
-                .tag(Tab.notifications)
-            ProfileScreenView(profile: profile)
-                .tabItem {
-                    Image(systemName: "person.fill")
-                    Text("Profile")
-                }
-                .tag(Tab.profile)
+                .onSubmit(of: .search, searchScreenViewModel.search)
         }
         .navigationTitle(selection.title)
         .toolbar {
@@ -57,7 +44,7 @@ struct TabbarView: View {
             if selection == Tab.search {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: {
-                        showBarcodeScanner.toggle()
+                        searchScreenViewModel.showBarcodeScanner.toggle()
                     }) {
                         Image(systemName: "barcode.viewfinder")
                     }
@@ -78,9 +65,50 @@ struct TabbarView: View {
                         notificationManager.markAllAsRead()
                     }
                 }
-            }
-        }
+            }        }
     }
+    
+    var activityScreen: some View {
+        ActivityScreenView(profile: profile)
+            .tabItem {
+                Image(systemName: "list.star")
+                Text("Activity")
+            }
+            .tag(Tab.activity)
+    }
+    
+    var searchScreen: some View {
+        SearchScreenView(viewModel: searchScreenViewModel)
+            .tabItem {
+                Image(systemName: "magnifyingglass")
+                Text("Search")
+            }
+            .tag(Tab.search)
+    }
+    
+    var notificationScreen: some View {
+        NotificationScreenView()
+            .tabItem {
+                Image(systemName: "bell")
+                Text("Notifications")
+            }
+            .badge(notificationManager
+                .notifications
+                .filter { $0.seenAt == nil }
+                .count
+            )
+            .tag(Tab.notifications)
+    }
+    
+    var profileScreen: some View {
+        ProfileScreenView(profile: profile)
+            .tabItem {
+                Image(systemName: "person.fill")
+                Text("Profile")
+            }
+            .tag(Tab.profile)
+    }
+
 }
 
 enum Tab: Int, Equatable {
