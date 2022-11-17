@@ -73,7 +73,7 @@ struct TabbarView: View {
                             Label("Delete all notifications", systemImage: "trash")
                         }
                     } label: {
-                        Label("Mark all as read", systemImage: "checkmark.circle")
+                        Text("Mark all read")
                     } primaryAction: {
                         notificationManager.markAllAsRead()
                     }
