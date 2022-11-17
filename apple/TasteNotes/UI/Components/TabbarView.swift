@@ -4,7 +4,7 @@ struct TabbarView: View {
     let profile: Profile
     @EnvironmentObject var notificationManager: NotificationManager
     @State var selection = Tab.activity
-    
+
     // The initialize the view model for search page here because searchable needs to be a direct child of NavigationStack
     // TODO: Investigate if there is a better way to do this (created: 17.11.2022)
     @StateObject private var searchScreenViewModel = SearchScreenViewModel()
@@ -40,7 +40,7 @@ struct TabbarView: View {
                     }
                 }
             }
-            
+
             if selection == Tab.search {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -50,7 +50,7 @@ struct TabbarView: View {
                     }
                 }
             }
-            
+
             if selection == Tab.notifications {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Menu {
@@ -65,9 +65,10 @@ struct TabbarView: View {
                         notificationManager.markAllAsRead()
                     }
                 }
-            }        }
+            }
+        }
     }
-    
+
     var activityScreen: some View {
         ActivityScreenView(profile: profile)
             .tabItem {
@@ -76,7 +77,7 @@ struct TabbarView: View {
             }
             .tag(Tab.activity)
     }
-    
+
     var searchScreen: some View {
         SearchScreenView(viewModel: searchScreenViewModel)
             .tabItem {
@@ -85,7 +86,7 @@ struct TabbarView: View {
             }
             .tag(Tab.search)
     }
-    
+
     var notificationScreen: some View {
         NotificationScreenView()
             .tabItem {
@@ -99,7 +100,7 @@ struct TabbarView: View {
             )
             .tag(Tab.notifications)
     }
-    
+
     var profileScreen: some View {
         ProfileScreenView(profile: profile)
             .tabItem {
@@ -108,7 +109,6 @@ struct TabbarView: View {
             }
             .tag(Tab.profile)
     }
-
 }
 
 enum Tab: Int, Equatable {
