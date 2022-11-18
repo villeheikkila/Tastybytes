@@ -4,12 +4,13 @@ import FirebaseMessaging
 final class NotificationManager: NSObject, ObservableObject {
     @Published private(set) var notifications = [Notification]()
 
-    func getAll() {
+    func refresh() {
+        let latestId = notifications.first?.id
         Task {
-            switch await repository.notification.getAll() {
-            case let .success(notifications):
+            switch await repository.notification.getAll(afterId: latestId) {
+            case let .success(newNotifications):
                 await MainActor.run {
-                    self.notifications = notifications
+                    self.notifications.append(contentsOf: newNotifications) 
                 }
             case let .failure(error):
                 print(error.localizedDescription)
@@ -18,20 +19,33 @@ final class NotificationManager: NSObject, ObservableObject {
     }
     
     func deleteAll() {
-        DispatchQueue.main.async {
-            self.notifications = [Notification]()
+        Task {
+            switch await repository.notification.deleteAll() {
+            case .success():
+                DispatchQueue.main.async {
+                    self.notifications = [Notification]()
+                }
+            case let .failure(error):
+                print(error.localizedDescription)
+            }
         }
     }
     
     func markAllAsRead() {
-        DispatchQueue.main.async {
-            self.notifications = self.notifications.map {
-                n in
-                if n.seenAt == nil {
-                    return Notification(id: n.id, createdAt: n.createdAt, seenAt: Date(), content: n.content)
-                } else {
-                    return n
+        Task {
+            switch await repository.notification.markAllRead() {
+            case .success():
+                DispatchQueue.main.async {
+                    self.notifications = self.notifications.map {
+                        if $0.seenAt == nil {
+                            return Notification(id: $0.id, createdAt: $0.createdAt, seenAt: Date(), content: $0.content)
+                        } else {
+                            return $0
+                        }
+                    }
                 }
+            case let .failure(error):
+                print(error.localizedDescription)
             }
         }
     }
@@ -153,7 +167,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         -> UNNotificationPresentationOptions {
         let userInfo = notification.request.content.userInfo
         print(userInfo)
-        self.getAll()
+        self.refresh()
         return [[.sound]]
     }
 
