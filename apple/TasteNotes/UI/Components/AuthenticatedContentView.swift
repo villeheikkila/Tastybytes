@@ -33,8 +33,8 @@ struct AuthenticatedContentView: View {
                             PreferencesScreenView()
                         case let .activity(profile):
                             ActivityScreenView(profile: profile)
-                        case .addProduct:
-                            ProductSheetView()
+                        case let .addProduct(initialBarcode):
+                            ProductSheetView(initialBarcode: initialBarcode)
                         case let .checkIn(checkIn):
                             CheckInScreenView(checkIn: checkIn)
                         case let .profile(profile):
@@ -87,5 +87,5 @@ enum Route: Hashable {
     case currentUserFriends
     case friends(Profile)
     case activity(Profile)
-    case addProduct
+    case addProduct(Barcode?)
 }

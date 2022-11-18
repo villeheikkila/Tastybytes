@@ -19,7 +19,7 @@ extension Product {
         case let .saved(withTableName):
             return queryWithTableName(tableName, saved, withTableName)
         case let .joinedBrandSubcategories(withTableName):
-            return queryWithTableName(tableName, joinWithComma(saved, SubBrand.getQuery(.joinedBrand(true)), Subcategory.getQuery(.joinedCategory(true))), withTableName)
+            return queryWithTableName(tableName, joinWithComma(saved, SubBrand.getQuery(.joinedBrand(true)), Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true))), withTableName)
         }
     }
 
@@ -36,6 +36,7 @@ struct ProductJoined: Identifiable {
     let description: String?
     let subBrand: SubBrandJoinedWithBrand
     let subcategories: [SubcategoryJoinedWithCategory]
+    let barcodes: [ProductBarcode]
 
     func getCategory() -> CategoryName? {
         return subcategories.first?.category.name
@@ -78,6 +79,7 @@ extension ProductJoined: Decodable {
         case description
         case subBrand = "sub_brands"
         case subcategories
+        case barcodes = "product_barcodes"
     }
 
     init(from decoder: Decoder) throws {
@@ -87,6 +89,7 @@ extension ProductJoined: Decodable {
         description = try values.decodeIfPresent(String.self, forKey: .description)
         subBrand = try values.decode(SubBrandJoinedWithBrand.self, forKey: .subBrand)
         subcategories = try values.decode([SubcategoryJoinedWithCategory].self, forKey: .subcategories)
+        barcodes = try values.decode([ProductBarcode].self, forKey: .barcodes)
     }
 }
 
@@ -97,6 +100,7 @@ extension ProductJoined {
         description = product.name
         self.subBrand = SubBrandJoinedWithBrand(id: subBrand.id, name: subBrand.name, brand: BrandJoinedWithCompany(id: brand.id, name: brand.name, brandOwner: company))
         subcategories = product.subcategories
+        barcodes = []
     }
 }
 

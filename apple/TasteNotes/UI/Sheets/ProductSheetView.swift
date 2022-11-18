@@ -5,9 +5,11 @@ struct ProductSheetView: View {
     @EnvironmentObject var toastManager: ToastManager
     @StateObject var viewModel = ViewModel()
     let initialProduct: ProductJoined?
+    let initialBarcode: Barcode?
 
-    init(initialProduct: ProductJoined? = nil) {
+    init(initialProduct: ProductJoined? = nil, initialBarcode: Barcode? = nil) {
         self.initialProduct = initialProduct
+        self.initialBarcode = initialBarcode
     }
 
     var body: some View {
@@ -68,10 +70,16 @@ struct ProductSheetView: View {
 
                     })
                 }
+            case .barcode:
+                BarcodeScannerSheetView(onComplete: {
+                    barcode in viewModel.barcode = barcode
+                })
+                .presentationDetents([.medium])
             }
         }
         .task {
             viewModel.loadInitialProduct(initialProduct)
+            viewModel.loadInitialBarcode(initialBarcode)
         }
         .task {
             viewModel.loadCategories()
@@ -151,6 +159,15 @@ struct ProductSheetView: View {
         Section {
             TextField("Flavor", text: $viewModel.name)
             TextField("Description (optional)", text: $viewModel.description)
+            Button(action: {
+                viewModel.setActiveSheet(.barcode)
+            }) {
+                if viewModel.barcode != nil {
+                    Text("Barcode Added!")
+                } else {
+                    Text("Add Barcode")
+                }
+            }
         } header: {
             Text("Product")
         }
@@ -165,6 +182,7 @@ extension ProductSheetView {
         case brandOwner
         case brand
         case subBrand
+        case barcode
     }
 
     enum Toast: Identifiable {
@@ -185,6 +203,7 @@ extension ProductSheetView {
         @Published var name: String = ""
         @Published var description: String = ""
         @Published var hasSubBrand = false
+        @Published var barcode: Barcode? = nil
 
         func getSubcategoriesForCategory() -> [Subcategory]? {
             return categories.first(where: { $0.name == category })?.subcategories
@@ -242,6 +261,14 @@ extension ProductSheetView {
             name = initialProduct.name
             description = initialProduct.description ?? ""
             hasSubBrand = initialProduct.subBrand.name != nil
+        }
+        
+        func loadInitialBarcode(_ initialBarcode: Barcode?) {
+            guard let initialBarcode = initialBarcode else { return }
+            
+            DispatchQueue.main.async {
+                self.barcode = initialBarcode
+            }
         }
 
         func loadCategories() {
