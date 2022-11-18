@@ -24,7 +24,6 @@ struct ProductSheetView: View {
                         viewModel.createProductEditSuggestion(product: initialProduct, onComplete: {
                             print("hei")
                         })
-
                     } else {
                         viewModel.createProduct(onCreation: {
                             product in routeManager.navigateTo(destination: product, resetStack: true)

@@ -2,7 +2,9 @@
   "applinks": {
     "details": [
       {
-        "appID": "com.villeheikkila.tastey",
+        "appIDs": [
+          "com.villeheikkila.tastey"
+        ],
         "components": [
           {
             "/": "/companies/*"
