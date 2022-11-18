@@ -11,7 +11,7 @@ struct SubBrandSheetView: View {
         
         NavigationStack {
             List {
-                ForEach(brandWithSubBrands.subBrands, id: \.self) { subBrand in
+                ForEach(brandWithSubBrands.subBrands.filter { $0.name != nil }, id: \.self) { subBrand in
                     Button(action: {self.onSelect(subBrand, false)}) {
                         if let name = subBrand.name {
                             Text(name)
