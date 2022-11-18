@@ -1,13 +1,13 @@
 import SwiftUI
 import AVFoundation
 
-public struct BarcodeScannerView: UIViewControllerRepresentable {
+struct BarcodeScannerView: UIViewControllerRepresentable {
     public var isTorchOn: Bool
-    public var completion: (Result<BardcodeScanResult, BardcodeScanError>) -> Void
+    public var completion: (Result<Barcode, BardcodeScanError>) -> Void
 
     public init(
         isTorchOn: Bool = false,
-        completion: @escaping (Result<BardcodeScanResult, BardcodeScanError>) -> Void
+        completion: @escaping (Result<Barcode, BardcodeScanError>) -> Void
     ) {
         self.isTorchOn = isTorchOn
         self.completion = completion
@@ -26,19 +26,14 @@ public struct BarcodeScannerView: UIViewControllerRepresentable {
     
 }
 
-public enum BardcodeScanError: Error {
-    case badInput
-    case badOutput
-    case initError(_ error: Error)
-    case permissionDenied
-}
-
-public struct BardcodeScanResult {
-    public let code: String
-    public let type: AVMetadataObject.ObjectType
-}
-
 extension BarcodeScannerView {
+    enum BardcodeScanError: Error {
+        case badInput
+        case badOutput
+        case initError(_ error: Error)
+        case permissionDenied
+    }
+    
     public class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVCaptureMetadataOutputObjectsDelegate {
         var parentView: BarcodeScannerView!
         var didFinishScanning = false
@@ -251,7 +246,7 @@ extension BarcodeScannerView {
                 guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
                 guard let stringValue = readableObject.stringValue else { return }
                 guard didFinishScanning == false else { return }
-                let result = BardcodeScanResult(code: stringValue, type: readableObject.type)
+                let result = Barcode(barcode: stringValue, type: readableObject.type)
                 found(result)
                 didFinishScanning = true
             }
@@ -265,7 +260,7 @@ extension BarcodeScannerView {
             Date().timeIntervalSince(lastTime) <= 0.5
         }
 
-        func found(_ result: BardcodeScanResult) {
+        func found(_ result: Barcode) {
             lastTime = Date()
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             parentView.completion(.success(result))

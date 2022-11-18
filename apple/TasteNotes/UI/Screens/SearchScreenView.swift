@@ -48,7 +48,7 @@ struct SearchScreenView: View {
         .onSubmit(of: .search, viewModel.search)
         .sheet(isPresented: $viewModel.showBarcodeScanner) {
             BarcodeScannerSheetView(onComplete: {
-                code in print(code)
+                barcode in viewModel.searchProductsByBardcode(barcode)
             })
             .presentationDetents([.medium])
         }
@@ -123,6 +123,21 @@ class SearchScreenViewModel: ObservableObject {
             case let .success(searchResults):
                 await MainActor.run {
                     self.profiles = searchResults
+                }
+            case let .failure(error):
+                print(error)
+            }
+        }
+    }
+    
+    func searchProductsByBardcode(_ barcode: Barcode) {
+        Task {
+            switch await repository.product.search(barcode: barcode) {
+            case let .success(searchResults):
+                print(searchResults)
+                await MainActor.run {
+                    self.products = searchResults
+                    self.isSearched = true
                 }
             case let .failure(error):
                 print(error)

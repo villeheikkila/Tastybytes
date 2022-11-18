@@ -3,6 +3,7 @@ import Supabase
 
 protocol ProductRepository {
     func search(searchTerm: String) async -> Result<[ProductJoined], Error>
+    func search(barcode: Barcode) async -> Result<[ProductJoined], Error>
     func getById(id: Int) async -> Result<ProductJoined, Error>
     func delete(id: Int) async -> Result<Void, Error>
     func create(newProductParams: NewProductParams) async -> Result<ProductJoined, Error>
@@ -30,6 +31,22 @@ struct SupabaseProductRepository: ProductRepository {
                 .decoded(to: [ProductJoined].self)
 
             return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func search(barcode: Barcode) async -> Result<[ProductJoined], Error> {
+        print(barcode)
+        do {
+            let response = try await client
+                .database
+                .from(ProductBarcode.getQuery(.tableName))
+                .select(columns: ProductBarcode.getQuery(.joined(false)))
+                .execute()
+                .decoded(to: [ProductBarcode].self)
+
+            return .success(response.map { $0.product })
         } catch {
             return .failure(error)
         }

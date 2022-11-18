@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct BarcodeScannerSheetView: View {
-    let onComplete: (_ scannedCode: String) -> Void
+    let onComplete: (_ barcode: Barcode) -> Void
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationStack {
-            BarcodeScannerView() { response in
+            BarcodeScannerView { response in
                 if case let .success(result) = response {
-                    onComplete(result.code)
+                    onComplete(result)
                     dismiss()
                 }
             }
@@ -16,7 +16,7 @@ struct BarcodeScannerSheetView: View {
             .navigationBarItems(trailing: Button(action: {
                 dismiss()
             }) {
-                Text("Done").bold()
+                Text("Cancel").bold()
             })
         }
     }
