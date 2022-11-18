@@ -1,5 +1,5 @@
-import SwiftUI
 import AVFoundation
+import SwiftUI
 
 struct BarcodeScannerView: UIViewControllerRepresentable {
     public var isTorchOn: Bool
@@ -23,7 +23,6 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
             isTorchOn: isTorchOn
         )
     }
-    
 }
 
 extension BarcodeScannerView {
@@ -33,14 +32,14 @@ extension BarcodeScannerView {
         case initError(_ error: Error)
         case permissionDenied
     }
-    
+
     public class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVCaptureMetadataOutputObjectsDelegate {
         var parentView: BarcodeScannerView!
         var didFinishScanning = false
         var lastTime = Date(timeIntervalSince1970: 0)
         var captureSession: AVCaptureSession?
         var previewLayer: AVCaptureVideoPreviewLayer!
-        
+
         public init(parentView: BarcodeScannerView) {
             self.parentView = parentView
             super.init(nibName: nil, bundle: nil)
@@ -49,12 +48,12 @@ extension BarcodeScannerView {
         required init?(coder: NSCoder) {
             super.init(coder: coder)
         }
-        
+
         override public func viewDidLoad() {
             super.viewDidLoad()
-            self.addOrientationDidChangeObserver()
-            self.setBackgroundColor()
-            self.handleCameraPermission()
+            addOrientationDidChangeObserver()
+            setBackgroundColor()
+            handleCameraPermission()
         }
 
         override public func viewWillLayoutSubviews() {
@@ -76,12 +75,12 @@ extension BarcodeScannerView {
             super.viewWillAppear(animated)
             setupSession()
         }
-      
+
         private func setupSession() {
             guard let captureSession = captureSession else {
                 return
             }
-            
+
             if previewLayer == nil {
                 previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
             }
@@ -92,7 +91,7 @@ extension BarcodeScannerView {
 
             reset()
 
-            if (captureSession.isRunning == false) {
+            if captureSession.isRunning == false {
                 DispatchQueue.global(qos: .userInteractive).async {
                     self.captureSession?.startRunning()
                 }
@@ -101,23 +100,23 @@ extension BarcodeScannerView {
 
         private func handleCameraPermission() {
             switch AVCaptureDevice.authorizationStatus(for: .video) {
-                case .restricted:
-                    break
-                case .denied:
-                    self.didFail(reason: .permissionDenied)
-                case .notDetermined:
-                    self.requestCameraAccess {
-                        self.setupCaptureDevice()
-                        DispatchQueue.main.async {
-                            self.setupSession()
-                        }
-                    }
-                case .authorized:
+            case .restricted:
+                break
+            case .denied:
+                didFail(reason: .permissionDenied)
+            case .notDetermined:
+                requestCameraAccess {
                     self.setupCaptureDevice()
-                    self.setupSession()
-                    
-                default:
-                    break
+                    DispatchQueue.main.async {
+                        self.setupSession()
+                    }
+                }
+            case .authorized:
+                setupCaptureDevice()
+                setupSession()
+
+            default:
+                break
             }
         }
 
@@ -130,7 +129,7 @@ extension BarcodeScannerView {
                 completion?()
             }
         }
-      
+
         private func addOrientationDidChangeObserver() {
             NotificationCenter.default.addObserver(
                 self,
@@ -139,11 +138,11 @@ extension BarcodeScannerView {
                 object: nil
             )
         }
-      
+
         private func setBackgroundColor(_ color: UIColor = .black) {
             view.backgroundColor = color
         }
-      
+
         private func setupCaptureDevice() {
             captureSession = AVCaptureSession()
 
@@ -160,7 +159,7 @@ extension BarcodeScannerView {
                 return
             }
 
-            if (captureSession!.canAddInput(videoInput)) {
+            if captureSession!.canAddInput(videoInput) {
                 captureSession!.addInput(videoInput)
             } else {
                 didFail(reason: .badInput)
@@ -169,11 +168,11 @@ extension BarcodeScannerView {
 
             let metadataOutput = AVCaptureMetadataOutput()
 
-            if (captureSession!.canAddOutput(metadataOutput)) {
+            if captureSession!.canAddOutput(metadataOutput) {
                 captureSession!.addOutput(metadataOutput)
 
                 metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-                metadataOutput.metadataObjectTypes = [.qr, .codabar, .code39, .ean8, .ean13 ]
+                metadataOutput.metadataObjectTypes = [.qr, .codabar, .code39, .ean8, .ean13]
             } else {
                 didFail(reason: .badOutput)
                 return
@@ -183,7 +182,7 @@ extension BarcodeScannerView {
         override public func viewDidDisappear(_ animated: Bool) {
             super.viewDidDisappear(animated)
 
-            if (captureSession?.isRunning == true) {
+            if captureSession?.isRunning == true {
                 DispatchQueue.global(qos: .userInteractive).async {
                     self.captureSession?.stopRunning()
                 }
@@ -200,7 +199,7 @@ extension BarcodeScannerView {
             .all
         }
 
-        public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             guard touches.first?.view == view,
                   let touchPoint = touches.first,
                   let device = AVCaptureDevice.default(for: .video),
@@ -225,17 +224,16 @@ extension BarcodeScannerView {
             device.exposureMode = AVCaptureDevice.ExposureMode.continuousAutoExposure
             device.unlockForConfiguration()
         }
-        
+
         func updateViewController(isTorchOn: Bool) {
             if let backCamera = AVCaptureDevice.default(for: AVMediaType.video),
-               backCamera.hasTorch
-            {
+               backCamera.hasTorch {
                 try? backCamera.lockForConfiguration()
                 backCamera.torchMode = isTorchOn ? .on : .off
                 backCamera.unlockForConfiguration()
             }
         }
-        
+
         public func reset() {
             didFinishScanning = false
             lastTime = Date(timeIntervalSince1970: 0)
@@ -255,7 +253,7 @@ extension BarcodeScannerView {
         func isPastScanInterval() -> Bool {
             Date().timeIntervalSince(lastTime) >= 2.0
         }
-        
+
         func isWithinManualCaptureInterval() -> Bool {
             Date().timeIntervalSince(lastTime) <= 0.5
         }
@@ -269,6 +267,5 @@ extension BarcodeScannerView {
         func didFail(reason: BardcodeScanError) {
             parentView.completion(.failure(reason))
         }
-        
     }
 }

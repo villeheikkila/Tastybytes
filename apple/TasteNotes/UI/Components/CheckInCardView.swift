@@ -242,7 +242,7 @@ extension CheckInCardView {
 struct CheckInCardView_Previews: PreviewProvider {
     static let company = Company(id: 0, name: "The Coca Cola Company", logoUrl: nil)
 
-    static let product = ProductJoined(id: 0, name: "Coca Cola", description: "Original Taste", subBrand: subBrand, subcategories: subcategories)
+    static let product = ProductJoined(id: 0, name: "Coca Cola", description: "Original Taste", subBrand: subBrand, subcategories: subcategories, barcodes: [])
     
     static let profile = Profile(id: UUID(uuidString: "82c34cc0-4795-4478-99ad-38003fdb65fd") ?? UUID(), preferredName: "villeheikkila", avatarUrl: "avatar.jpeg")
 

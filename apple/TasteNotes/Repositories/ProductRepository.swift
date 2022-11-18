@@ -8,6 +8,7 @@ protocol ProductRepository {
     func delete(id: Int) async -> Result<Void, Error>
     func create(newProductParams: NewProductParams) async -> Result<ProductJoined, Error>
     func getSummaryById(id: Int) async -> Result<ProductSummary, Error>
+    func addBarcodeToProduct(product: ProductJoined, barcode: Barcode) async -> Result<Barcode, Error>
     func createUpdateSuggestion(productEditSuggestionParams: NewProductEditSuggestionParams) async -> Result<DecodableId, Error>
 }
 
@@ -37,14 +38,15 @@ struct SupabaseProductRepository: ProductRepository {
     }
     
     func search(barcode: Barcode) async -> Result<[ProductJoined], Error> {
-        print(barcode)
         do {
             let response = try await client
                 .database
                 .from(ProductBarcode.getQuery(.tableName))
                 .select(columns: ProductBarcode.getQuery(.joined(false)))
+                .eq(column: "barcode", value: barcode.barcode)
+                .eq(column: "type", value: barcode.type.rawValue)
                 .execute()
-                .decoded(to: [ProductBarcode].self)
+                .decoded(to: [ProductBarcodeJoined].self)
 
             return .success(response.map { $0.product })
         } catch {
@@ -105,6 +107,20 @@ struct SupabaseProductRepository: ProductRepository {
             case let .failure(error):
                 return .failure(error)
             }
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func addBarcodeToProduct(product: ProductJoined, barcode: Barcode) async -> Result<Barcode, Error> {
+        do {
+            try await client
+                .database
+                .from(ProductBarcode.getQuery(.tableName))
+                .insert(values: ProductBarcode.New(product: product, barcode: barcode), returning: .representation)
+                .execute()
+            
+            return .success(barcode)
         } catch {
             return .failure(error)
         }
