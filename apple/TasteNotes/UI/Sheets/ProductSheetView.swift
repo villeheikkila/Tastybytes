@@ -265,7 +265,6 @@ extension ProductSheetView {
         
         func loadInitialBarcode(_ initialBarcode: Barcode?) {
             guard let initialBarcode = initialBarcode else { return }
-            
             DispatchQueue.main.async {
                 self.barcode = initialBarcode
             }
