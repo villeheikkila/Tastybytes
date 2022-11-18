@@ -52,7 +52,7 @@ struct AuthenticatedContentView: View {
         .preferredColorScheme(profileManager.colorScheme)
         .task {
             profileManager.refresh()
-            notificationManager.getAll()
+            notificationManager.refresh()
         }
         .onOpenURL { url in
             if let detailPage = url.detailPage {

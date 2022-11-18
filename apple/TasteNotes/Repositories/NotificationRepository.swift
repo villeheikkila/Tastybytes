@@ -2,22 +2,26 @@ import Foundation
 import Supabase
 
 protocol NotificationRepository {
-    func getAll() async -> Result<[Notification], Error>
+    func getAll(afterId: Int?) async -> Result<[Notification], Error>
     func markRead(id: Int) async -> Result<Notification, Error>
+    func markAllRead() async -> Result<Void, Error>
     func markAllFriendRequestsAsRead() async -> Result<[Notification], Error>
     func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Notification], Error>
     func delete(id: Int) async -> Result<Void, Error>
+    func deleteAll() async -> Result<Void, Error>
 }
 
 struct SupabaseNotificationRepository: NotificationRepository {
     let client: SupabaseClient
 
-    func getAll() async -> Result<[Notification], Error> {
+    func getAll(afterId: Int? = nil) async -> Result<[Notification], Error> {
         do {
             let response = try await client
                 .database
                 .from(Notification.getQuery(.tableName))
                 .select(columns: Notification.getQuery(.joined))
+                .gt(column: "id", value: afterId ?? 0)
+                .order(column: "id", ascending: false)
                 .execute()
                 .decoded(to: [Notification].self)
 
@@ -43,7 +47,20 @@ struct SupabaseNotificationRepository: NotificationRepository {
             return .failure(error)
         }
     }
-    
+
+    func markAllRead() async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .rpc(fn: "fnc__mark_all_notification_read")
+                .execute()
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
     func markAllFriendRequestsAsRead() async -> Result<[Notification], Error> {
         do {
             let response = try await client
@@ -58,7 +75,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             return .failure(error)
         }
     }
-    
+
     func markAllCheckInNotificationsAsRead(checkInId: Int) async -> Result<[Notification], Error> {
         do {
             let response = try await client
@@ -73,7 +90,7 @@ struct SupabaseNotificationRepository: NotificationRepository {
             return .failure(error)
         }
     }
-    
+
     func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
@@ -83,7 +100,21 @@ struct SupabaseNotificationRepository: NotificationRepository {
                 .eq(column: "id", value: id)
                 .execute()
 
-            return .success(Void())
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func deleteAll() async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .from(Notification.getQuery(.tableName))
+                .delete()
+                .execute()
+
+            return .success(())
         } catch {
             return .failure(error)
         }
