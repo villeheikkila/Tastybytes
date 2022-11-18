@@ -41,10 +41,7 @@ struct CheckInCardView: View {
                     footer
                 }
                 .padding(.all, 10)
-                .background(.ultraThinMaterial)
-                .background(
-                    backgroundImage
-                )
+                .background(Color(.tertiarySystemBackground))
                 .clipped()
         }
         .cornerRadius(10)
