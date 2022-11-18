@@ -28,7 +28,7 @@ struct TabbarView: View {
         }
         .navigationTitle(selection.title)
         .toolbar {
-            if selection == Tab.profile {
+            if selection == Tab.profile || selection == Tab.activity {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     NavigationLink(value: Route.currentUserFriends) {
                         Image(systemName: "person.2").imageScale(.large)
