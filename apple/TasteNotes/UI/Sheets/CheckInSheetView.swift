@@ -5,7 +5,7 @@ import WrappingHStack
 struct CheckInSheetView: View {
     @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
-    
+
     let product: ProductJoined
     let onCreation: ((_ checkIn: CheckIn) -> Void)?
     let onUpdate: ((_ checkIn: CheckIn) -> Void)?
