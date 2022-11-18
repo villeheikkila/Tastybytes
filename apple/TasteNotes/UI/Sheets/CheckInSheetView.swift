@@ -34,6 +34,11 @@ struct CheckInSheetView: View {
             VStack {
                 ProductCardView(product: product)
                 photoPicker
+                Button(action: {
+                    viewModel.showCamera.toggle()
+                }) {
+                    Text("Camera")
+                }
                 Form {
                     Section {
                         TextField("How was it?", text: $viewModel.review, axis: .vertical)
@@ -120,6 +125,11 @@ struct CheckInSheetView: View {
                         })
                     }
                 }
+                .fullScreenCover(isPresented: $viewModel.showCamera, content: {
+                    CameraView(onClose: {
+                        viewModel.showCamera = false
+                    })
+                })
                 .navigationBarItems(
                     leading: Button(action: {
                         dismiss()
@@ -202,6 +212,7 @@ extension CheckInSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var selectedItem: PhotosPickerItem? = nil
         @Published var activeSheet: Sheet?
+        @Published var showCamera = false
         @Published var review: String = ""
         @Published var rating: Double = 0
         @Published var manufacturer: Company? = nil
