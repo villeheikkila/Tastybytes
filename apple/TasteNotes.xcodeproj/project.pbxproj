@@ -16,6 +16,7 @@
 		5C0E36502925A9640072EFBD /* BarcodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E364F2925A9640072EFBD /* BarcodeScannerView.swift */; };
 		5C0E3652292679630072EFBD /* BarcodeScannerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E3651292679630072EFBD /* BarcodeScannerSheet.swift */; };
 		5C0E365429279B240072EFBD /* Barcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E365329279B240072EFBD /* Barcode.swift */; };
+		5C0E36562927F09F0072EFBD /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E36552927F09F0072EFBD /* CameraView.swift */; };
 		5C11ECB328EEEDEF00CCDE6A /* FriendsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB228EEEDEF00CCDE6A /* FriendsScreenView.swift */; };
 		5C11ECB628EEEFB300CCDE6A /* PreferencesScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB528EEEFB300CCDE6A /* PreferencesScreenView.swift */; };
 		5C11ECB928EEF16000CCDE6A /* ProfileScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB828EEF16000CCDE6A /* ProfileScreenView.swift */; };
@@ -118,6 +119,7 @@
 		5C0E364F2925A9640072EFBD /* BarcodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerView.swift; sourceTree = "<group>"; };
 		5C0E3651292679630072EFBD /* BarcodeScannerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerSheet.swift; sourceTree = "<group>"; };
 		5C0E365329279B240072EFBD /* Barcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Barcode.swift; sourceTree = "<group>"; };
+		5C0E36552927F09F0072EFBD /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		5C11ECB228EEEDEF00CCDE6A /* FriendsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsScreenView.swift; sourceTree = "<group>"; };
 		5C11ECB528EEEFB300CCDE6A /* PreferencesScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesScreenView.swift; sourceTree = "<group>"; };
 		5C11ECB828EEF16000CCDE6A /* ProfileScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenView.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */,
 				5CFEE57828ED69B100A8DD66 /* RootView.swift */,
 				5C12B4342902C9D0001EE549 /* TabbarView.swift */,
+				5C0E36552927F09F0072EFBD /* CameraView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -556,6 +559,7 @@
 				5CD10A5328F98CFC0001CFC2 /* Brand.swift in Sources */,
 				5C919E1E28FF01480055CFD2 /* Flavor.swift in Sources */,
 				5C919E1A28FEE2DE0055CFD2 /* FriendSheetView.swift in Sources */,
+				5C0E36562927F09F0072EFBD /* CameraView.swift in Sources */,
 				5CB1C24728F9B551000B0EB4 /* CheckInCommentRepository.swift in Sources */,
 				5C0E3652292679630072EFBD /* BarcodeScannerSheet.swift in Sources */,
 				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,
