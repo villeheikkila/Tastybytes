@@ -64,8 +64,8 @@ struct ProductSheetView: View {
                     SubBrandSheetView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
                         if createdNew {
                             toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
-                            viewModel.subBrand = subBrand
                         }
+                        viewModel.subBrand = subBrand
                         viewModel.dismissSheet()
 
                     })
