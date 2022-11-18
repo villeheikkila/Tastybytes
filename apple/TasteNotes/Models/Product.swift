@@ -144,14 +144,24 @@ struct NewProductParams: Encodable {
     let p_brand_id: Int
     let p_sub_category_ids: [Int]
     let p_sub_brand_id: Int?
+    let p_barcode_code: String?
+    let p_barcode_type: String?
 
-    init(name: String, description: String?, categoryId: Int, brandId: Int, subBrandId: Int?, subCategoryIds: [Int]) {
+    init(name: String, description: String?, categoryId: Int, brandId: Int, subBrandId: Int?, subCategoryIds: [Int], barcode: Barcode?) {
         p_name = name
         p_description = description
         p_category_id = categoryId
         p_sub_brand_id = subBrandId
         p_sub_category_ids = subCategoryIds
         p_brand_id = brandId
+        
+        if let barcode = barcode {
+            p_barcode_code = barcode.barcode
+            p_barcode_type = barcode.type.rawValue
+        } else {
+            p_barcode_code = nil
+            p_barcode_type = nil
+        }
     }
 }
 

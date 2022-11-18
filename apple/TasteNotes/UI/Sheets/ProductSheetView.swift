@@ -286,7 +286,7 @@ extension ProductSheetView {
 
         func createProduct(onCreation: @escaping (_ product: ProductJoined) -> Void) {
             if let categoryId = categories.first(where: { $0.name == category })?.id, let brandId = brand?.id {
-                let newProductParams = NewProductParams(name: name, description: description, categoryId: categoryId, brandId: brandId, subBrandId: subBrand?.id, subCategoryIds: subcategories.map { $0.id })
+                let newProductParams = NewProductParams(name: name, description: description, categoryId: categoryId, brandId: brandId, subBrandId: subBrand?.id, subCategoryIds: subcategories.map { $0.id }, barcode: barcode)
                 Task {
                     switch await repository.product.create(newProductParams: newProductParams) {
                     case let .success(newProduct):
