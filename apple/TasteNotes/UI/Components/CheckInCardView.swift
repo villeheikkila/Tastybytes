@@ -33,19 +33,28 @@ struct CheckInCardView: View {
     var body: some View {
         VStack {
             VStack {
-                    header
-                    productSection
-                    if !checkIn.isEmpty() {
-                        checkInSection
-                    }
-                    footer
+                header
+                productSection
+                if !checkIn.isEmpty() {
+                    checkInSection
                 }
-                .padding(.all, 10)
-                .background(Color(.tertiarySystemBackground))
-                .clipped()
+                if let imageUrl = checkIn.getImageUrl() {
+                    CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                }
+                footer
+            }
+            .padding([.top, .bottom], 10)
+            .background(Color(.tertiarySystemBackground))
+            .clipped()
         }
         .cornerRadius(10)
-        .padding(.all, 10)
+        .padding([.top, .bottom], 10)
         .shadow(color: Color.black.opacity(0.2), radius: 4, x: 2, y: 2)
         .sheet(isPresented: $viewModel.showingSheet) {
             CheckInSheetView(checkIn: checkIn, onUpdate: {
@@ -58,7 +67,7 @@ struct CheckInCardView: View {
             if isOwnedByCurrentUser() {
                 Button(action: {
                     viewModel.toggleSheet()
-                }) { 
+                }) {
                     Label("Edit", systemImage: "pencil")
                 }
 
@@ -73,7 +82,7 @@ struct CheckInCardView: View {
                             isPresented: $showDeleteCheckInConfirmationDialog
         ) {
             Button("Delete the check-in", role: .destructive, action: {
-                    viewModel.delete(checkIn: checkIn, onDelete: onDelete)
+                viewModel.delete(checkIn: checkIn, onDelete: onDelete)
             })
         }
     }
@@ -88,6 +97,7 @@ struct CheckInCardView: View {
                 Spacer()
             }
         }
+        .padding([.leading, .trailing], 10)
         .disabled(avoidStackingCheckInPage())
     }
 
@@ -137,6 +147,7 @@ struct CheckInCardView: View {
                 }
             }
         }
+        .padding([.leading, .trailing], 10)
         .buttonStyle(.plain)
     }
 
@@ -148,23 +159,22 @@ struct CheckInCardView: View {
                         if let rating = checkIn.rating {
                             RatingView(rating: rating)
                         }
-                        
+
                         if let review = checkIn.review {
                             Text(review)
                                 .fontWeight(.medium)
                                 .foregroundColor(.primary)
                         }
-                        
+
                         if let flavors = checkIn.flavors {
-                            WrappingHStack(flavors, id: \.self) {
+                            WrappingHStack(flavors, id: \.self, spacing: .constant(4)) {
                                 flavor in
-                                ChipView(title: flavor.name.capitalized, cornerRadius: 5).padding(.all, 2)
+                                ChipView(title: flavor.name.capitalized, cornerRadius: 5)
                             }
                         }
                     }
                 }
                 .padding(.all, 10)
-                .opacity(1)
                 .background(Color(.secondarySystemBackground))
                 .cornerRadius(5)
 
@@ -189,6 +199,7 @@ struct CheckInCardView: View {
                 }
             }
         }
+        .padding([.leading, .trailing], 10)
         .buttonStyle(.plain)
     }
 
@@ -197,13 +208,13 @@ struct CheckInCardView: View {
             NavigationLink(value: checkIn) {
                 Text(checkIn.createdAt.formatted())
                     .font(.system(size: 12, weight: .medium, design: .default))
-
                 Spacer()
             }
             .buttonStyle(.plain)
             Spacer()
             ReactionsView(checkIn: checkIn)
         }
+        .padding([.leading, .trailing], 10)
     }
 }
 
@@ -235,12 +246,11 @@ extension CheckInCardView {
     }
 }
 
-
 struct CheckInCardView_Previews: PreviewProvider {
     static let company = Company(id: 0, name: "The Coca Cola Company", logoUrl: nil)
 
     static let product = ProductJoined(id: 0, name: "Coca Cola", description: "Original Taste", subBrand: subBrand, subcategories: subcategories, barcodes: [])
-    
+
     static let profile = Profile(id: UUID(uuidString: "82c34cc0-4795-4478-99ad-38003fdb65fd") ?? UUID(), preferredName: "villeheikkila", avatarUrl: "avatar.jpeg")
 
     static let servingStyle = ServingStyle(id: 0, name: .bottle)
@@ -248,9 +258,9 @@ struct CheckInCardView_Previews: PreviewProvider {
     static let hartwallCompany = Company(id: 0, name: "Hartwall", logoUrl: nil)
 
     static let variant = ProductVariant(id: 0, manufacturer: hartwallCompany)
-        
+
     static let category = Category(id: 0, name: .beverage)
-        
+
     static let flavors = [Flavor(id: 0, name: "Cola")]
 
     static let checkInReactions = [CheckInReaction(id: 0, profile: profile)]
@@ -260,17 +270,14 @@ struct CheckInCardView_Previews: PreviewProvider {
     static let brand = BrandJoinedWithCompany(id: 0, name: "Coca Cola", brandOwner: company)
 
     static let subBrand = SubBrandJoinedWithBrand(id: 0, name: "Zero", brand: brand)
-    
+
     static let country = Country(countryCode: "FI", name: "Finland", emoji: "🇫🇮")
-    
+
     static let location = Location(id: UUID(), name: "McDonalds", title: "Mäkkäri", location: nil, countryCode: "FI", country: country)
-    
-    static let checkIn = CheckIn(id: 0, rating: 2.5, review: "Pretty Good!", imageUrl: "IMG_3155.jpeg", createdAt: Date(), profile: profile, product: product, checkInReactions: checkInReactions, taggedProfiles: [profile], flavors: flavors, variant: variant , servingStyle: servingStyle, location: location)
-                                                   
+
+    static let checkIn = CheckIn(id: 0, rating: 2.5, review: "Pretty Good!", imageUrl: "IMG_3155.jpeg", createdAt: Date(), profile: profile, product: product, checkInReactions: checkInReactions, taggedProfiles: [profile], flavors: flavors, variant: variant, servingStyle: servingStyle, location: location)
+
     static var previews: some View {
-        CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn, onDelete: { _ in print("delete")}, onUpdate: { _ in print("update") })
+        CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn, onDelete: { _ in print("delete") }, onUpdate: { _ in print("update") })
     }
 }
-
-
-

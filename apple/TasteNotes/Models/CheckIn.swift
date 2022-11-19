@@ -23,7 +23,7 @@ struct CheckIn: Identifiable {
         if let imageUrl = imageUrl {
             let bucketId = "check-ins"
             let urlString = "\(Config.supabaseUrl)/storage/v1/object/public/\(bucketId)/\(profile.id.uuidString.lowercased())/\(imageUrl)"
-
+            
             guard let url = URL(string: urlString) else { return nil }
             return url
         } else {
