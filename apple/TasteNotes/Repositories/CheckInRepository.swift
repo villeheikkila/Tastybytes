@@ -11,7 +11,7 @@ protocol CheckInRepository {
     func update(updateCheckInParams: UpdateCheckInParams) async -> Result<CheckIn, Error>
     func delete(id: Int) async -> Result<Void, Error>
     func getSummaryByProfileId(id: UUID) async -> Result<ProfileSummary, Error>
-    func uploadImage(id: Int, profileId: UUID, data: Data) async -> Result<Void, Error>
+    func uploadImage(id: Int, data: Data) async -> Result<Void, Error>
 }
 
 struct SupabaseCheckInRepository: CheckInRepository {
@@ -153,7 +153,9 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func uploadImage(id: Int, profileId: UUID, data: Data) async -> Result<Void, Error> {
+    func uploadImage(id: Int, data: Data) async -> Result<Void, Error> {
+        let profileId = repository.auth.getCurrentUserId()
+
         let file = File(
             name: "\(id).jpeg", data: data, fileName: "\(id).jpeg", contentType: "image/jpeg")
 

@@ -1,4 +1,5 @@
 import SwiftUI
+import CachedAsyncImage
 
 struct CheckInScreenView: View {
     let checkIn: CheckIn

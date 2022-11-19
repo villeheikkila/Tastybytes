@@ -288,6 +288,7 @@ extension CheckInSheetView {
                 switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
                 case let .success(updatedCheckIn):
                     onUpdate(updatedCheckIn)
+                    uploadImage(checkIn: updatedCheckIn)
                 case let .failure(error):
                     print("error: \(error)")
                 }
@@ -300,16 +301,23 @@ extension CheckInSheetView {
             Task {
                 switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
                 case let .success(newCheckIn):
-                    if let data = image?.jpegData(compressionQuality: 0.3) {
-                        switch await repository.checkIn.uploadImage(id: newCheckIn.id, profileId: repository.auth.getCurrentUserId(), data: data) {
-                        default:
-                            break
-                        }
-                    }
-
+                    uploadImage(checkIn: newCheckIn)
                     onCreation(newCheckIn)
                 case let .failure(error):
                     print(error)
+                }
+            }
+        }
+        
+        func uploadImage(checkIn: CheckIn) {
+            Task {
+                if let data = image?.jpegData(compressionQuality: 0.3) {
+                    switch await repository.checkIn.uploadImage(id: checkIn.id, data: data) {
+                    case let .failure(error):
+                        print(error)
+                    default:
+                        break
+                    }
                 }
             }
         }

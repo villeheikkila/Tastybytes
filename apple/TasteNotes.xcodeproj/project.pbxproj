@@ -66,7 +66,6 @@
 		5CC2FE982919CB19002BDF83 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE972919CB19002BDF83 /* Country.swift */; };
 		5CC2FE9B2919D5A7002BDF83 /* Production.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */; };
 		5CC2FE9D2919D5BA002BDF83 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */; };
-		5CC49476290589E700D269A2 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC49475290589E700D269A2 /* CardView.swift */; };
 		5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE914D28F45DE7005A6043 /* Utils.swift */; };
 		5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */; };
 		5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */; };
@@ -171,7 +170,6 @@
 		5CC2FE972919CB19002BDF83 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
 		5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
-		5CC49475290589E700D269A2 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		5CCE914D28F45DE7005A6043 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardView.swift; sourceTree = "<group>"; };
@@ -392,7 +390,6 @@
 				5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */,
 				5CFB563228F597ED00F13A1E /* RatingView.swift */,
 				5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */,
-				5CC49475290589E700D269A2 /* CardView.swift */,
 				5CD10A4628F9522D0001CFC2 /* RatingPickerView.swift */,
 				5C0E364F2925A9640072EFBD /* BarcodeScannerView.swift */,
 				5C0E36552927F09F0072EFBD /* CameraView.swift */,
@@ -626,7 +623,6 @@
 				5CD10A5528F98D220001CFC2 /* SubBrand.swift in Sources */,
 				5C12B4332902A4C9001EE549 /* BlockedUsersScreenView.swift in Sources */,
 				5C0E36502925A9640072EFBD /* BarcodeScannerView.swift in Sources */,
-				5CC49476290589E700D269A2 /* CardView.swift in Sources */,
 				5CD10A4F28F98C0B0001CFC2 /* Category.swift in Sources */,
 				5CD10A5128F98C8C0001CFC2 /* Subcategory.swift in Sources */,
 				5C0E36482922F21B0072EFBD /* ToastManager.swift in Sources */,
