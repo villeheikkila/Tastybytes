@@ -5,6 +5,7 @@ import WrappingHStack
 struct CheckInSheetView: View {
     @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
+    @State var showPhotoMenu = false
 
     let product: ProductJoined
     let onCreation: ((_ checkIn: CheckIn) -> Void)?
@@ -33,7 +34,7 @@ struct CheckInSheetView: View {
         NavigationStack {
             VStack {
                 ProductCardView(product: product)
-                
+
                 if let image = viewModel.image {
                     Image(uiImage: image)
                         .resizable()
@@ -41,19 +42,19 @@ struct CheckInSheetView: View {
                         .frame(height: 150, alignment: .top)
                         .shadow(radius: 4)
                 }
-                
-                photoPicker
+
                 Button(action: {
-                    viewModel.showCamera.toggle()
+                    showPhotoMenu.toggle()
                 }) {
-                    Text("Camera")
+                    Label("Add Photo", systemImage: "photo")
                 }
+
                 Form {
                     Section {
                         TextField("How was it?", text: $viewModel.review, axis: .vertical)
                         RatingPickerView(rating: $viewModel.rating)
                         Button(action: {
-                            viewModel.activateSheet(.flavors)
+                            viewModel.setActiveSheet(.flavors)
                         }) {
                             if viewModel.pickedFlavors.count != 0 {
                                 WrappingHStack(viewModel.pickedFlavors, id: \.self) {
@@ -79,7 +80,7 @@ struct CheckInSheetView: View {
                         }
 
                         Button(action: {
-                            viewModel.activateSheet(.manufacturer)
+                            viewModel.setActiveSheet(.manufacturer)
                         }) {
                             Text(viewModel.manufacturer?.name ?? "Manufactured by")
                         }
@@ -87,7 +88,7 @@ struct CheckInSheetView: View {
 
                     Section {
                         Button(action: {
-                            viewModel.activateSheet(.friends)
+                            viewModel.setActiveSheet(.friends)
                         }) {
                             if viewModel.taggedFriends.count == 0 {
                                 Text("Tag friends")
@@ -101,7 +102,7 @@ struct CheckInSheetView: View {
                     }
 
                     Button(action: {
-                        viewModel.activateSheet(.location)
+                        viewModel.setActiveSheet(.location)
                     }) {
                         if let location = viewModel.location {
                             HStack {
@@ -115,6 +116,20 @@ struct CheckInSheetView: View {
                             Text("Location")
                         }
                     }
+                }
+                .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
+                    Button(action: {
+                        viewModel.showCamera.toggle()
+                    }) {
+                        Text("Camera")
+                    }
+                    Button(action: {
+                        viewModel.setActiveSheet(.photoPicker)
+                    }) {
+                        Text("Photo Gallery")
+                    }
+                } message: {
+                    Text("Pick a photo")
                 }
                 .sheet(item: $viewModel.activeSheet) { sheet in
                     switch sheet {
@@ -131,6 +146,10 @@ struct CheckInSheetView: View {
                     case .manufacturer:
                         CompanySheetView(onSelect: { company, _ in
                             viewModel.setManufacturer(company)
+                        })
+                    case .photoPicker:
+                        LegacyPhotoPicker(onSelection: {
+                            image in viewModel.setImageFromPicker(pickedImage: image)
                         })
                     }
                 }
@@ -180,22 +199,6 @@ struct CheckInSheetView: View {
             }
         }
     }
-
-    var photoPicker: some View {
-        PhotosPicker(
-            selection: $viewModel.selectedItem,
-            matching: .images,
-            photoLibrary: .shared()
-        ) {
-                Text("Upload image")
-        }
-        .frame(maxWidth: .infinity, alignment: .center)
-        .listRowBackground(Color(UIColor.systemGroupedBackground))
-        .padding(.top, 0)
-        .onChange(of: viewModel.selectedItem) { newValue in
-            viewModel.setImageFromPicker(pickedImage: newValue)
-        }
-    }
 }
 
 extension CheckInSheetView {
@@ -210,6 +213,7 @@ extension CheckInSheetView {
         case friends
         case flavors
         case location
+        case photoPicker
     }
 
     @MainActor class ViewModel: ObservableObject {
@@ -236,7 +240,7 @@ extension CheckInSheetView {
             location = checkIn.location
         }
 
-        func activateSheet(_ sheet: Sheet) {
+        func setActiveSheet(_ sheet: Sheet) {
             DispatchQueue.main.async {
                 self.activeSheet = sheet
             }
@@ -269,13 +273,10 @@ extension CheckInSheetView {
             }
         }
 
-        func setImageFromPicker(pickedImage: PhotosPickerItem?) {
+        func setImageFromPicker(pickedImage: UIImage) {
             Task {
-                if let imageData = try await pickedImage?.loadTransferable(type: Data.self),
-                   let image = UIImage(data: imageData) {
-                    await MainActor.run {
-                        self.image = image
-                    }
+                await MainActor.run {
+                    self.image = pickedImage
                 }
             }
         }

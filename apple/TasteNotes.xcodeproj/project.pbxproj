@@ -17,6 +17,7 @@
 		5C0E3652292679630072EFBD /* BarcodeScannerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E3651292679630072EFBD /* BarcodeScannerSheet.swift */; };
 		5C0E365429279B240072EFBD /* Barcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E365329279B240072EFBD /* Barcode.swift */; };
 		5C0E36562927F09F0072EFBD /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E36552927F09F0072EFBD /* CameraView.swift */; };
+		5C0E36582928EA910072EFBD /* LegacyPhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E36572928EA910072EFBD /* LegacyPhotoPicker.swift */; };
 		5C11ECB328EEEDEF00CCDE6A /* FriendsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB228EEEDEF00CCDE6A /* FriendsScreenView.swift */; };
 		5C11ECB628EEEFB300CCDE6A /* PreferencesScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB528EEEFB300CCDE6A /* PreferencesScreenView.swift */; };
 		5C11ECB928EEF16000CCDE6A /* ProfileScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB828EEF16000CCDE6A /* ProfileScreenView.swift */; };
@@ -120,6 +121,7 @@
 		5C0E3651292679630072EFBD /* BarcodeScannerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerSheet.swift; sourceTree = "<group>"; };
 		5C0E365329279B240072EFBD /* Barcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Barcode.swift; sourceTree = "<group>"; };
 		5C0E36552927F09F0072EFBD /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		5C0E36572928EA910072EFBD /* LegacyPhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyPhotoPicker.swift; sourceTree = "<group>"; };
 		5C11ECB228EEEDEF00CCDE6A /* FriendsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsScreenView.swift; sourceTree = "<group>"; };
 		5C11ECB528EEEFB300CCDE6A /* PreferencesScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesScreenView.swift; sourceTree = "<group>"; };
 		5C11ECB828EEF16000CCDE6A /* ProfileScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenView.swift; sourceTree = "<group>"; };
@@ -386,12 +388,14 @@
 			isa = PBXGroup;
 			children = (
 				5CFB562E28F596A200F13A1E /* ChipView.swift */,
+				5C0E36572928EA910072EFBD /* LegacyPhotoPicker.swift */,
 				5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */,
 				5CFB563228F597ED00F13A1E /* RatingView.swift */,
 				5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */,
 				5CC49475290589E700D269A2 /* CardView.swift */,
 				5CD10A4628F9522D0001CFC2 /* RatingPickerView.swift */,
 				5C0E364F2925A9640072EFBD /* BarcodeScannerView.swift */,
+				5C0E36552927F09F0072EFBD /* CameraView.swift */,
 			);
 			path = Primitives;
 			sourceTree = "<group>";
@@ -406,7 +410,6 @@
 				5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */,
 				5CFEE57828ED69B100A8DD66 /* RootView.swift */,
 				5C12B4342902C9D0001EE549 /* TabbarView.swift */,
-				5C0E36552927F09F0072EFBD /* CameraView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 				5C11ECBB28EEF24700CCDE6A /* ActivityScreenView.swift in Sources */,
 				5CFEE57928ED69B100A8DD66 /* RootView.swift in Sources */,
 				5CC2FE9429197D9F002BDF83 /* LocationSearchService.swift in Sources */,
+				5C0E36582928EA910072EFBD /* LegacyPhotoPicker.swift in Sources */,
 				5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */,
 				5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */,
 				5C13F21D291A7FEB00599892 /* AppDelegate.swift in Sources */,
