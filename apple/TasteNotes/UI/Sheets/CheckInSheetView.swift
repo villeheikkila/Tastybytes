@@ -33,6 +33,15 @@ struct CheckInSheetView: View {
         NavigationStack {
             VStack {
                 ProductCardView(product: product)
+                
+                if let image = viewModel.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 150, alignment: .top)
+                        .shadow(radius: 4)
+                }
+                
                 photoPicker
                 Button(action: {
                     viewModel.showCamera.toggle()
@@ -128,6 +137,8 @@ struct CheckInSheetView: View {
                 .fullScreenCover(isPresented: $viewModel.showCamera, content: {
                     CameraView(onClose: {
                         viewModel.showCamera = false
+                    }, onCapture: {
+                        image in viewModel.setImageFromCamera(image)
                     })
                 })
                 .navigationBarItems(
@@ -176,21 +187,13 @@ struct CheckInSheetView: View {
             matching: .images,
             photoLibrary: .shared()
         ) {
-            if let image = viewModel.image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 150, alignment: .top)
-                    .shadow(radius: 4)
-            } else {
                 Text("Upload image")
-            }
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .listRowBackground(Color(UIColor.systemGroupedBackground))
         .padding(.top, 0)
         .onChange(of: viewModel.selectedItem) { newValue in
-            viewModel.setImage(pickedImage: newValue)
+            viewModel.setImageFromPicker(pickedImage: newValue)
         }
     }
 }
@@ -257,7 +260,16 @@ extension CheckInSheetView {
             }
         }
 
-        func setImage(pickedImage: PhotosPickerItem?) {
+        func setImageFromCamera(_ image: UIImage) {
+            Task {
+                await MainActor.run {
+                    self.image = image
+                    self.showCamera = false
+                }
+            }
+        }
+
+        func setImageFromPicker(pickedImage: PhotosPickerItem?) {
             Task {
                 if let imageData = try await pickedImage?.loadTransferable(type: Data.self),
                    let image = UIImage(data: imageData) {
