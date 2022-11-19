@@ -57,6 +57,10 @@ struct BrandJoinedWithCompany: Identifiable {
 }
 
 extension BrandJoinedWithCompany: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: BrandJoinedWithCompany, rhs: BrandJoinedWithCompany) -> Bool {
         return lhs.id == rhs.id
     }

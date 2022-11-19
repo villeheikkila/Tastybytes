@@ -42,6 +42,11 @@ extension Company {
 }
 
 extension Company: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(logoUrl)
+    }
+    
     static func == (lhs: Company, rhs: Company) -> Bool {
         return lhs.id == rhs.id
     }

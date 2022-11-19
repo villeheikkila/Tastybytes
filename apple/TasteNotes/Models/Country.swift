@@ -1,8 +1,18 @@
-struct Country: Identifiable, Hashable {
+struct Country: Identifiable {
     var id: String { countryCode }
     let countryCode: String
     let name: String
     let emoji: String
+}
+
+extension Country: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(countryCode)
+    }
+    
+    static func == (lhs: Country, rhs: Country) -> Bool {
+        return lhs.countryCode == rhs.countryCode
+    }
 }
 
 extension Country {

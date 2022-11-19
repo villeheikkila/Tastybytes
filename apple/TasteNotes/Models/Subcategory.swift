@@ -42,6 +42,10 @@ struct SubcategoryJoinedWithCategory: Identifiable {
 }
 
 extension SubcategoryJoinedWithCategory: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: SubcategoryJoinedWithCategory, rhs: SubcategoryJoinedWithCategory) -> Bool {
         return lhs.id == rhs.id
     }

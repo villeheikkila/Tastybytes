@@ -43,6 +43,10 @@ extension ServingStyle: Decodable {
 }
 
 extension ServingStyle: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: ServingStyle, rhs: ServingStyle) -> Bool {
         return lhs.id == rhs.id
     }

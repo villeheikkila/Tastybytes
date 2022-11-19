@@ -8,6 +8,11 @@ struct CheckInComment: Identifiable {
 }
 
 extension CheckInComment: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(content)
+    }
+    
     static func == (lhs: CheckInComment, rhs: CheckInComment) -> Bool {
         return lhs.id == rhs.id && lhs.content == rhs.content
     }

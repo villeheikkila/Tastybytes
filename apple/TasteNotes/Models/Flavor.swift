@@ -4,6 +4,10 @@ struct Flavor: Identifiable, Decodable {
 }
 
 extension Flavor: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: Flavor, rhs: Flavor) -> Bool {
         return lhs.id == rhs.id
     }

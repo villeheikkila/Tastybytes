@@ -276,7 +276,7 @@ extension CheckInSheetView {
                 case let .success(updatedCheckIn):
                     onUpdate(updatedCheckIn)
                 case let .failure(error):
-                    print(error)
+                    print("error: \(error)")
                 }
             }
         }

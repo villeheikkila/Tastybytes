@@ -106,6 +106,10 @@ extension CategoryJoinedWithSubcategories: Decodable {
 }
 
 extension CategoryJoinedWithSubcategories: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: CategoryJoinedWithSubcategories, rhs: CategoryJoinedWithSubcategories) -> Bool {
         return lhs.id == rhs.id
     }

@@ -109,6 +109,12 @@ extension Profile {
 }
 
 extension Profile: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(preferredName)
+        hasher.combine(avatarUrl)
+    }
+    
     static func == (lhs: Profile, rhs: Profile) -> Bool {
         return lhs.id == rhs.id
     }
@@ -143,6 +149,15 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
     let sendReactionNotifications: Bool
     let sendTaggedCheckInNotifications: Bool
     let sendFriendRequestNotifications: Bool
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(colorScheme)
+        hasher.combine(sendReactionNotifications)
+        hasher.combine(sendTaggedCheckInNotifications)
+        hasher.combine(sendFriendRequestNotifications)
+    }
+    
     
     static func == (lhs: ProfileSettings, rhs: ProfileSettings) -> Bool {
         return lhs.id == rhs.id
