@@ -67,6 +67,10 @@ extension ProductJoined {
 }
 
 extension ProductJoined: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: ProductJoined, rhs: ProductJoined) -> Bool {
         return lhs.id == rhs.id
     }

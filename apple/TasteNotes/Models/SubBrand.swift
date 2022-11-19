@@ -56,6 +56,10 @@ struct SubBrandJoinedWithBrand: Identifiable {
 }
 
 extension SubBrandJoinedWithBrand: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: SubBrandJoinedWithBrand, rhs: SubBrandJoinedWithBrand) -> Bool {
         return lhs.id == rhs.id
     }

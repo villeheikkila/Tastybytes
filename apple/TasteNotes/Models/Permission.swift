@@ -4,6 +4,10 @@ struct Permission: Identifiable {
 }
 
 extension Permission: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: Permission, rhs: Permission) -> Bool {
         return lhs.id == rhs.id
     }

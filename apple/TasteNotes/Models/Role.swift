@@ -5,6 +5,10 @@ struct Role: Identifiable {
 }
 
 extension Role: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: Role, rhs: Role) -> Bool {
         return lhs.id == rhs.id
     }

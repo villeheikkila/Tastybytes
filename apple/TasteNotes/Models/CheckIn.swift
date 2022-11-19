@@ -16,21 +16,20 @@ struct CheckIn: Identifiable {
     let location: Location?
 
     func isEmpty() -> Bool {
-        return [rating == nil, (review == nil || review == ""), flavors.count == 0].allSatisfy { $0 }
+        return [rating == nil, review == nil || review == "", flavors.count == 0].allSatisfy { $0 }
     }
-    
+
     func getImageUrl() -> URL? {
         if let imageUrl = imageUrl {
             let bucketId = "check-ins"
             let urlString = "\(Config.supabaseUrl)/storage/v1/object/public/\(bucketId)/\(profile.id.uuidString.lowercased())/\(imageUrl)"
-            
-            guard let url = URL(string: urlString) else { return nil }            
+
+            guard let url = URL(string: urlString) else { return nil }
             return url
         } else {
             return nil
         }
     }
-    
 }
 
 extension CheckIn {
@@ -40,7 +39,7 @@ extension CheckIn {
         let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
         let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
         let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
-        
+
         switch queryType {
         case .tableName:
             return tableName
@@ -48,7 +47,7 @@ extension CheckIn {
             return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.minimal(true)), Product.getQuery(.joinedBrandSubcategories(true)), CheckInReaction.getQuery(.joinedProfile(true)), checkInTaggedProfilesJoined, checkInFlavorsJoined, productVariantJoined, ServingStyle.getQuery(.saved(true))), withTableName)
         }
     }
-    
+
     enum QueryType {
         case tableName
         case joined(_ withTableName: Bool)
@@ -56,8 +55,15 @@ extension CheckIn {
 }
 
 extension CheckIn: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(rating)
+        hasher.combine(review)
+        hasher.combine(imageUrl)
+    }
+
     static func == (lhs: CheckIn, rhs: CheckIn) -> Bool {
-        return lhs.id == rhs.id && lhs.profile.preferredName == rhs.profile.preferredName
+        return lhs.id == rhs.id && lhs.rating == rhs.rating && lhs.review == rhs.review && lhs.imageUrl == rhs.imageUrl
     }
 }
 
@@ -77,7 +83,7 @@ extension CheckIn: Decodable {
         case servingStyle = "serving_styles"
         case location = "locations"
     }
-    
+
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
@@ -106,20 +112,19 @@ struct NewCheckInParams: Encodable {
     let p_flavor_ids: [Int]?
     let p_location_id: String?
 
-    
     init(product: ProductJoined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Double, location: Location?) {
-        self.p_product_id = product.id
-        self.p_review = review == "" ? nil : review
-        self.p_manufacturer_id = manufacturer?.id ?? nil
-        self.p_serving_style_id = servingStyle?.id ?? nil
-        self.p_friend_ids = taggedFriends.map { $0.id.uuidString }
-        self.p_flavor_ids = flavors.map { $0.id }
-        self.p_rating = rating
-        self.p_location_id = location?.id.uuidString
+        p_product_id = product.id
+        p_review = review == "" ? nil : review
+        p_manufacturer_id = manufacturer?.id ?? nil
+        p_serving_style_id = servingStyle?.id ?? nil
+        p_friend_ids = taggedFriends.map { $0.id.uuidString }
+        p_flavor_ids = flavors.map { $0.id }
+        p_rating = rating
+        p_location_id = location?.id.uuidString
     }
 }
 
-struct UpdateCheckInParams: Encodable  {
+struct UpdateCheckInParams: Encodable {
     let p_check_in_id: Int
     let p_product_id: Int
     let p_rating: Double
@@ -129,27 +134,27 @@ struct UpdateCheckInParams: Encodable  {
     let p_friend_ids: [String]?
     let p_flavor_ids: [Int]?
     let p_location_id: String?
-    
+
     init(checkIn: CheckIn, product: ProductJoined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Double, location: Location?) {
-        self.p_check_in_id = checkIn.id
-        self.p_product_id = product.id
-        self.p_review = review
-        self.p_manufacturer_id = manufacturer?.id ?? nil
-        self.p_serving_style_id = servingStyle?.id ?? nil
-        self.p_friend_ids = taggedFriends.map { $0.id.uuidString }
-        self.p_flavor_ids = flavors.map { $0.id }
-        self.p_rating = rating
-        self.p_location_id = location?.id.uuidString
+        p_check_in_id = checkIn.id
+        p_product_id = product.id
+        p_review = review
+        p_manufacturer_id = manufacturer?.id ?? nil
+        p_serving_style_id = servingStyle?.id ?? nil
+        p_friend_ids = taggedFriends.map { $0.id.uuidString }
+        p_flavor_ids = flavors.map { $0.id }
+        p_rating = rating
+        p_location_id = location?.id.uuidString
     }
 }
 
 struct CheckInTaggedProfile: Decodable {
     let profile: Profile
-    
+
     enum CodingKeys: String, CodingKey {
         case profile = "profiles"
     }
-    
+
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         profile = try values.decode(Profile.self, forKey: .profile)
@@ -158,11 +163,11 @@ struct CheckInTaggedProfile: Decodable {
 
 struct CheckInFlavors: Decodable {
     let flavor: Flavor
-    
+
     enum CodingKeys: String, CodingKey {
         case flavor = "flavors"
     }
-    
+
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         flavor = try values.decode(Flavor.self, forKey: .flavor)
@@ -173,17 +178,17 @@ struct CheckInNotification: Identifiable, Hashable, Decodable {
     let id: Int
     let profile: Profile
     let product: ProductJoined
-    
+
     static func == (lhs: CheckInNotification, rhs: CheckInNotification) -> Bool {
         return lhs.id == rhs.id
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case profile = "profiles"
         case product = "products"
     }
-    
+
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)

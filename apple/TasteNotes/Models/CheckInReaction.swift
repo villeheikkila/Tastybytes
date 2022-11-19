@@ -6,6 +6,10 @@ struct CheckInReaction: Identifiable {
 }
 
 extension CheckInReaction: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: CheckInReaction, rhs: CheckInReaction) -> Bool {
         return lhs.id == rhs.id
     }
@@ -55,6 +59,10 @@ struct CheckInReactionWithCheckIn: Identifiable {
 }
 
 extension CheckInReactionWithCheckIn: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: CheckInReactionWithCheckIn, rhs: CheckInReactionWithCheckIn) -> Bool {
         return lhs.id == rhs.id
     }

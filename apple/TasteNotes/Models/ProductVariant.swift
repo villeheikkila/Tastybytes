@@ -22,6 +22,10 @@ extension ProductVariant {
 }
 
 extension ProductVariant: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: ProductVariant, rhs: ProductVariant) -> Bool {
         return lhs.id == rhs.id
     }

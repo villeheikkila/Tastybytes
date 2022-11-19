@@ -49,7 +49,7 @@ extension ActivityScreenView {
         func refresh() {
             DispatchQueue.main.async {
                 self.page = 0
-                self.checkIns = []
+                self.checkIns = [CheckIn]()
                 self.fetchActivityFeedItems()
             }
         }

@@ -48,6 +48,10 @@ extension Location {
 }
 
 extension Location: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     static func == (lhs: Location, rhs: Location) -> Bool {
         return lhs.id == rhs.id
     }
