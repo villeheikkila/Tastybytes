@@ -38,7 +38,9 @@ struct ProductSheetView: View {
             switch sheet {
             case .subcategories:
                 if let subcategoriesForCategory = viewModel.getSubcategoriesForCategory() {
-                    SubcategorySheetView(availableSubcategories: subcategoriesForCategory, subcategories: $viewModel.subcategories)
+                    SubcategorySheetView(availableSubcategories: subcategoriesForCategory, subcategories: $viewModel.subcategories, onCreate: {
+                        newSubcategoryName in viewModel.createSubcategory(newSubcategoryName: newSubcategoryName)
+                    })
                 }
             case .brandOwner:
                 CompanySheetView(onSelect: { company, createdNew in
@@ -208,6 +210,23 @@ extension ProductSheetView {
             return categories.first(where: { $0.name == category })?.subcategories
         }
 
+        func createSubcategory(newSubcategoryName: String) {
+            let categoryWithSubcategories = categories.first(where: { $0.name == category })
+            
+            if let categoryWithSubcategories = categoryWithSubcategories {
+                Task {
+                    switch await repository.subcategory.insert(newSubcategory: Subcategory.New(name: newSubcategoryName, category: categoryWithSubcategories)) {
+                    case .success(_):
+                        await MainActor.run {
+                            self.loadCategories()
+                        }
+                    case let .failure(error):
+                        print(error)
+                    }
+                }
+            }
+        }
+        
         func setBrand(brand: BrandJoinedWithSubBrands) {
             DispatchQueue.main.async {
                 self.brand = brand

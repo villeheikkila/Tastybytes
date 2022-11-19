@@ -66,12 +66,14 @@ extension SubcategoryJoinedWithCategory: Decodable {
     }
 }
 
-struct SubBrandNew: Encodable {
-    let name: String
-    let brand_id: Int
-    
-    init(name: String, brandId: Int) {
-        self.name = name
-        self.brand_id = brandId
+extension Subcategory {
+    struct New: Encodable {
+        let name: String
+        let category_id: Int
+        
+        init (name: String, category: CategoryJoinedWithSubcategories) {
+            self.name = name
+            self.category_id = category.id
+        }
     }
 }

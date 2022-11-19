@@ -37,7 +37,8 @@ enum PermissionName: String, Decodable, Equatable {
     case canDeleteProducts = "can_delete_products"
     case canDeleteCompanies = "can_delete_companies"
     case canDeleteBrands = "can_delete_brands"
-    
+    case canAddSubcategories = "can_add_subcategories"
+
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let rawString = try container.decode(String.self)

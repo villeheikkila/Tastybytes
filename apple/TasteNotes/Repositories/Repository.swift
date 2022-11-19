@@ -36,6 +36,7 @@ class SupabaseRepository: Repository {
     let company: CompanyRepository
     let friend: FriendRepository
     let category: CategoryRepository
+    let subcategory: SubcategoryRepository
     let brand: BrandRepository
     let subBrand: SubBrandRepository
     let flavor: FlavorRepository
@@ -52,6 +53,7 @@ class SupabaseRepository: Repository {
         self.company = SupabaseCompanyRepository(client: client)
         self.friend = SupabaseFriendsRepository(client: client)
         self.category = SupabaseCategoryRepository(client: client)
+        self.subcategory = SupabaseSubcategoryRepository(client: client)
         self.brand = SupabaseBrandRepository(client: client)
         self.subBrand = SupabaseSubBrandRepository(client: client)
         self.flavor = SupabaseFlavorRepository(client: client)
