@@ -99,3 +99,15 @@ struct SubBrandJoinedProduct: Identifiable, Hashable, Decodable {
     }
 }
 
+extension SubBrand {
+    struct New: Encodable {
+        let name: String
+        let brand_id: Int
+        
+        init(name: String, brandId: Int) {
+            self.name = name
+            self.brand_id = brandId
+        }
+    }
+
+}

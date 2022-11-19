@@ -46,7 +46,7 @@ extension SubBrandSheetView {
         
         func createNewSubBrand(_ brand: BrandJoinedWithSubBrands, _ onSelect: @escaping (_ subBrand: SubBrand,  _ createdNew: Bool) -> Void) {
             Task {
-                switch await repository.subBrand.insert(newSubBrand: SubBrandNew(name: subBrandName, brandId: brand.id)) {
+                switch await repository.subBrand.insert(newSubBrand: SubBrand.New(name: subBrandName, brandId: brand.id)) {
                 case let .success(newSubBrand):
                     await MainActor.run {
                         onSelect(newSubBrand, true)
