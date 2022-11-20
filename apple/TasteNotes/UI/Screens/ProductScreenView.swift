@@ -14,53 +14,7 @@ struct ProductScreenView: View {
                                                    onDelete: { checkIn in viewModel.deleteCheckIn(checkIn) },
                                                    onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn) })
                                },
-                               header: {
-                                   VStack {
-                                       ProductCardView(product: product)
-                                           .contextMenu {
-                                               ShareLink("Share", item: createLinkToScreen(.product(id: product.id)))
-                                               Button(action: {
-                                                   viewModel.setActiveSheet(.editSuggestion)
-                                               }) {
-                                                   Label("Edit Suggestion", systemImage: "square.and.pencil")
-                                                       .foregroundColor(.red)
-                                               }
-                                               if profileManager.hasPermission(.canDeleteProducts) {
-                                                   Button(action: {
-                                                       viewModel.showDeleteConfirmation()
-                                                   }) {
-                                                       Label("Delete", systemImage: "trash.fill")
-                                                           .foregroundColor(.red)
-                                                   }
-                                               }
-                                           }
-
-                                       VStack(spacing: 10) {
-                                           if let checkIns = viewModel.productSummary?.totalCheckIns {
-                                               HStack {
-                                                   Text("Check-ins:")
-                                                   Spacer()
-                                                   Text(String(checkIns))
-                                               }
-                                           }
-                                           if let averageRating = viewModel.productSummary?.averageRating {
-                                               HStack {
-                                                   Text("Average:")
-                                                   Spacer()
-                                                   RatingView(rating: averageRating)
-                                               }
-                                           }
-                                           if let currentUserAverageRating = viewModel.productSummary?.currentUserAverageRating {
-                                               HStack {
-                                                   Text("Your rating:")
-                                                   Spacer()
-                                                   RatingView(rating: currentUserAverageRating)
-                                               }
-                                           }
-                                       }.padding(.all, 10)
-                                   }
-                               }
-            )
+                               header: { header })
         }
         .task {
             viewModel.loadProductSummary(product)
@@ -87,6 +41,75 @@ struct ProductScreenView: View {
         ) {
             Button("Delete Product", role: .destructive, action: { viewModel.deleteProduct(product)
             })
+        }
+    }
+
+    var header: some View {
+        VStack {
+            ProductCardView(product: product)
+                .contextMenu {
+                    ShareLink("Share", item: createLinkToScreen(.product(id: product.id)))
+                    Button(action: {
+                        viewModel.setActiveSheet(.editSuggestion)
+                    }) {
+                        Label("Edit Suggestion", systemImage: "square.and.pencil")
+                            .foregroundColor(.red)
+                    }
+                    if profileManager.hasPermission(.canDeleteProducts) {
+                        Button(action: {
+                            viewModel.showDeleteConfirmation()
+                        }) {
+                            Label("Delete", systemImage: "trash.fill")
+                                .foregroundColor(.red)
+                        }
+                    }
+                }
+            productSummary
+        }
+    }
+
+    @ViewBuilder
+    var productSummary: some View {
+        if let productSummary = viewModel.productSummary {
+            Grid(alignment: .leading) {
+                GridRow {
+                    Text("")
+                    Spacer()
+                    Text("Check-ins")
+                        .font(.system(size: 12, weight: .bold, design: .default))
+                    Spacer()
+                    Text("Rating")
+                        .font(.system(size: 12, weight: .bold, design: .default))
+                }
+            
+                if let averageRating = productSummary.averageRating {
+                    GridRow {
+                        Text("Everyone")
+                            .font(.system(size: 12, weight: .bold, design: .default))
+                        Spacer()
+                        Text(String(productSummary.totalCheckIns))
+                            .font(.system(size: 12, weight: .medium, design: .default))
+                        Spacer()
+                        RatingView(rating: averageRating, type: .small)
+                    }
+                }
+                
+                Divider()
+                    .gridCellUnsizedAxes(.horizontal)
+
+                if let currentUserAverageRating = productSummary.currentUserAverageRating {
+                    GridRow {
+                        Text("You")
+                            .font(.system(size: 12, weight: .bold, design: .default))
+                        Spacer()
+                        Text(String(productSummary.currentUserTotalCheckIns))
+                            .font(.system(size: 12, weight: .medium, design: .default))
+                        Spacer()
+                        RatingView(rating: currentUserAverageRating, type: .small)
+                    }
+                }
+            }
+            .padding(.all, 10)
         }
     }
 }
