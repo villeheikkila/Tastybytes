@@ -2,11 +2,11 @@ import SwiftUI
 import AlertToast
 
 struct FlavorSheetView: View {
-    @Binding var pickedFlavors: [Flavor]
+    @Environment(\.dismiss) var dismiss
     @StateObject var viewModel = ViewModel()
+    @Binding var pickedFlavors: [Flavor]
     @State var searchText = ""
     @State var showToast = false
-    @Environment(\.dismiss) var dismiss
     let maxFlavors = 6
     
     func toggleFlavor(_ flavor: Flavor) {

@@ -4,13 +4,13 @@ import SwiftUI
 struct SubcategorySheetView: View {
     let availableSubcategories: [Subcategory]
     @EnvironmentObject var profileManager: ProfileManager
+    @Environment(\.dismiss) var dismiss
     @Binding var subcategories: [Subcategory]
     @State var showToast = false
     @State var showAddSubcategory = false
     @State var newSubcategoryName = ""
-    @Environment(\.dismiss) var dismiss
+    
     let maxSubcategories = 4
-
     let onCreate: (_ newSubcategoryName: String) -> Void
 
     func toggleSubcategory(subcategory: Subcategory) {
