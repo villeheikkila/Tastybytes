@@ -39,7 +39,7 @@ where Data: RandomAccessCollection, Data.Element: Hashable, Data.Element: Identi
                             }
                         }
                 }
-            }
+            }.padding([.trailing, .leading], 5)
             
             if isLoading {
                 ProgressView()
