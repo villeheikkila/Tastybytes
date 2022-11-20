@@ -6,12 +6,10 @@ struct FriendSheetView: View {
     @Environment(\.dismiss) var dismiss
 
     func toggleFriend(friend: Profile) {
-        DispatchQueue.main.async {
-            if taggedFriends.contains(friend) {
-                self.taggedFriends.remove(object: friend)
-            } else {
-                self.taggedFriends.append(friend)
-            }
+        if taggedFriends.contains(friend) {
+            taggedFriends.remove(object: friend)
+        } else {
+            taggedFriends.append(friend)
         }
     }
 

@@ -1,3 +1,4 @@
+import CachedAsyncImage
 import PhotosUI
 import SwiftUI
 import WrappingHStack
@@ -41,12 +42,22 @@ struct CheckInSheetView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(height: 150, alignment: .top)
                         .shadow(radius: 4)
+                } else if let imageUrl = existingCheckIn?.getImageUrl() {
+                    CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 150, alignment: .top)
+                            .shadow(radius: 4)
+                    } placeholder: {
+                        EmptyView()
+                    }
                 }
 
                 Button(action: {
                     showPhotoMenu.toggle()
                 }) {
-                    Label("Add Photo", systemImage: "photo")
+                    Label("\(existingCheckIn?.getImageUrl() == nil && viewModel.image == nil ? "Add" : "Change") Photo", systemImage: "photo")
                 }
 
                 Form {
@@ -300,7 +311,7 @@ extension CheckInSheetView {
                 }
             }
         }
-        
+
         func uploadImage(checkIn: CheckIn) {
             Task {
                 if let data = image?.jpegData(compressionQuality: 0.3) {
