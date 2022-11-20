@@ -14,14 +14,12 @@ struct SubcategorySheetView: View {
     let onCreate: (_ newSubcategoryName: String) -> Void
 
     func toggleSubcategory(subcategory: Subcategory) {
-        DispatchQueue.main.async {
-            if subcategories.contains(subcategory) {
-                self.subcategories.remove(object: subcategory)
-            } else if subcategories.count < maxSubcategories {
-                self.subcategories.append(subcategory)
-            } else {
-                showToast = true
-            }
+        if subcategories.contains(subcategory) {
+            subcategories.remove(object: subcategory)
+        } else if subcategories.count < maxSubcategories {
+            subcategories.append(subcategory)
+        } else {
+            showToast = true
         }
     }
 

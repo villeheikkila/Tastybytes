@@ -1,17 +1,21 @@
 import SwiftUI
+import AlertToast
 
 struct FlavorSheetView: View {
     @Binding var pickedFlavors: [Flavor]
     @StateObject var viewModel = ViewModel()
     @State var searchText = ""
+    @State var showToast = false
     @Environment(\.dismiss) var dismiss
+    let maxFlavors = 6
     
     func toggleFlavor(_ flavor: Flavor) {
         if pickedFlavors.contains(flavor) {
             pickedFlavors.remove(object: flavor)
-
-        } else {
+        } else if pickedFlavors.count < maxFlavors {
             pickedFlavors.append(flavor)
+        } else {
+            showToast = true
         }
     }
 
@@ -37,6 +41,9 @@ struct FlavorSheetView: View {
                         }
                     }
                 }
+            }
+            .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
+                AlertToast(type: .error(.red), title: "You can only add \(maxFlavors) flavors")
             }
             .navigationTitle("Flavors")
             .navigationBarItems(trailing: Button(action: {
