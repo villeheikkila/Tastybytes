@@ -4,6 +4,8 @@ struct ProductSheetView: View {
     @EnvironmentObject var routeManager: RouteManager
     @EnvironmentObject var toastManager: ToastManager
     @StateObject var viewModel = ViewModel()
+    @FocusState private var focusedField: Focusable?
+
     let initialProduct: ProductJoined?
     let initialBarcode: Barcode?
 
@@ -32,7 +34,6 @@ struct ProductSheetView: View {
                 })
                 .disabled(!viewModel.isValid())
             }
-
         }
         .sheet(item: $viewModel.activeSheet) { sheet in
             switch sheet {
@@ -116,6 +117,9 @@ struct ProductSheetView: View {
         }
     header: {
             Text("Category")
+                .onTapGesture {
+                    self.focusedField = nil
+                }
         }
         .headerProminence(.increased)
     }
@@ -152,6 +156,9 @@ struct ProductSheetView: View {
 
         } header: {
             Text("Brand")
+                .onTapGesture {
+                    self.focusedField = nil
+                }
         }
         .headerProminence(.increased)
     }
@@ -159,7 +166,9 @@ struct ProductSheetView: View {
     var productSection: some View {
         Section {
             TextField("Flavor", text: $viewModel.name)
+                .focused($focusedField, equals: .name)
             TextField("Description (optional)", text: $viewModel.description)
+                .focused($focusedField, equals: .description)
             Button(action: {
                 viewModel.setActiveSheet(.barcode)
             }) {
@@ -171,12 +180,20 @@ struct ProductSheetView: View {
             }
         } header: {
             Text("Product")
+                .onTapGesture {
+                    self.focusedField = nil
+                }
         }
         .headerProminence(.increased)
     }
 }
 
 extension ProductSheetView {
+    enum Focusable {
+        case name
+        case description
+    }
+
     enum Sheet: Identifiable {
         var id: Self { self }
         case subcategories
@@ -212,11 +229,11 @@ extension ProductSheetView {
 
         func createSubcategory(newSubcategoryName: String) {
             let categoryWithSubcategories = categories.first(where: { $0.name == category })
-            
+
             if let categoryWithSubcategories = categoryWithSubcategories {
                 Task {
                     switch await repository.subcategory.insert(newSubcategory: Subcategory.New(name: newSubcategoryName, category: categoryWithSubcategories)) {
-                    case .success(_):
+                    case .success:
                         await MainActor.run {
                             self.loadCategories()
                         }
@@ -226,7 +243,7 @@ extension ProductSheetView {
                 }
             }
         }
-        
+
         func setBrand(brand: BrandJoinedWithSubBrands) {
             DispatchQueue.main.async {
                 self.brand = brand
@@ -280,7 +297,7 @@ extension ProductSheetView {
             description = initialProduct.description ?? ""
             hasSubBrand = initialProduct.subBrand.name != nil
         }
-        
+
         func loadInitialBarcode(_ initialBarcode: Barcode?) {
             guard let initialBarcode = initialBarcode else { return }
             DispatchQueue.main.async {
