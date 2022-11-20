@@ -7,12 +7,14 @@ struct CheckInSheetView: View {
     @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
     @State var showPhotoMenu = false
+    @FocusState private var focusedField: Focusable?
 
     let product: ProductJoined
     let onCreation: ((_ checkIn: CheckIn) -> Void)?
     let onUpdate: ((_ checkIn: CheckIn) -> Void)?
     let existingCheckIn: CheckIn?
     let action: Action
+    
 
     init(product: ProductJoined, onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
         self.product = product
@@ -35,6 +37,9 @@ struct CheckInSheetView: View {
         NavigationStack {
             VStack {
                 ProductCardView(product: product)
+                    .onTapGesture {
+                        self.focusedField = nil
+                    }
 
                 if let image = viewModel.image {
                     Image(uiImage: image)
@@ -63,6 +68,7 @@ struct CheckInSheetView: View {
                 Form {
                     Section {
                         TextField("How was it?", text: $viewModel.review, axis: .vertical)
+                            .focused($focusedField, equals: .review)
                         RatingPickerView(rating: $viewModel.rating)
                         Button(action: {
                             viewModel.setActiveSheet(.flavors)
@@ -211,6 +217,10 @@ struct CheckInSheetView: View {
 }
 
 extension CheckInSheetView {
+    enum Focusable {
+        case review
+    }
+    
     enum Action {
         case create
         case update
