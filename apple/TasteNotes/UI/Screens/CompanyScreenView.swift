@@ -8,80 +8,46 @@ struct CompanyScreenView: View {
     @StateObject private var viewModel = ViewModel()
     @State private var showDeleteCompanyConfirmationDialog = false
     @State private var showDeleteBrandConfirmationDialog = false
-    
+
     func getProductJoined(product: ProductJoinedCategory, subBrand: SubBrand, brand: BrandJoinedSubBrandsJoinedProduct) -> ProductJoined {
         return ProductJoined(id: product.id, name: product.name, description: product.name, subBrand: SubBrandJoinedWithBrand(id: subBrand.id, name: subBrand.name, brand: BrandJoinedWithCompany(id: brand.id, name: brand.name, brandOwner: company)), category: product.category, subcategories: product.subcategories, barcodes: [])
     }
-    
+
     var body: some View {
         List {
-            HStack(spacing: 20) {
-                if let logoUrl = company.getLogoUrl() {
-                    CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
-                        image.resizable()
-                    } placeholder: {
-                        Image(systemName: "photo")
-                    }
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 52, height: 52)
-                }
-                VStack(spacing: 10) {
-                    HStack {
-                        Text(company.name)
-                            .font(.title3)
-                            .fontWeight(.medium)
-                        Spacer()
-                    }
-                    
-                    if let checkIns = viewModel.companySummary?.totalCheckIns {
-                        HStack {
-                            Text("Check-ins:")
-                            Spacer()
-                            Text(String(checkIns))
-                        }
-                    }
-                    if let averageRating = viewModel.companySummary?.averageRating {
-                        HStack {
-                            Text("Average:")
-                            Spacer()
-                            RatingView(rating: averageRating)
-                        }
-                    }
-                    if let currentUserAverageRating = viewModel.companySummary?.currentUserAverageRating {
-                        HStack {
-                            Text("Your rating:")
-                            Spacer()
-                            RatingView(rating: currentUserAverageRating)
-                        }
-                    }
-                }.contextMenu {
-                    ShareLink("Share", item: createLinkToScreen(.company(id: company.id)))
-                    
-                    if profileManager.hasPermission(.canDeleteCompanies) {
-                        Button(action: {
-                            showDeleteCompanyConfirmationDialog.toggle()
-                        }) {
-                            Label("Delete", systemImage: "trash.fill")
-                                .foregroundColor(.red)
-                        }
-                    }
-                    
-                    Button(action: {
-                        viewModel.setActiveSheet(.editSuggestion)
-                    }) {
-                        Label("Edit Suggestion", systemImage: "pencil")
-                    }
-                    
+            VStack(alignment: .leading) {
+                companyHeader
+                if let companySummary = viewModel.companySummary {
+                    SummaryView(companySummary: companySummary)
                 }
             }
-            .padding(.all, 10)
+            .listRowBackground(Color.clear)
+            .navigationTitle(company.name)
+            .contextMenu {
+                ShareLink("Share", item: createLinkToScreen(.company(id: company.id)))
+
+                if profileManager.hasPermission(.canDeleteCompanies) {
+                    Button(action: {
+                        showDeleteCompanyConfirmationDialog.toggle()
+                    }) {
+                        Label("Delete", systemImage: "trash.fill")
+                            .foregroundColor(.red)
+                    }
+                }
+
+                Button(action: {
+                    viewModel.setActiveSheet(.editSuggestion)
+                }) {
+                    Label("Edit Suggestion", systemImage: "pencil")
+                }
+            }
             .sheet(item: $viewModel.activeSheet) { sheet in
                 switch sheet {
                 case .editSuggestion:
                     companyEditSuggestion
                 }
             }
-            
+
             if let companyJoined = viewModel.companyJoined {
                 ForEach(companyJoined.brands, id: \.id) { brand in
                     Section {
@@ -131,7 +97,7 @@ struct CompanyScreenView: View {
             viewModel.getInitialData(company.id)
         }
     }
-    
+
     var companyEditSuggestion: some View {
         Form {
             Section {
@@ -145,6 +111,22 @@ struct CompanyScreenView: View {
             }
         }
     }
+
+    var companyHeader: some View {
+        HStack(spacing: 10) {
+            if let logoUrl = company.getLogoUrl() {
+                CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 52, height: 52)
+                } placeholder: {
+                    Image(systemName: "photo")
+                }
+            }
+            Spacer()
+        }
+    }
 }
 
 extension CompanyScreenView {
@@ -152,22 +134,21 @@ extension CompanyScreenView {
         var id: Self { self }
         case editSuggestion
     }
-    
+
     @MainActor class ViewModel: ObservableObject {
         @Published var companyJoined: CompanyJoined?
         @Published var companySummary: CompanySummary?
         @Published var activeSheet: Sheet?
-        
+
         @Published var newCompanyNameSuggestion = ""
-        
+
         func setActiveSheet(_ sheet: Sheet) {
-                self.activeSheet = sheet
+            activeSheet = sheet
         }
-        
+
         func sendCompanyEditSuggestion() {
-            
         }
-        
+
         func getInitialData(_ companyId: Int) {
             Task {
                 switch await repository.company.getJoinedById(id: companyId) {
@@ -179,7 +160,7 @@ extension CompanyScreenView {
                     print(error)
                 }
             }
-            
+
             Task {
                 switch await repository.company.getSummaryById(id: companyId) {
                 case let .success(summary):
@@ -191,7 +172,7 @@ extension CompanyScreenView {
                 }
             }
         }
-        
+
         func deleteCompany(_ company: Company, onDelete: @escaping () -> Void) {
             Task {
                 switch await repository.company.delete(id: company.id) {
@@ -202,7 +183,7 @@ extension CompanyScreenView {
                 }
             }
         }
-        
+
         func deleteBrand(_ brand: BrandJoinedSubBrandsJoinedProduct) {
             Task {
                 switch await repository.brand.delete(id: brand.id) {
