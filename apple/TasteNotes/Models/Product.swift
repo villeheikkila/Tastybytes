@@ -12,14 +12,14 @@ extension Product {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "products"
         let saved = "id, name, description"
-        
+
         switch queryType {
         case .tableName:
             return tableName
         case let .saved(withTableName):
             return queryWithTableName(tableName, saved, withTableName)
         case let .joinedBrandSubcategories(withTableName):
-            return queryWithTableName(tableName, joinWithComma(saved, SubBrand.getQuery(.joinedBrand(true)), Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true))), withTableName)
+            return queryWithTableName(tableName, joinWithComma(saved, SubBrand.getQuery(.joinedBrand(true)), Category.getQuery(.saved(true)), Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true))), withTableName)
         }
     }
 
@@ -35,6 +35,7 @@ struct ProductJoined: Identifiable {
     let name: String
     let description: String?
     let subBrand: SubBrandJoinedWithBrand
+    let category: Category
     let subcategories: [SubcategoryJoinedWithCategory]
     let barcodes: [ProductBarcode]
 
@@ -70,7 +71,7 @@ extension ProductJoined: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     static func == (lhs: ProductJoined, rhs: ProductJoined) -> Bool {
         return lhs.id == rhs.id
     }
@@ -82,6 +83,7 @@ extension ProductJoined: Decodable {
         case name
         case description
         case subBrand = "sub_brands"
+        case category = "categories"
         case subcategories
         case barcodes = "product_barcodes"
     }
@@ -92,6 +94,7 @@ extension ProductJoined: Decodable {
         name = try values.decode(String.self, forKey: .name)
         description = try values.decodeIfPresent(String.self, forKey: .description)
         subBrand = try values.decode(SubBrandJoinedWithBrand.self, forKey: .subBrand)
+        category = try values.decode(Category.self, forKey: .category)
         subcategories = try values.decode([SubcategoryJoinedWithCategory].self, forKey: .subcategories)
         barcodes = try values.decode([ProductBarcode].self, forKey: .barcodes)
     }
@@ -104,6 +107,7 @@ extension ProductJoined {
         description = product.name
         self.subBrand = SubBrandJoinedWithBrand(id: subBrand.id, name: subBrand.name, brand: BrandJoinedWithCompany(id: brand.id, name: brand.name, brandOwner: company))
         subcategories = product.subcategories
+        category = product.category
         barcodes = []
     }
 }
@@ -112,6 +116,7 @@ struct ProductJoinedCategory: Identifiable, Decodable, Hashable {
     let id: Int
     let name: String
     let description: String?
+    let category: Category
     let subcategories: [SubcategoryJoinedWithCategory]
 
     static func == (lhs: ProductJoinedCategory, rhs: ProductJoinedCategory) -> Bool {
@@ -122,13 +127,15 @@ struct ProductJoinedCategory: Identifiable, Decodable, Hashable {
         case id
         case name
         case description
+        case category
         case subcategories
     }
 
-    init(id: Int, name: String, description: String?, subcategories: [SubcategoryJoinedWithCategory]) {
+    init(id: Int, name: String, category: Category, description: String?, subcategories: [SubcategoryJoinedWithCategory]) {
         self.id = id
         self.name = name
         self.description = description
+        self.category = category
         self.subcategories = subcategories
     }
 
@@ -137,6 +144,7 @@ struct ProductJoinedCategory: Identifiable, Decodable, Hashable {
         id = try values.decode(Int.self, forKey: .id)
         name = try values.decode(String.self, forKey: .name)
         description = try values.decodeIfPresent(String.self, forKey: .description)
+        category = try values.decode(Category.self, forKey: .category)
         subcategories = try values.decode([SubcategoryJoinedWithCategory].self, forKey: .subcategories)
     }
 }
@@ -158,7 +166,7 @@ struct NewProductParams: Encodable {
         p_sub_brand_id = subBrandId
         p_sub_category_ids = subCategoryIds
         p_brand_id = brandId
-        
+
         if let barcode = barcode {
             p_barcode_code = barcode.barcode
             p_barcode_type = barcode.type.rawValue

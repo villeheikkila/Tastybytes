@@ -114,7 +114,7 @@ extension CheckInScreenView {
                 switch await repository.checkInComment.update(updateCheckInComment: updateCheckInComment) {
                 case let .success(updatedComment):
                     DispatchQueue.main.async {
-                        if let index = self.checkInComments.firstIndex(of: updatedComment) {
+                        if let index = self.checkInComments.firstIndex(where: { $0.id == updatedComment.id }) {
                             self.checkInComments[index] = updatedComment
                         }
                     }

@@ -88,7 +88,7 @@ struct CheckInSheetView: View {
 
                     Section {
                         if viewModel.servingStyles.count > 0 {
-                            Picker("Serving Style", selection: $viewModel.servingStyle) {
+                            Picker("Serving Style", selection: $viewModel.servingStyleName) {
                                 Text("Not Selected").tag(ServingStyleName.none)
                                 ForEach(viewModel.servingStyles.map { $0.name }) { servingStyle in
                                     Text(servingStyle.rawValue.capitalized)
@@ -242,8 +242,14 @@ extension CheckInSheetView {
         @Published var review: String = ""
         @Published var rating: Double = 0
         @Published var manufacturer: Company? = nil
+        @Published var servingStyleName: ServingStyleName = ServingStyleName.none {
+            // TODO: Investigate if this cna be avoided by passing ServingStyle directly to the picker
+            didSet {
+                self.servingStyle = servingStyles.first(where: { $0.name == servingStyleName})
+            }
+        }
         @Published var servingStyles = [ServingStyle]()
-        @Published var servingStyle = ServingStyleName.none
+        @Published var servingStyle: ServingStyle?
         @Published var taggedFriends = [Profile]()
         @Published var pickedFlavors = [Flavor]()
         @Published var location: Location?
@@ -253,7 +259,7 @@ extension CheckInSheetView {
             review = checkIn.review ?? ""
             rating = checkIn.rating ?? 0
             manufacturer = checkIn.variant?.manufacturer
-            servingStyle = checkIn.servingStyle?.name ?? ServingStyleName.none
+            servingStyle = checkIn.servingStyle
             taggedFriends = checkIn.taggedProfiles
             pickedFlavors = checkIn.flavors
             location = checkIn.location
@@ -295,8 +301,9 @@ extension CheckInSheetView {
         }
 
         func updateCheckIn(_ checkIn: CheckIn, _ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) {
-            let updateCheckInParams = UpdateCheckInParams(checkIn: checkIn, product: checkIn.product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyles.first(where: { $0.name == servingStyle }), manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
+            let updateCheckInParams = UpdateCheckInParams(checkIn: checkIn, product: checkIn.product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyle, manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
 
+            print(updateCheckInParams)
             Task {
                 switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
                 case let .success(updatedCheckIn):
@@ -309,7 +316,7 @@ extension CheckInSheetView {
         }
 
         func createCheckIn(_ product: ProductJoined, _ onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
-            let newCheckParams = NewCheckInParams(product: product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyles.first(where: { $0.name == servingStyle }), manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
+            let newCheckParams = NewCheckInParams(product: product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyle, manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
 
             Task {
                 switch await repository.checkIn.create(newCheckInParams: newCheckParams) {

@@ -10,7 +10,7 @@ struct CompanyScreenView: View {
     @State private var showDeleteBrandConfirmationDialog = false
     
     func getProductJoined(product: ProductJoinedCategory, subBrand: SubBrand, brand: BrandJoinedSubBrandsJoinedProduct) -> ProductJoined {
-        return ProductJoined(id: product.id, name: product.name, description: product.name, subBrand: SubBrandJoinedWithBrand(id: subBrand.id, name: subBrand.name, brand: BrandJoinedWithCompany(id: brand.id, name: brand.name, brandOwner: company)), subcategories: product.subcategories, barcodes: [])
+        return ProductJoined(id: product.id, name: product.name, description: product.name, subBrand: SubBrandJoinedWithBrand(id: subBrand.id, name: subBrand.name, brand: BrandJoinedWithCompany(id: brand.id, name: brand.name, brandOwner: company)), category: product.category, subcategories: product.subcategories, barcodes: [])
     }
     
     var body: some View {
