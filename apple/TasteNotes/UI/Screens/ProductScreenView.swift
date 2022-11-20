@@ -18,6 +18,13 @@ struct ProductScreenView: View {
                                    VStack {
                                        ProductCardView(product: product)
                                            .contextMenu {
+                                               ShareLink("Share", item: createLinkToScreen(.product(id: product.id)))
+                                               Button(action: {
+                                                   viewModel.setActiveSheet(.editSuggestion)
+                                               }) {
+                                                   Label("Edit Suggestion", systemImage: "square.and.pencil")
+                                                       .foregroundColor(.red)
+                                               }
                                                if profileManager.hasPermission(.canDeleteProducts) {
                                                    Button(action: {
                                                        viewModel.showDeleteConfirmation()
@@ -25,12 +32,6 @@ struct ProductScreenView: View {
                                                        Label("Delete", systemImage: "trash.fill")
                                                            .foregroundColor(.red)
                                                    }
-                                               }
-                                               Button(action: {
-                                                   viewModel.setActiveSheet(.editSuggestion)
-                                               }) {
-                                                   Label("Edit Suggestion", systemImage: "square.and.pencil")
-                                                       .foregroundColor(.red)
                                                }
                                            }
 
@@ -158,8 +159,10 @@ extension ProductScreenView {
         }
 
         func onCheckInUpdate(_ checkIn: CheckIn) {
-            if let index = checkIns.firstIndex(of: checkIn) {
-                checkIns[index] = checkIn
+            if let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) {
+                DispatchQueue.main.async {
+                    self.checkIns[index] = checkIn
+                }
             }
         }
 

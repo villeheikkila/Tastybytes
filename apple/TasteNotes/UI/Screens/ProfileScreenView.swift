@@ -157,8 +157,10 @@ extension ProfileScreenView {
         }
 
         func onCheckInUpdate(checkIn: CheckIn) {
-            if let index = checkIns.firstIndex(of: checkIn) {
-                checkIns[index] = checkIn
+            if let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) {
+                DispatchQueue.main.async {
+                    self.checkIns[index] = checkIn
+                }
             }
         }
 

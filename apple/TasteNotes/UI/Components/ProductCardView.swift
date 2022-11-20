@@ -27,8 +27,5 @@ struct ProductCardView: View {
         }
         .padding(.all, 10)
         .cornerRadius(5)
-        .contextMenu {
-            ShareLink("Share", item: createLinkToScreen(.product(id: product.id)))
-        }
     }
 }
