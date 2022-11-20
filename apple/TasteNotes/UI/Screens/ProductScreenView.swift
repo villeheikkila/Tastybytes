@@ -68,7 +68,7 @@ struct ProductScreenView: View {
                             .foregroundColor(.secondary)
                     }
                 }
-            }.padding(.all, 10)
+            }.padding([.leading, .trailing], 10)
             Spacer()
         }
         .contextMenu {
@@ -151,7 +151,8 @@ struct ProductScreenView: View {
                     }
                 }
             }
-            .padding(.all, 10)
+            .padding([.leading, .trailing], 10)
+            .padding(.top, 5)
         }
     }
 }
