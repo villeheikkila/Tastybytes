@@ -136,9 +136,7 @@ struct CheckInSheetView: View {
                     case .friends:
                         FriendSheetView(taggedFriends: $viewModel.taggedFriends)
                     case .flavors:
-                        FlavorSheetView(initialFlavors: viewModel.pickedFlavors, onComplete: {
-                            pickedFlavors in viewModel.setFlavors(pickedFlavors)
-                        })
+                        FlavorSheetView(pickedFlavors: $viewModel.pickedFlavors)
                     case .location:
                         LocationSearchView(onSelect: {
                             location in viewModel.setLocation(location)
@@ -243,12 +241,6 @@ extension CheckInSheetView {
         func setActiveSheet(_ sheet: Sheet) {
             DispatchQueue.main.async {
                 self.activeSheet = sheet
-            }
-        }
-
-        func setFlavors(_ flavors: [Flavor]) {
-            DispatchQueue.main.async {
-                self.pickedFlavors = flavors
             }
         }
 

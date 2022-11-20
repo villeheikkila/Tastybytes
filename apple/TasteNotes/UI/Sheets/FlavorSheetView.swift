@@ -1,21 +1,38 @@
 import SwiftUI
 
 struct FlavorSheetView: View {
-    let initialFlavors: [Flavor]
-    let onComplete: (_ selectedFlavors: [Flavor]) -> Void
+    @Binding var pickedFlavors: [Flavor]
     @StateObject var viewModel = ViewModel()
+    @State var searchText = ""
     @Environment(\.dismiss) var dismiss
+    
+    func toggleFlavor(_ flavor: Flavor) {
+        if pickedFlavors.contains(flavor) {
+            pickedFlavors.remove(object: flavor)
+
+        } else {
+            pickedFlavors.append(flavor)
+        }
+    }
+
+    var filteredFlavors: [Flavor] {
+        if searchText.isEmpty {
+            return viewModel.availableFlavors
+        } else {
+            return viewModel.availableFlavors.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        }
+    }
 
     var body: some View {
         NavigationStack {
-            List(viewModel.filteredFlavors, id: \.self) { flavor in
+            List(filteredFlavors, id: \.self) { flavor in
                 Button(action: {
-                    viewModel.toggleFlavor(flavor)
+                    toggleFlavor(flavor)
                 }) {
                     HStack {
                         Text(flavor.name.capitalized)
                         Spacer()
-                        if viewModel.pickedFlavors.contains(flavor) {
+                        if pickedFlavors.contains(flavor) {
                             Image(systemName: "checkmark")
                         }
                     }
@@ -23,15 +40,14 @@ struct FlavorSheetView: View {
             }
             .navigationTitle("Flavors")
             .navigationBarItems(trailing: Button(action: {
-                onComplete(viewModel.pickedFlavors)
                 dismiss()
             }) {
                 Text("Done").bold()
             })
             .task {
-                viewModel.loadFlavors(initialFlavors)
+                viewModel.loadFlavors()
             }
-            .searchable(text: $viewModel.searchText)
+            .searchable(text: $searchText)
         }
     }
 }
@@ -39,29 +55,9 @@ struct FlavorSheetView: View {
 extension FlavorSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var availableFlavors = [Flavor]()
-        @Published var pickedFlavors = [Flavor]()
-        @Published var searchText = ""
 
-        func toggleFlavor(_ flavor: Flavor) {
-            if pickedFlavors.contains(flavor) {
-                pickedFlavors.remove(object: flavor)
 
-            } else {
-                pickedFlavors.append(flavor)
-            }
-        }
-
-        var filteredFlavors: [Flavor] {
-            if searchText.isEmpty {
-                return availableFlavors
-            } else {
-                return availableFlavors.filter { $0.name.lowercased().contains(searchText.lowercased()) }
-            }
-        }
-
-        func loadFlavors(_ initialFlavors: [Flavor]) {
-            pickedFlavors = initialFlavors
-
+        func loadFlavors() {
             if availableFlavors.count == 0 {
                 Task {
                     switch await repository.flavor.getAll() {
