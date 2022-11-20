@@ -123,7 +123,7 @@ struct ProductJoinedCategory: Identifiable, Decodable, Hashable {
         case id
         case name
         case description
-        case category
+        case category = "categories"
         case subcategories
     }
 
