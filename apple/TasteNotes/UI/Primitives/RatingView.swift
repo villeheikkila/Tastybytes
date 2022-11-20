@@ -5,20 +5,31 @@ struct RatingView: View {
     @State private var starSize: CGSize = .zero
     @State private var controlSize: CGSize = .zero
     @GestureState private var dragging: Bool = false
+    let type: StarType
+
+    init(rating: Double, type: StarType = .large) {
+        self.rating = rating
+        self.type = type
+    }
 
     var body: some View {
         ZStack {
             HStack {
-                ForEach(0..<Int(rating), id: \.self) { idx in
-                    fullStar
+                ForEach(0 ..< Int(rating), id: \.self) { _ in
+                    Image(systemName: "star.fill")
+                        .star(size: starSize, type: type)
+                        .foregroundColor(.yellow)
                 }
 
-                if (rating != floor(rating)) {
-                    halfStar
+                if rating != floor(rating) {
+                    Image(systemName: "star.leadinghalf.fill")
+                        .star(size: starSize, type: type)
+                        .foregroundColor(.yellow)
                 }
 
-                ForEach(0..<Int(Double(5) - rating), id: \.self) { idx in
-                    emptyStar
+                ForEach(0 ..< Int(Double(5) - rating), id: \.self) { _ in
+                    Image(systemName: "star")
+                        .star(size: starSize, type: type)
                 }
             }
             .background(
@@ -38,30 +49,15 @@ struct RatingView: View {
                 .contentShape(Rectangle())
         }
     }
+}
 
-    private var fullStar: some View {
-        Image(systemName: "star.fill")
-            .star(size: starSize)
-            .foregroundColor(.yellow)
-    }
-
-    private var halfStar: some View {
-        Image(systemName: "star.leadinghalf.fill")
-            .star(size: starSize)
-            .foregroundColor(.yellow)
-    }
-
-    private var emptyStar: some View {
-        Image(systemName: "star")
-            .star(size: starSize)
-    }
-
+enum StarType {
+    case large, small
 }
 
 fileprivate extension Image {
-    func star(size: CGSize) -> some View {
-        return self
-            .font(.title)
+    func star(size: CGSize, type: StarType) -> some View {
+        return font(type == StarType.large ? .title : .none)
             .background(
                 GeometryReader { proxy in
                     Color.clear.preference(key: StarSizeKey.self, value: proxy.size)

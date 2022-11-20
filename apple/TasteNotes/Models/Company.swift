@@ -107,6 +107,7 @@ extension CompanyJoined: Decodable {
 struct CompanySummary {
     let totalCheckIns: Int
     let averageRating: Double?
+    let currentUserTotalCheckIns: Int
     let currentUserAverageRating: Double?
 }
 
@@ -122,6 +123,7 @@ extension CompanySummary: Decodable {
     enum CodingKeys: String, CodingKey {
         case totalCheckIns = "total_check_ins"
         case averageRating = "average_rating"
+        case currentUserTotalCheckIns = "current_user_check_ins"
         case currentUserAverageRating = "current_user_average_rating"
     }
     
@@ -129,6 +131,7 @@ extension CompanySummary: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         totalCheckIns = try values.decode(Int.self, forKey: .totalCheckIns)
         averageRating = try values.decodeIfPresent(Double.self, forKey: .averageRating)
+        currentUserTotalCheckIns = try values.decode(Int.self, forKey: .currentUserTotalCheckIns)
         currentUserAverageRating = try values.decodeIfPresent(Double.self, forKey: .currentUserAverageRating)
     }
 }
