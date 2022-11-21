@@ -35,7 +35,7 @@ struct AuthenticationScreenView: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 120, height: 120)
                 .padding(.top, 5)
-            Text("tastesome")
+            Text("TasteNotes")
                 .font(Font.custom("Menlo-Bold", size: 28))
         }
         .onTapGesture {
