@@ -32,6 +32,8 @@ struct ProfileScreenView: View {
                                    sheets
                                }
                            })
+        .navigationTitle(profile.preferredName)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     var sendFriendRequestButton: some View {
@@ -51,32 +53,37 @@ struct ProfileScreenView: View {
 
     var profileSummary: some View {
         HStack(alignment: .center, spacing: 20) {
-            Spacer()
-
-            VStack {
-                Text("Check-ins")
-                    .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-                Text(String(viewModel.profileSummary?.totalCheckIns ?? 0))
-                    .font(.system(size: 16, weight: .bold, design: .default))
+            HStack {
+                VStack {
+                    Text("Check-ins")
+                        .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
+                    Text(String(viewModel.profileSummary?.totalCheckIns ?? 0))
+                        .font(.system(size: 16, weight: .bold, design: .default))
+                }
+                .padding(.leading, 30)
+                .frame(width: 100)
             }
+            
+            Spacer()
 
             VStack(alignment: .center) {
-                Text(profile.preferredName)
-                    .font(.system(size: 16, weight: .bold, design: .default))
-                    .lineLimit(1)
-                    .font(.system(size: 500))
-                    .minimumScaleFactor(0.01)
                 AvatarView(avatarUrl: profile.getAvatarURL(), size: 80, id: profile.id)
             }
+            
+            Spacer()
 
-            VStack {
-                Text("Unique")
-                    .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-                Text(String(viewModel.profileSummary?.uniqueCheckIns ?? 0))
-                    .font(.system(size: 16, weight: .bold, design: .default))
+            HStack {
+                VStack {
+                    Text("Unique")
+                        .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
+                    Text(String(viewModel.profileSummary?.uniqueCheckIns ?? 0))
+                        .font(.system(size: 16, weight: .bold, design: .default))
+                }
+                .padding(.trailing, 30)
+                .frame(width: 100)
             }
 
-            Spacer()
+
         }
         .task {
             viewModel.getProfileData(userId: profile.id)

@@ -26,46 +26,10 @@ struct TabbarView: View {
                 }
                 .onSubmit(of: .search, searchScreenViewModel.search)
         }
-        .navigationTitle(selection.title)
+        .navigationTitle(selection == Tab.profile ? profile.preferredName : selection.title)
+        .navigationBarTitleDisplayMode(selection == Tab.profile ? .inline : .automatic)
         .toolbar {
-            if selection == Tab.profile || selection == Tab.activity {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    NavigationLink(value: Route.currentUserFriends) {
-                        Image(systemName: "person.2").imageScale(.large)
-                    }
-                }
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    NavigationLink(value: Route.settings) {
-                        Image(systemName: "gear").imageScale(.large)
-                    }
-                }
-            }
-
-            if selection == Tab.search {
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        searchScreenViewModel.showBarcodeScanner.toggle()
-                    }) {
-                        Image(systemName: "barcode.viewfinder")
-                    }
-                }
-            }
-
-            if selection == Tab.notifications {
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Menu {
-                        Button(action: {
-                            notificationManager.deleteAll()
-                        }) {
-                            Label("Delete all notifications", systemImage: "trash")
-                        }
-                    } label: {
-                        Text("Mark all read")
-                    } primaryAction: {
-                        notificationManager.markAllAsRead()
-                    }
-                }
-            }
+            toolbarContent
         }
     }
 
@@ -109,24 +73,72 @@ struct TabbarView: View {
             }
             .tag(Tab.profile)
     }
-}
-
-enum Tab: Int, Equatable {
-    case activity = 1
-    case search = 2
-    case notifications = 3
-    case profile = 4
-
-    var title: String {
-        switch self {
-        case .activity:
-            return "Activity"
-        case .search:
-            return "Search"
-        case .notifications:
-            return "Notifications"
-        case .profile:
-            return ""
+    
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        if selection == Tab.profile || selection == Tab.activity {
+            ToolbarItemGroup(placement: .navigationBarLeading) {
+                NavigationLink(value: Route.currentUserFriends) {
+                    Image(systemName: "person.2").imageScale(.large)
+                }
+            }
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                NavigationLink(value: Route.settings) {
+                    Image(systemName: "gear").imageScale(.large)
+                }
+            }
+        } else if selection == Tab.search {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button(action: {
+                    searchScreenViewModel.showBarcodeScanner.toggle()
+                }) {
+                    Image(systemName: "barcode.viewfinder")
+                }
+            }
+        } else if selection == Tab.notifications {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Menu {
+                    Button(action: {
+                        notificationManager.deleteAll()
+                    }) {
+                        Label("Delete all notifications", systemImage: "trash")
+                    }
+                } label: {
+                    Text("Mark all read")
+                } primaryAction: {
+                    notificationManager.markAllAsRead()
+                }
+            }
+        } else {
+            ToolbarItemGroup(placement: .navigationBarLeading) {
+                NavigationLink(value: Route.currentUserFriends) {
+                    Image(systemName: "person.2").imageScale(.large)
+                }
+            }
         }
     }
 }
+
+extension TabbarView {
+    enum Tab: Int, Equatable {
+        case activity = 1
+        case search = 2
+        case notifications = 3
+        case profile = 4
+        
+        var title: String {
+            switch self {
+            case .activity:
+                return "Activity"
+            case .search:
+                return "Search"
+            case .notifications:
+                return "Notifications"
+            case .profile:
+                return ""
+            }
+        }
+    }
+}
+
+

@@ -6,7 +6,7 @@ struct AuthenticatedContentView: View {
     @StateObject var routeManager = RouteManager()
     @StateObject var profileManager = ProfileManager()
     @EnvironmentObject var notificationManager: NotificationManager
-
+    
     var body: some View {
         NavigationStack(path: $routeManager.path) {
             if profileManager.isLoggedIn, let currentProfile = profileManager.getProfile() {
@@ -53,26 +53,11 @@ struct AuthenticatedContentView: View {
         .task {
             profileManager.refresh()
             notificationManager.refresh()
+            notificationManager.refreshAPNS()
         }
         .onOpenURL { url in
             if let detailPage = url.detailPage {
                 routeManager.fetchAndNavigateTo(detailPage)
-            }
-        }
-        .task {
-            Messaging.messaging().token { token, error in
-                if let error = error {
-                    print("Error fetching FCM registration token: \(error)")
-                } else if let token = token {
-                    Task {
-                        switch await repository.profile.uploadPushNotificationToken(token: Profile.PushNotificationToken(firebaseRegistrationToken: token)) {
-                        case .success():
-                            break
-                        case let .failure(error):
-                            print("Couldn't save FCM (\(String(describing: token))): \(error)")
-                        }
-                    }
-                }
             }
         }
     }

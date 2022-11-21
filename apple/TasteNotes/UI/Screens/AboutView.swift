@@ -9,7 +9,7 @@ struct AboutScreenView: View {
             
             List {
                 Link(destination: URL(string: "https://github.com/villeheikkila/TasteNotes")!) {
-                    Label("GitHub", systemImage: "github-fill")
+                    Label("GitHub", systemImage: "github")
                         .fontWeight(.medium)
                 }
                 Link(destination: URL(string: "https://villeheikkila.com")!) {
@@ -17,7 +17,7 @@ struct AboutScreenView: View {
                         .fontWeight(.medium)
                 }
                 Link(destination: URL(string: "www.linkedin.com/in/heikkilaville")!) {
-                    Label("LinkedIn", systemImage: "linkedin-fill")
+                    Label("LinkedIn", systemImage: "linkedin")
                         .fontWeight(.medium)
                 }
             }
