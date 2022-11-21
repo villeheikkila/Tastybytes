@@ -10,7 +10,6 @@ struct ProfileSettingsScreenView: View {
 
     var body: some View {
         Form {
-            avatarPicker
             profileSection
             profileDisplaySettings
             emailSection
@@ -18,35 +17,6 @@ struct ProfileSettingsScreenView: View {
         .navigationTitle("Profile")
         .task {
             viewModel.getInitialValues(profile: profileManager.get())
-        }
-    }
-
-    func ImageWithDefault() -> Image {
-        guard let image = viewModel.avatarImage else {
-            return Image(systemName: "person.fill")
-        }
-        return Image(uiImage: image)
-    }
-
-    var avatarPicker: some View {
-        PhotosPicker(
-            selection: $viewModel.selectedItem,
-            matching: .images,
-            photoLibrary: .shared()
-        ) {
-            ImageWithDefault()
-                .resizable()
-                .clipShape(Circle())
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 120, height: 120, alignment: .top)
-                .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                .shadow(radius: 4)
-        }
-        .frame(maxWidth: .infinity, alignment: .center)
-        .listRowBackground(Color(UIColor.systemGroupedBackground))
-        .padding(.top, 0)
-        .onChange(of: viewModel.selectedItem) { newValue in
-            viewModel.uploadAvatar(newAvatar: newValue)
         }
     }
 
@@ -109,7 +79,6 @@ extension ProfileSettingsScreenView {
         @Published var username = ""
         @Published var firstName = ""
         @Published var lastName = ""
-        @Published var avatarImage: UIImage?
         @Published var showFullName = false
         @Published var email = ""
 
@@ -131,20 +100,8 @@ extension ProfileSettingsScreenView {
         func getInitialValues(profile: Profile.Extended) {
             DispatchQueue.main.async {
                 self.updateFormValues(profile: profile)
-            }
-
-            Task {
-                if let url = getAvatarURL(id: profile.id, avatarUrl: profile.avatarUrl) {
-                    let (data, _) = try await URLSession.shared.data(from: url)
-                    DispatchQueue.main.async {
-                        self.avatarImage = UIImage(data: data)
-                    }
-                }
-
-                await MainActor.run {
-                    self.user = user
-                    self.email = user?.email ?? ""
-                }
+                self.user = supabaseClient.auth.session?.user
+                self.email = supabaseClient.auth.session?.user.email ?? ""
             }
         }
 
@@ -193,20 +150,6 @@ extension ProfileSettingsScreenView {
         func sendEmailVerificationLink() {
             Task {
                 _ = await repository.auth.sendEmailVerification(email: email)
-            }
-        }
-
-        func uploadAvatar(newAvatar: PhotosPickerItem?) {
-            Task {
-                if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
-                   let image = UIImage(data: imageData),
-                   let data = image.jpegData(compressionQuality: 0.5) {
-                    _ = await repository.profile.uploadAvatar(id: repository.auth.getCurrentUserId(), data: data)
-
-                    DispatchQueue.main.async {
-                        self.avatarImage = image
-                    }
-                }
             }
         }
     }

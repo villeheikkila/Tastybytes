@@ -1,13 +1,18 @@
 import Charts
 import GoTrue
 import SwiftUI
+import PhotosUI
 
 struct ProfileScreenView: View {
-    let profile: Profile
+    @State var profile: Profile
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var routeManager: RouteManager
     @EnvironmentObject var toastManager: ToastManager
     @EnvironmentObject var profileManager: ProfileManager
+    
+    init (profile: Profile) {
+        _profile = State(initialValue: profile)
+    }
 
     var body: some View {
         InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, loadMore: { viewModel.fetchMoreCheckIns(userId: profile.id) },
@@ -50,7 +55,11 @@ struct ProfileScreenView: View {
             Spacer()
         }
     }
-
+    
+    var avatar: some View {
+        AvatarView(avatarUrl: profile.getAvatarURL(), size: 90, id: profile.id)
+    }
+    
     var profileSummary: some View {
         HStack(alignment: .center, spacing: 20) {
             HStack {
@@ -67,8 +76,23 @@ struct ProfileScreenView: View {
             Spacer()
 
             VStack(alignment: .center) {
-                AvatarView(avatarUrl: profile.getAvatarURL(), size: 80, id: profile.id)
+                if profile.id == profileManager.getId() {
+                    PhotosPicker(
+                        selection: $viewModel.selectedItem,
+                        matching: .images,
+                        photoLibrary: .shared()
+                    ) {
+                        avatar
+                    }
+                } else {
+                    avatar
+                }
+            }.onChange(of: viewModel.selectedItem) { newValue in
+                viewModel.uploadAvatar(newAvatar: newValue) {
+                    fileName in profile.avatarUrl = fileName
+                }
             }
+            
             
             Spacer()
 
@@ -85,6 +109,7 @@ struct ProfileScreenView: View {
 
 
         }
+        .padding(.top, 10)
         .task {
             viewModel.getProfileData(userId: profile.id)
         }
@@ -186,6 +211,8 @@ extension ProfileScreenView {
         @Published var checkIns = [CheckIn]()
         @Published var profileSummary: ProfileSummary?
         @Published var isLoading = false
+        @Published var selectedItem: PhotosPickerItem? = nil
+
         let pageSize = 10
         var page = 0
 
@@ -224,6 +251,21 @@ extension ProfileScreenView {
                     }
                 case let .failure(error):
                     print(error)
+                }
+            }
+        }
+        
+        func uploadAvatar(newAvatar: PhotosPickerItem?, onSuccess: @escaping (_ fileName: String) -> Void) {
+            Task {
+                if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
+                   let image = UIImage(data: imageData),
+                   let data = image.jpegData(compressionQuality: 0.5) {
+                    switch await repository.profile.uploadAvatar(userId: repository.auth.getCurrentUserId(), data: data) {
+                    case let .success(fileName):
+                        onSuccess(fileName)
+                    case let .failure(error):
+                        print(error)
+                    }
                 }
             }
         }

@@ -3,7 +3,7 @@ import Foundation
 struct Profile: Identifiable {
     let id: UUID
     let preferredName: String
-    let avatarUrl: String?
+    var avatarUrl: String?
 }
 
 extension Profile: Decodable {
