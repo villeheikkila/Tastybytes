@@ -2,7 +2,7 @@ import Foundation
 import Supabase
 
 protocol ProductRepository {
-    func search(searchTerm: String) async -> Result<[ProductJoined], Error>
+    func search(searchTerm: String, categoryName: CategoryName?) async -> Result<[ProductJoined], Error>
     func search(barcode: Barcode) async -> Result<[ProductJoined], Error>
     func getById(id: Int) async -> Result<ProductJoined, Error>
     func delete(id: Int) async -> Result<Void, Error>
@@ -15,18 +15,26 @@ protocol ProductRepository {
 struct SupabaseProductRepository: ProductRepository {
     let client: SupabaseClient
 
-    func search(searchTerm: String) async -> Result<[ProductJoined], Error> {
+    func search(searchTerm: String, categoryName: CategoryName?) async -> Result<[ProductJoined], Error> {
         struct SearchProductsParams: Encodable {
             let p_search_term: String
-            init(searchTerm: String) {
+            let p_category_name: String?
+            
+            init(searchTerm: String, categoryName: CategoryName?) {
                 p_search_term = "%\(searchTerm.trimmingCharacters(in: .whitespacesAndNewlines))%"
+                
+                if let categoryName = categoryName {
+                    p_category_name = categoryName.rawValue
+                } else {
+                    p_category_name = nil
+                }
             }
         }
 
         do {
             let response = try await client
                 .database
-                .rpc(fn: "fnc__search_products", params: SearchProductsParams(searchTerm: searchTerm))
+                .rpc(fn: "fnc__search_products", params: SearchProductsParams(searchTerm: searchTerm, categoryName: categoryName))
                 .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
                 .execute()
                 .decoded(to: [ProductJoined].self)

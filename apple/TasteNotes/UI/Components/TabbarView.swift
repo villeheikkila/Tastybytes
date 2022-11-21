@@ -18,7 +18,34 @@ struct TabbarView: View {
         }
         .if(selection == Tab.search) { view in
             view
-                .searchable(text: $searchScreenViewModel.searchTerm)
+                .searchable(text: $searchScreenViewModel.searchTerm, tokens: $searchScreenViewModel.tokens) { token in
+                    switch token {
+                    case .chips: Text("Chips")
+                    case .candy: Text("Candy")
+                    case .chewing_gum: Text("Chewing Gum")
+                    case .fruit: Text("Fruit")
+                    case .popcorn: Text("Popcorn")
+                    case .ingredient: Text("Ingredient")
+                    case .beverage: Text("Beverage")
+                    case .convenience_food: Text("Convenience Food")
+                    case .cheese: Text("Cheese")
+                    case .snacks: Text("Snacks")
+                    case .juice: Text("Juice")
+                    case .chocolate: Text("Chocolate")
+                    case .cocoa: Text("Cocoa")
+                    case .ice_cream: Text("Ice Cream")
+                    case .pizza: Text("Pizza")
+                    case .protein: Text("Protein")
+                    case .milk: Text("Milk")
+                    case .alcoholic_beverage: Text("Alcoholic Beverage")
+                    case .cereal: Text("Cereal")
+                    case .pastry: Text("Pastry")
+                    case .spice: Text("Spice")
+                    case .noodles: Text("Noodles")
+                    case .tea: Text("Tea")
+                    case .coffee: Text("Coffee")
+                    }
+                }
                 .searchScopes($searchScreenViewModel.searchScope) {
                     Text("Products").tag(SearchScope.products)
                     Text("Companies").tag(SearchScope.companies)
