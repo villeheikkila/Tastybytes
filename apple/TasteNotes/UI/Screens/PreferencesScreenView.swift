@@ -4,7 +4,6 @@ struct PreferencesScreenView: View {
     @StateObject var viewModel = ViewModel()
     
     var body: some View {
-        
         List {
             Section {
                 NavigationLink(destination: ProfileSettingsScreenView()) {

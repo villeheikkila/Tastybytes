@@ -10,7 +10,7 @@ protocol ProfileRepository {
     func update(id: UUID, update: Profile.Update) async -> Result<Profile.Extended, Error>
     func currentUserExport() async -> Result<String, Error>
     func search(searchTerm: String, currentUserId: UUID) async -> Result<[Profile], Error>
-    func uploadAvatar(id: UUID, data: Data) async -> Result<Void, Error>
+    func uploadAvatar(userId: UUID, data: Data) async -> Result<String, Error>
     func uploadPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<Void, Error>
     func deleteCurrentAccount() async -> Result<Void, Error>
     func updateSettings(id: UUID, update: ProfileSettings.Update) async -> Result<ProfileSettings, Error>
@@ -144,18 +144,21 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    func uploadAvatar(id: UUID, data: Data) async -> Result<Void, Error> {
+    func uploadAvatar(userId: UUID, data: Data) async -> Result<String, Error> {
         do {
+            let fileName = "\(UUID().uuidString.lowercased()).jpeg"
+            print(fileName)
+            
             let file = File(
-                name: "avatar.jpeg", data: data, fileName: "avatar.jpeg", contentType: "image/jpeg")
+                name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
 
             _ = try await client
                 .storage
                 .from(id: "avatars")
                 .upload(
-                    path: "\(id.uuidString.lowercased())/avatar.jpeg", file: file, fileOptions: nil)
+                    path: "\(userId.uuidString.lowercased())/\(fileName)", file: file, fileOptions: nil)
 
-            return .success(())
+            return .success(fileName)
         } catch {
             return .failure(error)
         }

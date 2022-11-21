@@ -1530,14 +1530,25 @@ ALTER FUNCTION "public"."tg__send_tagged_in_check_in_notification"() OWNER TO "p
 -- Name: tg__set_avatar_on_upload(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION "public"."tg__set_avatar_on_upload"() RETURNS "trigger"
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    SET "search_path" TO 'public'
-    AS $$
+CREATE OR REPLACE FUNCTION public.tg__set_avatar_on_upload()
+  RETURNS trigger
+  LANGUAGE plpgsql
+  SET search_path TO 'public'
+AS
+$$
 begin
   if new.bucket_id = 'avatars' then
-    delete from storage.objects where name = new.name;
-    update public.profiles set avatar_url = new.name where id = auth.uid();
+    delete from storage.objects where bucket_id = 'avatars' and owner = new.owner;
+    with parts as (select string_to_array(new.name, '/') arr),
+         formatted_parts as (select array_to_string(arr[2:], '')                              image_url,
+                                    substr(array_to_string(arr[2:], ''), 0,
+                                           strpos(array_to_string(arr[2:], ''), '.'))::bigint check_in_id
+                             from parts)
+    update
+      public.profiles
+    set avatar_url = fp.image_url
+    from formatted_parts fp
+    where id = new.owner;
   end if;
   return new;
 end;
