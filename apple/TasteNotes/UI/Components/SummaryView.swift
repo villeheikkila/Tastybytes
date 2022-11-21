@@ -9,11 +9,7 @@ struct SummaryView: View {
             Divider()
                 .gridCellUnsizedAxes(.horizontal)
             everyoneSection
-            Divider()
-                .gridCellUnsizedAxes(.horizontal)
             friendsSection
-            Divider()
-                .gridCellUnsizedAxes(.horizontal)
             youSection
         }
         .padding([.leading, .trailing], 10)
@@ -44,6 +40,8 @@ struct SummaryView: View {
                 Spacer()
                 RatingView(rating: averageRating, type: .small)
             }
+            Divider()
+                .gridCellUnsizedAxes(.horizontal)
         }
     }
 
@@ -59,6 +57,8 @@ struct SummaryView: View {
                 Spacer()
                 RatingView(rating: friendsAverageRating, type: .small)
             }
+            Divider()
+                .gridCellUnsizedAxes(.horizontal)
         }
     }
 

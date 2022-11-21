@@ -5,6 +5,9 @@ import SwiftUI
 struct ProfileScreenView: View {
     let profile: Profile
     @StateObject private var viewModel = ViewModel()
+    @EnvironmentObject var routeManager: RouteManager
+    @EnvironmentObject var toastManager: ToastManager
+    @EnvironmentObject var profileManager: ProfileManager
 
     var body: some View {
         InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, loadMore: { viewModel.fetchMoreCheckIns(userId: profile.id) },
@@ -23,9 +26,27 @@ struct ProfileScreenView: View {
                                    profileSummary
                                    ratingChart
                                    ratingSummary
+                                   if profileManager.getId() != profile.id && !profileManager.hasFriendByUserId(userId: profile.id) {
+                                       sendFriendRequestButton
+                                   }
                                    sheets
                                }
                            })
+    }
+    
+    var sendFriendRequestButton: some View {
+        HStack {
+            Spacer()
+            Button(action: {
+                profileManager.sendFriendRequest(receiver: profile.id) {
+                    toastManager.toggle(.success("Friend Request Sent!"))
+                }
+            }) {
+                Text("Send Friend Request")
+                    .font(.system(size: 14, weight: .bold, design: .default))
+            }.buttonStyle(ScalingButton())
+            Spacer()
+        }
     }
 
     var profileSummary: some View {
@@ -135,10 +156,21 @@ struct ProfileScreenView: View {
 
     var sheets: some View {
         VStack {
-            NavigationLink(value: Route.friends(profile)) {
+            HStack {
                 Text("Friends")
+                Spacer()
+                Image(systemName: "chevron.forward")
             }
+            .padding([.leading, .trailing], 20)
+            .padding([.top, .bottom], 10)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                routeManager.navigateTo(destination: Route.friends(profile), resetStack: false)
+            }
+            .buttonStyle(.plain)
         }
+        .background(Color(.tertiarySystemBackground))
+        .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
     }
 }
 
@@ -201,5 +233,18 @@ extension ProfileScreenView {
                 }
             }
         }
+    }
+}
+
+struct ScalingButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(.all, 10)
+            .background(.blue)
+            .foregroundColor(.white)
+            .clipShape(Rectangle())
+            .cornerRadius(8)
+            .scaleEffect(configuration.isPressed ? 1.05 : 1)
+            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
     }
 }

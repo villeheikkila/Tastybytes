@@ -135,12 +135,10 @@ struct CheckInCardView: View {
                     }
 
                     if let manufacturer = checkIn.variant?.manufacturer, manufacturer.id != checkIn.product.subBrand.brand.brandOwner.id {
-                        NavigationLink(value: manufacturer) {
-                            Text("(\(manufacturer.name))")
-                                .font(.system(size: 16, weight: .bold, design: .default))
-                                .foregroundColor(.secondary)
-                                .lineLimit(nil)
-                        }
+                        Text("(\(manufacturer.name))")
+                            .font(.system(size: 16, weight: .bold, design: .default))
+                            .foregroundColor(.secondary)
+                            .lineLimit(nil)
                     }
 
                     Spacer()
@@ -260,7 +258,7 @@ struct CheckInCardView_Previews: PreviewProvider {
     static let variant = ProductVariant(id: 0, manufacturer: hartwallCompany)
 
     static let category = Category(id: 0, name: .beverage)
-    
+
     static let categoryJoined = CategoryJoinedWithSubcategories(id: 0, name: .beverage, subcategories: [Subcategory(id: 0, name: "Soda")])
 
     static let flavors = [Flavor(id: 0, name: "Cola")]
