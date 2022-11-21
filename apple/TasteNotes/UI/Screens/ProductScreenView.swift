@@ -105,7 +105,6 @@ struct ProductScreenView: View {
                     Text("Rating")
                         .font(.system(size: 10, weight: .bold, design: .default))
                 }
-
                 Divider()
                     .gridCellUnsizedAxes(.horizontal)
 
@@ -119,10 +118,10 @@ struct ProductScreenView: View {
                         Spacer()
                         RatingView(rating: averageRating, type: .small)
                     }
+                    
+                    Divider()
+                        .gridCellUnsizedAxes(.horizontal)
                 }
-
-                Divider()
-                    .gridCellUnsizedAxes(.horizontal)
 
                 if let friendsAverageRating = productSummary.friendsAverageRating {
                     GridRow {
@@ -134,10 +133,10 @@ struct ProductScreenView: View {
                         Spacer()
                         RatingView(rating: friendsAverageRating, type: .small)
                     }
+                    
+                    Divider()
+                        .gridCellUnsizedAxes(.horizontal)
                 }
-
-                Divider()
-                    .gridCellUnsizedAxes(.horizontal)
 
                 if let currentUserAverageRating = productSummary.currentUserAverageRating {
                     GridRow {
