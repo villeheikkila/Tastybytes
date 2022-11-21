@@ -1,5 +1,5 @@
-import SwiftUI
 import FirebaseMessaging
+import SwiftUI
 
 final class NotificationManager: NSObject, ObservableObject {
     @Published private(set) var notifications = [Notification]()
@@ -10,14 +10,14 @@ final class NotificationManager: NSObject, ObservableObject {
             switch await repository.notification.getAll(afterId: latestId) {
             case let .success(newNotifications):
                 await MainActor.run {
-                    self.notifications.append(contentsOf: newNotifications) 
+                    self.notifications.append(contentsOf: newNotifications)
                 }
             case let .failure(error):
                 print(error.localizedDescription)
             }
         }
     }
-    
+
     func deleteAll() {
         Task {
             switch await repository.notification.deleteAll() {
@@ -30,7 +30,7 @@ final class NotificationManager: NSObject, ObservableObject {
             }
         }
     }
-    
+
     func markAllAsRead() {
         Task {
             switch await repository.notification.markAllRead() {
@@ -133,7 +133,7 @@ final class NotificationManager: NSObject, ObservableObject {
         if let index = at.first {
             Task {
                 switch await repository.notification.delete(id: notifications[index].id) {
-                case .success(_):
+                case .success:
                     await MainActor.run {
                         DispatchQueue.main.async {
                             self.notifications.remove(at: index)
@@ -158,6 +158,23 @@ final class NotificationManager: NSObject, ObservableObject {
             }
         }
     }
+
+    func refreshAPNS() {
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                print("Error fetching FCM registration token: \(error)")
+            } else if let token = token {
+                Task {
+                    switch await repository.profile.uploadPushNotificationToken(token: Profile.PushNotificationToken(firebaseRegistrationToken: token)) {
+                    case .success():
+                        break
+                    case let .failure(error):
+                        print("Couldn't save FCM (\(String(describing: token))): \(error)")
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
@@ -167,7 +184,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         -> UNNotificationPresentationOptions {
         let userInfo = notification.request.content.userInfo
         print(userInfo)
-        self.refresh()
+        refresh()
         return [[.sound]]
     }
 
@@ -177,5 +194,4 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo
         print(userInfo)
     }
-
 }
