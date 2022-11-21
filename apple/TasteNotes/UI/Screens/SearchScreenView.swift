@@ -6,10 +6,17 @@ enum SearchScope: String, CaseIterable {
     case users
 }
 
+enum FruitToken: Identifiable, Hashable, CaseIterable {
+    case apple
+    case pear
+    case banana
+    var id: Self { self }
+}
+
 struct SearchScreenView: View {
     @ObservedObject var viewModel: SearchScreenViewModel
-    @EnvironmentObject var toastManager: ToastManager
-
+    @EnvironmentObject private var toastManager: ToastManager
+    
     var body: some View {
         List {
             switch viewModel.searchScope {
@@ -41,12 +48,6 @@ struct SearchScreenView: View {
             }
         }
         .listStyle(InsetGroupedListStyle())
-        .searchable(text: $viewModel.searchTerm)
-        .searchScopes($viewModel.searchScope) {
-            Text("Products").tag(SearchScope.products)
-            Text("Companies").tag(SearchScope.companies)
-            Text("Users").tag(SearchScope.users)
-        }
         .onChange(of: viewModel.searchScope, perform: { _ in
             viewModel.search()
         })
@@ -109,7 +110,16 @@ struct SearchScreenView: View {
 }
 
 class SearchScreenViewModel: ObservableObject {
-    @Published var searchTerm: String = ""
+    @Published var searchTerm: String = "" {
+        didSet {
+            if let firstPartOfSearchString = searchTerm.lowercased().split(separator: " ", maxSplits: 1).map(String.init).first {
+                if let category = CategoryName(rawValue: firstPartOfSearchString) {
+                    tokens = [category]
+                    searchTerm = ""
+                }
+            }
+        }
+    }
     @Published var products = [ProductJoined]()
     @Published var profiles = [Profile]()
     @Published var companies = [Company]()
@@ -117,7 +127,8 @@ class SearchScreenViewModel: ObservableObject {
     @Published var isSearched = false
     @Published var searchScope: SearchScope = .products
     @Published var barcode: Barcode? = nil
-
+    @Published var tokens: [CategoryName] = []
+    
     func resetSearch() {
         profiles = []
         products = []
@@ -148,7 +159,7 @@ class SearchScreenViewModel: ObservableObject {
     
     func searchProducts() {
         Task {
-            switch await repository.product.search(searchTerm: searchTerm) {
+            switch await repository.product.search(searchTerm: searchTerm, categoryName: tokens.first) {
             case let .success(searchResults):
                 await MainActor.run {
                     self.products = searchResults

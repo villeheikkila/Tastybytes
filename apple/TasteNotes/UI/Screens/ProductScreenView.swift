@@ -48,15 +48,6 @@ struct ProductScreenView: View {
     var productInfo: some View {
         HStack {
             VStack(alignment: .leading) {
-                HStack {
-                    Text(product.category.name.rawValue.capitalized)
-                        .font(.system(size: 12, weight: .bold, design: .default))
-                    
-                    ForEach(product.subcategories, id: \.id) { subcategory in
-                        ChipView(title: subcategory.name, cornerRadius: 5)
-                    }
-                }
-                
                 Text(product.getDisplayName(.fullName))
                     .font(.system(size: 18, weight: .bold, design: .default))
                     .foregroundColor(.primary)
@@ -66,6 +57,15 @@ struct ProductScreenView: View {
                         Text(product.getDisplayName(.brandOwner))
                             .font(.system(size: 16, weight: .bold, design: .default))
                             .foregroundColor(.secondary)
+                    }
+                }
+                
+                HStack {
+                    Text(product.category.name.rawValue.capitalized)
+                        .font(.system(size: 12, weight: .bold, design: .default))
+                    
+                    ForEach(product.subcategories, id: \.id) { subcategory in
+                        ChipView(title: subcategory.name, cornerRadius: 5)
                     }
                 }
             }.padding([.leading, .trailing], 10)

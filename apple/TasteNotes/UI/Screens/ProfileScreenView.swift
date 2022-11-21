@@ -34,7 +34,7 @@ struct ProfileScreenView: View {
                                    if profileManager.getId() != profile.id && !profileManager.hasFriendByUserId(userId: profile.id) {
                                        sendFriendRequestButton
                                    }
-                                   sheets
+                                   links
                                }
                            })
         .navigationTitle(profile.preferredName)
@@ -186,23 +186,38 @@ struct ProfileScreenView: View {
         }
     }
 
-    var sheets: some View {
+    var links: some View {
         VStack {
             HStack {
                 Text("Friends")
+                    .font(.system(size: 16, weight: .medium, design: .default))
                 Spacer()
                 Image(systemName: "chevron.forward")
             }
             .padding([.leading, .trailing], 20)
-            .padding([.top, .bottom], 10)
+            .padding([.top], 10)
             .contentShape(Rectangle())
             .onTapGesture {
                 routeManager.navigateTo(destination: Route.friends(profile), resetStack: false)
             }
-            .buttonStyle(.plain)
+            Divider()
+            HStack {
+                Text("Products")
+                    .font(.system(size: 16, weight: .medium, design: .default))
+                Spacer()
+                Image(systemName: "chevron.forward")
+            }
+            .padding([.leading, .trailing], 20)
+            .padding([.bottom], 10)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                routeManager.navigateTo(destination: Route.profileProducts(profile), resetStack: false)
+            }
         }
         .background(Color(.tertiarySystemBackground))
+        .cornerRadius(10)
         .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
+        .padding([.leading, .trailing], 5)
     }
 }
 
