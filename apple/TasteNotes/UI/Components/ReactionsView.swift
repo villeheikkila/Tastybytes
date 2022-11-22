@@ -42,7 +42,7 @@ extension ReactionsView {
 
         func reactToCheckIn(_ checkIn: CheckIn) {
             Task {
-                switch await repository.checkInReactions.insert(newCheckInReaction: NewCheckInReaction(checkInId: checkIn.id)) {
+                switch await repository.checkInReactions.insert(newCheckInReaction: CheckInReaction.NewRequest(checkInId: checkIn.id)) {
                 case let .success(checkInReaction):
                     await MainActor.run {
                         self.checkInReactions.append(checkInReaction)

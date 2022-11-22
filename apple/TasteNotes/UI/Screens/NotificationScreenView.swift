@@ -71,7 +71,7 @@ struct MessageNotificationView: View {
 }
 
 struct CheckInReactionNotificationView: View {
-    let checkInReaction: CheckInReactionWithCheckIn
+    let checkInReaction: CheckInReaction.JoinedCheckIn
 
     var body: some View {
         NavigationLink(value: checkInReaction.checkIn) {

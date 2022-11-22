@@ -93,7 +93,7 @@ extension CheckInScreenView {
         }
 
         func sendComment(checkInId: Int) {
-            let newCheckInComment = NewCheckInComment(content: comment, checkInId: checkInId)
+            let newCheckInComment = CheckInComment.NewRequest(content: comment, checkInId: checkInId)
 
             Task {
                 let result = await repository.checkInComment.insert(newCheckInComment: newCheckInComment)
@@ -109,7 +109,7 @@ extension CheckInScreenView {
             }
         }
 
-        func editComment(updateCheckInComment: UpdateCheckInComment) {
+        func editComment(updateCheckInComment: CheckInComment.UpdateRequest) {
             Task {
                 switch await repository.checkInComment.update(updateCheckInComment: updateCheckInComment) {
                 case let .success(updatedComment):
@@ -131,7 +131,7 @@ struct CommentItemView: View {
     @State var content: String
     @State var showEditCommentPrompt = false
     let onDelete: (_ commentId: Int) -> Void
-    let onUpdate: (_ update: UpdateCheckInComment) -> Void
+    let onUpdate: (_ update: CheckInComment.UpdateRequest) -> Void
 
     var updateComment: () -> Void {
         return {
@@ -139,7 +139,7 @@ struct CommentItemView: View {
                 return
             }
 
-            let updatedComment = UpdateCheckInComment(id: comment.id, content: content)
+            let updatedComment = CheckInComment.UpdateRequest(id: comment.id, content: content)
             onUpdate(updatedComment)
             content = ""
         }

@@ -247,7 +247,7 @@ extension CheckInCardView {
 struct CheckInCardView_Previews: PreviewProvider {
     static let company = Company(id: 0, name: "The Coca Cola Company", logoUrl: nil)
 
-    static let product = ProductJoined(id: 0, name: "Coca Cola", description: "Original Taste", subBrand: subBrand, category: category, subcategories: subcategories, barcodes: [])
+    static let product = Product.Joined(id: 0, name: "Coca Cola", description: "Original Taste", subBrand: subBrand, category: category, subcategories: subcategories, barcodes: [])
 
     static let profile = Profile(id: UUID(uuidString: "82c34cc0-4795-4478-99ad-38003fdb65fd") ?? UUID(), preferredName: "villeheikkila", avatarUrl: "avatar.jpeg")
 
@@ -259,17 +259,17 @@ struct CheckInCardView_Previews: PreviewProvider {
 
     static let category = Category(id: 0, name: .beverage)
 
-    static let categoryJoined = CategoryJoinedWithSubcategories(id: 0, name: .beverage, subcategories: [Subcategory(id: 0, name: "Soda")])
+    static let categoryJoined = Category.JoinedSubcategories(id: 0, name: .beverage, subcategories: [Subcategory(id: 0, name: "Soda")])
 
     static let flavors = [Flavor(id: 0, name: "Cola")]
 
     static let checkInReactions = [CheckInReaction(id: 0, profile: profile)]
 
-    static let subcategories = [SubcategoryJoinedWithCategory(id: 0, name: "Soda", category: category)]
+    static let subcategories = [Subcategory.JoinedCategory(id: 0, name: "Soda", category: category)]
 
-    static let brand = BrandJoinedWithCompany(id: 0, name: "Coca Cola", brandOwner: company)
+    static let brand = Brand.JoinedCompany(id: 0, name: "Coca Cola", brandOwner: company)
 
-    static let subBrand = SubBrandJoinedWithBrand(id: 0, name: "Zero", brand: brand)
+    static let subBrand = SubBrand.JoinedBrand(id: 0, name: "Zero", brand: brand)
 
     static let country = Country(countryCode: "FI", name: "Finland", emoji: "🇫🇮")
 

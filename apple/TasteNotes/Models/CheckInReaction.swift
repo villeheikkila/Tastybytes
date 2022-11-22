@@ -1,11 +1,26 @@
 import Foundation
 
-struct CheckInReaction: Identifiable {
+struct CheckInReaction: Identifiable, Decodable, Hashable {
     let id: Int
     let profile: Profile
-}
+    
+    init(id: Int, profile: Profile) {
+        self.id = id
+        self.profile = profile
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case content
+        case profile = "profiles"
+    }
 
-extension CheckInReaction: Hashable {
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(Int.self, forKey: .id)
+        profile = try values.decode(Profile.self, forKey: .profile)
+    }
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
@@ -38,55 +53,41 @@ extension CheckInReaction {
     }
 }
 
-extension CheckInReaction: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case content
-        case profile = "profiles"
-    }
+extension CheckInReaction {
+    struct JoinedCheckIn: Identifiable, Hashable, Decodable {
+        let id: Int
+        let profile: Profile
+        let checkIn: CheckIn
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+        
+        static func == (lhs: JoinedCheckIn, rhs: JoinedCheckIn) -> Bool {
+            return lhs.id == rhs.id
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case id
+            case profile = "profiles"
+            case checkIn = "check_ins"
+        }
 
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
-        profile = try values.decode(Profile.self, forKey: .profile)
-    }
-}
-
-struct CheckInReactionWithCheckIn: Identifiable {
-    let id: Int
-    let profile: Profile
-    let checkIn: CheckIn
-}
-
-extension CheckInReactionWithCheckIn: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
-    static func == (lhs: CheckInReactionWithCheckIn, rhs: CheckInReactionWithCheckIn) -> Bool {
-        return lhs.id == rhs.id
-    }
-}
-
-extension CheckInReactionWithCheckIn: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case profile = "profiles"
-        case checkIn = "check_ins"
-    }
-
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
-        profile = try values.decode(Profile.self, forKey: .profile)
-        checkIn = try values.decode(CheckIn.self, forKey: .checkIn)
+        init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            id = try values.decode(Int.self, forKey: .id)
+            profile = try values.decode(Profile.self, forKey: .profile)
+            checkIn = try values.decode(CheckIn.self, forKey: .checkIn)
+        }
     }
 }
 
-struct NewCheckInReaction: Encodable {
-    let p_check_in_id: Int
-
-    init(checkInId: Int) {
-        p_check_in_id = checkInId
+extension CheckInReaction {
+    struct NewRequest: Encodable {
+        let p_check_in_id: Int
+        
+        init(checkInId: Int) {
+            p_check_in_id = checkInId
+        }
     }
 }

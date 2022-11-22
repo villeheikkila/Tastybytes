@@ -6,10 +6,10 @@ struct ProductSheetView: View {
     @StateObject var viewModel = ViewModel()
     @FocusState private var focusedField: Focusable?
 
-    let initialProduct: ProductJoined?
+    let initialProduct: Product.Joined?
     let initialBarcode: Barcode?
 
-    init(initialProduct: ProductJoined? = nil, initialBarcode: Barcode? = nil) {
+    init(initialProduct: Product.Joined? = nil, initialBarcode: Barcode? = nil) {
         self.initialProduct = initialProduct
         self.initialBarcode = initialBarcode
     }
@@ -212,19 +212,19 @@ extension ProductSheetView {
     }
 
     @MainActor class ViewModel: ObservableObject {
-        @Published var categories = [CategoryJoinedWithSubcategories]()
+        @Published var categories = [Category.JoinedSubcategories]()
         @Published var activeSheet: Sheet?
-        @Published var categoryName: CategoryName = CategoryName.beverage {
+        @Published var categoryName: Category.Name = Category.Name.beverage {
             // TODO: Investigate if this cna be avoided by passing ServingStyle directly to the picker
             didSet {
                 category = categories.first(where: { $0.name == categoryName })
             }
         }
 
-        @Published var category: CategoryJoinedWithSubcategories?
+        @Published var category: Category.JoinedSubcategories?
         @Published var subcategories: [Subcategory] = []
         @Published var brandOwner: Company?
-        @Published var brand: BrandJoinedWithSubBrands?
+        @Published var brand: Brand.JoinedSubBrands?
         @Published var subBrand: SubBrand?
         @Published var name: String = ""
         @Published var description: String = ""
@@ -238,7 +238,7 @@ extension ProductSheetView {
         func createSubcategory(newSubcategoryName: String) {
             if let categoryWithSubcategories = category {
                 Task {
-                    switch await repository.subcategory.insert(newSubcategory: Subcategory.New(name: newSubcategoryName, category: categoryWithSubcategories)) {
+                    switch await repository.subcategory.insert(newSubcategory: Subcategory.NewRequest(name: newSubcategoryName, category: categoryWithSubcategories)) {
                     case .success:
                         await MainActor.run {
                             self.loadCategories()
@@ -250,7 +250,7 @@ extension ProductSheetView {
             }
         }
 
-        func setBrand(brand: BrandJoinedWithSubBrands) {
+        func setBrand(brand: Brand.JoinedSubBrands) {
             DispatchQueue.main.async {
                 self.brand = brand
                 self.subBrand = brand.subBrands.first(where: { $0.name == nil })
@@ -291,7 +291,7 @@ extension ProductSheetView {
             }
         }
 
-        func loadInitialProduct(_ initialProduct: ProductJoined?) {
+        func loadInitialProduct(_ initialProduct: Product.Joined?) {
             guard let initialProduct = initialProduct else { return }
 
             Task {
@@ -302,7 +302,7 @@ extension ProductSheetView {
                         self.category = categories.first(where: { $0.id == initialProduct.category.id })
                         self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
                         self.brandOwner = initialProduct.subBrand.brand.brandOwner
-                        self.brand = BrandJoinedWithSubBrands(id: initialProduct.subBrand.brand.id, name: initialProduct.subBrand.brand.name, subBrands: []) // TODO: Fetch sub-brands
+                        self.brand = Brand.JoinedSubBrands(id: initialProduct.subBrand.brand.id, name: initialProduct.subBrand.brand.name, subBrands: []) // TODO: Fetch sub-brands
                         self.subBrand = initialProduct.subBrand.getSubBrand()
                         self.name = initialProduct.name
                         self.description = initialProduct.description ?? ""
@@ -327,7 +327,7 @@ extension ProductSheetView {
                 case let .success(categories):
                     await MainActor.run {
                         self.categories = categories
-                        self.category = categories.first(where: { $0.name == CategoryName.beverage})
+                        self.category = categories.first(where: { $0.name == Category.Name.beverage})
                     }
                 case let .failure(error):
                     print(error)
@@ -335,9 +335,9 @@ extension ProductSheetView {
             }
         }
 
-        func createProduct(onCreation: @escaping (_ product: ProductJoined) -> Void) {
+        func createProduct(onCreation: @escaping (_ product: Product.Joined) -> Void) {
             if let category = category, let brandId = brand?.id {
-                let newProductParams = NewProductParams(name: name, description: description, categoryId: category.id, brandId: brandId, subBrandId: subBrand?.id, subCategoryIds: subcategories.map { $0.id }, barcode: barcode)
+                let newProductParams = Product.NewRequest(name: name, description: description, categoryId: category.id, brandId: brandId, subBrandId: subBrand?.id, subCategoryIds: subcategories.map { $0.id }, barcode: barcode)
                 Task {
                     switch await repository.product.create(newProductParams: newProductParams) {
                     case let .success(newProduct):
@@ -349,10 +349,10 @@ extension ProductSheetView {
             }
         }
 
-        func createProductEditSuggestion(product: ProductJoined, onComplete: @escaping () -> Void) {
+        func createProductEditSuggestion(product: Product.Joined, onComplete: @escaping () -> Void) {
             if let subBrand = subBrand {
-                let productEditSuggestionParams = NewProductEditSuggestionParams(productId: product.id, name: name, description: description, categoryId: product.subcategories.first!.category.id, subBrandId: subBrand.id, subCategoryIds: subcategories.map { $0.id })
-                print(productEditSuggestionParams)
+                let productEditSuggestionParams = Product.EditSuggestionRequest(productId: product.id, name: name, description: description, categoryId: product.subcategories.first!.category.id, subBrandId: subBrand.id, subCategoryIds: subcategories.map { $0.id })
+
                 Task {
                     switch await repository.product.createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams) {
                     case let .success(data):

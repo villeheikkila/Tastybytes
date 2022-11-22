@@ -15,12 +15,11 @@ struct ProfileSummary {
     let rating8: Int
     let rating9: Int
     let rating10: Int
-    
+
     func getFormattedAverageRating() -> String {
         return String(format: "%.2f", averageRating ?? "")
     }
 }
-
 
 extension ProfileSummary: Decodable {
     enum CodingKeys: String, CodingKey {
@@ -39,7 +38,7 @@ extension ProfileSummary: Decodable {
         case rating9 = "rating_9"
         case rating10 = "rating_10"
     }
-    
+
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         totalCheckIns = try values.decode(Int.self, forKey: .totalCheckIns)
@@ -59,10 +58,12 @@ extension ProfileSummary: Decodable {
     }
 }
 
-struct GetProfileSummaryParams: Encodable {
-    let p_uid: String
-    
-    init(profileId: UUID) {
-        p_uid = profileId.uuidString
+extension ProfileSummary {
+    struct GetRequest: Encodable {
+        let p_uid: String
+
+        init(profileId: UUID) {
+            p_uid = profileId.uuidString
+        }
     }
 }

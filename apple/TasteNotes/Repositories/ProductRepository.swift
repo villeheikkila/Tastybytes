@@ -2,42 +2,27 @@ import Foundation
 import Supabase
 
 protocol ProductRepository {
-    func search(searchTerm: String, categoryName: CategoryName?) async -> Result<[ProductJoined], Error>
-    func search(barcode: Barcode) async -> Result<[ProductJoined], Error>
-    func getById(id: Int) async -> Result<ProductJoined, Error>
+    func search(searchTerm: String, categoryName: Category.Name?) async -> Result<[Product.Joined], Error>
+    func search(barcode: Barcode) async -> Result<[Product.Joined], Error>
+    func getById(id: Int) async -> Result<Product.Joined, Error>
     func delete(id: Int) async -> Result<Void, Error>
-    func create(newProductParams: NewProductParams) async -> Result<ProductJoined, Error>
+    func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
     func getSummaryById(id: Int) async -> Result<ProductSummary, Error>
-    func addBarcodeToProduct(product: ProductJoined, barcode: Barcode) async -> Result<Barcode, Error>
-    func createUpdateSuggestion(productEditSuggestionParams: NewProductEditSuggestionParams) async -> Result<DecodableId, Error>
+    func addBarcodeToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error>
+    func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async -> Result<DecodableId, Error>
 }
 
 struct SupabaseProductRepository: ProductRepository {
     let client: SupabaseClient
 
-    func search(searchTerm: String, categoryName: CategoryName?) async -> Result<[ProductJoined], Error> {
-        struct SearchProductsParams: Encodable {
-            let p_search_term: String
-            let p_category_name: String?
-            
-            init(searchTerm: String, categoryName: CategoryName?) {
-                p_search_term = "%\(searchTerm.trimmingCharacters(in: .whitespacesAndNewlines))%"
-                
-                if let categoryName = categoryName {
-                    p_category_name = categoryName.rawValue
-                } else {
-                    p_category_name = nil
-                }
-            }
-        }
-
+    func search(searchTerm: String, categoryName: Category.Name?) async -> Result<[Product.Joined], Error> {
         do {
             let response = try await client
                 .database
-                .rpc(fn: "fnc__search_products", params: SearchProductsParams(searchTerm: searchTerm, categoryName: categoryName))
+                .rpc(fn: "fnc__search_products", params: Product.SearchParams(searchTerm: searchTerm, categoryName: categoryName))
                 .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
                 .execute()
-                .decoded(to: [ProductJoined].self)
+                .decoded(to: [Product.Joined].self)
 
             return .success(response)
         } catch {
@@ -45,7 +30,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
     
-    func search(barcode: Barcode) async -> Result<[ProductJoined], Error> {
+    func search(barcode: Barcode) async -> Result<[Product.Joined], Error> {
         do {
             let response = try await client
                 .database
@@ -54,7 +39,7 @@ struct SupabaseProductRepository: ProductRepository {
                 .eq(column: "barcode", value: barcode.barcode)
                 .eq(column: "type", value: barcode.type.rawValue)
                 .execute()
-                .decoded(to: [ProductBarcodeJoined].self)
+                .decoded(to: [ProductBarcode.Joined].self)
 
             return .success(response.map { $0.product })
         } catch {
@@ -62,7 +47,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    func getById(id: Int) async -> Result<ProductJoined, Error> {
+    func getById(id: Int) async -> Result<Product.Joined, Error> {
         do {
             let response = try await client
                 .database
@@ -72,7 +57,7 @@ struct SupabaseProductRepository: ProductRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: ProductJoined.self)
+                .decoded(to: Product.Joined.self)
             
             return .success(response)
         } catch {
@@ -95,7 +80,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    func create(newProductParams: NewProductParams) async -> Result<ProductJoined, Error> {
+    func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error> {
         do {
             let product = try await client
                 .database
@@ -120,12 +105,12 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
     
-    func addBarcodeToProduct(product: ProductJoined, barcode: Barcode) async -> Result<Barcode, Error> {
+    func addBarcodeToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error> {
         do {
             try await client
                 .database
                 .from(ProductBarcode.getQuery(.tableName))
-                .insert(values: ProductBarcode.New(product: product, barcode: barcode), returning: .representation)
+                .insert(values: ProductBarcode.NewRequest(product: product, barcode: barcode), returning: .representation)
                 .execute()
             
             return .success(barcode)
@@ -134,7 +119,7 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    func createUpdateSuggestion(productEditSuggestionParams: NewProductEditSuggestionParams) async -> Result<DecodableId, Error> {
+    func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async -> Result<DecodableId, Error> {
         do {
             let productEditSuggestion = try await client
                 .database
@@ -155,7 +140,7 @@ struct SupabaseProductRepository: ProductRepository {
         do {
             let response = try await client
                 .database
-                .rpc(fn: "fnc__get_product_summary", params: GetProductSummaryParams(id: id))
+                .rpc(fn: "fnc__get_product_summary", params: Product.SummaryRequest(id: id))
                 .select()
                 .limit(count: 1)
                 .single()

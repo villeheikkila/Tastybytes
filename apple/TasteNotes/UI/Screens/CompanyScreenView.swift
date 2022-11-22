@@ -9,10 +9,6 @@ struct CompanyScreenView: View {
     @State private var showDeleteCompanyConfirmationDialog = false
     @State private var showDeleteBrandConfirmationDialog = false
 
-    func getProductJoined(product: ProductJoinedCategory, subBrand: SubBrand, brand: BrandJoinedSubBrandsJoinedProduct) -> ProductJoined {
-        return ProductJoined(id: product.id, name: product.name, description: product.name, subBrand: SubBrandJoinedWithBrand(id: subBrand.id, name: subBrand.name, brand: BrandJoinedWithCompany(id: brand.id, name: brand.name, brandOwner: company)), category: product.category, subcategories: product.subcategories, barcodes: [])
-    }
-
     var body: some View {
         List {
             VStack(alignment: .leading) {
@@ -55,7 +51,7 @@ struct CompanyScreenView: View {
                             subBrand in
                             ForEach(subBrand.products, id: \.id) {
                                 product in
-                                NavigationLink(value: ProductJoined(company: company, product: product, subBrand: subBrand, brand: brand)) {
+                                NavigationLink(value: Product.Joined(company: company, product: product, subBrand: subBrand, brand: brand)) {
                                     HStack {
                                         Text(joinOptionalStrings([brand.name, subBrand.name, product.name]))
                                             .lineLimit(nil)
@@ -136,8 +132,8 @@ extension CompanyScreenView {
     }
 
     @MainActor class ViewModel: ObservableObject {
-        @Published var companyJoined: CompanyJoined?
-        @Published var companySummary: CompanySummary?
+        @Published var companyJoined: Company.Joined?
+        @Published var companySummary: Company.Summary?
         @Published var activeSheet: Sheet?
 
         @Published var newCompanyNameSuggestion = ""
@@ -184,7 +180,7 @@ extension CompanyScreenView {
             }
         }
 
-        func deleteBrand(_ brand: BrandJoinedSubBrandsJoinedProduct) {
+        func deleteBrand(_ brand: Brand.JoinedSubBrandsProducts) {
             Task {
                 switch await repository.brand.delete(id: brand.id) {
                 case .success():

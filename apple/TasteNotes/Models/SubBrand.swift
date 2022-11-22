@@ -45,62 +45,66 @@ extension SubBrand {
     }
 }
 
-struct SubBrandJoinedWithBrand: Identifiable {
-    let id: Int
-    let name: String?
-    let brand: BrandJoinedWithCompany
-    
-    func getSubBrand() -> SubBrand {
-        return SubBrand(id: id, name: name)
-    }
-}
-
-extension SubBrandJoinedWithBrand: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
-    static func == (lhs: SubBrandJoinedWithBrand, rhs: SubBrandJoinedWithBrand) -> Bool {
-        return lhs.id == rhs.id
-    }
-}
-
-extension SubBrandJoinedWithBrand: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case brand = "brands"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
-        name = try values.decodeIfPresent(String.self, forKey: .name)
-        brand = try values.decode(BrandJoinedWithCompany.self, forKey: .brand)
-    }
-}
-
-struct SubBrandJoinedProduct: Identifiable, Hashable, Decodable {
-    let id: Int
-    let name: String?
-    let products: [ProductJoinedCategory]
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case products
-    }
+extension SubBrand {
+    struct JoinedBrand: Identifiable, Hashable, Decodable {
+        let id: Int
+        let name: String?
+        let brand: Brand.JoinedCompany
         
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
-        name = try values.decodeIfPresent(String.self, forKey: .name)
-        products = try values.decode([ProductJoinedCategory].self, forKey: .products)
+        func getSubBrand() -> SubBrand {
+            return SubBrand(id: id, name: name)
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+        
+        static func == (lhs: JoinedBrand, rhs: JoinedBrand) -> Bool {
+            return lhs.id == rhs.id
+        }
+        
+        init(id: Int, name: String?, brand: Brand.JoinedCompany) {
+            self.id = id
+            self.name = name
+            self.brand = brand
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case brand = "brands"
+        }
+        
+        init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            id = try values.decode(Int.self, forKey: .id)
+            name = try values.decodeIfPresent(String.self, forKey: .name)
+            brand = try values.decode(Brand.JoinedCompany.self, forKey: .brand)
+        }
+    }
+    
+    struct JoinedProduct: Identifiable, Hashable, Decodable {
+        let id: Int
+        let name: String?
+        let products: [Product.JoinedCategory]
+        
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case products
+        }
+        
+        init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            id = try values.decode(Int.self, forKey: .id)
+            name = try values.decodeIfPresent(String.self, forKey: .name)
+            products = try values.decode([Product.JoinedCategory].self, forKey: .products)
+        }
     }
 }
 
 extension SubBrand {
-    struct New: Encodable {
+    struct NewRequest: Encodable {
         let name: String
         let brand_id: Int
         

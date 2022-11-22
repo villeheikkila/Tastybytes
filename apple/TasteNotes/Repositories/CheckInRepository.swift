@@ -7,8 +7,8 @@ protocol CheckInRepository {
     func getById(id: Int) async -> Result<CheckIn, Error>
     func getByProfileId(id: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error>
     func getByProductId(id: Int, from: Int, to: Int) async -> Result<[CheckIn], Error>
-    func create(newCheckInParams: NewCheckInParams) async -> Result<CheckIn, Error>
-    func update(updateCheckInParams: UpdateCheckInParams) async -> Result<CheckIn, Error>
+    func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error>
+    func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error>
     func delete(id: Int) async -> Result<Void, Error>
     func getSummaryByProfileId(id: UUID) async -> Result<ProfileSummary, Error>
     func uploadImage(id: Int, data: Data) async -> Result<Void, Error>
@@ -87,7 +87,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func create(newCheckInParams: NewCheckInParams) async -> Result<CheckIn, Error> {
+    func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error> {
         do {
             let createdCheckIn = try await client
                 .database
@@ -104,7 +104,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func update(updateCheckInParams: UpdateCheckInParams) async -> Result<CheckIn, Error> {
+    func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error> {
         do {
             let response = try await client
                 .database
@@ -140,7 +140,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         do {
             let response = try await client
                 .database
-                .rpc(fn: "fnc__get_profile_summary", params: GetProfileSummaryParams(profileId: id))
+                .rpc(fn: "fnc__get_profile_summary", params: ProfileSummary.GetRequest(profileId: id))
                 .select()
                 .limit(count: 1)
                 .single()

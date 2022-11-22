@@ -121,7 +121,7 @@ extension Profile: Hashable {
 }
 
 extension Profile {
-    struct Update: Encodable {
+    struct UpdateRequest: Encodable {
         var username: String?
         var first_name: String?
         var last_name: String?
@@ -208,7 +208,7 @@ extension ProfileSettings {
         case dark
     }
     
-    struct Update: Encodable {
+    struct UpdateRequest: Encodable {
         var username: String?
         var send_reaction_notifications: Bool?
         var send_tagged_check_in_notifications: Bool?

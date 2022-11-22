@@ -2,14 +2,14 @@ import Foundation
 import Supabase
 
 protocol CategoryRepository {
-    func getAllWithSubcategories() async -> Result<[CategoryJoinedWithSubcategories], Error>
-    func getServingStylesByCategory(categoryId: Int) async -> Result<CategoryJoinedWithServingStyles, Error>
+    func getAllWithSubcategories() async -> Result<[Category.JoinedSubcategories], Error>
+    func getServingStylesByCategory(categoryId: Int) async -> Result<Category.JoinedServingStyles, Error>
 }
 
 struct SupabaseCategoryRepository: CategoryRepository {
     let client: SupabaseClient
 
-    func getAllWithSubcategories() async -> Result<[CategoryJoinedWithSubcategories], Error> {
+    func getAllWithSubcategories() async -> Result<[Category.JoinedSubcategories], Error> {
         do {
             let response = try await client
                 .database
@@ -17,7 +17,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
                 .select(columns: Category.getQuery(.joinedSubcategories(false)))
                 .order(column: "name")
                 .execute()
-                .decoded(to: [CategoryJoinedWithSubcategories].self)
+                .decoded(to: [Category.JoinedSubcategories].self)
             
             return .success(response)
         } catch {
@@ -25,7 +25,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
         }
     }
 
-    func getServingStylesByCategory(categoryId: Int) async -> Result<CategoryJoinedWithServingStyles, Error> {
+    func getServingStylesByCategory(categoryId: Int) async -> Result<Category.JoinedServingStyles, Error> {
         do {
             let response = try await client
                 .database
@@ -35,7 +35,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: CategoryJoinedWithServingStyles.self)
+                .decoded(to: Category.JoinedServingStyles.self)
             
             return .success(response)
         } catch {

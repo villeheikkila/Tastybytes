@@ -5,7 +5,7 @@ struct BrandSheetView: View {
     @StateObject var viewModel = ViewModel()
     @Environment(\.dismiss) var dismiss
 
-    let onSelect: (_ company: BrandJoinedWithSubBrands, _ createdNew: Bool) -> Void
+    let onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
 
     var body: some View {
         NavigationStack {
@@ -46,7 +46,7 @@ struct BrandSheetView: View {
 extension BrandSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var searchText = ""
-        @Published var brandsWithSubBrands = [BrandJoinedWithSubBrands]()
+        @Published var brandsWithSubBrands = [Brand.JoinedSubBrands]()
         @Published var brandName = ""
 
         func loadBrands(_ brandOwner: Company) {
@@ -62,9 +62,9 @@ extension BrandSheetView {
             }
         }
 
-        func createNewBrand(_ brandOwner: Company, _ onCreation: @escaping (_ brand: BrandJoinedWithSubBrands) -> Void) {
+        func createNewBrand(_ brandOwner: Company, _ onCreation: @escaping (_ brand: Brand.JoinedSubBrands) -> Void) {
             Task {
-                switch await repository.brand.insert(newBrand: NewBrand(name: brandName, brandOwnerId: brandOwner.id)) {
+                switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
                 case let .success(brandWithSubBrands):
                     onCreation(brandWithSubBrands)
                 case let .failure(error):

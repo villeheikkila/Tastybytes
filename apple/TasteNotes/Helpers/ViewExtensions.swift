@@ -41,17 +41,6 @@ public extension View {
 }
 
 extension View {
-    func sync<T>(_ published: Binding<T>, with binding: Binding<T>) -> some View where T: Equatable {
-        onChange(of: published.wrappedValue) { published in
-            binding.wrappedValue = published
-        }
-        .onChange(of: binding.wrappedValue) { binding in
-            published.wrappedValue = binding
-        }
-    }
-}
-
-extension View {
     /// Applies the given transform if the given condition evaluates to `true`.
     /// - Parameters:
     ///   - condition: The condition to evaluate.

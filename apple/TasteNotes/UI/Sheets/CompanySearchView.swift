@@ -92,7 +92,7 @@ extension CompanySheetView {
         }
 
         func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) {
-            let newCompany = NewCompany(name: companyName)
+            let newCompany = Company.NewRequest(name: companyName)
             Task {
                 switch await repository.company.insert(newCompany: newCompany) {
                 case let .success(newCompany):

@@ -96,7 +96,7 @@ extension FriendsScreenView {
 
         func sendFriendRequest(receiver: UUID, onSuccess: @escaping () -> Void) {
             Task {
-                switch await repository.friend.insert(newFriend: NewFriend(receiver: receiver, status: .pending)) {
+                switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
                 case let .success(newFriend):
                     await MainActor.run {
                         self.friends.append(newFriend)
@@ -112,16 +112,16 @@ extension FriendsScreenView {
             }
         }
 
-        func updateFriendRequest(id: Int, newStatus: FriendStatus) {
+        func updateFriendRequest(id: Int, newStatus: Friend.Status) {
             if let friend = friends.first(where: { $0.id == id }) {
-                let friendUpdate = FriendUpdate(user_id_1: friend.sender.id, user_id_2: friend.receiver.id, status: newStatus)
+                let friendUpdate = Friend.UpdateRequest(user_id_1: friend.sender.id, user_id_2: friend.receiver.id, status: newStatus)
                 Task {
                     switch await repository.friend.update(id: id, friendUpdate: friendUpdate) {
                     case let .success(updatedFriend):
                         await MainActor.run {
                             self.friends.removeAll(where: { $0.id == updatedFriend.id })
                         }
-                        if updatedFriend.status != FriendStatus.blocked {
+                        if updatedFriend.status != Friend.Status.blocked {
                             await MainActor.run {
                                 self.friends.append(updatedFriend)
                             }
@@ -152,7 +152,7 @@ extension FriendsScreenView {
 
         func loadFriends(userId: UUID, currentUser: Profile) {
             Task {
-                switch await repository.friend.getByUserId(userId: userId, status: currentUser.id == userId ? .none : FriendStatus.accepted) {
+                switch await repository.friend.getByUserId(userId: userId, status: currentUser.id == userId ? .none : Friend.Status.accepted) {
                 case let .success(friends):
                     await MainActor.run {
                         self.friends = friends
@@ -216,7 +216,7 @@ struct FriendListItemView: View {
                     HStack {
                         Text(profile.preferredName)
                             .foregroundColor(.primary)
-                        if friend.status == FriendStatus.pending {
+                        if friend.status == Friend.Status.pending {
                             Text("(\(friend.status.rawValue.capitalized))")
                                 .font(.footnote)
                                 .foregroundColor(.primary)

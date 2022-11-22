@@ -1,8 +1,8 @@
 import Supabase
 
 protocol CheckInCommentRepository {
-    func insert(newCheckInComment: NewCheckInComment) async -> Result<CheckInComment, Error>
-    func update(updateCheckInComment: UpdateCheckInComment) async -> Result<CheckInComment, Error>
+    func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error>
+    func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error>
     func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error>
     func deleteById(id: Int) async -> Result<Void, Error>
 }
@@ -10,7 +10,7 @@ protocol CheckInCommentRepository {
 struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
     let client: SupabaseClient
 
-    func insert(newCheckInComment: NewCheckInComment) async -> Result<CheckInComment, Error> {
+    func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error> {
         do {
             let result = try await client
                 .database
@@ -28,7 +28,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         }
     }
 
-    func update(updateCheckInComment: UpdateCheckInComment) async -> Result<CheckInComment, Error> {
+    func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error> {
         do {
             let response = try await client
                 .database

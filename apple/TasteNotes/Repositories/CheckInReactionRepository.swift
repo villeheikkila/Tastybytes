@@ -2,14 +2,14 @@ import Foundation
 import Supabase
 
 protocol CheckInReactionsRepository {
-    func insert(newCheckInReaction: NewCheckInReaction) async -> Result<CheckInReaction, Error>
+    func insert(newCheckInReaction: CheckInReaction.NewRequest) async -> Result<CheckInReaction, Error>
     func delete(id: Int) async -> Result<Void, Error>
 }
 
 struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
     let client: SupabaseClient
     
-    func insert(newCheckInReaction: NewCheckInReaction) async -> Result<CheckInReaction, Error> {
+    func insert(newCheckInReaction: CheckInReaction.NewRequest) async -> Result<CheckInReaction, Error> {
         do {
             let response = try await client
                 .database

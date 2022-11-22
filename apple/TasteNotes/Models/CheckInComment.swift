@@ -54,17 +54,21 @@ extension CheckInComment {
     }
 }
 
-struct NewCheckInComment: Encodable {
-    let content: String
-    let check_in_id: Int
-    
-    init(content: String, checkInId: Int) {
-        self.content = content
-        check_in_id = checkInId
+extension CheckInComment {
+    struct NewRequest: Encodable {
+        let content: String
+        let check_in_id: Int
+        
+        init(content: String, checkInId: Int) {
+            self.content = content
+            check_in_id = checkInId
+        }
+    }
+
+    struct UpdateRequest: Encodable {
+        let id: Int
+        let content: String
     }
 }
 
-struct UpdateCheckInComment: Encodable {
-    let id: Int
-    let content: String
-}
+

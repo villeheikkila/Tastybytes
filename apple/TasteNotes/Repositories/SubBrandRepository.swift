@@ -2,13 +2,13 @@ import Foundation
 import Supabase
 
 protocol SubBrandRepository {
-    func insert(newSubBrand: SubBrand.New) async -> Result<SubBrand, Error>
+    func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error>
 }
 
 struct SupabaseSubBrandRepository: SubBrandRepository {
     let client: SupabaseClient
 
-    func insert(newSubBrand: SubBrand.New) async -> Result<SubBrand, Error> {
+    func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error> {
         do {
             let response = try await client
                 .database

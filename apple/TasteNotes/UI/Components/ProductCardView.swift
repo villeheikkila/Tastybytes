@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProductCardView: View {
-    let product: ProductJoined
+    let product: Product.Joined
 
     var body: some View {
         VStack {
