@@ -1,6 +1,6 @@
 import SwiftUI
 
-final class SplashScreenManager: ObservableObject { @MainActor
+class SplashScreenManager: ObservableObject { @MainActor
     @Published private(set) var state: SplashScreenState = .showing
 
     @MainActor
@@ -13,8 +13,10 @@ final class SplashScreenManager: ObservableObject { @MainActor
     }
 }
 
-enum SplashScreenState  {
-    case showing
-    case dismissing
-    case finished
+extension SplashScreenManager {
+    enum SplashScreenState  {
+        case showing
+        case dismissing
+        case finished
+    }
 }
