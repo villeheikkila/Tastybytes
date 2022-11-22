@@ -112,6 +112,9 @@ struct SupabaseNotificationRepository: NotificationRepository {
                 .database
                 .from(Notification.getQuery(.tableName))
                 .delete()
+                // DELETE requires a where clause, add something that always returns true
+                // Security policies make sure that everything can be deleted
+                .neq(column: "id", value: 0)
                 .execute()
 
             return .success(())
