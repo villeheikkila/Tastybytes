@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SubBrandSheetView: View {
-    let brandWithSubBrands: BrandJoinedWithSubBrands
+    let brandWithSubBrands: Brand.JoinedSubBrands
     let onSelect: (_ company: SubBrand, _ createdNew: Bool) -> Void
     
     @StateObject private var viewModel = ViewModel()
@@ -44,9 +44,9 @@ extension SubBrandSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var subBrandName = ""
         
-        func createNewSubBrand(_ brand: BrandJoinedWithSubBrands, _ onSelect: @escaping (_ subBrand: SubBrand,  _ createdNew: Bool) -> Void) {
+        func createNewSubBrand(_ brand: Brand.JoinedSubBrands, _ onSelect: @escaping (_ subBrand: SubBrand,  _ createdNew: Bool) -> Void) {
             Task {
-                switch await repository.subBrand.insert(newSubBrand: SubBrand.New(name: subBrandName, brandId: brand.id)) {
+                switch await repository.subBrand.insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brand.id)) {
                 case let .success(newSubBrand):
                     await MainActor.run {
                         onSelect(newSubBrand, true)

@@ -2,11 +2,11 @@ import Supabase
 
 protocol CompanyRepository {
     func getById(id: Int) async -> Result<Company, Error>
-    func getJoinedById(id: Int) async -> Result<CompanyJoined, Error>
-    func insert(newCompany: NewCompany) async -> Result<Company, Error>
+    func getJoinedById(id: Int) async -> Result<Company.Joined, Error>
+    func insert(newCompany: Company.NewRequest) async -> Result<Company, Error>
     func delete(id: Int) async -> Result<Void, Error>
     func search(searchTerm: String) async -> Result<[Company], Error>
-    func getSummaryById(id: Int) async -> Result<CompanySummary, Error>
+    func getSummaryById(id: Int) async -> Result<Company.Summary, Error>
 }
 
 struct SupabaseCompanyRepository: CompanyRepository {
@@ -30,7 +30,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
     
-    func getJoinedById(id: Int) async -> Result<CompanyJoined, Error> {
+    func getJoinedById(id: Int) async -> Result<Company.Joined, Error> {
         do {
             let response = try await client
                 .database
@@ -40,7 +40,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: CompanyJoined.self)
+                .decoded(to: Company.Joined.self)
 
             return .success(response)
         } catch {
@@ -48,7 +48,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    func insert(newCompany: NewCompany) async -> Result<Company, Error> {
+    func insert(newCompany: Company.NewRequest) async -> Result<Company, Error> {
         do {
             let response = try await client
                 .database
@@ -96,16 +96,16 @@ struct SupabaseCompanyRepository: CompanyRepository {
         }
     }
 
-    func getSummaryById(id: Int) async -> Result<CompanySummary, Error> {
+    func getSummaryById(id: Int) async -> Result<Company.Summary, Error> {
         do {
             let response = try await client
                 .database
-                .rpc(fn: "fnc__get_company_summary", params: GetCompanySummaryParams(id: id))
+                .rpc(fn: "fnc__get_company_summary", params: Company.SummaryRequest(id: id))
                 .select()
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: CompanySummary.self)
+                .decoded(to: Company.Summary.self)
 
             return .success(response)
         } catch {

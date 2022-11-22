@@ -114,7 +114,7 @@ extension ProfileSettingsScreenView {
         }
 
         func updateProfile(onSuccess: @escaping () -> Void) {
-            let update = Profile.Update(
+            let update = Profile.UpdateRequest(
                 username: username,
                 firstName: firstName,
                 lastName: lastName
@@ -136,7 +136,7 @@ extension ProfileSettingsScreenView {
         }
 
         func updateDisplaySettings() {
-            let update = Profile.Update(
+            let update = Profile.UpdateRequest(
                 showFullName: showFullName
             )
 

@@ -7,13 +7,13 @@ import SupabaseStorage
 protocol ProfileRepository {
     func getById(id: UUID) async -> Result<Profile, Error>
     func getCurrentUser() async -> Result<Profile.Extended, Error>
-    func update(id: UUID, update: Profile.Update) async -> Result<Profile.Extended, Error>
+    func update(id: UUID, update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error>
     func currentUserExport() async -> Result<String, Error>
     func search(searchTerm: String, currentUserId: UUID) async -> Result<[Profile], Error>
     func uploadAvatar(userId: UUID, data: Data) async -> Result<String, Error>
     func uploadPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<Void, Error>
     func deleteCurrentAccount() async -> Result<Void, Error>
-    func updateSettings(id: UUID, update: ProfileSettings.Update) async -> Result<ProfileSettings, Error>
+    func updateSettings(id: UUID, update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error>
 }
 
 struct SupabaseProfileRepository: ProfileRepository {
@@ -54,7 +54,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    func update(id: UUID, update: Profile.Update) async -> Result<Profile.Extended, Error> {
+    func update(id: UUID, update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error> {
         do {
             let response = try await client
                 .database
@@ -75,7 +75,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         }
     }
 
-    func updateSettings(id: UUID, update: ProfileSettings.Update) async -> Result<ProfileSettings, Error> {
+    func updateSettings(id: UUID, update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error> {
         do {
             let response = try await client
                 .database
@@ -147,11 +147,8 @@ struct SupabaseProfileRepository: ProfileRepository {
     func uploadAvatar(userId: UUID, data: Data) async -> Result<String, Error> {
         do {
             let fileName = "\(UUID().uuidString.lowercased()).jpeg"
-            print(fileName)
-            
             let file = File(
                 name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
-
             _ = try await client
                 .storage
                 .from(id: "avatars")

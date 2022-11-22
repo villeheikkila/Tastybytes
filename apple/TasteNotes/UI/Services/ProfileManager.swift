@@ -87,7 +87,7 @@ class ProfileManager: ObservableObject {
     
     func sendFriendRequest(receiver: UUID, onSuccess: @escaping () -> Void) {
         Task {
-            switch await repository.friend.insert(newFriend: NewFriend(receiver: receiver, status: .pending)) {
+            switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
             case let .success(newFriend):
                 await MainActor.run {
                     self.friends.append(newFriend.receiver)

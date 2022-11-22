@@ -17,7 +17,7 @@ struct AuthenticatedContentView: View {
                     .navigationDestination(for: Profile.self) { profile in
                         ProfileScreenView(profile: profile)
                     }
-                    .navigationDestination(for: ProductJoined.self) { product in
+                    .navigationDestination(for: Product.Joined.self) { product in
                         ProductScreenView(product: product)
                     }
                     .navigationDestination(for: Company.self) { company in
@@ -66,7 +66,7 @@ struct AuthenticatedContentView: View {
 }
 
 enum Route: Hashable {
-    case product(ProductJoined)
+    case product(Product.Joined)
     case profile(Profile)
     case checkIn(CheckIn)
     case companies(Company)

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProductScreenView: View {
-    let product: ProductJoined
+    let product: Product.Joined
     @StateObject private var viewModel = ViewModel()
     @EnvironmentObject var profileManager: ProfileManager
 
@@ -188,7 +188,7 @@ extension ProductScreenView {
             showDeleteProductConfirmationDialog.toggle()
         }
 
-        func loadProductSummary(_ product: ProductJoined) {
+        func loadProductSummary(_ product: Product.Joined) {
             Task {
                 switch await repository.product.getSummaryById(id: product.id) {
                 case let .success(summary):
@@ -212,7 +212,7 @@ extension ProductScreenView {
             }
         }
 
-        func deleteProduct(_ product: ProductJoined) {
+        func deleteProduct(_ product: Product.Joined) {
             Task {
                 switch await repository.product.delete(id: product.id) {
                 case .success():

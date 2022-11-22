@@ -2,13 +2,13 @@ import Foundation
 import Supabase
 
 protocol SubcategoryRepository {
-    func insert(newSubcategory: Subcategory.New) async -> Result<Subcategory, Error>
+    func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error>
 }
 
 struct SupabaseSubcategoryRepository: SubcategoryRepository {
     let client: SupabaseClient
 
-    func insert(newSubcategory: Subcategory.New) async -> Result<Subcategory, Error> {
+    func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error> {
         do {
             let response = try await client
                 .database

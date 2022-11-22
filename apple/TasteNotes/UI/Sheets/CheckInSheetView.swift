@@ -9,14 +9,14 @@ struct CheckInSheetView: View {
     @State var showPhotoMenu = false
     @FocusState private var focusedField: Focusable?
 
-    let product: ProductJoined
+    let product: Product.Joined
     let onCreation: ((_ checkIn: CheckIn) -> Void)?
     let onUpdate: ((_ checkIn: CheckIn) -> Void)?
     let existingCheckIn: CheckIn?
     let action: Action
     
 
-    init(product: ProductJoined, onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
+    init(product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
         self.product = product
         existingCheckIn = nil
         self.onCreation = onCreation
@@ -301,7 +301,7 @@ extension CheckInSheetView {
         }
 
         func updateCheckIn(_ checkIn: CheckIn, _ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) {
-            let updateCheckInParams = UpdateCheckInParams(checkIn: checkIn, product: checkIn.product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyle, manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
+            let updateCheckInParams = CheckIn.UpdateRequest(checkIn: checkIn, product: checkIn.product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyle, manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
 
             print(updateCheckInParams)
             Task {
@@ -315,8 +315,8 @@ extension CheckInSheetView {
             }
         }
 
-        func createCheckIn(_ product: ProductJoined, _ onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
-            let newCheckParams = NewCheckInParams(product: product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyle, manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
+        func createCheckIn(_ product: Product.Joined, _ onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
+            let newCheckParams = CheckIn.NewRequest(product: product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyle, manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
 
             Task {
                 switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
@@ -342,7 +342,7 @@ extension CheckInSheetView {
             }
         }
 
-        func loadInitialData(product: ProductJoined) {
+        func loadInitialData(product: Product.Joined) {
             if let categoryId = product.subcategories.first?.category.id {
                 Task {
                     switch await repository.category.getServingStylesByCategory(categoryId: categoryId) {

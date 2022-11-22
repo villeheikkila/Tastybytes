@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SummaryView: View {
-    let companySummary: CompanySummary
+    let companySummary: Company.Summary
 
     var body: some View {
         Grid(alignment: .leading) {

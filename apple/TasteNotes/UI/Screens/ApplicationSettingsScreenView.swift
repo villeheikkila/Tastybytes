@@ -89,7 +89,7 @@ extension ApplicationSettingsScreenView {
             if isSystemColor {
                 isDarkMode = initialColorScheme == ColorScheme.dark
             }
-            let update = ProfileSettings.Update(
+            let update = ProfileSettings.UpdateRequest(
                 isDarkMode: isDarkMode, isSystemColor: isSystemColor
             )
 
@@ -105,7 +105,7 @@ extension ApplicationSettingsScreenView {
         }
 
         func updateNotificationSettings() {
-            let update = ProfileSettings.Update(sendReactionNotifications: reactionNotifications, sendTaggedCheckInNotifications: friendRequestNotifications, sendFriendRequestNotifications: checkInTagNotifications
+            let update = ProfileSettings.UpdateRequest(sendReactionNotifications: reactionNotifications, sendTaggedCheckInNotifications: friendRequestNotifications, sendFriendRequestNotifications: checkInTagNotifications
             )
 
             Task {

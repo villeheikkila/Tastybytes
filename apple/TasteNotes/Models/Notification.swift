@@ -4,7 +4,7 @@ enum NotificationContent: Hashable {
     case message(String)
     case friendRequest(Friend)
     case taggedCheckIn(CheckIn)
-    case checkInReaction(CheckInReactionWithCheckIn)
+    case checkInReaction(CheckInReaction.JoinedCheckIn)
 }
 
 struct Notification: Identifiable {
@@ -64,7 +64,7 @@ extension Notification: Decodable {
         let message = try values.decodeIfPresent(String.self, forKey: .message)
         let friendRequest = try values.decodeIfPresent(Friend.self, forKey: .friendRequest)
         let taggedCheckIn = try values.decodeIfPresent(CheckInTaggedProfiles.self, forKey: .taggedCheckIn)
-        let checkInReaction = try values.decodeIfPresent(CheckInReactionWithCheckIn.self, forKey: .checkInReaction)
+        let checkInReaction = try values.decodeIfPresent(CheckInReaction.JoinedCheckIn.self, forKey: .checkInReaction)
 
         if let message = message {
             content = NotificationContent.message(message)

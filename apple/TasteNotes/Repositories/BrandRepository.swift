@@ -2,15 +2,15 @@ import Foundation
 import Supabase
 
 protocol BrandRepository {
-    func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[BrandJoinedWithSubBrands], Error>
-    func insert(newBrand: NewBrand) async -> Result<BrandJoinedWithSubBrands, Error>
+    func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error>
+    func insert(newBrand: Brand.NewRequest) async -> Result<Brand.JoinedSubBrands, Error>
     func delete(id: Int) async -> Result<Void, Error>
 }
 
 struct SupabaseBrandRepository: BrandRepository {
     let client: SupabaseClient
 
-    func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[BrandJoinedWithSubBrands], Error> {
+    func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error> {
         do {
             let response = try await client
                 .database
@@ -19,7 +19,7 @@ struct SupabaseBrandRepository: BrandRepository {
                 .eq(column: "brand_owner_id", value: brandOwnerId)
                 .order(column: "name")
                 .execute()
-                .decoded(to: [BrandJoinedWithSubBrands].self)
+                .decoded(to: [Brand.JoinedSubBrands].self)
             
             return .success(response)
         } catch {
@@ -27,7 +27,7 @@ struct SupabaseBrandRepository: BrandRepository {
         }
     }
 
-    func insert(newBrand: NewBrand) async -> Result<BrandJoinedWithSubBrands, Error> {
+    func insert(newBrand: Brand.NewRequest) async -> Result<Brand.JoinedSubBrands, Error> {
         do {
             let response = try await client
                 .database
@@ -36,7 +36,7 @@ struct SupabaseBrandRepository: BrandRepository {
                 .select(columns: Brand.getQuery(.joinedSubBrands(false)))
                 .single()
                 .execute()
-                .decoded(to: BrandJoinedWithSubBrands.self)
+                .decoded(to: Brand.JoinedSubBrands.self)
 
             return .success(response)
         } catch {

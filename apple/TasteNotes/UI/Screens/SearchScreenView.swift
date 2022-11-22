@@ -113,21 +113,21 @@ class SearchScreenViewModel: ObservableObject {
     @Published var searchTerm: String = "" {
         didSet {
             if let firstPartOfSearchString = searchTerm.lowercased().split(separator: " ", maxSplits: 1).map(String.init).first {
-                if let category = CategoryName(rawValue: firstPartOfSearchString) {
+                if let category = Category.Name(rawValue: firstPartOfSearchString) {
                     tokens = [category]
                     searchTerm = ""
                 }
             }
         }
     }
-    @Published var products = [ProductJoined]()
+    @Published var products = [Product.Joined]()
     @Published var profiles = [Profile]()
     @Published var companies = [Company]()
     @Published var showBarcodeScanner = false
     @Published var isSearched = false
     @Published var searchScope: SearchScope = .products
     @Published var barcode: Barcode? = nil
-    @Published var tokens: [CategoryName] = []
+    @Published var tokens: [Category.Name] = []
     
     func resetSearch() {
         profiles = []
@@ -141,7 +141,7 @@ class SearchScreenViewModel: ObservableObject {
         }
     }
     
-    func addBarcodeToProduct(_ product: ProductJoined, onComplete: @escaping () -> Void) {
+    func addBarcodeToProduct(_ product: Product.Joined, onComplete: @escaping () -> Void) {
         if let barcode = barcode {
             Task {
                 switch await repository.product.addBarcodeToProduct(product: product, barcode: barcode) {

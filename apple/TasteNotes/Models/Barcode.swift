@@ -50,15 +50,39 @@ extension ProductBarcode: Decodable {
 }
 
 extension ProductBarcode {
-    struct New: Encodable {
+    struct NewRequest: Encodable {
         let barcode: String
         let type: String
         let product_id: Int
         
-        init (product: ProductJoined, barcode: Barcode) {
+        init (product: Product.Joined, barcode: Barcode) {
             self.product_id = product.id
             self.type = barcode.type.rawValue
             self.barcode = barcode.barcode
+        }
+    }
+    
+    struct Joined: Identifiable, Hashable, Decodable {
+        let id: Int
+        let barcode: String
+        let type: AVMetadataObject.ObjectType
+        let product: Product.Joined
+        
+        func isBarcode(_ code: Barcode?) -> Bool {
+            guard let code = code else { return false }
+            return type == code.type && barcode == code.barcode
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case id, barcode, type, product = "products"
+        }
+        
+        init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            id = try values.decode(Int.self, forKey: .id)
+            barcode = try values.decode(String.self, forKey: .barcode)
+            type = AVMetadataObject.ObjectType(rawValue: try values.decode(String.self, forKey: .type))
+            product =  try values.decode(Product.Joined.self, forKey: .product)
         }
     }
 }
@@ -84,31 +108,3 @@ extension ProductBarcode {
         case joined(_ withTableName: Bool)
     }
 }
-
-
-struct ProductBarcodeJoined: Identifiable, Hashable {
-    let id: Int
-    let barcode: String
-    let type: AVMetadataObject.ObjectType
-    let product: ProductJoined
-    
-    func isBarcode(_ code: Barcode?) -> Bool {
-        guard let code = code else { return false }
-        return type == code.type && barcode == code.barcode
-    }
-}
-
-extension ProductBarcodeJoined: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case id, barcode, type, product = "products"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
-        barcode = try values.decode(String.self, forKey: .barcode)
-        type = AVMetadataObject.ObjectType(rawValue: try values.decode(String.self, forKey: .type))
-        product =  try values.decode(ProductJoined.self, forKey: .product)
-    }
-}
-

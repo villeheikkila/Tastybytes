@@ -1,9 +1,7 @@
-struct Subcategory: Identifiable, Decodable {
+struct Subcategory: Identifiable, Decodable, Hashable {
     let id: Int
     let name: String
-}
-
-extension Subcategory: Hashable {
+    
     static func == (lhs: Subcategory, rhs: Subcategory) -> Bool {
         return lhs.id == rhs.id
     }
@@ -31,47 +29,51 @@ extension Subcategory {
     }
 }
 
-struct SubcategoryJoinedWithCategory: Identifiable {
-    let id: Int
-    let name: String
-    let category: Category
-    
-    func getSubcategory() -> Subcategory {
-        return Subcategory(id: id, name: name)
-    }
-}
-
-extension SubcategoryJoinedWithCategory: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
-    static func == (lhs: SubcategoryJoinedWithCategory, rhs: SubcategoryJoinedWithCategory) -> Bool {
-        return lhs.id == rhs.id
-    }
-}
-
-extension SubcategoryJoinedWithCategory: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case category = "categories"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
-        name = try values.decode(String.self, forKey: .name)
-        category = try values.decode(Category.self, forKey: .category)
+extension Subcategory {
+    struct JoinedCategory: Identifiable, Hashable, Decodable {
+        let id: Int
+        let name: String
+        let category: Category
+        
+        func getSubcategory() -> Subcategory {
+            return Subcategory(id: id, name: name)
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+        
+        static func == (lhs: JoinedCategory, rhs: JoinedCategory) -> Bool {
+            return lhs.id == rhs.id
+        }
+        
+        init(id: Int, name: String, category: Category) {
+            self.id = id
+            self.name = name
+            self.category = category
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case category = "categories"
+        }
+        
+        init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            id = try values.decode(Int.self, forKey: .id)
+            name = try values.decode(String.self, forKey: .name)
+            category = try values.decode(Category.self, forKey: .category)
+        }
     }
 }
 
 extension Subcategory {
-    struct New: Encodable {
+    struct NewRequest: Encodable {
         let name: String
         let category_id: Int
         
-        init (name: String, category: CategoryJoinedWithSubcategories) {
+        init (name: String, category: Category.JoinedSubcategories) {
             self.name = name
             self.category_id = category.id
         }

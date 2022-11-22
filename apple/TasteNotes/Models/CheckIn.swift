@@ -7,7 +7,7 @@ struct CheckIn: Identifiable {
     let imageUrl: String?
     let createdAt: Date
     let profile: Profile
-    let product: ProductJoined
+    let product: Product.Joined
     let checkInReactions: [CheckInReaction]
     let taggedProfiles: [Profile]
     let flavors: [Flavor]
@@ -92,7 +92,7 @@ extension CheckIn: Decodable {
         imageUrl = try values.decodeIfPresent(String.self, forKey: .imageUrl)
         createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
         profile = try values.decode(Profile.self, forKey: .profile)
-        product = try values.decode(ProductJoined.self, forKey: .product)
+        product = try values.decode(Product.Joined.self, forKey: .product)
         checkInReactions = try values.decode([CheckInReaction].self, forKey: .checkInReactions)
         taggedProfiles = try values.decode([CheckInTaggedProfile].self, forKey: .taggedProfiles).compactMap { $0.profile }
         flavors = try values.decode([CheckInFlavors].self, forKey: .flavors).compactMap { $0.flavor }
@@ -102,51 +102,55 @@ extension CheckIn: Decodable {
     }
 }
 
-struct NewCheckInParams: Encodable {
-    let p_product_id: Int
-    let p_rating: Double?
-    let p_review: String?
-    let p_manufacturer_id: Int?
-    let p_serving_style_id: Int?
-    let p_friend_ids: [String]?
-    let p_flavor_ids: [Int]?
-    let p_location_id: String?
+extension CheckIn {
+    struct NewRequest: Encodable {
+        let p_product_id: Int
+        let p_rating: Double?
+        let p_review: String?
+        let p_manufacturer_id: Int?
+        let p_serving_style_id: Int?
+        let p_friend_ids: [String]?
+        let p_flavor_ids: [Int]?
+        let p_location_id: String?
+        
+        init(product: Product.Joined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Double, location: Location?) {
+            p_product_id = product.id
+            p_review = review == "" ? nil : review
+            p_manufacturer_id = manufacturer?.id ?? nil
+            p_serving_style_id = servingStyle?.id ?? nil
+            p_friend_ids = taggedFriends.map { $0.id.uuidString }
+            p_flavor_ids = flavors.map { $0.id }
+            p_rating = rating
+            p_location_id = location?.id.uuidString
+        }
+    }
+    
+    struct UpdateRequest: Encodable {
+        let p_check_in_id: Int
+        let p_product_id: Int
+        let p_rating: Double
+        let p_review: String?
+        let p_manufacturer_id: Int?
+        let p_serving_style_id: Int?
+        let p_friend_ids: [String]?
+        let p_flavor_ids: [Int]?
+        let p_location_id: String?
 
-    init(product: ProductJoined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Double, location: Location?) {
-        p_product_id = product.id
-        p_review = review == "" ? nil : review
-        p_manufacturer_id = manufacturer?.id ?? nil
-        p_serving_style_id = servingStyle?.id ?? nil
-        p_friend_ids = taggedFriends.map { $0.id.uuidString }
-        p_flavor_ids = flavors.map { $0.id }
-        p_rating = rating
-        p_location_id = location?.id.uuidString
+        init(checkIn: CheckIn, product: Product.Joined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Double, location: Location?) {
+            p_check_in_id = checkIn.id
+            p_product_id = product.id
+            p_review = review
+            p_manufacturer_id = manufacturer?.id ?? nil
+            p_serving_style_id = servingStyle?.id ?? nil
+            p_friend_ids = taggedFriends.map { $0.id.uuidString }
+            p_flavor_ids = flavors.map { $0.id }
+            p_rating = rating
+            p_location_id = location?.id.uuidString
+        }
     }
 }
 
-struct UpdateCheckInParams: Encodable {
-    let p_check_in_id: Int
-    let p_product_id: Int
-    let p_rating: Double
-    let p_review: String?
-    let p_manufacturer_id: Int?
-    let p_serving_style_id: Int?
-    let p_friend_ids: [String]?
-    let p_flavor_ids: [Int]?
-    let p_location_id: String?
 
-    init(checkIn: CheckIn, product: ProductJoined, review: String?, taggedFriends: [Profile], servingStyle: ServingStyle?, manufacturer: Company?, flavors: [Flavor], rating: Double, location: Location?) {
-        p_check_in_id = checkIn.id
-        p_product_id = product.id
-        p_review = review
-        p_manufacturer_id = manufacturer?.id ?? nil
-        p_serving_style_id = servingStyle?.id ?? nil
-        p_friend_ids = taggedFriends.map { $0.id.uuidString }
-        p_flavor_ids = flavors.map { $0.id }
-        p_rating = rating
-        p_location_id = location?.id.uuidString
-    }
-}
 
 struct CheckInTaggedProfile: Decodable {
     let profile: Profile
@@ -177,7 +181,7 @@ struct CheckInFlavors: Decodable {
 struct CheckInNotification: Identifiable, Hashable, Decodable {
     let id: Int
     let profile: Profile
-    let product: ProductJoined
+    let product: Product.Joined
 
     static func == (lhs: CheckInNotification, rhs: CheckInNotification) -> Bool {
         return lhs.id == rhs.id
@@ -193,6 +197,6 @@ struct CheckInNotification: Identifiable, Hashable, Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(Int.self, forKey: .id)
         profile = try values.decode(Profile.self, forKey: .profile)
-        product = try values.decode(ProductJoined.self, forKey: .product)
+        product = try values.decode(Product.Joined.self, forKey: .product)
     }
 }
