@@ -5,6 +5,7 @@ struct AppLogoView: View {
         Image("ProjectLogo")
             .resizable()
             .aspectRatio(contentMode: .fill)
+            .frame(width: 120, height: 120)
     }
 }
 

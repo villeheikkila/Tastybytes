@@ -17,10 +17,6 @@ struct PreferencesScreenView: View {
                 NavigationLink(destination: BlockedUsersScreenView()) {
                     Label("Blocked Users", systemImage: "person.fill.xmark")
                 }
-                
-                NavigationLink(destination: DeleteAccountScreenView()) {
-                    Label("Delete Account", systemImage: "person.crop.circle.badge.minus")
-                }
             }
             
             Section {

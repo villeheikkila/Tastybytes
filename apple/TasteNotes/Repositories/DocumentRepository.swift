@@ -14,6 +14,7 @@ struct SupabaseDocumentRepository: DocumentRepository {
                 .database
                 .from(Document.getQuery(.tableName))
                 .select(columns: Document.getQuery(.saved(false)))
+                .eq(column: "page_name", value: Document.Page.about.rawValue)
                 .single()
                 .execute()
                 .decoded(to: Document.About.self)
