@@ -164,7 +164,7 @@ extension CompanyScreenView {
                         self.companySummary = summary
                     }
                 case let .failure(error):
-                    print("error: \(error)")
+                    print(error)
                 }
             }
         }

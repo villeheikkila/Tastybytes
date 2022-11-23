@@ -2,8 +2,6 @@ import SwiftUI
 
 struct AboutScreenView: View {
     @StateObject var viewModel = ViewModel()
-    
-    let currentYear = Calendar(identifier: .gregorian).dateComponents([.year], from: .now).year
 
     var body: some View {
         VStack {
@@ -54,6 +52,7 @@ struct AboutScreenView: View {
                                     .frame(width: 18, height: 18)
                                     .padding(.leading, 5)
                                     .padding(.trailing, 15)
+                                
                                 Text("LinkedIn")
                                     .fontWeight(.medium)
                             }
@@ -67,7 +66,7 @@ struct AboutScreenView: View {
             HStack(alignment: .center) {
                 Image(systemName: "c.circle")
                     .font(.system(size: 12, weight: .bold, design: .default))
-                if let currentYear = currentYear {
+                if let currentYear = viewModel.currentYear {
                     Text(String(currentYear))
                         .font(.system(size: 12, weight: .bold, design: .default))
                 }
@@ -85,6 +84,7 @@ struct AboutScreenView: View {
 extension AboutScreenView {
     @MainActor class ViewModel: ObservableObject {
         @Published var aboutPage: AboutPage?
+        let currentYear = Calendar(identifier: .gregorian).dateComponents([.year], from: .now).year
 
         func getAboutPage() {
             Task {

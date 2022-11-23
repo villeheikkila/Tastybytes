@@ -303,14 +303,13 @@ extension CheckInSheetView {
         func updateCheckIn(_ checkIn: CheckIn, _ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) {
             let updateCheckInParams = CheckIn.UpdateRequest(checkIn: checkIn, product: checkIn.product, review: review, taggedFriends: taggedFriends, servingStyle: servingStyle, manufacturer: manufacturer, flavors: pickedFlavors, rating: rating, location: location)
 
-            print(updateCheckInParams)
             Task {
                 switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
                 case let .success(updatedCheckIn):
                     onUpdate(updatedCheckIn)
                     uploadImage(checkIn: updatedCheckIn)
                 case let .failure(error):
-                    print("error: \(error)")
+                    print(error)
                 }
             }
         }
