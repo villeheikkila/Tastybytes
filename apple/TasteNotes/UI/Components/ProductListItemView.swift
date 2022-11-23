@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ProductListItemView: View {
     let product: Product.Joined
-    @State private var searchText = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {

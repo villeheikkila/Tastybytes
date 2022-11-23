@@ -63,7 +63,6 @@ extension FlavorSheetView {
     @MainActor class ViewModel: ObservableObject {
         @Published var availableFlavors = [Flavor]()
 
-
         func loadFlavors() {
             if availableFlavors.count == 0 {
                 Task {
