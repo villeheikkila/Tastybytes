@@ -29,14 +29,10 @@ struct AuthenticationScreenView: View {
     }
     
     var projectLogo: some View {
-        VStack(alignment: .center) {
-            Image("app-icon")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
+        VStack(alignment: .center, spacing: 12) {
+            AppLogoView()
                 .frame(width: 120, height: 120)
-                .padding(.top, 5)
-            Text("TasteNotes")
-                .font(Font.custom("Menlo-Bold", size: 28))
+            AppNameView()
         }
         .onTapGesture {
             self.focusedField = nil

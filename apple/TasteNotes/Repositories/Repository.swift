@@ -42,6 +42,7 @@ class SupabaseRepository: Repository {
     let flavor: FlavorRepository
     let notification: NotificationRepository
     let location: LocationRepository
+    let document: DocumentRepository
 
     init(_ client: SupabaseClient) {
         self.profile = SupabaseProfileRepository(client: client)
@@ -59,5 +60,6 @@ class SupabaseRepository: Repository {
         self.flavor = SupabaseFlavorRepository(client: client)
         self.notification = SupabaseNotificationRepository(client: client)
         self.location = SupabaseLocationRepository(client: client)
+        self.document = SupabaseDocumentRepository(client: client)
     }
 }

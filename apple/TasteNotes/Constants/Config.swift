@@ -40,4 +40,6 @@ public enum Config {
         }
         return baseUrl
     }()
+    
+    static let appName = "TasteNotes"
 }
