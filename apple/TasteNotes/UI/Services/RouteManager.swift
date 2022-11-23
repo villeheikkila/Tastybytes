@@ -87,7 +87,7 @@ func createLinkToScreen(_ destination: FetchAndNavigateToDestination) -> URL {
 
 extension URL {
     var isDeepLink: Bool {
-        return scheme == "tastenotes"
+        return scheme == Config.appName.lowercased()
     }
 
     var hostIdentifier: HostIdentifier? {

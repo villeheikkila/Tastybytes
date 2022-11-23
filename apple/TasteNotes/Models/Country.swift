@@ -1,17 +1,35 @@
-struct Country: Identifiable {
+struct Country: Identifiable, Hashable, Decodable {
     var id: String { countryCode }
     let countryCode: String
     let name: String
     let emoji: String
-}
-
-extension Country: Hashable {
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(countryCode)
     }
     
     static func == (lhs: Country, rhs: Country) -> Bool {
         return lhs.countryCode == rhs.countryCode
+    }
+    
+    init(countryCode: String, name: String, emoji: String) {
+        self.countryCode = countryCode
+        self.name = name
+        self.emoji = emoji
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case countryCode = "country_code"
+        case name
+        case emoji
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        countryCode = try container.decode(String.self, forKey: .countryCode)
+        name = try container.decode(String.self, forKey: .name)
+        emoji = try container.decode(String.self, forKey: .emoji)
     }
 }
 
@@ -31,21 +49,5 @@ extension Country {
     enum QueryType {
         case tableName
         case saved(_ withTableName: Bool)
-    }
-}
-
-extension Country: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case countryCode = "country_code"
-        case name
-        case emoji
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        countryCode = try container.decode(String.self, forKey: .countryCode)
-        name = try container.decode(String.self, forKey: .name)
-        emoji = try container.decode(String.self, forKey: .emoji)
     }
 }

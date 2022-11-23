@@ -15,7 +15,7 @@ struct Barcode: Encodable, Hashable {
     }
 }
 
-struct ProductBarcode: Identifiable {
+struct ProductBarcode: Identifiable, Hashable, Decodable {
     let id: Int
     let barcode: String
     let type: AVMetadataObject.ObjectType
@@ -24,9 +24,7 @@ struct ProductBarcode: Identifiable {
         guard let code = code else { return false }
         return type == code.type && barcode == code.barcode
     }
-}
-
-extension ProductBarcode: Hashable {
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
@@ -34,9 +32,7 @@ extension ProductBarcode: Hashable {
     static func == (lhs: ProductBarcode, rhs: ProductBarcode) -> Bool {
         return lhs.id == rhs.id
     }
-}
-
-extension ProductBarcode: Decodable {
+    
     enum CodingKeys: String, CodingKey {
         case id, barcode, type
     }
