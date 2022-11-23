@@ -19,6 +19,10 @@ struct Document: Decodable {
         case tableName
         case saved(_ withTableName: Bool)
     }
+    
+    enum Page: String, Encodable {
+        case about
+    }
 }
 
 extension Document {

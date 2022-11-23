@@ -16,7 +16,6 @@ struct SplashScreenView: View {
                 .ignoresSafeArea()
             VStack {
                 AppLogoView()
-                    .frame(width: 120, height: 120)
                     .scaleEffect(size)
                     .opacity(opacity)
 

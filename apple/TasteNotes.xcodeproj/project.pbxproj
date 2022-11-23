@@ -28,7 +28,6 @@
 		5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECBF28EF434700CCDE6A /* Profile.swift */; };
 		5C12B42D2902A12A001EE549 /* ApplicationSettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B42C2902A12A001EE549 /* ApplicationSettingsScreenView.swift */; };
 		5C12B42F2902A191001EE549 /* ProfileSettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B42E2902A190001EE549 /* ProfileSettingsScreenView.swift */; };
-		5C12B4312902A29A001EE549 /* DeleteAccountScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4302902A29A001EE549 /* DeleteAccountScreenView.swift */; };
 		5C12B4332902A4C9001EE549 /* BlockedUsersScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4322902A4C9001EE549 /* BlockedUsersScreenView.swift */; };
 		5C12B4352902C9D0001EE549 /* TabbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4342902C9D0001EE549 /* TabbarView.swift */; };
 		5C12B4372902CA04001EE549 /* NotificationScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4362902CA04001EE549 /* NotificationScreenView.swift */; };
@@ -138,7 +137,6 @@
 		5C11ECC128EF768A00CCDE6A /* .xcconfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = .xcconfig.xcconfig; sourceTree = "<group>"; };
 		5C12B42C2902A12A001EE549 /* ApplicationSettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationSettingsScreenView.swift; sourceTree = "<group>"; };
 		5C12B42E2902A190001EE549 /* ProfileSettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsScreenView.swift; sourceTree = "<group>"; };
-		5C12B4302902A29A001EE549 /* DeleteAccountScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountScreenView.swift; sourceTree = "<group>"; };
 		5C12B4322902A4C9001EE549 /* BlockedUsersScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersScreenView.swift; sourceTree = "<group>"; };
 		5C12B4342902C9D0001EE549 /* TabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarView.swift; sourceTree = "<group>"; };
 		5C12B4362902CA04001EE549 /* NotificationScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScreenView.swift; sourceTree = "<group>"; };
@@ -375,7 +373,6 @@
 				5C12B4322902A4C9001EE549 /* BlockedUsersScreenView.swift */,
 				5CD10A3E28F760520001CFC2 /* CheckInScreenView.swift */,
 				5C25AEB929053B7E00793607 /* CompanyScreenView.swift */,
-				5C12B4302902A29A001EE549 /* DeleteAccountScreenView.swift */,
 				5C11ECB228EEEDEF00CCDE6A /* FriendsScreenView.swift */,
 				5C12B4362902CA04001EE549 /* NotificationScreenView.swift */,
 				5C11ECB528EEEFB300CCDE6A /* PreferencesScreenView.swift */,
@@ -606,7 +603,6 @@
 				5C25AEB429031F9C00793607 /* Extensions.swift in Sources */,
 				5CED432828FD417E003F8194 /* ProductSheetView.swift in Sources */,
 				5C25AEBA29053B7E00793607 /* CompanyScreenView.swift in Sources */,
-				5C12B4312902A29A001EE549 /* DeleteAccountScreenView.swift in Sources */,
 				5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */,
 				5CED433228FD76BB003F8194 /* SubBrandSheetView.swift in Sources */,
 				5CED432E28FD6EA7003F8194 /* BrandSheetView.swift in Sources */,

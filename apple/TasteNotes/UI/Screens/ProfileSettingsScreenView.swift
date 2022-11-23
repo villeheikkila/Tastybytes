@@ -13,8 +13,32 @@ struct ProfileSettingsScreenView: View {
             profileSection
             profileDisplaySettings
             emailSection
+            Spacer()
+                .listRowBackground(Color.clear)
+            deleteAccount
         }
         .navigationTitle("Profile")
+        .fileExporter(isPresented: $viewModel.showingExporter,
+                      document: viewModel.csvExport,
+                      contentType: UTType.commaSeparatedText,
+                      defaultFilename: "tasty_export.csv") { result in
+            switch result {
+            case .success:
+                toastManager.toggle(.success("Data was exported as CSV"))
+            case .failure:
+                toastManager.toggle(.error("Error occurred while trying to export data"))
+            }
+        }
+        .confirmationDialog(
+            "Are you sure you want to permanently delete your account? All data will be lost.",
+            isPresented: $viewModel.showDeleteConfirmation
+        ) {
+            Button("Delete Account", role: .destructive, action: {
+                viewModel.deleteCurrentAccount(onError: {
+                    message in toastManager.toggle(.error(message))
+                })
+            })
+        }
         .task {
             viewModel.getInitialValues(profile: profileManager.get())
         }
@@ -71,6 +95,32 @@ struct ProfileSettingsScreenView: View {
         }
         .headerProminence(.increased)
     }
+
+    var deleteAccount: some View {
+        Section {
+            Button(action: {
+                viewModel.exportData(onError: {
+                    message in toastManager.toggle(.error(message))
+                })
+            }) {
+                Label("Export CSV", systemImage: "square.and.arrow.up")
+                    .fontWeight(.medium)
+            }
+            Button(role: .destructive, action: {
+                viewModel.showDeleteConfirmation = true
+            }) {
+                if UIColor.responds(to: Selector(("_systemDestructiveTintColor"))) {
+                    if let destructive = UIColor.perform(Selector(("_systemDestructiveTintColor")))?.takeUnretainedValue() as? UIColor {
+                        Label("Delete Account", systemImage: "person.crop.circle.badge.minus")
+                            .fontWeight(.medium)
+                            .foregroundColor(Color(destructive))
+                    } else {
+                        Text("Delete Account")
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension ProfileSettingsScreenView {
@@ -81,6 +131,10 @@ extension ProfileSettingsScreenView {
         @Published var lastName = ""
         @Published var showFullName = false
         @Published var email = ""
+
+        @Published var csvExport: CSVFile?
+        @Published var showingExporter = false
+        @Published var showDeleteConfirmation = false
 
         var profile: Profile.Extended?
         var user: User?
@@ -150,6 +204,32 @@ extension ProfileSettingsScreenView {
         func sendEmailVerificationLink() {
             Task {
                 _ = await repository.auth.sendEmailVerification(email: email)
+            }
+        }
+
+        func exportData(onError: @escaping (_ error: String) -> Void) {
+            Task {
+                switch await repository.profile.currentUserExport() {
+                case let .success(csvText):
+                    await MainActor.run {
+                        self.csvExport = CSVFile(initialText: csvText)
+                        self.showingExporter = true
+                    }
+                case let .failure(error):
+                    onError(error.localizedDescription)
+                }
+            }
+        }
+
+        func deleteCurrentAccount(onError: @escaping (_ error: String) -> Void) {
+            Task {
+                switch await repository.profile.deleteCurrentAccount() {
+                case .success():
+                    _ = await repository.profile.deleteCurrentAccount()
+                    _ = await repository.auth.logOut()
+                case let .failure(error):
+                    onError(error.localizedDescription)
+                }
             }
         }
     }

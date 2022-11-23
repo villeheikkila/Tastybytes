@@ -31,7 +31,6 @@ struct AuthenticationScreenView: View {
     var projectLogo: some View {
         VStack(alignment: .center, spacing: 12) {
             AppLogoView()
-                .frame(width: 120, height: 120)
             AppNameView()
         }
         .onTapGesture {
