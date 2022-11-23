@@ -43,7 +43,6 @@ class RouteManager: ObservableObject {
             case let .company(id):
                 switch await repository.company.getById(id: id) {
                 case let .success(company):
-                    print(company)
                     self.navigateTo(destination: company, resetStack: true)
                 case let .failure(error):
                     print(error)
