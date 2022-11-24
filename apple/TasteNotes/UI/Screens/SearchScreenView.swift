@@ -1,18 +1,5 @@
 import SwiftUI
 
-enum SearchScope: String, CaseIterable {
-    case products
-    case companies
-    case users
-}
-
-enum FruitToken: Identifiable, Hashable, CaseIterable {
-    case apple
-    case pear
-    case banana
-    var id: Self { self }
-}
-
 struct SearchScreenView: View {
     @ObservedObject var viewModel: SearchScreenViewModel
     @EnvironmentObject private var toastManager: ToastManager
@@ -224,4 +211,10 @@ class SearchScreenViewModel: ObservableObject {
             searchProfiles()
         }
     }
+}
+
+enum SearchScope: String, CaseIterable {
+    case products
+    case companies
+    case users
 }
