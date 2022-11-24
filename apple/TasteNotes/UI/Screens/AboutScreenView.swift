@@ -66,6 +66,7 @@ struct AboutScreenView: View {
             HStack(alignment: .center) {
                 Image(systemName: "c.circle")
                     .font(.system(size: 12, weight: .bold, design: .default))
+                
                 if let currentYear = viewModel.currentYear {
                     Text(String(currentYear))
                         .font(.system(size: 12, weight: .bold, design: .default))
