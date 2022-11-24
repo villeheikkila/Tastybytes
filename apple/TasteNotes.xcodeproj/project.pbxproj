@@ -45,6 +45,8 @@
 		5C663F25292E0100006F9A97 /* AppNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F24292E0100006F9A97 /* AppNameView.swift */; };
 		5C663F27292E0F1D006F9A97 /* DocumentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F26292E0F1D006F9A97 /* DocumentRepository.swift */; };
 		5C663F29292E1071006F9A97 /* Documents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F28292E1071006F9A97 /* Documents.swift */; };
+		5C663F2B292FBE10006F9A97 /* AppIconScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F2A292FBE10006F9A97 /* AppIconScreenView.swift */; };
+		5C663F2D292FE614006F9A97 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F2C292FE614006F9A97 /* AppIcon.swift */; };
 		5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */; };
 		5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B828FA07CF00AED6F1 /* Friend.swift */; };
 		5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1728FED0E00055CFD2 /* ServingStyle.swift */; };
@@ -154,6 +156,8 @@
 		5C663F24292E0100006F9A97 /* AppNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNameView.swift; sourceTree = "<group>"; };
 		5C663F26292E0F1D006F9A97 /* DocumentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentRepository.swift; sourceTree = "<group>"; };
 		5C663F28292E1071006F9A97 /* Documents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Documents.swift; sourceTree = "<group>"; };
+		5C663F2A292FBE10006F9A97 /* AppIconScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconScreenView.swift; sourceTree = "<group>"; };
+		5C663F2C292FE614006F9A97 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsRepository.swift; sourceTree = "<group>"; };
 		5C7DC2B828FA07CF00AED6F1 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		5C919E1728FED0E00055CFD2 /* ServingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyle.swift; sourceTree = "<group>"; };
@@ -272,6 +276,7 @@
 				5CC2FE972919CB19002BDF83 /* Country.swift */,
 				5C0E365329279B240072EFBD /* Barcode.swift */,
 				5C663F28292E1071006F9A97 /* Documents.swift */,
+				5C663F2C292FE614006F9A97 /* AppIcon.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -368,6 +373,7 @@
 			children = (
 				5CE90090292101C8003DE697 /* AboutScreenView.swift */,
 				5C11ECBA28EEF24700CCDE6A /* ActivityScreenView.swift */,
+				5C663F2A292FBE10006F9A97 /* AppIconScreenView.swift */,
 				5C12B42C2902A12A001EE549 /* ApplicationSettingsScreenView.swift */,
 				5C0E364B292308080072EFBD /* AuthenticationScreenView.swift */,
 				5C12B4322902A4C9001EE549 /* BlockedUsersScreenView.swift */,
@@ -377,11 +383,11 @@
 				5C12B4362902CA04001EE549 /* NotificationScreenView.swift */,
 				5C11ECB528EEEFB300CCDE6A /* PreferencesScreenView.swift */,
 				5CD10A3C28F75B7A0001CFC2 /* ProductScreenView.swift */,
+				5CB52D63292BBC14000BF55F /* ProfileProductListView.swift */,
 				5C11ECB828EEF16000CCDE6A /* ProfileScreenView.swift */,
 				5C12B42E2902A190001EE549 /* ProfileSettingsScreenView.swift */,
 				5C11ECBC28EEF30600CCDE6A /* SearchScreenView.swift */,
 				5CE9008B291FCB71003DE697 /* SplashScreenView.swift */,
-				5CB52D63292BBC14000BF55F /* ProfileProductListView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -587,6 +593,7 @@
 				5C25AEB62903FBDE00793607 /* Role.swift in Sources */,
 				5C919E2028FF024A0055CFD2 /* FlavorSheetView.swift in Sources */,
 				5C12B4372902CA04001EE549 /* NotificationScreenView.swift in Sources */,
+				5C663F2B292FBE10006F9A97 /* AppIconScreenView.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileScreenView.swift in Sources */,
 				5C989DBE2901EA6200BBC5A7 /* AuthenticatedContentView.swift in Sources */,
 				5C12B4392902CAF3001EE549 /* Notification.swift in Sources */,
@@ -596,6 +603,7 @@
 				5C919E2228FF0CF60055CFD2 /* ProductVariant.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsScreenView.swift in Sources */,
 				5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */,
+				5C663F2D292FE614006F9A97 /* AppIcon.swift in Sources */,
 				5CED433428FDA357003F8194 /* SubBrandRepository.swift in Sources */,
 				5CB1C24928F9BBAA000B0EB4 /* CheckInReactionRepository.swift in Sources */,
 				5C11ECB628EEEFB300CCDE6A /* PreferencesScreenView.swift in Sources */,
@@ -777,6 +785,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIconCola AppIconEnergyDrink AppIconJuice AppIconKombucha";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -818,6 +827,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIconCola AppIconEnergyDrink AppIconJuice AppIconKombucha";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;

@@ -14,6 +14,10 @@ struct PreferencesScreenView: View {
                     Label("Application", systemImage: "gear")
                 }
                 
+                NavigationLink(destination: AppIconScreenView()) {
+                    Label("App Icon", systemImage: "app.fill")
+                }
+                
                 NavigationLink(destination: BlockedUsersScreenView()) {
                     Label("Blocked Users", systemImage: "person.fill.xmark")
                 }
