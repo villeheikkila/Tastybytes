@@ -8,100 +8,131 @@ struct CompanyScreenView: View {
     @StateObject private var viewModel = ViewModel()
     @State private var showDeleteCompanyConfirmationDialog = false
     @State private var showDeleteBrandConfirmationDialog = false
+    @State private var showDeleteProductConfirmationDialog = false
 
     var body: some View {
         List {
-            VStack(alignment: .leading) {
+            Section {
                 companyHeader
-                if let companySummary = viewModel.companySummary {
+                if let companySummary = viewModel.companySummary, companySummary.averageRating != nil {
                     SummaryView(companySummary: companySummary)
                 }
             }
             .listRowBackground(Color.clear)
             .navigationTitle(company.name)
-            .contextMenu {
-                ShareLink("Share", item: createLinkToScreen(.company(id: company.id)))
-
-                if profileManager.hasPermission(.canDeleteCompanies) {
+            .navigationBarItems(trailing:
+                Menu {
+                    ShareLink("Share", item: createLinkToScreen(.company(id: company.id)))
                     Button(action: {
-                        showDeleteCompanyConfirmationDialog.toggle()
+                        viewModel.setActiveSheet(.editSuggestion)
                     }) {
-                        Label("Delete", systemImage: "trash.fill")
-                            .foregroundColor(.red)
+                        Label("Edit Suggestion", systemImage: "pencil")
                     }
-                }
-
-                Button(action: {
-                    viewModel.setActiveSheet(.editSuggestion)
-                }) {
-                    Label("Edit Suggestion", systemImage: "pencil")
-                }
-            }
+                
+                    Divider()
+                
+                    if profileManager.hasPermission(.canDeleteCompanies) {
+                        Button(action: {
+                            showDeleteCompanyConfirmationDialog.toggle()
+                        }) {
+                            Label("Delete", systemImage: "trash.fill")
+                        }
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                })
             .sheet(item: $viewModel.activeSheet) { sheet in
                 switch sheet {
                 case .editSuggestion:
                     companyEditSuggestionSheet
                 case .mergeProduct:
-                    mergeProductSheet
+                    if let productToMerge = viewModel.productToMerge {
+                        MergeSheetView(productToMerge: productToMerge)
+                    }
                 }
             }
 
-            if let companyJoined = viewModel.companyJoined {
-                ForEach(companyJoined.brands, id: \.id) { brand in
-                    Section {
-                        ForEach(brand.subBrands, id: \.id) {
-                            subBrand in
-                            ForEach(subBrand.products, id: \.id) {
-                                product in
-                                NavigationLink(value: Product.Joined(company: company, product: product, subBrand: subBrand, brand: brand)) {
-                                    HStack {
-                                        Text(joinOptionalStrings([brand.name, subBrand.name, product.name]))
-                                            .lineLimit(nil)
-                                        Spacer()
-                                    }.contextMenu {
-                                        if profileManager.hasPermission(.canMergeProducts) {
-                                            Button(action: {
-                                                viewModel.productToMerge = product
-                                                viewModel.setActiveSheet(.mergeProduct)
-                                            }) {
-                                                Text("Merge product to...")
-                                            }
+            productList
+        }
+        .confirmationDialog("Delete Company Confirmation",
+                            isPresented: $showDeleteCompanyConfirmationDialog
+        ) {
+            Button("Delete Company", role: .destructive, action: {
+                viewModel.deleteCompany(company, onDelete: {
+                    routeManager.gotoHomePage()
+                })
+            })
+        }
+        .confirmationDialog("Delete Product Confirmation",
+                            isPresented: $showDeleteProductConfirmationDialog
+        ) {
+            Button("Delete Product \(viewModel.productToDelete?.name ?? ""). This can't be undone.", role: .destructive, action: {
+                viewModel.deleteProduct()
+            })
+        }
+        .task {
+            viewModel.refreshData(companyId: company.id)
+        }
+    }
+
+    @ViewBuilder
+    var productList: some View {
+        if let companyJoined = viewModel.companyJoined {
+            ForEach(companyJoined.brands, id: \.id) { brand in
+                Section {
+                    ForEach(brand.subBrands, id: \.id) {
+                        subBrand in
+                        ForEach(subBrand.products, id: \.id) {
+                            product in
+                            NavigationLink(value: Product.Joined(company: company, product: product, subBrand: subBrand, brand: brand)) {
+                                HStack {
+                                    Text(joinOptionalStrings([brand.name, subBrand.name, product.name]))
+                                        .lineLimit(nil)
+                                    Spacer()
+                                }
+                                .contextMenu {
+                                    if profileManager.hasPermission(.canMergeProducts) {
+                                        Button(action: {
+                                            viewModel.productToMerge = product
+                                            viewModel.setActiveSheet(.mergeProduct)
+                                        }) {
+                                            Text("Merge product to...")
+                                        }
+                                    }
+
+                                    if profileManager.hasPermission(.canDeleteProducts) {
+                                        Button(action: {
+                                            showDeleteProductConfirmationDialog.toggle()
+                                            viewModel.productToDelete = product
+                                        }) {
+                                            Label("Delete", systemImage: "trash.fill")
+                                                .foregroundColor(.red)
                                         }
                                     }
                                 }
                             }
                         }
-                    } header: {
-                        HStack {
-                            Text("\(brand.name) (\(brand.getNumberOfProducts()))")
-                            Spacer()
-                            if profileManager.hasPermission(.canDeleteBrands) {
-                                Button(action: {
-                                    showDeleteBrandConfirmationDialog.toggle()
-                                }) {
-                                    Image(systemName: "x.square")
-                                }
+                    }
+                } header: {
+                    HStack {
+                        Text("\(brand.name) (\(brand.getNumberOfProducts()))")
+                        Spacer()
+                        if profileManager.hasPermission(.canDeleteBrands) {
+                            Button(action: {
+                                showDeleteBrandConfirmationDialog.toggle()
+                            }) {
+                                Image(systemName: "x.square")
                             }
                         }
                     }
-                    .headerProminence(.increased)
-                    .confirmationDialog("delete_brand",
-                                        isPresented: $showDeleteBrandConfirmationDialog
-                    ) {
-                        Button("Delete Brand", role: .destructive, action: { viewModel.deleteBrand(brand) })
-                    }
+                }
+                .headerProminence(.increased)
+                .confirmationDialog("Delete Brand Confirmation",
+                                    isPresented: $showDeleteBrandConfirmationDialog
+                ) {
+                    Button("Delete Brand", role: .destructive, action: { viewModel.deleteBrand(brand) })
                 }
             }
-        }
-        .confirmationDialog("delete_company",
-                            isPresented: $showDeleteCompanyConfirmationDialog
-        ) {
-            Button("Delete Company", role: .destructive, action: { viewModel.deleteCompany(company, onDelete: {
-                routeManager.gotoHomePage()
-            }) })
-        }
-        .task {
-            viewModel.getInitialData(company.id)
         }
     }
 
@@ -117,38 +148,6 @@ struct CompanyScreenView: View {
                 Text("What should the company be called?")
             }
         }
-    }
-
-    var mergeProductSheet: some View {
-        NavigationStack {
-            List {
-                if let productSearchResults = viewModel.productSearchResults {
-                    ForEach(productSearchResults, id: \.self) { product in
-                        Button(action: {
-                            viewModel.mergeToProduct = product
-                            viewModel.isPresentingProductMergeConfirmation.toggle()
-                        }) {
-                            ProductListItemView(product: product)
-                        }.buttonStyle(.plain)
-                    }
-                }
-            }
-            .navigationTitle("Merge to...")
-            .confirmationDialog("Are you sure?",
-                                isPresented: $viewModel.isPresentingProductMergeConfirmation) {
-              Button("Merge. This can't be undone.", role: .destructive) {
-                  viewModel.mergeProducts()
-              }
-            } message: {
-                if let productToMerge = viewModel.productToMerge, let mergeToProduct = viewModel.mergeToProduct {
-                    Text("Merge \(productToMerge.name) to \(mergeToProduct.getDisplayName(.fullName))")
-                }
-            }
-        }
-        .searchable(text: $viewModel.productSearchTerm)
-        .onSubmit(of: .search, {
-            viewModel.searchProducts()
-        })
     }
 
     var companyHeader: some View {
@@ -179,14 +178,9 @@ extension CompanyScreenView {
         @Published var companyJoined: Company.Joined?
         @Published var companySummary: Company.Summary?
         @Published var activeSheet: Sheet?
-
         @Published var newCompanyNameSuggestion = ""
-
         @Published var productToMerge: Product.JoinedCategory?
-        @Published var mergeToProduct: Product.Joined?
-        @Published var isPresentingProductMergeConfirmation = false
-        @Published var productSearchTerm = ""
-        @Published var productSearchResults: [Product.Joined] = []
+        @Published var productToDelete: Product.JoinedCategory?
 
         func setActiveSheet(_ sheet: Sheet) {
             activeSheet = sheet
@@ -194,24 +188,8 @@ extension CompanyScreenView {
 
         func sendCompanyEditSuggestion() {
         }
-        
-        func mergeProducts() {
-            if let productToMerge = productToMerge, let mergeToProduct = mergeToProduct {
-                Task {
-                    switch await repository.product.mergeProducts(productId: productToMerge.id, toProductId: mergeToProduct.id) {
-                    case .success():
-                        print("success")
-                        self.productToMerge = nil
-                        self.mergeToProduct = nil
-                        self.activeSheet = nil
-                    case let .failure(error):
-                        print(error)
-                    }
-                }
-            }
-        }
 
-        func getInitialData(_ companyId: Int) {
+        func refreshData(companyId: Int) {
             Task {
                 switch await repository.company.getJoinedById(id: companyId) {
                 case let .success(company):
@@ -246,17 +224,16 @@ extension CompanyScreenView {
             }
         }
 
-        func searchProducts() {
-            Task {
-                switch await repository.product.search(searchTerm: productSearchTerm, categoryName: nil) {
-                case let .success(searchResults):
-                    await MainActor.run {
-                        if let productToMergeId = productToMerge?.id {
-                            self.productSearchResults = searchResults.filter { $0.id != productToMergeId }
-                        }
+        func deleteProduct() {
+            if let productToDelete = productToDelete, let companyJoined = companyJoined {
+                Task {
+                    switch await repository.product.delete(id: productToDelete.id) {
+                    case .success():
+                        refreshData(companyId: companyJoined.id)
+                        self.productToDelete = nil
+                    case let .failure(error):
+                        print(error)
                     }
-                case let .failure(error):
-                    print(error)
                 }
             }
         }
@@ -269,9 +246,7 @@ extension CompanyScreenView {
                     if let companyJoined = companyJoined {
                         switch await repository.company.getJoinedById(id: companyJoined.id) {
                         case let .success(company):
-                            await MainActor.run {
-                                self.companyJoined = company
-                            }
+                            refreshData(companyId: company.id)
                         case let .failure(error):
                             print(error)
                         }

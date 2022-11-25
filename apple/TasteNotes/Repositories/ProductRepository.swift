@@ -122,7 +122,7 @@ struct SupabaseProductRepository: ProductRepository {
     
     func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error> {
         do {
-            let response = try await client
+            try await client
                 .database
                 .rpc(fn: "fnc__merge_products", params: Product.MergeProductsParams(productId: productId, toProductId: toProductId))
                 .execute()

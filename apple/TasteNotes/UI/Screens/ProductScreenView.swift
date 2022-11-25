@@ -37,7 +37,7 @@ struct ProductScreenView: View {
                                    ProductSheetView(initialProduct: product)
                                }
                            }
-                           .confirmationDialog("delete_company",
+                           .confirmationDialog("Delete Product Confirmation",
                                                isPresented: $viewModel.showDeleteProductConfirmationDialog
                            ) {
                                Button("Delete Product", role: .destructive, action: { viewModel.deleteProduct(product)
@@ -82,11 +82,11 @@ struct ProductScreenView: View {
             }
             
             if profileManager.hasPermission(.canDeleteProducts) {
+                Divider()
                 Button(action: {
                     viewModel.showDeleteConfirmation()
                 }) {
                     Label("Delete", systemImage: "trash.fill")
-                        .foregroundColor(.red)
                 }
             }
         }
@@ -94,7 +94,7 @@ struct ProductScreenView: View {
 
     @ViewBuilder
     var productSummary: some View {
-        if let productSummary = viewModel.productSummary {
+        if let productSummary = viewModel.productSummary, productSummary.averageRating != nil  {
             Grid(alignment: .leading) {
                 GridRow {
                     Text("")
