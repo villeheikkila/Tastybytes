@@ -34,8 +34,13 @@ extension Notification {
 }
 
 extension Notification: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(seenAt)
+    }
+    
     static func == (lhs: Notification, rhs: Notification) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.seenAt == rhs.seenAt
     }
 }
 

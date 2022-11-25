@@ -27,7 +27,7 @@ struct NotificationScreenView: View {
             .onDelete(perform: notificationManager.deleteFromIndex)
         }
         .refreshable {
-            notificationManager.refresh()
+            notificationManager.refresh(reset: true)
         }
     }
 }
