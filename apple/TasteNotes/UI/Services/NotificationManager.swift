@@ -4,13 +4,16 @@ import SwiftUI
 final class NotificationManager: NSObject, ObservableObject {
     @Published private(set) var notifications = [Notification]()
 
-    func refresh() {
-        let latestId = notifications.first?.id
+    func refresh(reset: Bool = false) {
         Task {
-            switch await repository.notification.getAll(afterId: latestId) {
+            switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
             case let .success(newNotifications):
                 await MainActor.run {
-                    self.notifications.append(contentsOf: newNotifications)
+                    if reset {
+                        self.notifications = newNotifications
+                    } else {
+                        self.notifications.append(contentsOf: newNotifications)
+                    }
                 }
             case let .failure(error):
                 print(error.localizedDescription)
