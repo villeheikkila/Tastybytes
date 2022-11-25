@@ -95,6 +95,11 @@ struct CheckInCardView: View {
                     .font(.system(size: 12, weight: .bold, design: .default))
                     .foregroundColor(.primary)
                 Spacer()
+                if let location = checkIn.location {
+                    Text("\(location.name) \(location.country?.emoji ?? "")")
+                        .font(.system(size: 12, weight: .bold, design: .default))
+                        .foregroundColor(.primary)
+                }
             }
         }
         .padding([.leading, .trailing], 10)

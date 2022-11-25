@@ -44,7 +44,7 @@ extension CheckIn {
         case .tableName:
             return tableName
         case let .joined(withTableName):
-            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.minimal(true)), Product.getQuery(.joinedBrandSubcategories(true)), CheckInReaction.getQuery(.joinedProfile(true)), checkInTaggedProfilesJoined, checkInFlavorsJoined, productVariantJoined, ServingStyle.getQuery(.saved(true))), withTableName)
+            return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.minimal(true)), Product.getQuery(.joinedBrandSubcategories(true)), CheckInReaction.getQuery(.joinedProfile(true)), checkInTaggedProfilesJoined, checkInFlavorsJoined, productVariantJoined, ServingStyle.getQuery(.saved(true)), Location.getQuery(.joined(true))), withTableName)
         }
     }
 
