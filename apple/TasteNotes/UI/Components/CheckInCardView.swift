@@ -170,14 +170,18 @@ struct CheckInCardView: View {
                         }
 
                         if let flavors = checkIn.flavors {
-                            WrappingHStack(flavors, id: \.self, spacing: .constant(4)) {
-                                flavor in
-                                ChipView(title: flavor.name.capitalized, cornerRadius: 5)
+                            HStack {
+                                if let servingStyle = checkIn.servingStyle {
+                                    Text(servingStyle.name.rawValue)
+                                }
+                                WrappingHStack(flavors, id: \.self, spacing: .constant(4)) {
+                                    flavor in
+                                    ChipView(title: flavor.name.capitalized, cornerRadius: 5)
+                                }
                             }
                         }
                     }
                 }
-                .cornerRadius(5)
 
                 if checkIn.taggedProfiles.count > 0 {
                     VStack {
