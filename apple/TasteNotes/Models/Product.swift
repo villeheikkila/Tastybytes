@@ -45,6 +45,16 @@ extension Product {
             }
         }
     }
+    
+    struct MergeProductsParams: Encodable {
+        let p_product_id: Int
+        let p_to_product_id: Int?
+
+        init(productId: Int, toProductId: Int) {
+            p_product_id = productId
+            p_to_product_id = toProductId
+        }
+    }
 
     struct NewRequest: Encodable {
         let p_name: String

@@ -9,6 +9,7 @@ protocol ProductRepository {
     func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
     func getSummaryById(id: Int) async -> Result<ProductSummary, Error>
     func addBarcodeToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error>
+    func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
     func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async -> Result<DecodableId, Error>
 }
 
@@ -114,6 +115,19 @@ struct SupabaseProductRepository: ProductRepository {
                 .execute()
             
             return .success(barcode)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error> {
+        do {
+            let response = try await client
+                .database
+                .rpc(fn: "fnc__merge_products", params: Product.MergeProductsParams(productId: productId, toProductId: toProductId))
+                .execute()
+
+            return .success(())
         } catch {
             return .failure(error)
         }
