@@ -177,8 +177,6 @@ struct CheckInCardView: View {
                         }
                     }
                 }
-                .padding(.all, 10)
-                .background(Color(.secondarySystemBackground))
                 .cornerRadius(5)
 
                 if checkIn.taggedProfiles.count > 0 {
