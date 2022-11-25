@@ -56,7 +56,6 @@ struct FriendsScreenView: View {
                         }
                     }
                 }
-
                 .errorAlert(error: $viewModel.modalError)
             })
             .presentationDetents([.medium])

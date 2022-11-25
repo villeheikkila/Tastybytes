@@ -40,7 +40,9 @@ struct CompanyScreenView: View {
             .sheet(item: $viewModel.activeSheet) { sheet in
                 switch sheet {
                 case .editSuggestion:
-                    companyEditSuggestion
+                    companyEditSuggestionSheet
+                case .mergeProduct:
+                    mergeProductSheet
                 }
             }
 
@@ -56,6 +58,15 @@ struct CompanyScreenView: View {
                                         Text(joinOptionalStrings([brand.name, subBrand.name, product.name]))
                                             .lineLimit(nil)
                                         Spacer()
+                                    }.contextMenu {
+                                        if profileManager.hasPermission(.canMergeProducts) {
+                                            Button(action: {
+                                                viewModel.productToMerge = product
+                                                viewModel.setActiveSheet(.mergeProduct)
+                                            }) {
+                                                Text("Merge product to...")
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -94,7 +105,7 @@ struct CompanyScreenView: View {
         }
     }
 
-    var companyEditSuggestion: some View {
+    var companyEditSuggestionSheet: some View {
         Form {
             Section {
                 TextField("Name", text: $viewModel.newCompanyNameSuggestion)
@@ -106,6 +117,38 @@ struct CompanyScreenView: View {
                 Text("What should the company be called?")
             }
         }
+    }
+
+    var mergeProductSheet: some View {
+        NavigationStack {
+            List {
+                if let productSearchResults = viewModel.productSearchResults {
+                    ForEach(productSearchResults, id: \.self) { product in
+                        Button(action: {
+                            viewModel.mergeToProduct = product
+                            viewModel.isPresentingProductMergeConfirmation.toggle()
+                        }) {
+                            ProductListItemView(product: product)
+                        }.buttonStyle(.plain)
+                    }
+                }
+            }
+            .navigationTitle("Merge to...")
+            .confirmationDialog("Are you sure?",
+                                isPresented: $viewModel.isPresentingProductMergeConfirmation) {
+              Button("Merge. This can't be undone.", role: .destructive) {
+                  viewModel.mergeProducts()
+              }
+            } message: {
+                if let productToMerge = viewModel.productToMerge, let mergeToProduct = viewModel.mergeToProduct {
+                    Text("Merge \(productToMerge.name) to \(mergeToProduct.getDisplayName(.fullName))")
+                }
+            }
+        }
+        .searchable(text: $viewModel.productSearchTerm)
+        .onSubmit(of: .search, {
+            viewModel.searchProducts()
+        })
     }
 
     var companyHeader: some View {
@@ -129,6 +172,7 @@ extension CompanyScreenView {
     enum Sheet: Identifiable {
         var id: Self { self }
         case editSuggestion
+        case mergeProduct
     }
 
     @MainActor class ViewModel: ObservableObject {
@@ -138,11 +182,33 @@ extension CompanyScreenView {
 
         @Published var newCompanyNameSuggestion = ""
 
+        @Published var productToMerge: Product.JoinedCategory?
+        @Published var mergeToProduct: Product.Joined?
+        @Published var isPresentingProductMergeConfirmation = false
+        @Published var productSearchTerm = ""
+        @Published var productSearchResults: [Product.Joined] = []
+
         func setActiveSheet(_ sheet: Sheet) {
             activeSheet = sheet
         }
 
         func sendCompanyEditSuggestion() {
+        }
+        
+        func mergeProducts() {
+            if let productToMerge = productToMerge, let mergeToProduct = mergeToProduct {
+                Task {
+                    switch await repository.product.mergeProducts(productId: productToMerge.id, toProductId: mergeToProduct.id) {
+                    case .success():
+                        print("success")
+                        self.productToMerge = nil
+                        self.mergeToProduct = nil
+                        self.activeSheet = nil
+                    case let .failure(error):
+                        print(error)
+                    }
+                }
+            }
         }
 
         func getInitialData(_ companyId: Int) {
@@ -174,6 +240,21 @@ extension CompanyScreenView {
                 switch await repository.company.delete(id: company.id) {
                 case .success():
                     onDelete()
+                case let .failure(error):
+                    print(error)
+                }
+            }
+        }
+
+        func searchProducts() {
+            Task {
+                switch await repository.product.search(searchTerm: productSearchTerm, categoryName: nil) {
+                case let .success(searchResults):
+                    await MainActor.run {
+                        if let productToMergeId = productToMerge?.id {
+                            self.productSearchResults = searchResults.filter { $0.id != productToMergeId }
+                        }
+                    }
                 case let .failure(error):
                     print(error)
                 }
