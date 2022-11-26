@@ -12,7 +12,7 @@ struct ChipView: View {
             }
             Text(title).font(.system(size: 10, weight: .bold, design: .default))
         }
-        .padding(.all, 4)
+        .padding(.all, 3)
         .foregroundColor(.white)
         .background(Color(.systemBlue))
         .cornerRadius(cornerRadius)
