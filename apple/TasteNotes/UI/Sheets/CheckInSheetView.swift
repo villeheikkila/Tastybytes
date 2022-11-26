@@ -14,7 +14,6 @@ struct CheckInSheetView: View {
     let onUpdate: ((_ checkIn: CheckIn) -> Void)?
     let existingCheckIn: CheckIn?
     let action: Action
-    
 
     init(product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
         self.product = product
@@ -194,8 +193,8 @@ struct CheckInSheetView: View {
                         case .update:
                             if let existingCheckIn = existingCheckIn, let onUpdate = onUpdate {
                                 viewModel.updateCheckIn(existingCheckIn, {
-                                    newCheckIn in
-                                    onUpdate(newCheckIn)
+                                    updatedCheckIn in
+                                    onUpdate(updatedCheckIn)
                                 })
                             }
                         }
@@ -220,7 +219,7 @@ extension CheckInSheetView {
     enum Focusable {
         case review
     }
-    
+
     enum Action {
         case create
         case update
@@ -245,9 +244,10 @@ extension CheckInSheetView {
         @Published var servingStyleName: ServingStyleName = ServingStyleName.none {
             // TODO: Investigate if this cna be avoided by passing ServingStyle directly to the picker
             didSet {
-                self.servingStyle = servingStyles.first(where: { $0.name == servingStyleName})
+                servingStyle = servingStyles.first(where: { $0.name == servingStyleName })
             }
         }
+
         @Published var servingStyles = [ServingStyle]()
         @Published var servingStyle: ServingStyle?
         @Published var taggedFriends = [Profile]()
@@ -306,8 +306,8 @@ extension CheckInSheetView {
             Task {
                 switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
                 case let .success(updatedCheckIn):
-                    onUpdate(updatedCheckIn)
                     uploadImage(checkIn: updatedCheckIn)
+                    onUpdate(updatedCheckIn)
                 case let .failure(error):
                     print(error)
                 }
@@ -342,16 +342,14 @@ extension CheckInSheetView {
         }
 
         func loadInitialData(product: Product.Joined) {
-            if let categoryId = product.subcategories.first?.category.id {
-                Task {
-                    switch await repository.category.getServingStylesByCategory(categoryId: categoryId) {
-                    case let .success(categoryServingStyles):
-                        await MainActor.run {
-                            self.servingStyles = categoryServingStyles.servingStyles
-                        }
-                    case let .failure(error):
-                        print(error)
+            Task {
+                switch await repository.category.getServingStylesByCategory(categoryId: product.category.id) {
+                case let .success(categoryServingStyles):
+                    await MainActor.run {
+                        self.servingStyles = categoryServingStyles.servingStyles
                     }
+                case let .failure(error):
+                    print(error)
                 }
             }
         }

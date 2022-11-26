@@ -79,7 +79,7 @@ struct CSVFile: FileDocument {
     }
 }
 
-struct DecodableId: Decodable {
+struct IntId: Decodable {
     let id: Int
 }
 

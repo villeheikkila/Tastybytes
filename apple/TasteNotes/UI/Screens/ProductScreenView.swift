@@ -61,8 +61,7 @@ struct ProductScreenView: View {
                 }
                 
                 HStack {
-                    Text(product.category.name.rawValue.capitalized)
-                        .font(.system(size: 12, weight: .bold, design: .default))
+                    CategoryNameView(category: product.category)
                     
                     ForEach(product.subcategories, id: \.id) { subcategory in
                         ChipView(title: subcategory.name, cornerRadius: 5)
