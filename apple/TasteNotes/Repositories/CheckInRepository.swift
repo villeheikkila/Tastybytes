@@ -96,7 +96,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: DecodableId.self)
+                .decoded(to: IntId.self)
 
             return await getById(id: createdCheckIn.id)
         } catch {

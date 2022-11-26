@@ -128,8 +128,7 @@ struct CheckInCardView: View {
         NavigationLink(value: checkIn.product) {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(checkIn.product.category.name.rawValue.capitalized)
-                        .font(.system(size: 12, weight: .bold, design: .default))
+                    CategoryNameView(category: checkIn.product.category)
                     
                     ForEach(checkIn.product.subcategories, id: \.id) { subcategory in
                         ChipView(title: subcategory.name, cornerRadius: 5)
@@ -138,7 +137,7 @@ struct CheckInCardView: View {
                     Spacer()
                     
                     if let servingStyle = checkIn.servingStyle {
-                        ServingStyleLabelView(servingStyle: servingStyle)
+                        ServingStyleLabelView(servingStyle: servingStyle    )
                     }
                 }.frame(height: 8)
                 

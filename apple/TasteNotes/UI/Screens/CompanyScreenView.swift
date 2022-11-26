@@ -18,7 +18,6 @@ struct CompanyScreenView: View {
                     SummaryView(companySummary: companySummary)
                 }
             }
-            .listRowBackground(Color.clear)
             .navigationTitle(company.name)
             .navigationBarItems(trailing:
                 Menu {
