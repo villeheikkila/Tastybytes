@@ -47,6 +47,25 @@ struct CheckInCardView: View {
                         ProgressView()
                     }
                 }
+                if checkIn.taggedProfiles.count > 0 {
+                    VStack {
+                        HStack {
+                            Text(verbatim: "Tagged friends")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                            Spacer()
+                        }
+                        HStack {
+                            ForEach(checkIn.taggedProfiles, id: \.id) {
+                                taggedProfile in
+                                NavigationLink(value: taggedProfile) {
+                                    AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 32, id: taggedProfile.id)
+                                }
+                            }
+                            Spacer()
+                        }
+                    }.padding([.trailing, .leading], 10)
+                }
                 footer
             }
             .padding([.top, .bottom], 10)
@@ -190,26 +209,6 @@ struct CheckInCardView: View {
                                     ChipView(title: flavor.name.capitalized, cornerRadius: 5)
                                 }
                             }
-                        }
-                    }
-                }
-
-                if checkIn.taggedProfiles.count > 0 {
-                    VStack {
-                        HStack {
-                            Text(verbatim: "Tagged friends")
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                            Spacer()
-                        }
-                        HStack {
-                            ForEach(checkIn.taggedProfiles, id: \.id) {
-                                taggedProfile in
-                                NavigationLink(value: taggedProfile) {
-                                    AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 32, id: taggedProfile.id)
-                                }
-                            }
-                            Spacer()
                         }
                     }
                 }
