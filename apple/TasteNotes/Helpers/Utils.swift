@@ -35,9 +35,9 @@ enum StrinLengthType {
 func validateStringLength(str: String, type: StrinLengthType) -> Bool {
     switch type {
     case .normal:
-        return str.count > 2 && str.count <= 24
+        return str.count > 1 && str.count <= 100
     case .long:
-        return str.count > 2 && str.count <= 48
+        return str.count > 1 && str.count <= 1024
     }
 }
 
