@@ -220,14 +220,14 @@ struct EditBrandSheetView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel = ViewModel()
     @State var name: String
-    
+    @State var brandOwner: Company
+
     let brand: Brand.JoinedSubBrandsProducts
-    let brandOwner: Company
     let onUpdate: () -> Void
 
     init(brand: Brand.JoinedSubBrandsProducts, brandOwner: Company, onUpdate: @escaping () -> Void) {
         self.brand = brand
-        self.brandOwner = brandOwner
+        _brandOwner = State(initialValue: brandOwner)
         _name = State(initialValue: brand.name)
         self.onUpdate = onUpdate
     }
@@ -236,6 +236,11 @@ struct EditBrandSheetView: View {
         Form {
             Section {
                 TextField("Name", text: $name)
+                Button(action: {
+                    viewModel.activeSheet = Sheet.brandOwner
+                }) {
+                    Text(brandOwner.name)
+                }
                 Button("Edit") {
                     viewModel.editBrand(brand: brand, name: name, brandOwner: brandOwner) {
                         dismiss()
@@ -253,15 +258,32 @@ struct EditBrandSheetView: View {
         }) {
             Text("Cancel").bold()
         })
+        .sheet(item: $viewModel.activeSheet) { sheet in NavigationStack {
+            switch sheet {
+            case .brandOwner:
+                CompanySheetView(onSelect: { company, _ in
+                    brandOwner = company
+                    viewModel.activeSheet = nil
+                })
+            }
+        }
+        }
     }
 }
 
 extension EditBrandSheetView {
+    enum Sheet: Identifiable {
+        var id: Self { self }
+        case brandOwner
+    }
+
     @MainActor class ViewModel: ObservableObject {
+        @Published var activeSheet: Sheet?
+
         func editBrand(brand: Brand.JoinedSubBrandsProducts, name: String, brandOwner: Company, onSuccess: @escaping () -> Void) {
             Task {
                 switch await repository.brand.update(updateRequest: Brand.UpdateRequest(id: brand.id, name: name, brandOwnerId: brandOwner.id)) {
-                case .success(_):
+                case .success:
                     onSuccess()
                 case let .failure(error):
                     print(error)
