@@ -259,7 +259,7 @@ extension CheckInSheetView {
             review = checkIn.review ?? ""
             rating = checkIn.rating ?? 0
             manufacturer = checkIn.variant?.manufacturer
-            servingStyle = checkIn.servingStyle
+            servingStyleName = checkIn.servingStyle?.name ?? ServingStyleName.none
             taggedFriends = checkIn.taggedProfiles
             pickedFlavors = checkIn.flavors
             location = checkIn.location
