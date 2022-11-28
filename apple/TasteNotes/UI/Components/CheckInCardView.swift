@@ -115,9 +115,11 @@ struct CheckInCardView: View {
                     .foregroundColor(.primary)
                 Spacer()
                 if let location = checkIn.location {
-                    Text("\(location.name) \(location.country?.emoji ?? "")")
-                        .font(.system(size: 12, weight: .bold, design: .default))
-                        .foregroundColor(.primary)
+                    NavigationLink(value: location) {
+                        Text("\(location.name) \(location.country?.emoji ?? "")")
+                            .font(.system(size: 12, weight: .bold, design: .default))
+                            .foregroundColor(.primary)
+                    }
                 }
             }
         }
@@ -239,6 +241,7 @@ extension CheckInCardView {
         case product
         case profile(Profile)
         case activity(Profile)
+        case location(Location)
     }
 
     @MainActor class ViewModel: ObservableObject {
