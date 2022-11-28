@@ -27,9 +27,9 @@ struct CompanyScreenView: View {
                     }) {
                         Label("Edit Suggestion", systemImage: "pencil")
                     }
-                
+
                     Divider()
-                
+
                     if profileManager.hasPermission(.canDeleteCompanies) {
                         Button(action: {
                             showDeleteCompanyConfirmationDialog.toggle()
@@ -41,12 +41,14 @@ struct CompanyScreenView: View {
                     Image(systemName: "ellipsis")
                 })
             .sheet(item: $viewModel.activeSheet) { sheet in
-                switch sheet {
-                case .editSuggestion:
-                    companyEditSuggestionSheet
-                case .mergeProduct:
-                    if let productToMerge = viewModel.productToMerge {
-                        MergeSheetView(productToMerge: productToMerge)
+                NavigationStack {
+                    switch sheet {
+                    case .editSuggestion:
+                        companyEditSuggestionSheet
+                    case .mergeProduct:
+                        if let productToMerge = viewModel.productToMerge {
+                            MergeSheetView(productToMerge: productToMerge)
+                        }
                     }
                 }
             }

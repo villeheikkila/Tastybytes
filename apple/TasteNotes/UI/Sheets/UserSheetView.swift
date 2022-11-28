@@ -6,23 +6,21 @@ struct UserSheetView<Actions: View>: View {
     let actions: (_ profile: Profile) -> Actions
 
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(viewModel.searchResults, id: \.id) { profile in
+        List {
+            ForEach(viewModel.searchResults, id: \.id) { profile in
+                HStack {
+                    AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
+                    Text(profile.preferredName)
+                    Spacer()
                     HStack {
-                        AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
-                        Text(profile.preferredName)
-                        Spacer()
-                        HStack {
-                            self.actions(profile)
-                        }
+                        self.actions(profile)
                     }
                 }
             }
-            .navigationTitle("Search users")
-            .searchable(text: $viewModel.searchText)
-            .onSubmit(of: .search, { viewModel.searchUsers() })
         }
+        .navigationTitle("Search users")
+        .searchable(text: $viewModel.searchText)
+        .onSubmit(of: .search, { viewModel.searchUsers() })
     }
 }
 

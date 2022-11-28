@@ -45,20 +45,22 @@ struct FriendsScreenView: View {
         .navigationBarItems(
             trailing: addFriendButton)
         .sheet(isPresented: $viewModel.showUserSearchSheet) {
-            UserSheetView(actions: { profile in
-                HStack {
-                    if !viewModel.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
-                        Button(action: { viewModel.sendFriendRequest(receiver: profile.id, onSuccess: {
-                            toastManager.toggle(.success("Friend Request Sent!"))
-                        }) }) {
-                            Image(systemName: "person.badge.plus")
-                                .imageScale(.large)
+            NavigationStack {
+                UserSheetView(actions: { profile in
+                    HStack {
+                        if !viewModel.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
+                            Button(action: { viewModel.sendFriendRequest(receiver: profile.id, onSuccess: {
+                                toastManager.toggle(.success("Friend Request Sent!"))
+                            }) }) {
+                                Image(systemName: "person.badge.plus")
+                                    .imageScale(.large)
+                            }
                         }
                     }
-                }
-                .errorAlert(error: $viewModel.modalError)
-            })
-            .presentationDetents([.medium])
+                    .errorAlert(error: $viewModel.modalError)
+                })
+                .presentationDetents([.medium])
+            }
         }
         .errorAlert(error: $viewModel.error)
         .confirmationDialog("delete_friend",

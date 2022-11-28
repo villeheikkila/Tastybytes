@@ -9,31 +9,29 @@ struct MergeSheetView: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        NavigationStack {
-            List {
-                if let productSearchResults = viewModel.productSearchResults {
-                    ForEach(productSearchResults, id: \.self) { product in
-                        Button(action: {
-                            viewModel.mergeToProduct = product
-                            viewModel.isPresentingProductMergeConfirmation.toggle()
-                        }) {
-                            ProductListItemView(product: product)
-                        }.buttonStyle(.plain)
-                    }
+        List {
+            if let productSearchResults = viewModel.productSearchResults {
+                ForEach(productSearchResults, id: \.self) { product in
+                    Button(action: {
+                        viewModel.mergeToProduct = product
+                        viewModel.isPresentingProductMergeConfirmation.toggle()
+                    }) {
+                        ProductListItemView(product: product)
+                    }.buttonStyle(.plain)
                 }
             }
-            .navigationTitle("Merge to...")
-            .confirmationDialog("Are you sure?",
-                                isPresented: $viewModel.isPresentingProductMergeConfirmation) {
-                Button("Merge. This can't be undone.", role: .destructive) {
-                    viewModel.mergeProducts(productToMerge: productToMerge, onSuccess: {
-                        dismiss()
-                    })
-                }
-            } message: {
-                if let mergeToProduct = viewModel.mergeToProduct {
-                    Text("Merge \(productToMerge.name) to \(mergeToProduct.getDisplayName(.fullName))")
-                }
+        }
+        .navigationTitle("Merge to...")
+        .confirmationDialog("Are you sure?",
+                            isPresented: $viewModel.isPresentingProductMergeConfirmation) {
+            Button("Merge. This can't be undone.", role: .destructive) {
+                viewModel.mergeProducts(productToMerge: productToMerge, onSuccess: {
+                    dismiss()
+                })
+            }
+        } message: {
+            if let mergeToProduct = viewModel.mergeToProduct {
+                Text("Merge \(productToMerge.name) to \(mergeToProduct.getDisplayName(.fullName))")
             }
         }
         .searchable(text: $viewModel.productSearchTerm)

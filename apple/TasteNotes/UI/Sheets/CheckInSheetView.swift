@@ -33,144 +33,144 @@ struct CheckInSheetView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    VStack(alignment: .leading) {
-                        HStack {
-                            CategoryNameView(category: product.category)
-                            ForEach(product.subcategories, id: \.id) { subcategory in
-                                ChipView(title: subcategory.name, cornerRadius: 5)
-                            }
+        Form {
+            Section {
+                VStack(alignment: .leading) {
+                    HStack {
+                        CategoryNameView(category: product.category)
+                        ForEach(product.subcategories, id: \.id) { subcategory in
+                            ChipView(title: subcategory.name, cornerRadius: 5)
                         }
-
-                        Text(product.getDisplayName(.fullName))
-                            .font(.system(size: 18, weight: .bold, design: .default))
-                            .foregroundColor(.primary)
-
-                        Text(product.getDisplayName(.brandOwner))
-                            .font(.system(size: 16, weight: .bold, design: .default))
-                            .foregroundColor(.secondary)
                     }
-                    .onTapGesture {
-                        self.focusedField = nil
-                    }
-                    
-                    if viewModel.image != nil || existingCheckIn?.imageUrl != nil {
-                        HStack {
-                            Spacer()
-                            if let image = viewModel.image {
-                                Image(uiImage: image)
+
+                    Text(product.getDisplayName(.fullName))
+                        .font(.system(size: 18, weight: .bold, design: .default))
+                        .foregroundColor(.primary)
+
+                    Text(product.getDisplayName(.brandOwner))
+                        .font(.system(size: 16, weight: .bold, design: .default))
+                        .foregroundColor(.secondary)
+                }
+                .onTapGesture {
+                    self.focusedField = nil
+                }
+
+                if viewModel.image != nil || existingCheckIn?.imageUrl != nil {
+                    HStack {
+                        Spacer()
+                        if let image = viewModel.image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: 150, alignment: .top)
+                                .shadow(radius: 4)
+                        } else if let imageUrl = existingCheckIn?.getImageUrl() {
+                            CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+                                image
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(height: 150, alignment: .top)
                                     .shadow(radius: 4)
-                            } else if let imageUrl = existingCheckIn?.getImageUrl() {
-                                CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(height: 150, alignment: .top)
-                                        .shadow(radius: 4)
-                                } placeholder: {
-                                    EmptyView()
-                                }
-                            }
-                            Spacer()
-                        }
-                    }
-                }
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
-
-                Section {
-                    TextField("How was it?", text: $viewModel.review, axis: .vertical)
-                        .focused($focusedField, equals: .review)
-                    RatingPickerView(rating: $viewModel.rating)
-                    Button(action: {
-                        showPhotoMenu.toggle()
-                    }) {
-                        Label("\(existingCheckIn?.getImageUrl() == nil && viewModel.image == nil ? "Add" : "Change") Photo", systemImage: "photo")
-                    }
-                    Button(action: {
-                        viewModel.setActiveSheet(.flavors)
-                    }) {
-                        if viewModel.pickedFlavors.count != 0 {
-                            WrappingHStack(viewModel.pickedFlavors, id: \.self) {
-                                flavor in ChipView(title: flavor.name.capitalized).padding(3)
-                            }
-                        } else {
-                            Text("Flavors")
-                        }
-                    }
-                } header: {
-                    Text("Review")
-                }
-                .headerProminence(.increased)
-
-                Section {
-                    if viewModel.servingStyles.count > 0 {
-                        Picker("Serving Style", selection: $viewModel.servingStyleName) {
-                            Text("Not Selected").tag(ServingStyleName.none)
-                            ForEach(viewModel.servingStyles.map { $0.name }) { servingStyle in
-                                Text(servingStyle.rawValue.capitalized)
+                            } placeholder: {
+                                EmptyView()
                             }
                         }
-                    }
-
-                    Button(action: {
-                        viewModel.setActiveSheet(.manufacturer)
-                    }) {
-                        Text(viewModel.manufacturer?.name ?? "Manufactured by")
+                        Spacer()
                     }
                 }
+            }
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
 
-                Section {
-                    Button(action: {
-                        viewModel.setActiveSheet(.friends)
-                    }) {
-                        if viewModel.taggedFriends.count == 0 {
-                            Text("Tag friends")
-                        } else {
-                            WrappingHStack(viewModel.taggedFriends, id: \.self) {
-                                friend in
-                                AvatarView(avatarUrl: friend.getAvatarURL(), size: 24, id: friend.id)
-                            }
-                        }
-                    }
-                }
-
+            Section {
+                TextField("How was it?", text: $viewModel.review, axis: .vertical)
+                    .focused($focusedField, equals: .review)
+                RatingPickerView(rating: $viewModel.rating)
                 Button(action: {
-                    viewModel.setActiveSheet(.location)
+                    showPhotoMenu.toggle()
                 }) {
-                    if let location = viewModel.location {
-                        HStack {
-                            Text(location.name)
-                            if let title = location.title {
-                                Text(title)
-                                    .foregroundColor(.secondary)
-                            }
+                    Label("\(existingCheckIn?.getImageUrl() == nil && viewModel.image == nil ? "Add" : "Change") Photo", systemImage: "photo")
+                }
+                Button(action: {
+                    viewModel.setActiveSheet(.flavors)
+                }) {
+                    if viewModel.pickedFlavors.count != 0 {
+                        WrappingHStack(viewModel.pickedFlavors, id: \.self) {
+                            flavor in ChipView(title: flavor.name.capitalized).padding(3)
                         }
                     } else {
-                        Text("Location")
+                        Text("Flavors")
+                    }
+                }
+            } header: {
+                Text("Review")
+            }
+            .headerProminence(.increased)
+
+            Section {
+                if viewModel.servingStyles.count > 0 {
+                    Picker("Serving Style", selection: $viewModel.servingStyleName) {
+                        Text("Not Selected").tag(ServingStyleName.none)
+                        ForEach(viewModel.servingStyles.map { $0.name }) { servingStyle in
+                            Text(servingStyle.rawValue.capitalized)
+                        }
+                    }
+                }
+
+                Button(action: {
+                    viewModel.setActiveSheet(.manufacturer)
+                }) {
+                    Text(viewModel.manufacturer?.name ?? "Manufactured by")
+                }
+            }
+
+            Section {
+                Button(action: {
+                    viewModel.setActiveSheet(.friends)
+                }) {
+                    if viewModel.taggedFriends.count == 0 {
+                        Text("Tag friends")
+                    } else {
+                        WrappingHStack(viewModel.taggedFriends, id: \.self) {
+                            friend in
+                            AvatarView(avatarUrl: friend.getAvatarURL(), size: 24, id: friend.id)
+                        }
                     }
                 }
             }
-            .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
-                Button(action: {
-                    viewModel.showCamera.toggle()
-                }) {
-                    Text("Camera")
+
+            Button(action: {
+                viewModel.setActiveSheet(.location)
+            }) {
+                if let location = viewModel.location {
+                    HStack {
+                        Text(location.name)
+                        if let title = location.title {
+                            Text(title)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                } else {
+                    Text("Location")
                 }
-                Button(action: {
-                    viewModel.setActiveSheet(.photoPicker)
-                }) {
-                    Text("Photo Gallery")
-                }
-            } message: {
-                Text("Pick a photo")
             }
-            .sheet(item: $viewModel.activeSheet) { sheet in
+        }
+        .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
+            Button(action: {
+                viewModel.showCamera.toggle()
+            }) {
+                Text("Camera")
+            }
+            Button(action: {
+                viewModel.setActiveSheet(.photoPicker)
+            }) {
+                Text("Photo Gallery")
+            }
+        } message: {
+            Text("Pick a photo")
+        }
+        .sheet(item: $viewModel.activeSheet) { sheet in
+            NavigationStack {
                 switch sheet {
                 case .friends:
                     FriendSheetView(taggedFriends: $viewModel.taggedFriends)
@@ -190,48 +190,48 @@ struct CheckInSheetView: View {
                     })
                 }
             }
-            .fullScreenCover(isPresented: $viewModel.showCamera, content: {
-                CameraView(onClose: {
-                    viewModel.showCamera = false
-                }, onCapture: {
-                    image in viewModel.setImageFromCamera(image)
-                })
+        }
+        .fullScreenCover(isPresented: $viewModel.showCamera, content: {
+            CameraView(onClose: {
+                viewModel.showCamera = false
+            }, onCapture: {
+                image in viewModel.setImageFromCamera(image)
             })
-            .navigationBarItems(
-                leading: Button(action: {
-                    dismiss()
-                }) {
-                    Text("Cancel")
-                        .bold()
-                },
-                trailing: Button(action: {
-                    switch action {
-                    case .create:
-                        if let onCreation = onCreation {
-                            viewModel.createCheckIn(product, {
-                                newCheckIn in
-                                onCreation(newCheckIn)
-                            })
-                        }
-                    case .update:
-                        if let existingCheckIn = existingCheckIn, let onUpdate = onUpdate {
-                            viewModel.updateCheckIn(existingCheckIn, {
-                                updatedCheckIn in
-                                onUpdate(updatedCheckIn)
-                            })
-                        }
+        })
+        .navigationBarItems(
+            leading: Button(action: {
+                dismiss()
+            }) {
+                Text("Cancel")
+                    .bold()
+            },
+            trailing: Button(action: {
+                switch action {
+                case .create:
+                    if let onCreation = onCreation {
+                        viewModel.createCheckIn(product, {
+                            newCheckIn in
+                            onCreation(newCheckIn)
+                        })
                     }
-                    dismiss()
-
-                }) {
-                    Text(action == Action.create ? "Check-in!" : "Update Check-in!")
-                        .bold()
-                })
-            .task {
-                viewModel.loadInitialData(product: product)
-                if let existingCheckIn = existingCheckIn {
-                    viewModel.loadFromCheckIn(checkIn: existingCheckIn)
+                case .update:
+                    if let existingCheckIn = existingCheckIn, let onUpdate = onUpdate {
+                        viewModel.updateCheckIn(existingCheckIn, {
+                            updatedCheckIn in
+                            onUpdate(updatedCheckIn)
+                        })
+                    }
                 }
+                dismiss()
+
+            }) {
+                Text(action == Action.create ? "Check-in!" : "Update Check-in!")
+                    .bold()
+            })
+        .task {
+            viewModel.loadInitialData(product: product)
+            if let existingCheckIn = existingCheckIn {
+                viewModel.loadFromCheckIn(checkIn: existingCheckIn)
             }
         }
     }

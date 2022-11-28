@@ -5,19 +5,17 @@ struct BarcodeScannerSheetView: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        NavigationStack {
-            BarcodeScannerView { response in
-                if case let .success(result) = response {
-                    onComplete(result)
-                    dismiss()
-                }
-            }
-            .navigationTitle("Barcode Scanner")
-            .navigationBarItems(trailing: Button(action: {
+        BarcodeScannerView { response in
+            if case let .success(result) = response {
+                onComplete(result)
                 dismiss()
-            }) {
-                Text("Cancel").bold()
-            })
+            }
         }
+        .navigationTitle("Barcode Scanner")
+        .navigationBarItems(trailing: Button(action: {
+            dismiss()
+        }) {
+            Text("Cancel").bold()
+        })
     }
 }

@@ -33,49 +33,51 @@ struct ProductSheetView: View {
             })
             .disabled(!viewModel.isValid())
         }
-        .navigationTitle("Add Product")
+        .navigationTitle(initialProduct == nil ? "Add Product" : "Edit Suggestion")
         .sheet(item: $viewModel.activeSheet) { sheet in
-            switch sheet {
-            case .subcategories:
-                if let subcategoriesForCategory = viewModel.category?.subcategories {
-                    SubcategorySheetView(availableSubcategories: subcategoriesForCategory, subcategories: $viewModel.subcategories, onCreate: {
-                        newSubcategoryName in viewModel.createSubcategory(newSubcategoryName: newSubcategoryName)
-                    })
-                }
-            case .brandOwner:
-                CompanySheetView(onSelect: { company, createdNew in
-                    viewModel.setBrandOwner(company)
-                    if createdNew {
-                        toastManager.toggle(.success(viewModel.getToastText(.createdCompany)))
+            NavigationStack {
+                switch sheet {
+                case .subcategories:
+                    if let subcategoriesForCategory = viewModel.category?.subcategories {
+                        SubcategorySheetView(availableSubcategories: subcategoriesForCategory, subcategories: $viewModel.subcategories, onCreate: {
+                            newSubcategoryName in viewModel.createSubcategory(newSubcategoryName: newSubcategoryName)
+                        })
                     }
-                    viewModel.dismissSheet()
-                })
-            case .brand:
-                if let brandOwner = viewModel.brandOwner {
-                    BrandSheetView(brandOwner: brandOwner, onSelect: { brand, createdNew in
+                case .brandOwner:
+                    CompanySheetView(onSelect: { company, createdNew in
+                        viewModel.setBrandOwner(company)
                         if createdNew {
-                            toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
+                            toastManager.toggle(.success(viewModel.getToastText(.createdCompany)))
                         }
-                        viewModel.setBrand(brand: brand)
-                    })
-                }
-
-            case .subBrand:
-                if let brand = viewModel.brand {
-                    SubBrandSheetView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
-                        if createdNew {
-                            toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
-                        }
-                        viewModel.subBrand = subBrand
                         viewModel.dismissSheet()
-
                     })
+                case .brand:
+                    if let brandOwner = viewModel.brandOwner {
+                        BrandSheetView(brandOwner: brandOwner, onSelect: { brand, createdNew in
+                            if createdNew {
+                                toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
+                            }
+                            viewModel.setBrand(brand: brand)
+                        })
+                    }
+                    
+                case .subBrand:
+                    if let brand = viewModel.brand {
+                        SubBrandSheetView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
+                            if createdNew {
+                                toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
+                            }
+                            viewModel.subBrand = subBrand
+                            viewModel.dismissSheet()
+                            
+                        })
+                    }
+                case .barcode:
+                    BarcodeScannerSheetView(onComplete: {
+                        barcode in viewModel.barcode = barcode
+                    })
+                    .presentationDetents([.medium])
                 }
-            case .barcode:
-                BarcodeScannerSheetView(onComplete: {
-                    barcode in viewModel.barcode = barcode
-                })
-                .presentationDetents([.medium])
             }
         }
         .task {
