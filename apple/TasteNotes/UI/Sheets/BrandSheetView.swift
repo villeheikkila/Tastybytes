@@ -8,36 +8,34 @@ struct BrandSheetView: View {
     let onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
 
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(viewModel.brandsWithSubBrands, id: \.self) { brand in
-                    Button(action: {
-                        onSelect(brand, false)
-                    }) {
-                        Text(brand.name)
-                    }
-                }
-
-                Section {
-                    TextField("Name", text: $viewModel.brandName)
-                    Button("Create") {
-                        viewModel.createNewBrand(brandOwner, {
-                            brand in onSelect(brand, true)
-                        })
-                    }
-                    .disabled(!validateStringLength(str: viewModel.brandName, type: .normal))
-                } header: {
-                    Text("Add new brand for \(brandOwner.name)")
+        List {
+            ForEach(viewModel.brandsWithSubBrands, id: \.self) { brand in
+                Button(action: {
+                    onSelect(brand, false)
+                }) {
+                    Text(brand.name)
                 }
             }
-            .navigationTitle("Add brand name")
-            .navigationBarItems(trailing: Button(action: {
-                dismiss()
-            }) {
-                Text("Cancel").bold()
-            })
 
-        }.task {
+            Section {
+                TextField("Name", text: $viewModel.brandName)
+                Button("Create") {
+                    viewModel.createNewBrand(brandOwner, {
+                        brand in onSelect(brand, true)
+                    })
+                }
+                .disabled(!validateStringLength(str: viewModel.brandName, type: .normal))
+            } header: {
+                Text("Add new brand for \(brandOwner.name)")
+            }
+        }
+        .navigationTitle("Add brand name")
+        .navigationBarItems(trailing: Button(action: {
+            dismiss()
+        }) {
+            Text("Cancel").bold()
+        })
+        .task {
             viewModel.loadBrands(brandOwner)
         }
     }

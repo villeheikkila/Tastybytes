@@ -1,5 +1,5 @@
-import SwiftUI
 import AlertToast
+import SwiftUI
 
 struct FlavorSheetView: View {
     @Environment(\.dismiss) var dismiss
@@ -8,7 +8,7 @@ struct FlavorSheetView: View {
     @State var searchText = ""
     @State var showToast = false
     let maxFlavors = 6
-    
+
     func toggleFlavor(_ flavor: Flavor) {
         if pickedFlavors.contains(flavor) {
             pickedFlavors.remove(object: flavor)
@@ -28,34 +28,32 @@ struct FlavorSheetView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            List(filteredFlavors, id: \.self) { flavor in
-                Button(action: {
-                    toggleFlavor(flavor)
-                }) {
-                    HStack {
-                        Text(flavor.name.capitalized)
-                        Spacer()
-                        if pickedFlavors.contains(flavor) {
-                            Image(systemName: "checkmark")
-                        }
+        List(filteredFlavors, id: \.self) { flavor in
+            Button(action: {
+                toggleFlavor(flavor)
+            }) {
+                HStack {
+                    Text(flavor.name.capitalized)
+                    Spacer()
+                    if pickedFlavors.contains(flavor) {
+                        Image(systemName: "checkmark")
                     }
                 }
             }
-            .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
-                AlertToast(type: .error(.red), title: "You can only add \(maxFlavors) flavors")
-            }
-            .navigationTitle("Flavors")
-            .navigationBarItems(trailing: Button(action: {
-                dismiss()
-            }) {
-                Text("Done").bold()
-            })
-            .task {
-                viewModel.loadFlavors()
-            }
-            .searchable(text: $searchText)
         }
+        .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
+            AlertToast(type: .error(.red), title: "You can only add \(maxFlavors) flavors")
+        }
+        .navigationTitle("Flavors")
+        .navigationBarItems(trailing: Button(action: {
+            dismiss()
+        }) {
+            Text("Done").bold()
+        })
+        .task {
+            viewModel.loadFlavors()
+        }
+        .searchable(text: $searchText)
     }
 }
 

@@ -28,13 +28,15 @@ struct ProductScreenView: View {
                                        .bold()
                                })
                            .sheet(item: $viewModel.activeSheet) { sheet in
-                               switch sheet {
-                               case .checkIn:
-                                   CheckInSheetView(product: product, onCreation: {
-                                       viewModel.appendNewCheckIn(newCheckIn: $0)
-                                   })
-                               case .editSuggestion:
-                                   ProductSheetView(initialProduct: product)
+                               NavigationStack {
+                                   switch sheet {
+                                   case .checkIn:
+                                       CheckInSheetView(product: product, onCreation: {
+                                           viewModel.appendNewCheckIn(newCheckIn: $0)
+                                       })
+                                   case .editSuggestion:
+                                       ProductSheetView(initialProduct: product)
+                                   }
                                }
                            }
                            .confirmationDialog("Delete Product Confirmation",

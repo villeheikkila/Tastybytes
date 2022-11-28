@@ -14,27 +14,26 @@ struct FriendSheetView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            List(viewModel.friends, id: \.self) { friend in
-                Button(action: {
-                    toggleFriend(friend: friend)
-                }) {
-                    AvatarView(avatarUrl: friend.getAvatarURL(), size: 32, id: friend.id)
-                    Text(friend.preferredName)
-                    Spacer()
-                    if taggedFriends.contains(friend) {
-                        Image(systemName: "checkmark")
-                    }
+        List(viewModel.friends, id: \.self) { friend in
+            Button(action: {
+                toggleFriend(friend: friend)
+            }) {
+                AvatarView(avatarUrl: friend.getAvatarURL(), size: 32, id: friend.id)
+                Text(friend.preferredName)
+                Spacer()
+                if taggedFriends.contains(friend) {
+                    Image(systemName: "checkmark")
                 }
             }
-            .buttonStyle(.plain)
-            .navigationTitle("Friends")
-            .navigationBarItems(trailing: Button(action: {
-                dismiss()
-            }) {
-                Text("Done").bold()
-            })
-        }.task {
+        }
+        .buttonStyle(.plain)
+        .navigationTitle("Friends")
+        .navigationBarItems(trailing: Button(action: {
+            dismiss()
+        }) {
+            Text("Done").bold()
+        })
+        .task {
             viewModel.loadFriends()
         }
     }

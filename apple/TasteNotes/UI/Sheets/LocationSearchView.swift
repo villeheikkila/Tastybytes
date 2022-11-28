@@ -11,31 +11,29 @@ struct LocationSearchView: View {
     var onSelect: (_ location: Location) -> Void
 
     var body: some View {
-        NavigationStack {
-            List(viewModel.viewData, id: \.self) { location in
-                Button(action: {
-                    viewModel.storeLocation(location, onSuccess: {
-                        savedLocation in onSelect(savedLocation)
-                        dismiss()
-                    })
-                }) {
-                    VStack(alignment: .leading) {
-                        Text(location.name)
-                        if let title = location.title {
-                            Text(title)
-                                .foregroundColor(.secondary)
-                        }
+        List(viewModel.viewData, id: \.self) { location in
+            Button(action: {
+                viewModel.storeLocation(location, onSuccess: {
+                    savedLocation in onSelect(savedLocation)
+                    dismiss()
+                })
+            }) {
+                VStack(alignment: .leading) {
+                    Text(location.name)
+                    if let title = location.title {
+                        Text(title)
+                            .foregroundColor(.secondary)
                     }
                 }
             }
-            .navigationBarItems(trailing: Button(action: {
-                dismiss()
-            }) {
-                Text("Cancel").bold()
-            })
-            .navigationTitle("Location")
-            .searchable(text: $viewModel.searchText)
         }
+        .navigationBarItems(trailing: Button(action: {
+            dismiss()
+        }) {
+            Text("Cancel").bold()
+        })
+        .navigationTitle("Location")
+        .searchable(text: $viewModel.searchText)
         .task {
             viewModel.setInitialLocation(locationManager.lastLocation)
         }
