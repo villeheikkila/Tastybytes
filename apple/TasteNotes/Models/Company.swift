@@ -1,6 +1,6 @@
 import Foundation
 
-struct Company: Identifiable {
+struct Company: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
     let logoUrl: String?
@@ -14,6 +14,34 @@ struct Company: Identifiable {
         } else {
             return nil
         }
+    }
+    
+    init(id: Int, name: String, logoUrl: String?) {
+        self.id = id
+        self.name = name
+        self.logoUrl = logoUrl
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(logoUrl)
+    }
+
+    static func == (lhs: Company, rhs: Company) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case logoUrl = "logo_url"
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        logoUrl = try container.decodeIfPresent(String.self, forKey: .logoUrl)
     }
 }
 
@@ -40,34 +68,13 @@ extension Company {
     }
 }
 
-extension Company: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(logoUrl)
-    }
-
-    static func == (lhs: Company, rhs: Company) -> Bool {
-        return lhs.id == rhs.id
-    }
-}
-
-extension Company: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case logoUrl = "logo_url"
-    }
-
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
-        name = try values.decode(String.self, forKey: .name)
-        logoUrl = try values.decodeIfPresent(String.self, forKey: .logoUrl)
-    }
-}
-
 extension Company {
     struct NewRequest: Encodable {
+        let name: String
+    }
+    
+    struct UpdateRequest: Encodable {
+        let id: Int
         let name: String
     }
 

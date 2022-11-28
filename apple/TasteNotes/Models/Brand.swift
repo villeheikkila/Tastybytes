@@ -130,6 +130,18 @@ extension Brand {
             self.brand_owner_id = brandOwnerId
         }
     }
+    
+    struct UpdateRequest: Encodable {
+        let id: Int
+        let name: String
+        let brand_owner_id: Int
+        
+        init(id: Int, name: String, brandOwnerId: Int) {
+            self.id = id
+            self.name = name
+            self.brand_owner_id = brandOwnerId
+        }
+    }
 }
 
 

@@ -4,6 +4,7 @@ protocol CompanyRepository {
     func getById(id: Int) async -> Result<Company, Error>
     func getJoinedById(id: Int) async -> Result<Company.Joined, Error>
     func insert(newCompany: Company.NewRequest) async -> Result<Company, Error>
+    func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error>
     func delete(id: Int) async -> Result<Void, Error>
     func search(searchTerm: String) async -> Result<[Company], Error>
     func getSummaryById(id: Int) async -> Result<Company.Summary, Error>
@@ -59,6 +60,24 @@ struct SupabaseCompanyRepository: CompanyRepository {
                 .execute()
                 .decoded(to: Company.self)
 
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error> {
+        do {
+            let response = try await client
+                .database
+                .from(Company.getQuery(.tableName))
+                .update(values: updateRequest)
+                .eq(column: "id", value: updateRequest.id)
+                .select(columns: Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
+                .single()
+                .execute()
+                .decoded(to: Company.Joined.self)
+            
             return .success(response)
         } catch {
             return .failure(error)
