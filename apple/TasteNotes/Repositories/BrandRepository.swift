@@ -4,6 +4,7 @@ import Supabase
 protocol BrandRepository {
     func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error>
     func insert(newBrand: Brand.NewRequest) async -> Result<Brand.JoinedSubBrands, Error>
+    func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error>
     func delete(id: Int) async -> Result<Void, Error>
 }
 
@@ -39,6 +40,21 @@ struct SupabaseBrandRepository: BrandRepository {
                 .decoded(to: Brand.JoinedSubBrands.self)
 
             return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .from(Brand.getQuery(.tableName))
+                .update(values: updateRequest)
+                .eq(column: "id", value: updateRequest.id)
+                .execute()
+            
+            return .success(())
         } catch {
             return .failure(error)
         }

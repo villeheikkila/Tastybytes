@@ -19,32 +19,20 @@ struct CompanyScreenView: View {
                 }
             }
             .navigationTitle(company.name)
-            .navigationBarItems(trailing:
-                Menu {
-                    ShareLink("Share", item: createLinkToScreen(.company(id: company.id)))
-                    Button(action: {
-                        viewModel.setActiveSheet(.editSuggestion)
-                    }) {
-                        Label("Edit Suggestion", systemImage: "pencil")
-                    }
-
-                    Divider()
-
-                    if profileManager.hasPermission(.canDeleteCompanies) {
-                        Button(action: {
-                            showDeleteCompanyConfirmationDialog.toggle()
-                        }) {
-                            Label("Delete", systemImage: "trash.fill")
-                        }
-                    }
-                } label: {
-                    Image(systemName: "ellipsis")
-                })
+            .navigationBarItems(trailing: navigationBarMenu)
             .sheet(item: $viewModel.activeSheet) { sheet in
                 NavigationStack {
                     switch sheet {
                     case .editSuggestion:
                         companyEditSuggestionSheet
+                    case .editCompany:
+                        companyEditDirectlySheet
+                    case .editBrand:
+                        if let editBrand = viewModel.editBrand {
+                            EditBrandSheetView(brand: editBrand, brandOwner: company) {
+                                viewModel.refreshData(companyId: company.id)
+                            }
+                        }
                     case .mergeProduct:
                         if let productToMerge = viewModel.productToMerge {
                             MergeSheetView(productToMerge: productToMerge)
@@ -73,6 +61,38 @@ struct CompanyScreenView: View {
         }
         .task {
             viewModel.refreshData(companyId: company.id)
+        }
+    }
+
+    var navigationBarMenu: some View {
+        Menu {
+            ShareLink("Share", item: createLinkToScreen(.company(id: company.id)))
+
+            if profileManager.hasPermission(.canEditCompanies) {
+                Button(action: {
+                    viewModel.setActiveSheet(.editCompany)
+                }) {
+                    Label("Edit", systemImage: "pencil")
+                }
+            } else {
+                Button(action: {
+                    viewModel.setActiveSheet(.editSuggestion)
+                }) {
+                    Label("Edit Suggestion", systemImage: "pencil")
+                }
+            }
+
+            Divider()
+
+            if profileManager.hasPermission(.canDeleteCompanies) {
+                Button(action: {
+                    showDeleteCompanyConfirmationDialog.toggle()
+                }) {
+                    Label("Delete", systemImage: "trash.fill")
+                }
+            }
+        } label: {
+            Image(systemName: "ellipsis")
         }
     }
 
@@ -118,12 +138,24 @@ struct CompanyScreenView: View {
                     HStack {
                         Text("\(brand.name) (\(brand.getNumberOfProducts()))")
                         Spacer()
-                        if profileManager.hasPermission(.canDeleteBrands) {
-                            Button(action: {
-                                showDeleteBrandConfirmationDialog.toggle()
-                            }) {
-                                Image(systemName: "x.square")
+                        Menu {
+                            if profileManager.hasPermission(.canDeleteBrands) {
+                                Button(action: {
+                                    showDeleteBrandConfirmationDialog.toggle()
+                                }) {
+                                    Label("Delete", systemImage: "trash.fill")
+                                }
                             }
+                            if profileManager.hasPermission(.canEditBrands) {
+                                Button(action: {
+                                    viewModel.editBrand = brand
+                                    viewModel.setActiveSheet(.editBrand)
+                                }) {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
                         }
                     }
                 }
@@ -141,7 +173,7 @@ struct CompanyScreenView: View {
         Form {
             Section {
                 TextField("Name", text: $viewModel.newCompanyNameSuggestion)
-                Button("Send edit suggestion") {
+                Button("Send") {
                     viewModel.sendCompanyEditSuggestion()
                 }
                 .disabled(!validateStringLength(str: viewModel.newCompanyNameSuggestion, type: .normal))
@@ -149,6 +181,22 @@ struct CompanyScreenView: View {
                 Text("What should the company be called?")
             }
         }
+        .navigationTitle("Edit suggestion")
+    }
+
+    var companyEditDirectlySheet: some View {
+        Form {
+            Section {
+                TextField("Name", text: $viewModel.newCompanyNameSuggestion)
+                Button("Edit") {
+                    viewModel.editCompany()
+                }
+                .disabled(!validateStringLength(str: viewModel.newCompanyNameSuggestion, type: .normal))
+            } header: {
+                Text("Company name")
+            }
+        }
+        .navigationTitle("Edit Company")
     }
 
     var companyHeader: some View {
@@ -168,10 +216,67 @@ struct CompanyScreenView: View {
     }
 }
 
+struct EditBrandSheetView: View {
+    @Environment(\.dismiss) var dismiss
+    @StateObject var viewModel = ViewModel()
+    @State var name: String
+    
+    let brand: Brand.JoinedSubBrandsProducts
+    let brandOwner: Company
+    let onUpdate: () -> Void
+
+    init(brand: Brand.JoinedSubBrandsProducts, brandOwner: Company, onUpdate: @escaping () -> Void) {
+        self.brand = brand
+        self.brandOwner = brandOwner
+        _name = State(initialValue: brand.name)
+        self.onUpdate = onUpdate
+    }
+
+    var body: some View {
+        Form {
+            Section {
+                TextField("Name", text: $name)
+                Button("Edit") {
+                    viewModel.editBrand(brand: brand, name: name, brandOwner: brandOwner) {
+                        dismiss()
+                        onUpdate()
+                    }
+                }
+                .disabled(!validateStringLength(str: name, type: .normal))
+            } header: {
+                Text("Brand name")
+            }
+        }
+        .navigationTitle("Edit Brand")
+        .navigationBarItems(trailing: Button(action: {
+            dismiss()
+        }) {
+            Text("Cancel").bold()
+        })
+    }
+}
+
+extension EditBrandSheetView {
+    @MainActor class ViewModel: ObservableObject {
+        func editBrand(brand: Brand.JoinedSubBrandsProducts, name: String, brandOwner: Company, onSuccess: @escaping () -> Void) {
+            Task {
+                switch await repository.brand.update(updateRequest: Brand.UpdateRequest(id: brand.id, name: name, brandOwnerId: brandOwner.id)) {
+                case .success(_):
+                    onSuccess()
+                case let .failure(error):
+                    print(error)
+                }
+            }
+        }
+    }
+}
+
 extension CompanyScreenView {
     enum Sheet: Identifiable {
         var id: Self { self }
         case editSuggestion
+        case editCompany
+        case editBrand
         case mergeProduct
     }
 
@@ -182,6 +287,7 @@ extension CompanyScreenView {
         @Published var newCompanyNameSuggestion = ""
         @Published var productToMerge: Product.JoinedCategory?
         @Published var productToDelete: Product.JoinedCategory?
+        @Published var editBrand: Brand.JoinedSubBrandsProducts?
 
         func setActiveSheet(_ sheet: Sheet) {
             activeSheet = sheet
@@ -190,12 +296,29 @@ extension CompanyScreenView {
         func sendCompanyEditSuggestion() {
         }
 
+        func editCompany() {
+            if let companyJoined = companyJoined {
+                Task {
+                    switch await repository.company.update(updateRequest: Company.UpdateRequest(id: companyJoined.id, name: newCompanyNameSuggestion)) {
+                    case let .success(updatedCompany):
+                        await MainActor.run {
+                            self.companyJoined = updatedCompany
+                            self.activeSheet = nil
+                        }
+                    case let .failure(error):
+                        print(error)
+                    }
+                }
+            }
+        }
+
         func refreshData(companyId: Int) {
             Task {
                 switch await repository.company.getJoinedById(id: companyId) {
                 case let .success(company):
                     await MainActor.run {
                         self.companyJoined = company
+                        self.newCompanyNameSuggestion = company.name
                     }
                 case let .failure(error):
                     print(error)
