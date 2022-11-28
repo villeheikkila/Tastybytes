@@ -158,7 +158,7 @@ struct CheckInCardView: View {
                     Spacer()
                     
                     if let servingStyle = checkIn.servingStyle {
-                        ServingStyleLabelView(servingStyle: servingStyle    )
+                        ServingStyleLabelView(servingStyleName: servingStyle.name   )
                     }
                 }.frame(height: 8)
                 
