@@ -15,26 +15,25 @@ struct ProductSheetView: View {
     }
 
     var body: some View {
-        VStack {
-            List {
-                categorySection
-                brandSection
-                productSection
+        List {
+            categorySection
+            brandSection
+            productSection
 
-                Button(initialProduct == nil ? "Create Product" : "Send edit suggestion", action: {
-                    if let initialProduct = initialProduct {
-                        viewModel.createProductEditSuggestion(product: initialProduct, onComplete: {
-                            print("hei")
-                        })
-                    } else {
-                        viewModel.createProduct(onCreation: {
-                            product in routeManager.navigateTo(destination: product, resetStack: true)
-                        })
-                    }
-                })
-                .disabled(!viewModel.isValid())
-            }
+            Button(initialProduct == nil ? "Create" : "Send edit suggestion", action: {
+                if let initialProduct = initialProduct {
+                    viewModel.createProductEditSuggestion(product: initialProduct, onComplete: {
+                        print("hei")
+                    })
+                } else {
+                    viewModel.createProduct(onCreation: {
+                        product in routeManager.navigateTo(destination: product, resetStack: true)
+                    })
+                }
+            })
+            .disabled(!viewModel.isValid())
         }
+        .navigationTitle("Add Product")
         .sheet(item: $viewModel.activeSheet) { sheet in
             switch sheet {
             case .subcategories:
@@ -327,7 +326,7 @@ extension ProductSheetView {
                 case let .success(categories):
                     await MainActor.run {
                         self.categories = categories
-                        self.category = categories.first(where: { $0.name == initialCategory})
+                        self.category = categories.first(where: { $0.name == initialCategory })
                     }
                 case let .failure(error):
                     print(error)
