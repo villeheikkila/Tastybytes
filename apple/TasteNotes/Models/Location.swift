@@ -17,7 +17,7 @@ struct Location: Identifiable {
         countryCode = mapItem.placemark.countryCode
         country = nil
     }
-    
+
     init(id: UUID, name: String, title: String?, location: CLLocation?, countryCode: String?, country: Country?) {
         self.id = id
         self.name = name
@@ -26,13 +26,22 @@ struct Location: Identifiable {
         self.countryCode = countryCode
         self.country = country
     }
+
+    func getNew() -> New? {
+        // TODO: Encodable should be good enough for this
+        if let location = location, let countryCode = countryCode {
+            return New(name: name, title: title, longitude: location.coordinate.longitude, latitude: location.coordinate.latitude, countryCode: countryCode)
+        } else {
+            return nil
+        }
+    }
 }
 
 extension Location {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "locations"
         let saved = "id, name, title, longitude, latitude, country_code"
-        
+
         switch queryType {
         case .tableName:
             return tableName
@@ -51,7 +60,7 @@ extension Location: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     static func == (lhs: Location, rhs: Location) -> Bool {
         return lhs.id == rhs.id
     }
@@ -83,12 +92,38 @@ extension Location: Decodable {
 }
 
 extension Location: Encodable {
+    enum EncodableCodingKeys: String, CodingKey {
+        case name = "p_name"
+        case title = "p_title"
+        case longitude = "p_longitude"
+        case latitude = "p_latitude"
+        case countryCode = "p_country_code"
+    }
+
     func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
+        var container = encoder.container(keyedBy: EncodableCodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(title, forKey: .title)
         try container.encode(location?.coordinate.latitude, forKey: .latitude)
         try container.encode(location?.coordinate.longitude, forKey: .longitude)
         try container.encode(countryCode, forKey: .countryCode)
+    }
+}
+
+extension Location {
+    struct New: Encodable {
+        let p_name: String
+        let p_title: String?
+        let p_longitude: Double
+        let p_latitude: Double
+        let p_country_code: String
+
+        init(name: String, title: String?, longitude: Double, latitude: Double, countryCode: String) {
+            p_name = name
+            p_title = title
+            p_longitude = longitude
+            p_latitude = latitude
+            p_country_code = countryCode
+        }
     }
 }

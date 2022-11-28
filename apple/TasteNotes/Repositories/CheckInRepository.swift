@@ -7,6 +7,7 @@ protocol CheckInRepository {
     func getById(id: Int) async -> Result<CheckIn, Error>
     func getByProfileId(id: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error>
     func getByProductId(id: Int, from: Int, to: Int) async -> Result<[CheckIn], Error>
+    func getByLocation(locationId: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error>
     func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error>
     func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error>
     func delete(id: Int) async -> Result<Void, Error>
@@ -58,6 +59,24 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .from(CheckIn.getQuery(.tableName))
                 .select(columns: CheckIn.getQuery(.joined(false)))
                 .eq(column: "product_id", value: id)
+                .order(column: "created_at", ascending: false)
+                .range(from: from, to: to)
+                .execute()
+                .decoded(to: [CheckIn].self)
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func getByLocation(locationId: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error> {
+        do {
+            let response = try await client
+                .database
+                .from(CheckIn.getQuery(.tableName))
+                .select(columns: CheckIn.getQuery(.joined(false)))
+                .eq(column: "location_id", value: locationId.uuidString)
                 .order(column: "created_at", ascending: false)
                 .range(from: from, to: to)
                 .execute()

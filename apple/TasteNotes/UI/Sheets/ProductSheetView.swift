@@ -241,7 +241,7 @@ extension ProductSheetView {
                     switch await repository.subcategory.insert(newSubcategory: Subcategory.NewRequest(name: newSubcategoryName, category: categoryWithSubcategories)) {
                     case .success:
                         await MainActor.run {
-                            self.loadCategories()
+                            self.loadCategories(categoryWithSubcategories.name)
                         }
                     case let .failure(error):
                         print(error)
@@ -321,13 +321,13 @@ extension ProductSheetView {
             }
         }
 
-        func loadCategories() {
+        func loadCategories(_ initialCategory: Category.Name = Category.Name.beverage) {
             Task {
                 switch await repository.category.getAllWithSubcategories() {
                 case let .success(categories):
                     await MainActor.run {
                         self.categories = categories
-                        self.category = categories.first(where: { $0.name == Category.Name.beverage})
+                        self.category = categories.first(where: { $0.name == initialCategory})
                     }
                 case let .failure(error):
                     print(error)

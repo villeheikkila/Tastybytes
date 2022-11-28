@@ -20,6 +20,9 @@ struct AuthenticatedContentView: View {
                     .navigationDestination(for: Product.Joined.self) { product in
                         ProductScreenView(product: product)
                     }
+                    .navigationDestination(for: Location.self) { location in
+                        LocationScreenView(location: location)
+                    }
                     .navigationDestination(for: Company.self) { company in
                         CompanyScreenView(company: company)
                     }
@@ -33,6 +36,8 @@ struct AuthenticatedContentView: View {
                             PreferencesScreenView()
                         case let .activity(profile):
                             ActivityScreenView(profile: profile)
+                        case let .location(location):
+                            LocationScreenView(location: location)
                         case let .profileProducts(profile):
                             ProfileProductListView(profile: profile)
                         case let .addProduct(initialBarcode):
@@ -69,6 +74,7 @@ enum Route: Hashable {
     case product(Product.Joined)
     case profile(Profile)
     case checkIn(CheckIn)
+    case location(Location)
     case companies(Company)
     case profileProducts(Profile)
     case settings

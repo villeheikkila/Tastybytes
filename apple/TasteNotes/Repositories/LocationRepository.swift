@@ -9,15 +9,19 @@ struct SupabaseLocationRepository: LocationRepository {
     let client: SupabaseClient
 
     func insert(location: Location) async -> Result<Location, Error> {
+        let params = location.getNew()
+        print(params)
         do {
             let result =  try await client
                 .database
-                .from(Location.getQuery(.tableName))
-                .insert(values: location, returning: .representation)
+                .rpc(fn: "fnc__get_location_insert_if_not_exist", params: params)
                 .select(columns: Location.getQuery(.joined(false)))
                 .single()
                 .execute()
                 .decoded(to: Location.self)
+            
+            
+            print(result)
             
             return .success(result)
         } catch {
