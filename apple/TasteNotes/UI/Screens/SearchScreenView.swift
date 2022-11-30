@@ -46,10 +46,12 @@ struct SearchScreenView: View {
         })
         .onSubmit(of: .search, viewModel.search)
         .sheet(isPresented: $viewModel.showBarcodeScanner) {
-            BarcodeScannerSheetView(onComplete: {
-                barcode in viewModel.searchProductsByBardcode(barcode)
-            })
-            .presentationDetents([.medium])
+            NavigationStack {
+                BarcodeScannerSheetView(onComplete: {
+                    barcode in viewModel.searchProductsByBardcode(barcode)
+                })
+                .presentationDetents([.medium])
+            }
         }
     }
 

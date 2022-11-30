@@ -55,9 +55,11 @@ extension LocationSearchView {
             Task {
                 switch await repository.location.insert(location: location) {
                 case let .success(savedLocation):
-                    print(savedLocation)
+                    print("saved: \(savedLocation)")
                     onSuccess(savedLocation)
                 case let .failure(error):
+                    print("error: \(error)")
+
                     print(error)
                 }
             }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-@main
+    @main
 struct Main: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var splashScreenManager = SplashScreenManager()
