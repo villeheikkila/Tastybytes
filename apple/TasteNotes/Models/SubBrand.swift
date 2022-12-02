@@ -114,7 +114,7 @@ extension SubBrand {
         }
     }
     
-    struct UpdateRequest: Encodable {
+    struct UpdateNameRequest: Encodable {
         let id: Int
         let name: String
         
@@ -122,5 +122,20 @@ extension SubBrand {
             self.id = id
             self.name = name
         }
+    }
+    
+    struct UpdateBrandRequest: Encodable {
+        let id: Int
+        let brand_id: Int
+        
+        init(id: Int, brandId: Int) {
+            self.id = id
+            self.brand_id = brandId
+        }
+    }
+    
+    enum Update {
+        case brand(UpdateBrandRequest)
+        case name(UpdateNameRequest)
     }
 }
