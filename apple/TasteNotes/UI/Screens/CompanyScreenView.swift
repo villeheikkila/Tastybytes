@@ -12,36 +12,34 @@ struct CompanyScreenView: View {
 
     var body: some View {
         List {
-            Section {
-                companyHeader
-                if let companySummary = viewModel.companySummary, companySummary.averageRating != nil {
+            if let companySummary = viewModel.companySummary, companySummary.averageRating != nil {
+                Section {
                     SummaryView(companySummary: companySummary)
                 }
             }
-            .navigationTitle(company.name)
-            .navigationBarItems(trailing: navigationBarMenu)
-            .sheet(item: $viewModel.activeSheet) { sheet in
-                NavigationStack {
-                    switch sheet {
-                    case .editSuggestionCompany:
-                        companyEditSuggestionSheet
-                    case .editCompany:
-                        companyEditSheet
-                    case .editBrand:
-                        if let editBrand = viewModel.editBrand {
-                            EditBrandSheetView(brand: editBrand, brandOwner: company) {
-                                viewModel.refreshData(companyId: company.id)
-                            }
+            productList
+        }
+        .navigationTitle(company.name)
+        .navigationBarItems(trailing: navigationBarMenu)
+        .sheet(item: $viewModel.activeSheet) { sheet in
+            NavigationStack {
+                switch sheet {
+                case .editSuggestionCompany:
+                    companyEditSuggestionSheet
+                case .editCompany:
+                    companyEditSheet
+                case .editBrand:
+                    if let editBrand = viewModel.editBrand {
+                        EditBrandSheetView(brand: editBrand, brandOwner: company) {
+                            viewModel.refreshData(companyId: company.id)
                         }
-                    case .mergeProduct:
-                        if let productToMerge = viewModel.productToMerge {
-                            MergeSheetView(productToMerge: productToMerge)
-                        }
+                    }
+                case .mergeProduct:
+                    if let productToMerge = viewModel.productToMerge {
+                        MergeSheetView(productToMerge: productToMerge)
                     }
                 }
             }
-
-            productList
         }
         .confirmationDialog("Delete Company Confirmation",
                             isPresented: $showDeleteCompanyConfirmationDialog
@@ -147,7 +145,7 @@ struct CompanyScreenView: View {
                                     Label("Edit", systemImage: "pencil")
                                 }
                             }
-                            
+
                             if profileManager.hasPermission(.canDeleteBrands) {
                                 Button(action: {
                                     showDeleteBrandConfirmationDialog.toggle()
