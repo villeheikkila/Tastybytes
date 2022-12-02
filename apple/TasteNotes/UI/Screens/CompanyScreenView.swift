@@ -139,19 +139,20 @@ struct CompanyScreenView: View {
                         Text("\(brand.name) (\(brand.getNumberOfProducts()))")
                         Spacer()
                         Menu {
-                            if profileManager.hasPermission(.canDeleteBrands) {
-                                Button(action: {
-                                    showDeleteBrandConfirmationDialog.toggle()
-                                }) {
-                                    Label("Delete", systemImage: "trash.fill")
-                                }
-                            }
                             if profileManager.hasPermission(.canEditBrands) {
                                 Button(action: {
                                     viewModel.editBrand = brand
                                     viewModel.setActiveSheet(.editBrand)
                                 }) {
                                     Label("Edit", systemImage: "pencil")
+                                }
+                            }
+                            
+                            if profileManager.hasPermission(.canDeleteBrands) {
+                                Button(action: {
+                                    showDeleteBrandConfirmationDialog.toggle()
+                                }) {
+                                    Label("Delete", systemImage: "trash.fill")
                                 }
                             }
                         } label: {

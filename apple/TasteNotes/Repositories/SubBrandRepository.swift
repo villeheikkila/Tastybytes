@@ -3,7 +3,8 @@ import Supabase
 
 protocol SubBrandRepository {
     func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error>
-    func update(updateRequest: SubBrand.UpdateRequest) async -> Result<Void, Error>
+    func update(updateRequest: SubBrand.Update) async -> Result<Void, Error>
+    func delete(id: Int) async -> Result<Void, Error>
 }
 
 struct SupabaseSubBrandRepository: SubBrandRepository {
@@ -26,13 +27,38 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         }
     }
     
-    func update(updateRequest: SubBrand.UpdateRequest) async -> Result<Void, Error> {
+    func update(updateRequest: SubBrand.Update) async -> Result<Void, Error> {
+        do {
+            let baseQuery = client
+                .database
+                .from(SubBrand.getQuery(.tableName))
+            
+            switch updateRequest {
+            case let .brand(update):
+                try await baseQuery
+                    .update(values: update)
+                    .eq(column: "id", value: update.id)
+                    .execute()
+            case let .name(update):
+                try await baseQuery
+                    .update(values: update)
+                    .eq(column: "id", value: update.id)
+                    .execute()
+            }
+                        
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func delete(id: Int) async -> Result<Void, Error> {
         do {
             try await client
                 .database
                 .from(SubBrand.getQuery(.tableName))
-                .update(values: updateRequest)
-                .eq(column: "id", value: updateRequest.id)
+                .delete()
+                .eq(column: "id", value: id)
                 .execute()
             
             return .success(())
