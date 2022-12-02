@@ -1,5 +1,5 @@
-import SwiftUI
 import AlertToast
+import SwiftUI
 
 struct EditBrandSheetView: View {
     @Environment(\.dismiss) var dismiss
@@ -64,7 +64,7 @@ struct EditBrandSheetView: View {
                                 }) {
                                     Label("Edit", systemImage: "pencil")
                                 }
-                                
+
                                 Button(action: {
                                     print("subBrand: \(subBrand)")
                                     viewModel.toDeleteSubBrand = subBrand
@@ -97,7 +97,9 @@ struct EditBrandSheetView: View {
             case .editSubBrand:
                 if let subBrand = editSubBrand {
                     EditSubBrandSheetView(brand: brand, subBrand: subBrand,
-                                          onUpdate: onUpdate,
+                                          onUpdate: {
+                                              onUpdate()
+                                          },
                                           onClose: {
                                               viewModel.activeSheet = nil
                                               editSubBrand = nil
@@ -152,7 +154,7 @@ extension EditBrandSheetView {
                 }
             }
         }
-        
+
         func deleteSubBrand(onSuccess: @escaping () -> Void) {
             if let toDeleteSubBrand = toDeleteSubBrand {
                 Task {
@@ -171,12 +173,12 @@ extension EditBrandSheetView {
 struct EditSubBrandSheetView: View {
     @StateObject private var viewModel = ViewModel()
     @State var newSubBrandName: String
-    
+
     let brand: Brand.JoinedSubBrandsProducts
     let subBrand: SubBrand.JoinedProduct
     let onUpdate: () -> Void
     let onClose: () -> Void
-    
+
     init(brand: Brand.JoinedSubBrandsProducts, subBrand: SubBrand.JoinedProduct, onUpdate: @escaping () -> Void, onClose: @escaping () -> Void) {
         self.brand = brand
         self.subBrand = subBrand
@@ -184,7 +186,6 @@ struct EditSubBrandSheetView: View {
         self.onClose = onClose
         _newSubBrandName = State(initialValue: subBrand.name ?? "")
     }
-
 
     var body: some View {
         List {
@@ -200,22 +201,21 @@ struct EditSubBrandSheetView: View {
                 Text("Name")
             }
 
-            if !brand.subBrands
-                .filter { $0.name != nil && $0.id != subBrand.id } .isEmpty {
-                    Section {
-                        ForEach(brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id  }, id: \.self) { subBrand in
-                            Button(action: {
-                                viewModel.mergeTo = subBrand
-                            }) {
-                                if let name = subBrand.name {
-                                    Text(name)
-                                }
+            if !brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id }.isEmpty {
+                Section {
+                    ForEach(brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id }, id: \.self) { subBrand in
+                        Button(action: {
+                            viewModel.mergeTo = subBrand
+                        }) {
+                            if let name = subBrand.name {
+                                Text(name)
                             }
                         }
-                    } header: {
-                        Text("Merge to another sub-brand")
                     }
+                } header: {
+                    Text("Merge to another sub-brand")
                 }
+            }
         }
         .navigationTitle("Edit \(subBrand.name ?? "")")
         .navigationBarItems(trailing: Button(action: {

@@ -212,8 +212,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/URLQueryEncoder",
       "state" : {
-        "revision" : "4cc975d4d075d0e62699a796a08284e217d4ee93",
-        "version" : "0.2.0"
+        "revision" : "4ce950479707ea109f229d7230ec074a133b15d7",
+        "version" : "0.2.1"
       }
     },
     {
@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/dkk/WrappingHStack.git",
       "state" : {
-        "revision" : "dbd65bd3442ffa14459470778b70c4604eac2c02",
-        "version" : "2.2.6"
+        "revision" : "3e1eb1c4ad95bc690b15d7f2f521cb00d42b784a",
+        "version" : "2.2.7"
       }
     },
     {
