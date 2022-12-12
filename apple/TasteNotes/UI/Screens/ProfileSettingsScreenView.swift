@@ -55,6 +55,8 @@ struct ProfileSettingsScreenView: View {
             if viewModel.profileHasChanged() {
                 Button("Update", action: { viewModel.updateProfile(onSuccess: {
                     toastManager.toggle(.success("Profile updated!"))
+                }, onFailure: {
+                    error in toastManager.toggle(.error(error.localizedDescription))
                 }) })
             }
         } header: {
@@ -167,13 +169,13 @@ extension ProfileSettingsScreenView {
             showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
         }
 
-        func updateProfile(onSuccess: @escaping () -> Void) {
+        func updateProfile(onSuccess: @escaping () -> Void, onFailure: @escaping (_ error: Error) -> Void) {
             let update = Profile.UpdateRequest(
                 username: username,
                 firstName: firstName,
                 lastName: lastName
             )
-
+            
             Task {
                 switch await repository.profile.update(id: repository.auth.getCurrentUserId(),
                                                        update: update) {
@@ -184,7 +186,10 @@ extension ProfileSettingsScreenView {
                     }
 
                 case let .failure(error):
-                    print(error)
+                    await MainActor.run {
+                        print(error.localizedDescription)
+                        onFailure(error)
+                    }
                 }
             }
         }
