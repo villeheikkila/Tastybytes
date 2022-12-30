@@ -27,7 +27,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .range(from: from, to: to)
                 .execute()
                 .decoded(to: [CheckIn].self)
-
+            
             return .success(response)
         } catch {
             return .failure(error)
