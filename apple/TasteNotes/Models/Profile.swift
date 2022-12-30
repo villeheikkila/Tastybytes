@@ -149,6 +149,7 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
     let sendReactionNotifications: Bool
     let sendTaggedCheckInNotifications: Bool
     let sendFriendRequestNotifications: Bool
+    let publicProfile: Bool
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -156,6 +157,7 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
         hasher.combine(sendReactionNotifications)
         hasher.combine(sendTaggedCheckInNotifications)
         hasher.combine(sendFriendRequestNotifications)
+        hasher.combine(publicProfile)
     }
     
     
@@ -169,6 +171,7 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
         case sendReactionNotifications = "send_reaction_notifications"
         case sendTaggedCheckInNotifications = "send_tagged_check_in_notifications"
         case sendFriendRequestNotifications = "send_friend_request_notifications"
+        case publicProfile = "public_profile"
     }
     
     init(from decoder: Decoder) throws {
@@ -178,14 +181,14 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
         sendReactionNotifications = try values.decode(Bool.self, forKey: .sendReactionNotifications)
         sendTaggedCheckInNotifications = try values.decode(Bool.self, forKey: .sendTaggedCheckInNotifications)
         sendFriendRequestNotifications = try values.decode(Bool.self, forKey: .sendFriendRequestNotifications)
-
+        publicProfile = try values.decode(Bool.self, forKey: .publicProfile)
     }
 }
 
 extension ProfileSettings {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "profile_settings"
-        let saved = "id, color_scheme, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications"
+        let saved = "id, color_scheme, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications, public_profile"
 
         switch queryType {
         case .tableName:
@@ -214,6 +217,7 @@ extension ProfileSettings {
         var send_tagged_check_in_notifications: Bool?
         var send_friend_request_notifications: Bool?
         var color_scheme: String?
+        var public_profile: Bool?
         
         init(sendReactionNotifications: Bool, sendTaggedCheckInNotifications: Bool, sendFriendRequestNotifications: Bool) {
             self.send_reaction_notifications = sendReactionNotifications
@@ -229,6 +233,10 @@ extension ProfileSettings {
             } else {
                 color_scheme = ColorScheme.light.rawValue
             }
+        }
+        
+        init(publicProfile: Bool) {
+            self.public_profile = publicProfile
         }
     }
 }
