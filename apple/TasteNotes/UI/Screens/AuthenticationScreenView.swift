@@ -144,8 +144,17 @@ struct AuthenticationScreenView: View {
         case .forgotPassword: return "Send reset password instructions"
         }
     }
+    
+    func onSignUp() {
+        DispatchQueue.main.async {
+            mode = .signIn
+            email = ""
+            password = ""
+            toastManager.toggle(.success("Confirmation email has been sent!"))
+        }
+    }
 
-    private func primaryActionTapped() {
+    func primaryActionTapped() {
         Task {
             self.isLoading.toggle()
 
@@ -160,7 +169,7 @@ struct AuthenticationScreenView: View {
             case .signUp:
                 switch await repository.auth.signUp(email: email, password: password) {
                 case .success():
-                    toastManager.toggle(.success("Confirmation email has been sent!"))
+                    onSignUp()
                 case let .failure(error):
                     toastManager.toggle(.error(error.localizedDescription))
                 }
