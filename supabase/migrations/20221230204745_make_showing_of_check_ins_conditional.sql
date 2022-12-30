@@ -28,12 +28,16 @@ select exists(select 1
 $function$
 ;
 
-create policy "Check-ins are viewable depending on creator's settings."
+create policy "Enable read based on check in's creator's privacy settings"
 on "public"."check_ins"
-as restrictive
+as permissive
 for select
-to public
+to authenticated
 using (fnc__user_can_view_check_in(auth.uid(), id));
+
+
+
+
 
 
 
