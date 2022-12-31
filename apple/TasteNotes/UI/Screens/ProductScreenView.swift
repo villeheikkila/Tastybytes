@@ -35,7 +35,9 @@ struct ProductScreenView: View {
                                            viewModel.appendNewCheckIn(newCheckIn: $0)
                                        })
                                    case .editSuggestion:
-                                       ProductSheetView(initialProduct: product)
+                                       ProductSheetView(mode: .editSuggestion, initialProduct: product)
+                                   case .editCompany:
+                                       ProductSheetView(mode: .edit, initialProduct: product)
                                    }
                                }
                            }
@@ -75,11 +77,18 @@ struct ProductScreenView: View {
         .contextMenu {
             ShareLink("Share", item: createLinkToScreen(.product(id: product.id)))
             
-            Button(action: {
-                viewModel.setActiveSheet(.editSuggestion)
-            }) {
-                Label("Edit Suggestion", systemImage: "square.and.pencil")
-                    .foregroundColor(.red)
+            if profileManager.hasPermission(.canEditCompanies) {
+                Button(action: {
+                    viewModel.setActiveSheet(.editCompany)
+                }) {
+                    Label("Edit", systemImage: "pencil")
+                }
+            } else {
+                Button(action: {
+                    viewModel.setActiveSheet(.editSuggestion)
+                }) {
+                    Label("Edit Suggestion", systemImage: "pencil")
+                }
             }
             
             if profileManager.hasPermission(.canDeleteProducts) {
@@ -162,6 +171,7 @@ extension ProductScreenView {
         var id: Self { self }
         case checkIn
         case editSuggestion
+        case editCompany
     }
 
     @MainActor class ViewModel: ObservableObject {
