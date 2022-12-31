@@ -3,6 +3,7 @@ import SwiftUI
 struct BrandSheetView: View {
     let brandOwner: Company
     @StateObject var viewModel = ViewModel()
+    @EnvironmentObject private var profileManager: ProfileManager
     @Environment(\.dismiss) var dismiss
 
     let onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
@@ -17,16 +18,18 @@ struct BrandSheetView: View {
                 }
             }
 
-            Section {
-                TextField("Name", text: $viewModel.brandName)
-                Button("Create") {
-                    viewModel.createNewBrand(brandOwner, {
-                        brand in onSelect(brand, true)
-                    })
+            if profileManager.hasPermission(.canCreateBrands) {
+                Section {
+                    TextField("Name", text: $viewModel.brandName)
+                    Button("Create") {
+                        viewModel.createNewBrand(brandOwner, {
+                            brand in onSelect(brand, true)
+                        })
+                    }
+                    .disabled(!validateStringLength(str: viewModel.brandName, type: .normal))
+                } header: {
+                    Text("Add new brand for \(brandOwner.name)")
                 }
-                .disabled(!validateStringLength(str: viewModel.brandName, type: .normal))
-            } header: {
-                Text("Add new brand for \(brandOwner.name)")
             }
         }
         .navigationTitle("Add brand name")

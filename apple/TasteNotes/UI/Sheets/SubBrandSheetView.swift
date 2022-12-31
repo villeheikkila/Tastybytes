@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SubBrandSheetView: View {
+    @EnvironmentObject private var profileManager: ProfileManager
     let brandWithSubBrands: Brand.JoinedSubBrands
     let onSelect: (_ company: SubBrand, _ createdNew: Bool) -> Void
 
@@ -17,14 +18,16 @@ struct SubBrandSheetView: View {
                 }
             }
 
-            Section {
-                TextField("Name", text: $viewModel.subBrandName)
-                Button("Create") {
-                    viewModel.createNewSubBrand(brandWithSubBrands, onSelect)
+            if profileManager.hasPermission(.canCreateBrands) {
+                Section {
+                    TextField("Name", text: $viewModel.subBrandName)
+                    Button("Create") {
+                        viewModel.createNewSubBrand(brandWithSubBrands, onSelect)
+                    }
+                    .disabled(!validateStringLength(str: viewModel.subBrandName, type: .normal))
+                } header: {
+                    Text("Add new sub-brand for \(brandWithSubBrands.name)")
                 }
-                .disabled(!validateStringLength(str: viewModel.subBrandName, type: .normal))
-            } header: {
-                Text("Add new sub-brand for \(brandWithSubBrands.name)")
             }
         }
         .navigationTitle("Sub-brands")

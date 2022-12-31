@@ -3,6 +3,7 @@ import SwiftUI
 struct SearchScreenView: View {
     @ObservedObject var viewModel: SearchScreenViewModel
     @EnvironmentObject private var toastManager: ToastManager
+    @EnvironmentObject private var profileManager: ProfileManager
     
     var body: some View {
         List {
@@ -23,6 +24,7 @@ struct SearchScreenView: View {
                     Section {
                         NavigationLink("Add new", value: Route.addProduct(viewModel.barcode))
                             .fontWeight(.medium)
+                            .disabled(!profileManager.hasPermission(.canCreateProducts))
                     } header: {
                         Text("Didn't find a product you were looking for?")
                     }
