@@ -45,6 +45,12 @@ enum PermissionName: String, Decodable, Equatable {
     case canDeleteFlavors = "can_delete_flavors"
     case canUpdateFlavors = "can_update_flavors"
     case canInsertFlavors = "can_insert_flavors"
+    case canCreateCheckIns = "can_create_check_ins"
+    case canCreateProducts = "can_create_products"
+    case canCreateBrands = "can_create_brands"
+    case canSendFriendRequests = "can_send_friend_requests"
+    case canReactToCheckIns = "can_react_to_check_ins"
+    case canCreateCompanies = "can_create_companies"
 
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
