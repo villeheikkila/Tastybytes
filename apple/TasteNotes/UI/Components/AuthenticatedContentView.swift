@@ -41,7 +41,7 @@ struct AuthenticatedContentView: View {
                         case let .profileProducts(profile):
                             ProfileProductListView(profile: profile)
                         case let .addProduct(initialBarcode):
-                            ProductSheetView(initialBarcode: initialBarcode)
+                            ProductSheetView(mode: .new, initialBarcode: initialBarcode)
                         case let .checkIn(checkIn):
                             CheckInScreenView(checkIn: checkIn)
                         case let .profile(profile):

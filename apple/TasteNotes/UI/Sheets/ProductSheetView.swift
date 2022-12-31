@@ -4,28 +4,59 @@ struct ProductSheetView: View {
     @EnvironmentObject var routeManager: RouteManager
     @EnvironmentObject var toastManager: ToastManager
     @StateObject var viewModel = ViewModel()
+    @State var mode = Mode.new
     @FocusState private var focusedField: Focusable?
 
     let initialProduct: Product.Joined?
     let initialBarcode: Barcode?
 
-    init(initialProduct: Product.Joined? = nil, initialBarcode: Barcode? = nil) {
+    init(mode: Mode, initialProduct: Product.Joined? = nil, initialBarcode: Barcode? = nil) {
+        self.mode = mode
         self.initialProduct = initialProduct
         self.initialBarcode = initialBarcode
     }
-
+    
+    var doneLabel: String {
+        switch mode {
+        case .edit:
+            return "Edit"
+        case .editSuggestion:
+            return "Send Edit suggestion"
+        case .new:
+            return "Create"
+        }
+    }
+    
+    var navigationTitle: String {
+        switch mode {
+        case .edit:
+            return "Edit Product"
+        case .editSuggestion:
+            return "Edit Suggestion"
+        case .new:
+            return "Add Product"
+        }
+    }
+    
     var body: some View {
         List {
             categorySection
             brandSection
             productSection
 
-            Button(initialProduct == nil ? "Create" : "Send edit suggestion", action: {
-                if let initialProduct = initialProduct {
-                    viewModel.createProductEditSuggestion(product: initialProduct, onComplete: {
+            Button(doneLabel, action: {
+                switch mode {
+                case .editSuggestion:
+                    if let initialProduct = initialProduct {
+                        viewModel.createProductEditSuggestion(product: initialProduct, onComplete: {
+                            print("hei")
+                        })
+                    }
+                case .edit:
+                    viewModel.editProduct(onComplete: {
                         print("hei")
                     })
-                } else {
+                case .new:
                     viewModel.createProduct(onCreation: {
                         product in routeManager.navigateTo(destination: product, resetStack: true)
                     })
@@ -33,7 +64,7 @@ struct ProductSheetView: View {
             })
             .disabled(!viewModel.isValid())
         }
-        .navigationTitle(initialProduct == nil ? "Add Product" : "Edit Suggestion")
+        .navigationTitle(navigationTitle)
         .sheet(item: $viewModel.activeSheet) { sheet in
             NavigationStack {
                 switch sheet {
@@ -191,6 +222,11 @@ struct ProductSheetView: View {
 }
 
 extension ProductSheetView {
+    enum Mode {
+        case new
+        case edit
+        case editSuggestion
+    }
     enum Focusable {
         case name
         case description
@@ -349,7 +385,7 @@ extension ProductSheetView {
                 }
             }
         }
-
+        
         func createProductEditSuggestion(product: Product.Joined, onComplete: @escaping () -> Void) {
             if let subBrand = subBrand {
                 let productEditSuggestionParams = Product.EditSuggestionRequest(productId: product.id, name: name, description: description, categoryId: product.subcategories.first!.category.id, subBrandId: subBrand.id, subCategoryIds: subcategories.map { $0.id })
@@ -365,6 +401,9 @@ extension ProductSheetView {
                     onComplete()
                 }
             }
+        }
+        
+        func editProduct(onComplete: @escaping () -> Void) {
         }
     }
 }
