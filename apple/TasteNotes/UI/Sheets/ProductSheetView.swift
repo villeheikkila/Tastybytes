@@ -53,9 +53,11 @@ struct ProductSheetView: View {
                         })
                     }
                 case .edit:
-                    viewModel.editProduct(onComplete: {
-                        print("hei")
-                    })
+                    if let initialProduct = initialProduct {
+                        viewModel.editProduct(product: initialProduct, onComplete: {
+                            print("hei")
+                        })
+                    }
                 case .new:
                     viewModel.createProduct(onCreation: {
                         product in routeManager.navigateTo(destination: product, resetStack: true)
@@ -403,7 +405,21 @@ extension ProductSheetView {
             }
         }
         
-        func editProduct(onComplete: @escaping () -> Void) {
+        func editProduct(product: Product.Joined, onComplete: @escaping () -> Void) {
+            if let subBrand = subBrand {
+                let productEditSuggestionParams = Product.EditSuggestionRequest(productId: product.id, name: name, description: description, categoryId: product.subcategories.first!.category.id, subBrandId: subBrand.id, subCategoryIds: subcategories.map { $0.id })
+
+                Task {
+                    switch await repository.product.editProduct(productEditParams: productEditSuggestionParams) {
+                    case let .success(data):
+                        print(data)
+                        onComplete()
+                    case let .failure(error):
+                        print(error)
+                    }
+                    onComplete()
+                }
+            }
         }
     }
 }

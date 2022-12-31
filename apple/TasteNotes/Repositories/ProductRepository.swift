@@ -10,6 +10,7 @@ protocol ProductRepository {
     func getSummaryById(id: Int) async -> Result<ProductSummary, Error>
     func addBarcodeToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error>
     func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
+    func editProduct(productEditParams: Product.EditSuggestionRequest) async -> Result<IntId, Error>
     func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async -> Result<IntId, Error>
 }
 
@@ -156,6 +157,23 @@ struct SupabaseProductRepository: ProductRepository {
             let productEditSuggestion = try await client
                 .database
                 .rpc(fn: "fnc__create_product_edit_suggestion", params: productEditSuggestionParams)
+                .select(columns: "id")
+                .limit(count: 1)
+                .single()
+                .execute()
+                .decoded(to: IntId.self)
+
+            return .success(productEditSuggestion)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func editProduct(productEditParams: Product.EditSuggestionRequest) async -> Result<IntId, Error> {
+        do {
+            let productEditSuggestion = try await client
+                .database
+                .rpc(fn: "fnc__edit_product", params: productEditParams)
                 .select(columns: "id")
                 .limit(count: 1)
                 .single()
