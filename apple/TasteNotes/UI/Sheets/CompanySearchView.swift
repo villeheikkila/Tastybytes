@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CompanySheetView: View {
     @StateObject var viewModel = ViewModel()
+    @EnvironmentObject private var profileManager: ProfileManager
     @Environment(\.dismiss) var dismiss
     @State var companyName = ""
     let onSelect: (_ company: Company, _ createdNew: Bool) -> Void
@@ -16,33 +17,35 @@ struct CompanySheetView: View {
                     Text(company.name)
                 }
             }
-
-            switch viewModel.status {
-            case .searched:
-                Section {
-                    Button(action: {
-                        viewModel.createNew()
-                    }) {
-                        Text("Add")
+            
+            if profileManager.hasPermission(.canCreateCompanies) {
+                switch viewModel.status {
+                case .searched:
+                    Section {
+                        Button(action: {
+                            viewModel.createNew()
+                        }) {
+                            Text("Add")
+                        }
+                    } header: {
+                        Text("Didn't find the company you were looking for?")
+                    }.textCase(nil)
+                case .add:
+                    Section {
+                        TextField("Name", text: $viewModel.companyName)
+                        Button("Create") {
+                            viewModel.createNewCompany(onSuccess: {
+                                company in self.onSelect(company, true)
+                                dismiss()
+                            })
+                        }
+                        .disabled(!validateStringLength(str: viewModel.companyName, type: .normal))
+                    } header: {
+                        Text("Add new company")
                     }
-                } header: {
-                    Text("Didn't find the company you were looking for?")
-                }.textCase(nil)
-            case .add:
-                Section {
-                    TextField("Name", text: $viewModel.companyName)
-                    Button("Create") {
-                        viewModel.createNewCompany(onSuccess: {
-                            company in self.onSelect(company, true)
-                            dismiss()
-                        })
-                    }
-                    .disabled(!validateStringLength(str: viewModel.companyName, type: .normal))
-                } header: {
-                    Text("Add new company")
+                case .none:
+                    EmptyView()
                 }
-            case .none:
-                EmptyView()
             }
         }
         .navigationTitle("Search companies")

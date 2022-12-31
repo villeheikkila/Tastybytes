@@ -26,7 +26,7 @@ struct ProductScreenView: View {
                                }) {
                                    Text("Check-in!")
                                        .bold()
-                               })
+                               }.disabled(!profileManager.hasPermission(.canCreateCheckIns)))
                            .sheet(item: $viewModel.activeSheet) { sheet in
                                NavigationStack {
                                    switch sheet {
