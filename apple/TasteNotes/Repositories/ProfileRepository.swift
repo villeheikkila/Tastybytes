@@ -46,9 +46,11 @@ struct SupabaseProfileRepository: ProfileRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: Profile.Extended.self)
+            
+            printData(data: response.data)
 
-            return .success(response)
+            return .success(try response.decoded(to: Profile.Extended.self)
+)
         } catch {
             return .failure(error)
         }
