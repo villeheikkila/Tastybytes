@@ -2,16 +2,32 @@ struct Product: Identifiable, Decodable, Hashable {
     let id: Int
     let name: String
     let description: String?
+    let isVerified: Bool
 
     static func == (lhs: Product, rhs: Product) -> Bool {
         return lhs.id == rhs.id
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case description
+        case isVerified = "is_verified"
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(Int.self, forKey: .id)
+        name = try values.decode(String.self, forKey: .name)
+        description = try values.decodeIfPresent(String.self, forKey: .description)
+        isVerified = try values.decode(Bool.self, forKey: .isVerified)
     }
 }
 
 extension Product {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "products"
-        let saved = "id, name, description"
+        let saved = "id, name, description, is_verified"
 
         switch queryType {
         case .tableName:
@@ -109,6 +125,14 @@ extension Product {
             p_product_id = id
         }
     }
+    
+    struct VerifyRequest: Encodable {
+        let p_product_id: Int
+
+        init(id: Int) {
+            p_product_id = id
+        }
+    }
 }
 
 extension Product {
@@ -116,6 +140,7 @@ extension Product {
         let id: Int
         let name: String
         let description: String?
+        let isVerified: Bool
         let subBrand: SubBrand.JoinedBrand
         let category: Category
         let subcategories: [Subcategory.JoinedCategory]
@@ -148,16 +173,18 @@ extension Product {
             case id
             case name
             case description
+            case isVerified = "is_verified"
             case subBrand = "sub_brands"
             case category = "categories"
             case subcategories
             case barcodes = "product_barcodes"
         }
         
-        init(id: Int, name: String, description: String, subBrand: SubBrand.JoinedBrand, category: Category, subcategories: [Subcategory.JoinedCategory], barcodes: [ProductBarcode]) {
+        init(id: Int, name: String, description: String, isVerified: Bool, subBrand: SubBrand.JoinedBrand, category: Category, subcategories: [Subcategory.JoinedCategory], barcodes: [ProductBarcode]) {
             self.id = id
             self.name = name
             self.description = description
+            self.isVerified = isVerified
             self.subBrand = subBrand
             self.subcategories = subcategories
             self.category = category
@@ -168,7 +195,8 @@ extension Product {
             id = product.id
             name = product.name
             description = product.name
-            self.subBrand = SubBrand.JoinedBrand(id: subBrand.id, name: subBrand.name, brand: Brand.JoinedCompany(id: brand.id, name: brand.name, brandOwner: company))
+            isVerified = product.isVerified
+            self.subBrand = SubBrand.JoinedBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified, brand: Brand.JoinedCompany(id: brand.id, name: brand.name, brandOwner: company))
             subcategories = product.subcategories
             category = product.category
             barcodes = []
@@ -179,6 +207,7 @@ extension Product {
             id = try values.decode(Int.self, forKey: .id)
             name = try values.decode(String.self, forKey: .name)
             description = try values.decodeIfPresent(String.self, forKey: .description)
+            isVerified = try values.decode(Bool.self, forKey: .isVerified)
             subBrand = try values.decode(SubBrand.JoinedBrand.self, forKey: .subBrand)
             category = try values.decode(Category.self, forKey: .category)
             subcategories = try values.decode([Subcategory.JoinedCategory].self, forKey: .subcategories)
@@ -190,6 +219,7 @@ extension Product {
         let id: Int
         let name: String
         let description: String?
+        let isVerified: Bool
         let category: Category
         let subcategories: [Subcategory.JoinedCategory]
 
@@ -201,14 +231,16 @@ extension Product {
             case id
             case name
             case description
+            case isVerified = "is_verified"
             case category = "categories"
             case subcategories
         }
 
-        init(id: Int, name: String, category: Category, description: String?, subcategories: [Subcategory.JoinedCategory]) {
+        init(id: Int, name: String, category: Category, description: String?, isVerified: Bool, subcategories: [Subcategory.JoinedCategory]) {
             self.id = id
             self.name = name
             self.description = description
+            self.isVerified = isVerified
             self.category = category
             self.subcategories = subcategories
         }
@@ -218,6 +250,7 @@ extension Product {
             id = try values.decode(Int.self, forKey: .id)
             name = try values.decode(String.self, forKey: .name)
             description = try values.decodeIfPresent(String.self, forKey: .description)
+            isVerified = try values.decode(Bool.self, forKey: .isVerified)
             category = try values.decode(Category.self, forKey: .category)
             subcategories = try values.decode([Subcategory.JoinedCategory].self, forKey: .subcategories)
         }

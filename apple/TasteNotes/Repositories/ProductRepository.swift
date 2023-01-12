@@ -12,6 +12,7 @@ protocol ProductRepository {
     func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
     func editProduct(productEditParams: Product.EditSuggestionRequest) async -> Result<IntId, Error>
     func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async -> Result<IntId, Error>
+    func verifyProduct(productId: Int) async -> Result<Void, Error>
 }
 
 struct SupabaseProductRepository: ProductRepository {
@@ -181,6 +182,20 @@ struct SupabaseProductRepository: ProductRepository {
                 .decoded(to: IntId.self)
 
             return .success(productEditSuggestion)
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    func verifyProduct(productId: Int) async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .rpc(fn: "fnc__verify_product", params: Product.VerifyRequest(id: productId))
+                .single()
+                .execute()
+
+            return .success(())
         } catch {
             return .failure(error)
         }

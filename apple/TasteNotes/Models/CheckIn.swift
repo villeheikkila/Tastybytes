@@ -6,6 +6,7 @@ struct CheckIn: Identifiable {
     let review: String?
     let imageUrl: String?
     let createdAt: Date
+    let isMigrated: Bool
     let profile: Profile
     let product: Product.Joined
     let checkInReactions: [CheckInReaction]
@@ -17,6 +18,18 @@ struct CheckIn: Identifiable {
 
     func isEmpty() -> Bool {
         return [rating == nil, review == nil || review == "", flavors.count == 0].allSatisfy { $0 }
+    }
+    
+    func getRelativeCreatedAt() -> String {
+        let now = Date.now
+        
+        if createdAt < Calendar.current.date(byAdding: .month, value: -1, to: now)! {
+            return createdAt.formatted()
+        } else {
+            let formatter = RelativeDateTimeFormatter()
+            formatter.unitsStyle = .full
+            return formatter.localizedString(for: createdAt, relativeTo: Date.now)
+        }
     }
 
     func getImageUrl() -> URL? {
@@ -35,7 +48,7 @@ struct CheckIn: Identifiable {
 extension CheckIn {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "check_ins"
-        let saved = "id, rating, review, image_url, created_at"
+        let saved = "id, rating, review, image_url, created_at, is_migrated"
         let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
         let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
         let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
@@ -72,6 +85,7 @@ extension CheckIn: Decodable {
         case id
         case rating
         case review
+        case isMigrated = "is_migrated"
         case imageUrl = "image_url"
         case createdAt = "created_at"
         case profile = "profiles"
@@ -90,6 +104,7 @@ extension CheckIn: Decodable {
         rating = try values.decodeIfPresent(Double.self, forKey: .rating)
         review = try values.decodeIfPresent(String.self, forKey: .review)
         imageUrl = try values.decodeIfPresent(String.self, forKey: .imageUrl)
+        isMigrated = try values.decode(Bool.self, forKey: .isMigrated)
         createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
         profile = try values.decode(Profile.self, forKey: .profile)
         product = try values.decode(Product.Joined.self, forKey: .product)

@@ -6,6 +6,7 @@ import WrappingHStack
 
 struct CheckInCardView: View {
     @StateObject var viewModel = ViewModel()
+    @EnvironmentObject var profileManager: ProfileManager
     @State var showDeleteCheckInConfirmationDialog = false
 
     let checkIn: CheckIn
@@ -84,7 +85,21 @@ struct CheckInCardView: View {
         }
         .contextMenu {
             ShareLink("Share", item: createLinkToScreen(.checkIn(id: checkIn.id)))
-
+            
+            if checkIn.product.isVerified {
+                Label("Verified", systemImage: "checkmark.circle")
+            } else if profileManager.hasPermission(.canVerify) {
+                Button(action: {
+                    viewModel.verifyProduct(product: checkIn.product)
+                }) {
+                    Label("Verify product", systemImage: "checkmark")
+                }
+                
+            } else {
+                Label("Not verified", systemImage: "x.circle")
+            }
+            
+            Divider()
             if isOwnedByCurrentUser() {
                 Button(action: {
                     viewModel.toggleSheet()
@@ -164,9 +179,11 @@ struct CheckInCardView: View {
                     }
                 }.frame(height: 8)
                 
-                Text(checkIn.product.getDisplayName(.fullName))
-                    .font(.system(size: 18, weight: .bold, design: .default))
-                    .foregroundColor(.primary)
+                HStack {
+                    Text(checkIn.product.getDisplayName(.fullName))
+                        .font(.system(size: 18, weight: .bold, design: .default))
+                        .foregroundColor(.primary)
+                }
 
                 HStack {
                     NavigationLink(value: checkIn.product.subBrand.brand.brandOwner) {
@@ -225,8 +242,12 @@ struct CheckInCardView: View {
     var footer: some View {
         HStack {
             NavigationLink(value: checkIn) {
-                Text(checkIn.createdAt.formatted())
-                    .font(.system(size: 12, weight: .medium, design: .default))
+                if checkIn.isMigrated {
+                    Text("Migrated")
+                } else {
+                    Text(checkIn.getRelativeCreatedAt())
+                        .font(.system(size: 12, weight: .medium, design: .default))
+                }
                 Spacer()
             }
             .buttonStyle(.plain)
@@ -252,6 +273,17 @@ extension CheckInCardView {
         func toggleSheet() {
             showingSheet.toggle()
         }
+        
+        func verifyProduct(product: Product.Joined) {
+            Task {
+                switch await repository.product.verifyProduct(productId: product.id){
+                case .success():
+                    print("Verified")
+                case let .failure(error):
+                    print(error)
+                }
+            }
+        }
 
         func delete(checkIn: CheckIn, onDelete: @escaping (_ checkIn: CheckIn) -> Void) {
             Task {
@@ -269,7 +301,7 @@ extension CheckInCardView {
 struct CheckInCardView_Previews: PreviewProvider {
     static let company = Company(id: 0, name: "The Coca Cola Company", logoUrl: nil)
 
-    static let product = Product.Joined(id: 0, name: "Coca Cola", description: "Original Taste", subBrand: subBrand, category: category, subcategories: subcategories, barcodes: [])
+    static let product = Product.Joined(id: 0, name: "Coca Cola", description: "Original Taste", isVerified: true, subBrand: subBrand, category: category, subcategories: subcategories, barcodes: [])
 
     static let profile = Profile(id: UUID(uuidString: "82c34cc0-4795-4478-99ad-38003fdb65fd") ?? UUID(), preferredName: "villeheikkila", avatarUrl: "avatar.jpeg")
 
@@ -291,13 +323,13 @@ struct CheckInCardView_Previews: PreviewProvider {
 
     static let brand = Brand.JoinedCompany(id: 0, name: "Coca Cola", brandOwner: company)
 
-    static let subBrand = SubBrand.JoinedBrand(id: 0, name: "Zero", brand: brand)
+    static let subBrand = SubBrand.JoinedBrand(id: 0, name: "Zero", isVerified: false, brand: brand)
 
     static let country = Country(countryCode: "FI", name: "Finland", emoji: "🇫🇮")
 
     static let location = Location(id: UUID(), name: "McDonalds", title: "Mäkkäri", location: nil, countryCode: "FI", country: country)
 
-    static let checkIn = CheckIn(id: 0, rating: 2.5, review: "Pretty Good!", imageUrl: "IMG_3155.jpeg", createdAt: Date(), profile: profile, product: product, checkInReactions: checkInReactions, taggedProfiles: [profile], flavors: flavors, variant: variant, servingStyle: servingStyle, location: location)
+    static let checkIn = CheckIn(id: 0, rating: 2.5, review: "Pretty Good!", imageUrl: "IMG_3155.jpeg", createdAt: Date(), isMigrated: false, profile: profile, product: product, checkInReactions: checkInReactions, taggedProfiles: [profile], flavors: flavors, variant: variant, servingStyle: servingStyle, location: location)
 
     static var previews: some View {
         CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn, onDelete: { _ in print("delete") }, onUpdate: { _ in print("update") })
