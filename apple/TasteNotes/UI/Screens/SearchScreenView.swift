@@ -119,6 +119,7 @@ class SearchScreenViewModel: ObservableObject {
             }
         }
     }
+
     @Published var products = [Product.Joined]()
     @Published var profiles = [Profile]()
     @Published var companies = [Company]()
@@ -127,7 +128,7 @@ class SearchScreenViewModel: ObservableObject {
     @Published var searchScope: SearchScope = .products
     @Published var barcode: Barcode? = nil
     @Published var tokens: [Category.Name] = []
-    
+
     func resetSearch() {
         profiles = []
         products = []
@@ -139,12 +140,12 @@ class SearchScreenViewModel: ObservableObject {
             self.barcode = nil
         }
     }
-    
+
     func addBarcodeToProduct(_ product: Product.Joined, onComplete: @escaping () -> Void) {
         if let barcode = barcode {
             Task {
                 switch await repository.product.addBarcodeToProduct(product: product, barcode: barcode) {
-                case .success(_):
+                case .success:
                     await MainActor.run {
                         self.barcode = nil
                         onComplete()
@@ -155,7 +156,7 @@ class SearchScreenViewModel: ObservableObject {
             }
         }
     }
-    
+
     func searchProducts() {
         Task {
             switch await repository.product.search(searchTerm: searchTerm, categoryName: tokens.first) {
