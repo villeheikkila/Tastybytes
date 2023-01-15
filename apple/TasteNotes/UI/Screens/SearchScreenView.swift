@@ -4,7 +4,8 @@ struct SearchScreenView: View {
     @ObservedObject var viewModel: SearchScreenViewModel
     @EnvironmentObject private var toastManager: ToastManager
     @EnvironmentObject private var profileManager: ProfileManager
-    
+    @State private var showAddBarcodeConfirmation = false
+
     var body: some View {
         List {
             switch viewModel.searchScope {
@@ -89,12 +90,19 @@ struct SearchScreenView: View {
                 }
             } else {
                 Button(action: {
-                    viewModel.addBarcodeToProduct(product, onComplete: {
-                        toastManager.toggle(.success("Barcode added!"))
-                    })
+                    showAddBarcodeConfirmation.toggle()
                 }) {
                     ProductListItemView(product: product)
                 }.buttonStyle(.plain)
+                    .confirmationDialog("Are you sure you want to add the barcode to product \(product.id)",
+                                        isPresented: $showAddBarcodeConfirmation
+                    ) {
+                        Button("Add barcode", action: {
+                            viewModel.addBarcodeToProduct(product, onComplete: {
+                                toastManager.toggle(.success("Barcode added!"))
+                            })
+                        })
+                    }
             }
         }
     }
