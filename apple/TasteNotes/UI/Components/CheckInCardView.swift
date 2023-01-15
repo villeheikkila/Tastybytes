@@ -321,7 +321,7 @@ struct CheckInCardView_Previews: PreviewProvider {
 
     static let subcategories = [Subcategory.JoinedCategory(id: 0, name: "Soda", category: category)]
 
-    static let brand = Brand.JoinedCompany(id: 0, name: "Coca Cola", brandOwner: company)
+    static let brand = Brand.JoinedCompany(id: 0, name: "Coca Cola", isVerified: true, brandOwner: company)
 
     static let subBrand = SubBrand.JoinedBrand(id: 0, name: "Zero", isVerified: false, brand: brand)
 
