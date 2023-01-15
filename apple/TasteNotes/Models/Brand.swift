@@ -1,7 +1,7 @@
 struct Brand {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "brands"
-        let saved = "id, name"
+        let saved = "id, name, is_verified"
 
         switch queryType {
         case .tableName:
@@ -27,6 +27,7 @@ extension Brand {
     struct JoinedSubBrands: Identifiable, Hashable, Decodable {
         let id: Int
         let name: String
+        let isVerified: Bool
         let subBrands: [SubBrand]
         
         func hash(into hasher: inout Hasher) {
@@ -40,12 +41,14 @@ extension Brand {
         enum CodingKeys: String, CodingKey {
             case id
             case name
+            case isVerified = "is_verified"
             case subBrands = "sub_brands"
         }
         
-        init(id: Int, name: String, subBrands: [SubBrand]) {
+        init(id: Int, name: String, isVerified: Bool, subBrands: [SubBrand]) {
             self.id = id
             self.name = name
+            self.isVerified = isVerified
             self.subBrands = subBrands
         }
         
@@ -53,6 +56,7 @@ extension Brand {
             let values = try decoder.container(keyedBy: CodingKeys.self)
             id = try values.decode(Int.self, forKey: .id)
             name = try values.decode(String.self, forKey: .name)
+            isVerified = try values.decode(Bool.self, forKey: .isVerified)
             subBrands = try values.decode([SubBrand].self, forKey: .subBrands)
         }
     }
@@ -60,6 +64,7 @@ extension Brand {
     struct JoinedCompany: Identifiable, Hashable, Decodable {
         let id: Int
         let name: String
+        let isVerified: Bool
         let brandOwner: Company
         
         func hash(into hasher: inout Hasher) {
@@ -73,12 +78,14 @@ extension Brand {
         enum CodingKeys: String, CodingKey {
             case id
             case name
+            case isVerified = "is_verified"
             case brandOwner = "companies"
         }
         
-        init(id: Int, name: String, brandOwner: Company) {
+        init(id: Int, name: String, isVerified: Bool, brandOwner: Company) {
             self.id = id
             self.name = name
+            self.isVerified = isVerified
             self.brandOwner = brandOwner
         }
         
@@ -86,6 +93,7 @@ extension Brand {
             let values = try decoder.container(keyedBy: CodingKeys.self)
             id = try values.decode(Int.self, forKey: .id)
             name = try values.decode(String.self, forKey: .name)
+            isVerified = try values.decode(Bool.self, forKey: .isVerified)
             brandOwner = try values.decode(Company.self, forKey: .brandOwner)
         }
     }
@@ -93,6 +101,7 @@ extension Brand {
     struct JoinedSubBrandsProducts: Identifiable, Hashable, Decodable {
         let id: Int
         let name: String
+        let isVerified: Bool
         let subBrands: [SubBrand.JoinedProduct]
         
         func getNumberOfProducts() -> Int {
@@ -106,6 +115,7 @@ extension Brand {
         enum CodingKeys: String, CodingKey {
             case id
             case name
+            case isVerified = "is_verified"
             case subBrands = "sub_brands"
         }
         
@@ -113,6 +123,7 @@ extension Brand {
             let values = try decoder.container(keyedBy: CodingKeys.self)
             id = try values.decode(Int.self, forKey: .id)
             name = try values.decode(String.self, forKey: .name)
+            isVerified = try values.decode(Bool.self, forKey: .isVerified)
             subBrands = try values.decode([SubBrand.JoinedProduct].self, forKey: .subBrands)
         }
     }

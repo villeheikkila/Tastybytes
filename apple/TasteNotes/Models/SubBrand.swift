@@ -13,7 +13,7 @@ struct SubBrand: Identifiable, Hashable, Decodable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
-        case isVerified
+        case isVerified = "is_verified"
     }
     
     init(from decoder: Decoder) throws {
@@ -100,7 +100,7 @@ extension SubBrand {
         enum CodingKeys: String, CodingKey {
             case id
             case name
-            case isVerified
+            case isVerified = "is_verified"
             case products
         }
         
