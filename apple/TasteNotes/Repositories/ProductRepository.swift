@@ -20,12 +20,12 @@ struct SupabaseProductRepository: ProductRepository {
 
     func search(searchTerm: String, categoryName: Category.Name?) async -> Result<[Product.Joined], Error> {
         do {
-            let response = try await client
+            let response: [Product.Joined] = try await client
                 .database
                 .rpc(fn: "fnc__search_products", params: Product.SearchParams(searchTerm: searchTerm, categoryName: categoryName))
                 .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
                 .execute()
-                .decoded(to: [Product.Joined].self)
+                .value
 
             return .success(response)
         } catch {
@@ -35,14 +35,14 @@ struct SupabaseProductRepository: ProductRepository {
     
     func search(barcode: Barcode) async -> Result<[Product.Joined], Error> {
         do {
-            let response = try await client
+            let response: [ProductBarcode.Joined] = try await client
                 .database
                 .from(ProductBarcode.getQuery(.tableName))
                 .select(columns: ProductBarcode.getQuery(.joined(false)))
                 .eq(column: "barcode", value: barcode.barcode)
                 .eq(column: "type", value: barcode.type.rawValue)
                 .execute()
-                .decoded(to: [ProductBarcode.Joined].self)
+                .value
 
             return .success(response.map { $0.product })
         } catch {
@@ -52,7 +52,7 @@ struct SupabaseProductRepository: ProductRepository {
 
     func getById(id: Int) async -> Result<Product.Joined, Error> {
         do {
-            let response = try await client
+            let response: Product.Joined = try await client
                 .database
                 .from(Product.getQuery(.tableName))
                 .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
@@ -60,7 +60,7 @@ struct SupabaseProductRepository: ProductRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: Product.Joined.self)
+                .value
             
             return .success(response)
         } catch {
@@ -70,7 +70,7 @@ struct SupabaseProductRepository: ProductRepository {
     
     func getByUserId(userId: Int) async -> Result<Product.Joined, Error> {
         do {
-            let response = try await client
+            let response: Product.Joined = try await client
                 .database
                 .from("product_user_ratings")
                 .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
@@ -78,7 +78,7 @@ struct SupabaseProductRepository: ProductRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: Product.Joined.self)
+                .value
             
             return .success(response)
         } catch {
@@ -103,14 +103,14 @@ struct SupabaseProductRepository: ProductRepository {
 
     func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error> {
         do {
-            let product = try await client
+            let product: IntId = try await client
                 .database
                 .rpc(fn: "fnc__create_product", params: newProductParams)
                 .select(columns: "id")
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: IntId.self)
+                .value
             /**
              TODO: Investigate if it is possible to somehow join sub_brands immediately after it has been created as part of the fnc__create_product function. 22.10.2022
              */
@@ -155,14 +155,14 @@ struct SupabaseProductRepository: ProductRepository {
 
     func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async -> Result<IntId, Error> {
         do {
-            let productEditSuggestion = try await client
+            let productEditSuggestion: IntId = try await client
                 .database
                 .rpc(fn: "fnc__create_product_edit_suggestion", params: productEditSuggestionParams)
                 .select(columns: "id")
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: IntId.self)
+                .value
 
             return .success(productEditSuggestion)
         } catch {
@@ -172,14 +172,14 @@ struct SupabaseProductRepository: ProductRepository {
     
     func editProduct(productEditParams: Product.EditSuggestionRequest) async -> Result<IntId, Error> {
         do {
-            let productEditSuggestion = try await client
+            let productEditSuggestion: IntId = try await client
                 .database
                 .rpc(fn: "fnc__edit_product", params: productEditParams)
                 .select(columns: "id")
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: IntId.self)
+                .value
 
             return .success(productEditSuggestion)
         } catch {
@@ -203,14 +203,14 @@ struct SupabaseProductRepository: ProductRepository {
 
     func getSummaryById(id: Int) async -> Result<ProductSummary, Error> {
         do {
-            let response = try await client
+            let response: ProductSummary = try await client
                 .database
                 .rpc(fn: "fnc__get_product_summary", params: Product.SummaryRequest(id: id))
                 .select()
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: ProductSummary.self)
+                .value
 
             return .success(response)
         } catch {

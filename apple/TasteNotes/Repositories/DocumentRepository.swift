@@ -10,14 +10,14 @@ struct SupabaseDocumentRepository: DocumentRepository {
 
     func getAboutPage() async -> Result<AboutPage, Error> {
         do {
-            let response = try await client
+            let response: Document.About = try await client
                 .database
                 .from(Document.getQuery(.tableName))
                 .select(columns: Document.getQuery(.saved(false)))
                 .eq(column: "page_name", value: Document.Page.about.rawValue)
                 .single()
                 .execute()
-                .decoded(to: Document.About.self)
+                .value
 
             return .success(response.document)
         } catch {

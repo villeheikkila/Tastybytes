@@ -21,7 +21,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     
     func getById(id: UUID) async -> Result<Profile, Error> {
         do {
-            let response = try await client
+            let response: Profile = try await client
                 .database
                 .from(Profile.getQuery(.tableName))
                 .select(columns: Profile.getQuery(.minimal(false)))
@@ -29,7 +29,7 @@ struct SupabaseProfileRepository: ProfileRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: Profile.self)
+                .value
 
             return .success(response)
         } catch {
@@ -39,18 +39,15 @@ struct SupabaseProfileRepository: ProfileRepository {
 
     func getCurrentUser() async -> Result<Profile.Extended, Error> {
         do {
-            let response = try await client
+            let response: Profile.Extended = try await client
                 .database
                 .rpc(fn: "fnc__get_current_profile")
                 .select(columns: Profile.getQuery(.extended(false)))
                 .limit(count: 1)
                 .single()
                 .execute()
-            
-            printData(data: response.data)
-
-            return .success(try response.decoded(to: Profile.Extended.self)
-)
+                .value
+            return .success(response)
         } catch {
             return .failure(error)
         }
@@ -58,7 +55,7 @@ struct SupabaseProfileRepository: ProfileRepository {
 
     func update(id: UUID, update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error> {
         do {
-            let response = try await client
+            let response: Profile.Extended = try await client
                 .database
                 .from(Profile.getQuery(.tableName))
                 .update(
@@ -69,7 +66,7 @@ struct SupabaseProfileRepository: ProfileRepository {
                 .select(columns: Profile.getQuery(.extended(false)))
                 .single()
                 .execute()
-                .decoded(to: Profile.Extended.self)
+                .value
 
             return .success(response)
         } catch {
@@ -79,7 +76,7 @@ struct SupabaseProfileRepository: ProfileRepository {
 
     func updateSettings(id: UUID, update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error> {
         do {
-            let response = try await client
+            let response: ProfileSettings = try await client
                 .database
                 .from(ProfileSettings.getQuery(.tableName))
                 .update(
@@ -90,7 +87,7 @@ struct SupabaseProfileRepository: ProfileRepository {
                 .select(columns: ProfileSettings.getQuery(.saved(false)))
                 .single()
                 .execute()
-                .decoded(to: ProfileSettings.self)
+                .value
 
             return .success(response)
         } catch {
@@ -113,15 +110,12 @@ struct SupabaseProfileRepository: ProfileRepository {
 
     func currentUserExport() async -> Result<String, Error> {
         do {
-            let response = try await client
+            let csv: String = try await client
                 .database
                 .rpc(fn: "fnc__export_data")
                 .csv()
                 .execute()
-
-            guard let csv = String(data: response.data, encoding: String.Encoding.utf8) else {
-                throw ProfileError.csvExportFailure
-            }
+                .value
 
             return .success(csv)
         } catch {
@@ -131,14 +125,14 @@ struct SupabaseProfileRepository: ProfileRepository {
 
     func search(searchTerm: String, currentUserId: UUID) async -> Result<[Profile], Error> {
         do {
-            let response = try await client
+            let response: [Profile] = try await client
                 .database
                 .from(Profile.getQuery(.tableName))
                 .select(columns: Profile.getQuery(.minimal(false)))
                 .ilike(column: "search", value: "%\(searchTerm)%")
                 .not(column: "id", operator: .eq, value: currentUserId.uuidString)
                 .execute()
-                .decoded(to: [Profile].self)
+                .value
 
             return .success(response)
         } catch {

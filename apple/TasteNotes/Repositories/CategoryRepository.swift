@@ -11,13 +11,13 @@ struct SupabaseCategoryRepository: CategoryRepository {
 
     func getAllWithSubcategories() async -> Result<[Category.JoinedSubcategories], Error> {
         do {
-            let response = try await client
+            let response: [Category.JoinedSubcategories] = try await client
                 .database
                 .from(Category.getQuery(.tableName))
                 .select(columns: Category.getQuery(.joinedSubcategories(false)))
                 .order(column: "name")
                 .execute()
-                .decoded(to: [Category.JoinedSubcategories].self)
+                .value
             
             return .success(response)
         } catch {
@@ -27,7 +27,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
 
     func getServingStylesByCategory(categoryId: Int) async -> Result<Category.JoinedServingStyles, Error> {
         do {
-            let response = try await client
+            let response: Category.JoinedServingStyles = try await client
                 .database
                 .from(Category.getQuery(.tableName))
                 .select(columns: Category.getQuery(.joinedServingStyles(false)))
@@ -35,7 +35,7 @@ struct SupabaseCategoryRepository: CategoryRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: Category.JoinedServingStyles.self)
+                .value
             
             return .success(response)
         } catch {

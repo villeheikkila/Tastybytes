@@ -19,15 +19,6 @@
       }
     },
     {
-      "identity" : "anycodable",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Flight-School/AnyCodable",
-      "state" : {
-        "revision" : "862808b2070cd908cb04f9aafe7de83d35f81b05",
-        "version" : "0.6.7"
-      }
-    },
-    {
       "identity" : "boringssl-swiftpm",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/boringssl-SwiftPM.git",
@@ -46,12 +37,30 @@
       }
     },
     {
+      "identity" : "functions-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/supabase-community/functions-swift",
+      "state" : {
+        "revision" : "7d5dfce3673bb30bbb7e1fbb5e0afe01bbd92624",
+        "version" : "0.2.0"
+      }
+    },
+    {
       "identity" : "get",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Get",
       "state" : {
-        "revision" : "7209fdb015686fd90918b2037cb2039206405bd3",
-        "version" : "2.1.5"
+        "revision" : "12830cc64f31789ae6f4352d2d51d03a25fc3741",
+        "version" : "2.1.6"
+      }
+    },
+    {
+      "identity" : "getextensions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/binaryscraping/GetExtensions",
+      "state" : {
+        "revision" : "aa20f38721142eb6592b2c8f11179d32d7d70ae3",
+        "version" : "1.0.0"
       }
     },
     {
@@ -77,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleUtilities.git",
       "state" : {
-        "revision" : "6db6edb48bdd9943426562c7f042a5492de5ba3d",
-        "version" : "7.10.0"
+        "revision" : "0543562f85620b5b7c510c6bcbef75b562a5127b",
+        "version" : "7.11.0"
       }
     },
     {
@@ -86,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/gotrue-swift",
       "state" : {
-        "revision" : "32719c3487d144a0fd76b9cd7bc5606c1fc720b7",
-        "version" : "0.0.9"
+        "revision" : "052fff22d1c2ffa4c3a6b3b58432e251f352891b",
+        "version" : "0.1.1"
       }
     },
     {
@@ -140,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/postgrest-swift",
       "state" : {
-        "revision" : "e949f57873118a44f301e4e6fee739ea589f6e7f",
-        "version" : "0.0.6"
+        "revision" : "a3c2d6a2ede94d2529edf063b056b1a66fd9cdc2",
+        "version" : "1.0.0"
       }
     },
     {
@@ -176,17 +185,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/supabase-swift",
       "state" : {
-        "revision" : "169ea4140473e0d9de5433ce25b051e56c3f6767",
-        "version" : "0.0.11"
-      }
-    },
-    {
-      "identity" : "swift-composable-keychain",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/binaryscraping/swift-composable-keychain",
-      "state" : {
-        "revision" : "3ebddfe9e9232218bada99ab6d6b3ca1fd94f112",
-        "version" : "0.0.2"
+        "revision" : "8292bf9a8eb21ca1bcfbd249ed84e67776e5ee2f",
+        "version" : "0.1.2"
       }
     },
     {
@@ -221,17 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/dkk/WrappingHStack.git",
       "state" : {
-        "revision" : "3e1eb1c4ad95bc690b15d7f2f521cb00d42b784a",
-        "version" : "2.2.7"
-      }
-    },
-    {
-      "identity" : "xctest-dynamic-overlay",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
-      "state" : {
-        "revision" : "5a5457a744239896e9b0b03a8e1a5069c3e7b91f",
-        "version" : "0.6.0"
+        "revision" : "44987fbb01112e6ec72098dc6481187dd53ad4d2",
+        "version" : "2.2.9"
       }
     }
   ],

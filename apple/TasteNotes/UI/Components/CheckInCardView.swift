@@ -15,7 +15,7 @@ struct CheckInCardView: View {
     let onUpdate: (_ checkIn: CheckIn) -> Void
 
     func isOwnedByCurrentUser() -> Bool {
-        return checkIn.profile.id == repository.auth.getCurrentUserId()
+        return checkIn.profile.id == profileManager.getId()
     }
 
     func avoidStackingCheckInPage() -> Bool {

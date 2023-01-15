@@ -13,14 +13,14 @@ struct SupabaseBrandRepository: BrandRepository {
 
     func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error> {
         do {
-            let response = try await client
+            let response: [Brand.JoinedSubBrands] = try await client
                 .database
                 .from(Brand.getQuery(.tableName))
                 .select(columns: Brand.getQuery(.joinedSubBrands(false)))
                 .eq(column: "brand_owner_id", value: brandOwnerId)
                 .order(column: "name")
                 .execute()
-                .decoded(to: [Brand.JoinedSubBrands].self)
+                .value
             
             return .success(response)
         } catch {
@@ -30,14 +30,14 @@ struct SupabaseBrandRepository: BrandRepository {
 
     func insert(newBrand: Brand.NewRequest) async -> Result<Brand.JoinedSubBrands, Error> {
         do {
-            let response = try await client
+            let response: Brand.JoinedSubBrands = try await client
                 .database
                 .from(Brand.getQuery(.tableName))
                 .insert(values: newBrand, returning: .representation)
                 .select(columns: Brand.getQuery(.joinedSubBrands(false)))
                 .single()
                 .execute()
-                .decoded(to: Brand.JoinedSubBrands.self)
+                .value
 
             return .success(response)
         } catch {

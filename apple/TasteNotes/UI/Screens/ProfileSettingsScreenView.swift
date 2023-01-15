@@ -154,10 +154,14 @@ extension ProfileSettingsScreenView {
         }
 
         func getInitialValues(profile: Profile.Extended) {
-            DispatchQueue.main.async {
-                self.updateFormValues(profile: profile)
-                self.user = supabaseClient.auth.session?.user
-                self.email = supabaseClient.auth.session?.user.email ?? ""
+            Task {
+                let user = try! await  supabaseClient.auth.session.user
+
+                await MainActor.run {
+                    self.updateFormValues(profile: profile)
+                    self.user = user
+                    self.email = user.email ?? ""
+                }
             }
         }
 
