@@ -20,13 +20,13 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
     func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
-            let response = try await client
+            let response: [CheckIn] = try await client
                 .database
                 .rpc(fn: "fnc__get_activity_feed")
                 .select(columns: CheckIn.getQuery(.joined(false)))
                 .range(from: from, to: to)
                 .execute()
-                .decoded(to: [CheckIn].self)
+                .value
             
             return .success(response)
         } catch {
@@ -36,7 +36,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
     func getByProfileId(id: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
-            let response = try await client
+            let response: [CheckIn] = try await client
                 .database
                 .from(CheckIn.getQuery(.tableName))
                 .select(columns: CheckIn.getQuery(.joined(false)))
@@ -44,7 +44,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .order(column: "id", ascending: false)
                 .range(from: from, to: to)
                 .execute()
-                .decoded(to: [CheckIn].self)
+                .value
 
             return .success(response)
         } catch {
@@ -54,7 +54,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
     func getByProductId(id: Int, from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
-            let response = try await client
+            let response: [CheckIn] = try await client
                 .database
                 .from(CheckIn.getQuery(.tableName))
                 .select(columns: CheckIn.getQuery(.joined(false)))
@@ -62,7 +62,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .order(column: "created_at", ascending: false)
                 .range(from: from, to: to)
                 .execute()
-                .decoded(to: [CheckIn].self)
+                .value
 
             return .success(response)
         } catch {
@@ -72,7 +72,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
     
     func getByLocation(locationId: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
-            let response = try await client
+            let response: [CheckIn] = try await client
                 .database
                 .from(CheckIn.getQuery(.tableName))
                 .select(columns: CheckIn.getQuery(.joined(false)))
@@ -80,7 +80,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .order(column: "created_at", ascending: false)
                 .range(from: from, to: to)
                 .execute()
-                .decoded(to: [CheckIn].self)
+                .value
 
             return .success(response)
         } catch {
@@ -90,7 +90,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
     func getById(id: Int) async -> Result<CheckIn, Error> {
         do {
-            let response = try await client
+            let response: CheckIn = try await client
                 .database
                 .from(CheckIn.getQuery(.tableName))
                 .select(columns: CheckIn.getQuery(.joined(false)))
@@ -98,7 +98,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: CheckIn.self)
+                .value
 
             return .success(response)
         } catch {
@@ -108,14 +108,14 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
     func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error> {
         do {
-            let createdCheckIn = try await client
+            let createdCheckIn: IntId = try await client
                 .database
                 .rpc(fn: "fnc__create_check_in", params: newCheckInParams)
                 .select(columns: "id")
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: IntId.self)
+                .value
 
             return await getById(id: createdCheckIn.id)
         } catch {
@@ -125,14 +125,14 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
     func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error> {
         do {
-            let response = try await client
+            let response: CheckIn = try await client
                 .database
                 .rpc(fn: "fnc__update_check_in", params: updateCheckInParams)
                 .select(columns: CheckIn.getQuery(.joined(false)))
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: CheckIn.self)
+                .value
 
             return .success(response)
         } catch {
@@ -157,14 +157,14 @@ struct SupabaseCheckInRepository: CheckInRepository {
 
     func getSummaryByProfileId(id: UUID) async -> Result<ProfileSummary, Error> {
         do {
-            let response = try await client
+            let response: ProfileSummary = try await client
                 .database
                 .rpc(fn: "fnc__get_profile_summary", params: ProfileSummary.GetRequest(profileId: id))
                 .select()
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: ProfileSummary.self)
+                .value
 
             return .success(response)
         } catch {
@@ -173,7 +173,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
     }
 
     func uploadImage(id: Int, data: Data) async -> Result<Void, Error> {
-        let profileId = repository.auth.getCurrentUserId()
+        let profileId = await repository.auth.getCurrentUserId()
 
         let file = File(
             name: "\(id).jpeg", data: data, fileName: "\(id).jpeg", contentType: "image/jpeg")

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ReactionsView: View {
     let checkIn: CheckIn
-    let currentUserId = repository.auth.getCurrentUserId()
+    @EnvironmentObject var profileManager: ProfileManager
     @StateObject private var viewModel = ViewModel()
 
     var body: some View {
@@ -12,7 +12,7 @@ struct ReactionsView: View {
             }
 
             Button {
-                if let existingReaction = viewModel.checkInReactions.first(where: { $0.profile.id == currentUserId }) {
+                if let existingReaction = viewModel.checkInReactions.first(where: { $0.profile.id == profileManager.getId() }) {
                     viewModel.removeReaction(reactionId: existingReaction.id)
                 } else {
                     viewModel.reactToCheckIn(checkIn)

@@ -20,7 +20,7 @@ struct RootView: View {
             Task { _ = try await supabaseClient.auth.session(from: url) }
         }
         .task {
-            for await authEventChange in supabaseClient.auth.authEventChange.values {
+            for await authEventChange in supabaseClient.auth.authEventChange {
                 withAnimation {
                     self.authEvent = authEventChange
                 }

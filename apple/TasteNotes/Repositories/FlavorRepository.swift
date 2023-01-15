@@ -11,13 +11,13 @@ struct SupabaseFlavorRepository: FlavorRepository {
 
     func getAll() async -> Result<[Flavor], Error> {
         do {
-            let response = try await client
+            let response: [Flavor] = try await client
                 .database
                 .from(Flavor.getQuery(.tableName))
                 .select(columns: Flavor.getQuery(.saved(false)))
                 .order(column: "name")
                 .execute()
-                .decoded(to: [Flavor].self)
+                .value
             
             return .success(response)
         } catch {

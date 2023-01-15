@@ -172,8 +172,9 @@ class SearchScreenViewModel: ObservableObject {
     }
 
     func searchProfiles() {
-        let currentUserId = repository.auth.getCurrentUserId()
         Task {
+            let currentUserId = await repository.auth.getCurrentUserId()
+
             switch await repository.profile.search(searchTerm: searchTerm, currentUserId: currentUserId) {
             case let .success(searchResults):
                 await MainActor.run {
