@@ -172,7 +172,7 @@ extension BarcodeScannerView {
                 captureSession!.addOutput(metadataOutput)
 
                 metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-                metadataOutput.metadataObjectTypes = [.qr, .codabar, .code39, .ean8, .ean13]
+                metadataOutput.metadataObjectTypes = [.codabar, .code39, .ean8, .ean13]
             } else {
                 didFail(reason: .badOutput)
                 return
