@@ -31,7 +31,7 @@ extension UserSheetView {
 
         func searchUsers() {
             Task {
-                let currentUserId = repository.auth.getCurrentUserId()
+                let currentUserId = await repository.auth.getCurrentUserId()
                 switch await repository.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
                 case let .success(searchResults):
                     await MainActor.run {

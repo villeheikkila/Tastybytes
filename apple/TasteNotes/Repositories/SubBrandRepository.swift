@@ -12,14 +12,14 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
 
     func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error> {
         do {
-            let response = try await client
+            let response: SubBrand = try await client
                 .database
                 .from(SubBrand.getQuery(.tableName))
                 .insert(values: newSubBrand, returning: .representation)
                 .select(columns: SubBrand.getQuery(.saved(false)))
                 .single()
                 .execute()
-                .decoded(to: SubBrand.self)
+                .value
 
             return .success(response)
         } catch {

@@ -26,9 +26,9 @@ struct SupabaseFriendsRepository: FriendRepository {
                 queryBuilder = queryBuilder.not(column: "status", operator: .eq, value: Friend.Status.blocked.rawValue)
             }
 
-            let response = try await queryBuilder
+            let response: [Friend] = try await queryBuilder
                 .execute()
-                .decoded(to: [Friend].self)
+                .value
 
             return .success(response)
         } catch {
@@ -38,14 +38,14 @@ struct SupabaseFriendsRepository: FriendRepository {
 
     func insert(newFriend: Friend.NewRequest) async -> Result<Friend, Error> {
         do {
-            let response = try await client
+            let response: Friend = try await client
                 .database
                 .from(Friend.getQuery(.tableName))
                 .insert(values: newFriend, returning: .representation)
                 .select(columns: Friend.getQuery(.joined(false)))
                 .single()
                 .execute()
-                .decoded(to: Friend.self)
+                .value
 
             return .success(response)
         } catch {
@@ -55,7 +55,7 @@ struct SupabaseFriendsRepository: FriendRepository {
 
     func update(id: Int, friendUpdate: Friend.UpdateRequest) async -> Result<Friend, Error> {
         do {
-            let response = try await client
+            let response: Friend = try await client
                 .database
                 .from(Friend.getQuery(.tableName))
                 .update(values: friendUpdate, returning: .representation)
@@ -63,7 +63,7 @@ struct SupabaseFriendsRepository: FriendRepository {
                 .select(columns: Friend.getQuery(.joined(false)))
                 .single()
                 .execute()
-                .decoded(to: Friend.self)
+                .value
 
             return .success(response)
         } catch {

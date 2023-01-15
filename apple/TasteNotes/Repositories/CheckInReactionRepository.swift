@@ -11,14 +11,14 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
     
     func insert(newCheckInReaction: CheckInReaction.NewRequest) async -> Result<CheckInReaction, Error> {
         do {
-            let response = try await client
+            let response: CheckInReaction = try await client
                 .database
                 .rpc(fn: "fnc__create_check_in_reaction", params: newCheckInReaction)
                 .select(columns: CheckInReaction.getQuery(.joinedProfile(false)))
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: CheckInReaction.self)
+                .value
             
             return .success(response)
         } catch {

@@ -15,7 +15,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
 
     func getById(id: Int) async -> Result<Company, Error> {
         do {
-            let response = try await client
+            let response: Company = try await client
                 .database
                 .from(Company.getQuery(.tableName))
                 .select(columns: Company.getQuery(.saved(false)))
@@ -23,7 +23,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: Company.self)
+                .value
 
             return .success(response)
         } catch {
@@ -33,7 +33,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
     
     func getJoinedById(id: Int) async -> Result<Company.Joined, Error> {
         do {
-            let response = try await client
+            let response: Company.Joined = try await client
                 .database
                 .from(Company.getQuery(.tableName))
                 .select(columns: Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
@@ -41,7 +41,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: Company.Joined.self)
+                .value
 
             return .success(response)
         } catch {
@@ -51,14 +51,14 @@ struct SupabaseCompanyRepository: CompanyRepository {
 
     func insert(newCompany: Company.NewRequest) async -> Result<Company, Error> {
         do {
-            let response = try await client
+            let response: Company = try await client
                 .database
                 .from(Company.getQuery(.tableName))
                 .insert(values: newCompany, returning: .representation)
                 .select(columns: Company.getQuery(.saved(false)))
                 .single()
                 .execute()
-                .decoded(to: Company.self)
+                .value
 
             return .success(response)
         } catch {
@@ -68,7 +68,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
     
     func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error> {
         do {
-            let response = try await client
+            let response: Company.Joined = try await client
                 .database
                 .from(Company.getQuery(.tableName))
                 .update(values: updateRequest)
@@ -76,7 +76,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
                 .select(columns: Company.getQuery(.joinedBrandSubcategoriesOwner(false)))
                 .single()
                 .execute()
-                .decoded(to: Company.Joined.self)
+                .value
             
             return .success(response)
         } catch {
@@ -101,13 +101,13 @@ struct SupabaseCompanyRepository: CompanyRepository {
 
     func search(searchTerm: String) async -> Result<[Company], Error> {
         do {
-            let response = try await client
+            let response: [Company] = try await client
                 .database
                 .from(Company.getQuery(.tableName))
                 .select(columns: Company.getQuery(.saved(false)))
                 .ilike(column: "name", value: "%\(searchTerm)%")
                 .execute()
-                .decoded(to: [Company].self)
+                .value
 
             return .success(response)
         } catch {
@@ -117,14 +117,14 @@ struct SupabaseCompanyRepository: CompanyRepository {
 
     func getSummaryById(id: Int) async -> Result<Company.Summary, Error> {
         do {
-            let response = try await client
+            let response: Company.Summary = try await client
                 .database
                 .rpc(fn: "fnc__get_company_summary", params: Company.SummaryRequest(id: id))
                 .select()
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: Company.Summary.self)
+                .value
 
             return .success(response)
         } catch {

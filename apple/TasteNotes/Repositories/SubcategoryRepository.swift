@@ -10,14 +10,14 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
 
     func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error> {
         do {
-            let response = try await client
+            let response: Subcategory = try await client
                 .database
                 .from(Subcategory.getQuery(.tableName))
                 .insert(values: newSubcategory, returning: .representation)
                 .select(columns: Subcategory.getQuery(.saved(false)))
                 .single()
                 .execute()
-                .decoded(to: Subcategory.self)
+                .value
 
             return .success(response)
         } catch {

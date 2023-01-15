@@ -12,7 +12,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
 
     func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error> {
         do {
-            let result = try await client
+            let result: CheckInComment = try await client
                 .database
                 .from(CheckInComment.getQuery(.tableName))
                 .insert(values: newCheckInComment, returning: .representation)
@@ -20,7 +20,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
                 .limit(count: 1)
                 .single()
                 .execute()
-                .decoded(to: CheckInComment.self)
+                .value
             
             return .success(result)
         } catch {
@@ -30,7 +30,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
 
     func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error> {
         do {
-            let response = try await client
+            let response: CheckInComment = try await client
                 .database
                 .from(CheckInComment.getQuery(.tableName))
                 .update(values: updateCheckInComment, returning: .representation)
@@ -38,7 +38,7 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
                 .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
                 .single()
                 .execute()
-                .decoded(to: CheckInComment.self)
+                .value
 
             return .success(response)
         } catch {
@@ -48,14 +48,14 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
 
     func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error> {
         do {
-            let response = try await client
+            let response: [CheckInComment] = try await client
                 .database
                 .from(CheckInComment.getQuery(.tableName))
                 .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
                 .eq(column: "check_in_id", value: id)
                 .order(column: "created_at")
                 .execute()
-                .decoded(to: [CheckInComment].self)
+                .value
 
             return .success(response)
         } catch {
