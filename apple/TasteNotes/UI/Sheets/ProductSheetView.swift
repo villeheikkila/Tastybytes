@@ -341,7 +341,7 @@ extension ProductSheetView {
                         self.category = categories.first(where: { $0.id == initialProduct.category.id })
                         self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
                         self.brandOwner = initialProduct.subBrand.brand.brandOwner
-                        self.brand = Brand.JoinedSubBrands(id: initialProduct.subBrand.brand.id, name: initialProduct.subBrand.brand.name, subBrands: []) // TODO: Fetch sub-brands
+                        self.brand = Brand.JoinedSubBrands(id: initialProduct.subBrand.brand.id, name: initialProduct.subBrand.brand.name, isVerified: initialProduct.subBrand.brand.isVerified, subBrands: []) // TODO: Fetch sub-brands
                         self.subBrand = initialProduct.subBrand.getSubBrand()
                         self.name = initialProduct.name
                         self.description = initialProduct.description ?? ""

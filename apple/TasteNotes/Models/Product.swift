@@ -196,7 +196,7 @@ extension Product {
             name = product.name
             description = product.name
             isVerified = product.isVerified
-            self.subBrand = SubBrand.JoinedBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified, brand: Brand.JoinedCompany(id: brand.id, name: brand.name, brandOwner: company))
+            self.subBrand = SubBrand.JoinedBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified, brand: Brand.JoinedCompany(id: brand.id, name: brand.name, isVerified: brand.isVerified, brandOwner: company))
             subcategories = product.subcategories
             category = product.category
             barcodes = []
