@@ -106,9 +106,9 @@ extension Product {
         let p_description: String?
         let p_category_id: Int
         let p_sub_category_ids: [Int]
-        let p_sub_brand_id: Int?
+        let p_sub_brand_id: Int
 
-        init(productId: Int, name: String, description: String?, categoryId: Int, subBrandId: Int?, subCategoryIds: [Int]) {
+        init(productId: Int, name: String, description: String?, categoryId: Int, subBrandId: Int, subCategoryIds: [Int]) {
             p_product_id = productId
             p_name = name
             p_description = description
