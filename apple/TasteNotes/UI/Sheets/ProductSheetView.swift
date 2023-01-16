@@ -407,10 +407,12 @@ extension ProductSheetView {
         
         func editProduct(product: Product.Joined, onComplete: @escaping () -> Void) {
             if let subBrand = subBrand {
-                let productEditSuggestionParams = Product.EditSuggestionRequest(productId: product.id, name: name, description: description, categoryId: product.subcategories.first!.category.id, subBrandId: subBrand.id, subCategoryIds: subcategories.map { $0.id })
+                let productEditParams = Product.EditSuggestionRequest(productId: product.id, name: name, description: description, categoryId: product.subcategories.first!.category.id, subBrandId: subBrand.id, subCategoryIds: subcategories.map { $0.id })
+                
+                print(productEditParams)
 
                 Task {
-                    switch await repository.product.editProduct(productEditParams: productEditSuggestionParams) {
+                    switch await repository.product.editProduct(productEditParams: productEditParams) {
                     case let .success(data):
                         print(data)
                         onComplete()
