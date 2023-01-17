@@ -496,8 +496,10 @@ extension ProductSheetView {
         }
         
         func editProduct(product: Product.Joined, onComplete: @escaping () -> Void) {
-            if let subBrand = subBrand, let category = category {
-                let productEditParams = Product.EditRequest(productId: product.id, name: name, description: description, categoryId: category.id, subBrandId: subBrand.id, subcategories: subcategories)
+            if let category = category, let brand = brand {
+                let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
+                guard let subBrandWithNil = subBrandWithNil else { return }
+                let productEditParams = Product.EditRequest(productId: product.id, name: name, description: description, categoryId: category.id, subBrandId: subBrandWithNil.id, subcategories: subcategories)
                 
                 Task {
                     switch await repository.product.editProduct(productEditParams: productEditParams) {
