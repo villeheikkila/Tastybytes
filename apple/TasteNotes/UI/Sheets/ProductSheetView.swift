@@ -297,12 +297,174 @@ extension ProductSheetView {
       }
     }
 
-    func setBrand(brand: Brand.JoinedSubBrands) {
-      DispatchQueue.main.async {
-        self.brand = brand
-        self.subBrand = brand.subBrands.first(where: { $0.name == nil })
-        self.activeSheet = nil
-      }
+    @MainActor class ViewModel: ObservableObject {
+        @Published var categories = [Category.JoinedSubcategories]()
+        @Published var activeSheet: Sheet?
+        @Published var categoryName: Category.Name = Category.Name.beverage {
+            // TODO: Investigate if this cna be avoided by passing ServingStyle directly to the picker
+            didSet {
+                category = categories.first(where: { $0.name == categoryName })
+            }
+        }
+
+        @Published var category: Category.JoinedSubcategories?
+        @Published var subcategories: [Subcategory] = []
+        @Published var brandOwner: Company?
+        @Published var brand: Brand.JoinedSubBrands?
+        @Published var subBrand: SubBrand?
+        @Published var name: String = ""
+        @Published var description: String = ""
+        @Published var hasSubBrand = false
+        @Published var barcode: Barcode? = nil
+
+        func getSubcategoriesForCategory() -> [Subcategory]? {
+            return category?.subcategories
+        }
+
+        func createSubcategory(newSubcategoryName: String) {
+            if let categoryWithSubcategories = category {
+                Task {
+                    switch await repository.subcategory.insert(newSubcategory: Subcategory.NewRequest(name: newSubcategoryName, category: categoryWithSubcategories)) {
+                    case .success:
+                        await MainActor.run {
+                            self.loadCategories(categoryWithSubcategories.name)
+                        }
+                    case let .failure(error):
+                        print(error)
+                    }
+                }
+            }
+        }
+
+        func setBrand(brand: Brand.JoinedSubBrands) {
+            DispatchQueue.main.async {
+                self.brand = brand
+                self.subBrand = brand.subBrands.first(where: { $0.name == nil })
+                self.activeSheet = nil
+            }
+        }
+
+        func setActiveSheet(_ sheet: Sheet) {
+            DispatchQueue.main.async {
+                self.activeSheet = sheet
+            }
+        }
+
+        func setBrandOwner(_ brandOwner: Company) {
+            DispatchQueue.main.async {
+                self.brandOwner = brandOwner
+            }
+        }
+
+        func dismissSheet() {
+            DispatchQueue.main.async {
+                self.activeSheet = nil
+            }
+        }
+
+        func isValid() -> Bool {
+            return brandOwner != nil && brand != nil && validateStringLength(str: name, type: .normal)
+        }
+
+        func getToastText(_ toast: Toast) -> String {
+            switch toast {
+            case .createdCompany:
+                return "New Company Created!"
+            case .createdBrand:
+                return "New Brand Created!"
+            case .createdSubBrand:
+                return "New Sub-brand Created!"
+            }
+        }
+
+        func loadInitialProduct(_ initialProduct: Product.Joined?) {
+            guard let initialProduct = initialProduct else { return }
+
+            Task {
+                switch await repository.category.getAllWithSubcategories() {
+                case let .success(categories):
+                    await MainActor.run {
+                        self.categories = categories
+                        self.category = categories.first(where: { $0.id == initialProduct.category.id })
+                        self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
+                        self.brandOwner = initialProduct.subBrand.brand.brandOwner
+                        self.brand = Brand.JoinedSubBrands(id: initialProduct.subBrand.brand.id, name: initialProduct.subBrand.brand.name, isVerified: initialProduct.subBrand.brand.isVerified, subBrands: []) // TODO: Fetch sub-brands
+                        self.subBrand = initialProduct.subBrand.getSubBrand()
+                        self.name = initialProduct.name
+                        self.description = initialProduct.description ?? ""
+                        self.hasSubBrand = initialProduct.subBrand.name != nil
+                    }
+                case let .failure(error):
+                    print(error)
+                }
+            }
+        }
+
+        func loadInitialBarcode(_ initialBarcode: Barcode?) {
+            guard let initialBarcode = initialBarcode else { return }
+            DispatchQueue.main.async {
+                self.barcode = initialBarcode
+            }
+        }
+
+        func loadCategories(_ initialCategory: Category.Name = Category.Name.beverage) {
+            Task {
+                switch await repository.category.getAllWithSubcategories() {
+                case let .success(categories):
+                    await MainActor.run {
+                        self.categories = categories
+                        self.category = categories.first(where: { $0.name == initialCategory })
+                    }
+                case let .failure(error):
+                    print(error)
+                }
+            }
+        }
+
+        func createProduct(onCreation: @escaping (_ product: Product.Joined) -> Void) {
+            if let category = category, let brandId = brand?.id {
+                let newProductParams = Product.NewRequest(name: name, description: description, categoryId: category.id, brandId: brandId, subBrandId: subBrand?.id, subCategoryIds: subcategories.map { $0.id }, barcode: barcode)
+                Task {
+                    switch await repository.product.create(newProductParams: newProductParams) {
+                    case let .success(newProduct):
+                        onCreation(newProduct)
+                    case let .failure(error):
+                        print(error)
+                    }
+                }
+            }
+        }
+        
+        func createProductEditSuggestion(product: Product.Joined, onComplete: @escaping () -> Void) {
+            if let subBrand = subBrand, let category = category {
+                let productEditSuggestionParams = Product.EditRequest(productId: product.id, name: name, description: description, categoryId: category.id, subBrandId: subBrand.id, subcategories: subcategories)
+
+                Task {
+                    switch await repository.product.createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams) {
+                    case .success(_):
+                        onComplete()
+                    case let .failure(error):
+                        print(error)
+                    }
+                    onComplete()
+                }
+            }
+        }
+        
+        func editProduct(product: Product.Joined, onComplete: @escaping () -> Void) {
+            if let subBrand = subBrand, let category = category {
+                let productEditParams = Product.EditRequest(productId: product.id, name: name, description: description, categoryId: category.id, subBrandId: subBrand.id, subcategories: subcategories)
+                
+                Task {
+                    switch await repository.product.editProduct(productEditParams: productEditParams) {
+                    case .success():
+                        onComplete()
+                    case let .failure(error):
+                        print(error)
+                    }
+                }
+            }
+        }
     }
 
     func setActiveSheet(_ sheet: Sheet) {
