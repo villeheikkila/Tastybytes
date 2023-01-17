@@ -196,23 +196,30 @@ struct ProductSheetView: View {
         .disabled(viewModel.brandOwner == nil)
       }
 
-      if viewModel.brand != nil {
-        Toggle("Has sub-brand?", isOn: $viewModel.hasSubBrand)
-      }
-
-      if viewModel.hasSubBrand {
-        Button(action: {
-          viewModel.setActiveSheet(.subBrand)
-        }) {
-          Text(viewModel.subBrand?.name ?? "Sub-brand")
-        }
-        .disabled(viewModel.brand == nil)
-      }
-
-    } header: {
-      Text("Brand")
-        .onTapGesture {
-          self.focusedField = nil
+    var productSection: some View {
+        Section {
+            TextField("Flavor", text: $viewModel.name)
+                .focused($focusedField, equals: .name)
+            
+            TextField("Description (optional)", text: $viewModel.description)
+                .focused($focusedField, equals: .description)
+            
+            if mode == .new {
+                Button(action: {
+                    viewModel.setActiveSheet(.barcode)
+                }) {
+                    if viewModel.barcode != nil {
+                        Text("Barcode Added!")
+                    } else {
+                        Text("Add Barcode")
+                    }
+                }
+            }
+        } header: {
+            Text("Product")
+                .onTapGesture {
+                    self.focusedField = nil
+                }
         }
     }
     .headerProminence(.increased)
@@ -317,7 +324,7 @@ extension ProductSheetView {
         @Published var categories = [Category.JoinedSubcategories]()
         @Published var activeSheet: Sheet?
         @Published var categoryName: Category.Name = Category.Name.beverage {
-            // TODO: Investigate if this cna be avoided by passing ServingStyle directly to the picker
+            // TODO: Investigate if this can be avoided by passing ServingStyle directly to the picker
             didSet {
                 category = categories.first(where: { $0.name == categoryName })
             }
