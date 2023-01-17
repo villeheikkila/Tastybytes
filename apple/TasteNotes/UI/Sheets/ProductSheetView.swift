@@ -322,11 +322,20 @@ extension ProductSheetView {
                 category = categories.first(where: { $0.name == categoryName })
             }
         }
-
+        
         @Published var category: Category.JoinedSubcategories?
         @Published var subcategories: [Subcategory] = []
-        @Published var brandOwner: Company?
-        @Published var brand: Brand.JoinedSubBrands?
+        @Published var brandOwner: Company? {
+            didSet {
+                brand = nil
+            }
+        }
+        @Published var brand: Brand.JoinedSubBrands? {
+            didSet {
+                hasSubBrand = false
+                subBrand = nil
+            }
+        }
         @Published var subBrand: SubBrand?
         @Published var name: String = ""
         @Published var description: String = ""
