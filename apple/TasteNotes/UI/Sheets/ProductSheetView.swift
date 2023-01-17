@@ -419,18 +419,24 @@ extension ProductSheetView {
             guard let initialProduct = initialProduct else { return }
 
             Task {
+                // TODO: Load the missing data in parallel 18.1.2023
                 switch await repository.category.getAllWithSubcategories() {
                 case let .success(categories):
-                    await MainActor.run {
-                        self.categories = categories
-                        self.category = categories.first(where: { $0.id == initialProduct.category.id })
-                        self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
-                        self.brandOwner = initialProduct.subBrand.brand.brandOwner
-                        self.brand = Brand.JoinedSubBrands(id: initialProduct.subBrand.brand.id, name: initialProduct.subBrand.brand.name, isVerified: initialProduct.subBrand.brand.isVerified, subBrands: []) // TODO: Fetch sub-brands
-                        self.subBrand = initialProduct.subBrand.getSubBrand()
-                        self.name = initialProduct.name
-                        self.description = initialProduct.description ?? ""
-                        self.hasSubBrand = initialProduct.subBrand.name != nil
+                    switch await repository.brand.getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id) {
+                    case let .success(brandsWithSubBrands):
+                        await MainActor.run {
+                            self.categories = categories
+                            self.category = categories.first(where: { $0.id == initialProduct.category.id })
+                            self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
+                            self.brandOwner = initialProduct.subBrand.brand.brandOwner
+                            self.brand = Brand.JoinedSubBrands(id: initialProduct.subBrand.brand.id, name: initialProduct.subBrand.brand.name, isVerified: initialProduct.subBrand.brand.isVerified, subBrands: brandsWithSubBrands.first(where: {$0.id == initialProduct.subBrand.brand.id })?.subBrands ?? [])
+                            self.subBrand = initialProduct.subBrand.getSubBrand()
+                            self.name = initialProduct.name
+                            self.description = initialProduct.description ?? ""
+                            self.hasSubBrand = initialProduct.subBrand.name != nil
+                        }
+                    case let .failure(error):
+                        print(error)
                     }
                 case let .failure(error):
                     print(error)
