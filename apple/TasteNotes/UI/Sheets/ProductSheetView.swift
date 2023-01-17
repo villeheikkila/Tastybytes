@@ -9,12 +9,14 @@ struct ProductSheetView: View {
 
   let initialProduct: Product.Joined?
   let initialBarcode: Barcode?
+  let onEdit: (() -> Void)?
 
-  init(mode: Mode, initialProduct: Product.Joined? = nil, initialBarcode: Barcode? = nil) {
-    self.mode = mode
-    self.initialProduct = initialProduct
-    self.initialBarcode = initialBarcode
-  }
+  init(mode: Mode, initialProduct: Product.Joined? = nil, initialBarcode: Barcode? = nil, onEdit: (() -> Void)? = nil) {
+        self.mode = mode
+        self.initialProduct = initialProduct
+        self.initialBarcode = initialBarcode
+        self.onEdit = onEdit
+    }
 
   var doneLabel: String {
     switch mode {
@@ -24,7 +26,6 @@ struct ProductSheetView: View {
       return "Send Edit suggestion"
     case .new:
       return "Create"
-    }
   }
 
   var navigationTitle: String {
@@ -37,19 +38,34 @@ struct ProductSheetView: View {
       return "Add Product"
     }
   }
+    
+    var body: some View {
+        List {
+            categorySection
+            brandSection
+            productSection
 
-  var body: some View {
-    List {
-      categorySection
-      brandSection
-      productSection
-
-      Button(doneLabel, action: {
-        switch mode {
-        case .editSuggestion:
-          if let initialProduct {
-            viewModel.createProductEditSuggestion(product: initialProduct, onComplete: {
-              print("hei")
+            Button(doneLabel, action: {
+                switch mode {
+                case .editSuggestion:
+                    if let initialProduct = initialProduct {
+                        viewModel.createProductEditSuggestion(product: initialProduct, onComplete: {
+                            toastManager.toggle(.success("Edit suggestion sent!"))
+                        })
+                    }
+                case .edit:
+                    if let initialProduct = initialProduct {
+                        viewModel.editProduct(product: initialProduct, onComplete: {
+                            if let onEdit = onEdit {
+                                onEdit()
+                            }
+                        })
+                    }
+                case .new:
+                    viewModel.createProduct(onCreation: {
+                        product in routeManager.navigateTo(destination: product, resetStack: true)
+                    })
+                }
             })
           }
         case .edit:
