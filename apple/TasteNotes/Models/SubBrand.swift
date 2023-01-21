@@ -1,152 +1,156 @@
 
 struct SubBrand: Identifiable, Hashable, Decodable {
+  let id: Int
+  let name: String?
+  let isVerified: Bool
+
+  init(id: Int, name: String?, isVerified: Bool) {
+    self.id = id
+    self.name = name
+    self.isVerified = isVerified
+  }
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case name
+    case isVerified = "is_verified"
+  }
+
+  init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    id = try values.decode(Int.self, forKey: .id)
+    name = try values.decodeIfPresent(String.self, forKey: .name)
+    isVerified = try values.decode(Bool.self, forKey: .isVerified)
+  }
+}
+
+extension SubBrand {
+  static func getQuery(_ queryType: QueryType) -> String {
+    let tableName = "sub_brands"
+    let saved = "id, name, is_verified"
+
+    switch queryType {
+    case .tableName:
+      return tableName
+    case let .saved(withTableName):
+      return queryWithTableName(tableName, saved, withTableName)
+    case let .joined(withTableName):
+      return queryWithTableName(
+        tableName,
+        joinWithComma(saved, Product.getQuery(.joinedBrandSubcategories(true))),
+        withTableName
+      )
+    case let .joinedBrand(withTableName):
+      return queryWithTableName(tableName, joinWithComma(saved, Brand.getQuery(.joinedCompany(true))), withTableName)
+    }
+  }
+
+  enum QueryType {
+    case tableName
+    case saved(_ withTableName: Bool)
+    case joined(_ withTableName: Bool)
+    case joinedBrand(_ withTableName: Bool)
+  }
+}
+
+extension SubBrand {
+  struct JoinedBrand: Identifiable, Hashable, Decodable {
     let id: Int
     let name: String?
     let isVerified: Bool
-    
-    init(id: Int, name: String?, isVerified: Bool) {
-        self.id = id
-        self.name = name
-        self.isVerified = isVerified
+    let brand: Brand.JoinedCompany
+
+    func getSubBrand() -> SubBrand {
+      SubBrand(id: id, name: name, isVerified: isVerified)
     }
-    
+
+    func hash(into hasher: inout Hasher) {
+      hasher.combine(id)
+    }
+
+    static func == (lhs: JoinedBrand, rhs: JoinedBrand) -> Bool {
+      lhs.id == rhs.id
+    }
+
+    init(id: Int, name: String?, isVerified: Bool, brand: Brand.JoinedCompany) {
+      self.id = id
+      self.name = name
+      self.brand = brand
+      self.isVerified = isVerified
+    }
+
     enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case isVerified = "is_verified"
+      case id
+      case name
+      case brand = "brands"
+      case isVerified = "is_verified"
     }
-    
+
     init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
-        name = try values.decodeIfPresent(String.self, forKey: .name)
-        isVerified = try values.decode(Bool.self, forKey: .isVerified)
+      let values = try decoder.container(keyedBy: CodingKeys.self)
+      id = try values.decode(Int.self, forKey: .id)
+      name = try values.decodeIfPresent(String.self, forKey: .name)
+      isVerified = try values.decode(Bool.self, forKey: .isVerified)
+      brand = try values.decode(Brand.JoinedCompany.self, forKey: .brand)
     }
+  }
+
+  struct JoinedProduct: Identifiable, Hashable, Decodable {
+    let id: Int
+    let name: String?
+    let isVerified: Bool
+    let products: [Product.JoinedCategory]
+
+    enum CodingKeys: String, CodingKey {
+      case id
+      case name
+      case isVerified = "is_verified"
+      case products
+    }
+
+    init(from decoder: Decoder) throws {
+      let values = try decoder.container(keyedBy: CodingKeys.self)
+      id = try values.decode(Int.self, forKey: .id)
+      name = try values.decodeIfPresent(String.self, forKey: .name)
+      isVerified = try values.decode(Bool.self, forKey: .isVerified)
+      products = try values.decode([Product.JoinedCategory].self, forKey: .products)
+    }
+  }
 }
 
 extension SubBrand {
-    static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "sub_brands"
-        let saved = "id, name, is_verified"
-                
-        switch queryType {
-        case .tableName:
-            return tableName
-        case let .saved(withTableName):
-            return queryWithTableName(tableName, saved, withTableName)
-        case let .joined(withTableName):
-            return queryWithTableName(tableName, joinWithComma(saved, Product.getQuery(.joinedBrandSubcategories(true))), withTableName)
-        case let .joinedBrand(withTableName):
-            return queryWithTableName(tableName, joinWithComma(saved, Brand.getQuery(.joinedCompany(true))), withTableName)
-        }
-    }
-    
-    enum QueryType {
-        case tableName
-        case saved(_ withTableName: Bool)
-        case joined(_ withTableName: Bool)
-        case joinedBrand(_ withTableName: Bool)
-    }
-}
+  struct NewRequest: Encodable {
+    let name: String
+    let brand_id: Int
 
-extension SubBrand {
-    struct JoinedBrand: Identifiable, Hashable, Decodable {
-        let id: Int
-        let name: String?
-        let isVerified: Bool
-        let brand: Brand.JoinedCompany
-        
-        func getSubBrand() -> SubBrand {
-            return SubBrand(id: id, name: name, isVerified: isVerified)
-        }
-        
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
-        
-        static func == (lhs: JoinedBrand, rhs: JoinedBrand) -> Bool {
-            return lhs.id == rhs.id
-        }
-        
-        init(id: Int, name: String?, isVerified: Bool, brand: Brand.JoinedCompany) {
-            self.id = id
-            self.name = name
-            self.brand = brand
-            self.isVerified = isVerified
-        }
-        
-        enum CodingKeys: String, CodingKey {
-            case id
-            case name
-            case brand = "brands"
-            case isVerified = "is_verified"
-        }
-        
-        init(from decoder: Decoder) throws {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            id = try values.decode(Int.self, forKey: .id)
-            name = try values.decodeIfPresent(String.self, forKey: .name)
-            isVerified = try values.decode(Bool.self, forKey: .isVerified)
-            brand = try values.decode(Brand.JoinedCompany.self, forKey: .brand)
-        }
+    init(name: String, brandId: Int) {
+      self.name = name
+      brand_id = brandId
     }
-    
-    struct JoinedProduct: Identifiable, Hashable, Decodable {
-        let id: Int
-        let name: String?
-        let isVerified: Bool
-        let products: [Product.JoinedCategory]
-        
-        enum CodingKeys: String, CodingKey {
-            case id
-            case name
-            case isVerified = "is_verified"
-            case products
-        }
-        
-        init(from decoder: Decoder) throws {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            id = try values.decode(Int.self, forKey: .id)
-            name = try values.decodeIfPresent(String.self, forKey: .name)
-            isVerified = try values.decode(Bool.self, forKey: .isVerified)
-            products = try values.decode([Product.JoinedCategory].self, forKey: .products)
-        }
-    }
-}
+  }
 
-extension SubBrand {
-    struct NewRequest: Encodable {
-        let name: String
-        let brand_id: Int
-        
-        init(name: String, brandId: Int) {
-            self.name = name
-            self.brand_id = brandId
-        }
+  struct UpdateNameRequest: Encodable {
+    let id: Int
+    let name: String
+
+    init(id: Int, name: String) {
+      self.id = id
+      self.name = name
     }
-    
-    struct UpdateNameRequest: Encodable {
-        let id: Int
-        let name: String
-        
-        init(id: Int, name: String) {
-            self.id = id
-            self.name = name
-        }
+  }
+
+  struct UpdateBrandRequest: Encodable {
+    let id: Int
+    let brand_id: Int
+
+    init(id: Int, brandId: Int) {
+      self.id = id
+      brand_id = brandId
     }
-    
-    struct UpdateBrandRequest: Encodable {
-        let id: Int
-        let brand_id: Int
-        
-        init(id: Int, brandId: Int) {
-            self.id = id
-            self.brand_id = brandId
-        }
-    }
-    
-    enum Update {
-        case brand(UpdateBrandRequest)
-        case name(UpdateNameRequest)
-    }
+  }
+
+  enum Update {
+    case brand(UpdateBrandRequest)
+    case name(UpdateNameRequest)
+  }
 }
