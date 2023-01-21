@@ -70,6 +70,7 @@
 		5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24E28F9C52E000B0EB4 /* CompanyRepository.swift */; };
 		5CB52D64292BBC14000BF55F /* ProfileProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB52D63292BBC14000BF55F /* ProfileProductListView.swift */; };
 		5CBC2450297C54B900A0002B /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBC244F297C54B900A0002B /* AppRouter.swift */; };
+		5CBC2452297C60AE00A0002B /* ProfileScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBC2451297C60AE00A0002B /* ProfileScreenView.swift */; };
 		5CC2FE8F29196A5D002BDF83 /* LocationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE8E29196A5D002BDF83 /* LocationSearchView.swift */; };
 		5CC2FE912919774A002BDF83 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE902919774A002BDF83 /* Location.swift */; };
 		5CC2FE9429197D9F002BDF83 /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9329197D9F002BDF83 /* LocationSearchService.swift */; };
@@ -183,6 +184,7 @@
 		5CB1C24E28F9C52E000B0EB4 /* CompanyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyRepository.swift; sourceTree = "<group>"; };
 		5CB52D63292BBC14000BF55F /* ProfileProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileProductListView.swift; sourceTree = "<group>"; };
 		5CBC244F297C54B900A0002B /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		5CBC2451297C60AE00A0002B /* ProfileScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenView.swift; sourceTree = "<group>"; };
 		5CC2FE8E29196A5D002BDF83 /* LocationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchView.swift; sourceTree = "<group>"; };
 		5CC2FE902919774A002BDF83 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		5CC2FE9329197D9F002BDF83 /* LocationSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchService.swift; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 				5CB52D63292BBC14000BF55F /* ProfileProductListView.swift */,
 				5C12B42E2902A190001EE549 /* ProfileSettingsScreenView.swift */,
 				5CE9008B291FCB71003DE697 /* SplashScreenView.swift */,
+				5CBC2451297C60AE00A0002B /* ProfileScreenView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -679,6 +682,7 @@
 				5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */,
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5CE9009329211AC9003DE697 /* NotificationManager.swift in Sources */,
+				5CBC2452297C60AE00A0002B /* ProfileScreenView.swift in Sources */,
 				5CC2FE912919774A002BDF83 /* Location.swift in Sources */,
 				5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */,
 				5C12B42F2902A191001EE549 /* ProfileSettingsScreenView.swift in Sources */,

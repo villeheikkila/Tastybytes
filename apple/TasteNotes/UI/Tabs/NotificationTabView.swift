@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NotificationTabView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
-  @EnvironmentObject private var routeManager: RouterPath
+  @StateObject private var routeManager = RouterPath()
 
   var body: some View {
     NavigationStack(path: $routeManager.path) {
