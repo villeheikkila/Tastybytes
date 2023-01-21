@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct NotificationScreenView: View {
+struct NotificationTabView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
 
   var body: some View {

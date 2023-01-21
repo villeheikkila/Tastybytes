@@ -3,7 +3,7 @@ import GoTrue
 import PhotosUI
 import SwiftUI
 
-struct ProfileScreenView: View {
+struct ProfileTabView: View {
   @State private var profile: Profile
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var routeManager: RouteManager
@@ -224,7 +224,7 @@ struct ProfileScreenView: View {
   }
 }
 
-extension ProfileScreenView {
+extension ProfileTabView {
   @MainActor class ViewModel: ObservableObject {
     @Published var checkIns = [CheckIn]()
     @Published var profileSummary: ProfileSummary?
