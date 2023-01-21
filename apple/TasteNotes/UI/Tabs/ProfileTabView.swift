@@ -15,36 +15,43 @@ struct ProfileTabView: View {
   }
 
   var body: some View {
-    InfiniteScrollView(
-      data: $viewModel.checkIns,
-      isLoading: $viewModel.isLoading,
-      loadMore: { viewModel.fetchMoreCheckIns(userId: profile.id) },
-      refresh: {
-        viewModel.refresh(userId: profile.id)
-      },
-      content: {
-        CheckInCardView(checkIn: $0,
-                        loadedFrom: .profile(profile),
-                        onDelete: { checkIn in viewModel.onCheckInDelete(checkIn: checkIn)
-                        },
-                        onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn) })
-      },
-      header: {
-        VStack(spacing: 20) {
-          profileSummary
-          ratingChart
-          ratingSummary
-          if profileManager.getId() != profile.id,
-             !profileManager.hasFriendByUserId(userId: profile.id)
-          {
-            sendFriendRequestButton
+    NavigationStack(path: $routeManager.path) {
+      WithRoutes {
+        InfiniteScrollView(
+          data: $viewModel.checkIns,
+          isLoading: $viewModel.isLoading,
+          loadMore: { viewModel.fetchMoreCheckIns(userId: profile.id) },
+          refresh: {
+            viewModel.refresh(userId: profile.id)
+          },
+          content: {
+            CheckInCardView(checkIn: $0,
+                            loadedFrom: .profile(profile),
+                            onDelete: { checkIn in viewModel.onCheckInDelete(checkIn: checkIn)
+                            },
+                            onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn) })
+          },
+          header: {
+            VStack(spacing: 20) {
+              profileSummary
+              ratingChart
+              ratingSummary
+              if profileManager.getId() != profile.id,
+                 !profileManager.hasFriendByUserId(userId: profile.id)
+              {
+                sendFriendRequestButton
+              }
+              links
+            }
           }
-          links
+        )
+        .navigationTitle(profile.preferredName)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+          toolbarContent
         }
       }
-    )
-    .navigationTitle(profile.preferredName)
-    .navigationBarTitleDisplayMode(.inline)
+    }
   }
 
   var sendFriendRequestButton: some View {
@@ -221,6 +228,20 @@ struct ProfileTabView: View {
     .cornerRadius(10)
     .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
     .padding([.leading, .trailing], 5)
+  }
+
+  @ToolbarContentBuilder
+  var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarLeading) {
+      NavigationLink(value: Route.currentUserFriends) {
+        Image(systemName: "person.2").imageScale(.large)
+      }
+    }
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
+      NavigationLink(value: Route.settings) {
+        Image(systemName: "gear").imageScale(.large)
+      }
+    }
   }
 }
 

@@ -14,7 +14,7 @@ struct Main: App {
   var body: some Scene {
     WindowGroup {
       ZStack {
-        RootView()
+        AppRootView()
         if splashScreenManager.state != .finished {
           SplashScreenView()
         }
