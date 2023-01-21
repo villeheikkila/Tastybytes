@@ -68,7 +68,7 @@ extension CompanySheetView {
   @MainActor class ViewModel: ObservableObject {
     @Published var searchText: String = ""
     @Published var searchResults = [Company]()
-    @Published var status: Status? = nil
+    @Published var status: Status?
     @Published var companyName = ""
 
     func createNew() {

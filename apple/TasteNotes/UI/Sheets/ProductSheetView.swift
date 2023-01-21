@@ -273,7 +273,7 @@ extension ProductSheetView {
     @Published var name: String = ""
     @Published var description: String = ""
     @Published var hasSubBrand = false
-    @Published var barcode: Barcode? = nil
+    @Published var barcode: Barcode?
 
     func getSubcategoriesForCategory() -> [Subcategory]? {
       category?.subcategories

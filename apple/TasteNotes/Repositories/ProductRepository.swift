@@ -115,7 +115,8 @@ struct SupabaseProductRepository: ProductRepository {
         .execute()
         .value
       /**
-       TODO: Investigate if it is possible to somehow join sub_brands immediately after it has been created as part of the fnc__create_product function. 22.10.2022
+       TODO: Investigate if it is possible to somehow join sub_brands immediately after it has been created
+       as part of the fnc__create_product function. 22.10.2022
        */
 
       switch await getById(id: product.id) {

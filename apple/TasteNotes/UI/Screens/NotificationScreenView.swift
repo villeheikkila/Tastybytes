@@ -78,7 +78,11 @@ struct CheckInReactionNotificationView: View {
       HStack {
         AvatarView(avatarUrl: checkInReaction.profile.getAvatarURL(), size: 32, id: checkInReaction.profile.id)
         Text(
-          "\(checkInReaction.profile.preferredName) reacted to your check-in of \(checkInReaction.checkIn.product.getDisplayName(.full))"
+          """
+          \(checkInReaction.profile.preferredName)\
+           reacted to your check-in of\
+           \(checkInReaction.checkIn.product.getDisplayName(.full))
+          """
         )
 
         Spacer()

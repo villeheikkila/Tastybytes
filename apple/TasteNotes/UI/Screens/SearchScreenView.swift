@@ -15,7 +15,10 @@ struct SearchScreenView: View {
           if viewModel.barcode != nil {
             Section {
               Text(
-                "\(viewModel.products.isEmpty ? "No results were found" : "If none of the results match"), you can assign the barcode to a product by searching again with the name or by creating a new product."
+                """
+                \(viewModel.products.isEmpty ? "No results were found" : "If none of the results match"),\
+                you can assign the barcode to a product by searching again with the name or by creating a new product.
+                """
               )
               Button(action: {
                 viewModel.resetBarcode()
@@ -129,7 +132,7 @@ class SearchScreenViewModel: ObservableObject {
   @Published var showBarcodeScanner = false
   @Published var isSearched = false
   @Published var searchScope: SearchScope = .products
-  @Published var barcode: Barcode? = nil
+  @Published var barcode: Barcode?
   @Published var tokens: [Category.Name] = []
 
   func resetSearch() {
