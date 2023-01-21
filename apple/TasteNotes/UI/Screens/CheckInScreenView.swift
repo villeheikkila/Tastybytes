@@ -4,7 +4,7 @@ import SwiftUI
 struct CheckInScreenView: View {
   let checkIn: CheckIn
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject private var routeManager: RouteManager
+  @EnvironmentObject private var routeManager: RouterPath
   @EnvironmentObject private var notificationManager: NotificationManager
 
   var body: some View {

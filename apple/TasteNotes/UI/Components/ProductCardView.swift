@@ -16,7 +16,7 @@ struct ProductCardView: View {
         .font(.system(size: 18, weight: .bold, design: .default))
         .foregroundColor(.primary)
       HStack {
-        NavigationLink(value: product.subBrand.brand.brandOwner) {
+        NavigationLink(value: Route.company(product.subBrand.brand.brandOwner)) {
           Text(product.getDisplayName(.brandOwner))
             .font(.system(size: 16, weight: .bold, design: .default))
             .foregroundColor(.secondary)

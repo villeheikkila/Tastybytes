@@ -58,7 +58,7 @@ struct CheckInCardView: View {
             HStack {
               ForEach(checkIn.taggedProfiles, id: \.id) {
                 taggedProfile in
-                NavigationLink(value: taggedProfile) {
+                NavigationLink(value: Route.profile(taggedProfile)) {
                   AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 32, id: taggedProfile.id)
                 }
               }
@@ -122,7 +122,7 @@ struct CheckInCardView: View {
   }
 
   var header: some View {
-    NavigationLink(value: checkIn.profile) {
+    NavigationLink(value: Route.profile(checkIn.profile)) {
       HStack {
         AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 30, id: checkIn.profile.id)
         Text(checkIn.profile.preferredName)
@@ -130,7 +130,7 @@ struct CheckInCardView: View {
           .foregroundColor(.primary)
         Spacer()
         if let location = checkIn.location {
-          NavigationLink(value: location) {
+          NavigationLink(value: Route.location(location)) {
             Text("\(location.name) \(location.country?.emoji ?? "")")
               .font(.system(size: 12, weight: .bold, design: .default))
               .foregroundColor(.primary)
@@ -161,7 +161,7 @@ struct CheckInCardView: View {
   }
 
   var productSection: some View {
-    NavigationLink(value: checkIn.product) {
+    NavigationLink(value: Route.product(checkIn.product)) {
       VStack(alignment: .leading) {
         HStack {
           CategoryNameView(category: checkIn.product.category)
@@ -184,7 +184,7 @@ struct CheckInCardView: View {
         }
 
         HStack {
-          NavigationLink(value: checkIn.product.subBrand.brand.brandOwner) {
+          NavigationLink(value: Route.company(checkIn.product.subBrand.brand.brandOwner)) {
             Text(checkIn.product.getDisplayName(.brandOwner))
               .font(.system(size: 16, weight: .bold, design: .default))
               .foregroundColor(.secondary)
@@ -209,7 +209,7 @@ struct CheckInCardView: View {
   }
 
   var checkInSection: some View {
-    NavigationLink(value: checkIn) {
+    NavigationLink(value: Route.checkIn(checkIn)) {
       VStack(spacing: 8) {
         HStack {
           VStack(alignment: .leading, spacing: 8) {
@@ -241,7 +241,7 @@ struct CheckInCardView: View {
 
   var footer: some View {
     HStack {
-      NavigationLink(value: checkIn) {
+      NavigationLink(value: Route.checkIn(checkIn)) {
         if checkIn.isMigrated {
           Text("Migrated")
         } else {

@@ -183,7 +183,7 @@ struct FriendListItemSimpleView: View {
   let profile: Profile
 
   var body: some View {
-    NavigationLink(value: profile) {
+    NavigationLink(value: Route.profile(profile)) {
       HStack(alignment: .center) {
         AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
         Text(profile.preferredName)
@@ -222,7 +222,7 @@ struct FriendListItemView: View {
   }
 
   var body: some View {
-    NavigationLink(value: friend.getFriend(userId: currentUser.id)) {
+    NavigationLink(value: Route.profile(friend.getFriend(userId: currentUser.id))) {
       HStack(alignment: .center) {
         AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
         VStack {

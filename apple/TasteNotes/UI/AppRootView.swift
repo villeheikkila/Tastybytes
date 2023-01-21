@@ -4,7 +4,7 @@ import SwiftUI
 
 struct AppRootView: View {
   @State private var authEvent: AuthChangeEvent?
-  @StateObject private var routeManager = RouteManager()
+  @StateObject private var routeManager = RouterPath()
   @StateObject private var profileManager = ProfileManager()
   @EnvironmentObject private var notificationManager: NotificationManager
 

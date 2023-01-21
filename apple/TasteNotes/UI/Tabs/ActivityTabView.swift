@@ -14,7 +14,7 @@ struct ActivityTabView: View {
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var toastManager: ToastManager
-  @EnvironmentObject private var routeManager: RouteManager
+  @EnvironmentObject private var routeManager: RouterPath
 
   var body: some View {
     NavigationStack(path: $routeManager.path) {
@@ -41,6 +41,9 @@ struct ActivityTabView: View {
         .navigationTitle("Activity")
         .toolbar {
           toolbarContent
+        }
+        .onAppear {
+          routeManager.reset()
         }
       }
     }
