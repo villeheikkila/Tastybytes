@@ -2,17 +2,17 @@ import Foundation
 import Supabase
 
 protocol ProductRepository {
-    func search(searchTerm: String, categoryName: Category.Name?) async -> Result<[Product.Joined], Error>
-    func search(barcode: Barcode) async -> Result<[Product.Joined], Error>
-    func getById(id: Int) async -> Result<Product.Joined, Error>
-    func delete(id: Int) async -> Result<Void, Error>
-    func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
-    func getSummaryById(id: Int) async -> Result<ProductSummary, Error>
-    func addBarcodeToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error>
-    func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
-    func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error>
-    func createUpdateSuggestion(productEditSuggestionParams: Product.EditRequest) async -> Result<IntId, Error>
-    func verifyProduct(productId: Int) async -> Result<Void, Error>
+  func search(searchTerm: String, categoryName: Category.Name?) async -> Result<[Product.Joined], Error>
+  func search(barcode: Barcode) async -> Result<[Product.Joined], Error>
+  func getById(id: Int) async -> Result<Product.Joined, Error>
+  func delete(id: Int) async -> Result<Void, Error>
+  func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
+  func getSummaryById(id: Int) async -> Result<ProductSummary, Error>
+  func addBarcodeToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error>
+  func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
+  func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error>
+  func createUpdateSuggestion(productEditSuggestionParams: Product.EditRequest) async -> Result<IntId, Error>
+  func verifyProduct(productId: Int) async -> Result<Void, Error>
 }
 
 struct SupabaseProductRepository: ProductRepository {
@@ -160,34 +160,34 @@ struct SupabaseProductRepository: ProductRepository {
     }
   }
 
-    func createUpdateSuggestion(productEditSuggestionParams: Product.EditRequest) async -> Result<IntId, Error> {
-        do {
-            let productEditSuggestion: IntId = try await client
-                .database
-                .rpc(fn: "fnc__create_product_edit_suggestion", params: productEditSuggestionParams)
-                .select(columns: "id")
-                .limit(count: 1)
-                .single()
-                .execute()
-                .value
+  func createUpdateSuggestion(productEditSuggestionParams: Product.EditRequest) async -> Result<IntId, Error> {
+    do {
+      let productEditSuggestion: IntId = try await client
+        .database
+        .rpc(fn: "fnc__create_product_edit_suggestion", params: productEditSuggestionParams)
+        .select(columns: "id")
+        .limit(count: 1)
+        .single()
+        .execute()
+        .value
 
       return .success(productEditSuggestion)
     } catch {
       return .failure(error)
     }
-    
-    func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error> {
-        do {
-            try await client
-                .database
-                .rpc(fn: "fnc__edit_product", params: productEditParams)
-                .execute()
-                .value
+  }
 
-            return .success(())
-        } catch {
-            return .failure(error)
-        }
+  func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error> {
+    do {
+      try await client
+        .database
+        .rpc(fn: "fnc__edit_product", params: productEditParams)
+        .execute()
+        .value
+
+      return .success(())
+    } catch {
+      return .failure(error)
     }
   }
 
