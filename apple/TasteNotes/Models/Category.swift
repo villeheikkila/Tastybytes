@@ -64,7 +64,7 @@ extension Category {
     case juice
     case chocolate
     case cocoa
-    case ice_cream
+    case iceCream = "ice_cream"
     case pizza
     case protein
     case milk
