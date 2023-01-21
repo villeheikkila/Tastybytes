@@ -79,7 +79,7 @@ struct SearchTabView: View {
           case .juice: Text("Juice")
           case .chocolate: Text("Chocolate")
           case .cocoa: Text("Cocoa")
-          case .ice_cream: Text("Ice Cream")
+          case .iceCream: Text("Ice Cream")
           case .pizza: Text("Pizza")
           case .protein: Text("Protein")
           case .milk: Text("Milk")
