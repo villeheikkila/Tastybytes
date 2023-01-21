@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FriendSheetView: View {
   @Binding var taggedFriends: [Profile]
-  @StateObject var viewModel = ViewModel()
+  @StateObject private var viewModel = ViewModel()
   @Environment(\.dismiss) var dismiss
 
   func toggleFriend(friend: Profile) {

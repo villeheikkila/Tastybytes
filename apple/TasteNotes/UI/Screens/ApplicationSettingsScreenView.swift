@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ApplicationSettingsScreenView: View {
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject var profileManager: ProfileManager
+  @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.colorScheme) var systemColorScheme
 
   var body: some View {

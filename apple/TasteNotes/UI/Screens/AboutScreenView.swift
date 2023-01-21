@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AboutScreenView: View {
-  @StateObject var viewModel = ViewModel()
+  @StateObject private var viewModel = ViewModel()
 
   var body: some View {
     VStack {

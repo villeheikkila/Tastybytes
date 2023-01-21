@@ -4,9 +4,9 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInSheetView: View {
-  @StateObject var viewModel = ViewModel()
+  @StateObject private var viewModel = ViewModel()
   @Environment(\.dismiss) var dismiss
-  @State var showPhotoMenu = false
+  @State private var showPhotoMenu = false
   @FocusState private var focusedField: Focusable?
 
   let product: Product.Joined

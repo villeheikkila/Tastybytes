@@ -3,10 +3,10 @@ import SwiftUI
 
 struct FlavorSheetView: View {
   @Environment(\.dismiss) var dismiss
-  @StateObject var viewModel = ViewModel()
+  @StateObject private var viewModel = ViewModel()
   @Binding var pickedFlavors: [Flavor]
-  @State var searchText = ""
-  @State var showToast = false
+  @State private var searchText = ""
+  @State private var showToast = false
   let maxFlavors = 6
 
   func toggleFlavor(_ flavor: Flavor) {

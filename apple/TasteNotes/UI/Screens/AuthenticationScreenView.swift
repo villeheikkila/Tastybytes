@@ -4,10 +4,10 @@ struct AuthenticationScreenView: View {
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var toastManager: ToastManager
   @FocusState private var focusedField: Field?
-  @State var mode: Mode = .signIn
-  @State var isLoading = false
-  @State var email = ""
-  @State var password = ""
+  @State private var mode: Mode = .signIn
+  @State private var isLoading = false
+  @State private var email = ""
+  @State private var password = ""
 
   var body: some View { VStack {
     VStack(spacing: 20) {

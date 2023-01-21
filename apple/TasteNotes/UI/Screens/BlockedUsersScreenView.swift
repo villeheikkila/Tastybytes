@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BlockedUsersScreenView: View {
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject var profileManager: ProfileManager
+  @EnvironmentObject private var profileManager: ProfileManager
 
   var body: some View {
     List {

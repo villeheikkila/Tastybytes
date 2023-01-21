@@ -4,11 +4,11 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileScreenView: View {
-  @State var profile: Profile
+  @State private var profile: Profile
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject var routeManager: RouteManager
-  @EnvironmentObject var toastManager: ToastManager
-  @EnvironmentObject var profileManager: ProfileManager
+  @EnvironmentObject private var routeManager: RouteManager
+  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var profileManager: ProfileManager
 
   init(profile: Profile) {
     _profile = State(initialValue: profile)

@@ -3,12 +3,12 @@ import SwiftUI
 
 struct EditBrandSheetView: View {
   @Environment(\.dismiss) var dismiss
-  @StateObject var viewModel = ViewModel()
-  @State var name: String
+  @StateObject private var viewModel = ViewModel()
+  @State private var name: String
   let initialBrandOwner: Company
-  @State var brandOwner: Company
-  @State var editSubBrand: SubBrand.JoinedProduct?
-  @State var showToast = false
+  @State private var brandOwner: Company
+  @State private var editSubBrand: SubBrand.JoinedProduct?
+  @State private var showToast = false
 
   let brand: Brand.JoinedSubBrandsProducts
   let onUpdate: () -> Void
@@ -179,7 +179,7 @@ extension EditBrandSheetView {
 
 struct EditSubBrandSheetView: View {
   @StateObject private var viewModel = ViewModel()
-  @State var newSubBrandName: String
+  @State private var newSubBrandName: String
 
   let brand: Brand.JoinedSubBrandsProducts
   let subBrand: SubBrand.JoinedProduct
