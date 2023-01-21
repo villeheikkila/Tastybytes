@@ -1,64 +1,107 @@
 import SwiftUI
 
 struct SearchTabView: View {
-  @ObservedObject var viewModel: SearchTabViewModel
+  @ObservedObject var viewModel = SearchTabViewModel()
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var showAddBarcodeConfirmation = false
+  @EnvironmentObject private var routeManager: RouteManager
 
   var body: some View {
-    List {
-      switch viewModel.searchScope {
-      case .products:
-        productResults
-        if viewModel.isSearched {
-          if viewModel.barcode != nil {
-            Section {
-              Text(
-                """
-                \(viewModel.products.isEmpty ? "No results were found" : "If none of the results match"),\
-                you can assign the barcode to a product by searching again with the name or by creating a new product.
-                """
-              )
-              Button(action: {
-                viewModel.resetBarcode()
-              }) {
-                Text("Dismiss barcode")
+    NavigationStack(path: $routeManager.path) {
+      WithRoutes {
+        List {
+          switch viewModel.searchScope {
+          case .products:
+            productResults
+            if viewModel.isSearched {
+              if viewModel.barcode != nil {
+                Section {
+                  Text(
+                    """
+                    \(viewModel.products.isEmpty ? "No results were found" : "If none of the results match"),\
+                    you can assign the barcode to a product by searching again with the name or by creating a new product.
+                    """
+                  )
+                  Button(action: {
+                    viewModel.resetBarcode()
+                  }) {
+                    Text("Dismiss barcode")
+                  }
+                }
               }
+              Section {
+                NavigationLink("Add new", value: Route.addProduct(viewModel.barcode))
+                  .fontWeight(.medium)
+                  .disabled(!profileManager.hasPermission(.canCreateProducts))
+              } header: {
+                Text("Didn't find a product you were looking for?")
+              }
+              .textCase(nil)
             }
+          case .companies:
+            companyResults
+          case .users:
+            profileResults
           }
-          Section {
-            NavigationLink("Add new", value: Route.addProduct(viewModel.barcode))
-              .fontWeight(.medium)
-              .disabled(!profileManager.hasPermission(.canCreateProducts))
-          } header: {
-            Text("Didn't find a product you were looking for?")
-          }
-          .textCase(nil)
         }
-      case .companies:
-        companyResults
-      case .users:
-        profileResults
-      }
-    }
-    .listStyle(InsetGroupedListStyle())
-    .onChange(of: viewModel.searchScope, perform: { _ in
-      viewModel.search()
-    })
-    .onChange(of: viewModel.searchTerm, perform: {
-      term in
-      if term.isEmpty {
-        viewModel.resetSearch()
-      }
-    })
-    .onSubmit(of: .search, viewModel.search)
-    .sheet(isPresented: $viewModel.showBarcodeScanner) {
-      NavigationStack {
-        BarcodeScannerSheetView(onComplete: {
-          barcode in viewModel.searchProductsByBardcode(barcode)
+        .listStyle(InsetGroupedListStyle())
+        .onChange(of: viewModel.searchScope, perform: { _ in
+          viewModel.search()
         })
-        .presentationDetents([.medium])
+        .onChange(of: viewModel.searchTerm, perform: {
+          term in
+          if term.isEmpty {
+            viewModel.resetSearch()
+          }
+        })
+        .onSubmit(of: .search, viewModel.search)
+        .sheet(isPresented: $viewModel.showBarcodeScanner) {
+          NavigationStack {
+            BarcodeScannerSheetView(onComplete: {
+              barcode in viewModel.searchProductsByBardcode(barcode)
+            })
+            .presentationDetents([.medium])
+          }
+        }
+        .searchable(text: $viewModel.searchTerm, tokens: $viewModel.tokens) { token in
+          switch token {
+          case .chips: Text("Chips")
+          case .candy: Text("Candy")
+          case .chewingGum: Text("Chewing Gum")
+          case .fruit: Text("Fruit")
+          case .popcorn: Text("Popcorn")
+          case .ingredient: Text("Ingredient")
+          case .beverage: Text("Beverage")
+          case .convenienceFood: Text("Convenience Food")
+          case .cheese: Text("Cheese")
+          case .snacks: Text("Snacks")
+          case .juice: Text("Juice")
+          case .chocolate: Text("Chocolate")
+          case .cocoa: Text("Cocoa")
+          case .ice_cream: Text("Ice Cream")
+          case .pizza: Text("Pizza")
+          case .protein: Text("Protein")
+          case .milk: Text("Milk")
+          case .alcoholicBeverage: Text("Alcoholic Beverage")
+          case .cereal: Text("Cereal")
+          case .pastry: Text("Pastry")
+          case .spice: Text("Spice")
+          case .noodles: Text("Noodles")
+          case .tea: Text("Tea")
+          case .coffee: Text("Coffee")
+          }
+        }
+        .searchScopes($viewModel.searchScope) {
+          Text("Products").tag(SearchScope.products)
+          Text("Companies").tag(SearchScope.companies)
+          Text("Users").tag(SearchScope.users)
+        }
+        .onSubmit(of: .search, viewModel.search)
+        .navigationTitle("Search")
+        .toolbar {
+          toolbarContent
+        }
       }
     }
   }
@@ -107,6 +150,17 @@ struct SearchTabView: View {
               })
             })
           }
+      }
+    }
+  }
+
+  @ToolbarContentBuilder
+  var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
+      Button(action: {
+        viewModel.showBarcodeScanner.toggle()
+      }) {
+        Image(systemName: "barcode.viewfinder")
       }
     }
   }

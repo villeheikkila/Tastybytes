@@ -2,32 +2,58 @@ import SwiftUI
 
 struct NotificationTabView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
+  @EnvironmentObject private var routeManager: RouteManager
 
   var body: some View {
-    List {
-      ForEach(notificationManager.notifications) {
-        notification in
-        HStack {
-          switch notification.content {
-          case let .message(message):
-            MessageNotificationView(message: message)
-              .onTapGesture {
-                notificationManager.markAsRead(notification)
+    NavigationStack(path: $routeManager.path) {
+      WithRoutes {
+        List {
+          ForEach(notificationManager.notifications) {
+            notification in
+            HStack {
+              switch notification.content {
+              case let .message(message):
+                MessageNotificationView(message: message)
+                  .onTapGesture {
+                    notificationManager.markAsRead(notification)
+                  }
+              case let .friendRequest(friendRequest):
+                FriendRequestNotificationView(friend: friendRequest)
+              case let .taggedCheckIn(taggedCheckIn):
+                TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
+              case let .checkInReaction(checkInReaction):
+                CheckInReactionNotificationView(checkInReaction: checkInReaction)
               }
-          case let .friendRequest(friendRequest):
-            FriendRequestNotificationView(friend: friendRequest)
-          case let .taggedCheckIn(taggedCheckIn):
-            TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
-          case let .checkInReaction(checkInReaction):
-            CheckInReactionNotificationView(checkInReaction: checkInReaction)
+              Spacer()
+            }
           }
-          Spacer()
+          .onDelete(perform: notificationManager.deleteFromIndex)
+        }
+        .refreshable {
+          notificationManager.refresh(reset: true)
+        }
+        .navigationTitle("Notifications")
+        .toolbar {
+          toolbarContent
         }
       }
-      .onDelete(perform: notificationManager.deleteFromIndex)
     }
-    .refreshable {
-      notificationManager.refresh(reset: true)
+  }
+
+  @ToolbarContentBuilder
+  var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
+      Menu {
+        Button(action: {
+          notificationManager.deleteAll()
+        }) {
+          Label("Delete all notifications", systemImage: "trash")
+        }
+      } label: {
+        Text("Mark all read")
+      } primaryAction: {
+        notificationManager.markAllAsRead()
+      }
     }
   }
 }
