@@ -53,12 +53,12 @@ extension Category {
     var id: Self { self }
     case chips
     case candy
-    case chewing_gum
+    case chewingGum = "chewing_gum"
     case fruit
     case popcorn
     case ingredient
     case beverage
-    case convenience_food
+    case convenienceFood = "convenience_food"
     case cheese
     case snacks
     case juice
@@ -68,7 +68,7 @@ extension Category {
     case pizza
     case protein
     case milk
-    case alcoholic_beverage
+    case alcoholicBeverage = "alcoholic_beverage"
     case cereal
     case pastry
     case spice
