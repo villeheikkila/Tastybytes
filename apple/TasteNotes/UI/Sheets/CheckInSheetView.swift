@@ -262,12 +262,12 @@ extension CheckInSheetView {
   }
 
   @MainActor class ViewModel: ObservableObject {
-    @Published var selectedItem: PhotosPickerItem? = nil
+    @Published var selectedItem: PhotosPickerItem?
     @Published var activeSheet: Sheet?
     @Published var showCamera = false
     @Published var review: String = ""
     @Published var rating: Double = 0
-    @Published var manufacturer: Company? = nil
+    @Published var manufacturer: Company?
     @Published var servingStyleName: ServingStyleName = .none {
       // TODO: Investigate if this cna be avoided by passing ServingStyle directly to the picker
       didSet {

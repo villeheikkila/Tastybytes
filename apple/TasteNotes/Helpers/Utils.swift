@@ -101,8 +101,9 @@ func joinWithComma(_ arr: String...) -> String {
 func getAvatarURL(id: UUID, avatarUrl: String?) -> URL? {
   if let avatarUrl {
     let bucketId = "avatars"
+    let supabaseUrl = Config.supabaseUrl.absoluteString
     let urlString =
-      "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(id.uuidString.lowercased())/\(avatarUrl)"
+      "\(supabaseUrl)/storage/v1/object/public/\(bucketId)/\(id.uuidString.lowercased())/\(avatarUrl)"
     guard let url = URL(string: urlString) else { return nil }
     return url
   } else {

@@ -287,7 +287,7 @@ extension CompanyScreenView {
     func deleteCompany(_ company: Company, onDelete: @escaping () -> Void) {
       Task {
         switch await repository.company.delete(id: company.id) {
-        case .success():
+        case .success:
           onDelete()
         case let .failure(error):
           print(error)
@@ -299,7 +299,7 @@ extension CompanyScreenView {
       if let productToDelete, let companyJoined {
         Task {
           switch await repository.product.delete(id: productToDelete.id) {
-          case .success():
+          case .success:
             refreshData(companyId: companyJoined.id)
             self.productToDelete = nil
           case let .failure(error):
@@ -312,7 +312,7 @@ extension CompanyScreenView {
     func deleteBrand(_ brand: Brand.JoinedSubBrandsProducts) {
       Task {
         switch await repository.brand.delete(id: brand.id) {
-        case .success():
+        case .success:
           // TODO: Do not refetch the company on deletion
           if let companyJoined {
             switch await repository.company.getJoinedById(id: companyJoined.id) {

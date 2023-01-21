@@ -12,9 +12,7 @@ struct CheckInScreenView: View {
       ScrollView {
         CheckInCardView(checkIn: viewModel.checkIn ?? checkIn,
                         loadedFrom: .checkIn,
-                        onDelete: {
-                          _ in routeManager.removeLast()
-                        },
+                        onDelete: { _ in routeManager.removeLast() },
                         onUpdate: { updatedCheckIn in
                           viewModel.setCheckIn(updatedCheckIn)
                         })
@@ -27,11 +25,14 @@ struct CheckInScreenView: View {
 
         VStack(spacing: 10) {
           ForEach(viewModel.checkInComments.reversed(), id: \.id) {
-            comment in CommentItemView(comment: comment, content: comment.content, onDelete: { _ in
-              viewModel.deleteComment(comment)
-            }, onUpdate: {
-              updatedComment in viewModel.editComment(updateCheckInComment: updatedComment)
-            })
+            comment in CommentItemView(
+              comment: comment,
+              content: comment.content,
+              onDelete: { _ in viewModel.deleteComment(comment) },
+              onUpdate: {
+                updatedComment in viewModel.editComment(updateCheckInComment: updatedComment)
+              }
+            )
           }
         }
         .padding([.leading, .trailing], 15)
@@ -81,7 +82,7 @@ extension CheckInScreenView {
     func deleteComment(_ comment: CheckInComment) {
       Task {
         switch await repository.checkInComment.deleteById(id: comment.id) {
-        case .success():
+        case .success:
           await MainActor.run {
             self.checkInComments.remove(object: comment)
           }

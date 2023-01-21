@@ -52,7 +52,7 @@ extension MergeSheetView {
       if let mergeToProduct {
         Task {
           switch await repository.product.mergeProducts(productId: productToMerge.id, toProductId: mergeToProduct.id) {
-          case .success():
+          case .success:
             self.mergeToProduct = nil
             onSuccess()
           case let .failure(error):

@@ -161,14 +161,14 @@ struct AuthenticationScreenView: View {
       switch mode {
       case .signIn:
         switch await repository.auth.signIn(email: email, password: password) {
-        case .success():
+        case .success:
           break
         case let .failure(error):
           toastManager.toggle(.error(error.localizedDescription))
         }
       case .signUp:
         switch await repository.auth.signUp(email: email, password: password) {
-        case .success():
+        case .success:
           onSignUp()
         case let .failure(error):
           toastManager.toggle(.error(error.localizedDescription))
@@ -176,7 +176,7 @@ struct AuthenticationScreenView: View {
 
       case .forgotPassword:
         switch await repository.auth.sendPasswordResetEmail(email: email) {
-        case .success():
+        case .success:
           toastManager.toggle(.success("Password reset email sent!"))
         case let .failure(error):
           toastManager.toggle(.error(error.localizedDescription))
@@ -184,7 +184,7 @@ struct AuthenticationScreenView: View {
 
       case .magicLink:
         switch await repository.auth.sendMagicLink(email: email) {
-        case .success():
+        case .success:
           toastManager.toggle(.success("Magic link sent!"))
         case .failure:
           toastManager.toggle(.error("Invalid email"))

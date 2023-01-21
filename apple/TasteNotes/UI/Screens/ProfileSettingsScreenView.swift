@@ -129,7 +129,7 @@ struct ProfileSettingsScreenView: View {
 
 extension ProfileSettingsScreenView {
   @MainActor class ViewModel: ObservableObject {
-    @Published var selectedItem: PhotosPickerItem? = nil
+    @Published var selectedItem: PhotosPickerItem?
     @Published var username = ""
     @Published var firstName = ""
     @Published var lastName = ""
@@ -236,7 +236,7 @@ extension ProfileSettingsScreenView {
     func deleteCurrentAccount(onError: @escaping (_ error: String) -> Void) {
       Task {
         switch await repository.profile.deleteCurrentAccount() {
-        case .success():
+        case .success:
           _ = await repository.profile.deleteCurrentAccount()
           _ = await repository.auth.logOut()
         case let .failure(error):

@@ -53,7 +53,7 @@ extension BlockedUsersScreenView {
     func unblockUser(id: Int) {
       Task {
         switch await repository.friend.delete(id: id) {
-        case .success():
+        case .success:
           await MainActor.run {
             self.blockedUsers.removeAll(where: { $0.id == id })
           }

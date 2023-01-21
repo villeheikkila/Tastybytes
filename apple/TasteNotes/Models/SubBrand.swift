@@ -1,4 +1,3 @@
-
 struct SubBrand: Identifiable, Hashable, Decodable {
   let id: Int
   let name: String?

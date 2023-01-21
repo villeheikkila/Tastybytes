@@ -220,7 +220,7 @@ extension ProductScreenView {
     func deleteCheckIn(_ checkIn: CheckIn) {
       Task {
         switch await repository.checkIn.delete(id: checkIn.id) {
-        case .success():
+        case .success:
           self.checkIns.remove(object: checkIn)
         case let .failure(error):
           print(error)
@@ -231,7 +231,7 @@ extension ProductScreenView {
     func deleteProduct(_ product: Product.Joined) {
       Task {
         switch await repository.product.delete(id: product.id) {
-        case .success():
+        case .success:
           print("TODO HANDLE THIS!!")
         case let .failure(error):
           print(error)

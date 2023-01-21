@@ -24,7 +24,7 @@ final class NotificationManager: NSObject, ObservableObject {
   func deleteAll() {
     Task {
       switch await repository.notification.deleteAll() {
-      case .success():
+      case .success:
         DispatchQueue.main.async {
           self.notifications = [Notification]()
         }
@@ -37,7 +37,7 @@ final class NotificationManager: NSObject, ObservableObject {
   func markAllAsRead() {
     Task {
       switch await repository.notification.markAllRead() {
-      case .success():
+      case .success:
         DispatchQueue.main.async {
           self.notifications = self.notifications.map {
             if $0.seenAt == nil {
@@ -152,7 +152,7 @@ final class NotificationManager: NSObject, ObservableObject {
   func deleteNotifications(notification: Notification) {
     Task {
       switch await repository.notification.delete(id: notification.id) {
-      case .success():
+      case .success:
         await MainActor.run {
           self.notifications.removeAll(where: { $0.id == notification.id })
         }
@@ -171,7 +171,7 @@ final class NotificationManager: NSObject, ObservableObject {
           switch await repository.profile
             .uploadPushNotificationToken(token: Profile.PushNotificationToken(firebaseRegistrationToken: token))
           {
-          case .success():
+          case .success:
             break
           case let .failure(error):
             print("Couldn't save FCM (\(String(describing: token))): \(error)")
