@@ -2,26 +2,26 @@ import Foundation
 import Supabase
 
 protocol SubcategoryRepository {
-    func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error>
+  func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error>
 }
 
 struct SupabaseSubcategoryRepository: SubcategoryRepository {
-    let client: SupabaseClient
+  let client: SupabaseClient
 
-    func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error> {
-        do {
-            let response: Subcategory = try await client
-                .database
-                .from(Subcategory.getQuery(.tableName))
-                .insert(values: newSubcategory, returning: .representation)
-                .select(columns: Subcategory.getQuery(.saved(false)))
-                .single()
-                .execute()
-                .value
+  func insert(newSubcategory: Subcategory.NewRequest) async -> Result<Subcategory, Error> {
+    do {
+      let response: Subcategory = try await client
+        .database
+        .from(Subcategory.getQuery(.tableName))
+        .insert(values: newSubcategory, returning: .representation)
+        .select(columns: Subcategory.getQuery(.saved(false)))
+        .single()
+        .execute()
+        .value
 
-            return .success(response)
-        } catch {
-            return .failure(error)
-        }
+      return .success(response)
+    } catch {
+      return .failure(error)
     }
+  }
 }

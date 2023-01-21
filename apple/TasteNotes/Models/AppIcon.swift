@@ -1,7 +1,7 @@
 enum AppIcon: String {
-    case ramune = "AppIcon"
-    case cola = "AppIconCola"
-    case juice = "AppIconJuice"
-    case energyDrink = "AppIconEnergyDrink"
-    case kombucha = "AppIconKombucha"
+  case ramune = "AppIcon"
+  case cola = "AppIconCola"
+  case juice = "AppIconJuice"
+  case energyDrink = "AppIconEnergyDrink"
+  case kombucha = "AppIconKombucha"
 }
