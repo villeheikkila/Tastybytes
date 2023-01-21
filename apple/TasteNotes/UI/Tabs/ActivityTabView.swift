@@ -10,11 +10,12 @@ struct SimpleCheckIn {
 }
 
 struct ActivityTabView: View {
-  let profile: Profile
+  @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var toastManager: ToastManager
   @StateObject private var router = Router()
+  @Binding var backToRoot: Tab
 
   var body: some View {
     NavigationStack(path: $router.path) {
@@ -32,7 +33,7 @@ struct ActivityTabView: View {
         }, content: {
           content in
           CheckInCardView(checkIn: content,
-                          loadedFrom: .activity(profile),
+                          loadedFrom: .activity(profileManager.getProfile()),
                           onDelete: viewModel.onCheckInDelete,
                           onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn) })
         }, header: {
@@ -44,6 +45,11 @@ struct ActivityTabView: View {
         }
         .onAppear {
           router.reset()
+        }
+        .onChange(of: $backToRoot.wrappedValue) { backToRoot in
+          if backToRoot == .activity {
+            router.reset()
+          }
         }
       }
     }
