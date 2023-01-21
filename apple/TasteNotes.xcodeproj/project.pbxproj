@@ -29,7 +29,7 @@
 		5C12B42D2902A12A001EE549 /* ApplicationSettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B42C2902A12A001EE549 /* ApplicationSettingsScreenView.swift */; };
 		5C12B42F2902A191001EE549 /* ProfileSettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B42E2902A190001EE549 /* ProfileSettingsScreenView.swift */; };
 		5C12B4332902A4C9001EE549 /* BlockedUsersScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4322902A4C9001EE549 /* BlockedUsersScreenView.swift */; };
-		5C12B4352902C9D0001EE549 /* TabbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4342902C9D0001EE549 /* TabbarView.swift */; };
+		5C12B4352902C9D0001EE549 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4342902C9D0001EE549 /* TabsView.swift */; };
 		5C12B4372902CA04001EE549 /* NotificationTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4362902CA04001EE549 /* NotificationTabView.swift */; };
 		5C12B4392902CAF3001EE549 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4382902CAF3001EE549 /* Notification.swift */; };
 		5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */; };
@@ -143,7 +143,7 @@
 		5C12B42C2902A12A001EE549 /* ApplicationSettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationSettingsScreenView.swift; sourceTree = "<group>"; };
 		5C12B42E2902A190001EE549 /* ProfileSettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsScreenView.swift; sourceTree = "<group>"; };
 		5C12B4322902A4C9001EE549 /* BlockedUsersScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersScreenView.swift; sourceTree = "<group>"; };
-		5C12B4342902C9D0001EE549 /* TabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarView.swift; sourceTree = "<group>"; };
+		5C12B4342902C9D0001EE549 /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
 		5C12B4362902CA04001EE549 /* NotificationTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTabView.swift; sourceTree = "<group>"; };
 		5C12B4382902CAF3001EE549 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRepository.swift; sourceTree = "<group>"; };
@@ -324,6 +324,7 @@
 				5C12B4362902CA04001EE549 /* NotificationTabView.swift */,
 				5C11ECB828EEF16000CCDE6A /* ProfileTabView.swift */,
 				5C11ECBC28EEF30600CCDE6A /* SearchTabView.swift */,
+				5C12B4342902C9D0001EE549 /* TabsView.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -437,7 +438,6 @@
 				5CB1C24028F99E1C000B0EB4 /* ProductListItemView.swift */,
 				5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */,
 				5CFEE57828ED69B100A8DD66 /* RootView.swift */,
-				5C12B4342902C9D0001EE549 /* TabbarView.swift */,
 				5C0E365B292ADA290072EFBD /* SummaryView.swift */,
 				5C663F22292DFF66006F9A97 /* AppLogoView.swift */,
 				5C663F24292E0100006F9A97 /* AppNameView.swift */,
@@ -718,7 +718,7 @@
 				5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */,
 				5CD10A4928F956AC0001CFC2 /* ProductCardView.swift in Sources */,
 				5C0E364E2923C8CD0072EFBD /* ProfileManager.swift in Sources */,
-				5C12B4352902C9D0001EE549 /* TabbarView.swift in Sources */,
+				5C12B4352902C9D0001EE549 /* TabsView.swift in Sources */,
 				5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

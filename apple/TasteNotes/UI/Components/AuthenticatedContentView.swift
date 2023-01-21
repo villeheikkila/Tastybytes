@@ -10,7 +10,7 @@ struct AuthenticatedContentView: View {
   var body: some View {
     NavigationStack(path: $routeManager.path) {
       if profileManager.isLoggedIn, let currentProfile = profileManager.getProfile() {
-        TabbarView(profile: currentProfile)
+          TabsView(profile: currentProfile)
           .navigationDestination(for: CheckIn.self) { checkIn in
             CheckInScreenView(checkIn: checkIn)
           }
