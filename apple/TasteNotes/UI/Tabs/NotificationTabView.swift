@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NotificationTabView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
-  @EnvironmentObject private var routeManager: RouteManager
+  @EnvironmentObject private var routeManager: RouterPath
 
   var body: some View {
     NavigationStack(path: $routeManager.path) {
@@ -62,7 +62,7 @@ struct TaggedInCheckInNotificationView: View {
   let checkIn: CheckIn
 
   var body: some View {
-    NavigationLink(value: checkIn) {
+    NavigationLink(value: Route.checkIn(checkIn)) {
       HStack {
         AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 32, id: checkIn.profile.id)
         Text("\(checkIn.profile.preferredName) tagged you in a check-in of \(checkIn.product.getDisplayName(.full))")
@@ -100,7 +100,7 @@ struct CheckInReactionNotificationView: View {
   let checkInReaction: CheckInReaction.JoinedCheckIn
 
   var body: some View {
-    NavigationLink(value: checkInReaction.checkIn) {
+    NavigationLink(value: Route.checkIn(checkInReaction.checkIn)) {
       HStack {
         AvatarView(avatarUrl: checkInReaction.profile.getAvatarURL(), size: 32, id: checkInReaction.profile.id)
         Text(

@@ -6,7 +6,7 @@ import SwiftUI
 struct ProfileTabView: View {
   @State private var profile: Profile
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject private var routeManager: RouteManager
+  @EnvironmentObject private var routeManager: RouterPath
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
 
@@ -208,7 +208,7 @@ struct ProfileTabView: View {
       .padding([.top], 10)
       .contentShape(Rectangle())
       .onTapGesture {
-        routeManager.navigateTo(destination: Route.friends(profile), resetStack: false)
+        routeManager.navigate(to: Route.friends(profile), resetStack: false)
       }
       Divider()
       HStack {
@@ -221,7 +221,7 @@ struct ProfileTabView: View {
       .padding([.bottom], 10)
       .contentShape(Rectangle())
       .onTapGesture {
-        routeManager.navigateTo(destination: Route.profileProducts(profile), resetStack: false)
+        routeManager.navigate(to: Route.profileProducts(profile), resetStack: false)
       }
     }
     .background(Color(.tertiarySystemBackground))

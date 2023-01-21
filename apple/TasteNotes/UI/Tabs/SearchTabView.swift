@@ -5,7 +5,7 @@ struct SearchTabView: View {
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var showAddBarcodeConfirmation = false
-  @EnvironmentObject private var routeManager: RouteManager
+  @EnvironmentObject private var routeManager: RouterPath
 
   var body: some View {
     NavigationStack(path: $routeManager.path) {
@@ -109,7 +109,7 @@ struct SearchTabView: View {
 
   var profileResults: some View {
     ForEach(viewModel.profiles, id: \.self) { profile in
-      NavigationLink(value: profile) {
+      NavigationLink(value: Route.profile(profile)) {
         HStack(alignment: .center) {
           AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
           VStack {
@@ -125,7 +125,7 @@ struct SearchTabView: View {
 
   var companyResults: some View {
     ForEach(viewModel.companies, id: \.self) { company in
-      NavigationLink(value: company) {
+      NavigationLink(value: Route.company(company)) {
         Text(company.name)
       }
     }
@@ -134,7 +134,7 @@ struct SearchTabView: View {
   var productResults: some View {
     ForEach(viewModel.products, id: \.self) { product in
       if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
-        NavigationLink(value: product) {
+        NavigationLink(value: Route.product(product)) {
           ProductListItemView(product: product)
         }
       } else {

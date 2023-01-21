@@ -4,7 +4,7 @@ import SwiftUI
 struct CompanyScreenView: View {
   let company: Company
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var routeManager: RouteManager
+  @EnvironmentObject private var routeManager: RouterPath
   @StateObject private var viewModel = ViewModel()
   @State private var showDeleteCompanyConfirmationDialog = false
   @State private var showDeleteBrandConfirmationDialog = false
@@ -45,7 +45,7 @@ struct CompanyScreenView: View {
                         isPresented: $showDeleteCompanyConfirmationDialog) {
       Button("Delete Company", role: .destructive, action: {
         viewModel.deleteCompany(company, onDelete: {
-          routeManager.gotoHomePage()
+          routeManager.reset()
         })
       })
     }
@@ -105,34 +105,34 @@ struct CompanyScreenView: View {
             subBrand in
             ForEach(subBrand.products, id: \.id) {
               product in
-              NavigationLink(value: Product
-                .Joined(company: company, product: product, subBrand: subBrand, brand: brand)) {
-                  HStack {
-                    Text(joinOptionalStrings([brand.name, subBrand.name, product.name]))
-                      .lineLimit(nil)
-                    Spacer()
-                  }
-                  .contextMenu {
-                    if profileManager.hasPermission(.canMergeProducts) {
-                      Button(action: {
-                        viewModel.productToMerge = product
-                        viewModel.setActiveSheet(.mergeProduct)
-                      }) {
-                        Text("Merge product to...")
-                      }
+              NavigationLink(value: Route.product(Product
+                  .Joined(company: company, product: product, subBrand: subBrand, brand: brand))) {
+                HStack {
+                  Text(joinOptionalStrings([brand.name, subBrand.name, product.name]))
+                    .lineLimit(nil)
+                  Spacer()
+                }
+                .contextMenu {
+                  if profileManager.hasPermission(.canMergeProducts) {
+                    Button(action: {
+                      viewModel.productToMerge = product
+                      viewModel.setActiveSheet(.mergeProduct)
+                    }) {
+                      Text("Merge product to...")
                     }
+                  }
 
-                    if profileManager.hasPermission(.canDeleteProducts) {
-                      Button(action: {
-                        showDeleteProductConfirmationDialog.toggle()
-                        viewModel.productToDelete = product
-                      }) {
-                        Label("Delete", systemImage: "trash.fill")
-                          .foregroundColor(.red)
-                      }
+                  if profileManager.hasPermission(.canDeleteProducts) {
+                    Button(action: {
+                      showDeleteProductConfirmationDialog.toggle()
+                      viewModel.productToDelete = product
+                    }) {
+                      Label("Delete", systemImage: "trash.fill")
+                        .foregroundColor(.red)
                     }
                   }
                 }
+              }
             }
           }
         } header: {
