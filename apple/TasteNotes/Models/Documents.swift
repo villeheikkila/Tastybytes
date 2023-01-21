@@ -1,54 +1,54 @@
 import Foundation
 
 struct Document: Decodable {
-    let document: String
-    
-    static func getQuery(_ queryType: QueryType) -> String {
-        let tableName = "documents"
-        let saved = "document"
+  let document: String
 
-        switch queryType {
-        case .tableName:
-            return tableName
-        case let .saved(withTableName):
-            return queryWithTableName(tableName, saved, withTableName)
-        }
-    }
+  static func getQuery(_ queryType: QueryType) -> String {
+    let tableName = "documents"
+    let saved = "document"
 
-    enum QueryType {
-        case tableName
-        case saved(_ withTableName: Bool)
+    switch queryType {
+    case .tableName:
+      return tableName
+    case let .saved(withTableName):
+      return queryWithTableName(tableName, saved, withTableName)
     }
-    
-    enum Page: String, Encodable {
-        case about
-    }
+  }
+
+  enum QueryType {
+    case tableName
+    case saved(_ withTableName: Bool)
+  }
+
+  enum Page: String, Encodable {
+    case about
+  }
 }
 
 extension Document {
-    struct About: Decodable {
-        let document: AboutPage
-    }
+  struct About: Decodable {
+    let document: AboutPage
+  }
 }
 
 struct AboutPage: Decodable {
-    let summary: String
-    let githubUrl: String
-    let portfolioUrl: String
-    let linkedInUrl: String
+  let summary: String
+  let githubUrl: String
+  let portfolioUrl: String
+  let linkedInUrl: String
 
-    enum CodingKeys: String, CodingKey {
-        case summary
-        case githubUrl = "github_url"
-        case portfolioUrl = "portfolio_url"
-        case linkedInUrl = "linked_in_url"
-    }
+  enum CodingKeys: String, CodingKey {
+    case summary
+    case githubUrl = "github_url"
+    case portfolioUrl = "portfolio_url"
+    case linkedInUrl = "linked_in_url"
+  }
 
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        summary = try container.decode(String.self, forKey: .summary)
-        githubUrl = try container.decode(String.self, forKey: .githubUrl)
-        portfolioUrl = try container.decode(String.self, forKey: .portfolioUrl)
-        linkedInUrl = try container.decode(String.self, forKey: .linkedInUrl)
-    }
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    summary = try container.decode(String.self, forKey: .summary)
+    githubUrl = try container.decode(String.self, forKey: .githubUrl)
+    portfolioUrl = try container.decode(String.self, forKey: .portfolioUrl)
+    linkedInUrl = try container.decode(String.self, forKey: .linkedInUrl)
+  }
 }
