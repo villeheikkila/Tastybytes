@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PreferencesScreenView: View {
-  @StateObject var viewModel = ViewModel()
+  @StateObject private var viewModel = ViewModel()
 
   var body: some View {
     List {

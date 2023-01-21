@@ -129,7 +129,7 @@ extension CheckInScreenView {
 struct CommentItemView: View {
   let comment: CheckInComment
   @State var content: String
-  @State var showEditCommentPrompt = false
+  @State private var showEditCommentPrompt = false
   let onDelete: (_ commentId: Int) -> Void
   let onUpdate: (_ update: CheckInComment.UpdateRequest) -> Void
 

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct UserSheetView<Actions: View>: View {
-  @StateObject var viewModel = ViewModel()
+  @StateObject private var viewModel = ViewModel()
 
   let actions: (_ profile: Profile) -> Actions
 

@@ -3,8 +3,8 @@ import SwiftUI
 
 struct CompanyScreenView: View {
   let company: Company
-  @EnvironmentObject var profileManager: ProfileManager
-  @EnvironmentObject var routeManager: RouteManager
+  @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var routeManager: RouteManager
   @StateObject private var viewModel = ViewModel()
   @State private var showDeleteCompanyConfirmationDialog = false
   @State private var showDeleteBrandConfirmationDialog = false

@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct CompanySheetView: View {
-  @StateObject var viewModel = ViewModel()
+  @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) var dismiss
-  @State var companyName = ""
+  @State private var companyName = ""
   let onSelect: (_ company: Company, _ createdNew: Bool) -> Void
 
   var body: some View {

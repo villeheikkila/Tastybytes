@@ -4,11 +4,11 @@ import SwiftUI
 struct FriendsScreenView: View {
   var profile: Profile
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject var profileManager: ProfileManager
-  @EnvironmentObject var toastManager: ToastManager
-  @EnvironmentObject var noficationManager: NotificationManager
-  @State var friendToBeRemoved: Friend?
-  @State var showRemoveFriendConfirmation = false
+  @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var noficationManager: NotificationManager
+  @State private var friendToBeRemoved: Friend?
+  @State private var showRemoveFriendConfirmation = false
 
   var body: some View {
     ScrollView {

@@ -2,9 +2,9 @@ import SwiftUI
 
 @main
 struct Main: App {
-  @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-  @StateObject var splashScreenManager = SplashScreenManager()
-  @StateObject var toastManager = ToastManager()
+  @UIApplicationDelegateAdaptor(AppDelegate.self) private var delegate
+  @StateObject private var splashScreenManager = SplashScreenManager()
+  @StateObject private var toastManager = ToastManager()
   private let notificationManager = NotificationManager()
 
   init() {

@@ -13,7 +13,7 @@ struct ActivityScreenView: View {
   let profile: Profile
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
-  @EnvironmentObject var toastManager: ToastManager
+  @EnvironmentObject private var toastManager: ToastManager
 
   var body: some View {
     InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, initialLoad: {
