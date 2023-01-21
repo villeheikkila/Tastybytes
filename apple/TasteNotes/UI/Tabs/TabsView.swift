@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct TabbarView: View {
+struct TabsView: View {
   let profile: Profile
   @EnvironmentObject private var notificationManager: NotificationManager
   @State private var selection = Tab.activity
@@ -145,7 +145,7 @@ struct TabbarView: View {
   }
 }
 
-extension TabbarView {
+extension TabsView {
   enum Tab: Int, Equatable {
     case activity = 1
     case search = 2
