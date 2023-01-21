@@ -15,7 +15,7 @@ struct AuthenticatedContentView: View {
             CheckInScreenView(checkIn: checkIn)
           }
           .navigationDestination(for: Profile.self) { profile in
-            ProfileScreenView(profile: profile)
+            ProfileTabView(profile: profile)
           }
           .navigationDestination(for: Product.Joined.self) { product in
             ProductScreenView(product: product)
@@ -45,7 +45,7 @@ struct AuthenticatedContentView: View {
             case let .checkIn(checkIn):
               CheckInScreenView(checkIn: checkIn)
             case let .profile(profile):
-              ProfileScreenView(profile: profile)
+              ProfileTabView(profile: profile)
             case let .product(product):
               ProductScreenView(product: product)
             case let .friends(profile):
