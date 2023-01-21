@@ -14,7 +14,7 @@ struct ActivityTabView: View {
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var toastManager: ToastManager
-  @EnvironmentObject private var routeManager: RouterPath
+  @StateObject private var routeManager = RouterPath()
 
   var body: some View {
     NavigationStack(path: $routeManager.path) {

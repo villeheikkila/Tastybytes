@@ -5,7 +5,7 @@ struct SearchTabView: View {
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var showAddBarcodeConfirmation = false
-  @EnvironmentObject private var routeManager: RouterPath
+  @StateObject private var routeManager = RouterPath()
 
   var body: some View {
     NavigationStack(path: $routeManager.path) {
