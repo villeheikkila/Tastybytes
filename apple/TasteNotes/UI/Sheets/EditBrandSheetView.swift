@@ -271,7 +271,7 @@ extension EditSubBrandSheetView {
           switch await repository.subBrand
             .update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id)))
           {
-          case .success():
+          case .success:
             self.mergeTo = nil
             onSuccess()
           case let .failure(error):
@@ -286,7 +286,7 @@ extension EditSubBrandSheetView {
         switch await repository.subBrand
           .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: name)))
         {
-        case .success():
+        case .success:
           showToast.toggle()
           onSuccess()
         case let .failure(error):

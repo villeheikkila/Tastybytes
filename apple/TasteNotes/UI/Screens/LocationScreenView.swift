@@ -30,7 +30,7 @@ extension LocationScreenView {
     @Published var checkIns = [CheckIn]()
     @Published var profileSummary: ProfileSummary?
     @Published var isLoading = false
-    @Published var selectedItem: PhotosPickerItem? = nil
+    @Published var selectedItem: PhotosPickerItem?
 
     let pageSize = 10
     var page = 0

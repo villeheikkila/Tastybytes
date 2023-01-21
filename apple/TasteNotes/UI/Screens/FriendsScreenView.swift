@@ -147,7 +147,7 @@ extension FriendsScreenView {
     func removeFriendRequest(_ friend: Friend) {
       Task {
         switch await repository.friend.delete(id: friend.id) {
-        case .success():
+        case .success:
           await MainActor.run {
             self.friends.remove(object: friend)
           }

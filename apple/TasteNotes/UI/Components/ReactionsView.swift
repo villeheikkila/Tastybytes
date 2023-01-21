@@ -58,7 +58,7 @@ extension ReactionsView {
     func removeReaction(reactionId: Int) {
       Task {
         switch await repository.checkInReactions.delete(id: reactionId) {
-        case .success():
+        case .success:
           await MainActor.run {
             self.checkInReactions.removeAll(where: { $0.id == reactionId })
           }

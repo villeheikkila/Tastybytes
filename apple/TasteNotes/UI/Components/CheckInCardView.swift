@@ -1,4 +1,3 @@
-
 import CachedAsyncImage
 import GoTrue
 import SwiftUI
@@ -278,7 +277,7 @@ extension CheckInCardView {
     func verifyProduct(product: Product.Joined) {
       Task {
         switch await repository.product.verifyProduct(productId: product.id) {
-        case .success():
+        case .success:
           print("Verified")
         case let .failure(error):
           print(error)
@@ -289,7 +288,7 @@ extension CheckInCardView {
     func delete(checkIn: CheckIn, onDelete: @escaping (_ checkIn: CheckIn) -> Void) {
       Task {
         switch await repository.checkIn.delete(id: checkIn.id) {
-        case .success():
+        case .success:
           onDelete(checkIn)
         case let .failure(error):
           print(error)

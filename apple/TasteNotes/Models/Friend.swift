@@ -84,7 +84,10 @@ extension Friend {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "friends"
     let joined =
-      "id, status, sender:user_id_1 (\(Profile.getQuery(.minimal(false)))), receiver:user_id_2 (\(Profile.getQuery(.minimal(false))))"
+      """
+        id, status, sender:user_id_1 (\(Profile.getQuery(.minimal(false)))),\
+        receiver:user_id_2 (\(Profile.getQuery(.minimal(false))))
+      """
 
     switch queryType {
     case .tableName:

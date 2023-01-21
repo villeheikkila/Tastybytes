@@ -96,9 +96,10 @@ extension Profile {
 extension Profile {
   func getAvatarURL() -> URL? {
     if let avatarUrl {
+      let supabaseUrl = Config.supabaseUrl.absoluteString
       let bucketId = "avatars"
       let urlString =
-        "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(id.uuidString.lowercased())/\(avatarUrl)"
+        "\(supabaseUrl)/storage/v1/object/public/\(bucketId)/\(id.uuidString.lowercased())/\(avatarUrl)"
       guard let url = URL(string: urlString) else { return nil }
       return url
     } else {
@@ -194,7 +195,10 @@ extension ProfileSettings {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "profile_settings"
     let saved =
-      "id, color_scheme, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications, public_profile"
+      """
+      id, color_scheme, send_reaction_notifications, send_tagged_check_in_notifications,\
+              send_friend_request_notifications, public_profile
+      """
 
     switch queryType {
     case .tableName:
