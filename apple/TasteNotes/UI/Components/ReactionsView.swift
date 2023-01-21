@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ReactionsView: View {
   let checkIn: CheckIn
-  @EnvironmentObject var profileManager: ProfileManager
+  @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var viewModel = ViewModel()
 
   var body: some View {

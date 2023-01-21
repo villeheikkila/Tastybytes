@@ -2,8 +2,8 @@ import SwiftUI
 
 struct TabbarView: View {
   let profile: Profile
-  @EnvironmentObject var notificationManager: NotificationManager
-  @State var selection = Tab.activity
+  @EnvironmentObject private var notificationManager: NotificationManager
+  @State private var selection = Tab.activity
 
   // The initialize the view model for search page here because searchable needs to be a direct child of NavigationStack
   // TODO: Investigate if there is a better way to do this (created: 17.11.2022)

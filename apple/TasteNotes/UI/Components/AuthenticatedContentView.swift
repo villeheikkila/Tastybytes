@@ -3,9 +3,9 @@ import Foundation
 import SwiftUI
 
 struct AuthenticatedContentView: View {
-  @StateObject var routeManager = RouteManager()
-  @StateObject var profileManager = ProfileManager()
-  @EnvironmentObject var notificationManager: NotificationManager
+  @StateObject private var routeManager = RouteManager()
+  @StateObject private var profileManager = ProfileManager()
+  @EnvironmentObject private var notificationManager: NotificationManager
 
   var body: some View {
     NavigationStack(path: $routeManager.path) {

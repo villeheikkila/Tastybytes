@@ -2,8 +2,8 @@ import AVFoundation
 import SwiftUI
 
 struct BarcodeScannerView: UIViewControllerRepresentable {
-  public var isTorchOn: Bool
-  public var completion: (Result<Barcode, BardcodeScanError>) -> Void
+  var isTorchOn: Bool
+  var completion: (Result<Barcode, BardcodeScanError>) -> Void
 
   public init(
     isTorchOn: Bool = false,

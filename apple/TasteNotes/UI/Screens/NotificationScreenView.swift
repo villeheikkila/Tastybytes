@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct NotificationScreenView: View {
-  @EnvironmentObject var notificationManager: NotificationManager
+  @EnvironmentObject private var notificationManager: NotificationManager
 
   var body: some View {
     List {

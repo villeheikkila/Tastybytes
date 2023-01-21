@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct AppIconScreenView: View {
-  @State var appIcons = [AppIcon.ramune, AppIcon.cola, AppIcon.energyDrink, AppIcon.juice, AppIcon.kombucha]
-  @State var selection: AppIcon?
+  @State private var appIcons = [AppIcon.ramune, AppIcon.cola, AppIcon.energyDrink, AppIcon.juice, AppIcon.kombucha]
+  @State private var selection: AppIcon?
 
   func getLabel(_ name: AppIcon) -> String {
     switch name {

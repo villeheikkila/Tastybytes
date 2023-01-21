@@ -4,8 +4,8 @@ import SwiftUI
 
 struct ProfileSettingsScreenView: View {
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject var profileManager: ProfileManager
-  @EnvironmentObject var toastManager: ToastManager
+  @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var toastManager: ToastManager
   @Environment(\.colorScheme) var initialColorScheme
 
   var body: some View {

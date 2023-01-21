@@ -3,7 +3,7 @@ import SwiftUI
 struct ProductScreenView: View {
   let product: Product.Joined
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject var profileManager: ProfileManager
+  @EnvironmentObject private var profileManager: ProfileManager
 
   var body: some View {
     InfiniteScrollView(

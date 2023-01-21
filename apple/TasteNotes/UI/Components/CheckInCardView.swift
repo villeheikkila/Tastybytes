@@ -4,9 +4,9 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInCardView: View {
-  @StateObject var viewModel = ViewModel()
-  @EnvironmentObject var profileManager: ProfileManager
-  @State var showDeleteCheckInConfirmationDialog = false
+  @StateObject private var viewModel = ViewModel()
+  @EnvironmentObject private var profileManager: ProfileManager
+  @State private var showDeleteCheckInConfirmationDialog = false
 
   let checkIn: CheckIn
   let loadedFrom: LoadedFrom

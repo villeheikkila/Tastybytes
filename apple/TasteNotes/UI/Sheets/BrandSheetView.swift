@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BrandSheetView: View {
   let brandOwner: Company
-  @StateObject var viewModel = ViewModel()
+  @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) var dismiss
 
