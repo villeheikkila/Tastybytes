@@ -24,11 +24,6 @@ struct AppRootView: View {
     .environmentObject(routeManager)
     .environmentObject(profileManager)
     .preferredColorScheme(profileManager.colorScheme)
-    .task {
-      profileManager.refresh()
-      notificationManager.refresh()
-      notificationManager.refreshAPNS()
-    }
     .onOpenURL { url in
       if let detailPage = url.detailPage {
         routeManager.fetchAndNavigateTo(detailPage)
@@ -41,6 +36,21 @@ struct AppRootView: View {
       for await authEventChange in supabaseClient.auth.authEventChange {
         withAnimation {
           self.authEvent = authEventChange
+        }
+
+        switch authEvent {
+        case .signedIn:
+          Task {
+            profileManager.refresh()
+            notificationManager.refresh()
+            notificationManager.refreshAPNS()
+          }
+        case .tokenRefreshed:
+          Task {
+            notificationManager.refreshAPNS()
+          }
+        default:
+          break
         }
       }
     }
