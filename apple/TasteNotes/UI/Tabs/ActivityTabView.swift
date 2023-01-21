@@ -9,36 +9,59 @@ struct SimpleCheckIn {
   let creator: String
 }
 
-struct ActivityScreenView: View {
+struct ActivityTabView: View {
   let profile: Profile
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var routeManager: RouteManager
 
   var body: some View {
-    InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, initialLoad: {
-      viewModel.fetchActivityFeedItems(onComplete: {
-        if splashScreenManager.state != .finished {
-          splashScreenManager.dismiss()
+    NavigationStack(path: $routeManager.path) {
+      WithRoutes {
+        InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, initialLoad: {
+          viewModel.fetchActivityFeedItems(onComplete: {
+            if splashScreenManager.state != .finished {
+              splashScreenManager.dismiss()
+            }
+          })
+        }, loadMore: {
+          viewModel.fetchActivityFeedItems()
+        }, refresh: {
+          viewModel.refresh()
+        }, content: {
+          content in
+          CheckInCardView(checkIn: content,
+                          loadedFrom: .activity(profile),
+                          onDelete: viewModel.onCheckInDelete,
+                          onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn) })
+        }, header: {
+          EmptyView()
+        })
+        .navigationTitle("Activity")
+        .toolbar {
+          toolbarContent
         }
-      })
-    }, loadMore: {
-      viewModel.fetchActivityFeedItems()
-    }, refresh: {
-      viewModel.refresh()
-    }, content: {
-      content in
-      CheckInCardView(checkIn: content,
-                      loadedFrom: .activity(profile),
-                      onDelete: viewModel.onCheckInDelete,
-                      onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn) })
-    }, header: {
-      EmptyView()
-    })
+      }
+    }
+  }
+
+  @ToolbarContentBuilder
+  var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarLeading) {
+      NavigationLink(value: Route.currentUserFriends) {
+        Image(systemName: "person.2").imageScale(.large)
+      }
+    }
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
+      NavigationLink(value: Route.settings) {
+        Image(systemName: "gear").imageScale(.large)
+      }
+    }
   }
 }
 
-extension ActivityScreenView {
+extension ActivityTabView {
   class ViewModel: ObservableObject {
     @Published var checkIns = [CheckIn]()
     @Published var isLoading = false
