@@ -4,7 +4,7 @@ import SwiftUI
 struct CheckInScreenView: View {
   let checkIn: CheckIn
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject private var routeManager: RouterPath
+  @EnvironmentObject private var router: Router
   @EnvironmentObject private var notificationManager: NotificationManager
 
   var body: some View {
@@ -12,7 +12,7 @@ struct CheckInScreenView: View {
       ScrollView {
         CheckInCardView(checkIn: viewModel.checkIn ?? checkIn,
                         loadedFrom: .checkIn,
-                        onDelete: { _ in routeManager.removeLast() },
+                        onDelete: { _ in router.removeLast() },
                         onUpdate: { updatedCheckIn in
                           viewModel.setCheckIn(updatedCheckIn)
                         })

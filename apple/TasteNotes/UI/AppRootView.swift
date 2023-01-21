@@ -4,7 +4,7 @@ import SwiftUI
 
 struct AppRootView: View {
   @State private var authEvent: AuthChangeEvent?
-  @StateObject private var routeManager = RouterPath()
+  @StateObject private var router = Router()
   @StateObject private var profileManager = ProfileManager()
   @EnvironmentObject private var notificationManager: NotificationManager
 
@@ -21,12 +21,12 @@ struct AppRootView: View {
         AuthenticationScreenView()
       }
     }
-    .environmentObject(routeManager)
+    .environmentObject(router)
     .environmentObject(profileManager)
     .preferredColorScheme(profileManager.colorScheme)
     .onOpenURL { url in
       if let detailPage = url.detailPage {
-        routeManager.fetchAndNavigateTo(detailPage)
+        router.fetchAndNavigateTo(detailPage)
       }
     }
     .onOpenURL { url in

@@ -14,10 +14,10 @@ struct ActivityTabView: View {
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var toastManager: ToastManager
-  @StateObject private var routeManager = RouterPath()
+  @StateObject private var router = Router()
 
   var body: some View {
-    NavigationStack(path: $routeManager.path) {
+    NavigationStack(path: $router.path) {
       WithRoutes {
         InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, initialLoad: {
           viewModel.fetchActivityFeedItems(onComplete: {
@@ -43,7 +43,7 @@ struct ActivityTabView: View {
           toolbarContent
         }
         .onAppear {
-          routeManager.reset()
+          router.reset()
         }
       }
     }

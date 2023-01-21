@@ -8,7 +8,7 @@ struct ProfileScreenView: View {
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var routeManager: RouterPath
+  @EnvironmentObject private var router: Router
 
   init(profile: Profile) {
     _profile = State(initialValue: profile)
@@ -204,7 +204,7 @@ struct ProfileScreenView: View {
       .padding([.top], 10)
       .contentShape(Rectangle())
       .onTapGesture {
-        routeManager.navigate(to: Route.friends(profile), resetStack: false)
+        router.navigate(to: Route.friends(profile), resetStack: false)
       }
       Divider()
       HStack {
@@ -217,7 +217,7 @@ struct ProfileScreenView: View {
       .padding([.bottom], 10)
       .contentShape(Rectangle())
       .onTapGesture {
-        routeManager.navigate(to: Route.profileProducts(profile), resetStack: false)
+        router.navigate(to: Route.profileProducts(profile), resetStack: false)
       }
     }
     .background(Color(.tertiarySystemBackground))
