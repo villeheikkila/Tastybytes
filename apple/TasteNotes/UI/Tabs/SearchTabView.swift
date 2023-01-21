@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct SearchScreenView: View {
-  @ObservedObject var viewModel: SearchScreenViewModel
+struct SearchTabView: View {
+  @ObservedObject var viewModel: SearchTabViewModel
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var showAddBarcodeConfirmation = false
@@ -112,7 +112,7 @@ struct SearchScreenView: View {
   }
 }
 
-class SearchScreenViewModel: ObservableObject {
+class SearchTabViewModel: ObservableObject {
   @Published var searchTerm: String = "" {
     didSet {
       if let firstPartOfSearchString = searchTerm.lowercased().split(separator: " ", maxSplits: 1).map(String.init)

@@ -7,7 +7,7 @@ struct TabbarView: View {
 
   // The initialize the view model for search page here because searchable needs to be a direct child of NavigationStack
   // TODO: Investigate if there is a better way to do this (created: 17.11.2022)
-  @StateObject private var searchScreenViewModel = SearchScreenViewModel()
+  @StateObject private var searchViewModel = SearchTabViewModel()
 
   var body: some View {
     TabView(selection: $selection) {
@@ -18,7 +18,7 @@ struct TabbarView: View {
     }
     .if(selection == Tab.search) { view in
       view
-        .searchable(text: $searchScreenViewModel.searchTerm, tokens: $searchScreenViewModel.tokens) { token in
+        .searchable(text: $searchViewModel.searchTerm, tokens: $searchViewModel.tokens) { token in
           switch token {
           case .chips: Text("Chips")
           case .candy: Text("Candy")
@@ -46,12 +46,12 @@ struct TabbarView: View {
           case .coffee: Text("Coffee")
           }
         }
-        .searchScopes($searchScreenViewModel.searchScope) {
+        .searchScopes($searchViewModel.searchScope) {
           Text("Products").tag(SearchScope.products)
           Text("Companies").tag(SearchScope.companies)
           Text("Users").tag(SearchScope.users)
         }
-        .onSubmit(of: .search, searchScreenViewModel.search)
+        .onSubmit(of: .search, searchViewModel.search)
     }
     .navigationTitle(selection == Tab.profile ? profile.preferredName : selection.title)
     .navigationBarTitleDisplayMode(selection == Tab.profile ? .inline : .automatic)
@@ -70,7 +70,7 @@ struct TabbarView: View {
   }
 
   var searchScreen: some View {
-    SearchScreenView(viewModel: searchScreenViewModel)
+    SearchTabView(viewModel: searchViewModel)
       .tabItem {
         Image(systemName: "magnifyingglass")
         Text("Search")
@@ -79,7 +79,7 @@ struct TabbarView: View {
   }
 
   var notificationScreen: some View {
-    NotificationScreenView()
+    NotificationTabView()
       .tabItem {
         Image(systemName: "bell")
         Text("Notifications")
@@ -92,7 +92,7 @@ struct TabbarView: View {
   }
 
   var profileScreen: some View {
-    ProfileScreenView(profile: profile)
+    ProfileTabView(profile: profile)
       .tabItem {
         Image(systemName: "person.fill")
         Text("Profile")
@@ -116,7 +116,7 @@ struct TabbarView: View {
     } else if selection == Tab.search {
       ToolbarItemGroup(placement: .navigationBarTrailing) {
         Button(action: {
-          searchScreenViewModel.showBarcodeScanner.toggle()
+          searchViewModel.showBarcodeScanner.toggle()
         }) {
           Image(systemName: "barcode.viewfinder")
         }
