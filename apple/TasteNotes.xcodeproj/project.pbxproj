@@ -76,8 +76,6 @@
 		5CC2FE9429197D9F002BDF83 /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9329197D9F002BDF83 /* LocationSearchService.swift */; };
 		5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */; };
 		5CC2FE982919CB19002BDF83 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE972919CB19002BDF83 /* Country.swift */; };
-		5CC2FE9B2919D5A7002BDF83 /* Production.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */; };
-		5CC2FE9D2919D5BA002BDF83 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */; };
 		5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE914D28F45DE7005A6043 /* Utils.swift */; };
 		5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */; };
 		5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */; };
@@ -495,6 +493,7 @@
 				5CFEE56F28ED69B100A8DD66 /* Sources */,
 				5CFEE57028ED69B100A8DD66 /* Frameworks */,
 				5CFEE57128ED69B100A8DD66 /* Resources */,
+				5C5DF978297BE25900D895CB /* SwiftFormat */,
 			);
 			buildRules = (
 			);
@@ -520,7 +519,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1400;
-				LastUpgradeCheck = 1410;
+				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					5CFEE57228ED69B100A8DD66 = {
 						CreatedOnToolsVersion = 14.0;
@@ -560,12 +559,31 @@
 				5CFEE57E28ED69B200A8DD66 /* Preview Assets.xcassets in Resources */,
 				5CFEE57B28ED69B200A8DD66 /* Assets.xcassets in Resources */,
 				5CE9008A291FCA10003DE697 /* GoogleService-Info.plist in Resources */,
-				5CC2FE9D2919D5BA002BDF83 /* Development.xcconfig in Resources */,
-				5CC2FE9B2919D5A7002BDF83 /* Production.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5C5DF978297BE25900D895CB /* SwiftFormat */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftFormat;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\nexport PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftformat >/dev/null; then\n  swiftformat --swiftversion 5.7 . \nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5CFEE56F28ED69B100A8DD66 /* Sources */ = {
@@ -827,6 +845,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -869,6 +888,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
