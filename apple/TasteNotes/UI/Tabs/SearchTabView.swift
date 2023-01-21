@@ -5,10 +5,10 @@ struct SearchTabView: View {
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var showAddBarcodeConfirmation = false
-  @StateObject private var routeManager = RouterPath()
+  @StateObject private var router = Router()
 
   var body: some View {
-    NavigationStack(path: $routeManager.path) {
+    NavigationStack(path: $router.path) {
       WithRoutes {
         List {
           switch viewModel.searchScope {

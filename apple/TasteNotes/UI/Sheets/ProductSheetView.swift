@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProductSheetView: View {
-  @EnvironmentObject var routeManager: RouterPath
+  @EnvironmentObject var router: Router
   @EnvironmentObject var toastManager: ToastManager
   @StateObject var viewModel = ViewModel()
   @State var mode = Mode.new
@@ -69,7 +69,7 @@ struct ProductSheetView: View {
           }
         case .new:
           viewModel.createProduct(onCreation: {
-            product in routeManager.navigate(to: .product(product), resetStack: true)
+            product in router.navigate(to: .product(product), resetStack: true)
           })
         }
       })
