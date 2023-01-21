@@ -3,52 +3,27 @@ import SwiftUI
 struct ProductScreenView: View {
   let product: Product.Joined
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject var profileManager: ProfileManager
 
-    var body: some View {
-        InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, loadMore: { viewModel.fetchMoreCheckIns(productId: product.id) }, refresh: { viewModel.refresh(productId: product.id) },
-                           content: {
-                               CheckInCardView(checkIn: $0,
-                                               loadedFrom: .product,
-                                               onDelete: { checkIn in viewModel.deleteCheckIn(checkIn) },
-                                               onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn) })
-                           },
-                           header: {
-                               productInfo
-                               productSummary
-                           })
-                           .task {
-                               viewModel.loadProductSummary(product)
-                           }
-                           .navigationBarItems(
-                               trailing: Button(action: {
-                                   viewModel.setActiveSheet(.checkIn)
-                               }) {
-                                   Text("Check-in!")
-                                       .bold()
-                               }.disabled(!profileManager.hasPermission(.canCreateCheckIns)))
-                           .sheet(item: $viewModel.activeSheet) { sheet in
-                               NavigationStack {
-                                   switch sheet {
-                                   case .checkIn:
-                                       CheckInSheetView(product: product, onCreation: {
-                                           viewModel.appendNewCheckIn(newCheckIn: $0)
-                                       })
-                                   case .editSuggestion:
-                                       ProductSheetView(mode: .editSuggestion, initialProduct: product)
-                                   case .editProduct:
-                                       ProductSheetView(mode: .edit, initialProduct: product, onEdit: {
-                                           viewModel.activeSheet = nil
-                                       })
-                                   }
-                               }
-                           }
-                           .confirmationDialog("Delete Product Confirmation",
-                                               isPresented: $viewModel.showDeleteProductConfirmationDialog
-                           ) {
-                               Button("Delete Product", role: .destructive, action: { viewModel.deleteProduct(product)
-                               })
-                           }
+  var body: some View {
+    InfiniteScrollView(
+      data: $viewModel.checkIns,
+      isLoading: $viewModel.isLoading,
+      loadMore: { viewModel.fetchMoreCheckIns(productId: product.id) },
+      refresh: { viewModel.refresh(productId: product.id) },
+      content: {
+        CheckInCardView(checkIn: $0,
+                        loadedFrom: .product,
+                        onDelete: { checkIn in viewModel.deleteCheckIn(checkIn) },
+                        onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn) })
+      },
+      header: {
+        productInfo
+        productSummary
+      }
+    )
+    .task {
+      viewModel.loadProductSummary(product)
     }
     .navigationBarItems(
       trailing: Button(action: {
@@ -67,8 +42,10 @@ struct ProductScreenView: View {
           })
         case .editSuggestion:
           ProductSheetView(mode: .editSuggestion, initialProduct: product)
-        case .editCompany:
-          ProductSheetView(mode: .edit, initialProduct: product)
+        case .editProduct:
+          ProductSheetView(mode: .edit, initialProduct: product, onEdit: {
+            viewModel.activeSheet = nil
+          })
         }
       }
     }
@@ -109,7 +86,7 @@ struct ProductScreenView: View {
 
       if profileManager.hasPermission(.canEditCompanies) {
         Button(action: {
-          viewModel.setActiveSheet(.editCompany)
+          viewModel.setActiveSheet(.editProduct)
         }) {
           Label("Edit", systemImage: "pencil")
         }
@@ -162,94 +139,20 @@ struct ProductScreenView: View {
           Divider()
             .gridCellUnsizedAxes(.horizontal)
         }
-        .contextMenu {
-            ShareLink("Share", item: createLinkToScreen(.product(id: product.id)))
-            
-            if profileManager.hasPermission(.canEditCompanies) {
-                Button(action: {
-                    viewModel.setActiveSheet(.editProduct)
-                }) {
-                    Label("Edit", systemImage: "pencil")
-                }
-            } else {
-                Button(action: {
-                    viewModel.setActiveSheet(.editSuggestion)
-                }) {
-                    Label("Edit Suggestion", systemImage: "pencil")
-                }
-            }
-            
-            if profileManager.hasPermission(.canDeleteProducts) {
-                Divider()
-                Button(action: {
-                    viewModel.showDeleteConfirmation()
-                }) {
-                    Label("Delete", systemImage: "trash.fill")
-                }
-            }
-        }
-    }
 
-    @ViewBuilder
-    var productSummary: some View {
-        if let productSummary = viewModel.productSummary, productSummary.averageRating != nil  {
-            Grid(alignment: .leading) {
-                GridRow {
-                    Text("")
-                    Spacer()
-                    Text("Check-ins")
-                        .font(.system(size: 10, weight: .bold, design: .default))
-                    Spacer()
-                    Text("Rating")
-                        .font(.system(size: 10, weight: .bold, design: .default))
-                }
-                Divider()
-                    .gridCellUnsizedAxes(.horizontal)
+        if let friendsAverageRating = productSummary.friendsAverageRating {
+          GridRow {
+            Text("Friends")
+              .font(.system(size: 10, weight: .bold, design: .default))
+            Spacer()
+            Text(String(productSummary.friendsTotalCheckIns))
+              .font(.system(size: 10, weight: .medium, design: .default))
+            Spacer()
+            RatingView(rating: friendsAverageRating, type: .small)
+          }
 
-                if let averageRating = productSummary.averageRating {
-                    GridRow {
-                        Text("Everyone")
-                            .font(.system(size: 10, weight: .bold, design: .default))
-                        Spacer()
-                        Text(String(productSummary.totalCheckIns))
-                            .font(.system(size: 10, weight: .medium, design: .default))
-                        Spacer()
-                        RatingView(rating: averageRating, type: .small)
-                    }
-                    
-                    Divider()
-                        .gridCellUnsizedAxes(.horizontal)
-                }
-
-                if let friendsAverageRating = productSummary.friendsAverageRating {
-                    GridRow {
-                        Text("Friends")
-                            .font(.system(size: 10, weight: .bold, design: .default))
-                        Spacer()
-                        Text(String(productSummary.friendsTotalCheckIns))
-                            .font(.system(size: 10, weight: .medium, design: .default))
-                        Spacer()
-                        RatingView(rating: friendsAverageRating, type: .small)
-                    }
-                    
-                    Divider()
-                        .gridCellUnsizedAxes(.horizontal)
-                }
-
-                if let currentUserAverageRating = productSummary.currentUserAverageRating {
-                    GridRow {
-                        Text("You")
-                            .font(.system(size: 10, weight: .bold, design: .default))
-                        Spacer()
-                        Text(String(productSummary.currentUserTotalCheckIns))
-                            .font(.system(size: 10, weight: .medium, design: .default))
-                        Spacer()
-                        RatingView(rating: currentUserAverageRating, type: .small)
-                    }
-                }
-            }
-            .padding([.leading, .trailing], 10)
-            .padding(.top, 5)
+          Divider()
+            .gridCellUnsizedAxes(.horizontal)
         }
 
         if let currentUserAverageRating = productSummary.currentUserAverageRating {
@@ -271,11 +174,28 @@ struct ProductScreenView: View {
 }
 
 extension ProductScreenView {
-    enum Sheet: Identifiable {
-        var id: Self { self }
-        case checkIn
-        case editSuggestion
-        case editProduct
+  enum Sheet: Identifiable {
+    var id: Self { self }
+    case checkIn
+    case editSuggestion
+    case editProduct
+  }
+
+  @MainActor class ViewModel: ObservableObject {
+    @Published var checkIns = [CheckIn]()
+    @Published var isLoading = false
+    @Published var activeSheet: Sheet?
+    @Published var productSummary: ProductSummary?
+    @Published var showDeleteProductConfirmationDialog = false
+    @Published var showEditSuggestionSheet = false
+
+    let pageSize = 10
+    var page = 0
+
+    func refresh(productId: Int) {
+      page = 0
+      checkIns = []
+      fetchMoreCheckIns(productId: productId)
     }
 
     func setActiveSheet(_ sheet: Sheet) {

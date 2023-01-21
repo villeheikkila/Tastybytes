@@ -113,6 +113,31 @@ extension Product {
     }
   }
 
+  struct EditRequest: Encodable {
+    let p_product_id: Int
+    let p_name: String
+    let p_description: String?
+    let p_category_id: Int
+    let p_sub_category_ids: [Int]
+    let p_sub_brand_id: Int
+
+    init(
+      productId: Int,
+      name: String,
+      description: String?,
+      categoryId: Int,
+      subBrandId: Int,
+      subcategories: [Subcategory]
+    ) {
+      p_product_id = productId
+      p_name = name
+      p_description = description
+      p_category_id = categoryId
+      p_sub_brand_id = subBrandId
+      p_sub_category_ids = subcategories.map(\.id)
+    }
+  }
+
   struct EditSuggestionRequest: Encodable {
     let p_product_id: Int
     let p_name: String
@@ -282,24 +307,6 @@ extension Product {
       self.isVerified = isVerified
       self.category = category
       self.subcategories = subcategories
-    }
-
-    struct EditRequest: Encodable {
-        let p_product_id: Int
-        let p_name: String
-        let p_description: String?
-        let p_category_id: Int
-        let p_sub_category_ids: [Int]
-        let p_sub_brand_id: Int
-
-        init(productId: Int, name: String, description: String?, categoryId: Int, subBrandId: Int, subcategories: [Subcategory]) {
-            p_product_id = productId
-            p_name = name
-            p_description = description
-            p_category_id = categoryId
-            p_sub_brand_id = subBrandId
-            p_sub_category_ids = subcategories.map { $0.id }
-        }
     }
   }
 
