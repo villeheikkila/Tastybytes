@@ -4,75 +4,78 @@ struct TabsView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var selection = Tab.activity
+  @State private var selectedTab: Tab = .activity
+  @State private var backToRoot: Tab = .activity
 
-  var body: some View {
-    TabView(selection: $selection) {
-      activityScreen
-      searchScreen
-      notificationScreen
-      profileScreen
+  private var tabs: [Tab] {
+    [.activity, .search, .notifications, .profile]
+  }
+
+  private func getBadgeByTab(_ tab: Tab) -> Int {
+    switch tab {
+    case .notifications:
+      return notificationManager.getUnreadCount()
+    default:
+      return 0
     }
   }
 
-  var activityScreen: some View {
-    ActivityTabView(profile: profileManager.getProfile())
-      .tabItem {
-        Image(systemName: "list.star")
-        Text("Activity")
+  var body: some View {
+    TabView(selection: .init(get: {
+      selectedTab
+    }, set: { newTab in
+      print(newTab)
+      if newTab == selectedTab {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+          backToRoot = selectedTab
+        }
       }
-      .tag(Tab.activity)
-  }
-
-  var searchScreen: some View {
-    SearchTabView()
-      .tabItem {
-        Image(systemName: "magnifyingglass")
-        Text("Search")
+      selectedTab = newTab
+    })) {
+      ForEach(tabs) { tab in
+        tab.makeContentView(backToRoot: $backToRoot)
+          .tabItem {
+            tab.label
+          }
+          .tag(tab)
+          .badge(getBadgeByTab(tab))
       }
-      .tag(Tab.search)
-  }
-
-  var notificationScreen: some View {
-    NotificationTabView()
-      .tabItem {
-        Image(systemName: "bell")
-        Text("Notifications")
-      }
-      .badge(notificationManager
-        .notifications
-        .filter { $0.seenAt == nil }
-        .count)
-      .tag(Tab.notifications)
-  }
-
-  var profileScreen: some View {
-    ProfileTabView(profile: profileManager.getProfile())
-      .tabItem {
-        Image(systemName: "person.fill")
-        Text("Profile")
-      }
-      .tag(Tab.profile)
+    }
   }
 }
 
-extension TabsView {
-  enum Tab: Int, Equatable {
-    case activity = 1
-    case search = 2
-    case notifications = 3
-    case profile = 4
+enum Tab: Int, Identifiable, Hashable {
+  case activity, search, notifications, profile
 
-    var title: String {
-      switch self {
-      case .activity:
-        return "Activity"
-      case .search:
-        return "Search"
-      case .notifications:
-        return "Notifications"
-      case .profile:
-        return ""
-      }
+  var id: Int {
+    rawValue
+  }
+
+  @ViewBuilder
+  func makeContentView(backToRoot: Binding<Tab>) -> some View {
+    switch self {
+    case .activity:
+      ActivityTabView(backToRoot: backToRoot)
+    case .search:
+      SearchTabView(backToRoot: backToRoot)
+    case .notifications:
+      NotificationTabView(backToRoot: backToRoot)
+    case .profile:
+      ProfileTabView(backToRoot: backToRoot)
+    }
+  }
+
+  @ViewBuilder
+  var label: some View {
+    switch self {
+    case .activity:
+      Label("Activity", systemImage: "list.star")
+    case .search:
+      Label("Search", systemImage: "magnifyingglass")
+    case .notifications:
+      Label("Notifications", systemImage: "bell")
+    case .profile:
+      Label("Profile", systemImage: "person.fill")
     }
   }
 }

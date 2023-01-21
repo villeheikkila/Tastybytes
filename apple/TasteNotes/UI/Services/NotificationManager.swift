@@ -4,6 +4,12 @@ import SwiftUI
 final class NotificationManager: NSObject, ObservableObject {
   @Published private(set) var notifications = [Notification]()
 
+  func getUnreadCount() -> Int {
+    notifications
+      .filter { $0.seenAt == nil }
+      .count
+  }
+
   func refresh(reset: Bool = false) {
     Task {
       switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {

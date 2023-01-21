@@ -6,6 +6,7 @@ struct SearchTabView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var showAddBarcodeConfirmation = false
   @StateObject private var router = Router()
+  @Binding var backToRoot: Tab
 
   var body: some View {
     NavigationStack(path: $router.path) {
@@ -102,6 +103,11 @@ struct SearchTabView: View {
         .navigationTitle("Search")
         .toolbar {
           toolbarContent
+        }
+        .onChange(of: $backToRoot.wrappedValue) { backToRoot in
+          if backToRoot == .search {
+            router.reset()
+          }
         }
       }
     }
