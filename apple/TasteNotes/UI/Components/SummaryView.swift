@@ -16,7 +16,7 @@ struct SummaryView: View {
     .padding(.top, 5)
   }
 
-  var header: some View {
+  private var header: some View {
     GridRow {
       Text("")
       Spacer()
@@ -29,7 +29,7 @@ struct SummaryView: View {
   }
 
   @ViewBuilder
-  var everyoneSection: some View {
+  private var everyoneSection: some View {
     if let averageRating = companySummary.averageRating {
       GridRow {
         Text("Everyone")
@@ -46,7 +46,7 @@ struct SummaryView: View {
   }
 
   @ViewBuilder
-  var friendsSection: some View {
+  private var friendsSection: some View {
     if let friendsAverageRating = companySummary.friendsAverageRating {
       GridRow {
         Text("Friends")
@@ -63,7 +63,7 @@ struct SummaryView: View {
   }
 
   @ViewBuilder
-  var youSection: some View {
+  private var youSection: some View {
     if let currentUserAverageRating = companySummary.currentUserAverageRating {
       GridRow {
         Text("You")

@@ -23,28 +23,6 @@ struct ProductSheetView: View {
     self.onEdit = onEdit
   }
 
-  var doneLabel: String {
-    switch mode {
-    case .edit:
-      return "Edit"
-    case .editSuggestion:
-      return "Send Edit suggestion"
-    case .new:
-      return "Create"
-    }
-  }
-
-  var navigationTitle: String {
-    switch mode {
-    case .edit:
-      return "Edit Product"
-    case .editSuggestion:
-      return "Edit Suggestion"
-    case .new:
-      return "Add Product"
-    }
-  }
-
   var body: some View {
     List {
       categorySection
@@ -136,7 +114,29 @@ struct ProductSheetView: View {
     }
   }
 
-  var categorySection: some View {
+  private var doneLabel: String {
+    switch mode {
+    case .edit:
+      return "Edit"
+    case .editSuggestion:
+      return "Send Edit suggestion"
+    case .new:
+      return "Create"
+    }
+  }
+
+  private var navigationTitle: String {
+    switch mode {
+    case .edit:
+      return "Edit Product"
+    case .editSuggestion:
+      return "Edit Suggestion"
+    case .new:
+      return "Add Product"
+    }
+  }
+
+  private var categorySection: some View {
     Section {
       if viewModel.categories.count > 0 {
         Picker("Category", selection: $viewModel.categoryName) {
@@ -172,7 +172,7 @@ struct ProductSheetView: View {
     .headerProminence(.increased)
   }
 
-  var brandSection: some View {
+  private var brandSection: some View {
     Section {
       Button(action: {
         viewModel.setActiveSheet(.brandOwner)
@@ -211,7 +211,7 @@ struct ProductSheetView: View {
     .headerProminence(.increased)
   }
 
-  var productSection: some View {
+  private var productSection: some View {
     Section {
       TextField("Flavor", text: $viewModel.name)
         .focused($focusedField, equals: .name)

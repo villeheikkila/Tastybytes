@@ -2,30 +2,12 @@ import AlertToast
 import SwiftUI
 
 struct FlavorSheetView: View {
-  @Environment(\.dismiss) var dismiss
+  @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel = ViewModel()
   @Binding var pickedFlavors: [Flavor]
   @State private var searchText = ""
   @State private var showToast = false
-  let maxFlavors = 6
-
-  func toggleFlavor(_ flavor: Flavor) {
-    if pickedFlavors.contains(flavor) {
-      pickedFlavors.remove(object: flavor)
-    } else if pickedFlavors.count < maxFlavors {
-      pickedFlavors.append(flavor)
-    } else {
-      showToast = true
-    }
-  }
-
-  var filteredFlavors: [Flavor] {
-    if searchText.isEmpty {
-      return viewModel.availableFlavors
-    } else {
-      return viewModel.availableFlavors.filter { $0.name.lowercased().contains(searchText.lowercased()) }
-    }
-  }
+  private let maxFlavors = 6
 
   var body: some View {
     List(filteredFlavors, id: \.self) { flavor in
@@ -54,6 +36,24 @@ struct FlavorSheetView: View {
       viewModel.loadFlavors()
     }
     .searchable(text: $searchText)
+  }
+
+  private func toggleFlavor(_ flavor: Flavor) {
+    if pickedFlavors.contains(flavor) {
+      pickedFlavors.remove(object: flavor)
+    } else if pickedFlavors.count < maxFlavors {
+      pickedFlavors.append(flavor)
+    } else {
+      showToast = true
+    }
+  }
+
+  private var filteredFlavors: [Flavor] {
+    if searchText.isEmpty {
+      return viewModel.availableFlavors
+    } else {
+      return viewModel.availableFlavors.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+    }
   }
 }
 

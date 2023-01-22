@@ -5,7 +5,7 @@ import WrappingHStack
 
 struct CheckInSheetView: View {
   @StateObject private var viewModel = ViewModel()
-  @Environment(\.dismiss) var dismiss
+  @Environment(\.dismiss) private var dismiss
   @State private var showPhotoMenu = false
   @FocusState private var focusedField: Focusable?
 

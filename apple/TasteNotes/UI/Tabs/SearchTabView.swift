@@ -141,7 +141,7 @@ struct SearchTabView: View {
     }
   }
 
-  var profileResults: some View {
+  private var profileResults: some View {
     ForEach(viewModel.profiles, id: \.self) { profile in
       NavigationLink(value: Route.profile(profile)) {
         HStack(alignment: .center) {
@@ -158,7 +158,7 @@ struct SearchTabView: View {
     }
   }
 
-  var companyResults: some View {
+  private var companyResults: some View {
     ForEach(viewModel.companies, id: \.self) { company in
       NavigationLink(value: Route.company(company)) {
         Text(company.name)
@@ -167,7 +167,7 @@ struct SearchTabView: View {
     }
   }
 
-  var productResults: some View {
+  private var productResults: some View {
     ForEach(viewModel.products, id: \.id) { product in
       if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
         NavigationLink(value: Route.product(product)) {
@@ -193,7 +193,7 @@ struct SearchTabView: View {
   }
 
   @ToolbarContentBuilder
-  var toolbarContent: some ToolbarContent {
+  private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Button(action: {
         viewModel.showBarcodeScanner.toggle()

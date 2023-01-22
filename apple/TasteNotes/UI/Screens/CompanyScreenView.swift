@@ -64,7 +64,7 @@ struct CompanyScreenView: View {
     }
   }
 
-  var navigationBarMenu: some View {
+  private var navigationBarMenu: some View {
     Menu {
       ShareLink("Share", item: createLinkToScreen(.company(id: company.id)))
 
@@ -97,7 +97,7 @@ struct CompanyScreenView: View {
   }
 
   @ViewBuilder
-  var productList: some View {
+  private var productList: some View {
     if let companyJoined = viewModel.companyJoined {
       ForEach(companyJoined.brands, id: \.id) { brand in
         Section {
@@ -170,7 +170,7 @@ struct CompanyScreenView: View {
     }
   }
 
-  var companyEditSuggestionSheet: some View {
+  private var companyEditSuggestionSheet: some View {
     Form {
       Section {
         TextField("Name", text: $viewModel.newCompanyNameSuggestion)
@@ -185,7 +185,7 @@ struct CompanyScreenView: View {
     .navigationTitle("Edit suggestion")
   }
 
-  var companyEditSheet: some View {
+  private var companyEditSheet: some View {
     Form {
       Section {
         TextField("Name", text: $viewModel.newCompanyNameSuggestion)
@@ -200,7 +200,7 @@ struct CompanyScreenView: View {
     .navigationTitle("Edit Company")
   }
 
-  var companyHeader: some View {
+  private var companyHeader: some View {
     HStack(spacing: 10) {
       if let logoUrl = company.getLogoUrl() {
         CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in

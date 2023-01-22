@@ -13,23 +13,6 @@ struct CheckInCardView: View {
   let onDelete: (_ checkIn: CheckIn) -> Void
   let onUpdate: (_ checkIn: CheckIn) -> Void
 
-  func isOwnedByCurrentUser() -> Bool {
-    checkIn.profile.id == profileManager.getId()
-  }
-
-  func avoidStackingCheckInPage() -> Bool {
-    var isCurrentProfile: Bool
-
-    switch loadedFrom {
-    case let .profile(profile):
-      isCurrentProfile = profile.id == checkIn.profile.id
-    default:
-      isCurrentProfile = false
-    }
-
-    return isCurrentProfile
-  }
-
   var body: some View {
     VStack {
       VStack {
@@ -121,7 +104,7 @@ struct CheckInCardView: View {
     }
   }
 
-  var header: some View {
+  private var header: some View {
     NavigationLink(value: Route.profile(checkIn.profile)) {
       HStack {
         AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 30, id: checkIn.profile.id)
@@ -142,7 +125,24 @@ struct CheckInCardView: View {
     .disabled(avoidStackingCheckInPage())
   }
 
-  var backgroundImage: some View {
+  private func isOwnedByCurrentUser() -> Bool {
+    checkIn.profile.id == profileManager.getId()
+  }
+
+  private func avoidStackingCheckInPage() -> Bool {
+    var isCurrentProfile: Bool
+
+    switch loadedFrom {
+    case let .profile(profile):
+      isCurrentProfile = profile.id == checkIn.profile.id
+    default:
+      isCurrentProfile = false
+    }
+
+    return isCurrentProfile
+  }
+
+  private var backgroundImage: some View {
     HStack {
       if let imageUrl = checkIn.getImageUrl() {
         HStack {
@@ -160,7 +160,7 @@ struct CheckInCardView: View {
     }
   }
 
-  var productSection: some View {
+  private var productSection: some View {
     NavigationLink(value: Route.product(checkIn.product)) {
       VStack(alignment: .leading) {
         HStack {
@@ -208,7 +208,7 @@ struct CheckInCardView: View {
     .buttonStyle(.plain)
   }
 
-  var checkInSection: some View {
+  private var checkInSection: some View {
     NavigationLink(value: Route.checkIn(checkIn)) {
       VStack(spacing: 8) {
         HStack {
@@ -239,7 +239,7 @@ struct CheckInCardView: View {
     .buttonStyle(.plain)
   }
 
-  var footer: some View {
+  private var footer: some View {
     HStack {
       NavigationLink(value: Route.checkIn(checkIn)) {
         if checkIn.isMigrated {

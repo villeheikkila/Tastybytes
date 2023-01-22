@@ -5,7 +5,7 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
   var isTorchOn: Bool
   var completion: (Result<Barcode, BardcodeScanError>) -> Void
 
-  public init(
+  init(
     isTorchOn: Bool = false,
     completion: @escaping (Result<Barcode, BardcodeScanError>) -> Void
   ) {
@@ -13,11 +13,11 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
     self.completion = completion
   }
 
-  public func makeUIViewController(context _: Context) -> ViewController {
+  func makeUIViewController(context _: Context) -> ViewController {
     ViewController(parentView: self)
   }
 
-  public func updateUIViewController(_ uiViewController: ViewController, context _: Context) {
+  func updateUIViewController(_ uiViewController: ViewController, context _: Context) {
     uiViewController.parentView = self
     uiViewController.updateViewController(
       isTorchOn: isTorchOn

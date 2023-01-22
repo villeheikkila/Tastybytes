@@ -6,7 +6,7 @@ struct MergeSheetView: View {
   @StateObject private var viewModel = ViewModel()
   @State private var showDeleteCompanyConfirmationDialog = false
   @State private var showDeleteBrandConfirmationDialog = false
-  @Environment(\.dismiss) var dismiss
+  @Environment(\.dismiss) private var dismiss
 
   var body: some View {
     List {

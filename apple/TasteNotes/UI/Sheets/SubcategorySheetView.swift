@@ -4,35 +4,14 @@ import SwiftUI
 struct SubcategorySheetView: View {
   let availableSubcategories: [Subcategory]
   @EnvironmentObject private var profileManager: ProfileManager
-  @Environment(\.dismiss) var dismiss
+  @Environment(\.dismiss) private var dismiss
   @Binding var subcategories: [Subcategory]
   @State private var showToast = false
   @State private var showAddSubcategory = false
   @State private var newSubcategoryName = ""
 
-  let maxSubcategories = 4
+  private let maxSubcategories = 4
   let onCreate: (_ newSubcategoryName: String) -> Void
-
-  func toggleSubcategory(subcategory: Subcategory) {
-    if subcategories.contains(subcategory) {
-      subcategories.remove(object: subcategory)
-    } else if subcategories.count < maxSubcategories {
-      subcategories.append(subcategory)
-    } else {
-      showToast = true
-    }
-  }
-
-  @ViewBuilder
-  var addSubcategoryView: some View {
-    if profileManager.hasPermission(.canDeleteBrands) {
-      Button(action: {
-        showAddSubcategory.toggle()
-      }) {
-        Image(systemName: "plus").bold()
-      }
-    }
-  }
 
   var body: some View {
     List(availableSubcategories, id: \.self) { subcategory in
@@ -65,5 +44,26 @@ struct SubcategorySheetView: View {
         onCreate(newSubcategoryName)
       })
     })
+  }
+
+  private func toggleSubcategory(subcategory: Subcategory) {
+    if subcategories.contains(subcategory) {
+      subcategories.remove(object: subcategory)
+    } else if subcategories.count < maxSubcategories {
+      subcategories.append(subcategory)
+    } else {
+      showToast = true
+    }
+  }
+
+  @ViewBuilder
+  private var addSubcategoryView: some View {
+    if profileManager.hasPermission(.canDeleteBrands) {
+      Button(action: {
+        showAddSubcategory.toggle()
+      }) {
+        Image(systemName: "plus").bold()
+      }
+    }
   }
 }

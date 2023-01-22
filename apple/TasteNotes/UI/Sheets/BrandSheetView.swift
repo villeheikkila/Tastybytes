@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct BrandSheetView: View {
-  let brandOwner: Company
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var profileManager: ProfileManager
-  @Environment(\.dismiss) var dismiss
+  @Environment(\.dismiss) private var dismiss
 
+  let brandOwner: Company
   let onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
 
   var body: some View {

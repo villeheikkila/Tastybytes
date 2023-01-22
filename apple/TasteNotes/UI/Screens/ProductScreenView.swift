@@ -57,7 +57,7 @@ struct ProductScreenView: View {
     }
   }
 
-  var productInfo: some View {
+  private var productInfo: some View {
     HStack {
       VStack(alignment: .leading) {
         Text(product.getDisplayName(.fullName))
@@ -111,7 +111,7 @@ struct ProductScreenView: View {
   }
 
   @ViewBuilder
-  var productSummary: some View {
+  private var productSummary: some View {
     if let productSummary = viewModel.productSummary, productSummary.averageRating != nil {
       Grid(alignment: .leading) {
         GridRow {
@@ -189,9 +189,8 @@ extension ProductScreenView {
     @Published var productSummary: ProductSummary?
     @Published var showDeleteProductConfirmationDialog = false
     @Published var showEditSuggestionSheet = false
-
-    let pageSize = 10
-    var page = 0
+    private let pageSize = 10
+    private var page = 0
 
     func refresh(productId: Int) {
       page = 0

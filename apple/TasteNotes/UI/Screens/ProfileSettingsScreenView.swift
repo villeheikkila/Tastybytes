@@ -44,7 +44,7 @@ struct ProfileSettingsScreenView: View {
     }
   }
 
-  var profileSection: some View {
+  private var profileSection: some View {
     Section {
       TextField("Username", text: $viewModel.username)
         .autocapitalization(.none)
@@ -67,7 +67,7 @@ struct ProfileSettingsScreenView: View {
     .headerProminence(.increased)
   }
 
-  var profileDisplaySettings: some View {
+  private var profileDisplaySettings: some View {
     Section {
       Toggle("Use Name Instead of Username", isOn: $viewModel.showFullName)
         .onChange(of: [self.viewModel.showFullName].publisher.first()) { _ in
@@ -78,7 +78,7 @@ struct ProfileSettingsScreenView: View {
     }
   }
 
-  var emailSection: some View {
+  private var emailSection: some View {
     Section {
       TextField("Email", text: $viewModel.email)
         .keyboardType(.emailAddress)
@@ -98,7 +98,7 @@ struct ProfileSettingsScreenView: View {
     .headerProminence(.increased)
   }
 
-  var deleteAccount: some View {
+  private var deleteAccount: some View {
     Section {
       Button(action: {
         viewModel.exportData(onError: {
@@ -140,8 +140,8 @@ extension ProfileSettingsScreenView {
     @Published var showingExporter = false
     @Published var showDeleteConfirmation = false
 
-    var profile: Profile.Extended?
-    var user: User?
+    private var profile: Profile.Extended?
+    private var user: User?
 
     func profileHasChanged() -> Bool {
       ![
