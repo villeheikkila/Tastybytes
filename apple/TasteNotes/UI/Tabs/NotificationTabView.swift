@@ -45,6 +45,7 @@ struct NotificationTabView: View {
         }
       }
     }
+    .environmentObject(router)
   }
 
   @ToolbarContentBuilder

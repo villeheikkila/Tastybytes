@@ -8,7 +8,6 @@ struct ProfileView: View {
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var router: Router
 
   init(profile: Profile, scrollToTop: Binding<Int>) {
     _profile = State(initialValue: profile)

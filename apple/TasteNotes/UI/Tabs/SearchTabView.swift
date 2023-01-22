@@ -140,6 +140,7 @@ struct SearchTabView: View {
         }
       }
     }
+    .environmentObject(router)
   }
 
   private var profileResults: some View {

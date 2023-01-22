@@ -74,6 +74,7 @@ struct ActivityTabView: View {
         }
       }
     }
+    .environmentObject(router)
   }
 
   @ToolbarContentBuilder

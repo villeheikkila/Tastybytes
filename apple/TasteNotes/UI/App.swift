@@ -10,7 +10,6 @@ struct Main: App {
   @StateObject private var splashScreenManager = SplashScreenManager()
   @StateObject private var profileManager = ProfileManager()
   @StateObject private var toastManager = ToastManager()
-  @StateObject private var router = Router()
   @State private var authEvent: AuthChangeEvent?
   private let notificationManager = NotificationManager()
 
@@ -28,7 +27,6 @@ struct Main: App {
         .environmentObject(toastManager)
         .environmentObject(notificationManager)
         .environmentObject(profileManager)
-        .environmentObject(router)
         .preferredColorScheme(profileManager.colorScheme)
         .onOpenURL { url in
           Task { _ = try await supabaseClient.auth.session(from: url) }
