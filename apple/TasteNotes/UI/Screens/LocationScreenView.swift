@@ -6,9 +6,10 @@ import SwiftUI
 struct LocationScreenView: View {
   let location: Location
   @StateObject private var viewModel = ViewModel()
+  @State private var scrollToTop: Int = 0
 
   var body: some View {
-    InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading,
+    InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, scrollToTop: $scrollToTop,
                        loadMore: { viewModel.fetchMoreCheckIns(locationId: location.id) },
                        refresh: {
                          viewModel.refresh(locationId: location.id)

@@ -4,11 +4,12 @@ struct ProductScreenView: View {
   let product: Product.Joined
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject var profileManager: ProfileManager
+  @State private var scrollToTop: Int = 0
 
   var body: some View {
     InfiniteScrollView(
       data: $viewModel.checkIns,
-      isLoading: $viewModel.isLoading,
+      isLoading: $viewModel.isLoading, scrollToTop: $scrollToTop,
       loadMore: { viewModel.fetchMoreCheckIns(productId: product.id) },
       refresh: { viewModel.refresh(productId: product.id) },
       content: {
