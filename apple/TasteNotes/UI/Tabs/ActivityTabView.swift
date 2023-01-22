@@ -16,8 +16,8 @@ struct ActivityTabView: View {
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var toastManager: ToastManager
   @StateObject private var router = Router()
-  @Binding var resetNavigationStackOnTab: Tab?
   @State private var scrollToTop: Int = 0
+  @Binding var resetNavigationStackOnTab: Tab?
 
   var body: some View {
     NavigationStack(path: $router.path) {
@@ -43,8 +43,8 @@ struct ActivityTabView: View {
             content in
             CheckInCardView(checkIn: content,
                             loadedFrom: .activity(profileManager.getProfile()),
-                            onDelete: viewModel.onCheckInDelete,
-                            onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn) })
+                            onDelete: { checkIn in viewModel.onCheckInDelete(checkIn) },
+                            onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn) })
           },
           header: {
             EmptyView()
@@ -77,7 +77,7 @@ struct ActivityTabView: View {
   }
 
   @ToolbarContentBuilder
-  var toolbarContent: some ToolbarContent {
+  private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       NavigationLink(value: Route.currentUserFriends) {
         Image(systemName: "person.2").imageScale(.large)
@@ -92,11 +92,11 @@ struct ActivityTabView: View {
 }
 
 extension ActivityTabView {
-  class ViewModel: ObservableObject {
+  @MainActor class ViewModel: ObservableObject {
     @Published var checkIns = [CheckIn]()
     @Published var isLoading = false
-    let pageSize = 10
-    var page = 0
+    private let pageSize = 10
+    private var page = 0
 
     func refresh() {
       DispatchQueue.main.async {
@@ -106,11 +106,11 @@ extension ActivityTabView {
       }
     }
 
-    func onCheckInDelete(checkIn: CheckIn) {
+    func onCheckInDelete(_ checkIn: CheckIn) {
       checkIns.remove(object: checkIn)
     }
 
-    func onCheckInUpdate(checkIn: CheckIn) {
+    func onCheckInUpdate(_ checkIn: CheckIn) {
       if let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) {
         DispatchQueue.main.async {
           self.checkIns[index] = checkIn

@@ -4,9 +4,9 @@ import SwiftUI
 class Router: ObservableObject {
   @Published public var path: [Route] = []
 
-  public init() {}
+  init() {}
 
-  public func navigate(to: Route, resetStack: Bool) {
+  func navigate(to: Route, resetStack: Bool) {
     if resetStack {
       path.removeLast(path.count)
     }
@@ -70,17 +70,18 @@ enum Route: Hashable {
   case addProduct(Barcode?)
 }
 
-public struct WithRoutes<RootView: View>: View {
-  let view: () -> RootView
+struct WithRoutes<RootView: View>: View {
   @EnvironmentObject private var profileManager: ProfileManager
 
-  public init(
+  let view: () -> RootView
+
+  init(
     @ViewBuilder view: @escaping () -> RootView
   ) {
     self.view = view
   }
 
-  public var body: some View {
+  var body: some View {
     view()
       .navigationDestination(for: Route.self) { route in
         switch route {

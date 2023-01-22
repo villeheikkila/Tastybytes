@@ -4,21 +4,6 @@ struct AppIconScreenView: View {
   @State private var appIcons = [AppIcon.ramune, AppIcon.cola, AppIcon.energyDrink, AppIcon.juice, AppIcon.kombucha]
   @State private var selection: AppIcon?
 
-  func getLabel(_ name: AppIcon) -> String {
-    switch name {
-    case .ramune:
-      return "Ramune"
-    case .juice:
-      return "Juice"
-    case .energyDrink:
-      return "Energy Drink"
-    case .kombucha:
-      return "Kombucha"
-    case .cola:
-      return "Cola"
-    }
-  }
-
   var body: some View {
     List(appIcons, id: \.self, selection: $selection) { name in
       HStack(spacing: 12) {
@@ -40,6 +25,21 @@ struct AppIconScreenView: View {
       }
     }.task {
       self.selection = getCurrentAppIcon()
+    }
+  }
+
+  private func getLabel(_ name: AppIcon) -> String {
+    switch name {
+    case .ramune:
+      return "Ramune"
+    case .juice:
+      return "Juice"
+    case .energyDrink:
+      return "Energy Drink"
+    case .kombucha:
+      return "Kombucha"
+    case .cola:
+      return "Cola"
     }
   }
 }

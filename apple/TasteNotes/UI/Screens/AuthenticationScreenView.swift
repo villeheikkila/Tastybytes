@@ -28,7 +28,7 @@ struct AuthenticationScreenView: View {
   }
   }
 
-  var projectLogo: some View {
+  private var projectLogo: some View {
     VStack(alignment: .center, spacing: 12) {
       AppLogoView()
       AppNameView()
@@ -38,7 +38,7 @@ struct AuthenticationScreenView: View {
     }
   }
 
-  var emailTextField: some View {
+  private var emailTextField: some View {
     VStack(alignment: .leading, spacing: 8) {
       HStack {
         Image(systemName: "envelope")
@@ -57,7 +57,7 @@ struct AuthenticationScreenView: View {
     }
   }
 
-  var passwordTextField: some View {
+  private var passwordTextField: some View {
     VStack(alignment: .leading) {
       HStack {
         Image(systemName: "key")
@@ -75,7 +75,7 @@ struct AuthenticationScreenView: View {
     }
   }
 
-  var actions: some View {
+  private var actions: some View {
     VStack(spacing: 12) {
       Button(action: primaryActionTapped) {
         HStack(spacing: 8) {
@@ -136,7 +136,7 @@ struct AuthenticationScreenView: View {
     }
   }
 
-  var primaryButtonText: String {
+  private var primaryButtonText: String {
     switch mode {
     case .signIn: return "Sign in"
     case .signUp: return "Sign up"
@@ -145,7 +145,7 @@ struct AuthenticationScreenView: View {
     }
   }
 
-  func onSignUp() {
+  private func onSignUp() {
     DispatchQueue.main.async {
       mode = .signIn
       email = ""
@@ -154,7 +154,7 @@ struct AuthenticationScreenView: View {
     }
   }
 
-  func primaryActionTapped() {
+  private func primaryActionTapped() {
     Task {
       self.isLoading.toggle()
 

@@ -18,7 +18,7 @@ struct ApplicationSettingsScreenView: View {
     }
   }
 
-  var colorSchemeSection: some View {
+  private var colorSchemeSection: some View {
     Section {
       Toggle("Use System Color Scheme", isOn: $viewModel.isSystemColor)
         .onChange(of: [self.viewModel.isSystemColor].publisher.first()) { _ in
@@ -33,7 +33,7 @@ struct ApplicationSettingsScreenView: View {
     }
   }
 
-  var notificationSection: some View {
+  private var notificationSection: some View {
     Section {
       Toggle("Reactions", isOn: $viewModel.reactionNotifications)
         .onChange(of: [self.viewModel.reactionNotifications].publisher.first()) { _ in
@@ -52,7 +52,7 @@ struct ApplicationSettingsScreenView: View {
     }
   }
 
-  var privacySection: some View {
+  private var privacySection: some View {
     Section {
       Toggle("Public Profile", isOn: $viewModel.isPublicProfile)
         .onChange(of: [self.viewModel.isPublicProfile].publisher.first()) { _ in

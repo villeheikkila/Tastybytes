@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct BarcodeScannerSheetView: View {
+  @Environment(\.dismiss) private var dismiss
   let onComplete: (_ barcode: Barcode) -> Void
-  @Environment(\.dismiss) var dismiss
 
   var body: some View {
     BarcodeScannerView { response in

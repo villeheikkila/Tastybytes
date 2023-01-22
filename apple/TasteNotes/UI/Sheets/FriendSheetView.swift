@@ -3,15 +3,7 @@ import SwiftUI
 struct FriendSheetView: View {
   @Binding var taggedFriends: [Profile]
   @StateObject private var viewModel = ViewModel()
-  @Environment(\.dismiss) var dismiss
-
-  func toggleFriend(friend: Profile) {
-    if taggedFriends.contains(friend) {
-      taggedFriends.remove(object: friend)
-    } else {
-      taggedFriends.append(friend)
-    }
-  }
+  @Environment(\.dismiss) private var dismiss
 
   var body: some View {
     List(viewModel.friends, id: \.self) { friend in
@@ -35,6 +27,14 @@ struct FriendSheetView: View {
     })
     .task {
       viewModel.loadFriends()
+    }
+  }
+
+  private func toggleFriend(friend: Profile) {
+    if taggedFriends.contains(friend) {
+      taggedFriends.remove(object: friend)
+    } else {
+      taggedFriends.append(friend)
     }
   }
 }

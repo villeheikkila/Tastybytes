@@ -78,7 +78,7 @@ struct FriendsScreenView: View {
     }
   }
 
-  var addFriendButton: some View {
+  private var addFriendButton: some View {
     HStack {
       if profile == profileManager.getProfile() {
         Button(action: { viewModel.showUserSearchSheet.toggle() }) {

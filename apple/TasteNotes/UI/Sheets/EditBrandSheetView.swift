@@ -2,14 +2,14 @@ import AlertToast
 import SwiftUI
 
 struct EditBrandSheetView: View {
-  @Environment(\.dismiss) var dismiss
+  @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel = ViewModel()
   @State private var name: String
-  let initialBrandOwner: Company
   @State private var brandOwner: Company
   @State private var editSubBrand: SubBrand.JoinedProduct?
   @State private var showToast = false
 
+  let initialBrandOwner: Company
   let brand: Brand.JoinedSubBrandsProducts
   let onUpdate: () -> Void
 

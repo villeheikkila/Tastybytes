@@ -21,23 +21,23 @@ struct BlockedUsersScreenView: View {
       viewModel.loadBlockedUsers(userId: profileManager.getId())
     }
   }
+}
 
-  struct BlockedUserListItemView: View {
-    let profile: Profile
-    let onUnblockUser: () -> Void
+private struct BlockedUserListItemView: View {
+  let profile: Profile
+  let onUnblockUser: () -> Void
 
-    var body: some View {
-      HStack(alignment: .center) {
-        AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
-        VStack {
-          HStack {
-            Text(profile.preferredName)
-            Spacer()
-            Button(action: {
-              onUnblockUser()
-            }) {
-              Label("Unblock", systemImage: "hand.raised.slash.fill")
-            }
+  var body: some View {
+    HStack(alignment: .center) {
+      AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
+      VStack {
+        HStack {
+          Text(profile.preferredName)
+          Spacer()
+          Button(action: {
+            onUnblockUser()
+          }) {
+            Label("Unblock", systemImage: "hand.raised.slash.fill")
           }
         }
       }

@@ -1,7 +1,14 @@
 import SwiftUI
 
 struct AppLogoView: View {
-  func getCurrentProjectLogo() -> String {
+  var body: some View {
+    Image(getCurrentProjectLogo())
+      .resizable()
+      .aspectRatio(contentMode: .fill)
+      .frame(width: 120, height: 120)
+  }
+
+  private func getCurrentProjectLogo() -> String {
     switch getCurrentAppIcon() {
     case .ramune:
       return "ProjectLogo"
@@ -14,13 +21,6 @@ struct AppLogoView: View {
     case .kombucha:
       return "ProjectLogoKombucha"
     }
-  }
-
-  var body: some View {
-    Image(getCurrentProjectLogo())
-      .resizable()
-      .aspectRatio(contentMode: .fill)
-      .frame(width: 120, height: 120)
   }
 }
 

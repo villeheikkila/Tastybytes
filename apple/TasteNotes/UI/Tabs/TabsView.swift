@@ -10,15 +10,6 @@ struct TabsView: View {
     [.activity, .search, .notifications, .profile]
   }
 
-  private func getBadgeByTab(_ tab: Tab) -> Int {
-    switch tab {
-    case .notifications:
-      return notificationManager.getUnreadCount()
-    default:
-      return 0
-    }
-  }
-
   var body: some View {
     TabView(selection: .init(get: {
       selection
@@ -38,6 +29,15 @@ struct TabsView: View {
           .tag(tab)
           .badge(getBadgeByTab(tab))
       }
+    }
+  }
+
+  private func getBadgeByTab(_ tab: Tab) -> Int {
+    switch tab {
+    case .notifications:
+      return notificationManager.getUnreadCount()
+    default:
+      return 0
     }
   }
 }

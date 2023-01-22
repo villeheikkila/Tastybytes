@@ -32,9 +32,8 @@ extension LocationScreenView {
     @Published var profileSummary: ProfileSummary?
     @Published var isLoading = false
     @Published var selectedItem: PhotosPickerItem?
-
-    let pageSize = 10
-    var page = 0
+    private let pageSize = 10
+    private var page = 0
 
     func refresh(locationId: UUID) {
       page = 0

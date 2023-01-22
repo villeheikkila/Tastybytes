@@ -48,7 +48,7 @@ struct NotificationTabView: View {
   }
 
   @ToolbarContentBuilder
-  var toolbarContent: some ToolbarContent {
+  private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
         Button(action: {

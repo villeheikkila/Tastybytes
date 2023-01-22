@@ -195,30 +195,28 @@ struct ProfileView: View {
 
   var links: some View {
     VStack {
-      HStack {
-        Text("Friends")
-          .font(.system(size: 16, weight: .medium, design: .default))
-        Spacer()
-        Image(systemName: "chevron.forward")
-      }
-      .padding([.leading, .trailing], 20)
-      .padding([.top], 10)
-      .contentShape(Rectangle())
-      .onTapGesture {
-        router.navigate(to: Route.friends(profile), resetStack: false)
+      NavigationLink(value: Route.friends(profile)) {
+        HStack {
+          Text("Friends")
+            .font(.system(size: 16, weight: .medium, design: .default))
+          Spacer()
+          Image(systemName: "chevron.forward")
+        }
+        .padding([.leading, .trailing], 20)
+        .padding([.top], 10)
+        .contentShape(Rectangle())
       }
       Divider()
-      HStack {
-        Text("Products")
-          .font(.system(size: 16, weight: .medium, design: .default))
-        Spacer()
-        Image(systemName: "chevron.forward")
-      }
-      .padding([.leading, .trailing], 20)
-      .padding([.bottom], 10)
-      .contentShape(Rectangle())
-      .onTapGesture {
-        router.navigate(to: Route.profileProducts(profile), resetStack: false)
+      NavigationLink(value: Route.profileProducts(profile)) {
+        HStack {
+          Text("Products")
+            .font(.system(size: 16, weight: .medium, design: .default))
+          Spacer()
+          Image(systemName: "chevron.forward")
+        }
+        .padding([.leading, .trailing], 20)
+        .padding([.bottom], 10)
+        .contentShape(Rectangle())
       }
     }
     .background(Color(.tertiarySystemBackground))
@@ -248,9 +246,8 @@ extension ProfileView {
     @Published var profileSummary: ProfileSummary?
     @Published var isLoading = false
     @Published var selectedItem: PhotosPickerItem?
-
-    let pageSize = 10
-    var page = 0
+    private let pageSize = 10
+    private var page = 0
 
     func refresh(userId: UUID) {
       page = 0

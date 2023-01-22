@@ -6,7 +6,7 @@ import SwiftUI
 struct LocationSearchView: View {
   @StateObject private var viewModel = ViewModel()
   @StateObject private var locationManager = LocationManager()
-  @Environment(\.dismiss) var dismiss
+  @Environment(\.dismiss) private var dismiss
 
   var onSelect: (_ location: Location) -> Void
 
