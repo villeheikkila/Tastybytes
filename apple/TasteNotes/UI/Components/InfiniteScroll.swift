@@ -3,8 +3,12 @@ import SwiftUI
 struct InfiniteScrollView<Data, Content, Header>: View
   where Data: RandomAccessCollection, Data.Element: Hashable, Data.Element: Identifiable, Content: View, Header: View
 {
+  @State private var scrollProxy: ScrollViewProxy?
+  @Binding var scrollToTop: Int
   @Binding var data: Data
   @Binding var isLoading: Bool
+  private let topAnchor = "top"
+
   let initialLoad: () -> Void
   let loadMore: () -> Void
   let content: (Data.Element) -> Content
@@ -13,6 +17,7 @@ struct InfiniteScrollView<Data, Content, Header>: View
 
   init(data: Binding<Data>,
        isLoading: Binding<Bool>,
+       scrollToTop: Binding<Int>,
        initialLoad: (() -> Void)? = nil,
        loadMore: @escaping () -> Void,
        refresh: @escaping () -> Void,
@@ -21,6 +26,7 @@ struct InfiniteScrollView<Data, Content, Header>: View
   {
     _data = data
     _isLoading = isLoading
+    _scrollToTop = scrollToTop
     self.initialLoad = initialLoad ?? loadMore
     self.loadMore = loadMore
     self.header = header
@@ -29,31 +35,46 @@ struct InfiniteScrollView<Data, Content, Header>: View
   }
 
   var body: some View {
-    ScrollView {
-      header()
-      LazyVStack {
-        ForEach(data, id: \.self) { item in
-          content(item)
-            .onAppear {
-              if item == data.last, isLoading != true {
-                loadMore()
-              }
+    ScrollViewReader { proxy in
+      ZStack(alignment: .top) {
+        ScrollView {
+          header()
+          LazyVStack {
+            ForEach(data, id: \.self) { item in
+              content(item)
+                .onAppear {
+                  if item == data.last, isLoading != true {
+                    loadMore()
+                  }
+                }
+                .if(item == data.first, transform: {
+                  view in view.id(topAnchor)
+                })
             }
-        }
-      }.padding([.trailing, .leading], 5)
+          }.padding([.trailing, .leading], 5)
 
-      if isLoading {
-        ProgressView()
-          .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+          if isLoading {
+            ProgressView()
+              .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+          }
+        }
+        .onAppear {
+          scrollProxy = proxy
+        }
+        .onChange(of: scrollToTop, perform: { _ in
+          withAnimation {
+            scrollProxy?.scrollTo(topAnchor, anchor: .top)
+          }
+        })
+        .refreshable {
+          if let refresh {
+            refresh()
+          }
+        }
+        .task {
+          initialLoad()
+        }
       }
-    }
-    .refreshable {
-      if let refresh {
-        refresh()
-      }
-    }
-    .task {
-      initialLoad()
     }
   }
 }

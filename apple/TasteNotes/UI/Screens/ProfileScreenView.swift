@@ -5,6 +5,7 @@ import SwiftUI
 
 struct ProfileScreenView: View {
   @State private var profile: Profile
+  @State private var scrollToTop: Int = 0
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -17,7 +18,7 @@ struct ProfileScreenView: View {
   var body: some View {
     InfiniteScrollView(
       data: $viewModel.checkIns,
-      isLoading: $viewModel.isLoading,
+      isLoading: $viewModel.isLoading, scrollToTop: $scrollToTop,
       loadMore: { viewModel.fetchMoreCheckIns(userId: profile.id) },
       refresh: {
         viewModel.refresh(userId: profile.id)

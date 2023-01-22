@@ -16,32 +16,46 @@ struct ActivityTabView: View {
   @EnvironmentObject private var toastManager: ToastManager
   @StateObject private var router = Router()
   @Binding var resetNavigationStackOnTab: Tab?
+  @State private var scrollToTop: Int = 0
 
   var body: some View {
     NavigationStack(path: $router.path) {
       WithRoutes {
-        InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, initialLoad: {
-          viewModel.fetchActivityFeedItems(onComplete: {
-            if splashScreenManager.state != .finished {
-              splashScreenManager.dismiss()
-            }
-          })
-        }, loadMore: {
-          viewModel.fetchActivityFeedItems()
-        }, refresh: {
-          viewModel.refresh()
-        }, content: {
-          content in
-          CheckInCardView(checkIn: content,
-                          loadedFrom: .activity(profileManager.getProfile()),
-                          onDelete: viewModel.onCheckInDelete,
-                          onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn) })
-        }, header: {
-          EmptyView()
-        })
+        InfiniteScrollView(
+          data: $viewModel.checkIns,
+          isLoading: $viewModel.isLoading,
+          scrollToTop: $scrollToTop,
+          initialLoad: {
+            viewModel.fetchActivityFeedItems(onComplete: {
+              if splashScreenManager.state != .finished {
+                splashScreenManager.dismiss()
+              }
+            })
+          },
+          loadMore: {
+            viewModel.fetchActivityFeedItems()
+          },
+          refresh: {
+            viewModel.refresh()
+          },
+          content: {
+            content in
+            CheckInCardView(checkIn: content,
+                            loadedFrom: .activity(profileManager.getProfile()),
+                            onDelete: viewModel.onCheckInDelete,
+                            onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn) })
+          },
+          header: {
+            EmptyView()
+          }
+        )
         .onChange(of: $resetNavigationStackOnTab.wrappedValue) { tab in
           if tab == .activity {
-            router.reset()
+            if router.path.isEmpty {
+              scrollToTop += 1
+            } else {
+              router.reset()
+            }
             resetNavigationStackOnTab = nil
           }
         }
