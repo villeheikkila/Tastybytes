@@ -1,11 +1,12 @@
 import SwiftUI
 
 struct RatingView: View {
-  let rating: Double
-  let type: StarType
   @State private var starSize: CGSize = .zero
   @State private var controlSize: CGSize = .zero
   @GestureState private var dragging: Bool = false
+
+  let rating: Double
+  let type: StarType
 
   init(rating: Double, type: StarType = .large) {
     self.rating = rating

@@ -13,6 +13,11 @@ struct ProfileTabView: View {
     NavigationStack(path: $router.path) {
       WithRoutes {
         ProfileView(profile: profileManager.getProfile(), scrollToTop: $scrollToTop)
+          .navigationTitle(profileManager.getProfile().preferredName)
+          .navigationBarTitleDisplayMode(.inline)
+          .toolbar {
+            toolbarContent
+          }
       }
       .onChange(of: $resetNavigationStackOnTab.wrappedValue) { tab in
         if tab == .profile {
@@ -23,6 +28,20 @@ struct ProfileTabView: View {
           }
           resetNavigationStackOnTab = nil
         }
+      }
+    }
+  }
+
+  @ToolbarContentBuilder
+  private var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarLeading) {
+      NavigationLink(value: Route.currentUserFriends) {
+        Image(systemName: "person.2").imageScale(.large)
+      }
+    }
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
+      NavigationLink(value: Route.settings) {
+        Image(systemName: "gear").imageScale(.large)
       }
     }
   }

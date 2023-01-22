@@ -1,10 +1,11 @@
 import SwiftUI
 
 struct ProductScreenView: View {
-  let product: Product.Joined
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject var profileManager: ProfileManager
   @State private var scrollToTop: Int = 0
+
+  let product: Product.Joined
 
   var body: some View {
     InfiniteScrollView(

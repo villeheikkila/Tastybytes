@@ -4,9 +4,10 @@ import PhotosUI
 import SwiftUI
 
 struct LocationScreenView: View {
-  let location: Location
   @StateObject private var viewModel = ViewModel()
   @State private var scrollToTop: Int = 0
+
+  let location: Location
 
   var body: some View {
     InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, scrollToTop: $scrollToTop,
@@ -32,6 +33,7 @@ extension LocationScreenView {
     @Published var profileSummary: ProfileSummary?
     @Published var isLoading = false
     @Published var selectedItem: PhotosPickerItem?
+
     private let pageSize = 10
     private var page = 0
 

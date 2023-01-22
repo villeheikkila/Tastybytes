@@ -44,14 +44,9 @@ struct ProfileView: View {
         }
       }
     )
-    .navigationTitle(profile.preferredName)
-    .navigationBarTitleDisplayMode(.inline)
-    .toolbar {
-      toolbarContent
-    }
   }
 
-  var sendFriendRequestButton: some View {
+  private var sendFriendRequestButton: some View {
     HStack {
       Spacer()
       Button(action: {
@@ -66,11 +61,11 @@ struct ProfileView: View {
     }
   }
 
-  var avatar: some View {
+  private var avatar: some View {
     AvatarView(avatarUrl: profile.getAvatarURL(), size: 90, id: profile.id)
   }
 
-  var profileSummary: some View {
+  private var profileSummary: some View {
     HStack(alignment: .center, spacing: 20) {
       HStack {
         VStack {
@@ -125,7 +120,7 @@ struct ProfileView: View {
     }
   }
 
-  var ratingChart: some View {
+  private var ratingChart: some View {
     Chart {
       LineMark(
         x: .value("Rating", "0.5"),
@@ -174,7 +169,7 @@ struct ProfileView: View {
     .padding([.leading, .trailing], 10)
   }
 
-  var ratingSummary: some View {
+  private var ratingSummary: some View {
     HStack {
       VStack {
         Text("Unrated")
@@ -193,7 +188,7 @@ struct ProfileView: View {
     }
   }
 
-  var links: some View {
+  private var links: some View {
     VStack {
       NavigationLink(value: Route.friends(profile)) {
         HStack {
@@ -224,20 +219,6 @@ struct ProfileView: View {
     .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
     .padding([.leading, .trailing], 5)
   }
-
-  @ToolbarContentBuilder
-  var toolbarContent: some ToolbarContent {
-    ToolbarItemGroup(placement: .navigationBarLeading) {
-      NavigationLink(value: Route.currentUserFriends) {
-        Image(systemName: "person.2").imageScale(.large)
-      }
-    }
-    ToolbarItemGroup(placement: .navigationBarTrailing) {
-      NavigationLink(value: Route.settings) {
-        Image(systemName: "gear").imageScale(.large)
-      }
-    }
-  }
 }
 
 extension ProfileView {
@@ -246,6 +227,7 @@ extension ProfileView {
     @Published var profileSummary: ProfileSummary?
     @Published var isLoading = false
     @Published var selectedItem: PhotosPickerItem?
+
     private let pageSize = 10
     private var page = 0
 

@@ -2,10 +2,11 @@ import CachedAsyncImage
 import SwiftUI
 
 struct CheckInScreenView: View {
-  let checkIn: CheckIn
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var notificationManager: NotificationManager
+
+  let checkIn: CheckIn
 
   var body: some View {
     VStack {
