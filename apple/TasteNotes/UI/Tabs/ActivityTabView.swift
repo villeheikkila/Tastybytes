@@ -17,7 +17,7 @@ struct ActivityTabView: View {
   @EnvironmentObject private var toastManager: ToastManager
   @StateObject private var router = Router()
   @State private var scrollToTop: Int = 0
-  @Binding var resetNavigationStackOnTab: Tab?
+  @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
     NavigationStack(path: $router.path) {
@@ -50,14 +50,14 @@ struct ActivityTabView: View {
             EmptyView()
           }
         )
-        .onChange(of: $resetNavigationStackOnTab.wrappedValue) { tab in
+        .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
           if tab == .activity {
             if router.path.isEmpty {
               scrollToTop += 1
             } else {
               router.reset()
             }
-            resetNavigationStackOnTab = nil
+            resetNavigationOnTab = nil
           }
         }
         .navigationTitle("Activity")
