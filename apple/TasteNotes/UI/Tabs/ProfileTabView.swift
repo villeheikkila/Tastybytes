@@ -30,6 +30,7 @@ struct ProfileTabView: View {
         }
       }
     }
+    .environmentObject(router)
   }
 
   @ToolbarContentBuilder
