@@ -1,3 +1,4 @@
+import PhotosUI
 import SwiftUI
 
 struct SimpleCheckIn {

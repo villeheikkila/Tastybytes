@@ -38,6 +38,9 @@ struct InfiniteScrollView<Data, Content, Header>: View
     ScrollViewReader { proxy in
       ZStack(alignment: .top) {
         ScrollView {
+          Rectangle()
+            .frame(height: 0)
+            .id(topAnchor)
           header()
           LazyVStack {
             ForEach(data, id: \.self) { item in
@@ -47,9 +50,6 @@ struct InfiniteScrollView<Data, Content, Header>: View
                     loadMore()
                   }
                 }
-                .if(item == data.first, transform: {
-                  view in view.id(topAnchor)
-                })
             }
           }.padding([.trailing, .leading], 5)
 
