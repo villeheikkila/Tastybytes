@@ -2,11 +2,9 @@ import SwiftUI
 
 struct SplashScreenView: View {
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
-
   @State private var firstAnimation = false
   @State private var secondAnimation = false
   @State private var startFadeoutAnimation = false
-
   @State private var size = 0.8
   @State private var opacity = 0.5
 
@@ -18,17 +16,18 @@ struct SplashScreenView: View {
         AppLogoView()
           .scaleEffect(size)
           .opacity(opacity)
-
         AppNameView()
           .foregroundColor(.primary.opacity(0.80))
       }
-    }.onReceive(
+    }
+    .onReceive(
       Timer
         .publish(every: 0.5, on: .current, in: .common)
         .autoconnect()
     ) { _ in
       updateAnimation()
-    }.opacity(startFadeoutAnimation ? 0 : 1)
+    }
+    .opacity(startFadeoutAnimation ? 0 : 1)
   }
 
   private func updateAnimation() {
