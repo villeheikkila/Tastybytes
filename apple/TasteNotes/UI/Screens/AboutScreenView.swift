@@ -58,21 +58,21 @@ struct AboutScreenView: View {
               }
             }
           }
+
+          Section {
+            HStack(alignment: .center) {
+              Image(systemName: "c.circle")
+                .font(.system(size: 12, weight: .bold, design: .default))
+
+              if let currentYear = viewModel.currentYear {
+                Text(String(currentYear))
+                  .font(.system(size: 12, weight: .bold, design: .default))
+              }
+              Text("Ville Heikkilä")
+                .font(.system(size: 12, weight: .bold, design: .default))
+            }
+          }
         }
-      }
-
-      Spacer()
-
-      HStack(alignment: .center) {
-        Image(systemName: "c.circle")
-          .font(.system(size: 12, weight: .bold, design: .default))
-
-        if let currentYear = viewModel.currentYear {
-          Text(String(currentYear))
-            .font(.system(size: 12, weight: .bold, design: .default))
-        }
-        Text("Ville Heikkilä")
-          .font(.system(size: 12, weight: .bold, design: .default))
       }
     }
     .navigationTitle("About")
