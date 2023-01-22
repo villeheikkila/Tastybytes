@@ -13,8 +13,6 @@ struct ProfileSettingsScreenView: View {
       profileSection
       profileDisplaySettings
       emailSection
-      Spacer()
-        .listRowBackground(Color.clear)
       deleteAccount
     }
     .navigationTitle("Profile")
@@ -145,9 +143,9 @@ extension ProfileSettingsScreenView {
 
     func profileHasChanged() -> Bool {
       ![
-        username == profile?.username,
-        firstName == profile?.firstName,
-        lastName == profile?.lastName,
+        username == profile?.username ?? "",
+        firstName == profile?.firstName ?? "",
+        lastName == profile?.lastName ?? "",
       ].allSatisfy { $0 }
     }
 
