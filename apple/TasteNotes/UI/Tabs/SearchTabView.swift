@@ -8,6 +8,7 @@ struct SearchTabView: View {
   @State private var showAddBarcodeConfirmation = false
   @StateObject private var router = Router()
   @State private var scrollProxy: ScrollViewProxy?
+
   private let topAnchor = "top"
 
   var body: some View {

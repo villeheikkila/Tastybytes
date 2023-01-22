@@ -2,7 +2,6 @@ import AlertToast
 import SwiftUI
 
 struct SubcategorySheetView: View {
-  let availableSubcategories: [Subcategory]
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @Binding var subcategories: [Subcategory]
@@ -11,6 +10,7 @@ struct SubcategorySheetView: View {
   @State private var newSubcategoryName = ""
 
   private let maxSubcategories = 4
+  let availableSubcategories: [Subcategory]
   let onCreate: (_ newSubcategoryName: String) -> Void
 
   var body: some View {

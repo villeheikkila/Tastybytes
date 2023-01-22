@@ -60,8 +60,8 @@ struct ProductSheetView: View {
         case .subcategories:
           if let subcategoriesForCategory = viewModel.category?.subcategories {
             SubcategorySheetView(
-              availableSubcategories: subcategoriesForCategory,
               subcategories: $viewModel.subcategories,
+              availableSubcategories: subcategoriesForCategory,
               onCreate: {
                 newSubcategoryName in viewModel.createSubcategory(newSubcategoryName: newSubcategoryName)
               }

@@ -2,13 +2,14 @@ import CachedAsyncImage
 import SwiftUI
 
 struct CompanyScreenView: View {
-  let company: Company
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
   @StateObject private var viewModel = ViewModel()
   @State private var showDeleteCompanyConfirmationDialog = false
   @State private var showDeleteBrandConfirmationDialog = false
   @State private var showDeleteProductConfirmationDialog = false
+
+  let company: Company
 
   var body: some View {
     List {

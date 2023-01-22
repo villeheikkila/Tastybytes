@@ -2,11 +2,12 @@ import CachedAsyncImage
 import SwiftUI
 
 struct MergeSheetView: View {
-  let productToMerge: Product.JoinedCategory
   @StateObject private var viewModel = ViewModel()
   @State private var showDeleteCompanyConfirmationDialog = false
   @State private var showDeleteBrandConfirmationDialog = false
   @Environment(\.dismiss) private var dismiss
+
+  let productToMerge: Product.JoinedCategory
 
   var body: some View {
     List {

@@ -1,10 +1,11 @@
 import SwiftUI
 
 class ProfileManager: ObservableObject {
-  private var profile: Profile.Extended?
   @Published private(set) var isLoggedIn = false
   @Published private(set) var colorScheme: ColorScheme?
   @Published private(set) var friends = [Profile]()
+
+  private var profile: Profile.Extended?
 
   func get() -> Profile.Extended {
     if let profile {

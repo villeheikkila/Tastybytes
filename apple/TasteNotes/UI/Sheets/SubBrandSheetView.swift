@@ -4,6 +4,7 @@ struct SubBrandSheetView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var viewModel = ViewModel()
   @Environment(\.dismiss) private var dismiss
+
   let brandWithSubBrands: Brand.JoinedSubBrands
   let onSelect: (_ company: SubBrand, _ createdNew: Bool) -> Void
 

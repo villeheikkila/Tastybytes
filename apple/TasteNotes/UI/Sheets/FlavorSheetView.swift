@@ -7,6 +7,7 @@ struct FlavorSheetView: View {
   @Binding var pickedFlavors: [Flavor]
   @State private var searchText = ""
   @State private var showToast = false
+
   private let maxFlavors = 6
 
   var body: some View {

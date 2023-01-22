@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct ProfileScreenView: View {
-  let profile: Profile
   @State private var scrollToTop = 0
+
+  let profile: Profile
 
   var body: some View {
     ProfileView(profile: profile, scrollToTop: $scrollToTop)

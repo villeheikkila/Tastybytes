@@ -1,9 +1,10 @@
 import SwiftUI
 
 struct ReactionsView: View {
-  let checkIn: CheckIn
   @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var viewModel = ViewModel()
+
+  let checkIn: CheckIn
 
   var body: some View {
     HStack {
