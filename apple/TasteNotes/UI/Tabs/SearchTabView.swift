@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SearchTabView: View {
   @ObservedObject var viewModel = ViewModel()
-  @Binding var resetNavigationStackOnTab: Tab?
+  @Binding var resetNavigationOnTab: Tab?
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var showAddBarcodeConfirmation = false
@@ -112,7 +112,7 @@ struct SearchTabView: View {
           .toolbar {
             toolbarContent
           }
-          .onChange(of: $resetNavigationStackOnTab.wrappedValue) { tab in
+          .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
             if tab == .search {
               if router.path.isEmpty {
                 withAnimation {
@@ -135,7 +135,7 @@ struct SearchTabView: View {
             } else {
               router.reset()
             }
-            resetNavigationStackOnTab = nil
+            resetNavigationOnTab = nil
           }
         }
       }
