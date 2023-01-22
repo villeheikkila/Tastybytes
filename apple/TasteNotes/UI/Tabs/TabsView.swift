@@ -4,8 +4,7 @@ struct TabsView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var selection = Tab.activity
-  @State private var selectedTab: Tab = .activity
-  @State private var backToRoot: Tab = .activity
+  @State private var resetNavigationStackOnTab: Tab?
 
   private var tabs: [Tab] {
     [.activity, .search, .notifications, .profile]
@@ -22,18 +21,17 @@ struct TabsView: View {
 
   var body: some View {
     TabView(selection: .init(get: {
-      selectedTab
+      selection
     }, set: { newTab in
-      print(newTab)
-      if newTab == selectedTab {
+      if newTab == selection {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-          backToRoot = selectedTab
+          resetNavigationStackOnTab = selection
         }
       }
-      selectedTab = newTab
+      selection = newTab
     })) {
       ForEach(tabs) { tab in
-        tab.makeContentView(backToRoot: $backToRoot)
+        tab.view($resetNavigationStackOnTab)
           .tabItem {
             tab.label
           }
@@ -52,16 +50,16 @@ enum Tab: Int, Identifiable, Hashable {
   }
 
   @ViewBuilder
-  func makeContentView(backToRoot: Binding<Tab>) -> some View {
+  func view(_ resetNavigationStackOnTab: Binding<Tab?>) -> some View {
     switch self {
     case .activity:
-      ActivityTabView(backToRoot: backToRoot)
+      ActivityTabView(resetNavigationStackOnTab: resetNavigationStackOnTab)
     case .search:
-      SearchTabView(backToRoot: backToRoot)
+      SearchTabView(resetNavigationStackOnTab: resetNavigationStackOnTab)
     case .notifications:
-      NotificationTabView(backToRoot: backToRoot)
+      NotificationTabView(resetNavigationStackOnTab: resetNavigationStackOnTab)
     case .profile:
-      ProfileTabView(backToRoot: backToRoot)
+      ProfileTabView(resetNavigationStackOnTab: resetNavigationStackOnTab)
     }
   }
 

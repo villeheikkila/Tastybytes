@@ -3,7 +3,7 @@ import SwiftUI
 struct NotificationTabView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @StateObject private var router = Router()
-  @Binding var backToRoot: Tab
+  @Binding var resetNavigationStackOnTab: Tab?
 
   var body: some View {
     NavigationStack(path: $router.path) {
@@ -37,9 +37,10 @@ struct NotificationTabView: View {
         .toolbar {
           toolbarContent
         }
-        .onChange(of: $backToRoot.wrappedValue) { backToRoot in
-          if backToRoot == .notifications {
+        .onChange(of: $resetNavigationStackOnTab.wrappedValue) { tab in
+          if tab == .notifications {
             router.reset()
+            resetNavigationStackOnTab = nil
           }
         }
       }
