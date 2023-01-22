@@ -15,7 +15,7 @@ struct ActivityTabView: View {
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var toastManager: ToastManager
   @StateObject private var router = Router()
-  @Binding var backToRoot: Tab
+  @Binding var resetNavigationStackOnTab: Tab?
 
   var body: some View {
     NavigationStack(path: $router.path) {
@@ -39,17 +39,18 @@ struct ActivityTabView: View {
         }, header: {
           EmptyView()
         })
+        .onChange(of: $resetNavigationStackOnTab.wrappedValue) { tab in
+          if tab == .activity {
+            router.reset()
+            resetNavigationStackOnTab = nil
+          }
+        }
         .navigationTitle("Activity")
         .toolbar {
           toolbarContent
         }
         .onAppear {
           router.reset()
-        }
-        .onChange(of: $backToRoot.wrappedValue) { backToRoot in
-          if backToRoot == .activity {
-            router.reset()
-          }
         }
       }
     }
