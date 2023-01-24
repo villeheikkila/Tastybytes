@@ -206,8 +206,7 @@ struct CheckInSheetView: View {
       leading: Button(action: {
         dismiss()
       }) {
-        Text("Cancel")
-          .bold()
+        Text("Cancel").bold()
       },
       trailing: Button(action: {
         switch action {
