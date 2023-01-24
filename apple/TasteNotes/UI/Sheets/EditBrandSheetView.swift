@@ -70,6 +70,7 @@ struct EditBrandSheetView: View {
                   viewModel.toDeleteSubBrand = subBrand
                 }) {
                   Label("Delete", systemImage: "trash")
+                    .disabled(subBrand.isVerified)
                 }
               } label: {
                 Image(systemName: "ellipsis")

@@ -106,6 +106,7 @@ struct ProductScreenView: View {
           viewModel.showDeleteConfirmation()
         }) {
           Label("Delete", systemImage: "trash.fill")
+            .disabled(product.isVerified)
         }
       }
     }
