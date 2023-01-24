@@ -130,7 +130,7 @@ struct CompanyScreenView: View {
                     }) {
                       Label("Delete", systemImage: "trash.fill")
                         .foregroundColor(.red)
-                    }
+                    }.disabled(product.isVerified)
                   }
                 }
               }
@@ -155,7 +155,7 @@ struct CompanyScreenView: View {
                   showDeleteBrandConfirmationDialog.toggle()
                 }) {
                   Label("Delete", systemImage: "trash.fill")
-                }
+                }.disabled(brand.isVerified)
               }
             } label: {
               Image(systemName: "ellipsis")
