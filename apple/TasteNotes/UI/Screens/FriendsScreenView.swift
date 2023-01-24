@@ -60,8 +60,8 @@ struct FriendsScreenView: View {
           }
           .errorAlert(error: $viewModel.modalError)
         })
-        .presentationDetents([.medium])
       }
+      .presentationDetents([.medium])
     }
     .errorAlert(error: $viewModel.error)
     .confirmationDialog("delete_friend",
