@@ -69,8 +69,8 @@ struct SearchTabView: View {
               BarcodeScannerSheetView(onComplete: {
                 barcode in viewModel.searchProductsByBardcode(barcode)
               })
-              .presentationDetents([.medium])
             }
+            .presentationDetents([.medium])
           }
           .searchable(text: $viewModel.searchTerm, tokens: $viewModel.tokens) { token in
             switch token {

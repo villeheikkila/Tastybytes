@@ -35,9 +35,10 @@ struct BlockedUsersScreenView: View {
               }
             }
           }
+
         })
-        .presentationDetents([.medium])
       }
+      .presentationDetents([.medium])
     }
     .navigationBarTitleDisplayMode(.inline)
     .task {
@@ -97,12 +98,29 @@ extension BlockedUsersScreenView {
       }
     }
 
+    func blockUser(user: Profile, onSuccess: @escaping () -> Void, onFailure: @escaping (_ error: String) -> Void) {
+      Task {
+        switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: user.id, status: .blocked)) {
+        case let .success(blockedUser):
+          await MainActor.run {
+            self.blockedUsers.append(blockedUser)
+            onSuccess()
+          }
+        case let .failure(error):
+          await MainActor.run {
+            onFailure(error.localizedDescription)
+          }
+        }
+      }
+    }
+
     func loadBlockedUsers(userId: UUID?) {
       if let userId {
         Task {
           switch await repository.friend.getByUserId(userId: userId, status: .blocked) {
           case let .success(blockedUsers):
             await MainActor.run {
+              print(blockedUsers)
               self.blockedUsers = blockedUsers
             }
           case let .failure(error):

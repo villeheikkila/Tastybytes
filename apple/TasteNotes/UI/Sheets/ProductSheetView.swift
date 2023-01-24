@@ -100,9 +100,8 @@ struct ProductSheetView: View {
           BarcodeScannerSheetView(onComplete: {
             barcode in viewModel.barcode = barcode
           })
-          .presentationDetents([.medium])
         }
-      }
+      }.if(sheet == .barcode, transform: { view in view.presentationDetents([.medium]) })
     }
     .task {
       if let initialProduct {
