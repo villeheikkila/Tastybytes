@@ -21,7 +21,13 @@ struct SupabaseFriendsRepository: FriendRepository {
         .or(filters: "user_id_1.eq.\(userId),user_id_2.eq.\(userId)")
 
       if let status {
-        queryBuilder = queryBuilder.eq(column: "status", value: status.rawValue)
+        switch status {
+        case .blocked:
+          queryBuilder = queryBuilder.eq(column: "status", value: status.rawValue)
+            .eq(column: "blocked_by", value: userId)
+        default:
+          queryBuilder = queryBuilder.eq(column: "status", value: status.rawValue)
+        }
       } else {
         queryBuilder = queryBuilder.not(column: "status", operator: .eq, value: Friend.Status.blocked.rawValue)
       }
