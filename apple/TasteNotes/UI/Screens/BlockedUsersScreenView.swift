@@ -3,6 +3,7 @@ import SwiftUI
 struct BlockedUsersScreenView: View {
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var toastManager: ToastManager
 
   var body: some View {
     List {
@@ -16,9 +17,39 @@ struct BlockedUsersScreenView: View {
       }
     }
     .navigationTitle("Blocked Users")
+    .navigationBarItems(
+      trailing: blockUser
+    )
+    .sheet(isPresented: $viewModel.showUserSearchSheet) {
+      NavigationStack {
+        UserSheetView(actions: { profile in
+          HStack {
+            if !viewModel.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
+              Button(action: { viewModel.blockUser(user: profile, onSuccess: {
+                toastManager.toggle(.success("User blocked"))
+              }, onFailure: {
+                error in toastManager.toggle(.error(error))
+              }) }) {
+                Label("Block", systemImage: "person.fill.xmark")
+                  .imageScale(.large)
+              }
+            }
+          }
+        })
+        .presentationDetents([.medium])
+      }
+    }
     .navigationBarTitleDisplayMode(.inline)
     .task {
       viewModel.loadBlockedUsers(userId: profileManager.getId())
+    }
+  }
+
+  private var blockUser: some View {
+    HStack {
+      Button(action: { viewModel.showUserSearchSheet.toggle() }) {
+        Image(systemName: "plus").imageScale(.large)
+      }
     }
   }
 }
@@ -49,6 +80,7 @@ extension BlockedUsersScreenView {
   @MainActor class ViewModel: ObservableObject {
     @Published var blockedUsers = [Friend]()
     @Published var error: Error?
+    @Published var showUserSearchSheet = false
 
     func unblockUser(id: Int) {
       Task {
