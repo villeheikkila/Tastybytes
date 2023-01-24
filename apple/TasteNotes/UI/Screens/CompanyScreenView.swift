@@ -165,7 +165,7 @@ struct CompanyScreenView: View {
         .headerProminence(.increased)
         .confirmationDialog("Delete Brand Confirmation",
                             isPresented: $showDeleteBrandConfirmationDialog) {
-          Button("Delete Brand", role: .destructive, action: { viewModel.deleteBrand(brand) })
+          Button("Delete \(brand.name) brand", role: .destructive, action: { viewModel.deleteBrand(brand) })
         }
       }
     }
