@@ -2,6 +2,7 @@ import SwiftUI
 
 struct UserSheetView<Actions: View>: View {
   @StateObject private var viewModel = ViewModel()
+  @Environment(\.dismiss) private var dismiss
 
   let actions: (_ profile: Profile) -> Actions
 
@@ -19,6 +20,11 @@ struct UserSheetView<Actions: View>: View {
       }
     }
     .navigationTitle("Search users")
+    .navigationBarItems(trailing: Button(action: {
+      dismiss()
+    }) {
+      Text("Cancel").bold()
+    })
     .searchable(text: $viewModel.searchText)
     .onSubmit(of: .search) { viewModel.searchUsers() }
   }

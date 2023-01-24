@@ -35,7 +35,6 @@ struct BlockedUsersScreenView: View {
               }
             }
           }
-
         })
       }
       .presentationDetents([.medium])
