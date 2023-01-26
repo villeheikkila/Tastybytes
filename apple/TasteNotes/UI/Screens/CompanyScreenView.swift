@@ -130,7 +130,8 @@ struct CompanyScreenView: View {
                     }) {
                       Label("Delete", systemImage: "trash.fill")
                         .foregroundColor(.red)
-                    }.disabled(product.isVerified)
+                    }
+                    .disabled(product.isVerified)
                   }
                 }
               }
