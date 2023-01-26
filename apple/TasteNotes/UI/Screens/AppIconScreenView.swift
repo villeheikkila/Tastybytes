@@ -7,7 +7,7 @@ struct AppIconScreenView: View {
   var body: some View {
     List(appIcons, id: \.self, selection: $selection) { name in
       HStack(spacing: 12) {
-        Image(uiImage: UIImage(named: name.rawValue) ?? UIImage())
+        Image(uiImage: .init(named: name.rawValue) ?? .init())
           .resizable()
           .aspectRatio(contentMode: .fill)
           .frame(width: 40, height: 40)
@@ -15,6 +15,12 @@ struct AppIconScreenView: View {
 
         Text(getLabel(name))
           .fontWeight(.medium)
+
+        Spacer()
+
+        if name == selection {
+          Image(systemName: "checkmark")
+        }
       }
       .padding(4)
     }
