@@ -5,7 +5,6 @@ struct SearchTabView: View {
   @Binding var resetNavigationOnTab: Tab?
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @State private var showAddBarcodeConfirmation = false
   @StateObject private var router = Router()
   @State private var scrollProxy: ScrollViewProxy?
 
@@ -178,18 +177,24 @@ struct SearchTabView: View {
         .id(product.id)
       } else {
         Button(action: {
-          showAddBarcodeConfirmation.toggle()
+          viewModel.addBarcodeTo = product
         }) {
           ProductListItemView(product: product)
-        }.buttonStyle(.plain)
-          .confirmationDialog("Are you sure you want to add the barcode to product \(product.id)",
-                              isPresented: $showAddBarcodeConfirmation) {
-            Button("Add barcode", action: {
+        }
+        .buttonStyle(.plain)
+        .confirmationDialog("Add barcode confirmation", isPresented: $viewModel.showAddBarcodeConfirmation) {
+          Button(
+            """
+                        Are you sure you want to add the barcode to product
+                        \(viewModel.addBarcodeTo?.getDisplayName(.fullName) ?? "unknown")
+            """,
+            action: {
               viewModel.addBarcodeToProduct(product, onComplete: {
                 toastManager.toggle(.success("Barcode added!"))
               })
-            })
-          }
+            }
+          )
+        }
       }
     }
   }
@@ -230,6 +235,13 @@ extension SearchTabView {
     @Published var searchScope: SearchScope = .products
     @Published var barcode: Barcode?
     @Published var tokens: [Category.Name] = []
+    @Published var addBarcodeTo: Product.Joined? {
+      didSet {
+        showAddBarcodeConfirmation = true
+      }
+    }
+
+    @Published var showAddBarcodeConfirmation = false
 
     func resetSearch() {
       profiles = []
@@ -250,6 +262,8 @@ extension SearchTabView {
           case .success:
             await MainActor.run {
               self.barcode = nil
+              self.addBarcodeTo = nil
+              self.showAddBarcodeConfirmation = false
               onComplete()
             }
           case let .failure(error):
