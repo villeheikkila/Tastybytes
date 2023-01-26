@@ -185,11 +185,11 @@ struct SearchTabView: View {
         .confirmationDialog("Add barcode confirmation", isPresented: $viewModel.showAddBarcodeConfirmation) {
           Button(
             """
-                        Are you sure you want to add the barcode to product
+                        Add barcode to
                         \(viewModel.addBarcodeTo?.getDisplayName(.fullName) ?? "unknown")
             """,
             action: {
-              viewModel.addBarcodeToProduct(product, onComplete: {
+              viewModel.addBarcodeToProduct(onComplete: {
                 toastManager.toggle(.success("Barcode added!"))
               })
             }
@@ -255,10 +255,10 @@ extension SearchTabView {
       }
     }
 
-    func addBarcodeToProduct(_ product: Product.Joined, onComplete: @escaping () -> Void) {
-      if let barcode {
+    func addBarcodeToProduct(onComplete: @escaping () -> Void) {
+      if let addBarcodeTo, let barcode {
         Task {
-          switch await repository.product.addBarcodeToProduct(product: product, barcode: barcode) {
+          switch await repository.product.addBarcodeToProduct(product: addBarcodeTo, barcode: barcode) {
           case .success:
             await MainActor.run {
               self.barcode = nil
