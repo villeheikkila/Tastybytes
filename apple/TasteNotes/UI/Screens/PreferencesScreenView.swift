@@ -36,7 +36,6 @@ struct PreferencesScreenView: View {
         }
       }
     }
-    .listStyle(.automatic)
     .navigationBarTitle("Preferences")
     .navigationBarTitleDisplayMode(.inline)
   }

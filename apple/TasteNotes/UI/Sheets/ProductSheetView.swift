@@ -212,7 +212,7 @@ struct ProductSheetView: View {
 
   private var productSection: some View {
     Section {
-      TextField("Flavor", text: $viewModel.name)
+      TextField("Name", text: $viewModel.name)
         .focused($focusedField, equals: .name)
 
       TextField("Description (optional)", text: $viewModel.description)

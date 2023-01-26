@@ -65,6 +65,11 @@ struct ProductScreenView: View {
           .font(.system(size: 18, weight: .bold, design: .default))
           .foregroundColor(.primary)
 
+        if let description = product.description {
+          Text(description)
+            .font(.system(size: 12, weight: .medium, design: .default))
+        }
+
         HStack {
           NavigationLink(value: Route.company(product.subBrand.brand.brandOwner)) {
             Text(product.getDisplayName(.brandOwner))

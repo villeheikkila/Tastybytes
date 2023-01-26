@@ -175,12 +175,15 @@ struct CheckInCardView: View {
           if let servingStyle = checkIn.servingStyle {
             ServingStyleLabelView(servingStyleName: servingStyle.name)
           }
-        }.frame(height: 8)
+        }
 
-        HStack {
-          Text(checkIn.product.getDisplayName(.fullName))
-            .font(.system(size: 18, weight: .bold, design: .default))
-            .foregroundColor(.primary)
+        Text(checkIn.product.getDisplayName(.fullName))
+          .font(.system(size: 18, weight: .bold, design: .default))
+          .foregroundColor(.primary)
+
+        if let description = checkIn.product.description {
+          Text(description)
+            .font(.system(size: 12, weight: .medium, design: .default))
         }
 
         HStack {
