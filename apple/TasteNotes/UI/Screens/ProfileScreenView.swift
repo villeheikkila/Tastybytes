@@ -7,5 +7,6 @@ struct ProfileScreenView: View {
 
   var body: some View {
     ProfileView(profile: profile, scrollToTop: $scrollToTop)
+      .navigationTitle(profile.preferredName)
   }
 }
