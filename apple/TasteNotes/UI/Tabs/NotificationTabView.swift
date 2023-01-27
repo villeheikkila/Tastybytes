@@ -4,12 +4,28 @@ struct NotificationTabView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @StateObject private var router = Router()
   @Binding var resetNavigationOnTab: Tab?
+  @State var notificationFilter: NotificationType?
 
   var body: some View {
     NavigationStack(path: $router.path) {
       WithRoutes {
         List {
-          ForEach(notificationManager.notifications) {
+          ForEach(notificationManager.notifications.filter { notification in
+            if notificationFilter == nil {
+              return true
+            } else {
+              switch notification.content {
+              case .checkInReaction:
+                return notificationFilter == .checkInReaction
+              case .friendRequest:
+                return notificationFilter == .friendRequest
+              case .message:
+                return notificationFilter == .message
+              case .taggedCheckIn:
+                return notificationFilter == .taggedCheckIn
+              }
+            }
+          }) {
             notification in
             HStack {
               switch notification.content {
@@ -33,7 +49,7 @@ struct NotificationTabView: View {
         .refreshable {
           notificationManager.refresh(reset: true)
         }
-        .navigationTitle("Notifications")
+        .navigationTitle(notificationFilter?.label() ?? "Notifications")
         .toolbar {
           toolbarContent
         }
@@ -50,7 +66,7 @@ struct NotificationTabView: View {
 
   @ToolbarContentBuilder
   private var toolbarContent: some ToolbarContent {
-    ToolbarItemGroup(placement: .navigationBarTrailing) {
+    ToolbarItemGroup {
       Menu {
         Button(action: {
           notificationManager.deleteAll()
@@ -61,6 +77,21 @@ struct NotificationTabView: View {
         Text("Mark all read")
       } primaryAction: {
         notificationManager.markAllAsRead()
+      }
+    }
+    ToolbarTitleMenu {
+      Button {
+        notificationFilter = nil
+      } label: {
+        Label("Show All", systemImage: "bell.fill")
+      }
+      Divider()
+      ForEach(NotificationType.allCases, id: \.self) { type in
+        Button {
+          notificationFilter = type
+        } label: {
+          Label(type.label(), systemImage: type.systemImage())
+        }
       }
     }
   }

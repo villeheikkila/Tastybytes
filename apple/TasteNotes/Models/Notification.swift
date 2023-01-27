@@ -1,5 +1,35 @@
 import Foundation
 
+enum NotificationType: String, CaseIterable {
+  case message, friendRequest, taggedCheckIn, checkInReaction
+
+  func label() -> String {
+    switch self {
+    case .message:
+      return "Alerts"
+    case .friendRequest:
+      return "Friend Requests"
+    case .taggedCheckIn:
+      return "Tagged check-ins"
+    case .checkInReaction:
+      return "Reactions"
+    }
+  }
+
+  func systemImage() -> String {
+    switch self {
+    case .message:
+      return "bell"
+    case .friendRequest:
+      return "person.badge.plus"
+    case .taggedCheckIn:
+      return "tag"
+    case .checkInReaction:
+      return "hand.thumbsup.fill"
+    }
+  }
+}
+
 enum NotificationContent: Hashable {
   case message(String)
   case friendRequest(Friend)
