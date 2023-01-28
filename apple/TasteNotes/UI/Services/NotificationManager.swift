@@ -178,8 +178,8 @@ final class NotificationManager: NSObject, ObservableObject {
         switch await repository.notification.delete(id: notifications[index].id) {
         case .success:
           await MainActor.run {
-            DispatchQueue.main.async {
-              self.notifications.remove(at: index)
+            withAnimation {
+              _ = self.notifications.remove(at: index)
             }
           }
         case let .failure(error):
@@ -195,7 +195,7 @@ final class NotificationManager: NSObject, ObservableObject {
       case .success:
         await MainActor.run {
           withAnimation {
-            self.notifications.removeAll(where: { $0.id == notification.id })
+            self.notifications.remove(object: notification)
           }
         }
       case let .failure(error):

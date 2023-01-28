@@ -8,7 +8,9 @@ struct FriendSheetView: View {
   var body: some View {
     List(viewModel.friends, id: \.self) { friend in
       Button(action: {
-        toggleFriend(friend: friend)
+        withAnimation {
+          toggleFriend(friend: friend)
+        }
       }) {
         AvatarView(avatarUrl: friend.getAvatarURL(), size: 32, id: friend.id)
         Text(friend.preferredName)

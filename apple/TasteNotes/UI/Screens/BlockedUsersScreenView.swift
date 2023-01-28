@@ -12,7 +12,7 @@ struct BlockedUsersScreenView: View {
       }
       ForEach(viewModel.blockedUsers, id: \.self) { friend in
         BlockedUserListItemView(profile: friend.getFriend(userId: profileManager.getId()), onUnblockUser: {
-          viewModel.unblockUser(id: friend.id)
+          viewModel.unblockUser(friend)
         })
       }
     }
@@ -82,12 +82,12 @@ extension BlockedUsersScreenView {
     @Published var error: Error?
     @Published var showUserSearchSheet = false
 
-    func unblockUser(id: Int) {
+    func unblockUser(_ friend: Friend) {
       Task {
-        switch await repository.friend.delete(id: id) {
+        switch await repository.friend.delete(id: friend.id) {
         case .success:
           await MainActor.run {
-            self.blockedUsers.removeAll(where: { $0.id == id })
+            self.blockedUsers.remove(object: friend)
           }
         case let .failure(error):
           await MainActor.run {
@@ -102,7 +102,9 @@ extension BlockedUsersScreenView {
         switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: user.id, status: .blocked)) {
         case let .success(blockedUser):
           await MainActor.run {
-            self.blockedUsers.append(blockedUser)
+            withAnimation {
+              self.blockedUsers.append(blockedUser)
+            }
             onSuccess()
           }
         case let .failure(error):
@@ -119,8 +121,9 @@ extension BlockedUsersScreenView {
           switch await repository.friend.getByUserId(userId: userId, status: .blocked) {
           case let .success(blockedUsers):
             await MainActor.run {
-              print(blockedUsers)
-              self.blockedUsers = blockedUsers
+              withAnimation {
+                self.blockedUsers = blockedUsers
+              }
             }
           case let .failure(error):
             await MainActor.run {

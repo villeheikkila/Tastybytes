@@ -30,10 +30,8 @@ struct ProductScreenView: View {
     .navigationBarItems(
       trailing: Button(action: {
         viewModel.setActiveSheet(.checkIn)
-      }) {
-        Text("Check-in!")
-          .bold()
-      }.disabled(!profileManager.hasPermission(.canCreateCheckIns))
+      }) { Text("Check-in!").bold() }
+        .disabled(!profileManager.hasPermission(.canCreateCheckIns))
     )
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {

@@ -48,9 +48,13 @@ struct SubcategorySheetView: View {
 
   private func toggleSubcategory(subcategory: Subcategory) {
     if subcategories.contains(subcategory) {
-      subcategories.remove(object: subcategory)
+      withAnimation {
+        subcategories.remove(object: subcategory)
+      }
     } else if subcategories.count < maxSubcategories {
-      subcategories.append(subcategory)
+      withAnimation {
+        subcategories.append(subcategory)
+      }
     } else {
       showToast = true
     }

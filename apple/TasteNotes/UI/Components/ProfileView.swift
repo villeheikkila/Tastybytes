@@ -91,7 +91,8 @@ struct ProfileView: View {
         } else {
           avatar
         }
-      }.onChange(of: viewModel.selectedItem) { newValue in
+      }
+      .onChange(of: viewModel.selectedItem) { newValue in
         viewModel.uploadAvatar(newAvatar: newValue) {
           fileName in profile.avatarUrl = fileName
         }
@@ -245,7 +246,9 @@ extension ProfileView {
     }
 
     func onCheckInDelete(checkIn: CheckIn) {
-      checkIns.remove(object: checkIn)
+      withAnimation {
+        self.checkIns.remove(object: checkIn)
+      }
     }
 
     func fetchMoreCheckIns(userId: UUID) {

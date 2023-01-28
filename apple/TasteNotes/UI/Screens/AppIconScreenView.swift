@@ -5,20 +5,20 @@ struct AppIconScreenView: View {
   @State private var selection: AppIcon?
 
   var body: some View {
-    List(appIcons, id: \.self, selection: $selection) { name in
+    List(appIcons, id: \.self, selection: $selection) { icon in
       HStack(spacing: 12) {
-        Image(uiImage: .init(named: name.rawValue) ?? .init())
+        Image(uiImage: .init(named: icon.rawValue) ?? .init())
           .resizable()
           .aspectRatio(contentMode: .fill)
           .frame(width: 40, height: 40)
           .cornerRadius(8)
 
-        Text(getLabel(name))
+        Text(icon.label)
           .fontWeight(.medium)
 
         Spacer()
 
-        if name == selection {
+        if icon == selection {
           Image(systemName: "checkmark")
         }
       }
@@ -31,21 +31,6 @@ struct AppIconScreenView: View {
       }
     }.task {
       self.selection = getCurrentAppIcon()
-    }
-  }
-
-  private func getLabel(_ name: AppIcon) -> String {
-    switch name {
-    case .ramune:
-      return "Ramune"
-    case .juice:
-      return "Juice"
-    case .energyDrink:
-      return "Energy Drink"
-    case .kombucha:
-      return "Kombucha"
-    case .cola:
-      return "Cola"
     }
   }
 }

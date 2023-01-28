@@ -85,7 +85,9 @@ extension CheckInScreenView {
         switch await repository.checkInComment.deleteById(id: comment.id) {
         case .success:
           await MainActor.run {
-            self.checkInComments.remove(object: comment)
+            withAnimation {
+              self.checkInComments.remove(object: comment)
+            }
           }
         case let .failure(error):
           print(error)
@@ -101,7 +103,9 @@ extension CheckInScreenView {
         switch result {
         case let .success(newCheckInComment):
           await MainActor.run {
-            self.checkInComments.append(newCheckInComment)
+            withAnimation {
+              self.checkInComments.append(newCheckInComment)
+            }
             self.comment = ""
           }
         case let .failure(error):

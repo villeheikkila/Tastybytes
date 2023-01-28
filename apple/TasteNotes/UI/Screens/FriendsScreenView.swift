@@ -70,7 +70,9 @@ struct FriendsScreenView: View {
         "Remove \(presenting.getFriend(userId: profileManager.getId()).preferredName) from friends",
         role: .destructive,
         action: {
-          viewModel.removeFriendRequest(presenting)
+          withAnimation {
+            viewModel.removeFriendRequest(presenting)
+          }
         }
       )
     }
@@ -102,7 +104,9 @@ extension FriendsScreenView {
         switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
         case let .success(newFriend):
           await MainActor.run {
-            self.friends.append(newFriend)
+            withAnimation {
+              self.friends.append(newFriend)
+            }
             self.showUserSearchSheet = false
             onSuccess()
           }
@@ -126,7 +130,7 @@ extension FriendsScreenView {
           switch await repository.friend.update(id: id, friendUpdate: friendUpdate) {
           case let .success(updatedFriend):
             await MainActor.run {
-              self.friends.removeAll(where: { $0.id == updatedFriend.id })
+              self.friends.remove(object: updatedFriend)
             }
             if updatedFriend.status != Friend.Status.blocked {
               await MainActor.run {
@@ -147,7 +151,9 @@ extension FriendsScreenView {
         switch await repository.friend.delete(id: friend.id) {
         case .success:
           await MainActor.run {
-            self.friends.remove(object: friend)
+            withAnimation {
+              self.friends.remove(object: friend)
+            }
           }
         case let .failure(error):
           await MainActor.run {

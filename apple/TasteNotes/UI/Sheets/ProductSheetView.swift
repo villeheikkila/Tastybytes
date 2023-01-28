@@ -144,7 +144,9 @@ struct ProductSheetView: View {
           }
         }
         .onChange(of: viewModel.category) { _ in
-          viewModel.subcategories.removeAll()
+          withAnimation {
+            viewModel.subcategories.removeAll()
+          }
         }
       }
 

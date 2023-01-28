@@ -14,7 +14,7 @@ struct ReactionsView: View {
 
       Button {
         if let existingReaction = viewModel.checkInReactions.first(where: { $0.profile.id == profileManager.getId() }) {
-          viewModel.removeReaction(reactionId: existingReaction.id)
+          viewModel.removeReaction(existingReaction)
         } else {
           viewModel.reactToCheckIn(checkIn)
         }
@@ -48,7 +48,9 @@ extension ReactionsView {
         {
         case let .success(checkInReaction):
           await MainActor.run {
-            self.checkInReactions.append(checkInReaction)
+            withAnimation {
+              self.checkInReactions.append(checkInReaction)
+            }
           }
         case let .failure(error):
           print(error)
@@ -56,14 +58,15 @@ extension ReactionsView {
       }
     }
 
-    func removeReaction(reactionId: Int) {
+    func removeReaction(_ reaction: CheckInReaction) {
       Task {
-        switch await repository.checkInReactions.delete(id: reactionId) {
+        switch await repository.checkInReactions.delete(id: reaction.id) {
         case .success:
           await MainActor.run {
-            self.checkInReactions.removeAll(where: { $0.id == reactionId })
+            withAnimation {
+              self.checkInReactions.remove(object: reaction)
+            }
           }
-
         case let .failure(error):
           print(error)
         }

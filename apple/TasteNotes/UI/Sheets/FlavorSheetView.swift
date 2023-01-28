@@ -13,7 +13,9 @@ struct FlavorSheetView: View {
   var body: some View {
     List(filteredFlavors, id: \.self) { flavor in
       Button(action: {
-        toggleFlavor(flavor)
+        withAnimation {
+          toggleFlavor(flavor)
+        }
       }) {
         HStack {
           Text(flavor.name.capitalized)
@@ -41,9 +43,13 @@ struct FlavorSheetView: View {
 
   private func toggleFlavor(_ flavor: Flavor) {
     if pickedFlavors.contains(flavor) {
-      pickedFlavors.remove(object: flavor)
+      withAnimation {
+        pickedFlavors.remove(object: flavor)
+      }
     } else if pickedFlavors.count < maxFlavors {
-      pickedFlavors.append(flavor)
+      withAnimation {
+        pickedFlavors.append(flavor)
+      }
     } else {
       showToast = true
     }
