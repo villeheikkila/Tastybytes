@@ -56,6 +56,7 @@ struct SearchTabView: View {
           .listStyle(.grouped)
           .onChange(of: viewModel.searchScope, perform: { _ in
             viewModel.search()
+            viewModel.barcode = nil
           })
           .onChange(of: viewModel.searchTerm, perform: {
             term in
@@ -166,10 +167,7 @@ struct SearchTabView: View {
         ) {
           presenting in
           Button(
-            """
-                        Add barcode to
-                        \(presenting.getDisplayName(.fullName))
-            """,
+            "Add barcode to \(presenting.getDisplayName(.fullName))",
             action: {
               viewModel.addBarcodeToProduct(onComplete: {
                 toastManager.toggle(.success("Barcode added!"))
