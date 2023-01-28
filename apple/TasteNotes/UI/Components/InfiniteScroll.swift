@@ -42,7 +42,7 @@ struct InfiniteScrollView<Data, Content, Header>: View
             .frame(height: 0)
             .id(topAnchor)
           header()
-          LazyVStack {
+          LazyVStack(spacing: 8) {
             ForEach(data, id: \.self) { item in
               content(item)
                 .onAppear {

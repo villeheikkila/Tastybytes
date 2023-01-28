@@ -55,8 +55,7 @@ struct CheckInCardView: View {
       .background(Color(.tertiarySystemBackground))
       .clipped()
     }
-    .cornerRadius(10)
-    .padding([.top, .bottom], 10)
+    .cornerRadius(8)
     .shadow(color: Color.black.opacity(0.2), radius: 4, x: 2, y: 2)
     .sheet(isPresented: $viewModel.showingSheet) {
       NavigationStack {
@@ -135,24 +134,6 @@ struct CheckInCardView: View {
       return profile.id == checkIn.profile.id
     default:
       return false
-    }
-  }
-
-  private var backgroundImage: some View {
-    HStack {
-      if let imageUrl = checkIn.getImageUrl() {
-        HStack {
-          CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
-            image
-              .resizable()
-              .scaledToFill()
-          } placeholder: {
-            EmptyView()
-          }
-        }
-      } else {
-        EmptyView()
-      }
     }
   }
 
