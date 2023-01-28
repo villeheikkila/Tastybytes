@@ -227,9 +227,7 @@ struct CheckInCardView: View {
   private var footer: some View {
     HStack {
       OptionalNavigationLink(value: Route.checkIn(checkIn), enabled: loadedFrom != .checkIn) {
-        if checkIn.isMigrated {
-          Text("Migrated")
-        } else {
+        if !checkIn.isMigrated {
           Text(checkIn.getRelativeCreatedAt())
             .font(.system(size: 12, weight: .medium, design: .default))
         }
