@@ -19,7 +19,7 @@ struct ProfileSettingsScreenView: View {
     .fileExporter(isPresented: $viewModel.showingExporter,
                   document: viewModel.csvExport,
                   contentType: UTType.commaSeparatedText,
-                  defaultFilename: "tasty_export.csv") { result in
+                  defaultFilename: viewModel.getCSVExportName()) { result in
       switch result {
       case .success:
         toastManager.toggle(.success("Data was exported as CSV"))
@@ -140,6 +140,15 @@ extension ProfileSettingsScreenView {
 
     private var profile: Profile.Extended?
     private var user: User?
+
+    func getCSVExportName() -> String {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "yyyy_MM_dd_HH_mm"
+      let date = Date()
+      let timestamp = formatter.string(from: date)
+      let fileName = "tastenotes_export_\(timestamp).csv"
+      return "tastenotes_export-\(timestamp).csv"
+    }
 
     func profileHasChanged() -> Bool {
       ![
