@@ -2,7 +2,35 @@ import FirebaseMessaging
 import SwiftUI
 
 final class NotificationManager: NSObject, ObservableObject {
-  @Published private(set) var notifications = [Notification]()
+  @Published private(set) var notifications = [Notification]() {
+    didSet {
+      filter = nil
+      filteredNotifications = notifications
+    }
+  }
+
+  @Published var filter: NotificationType? {
+    didSet {
+      filteredNotifications = notifications.filter { notification in
+        if filter == nil {
+          return true
+        } else {
+          switch notification.content {
+          case .checkInReaction:
+            return filter == .checkInReaction
+          case .friendRequest:
+            return filter == .friendRequest
+          case .message:
+            return filter == .message
+          case .taggedCheckIn:
+            return filter == .taggedCheckIn
+          }
+        }
+      }
+    }
+  }
+
+  @Published var filteredNotifications: [Notification] = []
 
   func getUnreadCount() -> Int {
     notifications

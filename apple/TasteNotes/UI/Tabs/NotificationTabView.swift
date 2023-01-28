@@ -4,28 +4,12 @@ struct NotificationTabView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @StateObject private var router = Router()
   @Binding var resetNavigationOnTab: Tab?
-  @State var notificationFilter: NotificationType?
 
   var body: some View {
     NavigationStack(path: $router.path) {
       WithRoutes {
         List {
-          ForEach(notificationManager.notifications.filter { notification in
-            if notificationFilter == nil {
-              return true
-            } else {
-              switch notification.content {
-              case .checkInReaction:
-                return notificationFilter == .checkInReaction
-              case .friendRequest:
-                return notificationFilter == .friendRequest
-              case .message:
-                return notificationFilter == .message
-              case .taggedCheckIn:
-                return notificationFilter == .taggedCheckIn
-              }
-            }
-          }) {
+          ForEach(notificationManager.filteredNotifications) {
             notification in
             HStack {
               switch notification.content {
@@ -49,7 +33,8 @@ struct NotificationTabView: View {
         .refreshable {
           notificationManager.refresh(reset: true)
         }
-        .navigationTitle(notificationFilter?.label() ?? "Notifications")
+        .navigationTitle(notificationManager.filter?.label() ?? "Notifications")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
           toolbarContent
         }
@@ -69,26 +54,29 @@ struct NotificationTabView: View {
     ToolbarItemGroup {
       Menu {
         Button(action: {
+          notificationManager.markAllAsRead()
+        }) {
+          Label("Mark all read", systemImage: "envelope.open")
+        }
+        Button(action: {
           notificationManager.deleteAll()
         }) {
-          Label("Delete all notifications", systemImage: "trash")
+          Label("Delete all", systemImage: "trash")
         }
       } label: {
-        Text("Mark all read")
-      } primaryAction: {
-        notificationManager.markAllAsRead()
+        Image(systemName: "ellipsis")
       }
     }
     ToolbarTitleMenu {
       Button {
-        notificationFilter = nil
+        notificationManager.filter = nil
       } label: {
         Label("Show All", systemImage: "bell.fill")
       }
       Divider()
       ForEach(NotificationType.allCases, id: \.self) { type in
         Button {
-          notificationFilter = type
+          notificationManager.filter = type
         } label: {
           Label(type.label(), systemImage: type.systemImage())
         }
