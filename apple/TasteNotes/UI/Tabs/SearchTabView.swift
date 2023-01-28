@@ -182,11 +182,16 @@ struct SearchTabView: View {
           ProductItemView(product: product)
         }
         .buttonStyle(.plain)
-        .confirmationDialog("Add barcode confirmation", isPresented: $viewModel.showAddBarcodeConfirmation) {
+        .confirmationDialog(
+          "Add barcode confirmation",
+          isPresented: $viewModel.showAddBarcodeConfirmation,
+          presenting: viewModel.addBarcodeTo
+        ) {
+          presenting in
           Button(
             """
                         Add barcode to
-                        \(viewModel.addBarcodeTo?.getDisplayName(.fullName) ?? "unknown")
+                        \(presenting.getDisplayName(.fullName))
             """,
             action: {
               viewModel.addBarcodeToProduct(onComplete: {
@@ -242,7 +247,9 @@ extension SearchTabView {
   @MainActor class ViewModel: ObservableObject {
     @Published var searchTerm: String = "" {
       didSet {
-        if let firstPartOfSearchString = searchTerm.lowercased().split(separator: " ", maxSplits: 1)
+        if let firstPartOfSearchString = searchTerm
+          .lowercased()
+          .split(separator: " ", maxSplits: 1)
           .map(String.init)
           .first
         {

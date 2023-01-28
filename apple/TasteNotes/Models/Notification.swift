@@ -1,47 +1,17 @@
 import Foundation
 
-enum NotificationType: String, CaseIterable {
-  case message, friendRequest, taggedCheckIn, checkInReaction
-
-  func label() -> String {
-    switch self {
-    case .message:
-      return "Alerts"
-    case .friendRequest:
-      return "Friend Requests"
-    case .taggedCheckIn:
-      return "Tagged check-ins"
-    case .checkInReaction:
-      return "Reactions"
-    }
-  }
-
-  func systemImage() -> String {
-    switch self {
-    case .message:
-      return "bell"
-    case .friendRequest:
-      return "person.badge.plus"
-    case .taggedCheckIn:
-      return "tag"
-    case .checkInReaction:
-      return "hand.thumbsup.fill"
-    }
-  }
-}
-
-enum NotificationContent: Hashable {
-  case message(String)
-  case friendRequest(Friend)
-  case taggedCheckIn(CheckIn)
-  case checkInReaction(CheckInReaction.JoinedCheckIn)
-}
-
 struct Notification: Identifiable {
+  enum Content: Hashable {
+    case message(String)
+    case friendRequest(Friend)
+    case taggedCheckIn(CheckIn)
+    case checkInReaction(CheckInReaction.JoinedCheckIn)
+  }
+
   let id: Int
   let createdAt: Date
   let seenAt: Date?
-  let content: NotificationContent
+  let content: Content
 }
 
 extension Notification {
@@ -107,15 +77,15 @@ extension Notification: Decodable {
     let checkInReaction = try values.decodeIfPresent(CheckInReaction.JoinedCheckIn.self, forKey: .checkInReaction)
 
     if let message {
-      content = NotificationContent.message(message)
+      content = Notification.Content.message(message)
     } else if let friendRequest {
-      content = NotificationContent.friendRequest(friendRequest)
+      content = Notification.Content.friendRequest(friendRequest)
     } else if let checkIn = taggedCheckIn?.checkIn {
-      content = NotificationContent.taggedCheckIn(checkIn)
+      content = Notification.Content.taggedCheckIn(checkIn)
     } else if let checkInReaction {
-      content = NotificationContent.checkInReaction(checkInReaction)
+      content = Notification.Content.checkInReaction(checkInReaction)
     } else {
-      content = NotificationContent.message("No content")
+      content = Notification.Content.message("No content")
     }
   }
 }
@@ -171,6 +141,36 @@ extension Notification {
 
     init(checkInId: Int) {
       p_check_in_id = checkInId
+    }
+  }
+}
+
+enum NotificationType: String, CaseIterable {
+  case message, friendRequest, taggedCheckIn, checkInReaction
+
+  func label() -> String {
+    switch self {
+    case .message:
+      return "Alerts"
+    case .friendRequest:
+      return "Friend Requests"
+    case .taggedCheckIn:
+      return "Tagged check-ins"
+    case .checkInReaction:
+      return "Reactions"
+    }
+  }
+
+  func systemImage() -> String {
+    switch self {
+    case .message:
+      return "bell"
+    case .friendRequest:
+      return "person.badge.plus"
+    case .taggedCheckIn:
+      return "tag"
+    case .checkInReaction:
+      return "hand.thumbsup"
     }
   }
 }

@@ -113,14 +113,13 @@ struct EditBrandSheetView: View {
       AlertToast(type: .complete(.green), title: "Brand updated!")
     }
     .confirmationDialog("Delete Sub-brand",
-                        isPresented: $viewModel.showDeleteSubBrandConfirmation) {
-      if let toDeleteSubBrand = viewModel.toDeleteSubBrand {
-        Button("Delete \(toDeleteSubBrand.name ?? "") and all related products", role: .destructive, action: {
-          viewModel.deleteSubBrand(onSuccess: {
-            onUpdate()
-          })
+                        isPresented: $viewModel.showDeleteSubBrandConfirmation,
+                        presenting: viewModel.toDeleteSubBrand) { presenting in
+      Button("Delete \(presenting.name ?? "") and all related products", role: .destructive, action: {
+        viewModel.deleteSubBrand(onSuccess: {
+          onUpdate()
         })
-      }
+      })
     }
   }
 }
@@ -240,14 +239,13 @@ struct EditSubBrandSheetView: View {
       AlertToast(type: .complete(.green), title: "Sub-brand updated!")
     }
     .confirmationDialog("Merge Sub-brands Confirmation",
-                        isPresented: $viewModel.showMergeSubBrandsConfirmation) {
-      if let mergeTo = viewModel.mergeTo {
-        Button("Merge \(subBrand.name ?? "") to \(mergeTo.name ?? "default sub-brand")", role: .destructive, action: {
-          viewModel.mergeToSubBrand(subBrand: subBrand, onSuccess: {
-            onUpdate()
-          })
+                        isPresented: $viewModel.showMergeSubBrandsConfirmation,
+                        presenting: viewModel.mergeTo) { presenting in
+      Button("Merge \(subBrand.name ?? "") to \(presenting.name ?? "default sub-brand")", role: .destructive, action: {
+        viewModel.mergeToSubBrand(subBrand: subBrand, onSuccess: {
+          onUpdate()
         })
-      }
+      })
     }
   }
 }

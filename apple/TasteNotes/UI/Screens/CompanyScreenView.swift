@@ -43,17 +43,18 @@ struct CompanyScreenView: View {
       }
     }
     .confirmationDialog("Delete Company Confirmation",
-                        isPresented: $showDeleteCompanyConfirmationDialog) {
-      Button("Delete Company", role: .destructive, action: {
+                        isPresented: $showDeleteCompanyConfirmationDialog, presenting: company) { presenting in
+      Button("Delete \(presenting.name) Company", role: .destructive, action: {
         viewModel.deleteCompany(company, onDelete: {
           router.reset()
         })
       })
     }
     .confirmationDialog("Delete Product Confirmation",
-                        isPresented: $showDeleteProductConfirmationDialog) {
+                        isPresented: $showDeleteProductConfirmationDialog,
+                        presenting: viewModel.productToDelete) { presenting in
       Button(
-        "Delete Product \(viewModel.productToDelete?.name ?? ""). This can't be undone.",
+        "Delete \(presenting.name) Product",
         role: .destructive,
         action: {
           viewModel.deleteProduct()
@@ -165,8 +166,8 @@ struct CompanyScreenView: View {
         }
         .headerProminence(.increased)
         .confirmationDialog("Delete Brand Confirmation",
-                            isPresented: $showDeleteBrandConfirmationDialog) {
-          Button("Delete \(brand.name) brand", role: .destructive, action: { viewModel.deleteBrand(brand) })
+                            isPresented: $showDeleteBrandConfirmationDialog, presenting: brand) { presenting in
+          Button("Delete \(presenting.name) brand", role: .destructive, action: { viewModel.deleteBrand(presenting) })
         }
       }
     }

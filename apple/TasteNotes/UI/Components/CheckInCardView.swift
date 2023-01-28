@@ -96,10 +96,10 @@ struct CheckInCardView: View {
         }
       }
     }
-    .confirmationDialog("delete_check_in",
-                        isPresented: $showDeleteCheckInConfirmationDialog) {
-      Button("Delete the check-in", role: .destructive, action: {
-        viewModel.delete(checkIn: checkIn, onDelete: onDelete)
+    .confirmationDialog("Delete Check-in Confirmation",
+                        isPresented: $showDeleteCheckInConfirmationDialog, presenting: checkIn) { presenting in
+      Button("Delete the check-in for \(presenting.product.getDisplayName(.fullName))", role: .destructive, action: {
+        viewModel.delete(checkIn: presenting, onDelete: onDelete)
       })
     }
   }

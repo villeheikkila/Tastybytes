@@ -23,16 +23,13 @@ struct MergeSheetView: View {
       }
     }
     .navigationTitle("Merge to...")
-    .confirmationDialog("Are you sure?",
-                        isPresented: $viewModel.isPresentingProductMergeConfirmation) {
-      Button("Merge. This can't be undone.", role: .destructive) {
+    .confirmationDialog("Product Merge Confirmation",
+                        isPresented: $viewModel.isPresentingProductMergeConfirmation,
+                        presenting: viewModel.mergeToProduct) { presenting in
+      Button("Merge \(presenting.name) to \(presenting.getDisplayName(.fullName))", role: .destructive) {
         viewModel.mergeProducts(productToMerge: productToMerge, onSuccess: {
           dismiss()
         })
-      }
-    } message: {
-      if let mergeToProduct = viewModel.mergeToProduct {
-        Text("Merge \(productToMerge.name) to \(mergeToProduct.getDisplayName(.fullName))")
       }
     }
     .searchable(text: $viewModel.productSearchTerm)

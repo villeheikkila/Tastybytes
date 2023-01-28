@@ -64,15 +64,13 @@ struct FriendsScreenView: View {
       .presentationDetents([.medium])
     }
     .errorAlert(error: $viewModel.error)
-    .confirmationDialog("delete_friend",
-                        isPresented: $showRemoveFriendConfirmation) {
+    .confirmationDialog("Delete Friend Confirmation",
+                        isPresented: $showRemoveFriendConfirmation, presenting: friendToBeRemoved) { presenting in
       Button(
-        "Remove \(friendToBeRemoved?.getFriend(userId: profileManager.getId()).preferredName ?? "??")",
+        "Remove \(presenting.getFriend(userId: profileManager.getId()).preferredName) from friends",
         role: .destructive,
         action: {
-          if let friend = friendToBeRemoved {
-            viewModel.removeFriendRequest(friend)
-          }
+          viewModel.removeFriendRequest(presenting)
         }
       )
     }

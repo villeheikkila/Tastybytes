@@ -52,9 +52,14 @@ struct ProductScreenView: View {
       }
     }
     .confirmationDialog("Delete Product Confirmation",
-                        isPresented: $viewModel.showDeleteProductConfirmationDialog) {
-      Button("Delete Product", role: .destructive, action: { viewModel.deleteProduct(product)
-      })
+                        isPresented: $viewModel.showDeleteProductConfirmationDialog,
+                        presenting: product) { presenting in
+      Button(
+        "Delete \(presenting.getDisplayName(.fullName)) Product",
+        role: .destructive,
+        action: { viewModel.deleteProduct(presenting)
+        }
+      )
     }
   }
 
