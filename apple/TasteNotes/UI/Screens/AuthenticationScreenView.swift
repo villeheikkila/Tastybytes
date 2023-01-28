@@ -102,12 +102,6 @@ struct AuthenticationScreenView: View {
         }
       }
 
-      if mode == .signIn {
-        Button("Sign in with magic link") {
-          withAnimation { mode = .magicLink }
-        }
-      }
-
       if mode == .signIn || mode == .signUp {
         Button(
           mode == .signIn
