@@ -33,7 +33,7 @@ struct NotificationTabView: View {
         .refreshable {
           notificationManager.refresh(reset: true)
         }
-        .navigationTitle(notificationManager.filter?.label() ?? "Notifications")
+        .navigationTitle(notificationManager.filter?.label ?? "Notifications")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
           toolbarContent
@@ -78,7 +78,7 @@ struct NotificationTabView: View {
         Button {
           notificationManager.filter = type
         } label: {
-          Label(type.label(), systemImage: type.systemImage())
+          Label(type.label, systemImage: type.systemImage)
         }
       }
     }

@@ -80,13 +80,9 @@ struct AuthenticationScreenView: View {
       Button(action: primaryActionTapped) {
         HStack(spacing: 8) {
           if isLoading {
-            if #available(iOS 14.0, *) {
-              ProgressView()
-            } else {
-              Text("Submitting...").bold()
-            }
+            ProgressView()
           }
-          Text(primaryButtonText).bold()
+          Text(mode.primaryLabel).bold()
         }
         .foregroundColor(.white)
         .frame(maxWidth: .infinity)
@@ -133,15 +129,6 @@ struct AuthenticationScreenView: View {
           withAnimation { mode = .signIn }
         }
       }
-    }
-  }
-
-  private var primaryButtonText: String {
-    switch mode {
-    case .signIn: return "Sign in"
-    case .signUp: return "Sign up"
-    case .magicLink: return "Send magic link"
-    case .forgotPassword: return "Send reset password instructions"
     }
   }
 
@@ -199,6 +186,15 @@ struct AuthenticationScreenView: View {
 extension AuthenticationScreenView {
   enum Mode {
     case signIn, signUp, magicLink, forgotPassword
+
+    var primaryLabel: String {
+      switch self {
+      case .signIn: return "Sign in"
+      case .signUp: return "Sign up"
+      case .magicLink: return "Send magic link"
+      case .forgotPassword: return "Send reset password instructions"
+      }
+    }
   }
 
   enum Field {

@@ -1,9 +1,8 @@
 import SwiftUI
 
-class SplashScreenManager: ObservableObject { @MainActor
+@MainActor class SplashScreenManager: ObservableObject {
   @Published private(set) var state: SplashScreenState = .showing
 
-  @MainActor
   func dismiss() {
     Task {
       state = .dismissing
@@ -15,8 +14,6 @@ class SplashScreenManager: ObservableObject { @MainActor
 
 extension SplashScreenManager {
   enum SplashScreenState {
-    case showing
-    case dismissing
-    case finished
+    case showing, dismissing, finished
   }
 }

@@ -67,12 +67,6 @@ struct ApplicationSettingsScreenView: View {
 }
 
 extension ApplicationSettingsScreenView {
-  enum Toast {
-    case profileUpdated
-    case exported
-    case exportError
-  }
-
   @MainActor class ViewModel: ObservableObject {
     @Published var isPublicProfile = true
     @Published var isSystemColor = false

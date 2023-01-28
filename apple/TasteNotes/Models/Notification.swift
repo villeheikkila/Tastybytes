@@ -148,7 +148,7 @@ extension Notification {
 enum NotificationType: String, CaseIterable {
   case message, friendRequest, taggedCheckIn, checkInReaction
 
-  func label() -> String {
+  var label: String {
     switch self {
     case .message:
       return "Alerts"
@@ -161,7 +161,7 @@ enum NotificationType: String, CaseIterable {
     }
   }
 
-  func systemImage() -> String {
+  var systemImage: String {
     switch self {
     case .message:
       return "bell"

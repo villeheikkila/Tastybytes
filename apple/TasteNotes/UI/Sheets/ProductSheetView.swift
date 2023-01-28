@@ -29,7 +29,7 @@ struct ProductSheetView: View {
       brandSection
       productSection
 
-      Button(doneLabel, action: {
+      Button(mode.doneLabel, action: {
         switch mode {
         case .editSuggestion:
           if let initialProduct {
@@ -53,7 +53,7 @@ struct ProductSheetView: View {
       })
       .disabled(!viewModel.isValid())
     }
-    .navigationTitle(navigationTitle)
+    .navigationTitle(mode.navigationTitle)
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {
@@ -110,28 +110,6 @@ struct ProductSheetView: View {
         viewModel.loadCategories()
       }
       viewModel.loadInitialBarcode(initialBarcode)
-    }
-  }
-
-  private var doneLabel: String {
-    switch mode {
-    case .edit:
-      return "Edit"
-    case .editSuggestion:
-      return "Send Edit suggestion"
-    case .new:
-      return "Create"
-    }
-  }
-
-  private var navigationTitle: String {
-    switch mode {
-    case .edit:
-      return "Edit Product"
-    case .editSuggestion:
-      return "Edit Suggestion"
-    case .new:
-      return "Add Product"
     }
   }
 
@@ -243,23 +221,38 @@ struct ProductSheetView: View {
 
 extension ProductSheetView {
   enum Mode {
-    case new
-    case edit
-    case editSuggestion
+    case new, edit, editSuggestion
+
+    var doneLabel: String {
+      switch self {
+      case .edit:
+        return "Edit"
+      case .editSuggestion:
+        return "Send Edit suggestion"
+      case .new:
+        return "Create"
+      }
+    }
+
+    var navigationTitle: String {
+      switch self {
+      case .edit:
+        return "Edit Product"
+      case .editSuggestion:
+        return "Edit Suggestion"
+      case .new:
+        return "Add Product"
+      }
+    }
   }
 
   enum Focusable {
-    case name
-    case description
+    case name, description
   }
 
   enum Sheet: Identifiable {
     var id: Self { self }
-    case subcategories
-    case brandOwner
-    case brand
-    case subBrand
-    case barcode
+    case subcategories, brandOwner, brand, subBrand, barcode
   }
 
   enum Toast: Identifiable {
@@ -267,6 +260,17 @@ extension ProductSheetView {
     case createdCompany
     case createdBrand
     case createdSubBrand
+
+    var text: String {
+      switch self {
+      case .createdCompany:
+        return "New Company Created!"
+      case .createdBrand:
+        return "New Brand Created!"
+      case .createdSubBrand:
+        return "New Sub-brand Created!"
+      }
+    }
   }
 
   @MainActor class ViewModel: ObservableObject {
@@ -360,14 +364,7 @@ extension ProductSheetView {
     }
 
     func getToastText(_ toast: Toast) -> String {
-      switch toast {
-      case .createdCompany:
-        return "New Company Created!"
-      case .createdBrand:
-        return "New Brand Created!"
-      case .createdSubBrand:
-        return "New Sub-brand Created!"
-      }
+      toast.text
     }
 
     func loadInitialProduct(_ initialProduct: Product.Joined?) {

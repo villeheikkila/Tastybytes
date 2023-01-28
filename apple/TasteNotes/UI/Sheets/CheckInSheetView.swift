@@ -268,7 +268,7 @@ extension CheckInSheetView {
     @Published var rating: Double = 0
     @Published var manufacturer: Company?
     @Published var servingStyleName: ServingStyleName = .none {
-      // TODO: Investigate if this cna be avoided by passing ServingStyle directly to the picker
+      // TODO: Investigate if this can be avoided by passing ServingStyle directly to the picker
       didSet {
         servingStyle = servingStyles.first(where: { $0.name == servingStyleName })
       }
