@@ -6,7 +6,6 @@ struct ProfileSettingsScreenView: View {
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var toastManager: ToastManager
-  @Environment(\.colorScheme) var initialColorScheme
 
   var body: some View {
     Form {
@@ -28,14 +27,18 @@ struct ProfileSettingsScreenView: View {
       }
     }
     .confirmationDialog(
-      "Are you sure you want to permanently delete your account? All data will be lost.",
+      "Delete Account Confirmation",
       isPresented: $viewModel.showDeleteConfirmation
     ) {
-      Button("Delete Account", role: .destructive, action: {
-        viewModel.deleteCurrentAccount(onError: {
-          message in toastManager.toggle(.error(message))
-        })
-      })
+      Button(
+        "Are you sure you want to permanently delete your account? All data will be lost.",
+        role: .destructive,
+        action: {
+          viewModel.deleteCurrentAccount(onError: {
+            message in toastManager.toggle(.error(message))
+          })
+        }
+      )
     }
     .task {
       viewModel.getInitialValues(profile: profileManager.get())
@@ -146,7 +149,6 @@ extension ProfileSettingsScreenView {
       formatter.dateFormat = "yyyy_MM_dd_HH_mm"
       let date = Date()
       let timestamp = formatter.string(from: date)
-      let fileName = "tastenotes_export_\(timestamp).csv"
       return "tastenotes_export-\(timestamp).csv"
     }
 
