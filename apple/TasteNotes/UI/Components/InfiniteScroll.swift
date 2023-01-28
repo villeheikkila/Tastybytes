@@ -51,8 +51,7 @@ struct InfiniteScrollView<Data, Content, Header>: View
                   }
                 }
             }
-          }.padding([.trailing, .leading], 5)
-
+          }
           if isLoading {
             ProgressView()
               .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
