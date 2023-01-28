@@ -71,14 +71,15 @@ struct SearchTabView: View {
             }
             .presentationDetents([.medium])
           }
-          .searchable(text: $viewModel.searchTerm, tokens: $viewModel.tokens) { token in
+          .searchable(text: $viewModel.searchTerm, tokens: $viewModel.tokens,
+                      prompt: viewModel.searchScope.prompt) { token in
             Text(token.label)
           }
           .disableAutocorrection(true)
           .searchScopes($viewModel.searchScope) {
-            Text("Products").tag(SearchScope.products)
-            Text("Companies").tag(SearchScope.companies)
-            Text("Users").tag(SearchScope.users)
+            ForEach(SearchScope.allCases) { scope in
+              Text(scope.label).tag(scope)
+            }
           }
           .onSubmit(of: .search) {
             viewModel.search()
@@ -342,6 +343,8 @@ extension SearchTabView {
     }
 
     func search() {
+      if searchTerm.count < 3 { return }
+
       switch searchScope {
       case .products:
         searchProducts()
@@ -353,9 +356,30 @@ extension SearchTabView {
     }
   }
 
-  enum SearchScope: String, CaseIterable {
-    case products
-    case companies
-    case users
+  enum SearchScope: String, CaseIterable, Identifiable {
+    var id: Self { self }
+    case products, companies, users
+
+    var label: String {
+      switch self {
+      case .products:
+        return "Products"
+      case .companies:
+        return "Companies"
+      case .users:
+        return "Users"
+      }
+    }
+
+    var prompt: String {
+      switch self {
+      case .products:
+        return "Search products, brands..."
+      case .users:
+        return "Search users"
+      case .companies:
+        return "Search companies"
+      }
+    }
   }
 }
