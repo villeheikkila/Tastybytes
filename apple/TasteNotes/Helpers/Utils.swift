@@ -117,3 +117,29 @@ func getCurrentAppIcon() -> AppIcon {
     return AppIcon.ramune
   }
 }
+
+struct OptionalNavigationLink<RootView: View>: View {
+  let value: Route
+  let enabled: Bool
+  let view: () -> RootView
+
+  init(
+    value: Route,
+    enabled: Bool,
+    @ViewBuilder view: @escaping () -> RootView
+  ) {
+    self.view = view
+    self.value = value
+    self.enabled = enabled
+  }
+
+  var body: some View {
+    if enabled {
+      NavigationLink(value: value) {
+        view()
+      }
+    } else {
+      view()
+    }
+  }
+}

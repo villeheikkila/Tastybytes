@@ -130,16 +130,12 @@ struct CheckInCardView: View {
   }
 
   private func avoidStackingCheckInPage() -> Bool {
-    var isCurrentProfile: Bool
-
     switch loadedFrom {
     case let .profile(profile):
-      isCurrentProfile = profile.id == checkIn.profile.id
+      return profile.id == checkIn.profile.id
     default:
-      isCurrentProfile = false
+      return false
     }
-
-    return isCurrentProfile
   }
 
   private var backgroundImage: some View {
@@ -161,7 +157,7 @@ struct CheckInCardView: View {
   }
 
   private var productSection: some View {
-    NavigationLink(value: Route.product(checkIn.product)) {
+    OptionalNavigationLink(value: Route.product(checkIn.product), enabled: loadedFrom != .product) {
       VStack(alignment: .leading) {
         HStack {
           CategoryNameView(category: checkIn.product.category)
@@ -187,7 +183,9 @@ struct CheckInCardView: View {
         }
 
         HStack {
-          NavigationLink(value: Route.company(checkIn.product.subBrand.brand.brandOwner)) {
+          NavigationLink(
+            value: Route.company(checkIn.product.subBrand.brand.brandOwner)
+          ) {
             Text(checkIn.product.getDisplayName(.brandOwner))
               .font(.system(size: 16, weight: .bold, design: .default))
               .foregroundColor(.secondary)
@@ -212,7 +210,10 @@ struct CheckInCardView: View {
   }
 
   private var checkInSection: some View {
-    NavigationLink(value: Route.checkIn(checkIn)) {
+    OptionalNavigationLink(
+      value: Route.checkIn(checkIn),
+      enabled: loadedFrom == .checkIn
+    ) {
       VStack(spacing: 8) {
         HStack {
           VStack(alignment: .leading, spacing: 8) {
@@ -244,7 +245,7 @@ struct CheckInCardView: View {
 
   private var footer: some View {
     HStack {
-      NavigationLink(value: Route.checkIn(checkIn)) {
+      OptionalNavigationLink(value: Route.checkIn(checkIn), enabled: loadedFrom != .checkIn) {
         if checkIn.isMigrated {
           Text("Migrated")
         } else {
