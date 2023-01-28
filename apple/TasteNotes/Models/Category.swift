@@ -76,7 +76,7 @@ extension Category {
     case tea
     case coffee
 
-    var getName: String {
+    var label: String {
       rawValue.replacingOccurrences(of: "_", with: " ").capitalized
     }
   }

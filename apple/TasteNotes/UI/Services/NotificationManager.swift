@@ -4,26 +4,30 @@ import SwiftUI
 final class NotificationManager: NSObject, ObservableObject {
   @Published private(set) var notifications = [Notification]() {
     didSet {
-      filter = nil
-      filteredNotifications = notifications
+      withAnimation {
+        filter = nil
+        filteredNotifications = notifications
+      }
     }
   }
 
   @Published var filter: NotificationType? {
     didSet {
-      filteredNotifications = notifications.filter { notification in
-        if filter == nil {
-          return true
-        } else {
-          switch notification.content {
-          case .checkInReaction:
-            return filter == .checkInReaction
-          case .friendRequest:
-            return filter == .friendRequest
-          case .message:
-            return filter == .message
-          case .taggedCheckIn:
-            return filter == .taggedCheckIn
+      withAnimation {
+        filteredNotifications = notifications.filter { notification in
+          if filter == nil {
+            return true
+          } else {
+            switch notification.content {
+            case .checkInReaction:
+              return filter == .checkInReaction
+            case .friendRequest:
+              return filter == .friendRequest
+            case .message:
+              return filter == .message
+            case .taggedCheckIn:
+              return filter == .taggedCheckIn
+            }
           }
         }
       }
@@ -60,7 +64,9 @@ final class NotificationManager: NSObject, ObservableObject {
       switch await repository.notification.deleteAll() {
       case .success:
         DispatchQueue.main.async {
-          self.notifications = [Notification]()
+          withAnimation {
+            self.notifications = [Notification]()
+          }
         }
       case let .failure(error):
         print(error.localizedDescription)
@@ -188,7 +194,9 @@ final class NotificationManager: NSObject, ObservableObject {
       switch await repository.notification.delete(id: notification.id) {
       case .success:
         await MainActor.run {
-          self.notifications.removeAll(where: { $0.id == notification.id })
+          withAnimation {
+            self.notifications.removeAll(where: { $0.id == notification.id })
+          }
         }
       case let .failure(error):
         print(error.localizedDescription)

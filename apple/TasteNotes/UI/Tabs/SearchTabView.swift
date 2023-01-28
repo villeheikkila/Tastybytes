@@ -72,33 +72,9 @@ struct SearchTabView: View {
             .presentationDetents([.medium])
           }
           .searchable(text: $viewModel.searchTerm, tokens: $viewModel.tokens) { token in
-            switch token {
-            case .chips: Text("Chips")
-            case .candy: Text("Candy")
-            case .chewingGum: Text("Chewing Gum")
-            case .fruit: Text("Fruit")
-            case .popcorn: Text("Popcorn")
-            case .ingredient: Text("Ingredient")
-            case .beverage: Text("Beverage")
-            case .convenienceFood: Text("Convenience Food")
-            case .cheese: Text("Cheese")
-            case .snacks: Text("Snacks")
-            case .juice: Text("Juice")
-            case .chocolate: Text("Chocolate")
-            case .cocoa: Text("Cocoa")
-            case .iceCream: Text("Ice Cream")
-            case .pizza: Text("Pizza")
-            case .protein: Text("Protein")
-            case .milk: Text("Milk")
-            case .alcoholicBeverage: Text("Alcoholic Beverage")
-            case .cereal: Text("Cereal")
-            case .pastry: Text("Pastry")
-            case .spice: Text("Spice")
-            case .noodles: Text("Noodles")
-            case .tea: Text("Tea")
-            case .coffee: Text("Coffee")
-            }
+            Text(token.label)
           }
+          .disableAutocorrection(true)
           .searchScopes($viewModel.searchScope) {
             Text("Products").tag(SearchScope.products)
             Text("Companies").tag(SearchScope.companies)

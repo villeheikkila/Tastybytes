@@ -140,7 +140,7 @@ struct ProductSheetView: View {
       if viewModel.categories.count > 0 {
         Picker("Category", selection: $viewModel.categoryName) {
           ForEach(viewModel.categories.map(\.name)) { category in
-            Text(category.getName).tag(category)
+            Text(category.label).tag(category)
           }
         }
         .onChange(of: viewModel.category) { _ in
