@@ -116,9 +116,9 @@ extension ApplicationSettingsScreenView {
       )
 
       Task {
-        switch await repository.profile.updateSettings(id: repository.auth.getCurrentUserId(),
-                                                       update: update)
-        {
+        switch await repository.profile.updateSettings(
+          update: update
+        ) {
         case .success:
           onChange()
         case let .failure(error):
@@ -130,13 +130,14 @@ extension ApplicationSettingsScreenView {
     func updateNotificationSettings() {
       let update = ProfileSettings.UpdateRequest(
         sendReactionNotifications: reactionNotifications,
-        sendTaggedCheckInNotifications: friendRequestNotifications,
-        sendFriendRequestNotifications: checkInTagNotifications
+        sendTaggedCheckInNotifications: checkInTagNotifications,
+        sendFriendRequestNotifications: friendRequestNotifications
       )
 
       Task {
-        _ = await repository.profile.updateSettings(id: repository.auth.getCurrentUserId(),
-                                                    update: update)
+        _ = await repository.profile.updateSettings(
+          update: update
+        )
       }
     }
 
@@ -144,8 +145,9 @@ extension ApplicationSettingsScreenView {
       let update = ProfileSettings.UpdateRequest(publicProfile: isPublicProfile)
 
       Task {
-        _ = await repository.profile.updateSettings(id: repository.auth.getCurrentUserId(),
-                                                    update: update)
+        _ = await repository.profile.updateSettings(
+          update: update
+        )
       }
     }
   }

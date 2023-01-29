@@ -222,11 +222,10 @@ extension ProfileSettings {
   }
 
   struct UpdateRequest: Encodable {
-    var username: String?
+    var color_scheme: String?
     var send_reaction_notifications: Bool?
     var send_tagged_check_in_notifications: Bool?
     var send_friend_request_notifications: Bool?
-    var color_scheme: String?
     var public_profile: Bool?
 
     init(sendReactionNotifications: Bool, sendTaggedCheckInNotifications: Bool, sendFriendRequestNotifications: Bool) {

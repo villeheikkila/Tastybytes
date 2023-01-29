@@ -93,7 +93,7 @@ struct ProfileView: View {
         }
       }
       .onChange(of: viewModel.selectedItem) { newValue in
-        viewModel.uploadAvatar(newAvatar: newValue) {
+        viewModel.uploadAvatar(userId: profileManager.getId(), newAvatar: newValue) {
           fileName in profile.avatarUrl = fileName
         }
       }
@@ -272,13 +272,13 @@ extension ProfileView {
       }
     }
 
-    func uploadAvatar(newAvatar: PhotosPickerItem?, onSuccess: @escaping (_ fileName: String) -> Void) {
+    func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?, onSuccess: @escaping (_ fileName: String) -> Void) {
       Task {
         if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
            let image = UIImage(data: imageData),
            let data = image.jpegData(compressionQuality: 0.5)
         {
-          switch await repository.profile.uploadAvatar(userId: repository.auth.getCurrentUserId(), data: data) {
+          switch await repository.profile.uploadAvatar(userId: userId, data: data) {
           case let .success(fileName):
             onSuccess(fileName)
           case let .failure(error):

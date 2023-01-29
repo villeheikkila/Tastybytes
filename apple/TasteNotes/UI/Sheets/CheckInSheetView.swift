@@ -376,7 +376,7 @@ extension CheckInSheetView {
     func uploadImage(checkIn: CheckIn) {
       Task {
         if let data = image?.jpegData(compressionQuality: 0.3) {
-          switch await repository.checkIn.uploadImage(id: checkIn.id, data: data) {
+          switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
           case let .failure(error):
             print(error)
           default:

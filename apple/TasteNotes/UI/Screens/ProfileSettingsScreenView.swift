@@ -217,9 +217,9 @@ extension ProfileSettingsScreenView {
       )
 
       Task {
-        switch await repository.profile.update(id: repository.auth.getCurrentUserId(),
-                                               update: update)
-        {
+        switch await repository.profile.update(
+          update: update
+        ) {
         case let .success(profile):
           await MainActor.run {
             self.updateFormValues(profile: profile)
@@ -241,8 +241,9 @@ extension ProfileSettingsScreenView {
       )
 
       Task {
-        _ = await repository.profile.update(id: repository.auth.getCurrentUserId(),
-                                            update: update)
+        _ = await repository.profile.update(
+          update: update
+        )
       }
     }
 

@@ -298,9 +298,7 @@ extension SearchTabView {
 
     func searchProfiles() {
       Task {
-        let currentUserId = await repository.auth.getCurrentUserId()
-
-        switch await repository.profile.search(searchTerm: searchTerm, currentUserId: currentUserId) {
+        switch await repository.profile.search(searchTerm: searchTerm, currentUserId: nil) {
         case let .success(searchResults):
           await MainActor.run {
             self.profiles = searchResults

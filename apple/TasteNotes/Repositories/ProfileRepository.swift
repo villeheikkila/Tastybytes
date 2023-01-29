@@ -7,13 +7,13 @@ import SupabaseStorage
 protocol ProfileRepository {
   func getById(id: UUID) async -> Result<Profile, Error>
   func getCurrentUser() async -> Result<Profile.Extended, Error>
-  func update(id: UUID, update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error>
+  func update(update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error>
   func currentUserExport() async -> Result<String, Error>
-  func search(searchTerm: String, currentUserId: UUID) async -> Result<[Profile], Error>
+  func search(searchTerm: String, currentUserId: UUID?) async -> Result<[Profile], Error>
   func uploadAvatar(userId: UUID, data: Data) async -> Result<String, Error>
   func uploadPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<Void, Error>
   func deleteCurrentAccount() async -> Result<Void, Error>
-  func updateSettings(id: UUID, update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error>
+  func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error>
 }
 
 struct SupabaseProfileRepository: ProfileRepository {
@@ -53,7 +53,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     }
   }
 
-  func update(id: UUID, update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error> {
+  func update(update: Profile.UpdateRequest) async -> Result<Profile.Extended, Error> {
     do {
       let response: Profile.Extended = try await client
         .database
@@ -62,7 +62,12 @@ struct SupabaseProfileRepository: ProfileRepository {
           values: update,
           returning: .representation
         )
-        .eq(column: "id", value: id.uuidString.lowercased())
+        /*
+         Supabase responds with status code 46 if where clause is not specified for an update.
+         However we do not need top pass the real id here because it is assigned by trigger.
+         RLS makes sure that user can only ever update their own profiles.
+         */
+        .notEquals(column: "id", value: UUID().uuidString)
         .select(columns: Profile.getQuery(.extended(false)))
         .single()
         .execute()
@@ -74,7 +79,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     }
   }
 
-  func updateSettings(id: UUID, update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error> {
+  func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error> {
     do {
       let response: ProfileSettings = try await client
         .database
@@ -83,7 +88,12 @@ struct SupabaseProfileRepository: ProfileRepository {
           values: update,
           returning: .representation
         )
-        .eq(column: "id", value: id.uuidString.lowercased())
+        /*
+         Supabase responds with status code 46 if where clause is not specified for an update.
+         However we do not need top pass the real id here because it is assigned by trigger.
+         RLS makes sure that user can only ever update their own profiles.
+         */
+        .notEquals(column: "id", value: UUID().uuidString)
         .select(columns: ProfileSettings.getQuery(.saved(false)))
         .single()
         .execute()
@@ -123,17 +133,21 @@ struct SupabaseProfileRepository: ProfileRepository {
     }
   }
 
-  func search(searchTerm: String, currentUserId: UUID) async -> Result<[Profile], Error> {
+  func search(searchTerm: String, currentUserId: UUID? = nil) async -> Result<[Profile], Error> {
     do {
-      let response: [Profile] = try await client
+      let query = client
         .database
         .from(Profile.getQuery(.tableName))
         .select(columns: Profile.getQuery(.minimal(false)))
         .ilike(column: "search", value: "%\(searchTerm)%")
-        .not(column: "id", operator: .eq, value: currentUserId.uuidString)
-        .execute()
-        .value
 
+      if let currentUserId {
+        let response: [Profile] = try await query.not(column: "id", operator: .eq, value: currentUserId.uuidString)
+          .execute().value
+        return .success(response)
+      }
+
+      let response: [Profile] = try await query.execute().value
       return .success(response)
     } catch {
       return .failure(error)

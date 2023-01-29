@@ -4,8 +4,6 @@ import Supabase
 import SupabaseStorage
 
 protocol AuthRepository {
-  func getCurrentUserId() async -> UUID
-  func getCurrentUser() async -> User?
   func logOut() async -> Result<Void, Error>
   func sendEmailVerification(email: String) async -> Result<Void, Error>
   func sendMagicLink(email: String) async -> Result<Void, Error>
@@ -16,22 +14,6 @@ protocol AuthRepository {
 
 struct SupabaseAuthRepository: AuthRepository {
   let client: SupabaseClient
-
-  func getCurrentUserId() async -> UUID {
-    let user = try! await client
-      .auth
-      .session
-      .user
-      .id
-    return user
-  }
-
-  func getCurrentUser() async -> User? {
-    try! await client
-      .auth
-      .session
-      .user
-  }
 
   func logOut() async -> Result<Void, Error> {
     do {
