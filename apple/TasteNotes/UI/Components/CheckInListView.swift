@@ -144,8 +144,8 @@ extension CheckInListView {
       }
     }
 
-    @Published var editCheckIn: CheckIn?
     @Published var showDeleteCheckInConfirmationDialog = false
+    @Published var editCheckIn: CheckIn?
     @Published var checkIns = [CheckIn]()
     @Published var isLoading = false
     private let pageSize = 10

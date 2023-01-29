@@ -5,24 +5,70 @@ struct CheckInScreenView: View {
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var notificationManager: NotificationManager
+  @EnvironmentObject private var profileManager: ProfileManager
 
   let checkIn: CheckIn
 
   var body: some View {
     VStack {
       ScrollView {
-        DeprecatedCheckInCardView(checkIn: viewModel.checkIn ?? checkIn,
-                                  loadedFrom: .checkIn,
-                                  onDelete: { _ in router.removeLast() },
-                                  onUpdate: { updatedCheckIn in
-                                    viewModel.setCheckIn(updatedCheckIn)
-                                  })
-                                  .task {
-                                    viewModel.setCheckIn(checkIn)
-                                  }
-                                  .task {
-                                    viewModel.loadCheckInComments(checkIn)
-                                  }
+        CheckInCardView(checkIn: viewModel.checkIn ?? checkIn, loadedFrom: .checkIn)
+          .sheet(item: $viewModel.editCheckIn) { editCheckIn in
+            NavigationStack {
+              CheckInSheetView(checkIn: editCheckIn, onUpdate: {
+                updatedCheckIn in
+                viewModel.setCheckIn(updatedCheckIn)
+              })
+            }
+          }
+          .contextMenu {
+            ShareLink("Share", item: createLinkToScreen(.checkIn(id: checkIn.id)))
+
+            if checkIn.product.isVerified {
+              Label("Verified", systemImage: "checkmark.circle")
+            } else if profileManager.hasPermission(.canVerify) {
+              Button(action: {
+                viewModel.verifyProduct(product: checkIn.product)
+              }) {
+                Label("Verify product", systemImage: "checkmark")
+              }
+
+            } else {
+              Label("Not verified", systemImage: "x.circle")
+            }
+
+            Divider()
+            if checkIn.profile.id == profileManager.getId() {
+              Button(action: {
+                viewModel.editCheckIn = checkIn
+              }) {
+                Label("Edit", systemImage: "pencil")
+              }
+
+              Button(action: {
+                viewModel.showDeleteConfirmationFor = checkIn
+              }) {
+                Label("Delete", systemImage: "trash.fill")
+              }
+            }
+          }
+          .confirmationDialog("Delete Check-in Confirmation",
+                              isPresented: $viewModel.showDeleteCheckInConfirmationDialog,
+                              presenting: viewModel.showDeleteConfirmationFor) { presenting in
+            Button(
+              "Delete the check-in for \(presenting.product.getDisplayName(.fullName))",
+              role: .destructive,
+              action: {
+                viewModel.deleteCheckIn(checkIn: presenting, onDelete: { router.removeLast() })
+              }
+            )
+          }
+          .task {
+            viewModel.setCheckIn(checkIn)
+          }
+          .task {
+            viewModel.loadCheckInComments(checkIn)
+          }
 
         VStack(spacing: 10) {
           ForEach(viewModel.checkInComments.reversed(), id: \.id) {
@@ -58,6 +104,14 @@ extension CheckInScreenView {
     @Published var checkIn: CheckIn?
     @Published var checkInComments = [CheckInComment]()
     @Published var comment = ""
+    @Published var showDeleteConfirmationFor: CheckIn? {
+      didSet {
+        showDeleteCheckInConfirmationDialog = true
+      }
+    }
+
+    @Published var showDeleteCheckInConfirmationDialog = false
+    @Published var editCheckIn: CheckIn?
 
     func setCheckIn(_ checkIn: CheckIn) {
       self.checkIn = checkIn
@@ -65,6 +119,17 @@ extension CheckInScreenView {
 
     func isInvalidComment() -> Bool {
       comment.isEmpty
+    }
+
+    func deleteCheckIn(checkIn: CheckIn, onDelete: @escaping () -> Void) {
+      Task {
+        switch await repository.checkIn.delete(id: checkIn.id) {
+        case .success:
+          onDelete()
+        case let .failure(error):
+          print(error)
+        }
+      }
     }
 
     func loadCheckInComments(_ checkIn: CheckIn) {
@@ -108,6 +173,17 @@ extension CheckInScreenView {
             }
             self.comment = ""
           }
+        case let .failure(error):
+          print(error)
+        }
+      }
+    }
+
+    func verifyProduct(product: Product.Joined) {
+      Task {
+        switch await repository.product.verifyProduct(productId: product.id) {
+        case .success:
+          print("Verified")
         case let .failure(error):
           print(error)
         }
