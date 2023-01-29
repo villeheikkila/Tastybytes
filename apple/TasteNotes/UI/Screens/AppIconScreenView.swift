@@ -29,7 +29,8 @@ struct AppIconScreenView: View {
       if let icon, icon != getCurrentAppIcon() {
         UIApplication.shared.setAlternateIconName(icon == AppIcon.ramune ? nil : icon.rawValue)
       }
-    }.task {
+    }
+    .task {
       self.selection = getCurrentAppIcon()
     }
   }

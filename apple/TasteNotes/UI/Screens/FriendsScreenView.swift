@@ -44,8 +44,6 @@ struct FriendsScreenView: View {
     }
     .task {
       viewModel.loadFriends(currentUser: profileManager.getProfile())
-    }
-    .task {
       if viewModel.profile == profileManager.getProfile() {
         noficationManager.markAllFriendRequestsAsRead()
       }
