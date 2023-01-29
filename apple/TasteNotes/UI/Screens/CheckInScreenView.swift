@@ -11,18 +11,18 @@ struct CheckInScreenView: View {
   var body: some View {
     VStack {
       ScrollView {
-        CheckInCardView(checkIn: viewModel.checkIn ?? checkIn,
-                        loadedFrom: .checkIn,
-                        onDelete: { _ in router.removeLast() },
-                        onUpdate: { updatedCheckIn in
-                          viewModel.setCheckIn(updatedCheckIn)
-                        })
-                        .task {
-                          viewModel.setCheckIn(checkIn)
-                        }
-                        .task {
-                          viewModel.loadCheckInComments(checkIn)
-                        }
+        DeprecatedCheckInCardView(checkIn: viewModel.checkIn ?? checkIn,
+                                  loadedFrom: .checkIn,
+                                  onDelete: { _ in router.removeLast() },
+                                  onUpdate: { updatedCheckIn in
+                                    viewModel.setCheckIn(updatedCheckIn)
+                                  })
+                                  .task {
+                                    viewModel.setCheckIn(checkIn)
+                                  }
+                                  .task {
+                                    viewModel.loadCheckInComments(checkIn)
+                                  }
 
         VStack(spacing: 10) {
           ForEach(viewModel.checkInComments.reversed(), id: \.id) {

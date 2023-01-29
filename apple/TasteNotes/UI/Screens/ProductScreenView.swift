@@ -4,30 +4,19 @@ struct ProductScreenView: View {
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject var profileManager: ProfileManager
   @State private var scrollToTop: Int = 0
+  @State private var resetView: Int = 0
 
   let product: Product.Joined
 
   var body: some View {
-    InfiniteScrollView(
-      data: $viewModel.checkIns,
-      isLoading: $viewModel.isLoading, scrollToTop: $scrollToTop,
-      loadMore: { viewModel.fetchMoreCheckIns(productId: product.id) },
-      refresh: { viewModel.refresh(productId: product.id) },
-      content: {
-        CheckInCardView(checkIn: $0,
-                        loadedFrom: .product,
-                        onDelete: { checkIn in viewModel.deleteCheckIn(checkIn) },
-                        onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn) })
-      },
-      header: {
-        productInfo
-        if let summary = viewModel.summary, summary.averageRating != nil {
-          Section {
-            SummaryView(summary: summary)
-          }
+    CheckInListView(fetcher: .product(product), scrollToTop: $scrollToTop, resetView: $resetView) {
+      productInfo
+      if let summary = viewModel.summary, summary.averageRating != nil {
+        Section {
+          SummaryView(summary: summary)
         }
       }
-    )
+    }
     .task {
       viewModel.loadProductSummary(product)
     }
@@ -42,7 +31,7 @@ struct ProductScreenView: View {
         switch sheet {
         case .checkIn:
           CheckInSheetView(product: product, onCreation: {
-            viewModel.appendNewCheckIn(newCheckIn: $0)
+            _ in resetView += 1 // TODO: get rid of this hack 29.1.2023
           })
         case .editSuggestion:
           ProductSheetView(mode: .editSuggestion, initialProduct: product)
@@ -134,20 +123,9 @@ extension ProductScreenView {
   }
 
   @MainActor class ViewModel: ObservableObject {
-    @Published var checkIns = [CheckIn]()
-    @Published var isLoading = false
     @Published var activeSheet: Sheet?
     @Published var summary: Summary?
     @Published var showDeleteProductConfirmationDialog = false
-    @Published var showEditSuggestionSheet = false
-    private let pageSize = 10
-    private var page = 0
-
-    func refresh(productId: Int) {
-      page = 0
-      checkIns = []
-      fetchMoreCheckIns(productId: productId)
-    }
 
     func setActiveSheet(_ sheet: Sheet) {
       activeSheet = sheet
@@ -170,17 +148,6 @@ extension ProductScreenView {
       }
     }
 
-    func deleteCheckIn(_ checkIn: CheckIn) {
-      Task {
-        switch await repository.checkIn.delete(id: checkIn.id) {
-        case .success:
-          self.checkIns.remove(object: checkIn)
-        case let .failure(error):
-          print(error)
-        }
-      }
-    }
-
     func deleteProduct(_ product: Product.Joined) {
       Task {
         switch await repository.product.delete(id: product.id) {
@@ -190,39 +157,6 @@ extension ProductScreenView {
           print(error)
         }
       }
-    }
-
-    func onCheckInUpdate(_ checkIn: CheckIn) {
-      if let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) {
-        DispatchQueue.main.async {
-          self.checkIns[index] = checkIn
-        }
-      }
-    }
-
-    func fetchMoreCheckIns(productId: Int) {
-      let (from, to) = getPagination(page: page, size: pageSize)
-
-      Task {
-        await MainActor.run {
-          self.isLoading = true
-        }
-
-        switch await repository.checkIn.getByProductId(id: productId, from: from, to: to) {
-        case let .success(checkIns):
-          await MainActor.run {
-            self.checkIns.append(contentsOf: checkIns)
-            self.page += 1
-            self.isLoading = false
-          }
-        case let .failure(error):
-          print(error)
-        }
-      }
-    }
-
-    func appendNewCheckIn(newCheckIn: CheckIn) {
-      checkIns.insert(newCheckIn, at: 0)
     }
   }
 }

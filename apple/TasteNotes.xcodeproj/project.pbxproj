@@ -39,6 +39,7 @@
 		5C25AEB82904038000793607 /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB72904038000793607 /* Permission.swift */; };
 		5C25AEBA29053B7E00793607 /* CompanyScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB929053B7E00793607 /* CompanyScreenView.swift */; };
 		5C43237D2986A6910085522E /* Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237C2986A6910085522E /* Summary.swift */; };
+		5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237E2986FAA40085522E /* CheckInListView.swift */; };
 		5C46E8642911D9FD0008F142 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C46E8632911D9FD0008F142 /* Config.swift */; };
 		5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F22292DFF66006F9A97 /* AppLogoView.swift */; };
 		5C663F25292E0100006F9A97 /* AppNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F24292E0100006F9A97 /* AppNameView.swift */; };
@@ -82,7 +83,6 @@
 		5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */; };
 		5CD10A3D28F75B7A0001CFC2 /* ProductScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3C28F75B7A0001CFC2 /* ProductScreenView.swift */; };
 		5CD10A3F28F760520001CFC2 /* CheckInScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3E28F760520001CFC2 /* CheckInScreenView.swift */; };
-		5CD10A4328F82E000001CFC2 /* InfiniteScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */; };
 		5CD10A4528F952030001CFC2 /* CheckInSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4428F952030001CFC2 /* CheckInSheetView.swift */; };
 		5CD10A4728F9522D0001CFC2 /* RatingPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4628F9522D0001CFC2 /* RatingPickerView.swift */; };
 		5CD10A4928F956AC0001CFC2 /* ProductCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */; };
@@ -152,6 +152,7 @@
 		5C25AEB72904038000793607 /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
 		5C25AEB929053B7E00793607 /* CompanyScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyScreenView.swift; sourceTree = "<group>"; };
 		5C43237C2986A6910085522E /* Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Summary.swift; sourceTree = "<group>"; };
+		5C43237E2986FAA40085522E /* CheckInListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListView.swift; sourceTree = "<group>"; };
 		5C46E8632911D9FD0008F142 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		5C46E8662911E5860008F142 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5C663F22292DFF66006F9A97 /* AppLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogoView.swift; sourceTree = "<group>"; };
@@ -198,7 +199,6 @@
 		5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardView.swift; sourceTree = "<group>"; };
 		5CD10A3C28F75B7A0001CFC2 /* ProductScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductScreenView.swift; sourceTree = "<group>"; };
 		5CD10A3E28F760520001CFC2 /* CheckInScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInScreenView.swift; sourceTree = "<group>"; };
-		5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScroll.swift; sourceTree = "<group>"; };
 		5CD10A4428F952030001CFC2 /* CheckInSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInSheetView.swift; sourceTree = "<group>"; };
 		5CD10A4628F9522D0001CFC2 /* RatingPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPickerView.swift; sourceTree = "<group>"; };
 		5CD10A4828F956AC0001CFC2 /* ProductCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCardView.swift; sourceTree = "<group>"; };
@@ -426,13 +426,13 @@
 				5C663F22292DFF66006F9A97 /* AppLogoView.swift */,
 				5C0E36572928EA910072EFBD /* LegacyPhotoPicker.swift */,
 				5CFB563228F597ED00F13A1E /* RatingView.swift */,
-				5CD10A4228F82E000001CFC2 /* InfiniteScroll.swift */,
 				5CD10A4628F9522D0001CFC2 /* RatingPickerView.swift */,
 				5C0E36552927F09F0072EFBD /* CameraView.swift */,
 				5C0E364F2925A9640072EFBD /* BarcodeScannerView.swift */,
 				5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */,
 				5C663F24292E0100006F9A97 /* AppNameView.swift */,
 				5CBC2453297D3A5F00A0002B /* ProfileView.swift */,
+				5C43237E2986FAA40085522E /* CheckInListView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -618,7 +618,6 @@
 				5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */,
 				5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */,
 				5C663F3329322016006F9A97 /* ServingStyleLabelView.swift in Sources */,
-				5CD10A4328F82E000001CFC2 /* InfiniteScroll.swift in Sources */,
 				5C0E365429279B240072EFBD /* Barcode.swift in Sources */,
 				5CED432228FAC01C003F8194 /* UserSheetView.swift in Sources */,
 				5CED432C28FD69DE003F8194 /* CompanySearchView.swift in Sources */,
@@ -653,6 +652,7 @@
 				5CD10A5C28F998BF0001CFC2 /* ProfileRepository.swift in Sources */,
 				5C11ECBD28EEF30600CCDE6A /* SearchTabView.swift in Sources */,
 				5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */,
+				5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */,
 				5C919E2228FF0CF60055CFD2 /* ProductVariant.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsScreenView.swift in Sources */,
 				5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */,

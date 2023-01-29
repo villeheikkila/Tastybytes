@@ -6,6 +6,7 @@ struct ProfileView: View {
   @State private var profile: Profile
   @Binding var scrollToTop: Int
   @StateObject private var viewModel = ViewModel()
+  @State private var resetView: Int = 0
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
 
@@ -15,34 +16,19 @@ struct ProfileView: View {
   }
 
   var body: some View {
-    InfiniteScrollView(
-      data: $viewModel.checkIns,
-      isLoading: $viewModel.isLoading, scrollToTop: $scrollToTop,
-      loadMore: { viewModel.fetchMoreCheckIns(userId: profile.id) },
-      refresh: {
-        viewModel.refresh(userId: profile.id)
-      },
-      content: {
-        CheckInCardView(checkIn: $0,
-                        loadedFrom: .profile(profile),
-                        onDelete: { checkIn in viewModel.onCheckInDelete(checkIn: checkIn)
-                        },
-                        onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn) })
-      },
-      header: {
-        VStack(spacing: 20) {
-          profileSummary
-          ratingChart
-          ratingSummary
-          if profileManager.getId() != profile.id,
-             !profileManager.hasFriendByUserId(userId: profile.id)
-          {
-            sendFriendRequestButton
-          }
-          links
+    CheckInListView(fetcher: .profile(profile), scrollToTop: $scrollToTop, resetView: $resetView) {
+      VStack(spacing: 20) {
+        profileSummary
+        ratingChart
+        ratingSummary
+        if profileManager.getId() != profile.id,
+           !profileManager.hasFriendByUserId(userId: profile.id)
+        {
+          sendFriendRequestButton
         }
+        links
       }
-    )
+    }
   }
 
   private var sendFriendRequestButton: some View {
@@ -223,54 +209,8 @@ struct ProfileView: View {
 
 extension ProfileView {
   @MainActor class ViewModel: ObservableObject {
-    @Published var checkIns = [CheckIn]()
     @Published var profileSummary: ProfileSummary?
-    @Published var isLoading = false
     @Published var selectedItem: PhotosPickerItem?
-
-    private let pageSize = 10
-    private var page = 0
-
-    func refresh(userId: UUID) {
-      page = 0
-      checkIns = []
-      fetchMoreCheckIns(userId: userId)
-    }
-
-    func onCheckInUpdate(checkIn: CheckIn) {
-      if let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) {
-        DispatchQueue.main.async {
-          self.checkIns[index] = checkIn
-        }
-      }
-    }
-
-    func onCheckInDelete(checkIn: CheckIn) {
-      withAnimation {
-        self.checkIns.remove(object: checkIn)
-      }
-    }
-
-    func fetchMoreCheckIns(userId: UUID) {
-      let (from, to) = getPagination(page: page, size: pageSize)
-
-      Task {
-        await MainActor.run {
-          self.isLoading = true
-        }
-
-        switch await repository.checkIn.getByProfileId(id: userId, from: from, to: to) {
-        case let .success(checkIns):
-          await MainActor.run {
-            self.checkIns.append(contentsOf: checkIns)
-            self.page += 1
-            self.isLoading = false
-          }
-        case let .failure(error):
-          print(error)
-        }
-      }
-    }
 
     func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?, onSuccess: @escaping (_ fileName: String) -> Void) {
       Task {
