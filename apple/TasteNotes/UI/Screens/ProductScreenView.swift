@@ -21,7 +21,11 @@ struct ProductScreenView: View {
       },
       header: {
         productInfo
-        productSummary
+        if let summary = viewModel.summary, summary.averageRating != nil {
+          Section {
+            SummaryView(summary: summary)
+          }
+        }
       }
     )
     .task {
@@ -119,69 +123,6 @@ struct ProductScreenView: View {
       }
     }
   }
-
-  @ViewBuilder
-  private var productSummary: some View {
-    if let productSummary = viewModel.productSummary, productSummary.averageRating != nil {
-      Grid(alignment: .leading) {
-        GridRow {
-          Text("")
-          Spacer()
-          Text("Check-ins")
-            .font(.system(size: 10, weight: .bold, design: .default))
-          Spacer()
-          Text("Rating")
-            .font(.system(size: 10, weight: .bold, design: .default))
-        }
-        Divider()
-          .gridCellUnsizedAxes(.horizontal)
-
-        if let averageRating = productSummary.averageRating {
-          GridRow {
-            Text("Everyone")
-              .font(.system(size: 10, weight: .bold, design: .default))
-            Spacer()
-            Text(String(productSummary.totalCheckIns))
-              .font(.system(size: 10, weight: .medium, design: .default))
-            Spacer()
-            RatingView(rating: averageRating, type: .small)
-          }
-
-          Divider()
-            .gridCellUnsizedAxes(.horizontal)
-        }
-
-        if let friendsAverageRating = productSummary.friendsAverageRating {
-          GridRow {
-            Text("Friends")
-              .font(.system(size: 10, weight: .bold, design: .default))
-            Spacer()
-            Text(String(productSummary.friendsTotalCheckIns))
-              .font(.system(size: 10, weight: .medium, design: .default))
-            Spacer()
-            RatingView(rating: friendsAverageRating, type: .small)
-          }
-
-          Divider()
-            .gridCellUnsizedAxes(.horizontal)
-        }
-
-        if let currentUserAverageRating = productSummary.currentUserAverageRating {
-          GridRow {
-            Text("You")
-              .font(.system(size: 10, weight: .bold, design: .default))
-            Spacer()
-            Text(String(productSummary.currentUserTotalCheckIns))
-              .font(.system(size: 10, weight: .medium, design: .default))
-            Spacer()
-            RatingView(rating: currentUserAverageRating, type: .small)
-          }
-        }
-      }
-      .padding([.leading, .trailing], 10)
-      .padding(.top, 5)
-    }
-  }
 }
 
 extension ProductScreenView {
@@ -196,7 +137,7 @@ extension ProductScreenView {
     @Published var checkIns = [CheckIn]()
     @Published var isLoading = false
     @Published var activeSheet: Sheet?
-    @Published var productSummary: ProductSummary?
+    @Published var summary: Summary?
     @Published var showDeleteProductConfirmationDialog = false
     @Published var showEditSuggestionSheet = false
     private let pageSize = 10
@@ -221,7 +162,7 @@ extension ProductScreenView {
         switch await repository.product.getSummaryById(id: product.id) {
         case let .success(summary):
           await MainActor.run {
-            self.productSummary = summary
+            self.summary = summary
           }
         case let .failure(error):
           print(error)

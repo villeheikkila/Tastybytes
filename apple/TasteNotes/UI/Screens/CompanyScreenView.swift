@@ -13,9 +13,9 @@ struct CompanyScreenView: View {
 
   var body: some View {
     List {
-      if let companySummary = viewModel.companySummary, companySummary.averageRating != nil {
+      if let summary = viewModel.summary, summary.averageRating != nil {
         Section {
-          SummaryView(companySummary: companySummary)
+          SummaryView(summary: summary)
         }
       }
       productList
@@ -232,7 +232,7 @@ extension CompanyScreenView {
 
   @MainActor class ViewModel: ObservableObject {
     @Published var companyJoined: Company.Joined?
-    @Published var companySummary: Company.Summary?
+    @Published var summary: Summary?
     @Published var activeSheet: Sheet?
     @Published var newCompanyNameSuggestion = ""
     @Published var productToMerge: Product.JoinedCategory?
@@ -280,7 +280,7 @@ extension CompanyScreenView {
         switch await repository.company.getSummaryById(id: companyId) {
         case let .success(summary):
           await MainActor.run {
-            self.companySummary = summary
+            self.summary = summary
           }
         case let .failure(error):
           print(error)

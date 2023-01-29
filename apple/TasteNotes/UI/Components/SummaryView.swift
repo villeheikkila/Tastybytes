@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SummaryView: View {
-  let companySummary: Company.Summary
+  let summary: Summary
 
   var body: some View {
     Grid(alignment: .leading) {
@@ -30,12 +30,12 @@ struct SummaryView: View {
 
   @ViewBuilder
   private var everyoneSection: some View {
-    if let averageRating = companySummary.averageRating {
+    if let averageRating = summary.averageRating {
       GridRow {
         Text("Everyone")
           .font(.system(size: 10, weight: .bold, design: .default))
         Spacer()
-        Text(String(companySummary.totalCheckIns))
+        Text(String(summary.totalCheckIns))
           .font(.system(size: 10, weight: .medium, design: .default))
         Spacer()
         RatingView(rating: averageRating, type: .small)
@@ -47,12 +47,12 @@ struct SummaryView: View {
 
   @ViewBuilder
   private var friendsSection: some View {
-    if let friendsAverageRating = companySummary.friendsAverageRating {
+    if let friendsAverageRating = summary.friendsAverageRating {
       GridRow {
         Text("Friends")
           .font(.system(size: 10, weight: .bold, design: .default))
         Spacer()
-        Text(String(companySummary.friendsTotalCheckIns))
+        Text(String(summary.friendsTotalCheckIns))
           .font(.system(size: 10, weight: .medium, design: .default))
         Spacer()
         RatingView(rating: friendsAverageRating, type: .small)
@@ -64,12 +64,12 @@ struct SummaryView: View {
 
   @ViewBuilder
   private var youSection: some View {
-    if let currentUserAverageRating = companySummary.currentUserAverageRating {
+    if let currentUserAverageRating = summary.currentUserAverageRating {
       GridRow {
         Text("You")
           .font(.system(size: 10, weight: .bold, design: .default))
         Spacer()
-        Text(String(companySummary.currentUserTotalCheckIns))
+        Text(String(summary.currentUserTotalCheckIns))
           .font(.system(size: 10, weight: .medium, design: .default))
         Spacer()
         RatingView(rating: currentUserAverageRating, type: .small)

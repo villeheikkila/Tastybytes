@@ -7,7 +7,7 @@ protocol CompanyRepository {
   func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error>
   func delete(id: Int) async -> Result<Void, Error>
   func search(searchTerm: String) async -> Result<[Company], Error>
-  func getSummaryById(id: Int) async -> Result<Company.Summary, Error>
+  func getSummaryById(id: Int) async -> Result<Summary, Error>
 }
 
 struct SupabaseCompanyRepository: CompanyRepository {
@@ -115,9 +115,9 @@ struct SupabaseCompanyRepository: CompanyRepository {
     }
   }
 
-  func getSummaryById(id: Int) async -> Result<Company.Summary, Error> {
+  func getSummaryById(id: Int) async -> Result<Summary, Error> {
     do {
-      let response: Company.Summary = try await client
+      let response: Summary = try await client
         .database
         .rpc(fn: "fnc__get_company_summary", params: Company.SummaryRequest(id: id))
         .select()

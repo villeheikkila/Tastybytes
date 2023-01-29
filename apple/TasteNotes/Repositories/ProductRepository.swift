@@ -7,7 +7,7 @@ protocol ProductRepository {
   func getById(id: Int) async -> Result<Product.Joined, Error>
   func delete(id: Int) async -> Result<Void, Error>
   func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
-  func getSummaryById(id: Int) async -> Result<ProductSummary, Error>
+  func getSummaryById(id: Int) async -> Result<Summary, Error>
   func addBarcodeToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error>
   func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
   func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error>
@@ -205,9 +205,9 @@ struct SupabaseProductRepository: ProductRepository {
     }
   }
 
-  func getSummaryById(id: Int) async -> Result<ProductSummary, Error> {
+  func getSummaryById(id: Int) async -> Result<Summary, Error> {
     do {
-      let response: ProductSummary = try await client
+      let response: Summary = try await client
         .database
         .rpc(fn: "fnc__get_product_summary", params: Product.SummaryRequest(id: id))
         .select()
