@@ -11,23 +11,22 @@ struct ProfileTabView: View {
 
   var body: some View {
     NavigationStack(path: $router.path) {
-      WithRoutes {
-        ProfileView(profile: profileManager.getProfile(), scrollToTop: $scrollToTop)
-          .navigationTitle(profileManager.getProfile().preferredName)
-          .navigationBarTitleDisplayMode(.inline)
-          .toolbar {
-            toolbarContent
-          }
-      }
-      .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
-        if tab == .profile {
-          if router.path.isEmpty {
-            scrollToTop += 1
-          } else {
-            router.reset()
-          }
-          resetNavigationOnTab = nil
+      ProfileView(profile: profileManager.getProfile(), scrollToTop: $scrollToTop)
+        .navigationTitle(profileManager.getProfile().preferredName)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+          toolbarContent
         }
+        .withRoutes()
+    }
+    .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+      if tab == .profile {
+        if router.path.isEmpty {
+          scrollToTop += 1
+        } else {
+          router.reset()
+        }
+        resetNavigationOnTab = nil
       }
     }
     .environmentObject(router)

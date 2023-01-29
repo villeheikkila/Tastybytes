@@ -7,48 +7,47 @@ struct NotificationTabView: View {
 
   var body: some View {
     NavigationStack(path: $router.path) {
-      WithRoutes {
-        List {
-          ForEach(notificationManager.filteredNotifications) {
-            notification in
-            HStack {
-              switch notification.content {
-              case let .message(message):
-                MessageNotificationView(message: message)
-                  .onTapGesture {
-                    notificationManager.markAsRead(notification)
-                  }
-              case let .friendRequest(friendRequest):
-                FriendRequestNotificationView(friend: friendRequest)
-              case let .taggedCheckIn(taggedCheckIn):
-                TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
-              case let .checkInReaction(checkInReaction):
-                CheckInReactionNotificationView(checkInReaction: checkInReaction)
-              }
-              Spacer()
+      List {
+        ForEach(notificationManager.filteredNotifications) {
+          notification in
+          HStack {
+            switch notification.content {
+            case let .message(message):
+              MessageNotificationView(message: message)
+                .onTapGesture {
+                  notificationManager.markAsRead(notification)
+                }
+            case let .friendRequest(friendRequest):
+              FriendRequestNotificationView(friend: friendRequest)
+            case let .taggedCheckIn(taggedCheckIn):
+              TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
+            case let .checkInReaction(checkInReaction):
+              CheckInReactionNotificationView(checkInReaction: checkInReaction)
             }
+            Spacer()
           }
-          .onDelete(perform: notificationManager.deleteFromIndex)
         }
-        .refreshable {
-          notificationManager.refresh(reset: true)
-        }
-        .navigationTitle(notificationManager.filter?.label ?? "Notifications")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-          toolbarContent
-        }
-        .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
-          if tab == .notifications {
-            if router.path.isEmpty {
-              notificationManager.filter = nil
-            } else {
-              router.reset()
-            }
-            resetNavigationOnTab = nil
+        .onDelete(perform: notificationManager.deleteFromIndex)
+      }
+      .refreshable {
+        notificationManager.refresh(reset: true)
+      }
+      .navigationTitle(notificationManager.filter?.label ?? "Notifications")
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        toolbarContent
+      }
+      .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+        if tab == .notifications {
+          if router.path.isEmpty {
+            notificationManager.filter = nil
+          } else {
+            router.reset()
           }
+          resetNavigationOnTab = nil
         }
       }
+      .withRoutes()
     }
     .environmentObject(router)
   }

@@ -21,58 +21,57 @@ struct ActivityTabView: View {
 
   var body: some View {
     NavigationStack(path: $router.path) {
-      WithRoutes {
-        InfiniteScrollView(
-          data: $viewModel.checkIns,
-          isLoading: $viewModel.isLoading,
-          scrollToTop: $scrollToTop,
-          initialLoad: {
-            viewModel.fetchActivityFeedItems(onComplete: {
-              if splashScreenManager.state != .finished {
-                splashScreenManager.dismiss()
-              }
-            })
-          },
-          loadMore: {
-            viewModel.fetchActivityFeedItems()
-          },
-          refresh: {
-            viewModel.refresh()
-          },
-          content: {
-            content in
-            CheckInCardView(checkIn: content,
-                            loadedFrom: .activity(profileManager.getProfile()),
-                            onDelete: { checkIn in viewModel.onCheckInDelete(checkIn) },
-                            onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn) })
-          },
-          header: {
-            EmptyView()
-          }
-        )
-        .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
-          if tab == .activity {
-            if router.path.isEmpty {
-              scrollToTop += 1
-            } else {
-              router.reset()
+      InfiniteScrollView(
+        data: $viewModel.checkIns,
+        isLoading: $viewModel.isLoading,
+        scrollToTop: $scrollToTop,
+        initialLoad: {
+          viewModel.fetchActivityFeedItems(onComplete: {
+            if splashScreenManager.state != .finished {
+              splashScreenManager.dismiss()
             }
-            resetNavigationOnTab = nil
+          })
+        },
+        loadMore: {
+          viewModel.fetchActivityFeedItems()
+        },
+        refresh: {
+          viewModel.refresh()
+        },
+        content: {
+          content in
+          CheckInCardView(checkIn: content,
+                          loadedFrom: .activity(profileManager.getProfile()),
+                          onDelete: { checkIn in viewModel.onCheckInDelete(checkIn) },
+                          onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn) })
+        },
+        header: {
+          EmptyView()
+        }
+      )
+      .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+        if tab == .activity {
+          if router.path.isEmpty {
+            scrollToTop += 1
+          } else {
+            router.reset()
           }
-        }
-        .navigationTitle("Activity")
-        .toolbar {
-          toolbarContent
-        }
-        .onAppear {
-          router.reset()
-        }
-        .onOpenURL { url in
-          if let detailPage = url.detailPage {
-            router.fetchAndNavigateTo(detailPage)
-          }
+          resetNavigationOnTab = nil
         }
       }
+      .navigationTitle("Activity")
+      .toolbar {
+        toolbarContent
+      }
+      .onAppear {
+        router.reset()
+      }
+      .onOpenURL { url in
+        if let detailPage = url.detailPage {
+          router.fetchAndNavigateTo(detailPage)
+        }
+      }
+      .withRoutes()
     }
     .environmentObject(router)
   }

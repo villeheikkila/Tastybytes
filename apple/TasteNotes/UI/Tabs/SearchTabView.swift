@@ -12,116 +12,115 @@ struct SearchTabView: View {
 
   var body: some View {
     NavigationStack(path: $router.path) {
-      WithRoutes {
-        ScrollViewReader { proxy in
-          List {
-            switch viewModel.searchScope {
-            case .products:
-              productResults
-              if viewModel.isSearched {
-                if viewModel.barcode != nil {
-                  Section {
-                    Text(
-                      """
-                      \(viewModel.products.isEmpty ? "No results were found" : "If none of the results match"),\
-                      you can assign the barcode to a product by searching again\
-                      with the name or by creating a new product.
-                      """
-                    )
-                    Button(action: {
-                      viewModel.resetBarcode()
-                    }) {
-                      Text("Dismiss barcode")
-                    }
-                  }
-                }
+      ScrollViewReader { proxy in
+        List {
+          switch viewModel.searchScope {
+          case .products:
+            productResults
+            if viewModel.isSearched {
+              if viewModel.barcode != nil {
                 Section {
-                  NavigationLink("Add new", value: Route.addProduct(viewModel.barcode))
-                    .fontWeight(.medium)
-                    .disabled(!profileManager.hasPermission(.canCreateProducts))
-                } header: {
-                  Text("Didn't find a product you were looking for?")
-                }
-                .textCase(nil)
-              }
-            case .companies:
-              companyResults
-            case .users:
-              profileResults
-            case .locations:
-              locationResults
-            }
-          }
-          .onAppear {
-            scrollProxy = proxy
-          }
-          .listStyle(.grouped)
-          .onChange(of: viewModel.searchScope, perform: { _ in
-            viewModel.search()
-            viewModel.barcode = nil
-          })
-          .onChange(of: viewModel.searchTerm, perform: {
-            term in
-            if term.isEmpty {
-              viewModel.resetSearch()
-            }
-          })
-          .sheet(isPresented: $viewModel.showBarcodeScanner) {
-            NavigationStack {
-              BarcodeScannerSheetView(onComplete: {
-                barcode in viewModel.searchProductsByBardcode(barcode)
-              })
-            }
-            .presentationDetents([.medium])
-          }
-          .searchable(text: $viewModel.searchTerm, tokens: $viewModel.tokens,
-                      prompt: viewModel.searchScope.prompt) { token in
-            Text(token.label)
-          }
-          .disableAutocorrection(true)
-          .searchScopes($viewModel.searchScope) {
-            ForEach(SearchScope.allCases) { scope in
-              Text(scope.label).tag(scope)
-            }
-          }
-          .onSubmit(of: .search) {
-            viewModel.search()
-          }
-          .navigationTitle("Search")
-          .toolbar {
-            toolbarContent
-          }
-          .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
-            if tab == .search {
-              if router.path.isEmpty {
-                withAnimation {
-                  switch viewModel.searchScope {
-                  case .products:
-                    if let id = viewModel.products.first?.id {
-                      scrollProxy?.scrollTo(id, anchor: .top)
-                    }
-                  case .companies:
-                    if let id = viewModel.companies.first?.id {
-                      scrollProxy?.scrollTo(id, anchor: .top)
-                    }
-                  case .users:
-                    if let id = viewModel.profiles.first?.id {
-                      scrollProxy?.scrollTo(id, anchor: .top)
-                    }
-                  case .locations:
-                    if let id = viewModel.locations.first?.id {
-                      scrollProxy?.scrollTo(id, anchor: .top)
-                    }
+                  Text(
+                    """
+                    \(viewModel.products.isEmpty ? "No results were found" : "If none of the results match"),\
+                    you can assign the barcode to a product by searching again\
+                    with the name or by creating a new product.
+                    """
+                  )
+                  Button(action: {
+                    viewModel.resetBarcode()
+                  }) {
+                    Text("Dismiss barcode")
                   }
                 }
               }
-            } else {
-              router.reset()
+              Section {
+                NavigationLink("Add new", value: Route.addProduct(viewModel.barcode))
+                  .fontWeight(.medium)
+                  .disabled(!profileManager.hasPermission(.canCreateProducts))
+              } header: {
+                Text("Didn't find a product you were looking for?")
+              }
+              .textCase(nil)
             }
-            resetNavigationOnTab = nil
+          case .companies:
+            companyResults
+          case .users:
+            profileResults
+          case .locations:
+            locationResults
           }
         }
+        .onAppear {
+          scrollProxy = proxy
+        }
+        .listStyle(.grouped)
+        .onChange(of: viewModel.searchScope, perform: { _ in
+          viewModel.search()
+          viewModel.barcode = nil
+        })
+        .onChange(of: viewModel.searchTerm, perform: {
+          term in
+          if term.isEmpty {
+            viewModel.resetSearch()
+          }
+        })
+        .sheet(isPresented: $viewModel.showBarcodeScanner) {
+          NavigationStack {
+            BarcodeScannerSheetView(onComplete: {
+              barcode in viewModel.searchProductsByBardcode(barcode)
+            })
+          }
+          .presentationDetents([.medium])
+        }
+        .searchable(text: $viewModel.searchTerm, tokens: $viewModel.tokens,
+                    prompt: viewModel.searchScope.prompt) { token in
+          Text(token.label)
+        }
+        .disableAutocorrection(true)
+        .searchScopes($viewModel.searchScope) {
+          ForEach(SearchScope.allCases) { scope in
+            Text(scope.label).tag(scope)
+          }
+        }
+        .onSubmit(of: .search) {
+          viewModel.search()
+        }
+        .navigationTitle("Search")
+        .toolbar {
+          toolbarContent
+        }
+        .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+          if tab == .search {
+            if router.path.isEmpty {
+              withAnimation {
+                switch viewModel.searchScope {
+                case .products:
+                  if let id = viewModel.products.first?.id {
+                    scrollProxy?.scrollTo(id, anchor: .top)
+                  }
+                case .companies:
+                  if let id = viewModel.companies.first?.id {
+                    scrollProxy?.scrollTo(id, anchor: .top)
+                  }
+                case .users:
+                  if let id = viewModel.profiles.first?.id {
+                    scrollProxy?.scrollTo(id, anchor: .top)
+                  }
+                case .locations:
+                  if let id = viewModel.locations.first?.id {
+                    scrollProxy?.scrollTo(id, anchor: .top)
+                  }
+                }
+              }
+            }
+          } else {
+            router.reset()
+          }
+          resetNavigationOnTab = nil
+        }
       }
+      .withRoutes()
     }
     .environmentObject(router)
   }

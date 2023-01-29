@@ -1,5 +1,13 @@
 import SwiftUI
 
+struct CurrentUserFriendsScreenView: View {
+  @EnvironmentObject private var profileManager: ProfileManager
+
+  var body: some View {
+    FriendsScreenView(profile: profileManager.getProfile())
+  }
+}
+
 struct FriendsScreenView: View {
   @StateObject private var viewModel = ViewModel()
   @EnvironmentObject private var profileManager: ProfileManager

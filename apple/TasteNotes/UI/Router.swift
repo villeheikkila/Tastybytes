@@ -68,45 +68,31 @@ enum Route: Hashable {
   case currentUserFriends
   case friends(Profile)
   case addProduct(Barcode?)
-}
 
-struct WithRoutes<RootView: View>: View {
-  @EnvironmentObject private var profileManager: ProfileManager
-
-  let view: () -> RootView
-
-  init(
-    @ViewBuilder view: @escaping () -> RootView
-  ) {
-    self.view = view
-  }
-
-  var body: some View {
-    view()
-      .navigationDestination(for: Route.self) { route in
-        switch route {
-        case let .company(company):
-          CompanyScreenView(company: company)
-        case .currentUserFriends:
-          FriendsScreenView(profile: profileManager.getProfile())
-        case .settings:
-          PreferencesScreenView()
-        case let .location(location):
-          LocationScreenView(location: location)
-        case let .profileProducts(profile):
-          ProfileProductListView(profile: profile)
-        case let .addProduct(initialBarcode):
-          ProductSheetView(mode: .new, initialBarcode: initialBarcode)
-        case let .checkIn(checkIn):
-          CheckInScreenView(checkIn: checkIn)
-        case let .profile(profile):
-          ProfileScreenView(profile: profile)
-        case let .product(product):
-          ProductScreenView(product: product)
-        case let .friends(profile):
-          FriendsScreenView(profile: profile)
-        }
-      }
+  @ViewBuilder
+  var view: some View {
+    switch self {
+    case let .company(company):
+      CompanyScreenView(company: company)
+    case .currentUserFriends:
+      CurrentUserFriendsScreenView()
+    case .settings:
+      PreferencesScreenView()
+    case let .location(location):
+      LocationScreenView(location: location)
+    case let .profileProducts(profile):
+      ProfileProductListView(profile: profile)
+    case let .addProduct(initialBarcode):
+      ProductSheetView(mode: .new, initialBarcode: initialBarcode)
+    case let .checkIn(checkIn):
+      CheckInScreenView(checkIn: checkIn)
+    case let .profile(profile):
+      ProfileScreenView(profile: profile)
+    case let .product(product):
+      ProductScreenView(product: product)
+    case let .friends(profile):
+      FriendsScreenView(profile: profile)
+    }
   }
 }
 
@@ -175,13 +161,21 @@ extension URL {
       guard let uuid = UUID(uuidString: path) else {
         return nil
       }
-      print(uuid)
       return .profile(id: uuid)
     case .companies:
       guard let id = Int(path) else {
         return nil
       }
       return .company(id: id)
+    }
+  }
+}
+
+@MainActor
+extension View {
+  func withRoutes() -> some View {
+    navigationDestination(for: Route.self) { route in
+      route.view
     }
   }
 }
