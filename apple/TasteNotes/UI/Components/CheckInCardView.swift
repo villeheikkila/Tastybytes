@@ -285,7 +285,7 @@ extension CheckInCardView {
 }
 
 struct CheckInCardView_Previews: PreviewProvider {
-  static let company = Company(id: 0, name: "The Coca Cola Company", logoUrl: nil)
+  static let company = Company(id: 0, name: "The Coca Cola Company", logoUrl: nil, isVerified: true)
 
   static let product = Product.Joined(
     id: 0,
@@ -306,7 +306,7 @@ struct CheckInCardView_Previews: PreviewProvider {
 
   static let servingStyle = ServingStyle(id: 0, name: .bottle)
 
-  static let hartwallCompany = Company(id: 0, name: "Hartwall", logoUrl: nil)
+  static let hartwallCompany = Company(id: 0, name: "Hartwall", logoUrl: nil, isVerified: true)
 
   static let variant = ProductVariant(id: 0, manufacturer: hartwallCompany)
 

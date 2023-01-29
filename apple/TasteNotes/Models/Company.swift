@@ -4,6 +4,7 @@ struct Company: Identifiable, Codable, Hashable {
   let id: Int
   let name: String
   let logoUrl: String?
+  let isVerified: Bool
 
   func getLogoUrl() -> URL? {
     if let logoUrl {
@@ -16,10 +17,11 @@ struct Company: Identifiable, Codable, Hashable {
     }
   }
 
-  init(id: Int, name: String, logoUrl: String?) {
+  init(id: Int, name: String, logoUrl: String?, isVerified: Bool) {
     self.id = id
     self.name = name
     self.logoUrl = logoUrl
+    self.isVerified = isVerified
   }
 
   func hash(into hasher: inout Hasher) {
@@ -35,6 +37,7 @@ struct Company: Identifiable, Codable, Hashable {
     case id
     case name
     case logoUrl = "logo_url"
+    case isVerified = "is_verified"
   }
 
   init(from decoder: Decoder) throws {
@@ -42,6 +45,7 @@ struct Company: Identifiable, Codable, Hashable {
     id = try container.decode(Int.self, forKey: .id)
     name = try container.decode(String.self, forKey: .name)
     logoUrl = try container.decodeIfPresent(String.self, forKey: .logoUrl)
+    isVerified = try container.decode(Bool.self, forKey: .isVerified)
   }
 }
 

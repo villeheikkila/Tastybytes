@@ -92,6 +92,7 @@ struct CompanyScreenView: View {
         }) {
           Label("Delete", systemImage: "trash.fill")
         }
+        .disabled(company.isVerified)
       }
     } label: {
       Image(systemName: "ellipsis")
