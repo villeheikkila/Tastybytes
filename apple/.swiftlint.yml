@@ -10,6 +10,5 @@ disabled_rules:
   - cyclomatic_complexity
   - type_body_length
   - file_length
-  - force_try
   - legacy_random
   - notification_center_detachment
