@@ -1,5 +1,4 @@
 import CachedAsyncImage
-import GoTrue
 import SwiftUI
 import WrappingHStack
 
