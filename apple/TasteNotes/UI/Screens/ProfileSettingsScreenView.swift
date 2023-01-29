@@ -53,7 +53,7 @@ struct ProfileSettingsScreenView: View {
       TextField("First Name", text: $viewModel.firstName)
       TextField("Last Name", text: $viewModel.lastName)
 
-      if viewModel.profileHasChanged() {
+      if viewModel.showProfileUpdateButton {
         Button("Update", action: { viewModel.updateProfile(onSuccess: {
           toastManager.toggle(.success("Profile updated!"))
         }, onFailure: {
@@ -87,7 +87,7 @@ struct ProfileSettingsScreenView: View {
         .autocapitalization(.none)
         .disableAutocorrection(true)
 
-      if viewModel.emailHasChanged() {
+      if viewModel.showEmailConfirmationButton {
         Button("Send Verification Link", action: { viewModel.sendEmailVerificationLink() })
       }
 
@@ -131,18 +131,47 @@ struct ProfileSettingsScreenView: View {
 extension ProfileSettingsScreenView {
   @MainActor class ViewModel: ObservableObject {
     @Published var selectedItem: PhotosPickerItem?
-    @Published var username = ""
-    @Published var firstName = ""
-    @Published var lastName = ""
+    @Published var username = "" {
+      didSet {
+        withAnimation {
+          showProfileUpdateButton = profileHasChanged()
+        }
+      }
+    }
+
+    @Published var firstName = "" {
+      didSet {
+        withAnimation {
+          showProfileUpdateButton = profileHasChanged()
+        }
+      }
+    }
+
+    @Published var lastName = "" {
+      didSet {
+        withAnimation {
+          showProfileUpdateButton = profileHasChanged()
+        }
+      }
+    }
+
     @Published var showFullName = false
-    @Published var email = ""
+    @Published var email = "" {
+      didSet {
+        withAnimation {
+          showEmailConfirmationButton = email != initialEmail
+        }
+      }
+    }
 
     @Published var csvExport: CSVFile?
     @Published var showingExporter = false
     @Published var showDeleteConfirmation = false
+    @Published var showEmailConfirmationButton = false
+    @Published var showProfileUpdateButton = false
 
     private var profile: Profile.Extended?
-    private var user: User?
+    private var initialEmail: String?
 
     func getCSVExportName() -> String {
       let formatter = DateFormatter()
@@ -160,17 +189,13 @@ extension ProfileSettingsScreenView {
       ].allSatisfy { $0 }
     }
 
-    func emailHasChanged() -> Bool {
-      email != user?.email
-    }
-
     func getInitialValues(profile: Profile.Extended) {
       Task {
-        let user = try! await supabaseClient.auth.session.user
+        let user = try await supabaseClient.auth.session.user
 
         await MainActor.run {
           self.updateFormValues(profile: profile)
-          self.user = user
+          self.initialEmail = user.email
           self.email = user.email ?? ""
         }
       }
