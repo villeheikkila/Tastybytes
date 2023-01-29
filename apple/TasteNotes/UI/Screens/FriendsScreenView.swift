@@ -20,20 +20,18 @@ struct FriendsScreenView: View {
 
   var body: some View {
     ScrollView {
-      VStack {
-        ForEach(viewModel.friends, id: \.self) { friend in
-          if profile == profileManager.getProfile() {
-            FriendListItemView(friend: friend,
-                               currentUser: profileManager.getProfile(),
-                               onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
-                               onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
-                               onDelete: { friend in
-                                 friendToBeRemoved = friend
-                                 showRemoveFriendConfirmation = true
-                               })
-          } else {
-            FriendListItemSimpleView(profile: friend.getFriend(userId: profile.id))
-          }
+      ForEach(viewModel.friends, id: \.self) { friend in
+        if profile == profileManager.getProfile() {
+          FriendListItemView(friend: friend,
+                             currentUser: profileManager.getProfile(),
+                             onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
+                             onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
+                             onDelete: { friend in
+                               friendToBeRemoved = friend
+                               showRemoveFriendConfirmation = true
+                             })
+        } else {
+          FriendListItemSimpleView(profile: friend.getFriend(userId: profile.id))
         }
       }
       .navigationTitle("Friends")
