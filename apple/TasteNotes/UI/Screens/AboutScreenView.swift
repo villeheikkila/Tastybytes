@@ -48,7 +48,7 @@ struct AboutScreenView: View {
             }
             Link(destination: URL(string: aboutPage.linkedInUrl)!) {
               HStack {
-                GitHubShape()
+                LinkedInShape()
                   .frame(width: 18, height: 18)
                   .padding(.leading, 5)
                   .padding(.trailing, 15)
