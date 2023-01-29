@@ -52,7 +52,7 @@ struct Company: Identifiable, Codable, Hashable {
 extension Company {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "companies"
-    let saved = "id, name, logo_url"
+    let saved = "id, name, logo_url, is_verified"
     let owner = queryWithTableName(tableName, saved, true)
 
     switch queryType {
