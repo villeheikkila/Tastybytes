@@ -48,6 +48,8 @@ struct SearchTabView: View {
               companyResults
             case .users:
               profileResults
+            case .locations:
+              locationResults
             }
           }
           .onAppear {
@@ -106,6 +108,10 @@ struct SearchTabView: View {
                     if let id = viewModel.profiles.first?.id {
                       scrollProxy?.scrollTo(id, anchor: .top)
                     }
+                  case .locations:
+                    if let id = viewModel.locations.first?.id {
+                      scrollProxy?.scrollTo(id, anchor: .top)
+                    }
                   }
                 }
               }
@@ -143,6 +149,15 @@ struct SearchTabView: View {
         Text(company.name)
       }
       .id(company.id)
+    }
+  }
+
+  private var locationResults: some View {
+    ForEach(viewModel.locations, id: \.self) { location in
+      NavigationLink(value: Route.location(location)) {
+        Text(location.name)
+      }
+      .id(location.id)
     }
   }
 
@@ -239,6 +254,7 @@ extension SearchTabView {
     @Published var products = [Product.Joined]()
     @Published var profiles = [Profile]()
     @Published var companies = [Company]()
+    @Published var locations = [Location]()
     @Published var showBarcodeScanner = false
     @Published var isSearched = false
     @Published var searchScope: SearchScope = .products
@@ -256,6 +272,7 @@ extension SearchTabView {
       profiles = []
       products = []
       companies = []
+      locations = []
     }
 
     func resetBarcode() {
@@ -338,6 +355,20 @@ extension SearchTabView {
       }
     }
 
+    func searchLocations() {
+      Task {
+        switch await repository.location.search(searchTerm: searchTerm) {
+        case let .success(searchResults):
+          await MainActor.run {
+            self.locations = searchResults
+          }
+
+        case let .failure(error):
+          print(error)
+        }
+      }
+    }
+
     func search() {
       if searchTerm.count < 3 { return }
 
@@ -348,13 +379,15 @@ extension SearchTabView {
         searchCompanies()
       case .users:
         searchProfiles()
+      case .locations:
+        searchLocations()
       }
     }
   }
 
   enum SearchScope: String, CaseIterable, Identifiable {
     var id: Self { self }
-    case products, companies, users
+    case products, companies, users, locations
 
     var label: String {
       switch self {
@@ -364,6 +397,8 @@ extension SearchTabView {
         return "Companies"
       case .users:
         return "Users"
+      case .locations:
+        return "Locations"
       }
     }
 
@@ -375,6 +410,8 @@ extension SearchTabView {
         return "Search users"
       case .companies:
         return "Search companies"
+      case .locations:
+        return "Search locations"
       }
     }
   }

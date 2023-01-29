@@ -3,6 +3,7 @@ import Supabase
 
 protocol LocationRepository {
   func insert(location: Location) async -> Result<Location, Error>
+  func search(searchTerm: String) async -> Result<[Location], Error>
   func getSummaryById(id: UUID) async -> Result<Summary, Error>
 }
 
@@ -20,6 +21,22 @@ struct SupabaseLocationRepository: LocationRepository {
         .value
 
       return .success(result)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func search(searchTerm: String) async -> Result<[Location], Error> {
+    do {
+      let response: [Location] = try await client
+        .database
+        .from(Location.getQuery(.tableName))
+        .select(columns: Location.getQuery(.joined(false)))
+        .ilike(column: "name", value: "%\(searchTerm)%")
+        .execute()
+        .value
+
+      return .success(response)
     } catch {
       return .failure(error)
     }
