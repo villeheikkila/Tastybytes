@@ -9,19 +9,21 @@ struct CurrentUserFriendsScreenView: View {
 }
 
 struct FriendsScreenView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var noficationManager: NotificationManager
   @State private var friendToBeRemoved: Friend?
   @State private var showRemoveFriendConfirmation = false
 
-  var profile: Profile
+  init(profile: Profile) {
+    _viewModel = StateObject(wrappedValue: ViewModel(profile: profile))
+  }
 
   var body: some View {
     ScrollView {
       ForEach(viewModel.friends, id: \.self) { friend in
-        if profile == profileManager.getProfile() {
+        if viewModel.profile == profileManager.getProfile() {
           FriendListItemView(friend: friend,
                              currentUser: profileManager.getProfile(),
                              onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
@@ -31,20 +33,20 @@ struct FriendsScreenView: View {
                                showRemoveFriendConfirmation = true
                              })
         } else {
-          FriendListItemSimpleView(profile: friend.getFriend(userId: profile.id))
+          FriendListItemSimpleView(profile: friend.getFriend(userId: viewModel.profile.id))
         }
       }
       .navigationTitle("Friends")
       .navigationBarTitleDisplayMode(.inline)
     }
     .refreshable {
-      viewModel.loadFriends(userId: profile.id, currentUser: profileManager.getProfile())
+      viewModel.loadFriends(currentUser: profileManager.getProfile())
     }
     .task {
-      viewModel.loadFriends(userId: profile.id, currentUser: profileManager.getProfile())
+      viewModel.loadFriends(currentUser: profileManager.getProfile())
     }
     .task {
-      if profile == profileManager.getProfile() {
+      if viewModel.profile == profileManager.getProfile() {
         noficationManager.markAllFriendRequestsAsRead()
       }
     }
@@ -86,7 +88,7 @@ struct FriendsScreenView: View {
 
   private var addFriendButton: some View {
     HStack {
-      if profile == profileManager.getProfile() {
+      if viewModel.profile == profileManager.getProfile() {
         Button(action: { viewModel.showUserSearchSheet.toggle() }) {
           Image(systemName: "plus").imageScale(.large)
         }
@@ -104,6 +106,12 @@ extension FriendsScreenView {
 
     @Published var error: Error?
     @Published var modalError: Error?
+
+    let profile: Profile
+
+    init(profile: Profile) {
+      self.profile = profile
+    }
 
     func sendFriendRequest(receiver: UUID, onSuccess: @escaping () -> Void) {
       Task {
@@ -169,11 +177,11 @@ extension FriendsScreenView {
       }
     }
 
-    func loadFriends(userId: UUID, currentUser: Profile) {
+    func loadFriends(currentUser: Profile) {
       Task {
         switch await repository.friend.getByUserId(
-          userId: userId,
-          status: currentUser.id == userId ? .none : Friend.Status.accepted
+          userId: profile.id,
+          status: currentUser.id == profile.id ? .none : Friend.Status.accepted
         ) {
         case let .success(friends):
           await MainActor.run {
