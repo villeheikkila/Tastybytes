@@ -40,7 +40,11 @@ struct NotificationTabView: View {
         }
         .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
           if tab == .notifications {
-            router.reset()
+            if router.path.isEmpty {
+              notificationManager.filter = nil
+            } else {
+              router.reset()
+            }
             resetNavigationOnTab = nil
           }
         }
