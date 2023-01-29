@@ -228,7 +228,7 @@ struct CheckInCardView: View {
     HStack {
       OptionalNavigationLink(value: Route.checkIn(checkIn), enabled: loadedFrom != .checkIn) {
         if checkIn.isMigrated {
-          Text("check-in made before 22.10.2022")
+          Text("legacy check-in")
             .font(.system(size: 12, weight: .bold, design: .default))
         } else {
           Text(checkIn.getRelativeCreatedAt())

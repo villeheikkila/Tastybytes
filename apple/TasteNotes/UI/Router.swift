@@ -96,6 +96,13 @@ enum Route: Hashable {
   }
 }
 
+@MainActor
+extension View {
+  func withRoutes() -> some View {
+    navigationDestination(for: Route.self) { route in route.view }
+  }
+}
+
 enum FetchAndNavigateToDestination {
   case product(id: Int)
   case checkIn(id: Int)
@@ -167,15 +174,6 @@ extension URL {
         return nil
       }
       return .company(id: id)
-    }
-  }
-}
-
-@MainActor
-extension View {
-  func withRoutes() -> some View {
-    navigationDestination(for: Route.self) { route in
-      route.view
     }
   }
 }
