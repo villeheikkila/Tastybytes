@@ -132,4 +132,12 @@ extension Location {
       p_country_code = countryCode
     }
   }
+
+  struct SummaryRequest: Encodable {
+    let p_location_id: UUID
+
+    init(id: UUID) {
+      p_location_id = id
+    }
+  }
 }

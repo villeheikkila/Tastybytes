@@ -4,26 +4,37 @@ import PhotosUI
 import SwiftUI
 
 struct LocationScreenView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @State private var scrollToTop: Int = 0
 
-  let location: Location
+  init(location: Location) {
+    _viewModel = StateObject(wrappedValue: ViewModel(location: location))
+  }
 
   var body: some View {
     InfiniteScrollView(data: $viewModel.checkIns, isLoading: $viewModel.isLoading, scrollToTop: $scrollToTop,
-                       loadMore: { viewModel.fetchMoreCheckIns(locationId: location.id) },
+                       loadMore: { viewModel.fetchMoreCheckIns() },
                        refresh: {
-                         viewModel.refresh(locationId: location.id)
+                         viewModel.refresh()
                        },
                        content: {
                          CheckInCardView(checkIn: $0,
-                                         loadedFrom: .location(location),
+                                         loadedFrom: .location(viewModel.location),
                                          onDelete: { checkIn in viewModel.onCheckInDelete(checkIn: checkIn)
                                          },
                                          onUpdate: { checkIn in viewModel.onCheckInUpdate(checkIn: checkIn) })
-                       }, header: {})
-      .navigationTitle(location.name)
-      .navigationBarTitleDisplayMode(.inline)
+                       }, header: {
+                         if let summary = viewModel.summary, summary.averageRating != nil {
+                           Section {
+                             SummaryView(summary: summary)
+                           }
+                         }
+                       })
+                       .navigationTitle(viewModel.location.name)
+                       .navigationBarTitleDisplayMode(.inline)
+                       .task {
+                         viewModel.getSummary()
+                       }
   }
 }
 
@@ -31,16 +42,22 @@ extension LocationScreenView {
   @MainActor class ViewModel: ObservableObject {
     @Published var checkIns = [CheckIn]()
     @Published var profileSummary: ProfileSummary?
+    @Published var summary: Summary?
     @Published var isLoading = false
     @Published var selectedItem: PhotosPickerItem?
+    let location: Location
+
+    init(location: Location) {
+      self.location = location
+    }
 
     private let pageSize = 10
     private var page = 0
 
-    func refresh(locationId: UUID) {
+    func refresh() {
       page = 0
       checkIns = []
-      fetchMoreCheckIns(locationId: locationId)
+      fetchMoreCheckIns()
     }
 
     func onCheckInUpdate(checkIn: CheckIn) {
@@ -55,7 +72,20 @@ extension LocationScreenView {
       checkIns.remove(object: checkIn)
     }
 
-    func fetchMoreCheckIns(locationId: UUID) {
+    func getSummary() {
+      Task {
+        switch await repository.location.getSummaryById(id: location.id) {
+        case let .success(summary):
+          await MainActor.run {
+            self.summary = summary
+          }
+        case let .failure(error):
+          print(error)
+        }
+      }
+    }
+
+    func fetchMoreCheckIns() {
       let (from, to) = getPagination(page: page, size: pageSize)
 
       Task {
@@ -63,7 +93,7 @@ extension LocationScreenView {
           self.isLoading = true
         }
 
-        switch await repository.checkIn.getByLocation(locationId: locationId, from: from, to: to) {
+        switch await repository.checkIn.getByLocation(locationId: location.id, from: from, to: to) {
         case let .success(checkIns):
           await MainActor.run {
             self.checkIns.append(contentsOf: checkIns)
