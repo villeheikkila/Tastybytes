@@ -20,10 +20,12 @@ struct CheckIn: Identifiable {
     [rating == nil, review == nil || review == "", flavors.count == 0].allSatisfy { $0 }
   }
 
-  func getRelativeCreatedAt() -> String {
+  func getFormattedDate() -> String {
     let now = Date.now
 
-    if createdAt < Calendar.current.date(byAdding: .month, value: -1, to: now)! {
+    if isMigrated {
+      return "legacy check-in"
+    } else if createdAt < Calendar.current.date(byAdding: .month, value: -1, to: now)! {
       return createdAt.formatted()
     } else {
       let formatter = RelativeDateTimeFormatter()

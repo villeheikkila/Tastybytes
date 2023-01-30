@@ -120,26 +120,28 @@ func getCurrentAppIcon() -> AppIcon {
 
 struct OptionalNavigationLink<RootView: View>: View {
   let value: Route
-  let enabled: Bool
+  let disabled: Bool
   let view: () -> RootView
 
   init(
     value: Route,
-    enabled: Bool,
+    disabled: Bool,
     @ViewBuilder view: @escaping () -> RootView
   ) {
     self.view = view
     self.value = value
-    self.enabled = enabled
+    self.disabled = disabled
   }
 
   var body: some View {
-    if enabled {
+    if disabled {
+      view()
+
+    } else {
       NavigationLink(value: value) {
         view()
       }
-    } else {
-      view()
+      .buttonStyle(.plain)
     }
   }
 }

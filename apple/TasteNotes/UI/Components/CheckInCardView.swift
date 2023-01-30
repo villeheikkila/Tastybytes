@@ -3,34 +3,8 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInCardView: View {
-  enum LoadedFrom: Equatable {
-    case checkIn
-    case product
-    case profile(Profile)
-    case activity(Profile)
-    case location(Location)
-  }
-
   let checkIn: CheckIn
   let loadedFrom: LoadedFrom
-
-  private func isLoadedFromProfile(_: Profile) -> Bool {
-    switch loadedFrom {
-    case let .profile(fromProfile):
-      return fromProfile == checkIn.profile
-    default:
-      return false
-    }
-  }
-
-  private func isLoadedFromLocation(_ location: Location) -> Bool {
-    switch loadedFrom {
-    case let .location(fromLocation):
-      return fromLocation == location
-    default:
-      return false
-    }
-  }
 
   var body: some View {
     VStack {
@@ -41,7 +15,7 @@ struct CheckInCardView: View {
       taggedProfilesSection
       footer
     }
-    .padding([.top, .bottom], 10)
+    .padding(10)
     .background(Color(.tertiarySystemBackground))
     .clipped()
     .cornerRadius(8)
@@ -49,7 +23,10 @@ struct CheckInCardView: View {
   }
 
   private var header: some View {
-    OptionalNavigationLink(value: Route.profile(checkIn.profile), enabled: !isLoadedFromProfile(checkIn.profile)) {
+    OptionalNavigationLink(
+      value: Route.profile(checkIn.profile),
+      disabled: loadedFrom.isLoadedFromProfile(checkIn.profile)
+    ) {
       HStack {
         AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 30, id: checkIn.profile.id)
         Text(checkIn.profile.preferredName)
@@ -57,7 +34,10 @@ struct CheckInCardView: View {
           .foregroundColor(.primary)
         Spacer()
         if let location = checkIn.location {
-          OptionalNavigationLink(value: Route.location(location), enabled: !isLoadedFromLocation(location)) {
+          OptionalNavigationLink(
+            value: Route.location(location),
+            disabled: loadedFrom.isLoadedFromLocation(location)
+          ) {
             Text("\(location.name) \(location.country?.emoji ?? "")")
               .font(.system(size: 12, weight: .bold, design: .default))
               .foregroundColor(.primary)
@@ -65,7 +45,6 @@ struct CheckInCardView: View {
         }
       }
     }
-    .padding([.leading, .trailing], 10)
   }
 
   @ViewBuilder
@@ -82,8 +61,8 @@ struct CheckInCardView: View {
   }
 
   private var productSection: some View {
-    OptionalNavigationLink(value: Route.product(checkIn.product), enabled: loadedFrom != .product) {
-      VStack(alignment: .leading) {
+    OptionalNavigationLink(value: Route.product(checkIn.product), disabled: loadedFrom == .product) {
+      VStack(alignment: .leading, spacing: 2) {
         HStack {
           CategoryNameView(category: checkIn.product.category)
 
@@ -130,8 +109,6 @@ struct CheckInCardView: View {
         }
       }
     }
-    .padding([.leading, .trailing], 10)
-    .buttonStyle(.plain)
   }
 
   @ViewBuilder
@@ -139,35 +116,27 @@ struct CheckInCardView: View {
     if !checkIn.isEmpty() {
       OptionalNavigationLink(
         value: Route.checkIn(checkIn),
-        enabled: loadedFrom == .checkIn
+        disabled: loadedFrom == .checkIn
       ) {
-        VStack(spacing: 8) {
-          HStack {
-            VStack(alignment: .leading, spacing: 8) {
-              if let rating = checkIn.rating {
-                RatingView(rating: rating)
-              }
+        VStack(alignment: .leading, spacing: 8) {
+          if let rating = checkIn.rating {
+            RatingView(rating: rating)
+          }
 
-              if let review = checkIn.review {
-                Text(review)
-                  .fontWeight(.medium)
-                  .foregroundColor(.primary)
-              }
+          if let review = checkIn.review {
+            Text(review)
+              .fontWeight(.medium)
+              .foregroundColor(.primary)
+          }
 
-              if let flavors = checkIn.flavors {
-                HStack {
-                  WrappingHStack(flavors, id: \.self, spacing: .constant(4)) {
-                    flavor in
-                    ChipView(title: flavor.name.capitalized, cornerRadius: 5)
-                  }
-                }
-              }
+          if let flavors = checkIn.flavors {
+            WrappingHStack(flavors, id: \.self, spacing: .constant(4)) {
+              flavor in
+              ChipView(title: flavor.name.capitalized, cornerRadius: 5)
             }
           }
         }
       }
-      .padding([.leading, .trailing], 10)
-      .buttonStyle(.plain)
     }
   }
 
@@ -186,7 +155,7 @@ struct CheckInCardView: View {
             taggedProfile in
             OptionalNavigationLink(
               value: Route.profile(taggedProfile),
-              enabled: isLoadedFromProfile(taggedProfile)
+              disabled: loadedFrom.isLoadedFromProfile(taggedProfile)
             ) {
               AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 32, id: taggedProfile.id)
             }
@@ -194,27 +163,47 @@ struct CheckInCardView: View {
           Spacer()
         }
       }
-      .padding([.trailing, .leading], 10)
     }
   }
 
   private var footer: some View {
     HStack {
-      OptionalNavigationLink(value: Route.checkIn(checkIn), enabled: loadedFrom != .checkIn) {
-        if checkIn.isMigrated {
-          Text("legacy check-in")
-            .font(.system(size: 12, weight: .bold, design: .default))
-        } else {
-          Text(checkIn.getRelativeCreatedAt())
-            .font(.system(size: 12, weight: .medium, design: .default))
-        }
+      OptionalNavigationLink(value: Route.checkIn(checkIn), disabled: loadedFrom == .checkIn) {
+        Text(checkIn.getFormattedDate())
+          .font(.system(size: 12, weight: .medium, design: .default))
         Spacer()
       }
-      .buttonStyle(.plain)
       Spacer()
       ReactionsView(checkIn: checkIn)
     }
-    .padding([.leading, .trailing], 10)
+  }
+}
+
+extension CheckInCardView {
+  enum LoadedFrom: Equatable {
+    case checkIn
+    case product
+    case profile(Profile)
+    case activity(Profile)
+    case location(Location)
+
+    func isLoadedFromLocation(_ location: Location) -> Bool {
+      switch self {
+      case let .location(fromLocation):
+        return fromLocation == location
+      default:
+        return false
+      }
+    }
+
+    func isLoadedFromProfile(_ profile: Profile) -> Bool {
+      switch self {
+      case let .profile(fromProfile):
+        return fromProfile == profile
+      default:
+        return false
+      }
+    }
   }
 }
 
