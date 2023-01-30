@@ -18,8 +18,11 @@ struct TabsView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
           resetNavigationOnTab = selection
         }
+      } else {
+        withAnimation {
+          selection = newTab
+        }
       }
-      selection = newTab
     })) {
       ForEach(tabs) { tab in
         tab.view($resetNavigationOnTab)

@@ -26,53 +26,51 @@ struct CheckInListView<Header>: View
 
   var body: some View {
     ScrollViewReader { proxy in
-      ZStack(alignment: .top) {
-        ScrollView {
-          Rectangle()
-            .frame(height: 0)
-            .id(topAnchor)
-          header()
-          LazyVStack(spacing: 8) {
-            checkInsList
+      ScrollView {
+        Rectangle()
+          .frame(height: 0)
+          .id(topAnchor)
+        header()
+        LazyVStack(spacing: 8) {
+          checkInsList
+        }
+        if viewModel.isLoading {
+          ProgressView()
+            .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+        }
+      }
+      .onAppear {
+        scrollProxy = proxy
+      }
+      .confirmationDialog("Delete Check-in Confirmation",
+                          isPresented: $viewModel.showDeleteCheckInConfirmationDialog,
+                          presenting: viewModel.showDeleteConfirmationFor) { presenting in
+        Button(
+          "Delete the check-in for \(presenting.product.getDisplayName(.fullName))",
+          role: .destructive,
+          action: {
+            viewModel.deleteCheckIn(checkIn: presenting)
           }
-          if viewModel.isLoading {
-            ProgressView()
-              .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-          }
-        }
-        .onAppear {
-          scrollProxy = proxy
-        }
-        .confirmationDialog("Delete Check-in Confirmation",
-                            isPresented: $viewModel.showDeleteCheckInConfirmationDialog,
-                            presenting: viewModel.showDeleteConfirmationFor) { presenting in
-          Button(
-            "Delete the check-in for \(presenting.product.getDisplayName(.fullName))",
-            role: .destructive,
-            action: {
-              viewModel.deleteCheckIn(checkIn: presenting)
-            }
-          )
-        }
+        )
+      }
 
-        .onChange(of: scrollToTop, perform: { _ in
-          withAnimation {
-            scrollProxy?.scrollTo(topAnchor, anchor: .top)
+      .onChange(of: scrollToTop, perform: { _ in
+        withAnimation {
+          scrollProxy?.scrollTo(topAnchor, anchor: .top)
+        }
+      })
+      .onChange(of: resetView, perform: { _ in
+        viewModel.refresh()
+      })
+      .refreshable {
+        viewModel.refresh()
+      }
+      .task {
+        viewModel.fetchActivityFeedItems(onComplete: {
+          if splashScreenManager.state != .finished {
+            splashScreenManager.dismiss()
           }
         })
-        .onChange(of: resetView, perform: { _ in
-          viewModel.refresh()
-        })
-        .refreshable {
-          viewModel.refresh()
-        }
-        .task {
-          viewModel.fetchActivityFeedItems(onComplete: {
-            if splashScreenManager.state != .finished {
-              splashScreenManager.dismiss()
-            }
-          })
-        }
       }
     }
     .sheet(item: $viewModel.editCheckIn) { checkIn in
@@ -88,7 +86,7 @@ struct CheckInListView<Header>: View
   private var checkInsList: some View {
     ForEach(viewModel.checkIns, id: \.self) { checkIn in
       CheckInCardView(checkIn: checkIn,
-                      loadedFrom: .activity(profileManager.getProfile()))
+                      loadedFrom: getLoadedFrom)
         .contextMenu {
           ShareLink("Share", item: createLinkToScreen(.checkIn(id: checkIn.id)))
           Divider()
@@ -125,6 +123,19 @@ struct CheckInListView<Header>: View
       NavigationLink(value: Route.settings) {
         Image(systemName: "gear").imageScale(.large)
       }
+    }
+  }
+
+  var getLoadedFrom: CheckInCardView.LoadedFrom {
+    switch viewModel.fetcher {
+    case let .profile(profile):
+      return .profile(profile)
+    case let .location(location):
+      return .location(location)
+    case .product:
+      return .product
+    case .activityFeed:
+      return .activity(profileManager.getProfile())
     }
   }
 }

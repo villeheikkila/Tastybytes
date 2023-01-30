@@ -14,10 +14,19 @@ struct CheckInCardView: View {
   let checkIn: CheckIn
   let loadedFrom: LoadedFrom
 
-  private var avoidStackingProfilePage: Bool {
+  private func isLoadedFromProfile(_: Profile) -> Bool {
     switch loadedFrom {
-    case let .profile(profile):
-      return profile.id == checkIn.profile.id
+    case let .profile(fromProfile):
+      return fromProfile == checkIn.profile
+    default:
+      return false
+    }
+  }
+
+  private func isLoadedFromLocation(_ location: Location) -> Bool {
+    switch loadedFrom {
+    case let .location(fromLocation):
+      return fromLocation == location
     default:
       return false
     }
@@ -25,53 +34,22 @@ struct CheckInCardView: View {
 
   var body: some View {
     VStack {
-      VStack {
-        header
-        productSection
-        if !checkIn.isEmpty() {
-          checkInSection
-        }
-        if let imageUrl = checkIn.getImageUrl() {
-          CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
-            image
-              .resizable()
-              .scaledToFill()
-          } placeholder: {
-            ProgressView()
-          }
-        }
-        if checkIn.taggedProfiles.count > 0 {
-          VStack {
-            HStack {
-              Text(verbatim: "Tagged friends")
-                .font(.subheadline)
-                .fontWeight(.medium)
-              Spacer()
-            }
-            HStack {
-              ForEach(checkIn.taggedProfiles, id: \.id) {
-                taggedProfile in
-                NavigationLink(value: Route.profile(taggedProfile)) {
-                  AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 32, id: taggedProfile.id)
-                }
-              }
-              Spacer()
-            }
-          }
-          .padding([.trailing, .leading], 10)
-        }
-        footer
-      }
-      .padding([.top, .bottom], 10)
-      .background(Color(.tertiarySystemBackground))
-      .clipped()
+      header
+      productSection
+      checkInImage
+      checkInSection
+      taggedProfilesSection
+      footer
     }
+    .padding([.top, .bottom], 10)
+    .background(Color(.tertiarySystemBackground))
+    .clipped()
     .cornerRadius(8)
-    .shadow(color: Color.black.opacity(0.2), radius: 4, x: 2, y: 2)
+    .shadow(color: Color.black.opacity(0.1), radius: 4, x: 2, y: 2)
   }
 
   private var header: some View {
-    NavigationLink(value: Route.profile(checkIn.profile)) {
+    OptionalNavigationLink(value: Route.profile(checkIn.profile), enabled: !isLoadedFromProfile(checkIn.profile)) {
       HStack {
         AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 30, id: checkIn.profile.id)
         Text(checkIn.profile.preferredName)
@@ -79,7 +57,7 @@ struct CheckInCardView: View {
           .foregroundColor(.primary)
         Spacer()
         if let location = checkIn.location {
-          NavigationLink(value: Route.location(location)) {
+          OptionalNavigationLink(value: Route.location(location), enabled: !isLoadedFromLocation(location)) {
             Text("\(location.name) \(location.country?.emoji ?? "")")
               .font(.system(size: 12, weight: .bold, design: .default))
               .foregroundColor(.primary)
@@ -88,7 +66,19 @@ struct CheckInCardView: View {
       }
     }
     .padding([.leading, .trailing], 10)
-    .disabled(avoidStackingProfilePage)
+  }
+
+  @ViewBuilder
+  private var checkInImage: some View {
+    if let imageUrl = checkIn.getImageUrl() {
+      CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+        image
+          .resizable()
+          .scaledToFill()
+      } placeholder: {
+        ProgressView()
+      }
+    }
   }
 
   private var productSection: some View {
@@ -144,38 +134,68 @@ struct CheckInCardView: View {
     .buttonStyle(.plain)
   }
 
+  @ViewBuilder
   private var checkInSection: some View {
-    OptionalNavigationLink(
-      value: Route.checkIn(checkIn),
-      enabled: loadedFrom == .checkIn
-    ) {
-      VStack(spacing: 8) {
-        HStack {
-          VStack(alignment: .leading, spacing: 8) {
-            if let rating = checkIn.rating {
-              RatingView(rating: rating)
-            }
+    if !checkIn.isEmpty() {
+      OptionalNavigationLink(
+        value: Route.checkIn(checkIn),
+        enabled: loadedFrom == .checkIn
+      ) {
+        VStack(spacing: 8) {
+          HStack {
+            VStack(alignment: .leading, spacing: 8) {
+              if let rating = checkIn.rating {
+                RatingView(rating: rating)
+              }
 
-            if let review = checkIn.review {
-              Text(review)
-                .fontWeight(.medium)
-                .foregroundColor(.primary)
-            }
+              if let review = checkIn.review {
+                Text(review)
+                  .fontWeight(.medium)
+                  .foregroundColor(.primary)
+              }
 
-            if let flavors = checkIn.flavors {
-              HStack {
-                WrappingHStack(flavors, id: \.self, spacing: .constant(4)) {
-                  flavor in
-                  ChipView(title: flavor.name.capitalized, cornerRadius: 5)
+              if let flavors = checkIn.flavors {
+                HStack {
+                  WrappingHStack(flavors, id: \.self, spacing: .constant(4)) {
+                    flavor in
+                    ChipView(title: flavor.name.capitalized, cornerRadius: 5)
+                  }
                 }
               }
             }
           }
         }
       }
+      .padding([.leading, .trailing], 10)
+      .buttonStyle(.plain)
     }
-    .padding([.leading, .trailing], 10)
-    .buttonStyle(.plain)
+  }
+
+  @ViewBuilder
+  private var taggedProfilesSection: some View {
+    if checkIn.taggedProfiles.count > 0 {
+      VStack(spacing: 4) {
+        HStack {
+          Text(verbatim: "Tagged friends")
+            .font(.subheadline)
+            .fontWeight(.medium)
+          Spacer()
+        }
+        HStack(spacing: 4) {
+          ForEach(checkIn.taggedProfiles, id: \.id) {
+            taggedProfile in
+            OptionalNavigationLink(
+              value: Route.profile(taggedProfile),
+              enabled: isLoadedFromProfile(taggedProfile)
+            ) {
+              AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 32, id: taggedProfile.id)
+            }
+          }
+          Spacer()
+        }
+      }
+      .padding([.trailing, .leading], 10)
+    }
   }
 
   private var footer: some View {
