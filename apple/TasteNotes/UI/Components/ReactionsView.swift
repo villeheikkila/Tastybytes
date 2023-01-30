@@ -24,7 +24,8 @@ struct ReactionsView: View {
         Image(systemName: "hand.thumbsup.fill")
           .frame(height: 24, alignment: .leading)
           .foregroundColor(Color(.systemYellow))
-      }.disabled(viewModel.isLoading)
+      }
+      .disabled(viewModel.isLoading)
     }
   }
 }

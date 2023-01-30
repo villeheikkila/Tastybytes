@@ -202,8 +202,7 @@ struct ProfileView: View {
     }
     .background(Color(.tertiarySystemBackground))
     .cornerRadius(10)
-    .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
-    .padding([.leading, .trailing], 5)
+    .shadow(color: Color.black.opacity(0.1), radius: 20, x: 0, y: 0)
   }
 }
 

@@ -3,7 +3,7 @@ import SwiftUI
 struct FriendSheetView: View {
   @Binding var taggedFriends: [Profile]
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject var profileManager: ProfileManager
+  @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
 
   var body: some View {
@@ -51,7 +51,9 @@ extension FriendSheetView {
         // TODO: Make a view / db function to get this data directly
         switch await repository.friend.getByUserId(userId: currentUserId, status: .accepted) {
         case let .success(acceptedFriends):
-          self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }
+          withAnimation {
+            self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }
+          }
         case let .failure(error):
           print(error)
         }

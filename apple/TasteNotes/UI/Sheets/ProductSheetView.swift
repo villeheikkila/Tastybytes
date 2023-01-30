@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct ProductSheetView: View {
-  @EnvironmentObject var router: Router
-  @EnvironmentObject var toastManager: ToastManager
-  @StateObject var viewModel = ViewModel()
-  @State var mode = Mode.new
+  @EnvironmentObject private var router: Router
+  @EnvironmentObject private var toastManager: ToastManager
+  @StateObject private var viewModel = ViewModel()
+  @State private var mode = Mode.new
   @FocusState private var focusedField: Focusable?
 
   let initialProduct: Product.Joined?

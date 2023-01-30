@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProductScreenView: View {
   @StateObject private var viewModel = ViewModel()
-  @EnvironmentObject var profileManager: ProfileManager
+  @EnvironmentObject private var profileManager: ProfileManager
   @State private var scrollToTop: Int = 0
   @State private var resetView: Int = 0
 
