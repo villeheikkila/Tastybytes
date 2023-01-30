@@ -73,10 +73,8 @@ extension FlavorSheetView {
         Task {
           switch await repository.flavor.getAll() {
           case let .success(flavors):
-            await MainActor.run {
-              withAnimation {
-                self.availableFlavors = flavors
-              }
+            withAnimation {
+              self.availableFlavors = flavors
             }
           case let .failure(error):
             print(error)

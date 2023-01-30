@@ -77,30 +77,28 @@ extension ApplicationSettingsScreenView {
 
     var initialColorScheme: ColorScheme?
 
-    func setInitialValues(systemColorScheme: ColorScheme, profile: Profile.Extended?) {
+    func setInitialValues(systemColorScheme: ColorScheme, profile _: Profile.Extended?) {
       Task {
         switch await repository.profile.getCurrentUser() {
         case let .success(profile):
-          await MainActor.run {
-            switch profile.settings.colorScheme {
-            case .light:
-              self.isDarkMode = false
-              self.isSystemColor = false
-            case .dark:
-              self.isDarkMode = true
-              self.isSystemColor = false
-            case .system:
-              self.isDarkMode = initialColorScheme == ColorScheme.dark
-              self.isSystemColor = true
-            }
-
-            self.reactionNotifications = profile.settings.sendReactionNotifications
-            self.friendRequestNotifications = profile.settings.sendFriendRequestNotifications
-            self.checkInTagNotifications = profile.settings.sendTaggedCheckInNotifications
-            self.isPublicProfile = profile.settings.publicProfile
-
-            initialColorScheme = systemColorScheme
+          switch profile.settings.colorScheme {
+          case .light:
+            self.isDarkMode = false
+            self.isSystemColor = false
+          case .dark:
+            self.isDarkMode = true
+            self.isSystemColor = false
+          case .system:
+            self.isDarkMode = initialColorScheme == ColorScheme.dark
+            self.isSystemColor = true
           }
+
+          self.reactionNotifications = profile.settings.sendReactionNotifications
+          self.friendRequestNotifications = profile.settings.sendFriendRequestNotifications
+          self.checkInTagNotifications = profile.settings.sendTaggedCheckInNotifications
+          self.isPublicProfile = profile.settings.publicProfile
+
+          initialColorScheme = systemColorScheme
         case let .failure(error):
           print(error)
         }

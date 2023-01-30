@@ -73,20 +73,16 @@ extension CompanySheetView {
     @Published var companyName = ""
 
     func createNew() {
-      DispatchQueue.main.async {
-        self.companyName = self.searchText
-        self.status = Status.add
-      }
+      companyName = searchText
+      status = Status.add
     }
 
     func searchCompanies() {
       Task {
         switch await repository.company.search(searchTerm: searchText) {
         case let .success(searchResults):
-          await MainActor.run {
-            self.searchResults = searchResults
-            self.status = Status.searched
-          }
+          self.searchResults = searchResults
+          self.status = Status.searched
         case let .failure(error):
           print(error)
         }

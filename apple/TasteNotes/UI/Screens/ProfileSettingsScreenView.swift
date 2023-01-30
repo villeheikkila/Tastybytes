@@ -193,11 +193,9 @@ extension ProfileSettingsScreenView {
       Task {
         let user = try await supabaseClient.auth.session.user
 
-        await MainActor.run {
-          self.updateFormValues(profile: profile)
-          self.initialEmail = user.email
-          self.email = user.email ?? ""
-        }
+        self.updateFormValues(profile: profile)
+        self.initialEmail = user.email
+        self.email = user.email ?? ""
       }
     }
 
@@ -221,16 +219,10 @@ extension ProfileSettingsScreenView {
           update: update
         ) {
         case let .success(profile):
-          await MainActor.run {
-            self.updateFormValues(profile: profile)
-            onSuccess()
-          }
-
+          self.updateFormValues(profile: profile)
+          onSuccess()
         case let .failure(error):
-          await MainActor.run {
-            print(error.localizedDescription)
-            onFailure(error)
-          }
+          onFailure(error)
         }
       }
     }
@@ -258,10 +250,8 @@ extension ProfileSettingsScreenView {
       Task {
         switch await repository.profile.currentUserExport() {
         case let .success(csvText):
-          await MainActor.run {
-            self.csvExport = CSVFile(initialText: csvText)
-            self.showingExporter = true
-          }
+          self.csvExport = CSVFile(initialText: csvText)
+          self.showingExporter = true
         case let .failure(error):
           onError(error.localizedDescription)
         }

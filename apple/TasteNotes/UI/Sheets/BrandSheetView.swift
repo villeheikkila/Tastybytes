@@ -54,9 +54,7 @@ extension BrandSheetView {
       Task {
         switch await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id) {
         case let .success(brandsWithSubBrands):
-          await MainActor.run {
-            self.brandsWithSubBrands = brandsWithSubBrands
-          }
+          self.brandsWithSubBrands = brandsWithSubBrands
         case let .failure(error):
           print(error)
         }

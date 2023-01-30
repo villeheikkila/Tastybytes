@@ -323,9 +323,7 @@ extension ProductSheetView {
               .NewRequest(name: newSubcategoryName, category: categoryWithSubcategories))
           {
           case .success:
-            await MainActor.run {
-              self.loadCategories(categoryWithSubcategories.name)
-            }
+            self.loadCategories(categoryWithSubcategories.name)
           case let .failure(error):
             print(error)
           }
@@ -334,29 +332,21 @@ extension ProductSheetView {
     }
 
     func setBrand(brand: Brand.JoinedSubBrands) {
-      DispatchQueue.main.async {
-        self.brand = brand
-        self.subBrand = brand.subBrands.first(where: { $0.name == nil })
-        self.activeSheet = nil
-      }
+      self.brand = brand
+      subBrand = brand.subBrands.first(where: { $0.name == nil })
+      activeSheet = nil
     }
 
     func setActiveSheet(_ sheet: Sheet) {
-      DispatchQueue.main.async {
-        self.activeSheet = sheet
-      }
+      activeSheet = sheet
     }
 
     func setBrandOwner(_ brandOwner: Company) {
-      DispatchQueue.main.async {
-        self.brandOwner = brandOwner
-      }
+      self.brandOwner = brandOwner
     }
 
     func dismissSheet() {
-      DispatchQueue.main.async {
-        self.activeSheet = nil
-      }
+      activeSheet = nil
     }
 
     func isValid() -> Bool {
@@ -378,23 +368,21 @@ extension ProductSheetView {
             .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
           {
           case let .success(brandsWithSubBrands):
-            await MainActor.run {
-              self.categories = categories
-              self.category = categories.first(where: { $0.id == initialProduct.category.id })
-              self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
-              self.brandOwner = initialProduct.subBrand.brand.brandOwner
-              self.brand = Brand.JoinedSubBrands(
-                id: initialProduct.subBrand.brand.id,
-                name: initialProduct.subBrand.brand.name,
-                isVerified: initialProduct.subBrand.brand.isVerified,
-                subBrands: brandsWithSubBrands
-                  .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? []
-              )
-              self.subBrand = initialProduct.subBrand.getSubBrand()
-              self.name = initialProduct.name
-              self.description = initialProduct.description ?? ""
-              self.hasSubBrand = initialProduct.subBrand.name != nil
-            }
+            self.categories = categories
+            self.category = categories.first(where: { $0.id == initialProduct.category.id })
+            self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
+            self.brandOwner = initialProduct.subBrand.brand.brandOwner
+            self.brand = Brand.JoinedSubBrands(
+              id: initialProduct.subBrand.brand.id,
+              name: initialProduct.subBrand.brand.name,
+              isVerified: initialProduct.subBrand.brand.isVerified,
+              subBrands: brandsWithSubBrands
+                .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? []
+            )
+            self.subBrand = initialProduct.subBrand.getSubBrand()
+            self.name = initialProduct.name
+            self.description = initialProduct.description ?? ""
+            self.hasSubBrand = initialProduct.subBrand.name != nil
           case let .failure(error):
             print(error)
           }
@@ -406,19 +394,15 @@ extension ProductSheetView {
 
     func loadInitialBarcode(_ initialBarcode: Barcode?) {
       guard let initialBarcode else { return }
-      DispatchQueue.main.async {
-        self.barcode = initialBarcode
-      }
+      barcode = initialBarcode
     }
 
     func loadCategories(_ initialCategory: Category.Name = Category.Name.beverage) {
       Task {
         switch await repository.category.getAllWithSubcategories() {
         case let .success(categories):
-          await MainActor.run {
-            self.categories = categories
-            self.category = categories.first(where: { $0.name == initialCategory })
-          }
+          self.categories = categories
+          self.category = categories.first(where: { $0.name == initialCategory })
         case let .failure(error):
           print(error)
         }

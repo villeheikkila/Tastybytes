@@ -52,9 +52,7 @@ extension SubBrandSheetView {
           .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brand.id))
         {
         case let .success(newSubBrand):
-          await MainActor.run {
-            onSelect(newSubBrand, true)
-          }
+          onSelect(newSubBrand, true)
         case let .failure(error):
           print(error)
         }

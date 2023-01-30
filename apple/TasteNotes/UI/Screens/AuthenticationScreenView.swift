@@ -127,12 +127,10 @@ struct AuthenticationScreenView: View {
   }
 
   private func onSignUp() {
-    DispatchQueue.main.async {
-      mode = .signIn
-      email = ""
-      password = ""
-      toastManager.toggle(.success("Confirmation email has been sent!"))
-    }
+    mode = .signIn
+    email = ""
+    password = ""
+    toastManager.toggle(.success("Confirmation email has been sent!"))
   }
 
   private func primaryActionTapped() {

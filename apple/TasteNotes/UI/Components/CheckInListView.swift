@@ -169,11 +169,9 @@ extension CheckInListView {
     }
 
     func refresh() {
-      DispatchQueue.main.async {
-        self.page = 0
-        self.checkIns = [CheckIn]()
-        self.fetchActivityFeedItems()
-      }
+      page = 0
+      checkIns = [CheckIn]()
+      fetchActivityFeedItems()
     }
 
     func deleteCheckIn(checkIn: CheckIn) {
@@ -192,26 +190,20 @@ extension CheckInListView {
 
     func onCheckInUpdate(_ checkIn: CheckIn) {
       if let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) {
-        DispatchQueue.main.async {
-          self.checkIns[index] = checkIn
-        }
+        checkIns[index] = checkIn
       }
     }
 
     func fetchActivityFeedItems(onComplete: (() -> Void)? = nil) {
       let (from, to) = getPagination(page: page, size: pageSize)
       Task {
-        await MainActor.run {
-          self.isLoading = true
-        }
+        self.isLoading = true
 
         switch await checkInFetcher(from: from, to: to) {
         case let .success(checkIns):
-          await MainActor.run {
-            self.checkIns.append(contentsOf: checkIns)
-            self.page += 1
-            self.isLoading = false
-          }
+          self.checkIns.append(contentsOf: checkIns)
+          self.page += 1
+          self.isLoading = false
 
           if let onComplete {
             onComplete()

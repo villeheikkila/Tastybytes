@@ -275,9 +275,7 @@ extension SearchTabView {
     }
 
     func resetBarcode() {
-      DispatchQueue.main.async {
-        self.barcode = nil
-      }
+      barcode = nil
     }
 
     func addBarcodeToProduct(onComplete: @escaping () -> Void) {
@@ -285,12 +283,10 @@ extension SearchTabView {
         Task {
           switch await repository.product.addBarcodeToProduct(product: addBarcodeTo, barcode: barcode) {
           case .success:
-            await MainActor.run {
-              self.barcode = nil
-              self.addBarcodeTo = nil
-              self.showAddBarcodeConfirmation = false
-              onComplete()
-            }
+            self.barcode = nil
+            self.addBarcodeTo = nil
+            self.showAddBarcodeConfirmation = false
+            onComplete()
           case let .failure(error):
             print(error.localizedDescription)
           }
@@ -302,10 +298,8 @@ extension SearchTabView {
       Task {
         switch await repository.product.search(searchTerm: searchTerm, categoryName: tokens.first) {
         case let .success(searchResults):
-          await MainActor.run {
-            self.products = searchResults
-            self.isSearched = true
-          }
+          self.products = searchResults
+          self.isSearched = true
         case let .failure(error):
           print(error)
         }
@@ -316,9 +310,7 @@ extension SearchTabView {
       Task {
         switch await repository.profile.search(searchTerm: searchTerm, currentUserId: nil) {
         case let .success(searchResults):
-          await MainActor.run {
-            self.profiles = searchResults
-          }
+          self.profiles = searchResults
         case let .failure(error):
           print(error)
         }
@@ -329,11 +321,9 @@ extension SearchTabView {
       Task {
         switch await repository.product.search(barcode: barcode) {
         case let .success(searchResults):
-          await MainActor.run {
-            self.barcode = barcode
-            self.products = searchResults
-            self.isSearched = true
-          }
+          self.barcode = barcode
+          self.products = searchResults
+          self.isSearched = true
         case let .failure(error):
           print(error)
         }
@@ -344,10 +334,7 @@ extension SearchTabView {
       Task {
         switch await repository.company.search(searchTerm: searchTerm) {
         case let .success(searchResults):
-          await MainActor.run {
-            self.companies = searchResults
-          }
-
+          self.companies = searchResults
         case let .failure(error):
           print(error)
         }
@@ -358,10 +345,7 @@ extension SearchTabView {
       Task {
         switch await repository.location.search(searchTerm: searchTerm) {
         case let .success(searchResults):
-          await MainActor.run {
-            self.locations = searchResults
-          }
-
+          self.locations = searchResults
         case let .failure(error):
           print(error)
         }

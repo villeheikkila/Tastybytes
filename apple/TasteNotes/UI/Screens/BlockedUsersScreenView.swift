@@ -86,15 +86,11 @@ extension BlockedUsersScreenView {
       Task {
         switch await repository.friend.delete(id: friend.id) {
         case .success:
-          await MainActor.run {
-            withAnimation {
-              self.blockedUsers.remove(object: friend)
-            }
+          withAnimation {
+            self.blockedUsers.remove(object: friend)
           }
         case let .failure(error):
-          await MainActor.run {
-            self.error = error
-          }
+          self.error = error
         }
       }
     }
@@ -103,16 +99,12 @@ extension BlockedUsersScreenView {
       Task {
         switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: user.id, status: .blocked)) {
         case let .success(blockedUser):
-          await MainActor.run {
-            withAnimation {
-              self.blockedUsers.append(blockedUser)
-            }
-            onSuccess()
+          withAnimation {
+            self.blockedUsers.append(blockedUser)
           }
+          onSuccess()
         case let .failure(error):
-          await MainActor.run {
-            onFailure(error.localizedDescription)
-          }
+          onFailure(error.localizedDescription)
         }
       }
     }
@@ -122,15 +114,11 @@ extension BlockedUsersScreenView {
         Task {
           switch await repository.friend.getByUserId(userId: userId, status: .blocked) {
           case let .success(blockedUsers):
-            await MainActor.run {
-              withAnimation {
-                self.blockedUsers = blockedUsers
-              }
+            withAnimation {
+              self.blockedUsers = blockedUsers
             }
           case let .failure(error):
-            await MainActor.run {
-              self.error = error
-            }
+            self.error = error
           }
         }
       }

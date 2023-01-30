@@ -48,10 +48,8 @@ extension ReactionsView {
         if let reaction = checkInReactions.first(where: { $0.profile.id == userId }) {
           switch await repository.checkInReactions.delete(id: reaction.id) {
           case .success:
-            await MainActor.run {
-              withAnimation {
-                self.checkInReactions.remove(object: reaction)
-              }
+            withAnimation {
+              self.checkInReactions.remove(object: reaction)
             }
           case let .failure(error):
             print(error)
@@ -61,10 +59,8 @@ extension ReactionsView {
             .insert(newCheckInReaction: CheckInReaction.NewRequest(checkInId: checkIn.id))
           {
           case let .success(checkInReaction):
-            await MainActor.run {
-              withAnimation {
-                self.checkInReactions.append(checkInReaction)
-              }
+            withAnimation {
+              self.checkInReactions.append(checkInReaction)
             }
           case let .failure(error):
             print(error)

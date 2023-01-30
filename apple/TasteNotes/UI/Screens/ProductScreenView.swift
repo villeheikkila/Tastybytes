@@ -139,9 +139,7 @@ extension ProductScreenView {
       Task {
         switch await repository.product.getSummaryById(id: product.id) {
         case let .success(summary):
-          await MainActor.run {
-            self.summary = summary
-          }
+          self.summary = summary
         case let .failure(error):
           print(error)
         }

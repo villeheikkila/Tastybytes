@@ -143,9 +143,7 @@ extension CheckInScreenView {
       Task {
         switch await repository.checkInComment.getByCheckInId(id: checkIn.id) {
         case let .success(checkIns):
-          await MainActor.run {
-            self.checkInComments = checkIns
-          }
+          self.checkInComments = checkIns
         case let .failure(error):
           print(error)
         }
@@ -156,10 +154,8 @@ extension CheckInScreenView {
       Task {
         switch await repository.checkInComment.deleteById(id: comment.id) {
         case .success:
-          await MainActor.run {
-            withAnimation {
-              self.checkInComments.remove(object: comment)
-            }
+          withAnimation {
+            self.checkInComments.remove(object: comment)
           }
         case let .failure(error):
           print(error)
@@ -174,12 +170,10 @@ extension CheckInScreenView {
         let result = await repository.checkInComment.insert(newCheckInComment: newCheckInComment)
         switch result {
         case let .success(newCheckInComment):
-          await MainActor.run {
-            withAnimation {
-              self.checkInComments.append(newCheckInComment)
-            }
-            self.comment = ""
+          withAnimation {
+            self.checkInComments.append(newCheckInComment)
           }
+          self.comment = ""
         case let .failure(error):
           print(error)
         }
@@ -201,10 +195,8 @@ extension CheckInScreenView {
       Task {
         switch await repository.checkInComment.update(updateCheckInComment: updateCheckInComment) {
         case let .success(updatedComment):
-          DispatchQueue.main.async {
-            if let index = self.checkInComments.firstIndex(where: { $0.id == updatedComment.id }) {
-              self.checkInComments[index] = updatedComment
-            }
+          if let index = self.checkInComments.firstIndex(where: { $0.id == updatedComment.id }) {
+            self.checkInComments[index] = updatedComment
           }
         case let .failure(error):
           print(error.localizedDescription)

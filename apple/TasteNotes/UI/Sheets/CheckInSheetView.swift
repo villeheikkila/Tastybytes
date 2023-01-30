@@ -292,38 +292,26 @@ extension CheckInSheetView {
     }
 
     func setActiveSheet(_ sheet: Sheet) {
-      DispatchQueue.main.async {
-        self.activeSheet = sheet
-      }
+      activeSheet = sheet
     }
 
     func setLocation(_ location: Location) {
-      DispatchQueue.main.async {
-        self.location = location
-      }
+      self.location = location
     }
 
     func setManufacturer(_ company: Company) {
-      DispatchQueue.main.async {
-        self.manufacturer = company
-      }
+      manufacturer = company
     }
 
     func setImageFromCamera(_ image: UIImage) {
       Task {
-        await MainActor.run {
-          self.image = image
-          self.showCamera = false
-        }
+        self.image = image
+        self.showCamera = false
       }
     }
 
     func setImageFromPicker(pickedImage: UIImage) {
-      Task {
-        await MainActor.run {
-          self.image = pickedImage
-        }
-      }
+      image = pickedImage
     }
 
     func updateCheckIn(_ checkIn: CheckIn, _ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) {
@@ -390,9 +378,7 @@ extension CheckInSheetView {
       Task {
         switch await repository.category.getServingStylesByCategory(categoryId: product.category.id) {
         case let .success(categoryServingStyles):
-          await MainActor.run {
-            self.servingStyles = categoryServingStyles.servingStyles
-          }
+          self.servingStyles = categoryServingStyles.servingStyles
         case let .failure(error):
           print(error)
         }

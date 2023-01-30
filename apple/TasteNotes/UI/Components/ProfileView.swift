@@ -231,10 +231,8 @@ extension ProfileView {
       Task {
         switch await repository.checkIn.getSummaryByProfileId(id: userId) {
         case let .success(summary):
-          await MainActor.run {
-            withAnimation {
-              self.profileSummary = summary
-            }
+          withAnimation {
+            self.profileSummary = summary
           }
         case let .failure(error):
           print(error)

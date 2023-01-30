@@ -1,6 +1,6 @@
 import SwiftUI
 
-class ProfileManager: ObservableObject {
+@MainActor class ProfileManager: ObservableObject {
   @Published private(set) var isLoggedIn = false
   @Published private(set) var colorScheme: ColorScheme?
   @Published private(set) var friends = [Profile]()
@@ -35,12 +35,10 @@ class ProfileManager: ObservableObject {
     Task {
       switch await repository.profile.getCurrentUser() {
       case let .success(currentUserProfile):
-        await MainActor.run {
-          self.profile = currentUserProfile
-          setPreferredColorScheme(settings: currentUserProfile.settings)
-          self.isLoggedIn = true
-          loadFriends()
-        }
+        self.profile = currentUserProfile
+        setPreferredColorScheme(settings: currentUserProfile.settings)
+        self.isLoggedIn = true
+        loadFriends()
       case let .failure(error):
         print("error while loading profile: \(error.localizedDescription)")
         self.isLoggedIn = false
@@ -73,9 +71,7 @@ class ProfileManager: ObservableObject {
     Task {
       switch await repository.friend.getByUserId(userId: getId(), status: nil) {
       case let .success(friends):
-        await MainActor.run {
-          self.friends = friends.map { $0.getFriend(userId: getId()) }
-        }
+        self.friends = friends.map { $0.getFriend(userId: getId()) }
       case let .failure(error):
         print(error)
       }
@@ -90,14 +86,10 @@ class ProfileManager: ObservableObject {
     Task {
       switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
       case let .success(newFriend):
-        await MainActor.run {
-          self.friends.append(newFriend.receiver)
-          onSuccess()
-        }
+        self.friends.append(newFriend.receiver)
+        onSuccess()
       case let .failure(error):
-        await MainActor.run {
-          print(error)
-        }
+        print(error)
       }
     }
   }

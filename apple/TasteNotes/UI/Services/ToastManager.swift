@@ -10,13 +10,11 @@ class ToastManager: ObservableObject {
   }
 
   func toggle(_ type: ToastType) {
-    DispatchQueue.main.async {
-      switch type {
-      case let .success(title):
-        self.toast = AlertToast(type: .complete(.green), title: title)
-      case let .error(title):
-        self.toast = AlertToast(type: .error(.red), title: title)
-      }
+    switch type {
+    case let .success(title):
+      toast = AlertToast(type: .complete(.green), title: title)
+    case let .error(title):
+      toast = AlertToast(type: .error(.red), title: title)
     }
   }
 }

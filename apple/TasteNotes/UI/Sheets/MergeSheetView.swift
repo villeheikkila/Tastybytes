@@ -64,9 +64,7 @@ extension MergeSheetView {
       Task {
         switch await repository.product.search(searchTerm: productSearchTerm, categoryName: nil) {
         case let .success(searchResults):
-          await MainActor.run {
-            self.productSearchResults = searchResults.filter { $0.id != productToMerge.id }
-          }
+          self.productSearchResults = searchResults.filter { $0.id != productToMerge.id }
         case let .failure(error):
           print(error)
         }

@@ -252,12 +252,10 @@ extension CompanyScreenView {
             .update(updateRequest: Company.UpdateRequest(id: companyJoined.id, name: newCompanyNameSuggestion))
           {
           case let .success(updatedCompany):
-            await MainActor.run {
-              withAnimation {
-                self.companyJoined = updatedCompany
-              }
-              self.activeSheet = nil
+            withAnimation {
+              self.companyJoined = updatedCompany
             }
+            self.activeSheet = nil
           case let .failure(error):
             print(error)
           }
@@ -269,10 +267,8 @@ extension CompanyScreenView {
       Task {
         switch await repository.company.getJoinedById(id: companyId) {
         case let .success(company):
-          await MainActor.run {
-            self.companyJoined = company
-            self.newCompanyNameSuggestion = company.name
-          }
+          self.companyJoined = company
+          self.newCompanyNameSuggestion = company.name
         case let .failure(error):
           print(error)
         }
@@ -281,9 +277,7 @@ extension CompanyScreenView {
       Task {
         switch await repository.company.getSummaryById(id: companyId) {
         case let .success(summary):
-          await MainActor.run {
-            self.summary = summary
-          }
+          self.summary = summary
         case let .failure(error):
           print(error)
         }

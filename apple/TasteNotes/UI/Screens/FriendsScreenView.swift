@@ -119,17 +119,13 @@ extension FriendsScreenView {
       Task {
         switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
         case let .success(newFriend):
-          await MainActor.run {
-            withAnimation {
-              self.friends.append(newFriend)
-            }
-            self.showUserSearchSheet = false
-            onSuccess()
+          withAnimation {
+            self.friends.append(newFriend)
           }
+          self.showUserSearchSheet = false
+          onSuccess()
         case let .failure(error):
-          await MainActor.run {
-            self.modalError = error
-          }
+          self.modalError = error
         }
       }
     }
@@ -146,22 +142,16 @@ extension FriendsScreenView {
         case let .success(updatedFriend):
 
           if updatedFriend.status != Friend.Status.blocked {
-            await MainActor.run {
-              withAnimation {
-                self.friends.replace(friend, with: updatedFriend)
-              }
+            withAnimation {
+              self.friends.replace(friend, with: updatedFriend)
             }
           } else {
-            await MainActor.run {
-              withAnimation {
-                self.friends.remove(object: friend)
-              }
+            withAnimation {
+              self.friends.remove(object: friend)
             }
           }
         case let .failure(error):
-          await MainActor.run {
-            self.error = error
-          }
+          self.error = error
         }
       }
     }
@@ -170,16 +160,12 @@ extension FriendsScreenView {
       Task {
         switch await repository.friend.delete(id: friend.id) {
         case .success:
-          await MainActor.run {
-            withAnimation {
-              self.friends.remove(object: friend)
-            }
-            showRemoveFriendConfirmation = false
+          withAnimation {
+            self.friends.remove(object: friend)
           }
+          showRemoveFriendConfirmation = false
         case let .failure(error):
-          await MainActor.run {
-            self.error = error
-          }
+          self.error = error
         }
       }
     }
@@ -191,13 +177,9 @@ extension FriendsScreenView {
           status: currentUser.id == profile.id ? .none : Friend.Status.accepted
         ) {
         case let .success(friends):
-          await MainActor.run {
-            self.friends = friends
-          }
+          self.friends = friends
         case let .failure(error):
-          await MainActor.run {
-            self.error = error
-          }
+          self.error = error
         }
       }
     }
