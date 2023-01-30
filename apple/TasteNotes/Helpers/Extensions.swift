@@ -12,13 +12,10 @@ extension URLCache {
 }
 
 public extension Array where Element: Equatable {
-  @discardableResult
-  mutating func replace(_ element: Element, with new: Element) -> Bool {
+  mutating func replace(_ element: Element, with new: Element) {
     if let toReplace = firstIndex(where: { $0 == element }) {
       self[toReplace] = new
-      return true
     }
-    return false
   }
 }
 

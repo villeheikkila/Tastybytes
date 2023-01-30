@@ -13,8 +13,6 @@ struct FriendsScreenView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var noficationManager: NotificationManager
-  @State private var friendToBeRemoved: Friend?
-  @State private var showRemoveFriendConfirmation = false
 
   init(profile: Profile) {
     _viewModel = StateObject(wrappedValue: ViewModel(profile: profile))
@@ -26,11 +24,10 @@ struct FriendsScreenView: View {
         if viewModel.profile == profileManager.getProfile() {
           FriendListItemView(friend: friend,
                              currentUser: profileManager.getProfile(),
-                             onAccept: { id in viewModel.updateFriendRequest(id: id, newStatus: .accepted) },
-                             onBlock: { id in viewModel.updateFriendRequest(id: id, newStatus: .blocked) },
-                             onDelete: { friend in
-                               friendToBeRemoved = friend
-                               showRemoveFriendConfirmation = true
+                             onAccept: { f in viewModel.updateFriendRequest(friend: f, newStatus: .accepted) },
+                             onBlock: { f in viewModel.updateFriendRequest(friend: f, newStatus: .blocked) },
+                             onDelete: { f in
+                               viewModel.friendToBeRemoved = f
                              })
         } else {
           FriendListItemSimpleView(profile: friend.getFriend(userId: viewModel.profile.id))
@@ -71,7 +68,8 @@ struct FriendsScreenView: View {
     }
     .errorAlert(error: $viewModel.error)
     .confirmationDialog("Delete Friend Confirmation",
-                        isPresented: $showRemoveFriendConfirmation, presenting: friendToBeRemoved) { presenting in
+                        isPresented: $viewModel.showRemoveFriendConfirmation,
+                        presenting: viewModel.friendToBeRemoved) { presenting in
       Button(
         "Remove \(presenting.getFriend(userId: profileManager.getId()).preferredName) from friends",
         role: .destructive,
@@ -101,9 +99,15 @@ extension FriendsScreenView {
     @Published var products = [Profile]()
     @Published var friends = [Friend]()
     @Published var showUserSearchSheet = false
-
     @Published var error: Error?
     @Published var modalError: Error?
+    @Published var friendToBeRemoved: Friend? {
+      didSet {
+        showRemoveFriendConfirmation = true
+      }
+    }
+
+    @Published var showRemoveFriendConfirmation = false
 
     let profile: Profile
 
@@ -124,35 +128,39 @@ extension FriendsScreenView {
           }
         case let .failure(error):
           await MainActor.run {
-            print(error)
             self.modalError = error
           }
         }
       }
     }
 
-    func updateFriendRequest(id: Int, newStatus: Friend.Status) {
-      if let friend = friends.first(where: { $0.id == id }) {
-        let friendUpdate = Friend.UpdateRequest(
-          user_id_1: friend.sender.id,
-          user_id_2: friend.receiver.id,
-          status: newStatus
-        )
-        Task {
-          switch await repository.friend.update(id: id, friendUpdate: friendUpdate) {
-          case let .success(updatedFriend):
+    func updateFriendRequest(friend: Friend, newStatus: Friend.Status) {
+      let friendUpdate = Friend.UpdateRequest(
+        sender: friend.sender,
+        receiver: friend.receiver,
+        status: newStatus
+      )
+
+      Task {
+        switch await repository.friend.update(id: friend.id, friendUpdate: friendUpdate) {
+        case let .success(updatedFriend):
+
+          if updatedFriend.status != Friend.Status.blocked {
             await MainActor.run {
-              self.friends.remove(object: updatedFriend)
-            }
-            if updatedFriend.status != Friend.Status.blocked {
-              await MainActor.run {
-                self.friends.append(updatedFriend)
+              withAnimation {
+                self.friends.replace(friend, with: updatedFriend)
               }
             }
-          case let .failure(error):
+          } else {
             await MainActor.run {
-              self.error = error
+              withAnimation {
+                self.friends.remove(object: friend)
+              }
             }
+          }
+        case let .failure(error):
+          await MainActor.run {
+            self.error = error
           }
         }
       }
@@ -166,6 +174,7 @@ extension FriendsScreenView {
             withAnimation {
               self.friends.remove(object: friend)
             }
+            showRemoveFriendConfirmation = false
           }
         case let .failure(error):
           await MainActor.run {
@@ -183,7 +192,9 @@ extension FriendsScreenView {
         ) {
         case let .success(friends):
           await MainActor.run {
-            self.friends = friends
+            withAnimation {
+              self.friends = friends
+            }
           }
         case let .failure(error):
           await MainActor.run {
@@ -219,14 +230,14 @@ struct FriendListItemView: View {
   let friend: Friend
   let profile: Profile
   let currentUser: Profile
-  let onAccept: (_ id: Int) -> Void
-  let onBlock: (_ id: Int) -> Void
+  let onAccept: (_ friend: Friend) -> Void
+  let onBlock: (_ friend: Friend) -> Void
   let onDelete: (_ friend: Friend) -> Void
 
   init(friend: Friend,
        currentUser: Profile,
-       onAccept: @escaping (_ id: Int) -> Void,
-       onBlock: @escaping (_ id: Int) -> Void,
+       onAccept: @escaping (_ friend: Friend) -> Void,
+       onBlock: @escaping (_ friend: Friend) -> Void,
        onDelete: @escaping (_ friend: Friend) -> Void)
   {
     self.friend = friend
@@ -261,7 +272,7 @@ struct FriendListItemView: View {
                 }
 
                 Button(action: {
-                  onAccept(friend.id)
+                  onAccept(friend)
                 }) {
                   Image(systemName: "person.badge.plus")
                     .imageScale(.large)
@@ -280,7 +291,7 @@ struct FriendListItemView: View {
       }
 
       Button(action: {
-        onBlock(friend.id)
+        onBlock(friend)
       }) {
         Label("Block", systemImage: "person.2.slash").imageScale(.large)
       }

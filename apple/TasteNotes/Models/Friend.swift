@@ -72,9 +72,9 @@ extension Friend {
     let user_id_2: UUID
     let status: String
 
-    init(user_id_1: UUID, user_id_2: UUID, status: Status) {
-      self.user_id_1 = user_id_1
-      self.user_id_2 = user_id_2
+    init(sender: Profile, receiver: Profile, status: Status) {
+      user_id_1 = sender.id
+      user_id_2 = receiver.id
       self.status = status.rawValue
     }
   }
