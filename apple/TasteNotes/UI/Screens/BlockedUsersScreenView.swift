@@ -87,7 +87,9 @@ extension BlockedUsersScreenView {
         switch await repository.friend.delete(id: friend.id) {
         case .success:
           await MainActor.run {
-            self.blockedUsers.remove(object: friend)
+            withAnimation {
+              self.blockedUsers.remove(object: friend)
+            }
           }
         case let .failure(error):
           await MainActor.run {

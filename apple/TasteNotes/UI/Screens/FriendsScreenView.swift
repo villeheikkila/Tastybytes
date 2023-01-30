@@ -192,9 +192,7 @@ extension FriendsScreenView {
         ) {
         case let .success(friends):
           await MainActor.run {
-            withAnimation {
-              self.friends = friends
-            }
+            self.friends = friends
           }
         case let .failure(error):
           await MainActor.run {
@@ -299,7 +297,7 @@ struct FriendListItemView: View {
     .padding(.all, 10)
     .background(Color(.tertiarySystemBackground))
     .cornerRadius(10)
-    .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 0)
+    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 0)
     .padding([.leading, .trailing], 10)
   }
 }

@@ -41,7 +41,9 @@ extension LocationScreenView {
         switch await repository.location.getSummaryById(id: location.id) {
         case let .success(summary):
           await MainActor.run {
-            self.summary = summary
+            withAnimation {
+              self.summary = summary
+            }
           }
         case let .failure(error):
           print(error)

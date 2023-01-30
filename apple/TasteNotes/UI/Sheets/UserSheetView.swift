@@ -41,7 +41,9 @@ extension UserSheetView {
         switch await repository.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
         case let .success(searchResults):
           await MainActor.run {
-            self.searchResults = searchResults
+            withAnimation {
+              self.searchResults = searchResults
+            }
           }
         case let .failure(error):
           print(error)

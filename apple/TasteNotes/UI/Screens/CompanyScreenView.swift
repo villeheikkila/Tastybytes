@@ -253,7 +253,9 @@ extension CompanyScreenView {
           {
           case let .success(updatedCompany):
             await MainActor.run {
-              self.companyJoined = updatedCompany
+              withAnimation {
+                self.companyJoined = updatedCompany
+              }
               self.activeSheet = nil
             }
           case let .failure(error):

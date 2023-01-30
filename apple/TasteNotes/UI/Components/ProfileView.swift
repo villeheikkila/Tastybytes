@@ -232,7 +232,9 @@ extension ProfileView {
         switch await repository.checkIn.getSummaryByProfileId(id: userId) {
         case let .success(summary):
           await MainActor.run {
-            self.profileSummary = summary
+            withAnimation {
+              self.profileSummary = summary
+            }
           }
         case let .failure(error):
           print(error)

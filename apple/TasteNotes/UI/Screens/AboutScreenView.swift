@@ -92,7 +92,6 @@ extension AboutScreenView {
         switch await repository.document.getAboutPage() {
         case let .success(aboutPage):
           await MainActor.run {
-            print(aboutPage)
             self.aboutPage = aboutPage
           }
         case let .failure(error):
