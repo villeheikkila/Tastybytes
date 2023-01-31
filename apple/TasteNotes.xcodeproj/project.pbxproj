@@ -40,6 +40,7 @@
 		5C25AEBA29053B7E00793607 /* CompanyScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB929053B7E00793607 /* CompanyScreenView.swift */; };
 		5C43237D2986A6910085522E /* Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237C2986A6910085522E /* Summary.swift */; };
 		5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237E2986FAA40085522E /* CheckInListView.swift */; };
+		5C43238129898A4C0085522E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C43238029898A4C0085522E /* GoogleService-Info.plist */; };
 		5C46E8642911D9FD0008F142 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C46E8632911D9FD0008F142 /* Config.swift */; };
 		5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F22292DFF66006F9A97 /* AppLogoView.swift */; };
 		5C663F25292E0100006F9A97 /* AppNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F24292E0100006F9A97 /* AppNameView.swift */; };
@@ -94,7 +95,6 @@
 		5CD10A5728F98D490001CFC2 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5628F98D490001CFC2 /* Product.swift */; };
 		5CD10A5928F98D8A0001CFC2 /* CheckInReaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */; };
 		5CD10A5C28F998BF0001CFC2 /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */; };
-		5CE9008A291FCA10003DE697 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5CE90089291FCA10003DE697 /* GoogleService-Info.plist */; };
 		5CE9008C291FCB71003DE697 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008B291FCB71003DE697 /* SplashScreenView.swift */; };
 		5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */; };
 		5CE90091292101C8003DE697 /* AboutScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE90090292101C8003DE697 /* AboutScreenView.swift */; };
@@ -152,6 +152,7 @@
 		5C25AEB929053B7E00793607 /* CompanyScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyScreenView.swift; sourceTree = "<group>"; };
 		5C43237C2986A6910085522E /* Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Summary.swift; sourceTree = "<group>"; };
 		5C43237E2986FAA40085522E /* CheckInListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListView.swift; sourceTree = "<group>"; };
+		5C43238029898A4C0085522E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5C46E8632911D9FD0008F142 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		5C46E8662911E5860008F142 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5C663F22292DFF66006F9A97 /* AppLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogoView.swift; sourceTree = "<group>"; };
@@ -209,7 +210,6 @@
 		5CD10A5628F98D490001CFC2 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInReaction.swift; sourceTree = "<group>"; };
 		5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
-		5CE90089291FCA10003DE697 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5CE9008B291FCB71003DE697 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenManager.swift; sourceTree = "<group>"; };
 		5CE9008F291FE7C1003DE697 /* TasteNotesRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TasteNotesRelease.entitlements; sourceTree = "<group>"; };
@@ -439,7 +439,6 @@
 			children = (
 				5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */,
 				5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */,
-				5CE90089291FCA10003DE697 /* GoogleService-Info.plist */,
 				5C11ECC128EF768A00CCDE6A /* .xcconfig.xcconfig */,
 				5CFEE57528ED69B100A8DD66 /* TasteNotes */,
 				5CFEE57428ED69B100A8DD66 /* Products */,
@@ -461,6 +460,7 @@
 				5CE9008F291FE7C1003DE697 /* TasteNotesRelease.entitlements */,
 				5C13F21E291A8D8E00599892 /* TasteNotesDebug.entitlements */,
 				5C46E8662911E5860008F142 /* Info.plist */,
+				5C43238029898A4C0085522E /* GoogleService-Info.plist */,
 				5C46E8622911D9F00008F142 /* Constants */,
 				5CD10A5D28F99CDF0001CFC2 /* UI */,
 				5CD10A5A28F9988C0001CFC2 /* Repositories */,
@@ -556,7 +556,7 @@
 			files = (
 				5CFEE57E28ED69B200A8DD66 /* Preview Assets.xcassets in Resources */,
 				5CFEE57B28ED69B200A8DD66 /* Assets.xcassets in Resources */,
-				5CE9008A291FCA10003DE697 /* GoogleService-Info.plist in Resources */,
+				5C43238129898A4C0085522E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
