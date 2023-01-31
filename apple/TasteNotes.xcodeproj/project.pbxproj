@@ -852,10 +852,10 @@
 				INFOPLIST_FILE = TasteNotes/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TasteNotes;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for scanning product barcodes and for taking photos in app";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The location is used for the location search during check-ins";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "The location is used for the location search during check-ins";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The location is used for the location search during check-ins";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -895,10 +895,10 @@
 				INFOPLIST_FILE = TasteNotes/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TasteNotes;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used for scanning product barcodes and for taking photos in app";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "The location is used for the location search during check-ins";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "The location is used for the location search during check-ins";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The location is used for the location search during check-ins";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

@@ -1,7 +1,6 @@
 import SwiftUI
 
-@MainActor
-class Router: ObservableObject {
+@MainActor class Router: ObservableObject {
   @Published public var path: [Route] = []
 
   init() {}

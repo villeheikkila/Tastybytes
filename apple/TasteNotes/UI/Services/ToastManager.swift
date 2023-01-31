@@ -1,7 +1,7 @@
 import AlertToast
 import SwiftUI
 
-class ToastManager: ObservableObject {
+@MainActor class ToastManager: ObservableObject {
   @Published var show = false
   @Published var toast = AlertToast(type: .regular, title: "") {
     didSet {

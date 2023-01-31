@@ -4,29 +4,33 @@ import SwiftUI
 final class NotificationManager: NSObject, ObservableObject {
   @Published private(set) var notifications = [Notification]() {
     didSet {
-      withAnimation {
-        filter = nil
-        filteredNotifications = notifications
+      DispatchQueue.main.async {
+        withAnimation {
+          self.filter = nil
+          self.filteredNotifications = self.notifications
+        }
       }
     }
   }
 
   @Published var filter: NotificationType? {
     didSet {
-      withAnimation {
-        filteredNotifications = notifications.filter { notification in
-          if filter == nil {
-            return true
-          } else {
-            switch notification.content {
-            case .checkInReaction:
-              return filter == .checkInReaction
-            case .friendRequest:
-              return filter == .friendRequest
-            case .message:
-              return filter == .message
-            case .taggedCheckIn:
-              return filter == .taggedCheckIn
+      DispatchQueue.main.async {
+        withAnimation {
+          self.filteredNotifications = self.notifications.filter { notification in
+            if self.filter == nil {
+              return true
+            } else {
+              switch notification.content {
+              case .checkInReaction:
+                return self.filter == .checkInReaction
+              case .friendRequest:
+                return self.filter == .friendRequest
+              case .message:
+                return self.filter == .message
+              case .taggedCheckIn:
+                return self.filter == .taggedCheckIn
+              }
             }
           }
         }
@@ -46,10 +50,12 @@ final class NotificationManager: NSObject, ObservableObject {
     Task {
       switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
       case let .success(newNotifications):
-        if reset {
-          self.notifications = newNotifications
-        } else {
-          self.notifications.append(contentsOf: newNotifications)
+        await MainActor.run {
+          if reset {
+            self.notifications = newNotifications
+          } else {
+            self.notifications.append(contentsOf: newNotifications)
+          }
         }
       case let .failure(error):
         print(error.localizedDescription)
@@ -61,8 +67,10 @@ final class NotificationManager: NSObject, ObservableObject {
     Task {
       switch await repository.notification.deleteAll() {
       case .success:
-        withAnimation {
-          self.notifications = [Notification]()
+        await MainActor.run {
+          withAnimation {
+            self.notifications = [Notification]()
+          }
         }
       case let .failure(error):
         print(error.localizedDescription)
@@ -74,11 +82,13 @@ final class NotificationManager: NSObject, ObservableObject {
     Task {
       switch await repository.notification.markAllRead() {
       case .success:
-        self.notifications = self.notifications.map {
-          if $0.seenAt == nil {
-            return Notification(id: $0.id, createdAt: $0.createdAt, seenAt: Date(), content: $0.content)
-          } else {
-            return $0
+        await MainActor.run {
+          self.notifications = self.notifications.map {
+            if $0.seenAt == nil {
+              return Notification(id: $0.id, createdAt: $0.createdAt, seenAt: Date(), content: $0.content)
+            } else {
+              return $0
+            }
           }
         }
       case let .failure(error):
@@ -101,12 +111,14 @@ final class NotificationManager: NSObject, ObservableObject {
       Task {
         switch await repository.notification.markAllFriendRequestsAsRead() {
         case let .success(updatedNotifications):
-          self.notifications = self.notifications.map {
-            n in
-            if let updatedNotification = updatedNotifications.first(where: { $0.id == n.id }) {
-              return updatedNotification
-            } else {
-              return n
+          await MainActor.run {
+            self.notifications = self.notifications.map {
+              n in
+              if let updatedNotification = updatedNotifications.first(where: { $0.id == n.id }) {
+                return updatedNotification
+              } else {
+                return n
+              }
             }
           }
         case let .failure(error):
@@ -132,12 +144,14 @@ final class NotificationManager: NSObject, ObservableObject {
       Task {
         switch await repository.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id) {
         case let .success(updatedNotifications):
-          self.notifications = self.notifications.map {
-            n in
-            if let updatedNotification = updatedNotifications.first(where: { $0.id == n.id }) {
-              return updatedNotification
-            } else {
-              return n
+          await MainActor.run {
+            self.notifications = self.notifications.map {
+              n in
+              if let updatedNotification = updatedNotifications.first(where: { $0.id == n.id }) {
+                return updatedNotification
+              } else {
+                return n
+              }
             }
           }
         case let .failure(error):
@@ -151,8 +165,10 @@ final class NotificationManager: NSObject, ObservableObject {
     Task {
       switch await repository.notification.markRead(id: notifaction.id) {
       case let .success(updatedNotification):
-        if let index = self.notifications.firstIndex(of: notifaction) {
-          self.notifications[index] = updatedNotification
+        await MainActor.run {
+          if let index = self.notifications.firstIndex(of: notifaction) {
+            self.notifications[index] = updatedNotification
+          }
         }
       case let .failure(error):
         print(error.localizedDescription)
@@ -165,8 +181,10 @@ final class NotificationManager: NSObject, ObservableObject {
       Task {
         switch await repository.notification.delete(id: notifications[index].id) {
         case .success:
-          withAnimation {
-            _ = self.notifications.remove(at: index)
+          await MainActor.run {
+            withAnimation {
+              _ = self.notifications.remove(at: index)
+            }
           }
         case let .failure(error):
           print(error.localizedDescription)
@@ -179,8 +197,10 @@ final class NotificationManager: NSObject, ObservableObject {
     Task {
       switch await repository.notification.delete(id: notification.id) {
       case .success:
-        withAnimation {
-          self.notifications.remove(object: notification)
+        await MainActor.run {
+          withAnimation {
+            self.notifications.remove(object: notification)
+          }
         }
       case let .failure(error):
         print(error.localizedDescription)
