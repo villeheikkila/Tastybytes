@@ -3,7 +3,7 @@
     "details": [
       {
         "appIDs": [
-          "com.villeheikkila.tastey"
+          "6443958544.com.villeheikkila.tastey"
         ],
         "components": [
           {
@@ -24,7 +24,7 @@
   },
   "webcredentials": {
     "apps": [
-      "com.villeheikkila.tastey"
+      "6443958544.com.villeheikkila.tastey"
     ]
   }
 }
