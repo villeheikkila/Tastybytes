@@ -85,7 +85,7 @@ struct ProductScreenView: View {
       Spacer()
     }
     .contextMenu {
-      ShareLink("Share", item: createLinkToScreen(.product(id: product.id)))
+      ShareLink("Share", item: NavigatablePath.product(id: product.id).url)
 
       if profileManager.hasPermission(.canEditCompanies) {
         Button(action: {

@@ -102,7 +102,7 @@ struct ProfileView: View {
       viewModel.getProfileData(userId: profile.id)
     }
     .contextMenu {
-      ShareLink("Share", item: createLinkToScreen(.profile(id: profile.id)))
+      ShareLink("Share", item: NavigatablePath.profile(id: profile.id).url)
     }
   }
 

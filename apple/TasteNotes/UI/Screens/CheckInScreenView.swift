@@ -28,7 +28,7 @@ struct CheckInScreenView: View {
       }
     }
     .contextMenu {
-      ShareLink("Share", item: createLinkToScreen(.checkIn(id: viewModel.checkIn.id)))
+      ShareLink("Share", item: NavigatablePath.checkIn(id: viewModel.checkIn.id).url)
 
       if viewModel.checkIn.product.isVerified {
         Label("Verified", systemImage: "checkmark.circle")

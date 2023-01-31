@@ -18,7 +18,7 @@ import SwiftUI
     path.removeLast()
   }
 
-  func fetchAndNavigateTo(_ destination: FetchAndNavigateToDestination) {
+  func fetchAndNavigateTo(_ destination: NavigatablePath) {
     Task {
       switch destination {
       case let .product(id):
@@ -46,6 +46,13 @@ import SwiftUI
         switch await repository.profile.getById(id: id) {
         case let .success(profile):
           self.navigate(to: .profile(profile), resetStack: true)
+        case let .failure(error):
+          print(error)
+        }
+      case let .location(id):
+        switch await repository.location.getById(id: id) {
+        case let .success(location):
+          self.navigate(to: .location(location), resetStack: true)
         case let .failure(error):
           print(error)
         }
@@ -100,28 +107,31 @@ extension View {
   }
 }
 
-enum FetchAndNavigateToDestination {
+enum NavigatablePath {
   case product(id: Int)
   case checkIn(id: Int)
   case company(id: Int)
   case profile(id: UUID)
+  case location(id: UUID)
+
+  var url: URL {
+    switch self {
+    case let .profile(id):
+      return URL(string: "\(Config.baseUrl)/\(HostIdentifier.profiles)/\(id)")!
+    case let .checkIn(id):
+      return URL(string: "\(Config.baseUrl)/\(HostIdentifier.checkins)/\(id)")!
+    case let .product(id):
+      return URL(string: "\(Config.baseUrl)/\(HostIdentifier.products)/\(id)")!
+    case let .company(id):
+      return URL(string: "\(Config.baseUrl)/\(HostIdentifier.companies)/\(id)")!
+    case let .location(id):
+      return URL(string: "\(Config.baseUrl)/\(HostIdentifier.locations)/\(id)")!
+    }
+  }
 }
 
 enum HostIdentifier: Hashable {
-  case checkins, products, profiles, companies
-}
-
-func createLinkToScreen(_ destination: FetchAndNavigateToDestination) -> URL {
-  switch destination {
-  case let .profile(id):
-    return URL(string: "\(Config.baseUrl)/\(HostIdentifier.profiles)/\(id)")!
-  case let .checkIn(id):
-    return URL(string: "\(Config.baseUrl)/\(HostIdentifier.checkins)/\(id)")!
-  case let .product(id):
-    return URL(string: "\(Config.baseUrl)/\(HostIdentifier.products)/\(id)")!
-  case let .company(id):
-    return URL(string: "\(Config.baseUrl)/\(HostIdentifier.companies)/\(id)")!
-  }
+  case checkins, products, profiles, companies, locations
 }
 
 extension URL {
@@ -137,11 +147,12 @@ extension URL {
     case "products": return .products
     case "profiles": return .profiles
     case "companies": return .companies
+    case "locations": return .locations
     default: return nil
     }
   }
 
-  var detailPage: FetchAndNavigateToDestination? {
+  var detailPage: NavigatablePath? {
     guard let pathIdentifier,
           pathComponents.count > 1
     else {
@@ -171,6 +182,9 @@ extension URL {
         return nil
       }
       return .company(id: id)
+    case .locations:
+      guard let id = UUID(uuidString: path) else { return nil }
+      return .location(id: id)
     }
   }
 }

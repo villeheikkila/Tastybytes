@@ -68,7 +68,7 @@ struct CompanyScreenView: View {
 
   private var navigationBarMenu: some View {
     Menu {
-      ShareLink("Share", item: createLinkToScreen(.company(id: company.id)))
+      ShareLink("Share", item: NavigatablePath.company(id: company.id).url)
 
       if profileManager.hasPermission(.canEditCompanies) {
         Button(action: {

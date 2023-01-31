@@ -17,6 +17,9 @@ struct LocationScreenView: View {
         Section {
           SummaryView(summary: summary)
         }
+        .contextMenu {
+          ShareLink("Share", item: NavigatablePath.profile(id: viewModel.location.id).url)
+        }
       }
     }
     .navigationTitle(viewModel.location.name)

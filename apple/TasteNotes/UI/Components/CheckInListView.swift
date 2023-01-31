@@ -88,7 +88,7 @@ struct CheckInListView<Header>: View
       CheckInCardView(checkIn: checkIn,
                       loadedFrom: getLoadedFrom)
         .contextMenu {
-          ShareLink("Share", item: createLinkToScreen(.checkIn(id: checkIn.id)))
+          ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
           Divider()
           if checkIn.profile.id == profileManager.getId() {
             Button(action: {
