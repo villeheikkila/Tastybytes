@@ -215,7 +215,7 @@ extension ProfileView {
       Task {
         if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
            let image = UIImage(data: imageData),
-           let data = image.jpegData(compressionQuality: 0.5)
+           let data = image.jpegData(compressionQuality: 0.1)
         {
           switch await repository.profile.uploadAvatar(userId: userId, data: data) {
           case let .success(fileName):
