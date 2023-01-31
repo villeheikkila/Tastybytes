@@ -8,14 +8,19 @@ struct CheckInCardView: View {
 
   var body: some View {
     VStack {
-      header
-      productSection
+      VStack {
+        header
+        productSection
+      }.padding([.leading, .trailing], 10)
+
       checkInImage
-      checkInSection
-      taggedProfilesSection
-      footer
+      VStack {
+        checkInSection
+        taggedProfilesSection
+        footer
+      }.padding([.leading, .trailing], 10)
     }
-    .padding(10)
+    .padding([.top, .bottom], 10)
     .background(Color(.tertiarySystemBackground))
     .clipped()
     .cornerRadius(8)
