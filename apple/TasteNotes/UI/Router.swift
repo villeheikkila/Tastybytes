@@ -125,14 +125,14 @@ func createLinkToScreen(_ destination: FetchAndNavigateToDestination) -> URL {
 }
 
 extension URL {
-  var isDeepLink: Bool {
-    scheme == Config.appName.lowercased()
+  var isUniversalLink: Bool {
+    scheme == "https"
   }
 
-  var hostIdentifier: HostIdentifier? {
-    guard isDeepLink else { return nil }
+  var pathIdentifier: HostIdentifier? {
+    guard isUniversalLink else { return nil }
 
-    switch host {
+    switch pathComponents[1] {
     case "checkins": return .checkins
     case "products": return .products
     case "profiles": return .profiles
@@ -142,15 +142,15 @@ extension URL {
   }
 
   var detailPage: FetchAndNavigateToDestination? {
-    guard let hostIdentifier,
+    guard let pathIdentifier,
           pathComponents.count > 1
     else {
       return nil
     }
 
-    let path = pathComponents[1]
+    let path = pathComponents[2]
 
-    switch hostIdentifier {
+    switch pathIdentifier {
     case .products:
       guard let id = Int(path) else {
         return nil
