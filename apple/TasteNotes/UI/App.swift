@@ -97,13 +97,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(_: UIApplication,
-                   didReceiveRemoteNotification _: [AnyHashable: Any]) {}
+                   didReceiveRemoteNotification userInfo: [AnyHashable: Any])
+  {
+    Messaging.messaging().appDidReceiveMessage(userInfo)
+    // Print message ID.
+    if let messageID = userInfo[gcmMessageIDKey] {
+      print("Message ID: \(messageID)")
+    }
+
+    // Print full message.
+    print(userInfo)
+  }
 
   func application(_: UIApplication,
-                   didReceiveRemoteNotification _: [AnyHashable: Any]) async
+                   didReceiveRemoteNotification userInfo: [AnyHashable: Any]) async
     -> UIBackgroundFetchResult
   {
-    UIBackgroundFetchResult.newData
+    Messaging.messaging().appDidReceiveMessage(userInfo)
+    // Print message ID.
+    if let messageID = userInfo[gcmMessageIDKey] {
+      print("Message ID: \(messageID)")
+    }
+
+    // Print full message.
+    print(userInfo)
+
+    return UIBackgroundFetchResult.newData
   }
 
   func application(_: UIApplication,
