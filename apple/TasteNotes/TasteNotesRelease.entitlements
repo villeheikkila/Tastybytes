@@ -7,6 +7,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:tasted.dev</string>
+		<string>webcredentials:tasted.dev</string>
 	</array>
 </dict>
 </plist>

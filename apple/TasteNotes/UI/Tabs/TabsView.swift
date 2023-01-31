@@ -19,9 +19,7 @@ struct TabsView: View {
           resetNavigationOnTab = selection
         }
       } else {
-        withAnimation {
-          selection = newTab
-        }
+        selection = newTab
       }
     })) {
       ForEach(tabs) { tab in
