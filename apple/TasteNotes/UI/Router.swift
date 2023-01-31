@@ -3,8 +3,6 @@ import SwiftUI
 @MainActor class Router: ObservableObject {
   @Published public var path: [Route] = []
 
-  init() {}
-
   func navigate(to: Route, resetStack: Bool) {
     if resetStack {
       path.removeLast(path.count)
