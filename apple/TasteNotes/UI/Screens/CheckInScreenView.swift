@@ -79,24 +79,42 @@ struct CheckInScreenView: View {
   private var commentSection: some View {
     VStack(spacing: 10) {
       ForEach(viewModel.checkInComments.reversed(), id: \.id) {
-        comment in CommentItemView(
-          comment: comment,
-          content: comment.content,
-          onDelete: { _ in viewModel.deleteComment(comment) },
-          onUpdate: {
-            updatedComment in viewModel.editComment(updateCheckInComment: updatedComment)
+        comment in
+        CheckInCommenView(comment: comment)
+          .contextMenu {
+            Button {
+              withAnimation {
+                viewModel.editComment = comment
+              }
+            } label: {
+              Label("Edit Comment", systemImage: "pencil")
+            }
+
+            Button {
+              withAnimation {
+                viewModel.deleteComment(comment)
+              }
+            } label: {
+              Label("Delete Comment", systemImage: "trash.fill")
+            }
           }
-        )
+          .alert("Edit Comment", isPresented: $viewModel.showEditCommentPrompt, actions: {
+            TextField("TextField", text: $viewModel.editCommentText)
+            Button("Cancel", role: .cancel, action: {})
+            Button("Edit", action: {
+              viewModel.updateComment()
+            })
+          })
       }
     }
-    .padding([.leading, .trailing], 15)
+    .padding([.leading, .trailing], 5)
   }
 
   private var leaveCommentSection: some View {
     VStack {
       Spacer()
       HStack {
-        TextField("Leave a comment!", text: $viewModel.comment)
+        TextField("Leave a comment!", text: $viewModel.commentText)
         Button(action: { viewModel.sendComment() }) {
           Image(systemName: "paperplane.fill")
         }
@@ -113,9 +131,16 @@ extension CheckInScreenView {
   @MainActor class ViewModel: ObservableObject {
     @Published var checkIn: CheckIn
     @Published var checkInComments = [CheckInComment]()
-    @Published var comment = ""
     @Published var showDeleteConfirmation = false
     @Published var showEditCheckInSheet = false
+    @Published var showEditCommentPrompt = false
+    @Published var commentText = ""
+    @Published var editCommentText = ""
+    @Published var editComment: CheckInComment? {
+      didSet {
+        showEditCommentPrompt.toggle()
+      }
+    }
 
     init(checkIn: CheckIn) {
       self.checkIn = checkIn
@@ -127,7 +152,7 @@ extension CheckInScreenView {
     }
 
     func isInvalidComment() -> Bool {
-      comment.isEmpty
+      commentText.isEmpty
     }
 
     func deleteCheckIn(checkIn: CheckIn, onDelete: @escaping () -> Void) {
@@ -145,10 +170,32 @@ extension CheckInScreenView {
       Task {
         switch await repository.checkInComment.getByCheckInId(id: checkIn.id) {
         case let .success(checkIns):
-          self.checkInComments = checkIns
+          withAnimation {
+            self.checkInComments = checkIns
+          }
         case let .failure(error):
           print(error)
         }
+      }
+    }
+
+    func updateComment() {
+      if let editComment {
+        let updatedComment = CheckInComment.UpdateRequest(id: editComment.id, content: editCommentText)
+        Task {
+          switch await repository.checkInComment.update(updateCheckInComment: updatedComment) {
+          case let .success(updatedComment):
+            withAnimation {
+              if let index = self.checkInComments.firstIndex(where: { $0.id == updatedComment.id }) {
+                self.checkInComments[index] = updatedComment
+              }
+            }
+          case let .failure(error):
+            print(error.localizedDescription)
+          }
+        }
+
+        editCommentText = ""
       }
     }
 
@@ -166,7 +213,7 @@ extension CheckInScreenView {
     }
 
     func sendComment() {
-      let newCheckInComment = CheckInComment.NewRequest(content: comment, checkInId: checkIn.id)
+      let newCheckInComment = CheckInComment.NewRequest(content: commentText, checkInId: checkIn.id)
 
       Task {
         let result = await repository.checkInComment.insert(newCheckInComment: newCheckInComment)
@@ -175,7 +222,7 @@ extension CheckInScreenView {
           withAnimation {
             self.checkInComments.append(newCheckInComment)
           }
-          self.comment = ""
+          self.commentText = ""
         case let .failure(error):
           print(error)
         }
@@ -192,40 +239,11 @@ extension CheckInScreenView {
         }
       }
     }
-
-    func editComment(updateCheckInComment: CheckInComment.UpdateRequest) {
-      Task {
-        switch await repository.checkInComment.update(updateCheckInComment: updateCheckInComment) {
-        case let .success(updatedComment):
-          if let index = self.checkInComments.firstIndex(where: { $0.id == updatedComment.id }) {
-            self.checkInComments[index] = updatedComment
-          }
-        case let .failure(error):
-          print(error.localizedDescription)
-        }
-      }
-    }
   }
 }
 
-struct CommentItemView: View {
+struct CheckInCommenView: View {
   let comment: CheckInComment
-  @State var content: String
-  @State private var showEditCommentPrompt = false
-  let onDelete: (_ commentId: Int) -> Void
-  let onUpdate: (_ update: CheckInComment.UpdateRequest) -> Void
-
-  var updateComment: () -> Void {
-    {
-      guard !content.isEmpty else {
-        return
-      }
-
-      let updatedComment = CheckInComment.UpdateRequest(id: comment.id, content: content)
-      onUpdate(updatedComment)
-      content = ""
-    }
-  }
 
   var body: some View {
     HStack {
@@ -240,29 +258,5 @@ struct CommentItemView: View {
       }
       Spacer()
     }
-    .contextMenu {
-      Button {
-        withAnimation {
-          self.showEditCommentPrompt = true
-        }
-      } label: {
-        Label("Edit Comment", systemImage: "pencil")
-      }
-
-      Button {
-        withAnimation {
-          onDelete(comment.id)
-        }
-      } label: {
-        Label("Delete Comment", systemImage: "trash.fill")
-      }
-    }
-    .alert("Edit Comment", isPresented: $showEditCommentPrompt, actions: {
-      TextField("TextField", text: $content)
-      Button("Cancel", role: .cancel, action: {})
-      Button("Edit", action: {
-        updateComment()
-      })
-    })
   }
 }
