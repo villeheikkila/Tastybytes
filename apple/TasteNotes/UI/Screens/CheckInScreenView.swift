@@ -252,7 +252,7 @@ struct CheckInCommenView: View {
         HStack {
           Text(comment.profile.preferredName).font(.system(size: 12, weight: .medium, design: .default))
           Spacer()
-          Text(comment.createdAt.formatted()).font(.system(size: 8, weight: .medium, design: .default))
+          Text(comment.createdAt.relativeTime()).font(.system(size: 8, weight: .medium, design: .default))
         }
         Text(comment.content).font(.system(size: 14, weight: .light, design: .default))
       }

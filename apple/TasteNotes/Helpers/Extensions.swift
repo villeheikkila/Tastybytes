@@ -36,3 +36,11 @@ extension Date {
     return formatter.string(from: self)
   }
 }
+
+extension Date {
+  func relativeTime(in _: Locale = .current) -> String {
+    let formatter = RelativeDateTimeFormatter()
+    formatter.unitsStyle = .full
+    return formatter.localizedString(for: self, relativeTo: Date())
+  }
+}
