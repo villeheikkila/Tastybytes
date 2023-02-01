@@ -33,7 +33,7 @@ struct LocationScreenView: View {
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
-        ShareLink("Share", item: NavigatablePath.profile(id: viewModel.location.id).url)
+        ShareLink("Share", item: NavigatablePath.location(id: viewModel.location.id).url)
       } label: {
         Image(systemName: "ellipsis")
       }

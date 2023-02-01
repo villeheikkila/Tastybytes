@@ -113,6 +113,12 @@ struct AuthenticationScreenView: View {
       }
 
       if mode == .signIn {
+        Button("Sign in with magic link") {
+          withAnimation { mode = .magicLink }
+        }
+      }
+
+      if mode == .signIn {
         Button("Forgot your password?") {
           withAnimation { mode = .forgotPassword }
         }

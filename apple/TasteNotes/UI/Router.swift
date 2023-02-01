@@ -117,20 +117,20 @@ enum NavigatablePath {
   var url: URL {
     switch self {
     case let .profile(id):
-      return URL(string: "\(Config.baseUrl)/\(HostIdentifier.profiles)/\(id)")!
+      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.profiles)/\(id)")!
     case let .checkIn(id):
-      return URL(string: "\(Config.baseUrl)/\(HostIdentifier.checkins)/\(id)")!
+      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.checkins)/\(id)")!
     case let .product(id):
-      return URL(string: "\(Config.baseUrl)/\(HostIdentifier.products)/\(id)")!
+      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.products)/\(id)")!
     case let .company(id):
-      return URL(string: "\(Config.baseUrl)/\(HostIdentifier.companies)/\(id)")!
+      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.companies)/\(id)")!
     case let .location(id):
-      return URL(string: "\(Config.baseUrl)/\(HostIdentifier.locations)/\(id)")!
+      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.locations)/\(id)")!
     }
   }
 }
 
-enum HostIdentifier: Hashable {
+enum PathIdentifier: Hashable {
   case checkins, products, profiles, companies, locations
 }
 
@@ -139,8 +139,8 @@ extension URL {
     scheme == "https"
   }
 
-  var pathIdentifier: HostIdentifier? {
-    guard isUniversalLink else { return nil }
+  var pathIdentifier: PathIdentifier? {
+    guard isUniversalLink, pathComponents.count == 3 else { return nil }
 
     switch pathComponents[1] {
     case "checkins": return .checkins
@@ -153,8 +153,7 @@ extension URL {
   }
 
   var detailPage: NavigatablePath? {
-    guard let pathIdentifier,
-          pathComponents.count > 1
+    guard let pathIdentifier
     else {
       return nil
     }
