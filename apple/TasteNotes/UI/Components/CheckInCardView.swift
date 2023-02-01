@@ -57,26 +57,26 @@ struct CheckInCardView: View {
   @ViewBuilder
   private var checkInImage: some View {
     if let imageUrl = checkIn.getImageUrl() {
-      CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
-        image
-          .resizable()
-          .scaledToFill()
-          .frame(height: 200)
-          .clipped()
-      } placeholder: {
-        ProgressView()
-      }
-
-      .onTapGesture {
+      Button(action: {
         showFullPicture = true
-      }
-      .popover(isPresented: $showFullPicture) {
+      }) {
         CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
           image
             .resizable()
             .scaledToFill()
+            .frame(height: 200)
+            .clipped()
         } placeholder: {
           ProgressView()
+        }
+        .popover(isPresented: $showFullPicture) {
+          CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+            image
+              .resizable()
+              .scaledToFill()
+          } placeholder: {
+            ProgressView()
+          }
         }
       }
     }
