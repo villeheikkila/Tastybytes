@@ -3,6 +3,7 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInCardView: View {
+  @State private var showFullPicture = false
   let checkIn: CheckIn
   let loadedFrom: LoadedFrom
 
@@ -11,14 +12,15 @@ struct CheckInCardView: View {
       VStack {
         header
         productSection
-      }.padding([.leading, .trailing], 10)
-
+      }
+      .padding([.leading, .trailing], 10)
       checkInImage
       VStack {
         checkInSection
         taggedProfilesSection
         footer
-      }.padding([.leading, .trailing], 10)
+      }
+      .padding([.leading, .trailing], 10)
     }
     .padding([.top, .bottom], 10)
     .background(Color(.tertiarySystemBackground))
@@ -33,9 +35,9 @@ struct CheckInCardView: View {
       disabled: loadedFrom.isLoadedFromProfile(checkIn.profile)
     ) {
       HStack {
-        AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 30, id: checkIn.profile.id)
+        AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 24, id: checkIn.profile.id)
         Text(checkIn.profile.preferredName)
-          .font(.system(size: 12, weight: .bold, design: .default))
+          .font(.system(size: 10, weight: .bold, design: .default))
           .foregroundColor(.primary)
         Spacer()
         if let location = checkIn.location {
@@ -44,7 +46,7 @@ struct CheckInCardView: View {
             disabled: loadedFrom.isLoadedFromLocation(location)
           ) {
             Text("\(location.name) \(location.country?.emoji ?? "")")
-              .font(.system(size: 12, weight: .bold, design: .default))
+              .font(.system(size: 10, weight: .bold, design: .default))
               .foregroundColor(.primary)
           }
         }
@@ -59,8 +61,23 @@ struct CheckInCardView: View {
         image
           .resizable()
           .scaledToFill()
+          .frame(height: 200)
+          .clipped()
       } placeholder: {
         ProgressView()
+      }
+
+      .onTapGesture {
+        showFullPicture = true
+      }
+      .popover(isPresented: $showFullPicture) {
+        CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+          image
+            .resizable()
+            .scaledToFill()
+        } placeholder: {
+          ProgressView()
+        }
       }
     }
   }
@@ -83,12 +100,12 @@ struct CheckInCardView: View {
         }
 
         Text(checkIn.product.getDisplayName(.fullName))
-          .font(.system(size: 18, weight: .bold, design: .default))
+          .font(.system(size: 16, weight: .bold, design: .default))
           .foregroundColor(.primary)
 
         if let description = checkIn.product.description {
           Text(description)
-            .font(.system(size: 12, weight: .medium, design: .default))
+            .font(.system(size: 10, weight: .medium, design: .default))
         }
 
         HStack {
@@ -96,7 +113,7 @@ struct CheckInCardView: View {
             value: Route.company(checkIn.product.subBrand.brand.brandOwner)
           ) {
             Text(checkIn.product.getDisplayName(.brandOwner))
-              .font(.system(size: 16, weight: .bold, design: .default))
+              .font(.system(size: 14, weight: .bold, design: .default))
               .foregroundColor(.secondary)
               .lineLimit(nil)
           }
@@ -105,7 +122,7 @@ struct CheckInCardView: View {
              manufacturer.id != checkIn.product.subBrand.brand.brandOwner.id
           {
             Text("(\(manufacturer.name))")
-              .font(.system(size: 16, weight: .bold, design: .default))
+              .font(.system(size: 14, weight: .bold, design: .default))
               .foregroundColor(.secondary)
               .lineLimit(nil)
           }
@@ -123,7 +140,7 @@ struct CheckInCardView: View {
         value: Route.checkIn(checkIn),
         disabled: loadedFrom == .checkIn
       ) {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 6) {
           if let rating = checkIn.rating {
             RatingView(rating: rating)
           }
@@ -162,7 +179,7 @@ struct CheckInCardView: View {
               value: Route.profile(taggedProfile),
               disabled: loadedFrom.isLoadedFromProfile(taggedProfile)
             ) {
-              AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 32, id: taggedProfile.id)
+              AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 14, id: taggedProfile.id)
             }
           }
           Spacer()
@@ -175,7 +192,7 @@ struct CheckInCardView: View {
     HStack {
       OptionalNavigationLink(value: Route.checkIn(checkIn), disabled: loadedFrom == .checkIn) {
         Text(checkIn.getFormattedDate())
-          .font(.system(size: 12, weight: .medium, design: .default))
+          .font(.system(size: 10, weight: .medium, design: .default))
         Spacer()
       }
       Spacer()

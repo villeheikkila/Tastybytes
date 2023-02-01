@@ -4,6 +4,7 @@ import Supabase
 protocol LocationRepository {
   func insert(location: Location) async -> Result<Location, Error>
   func getById(id: UUID) async -> Result<Location, Error>
+  func delete(id: UUID) async -> Result<Void, Error>
   func search(searchTerm: String) async -> Result<[Location], Error>
   func getSummaryById(id: UUID) async -> Result<Summary, Error>
 }
@@ -40,6 +41,21 @@ struct SupabaseLocationRepository: LocationRepository {
         .value
 
       return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func delete(id: UUID) async -> Result<Void, Error> {
+    do {
+      try await client
+        .database
+        .from(Location.getQuery(.tableName))
+        .delete()
+        .eq(column: "id", value: id)
+        .execute()
+
+      return .success(())
     } catch {
       return .failure(error)
     }

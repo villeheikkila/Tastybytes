@@ -18,11 +18,11 @@ struct ReactionsView: View {
         viewModel.toggleReaction(userId: profileManager.getId())
       } label: {
         Text("\(viewModel.checkInReactions.count)")
-          .font(.system(size: 14, weight: .bold, design: .default))
+          .font(.system(size: 12, weight: .bold, design: .default))
           .foregroundColor(.primary)
 
         Image(systemName: "hand.thumbsup.fill")
-          .frame(height: 24, alignment: .leading)
+          .frame(height: 16, alignment: .leading)
           .foregroundColor(Color(.systemYellow))
       }
       .disabled(viewModel.isLoading)

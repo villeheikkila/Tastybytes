@@ -10,7 +10,7 @@ struct ChipView: View {
       if let systemName {
         Image(systemName: systemName).font(.title3)
       }
-      Text(title).font(.system(size: 10, weight: .bold, design: .default))
+      Text(title).font(.system(size: 8, weight: .bold, design: .default))
     }
     .padding(.all, 3)
     .foregroundColor(.white)

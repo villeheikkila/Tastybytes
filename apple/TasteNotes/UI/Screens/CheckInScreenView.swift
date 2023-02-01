@@ -103,6 +103,8 @@ struct CheckInScreenView: View {
         .disabled(viewModel.isInvalidComment())
       }
       .padding(.all, 10)
+      .background(Color(.systemBackground))
+      .cornerRadius(8, corners: [.topLeft, .topRight])
     }
   }
 }

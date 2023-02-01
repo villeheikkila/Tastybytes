@@ -3,6 +3,8 @@ import PhotosUI
 import SwiftUI
 
 struct LocationScreenView: View {
+  @EnvironmentObject var router: Router
+  @EnvironmentObject var profileManager: ProfileManager
   @StateObject private var viewModel: ViewModel
   @State private var scrollToTop: Int = 0
   @State private var resetView: Int = 0
@@ -24,6 +26,18 @@ struct LocationScreenView: View {
     .toolbar {
       toolbarContent
     }
+    .confirmationDialog("Delete Location Confirmation",
+                        isPresented: $viewModel.showDeleteLocationConfirmation,
+                        presenting: viewModel.location) { presenting in
+      Button(
+        "Delete \(presenting.name) location",
+        role: .destructive,
+        action: { viewModel.deleteLocation(presenting, onDelete: {
+          router.reset()
+        })
+        }
+      )
+    }
     .task {
       viewModel.getSummary()
     }
@@ -34,6 +48,13 @@ struct LocationScreenView: View {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
         ShareLink("Share", item: NavigatablePath.location(id: viewModel.location.id).url)
+        if profileManager.hasPermission(.canDeleteProducts) {
+          Button(action: {
+            viewModel.showDeleteLocationConfirmation.toggle()
+          }) {
+            Label("Delete", systemImage: "trash.fill")
+          }
+        }
       } label: {
         Image(systemName: "ellipsis")
       }
@@ -44,6 +65,7 @@ struct LocationScreenView: View {
 extension LocationScreenView {
   @MainActor class ViewModel: ObservableObject {
     @Published var summary: Summary?
+    @Published var showDeleteLocationConfirmation = false
     let location: Location
 
     init(location: Location) {
@@ -57,6 +79,17 @@ extension LocationScreenView {
           withAnimation {
             self.summary = summary
           }
+        case let .failure(error):
+          print(error)
+        }
+      }
+    }
+
+    func deleteLocation(_ location: Location, onDelete: @escaping () -> Void) {
+      Task {
+        switch await repository.location.delete(id: location.id) {
+        case .success:
+          onDelete()
         case let .failure(error):
           print(error)
         }
