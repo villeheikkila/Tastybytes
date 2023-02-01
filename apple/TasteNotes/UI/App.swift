@@ -43,10 +43,6 @@ struct Main: App {
                 notificationManager.refresh()
                 notificationManager.refreshAPNS()
               }
-            case .tokenRefreshed:
-              Task {
-                notificationManager.refreshAPNS()
-              }
             default:
               break
             }

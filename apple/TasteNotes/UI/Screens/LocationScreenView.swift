@@ -17,15 +17,26 @@ struct LocationScreenView: View {
         Section {
           SummaryView(summary: summary)
         }
-        .contextMenu {
-          ShareLink("Share", item: NavigatablePath.profile(id: viewModel.location.id).url)
-        }
       }
     }
     .navigationTitle(viewModel.location.name)
     .navigationBarTitleDisplayMode(.inline)
+    .toolbar {
+      toolbarContent
+    }
     .task {
       viewModel.getSummary()
+    }
+  }
+
+  @ToolbarContentBuilder
+  private var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
+      Menu {
+        ShareLink("Share", item: NavigatablePath.profile(id: viewModel.location.id).url)
+      } label: {
+        Image(systemName: "ellipsis")
+      }
     }
   }
 }
