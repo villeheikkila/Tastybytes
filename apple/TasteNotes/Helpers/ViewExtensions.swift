@@ -24,7 +24,7 @@ extension View {
         error.wrappedValue = nil
       }
     } message: { error in
-      Text(error.recoverySuggestion ?? "")
+      Text(error.recoverySuggestion.orEmpty)
     }
   }
 }

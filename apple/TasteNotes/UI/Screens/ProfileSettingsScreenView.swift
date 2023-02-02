@@ -195,15 +195,15 @@ extension ProfileSettingsScreenView {
 
         self.updateFormValues(profile: profile)
         self.initialEmail = user.email
-        self.email = user.email ?? ""
+        self.email = user.email.orEmpty
       }
     }
 
     func updateFormValues(profile: Profile.Extended) {
       self.profile = profile
       username = profile.username
-      lastName = profile.lastName ?? ""
-      firstName = profile.firstName ?? ""
+      lastName = profile.lastName.orEmpty
+      firstName = profile.firstName.orEmpty
       showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
     }
 

@@ -130,7 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: MessagingDelegate {
   func messaging(_: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-    let dataDict: [String: String] = ["token": fcmToken ?? ""]
+    let dataDict: [String: String] = ["token": fcmToken.orEmpty]
     NotificationCenter.default.post(
       name: FirebaseMessaging.Notification.Name("FCMToken"),
       object: nil,

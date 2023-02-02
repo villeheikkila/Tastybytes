@@ -1,10 +1,6 @@
 import PhotosUI
 import SwiftUI
 
-func printData(data: Data) {
-  print("DATA: ", String(data: data, encoding: String.Encoding.utf8) ?? "")
-}
-
 func getPagination(page: Int, size: Int) -> (Int, Int) {
   let limit = size + 1
   let from = page * limit

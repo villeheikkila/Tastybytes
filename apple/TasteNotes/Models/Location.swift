@@ -11,8 +11,8 @@ struct Location: Identifiable {
 
   init(mapItem: MKMapItem) {
     id = UUID()
-    name = mapItem.name ?? ""
-    title = mapItem.placemark.title ?? ""
+    name = mapItem.name.orEmpty
+    title = mapItem.placemark.title.orEmpty
     location = mapItem.placemark.location
     countryCode = mapItem.placemark.countryCode
     country = nil

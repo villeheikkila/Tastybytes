@@ -98,15 +98,15 @@ struct CheckInScreenView: View {
               Label("Delete Comment", systemImage: "trash.fill")
             }
           }
-          .alert("Edit Comment", isPresented: $viewModel.showEditCommentPrompt, actions: {
-            TextField("TextField", text: $viewModel.editCommentText)
-            Button("Cancel", role: .cancel, action: {})
-            Button("Edit", action: {
-              viewModel.updateComment()
-            })
-          })
       }
     }
+    .alert("Edit Comment", isPresented: $viewModel.showEditCommentPrompt, actions: {
+      TextField("TextField", text: $viewModel.editCommentText)
+      Button("Cancel", role: .cancel, action: {})
+      Button("Edit", action: {
+        viewModel.updateComment()
+      })
+    })
     .padding([.leading, .trailing], 5)
   }
 
@@ -125,6 +125,25 @@ struct CheckInScreenView: View {
       .cornerRadius(8, corners: [.topLeft, .topRight])
     }
   }
+
+  struct CheckInCommenView: View {
+    let comment: CheckInComment
+
+    var body: some View {
+      HStack {
+        AvatarView(avatarUrl: comment.profile.getAvatarURL(), size: 32, id: comment.profile.id)
+        VStack(alignment: .leading) {
+          HStack {
+            Text(comment.profile.preferredName).font(.system(size: 12, weight: .medium, design: .default))
+            Spacer()
+            Text(comment.createdAt.relativeTime()).font(.system(size: 8, weight: .medium, design: .default))
+          }
+          Text(comment.content).font(.system(size: 14, weight: .light, design: .default))
+        }
+        Spacer()
+      }
+    }
+  }
 }
 
 extension CheckInScreenView {
@@ -139,6 +158,7 @@ extension CheckInScreenView {
     @Published var editComment: CheckInComment? {
       didSet {
         showEditCommentPrompt.toggle()
+        editCommentText = editComment?.content ?? ""
       }
     }
 
@@ -238,25 +258,6 @@ extension CheckInScreenView {
           print(error)
         }
       }
-    }
-  }
-}
-
-struct CheckInCommenView: View {
-  let comment: CheckInComment
-
-  var body: some View {
-    HStack {
-      AvatarView(avatarUrl: comment.profile.getAvatarURL(), size: 32, id: comment.profile.id)
-      VStack(alignment: .leading) {
-        HStack {
-          Text(comment.profile.preferredName).font(.system(size: 12, weight: .medium, design: .default))
-          Spacer()
-          Text(comment.createdAt.relativeTime()).font(.system(size: 8, weight: .medium, design: .default))
-        }
-        Text(comment.content).font(.system(size: 14, weight: .light, design: .default))
-      }
-      Spacer()
     }
   }
 }

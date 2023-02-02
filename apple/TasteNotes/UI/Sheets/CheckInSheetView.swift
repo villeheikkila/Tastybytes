@@ -282,7 +282,7 @@ extension CheckInSheetView {
     @Published var image: UIImage?
 
     func loadFromCheckIn(checkIn: CheckIn) {
-      review = checkIn.review ?? ""
+      review = checkIn.review.orEmpty
       rating = checkIn.rating ?? 0
       manufacturer = checkIn.variant?.manufacturer
       servingStyleName = checkIn.servingStyle?.name ?? ServingStyleName.none

@@ -115,7 +115,7 @@ struct EditBrandSheetView: View {
     .confirmationDialog("Delete Sub-brand",
                         isPresented: $viewModel.showDeleteSubBrandConfirmation,
                         presenting: viewModel.toDeleteSubBrand) { presenting in
-      Button("Delete \(presenting.name ?? "") and all related products", role: .destructive, action: {
+      Button("Delete \(presenting.name.orEmpty) and all related products", role: .destructive, action: {
         viewModel.deleteSubBrand(onSuccess: {
           onUpdate()
         })
@@ -196,7 +196,7 @@ struct EditSubBrandSheetView: View {
     self.subBrand = subBrand
     self.onUpdate = onUpdate
     self.onClose = onClose
-    _newSubBrandName = State(initialValue: subBrand.name ?? "")
+    _newSubBrandName = State(initialValue: subBrand.name.orEmpty)
   }
 
   var body: some View {
@@ -229,7 +229,7 @@ struct EditSubBrandSheetView: View {
         }
       }
     }
-    .navigationTitle("Edit \(subBrand.name ?? "")")
+    .navigationTitle("Edit \(subBrand.name.orEmpty)")
     .navigationBarItems(trailing: Button(action: {
       onClose()
     }) {
@@ -241,11 +241,15 @@ struct EditSubBrandSheetView: View {
     .confirmationDialog("Merge Sub-brands Confirmation",
                         isPresented: $viewModel.showMergeSubBrandsConfirmation,
                         presenting: viewModel.mergeTo) { presenting in
-      Button("Merge \(subBrand.name ?? "") to \(presenting.name ?? "default sub-brand")", role: .destructive, action: {
-        viewModel.mergeToSubBrand(subBrand: subBrand, onSuccess: {
-          onUpdate()
-        })
-      })
+      Button(
+        "Merge \(subBrand.name.orEmpty) to \(presenting.name ?? "default sub-brand")",
+        role: .destructive,
+        action: {
+          viewModel.mergeToSubBrand(subBrand: subBrand, onSuccess: {
+            onUpdate()
+          })
+        }
+      )
     }
   }
 }

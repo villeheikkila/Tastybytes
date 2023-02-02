@@ -381,7 +381,7 @@ extension ProductSheetView {
             )
             self.subBrand = initialProduct.subBrand.getSubBrand()
             self.name = initialProduct.name
-            self.description = initialProduct.description ?? ""
+            self.description = initialProduct.description.orEmpty
             self.hasSubBrand = initialProduct.subBrand.name != nil
           case let .failure(error):
             print(error)
