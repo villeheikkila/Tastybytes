@@ -24,10 +24,12 @@ struct FriendsScreenView: View {
         if viewModel.profile == profileManager.getProfile() {
           FriendListItemView(friend: friend,
                              currentUser: profileManager.getProfile(),
-                             onAccept: { f in viewModel.updateFriendRequest(friend: f, newStatus: .accepted) },
-                             onBlock: { f in viewModel.updateFriendRequest(friend: f, newStatus: .blocked) },
-                             onDelete: { f in
-                               viewModel.friendToBeRemoved = f
+                             onAccept: { _ in
+                               viewModel.updateFriendRequest(friend: friend, newStatus: .accepted)
+                             },
+                             onBlock: { _ in viewModel.updateFriendRequest(friend: friend, newStatus: .blocked) },
+                             onDelete: { _ in
+                               viewModel.friendToBeRemoved = friend
                              })
         } else {
           FriendListItemSimpleView(profile: friend.getFriend(userId: viewModel.profile.id))

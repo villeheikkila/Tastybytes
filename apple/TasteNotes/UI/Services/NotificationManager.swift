@@ -113,11 +113,11 @@ final class NotificationManager: NSObject, ObservableObject {
         case let .success(updatedNotifications):
           await MainActor.run {
             self.notifications = self.notifications.map {
-              n in
-              if let updatedNotification = updatedNotifications.first(where: { $0.id == n.id }) {
+              notification in
+              if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
                 return updatedNotification
               } else {
-                return n
+                return notification
               }
             }
           }
@@ -131,10 +131,10 @@ final class NotificationManager: NSObject, ObservableObject {
   func markCheckInAsRead(checkIn: CheckIn) {
     let containsCheckIn = notifications.contains(where: {
       switch $0.content {
-      case let .checkInReaction(cr):
-        return cr.checkIn == checkIn
-      case let .taggedCheckIn(tc):
-        return tc == checkIn
+      case let .checkInReaction(cir):
+        return cir.checkIn == checkIn
+      case let .taggedCheckIn(tci):
+        return tci == checkIn
       default:
         return false
       }
@@ -146,11 +146,11 @@ final class NotificationManager: NSObject, ObservableObject {
         case let .success(updatedNotifications):
           await MainActor.run {
             self.notifications = self.notifications.map {
-              n in
-              if let updatedNotification = updatedNotifications.first(where: { $0.id == n.id }) {
+              notification in
+              if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
                 return updatedNotification
               } else {
-                return n
+                return notification
               }
             }
           }

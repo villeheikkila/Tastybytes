@@ -49,10 +49,14 @@ extension ProductBarcode {
   struct NewRequest: Encodable {
     let barcode: String
     let type: String
-    let product_id: Int
+    let productId: Int
+
+    enum CodingKeys: String, CodingKey {
+      case barcode, productId = "product_id"
+    }
 
     init(product: Product.Joined, barcode: Barcode) {
-      product_id = product.id
+      productId = product.id
       type = barcode.type.rawValue
       self.barcode = barcode.barcode
     }

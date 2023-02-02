@@ -94,23 +94,31 @@ extension Brand {
 extension Brand {
   struct NewRequest: Encodable {
     let name: String
-    let brand_owner_id: Int
+    let brandOwnerId: Int
+
+    enum CodingKeys: String, CodingKey {
+      case name, brandOwnerId = "brand_owner_id"
+    }
 
     init(name: String, brandOwnerId: Int) {
       self.name = name
-      brand_owner_id = brandOwnerId
+      self.brandOwnerId = brandOwnerId
     }
   }
 
   struct UpdateRequest: Encodable {
     let id: Int
     let name: String
-    let brand_owner_id: Int
+    let brandOwnerId: Int
+
+    enum CodingKeys: String, CodingKey {
+      case id, name, brandOwnerId = "brand_owner_id"
+    }
 
     init(id: Int, name: String, brandOwnerId: Int) {
       self.id = id
       self.name = name
-      brand_owner_id = brandOwnerId
+      self.brandOwnerId = brandOwnerId
     }
   }
 }

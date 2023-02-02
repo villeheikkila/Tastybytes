@@ -27,17 +27,10 @@ struct SupabaseCheckInReactionsRepository: CheckInReactionsRepository {
   }
 
   func delete(id: Int) async -> Result<Void, Error> {
-    struct DeleteCheckInReaction: Encodable {
-      let p_check_in_reaction_id: Int
-
-      init(id: Int) {
-        p_check_in_reaction_id = id
-      }
-    }
     do {
       try await client
         .database
-        .rpc(fn: "fnc__soft_delete_check_in_reaction", params: DeleteCheckInReaction(id: id))
+        .rpc(fn: "fnc__soft_delete_check_in_reaction", params: CheckInReaction.DeleteRequest(id: id))
         .execute()
 
       return .success(())

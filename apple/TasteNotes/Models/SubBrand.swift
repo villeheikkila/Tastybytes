@@ -97,11 +97,11 @@ extension SubBrand {
 extension SubBrand {
   struct NewRequest: Encodable {
     let name: String
-    let brand_id: Int
+    let brandId: Int
 
     init(name: String, brandId: Int) {
       self.name = name
-      brand_id = brandId
+      self.brandId = brandId
     }
   }
 
@@ -117,11 +117,15 @@ extension SubBrand {
 
   struct UpdateBrandRequest: Encodable {
     let id: Int
-    let brand_id: Int
+    let brandId: Int
+
+    enum CodingKeys: String, CodingKey {
+      case id, brandId = "brand_id"
+    }
 
     init(id: Int, brandId: Int) {
       self.id = id
-      brand_id = brandId
+      self.brandId = brandId
     }
   }
 

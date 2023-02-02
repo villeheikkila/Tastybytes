@@ -127,14 +127,25 @@ extension CheckIn: Decodable {
 
 extension CheckIn {
   struct NewRequest: Encodable {
-    let p_product_id: Int
-    let p_rating: Double?
-    let p_review: String?
-    let p_manufacturer_id: Int?
-    let p_serving_style_id: Int?
-    let p_friend_ids: [String]?
-    let p_flavor_ids: [Int]?
-    let p_location_id: String?
+    let productId: Int
+    let rating: Double?
+    let review: String?
+    let manufacturerId: Int?
+    let servingStyleId: Int?
+    let friendIds: [String]?
+    let flavorIds: [Int]?
+    let locationId: String?
+
+    enum CodingKeys: String, CodingKey {
+      case productId = "p_product_id"
+      case rating = "p_rating"
+      case review = "p_review"
+      case manufacturerId = "p_manufacturer_id"
+      case servingStyleId = "p_serving_style_id"
+      case friendIds = "p_friend_ids"
+      case flavorIds = "p_flavor_ids"
+      case locationId = "p_location_id"
+    }
 
     init(
       product: Product.Joined,
@@ -146,27 +157,39 @@ extension CheckIn {
       rating: Double,
       location: Location?
     ) {
-      p_product_id = product.id
-      p_review = review == "" ? nil : review
-      p_manufacturer_id = manufacturer?.id ?? nil
-      p_serving_style_id = servingStyle?.id ?? nil
-      p_friend_ids = taggedFriends.map(\.id.uuidString)
-      p_flavor_ids = flavors.map(\.id)
-      p_rating = rating
-      p_location_id = location?.id.uuidString
+      productId = product.id
+      self.review = review == "" ? nil : review
+      manufacturerId = manufacturer?.id ?? nil
+      servingStyleId = servingStyle?.id ?? nil
+      friendIds = taggedFriends.map(\.id.uuidString)
+      flavorIds = flavors.map(\.id)
+      self.rating = rating
+      locationId = location?.id.uuidString
     }
   }
 
   struct UpdateRequest: Encodable {
-    let p_check_in_id: Int
-    let p_product_id: Int
-    let p_rating: Double
-    let p_review: String?
-    let p_manufacturer_id: Int?
-    let p_serving_style_id: Int?
-    let p_friend_ids: [String]?
-    let p_flavor_ids: [Int]?
-    let p_location_id: String?
+    let checkInId: Int
+    let productId: Int
+    let rating: Double?
+    let review: String?
+    let manufacturerId: Int?
+    let servingStyleId: Int?
+    let friendIds: [String]?
+    let flavorIds: [Int]?
+    let locationId: String?
+
+    enum CodingKeys: String, CodingKey {
+      case checkInId = "p_check_in_id"
+      case productId = "p_product_id"
+      case rating = "p_rating"
+      case review = "p_review"
+      case manufacturerId = "p_manufacturer_id"
+      case servingStyleId = "p_serving_style_id"
+      case friendIds = "p_friend_ids"
+      case flavorIds = "p_flavor_ids"
+      case locationId = "p_location_id"
+    }
 
     init(
       checkIn: CheckIn,
@@ -179,15 +202,15 @@ extension CheckIn {
       rating: Double,
       location: Location?
     ) {
-      p_check_in_id = checkIn.id
-      p_product_id = product.id
-      p_review = review
-      p_manufacturer_id = manufacturer?.id ?? nil
-      p_serving_style_id = servingStyle?.id ?? nil
-      p_friend_ids = taggedFriends.map(\.id.uuidString)
-      p_flavor_ids = flavors.map(\.id)
-      p_rating = rating
-      p_location_id = location?.id.uuidString
+      checkInId = checkIn.id
+      productId = product.id
+      self.review = review
+      manufacturerId = manufacturer?.id ?? nil
+      servingStyleId = servingStyle?.id ?? nil
+      friendIds = taggedFriends.map(\.id.uuidString)
+      flavorIds = flavors.map(\.id)
+      self.rating = rating
+      locationId = location?.id.uuidString
     }
   }
 }

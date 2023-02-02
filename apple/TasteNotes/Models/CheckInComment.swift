@@ -49,11 +49,10 @@ extension CheckInComment {
 extension CheckInComment {
   struct NewRequest: Encodable {
     let content: String
-    let check_in_id: Int
+    let checkInId: Int
 
-    init(content: String, checkInId: Int) {
-      self.content = content
-      check_in_id = checkInId
+    enum CodingKeys: String, CodingKey {
+      case content, checkInId = "check_in_id"
     }
   }
 

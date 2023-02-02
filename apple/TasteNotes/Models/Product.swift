@@ -45,39 +45,53 @@ extension Product {
 
 extension Product {
   struct SearchParams: Encodable {
-    let p_search_term: String
-    let p_category_name: String?
+    let searchTerm: String
+    let categoryName: String?
+
+    enum CodingKeys: String, CodingKey {
+      case searchTerm = "p_search_term", categoryName = "p_category_name"
+    }
 
     init(searchTerm: String, categoryName: Category.Name?) {
-      p_search_term = "%\(searchTerm.trimmingCharacters(in: .whitespacesAndNewlines))%"
+      self.searchTerm = "%\(searchTerm.trimmingCharacters(in: .whitespacesAndNewlines))%"
 
       if let categoryName {
-        p_category_name = categoryName.rawValue
+        self.categoryName = categoryName.rawValue
       } else {
-        p_category_name = nil
+        self.categoryName = nil
       }
     }
   }
 
   struct MergeProductsParams: Encodable {
-    let p_product_id: Int
-    let p_to_product_id: Int?
+    let productId: Int
+    let toProductId: Int?
 
-    init(productId: Int, toProductId: Int) {
-      p_product_id = productId
-      p_to_product_id = toProductId
+    enum CodingKeys: String, CodingKey {
+      case productId = "p_product_id", toProductId = "p_to_product_id"
     }
   }
 
   struct NewRequest: Encodable {
-    let p_name: String
-    let p_description: String?
-    let p_category_id: Int
-    let p_brand_id: Int
-    let p_sub_category_ids: [Int]
-    let p_sub_brand_id: Int?
-    let p_barcode_code: String?
-    let p_barcode_type: String?
+    let name: String
+    let description: String?
+    let categoryId: Int
+    let brandId: Int
+    let subCategoryIds: [Int]
+    let subBrandId: Int?
+    let barcodeCode: String?
+    let barcodeType: String?
+
+    enum CodingKeys: String, CodingKey {
+      case name = "p_name"
+      case description = "p_description"
+      case categoryId = "p_category_id"
+      case brandId = "p_brand_id"
+      case subCategoryIds = "p_sub_category_ids"
+      case subBrandId = "p_sub_brand_id"
+      case barcodeCode = "p_barcode_code"
+      case barcodeType = "p_barcode_type"
+    }
 
     init(
       name: String,
@@ -88,30 +102,39 @@ extension Product {
       subCategoryIds: [Int],
       barcode: Barcode?
     ) {
-      p_name = name
-      p_description = description
-      p_category_id = categoryId
-      p_sub_brand_id = subBrandId
-      p_sub_category_ids = subCategoryIds
-      p_brand_id = brandId
+      self.name = name
+      self.description = description
+      self.categoryId = categoryId
+      self.subBrandId = subBrandId
+      self.subCategoryIds = subCategoryIds
+      self.brandId = brandId
 
       if let barcode {
-        p_barcode_code = barcode.barcode
-        p_barcode_type = barcode.type.rawValue
+        barcodeCode = barcode.barcode
+        barcodeType = barcode.type.rawValue
       } else {
-        p_barcode_code = nil
-        p_barcode_type = nil
+        barcodeCode = nil
+        barcodeType = nil
       }
     }
   }
 
   struct EditRequest: Encodable {
-    let p_product_id: Int
-    let p_name: String
-    let p_description: String?
-    let p_category_id: Int
-    let p_sub_category_ids: [Int]
-    let p_sub_brand_id: Int
+    let productId: Int
+    let name: String
+    let description: String?
+    let categoryId: Int
+    let subcategoryIds: [Int]
+    let subBrandId: Int
+
+    enum CodingKeys: String, CodingKey {
+      case productId = "p_product_id"
+      case name = "p_name"
+      case description = "p_description"
+      case categoryId = "p_category_id"
+      case subcategoryIds = "p_sub_category_ids"
+      case subBrandId = "p_sub_brand_id"
+    }
 
     init(
       productId: Int,
@@ -121,46 +144,46 @@ extension Product {
       subBrandId: Int,
       subcategories: [Subcategory]
     ) {
-      p_product_id = productId
-      p_name = name
-      p_description = description
-      p_category_id = categoryId
-      p_sub_brand_id = subBrandId
-      p_sub_category_ids = subcategories.map(\.id)
+      self.productId = productId
+      self.name = name
+      self.description = description
+      self.categoryId = categoryId
+      self.subBrandId = subBrandId
+      subcategoryIds = subcategories.map(\.id)
     }
   }
 
   struct EditSuggestionRequest: Encodable {
-    let p_product_id: Int
-    let p_name: String
-    let p_description: String?
-    let p_category_id: Int
-    let p_sub_category_ids: [Int]
-    let p_sub_brand_id: Int
+    let productId: Int
+    let name: String
+    let description: String?
+    let categoryId: Int
+    let subcategoryIds: [Int]
+    let subBrandId: Int
 
-    init(productId: Int, name: String, description: String?, categoryId: Int, subBrandId: Int, subCategoryIds: [Int]) {
-      p_product_id = productId
-      p_name = name
-      p_description = description
-      p_category_id = categoryId
-      p_sub_brand_id = subBrandId
-      p_sub_category_ids = subCategoryIds
+    enum CodingKeys: String, CodingKey {
+      case productId = "p_product_id"
+      case name = "p_name"
+      case description = "p_description"
+      case categoryId = "p_category_id"
+      case subcategoryIds = "p_sub_category_ids"
+      case subBrandId = "p_sub_brand_id"
     }
   }
 
   struct SummaryRequest: Encodable {
-    let p_product_id: Int
+    let id: Int
 
-    init(id: Int) {
-      p_product_id = id
+    enum CodingKeys: String, CodingKey {
+      case id = "p_product_id"
     }
   }
 
   struct VerifyRequest: Encodable {
-    let p_product_id: Int
+    let id: Int
 
-    init(id: Int) {
-      p_product_id = id
+    enum CodingKeys: String, CodingKey {
+      case id = "p_product_id"
     }
   }
 }

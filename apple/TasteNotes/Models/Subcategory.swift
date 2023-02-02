@@ -58,11 +58,15 @@ extension Subcategory {
 extension Subcategory {
   struct NewRequest: Encodable {
     let name: String
-    let category_id: Int
+    let categoryId: Int
+
+    enum CodingKeys: String, CodingKey {
+      case name, categoryId = "category_id"
+    }
 
     init(name: String, category: Category.JoinedSubcategories) {
       self.name = name
-      category_id = category.id
+      categoryId = category.id
     }
   }
 }

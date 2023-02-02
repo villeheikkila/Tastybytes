@@ -118,26 +118,23 @@ extension Location: Encodable {
 
 extension Location {
   struct New: Encodable {
-    let p_name: String
-    let p_title: String?
-    let p_longitude: Double
-    let p_latitude: Double
-    let p_country_code: String
+    let name: String
+    let title: String?
+    let longitude: Double
+    let latitude: Double
+    let countryCode: String
 
-    init(name: String, title: String?, longitude: Double, latitude: Double, countryCode: String) {
-      p_name = name
-      p_title = title
-      p_longitude = longitude
-      p_latitude = latitude
-      p_country_code = countryCode
+    enum CodingKeys: String, CodingKey {
+      case name = "p_name", title = "p_title", longitude = "p_longitude", latitude = "p_latitude",
+           countryCode = "p_country_code"
     }
   }
 
   struct SummaryRequest: Encodable {
-    let p_location_id: UUID
+    let id: UUID
 
-    init(id: UUID) {
-      p_location_id = id
+    enum CodingKeys: String, CodingKey {
+      case id = "p_location_id"
     }
   }
 }

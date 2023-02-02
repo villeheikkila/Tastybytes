@@ -48,22 +48,31 @@ extension Friend {
   }
 
   struct NewRequest: Encodable {
-    let user_id_2: UUID
+    let receiverId: UUID
     let status: String
+
+    enum CodingKeys: String, CodingKey {
+      case receiverId = "user_id_2", status
+    }
+
     init(receiver: UUID, status _: Status) {
-      user_id_2 = receiver
+      receiverId = receiver
       status = Status.pending.rawValue
     }
   }
 
   struct UpdateRequest: Encodable {
-    let user_id_1: UUID
-    let user_id_2: UUID
+    let senderId: UUID
+    let receiverId: UUID
     let status: String
 
+    enum CodingKeys: String, CodingKey {
+      case senderId = "user_id_1", receiverId = "user_id_2", status
+    }
+
     init(sender: Profile, receiver: Profile, status: Status) {
-      user_id_1 = sender.id
-      user_id_2 = receiver.id
+      senderId = sender.id
+      receiverId = receiver.id
       self.status = status.rawValue
     }
   }

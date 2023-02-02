@@ -368,23 +368,23 @@
 		5CD10A5A28F9988C0001CFC2 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */,
-				5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */,
+				5CB1C24C28F9C087000B0EB4 /* AuthRepository.swift */,
+				5CED432F28FD6EBC003F8194 /* BrandRepository.swift */,
+				5CED432928FD4E17003F8194 /* CategoryRepository.swift */,
 				5CB1C24628F9B551000B0EB4 /* CheckInCommentRepository.swift */,
 				5CB1C24828F9BBAA000B0EB4 /* CheckInReactionRepository.swift */,
-				5CB1C24A28F9BE4F000B0EB4 /* ProductRepository.swift */,
-				5CB1C24C28F9C087000B0EB4 /* AuthRepository.swift */,
+				5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */,
 				5CB1C24E28F9C52E000B0EB4 /* CompanyRepository.swift */,
-				5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */,
-				5CED432928FD4E17003F8194 /* CategoryRepository.swift */,
-				5CED432F28FD6EBC003F8194 /* BrandRepository.swift */,
-				5CED433328FDA357003F8194 /* SubBrandRepository.swift */,
-				5C919E1B28FEFEA50055CFD2 /* FlavorRepository.swift */,
-				5C989DAA2901AAD500BBC5A7 /* Repository.swift */,
-				5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */,
-				5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */,
-				5C0E365929296FCB0072EFBD /* SubcategoryRepository.swift */,
 				5C663F26292E0F1D006F9A97 /* DocumentRepository.swift */,
+				5C919E1B28FEFEA50055CFD2 /* FlavorRepository.swift */,
+				5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */,
+				5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */,
+				5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */,
+				5CB1C24A28F9BE4F000B0EB4 /* ProductRepository.swift */,
+				5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */,
+				5C989DAA2901AAD500BBC5A7 /* Repository.swift */,
+				5CED433328FDA357003F8194 /* SubBrandRepository.swift */,
+				5C0E365929296FCB0072EFBD /* SubcategoryRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";

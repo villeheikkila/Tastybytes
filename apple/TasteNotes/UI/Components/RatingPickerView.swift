@@ -67,10 +67,10 @@ struct RatingPickerView: View {
     let totalPaddingWidth = controlSize.width - CGFloat(5) * singleStarWidth
     let singlePaddingWidth = totalPaddingWidth / (CGFloat(5) - 1)
     let starWithSpaceWidth = Double(singleStarWidth + singlePaddingWidth)
-    let x = Double(position.x)
+    let xAxis = Double(position.x)
 
-    let starIdx = Int(x / starWithSpaceWidth)
-    let starPercent = x.truncatingRemainder(dividingBy: starWithSpaceWidth) / Double(singleStarWidth) * 100
+    let starIdx = Int(xAxis / starWithSpaceWidth)
+    let starPercent = xAxis.truncatingRemainder(dividingBy: starWithSpaceWidth) / Double(singleStarWidth) * 100
 
     let rating: Double
     if starPercent < 25 {

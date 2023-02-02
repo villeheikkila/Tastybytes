@@ -80,10 +80,18 @@ extension CheckInReaction {
 
 extension CheckInReaction {
   struct NewRequest: Encodable {
-    let p_check_in_id: Int
+    let checkInId: Int
 
-    init(checkInId: Int) {
-      p_check_in_id = checkInId
+    enum CodingKeys: String, CodingKey {
+      case checkInId = "p_check_in_id"
+    }
+  }
+
+  struct DeleteRequest: Encodable {
+    let id: Int
+
+    enum CodingKeys: String, CodingKey {
+      case id = "p_check_in_reaction_id"
     }
   }
 }

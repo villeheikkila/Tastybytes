@@ -38,10 +38,14 @@ extension ProfileSummary: Decodable {
 
 extension ProfileSummary {
   struct GetRequest: Encodable {
-    let p_uid: String
+    let profileId: String
+
+    enum CodingKeys: String, CodingKey {
+      case profileId = "p_uid"
+    }
 
     init(profileId: UUID) {
-      p_uid = profileId.uuidString
+      self.profileId = profileId.uuidString
     }
   }
 }

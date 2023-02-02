@@ -120,18 +120,25 @@ extension Profile: Hashable {
 extension Profile {
   struct UpdateRequest: Encodable {
     var username: String?
-    var first_name: String?
-    var last_name: String?
-    var name_display: String?
+    var firstName: String?
+    var lastName: String?
+    var nameDisplay: String?
+
+    enum CodingKeys: String, CodingKey {
+      case username
+      case firstName = "first_name"
+      case lastName = "last_name"
+      case nameDisplay = "name_display"
+    }
 
     init(showFullName: Bool) {
-      name_display = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
+      nameDisplay = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
     }
 
     init(username: String?, firstName: String?, lastName: String?) {
       self.username = username
-      first_name = firstName
-      last_name = lastName
+      self.firstName = firstName
+      self.lastName = lastName
     }
   }
 }
@@ -202,30 +209,38 @@ extension ProfileSettings {
   }
 
   struct UpdateRequest: Encodable {
-    var color_scheme: String?
-    var send_reaction_notifications: Bool?
-    var send_tagged_check_in_notifications: Bool?
-    var send_friend_request_notifications: Bool?
-    var public_profile: Bool?
+    var colorScheme: String?
+    var sendReactionNotifications: Bool?
+    var sendTaggedCheckInNotifications: Bool?
+    var sendFriendRequestNotifications: Bool?
+    var publicProfile: Bool?
+
+    enum CodingKeys: String, CodingKey {
+      case colorScheme = "color_scheme"
+      case sendReactionNotifications = "send_reaction_notifications"
+      case sendTaggedCheckInNotifications = "send_tagged_check_in_notifications"
+      case sendFriendRequestNotifications = "send_friend_request_notifications"
+      case publicProfile = "public_profile"
+    }
 
     init(sendReactionNotifications: Bool, sendTaggedCheckInNotifications: Bool, sendFriendRequestNotifications: Bool) {
-      send_reaction_notifications = sendReactionNotifications
-      send_tagged_check_in_notifications = sendTaggedCheckInNotifications
-      send_friend_request_notifications = sendFriendRequestNotifications
+      self.sendReactionNotifications = sendReactionNotifications
+      self.sendTaggedCheckInNotifications = sendTaggedCheckInNotifications
+      self.sendFriendRequestNotifications = sendFriendRequestNotifications
     }
 
     init(isDarkMode: Bool, isSystemColor: Bool) {
       if isSystemColor {
-        color_scheme = ColorScheme.system.rawValue
+        colorScheme = ColorScheme.system.rawValue
       } else if isDarkMode {
-        color_scheme = ColorScheme.dark.rawValue
+        colorScheme = ColorScheme.dark.rawValue
       } else {
-        color_scheme = ColorScheme.light.rawValue
+        colorScheme = ColorScheme.light.rawValue
       }
     }
 
     init(publicProfile: Bool) {
-      public_profile = publicProfile
+      self.publicProfile = publicProfile
     }
   }
 }

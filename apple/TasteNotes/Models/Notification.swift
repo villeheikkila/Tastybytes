@@ -123,18 +123,18 @@ extension Notification {
   }
 
   struct MarkReadRequest: Encodable {
-    let p_notification_id: Int
+    let id: Int
 
-    init(id: Int) {
-      p_notification_id = id
+    enum CodingKeys: String, CodingKey {
+      case id = "p_notification_id"
     }
   }
 
   struct MarkCheckInReadRequest: Encodable {
-    let p_check_in_id: Int
+    let checkInId: Int
 
-    init(checkInId: Int) {
-      p_check_in_id = checkInId
+    enum CodingKeys: String, CodingKey {
+      case checkInId = "p_check_in_id"
     }
   }
 }
