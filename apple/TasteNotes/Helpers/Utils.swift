@@ -81,10 +81,6 @@ func joinOptionalStrings(_ arr: [String?]) -> String {
   arr.compactMap { $0 }.joined(separator: " ")
 }
 
-func formatRating(_ rating: Double?) -> String {
-  String(format: "%.2f", rating ?? "")
-}
-
 func queryWithTableName(_ tableName: String, _ query: String, _ withTableName: Bool) -> String {
   withTableName ? "\(tableName) (\(query))" : query
 }
@@ -99,8 +95,7 @@ func getAvatarURL(id: UUID, avatarUrl: String?) -> URL? {
     let supabaseUrl = Config.supabaseUrl.absoluteString
     let urlString =
       "\(supabaseUrl)/storage/v1/object/public/\(bucketId)/\(id.uuidString.lowercased())/\(avatarUrl)"
-    guard let url = URL(string: urlString) else { return nil }
-    return url
+    return URL(string: urlString)
   } else {
     return nil
   }

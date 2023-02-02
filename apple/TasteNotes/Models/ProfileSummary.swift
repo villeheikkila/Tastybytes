@@ -15,10 +15,6 @@ struct ProfileSummary {
   let rating8: Int
   let rating9: Int
   let rating10: Int
-
-  func getFormattedAverageRating() -> String {
-    String(format: "%.2f", averageRating ?? "")
-  }
 }
 
 extension ProfileSummary: Decodable {

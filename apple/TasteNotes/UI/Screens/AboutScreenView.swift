@@ -5,74 +5,11 @@ struct AboutScreenView: View {
 
   var body: some View {
     VStack {
-      if let aboutPage = viewModel.aboutPage {
-        List {
-          Section {
-            HStack {
-              Spacer()
-              VStack(spacing: 10) {
-                AppLogoView()
-                AppNameView()
-              }
-              Spacer()
-            }
-          }
+      List {
+        header
           .listRowBackground(Color.clear)
-
-          Section {
-            Text(aboutPage.summary)
-          }
-
-          Section {
-            Link(destination: URL(string: aboutPage.githubUrl)!) {
-              HStack {
-                GitHubShape()
-                  .frame(width: 18, height: 18)
-                  .padding(.leading, 5)
-                  .padding(.trailing, 15)
-
-                Text("GitHub")
-                  .fontWeight(.medium)
-              }
-            }
-            Link(destination: URL(string: aboutPage.portfolioUrl)!) {
-              HStack {
-                WebShape()
-                  .frame(width: 18, height: 18)
-                  .padding(.leading, 5)
-                  .padding(.trailing, 15)
-
-                Text("Portfolio")
-                  .fontWeight(.medium)
-              }
-            }
-            Link(destination: URL(string: aboutPage.linkedInUrl)!) {
-              HStack {
-                LinkedInShape()
-                  .frame(width: 18, height: 18)
-                  .padding(.leading, 5)
-                  .padding(.trailing, 15)
-
-                Text("LinkedIn")
-                  .fontWeight(.medium)
-              }
-            }
-          }
-
-          Section {
-            HStack(alignment: .center) {
-              Image(systemName: "c.circle")
-                .font(.system(size: 12, weight: .bold, design: .default))
-
-              if let currentYear = viewModel.currentYear {
-                Text(String(currentYear))
-                  .font(.system(size: 12, weight: .bold, design: .default))
-              }
-              Text("Ville Heikkilä")
-                .font(.system(size: 12, weight: .bold, design: .default))
-            }
-          }
-        }
+        aboutSection
+        footer
       }
     }
     .navigationTitle("About")
@@ -80,12 +17,91 @@ struct AboutScreenView: View {
       viewModel.getAboutPage()
     }
   }
+
+  var header: some View {
+    Section {
+      HStack {
+        Spacer()
+        VStack(spacing: 10) {
+          AppLogoView()
+          AppNameView()
+        }
+        Spacer()
+      }
+    }
+  }
+
+  @ViewBuilder
+  var aboutSection: some View {
+    if let aboutPage = viewModel.aboutPage {
+      Section {
+        Text(aboutPage.summary)
+      }
+
+      Section {
+        if let githubUrl = aboutPage.githubUrl, let githubUrl = URL(string: githubUrl) {
+          Link(destination: githubUrl) {
+            HStack {
+              GitHubShape()
+                .frame(width: 18, height: 18)
+                .padding(.leading, 5)
+                .padding(.trailing, 15)
+
+              Text("GitHub")
+                .fontWeight(.medium)
+            }
+          }
+        }
+        if let portfolioUrl = aboutPage.portfolioUrl, let portfolioUrl = URL(string: portfolioUrl) {
+          Link(destination: portfolioUrl) {
+            HStack {
+              WebShape()
+                .frame(width: 18, height: 18)
+                .padding(.leading, 5)
+                .padding(.trailing, 15)
+
+              Text("Portfolio")
+                .fontWeight(.medium)
+            }
+          }
+        }
+        if let linkedInUrl = aboutPage.linkedInUrl, let linkedInUrl = URL(string: linkedInUrl) {
+          Link(destination: linkedInUrl) {
+            HStack {
+              LinkedInShape()
+                .frame(width: 18, height: 18)
+                .padding(.leading, 5)
+                .padding(.trailing, 15)
+
+              Text("LinkedIn")
+                .fontWeight(.medium)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  var footer: some View {
+    Section {
+      HStack(alignment: .center) {
+        Image(systemName: "c.circle")
+          .font(.system(size: 12, weight: .bold, design: .default))
+
+        if let currentYear = Calendar(identifier: .gregorian).dateComponents([.year], from: .now).year {
+          Text(String(currentYear))
+            .font(.system(size: 12, weight: .bold, design: .default))
+        }
+        Text("Ville Heikkilä")
+          .font(.system(size: 12, weight: .bold, design: .default))
+      }
+    }
+  }
 }
 
 extension AboutScreenView {
   @MainActor class ViewModel: ObservableObject {
     @Published var aboutPage: AboutPage?
-    let currentYear = Calendar(identifier: .gregorian).dateComponents([.year], from: .now).year
 
     func getAboutPage() {
       Task {

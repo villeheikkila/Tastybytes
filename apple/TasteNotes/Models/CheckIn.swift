@@ -16,22 +16,8 @@ struct CheckIn: Identifiable {
   let servingStyle: ServingStyle?
   let location: Location?
 
-  func isEmpty() -> Bool {
-    [rating == nil, review == nil || review == "", flavors.count == 0].allSatisfy { $0 }
-  }
-
-  func getFormattedDate() -> String {
-    let now = Date.now
-
-    if isMigrated {
-      return "legacy check-in"
-    } else if createdAt < Calendar.current.date(byAdding: .month, value: -1, to: now)! {
-      return createdAt.formatted()
-    } else {
-      let formatter = RelativeDateTimeFormatter()
-      formatter.unitsStyle = .full
-      return formatter.localizedString(for: createdAt, relativeTo: Date.now)
-    }
+  var isEmpty: Bool {
+    [rating == nil, review.isNilOrEmpty, flavors.count == 0].allSatisfy { $0 }
   }
 
   func getImageUrl() -> URL? {
@@ -40,8 +26,7 @@ struct CheckIn: Identifiable {
       let urlString =
         "\(Config.supabaseUrl)/storage/v1/object/public/\(bucketId)/\(profile.id.uuidString.lowercased())/\(imageUrl)"
 
-      guard let url = URL(string: urlString) else { return nil }
-      return url
+      return URL(string: urlString)
     } else {
       return nil
     }

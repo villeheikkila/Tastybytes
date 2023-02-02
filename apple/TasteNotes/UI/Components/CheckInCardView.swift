@@ -135,7 +135,7 @@ struct CheckInCardView: View {
 
   @ViewBuilder
   private var checkInSection: some View {
-    if !checkIn.isEmpty() {
+    if !checkIn.isEmpty {
       OptionalNavigationLink(
         value: Route.checkIn(checkIn),
         disabled: loadedFrom == .checkIn
@@ -191,7 +191,7 @@ struct CheckInCardView: View {
   private var footer: some View {
     HStack {
       OptionalNavigationLink(value: Route.checkIn(checkIn), disabled: loadedFrom == .checkIn) {
-        Text(checkIn.getFormattedDate())
+        Text(checkIn.isMigrated ? "legacy check-in" : checkIn.createdAt.relativeTime())
           .font(.system(size: 10, weight: .medium, design: .default))
         Spacer()
       }

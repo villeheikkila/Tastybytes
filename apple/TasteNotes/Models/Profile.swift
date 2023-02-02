@@ -100,8 +100,7 @@ extension Profile {
       let bucketId = "avatars"
       let urlString =
         "\(supabaseUrl)/storage/v1/object/public/\(bucketId)/\(id.uuidString.lowercased())/\(avatarUrl)"
-      guard let url = URL(string: urlString) else { return nil }
-      return url
+      return URL(string: urlString)
     } else {
       return nil
     }

@@ -168,7 +168,7 @@ struct ProfileView: View {
         Text("Average")
           .font(.system(size: 12, weight: .medium, design: .default))
           .textCase(.uppercase)
-        Text(String(viewModel.profileSummary?.getFormattedAverageRating() ?? "-"))
+        Text(String(viewModel.profileSummary?.averageRating.toRatingString ?? "-"))
           .font(.system(size: 16, weight: .bold, design: .default))
       }
     }

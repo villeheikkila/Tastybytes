@@ -10,8 +10,7 @@ struct Company: Identifiable, Codable, Hashable {
     if let logoUrl {
       let bucketId = "logos"
       let urlString = "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(logoUrl)"
-      guard let url = URL(string: urlString) else { return nil }
-      return url
+      return URL(string: urlString)
     } else {
       return nil
     }
@@ -83,10 +82,10 @@ extension Company {
   }
 
   struct SummaryRequest: Encodable {
-    let p_company_id: Int
+    let id: Int
 
-    init(id: Int) {
-      p_company_id = id
+    enum CodingKeys: String, CodingKey {
+      case id = "p_company_id"
     }
   }
 
