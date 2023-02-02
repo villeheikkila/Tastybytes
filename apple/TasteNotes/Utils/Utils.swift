@@ -1,13 +1,6 @@
 import PhotosUI
 import SwiftUI
 
-func getPagination(page: Int, size: Int) -> (Int, Int) {
-  let limit = size + 1
-  let from = page * limit
-  let to = from + size
-  return (from, to)
-}
-
 func getConsistentColor(seed: String) -> Color {
   var total = 0
   for unicodeScalar in seed.unicodeScalars {
@@ -87,18 +80,6 @@ func queryWithTableName(_ tableName: String, _ query: String, _ withTableName: B
 
 func joinWithComma(_ arr: String...) -> String {
   arr.joined(separator: ", ")
-}
-
-func getAvatarURL(id: UUID, avatarUrl: String?) -> URL? {
-  if let avatarUrl {
-    let bucketId = "avatars"
-    let supabaseUrl = Config.supabaseUrl.absoluteString
-    let urlString =
-      "\(supabaseUrl)/storage/v1/object/public/\(bucketId)/\(id.uuidString.lowercased())/\(avatarUrl)"
-    return URL(string: urlString)
-  } else {
-    return nil
-  }
 }
 
 func getCurrentAppIcon() -> AppIcon {

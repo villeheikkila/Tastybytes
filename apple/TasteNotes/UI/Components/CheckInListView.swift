@@ -174,6 +174,13 @@ extension CheckInListView {
       fetchActivityFeedItems()
     }
 
+    func getPagination(page: Int, size: Int) -> (Int, Int) {
+      let limit = size + 1
+      let from = page * limit
+      let to = from + size
+      return (from, to)
+    }
+
     func deleteCheckIn(checkIn: CheckIn) {
       Task {
         switch await repository.checkIn.delete(id: checkIn.id) {

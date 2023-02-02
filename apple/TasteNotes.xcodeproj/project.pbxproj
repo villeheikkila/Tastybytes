@@ -350,7 +350,7 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		5CCE914C28F45DD7005A6043 /* Helpers */ = {
+		5CCE914C28F45DD7005A6043 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				5CCE914D28F45DE7005A6043 /* Utils.swift */,
@@ -362,7 +362,7 @@
 				5C323E92298C50D400B005A9 /* DoubleExtensions.swift */,
 				5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */,
 			);
-			path = Helpers;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		5CD10A5A28F9988C0001CFC2 /* Repositories */ = {
@@ -479,7 +479,7 @@
 				5C46E8622911D9F00008F142 /* Constants */,
 				5CD10A5D28F99CDF0001CFC2 /* UI */,
 				5CD10A5A28F9988C0001CFC2 /* Repositories */,
-				5CCE914C28F45DD7005A6043 /* Helpers */,
+				5CCE914C28F45DD7005A6043 /* Utils */,
 				5C11ECBE28EF433700CCDE6A /* Models */,
 				5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */,
 				5CFEE57C28ED69B200A8DD66 /* Preview Content */,
