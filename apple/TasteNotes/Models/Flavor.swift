@@ -1,9 +1,7 @@
-struct Flavor: Identifiable, Decodable {
+struct Flavor: Identifiable, Decodable, Hashable {
   let id: Int
   let name: String
-}
 
-extension Flavor: Hashable {
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }

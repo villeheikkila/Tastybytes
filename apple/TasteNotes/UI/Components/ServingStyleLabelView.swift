@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ServingStyleLabelView: View {
-  let servingStyleName: ServingStyleName
+  let servingStyleName: ServingStyle.Name
 
   var body: some View {
     HStack {
@@ -13,6 +13,6 @@ struct ServingStyleLabelView: View {
 
 struct ServingStyleLabelView_Previews: PreviewProvider {
   static var previews: some View {
-    ServingStyleLabelView(servingStyleName: ServingStyleName.bottle)
+    ServingStyleLabelView(servingStyleName: ServingStyle.Name.bottle)
   }
 }

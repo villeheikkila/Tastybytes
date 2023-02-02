@@ -1,11 +1,19 @@
 import Foundation
 
-struct Friend: Identifiable {
+struct Friend: Identifiable, Decodable {
   let id: Int
   let sender: Profile
   let receiver: Profile
   let status: Status
   let blockedBy: UUID?
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case sender
+    case receiver
+    case status
+    case blockedBy = "blocked_by"
+  }
 
   func getFriend(userId: UUID?) -> Profile {
     if sender.id == userId {
@@ -31,25 +39,6 @@ struct Friend: Identifiable {
 extension Friend: Hashable {
   static func == (lhs: Friend, rhs: Friend) -> Bool {
     lhs.id == rhs.id && lhs.status == rhs.status
-  }
-}
-
-extension Friend: Decodable {
-  enum CodingKeys: String, CodingKey {
-    case id
-    case sender
-    case receiver
-    case status
-    case blockedBy = "blocked_by"
-  }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    id = try values.decode(Int.self, forKey: .id)
-    sender = try values.decode(Profile.self, forKey: .sender)
-    receiver = try values.decode(Profile.self, forKey: .receiver)
-    status = try values.decode(Status.self, forKey: .status)
-    blockedBy = try values.decodeIfPresent(UUID.self, forKey: .blockedBy)
   }
 }
 

@@ -43,12 +43,4 @@ struct AboutPage: Decodable {
     case portfolioUrl = "portfolio_url"
     case linkedInUrl = "linked_in_url"
   }
-
-  init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    summary = try container.decode(String.self, forKey: .summary)
-    githubUrl = try container.decode(String.self, forKey: .githubUrl)
-    portfolioUrl = try container.decode(String.self, forKey: .portfolioUrl)
-    linkedInUrl = try container.decode(String.self, forKey: .linkedInUrl)
-  }
 }

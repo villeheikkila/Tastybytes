@@ -16,14 +16,4 @@ struct Summary: Decodable {
     case currentUserTotalCheckIns = "current_user_check_ins"
     case currentUserAverageRating = "current_user_average_rating"
   }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    totalCheckIns = try values.decode(Int.self, forKey: .totalCheckIns)
-    averageRating = try values.decodeIfPresent(Double.self, forKey: .averageRating)
-    friendsTotalCheckIns = try values.decode(Int.self, forKey: .friendsTotalCheckIns)
-    friendsAverageRating = try values.decodeIfPresent(Double.self, forKey: .friendsAverageRating)
-    currentUserTotalCheckIns = try values.decode(Int.self, forKey: .currentUserTotalCheckIns)
-    currentUserAverageRating = try values.decodeIfPresent(Double.self, forKey: .currentUserAverageRating)
-  }
 }

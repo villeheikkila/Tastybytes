@@ -25,14 +25,6 @@ extension CheckInComment: Decodable {
     case createdAt = "created_at"
     case profile = "profiles"
   }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    id = try values.decode(Int.self, forKey: .id)
-    content = try values.decode(String.self, forKey: .content)
-    createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
-    profile = try values.decode(Profile.self, forKey: .profile)
-  }
 }
 
 extension CheckInComment {

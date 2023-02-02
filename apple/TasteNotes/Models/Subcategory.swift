@@ -47,23 +47,10 @@ extension Subcategory {
       lhs.id == rhs.id
     }
 
-    init(id: Int, name: String, category: Category) {
-      self.id = id
-      self.name = name
-      self.category = category
-    }
-
     enum CodingKeys: String, CodingKey {
       case id
       case name
       case category = "categories"
-    }
-
-    init(from decoder: Decoder) throws {
-      let values = try decoder.container(keyedBy: CodingKeys.self)
-      id = try values.decode(Int.self, forKey: .id)
-      name = try values.decode(String.self, forKey: .name)
-      category = try values.decode(Category.self, forKey: .category)
     }
   }
 }

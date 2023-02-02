@@ -14,13 +14,6 @@ struct SubBrand: Identifiable, Hashable, Decodable {
     case name
     case isVerified = "is_verified"
   }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    id = try values.decode(Int.self, forKey: .id)
-    name = try values.decodeIfPresent(String.self, forKey: .name)
-    isVerified = try values.decode(Bool.self, forKey: .isVerified)
-  }
 }
 
 extension SubBrand {
@@ -84,14 +77,6 @@ extension SubBrand {
       case brand = "brands"
       case isVerified = "is_verified"
     }
-
-    init(from decoder: Decoder) throws {
-      let values = try decoder.container(keyedBy: CodingKeys.self)
-      id = try values.decode(Int.self, forKey: .id)
-      name = try values.decodeIfPresent(String.self, forKey: .name)
-      isVerified = try values.decode(Bool.self, forKey: .isVerified)
-      brand = try values.decode(Brand.JoinedCompany.self, forKey: .brand)
-    }
   }
 
   struct JoinedProduct: Identifiable, Hashable, Decodable {
@@ -105,14 +90,6 @@ extension SubBrand {
       case name
       case isVerified = "is_verified"
       case products
-    }
-
-    init(from decoder: Decoder) throws {
-      let values = try decoder.container(keyedBy: CodingKeys.self)
-      id = try values.decode(Int.self, forKey: .id)
-      name = try values.decodeIfPresent(String.self, forKey: .name)
-      isVerified = try values.decode(Bool.self, forKey: .isVerified)
-      products = try values.decode([Product.JoinedCategory].self, forKey: .products)
     }
   }
 }

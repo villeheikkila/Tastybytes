@@ -14,14 +14,6 @@ struct Product: Identifiable, Decodable, Hashable {
     case description
     case isVerified = "is_verified"
   }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    id = try values.decode(Int.self, forKey: .id)
-    name = try values.decode(String.self, forKey: .name)
-    description = try values.decodeIfPresent(String.self, forKey: .description)
-    isVerified = try values.decode(Bool.self, forKey: .isVerified)
-  }
 }
 
 extension Product {
@@ -257,18 +249,6 @@ extension Product {
       subcategories = product.subcategories
       category = product.category
       barcodes = []
-    }
-
-    init(from decoder: Decoder) throws {
-      let values = try decoder.container(keyedBy: CodingKeys.self)
-      id = try values.decode(Int.self, forKey: .id)
-      name = try values.decode(String.self, forKey: .name)
-      description = try values.decodeIfPresent(String.self, forKey: .description)
-      isVerified = try values.decode(Bool.self, forKey: .isVerified)
-      subBrand = try values.decode(SubBrand.JoinedBrand.self, forKey: .subBrand)
-      category = try values.decode(Category.self, forKey: .category)
-      subcategories = try values.decode([Subcategory.JoinedCategory].self, forKey: .subcategories)
-      barcodes = try values.decode([ProductBarcode].self, forKey: .barcodes)
     }
   }
 

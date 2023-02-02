@@ -104,12 +104,6 @@ extension Notification {
       case checkIn = "check_ins"
     }
 
-    init(from decoder: Decoder) throws {
-      let values = try decoder.container(keyedBy: CodingKeys.self)
-      id = try values.decode(Int.self, forKey: .id)
-      checkIn = try values.decode(CheckIn.self, forKey: .checkIn)
-    }
-
     static func getQuery(_ queryType: QueryType) -> String {
       let tableName = "check_in_tagged_profiles"
       let saved = "id"

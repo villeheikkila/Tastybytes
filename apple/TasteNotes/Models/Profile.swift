@@ -1,23 +1,14 @@
 import Foundation
 
-struct Profile: Identifiable {
+struct Profile: Identifiable, Decodable {
   let id: UUID
   let preferredName: String
   var avatarUrl: String?
-}
 
-extension Profile: Decodable {
   enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case preferredName = "preferred_name"
     case avatarUrl = "avatar_url"
-  }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    id = try values.decode(UUID.self, forKey: .id)
-    preferredName = try values.decode(String.self, forKey: .preferredName)
-    avatarUrl = try values.decodeIfPresent(String.self, forKey: .avatarUrl)
   }
 }
 
@@ -178,16 +169,6 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
     case sendFriendRequestNotifications = "send_friend_request_notifications"
     case publicProfile = "public_profile"
   }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    id = try values.decode(UUID.self, forKey: .id)
-    colorScheme = try values.decode(ColorScheme.self, forKey: .colorScheme)
-    sendReactionNotifications = try values.decode(Bool.self, forKey: .sendReactionNotifications)
-    sendTaggedCheckInNotifications = try values.decode(Bool.self, forKey: .sendTaggedCheckInNotifications)
-    sendFriendRequestNotifications = try values.decode(Bool.self, forKey: .sendFriendRequestNotifications)
-    publicProfile = try values.decode(Bool.self, forKey: .publicProfile)
-  }
 }
 
 extension ProfileSettings {
@@ -264,11 +245,6 @@ extension Profile {
 
     enum CodingKeys: String, CodingKey {
       case firebaseRegistrationToken = "p_push_notification_token"
-    }
-
-    init(from decoder: Decoder) throws {
-      let values = try decoder.container(keyedBy: CodingKeys.self)
-      firebaseRegistrationToken = try values.decode(String.self, forKey: .firebaseRegistrationToken)
     }
 
     func encode(to encoder: Encoder) throws {

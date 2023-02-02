@@ -34,24 +34,6 @@ extension ProfileSummary: Decodable {
     case rating9 = "rating_9"
     case rating10 = "rating_10"
   }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    totalCheckIns = try values.decode(Int.self, forKey: .totalCheckIns)
-    uniqueCheckIns = try values.decode(Int.self, forKey: .uniqueCheckIns)
-    averageRating = try values.decodeIfPresent(Double.self, forKey: .averageRating)
-    unrated = try values.decode(Int.self, forKey: .unrated)
-    rating1 = try values.decode(Int.self, forKey: .rating1)
-    rating2 = try values.decode(Int.self, forKey: .rating2)
-    rating3 = try values.decode(Int.self, forKey: .rating3)
-    rating4 = try values.decode(Int.self, forKey: .rating4)
-    rating5 = try values.decode(Int.self, forKey: .rating5)
-    rating6 = try values.decode(Int.self, forKey: .rating6)
-    rating7 = try values.decode(Int.self, forKey: .rating7)
-    rating8 = try values.decode(Int.self, forKey: .rating8)
-    rating9 = try values.decode(Int.self, forKey: .rating9)
-    rating10 = try values.decode(Int.self, forKey: .rating10)
-  }
 }
 
 extension ProfileSummary {

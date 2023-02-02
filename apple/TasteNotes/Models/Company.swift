@@ -16,13 +16,6 @@ struct Company: Identifiable, Codable, Hashable {
     }
   }
 
-  init(id: Int, name: String, logoUrl: String?, isVerified: Bool) {
-    self.id = id
-    self.name = name
-    self.logoUrl = logoUrl
-    self.isVerified = isVerified
-  }
-
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
     hasher.combine(logoUrl)
@@ -37,14 +30,6 @@ struct Company: Identifiable, Codable, Hashable {
     case name
     case logoUrl = "logo_url"
     case isVerified = "is_verified"
-  }
-
-  init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    id = try container.decode(Int.self, forKey: .id)
-    name = try container.decode(String.self, forKey: .name)
-    logoUrl = try container.decodeIfPresent(String.self, forKey: .logoUrl)
-    isVerified = try container.decode(Bool.self, forKey: .isVerified)
   }
 }
 
@@ -106,15 +91,6 @@ extension Company {
       case subsidiaries = "companies"
       case brands
       case logoUrl
-    }
-
-    init(from decoder: Decoder) throws {
-      let values = try decoder.container(keyedBy: CodingKeys.self)
-      id = try values.decode(Int.self, forKey: .id)
-      name = try values.decode(String.self, forKey: .name)
-      logoUrl = try values.decodeIfPresent(String.self, forKey: .logoUrl)
-      subsidiaries = try values.decode([Company].self, forKey: .subsidiaries)
-      brands = try values.decode([Brand.JoinedSubBrandsProducts].self, forKey: .brands)
     }
   }
 }

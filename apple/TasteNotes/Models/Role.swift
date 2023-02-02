@@ -1,10 +1,14 @@
-struct Role: Identifiable {
+struct Role: Identifiable, Decodable, Hashable {
   let id: Int
   let name: String
   let permissions: [Permission]
-}
 
-extension Role: Hashable {
+  enum CodingKeys: String, CodingKey {
+    case id
+    case name
+    case permissions
+  }
+
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }
@@ -30,20 +34,5 @@ extension Role {
   enum QueryType {
     case tableName
     case joined(_ withTableName: Bool)
-  }
-}
-
-extension Role: Decodable {
-  enum CodingKeys: String, CodingKey {
-    case id
-    case name
-    case permissions
-  }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    id = try values.decode(Int.self, forKey: .id)
-    name = try values.decode(String.self, forKey: .name)
-    permissions = try values.decode([Permission].self, forKey: .permissions)
   }
 }

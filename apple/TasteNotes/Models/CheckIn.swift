@@ -93,6 +93,20 @@ extension CheckIn: Decodable {
   }
 
   init(from decoder: Decoder) throws {
+    struct CheckInTaggedProfile: Decodable {
+      let profile: Profile
+      enum CodingKeys: String, CodingKey {
+        case profile = "profiles"
+      }
+    }
+
+    struct CheckInFlavors: Decodable {
+      let flavor: Flavor
+      enum CodingKeys: String, CodingKey {
+        case flavor = "flavors"
+      }
+    }
+
     let values = try decoder.container(keyedBy: CodingKeys.self)
     id = try values.decode(Int.self, forKey: .id)
     rating = try values.decodeIfPresent(Double.self, forKey: .rating)
@@ -175,54 +189,5 @@ extension CheckIn {
       p_rating = rating
       p_location_id = location?.id.uuidString
     }
-  }
-}
-
-struct CheckInTaggedProfile: Decodable {
-  let profile: Profile
-
-  enum CodingKeys: String, CodingKey {
-    case profile = "profiles"
-  }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    profile = try values.decode(Profile.self, forKey: .profile)
-  }
-}
-
-struct CheckInFlavors: Decodable {
-  let flavor: Flavor
-
-  enum CodingKeys: String, CodingKey {
-    case flavor = "flavors"
-  }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    flavor = try values.decode(Flavor.self, forKey: .flavor)
-  }
-}
-
-struct CheckInNotification: Identifiable, Hashable, Decodable {
-  let id: Int
-  let profile: Profile
-  let product: Product.Joined
-
-  static func == (lhs: CheckInNotification, rhs: CheckInNotification) -> Bool {
-    lhs.id == rhs.id
-  }
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case profile = "profiles"
-    case product = "products"
-  }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    id = try values.decode(Int.self, forKey: .id)
-    profile = try values.decode(Profile.self, forKey: .profile)
-    product = try values.decode(Product.Joined.self, forKey: .product)
   }
 }

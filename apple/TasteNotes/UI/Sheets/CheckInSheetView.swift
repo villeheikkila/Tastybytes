@@ -114,7 +114,7 @@ struct CheckInSheetView: View {
       Section {
         if viewModel.servingStyles.count > 0 {
           Picker("Serving Style", selection: $viewModel.servingStyleName) {
-            Text("Not Selected").tag(ServingStyleName.none)
+            Text("Not Selected").tag(ServingStyle.Name.none)
             ForEach(viewModel.servingStyles.map(\.name)) { servingStyle in
               Text(servingStyle.rawValue.capitalized)
             }
@@ -267,7 +267,7 @@ extension CheckInSheetView {
     @Published var review: String = ""
     @Published var rating: Double = 0
     @Published var manufacturer: Company?
-    @Published var servingStyleName: ServingStyleName = .none {
+    @Published var servingStyleName: ServingStyle.Name = .none {
       // TODO: Investigate if this can be avoided by passing ServingStyle directly to the picker
       didSet {
         servingStyle = servingStyles.first(where: { $0.name == servingStyleName })
@@ -285,7 +285,7 @@ extension CheckInSheetView {
       review = checkIn.review.orEmpty
       rating = checkIn.rating ?? 0
       manufacturer = checkIn.variant?.manufacturer
-      servingStyleName = checkIn.servingStyle?.name ?? ServingStyleName.none
+      servingStyleName = checkIn.servingStyle?.name ?? ServingStyle.Name.none
       taggedFriends = checkIn.taggedProfiles
       pickedFlavors = checkIn.flavors
       location = checkIn.location

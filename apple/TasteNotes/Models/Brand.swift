@@ -44,21 +44,6 @@ extension Brand {
       case isVerified = "is_verified"
       case subBrands = "sub_brands"
     }
-
-    init(id: Int, name: String, isVerified: Bool, subBrands: [SubBrand]) {
-      self.id = id
-      self.name = name
-      self.isVerified = isVerified
-      self.subBrands = subBrands
-    }
-
-    init(from decoder: Decoder) throws {
-      let values = try decoder.container(keyedBy: CodingKeys.self)
-      id = try values.decode(Int.self, forKey: .id)
-      name = try values.decode(String.self, forKey: .name)
-      isVerified = try values.decode(Bool.self, forKey: .isVerified)
-      subBrands = try values.decode([SubBrand].self, forKey: .subBrands)
-    }
   }
 
   struct JoinedCompany: Identifiable, Hashable, Decodable {
@@ -81,21 +66,6 @@ extension Brand {
       case isVerified = "is_verified"
       case brandOwner = "companies"
     }
-
-    init(id: Int, name: String, isVerified: Bool, brandOwner: Company) {
-      self.id = id
-      self.name = name
-      self.isVerified = isVerified
-      self.brandOwner = brandOwner
-    }
-
-    init(from decoder: Decoder) throws {
-      let values = try decoder.container(keyedBy: CodingKeys.self)
-      id = try values.decode(Int.self, forKey: .id)
-      name = try values.decode(String.self, forKey: .name)
-      isVerified = try values.decode(Bool.self, forKey: .isVerified)
-      brandOwner = try values.decode(Company.self, forKey: .brandOwner)
-    }
   }
 
   struct JoinedSubBrandsProducts: Identifiable, Hashable, Decodable {
@@ -117,14 +87,6 @@ extension Brand {
       case name
       case isVerified = "is_verified"
       case subBrands = "sub_brands"
-    }
-
-    init(from decoder: Decoder) throws {
-      let values = try decoder.container(keyedBy: CodingKeys.self)
-      id = try values.decode(Int.self, forKey: .id)
-      name = try values.decode(String.self, forKey: .name)
-      isVerified = try values.decode(Bool.self, forKey: .isVerified)
-      subBrands = try values.decode([SubBrand.JoinedProduct].self, forKey: .subBrands)
     }
   }
 }

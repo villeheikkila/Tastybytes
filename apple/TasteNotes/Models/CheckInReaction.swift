@@ -75,13 +75,6 @@ extension CheckInReaction {
       case profile = "profiles"
       case checkIn = "check_ins"
     }
-
-    init(from decoder: Decoder) throws {
-      let values = try decoder.container(keyedBy: CodingKeys.self)
-      id = try values.decode(Int.self, forKey: .id)
-      profile = try values.decode(Profile.self, forKey: .profile)
-      checkIn = try values.decode(CheckIn.self, forKey: .checkIn)
-    }
   }
 }
 

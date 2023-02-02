@@ -1,9 +1,12 @@
-struct Permission: Identifiable {
+struct Permission: Identifiable, Decodable, Hashable {
   let id: Int
   let name: PermissionName
-}
 
-extension Permission: Hashable {
+  enum CodingKeys: String, CodingKey {
+    case id
+    case name
+  }
+
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }
@@ -65,18 +68,5 @@ enum PermissionName: String, Decodable, Equatable {
         debugDescription: "Cannot initialize PermissionName from invalid String value \(rawString)"
       )
     }
-  }
-}
-
-extension Permission: Decodable {
-  enum CodingKeys: String, CodingKey {
-    case id
-    case name
-  }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    id = try values.decode(Int.self, forKey: .id)
-    name = try values.decode(PermissionName.self, forKey: .name)
   }
 }
