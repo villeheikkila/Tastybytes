@@ -1,6 +1,6 @@
 import Foundation
 
-struct ProfileSummary {
+struct ProfileSummary: Decodable {
   let totalCheckIns: Int
   let uniqueCheckIns: Int
   let averageRating: Double?
@@ -15,9 +15,7 @@ struct ProfileSummary {
   let rating8: Int
   let rating9: Int
   let rating10: Int
-}
 
-extension ProfileSummary: Decodable {
   enum CodingKeys: String, CodingKey {
     case totalCheckIns = "total_check_ins"
     case uniqueCheckIns = "unique_check_ins"

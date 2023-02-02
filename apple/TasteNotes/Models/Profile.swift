@@ -1,6 +1,6 @@
 import Foundation
 
-struct Profile: Identifiable, Decodable {
+struct Profile: Identifiable, Decodable, Hashable {
   let id: UUID
   let preferredName: String
   var avatarUrl: String?
@@ -9,6 +9,16 @@ struct Profile: Identifiable, Decodable {
     case id
     case preferredName = "preferred_name"
     case avatarUrl = "avatar_url"
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+    hasher.combine(preferredName)
+    hasher.combine(avatarUrl)
+  }
+
+  static func == (lhs: Profile, rhs: Profile) -> Bool {
+    lhs.id == rhs.id
   }
 }
 
@@ -103,21 +113,7 @@ extension Profile {
     case username
     case fullName = "full_name"
   }
-}
 
-extension Profile: Hashable {
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-    hasher.combine(preferredName)
-    hasher.combine(avatarUrl)
-  }
-
-  static func == (lhs: Profile, rhs: Profile) -> Bool {
-    lhs.id == rhs.id
-  }
-}
-
-extension Profile {
   struct UpdateRequest: Encodable {
     var username: String?
     var firstName: String?
