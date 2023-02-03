@@ -10,6 +10,10 @@ struct PreferencesScreenView: View {
           Label("Profile", systemImage: "person.crop.circle")
         }
 
+        NavigationLink(destination: AccountSettingsScreenView()) {
+          Label("Account", systemImage: "gear")
+        }
+
         NavigationLink(destination: ApplicationSettingsScreenView()) {
           Label("Application", systemImage: "gear")
         }
