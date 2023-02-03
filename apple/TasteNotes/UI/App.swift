@@ -58,6 +58,8 @@ struct Main: App {
         if profileManager.isLoggedIn {
           TabsView()
         }
+      case .passwordRecovery:
+        PasswordResetScreenView()
       case nil:
         SplashScreenView()
       default:

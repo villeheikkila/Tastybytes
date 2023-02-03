@@ -44,6 +44,7 @@
 		5C323E93298C50D400B005A9 /* DoubleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E92298C50D400B005A9 /* DoubleExtensions.swift */; };
 		5C3D8273298C5DA300E861DC /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */; };
 		5C3D8275298D5F3300E861DC /* AccountSettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3D8274298D5F3300E861DC /* AccountSettingsScreenView.swift */; };
+		5C3D8277298D698400E861DC /* PasswordResetScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3D8276298D698400E861DC /* PasswordResetScreenView.swift */; };
 		5C43237D2986A6910085522E /* Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237C2986A6910085522E /* Summary.swift */; };
 		5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237E2986FAA40085522E /* CheckInListView.swift */; };
 		5C43238129898A4C0085522E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C43238029898A4C0085522E /* GoogleService-Info.plist */; };
@@ -162,6 +163,7 @@
 		5C323E92298C50D400B005A9 /* DoubleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtensions.swift; sourceTree = "<group>"; };
 		5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtensions.swift; sourceTree = "<group>"; };
 		5C3D8274298D5F3300E861DC /* AccountSettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsScreenView.swift; sourceTree = "<group>"; };
+		5C3D8276298D698400E861DC /* PasswordResetScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetScreenView.swift; sourceTree = "<group>"; };
 		5C43237C2986A6910085522E /* Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Summary.swift; sourceTree = "<group>"; };
 		5C43237E2986FAA40085522E /* CheckInListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListView.swift; sourceTree = "<group>"; };
 		5C43238029898A4C0085522E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 				5CE9008B291FCB71003DE697 /* SplashScreenView.swift */,
 				5CBC2451297C60AE00A0002B /* ProfileScreenView.swift */,
 				5C3D8274298D5F3300E861DC /* AccountSettingsScreenView.swift */,
+				5C3D8276298D698400E861DC /* PasswordResetScreenView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -628,6 +631,7 @@
 				5CC2FE9429197D9F002BDF83 /* LocationSearchService.swift in Sources */,
 				5C0E36582928EA910072EFBD /* LegacyPhotoPicker.swift in Sources */,
 				5C663F3929355601006F9A97 /* EditBrandSheetView.swift in Sources */,
+				5C3D8277298D698400E861DC /* PasswordResetScreenView.swift in Sources */,
 				5C663F352932AEB9006F9A97 /* CategoryNameView.swift in Sources */,
 				5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */,
 				5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */,
