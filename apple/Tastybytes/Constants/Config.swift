@@ -41,5 +41,5 @@ public enum Config {
     return baseUrl
   }()
 
-  static let appName = "TasteNotes"
+  static let appName = "Tastybytes"
 }

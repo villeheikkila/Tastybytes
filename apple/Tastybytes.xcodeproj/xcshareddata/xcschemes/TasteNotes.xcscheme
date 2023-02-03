@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5CFEE57228ED69B100A8DD66"
-               BuildableName = "TasteNotes.app"
-               BlueprintName = "TasteNotes"
-               ReferencedContainer = "container:TasteNotes.xcodeproj">
+               BuildableName = "Tastybytes.app"
+               BlueprintName = "Tastybytes"
+               ReferencedContainer = "container:Tastybytes.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5CFEE57228ED69B100A8DD66"
-            BuildableName = "TasteNotes.app"
-            BlueprintName = "TasteNotes"
-            ReferencedContainer = "container:TasteNotes.xcodeproj">
+            BuildableName = "Tastybytes.app"
+            BlueprintName = "Tastybytes"
+            ReferencedContainer = "container:Tastybytes.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5CFEE57228ED69B100A8DD66"
-            BuildableName = "TasteNotes.app"
-            BlueprintName = "TasteNotes"
-            ReferencedContainer = "container:TasteNotes.xcodeproj">
+            BuildableName = "Tastybytes.app"
+            BlueprintName = "Tastybytes"
+            ReferencedContainer = "container:Tastybytes.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

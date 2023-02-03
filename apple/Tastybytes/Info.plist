@@ -15,7 +15,7 @@
 			<string>com.villeheikkila.tastey</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>tastenotes</string>
+				<string>tastybytes</string>
 			</array>
 		</dict>
 		<dict>
