@@ -165,7 +165,7 @@ extension AccountSettingsScreenView {
       formatter.dateFormat = "yyyy_MM_dd_HH_mm"
       let date = Date()
       let timestamp = formatter.string(from: date)
-      return "tastenotes_export-\(timestamp).csv"
+      return "\(Config.appName.lowercased())_export-\(timestamp).csv"
     }
 
     func getInitialValues(profile _: Profile.Extended) {

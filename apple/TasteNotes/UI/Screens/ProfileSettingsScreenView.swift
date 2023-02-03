@@ -81,20 +81,9 @@ extension ProfileSettingsScreenView {
     }
 
     @Published var showFullName = false
-    @Published var csvExport: CSVFile?
-    @Published var showingExporter = false
-    @Published var showDeleteConfirmation = false
     @Published var showEmailConfirmationButton = false
     @Published var showProfileUpdateButton = false
     private var profile: Profile.Extended?
-
-    func getCSVExportName() -> String {
-      let formatter = DateFormatter()
-      formatter.dateFormat = "yyyy_MM_dd_HH_mm"
-      let date = Date()
-      let timestamp = formatter.string(from: date)
-      return "tastenotes_export-\(timestamp).csv"
-    }
 
     func profileHasChanged() -> Bool {
       ![
