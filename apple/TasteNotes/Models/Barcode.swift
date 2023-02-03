@@ -52,7 +52,7 @@ extension ProductBarcode {
     let productId: Int
 
     enum CodingKeys: String, CodingKey {
-      case barcode, productId = "product_id"
+      case barcode, type, productId = "product_id"
     }
 
     init(product: Product.Joined, barcode: Barcode) {
