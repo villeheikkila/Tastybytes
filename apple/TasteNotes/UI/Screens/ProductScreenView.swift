@@ -54,6 +54,18 @@ struct ProductScreenView: View {
           }
         }
 
+        if viewModel.product.isVerified {
+          Label("Verified", systemImage: "checkmark.circle")
+        } else if profileManager.hasPermission(.canVerify) {
+          Button(action: {
+            viewModel.verifyProduct()
+          }) {
+            Label("Verify product", systemImage: "checkmark")
+          }
+        } else {
+          Label("Not verified", systemImage: "x.circle")
+        }
+
         if profileManager.hasPermission(.canDeleteProducts) {
           Button(action: {
             viewModel.showDeleteConfirmation()
@@ -183,6 +195,17 @@ extension ProductScreenView {
         switch await repository.product.getSummaryById(id: product.id) {
         case let .success(summary):
           self.summary = summary
+        case let .failure(error):
+          print(error)
+        }
+      }
+    }
+
+    func verifyProduct() {
+      Task {
+        switch await repository.product.verifyProduct(productId: product.id) {
+        case .success:
+          print("Verified")
         case let .failure(error):
           print(error)
         }

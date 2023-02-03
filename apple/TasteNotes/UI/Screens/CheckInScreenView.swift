@@ -27,38 +27,29 @@ struct CheckInScreenView: View {
         })
       }
     }
-    .contextMenu {
-      ShareLink("Share", item: NavigatablePath.checkIn(id: viewModel.checkIn.id).url)
+    .navigationBarItems(
+      trailing: Menu {
+        ShareLink("Share", item: NavigatablePath.checkIn(id: viewModel.checkIn.id).url)
 
-      if viewModel.checkIn.product.isVerified {
-        Label("Verified", systemImage: "checkmark.circle")
-      } else if profileManager.hasPermission(.canVerify) {
-        Button(action: {
-          viewModel.verifyProduct()
-        }) {
-          Label("Verify product", systemImage: "checkmark")
+        Divider()
+
+        if viewModel.checkIn.profile.id == profileManager.getId() {
+          Button(action: {
+            viewModel.showEditCheckInSheet = true
+          }) {
+            Label("Edit", systemImage: "pencil")
+          }
+
+          Button(action: {
+            viewModel.showDeleteConfirmation = true
+          }) {
+            Label("Delete", systemImage: "trash.fill")
+          }
         }
-
-      } else {
-        Label("Not verified", systemImage: "x.circle")
+      } label: {
+        Image(systemName: "ellipsis")
       }
-
-      Divider()
-
-      if viewModel.checkIn.profile.id == profileManager.getId() {
-        Button(action: {
-          viewModel.showEditCheckInSheet = true
-        }) {
-          Label("Edit", systemImage: "pencil")
-        }
-
-        Button(action: {
-          viewModel.showDeleteConfirmation = true
-        }) {
-          Label("Delete", systemImage: "trash.fill")
-        }
-      }
-    }
+    )
     .confirmationDialog("Delete Check-in Confirmation",
                         isPresented: $viewModel.showDeleteConfirmation,
                         presenting: viewModel.checkIn) { presenting in
@@ -243,17 +234,6 @@ extension CheckInScreenView {
             self.checkInComments.append(newCheckInComment)
           }
           self.commentText = ""
-        case let .failure(error):
-          print(error)
-        }
-      }
-    }
-
-    func verifyProduct() {
-      Task {
-        switch await repository.product.verifyProduct(productId: checkIn.product.id) {
-        case .success:
-          print("Verified")
         case let .failure(error):
           print(error)
         }
