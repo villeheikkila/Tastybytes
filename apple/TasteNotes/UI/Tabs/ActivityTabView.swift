@@ -11,7 +11,7 @@ struct ActivityTabView: View {
 
   var body: some View {
     NavigationStack(path: $router.path) {
-      CheckInListView(fetcher: .activityFeed, scrollToTop: $scrollToTop, resetView: $resetView) {}
+      CheckInListView(fetcher: .activityFeed, scrollToTop: $scrollToTop, resetView: $resetView, onRefresh: {}) {}
         .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
           if tab == .activity {
             if router.path.isEmpty {

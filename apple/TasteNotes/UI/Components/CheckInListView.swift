@@ -11,17 +11,20 @@ struct CheckInListView<Header>: View
   @Binding var resetView: Int
   private let topAnchor = "top"
   let header: () -> Header
+  let onRefresh: () -> Void
 
   init(
     fetcher: Fetcher,
     scrollToTop: Binding<Int>,
     resetView: Binding<Int>,
+    onRefresh: @escaping () -> Void,
     @ViewBuilder header: @escaping () -> Header
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(fetcher: fetcher))
     _scrollToTop = scrollToTop
     _resetView = resetView
     self.header = header
+    self.onRefresh = onRefresh
   }
 
   var body: some View {
@@ -64,6 +67,7 @@ struct CheckInListView<Header>: View
       })
       .refreshable {
         viewModel.refresh()
+        onRefresh()
       }
       .task {
         viewModel.fetchActivityFeedItems(onComplete: {

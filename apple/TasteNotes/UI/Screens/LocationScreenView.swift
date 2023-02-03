@@ -14,7 +14,12 @@ struct LocationScreenView: View {
   }
 
   var body: some View {
-    CheckInListView(fetcher: .location(viewModel.location), scrollToTop: $scrollToTop, resetView: $resetView) {
+    CheckInListView(
+      fetcher: .location(viewModel.location),
+      scrollToTop: $scrollToTop,
+      resetView: $resetView,
+      onRefresh: {}
+    ) {
       if let summary = viewModel.summary, summary.averageRating != nil {
         Section {
           SummaryView(summary: summary)

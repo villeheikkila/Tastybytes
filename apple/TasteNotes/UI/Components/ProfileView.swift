@@ -16,7 +16,7 @@ struct ProfileView: View {
   }
 
   var body: some View {
-    CheckInListView(fetcher: .profile(profile), scrollToTop: $scrollToTop, resetView: $resetView) {
+    CheckInListView(fetcher: .profile(profile), scrollToTop: $scrollToTop, resetView: $resetView, onRefresh: {}) {
       VStack(spacing: 20) {
         profileSummary
         ratingChart

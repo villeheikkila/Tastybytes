@@ -1,15 +1,23 @@
 import SwiftUI
 
 struct ProductScreenView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var scrollToTop: Int = 0
-  @State private var resetView: Int = 0
 
-  let product: Product.Joined
+  init(product: Product.Joined) {
+    _viewModel = StateObject(wrappedValue: ViewModel(product: product))
+  }
 
   var body: some View {
-    CheckInListView(fetcher: .product(product), scrollToTop: $scrollToTop, resetView: $resetView) {
+    CheckInListView(
+      fetcher: .product(viewModel.product),
+      scrollToTop: $scrollToTop,
+      resetView: $viewModel.resetView,
+      onRefresh: {
+        viewModel.refresh()
+      }
+    ) {
       productInfo
       if let summary = viewModel.summary, summary.averageRating != nil {
         Section {
@@ -18,37 +26,69 @@ struct ProductScreenView: View {
       }
     }
     .task {
-      viewModel.loadProductSummary(product)
+      viewModel.loadProductSummary()
     }
     .navigationBarItems(
-      trailing: Button(action: {
-        viewModel.setActiveSheet(.checkIn)
-      }) { Text("Check-in!").bold() }
-        .disabled(!profileManager.hasPermission(.canCreateCheckIns))
+      trailing: Menu {
+        Button(action: {
+          viewModel.setActiveSheet(.checkIn)
+        }) {
+          Text("Check-in!").bold(
+          )
+        }.disabled(!profileManager.hasPermission(.canCreateCheckIns))
+
+        ShareLink("Share", item: NavigatablePath.product(id: viewModel.product.id).url)
+        Divider()
+
+        if profileManager.hasPermission(.canEditCompanies) {
+          Button(action: {
+            viewModel.setActiveSheet(.editProduct)
+          }) {
+            Label("Edit", systemImage: "pencil")
+          }
+        } else {
+          Button(action: {
+            viewModel.setActiveSheet(.editSuggestion)
+          }) {
+            Label("Edit Suggestion", systemImage: "pencil")
+          }
+        }
+
+        if profileManager.hasPermission(.canDeleteProducts) {
+          Button(action: {
+            viewModel.showDeleteConfirmation()
+          }) {
+            Label("Delete", systemImage: "trash.fill")
+              .disabled(viewModel.product.isVerified)
+          }
+        }
+      } label: {
+        Image(systemName: "ellipsis")
+      }
     )
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {
         case .checkIn:
-          CheckInSheetView(product: product, onCreation: {
-            _ in resetView += 1 // TODO: get rid of this hack 29.1.2023
+          CheckInSheetView(product: viewModel.product, onCreation: {
+            _ in viewModel.refreshCheckIns()
           })
         case .editSuggestion:
-          ProductSheetView(mode: .editSuggestion, initialProduct: product)
+          ProductSheetView(mode: .editSuggestion, initialProduct: viewModel.product)
         case .editProduct:
-          ProductSheetView(mode: .edit, initialProduct: product, onEdit: {
-            viewModel.activeSheet = nil
+          ProductSheetView(mode: .edit, initialProduct: viewModel.product, onEdit: {
+            viewModel.onEditCheckIn()
           })
         }
       }
     }
     .confirmationDialog("Delete Product Confirmation",
                         isPresented: $viewModel.showDeleteProductConfirmationDialog,
-                        presenting: product) { presenting in
+                        presenting: viewModel.product) { presenting in
       Button(
         "Delete \(presenting.getDisplayName(.fullName)) Product",
         role: .destructive,
-        action: { viewModel.deleteProduct(presenting)
+        action: { viewModel.deleteProduct()
         }
       )
     }
@@ -57,59 +97,32 @@ struct ProductScreenView: View {
   private var productInfo: some View {
     HStack {
       VStack(alignment: .leading) {
-        Text(product.getDisplayName(.fullName))
+        Text(viewModel.product.getDisplayName(.fullName))
           .font(.system(size: 18, weight: .bold, design: .default))
           .foregroundColor(.primary)
 
-        if let description = product.description {
+        if let description = viewModel.product.description {
           Text(description)
             .font(.system(size: 12, weight: .medium, design: .default))
         }
 
         HStack {
-          NavigationLink(value: Route.company(product.subBrand.brand.brandOwner)) {
-            Text(product.getDisplayName(.brandOwner))
+          NavigationLink(value: Route.company(viewModel.product.subBrand.brand.brandOwner)) {
+            Text(viewModel.product.getDisplayName(.brandOwner))
               .font(.system(size: 16, weight: .bold, design: .default))
               .foregroundColor(.secondary)
           }
         }
 
         HStack {
-          CategoryNameView(category: product.category)
+          CategoryNameView(category: viewModel.product.category)
 
-          ForEach(product.subcategories, id: \.id) { subcategory in
+          ForEach(viewModel.product.subcategories, id: \.id) { subcategory in
             ChipView(title: subcategory.name, cornerRadius: 5)
           }
         }
       }.padding([.leading, .trailing], 10)
       Spacer()
-    }
-    .contextMenu {
-      ShareLink("Share", item: NavigatablePath.product(id: product.id).url)
-
-      if profileManager.hasPermission(.canEditCompanies) {
-        Button(action: {
-          viewModel.setActiveSheet(.editProduct)
-        }) {
-          Label("Edit", systemImage: "pencil")
-        }
-      } else {
-        Button(action: {
-          viewModel.setActiveSheet(.editSuggestion)
-        }) {
-          Label("Edit Suggestion", systemImage: "pencil")
-        }
-      }
-
-      if profileManager.hasPermission(.canDeleteProducts) {
-        Divider()
-        Button(action: {
-          viewModel.showDeleteConfirmation()
-        }) {
-          Label("Delete", systemImage: "trash.fill")
-            .disabled(product.isVerified)
-        }
-      }
     }
   }
 }
@@ -123,9 +136,15 @@ extension ProductScreenView {
   }
 
   @MainActor class ViewModel: ObservableObject {
+    @Published var product: Product.Joined
     @Published var activeSheet: Sheet?
     @Published var summary: Summary?
     @Published var showDeleteProductConfirmationDialog = false
+    @Published var resetView: Int = 0
+
+    init(product: Product.Joined) {
+      self.product = product
+    }
 
     func setActiveSheet(_ sheet: Sheet) {
       activeSheet = sheet
@@ -135,7 +154,31 @@ extension ProductScreenView {
       showDeleteProductConfirmationDialog.toggle()
     }
 
-    func loadProductSummary(_ product: Product.Joined) {
+    func onEditCheckIn() {
+      activeSheet = nil
+      refresh()
+      refreshCheckIns()
+    }
+
+    func refresh() {
+      Task {
+        switch await repository.product.getById(id: product.id) {
+        case let .success(refreshedProduct):
+          withAnimation {
+            product = refreshedProduct
+            print(refreshedProduct)
+          }
+        case let .failure(error):
+          print(error)
+        }
+      }
+    }
+
+    func refreshCheckIns() {
+      resetView += 1 // TODO: get rid of this hack 29.1.2023
+    }
+
+    func loadProductSummary() {
       Task {
         switch await repository.product.getSummaryById(id: product.id) {
         case let .success(summary):
@@ -146,7 +189,7 @@ extension ProductScreenView {
       }
     }
 
-    func deleteProduct(_ product: Product.Joined) {
+    func deleteProduct() {
       Task {
         switch await repository.product.delete(id: product.id) {
         case .success:
