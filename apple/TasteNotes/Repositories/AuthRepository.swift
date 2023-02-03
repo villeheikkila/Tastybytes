@@ -10,6 +10,7 @@ protocol AuthRepository {
   func signUp(email: String, password: String) async -> Result<Void, Error>
   func signIn(email: String, password: String) async -> Result<Void, Error>
   func sendPasswordResetEmail(email: String) async -> Result<Void, Error>
+  func updatePassword(newPassword: String) async -> Result<Void, Error>
 }
 
 struct SupabaseAuthRepository: AuthRepository {
@@ -45,6 +46,16 @@ struct SupabaseAuthRepository: AuthRepository {
         .auth
         .signUp(email: email, password: password)
 
+      return .success(())
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func updatePassword(newPassword: String) async -> Result<Void, Error> {
+    do {
+      try await client
+        .auth.update(user: UserAttributes(password: newPassword))
       return .success(())
     } catch {
       return .failure(error)

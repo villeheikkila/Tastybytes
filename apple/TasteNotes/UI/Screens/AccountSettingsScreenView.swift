@@ -10,6 +10,7 @@ struct AccountSettingsScreenView: View {
   var body: some View {
     Form {
       emailSection
+      updatePassword
       deleteAccount
     }
     .navigationTitle("Account")
@@ -40,6 +41,34 @@ struct AccountSettingsScreenView: View {
     }
     .task {
       viewModel.getInitialValues(profile: profileManager.get())
+    }
+  }
+
+  private var updatePassword: some View {
+    Section {
+      HStack {
+        Image(systemName: "key")
+        SecureField("New Password", text: $viewModel.newPassword)
+          .textContentType(.password)
+          .autocapitalization(.none)
+          .disableAutocorrection(true)
+      }
+      HStack {
+        Image(systemName: "key")
+        SecureField("Confirm New Password", text: $viewModel.newPasswordConfirmation)
+          .textContentType(.password)
+          .autocapitalization(.none)
+          .disableAutocorrection(true)
+      }
+
+      if viewModel.showPasswordConfirmation {
+        Button("Update password", action: { viewModel.updatePassword() })
+      }
+
+    } header: {
+      Text("Change password")
+    } footer: {
+      Text("Password must be at least 8 characters")
     }
   }
 
@@ -98,11 +127,33 @@ extension AccountSettingsScreenView {
     @Published var showingExporter = false
     @Published var showDeleteConfirmation = false
     @Published var showEmailConfirmationButton = false
+    @Published var showPasswordConfirmation = false
     @Published var email = "" {
       didSet {
         withAnimation {
           showEmailConfirmationButton = email != initialEmail
         }
+      }
+    }
+
+    @Published var newPassword = "" {
+      didSet {
+        passwordCheck()
+      }
+    }
+
+    @Published var newPasswordConfirmation = "" {
+      didSet {
+        passwordCheck()
+      }
+    }
+
+    func passwordCheck() {
+      if newPassword == newPasswordConfirmation, newPassword.count >= 8 {
+        showPasswordConfirmation = true
+
+      } else {
+        showPasswordConfirmation = false
       }
     }
 
@@ -122,6 +173,12 @@ extension AccountSettingsScreenView {
         let user = try await supabaseClient.auth.session.user
         initialEmail = user.email.orEmpty
         self.email = user.email.orEmpty
+      }
+    }
+
+    func updatePassword() {
+      Task {
+        _ = await repository.auth.updatePassword(newPassword: newPassword)
       }
     }
 
