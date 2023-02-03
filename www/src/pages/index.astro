@@ -1,0 +1,73 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <header>
+      <img
+        src="/tastybytes.png"
+        width="140"
+        height="140"
+        alt="An image of a ramune bottle which is the logo of the app"
+      />
+      <div>
+        <h1>Tastybytes</h1>
+        <p>The definitive app for logging and sharing your tasting notes</p>
+      </div>
+    </header>
+    <section>
+      Discover and share your tasting notes for various kinds of foods with
+      Tastybytes. It provides a way to keep track of things you have tried and
+      makes it possible to make better decisions when in the store.
+    </section>
+    <section>
+      Tastybytes gives you a feed to your friend's check-ins and allows you to
+      easily find crowd sourced ratings for everything from sodas to coffee. You
+      can use it just by yourself or connect with friends and make the
+      experience more social.
+    </section>
+    <sectioN>
+      Features:
+      <ul>
+        <li>Crowd sourced database of products</li>
+        <li>Activity feed of your friend's check-ins</li>
+        <li>Check-ins with location, flavors and tasting notes</li>
+        <li>Statistics about each product and company</li>
+        <li>Way to find new products from different brands and companies</li>
+      </ul>
+    </sectioN>
+  </main>
+</Layout>
+
+<style>
+  header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    font-size: 1.1rem;
+    max-width: 3rem;
+    margin-bottom: 1rem;
+  }
+  header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: auto;
+    padding: 1.5rem;
+    max-width: 60ch;
+  }
+
+  main ul {
+    margin-left: 0;
+  }
+  main ul li {
+    padding: 0.15rem;
+  }
+</style>

@@ -1,0 +1,36 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "J9S7QG9SVR.com.villeheikkila.tastey"
+        ],
+        "components": [
+          {
+            "/": "/*"
+          },
+          {
+            "/": "/companies/*"
+          },
+          {
+            "/": "/checkins/*"
+          },
+          {
+            "/": "/products/*"
+          },
+          {
+            "/": "/profiles/*"
+          },
+          {
+            "/": "/locations/*"
+          }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "J9S7QG9SVR.com.villeheikkila.tastey"
+    ]
+  }
+}
