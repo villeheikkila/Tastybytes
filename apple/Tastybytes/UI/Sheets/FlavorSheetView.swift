@@ -78,7 +78,10 @@ extension FlavorSheetView {
               self.availableFlavors = flavors
             }
           case let .failure(error):
-            print(error)
+            logger
+              .error(
+                "fetching flavors failed: \(error.localizedDescription)"
+              )
           }
         }
       }

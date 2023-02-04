@@ -55,7 +55,10 @@ extension SubBrandSheetView {
         case let .success(newSubBrand):
           onSelect(newSubBrand, true)
         case let .failure(error):
-          print(error)
+          logger
+            .error(
+              "saving sub-brand \(self.subBrandName) failed: \(error.localizedDescription)"
+            )
         }
       }
     }

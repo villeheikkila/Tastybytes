@@ -110,7 +110,10 @@ extension AboutScreenView {
         case let .success(aboutPage):
           self.aboutPage = aboutPage
         case let .failure(error):
-          print(error)
+          logger
+            .error(
+              "fetching about page failed: \(error.localizedDescription)"
+            )
         }
       }
     }

@@ -1,6 +1,7 @@
 import SwiftUI
 
 @MainActor class ProfileManager: ObservableObject {
+  private let logger = getLogger(category: "ProfileManager")
   @Published private(set) var isLoggedIn = false
   @Published private(set) var colorScheme: ColorScheme?
   @Published private(set) var friends = [Profile]()
@@ -40,7 +41,7 @@ import SwiftUI
         self.isLoggedIn = true
         loadFriends()
       case let .failure(error):
-        print("error while loading profile: \(error.localizedDescription)")
+        logger.error("error while loading current user profile: \(error.localizedDescription)")
         self.isLoggedIn = false
         _ = await repository.auth.logOut()
       }
@@ -73,7 +74,7 @@ import SwiftUI
       case let .success(friends):
         self.friends = friends.map { $0.getFriend(userId: getId()) }
       case let .failure(error):
-        print(error)
+        logger.error("failed: \(error.localizedDescription)")
       }
     }
   }
@@ -89,7 +90,7 @@ import SwiftUI
         self.friends.append(newFriend.receiver)
         onSuccess()
       case let .failure(error):
-        print(error)
+        logger.error("failed: \(error.localizedDescription)")
       }
     }
   }

@@ -334,7 +334,7 @@ extension CheckInSheetView {
           uploadImage(checkIn: updatedCheckIn)
           onUpdate(updatedCheckIn)
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -357,7 +357,7 @@ extension CheckInSheetView {
           uploadImage(checkIn: newCheckIn)
           onCreation(newCheckIn)
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -367,7 +367,7 @@ extension CheckInSheetView {
         if let data = image?.jpegData(compressionQuality: 0.1) {
           switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
           case let .failure(error):
-            print(error)
+            logger.error("failed: \(error.localizedDescription)")
           default:
             break
           }
@@ -381,7 +381,7 @@ extension CheckInSheetView {
         case let .success(categoryServingStyles):
           self.servingStyles = categoryServingStyles.servingStyles
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }

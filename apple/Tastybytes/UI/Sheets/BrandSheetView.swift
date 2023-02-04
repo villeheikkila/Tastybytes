@@ -57,7 +57,7 @@ extension BrandSheetView {
         case let .success(brandsWithSubBrands):
           self.brandsWithSubBrands = brandsWithSubBrands
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -68,7 +68,7 @@ extension BrandSheetView {
         case let .success(brandWithSubBrands):
           onCreation(brandWithSubBrands)
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }

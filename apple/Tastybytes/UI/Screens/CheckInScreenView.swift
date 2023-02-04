@@ -173,7 +173,7 @@ extension CheckInScreenView {
         case .success:
           onDelete()
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -186,7 +186,7 @@ extension CheckInScreenView {
             self.checkInComments = checkIns
           }
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -203,7 +203,7 @@ extension CheckInScreenView {
               }
             }
           case let .failure(error):
-            print(error.localizedDescription)
+            logger.error("failed: \(error.localizedDescription)")
           }
         }
 
@@ -219,7 +219,7 @@ extension CheckInScreenView {
             self.checkInComments.remove(object: comment)
           }
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -236,7 +236,7 @@ extension CheckInScreenView {
           }
           self.commentText = ""
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }

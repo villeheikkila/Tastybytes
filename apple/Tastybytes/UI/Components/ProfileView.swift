@@ -222,7 +222,10 @@ extension ProfileView {
           case let .success(fileName):
             onSuccess(fileName)
           case let .failure(error):
-            print(error)
+            logger
+              .error(
+                "uplodaing avatar for \(userId) failed: \(error.localizedDescription)"
+              )
           }
         }
       }
@@ -236,7 +239,10 @@ extension ProfileView {
             self.profileSummary = summary
           }
         case let .failure(error):
-          print(error)
+          logger
+            .error(
+              "fetching profile data for \(userId) failed: \(error.localizedDescription)"
+            )
         }
       }
     }

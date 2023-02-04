@@ -66,7 +66,6 @@ struct EditBrandSheetView: View {
                 }
 
                 Button(action: {
-                  print("subBrand: \(subBrand)")
                   viewModel.toDeleteSubBrand = subBrand
                 }) {
                   Label("Delete", systemImage: "trash")
@@ -159,7 +158,7 @@ extension EditBrandSheetView {
         case .success:
           onSuccess()
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -171,7 +170,7 @@ extension EditBrandSheetView {
           case .success:
             onSuccess()
           case let .failure(error):
-            print(error)
+            logger.error("failed: \(error.localizedDescription)")
           }
         }
       }
@@ -281,7 +280,7 @@ extension EditSubBrandSheetView {
             self.mergeTo = nil
             onSuccess()
           case let .failure(error):
-            print(error)
+            logger.error("failed: \(error.localizedDescription)")
           }
         }
       }
@@ -296,7 +295,7 @@ extension EditSubBrandSheetView {
           showToast.toggle()
           onSuccess()
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }

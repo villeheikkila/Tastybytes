@@ -3,6 +3,7 @@ import SwiftUI
 struct ProductScreenView: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var router: Router
   @State private var scrollToTop: Int = 0
 
   init(product: Product.Joined) {
@@ -100,7 +101,9 @@ struct ProductScreenView: View {
       Button(
         "Delete \(presenting.getDisplayName(.fullName)) Product",
         role: .destructive,
-        action: { viewModel.deleteProduct()
+        action: { viewModel.deleteProduct(onDelete: {
+          router.removeLast()
+        })
         }
       )
     }
@@ -179,10 +182,9 @@ extension ProductScreenView {
         case let .success(refreshedProduct):
           withAnimation {
             product = refreshedProduct
-            print(refreshedProduct)
           }
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -197,7 +199,7 @@ extension ProductScreenView {
         case let .success(summary):
           self.summary = summary
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -206,20 +208,20 @@ extension ProductScreenView {
       Task {
         switch await repository.product.verifyProduct(productId: product.id) {
         case .success:
-          print("Verified")
+          refresh()
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
 
-    func deleteProduct() {
+    func deleteProduct(onDelete: @escaping () -> Void) {
       Task {
         switch await repository.product.delete(id: product.id) {
         case .success:
-          print("TODO HANDLE THIS!!")
+          onDelete()
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }

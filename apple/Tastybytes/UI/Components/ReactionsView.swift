@@ -53,7 +53,10 @@ extension ReactionsView {
               self.checkInReactions.remove(object: reaction)
             }
           case let .failure(error):
-            print(error)
+            logger
+              .error(
+                "removing check-in reaction \(reaction.id) failed: \(error.localizedDescription)"
+              )
           }
         } else {
           switch await repository.checkInReactions
@@ -64,7 +67,13 @@ extension ReactionsView {
               self.checkInReactions.append(checkInReaction)
             }
           case let .failure(error):
-            print(error)
+            logger
+              .error(
+                """
+                adding check-in reaction for check-in \(self.checkIn.id) by \(userId) failed:\
+                                \(error.localizedDescription)
+                """
+              )
           }
         }
         isLoading = false

@@ -86,7 +86,7 @@ extension LocationScreenView {
             self.summary = summary
           }
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -97,7 +97,7 @@ extension LocationScreenView {
         case .success:
           onDelete()
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }

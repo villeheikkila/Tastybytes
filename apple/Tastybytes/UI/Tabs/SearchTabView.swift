@@ -289,7 +289,10 @@ extension SearchTabView {
             self.showAddBarcodeConfirmation = false
             onComplete()
           case let .failure(error):
-            print(error.localizedDescription)
+            logger
+              .error(
+                "adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed: \(error.localizedDescription)"
+              )
           }
         }
       }
@@ -302,7 +305,13 @@ extension SearchTabView {
           self.products = searchResults
           self.isSearched = true
         case let .failure(error):
-          print(error)
+          logger
+            .error(
+              """
+                "searching products with \(self.searchTerm) and \(self.tokens.first?.rawValue ?? "no tokens")\
+                failed: \(error.localizedDescription)
+              """
+            )
         }
       }
     }
@@ -313,7 +322,10 @@ extension SearchTabView {
         case let .success(searchResults):
           self.profiles = searchResults
         case let .failure(error):
-          print(error)
+          logger
+            .error(
+              "searching profiles with search term \(self.searchTerm) failed: \(error.localizedDescription)"
+            )
         }
       }
     }
@@ -326,7 +338,13 @@ extension SearchTabView {
           self.products = searchResults
           self.isSearched = true
         case let .failure(error):
-          print(error)
+          logger
+            .error(
+              """
+              searching products with barcode \(self.barcode?.barcode ?? "empty") failed:\
+                \(error.localizedDescription)
+              """
+            )
         }
       }
     }
@@ -337,7 +355,10 @@ extension SearchTabView {
         case let .success(searchResults):
           self.companies = searchResults
         case let .failure(error):
-          print(error)
+          logger
+            .error(
+              "searching companies with barcode \(self.searchTerm) failed: \(error.localizedDescription)"
+            )
         }
       }
     }
@@ -348,7 +369,10 @@ extension SearchTabView {
         case let .success(searchResults):
           self.locations = searchResults
         case let .failure(error):
-          print(error)
+          logger
+            .error(
+              "searching locations with search term \(self.searchTerm) failed: \(error.localizedDescription)"
+            )
         }
       }
     }

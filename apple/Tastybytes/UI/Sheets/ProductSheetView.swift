@@ -326,7 +326,7 @@ extension ProductSheetView {
           case .success:
             self.loadCategories(categoryWithSubcategories.name)
           case let .failure(error):
-            print(error)
+            logger.error("failed: \(error.localizedDescription)")
           }
         }
       }
@@ -385,10 +385,10 @@ extension ProductSheetView {
             self.description = initialProduct.description.orEmpty
             self.hasSubBrand = initialProduct.subBrand.name != nil
           case let .failure(error):
-            print(error)
+            logger.error("failed: \(error.localizedDescription)")
           }
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -405,7 +405,7 @@ extension ProductSheetView {
           self.categories = categories
           self.category = categories.first(where: { $0.name == initialCategory })
         case let .failure(error):
-          print(error)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -426,7 +426,7 @@ extension ProductSheetView {
           case let .success(newProduct):
             onCreation(newProduct)
           case let .failure(error):
-            print(error)
+            logger.error("failed: \(error.localizedDescription)")
           }
         }
       }
@@ -450,7 +450,7 @@ extension ProductSheetView {
           case .success:
             onComplete()
           case let .failure(error):
-            print(error)
+            logger.error("failed: \(error.localizedDescription)")
           }
           onComplete()
         }
@@ -475,7 +475,7 @@ extension ProductSheetView {
           case .success:
             onComplete()
           case let .failure(error):
-            print(error)
+            logger.error("failed: \(error.localizedDescription)")
           }
         }
       }

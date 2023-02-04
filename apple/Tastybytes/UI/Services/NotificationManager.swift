@@ -2,6 +2,8 @@ import FirebaseMessaging
 import SwiftUI
 
 final class NotificationManager: NSObject, ObservableObject {
+  private let logger = getLogger(category: "NotificationManager")
+
   @Published private(set) var notifications = [Notification]() {
     didSet {
       DispatchQueue.main.async {
@@ -58,7 +60,7 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        print(error.localizedDescription)
+        logger.error("failed: \(error.localizedDescription)")
       }
     }
   }
@@ -73,7 +75,7 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        print(error.localizedDescription)
+        logger.error("failed: \(error.localizedDescription)")
       }
     }
   }
@@ -92,7 +94,7 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        print(error.localizedDescription)
+        logger.error("failed: \(error.localizedDescription)")
       }
     }
   }
@@ -122,7 +124,7 @@ final class NotificationManager: NSObject, ObservableObject {
             }
           }
         case let .failure(error):
-          print(error.localizedDescription)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -155,7 +157,7 @@ final class NotificationManager: NSObject, ObservableObject {
             }
           }
         case let .failure(error):
-          print(error.localizedDescription)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -171,7 +173,7 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        print(error.localizedDescription)
+        logger.error("failed: \(error.localizedDescription)")
       }
     }
   }
@@ -187,7 +189,7 @@ final class NotificationManager: NSObject, ObservableObject {
             }
           }
         case let .failure(error):
-          print(error.localizedDescription)
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -203,7 +205,7 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        print(error.localizedDescription)
+        logger.error("failed: \(error.localizedDescription)")
       }
     }
   }
@@ -211,16 +213,19 @@ final class NotificationManager: NSObject, ObservableObject {
   func refreshAPNS() {
     Messaging.messaging().token { token, error in
       if let error {
-        print("Error fetching FCM registration token: \(error)")
+        let logger = getLogger(category: "Messaging")
+        logger.error("failed to fetch FCM registration token: \(error.localizedDescription)")
       } else if let token {
         Task {
+          let logger = getLogger(category: "PushNotificationToken")
           switch await repository.profile
             .uploadPushNotificationToken(token: Profile.PushNotificationToken(firebaseRegistrationToken: token))
           {
           case .success:
             break
           case let .failure(error):
-            print("Couldn't save FCM (\(String(describing: token))): \(error)")
+            logger
+              .error("failed to save FCM token (\(String(describing: token))): \(error.localizedDescription)")
           }
         }
       }
@@ -234,8 +239,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                               willPresent notification: UNNotification) async
     -> UNNotificationPresentationOptions
   {
-    let userInfo = notification.request.content.userInfo
-    print(userInfo)
+    _ = notification.request.content.userInfo
     refresh()
     return [[.sound]]
   }
@@ -244,7 +248,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
   func userNotificationCenter(_: UNUserNotificationCenter,
                               didReceive response: UNNotificationResponse) async
   {
-    let userInfo = response.notification.request.content.userInfo
-    print(userInfo)
+    _ = response.notification.request.content.userInfo
   }
 }

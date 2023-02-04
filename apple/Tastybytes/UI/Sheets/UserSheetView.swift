@@ -45,7 +45,13 @@ extension UserSheetView {
             self.searchResults = searchResults
           }
         case let .failure(error):
-          print(error)
+          logger
+            .error(
+              """
+              sarching users by \(currentUserId) with search term \(self.searchText)\
+               failed: \(error.localizedDescription)
+              """
+            )
         }
       }
     }

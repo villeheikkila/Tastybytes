@@ -56,7 +56,10 @@ extension FriendSheetView {
             self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }
           }
         case let .failure(error):
-          print(error)
+          logger
+            .error(
+              "fetching friends failed: \(error.localizedDescription)"
+            )
         }
       }
     }

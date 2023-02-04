@@ -55,7 +55,10 @@ extension MergeSheetView {
             self.mergeToProduct = nil
             onSuccess()
           case let .failure(error):
-            print(error)
+            logger
+              .error(
+                "merging product \(productToMerge.id) to \(mergeToProduct.id) failed: \(error.localizedDescription)"
+              )
           }
         }
       }
@@ -67,7 +70,10 @@ extension MergeSheetView {
         case let .success(searchResults):
           self.productSearchResults = searchResults.filter { $0.id != productToMerge.id }
         case let .failure(error):
-          print(error)
+          logger
+            .error(
+              "searching products for merge with ter, \(self.productSearchTerm) failed: \(error.localizedDescription)"
+            )
         }
       }
     }
