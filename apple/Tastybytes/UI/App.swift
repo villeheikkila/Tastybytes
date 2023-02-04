@@ -60,11 +60,11 @@ struct Main: App {
           TabsView()
         }
       case .passwordRecovery:
-        AuthenticationScreenView(mode: .resetPassword)
+        AuthenticationScreenView(scene: .resetPassword)
       case nil:
         SplashScreenView()
       default:
-        AuthenticationScreenView(mode: .signIn)
+        AuthenticationScreenView(scene: .signIn)
       }
       if splashScreenManager.state != .finished {
         SplashScreenView()

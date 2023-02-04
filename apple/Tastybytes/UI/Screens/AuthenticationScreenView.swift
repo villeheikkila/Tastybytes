@@ -6,20 +6,20 @@ struct AuthenticationScreenView: View {
   @StateObject private var viewModel: ViewModel
   @FocusState private var focusedField: Field?
 
-  init(mode: Mode) {
-    _viewModel = StateObject(wrappedValue: ViewModel(mode: mode))
+  init(scene: Scene) {
+    _viewModel = StateObject(wrappedValue: ViewModel(scene: scene))
   }
 
   var body: some View {
     VStack(spacing: 20) {
       projectLogo
-      if viewModel.mode != .resetPassword {
+      if viewModel.scene != .resetPassword {
         EmailTextFieldView(email: $viewModel.email, focusedField: _focusedField)
       }
-      if viewModel.mode == .signIn || viewModel.mode == .signUp || viewModel.mode == .resetPassword {
+      if viewModel.scene == .signIn || viewModel.scene == .signUp || viewModel.scene == .resetPassword {
         PasswordTextFieldView(password: $viewModel.password, focusedField: _focusedField)
       }
-      if viewModel.mode == .resetPassword {
+      if viewModel.scene == .resetPassword {
         PasswordTextFieldView(password: $viewModel.passwordConfirmation, focusedField: _focusedField)
       }
       actions
@@ -53,7 +53,7 @@ struct AuthenticationScreenView: View {
           if viewModel.isLoading {
             ProgressView()
           }
-          Text(viewModel.mode.primaryLabel).bold()
+          Text(viewModel.scene.primaryLabel).bold()
         }
         .foregroundColor(.white)
         .frame(maxWidth: .infinity)
@@ -62,42 +62,42 @@ struct AuthenticationScreenView: View {
           RoundedRectangle(cornerRadius: 6, style: .continuous)
         )
       }
-      .disabled(viewModel.isLoading || (viewModel.mode == .resetPassword && !viewModel.isValidNewPassword))
+      .disabled(viewModel.isLoading || (viewModel.scene == .resetPassword && !viewModel.isValidNewPassword))
 
-      if viewModel.mode == .forgotPassword {
+      if viewModel.scene == .forgotPassword {
         HStack {
           Button("Go back to sign in") {
-            withAnimation { viewModel.mode = .signIn }
+            viewModel.setScene(.signIn)
           }
           Spacer()
         }
       }
 
-      if viewModel.mode == .signIn || viewModel.mode == .signUp {
+      if viewModel.scene == .signIn || viewModel.scene == .signUp {
         Button(
-          viewModel.mode == .signIn
+          viewModel.scene == .signIn
             ? "Don't have an account? Sign up"
             : "Do you have an account? Sign in"
         ) {
-          withAnimation { viewModel.mode = viewModel.mode == .signIn ? .signUp : .signIn }
+          viewModel.setScene(viewModel.scene == .signIn ? .signUp : .signIn)
         }
       }
 
-      if viewModel.mode == .signIn {
+      if viewModel.scene == .signIn {
         Button("Sign in with magic link") {
-          withAnimation { viewModel.mode = .magicLink }
+          viewModel.setScene(.magicLink)
         }
       }
 
-      if viewModel.mode == .signIn {
+      if viewModel.scene == .signIn {
         Button("Forgot your password?") {
-          withAnimation { viewModel.mode = .forgotPassword }
+          viewModel.setScene(.forgotPassword)
         }
       }
 
-      if viewModel.mode == .magicLink {
+      if viewModel.scene == .magicLink {
         Button("Sign in with password") {
-          withAnimation { viewModel.mode = .signIn }
+          viewModel.setScene(.signIn)
         }
       }
     }
@@ -152,7 +152,7 @@ struct AuthenticationScreenView: View {
 }
 
 extension AuthenticationScreenView {
-  enum Mode {
+  enum Scene {
     case signIn, signUp, magicLink, resetPassword, forgotPassword
 
     var primaryLabel: String {
@@ -173,7 +173,7 @@ extension AuthenticationScreenView {
   }
 
   @MainActor class ViewModel: ObservableObject {
-    @Published var mode: Mode = .resetPassword
+    @Published var scene: Scene
     @Published var isLoading = false
     @Published var email = ""
     @Published var isValidNewPassword = false
@@ -189,22 +189,24 @@ extension AuthenticationScreenView {
       }
     }
 
-    init(mode: Mode) {
-      self.mode = mode
+    init(scene: Scene) {
+      self.scene = scene
+    }
+
+    func setScene(_ scene: Scene) {
+      withAnimation {
+        self.scene = scene
+      }
     }
 
     private func onSignUp() {
-      mode = .signIn
+      scene = .signIn
       email = ""
       password = ""
     }
 
     private func passwordCheck() {
-      if password == passwordConfirmation, password.count >= 8 {
-        isValidNewPassword = true
-      } else {
-        isValidNewPassword = false
-      }
+      isValidNewPassword = password == passwordConfirmation && password.count >= 8
     }
 
     func primaryActionTapped(
@@ -216,7 +218,7 @@ extension AuthenticationScreenView {
         var primaryActionSuccessMessage: String?
         var primaryActionError: Error?
 
-        switch mode {
+        switch scene {
         case .signIn:
           switch await repository.auth.signIn(email: email, password: password) {
           case .success:

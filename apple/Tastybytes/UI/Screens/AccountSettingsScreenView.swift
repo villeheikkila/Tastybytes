@@ -148,13 +148,8 @@ extension AccountSettingsScreenView {
       }
     }
 
-    func passwordCheck() {
-      if newPassword == newPasswordConfirmation, newPassword.count >= 8 {
-        showPasswordConfirmation = true
-
-      } else {
-        showPasswordConfirmation = false
-      }
+    private func passwordCheck() {
+      showPasswordConfirmation = newPassword == newPasswordConfirmation && newPassword.count >= 8
     }
 
     private var profile: Profile.Extended?
