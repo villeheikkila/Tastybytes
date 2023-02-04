@@ -86,7 +86,10 @@ extension LocationScreenView {
             self.summary = summary
           }
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger
+            .error(
+              "failed to get summary for \(self.location.id.uuidString.lowercased()): \(error.localizedDescription)"
+            )
         }
       }
     }
@@ -97,7 +100,7 @@ extension LocationScreenView {
         case .success:
           onDelete()
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to delete location by id \(self.location.id): \(error.localizedDescription)")
         }
       }
     }

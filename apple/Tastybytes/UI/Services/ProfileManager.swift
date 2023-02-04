@@ -74,7 +74,7 @@ import SwiftUI
       case let .success(friends):
         self.friends = friends.map { $0.getFriend(userId: getId()) }
       case let .failure(error):
-        logger.error("failed: \(error.localizedDescription)")
+        logger.error("failed to load friends for user \(self.getId()): \(error.localizedDescription)")
       }
     }
   }
@@ -90,7 +90,10 @@ import SwiftUI
         self.friends.append(newFriend.receiver)
         onSuccess()
       case let .failure(error):
-        logger.error("failed: \(error.localizedDescription)")
+        logger
+          .error(
+            "failed to send friend request to \(receiver.uuidString.lowercased()): \(error.localizedDescription)"
+          )
       }
     }
   }

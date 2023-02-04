@@ -86,7 +86,8 @@ extension CompanySheetView {
           self.searchResults = searchResults
           self.status = Status.searched
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger
+            .error("failed to search companies with search term '\(self.searchText)': \(error.localizedDescription)")
         }
       }
     }
@@ -98,7 +99,7 @@ extension CompanySheetView {
         case let .success(newCompany):
           onSuccess(newCompany)
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to create new company with name '\(self.companyName)': \(error.localizedDescription)")
         }
       }
     }

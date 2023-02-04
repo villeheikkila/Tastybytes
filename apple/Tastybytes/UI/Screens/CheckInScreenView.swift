@@ -57,7 +57,7 @@ struct CheckInScreenView: View {
         "Delete the check-in for \(presenting.product.getDisplayName(.fullName))",
         role: .destructive,
         action: {
-          viewModel.deleteCheckIn(checkIn: presenting, onDelete: { router.removeLast() })
+          viewModel.deleteCheckIn(onDelete: { router.removeLast() })
         }
       )
     }
@@ -167,13 +167,13 @@ extension CheckInScreenView {
       commentText.isEmpty
     }
 
-    func deleteCheckIn(checkIn: CheckIn, onDelete: @escaping () -> Void) {
+    func deleteCheckIn(onDelete: @escaping () -> Void) {
       Task {
         switch await repository.checkIn.delete(id: checkIn.id) {
         case .success:
           onDelete()
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to delete check-in '\(self.checkIn.id)': \(error.localizedDescription)")
         }
       }
     }
@@ -186,7 +186,7 @@ extension CheckInScreenView {
             self.checkInComments = checkIns
           }
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("faile to load check-in comments for '\(self.checkIn.id)': \(error.localizedDescription)")
         }
       }
     }
@@ -203,7 +203,13 @@ extension CheckInScreenView {
               }
             }
           case let .failure(error):
-            logger.error("failed: \(error.localizedDescription)")
+            logger
+              .error(
+                """
+                failed to update comment \(editComment.id) with text\
+                  '\(self.editCommentText)': \(error.localizedDescription)
+                """
+              )
           }
         }
 
@@ -219,7 +225,7 @@ extension CheckInScreenView {
             self.checkInComments.remove(object: comment)
           }
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to delete comment '\(comment.id)': \(error.localizedDescription)")
         }
       }
     }
@@ -236,7 +242,13 @@ extension CheckInScreenView {
           }
           self.commentText = ""
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger
+            .error(
+              """
+              failed to send comment '\(self.commentText)' to\
+                            check-in '\(self.checkIn.id)': \(error.localizedDescription)
+              """
+            )
         }
       }
     }

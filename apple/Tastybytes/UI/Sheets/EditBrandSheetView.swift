@@ -158,7 +158,7 @@ extension EditBrandSheetView {
         case .success:
           onSuccess()
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to edit brand '\(brand.id)': \(error.localizedDescription)")
         }
       }
     }
@@ -170,7 +170,7 @@ extension EditBrandSheetView {
           case .success:
             onSuccess()
           case let .failure(error):
-            logger.error("failed: \(error.localizedDescription)")
+            logger.error("failed to delete brand '\(toDeleteSubBrand.id)': \(error.localizedDescription)")
           }
         }
       }
@@ -280,7 +280,10 @@ extension EditSubBrandSheetView {
             self.mergeTo = nil
             onSuccess()
           case let .failure(error):
-            logger.error("failed: \(error.localizedDescription)")
+            logger
+              .error(
+                "failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)': \(error.localizedDescription)"
+              )
           }
         }
       }
@@ -295,7 +298,7 @@ extension EditSubBrandSheetView {
           showToast.toggle()
           onSuccess()
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to edit sub-brand '\(subBrand.id)' to '\(name)': \(error.localizedDescription)")
         }
       }
     }

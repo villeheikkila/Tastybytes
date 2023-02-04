@@ -326,7 +326,7 @@ extension ProductSheetView {
           case .success:
             self.loadCategories(categoryWithSubcategories.name)
           case let .failure(error):
-            logger.error("failed: \(error.localizedDescription)")
+            logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
           }
         }
       }
@@ -385,10 +385,11 @@ extension ProductSheetView {
             self.description = initialProduct.description.orEmpty
             self.hasSubBrand = initialProduct.subBrand.name != nil
           case let .failure(error):
-            logger.error("failed: \(error.localizedDescription)")
+            logger
+              .error("failed to load brand owner for product '\(initialProduct.id)': \(error.localizedDescription)")
           }
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to load categories with subcategories: \(error.localizedDescription)")
         }
       }
     }
@@ -405,7 +406,13 @@ extension ProductSheetView {
           self.categories = categories
           self.category = categories.first(where: { $0.name == initialCategory })
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger
+            .error(
+              """
+              failed to load category with subcategories for '\(initialCategory.rawValue)': \(error
+                .localizedDescription)
+              """
+            )
         }
       }
     }
@@ -426,7 +433,7 @@ extension ProductSheetView {
           case let .success(newProduct):
             onCreation(newProduct)
           case let .failure(error):
-            logger.error("failed: \(error.localizedDescription)")
+            logger.error("failed to create new product: \(error.localizedDescription)")
           }
         }
       }
@@ -450,7 +457,8 @@ extension ProductSheetView {
           case .success:
             onComplete()
           case let .failure(error):
-            logger.error("failed: \(error.localizedDescription)")
+            logger
+              .error("failed to create product edit suggestion for '\(product.id)': \(error.localizedDescription)")
           }
           onComplete()
         }
@@ -475,7 +483,7 @@ extension ProductSheetView {
           case .success:
             onComplete()
           case let .failure(error):
-            logger.error("failed: \(error.localizedDescription)")
+            logger.error("failed to edit product '\(product.id)': \(error.localizedDescription)")
           }
         }
       }

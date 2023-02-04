@@ -60,7 +60,7 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        logger.error("failed: \(error.localizedDescription)")
+        logger.error("failed to refresh notifications: \(error.localizedDescription)")
       }
     }
   }
@@ -75,7 +75,7 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        logger.error("failed: \(error.localizedDescription)")
+        logger.error("failed to delete all notifications: \(error.localizedDescription)")
       }
     }
   }
@@ -94,7 +94,7 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        logger.error("failed: \(error.localizedDescription)")
+        logger.error("failed to mark all notifications as read: \(error.localizedDescription)")
       }
     }
   }
@@ -124,7 +124,7 @@ final class NotificationManager: NSObject, ObservableObject {
             }
           }
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to mark all friend requests as read: \(error.localizedDescription)")
         }
       }
     }
@@ -157,23 +157,23 @@ final class NotificationManager: NSObject, ObservableObject {
             }
           }
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to mark check-in as read \(checkIn.id): \(error.localizedDescription)")
         }
       }
     }
   }
 
-  func markAsRead(_ notifaction: Notification) {
+  func markAsRead(_ notification: Notification) {
     Task {
-      switch await repository.notification.markRead(id: notifaction.id) {
+      switch await repository.notification.markRead(id: notification.id) {
       case let .success(updatedNotification):
         await MainActor.run {
-          if let index = self.notifications.firstIndex(of: notifaction) {
+          if let index = self.notifications.firstIndex(of: notification) {
             self.notifications[index] = updatedNotification
           }
         }
       case let .failure(error):
-        logger.error("failed: \(error.localizedDescription)")
+        logger.error("failed to mark '\(notification.id)' as read: \(error.localizedDescription)")
       }
     }
   }
@@ -189,7 +189,8 @@ final class NotificationManager: NSObject, ObservableObject {
             }
           }
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger
+            .error("failed to delete notification '\(self.notifications[index].id)': \(error.localizedDescription)")
         }
       }
     }
@@ -205,7 +206,7 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        logger.error("failed: \(error.localizedDescription)")
+        logger.error("failed to delete notification '\(notification.id)': \(error.localizedDescription)")
       }
     }
   }

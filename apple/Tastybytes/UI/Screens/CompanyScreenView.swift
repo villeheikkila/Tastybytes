@@ -275,7 +275,7 @@ extension CompanyScreenView {
             }
             self.activeSheet = nil
           case let .failure(error):
-            logger.error("failed: \(error.localizedDescription)")
+            logger.error("failed to edit company \(companyJoined.id): \(error.localizedDescription)")
           }
         }
       }
@@ -288,7 +288,7 @@ extension CompanyScreenView {
           self.companyJoined = company
           self.newCompanyNameSuggestion = company.name
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to refresh data for company '\(companyId)': \(error.localizedDescription)")
         }
       }
 
@@ -297,7 +297,7 @@ extension CompanyScreenView {
         case let .success(summary):
           self.summary = summary
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to load summary for company '\(companyId)' : \(error.localizedDescription)")
         }
       }
     }
@@ -308,7 +308,7 @@ extension CompanyScreenView {
         case .success:
           onDelete()
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to delete company '\(company.id)': \(error.localizedDescription)")
         }
       }
     }
@@ -321,7 +321,7 @@ extension CompanyScreenView {
             refreshData(companyId: companyJoined.id)
             self.productToDelete = nil
           case let .failure(error):
-            logger.error("failed: \(error.localizedDescription)")
+            logger.error("failed to delete product '\(productToDelete.id)': \(error.localizedDescription)")
           }
         }
       }
@@ -337,11 +337,11 @@ extension CompanyScreenView {
             case let .success(company):
               refreshData(companyId: company.id)
             case let .failure(error):
-              logger.error("failed: \(error.localizedDescription)")
+              logger.error("failed to load company \(brand.id) after deleting a brand: \(error.localizedDescription)")
             }
           }
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to delete brand '\(brand.id)': \(error.localizedDescription)")
         }
       }
     }

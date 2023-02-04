@@ -184,7 +184,7 @@ extension ProductScreenView {
             product = refreshedProduct
           }
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to refresh product by id '\(self.product.id)': \(error.localizedDescription)")
         }
       }
     }
@@ -199,7 +199,7 @@ extension ProductScreenView {
         case let .success(summary):
           self.summary = summary
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to load product summary for '\(self.product.id)': \(error.localizedDescription)")
         }
       }
     }
@@ -210,7 +210,7 @@ extension ProductScreenView {
         case .success:
           refresh()
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to verify product \(self.product.id): \(error.localizedDescription)")
         }
       }
     }
@@ -221,7 +221,7 @@ extension ProductScreenView {
         case .success:
           onDelete()
         case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
+          logger.error("failed to delete product \(self.product.id): \(error.localizedDescription)")
         }
       }
     }
