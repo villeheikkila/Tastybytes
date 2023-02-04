@@ -66,6 +66,7 @@ struct FlavorSheetView: View {
 
 extension FlavorSheetView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "FlavorSheetView")
     @Published var availableFlavors = [Flavor]()
 
     func loadFlavors() {

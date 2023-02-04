@@ -1,6 +1,8 @@
+import os
 import SwiftUI
 
 @MainActor class Router: ObservableObject {
+  private let logger = getLogger(category: "Router")
   @Published public var path: [Route] = []
 
   func navigate(to: Route, resetStack: Bool) {
@@ -26,42 +28,42 @@ import SwiftUI
         case let .success(product):
           self.navigate(to: .product(product), resetStack: true)
         case let .failure(error):
-          print(error)
+          logger.error("request for product with \(id) failed: \(error.localizedDescription)")
         }
       case let .checkIn(id):
         switch await repository.checkIn.getById(id: id) {
         case let .success(checkIn):
           self.navigate(to: .checkIn(checkIn), resetStack: true)
         case let .failure(error):
-          print(error)
+          logger.error("request for check-in with \(id) failed: \(error.localizedDescription)")
         }
       case let .company(id):
         switch await repository.company.getById(id: id) {
         case let .success(company):
           self.navigate(to: .company(company), resetStack: true)
         case let .failure(error):
-          print(error)
+          logger.error("request for company with \(id) failed: \(error.localizedDescription)")
         }
       case let .brand(id):
         switch await repository.brand.getById(id: id) {
         case let .success(brand):
           self.navigate(to: .brand(brand), resetStack: true)
         case let .failure(error):
-          print(error)
+          logger.error("request for brand with \(id) failed: \(error.localizedDescription)")
         }
       case let .profile(id):
         switch await repository.profile.getById(id: id) {
         case let .success(profile):
           self.navigate(to: .profile(profile), resetStack: true)
         case let .failure(error):
-          print(error)
+          logger.error("request for profile with \(id.uuidString.lowercased()) failed: \(error.localizedDescription)")
         }
       case let .location(id):
         switch await repository.location.getById(id: id) {
         case let .success(location):
           self.navigate(to: .location(location), resetStack: true)
         case let .failure(error):
-          print(error)
+          logger.error("request for location with \(id) failed: \(error.localizedDescription)")
         }
       }
     }

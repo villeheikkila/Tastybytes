@@ -1,3 +1,4 @@
+import os
 import SwiftUI
 
 struct AuthenticationScreenView: View {
@@ -152,7 +153,7 @@ struct AuthenticationScreenView: View {
 }
 
 extension AuthenticationScreenView {
-  enum Scene {
+  enum Scene: String {
     case signIn, signUp, magicLink, resetPassword, forgotPassword
 
     var primaryLabel: String {
@@ -173,6 +174,7 @@ extension AuthenticationScreenView {
   }
 
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "AuthenticationScreenView")
     @Published var scene: Scene
     @Published var isLoading = false
     @Published var email = ""
@@ -262,6 +264,10 @@ extension AuthenticationScreenView {
         if let primaryActionSuccessMessage {
           onSuccess(primaryActionSuccessMessage)
         } else if let primaryActionError {
+          logger
+            .warning(
+              "Error occured when trying to \(self.scene.rawValue): \(primaryActionError.localizedDescription)"
+            )
           onFailure(primaryActionError.localizedDescription)
         }
 

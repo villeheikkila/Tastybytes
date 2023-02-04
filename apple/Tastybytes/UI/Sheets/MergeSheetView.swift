@@ -41,6 +41,7 @@ struct MergeSheetView: View {
 
 extension MergeSheetView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "MergeSheetView")
     @Published var mergeToProduct: Product.Joined?
     @Published var isPresentingProductMergeConfirmation = false
     @Published var productSearchTerm = ""

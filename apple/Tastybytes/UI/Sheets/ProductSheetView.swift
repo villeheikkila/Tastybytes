@@ -274,6 +274,7 @@ extension ProductSheetView {
   }
 
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "ProductSheetView")
     @Published var categories = [Category.JoinedSubcategories]()
     @Published var activeSheet: Sheet?
     @Published var categoryName: Category.Name = .beverage {

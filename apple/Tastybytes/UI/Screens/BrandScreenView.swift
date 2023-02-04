@@ -66,6 +66,7 @@ struct BrandScreenView: View {
 
 extension BrandScreenView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "BrandScreenView")
     @Published var brand: Brand.JoinedSubBrandsProducts
     @Published var showDeleteBrandConfirmationDialog = false
 

@@ -41,6 +41,7 @@ struct SubBrandSheetView: View {
 
 extension SubBrandSheetView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "SubBrandSheetView")
     @Published var subBrandName = ""
 
     func createNewSubBrand(

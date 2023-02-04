@@ -229,6 +229,7 @@ extension CompanyScreenView {
   }
 
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "CompanyScreenView")
     @Published var companyJoined: Company.Joined?
     @Published var summary: Summary?
     @Published var activeSheet: Sheet?

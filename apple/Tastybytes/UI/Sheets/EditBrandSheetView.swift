@@ -132,6 +132,8 @@ extension EditBrandSheetView {
   }
 
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "EditBrandSheetView")
+
     @Published var activeSheet: Sheet?
     @Published var showDeleteSubBrandConfirmation = false
     @Published var toDeleteSubBrand: SubBrand.JoinedProduct? {
@@ -256,6 +258,7 @@ struct EditSubBrandSheetView: View {
 
 extension EditSubBrandSheetView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "EditSubBrandSheetView")
     @Published var showToast = false
     @Published var showMergeSubBrandsConfirmation = false
     @Published var mergeTo: SubBrand.JoinedProduct? {

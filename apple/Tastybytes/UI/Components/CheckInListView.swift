@@ -153,6 +153,7 @@ extension CheckInListView {
   }
 
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "CheckInListView")
     @Published var showDeleteConfirmationFor: CheckIn? {
       didSet {
         showDeleteCheckInConfirmationDialog = true

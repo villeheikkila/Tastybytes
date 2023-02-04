@@ -46,6 +46,7 @@ struct BrandSheetView: View {
 
 extension BrandSheetView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "BrandSheetView")
     @Published var searchText = ""
     @Published var brandsWithSubBrands = [Brand.JoinedSubBrands]()
     @Published var brandName = ""

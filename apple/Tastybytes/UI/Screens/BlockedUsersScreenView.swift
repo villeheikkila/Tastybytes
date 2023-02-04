@@ -78,6 +78,7 @@ private struct BlockedUserListItemView: View {
 
 extension BlockedUsersScreenView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "BlockedUsersScreenView")
     @Published var blockedUsers = [Friend]()
     @Published var error: Error?
     @Published var showUserSearchSheet = false

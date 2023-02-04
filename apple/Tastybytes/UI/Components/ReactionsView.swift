@@ -32,6 +32,7 @@ struct ReactionsView: View {
 
 extension ReactionsView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "ReactionsView")
     @Published var checkInReactions = [CheckInReaction]()
     @Published var isLoading = false
 

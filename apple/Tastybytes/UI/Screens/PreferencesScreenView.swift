@@ -47,6 +47,7 @@ struct PreferencesScreenView: View {
 
 extension PreferencesScreenView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "PreferencesScreenView")
     func logOut() {
       Task {
         await repository.auth.logOut()

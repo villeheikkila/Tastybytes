@@ -139,6 +139,7 @@ struct CheckInScreenView: View {
 
 extension CheckInScreenView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "CheckInScreenView")
     @Published var checkIn: CheckIn
     @Published var checkInComments = [CheckInComment]()
     @Published var showDeleteConfirmation = false

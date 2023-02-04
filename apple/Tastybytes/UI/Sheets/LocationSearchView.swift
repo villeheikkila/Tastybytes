@@ -41,6 +41,7 @@ struct LocationSearchView: View {
 
 extension LocationSearchView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "LocationSearchView")
     var service: LocationSearchService
     private var cancellable: AnyCancellable?
     @Published var viewData = [Location]()

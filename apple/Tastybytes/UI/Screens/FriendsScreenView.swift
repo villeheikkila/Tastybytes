@@ -97,6 +97,8 @@ struct FriendsScreenView: View {
 
 extension FriendsScreenView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "FriendsScreenView")
+
     @Published var searchText: String = ""
     @Published var products = [Profile]()
     @Published var friends = [Friend]()

@@ -1,3 +1,4 @@
+import os
 import PhotosUI
 import SwiftUI
 
@@ -116,4 +117,11 @@ struct OptionalNavigationLink<RootView: View>: View {
       .buttonStyle(.plain)
     }
   }
+}
+
+func getLogger(category: String) -> Logger {
+  Logger(
+    subsystem: Bundle.main.bundleIdentifier!,
+    category: category
+  )
 }

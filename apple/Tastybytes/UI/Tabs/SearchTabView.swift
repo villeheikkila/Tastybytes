@@ -234,6 +234,7 @@ struct SearchTabView: View {
 
 extension SearchTabView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "SearchTabView")
     @Published var searchTerm: String = "" {
       didSet {
         if let firstPartOfSearchString = searchTerm

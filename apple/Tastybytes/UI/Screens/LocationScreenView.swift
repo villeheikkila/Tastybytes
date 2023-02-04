@@ -69,6 +69,7 @@ struct LocationScreenView: View {
 
 extension LocationScreenView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "LocationScreenView")
     @Published var summary: Summary?
     @Published var showDeleteLocationConfirmation = false
     let location: Location

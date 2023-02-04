@@ -261,6 +261,7 @@ extension CheckInSheetView {
   }
 
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "CheckInSheetView")
     @Published var selectedItem: PhotosPickerItem?
     @Published var activeSheet: Sheet?
     @Published var showCamera = false

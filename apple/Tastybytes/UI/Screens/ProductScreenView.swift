@@ -148,6 +148,7 @@ extension ProductScreenView {
   }
 
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "ProductScreenView")
     @Published var product: Product.Joined
     @Published var activeSheet: Sheet?
     @Published var summary: Summary?

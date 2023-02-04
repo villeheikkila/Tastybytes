@@ -123,6 +123,7 @@ struct AccountSettingsScreenView: View {
 
 extension AccountSettingsScreenView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "AccountSettingsScreenView")
     @Published var csvExport: CSVFile?
     @Published var showingExporter = false
     @Published var showDeleteConfirmation = false

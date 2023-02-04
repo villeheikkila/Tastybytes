@@ -208,6 +208,7 @@ struct ProfileView: View {
 
 extension ProfileView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "ProfileView")
     @Published var profileSummary: ProfileSummary?
     @Published var selectedItem: PhotosPickerItem?
 

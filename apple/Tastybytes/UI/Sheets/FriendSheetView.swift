@@ -44,6 +44,7 @@ struct FriendSheetView: View {
 
 extension FriendSheetView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "FriendSheetView")
     @Published var friends = [Profile]()
 
     func loadFriends(currentUserId: UUID) {

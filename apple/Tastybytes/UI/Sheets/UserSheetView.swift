@@ -33,6 +33,7 @@ struct UserSheetView<Actions: View>: View {
 
 extension UserSheetView {
   @MainActor class ViewModel: ObservableObject {
+    private let logger = getLogger(category: "UserSheetView")
     @Published var searchText: String = ""
     @Published var searchResults = [Profile]()
 
