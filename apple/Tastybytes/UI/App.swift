@@ -51,6 +51,7 @@ struct Main: App {
     }
   }
 
+  @ViewBuilder
   private var rootView: some View {
     ZStack {
       switch authEvent {

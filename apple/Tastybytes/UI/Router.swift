@@ -42,6 +42,13 @@ import SwiftUI
         case let .failure(error):
           print(error)
         }
+      case let .brand(id):
+        switch await repository.brand.getById(id: id) {
+        case let .success(brand):
+          self.navigate(to: .brand(brand), resetStack: true)
+        case let .failure(error):
+          print(error)
+        }
       case let .profile(id):
         switch await repository.profile.getById(id: id) {
         case let .success(profile):
@@ -67,6 +74,7 @@ enum Route: Hashable {
   case checkIn(CheckIn)
   case location(Location)
   case company(Company)
+  case brand(Brand.JoinedSubBrandsProducts)
   case profileProducts(Profile)
   case settings
   case currentUserFriends
@@ -78,6 +86,8 @@ enum Route: Hashable {
     switch self {
     case let .company(company):
       CompanyScreenView(company: company)
+    case let .brand(brand):
+      BrandScreenView(brand: brand)
     case .currentUserFriends:
       CurrentUserFriendsScreenView()
     case .settings:
@@ -113,6 +123,7 @@ enum NavigatablePath {
   case company(id: Int)
   case profile(id: UUID)
   case location(id: UUID)
+  case brand(id: Int)
 
   var url: URL {
     switch self {
@@ -124,6 +135,8 @@ enum NavigatablePath {
       return URL(string: "\(Config.baseUrl)/\(PathIdentifier.products)/\(id)")!
     case let .company(id):
       return URL(string: "\(Config.baseUrl)/\(PathIdentifier.companies)/\(id)")!
+    case let .brand(id):
+      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.brands)/\(id)")!
     case let .location(id):
       return URL(string: "\(Config.baseUrl)/\(PathIdentifier.locations)/\(id)")!
     }
@@ -131,7 +144,7 @@ enum NavigatablePath {
 }
 
 enum PathIdentifier: Hashable {
-  case checkins, products, profiles, companies, locations
+  case checkins, products, profiles, companies, locations, brands
 }
 
 extension URL {
@@ -147,6 +160,7 @@ extension URL {
     case "products": return .products
     case "profiles": return .profiles
     case "companies": return .companies
+    case "brands": return .brands
     case "locations": return .locations
     default: return nil
     }
@@ -176,6 +190,11 @@ extension URL {
         return nil
       }
       return .profile(id: uuid)
+    case .brands:
+      guard let id = Int(path) else {
+        return nil
+      }
+      return .brand(id: id)
     case .companies:
       guard let id = Int(path) else {
         return nil
