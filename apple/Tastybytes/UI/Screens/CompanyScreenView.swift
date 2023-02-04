@@ -5,9 +5,6 @@ struct CompanyScreenView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
   @StateObject private var viewModel = ViewModel()
-  @State private var showDeleteCompanyConfirmationDialog = false
-  @State private var showDeleteBrandConfirmationDialog = false
-  @State private var showDeleteProductConfirmationDialog = false
 
   let company: Company
 
@@ -42,8 +39,14 @@ struct CompanyScreenView: View {
         }
       }
     }
+    .confirmationDialog("Delete Brand Confirmation",
+                        isPresented: $viewModel.showDeleteBrandConfirmationDialog,
+                        presenting: viewModel.brandToDelete) { presenting in
+      Button("Delete \(presenting.name) brand", role: .destructive, action: { viewModel.deleteBrand(presenting) })
+    }
     .confirmationDialog("Delete Company Confirmation",
-                        isPresented: $showDeleteCompanyConfirmationDialog, presenting: company) { presenting in
+                        isPresented: $viewModel.showDeleteCompanyConfirmationDialog,
+                        presenting: company) { presenting in
       Button("Delete \(presenting.name) Company", role: .destructive, action: {
         viewModel.deleteCompany(company, onDelete: {
           router.reset()
@@ -51,7 +54,7 @@ struct CompanyScreenView: View {
       })
     }
     .confirmationDialog("Delete Product Confirmation",
-                        isPresented: $showDeleteProductConfirmationDialog,
+                        isPresented: $viewModel.showDeleteProductConfirmationDialog,
                         presenting: viewModel.productToDelete) { presenting in
       Button(
         "Delete \(presenting.name) Product",
@@ -88,7 +91,7 @@ struct CompanyScreenView: View {
 
       if profileManager.hasPermission(.canDeleteCompanies) {
         Button(action: {
-          showDeleteCompanyConfirmationDialog.toggle()
+          viewModel.showDeleteCompanyConfirmationDialog.toggle()
         }) {
           Label("Delete", systemImage: "trash.fill")
         }
@@ -119,7 +122,6 @@ struct CompanyScreenView: View {
                   if profileManager.hasPermission(.canMergeProducts) {
                     Button(action: {
                       viewModel.productToMerge = product
-                      viewModel.setActiveSheet(.mergeProduct)
                     }) {
                       Text("Merge product to...")
                     }
@@ -127,7 +129,6 @@ struct CompanyScreenView: View {
 
                   if profileManager.hasPermission(.canDeleteProducts) {
                     Button(action: {
-                      showDeleteProductConfirmationDialog.toggle()
                       viewModel.productToDelete = product
                     }) {
                       Label("Delete", systemImage: "trash.fill")
@@ -155,10 +156,11 @@ struct CompanyScreenView: View {
 
               if profileManager.hasPermission(.canDeleteBrands) {
                 Button(action: {
-                  showDeleteBrandConfirmationDialog.toggle()
+                  viewModel.brandToDelete = brand
                 }) {
                   Label("Delete", systemImage: "trash.fill")
-                }.disabled(brand.isVerified)
+                }
+                .disabled(brand.isVerified)
               }
             } label: {
               Image(systemName: "ellipsis")
@@ -166,10 +168,6 @@ struct CompanyScreenView: View {
           }
         }
         .headerProminence(.increased)
-        .confirmationDialog("Delete Brand Confirmation",
-                            isPresented: $showDeleteBrandConfirmationDialog, presenting: brand) { presenting in
-          Button("Delete \(presenting.name) brand", role: .destructive, action: { viewModel.deleteBrand(presenting) })
-        }
       }
     }
   }
@@ -235,9 +233,28 @@ extension CompanyScreenView {
     @Published var summary: Summary?
     @Published var activeSheet: Sheet?
     @Published var newCompanyNameSuggestion = ""
-    @Published var productToMerge: Product.JoinedCategory?
-    @Published var productToDelete: Product.JoinedCategory?
     @Published var editBrand: Brand.JoinedSubBrandsProducts?
+    @Published var productToMerge: Product.JoinedCategory? {
+      didSet {
+        setActiveSheet(.mergeProduct)
+      }
+    }
+
+    @Published var productToDelete: Product.JoinedCategory? {
+      didSet {
+        showDeleteProductConfirmationDialog = true
+      }
+    }
+
+    @Published var showDeleteProductConfirmationDialog = false
+    @Published var brandToDelete: Brand.JoinedSubBrandsProducts? {
+      didSet {
+        showDeleteBrandConfirmationDialog = true
+      }
+    }
+
+    @Published var showDeleteBrandConfirmationDialog = false
+    @Published var showDeleteCompanyConfirmationDialog = false
 
     func setActiveSheet(_ sheet: Sheet) {
       activeSheet = sheet
