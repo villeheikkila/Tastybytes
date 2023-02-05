@@ -83,9 +83,7 @@ extension BrandScreenView {
           onDelete()
         case let .failure(error):
           logger
-            .error(
-              "deleting brand by id \(self.brand.id) failed: \(error.localizedDescription)"
-            )
+            .error("failed to delete brand by id '\(self.brand.id)': \(error.localizedDescription)")
         }
       }
     }

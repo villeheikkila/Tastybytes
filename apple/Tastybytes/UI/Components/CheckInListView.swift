@@ -198,10 +198,7 @@ extension CheckInListView {
             checkIns.remove(object: checkIn)
           }
         case let .failure(error):
-          logger
-            .error(
-              "deleting check-in \(checkIn.id) failed: \(error.localizedDescription)"
-            )
+          logger.error("deleting check-in \(checkIn.id) failed: \(error.localizedDescription)")
         }
       }
     }
@@ -227,10 +224,7 @@ extension CheckInListView {
             onComplete()
           }
         case let .failure(error):
-          logger
-            .error(
-              "fetching check-ins failed: \(error.localizedDescription)"
-            )
+          logger.error("fetching check-ins failed: \(error.localizedDescription)")
         }
       }
     }

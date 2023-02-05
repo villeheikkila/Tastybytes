@@ -135,6 +135,7 @@ extension FriendsScreenView {
           self.showUserSearchSheet = false
           onSuccess()
         case let .failure(error):
+          logger.warning("failed add new friend '\(receiver)': \(error.localizedDescription)")
           self.modalError = error
         }
       }
@@ -161,6 +162,13 @@ extension FriendsScreenView {
             }
           }
         case let .failure(error):
+          logger
+            .warning(
+              """
+              failed to update friend request '\(friend.id)' with status '\(newStatus.rawValue)':\
+               \(error.localizedDescription)
+              """
+            )
           self.error = error
         }
       }
@@ -175,6 +183,7 @@ extension FriendsScreenView {
           }
           showRemoveFriendConfirmation = false
         case let .failure(error):
+          logger.warning("failed to remove friend request '\(friend.id)': \(error.localizedDescription)")
           self.error = error
         }
       }

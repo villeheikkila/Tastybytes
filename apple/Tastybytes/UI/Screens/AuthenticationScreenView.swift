@@ -267,9 +267,7 @@ extension AuthenticationScreenView {
           onSuccess(primaryActionSuccessMessage)
         } else if let primaryActionError {
           logger
-            .warning(
-              "Error occured when trying to \(self.scene.rawValue): \(primaryActionError.localizedDescription)"
-            )
+            .warning("Error occured when trying to \(self.scene.rawValue): \(primaryActionError.localizedDescription)")
           onFailure(primaryActionError.localizedDescription)
         }
 

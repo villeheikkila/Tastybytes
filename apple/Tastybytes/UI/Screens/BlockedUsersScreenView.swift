@@ -100,6 +100,7 @@ extension BlockedUsersScreenView {
             self.blockedUsers.remove(object: friend)
           }
         case let .failure(error):
+          logger.warning("failed to unblock user \(friend.id): \(error.localizedDescription)")
           self.error = error
         }
       }
@@ -114,6 +115,7 @@ extension BlockedUsersScreenView {
           }
           onSuccess()
         case let .failure(error):
+          logger.warning("failed to block user \(user.id): \(error.localizedDescription)")
           onFailure(error.localizedDescription)
         }
       }
@@ -128,6 +130,7 @@ extension BlockedUsersScreenView {
               self.blockedUsers = blockedUsers
             }
           case let .failure(error):
+            logger.warning("failed to load blocked users: \(error.localizedDescription)")
             self.error = error
           }
         }

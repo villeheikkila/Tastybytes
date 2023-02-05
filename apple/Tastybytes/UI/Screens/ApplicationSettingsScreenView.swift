@@ -110,10 +110,7 @@ extension ApplicationSettingsScreenView {
 
           initialColorScheme = systemColorScheme
         case let .failure(error):
-          logger
-            .error(
-              "fetching current user failed: \(error.localizedDescription)"
-            )
+          logger.error("fetching current user failed: \(error.localizedDescription)")
         }
       }
     }
@@ -133,10 +130,7 @@ extension ApplicationSettingsScreenView {
         case .success:
           onChange()
         case let .failure(error):
-          logger
-            .error(
-              "updating color scheme failed: \(error.localizedDescription)"
-            )
+          logger.error("updating color scheme failed: \(error.localizedDescription)")
         }
       }
     }

@@ -132,6 +132,7 @@ extension ProfileSettingsScreenView {
           self.updateFormValues(profile: profile)
           onSuccess()
         case let .failure(error):
+          logger.warning("failed to update profile: \(error.localizedDescription)")
           onFailure(error)
         }
       }
