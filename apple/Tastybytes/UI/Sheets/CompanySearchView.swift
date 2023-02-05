@@ -1,12 +1,17 @@
 import SwiftUI
 
 struct CompanySheetView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @State private var companyName = ""
 
   let onSelect: (_ company: Company, _ createdNew: Bool) -> Void
+
+  init(_ client: Client, onSelect: @escaping (_ company: Company, _ createdNew: Bool) -> Void) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.onSelect = onSelect
+  }
 
   var body: some View {
     List {
@@ -68,11 +73,15 @@ extension CompanySheetView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CompanySheetView")
-
+    private let client: Client
     @Published var searchText: String = ""
     @Published var searchResults = [Company]()
     @Published var status: Status?
     @Published var companyName = ""
+
+    init(_ client: Client) {
+      self.client = client
+    }
 
     func createNew() {
       companyName = searchText
@@ -81,7 +90,7 @@ extension CompanySheetView {
 
     func searchCompanies() {
       Task {
-        switch await repository.company.search(searchTerm: searchText) {
+        switch await client.company.search(searchTerm: searchText) {
         case let .success(searchResults):
           self.searchResults = searchResults
           self.status = Status.searched
@@ -95,7 +104,7 @@ extension CompanySheetView {
     func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) {
       let newCompany = Company.NewRequest(name: companyName)
       Task {
-        switch await repository.company.insert(newCompany: newCompany) {
+        switch await client.company.insert(newCompany: newCompany) {
         case let .success(newCompany):
           onSuccess(newCompany)
         case let .failure(error):

@@ -1,12 +1,22 @@
 import SwiftUI
 
 struct SubBrandSheetView: View {
+  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
-  @StateObject private var viewModel = ViewModel()
   @Environment(\.dismiss) private var dismiss
 
   let brandWithSubBrands: Brand.JoinedSubBrands
   let onSelect: (_ company: SubBrand, _ createdNew: Bool) -> Void
+
+  init(
+    _ client: Client,
+    brandWithSubBrands: Brand.JoinedSubBrands,
+    onSelect: @escaping (_ company: SubBrand, _ createdNew: Bool) -> Void
+  ) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.brandWithSubBrands = brandWithSubBrands
+    self.onSelect = onSelect
+  }
 
   var body: some View {
     List {
@@ -42,14 +52,19 @@ struct SubBrandSheetView: View {
 extension SubBrandSheetView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "SubBrandSheetView")
+    let client: Client
     @Published var subBrandName = ""
+
+    init(_ client: Client) {
+      self.client = client
+    }
 
     func createNewSubBrand(
       _ brand: Brand.JoinedSubBrands,
       _ onSelect: @escaping (_ subBrand: SubBrand, _ createdNew: Bool) -> Void
     ) {
       Task {
-        switch await repository.subBrand
+        switch await client.subBrand
           .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brand.id))
         {
         case let .success(newSubBrand):

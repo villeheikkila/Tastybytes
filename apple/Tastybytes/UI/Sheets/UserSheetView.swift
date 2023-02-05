@@ -1,11 +1,19 @@
 import SwiftUI
 
 struct UserSheetView<Actions: View>: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
 
   let actions: (_ profile: Profile) -> Actions
+
+  init(
+    _ client: Client,
+    actions: @escaping (_ profile: Profile) -> Actions
+  ) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.actions = actions
+  }
 
   var body: some View {
     List {
@@ -34,12 +42,17 @@ struct UserSheetView<Actions: View>: View {
 extension UserSheetView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "UserSheetView")
+    private let client: Client
     @Published var searchText: String = ""
     @Published var searchResults = [Profile]()
 
+    init(_ client: Client) {
+      self.client = client
+    }
+
     func searchUsers(currentUserId: UUID) {
       Task {
-        switch await repository.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
+        switch await client.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
         case let .success(searchResults):
           withAnimation {
             self.searchResults = searchResults

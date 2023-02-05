@@ -3,7 +3,7 @@ import SwiftUI
 struct ProductSheetView: View {
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var toastManager: ToastManager
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @State private var mode = Mode.new
   @FocusState private var focusedField: Focusable?
 
@@ -12,11 +12,13 @@ struct ProductSheetView: View {
   let onEdit: (() -> Void)?
 
   init(
+    _ client: Client,
     mode: Mode,
     initialProduct: Product.Joined? = nil,
     initialBarcode: Barcode? = nil,
     onEdit: (() -> Void)? = nil
   ) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
     self.mode = mode
     self.initialProduct = initialProduct
     self.initialBarcode = initialBarcode
@@ -68,7 +70,7 @@ struct ProductSheetView: View {
             )
           }
         case .brandOwner:
-          CompanySheetView(onSelect: { company, createdNew in
+          CompanySheetView(viewModel.client, onSelect: { company, createdNew in
             viewModel.setBrandOwner(company)
             if createdNew {
               toastManager.toggle(.success(viewModel.getToastText(.createdCompany)))
@@ -77,7 +79,7 @@ struct ProductSheetView: View {
           })
         case .brand:
           if let brandOwner = viewModel.brandOwner {
-            BrandSheetView(brandOwner: brandOwner, onSelect: { brand, createdNew in
+            BrandSheetView(viewModel.client, brandOwner: brandOwner, onSelect: { brand, createdNew in
               if createdNew {
                 toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
               }
@@ -87,7 +89,7 @@ struct ProductSheetView: View {
 
         case .subBrand:
           if let brand = viewModel.brand {
-            SubBrandSheetView(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
+            SubBrandSheetView(viewModel.client, brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
               if createdNew {
                 toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
               }
@@ -275,6 +277,7 @@ extension ProductSheetView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductSheetView")
+    let client: Client
     @Published var categories = [Category.JoinedSubcategories]()
     @Published var activeSheet: Sheet?
     @Published var categoryName: Category.Name = .beverage {
@@ -312,6 +315,10 @@ extension ProductSheetView {
 
     @Published var barcode: Barcode?
 
+    init(_ client: Client) {
+      self.client = client
+    }
+
     func getSubcategoriesForCategory() -> [Subcategory]? {
       category?.subcategories
     }
@@ -319,7 +326,7 @@ extension ProductSheetView {
     func createSubcategory(newSubcategoryName: String) {
       if let categoryWithSubcategories = category {
         Task {
-          switch await repository.subcategory
+          switch await client.subcategory
             .insert(newSubcategory: Subcategory
               .NewRequest(name: newSubcategoryName, category: categoryWithSubcategories))
           {
@@ -363,9 +370,9 @@ extension ProductSheetView {
 
       Task {
         // TODO: Load the missing data in parallel 18.1.2023
-        switch await repository.category.getAllWithSubcategories() {
+        switch await client.category.getAllWithSubcategories() {
         case let .success(categories):
-          switch await repository.brand
+          switch await client.brand
             .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
           {
           case let .success(brandsWithSubBrands):
@@ -401,7 +408,7 @@ extension ProductSheetView {
 
     func loadCategories(_ initialCategory: Category.Name = Category.Name.beverage) {
       Task {
-        switch await repository.category.getAllWithSubcategories() {
+        switch await client.category.getAllWithSubcategories() {
         case let .success(categories):
           self.categories = categories
           self.category = categories.first(where: { $0.name == initialCategory })
@@ -429,7 +436,7 @@ extension ProductSheetView {
           barcode: barcode
         )
         Task {
-          switch await repository.product.create(newProductParams: newProductParams) {
+          switch await client.product.create(newProductParams: newProductParams) {
           case let .success(newProduct):
             onCreation(newProduct)
           case let .failure(error):
@@ -451,7 +458,7 @@ extension ProductSheetView {
         )
 
         Task {
-          switch await repository.product
+          switch await client.product
             .createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams)
           {
           case .success:
@@ -479,7 +486,7 @@ extension ProductSheetView {
         )
 
         Task {
-          switch await repository.product.editProduct(productEditParams: productEditParams) {
+          switch await client.product.editProduct(productEditParams: productEditParams) {
           case .success:
             onComplete()
           case let .failure(error):

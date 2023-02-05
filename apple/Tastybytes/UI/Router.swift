@@ -20,46 +20,46 @@ import SwiftUI
     path.removeLast()
   }
 
-  func fetchAndNavigateTo(_ destination: NavigatablePath) {
+  func fetchAndNavigateTo(_ client: Client, _ destination: NavigatablePath) {
     Task {
       switch destination {
       case let .product(id):
-        switch await repository.product.getById(id: id) {
+        switch await client.product.getById(id: id) {
         case let .success(product):
           self.navigate(to: .product(product), resetStack: true)
         case let .failure(error):
           logger.error("request for product with \(id) failed: \(error.localizedDescription)")
         }
       case let .checkIn(id):
-        switch await repository.checkIn.getById(id: id) {
+        switch await client.checkIn.getById(id: id) {
         case let .success(checkIn):
           self.navigate(to: .checkIn(checkIn), resetStack: true)
         case let .failure(error):
           logger.error("request for check-in with \(id) failed: \(error.localizedDescription)")
         }
       case let .company(id):
-        switch await repository.company.getById(id: id) {
+        switch await client.company.getById(id: id) {
         case let .success(company):
           self.navigate(to: .company(company), resetStack: true)
         case let .failure(error):
           logger.error("request for company with \(id) failed: \(error.localizedDescription)")
         }
       case let .brand(id):
-        switch await repository.brand.getById(id: id) {
+        switch await client.brand.getById(id: id) {
         case let .success(brand):
           self.navigate(to: .brand(brand), resetStack: true)
         case let .failure(error):
           logger.error("request for brand with \(id) failed: \(error.localizedDescription)")
         }
       case let .profile(id):
-        switch await repository.profile.getById(id: id) {
+        switch await client.profile.getById(id: id) {
         case let .success(profile):
           self.navigate(to: .profile(profile), resetStack: true)
         case let .failure(error):
           logger.error("request for profile with \(id.uuidString.lowercased()) failed: \(error.localizedDescription)")
         }
       case let .location(id):
-        switch await repository.location.getById(id: id) {
+        switch await client.location.getById(id: id) {
         case let .success(location):
           self.navigate(to: .location(location), resetStack: true)
         case let .failure(error):
@@ -84,38 +84,38 @@ enum Route: Hashable {
   case addProduct(Barcode?)
 
   @ViewBuilder
-  var view: some View {
+  func view(_ client: Client) -> some View {
     switch self {
     case let .company(company):
-      CompanyScreenView(company: company)
+      CompanyScreenView(client, company: company)
     case let .brand(brand):
-      BrandScreenView(brand: brand)
+      BrandScreenView(client, brand: brand)
     case .currentUserFriends:
-      CurrentUserFriendsScreenView()
+      CurrentUserFriendsScreenView(client)
     case .settings:
-      PreferencesScreenView()
+      PreferencesScreenView(client)
     case let .location(location):
-      LocationScreenView(location: location)
+      LocationScreenView(client, location: location)
     case let .profileProducts(profile):
       ProfileProductListView(profile: profile)
     case let .addProduct(initialBarcode):
-      ProductSheetView(mode: .new, initialBarcode: initialBarcode)
+      ProductSheetView(client, mode: .new, initialBarcode: initialBarcode)
     case let .checkIn(checkIn):
-      CheckInScreenView(checkIn: checkIn)
+      CheckInScreenView(client, checkIn: checkIn)
     case let .profile(profile):
-      ProfileScreenView(profile: profile)
+      ProfileScreenView(client, profile: profile)
     case let .product(product):
-      ProductScreenView(product: product)
+      ProductScreenView(client, product: product)
     case let .friends(profile):
-      FriendsScreenView(profile: profile)
+      FriendsScreenView(client, profile: profile)
     }
   }
 }
 
 @MainActor
 extension View {
-  func withRoutes() -> some View {
-    navigationDestination(for: Route.self) { route in route.view }
+  func withRoutes(_ client: Client) -> some View {
+    navigationDestination(for: Route.self) { route in route.view(client) }
   }
 }
 

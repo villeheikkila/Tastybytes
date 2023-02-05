@@ -3,18 +3,21 @@ import PhotosUI
 import SwiftUI
 
 struct LocationScreenView: View {
+  let client: Client
   @EnvironmentObject var router: Router
   @EnvironmentObject var profileManager: ProfileManager
   @StateObject private var viewModel: ViewModel
   @State private var scrollToTop: Int = 0
   @State private var resetView: Int = 0
 
-  init(location: Location) {
-    _viewModel = StateObject(wrappedValue: ViewModel(location: location))
+  init(_ client: Client, location: Location) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client, location: location))
+    self.client = client
   }
 
   var body: some View {
     CheckInListView(
+      client,
       fetcher: .location(viewModel.location),
       scrollToTop: $scrollToTop,
       resetView: $resetView,
@@ -70,17 +73,19 @@ struct LocationScreenView: View {
 extension LocationScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "LocationScreenView")
+    private let client: Client
     @Published var summary: Summary?
     @Published var showDeleteLocationConfirmation = false
     let location: Location
 
-    init(location: Location) {
+    init(_ client: Client, location: Location) {
       self.location = location
+      self.client = client
     }
 
     func getSummary() {
       Task {
-        switch await repository.location.getSummaryById(id: location.id) {
+        switch await client.location.getSummaryById(id: location.id) {
         case let .success(summary):
           withAnimation {
             self.summary = summary
@@ -96,7 +101,7 @@ extension LocationScreenView {
 
     func deleteLocation(_ location: Location, onDelete: @escaping () -> Void) {
       Task {
-        switch await repository.location.delete(id: location.id) {
+        switch await client.location.delete(id: location.id) {
         case .success:
           onDelete()
         case let .failure(error):

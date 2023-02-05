@@ -4,14 +4,26 @@ import SwiftUI
 import WrappingHStack
 
 struct ActivityTabView: View {
+  let client: Client
   @StateObject private var router = Router()
   @State private var scrollToTop: Int = 0
   @Binding var resetNavigationOnTab: Tab?
   @State private var resetView: Int = 0
 
+  init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {
+    self.client = client
+    _resetNavigationOnTab = resetNavigationOnTab
+  }
+
   var body: some View {
     NavigationStack(path: $router.path) {
-      CheckInListView(fetcher: .activityFeed, scrollToTop: $scrollToTop, resetView: $resetView, onRefresh: {}) {}
+      CheckInListView(
+        client,
+        fetcher: .activityFeed,
+        scrollToTop: $scrollToTop,
+        resetView: $resetView,
+        onRefresh: {}
+      ) {}
         .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
           if tab == .activity {
             if router.path.isEmpty {
@@ -31,10 +43,10 @@ struct ActivityTabView: View {
         }
         .onOpenURL { url in
           if let detailPage = url.detailPage {
-            router.fetchAndNavigateTo(detailPage)
+            router.fetchAndNavigateTo(client, detailPage)
           }
         }
-        .withRoutes()
+        .withRoutes(client)
     }
     .environmentObject(router)
   }

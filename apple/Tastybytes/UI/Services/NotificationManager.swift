@@ -1,8 +1,13 @@
 import FirebaseMessaging
 import SwiftUI
 
-final class NotificationManager: NSObject, ObservableObject {
+final class NotificationManager: ObservableObject {
   private let logger = getLogger(category: "NotificationManager")
+  let client: Client
+
+  init(_ client: Client) {
+    self.client = client
+  }
 
   @Published private(set) var notifications = [Notification]() {
     didSet {
@@ -50,7 +55,7 @@ final class NotificationManager: NSObject, ObservableObject {
 
   func refresh(reset: Bool = false) {
     Task {
-      switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
+      switch await client.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
       case let .success(newNotifications):
         await MainActor.run {
           if reset {
@@ -60,14 +65,14 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        logger.error("failed to refresh notifications: \(error.localizedDescription)")
+        logger.error("failed: \(error.localizedDescription)")
       }
     }
   }
 
   func deleteAll() {
     Task {
-      switch await repository.notification.deleteAll() {
+      switch await client.notification.deleteAll() {
       case .success:
         await MainActor.run {
           withAnimation {
@@ -75,14 +80,14 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        logger.error("failed to delete all notifications: \(error.localizedDescription)")
+        logger.error("failed: \(error.localizedDescription)")
       }
     }
   }
 
   func markAllAsRead() {
     Task {
-      switch await repository.notification.markAllRead() {
+      switch await client.notification.markAllRead() {
       case .success:
         await MainActor.run {
           self.notifications = self.notifications.map {
@@ -94,7 +99,7 @@ final class NotificationManager: NSObject, ObservableObject {
           }
         }
       case let .failure(error):
-        logger.error("failed to mark all notifications as read: \(error.localizedDescription)")
+        logger.error("failed: \(error.localizedDescription)")
       }
     }
   }
@@ -111,7 +116,7 @@ final class NotificationManager: NSObject, ObservableObject {
 
     if containsFriendRequests {
       Task {
-        switch await repository.notification.markAllFriendRequestsAsRead() {
+        switch await client.notification.markAllFriendRequestsAsRead() {
         case let .success(updatedNotifications):
           await MainActor.run {
             self.notifications = self.notifications.map {
@@ -124,7 +129,7 @@ final class NotificationManager: NSObject, ObservableObject {
             }
           }
         case let .failure(error):
-          logger.error("failed to mark all friend requests as read: \(error.localizedDescription)")
+          logger.error("failed: \(error.localizedDescription)")
         }
       }
     }
@@ -144,7 +149,7 @@ final class NotificationManager: NSObject, ObservableObject {
 
     if containsCheckIn {
       Task {
-        switch await repository.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id) {
+        switch await client.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id) {
         case let .success(updatedNotifications):
           await MainActor.run {
             self.notifications = self.notifications.map {
@@ -165,7 +170,7 @@ final class NotificationManager: NSObject, ObservableObject {
 
   func markAsRead(_ notification: Notification) {
     Task {
-      switch await repository.notification.markRead(id: notification.id) {
+      switch await client.notification.markRead(id: notification.id) {
       case let .success(updatedNotification):
         await MainActor.run {
           if let index = self.notifications.firstIndex(of: notification) {
@@ -181,7 +186,7 @@ final class NotificationManager: NSObject, ObservableObject {
   func deleteFromIndex(at: IndexSet) {
     if let index = at.first {
       Task {
-        switch await repository.notification.delete(id: notifications[index].id) {
+        switch await client.notification.delete(id: notifications[index].id) {
         case .success:
           await MainActor.run {
             withAnimation {
@@ -198,7 +203,7 @@ final class NotificationManager: NSObject, ObservableObject {
 
   func deleteNotifications(notification: Notification) {
     Task {
-      switch await repository.notification.delete(id: notification.id) {
+      switch await client.notification.delete(id: notification.id) {
       case .success:
         await MainActor.run {
           withAnimation {
@@ -219,7 +224,7 @@ final class NotificationManager: NSObject, ObservableObject {
       } else if let token {
         Task {
           let logger = getLogger(category: "PushNotificationToken")
-          switch await repository.profile
+          switch await self.client.profile
             .uploadPushNotificationToken(token: Profile.PushNotificationToken(firebaseRegistrationToken: token))
           {
           case .success:
@@ -234,21 +239,21 @@ final class NotificationManager: NSObject, ObservableObject {
   }
 }
 
-extension NotificationManager: UNUserNotificationCenterDelegate {
-  @MainActor
-  func userNotificationCenter(_: UNUserNotificationCenter,
-                              willPresent notification: UNNotification) async
-    -> UNNotificationPresentationOptions
-  {
-    _ = notification.request.content.userInfo
-    refresh()
-    return [[.sound]]
-  }
-
-  @MainActor
-  func userNotificationCenter(_: UNUserNotificationCenter,
-                              didReceive response: UNNotificationResponse) async
-  {
-    _ = response.notification.request.content.userInfo
-  }
-}
+// extension NotificationManager: UNUserNotificationCenterDelegate {
+//  @MainActor
+//  func userNotificationCenter(_: UNUserNotificationCenter,
+//                              willPresent notification: UNNotification) async
+//    -> UNNotificationPresentationOptions
+//  {
+//    _ = notification.request.content.userInfo
+//    refresh()
+//    return [[.sound]]
+//  }
+//
+//  @MainActor
+//  func userNotificationCenter(_: UNUserNotificationCenter,
+//                              didReceive response: UNNotificationResponse) async
+//  {
+//    _ = response.notification.request.content.userInfo
+//  }
+// }

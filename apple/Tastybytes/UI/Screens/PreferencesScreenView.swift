@@ -1,20 +1,24 @@
 import SwiftUI
 
 struct PreferencesScreenView: View {
-  @StateObject private var viewModel = ViewModel()
+  let client: Client
+
+  init(_ client: Client) {
+    self.client = client
+  }
 
   var body: some View {
     List {
       Section {
-        NavigationLink(destination: ProfileSettingsScreenView()) {
+        NavigationLink(destination: ProfileSettingsScreenView(client)) {
           Label("Profile", systemImage: "person.crop.circle")
         }
 
-        NavigationLink(destination: AccountSettingsScreenView()) {
+        NavigationLink(destination: AccountSettingsScreenView(client)) {
           Label("Account", systemImage: "gear")
         }
 
-        NavigationLink(destination: ApplicationSettingsScreenView()) {
+        NavigationLink(destination: ApplicationSettingsScreenView(client)) {
           Label("Application", systemImage: "gear")
         }
 
@@ -22,19 +26,23 @@ struct PreferencesScreenView: View {
           Label("App Icon", systemImage: "app.fill")
         }
 
-        NavigationLink(destination: BlockedUsersScreenView()) {
+        NavigationLink(destination: BlockedUsersScreenView(client)) {
           Label("Blocked Users", systemImage: "person.fill.xmark")
         }
       }
 
       Section {
-        NavigationLink(destination: AboutScreenView()) {
+        NavigationLink(destination: AboutScreenView(client)) {
           Label("About", systemImage: "info.circle")
         }
       }
 
       Section {
-        Button(action: { viewModel.logOut() }) {
+        Button(action: { Task {
+          Task {
+            await client.auth.logOut()
+          }
+        } }) {
           Label("Log Out", systemImage: "arrow.uturn.left")
             .fontWeight(.medium)
         }
@@ -42,16 +50,5 @@ struct PreferencesScreenView: View {
     }
     .navigationBarTitle("Preferences")
     .navigationBarTitleDisplayMode(.inline)
-  }
-}
-
-extension PreferencesScreenView {
-  @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "PreferencesScreenView")
-    func logOut() {
-      Task {
-        await repository.auth.logOut()
-      }
-    }
   }
 }

@@ -7,13 +7,13 @@ struct CheckInScreenView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var profileManager: ProfileManager
 
-  init(checkIn: CheckIn) {
-    _viewModel = StateObject(wrappedValue: ViewModel(checkIn: checkIn))
+  init(_ client: Client, checkIn: CheckIn) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client, checkIn: checkIn))
   }
 
   var body: some View {
     ScrollView {
-      CheckInCardView(checkIn: viewModel.checkIn, loadedFrom: .checkIn)
+      CheckInCardView(client: viewModel.client, checkIn: viewModel.checkIn, loadedFrom: .checkIn)
       commentSection
     }
     .overlay(
@@ -21,7 +21,7 @@ struct CheckInScreenView: View {
     )
     .sheet(isPresented: $viewModel.showEditCheckInSheet) {
       NavigationStack {
-        CheckInSheetView(checkIn: viewModel.checkIn, onUpdate: {
+        CheckInSheetView(viewModel.client, checkIn: viewModel.checkIn, onUpdate: {
           updatedCheckIn in
           viewModel.updateCheckIn(updatedCheckIn)
         })
@@ -140,6 +140,7 @@ struct CheckInScreenView: View {
 extension CheckInScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CheckInScreenView")
+    let client: Client
     @Published var checkIn: CheckIn
     @Published var checkInComments = [CheckInComment]()
     @Published var showDeleteConfirmation = false
@@ -154,8 +155,9 @@ extension CheckInScreenView {
       }
     }
 
-    init(checkIn: CheckIn) {
+    init(_ client: Client, checkIn: CheckIn) {
       self.checkIn = checkIn
+      self.client = client
     }
 
     func updateCheckIn(_ checkIn: CheckIn) {
@@ -169,7 +171,7 @@ extension CheckInScreenView {
 
     func deleteCheckIn(onDelete: @escaping () -> Void) {
       Task {
-        switch await repository.checkIn.delete(id: checkIn.id) {
+        switch await client.checkIn.delete(id: checkIn.id) {
         case .success:
           onDelete()
         case let .failure(error):
@@ -180,7 +182,7 @@ extension CheckInScreenView {
 
     func loadCheckInComments() {
       Task {
-        switch await repository.checkInComment.getByCheckInId(id: checkIn.id) {
+        switch await client.checkInComment.getByCheckInId(id: checkIn.id) {
         case let .success(checkIns):
           withAnimation {
             self.checkInComments = checkIns
@@ -195,7 +197,7 @@ extension CheckInScreenView {
       if let editComment {
         let updatedComment = CheckInComment.UpdateRequest(id: editComment.id, content: editCommentText)
         Task {
-          switch await repository.checkInComment.update(updateCheckInComment: updatedComment) {
+          switch await client.checkInComment.update(updateCheckInComment: updatedComment) {
           case let .success(updatedComment):
             withAnimation {
               if let index = self.checkInComments.firstIndex(where: { $0.id == updatedComment.id }) {
@@ -219,7 +221,7 @@ extension CheckInScreenView {
 
     func deleteComment(_ comment: CheckInComment) {
       Task {
-        switch await repository.checkInComment.deleteById(id: comment.id) {
+        switch await client.checkInComment.deleteById(id: comment.id) {
         case .success:
           withAnimation {
             self.checkInComments.remove(object: comment)
@@ -234,7 +236,7 @@ extension CheckInScreenView {
       let newCheckInComment = CheckInComment.NewRequest(content: commentText, checkInId: checkIn.id)
 
       Task {
-        let result = await repository.checkInComment.insert(newCheckInComment: newCheckInComment)
+        let result = await client.checkInComment.insert(newCheckInComment: newCheckInComment)
         switch result {
         case let .success(newCheckInComment):
           withAnimation {

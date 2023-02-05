@@ -4,20 +4,26 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileTabView: View {
+  let client: Client
   @StateObject private var router = Router()
   @State private var scrollToTop = 0
   @EnvironmentObject private var profileManager: ProfileManager
   @Binding var resetNavigationOnTab: Tab?
 
+  init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {
+    self.client = client
+    _resetNavigationOnTab = resetNavigationOnTab
+  }
+
   var body: some View {
     NavigationStack(path: $router.path) {
-      ProfileView(profile: profileManager.getProfile(), scrollToTop: $scrollToTop)
+      ProfileView(client, profile: profileManager.getProfile(), scrollToTop: $scrollToTop)
         .navigationTitle(profileManager.getProfile().preferredName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
           toolbarContent
         }
-        .withRoutes()
+        .withRoutes(client)
     }
     .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
       if tab == .profile {

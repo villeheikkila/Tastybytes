@@ -3,9 +3,13 @@ import PhotosUI
 import SwiftUI
 
 struct AccountSettingsScreenView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var toastManager: ToastManager
+
+  init(_ client: Client) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+  }
 
   var body: some View {
     Form {
@@ -124,6 +128,7 @@ struct AccountSettingsScreenView: View {
 extension AccountSettingsScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "AccountSettingsScreenView")
+    private let client: Client
     @Published var csvExport: CSVFile?
     @Published var showingExporter = false
     @Published var showDeleteConfirmation = false
@@ -156,6 +161,10 @@ extension AccountSettingsScreenView {
     private var profile: Profile.Extended?
     private var initialEmail: String?
 
+    init(_ client: Client) {
+      self.client = client
+    }
+
     func getCSVExportName() -> String {
       let formatter = DateFormatter()
       formatter.dateFormat = "yyyy_MM_dd_HH_mm"
@@ -166,32 +175,37 @@ extension AccountSettingsScreenView {
 
     func getInitialValues(profile _: Profile.Extended) {
       Task {
-        let user = try await supabaseClient.auth.session.user
-        initialEmail = user.email.orEmpty
-        self.email = user.email.orEmpty
+        switch await client.auth.getUser() {
+        case let .success(user):
+          initialEmail = user.email.orEmpty
+          self.email = user.email.orEmpty
+        case let .failure(error):
+          logger.error("failed to get current user data: \(error.localizedDescription)")
+        }
       }
     }
 
     func updatePassword() {
       Task {
-        _ = await repository.auth.updatePassword(newPassword: newPassword)
+        _ = await client.auth.updatePassword(newPassword: newPassword)
       }
     }
 
     // TODO: Do not log out on email change
     func sendEmailVerificationLink() {
       Task {
-        _ = await repository.auth.sendEmailVerification(email: email)
+        _ = await client.auth.sendEmailVerification(email: email)
       }
     }
 
     func exportData(onError: @escaping (_ error: String) -> Void) {
       Task {
-        switch await repository.profile.currentUserExport() {
+        switch await client.profile.currentUserExport() {
         case let .success(csvText):
           self.csvExport = CSVFile(initialText: csvText)
           self.showingExporter = true
         case let .failure(error):
+          logger.error("failed to export check-in csv: \(error.localizedDescription)")
           onError(error.localizedDescription)
         }
       }
@@ -199,11 +213,12 @@ extension AccountSettingsScreenView {
 
     func deleteCurrentAccount(onError: @escaping (_ error: String) -> Void) {
       Task {
-        switch await repository.profile.deleteCurrentAccount() {
+        switch await client.profile.deleteCurrentAccount() {
         case .success:
-          _ = await repository.profile.deleteCurrentAccount()
-          _ = await repository.auth.logOut()
+          _ = await client.profile.deleteCurrentAccount()
+          _ = await client.auth.logOut()
         case let .failure(error):
+          logger.error("failed to delete current account: \(error.localizedDescription)")
           onError(error.localizedDescription)
         }
       }

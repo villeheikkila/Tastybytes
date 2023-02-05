@@ -1,10 +1,15 @@
 import SwiftUI
 
 struct TabsView: View {
+  let client: Client
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var selection = Tab.activity
   @State private var resetNavigationOnTab: Tab?
+
+  init(_ client: Client) {
+    self.client = client
+  }
 
   private var tabs: [Tab] {
     [.activity, .search, .notifications, .profile]
@@ -23,7 +28,7 @@ struct TabsView: View {
       }
     })) {
       ForEach(tabs) { tab in
-        tab.view($resetNavigationOnTab)
+        tab.view(client, $resetNavigationOnTab)
           .tabItem {
             tab.label
           }
@@ -51,16 +56,16 @@ enum Tab: Int, Identifiable, Hashable {
   }
 
   @ViewBuilder
-  func view(_ resetNavigationOnTab: Binding<Tab?>) -> some View {
+  func view(_ client: Client, _ resetNavigationOnTab: Binding<Tab?>) -> some View {
     switch self {
     case .activity:
-      ActivityTabView(resetNavigationOnTab: resetNavigationOnTab)
+      ActivityTabView(client, resetNavigationOnTab: resetNavigationOnTab)
     case .search:
-      SearchTabView(resetNavigationOnTab: resetNavigationOnTab)
+      SearchTabView(client, resetNavigationOnTab: resetNavigationOnTab)
     case .notifications:
-      NotificationTabView(resetNavigationOnTab: resetNavigationOnTab)
+      NotificationTabView(client, resetNavigationOnTab: resetNavigationOnTab)
     case .profile:
-      ProfileTabView(resetNavigationOnTab: resetNavigationOnTab)
+      ProfileTabView(client, resetNavigationOnTab: resetNavigationOnTab)
     }
   }
 

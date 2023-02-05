@@ -1,9 +1,13 @@
 import SwiftUI
 
 struct ApplicationSettingsScreenView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.colorScheme) var systemColorScheme
+
+  init(_ client: Client) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+  }
 
   var body: some View {
     Form {
@@ -69,6 +73,7 @@ struct ApplicationSettingsScreenView: View {
 extension ApplicationSettingsScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ApplicationSettingsScreenView")
+    private let client: Client
     @Published var isPublicProfile = true
     @Published var isSystemColor = false
     @Published var isDarkMode = false
@@ -78,9 +83,13 @@ extension ApplicationSettingsScreenView {
 
     var initialColorScheme: ColorScheme?
 
+    init(_ client: Client) {
+      self.client = client
+    }
+
     func setInitialValues(systemColorScheme: ColorScheme, profile _: Profile.Extended?) {
       Task {
-        switch await repository.profile.getCurrentUser() {
+        switch await client.profile.getCurrentUser() {
         case let .success(profile):
           switch profile.settings.colorScheme {
           case .light:
@@ -118,7 +127,7 @@ extension ApplicationSettingsScreenView {
       )
 
       Task {
-        switch await repository.profile.updateSettings(
+        switch await client.profile.updateSettings(
           update: update
         ) {
         case .success:
@@ -140,7 +149,7 @@ extension ApplicationSettingsScreenView {
       )
 
       Task {
-        _ = await repository.profile.updateSettings(
+        _ = await client.profile.updateSettings(
           update: update
         )
       }
@@ -150,7 +159,7 @@ extension ApplicationSettingsScreenView {
       let update = ProfileSettings.UpdateRequest(publicProfile: isPublicProfile)
 
       Task {
-        _ = await repository.profile.updateSettings(
+        _ = await client.profile.updateSettings(
           update: update
         )
       }

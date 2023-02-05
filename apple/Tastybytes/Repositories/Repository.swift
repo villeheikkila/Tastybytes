@@ -1,14 +1,9 @@
 import Supabase
 import SwiftUI
 
-let supabaseClient = SupabaseClient(
-  supabaseURL: Config.supabaseUrl,
-  supabaseKey: Config.supabaseAnonKey
-)
+protocol AppClient {
+  var supabaseClient: SupabaseClient { get }
 
-let repository = SupabaseRepository(supabaseClient)
-
-protocol Repository {
   var profile: ProfileRepository { get }
   var checkIn: CheckInRepository { get }
   var checkInComment: CheckInCommentRepository { get }
@@ -25,7 +20,9 @@ protocol Repository {
   var location: LocationRepository { get }
 }
 
-class SupabaseRepository: Repository {
+class Client: AppClient {
+  let supabaseClient: SupabaseClient
+
   let profile: ProfileRepository
   let checkIn: CheckInRepository
   let checkInComment: CheckInCommentRepository
@@ -43,7 +40,12 @@ class SupabaseRepository: Repository {
   let location: LocationRepository
   let document: DocumentRepository
 
-  init(_ client: SupabaseClient) {
+  init(url: URL, apiKey: String) {
+    let client = SupabaseClient(
+      supabaseURL: url,
+      supabaseKey: apiKey
+    )
+    supabaseClient = client
     profile = SupabaseProfileRepository(client: client)
     checkIn = SupabaseCheckInRepository(client: client)
     checkInComment = SupabaseCheckInCommentRepository(client: client)

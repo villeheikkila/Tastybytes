@@ -6,8 +6,8 @@ struct BrandScreenView: View {
   @EnvironmentObject private var router: Router
   @StateObject private var viewModel: ViewModel
 
-  init(brand: Brand.JoinedSubBrandsProducts) {
-    _viewModel = StateObject(wrappedValue: ViewModel(brand: brand))
+  init(_ client: Client, brand: Brand.JoinedSubBrandsProducts) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client, brand: brand))
   }
 
   var body: some View {
@@ -67,16 +67,18 @@ struct BrandScreenView: View {
 extension BrandScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "BrandScreenView")
+    let client: Client
     @Published var brand: Brand.JoinedSubBrandsProducts
     @Published var showDeleteBrandConfirmationDialog = false
 
-    init(brand: Brand.JoinedSubBrandsProducts) {
+    init(_ client: Client, brand: Brand.JoinedSubBrandsProducts) {
+      self.client = client
       self.brand = brand
     }
 
     func deleteBrand(onDelete: @escaping () -> Void) {
       Task {
-        switch await repository.brand.delete(id: brand.id) {
+        switch await client.brand.delete(id: brand.id) {
         case .success:
           onDelete()
         case let .failure(error):

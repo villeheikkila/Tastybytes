@@ -3,9 +3,13 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileSettingsScreenView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var toastManager: ToastManager
+
+  init(_ client: Client) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+  }
 
   var body: some View {
     Form {
@@ -56,6 +60,7 @@ struct ProfileSettingsScreenView: View {
 extension ProfileSettingsScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProfileSettingsScreenView")
+    private let client: Client
     @Published var selectedItem: PhotosPickerItem?
     @Published var username = "" {
       didSet {
@@ -85,6 +90,10 @@ extension ProfileSettingsScreenView {
     @Published var showEmailConfirmationButton = false
     @Published var showProfileUpdateButton = false
     private var profile: Profile.Extended?
+
+    init(_ client: Client) {
+      self.client = client
+    }
 
     func profileHasChanged() -> Bool {
       ![
@@ -116,7 +125,7 @@ extension ProfileSettingsScreenView {
       )
 
       Task {
-        switch await repository.profile.update(
+        switch await client.profile.update(
           update: update
         ) {
         case let .success(profile):
@@ -134,7 +143,7 @@ extension ProfileSettingsScreenView {
       )
 
       Task {
-        _ = await repository.profile.update(
+        _ = await client.profile.update(
           update: update
         )
       }

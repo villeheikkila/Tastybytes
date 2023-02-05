@@ -4,9 +4,11 @@ import SwiftUI
 struct CompanyScreenView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
 
-  let company: Company
+  init(_ client: Client, company: Company) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client, company: company))
+  }
 
   var body: some View {
     List {
@@ -17,7 +19,7 @@ struct CompanyScreenView: View {
       }
       productList
     }
-    .navigationTitle(company.name)
+    .navigationTitle(viewModel.company.name)
     .navigationBarItems(trailing: navigationBarMenu)
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
@@ -28,13 +30,13 @@ struct CompanyScreenView: View {
           companyEditSheet
         case .editBrand:
           if let editBrand = viewModel.editBrand {
-            EditBrandSheetView(brand: editBrand, brandOwner: company) {
-              viewModel.refreshData(companyId: company.id)
+            EditBrandSheetView(viewModel.client, brand: editBrand, brandOwner: viewModel.company) {
+              viewModel.refreshData(companyId: viewModel.company.id)
             }
           }
         case .mergeProduct:
           if let productToMerge = viewModel.productToMerge {
-            MergeSheetView(productToMerge: productToMerge)
+            MergeSheetView(viewModel.client, productToMerge: productToMerge)
           }
         }
       }
@@ -46,9 +48,9 @@ struct CompanyScreenView: View {
     }
     .confirmationDialog("Delete Company Confirmation",
                         isPresented: $viewModel.showDeleteCompanyConfirmationDialog,
-                        presenting: company) { presenting in
+                        presenting: viewModel.company) { presenting in
       Button("Delete \(presenting.name) Company", role: .destructive, action: {
-        viewModel.deleteCompany(company, onDelete: {
+        viewModel.deleteCompany(viewModel.company, onDelete: {
           router.reset()
         })
       })
@@ -65,13 +67,13 @@ struct CompanyScreenView: View {
       )
     }
     .task {
-      viewModel.refreshData(companyId: company.id)
+      viewModel.refreshData(companyId: viewModel.company.id)
     }
   }
 
   private var navigationBarMenu: some View {
     Menu {
-      ShareLink("Share", item: NavigatablePath.company(id: company.id).url)
+      ShareLink("Share", item: NavigatablePath.company(id: viewModel.company.id).url)
 
       if profileManager.hasPermission(.canEditCompanies) {
         Button(action: {
@@ -95,7 +97,7 @@ struct CompanyScreenView: View {
         }) {
           Label("Delete", systemImage: "trash.fill")
         }
-        .disabled(company.isVerified)
+        .disabled(viewModel.company.isVerified)
       }
     } label: {
       Image(systemName: "ellipsis")
@@ -112,7 +114,7 @@ struct CompanyScreenView: View {
             ForEach(subBrand.products, id: \.id) {
               product in
               NavigationLink(value: Route.product(Product
-                  .Joined(company: company, product: product, subBrand: subBrand, brand: brand))) {
+                  .Joined(company: viewModel.company, product: product, subBrand: subBrand, brand: brand))) {
                 HStack {
                   Text(joinOptionalStrings([brand.name, subBrand.name, product.name]))
                     .lineLimit(nil)
@@ -204,7 +206,7 @@ struct CompanyScreenView: View {
 
   private var companyHeader: some View {
     HStack(spacing: 10) {
-      if let logoUrl = company.getLogoUrl() {
+      if let logoUrl = viewModel.company.getLogoUrl() {
         CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
           image
             .resizable()
@@ -230,6 +232,8 @@ extension CompanyScreenView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CompanyScreenView")
+    let client: Client
+    @Published var company: Company
     @Published var companyJoined: Company.Joined?
     @Published var summary: Summary?
     @Published var activeSheet: Sheet?
@@ -257,6 +261,11 @@ extension CompanyScreenView {
     @Published var showDeleteBrandConfirmationDialog = false
     @Published var showDeleteCompanyConfirmationDialog = false
 
+    init(_ client: Client, company: Company) {
+      self.client = client
+      self.company = company
+    }
+
     func setActiveSheet(_ sheet: Sheet) {
       activeSheet = sheet
     }
@@ -266,7 +275,7 @@ extension CompanyScreenView {
     func editCompany() {
       if let companyJoined {
         Task {
-          switch await repository.company
+          switch await client.company
             .update(updateRequest: Company.UpdateRequest(id: companyJoined.id, name: newCompanyNameSuggestion))
           {
           case let .success(updatedCompany):
@@ -283,7 +292,7 @@ extension CompanyScreenView {
 
     func refreshData(companyId: Int) {
       Task {
-        switch await repository.company.getJoinedById(id: companyId) {
+        switch await client.company.getJoinedById(id: companyId) {
         case let .success(company):
           self.companyJoined = company
           self.newCompanyNameSuggestion = company.name
@@ -293,7 +302,7 @@ extension CompanyScreenView {
       }
 
       Task {
-        switch await repository.company.getSummaryById(id: companyId) {
+        switch await client.company.getSummaryById(id: companyId) {
         case let .success(summary):
           self.summary = summary
         case let .failure(error):
@@ -304,7 +313,7 @@ extension CompanyScreenView {
 
     func deleteCompany(_ company: Company, onDelete: @escaping () -> Void) {
       Task {
-        switch await repository.company.delete(id: company.id) {
+        switch await client.company.delete(id: company.id) {
         case .success:
           onDelete()
         case let .failure(error):
@@ -316,7 +325,7 @@ extension CompanyScreenView {
     func deleteProduct() {
       if let productToDelete, let companyJoined {
         Task {
-          switch await repository.product.delete(id: productToDelete.id) {
+          switch await client.product.delete(id: productToDelete.id) {
           case .success:
             refreshData(companyId: companyJoined.id)
             self.productToDelete = nil
@@ -329,11 +338,11 @@ extension CompanyScreenView {
 
     func deleteBrand(_ brand: Brand.JoinedSubBrandsProducts) {
       Task {
-        switch await repository.brand.delete(id: brand.id) {
+        switch await client.brand.delete(id: brand.id) {
         case .success:
           // TODO: Do not refetch the company on deletion
           if let companyJoined {
-            switch await repository.company.getJoinedById(id: companyJoined.id) {
+            switch await client.company.getJoinedById(id: companyJoined.id) {
             case let .success(company):
               refreshData(companyId: company.id)
             case let .failure(error):

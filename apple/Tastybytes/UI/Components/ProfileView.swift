@@ -3,20 +3,29 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileView: View {
+  let client: Client
   @State private var profile: Profile
   @Binding var scrollToTop: Int
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @State private var resetView: Int = 0
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
 
-  init(profile: Profile, scrollToTop: Binding<Int>) {
+  init(_ client: Client, profile: Profile, scrollToTop: Binding<Int>) {
     _profile = State(initialValue: profile)
     _scrollToTop = scrollToTop
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.client = client
   }
 
   var body: some View {
-    CheckInListView(fetcher: .profile(profile), scrollToTop: $scrollToTop, resetView: $resetView, onRefresh: {}) {
+    CheckInListView(
+      client,
+      fetcher: .profile(profile),
+      scrollToTop: $scrollToTop,
+      resetView: $resetView,
+      onRefresh: {}
+    ) {
       VStack(spacing: 20) {
         profileSummary
         ratingChart
@@ -209,8 +218,13 @@ struct ProfileView: View {
 extension ProfileView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProfileView")
+    private let client: Client
     @Published var profileSummary: ProfileSummary?
     @Published var selectedItem: PhotosPickerItem?
+
+    init(_ client: Client) {
+      self.client = client
+    }
 
     func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?, onSuccess: @escaping (_ fileName: String) -> Void) {
       Task {
@@ -218,7 +232,7 @@ extension ProfileView {
            let image = UIImage(data: imageData),
            let data = image.jpegData(compressionQuality: 0.1)
         {
-          switch await repository.profile.uploadAvatar(userId: userId, data: data) {
+          switch await client.profile.uploadAvatar(userId: userId, data: data) {
           case let .success(fileName):
             onSuccess(fileName)
           case let .failure(error):
@@ -233,7 +247,7 @@ extension ProfileView {
 
     func getProfileData(userId: UUID) {
       Task {
-        switch await repository.checkIn.getSummaryByProfileId(id: userId) {
+        switch await client.checkIn.getSummaryByProfileId(id: userId) {
         case let .success(summary):
           withAnimation {
             self.profileSummary = summary

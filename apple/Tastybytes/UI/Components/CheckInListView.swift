@@ -14,13 +14,14 @@ struct CheckInListView<Header>: View
   let onRefresh: () -> Void
 
   init(
+    _ client: Client,
     fetcher: Fetcher,
     scrollToTop: Binding<Int>,
     resetView: Binding<Int>,
     onRefresh: @escaping () -> Void,
     @ViewBuilder header: @escaping () -> Header
   ) {
-    _viewModel = StateObject(wrappedValue: ViewModel(fetcher: fetcher))
+    _viewModel = StateObject(wrappedValue: ViewModel(client, fetcher: fetcher))
     _scrollToTop = scrollToTop
     _resetView = resetView
     self.header = header
@@ -79,7 +80,7 @@ struct CheckInListView<Header>: View
     }
     .sheet(item: $viewModel.editCheckIn) { checkIn in
       NavigationStack {
-        CheckInSheetView(checkIn: checkIn, onUpdate: {
+        CheckInSheetView(viewModel.client, checkIn: checkIn, onUpdate: {
           updatedCheckIn in viewModel.onCheckInUpdate(updatedCheckIn)
         })
       }
@@ -89,7 +90,7 @@ struct CheckInListView<Header>: View
   @ViewBuilder
   private var checkInsList: some View {
     ForEach(viewModel.checkIns, id: \.self) { checkIn in
-      CheckInCardView(checkIn: checkIn,
+      CheckInCardView(client: viewModel.client, checkIn: checkIn,
                       loadedFrom: getLoadedFrom)
         .contextMenu {
           ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
@@ -154,6 +155,7 @@ extension CheckInListView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CheckInListView")
+    let client: Client
     @Published var showDeleteConfirmationFor: CheckIn? {
       didSet {
         showDeleteCheckInConfirmationDialog = true
@@ -169,8 +171,9 @@ extension CheckInListView {
 
     let fetcher: Fetcher
 
-    init(fetcher: Fetcher) {
+    init(_ client: Client, fetcher: Fetcher) {
       self.fetcher = fetcher
+      self.client = client
     }
 
     func refresh() {
@@ -188,7 +191,7 @@ extension CheckInListView {
 
     func deleteCheckIn(checkIn: CheckIn) {
       Task {
-        switch await repository.checkIn.delete(id: checkIn.id) {
+        switch await client.checkIn.delete(id: checkIn.id) {
         case .success:
           showDeleteCheckInConfirmationDialog = false
           withAnimation {
@@ -235,13 +238,13 @@ extension CheckInListView {
     func checkInFetcher(from: Int, to: Int) async -> Result<[CheckIn], Error> {
       switch fetcher {
       case .activityFeed:
-        return await repository.checkIn.getActivityFeed(from: from, to: to)
+        return await client.checkIn.getActivityFeed(from: from, to: to)
       case let .profile(product):
-        return await repository.checkIn.getByProfileId(id: product.id, from: from, to: to)
+        return await client.checkIn.getByProfileId(id: product.id, from: from, to: to)
       case let .product(product):
-        return await repository.checkIn.getByProductId(id: product.id, from: from, to: to)
+        return await client.checkIn.getByProductId(id: product.id, from: from, to: to)
       case let .location(location):
-        return await repository.checkIn.getByLocation(locationId: location.id, from: from, to: to)
+        return await client.checkIn.getByLocation(locationId: location.id, from: from, to: to)
       }
     }
   }

@@ -1,9 +1,13 @@
 import SwiftUI
 
 struct BlockedUsersScreenView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var toastManager: ToastManager
+
+  init(_ client: Client) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+  }
 
   var body: some View {
     List {
@@ -22,7 +26,7 @@ struct BlockedUsersScreenView: View {
     )
     .sheet(isPresented: $viewModel.showUserSearchSheet) {
       NavigationStack {
-        UserSheetView(actions: { profile in
+        UserSheetView(viewModel.client, actions: { profile in
           HStack {
             if !viewModel.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
               Button(action: { viewModel.blockUser(user: profile, onSuccess: {
@@ -79,13 +83,18 @@ private struct BlockedUserListItemView: View {
 extension BlockedUsersScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "BlockedUsersScreenView")
+    let client: Client
     @Published var blockedUsers = [Friend]()
     @Published var error: Error?
     @Published var showUserSearchSheet = false
 
+    init(_ client: Client) {
+      self.client = client
+    }
+
     func unblockUser(_ friend: Friend) {
       Task {
-        switch await repository.friend.delete(id: friend.id) {
+        switch await client.friend.delete(id: friend.id) {
         case .success:
           withAnimation {
             self.blockedUsers.remove(object: friend)
@@ -98,7 +107,7 @@ extension BlockedUsersScreenView {
 
     func blockUser(user: Profile, onSuccess: @escaping () -> Void, onFailure: @escaping (_ error: String) -> Void) {
       Task {
-        switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: user.id, status: .blocked)) {
+        switch await client.friend.insert(newFriend: Friend.NewRequest(receiver: user.id, status: .blocked)) {
         case let .success(blockedUser):
           withAnimation {
             self.blockedUsers.append(blockedUser)
@@ -113,7 +122,7 @@ extension BlockedUsersScreenView {
     func loadBlockedUsers(userId: UUID?) {
       if let userId {
         Task {
-          switch await repository.friend.getByUserId(userId: userId, status: .blocked) {
+          switch await client.friend.getByUserId(userId: userId, status: .blocked) {
           case let .success(blockedUsers):
             withAnimation {
               self.blockedUsers = blockedUsers

@@ -1,17 +1,20 @@
 import SwiftUI
 
 struct ProductScreenView: View {
+  let client: Client
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
   @State private var scrollToTop: Int = 0
 
-  init(product: Product.Joined) {
-    _viewModel = StateObject(wrappedValue: ViewModel(product: product))
+  init(_ client: Client, product: Product.Joined) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client, product: product))
+    self.client = client
   }
 
   var body: some View {
     CheckInListView(
+      client,
       fetcher: .product(viewModel.product),
       scrollToTop: $scrollToTop,
       resetView: $viewModel.resetView,
@@ -83,13 +86,13 @@ struct ProductScreenView: View {
       NavigationStack {
         switch sheet {
         case .checkIn:
-          CheckInSheetView(product: viewModel.product, onCreation: {
+          CheckInSheetView(client, product: viewModel.product, onCreation: {
             _ in viewModel.refreshCheckIns()
           })
         case .editSuggestion:
-          ProductSheetView(mode: .editSuggestion, initialProduct: viewModel.product)
+          ProductSheetView(client, mode: .editSuggestion, initialProduct: viewModel.product)
         case .editProduct:
-          ProductSheetView(mode: .edit, initialProduct: viewModel.product, onEdit: {
+          ProductSheetView(client, mode: .edit, initialProduct: viewModel.product, onEdit: {
             viewModel.onEditCheckIn()
           })
         }
@@ -152,14 +155,16 @@ extension ProductScreenView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductScreenView")
+    private let client: Client
     @Published var product: Product.Joined
     @Published var activeSheet: Sheet?
     @Published var summary: Summary?
     @Published var showDeleteProductConfirmationDialog = false
     @Published var resetView: Int = 0
 
-    init(product: Product.Joined) {
+    init(_ client: Client, product: Product.Joined) {
       self.product = product
+      self.client = client
     }
 
     func setActiveSheet(_ sheet: Sheet) {
@@ -178,7 +183,7 @@ extension ProductScreenView {
 
     func refresh() {
       Task {
-        switch await repository.product.getById(id: product.id) {
+        switch await client.product.getById(id: product.id) {
         case let .success(refreshedProduct):
           withAnimation {
             product = refreshedProduct
@@ -195,7 +200,7 @@ extension ProductScreenView {
 
     func loadProductSummary() {
       Task {
-        switch await repository.product.getSummaryById(id: product.id) {
+        switch await client.product.getSummaryById(id: product.id) {
         case let .success(summary):
           self.summary = summary
         case let .failure(error):
@@ -206,7 +211,7 @@ extension ProductScreenView {
 
     func verifyProduct() {
       Task {
-        switch await repository.product.verifyProduct(productId: product.id) {
+        switch await client.product.verifyProduct(productId: product.id) {
         case .success:
           refresh()
         case let .failure(error):
@@ -217,7 +222,7 @@ extension ProductScreenView {
 
     func deleteProduct(onDelete: @escaping () -> Void) {
       Task {
-        switch await repository.product.delete(id: product.id) {
+        switch await client.product.delete(id: product.id) {
         case .success:
           onDelete()
         case let .failure(error):

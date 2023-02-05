@@ -3,7 +3,7 @@ import SwiftUI
 
 struct EditBrandSheetView: View {
   @Environment(\.dismiss) private var dismiss
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @State private var name: String
   @State private var brandOwner: Company
   @State private var editSubBrand: SubBrand.JoinedProduct?
@@ -13,7 +13,8 @@ struct EditBrandSheetView: View {
   let brand: Brand.JoinedSubBrandsProducts
   let onUpdate: () -> Void
 
-  init(brand: Brand.JoinedSubBrandsProducts, brandOwner: Company, onUpdate: @escaping () -> Void) {
+  init(_ client: Client, brand: Brand.JoinedSubBrandsProducts, brandOwner: Company, onUpdate: @escaping () -> Void) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
     self.brand = brand
     initialBrandOwner = brandOwner
     _brandOwner = State(initialValue: brandOwner)
@@ -90,13 +91,13 @@ struct EditBrandSheetView: View {
     .sheet(item: $viewModel.activeSheet) { sheet in NavigationStack {
       switch sheet {
       case .brandOwner:
-        CompanySheetView(onSelect: { company, _ in
+        CompanySheetView(viewModel.client, onSelect: { company, _ in
           brandOwner = company
           viewModel.activeSheet = nil
         })
       case .editSubBrand:
         if let subBrand = editSubBrand {
-          EditSubBrandSheetView(brand: brand, subBrand: subBrand,
+          EditSubBrandSheetView(viewModel.client, brand: brand, subBrand: subBrand,
                                 onUpdate: {
                                   onUpdate()
                                 },
@@ -132,7 +133,7 @@ extension EditBrandSheetView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "EditBrandSheetView")
-
+    let client: Client
     @Published var activeSheet: Sheet?
     @Published var showDeleteSubBrandConfirmation = false
     @Published var toDeleteSubBrand: SubBrand.JoinedProduct? {
@@ -145,6 +146,10 @@ extension EditBrandSheetView {
       }
     }
 
+    init(_ client: Client) {
+      self.client = client
+    }
+
     func editBrand(
       brand: Brand.JoinedSubBrandsProducts,
       name: String,
@@ -152,7 +157,7 @@ extension EditBrandSheetView {
       onSuccess: @escaping () -> Void
     ) {
       Task {
-        switch await repository.brand
+        switch await client.brand
           .update(updateRequest: Brand.UpdateRequest(id: brand.id, name: name, brandOwnerId: brandOwner.id))
         {
         case .success:
@@ -166,7 +171,7 @@ extension EditBrandSheetView {
     func deleteSubBrand(onSuccess: @escaping () -> Void) {
       if let toDeleteSubBrand {
         Task {
-          switch await repository.subBrand.delete(id: toDeleteSubBrand.id) {
+          switch await client.subBrand.delete(id: toDeleteSubBrand.id) {
           case .success:
             onSuccess()
           case let .failure(error):
@@ -179,7 +184,7 @@ extension EditBrandSheetView {
 }
 
 struct EditSubBrandSheetView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @State private var newSubBrandName: String
 
   let brand: Brand.JoinedSubBrandsProducts
@@ -188,11 +193,13 @@ struct EditSubBrandSheetView: View {
   let onClose: () -> Void
 
   init(
+    _ client: Client,
     brand: Brand.JoinedSubBrandsProducts,
     subBrand: SubBrand.JoinedProduct,
     onUpdate: @escaping () -> Void,
     onClose: @escaping () -> Void
   ) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
     self.brand = brand
     self.subBrand = subBrand
     self.onUpdate = onUpdate
@@ -258,6 +265,7 @@ struct EditSubBrandSheetView: View {
 extension EditSubBrandSheetView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "EditSubBrandSheetView")
+    let client: Client
     @Published var showToast = false
     @Published var showMergeSubBrandsConfirmation = false
     @Published var mergeTo: SubBrand.JoinedProduct? {
@@ -270,10 +278,14 @@ extension EditSubBrandSheetView {
       }
     }
 
+    init(_ client: Client) {
+      self.client = client
+    }
+
     func mergeToSubBrand(subBrand: SubBrand.JoinedProduct, onSuccess: @escaping () -> Void) {
       if let mergeTo {
         Task {
-          switch await repository.subBrand
+          switch await client.subBrand
             .update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id)))
           {
           case .success:
@@ -291,7 +303,7 @@ extension EditSubBrandSheetView {
 
     func editSubBrand(subBrand: SubBrand.JoinedProduct, name: String, onSuccess: @escaping () -> Void) {
       Task {
-        switch await repository.subBrand
+        switch await client.subBrand
           .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: name)))
         {
         case .success:

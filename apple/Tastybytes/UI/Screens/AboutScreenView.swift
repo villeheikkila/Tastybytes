@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct AboutScreenView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
+
+  init(_ client: Client) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+  }
 
   var body: some View {
     VStack {
@@ -102,11 +106,16 @@ struct AboutScreenView: View {
 extension AboutScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "AboutScreenView")
+    private let client: Client
     @Published var aboutPage: AboutPage?
+
+    init(_ client: Client) {
+      self.client = client
+    }
 
     func getAboutPage() {
       Task {
-        switch await repository.document.getAboutPage() {
+        switch await client.document.getAboutPage() {
         case let .success(aboutPage):
           self.aboutPage = aboutPage
         case let .failure(error):
@@ -117,12 +126,6 @@ extension AboutScreenView {
         }
       }
     }
-  }
-}
-
-struct AboutScreenView_Previews: PreviewProvider {
-  static var previews: some View {
-    AboutScreenView()
   }
 }
 

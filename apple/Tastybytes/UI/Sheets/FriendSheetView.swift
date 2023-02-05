@@ -2,9 +2,14 @@ import SwiftUI
 
 struct FriendSheetView: View {
   @Binding var taggedFriends: [Profile]
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
+
+  init(_ client: Client, taggedFriends: Binding<[Profile]>) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    _taggedFriends = taggedFriends
+  }
 
   var body: some View {
     List(viewModel.friends, id: \.self) { friend in
@@ -45,12 +50,17 @@ struct FriendSheetView: View {
 extension FriendSheetView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "FriendSheetView")
+    let client: Client
     @Published var friends = [Profile]()
+
+    init(_ client: Client) {
+      self.client = client
+    }
 
     func loadFriends(currentUserId: UUID) {
       Task {
         // TODO: Make a view / db function to get this data directly
-        switch await repository.friend.getByUserId(userId: currentUserId, status: .accepted) {
+        switch await client.friend.getByUserId(userId: currentUserId, status: .accepted) {
         case let .success(acceptedFriends):
           withAnimation {
             self.friends = acceptedFriends.map { $0.getFriend(userId: currentUserId) }

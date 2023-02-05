@@ -3,12 +3,16 @@ import SwiftUI
 
 struct FlavorSheetView: View {
   @Environment(\.dismiss) private var dismiss
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @Binding var pickedFlavors: [Flavor]
   @State private var searchText = ""
   @State private var showToast = false
-
   private let maxFlavors = 6
+
+  init(_ client: Client, pickedFlavors: Binding<[Flavor]>) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    _pickedFlavors = pickedFlavors
+  }
 
   var body: some View {
     List(filteredFlavors, id: \.self) { flavor in
@@ -67,12 +71,17 @@ struct FlavorSheetView: View {
 extension FlavorSheetView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "FlavorSheetView")
+    let client: Client
     @Published var availableFlavors = [Flavor]()
+
+    init(_ client: Client) {
+      self.client = client
+    }
 
     func loadFlavors() {
       if availableFlavors.count == 0 {
         Task {
-          switch await repository.flavor.getAll() {
+          switch await client.flavor.getAll() {
           case let .success(flavors):
             withAnimation {
               self.availableFlavors = flavors

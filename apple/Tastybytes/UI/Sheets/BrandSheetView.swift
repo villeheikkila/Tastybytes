@@ -1,12 +1,22 @@
 import SwiftUI
 
 struct BrandSheetView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
 
   let brandOwner: Company
   let onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
+
+  init(
+    _ client: Client,
+    brandOwner: Company,
+    onSelect: @escaping (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
+  ) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.brandOwner = brandOwner
+    self.onSelect = onSelect
+  }
 
   var body: some View {
     List {
@@ -47,13 +57,18 @@ struct BrandSheetView: View {
 extension BrandSheetView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "BrandSheetView")
+    let client: Client
     @Published var searchText = ""
     @Published var brandsWithSubBrands = [Brand.JoinedSubBrands]()
     @Published var brandName = ""
 
+    init(_ client: Client) {
+      self.client = client
+    }
+
     func loadBrands(_ brandOwner: Company) {
       Task {
-        switch await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id) {
+        switch await client.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id) {
         case let .success(brandsWithSubBrands):
           self.brandsWithSubBrands = brandsWithSubBrands
         case let .failure(error):
@@ -64,7 +79,7 @@ extension BrandSheetView {
 
     func createNewBrand(_ brandOwner: Company, _ onCreation: @escaping (_ brand: Brand.JoinedSubBrands) -> Void) {
       Task {
-        switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
+        switch await client.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
         case let .success(brandWithSubBrands):
           onCreation(brandWithSubBrands)
         case let .failure(error):

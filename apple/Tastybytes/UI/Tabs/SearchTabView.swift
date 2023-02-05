@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SearchTabView: View {
-  @ObservedObject var viewModel = ViewModel()
+  @StateObject var viewModel: ViewModel
   @Binding var resetNavigationOnTab: Tab?
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -9,6 +9,11 @@ struct SearchTabView: View {
   @State private var scrollProxy: ScrollViewProxy?
 
   private let topAnchor = "top"
+
+  init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    _resetNavigationOnTab = resetNavigationOnTab
+  }
 
   var body: some View {
     NavigationStack(path: $router.path) {
@@ -120,7 +125,7 @@ struct SearchTabView: View {
           resetNavigationOnTab = nil
         }
       }
-      .withRoutes()
+      .withRoutes(viewModel.client)
     }
     .environmentObject(router)
   }
@@ -235,6 +240,7 @@ struct SearchTabView: View {
 extension SearchTabView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "SearchTabView")
+    let client: Client
     @Published var searchTerm: String = "" {
       didSet {
         if let firstPartOfSearchString = searchTerm
@@ -268,6 +274,10 @@ extension SearchTabView {
 
     @Published var showAddBarcodeConfirmation = false
 
+    init(_ client: Client) {
+      self.client = client
+    }
+
     func resetSearch() {
       profiles = []
       products = []
@@ -282,7 +292,7 @@ extension SearchTabView {
     func addBarcodeToProduct(onComplete: @escaping () -> Void) {
       if let addBarcodeTo, let barcode {
         Task {
-          switch await repository.product.addBarcodeToProduct(product: addBarcodeTo, barcode: barcode) {
+          switch await client.product.addBarcodeToProduct(product: addBarcodeTo, barcode: barcode) {
           case .success:
             self.barcode = nil
             self.addBarcodeTo = nil
@@ -300,7 +310,7 @@ extension SearchTabView {
 
     func searchProducts() {
       Task {
-        switch await repository.product.search(searchTerm: searchTerm, categoryName: tokens.first) {
+        switch await client.product.search(searchTerm: searchTerm, categoryName: tokens.first) {
         case let .success(searchResults):
           self.products = searchResults
           self.isSearched = true
@@ -318,7 +328,7 @@ extension SearchTabView {
 
     func searchProfiles() {
       Task {
-        switch await repository.profile.search(searchTerm: searchTerm, currentUserId: nil) {
+        switch await client.profile.search(searchTerm: searchTerm, currentUserId: nil) {
         case let .success(searchResults):
           self.profiles = searchResults
         case let .failure(error):
@@ -332,7 +342,7 @@ extension SearchTabView {
 
     func searchProductsByBardcode(_ barcode: Barcode) {
       Task {
-        switch await repository.product.search(barcode: barcode) {
+        switch await client.product.search(barcode: barcode) {
         case let .success(searchResults):
           self.barcode = barcode
           self.products = searchResults
@@ -351,7 +361,7 @@ extension SearchTabView {
 
     func searchCompanies() {
       Task {
-        switch await repository.company.search(searchTerm: searchTerm) {
+        switch await client.company.search(searchTerm: searchTerm) {
         case let .success(searchResults):
           self.companies = searchResults
         case let .failure(error):
@@ -365,7 +375,7 @@ extension SearchTabView {
 
     func searchLocations() {
       Task {
-        switch await repository.location.search(searchTerm: searchTerm) {
+        switch await client.location.search(searchTerm: searchTerm) {
         case let .success(searchResults):
           self.locations = searchResults
         case let .failure(error):

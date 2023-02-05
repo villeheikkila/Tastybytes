@@ -1,10 +1,15 @@
 import SwiftUI
 
 struct CurrentUserFriendsScreenView: View {
+  let client: Client
   @EnvironmentObject private var profileManager: ProfileManager
 
+  init(_ client: Client) {
+    self.client = client
+  }
+
   var body: some View {
-    FriendsScreenView(profile: profileManager.getProfile())
+    FriendsScreenView(client, profile: profileManager.getProfile())
   }
 }
 
@@ -14,8 +19,8 @@ struct FriendsScreenView: View {
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var noficationManager: NotificationManager
 
-  init(profile: Profile) {
-    _viewModel = StateObject(wrappedValue: ViewModel(profile: profile))
+  init(_ client: Client, profile: Profile) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client, profile: profile))
   }
 
   var body: some View {
@@ -52,7 +57,7 @@ struct FriendsScreenView: View {
     )
     .sheet(isPresented: $viewModel.showUserSearchSheet) {
       NavigationStack {
-        UserSheetView(actions: { profile in
+        UserSheetView(viewModel.client, actions: { profile in
           HStack {
             if !viewModel.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
               Button(action: { viewModel.sendFriendRequest(receiver: profile.id, onSuccess: {
@@ -98,7 +103,7 @@ struct FriendsScreenView: View {
 extension FriendsScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "FriendsScreenView")
-
+    let client: Client
     @Published var searchText: String = ""
     @Published var products = [Profile]()
     @Published var friends = [Friend]()
@@ -115,13 +120,14 @@ extension FriendsScreenView {
 
     let profile: Profile
 
-    init(profile: Profile) {
+    init(_ client: Client, profile: Profile) {
+      self.client = client
       self.profile = profile
     }
 
     func sendFriendRequest(receiver: UUID, onSuccess: @escaping () -> Void) {
       Task {
-        switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
+        switch await client.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
         case let .success(newFriend):
           withAnimation {
             self.friends.append(newFriend)
@@ -142,7 +148,7 @@ extension FriendsScreenView {
       )
 
       Task {
-        switch await repository.friend.update(id: friend.id, friendUpdate: friendUpdate) {
+        switch await client.friend.update(id: friend.id, friendUpdate: friendUpdate) {
         case let .success(updatedFriend):
 
           if updatedFriend.status != Friend.Status.blocked {
@@ -162,7 +168,7 @@ extension FriendsScreenView {
 
     func removeFriendRequest(_ friend: Friend) {
       Task {
-        switch await repository.friend.delete(id: friend.id) {
+        switch await client.friend.delete(id: friend.id) {
         case .success:
           withAnimation {
             self.friends.remove(object: friend)
@@ -176,7 +182,7 @@ extension FriendsScreenView {
 
     func loadFriends(currentUser: Profile) {
       Task {
-        switch await repository.friend.getByUserId(
+        switch await client.friend.getByUserId(
           userId: profile.id,
           status: currentUser.id == profile.id ? .none : Friend.Status.accepted
         ) {

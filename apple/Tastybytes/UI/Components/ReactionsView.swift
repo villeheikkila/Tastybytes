@@ -4,8 +4,8 @@ struct ReactionsView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var viewModel: ViewModel
 
-  init(checkIn: CheckIn) {
-    _viewModel = StateObject(wrappedValue: ViewModel(checkIn: checkIn))
+  init(_ client: Client, checkIn: CheckIn) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client, checkIn: checkIn))
   }
 
   var body: some View {
@@ -33,12 +33,14 @@ struct ReactionsView: View {
 extension ReactionsView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ReactionsView")
+    let client: Client
     @Published var checkInReactions = [CheckInReaction]()
     @Published var isLoading = false
 
     let checkIn: CheckIn
 
-    init(checkIn: CheckIn) {
+    init(_ client: Client, checkIn: CheckIn) {
+      self.client = client
       self.checkIn = checkIn
       checkInReactions = checkIn.checkInReactions
     }
@@ -47,7 +49,7 @@ extension ReactionsView {
       isLoading = true
       Task {
         if let reaction = checkInReactions.first(where: { $0.profile.id == userId }) {
-          switch await repository.checkInReactions.delete(id: reaction.id) {
+          switch await client.checkInReactions.delete(id: reaction.id) {
           case .success:
             withAnimation {
               self.checkInReactions.remove(object: reaction)
@@ -59,7 +61,7 @@ extension ReactionsView {
               )
           }
         } else {
-          switch await repository.checkInReactions
+          switch await client.checkInReactions
             .insert(newCheckInReaction: CheckInReaction.NewRequest(checkInId: checkIn.id))
           {
           case let .success(checkInReaction):

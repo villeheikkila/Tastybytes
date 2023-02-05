@@ -2,9 +2,14 @@ import SwiftUI
 
 @MainActor class ProfileManager: ObservableObject {
   private let logger = getLogger(category: "ProfileManager")
+  let client: Client
   @Published private(set) var isLoggedIn = false
   @Published private(set) var colorScheme: ColorScheme?
   @Published private(set) var friends = [Profile]()
+
+  init(_ client: Client) {
+    self.client = client
+  }
 
   private var profile: Profile.Extended?
 
@@ -34,7 +39,7 @@ import SwiftUI
 
   func refresh() {
     Task {
-      switch await repository.profile.getCurrentUser() {
+      switch await client.profile.getCurrentUser() {
       case let .success(currentUserProfile):
         self.profile = currentUserProfile
         setPreferredColorScheme(settings: currentUserProfile.settings)
@@ -43,7 +48,7 @@ import SwiftUI
       case let .failure(error):
         logger.error("error while loading current user profile: \(error.localizedDescription)")
         self.isLoggedIn = false
-        _ = await repository.auth.logOut()
+        _ = await client.auth.logOut()
       }
     }
   }
@@ -70,7 +75,7 @@ import SwiftUI
 
   func loadFriends() {
     Task {
-      switch await repository.friend.getByUserId(userId: getId(), status: nil) {
+      switch await client.friend.getByUserId(userId: getId(), status: nil) {
       case let .success(friends):
         self.friends = friends.map { $0.getFriend(userId: getId()) }
       case let .failure(error):
@@ -85,7 +90,7 @@ import SwiftUI
 
   func sendFriendRequest(receiver: UUID, onSuccess: @escaping () -> Void) {
     Task {
-      switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
+      switch await client.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
       case let .success(newFriend):
         self.friends.append(newFriend.receiver)
         onSuccess()

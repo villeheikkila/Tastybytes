@@ -2,12 +2,20 @@ import CachedAsyncImage
 import SwiftUI
 
 struct MergeSheetView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel: ViewModel
   @State private var showDeleteCompanyConfirmationDialog = false
   @State private var showDeleteBrandConfirmationDialog = false
   @Environment(\.dismiss) private var dismiss
 
   let productToMerge: Product.JoinedCategory
+
+  init(
+    _ client: Client,
+    productToMerge: Product.JoinedCategory
+  ) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.productToMerge = productToMerge
+  }
 
   var body: some View {
     List {
@@ -42,15 +50,20 @@ struct MergeSheetView: View {
 extension MergeSheetView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "MergeSheetView")
+    let client: Client
     @Published var mergeToProduct: Product.Joined?
     @Published var isPresentingProductMergeConfirmation = false
     @Published var productSearchTerm = ""
     @Published var productSearchResults: [Product.Joined] = []
 
+    init(_ client: Client) {
+      self.client = client
+    }
+
     func mergeProducts(productToMerge: Product.JoinedCategory, onSuccess: @escaping () -> Void) {
       if let mergeToProduct {
         Task {
-          switch await repository.product.mergeProducts(productId: productToMerge.id, toProductId: mergeToProduct.id) {
+          switch await client.product.mergeProducts(productId: productToMerge.id, toProductId: mergeToProduct.id) {
           case .success:
             self.mergeToProduct = nil
             onSuccess()
@@ -66,7 +79,7 @@ extension MergeSheetView {
 
     func searchProducts(productToMerge: Product.JoinedCategory) {
       Task {
-        switch await repository.product.search(searchTerm: productSearchTerm, categoryName: nil) {
+        switch await client.product.search(searchTerm: productSearchTerm, categoryName: nil) {
         case let .success(searchResults):
           self.productSearchResults = searchResults.filter { $0.id != productToMerge.id }
         case let .failure(error):

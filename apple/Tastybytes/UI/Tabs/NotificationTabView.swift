@@ -1,9 +1,15 @@
 import SwiftUI
 
 struct NotificationTabView: View {
+  let client: Client
   @EnvironmentObject private var notificationManager: NotificationManager
   @StateObject private var router = Router()
   @Binding var resetNavigationOnTab: Tab?
+
+  init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {
+    self.client = client
+    _resetNavigationOnTab = resetNavigationOnTab
+  }
 
   var body: some View {
     NavigationStack(path: $router.path) {
@@ -47,7 +53,7 @@ struct NotificationTabView: View {
           resetNavigationOnTab = nil
         }
       }
-      .withRoutes()
+      .withRoutes(client)
     }
     .environmentObject(router)
   }

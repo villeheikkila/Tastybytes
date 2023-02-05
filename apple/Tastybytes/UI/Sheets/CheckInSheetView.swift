@@ -4,7 +4,8 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInSheetView: View {
-  @StateObject private var viewModel = ViewModel()
+  let client: Client
+  @StateObject private var viewModel: ViewModel
   @Environment(\.dismiss) private var dismiss
   @State private var showPhotoMenu = false
   @FocusState private var focusedField: Focusable?
@@ -15,7 +16,9 @@ struct CheckInSheetView: View {
   let existingCheckIn: CheckIn?
   let action: Action
 
-  init(product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
+  init(_ client: Client, product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.client = client
     self.product = product
     existingCheckIn = nil
     self.onCreation = onCreation
@@ -23,9 +26,11 @@ struct CheckInSheetView: View {
     action = Action.create
   }
 
-  init(checkIn: CheckIn,
+  init(_ client: Client, checkIn: CheckIn,
        onUpdate: @escaping (_ checkIn: CheckIn) -> Void)
   {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.client = client
     product = checkIn.product
     existingCheckIn = checkIn
     onCreation = nil
@@ -177,15 +182,15 @@ struct CheckInSheetView: View {
       NavigationStack {
         switch sheet {
         case .friends:
-          FriendSheetView(taggedFriends: $viewModel.taggedFriends)
+          FriendSheetView(client, taggedFriends: $viewModel.taggedFriends)
         case .flavors:
-          FlavorSheetView(pickedFlavors: $viewModel.pickedFlavors)
+          FlavorSheetView(client, pickedFlavors: $viewModel.pickedFlavors)
         case .location:
-          LocationSearchView(onSelect: {
+          LocationSearchView(client, onSelect: {
             location in viewModel.setLocation(location)
           })
         case .manufacturer:
-          CompanySheetView(onSelect: { company, _ in
+          CompanySheetView(client, onSelect: { company, _ in
             viewModel.setManufacturer(company)
           })
         case .photoPicker:
@@ -262,6 +267,7 @@ extension CheckInSheetView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CheckInSheetView")
+    private let client: Client
     @Published var selectedItem: PhotosPickerItem?
     @Published var activeSheet: Sheet?
     @Published var showCamera = false
@@ -281,6 +287,10 @@ extension CheckInSheetView {
     @Published var pickedFlavors = [Flavor]()
     @Published var location: Location?
     @Published var image: UIImage?
+
+    init(_ client: Client) {
+      self.client = client
+    }
 
     func loadFromCheckIn(checkIn: CheckIn) {
       review = checkIn.review.orEmpty
@@ -329,7 +339,7 @@ extension CheckInSheetView {
       )
 
       Task {
-        switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
+        switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
         case let .success(updatedCheckIn):
           uploadImage(checkIn: updatedCheckIn)
           onUpdate(updatedCheckIn)
@@ -352,7 +362,7 @@ extension CheckInSheetView {
       )
 
       Task {
-        switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
+        switch await client.checkIn.create(newCheckInParams: newCheckParams) {
         case let .success(newCheckIn):
           uploadImage(checkIn: newCheckIn)
           onCreation(newCheckIn)
@@ -365,7 +375,7 @@ extension CheckInSheetView {
     func uploadImage(checkIn: CheckIn) {
       Task {
         if let data = image?.jpegData(compressionQuality: 0.1) {
-          switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
+          switch await client.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
           case let .failure(error):
             logger.error("failed to uplaod image to check-in '\(checkIn.id)': \(error.localizedDescription)")
           default:
@@ -377,7 +387,7 @@ extension CheckInSheetView {
 
     func loadInitialData(product: Product.Joined) {
       Task {
-        switch await repository.category.getServingStylesByCategory(categoryId: product.category.id) {
+        switch await client.category.getServingStylesByCategory(categoryId: product.category.id) {
         case let .success(categoryServingStyles):
           self.servingStyles = categoryServingStyles.servingStyles
         case let .failure(error):

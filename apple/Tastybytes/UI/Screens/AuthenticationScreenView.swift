@@ -7,8 +7,8 @@ struct AuthenticationScreenView: View {
   @StateObject private var viewModel: ViewModel
   @FocusState private var focusedField: Field?
 
-  init(scene: Scene) {
-    _viewModel = StateObject(wrappedValue: ViewModel(scene: scene))
+  init(_ client: Client, scene: Scene) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client, scene: scene))
   }
 
   var body: some View {
@@ -175,6 +175,7 @@ extension AuthenticationScreenView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "AuthenticationScreenView")
+    private let client: Client
     @Published var scene: Scene
     @Published var isLoading = false
     @Published var email = ""
@@ -191,8 +192,9 @@ extension AuthenticationScreenView {
       }
     }
 
-    init(scene: Scene) {
+    init(_ client: Client, scene: Scene) {
       self.scene = scene
+      self.client = client
     }
 
     func setScene(_ scene: Scene) {
@@ -222,14 +224,14 @@ extension AuthenticationScreenView {
 
         switch scene {
         case .signIn:
-          switch await repository.auth.signIn(email: email, password: password) {
+          switch await client.auth.signIn(email: email, password: password) {
           case .success:
             break
           case let .failure(error):
             primaryActionError = error
           }
         case .signUp:
-          switch await repository.auth.signUp(email: email, password: password) {
+          switch await client.auth.signUp(email: email, password: password) {
           case .success:
             primaryActionSuccessMessage = "Confirmation email has been sent!"
             onSignUp()
@@ -238,7 +240,7 @@ extension AuthenticationScreenView {
             primaryActionError = error
           }
         case .resetPassword:
-          switch await repository.auth.updatePassword(newPassword: password) {
+          switch await client.auth.updatePassword(newPassword: password) {
           case .success:
             primaryActionSuccessMessage = "Confirmation email has been sent!"
             onSignUp()
@@ -246,14 +248,14 @@ extension AuthenticationScreenView {
             primaryActionError = error
           }
         case .forgotPassword:
-          switch await repository.auth.sendPasswordResetEmail(email: email) {
+          switch await client.auth.sendPasswordResetEmail(email: email) {
           case .success:
             primaryActionSuccessMessage = "Password reset email sent!"
           case let .failure(error):
             primaryActionError = error
           }
         case .magicLink:
-          switch await repository.auth.sendMagicLink(email: email) {
+          switch await client.auth.sendMagicLink(email: email) {
           case .success:
             primaryActionSuccessMessage = "Magic link sent!"
           case let .failure(error):
