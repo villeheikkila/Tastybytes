@@ -98,6 +98,11 @@ extension SubBrand {
   struct NewRequest: Encodable {
     let name: String
     let brandId: Int
+      
+      enum CodingKeys: String, CodingKey {
+        case name
+        case brandId = "brand_id"
+      }
 
     init(name: String, brandId: Int) {
       self.name = name
