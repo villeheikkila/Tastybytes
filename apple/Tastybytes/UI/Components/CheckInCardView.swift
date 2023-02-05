@@ -181,7 +181,7 @@ struct CheckInCardView: View {
               value: Route.profile(taggedProfile),
               disabled: loadedFrom.isLoadedFromProfile(taggedProfile)
             ) {
-              AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 14, id: taggedProfile.id)
+              AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 24, id: taggedProfile.id)
             }
           }
           Spacer()

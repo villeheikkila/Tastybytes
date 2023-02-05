@@ -11,7 +11,7 @@ struct ReactionsView: View {
   var body: some View {
     HStack {
       ForEach(viewModel.checkInReactions, id: \.id) {
-        reaction in AvatarView(avatarUrl: reaction.profile.getAvatarURL(), size: 24, id: reaction.profile.id)
+        reaction in AvatarView(avatarUrl: reaction.profile.getAvatarURL(), size: 16, id: reaction.profile.id)
       }
 
       Button {

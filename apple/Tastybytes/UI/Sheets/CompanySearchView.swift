@@ -4,7 +4,6 @@ struct CompanySheetView: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
-  @State private var companyName = ""
 
   let onSelect: (_ company: Company, _ createdNew: Bool) -> Void
 

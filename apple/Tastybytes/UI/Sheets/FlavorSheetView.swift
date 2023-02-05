@@ -5,9 +5,7 @@ struct FlavorSheetView: View {
   @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel: ViewModel
   @Binding private var pickedFlavors: [Flavor]
-  @State private var searchText = ""
   @State private var showToast = false
-  private let maxFlavors = 6
 
   init(_ client: Client, pickedFlavors: Binding<[Flavor]>) {
     _viewModel = StateObject(wrappedValue: ViewModel(client))
@@ -15,11 +13,9 @@ struct FlavorSheetView: View {
   }
 
   var body: some View {
-    List(filteredFlavors, id: \.self) { flavor in
+    List(viewModel.filteredFlavors, id: \.id) { flavor in
       Button(action: {
-        withAnimation {
-          toggleFlavor(flavor)
-        }
+        toggleFlavor(flavor)
       }) {
         HStack {
           Text(flavor.name.capitalized)
@@ -31,7 +27,7 @@ struct FlavorSheetView: View {
       }
     }
     .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
-      AlertToast(type: .error(.red), title: "You can only add \(maxFlavors) flavors")
+      AlertToast(type: .error(.red), title: "You can only add \(viewModel.maxFlavors) flavors")
     }
     .navigationTitle("Flavors")
     .navigationBarItems(trailing: Button(action: {
@@ -42,28 +38,16 @@ struct FlavorSheetView: View {
     .task {
       viewModel.loadFlavors()
     }
-    .searchable(text: $searchText)
+    .searchable(text: $viewModel.searchTerm)
   }
 
   private func toggleFlavor(_ flavor: Flavor) {
     if pickedFlavors.contains(flavor) {
-      withAnimation {
-        pickedFlavors.remove(object: flavor)
-      }
-    } else if pickedFlavors.count < maxFlavors {
-      withAnimation {
-        pickedFlavors.append(flavor)
-      }
+      pickedFlavors.remove(object: flavor)
+    } else if pickedFlavors.count < viewModel.maxFlavors {
+      pickedFlavors.append(flavor)
     } else {
       showToast = true
-    }
-  }
-
-  private var filteredFlavors: [Flavor] {
-    if searchText.isEmpty {
-      return viewModel.availableFlavors
-    } else {
-      return viewModel.availableFlavors.filter { $0.name.lowercased().contains(searchText.lowercased()) }
     }
   }
 }
@@ -73,9 +57,20 @@ extension FlavorSheetView {
     private let logger = getLogger(category: "FlavorSheetView")
     let client: Client
     @Published var availableFlavors = [Flavor]()
+    @Published var searchTerm = ""
+
+    let maxFlavors = 4
 
     init(_ client: Client) {
       self.client = client
+    }
+
+    var filteredFlavors: [Flavor] {
+      if searchTerm.isEmpty {
+        return availableFlavors
+      } else {
+        return availableFlavors.filter { $0.name.lowercased().contains(searchTerm.lowercased()) }
+      }
     }
 
     func loadFlavors() {
