@@ -1,7 +1,7 @@
 import FirebaseMessaging
 import SwiftUI
 
-final class NotificationManager: ObservableObject {
+@MainActor class NotificationManager: ObservableObject {
   private let logger = getLogger(category: "NotificationManager")
   let client: Client
 
@@ -11,33 +11,29 @@ final class NotificationManager: ObservableObject {
 
   @Published private(set) var notifications = [Notification]() {
     didSet {
-      DispatchQueue.main.async {
-        withAnimation {
-          self.filter = nil
-          self.filteredNotifications = self.notifications
-        }
+      withAnimation {
+        self.filter = nil
+        self.filteredNotifications = self.notifications
       }
     }
   }
 
   @Published var filter: NotificationType? {
     didSet {
-      DispatchQueue.main.async {
-        withAnimation {
-          self.filteredNotifications = self.notifications.filter { notification in
-            if self.filter == nil {
-              return true
-            } else {
-              switch notification.content {
-              case .checkInReaction:
-                return self.filter == .checkInReaction
-              case .friendRequest:
-                return self.filter == .friendRequest
-              case .message:
-                return self.filter == .message
-              case .taggedCheckIn:
-                return self.filter == .taggedCheckIn
-              }
+      withAnimation {
+        self.filteredNotifications = self.notifications.filter { notification in
+          if self.filter == nil {
+            return true
+          } else {
+            switch notification.content {
+            case .checkInReaction:
+              return self.filter == .checkInReaction
+            case .friendRequest:
+              return self.filter == .friendRequest
+            case .message:
+              return self.filter == .message
+            case .taggedCheckIn:
+              return self.filter == .taggedCheckIn
             }
           }
         }
@@ -57,12 +53,10 @@ final class NotificationManager: ObservableObject {
     Task {
       switch await client.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
       case let .success(newNotifications):
-        await MainActor.run {
-          if reset {
-            self.notifications = newNotifications
-          } else {
-            self.notifications.append(contentsOf: newNotifications)
-          }
+        if reset {
+          self.notifications = newNotifications
+        } else {
+          self.notifications.append(contentsOf: newNotifications)
         }
       case let .failure(error):
         logger.error("failed: \(error.localizedDescription)")
@@ -74,10 +68,8 @@ final class NotificationManager: ObservableObject {
     Task {
       switch await client.notification.deleteAll() {
       case .success:
-        await MainActor.run {
-          withAnimation {
-            self.notifications = [Notification]()
-          }
+        withAnimation {
+          self.notifications = [Notification]()
         }
       case let .failure(error):
         logger.error("failed: \(error.localizedDescription)")
@@ -89,13 +81,11 @@ final class NotificationManager: ObservableObject {
     Task {
       switch await client.notification.markAllRead() {
       case .success:
-        await MainActor.run {
-          self.notifications = self.notifications.map {
-            if $0.seenAt == nil {
-              return Notification(id: $0.id, createdAt: $0.createdAt, seenAt: Date(), content: $0.content)
-            } else {
-              return $0
-            }
+        self.notifications = self.notifications.map {
+          if $0.seenAt == nil {
+            return Notification(id: $0.id, createdAt: $0.createdAt, seenAt: Date(), content: $0.content)
+          } else {
+            return $0
           }
         }
       case let .failure(error):
@@ -118,14 +108,12 @@ final class NotificationManager: ObservableObject {
       Task {
         switch await client.notification.markAllFriendRequestsAsRead() {
         case let .success(updatedNotifications):
-          await MainActor.run {
-            self.notifications = self.notifications.map {
-              notification in
-              if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
-                return updatedNotification
-              } else {
-                return notification
-              }
+          self.notifications = self.notifications.map {
+            notification in
+            if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
+              return updatedNotification
+            } else {
+              return notification
             }
           }
         case let .failure(error):
@@ -151,14 +139,12 @@ final class NotificationManager: ObservableObject {
       Task {
         switch await client.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id) {
         case let .success(updatedNotifications):
-          await MainActor.run {
-            self.notifications = self.notifications.map {
-              notification in
-              if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
-                return updatedNotification
-              } else {
-                return notification
-              }
+          self.notifications = self.notifications.map {
+            notification in
+            if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
+              return updatedNotification
+            } else {
+              return notification
             }
           }
         case let .failure(error):
@@ -172,11 +158,7 @@ final class NotificationManager: ObservableObject {
     Task {
       switch await client.notification.markRead(id: notification.id) {
       case let .success(updatedNotification):
-        await MainActor.run {
-          if let index = self.notifications.firstIndex(of: notification) {
-            self.notifications[index] = updatedNotification
-          }
-        }
+        notifications.replace(notification, with: updatedNotification)
       case let .failure(error):
         logger.error("failed to mark '\(notification.id)' as read: \(error.localizedDescription)")
       }
@@ -185,13 +167,13 @@ final class NotificationManager: ObservableObject {
 
   func deleteFromIndex(at: IndexSet) {
     if let index = at.first {
+      let notificationId = notifications[index].id
+
       Task {
-        switch await client.notification.delete(id: notifications[index].id) {
+        switch await client.notification.delete(id: notificationId) {
         case .success:
-          await MainActor.run {
-            withAnimation {
-              _ = self.notifications.remove(at: index)
-            }
+          withAnimation {
+            _ = self.notifications.remove(at: index)
           }
         case let .failure(error):
           logger
@@ -205,10 +187,8 @@ final class NotificationManager: ObservableObject {
     Task {
       switch await client.notification.delete(id: notification.id) {
       case .success:
-        await MainActor.run {
-          withAnimation {
-            self.notifications.remove(object: notification)
-          }
+        withAnimation {
+          self.notifications.remove(object: notification)
         }
       case let .failure(error):
         logger.error("failed to delete notification '\(notification.id)': \(error.localizedDescription)")
@@ -238,22 +218,3 @@ final class NotificationManager: ObservableObject {
     }
   }
 }
-
-// extension NotificationManager: UNUserNotificationCenterDelegate {
-//  @MainActor
-//  func userNotificationCenter(_: UNUserNotificationCenter,
-//                              willPresent notification: UNNotification) async
-//    -> UNNotificationPresentationOptions
-//  {
-//    _ = notification.request.content.userInfo
-//    refresh()
-//    return [[.sound]]
-//  }
-//
-//  @MainActor
-//  func userNotificationCenter(_: UNUserNotificationCenter,
-//                              didReceive response: UNNotificationResponse) async
-//  {
-//    _ = response.notification.request.content.userInfo
-//  }
-// }
