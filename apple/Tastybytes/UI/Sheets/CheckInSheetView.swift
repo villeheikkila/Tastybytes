@@ -9,16 +9,12 @@ struct CheckInSheetView: View {
   @State private var showPhotoMenu = false
   @FocusState private var focusedField: Focusable?
 
-  let product: Product.Joined
   let onCreation: ((_ checkIn: CheckIn) -> Void)?
   let onUpdate: ((_ checkIn: CheckIn) -> Void)?
-  let existingCheckIn: CheckIn?
   let action: Action
 
   init(_ client: Client, product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
-    self.product = product
-    existingCheckIn = nil
+    _viewModel = StateObject(wrappedValue: ViewModel(client, product: product, editCheckIn: nil))
     self.onCreation = onCreation
     onUpdate = nil
     action = Action.create
@@ -27,9 +23,7 @@ struct CheckInSheetView: View {
   init(_ client: Client, checkIn: CheckIn,
        onUpdate: @escaping (_ checkIn: CheckIn) -> Void)
   {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
-    product = checkIn.product
-    existingCheckIn = checkIn
+    _viewModel = StateObject(wrappedValue: ViewModel(client, product: checkIn.product, editCheckIn: checkIn))
     onCreation = nil
     self.onUpdate = onUpdate
     action = Action.update
@@ -40,17 +34,17 @@ struct CheckInSheetView: View {
       Section {
         VStack(alignment: .leading) {
           HStack {
-            CategoryNameView(category: product.category)
-            ForEach(product.subcategories, id: \.id) { subcategory in
+            CategoryNameView(category: viewModel.product.category)
+            ForEach(viewModel.product.subcategories, id: \.id) { subcategory in
               ChipView(title: subcategory.name, cornerRadius: 5)
             }
           }
 
-          Text(product.getDisplayName(.fullName))
+          Text(viewModel.product.getDisplayName(.fullName))
             .font(.system(size: 18, weight: .bold, design: .default))
             .foregroundColor(.primary)
 
-          Text(product.getDisplayName(.brandOwner))
+          Text(viewModel.product.getDisplayName(.brandOwner))
             .font(.system(size: 16, weight: .bold, design: .default))
             .foregroundColor(.secondary)
         }
@@ -58,7 +52,7 @@ struct CheckInSheetView: View {
           self.focusedField = nil
         }
 
-        if viewModel.image != nil || existingCheckIn?.imageUrl != nil {
+        if viewModel.image != nil || viewModel.editCheckIn?.imageUrl != nil {
           HStack {
             Spacer()
             if let image = viewModel.image {
@@ -67,7 +61,7 @@ struct CheckInSheetView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 150, alignment: .top)
                 .shadow(radius: 4)
-            } else if let imageUrl = existingCheckIn?.getImageUrl() {
+            } else if let imageUrl = viewModel.editCheckIn?.getImageUrl() {
               CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
                 image
                   .resizable()
@@ -93,7 +87,7 @@ struct CheckInSheetView: View {
           showPhotoMenu.toggle()
         }) {
           Label(
-            "\(existingCheckIn?.getImageUrl() == nil && viewModel.image == nil ? "Add" : "Change") Photo",
+            "\(viewModel.editCheckIn?.getImageUrl() == nil && viewModel.image == nil ? "Add" : "Change") Photo",
             systemImage: "photo"
           )
         }
@@ -214,14 +208,14 @@ struct CheckInSheetView: View {
         switch action {
         case .create:
           if let onCreation {
-            viewModel.createCheckIn(product) {
+            viewModel.createCheckIn {
               newCheckIn in
               onCreation(newCheckIn)
             }
           }
         case .update:
-          if let existingCheckIn, let onUpdate {
-            viewModel.updateCheckIn(existingCheckIn) {
+          if let onUpdate {
+            viewModel.updateCheckIn {
               updatedCheckIn in
               onUpdate(updatedCheckIn)
             }
@@ -235,10 +229,7 @@ struct CheckInSheetView: View {
       }
     )
     .task {
-      viewModel.loadInitialData(product: product)
-      if let existingCheckIn {
-        viewModel.loadFromCheckIn(checkIn: existingCheckIn)
-      }
+      viewModel.loadInitialData()
     }
   }
 }
@@ -265,6 +256,8 @@ extension CheckInSheetView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CheckInSheetView")
     let client: Client
+    @Published var product: Product.Joined
+    @Published var editCheckIn: CheckIn?
     @Published var selectedItem: PhotosPickerItem?
     @Published var activeSheet: Sheet?
     @Published var showCamera = false
@@ -285,18 +278,20 @@ extension CheckInSheetView {
     @Published var location: Location?
     @Published var image: UIImage?
 
-    init(_ client: Client) {
+    init(_ client: Client, product: Product.Joined, editCheckIn: CheckIn?) {
       self.client = client
-    }
+      self.product = product
 
-    func loadFromCheckIn(checkIn: CheckIn) {
-      review = checkIn.review.orEmpty
-      rating = checkIn.rating ?? 0
-      manufacturer = checkIn.variant?.manufacturer
-      servingStyleName = checkIn.servingStyle?.name ?? ServingStyle.Name.none
-      taggedFriends = checkIn.taggedProfiles
-      pickedFlavors = checkIn.flavors
-      location = checkIn.location
+      if let editCheckIn {
+        self.editCheckIn = editCheckIn
+        review = editCheckIn.review.orEmpty
+        rating = editCheckIn.rating ?? 0
+        manufacturer = editCheckIn.variant?.manufacturer
+        servingStyleName = editCheckIn.servingStyle?.name ?? ServingStyle.Name.none
+        taggedFriends = editCheckIn.taggedProfiles
+        pickedFlavors = editCheckIn.flavors
+        location = editCheckIn.location
+      }
     }
 
     func setActiveSheet(_ sheet: Sheet) {
@@ -322,31 +317,33 @@ extension CheckInSheetView {
       image = pickedImage
     }
 
-    func updateCheckIn(_ checkIn: CheckIn, _ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) {
-      let updateCheckInParams = CheckIn.UpdateRequest(
-        checkIn: checkIn,
-        product: checkIn.product,
-        review: review,
-        taggedFriends: taggedFriends,
-        servingStyle: servingStyle,
-        manufacturer: manufacturer,
-        flavors: pickedFlavors,
-        rating: rating,
-        location: location
-      )
+    func updateCheckIn(_ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) {
+      if let editCheckIn {
+        let updateCheckInParams = CheckIn.UpdateRequest(
+          checkIn: editCheckIn,
+          product: product,
+          review: review,
+          taggedFriends: taggedFriends,
+          servingStyle: servingStyle,
+          manufacturer: manufacturer,
+          flavors: pickedFlavors,
+          rating: rating,
+          location: location
+        )
 
-      Task {
-        switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
-        case let .success(updatedCheckIn):
-          uploadImage(checkIn: updatedCheckIn)
-          onUpdate(updatedCheckIn)
-        case let .failure(error):
-          logger.error("failed to update check-in '\(checkIn.id)': \(error.localizedDescription)")
+        Task {
+          switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
+          case let .success(updatedCheckIn):
+            uploadImage(checkIn: updatedCheckIn)
+            onUpdate(updatedCheckIn)
+          case let .failure(error):
+            logger.error("failed to update check-in '\(editCheckIn.id)': \(error.localizedDescription)")
+          }
         }
       }
     }
 
-    func createCheckIn(_ product: Product.Joined, _ onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
+    func createCheckIn(_ onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
       let newCheckParams = CheckIn.NewRequest(
         product: product,
         review: review,
@@ -382,7 +379,7 @@ extension CheckInSheetView {
       }
     }
 
-    func loadInitialData(product: Product.Joined) {
+    func loadInitialData() {
       Task {
         switch await client.category.getServingStylesByCategory(categoryId: product.category.id) {
         case let .success(categoryServingStyles):
@@ -390,7 +387,7 @@ extension CheckInSheetView {
         case let .failure(error):
           logger
             .error(
-              "failed to load serving styles by category '\(product.category.id)': \(error.localizedDescription)"
+              "failed to load serving styles by category '\(self.product.category.id)': \(error.localizedDescription)"
             )
         }
       }

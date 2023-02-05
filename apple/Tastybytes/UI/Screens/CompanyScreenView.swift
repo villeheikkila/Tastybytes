@@ -21,7 +21,7 @@ struct CompanyScreenView: View {
     }
     .navigationTitle(viewModel.company.name)
     .refreshable {
-      viewModel.refresh()
+      viewModel.getProductsAndSummary()
     }
     .navigationBarItems(trailing: navigationBarMenu)
     .sheet(item: $viewModel.activeSheet) { sheet in
@@ -34,7 +34,7 @@ struct CompanyScreenView: View {
         case .editBrand:
           if let editBrand = viewModel.editBrand {
             EditBrandSheetView(viewModel.client, brand: editBrand, brandOwner: viewModel.company) {
-              viewModel.refresh()
+              viewModel.getProductsAndSummary()
             }
           }
         case .mergeProduct:
@@ -70,7 +70,7 @@ struct CompanyScreenView: View {
       )
     }
     .task {
-      viewModel.refresh()
+      viewModel.getProductsAndSummary()
     }
   }
 
@@ -293,7 +293,7 @@ extension CompanyScreenView {
       }
     }
 
-    func refresh() {
+    func getProductsAndSummary() {
       Task {
         async let companyPromise = client.company.getJoinedById(id: company.id)
         async let summaryPromise = client.company.getSummaryById(id: company.id)
@@ -332,7 +332,7 @@ extension CompanyScreenView {
         Task {
           switch await client.product.delete(id: productToDelete.id) {
           case .success:
-            refresh()
+            getProductsAndSummary()
             self.productToDelete = nil
           case let .failure(error):
             logger.error("failed to delete product '\(productToDelete.id)': \(error.localizedDescription)")
@@ -345,7 +345,7 @@ extension CompanyScreenView {
       Task {
         switch await client.brand.delete(id: brand.id) {
         case .success:
-          refresh()
+          getProductsAndSummary()
         case let .failure(error):
           logger.error("failed to delete brand '\(brand.id)': \(error.localizedDescription)")
         }

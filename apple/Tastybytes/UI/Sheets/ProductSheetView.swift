@@ -4,11 +4,9 @@ struct ProductSheetView: View {
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var toastManager: ToastManager
   @StateObject private var viewModel: ViewModel
-  @State private var mode = Mode.new
   @FocusState private var focusedField: Focusable?
 
   let initialProduct: Product.Joined?
-  let initialBarcode: Barcode?
   let onEdit: (() -> Void)?
 
   init(
@@ -18,10 +16,8 @@ struct ProductSheetView: View {
     initialBarcode: Barcode? = nil,
     onEdit: (() -> Void)? = nil
   ) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
-    self.mode = mode
+    _viewModel = StateObject(wrappedValue: ViewModel(client, mode: mode, barcode: initialBarcode))
     self.initialProduct = initialProduct
-    self.initialBarcode = initialBarcode
     self.onEdit = onEdit
   }
 
@@ -31,8 +27,8 @@ struct ProductSheetView: View {
       brandSection
       productSection
 
-      Button(mode.doneLabel, action: {
-        switch mode {
+      Button(viewModel.mode.doneLabel, action: {
+        switch viewModel.mode {
         case .editSuggestion:
           if let initialProduct {
             viewModel.createProductEditSuggestion(product: initialProduct, onComplete: {
@@ -55,7 +51,7 @@ struct ProductSheetView: View {
       })
       .disabled(!viewModel.isValid())
     }
-    .navigationTitle(mode.navigationTitle)
+    .navigationTitle(viewModel.mode.navigationTitle)
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {
@@ -111,7 +107,6 @@ struct ProductSheetView: View {
       } else {
         viewModel.loadCategories()
       }
-      viewModel.loadInitialBarcode(initialBarcode)
     }
   }
 
@@ -200,7 +195,7 @@ struct ProductSheetView: View {
       TextField("Description (optional)", text: $viewModel.description)
         .focused($focusedField, equals: .description)
 
-      if mode == .new {
+      if viewModel.mode == .new {
         Button(action: {
           viewModel.setActiveSheet(.barcode)
         }) {
@@ -280,6 +275,7 @@ extension ProductSheetView {
     let client: Client
     @Published var categories = [Category.JoinedSubcategories]()
     @Published var activeSheet: Sheet?
+    @Published var mode: Mode
     @Published var categoryName: Category.Name = .beverage {
       // TODO: Investigate if this can be avoided by passing ServingStyle directly to the picker
       didSet {
@@ -315,8 +311,10 @@ extension ProductSheetView {
 
     @Published var barcode: Barcode?
 
-    init(_ client: Client) {
+    init(_ client: Client, mode: Mode, barcode: Barcode?) {
       self.client = client
+      self.mode = mode
+      self.barcode = barcode
     }
 
     func getSubcategoriesForCategory() -> [Subcategory]? {
@@ -399,11 +397,6 @@ extension ProductSheetView {
           logger.error("failed to load categories with subcategories: \(error.localizedDescription)")
         }
       }
-    }
-
-    func loadInitialBarcode(_ initialBarcode: Barcode?) {
-      guard let initialBarcode else { return }
-      barcode = initialBarcode
     }
 
     func loadCategories(_ initialCategory: Category.Name = Category.Name.beverage) {

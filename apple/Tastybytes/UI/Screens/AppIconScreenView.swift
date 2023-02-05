@@ -26,12 +26,12 @@ struct AppIconScreenView: View {
     }
     .navigationBarTitle("App Icon")
     .onChange(of: selection) { icon in
-      if let icon, icon != getCurrentAppIcon() {
+      if let icon, selection != getCurrentAppIcon() {
         UIApplication.shared.setAlternateIconName(icon == AppIcon.ramune ? nil : icon.rawValue)
       }
     }
-    .task {
-      self.selection = getCurrentAppIcon()
+    .onAppear {
+      selection = getCurrentAppIcon()
     }
   }
 }
