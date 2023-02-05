@@ -16,7 +16,7 @@ struct SupabaseLocationRepository: LocationRepository {
     do {
       let result: Location = try await client
         .database
-        .rpc(fn: "fnc__get_location_insert_if_not_exist", params: location.getNew())
+        .rpc(fn: "fnc__get_location_insert_if_not_exist", params: location)
         .select(columns: Location.getQuery(.joined(false)))
         .single()
         .execute()

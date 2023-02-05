@@ -21,8 +21,8 @@ struct RootView: View {
   @StateObject private var splashScreenManager = SplashScreenManager()
   @StateObject private var profileManager: ProfileManager
   @StateObject private var toastManager = ToastManager()
-  @State private var authEvent: AuthChangeEvent?
   @StateObject private var notificationManager: NotificationManager
+  @State private var authEvent: AuthChangeEvent?
 
   init(_ client: Client) {
     self.client = client

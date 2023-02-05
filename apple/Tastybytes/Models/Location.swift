@@ -1,7 +1,7 @@
 import Foundation
 import MapKit
 
-struct Location: Identifiable {
+struct Location: Identifiable, Codable, Hashable {
   let id: UUID
   let name: String
   let title: String?
@@ -27,42 +27,6 @@ struct Location: Identifiable {
     self.country = country
   }
 
-  func getNew() -> New? {
-    // TODO: Encodable should be good enough for this
-    if let location, let countryCode {
-      return New(
-        name: name,
-        title: title,
-        longitude: location.coordinate.longitude,
-        latitude: location.coordinate.latitude,
-        countryCode: countryCode
-      )
-    } else {
-      return nil
-    }
-  }
-}
-
-extension Location {
-  static func getQuery(_ queryType: QueryType) -> String {
-    let tableName = "locations"
-    let saved = "id, name, title, longitude, latitude, country_code"
-
-    switch queryType {
-    case .tableName:
-      return tableName
-    case let .joined(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, Country.getQuery(.saved(true))), withTableName)
-    }
-  }
-
-  enum QueryType {
-    case tableName
-    case joined(_ withTableName: Bool)
-  }
-}
-
-extension Location: Hashable {
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }
@@ -70,9 +34,7 @@ extension Location: Hashable {
   static func == (lhs: Location, rhs: Location) -> Bool {
     lhs.id == rhs.id
   }
-}
 
-extension Location: Decodable {
   enum CodingKeys: String, CodingKey {
     case id
     case name
@@ -95,24 +57,38 @@ extension Location: Decodable {
     countryCode = try container.decode(String.self, forKey: .countryCode)
     country = try container.decode(Country.self, forKey: .country)
   }
-}
 
-extension Location: Encodable {
-  enum EncodableCodingKeys: String, CodingKey {
-    case name = "p_name"
-    case title = "p_title"
-    case longitude = "p_longitude"
-    case latitude = "p_latitude"
-    case countryCode = "p_country_code"
+  enum EncodingKeys: String, CodingKey {
+    case name = "p_name", title = "p_title", longitude = "p_longitude", latitude = "p_latitude",
+         countryCode = "p_country_code"
   }
 
   func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: EncodableCodingKeys.self)
+    var container = encoder.container(keyedBy: EncodingKeys.self)
     try container.encode(name, forKey: .name)
     try container.encode(title, forKey: .title)
     try container.encode(location?.coordinate.latitude, forKey: .latitude)
     try container.encode(location?.coordinate.longitude, forKey: .longitude)
     try container.encode(countryCode, forKey: .countryCode)
+  }
+}
+
+extension Location {
+  static func getQuery(_ queryType: QueryType) -> String {
+    let tableName = "locations"
+    let saved = "id, name, title, longitude, latitude, country_code"
+
+    switch queryType {
+    case .tableName:
+      return tableName
+    case let .joined(withTableName):
+      return queryWithTableName(tableName, joinWithComma(saved, Country.getQuery(.saved(true))), withTableName)
+    }
+  }
+
+  enum QueryType {
+    case tableName
+    case joined(_ withTableName: Bool)
   }
 }
 
