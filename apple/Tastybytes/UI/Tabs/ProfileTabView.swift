@@ -8,7 +8,7 @@ struct ProfileTabView: View {
   @StateObject private var router = Router()
   @State private var scrollToTop = 0
   @EnvironmentObject private var profileManager: ProfileManager
-  @Binding var resetNavigationOnTab: Tab?
+  @Binding private var resetNavigationOnTab: Tab?
 
   init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {
     self.client = client

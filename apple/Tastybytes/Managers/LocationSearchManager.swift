@@ -3,7 +3,7 @@ import CoreLocation
 import Foundation
 import MapKit
 
-final class LocationSearchService {
+final class LocationSearchManager {
   let localSearchPublisher = PassthroughSubject<[MKMapItem], Never>()
   private var center = CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
   private let radius: CLLocationDistance = 2000

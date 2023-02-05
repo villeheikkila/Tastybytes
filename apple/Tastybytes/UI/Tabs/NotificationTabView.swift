@@ -4,7 +4,7 @@ struct NotificationTabView: View {
   let client: Client
   @EnvironmentObject private var notificationManager: NotificationManager
   @StateObject private var router = Router()
-  @Binding var resetNavigationOnTab: Tab?
+  @Binding private var resetNavigationOnTab: Tab?
 
   init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {
     self.client = client

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FriendSheetView: View {
-  @Binding var taggedFriends: [Profile]
+  @Binding private var taggedFriends: [Profile]
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss

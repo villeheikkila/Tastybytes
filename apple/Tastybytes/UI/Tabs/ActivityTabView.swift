@@ -7,7 +7,7 @@ struct ActivityTabView: View {
   let client: Client
   @StateObject private var router = Router()
   @State private var scrollToTop: Int = 0
-  @Binding var resetNavigationOnTab: Tab?
+  @Binding private var resetNavigationOnTab: Tab?
   @State private var resetView: Int = 0
 
   init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {

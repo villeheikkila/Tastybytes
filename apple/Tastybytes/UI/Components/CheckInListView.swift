@@ -7,8 +7,8 @@ struct CheckInListView<Header>: View
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @StateObject private var viewModel: ViewModel
   @State private var scrollProxy: ScrollViewProxy?
-  @Binding var scrollToTop: Int
-  @Binding var resetView: Int
+  @Binding private var scrollToTop: Int
+  @Binding private var resetView: Int
   private let topAnchor = "top"
   let header: () -> Header
   let onRefresh: () -> Void

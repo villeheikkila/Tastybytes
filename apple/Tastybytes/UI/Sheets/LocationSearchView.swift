@@ -48,7 +48,7 @@ extension LocationSearchView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "LocationSearchView")
     let client: Client
-    var service: LocationSearchService
+    var service: LocationSearchManager
     private var cancellable: AnyCancellable?
     @Published var viewData = [Location]()
     @Published var searchText = "" {
@@ -59,7 +59,7 @@ extension LocationSearchView {
 
     init(_ client: Client) {
       self.client = client
-      service = LocationSearchService()
+      service = LocationSearchManager()
       cancellable = service.localSearchPublisher.sink { mapItems in
         self.viewData = mapItems.map { Location(mapItem: $0) }
       }

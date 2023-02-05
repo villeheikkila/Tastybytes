@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct SearchTabView: View {
-  @StateObject var viewModel: ViewModel
-  @Binding var resetNavigationOnTab: Tab?
+  @StateObject private var viewModel: ViewModel
+  @Binding private var resetNavigationOnTab: Tab?
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var router = Router()

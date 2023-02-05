@@ -2,7 +2,7 @@ import Supabase
 import SwiftUI
 
 protocol AppClient {
-  var supabaseClient: SupabaseClient { get }
+  var supabase: SupabaseClient { get }
 
   var profile: ProfileRepository { get }
   var checkIn: CheckInRepository { get }
@@ -21,7 +21,7 @@ protocol AppClient {
 }
 
 class Client: AppClient {
-  let supabaseClient: SupabaseClient
+  let supabase: SupabaseClient
 
   let profile: ProfileRepository
   let checkIn: CheckInRepository
@@ -45,7 +45,7 @@ class Client: AppClient {
       supabaseURL: url,
       supabaseKey: apiKey
     )
-    supabaseClient = client
+    supabase = client
     profile = SupabaseProfileRepository(client: client)
     checkIn = SupabaseCheckInRepository(client: client)
     checkInComment = SupabaseCheckInCommentRepository(client: client)

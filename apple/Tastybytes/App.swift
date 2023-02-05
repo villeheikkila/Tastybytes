@@ -1,4 +1,4 @@
-import FirebaseCore
+import Firebase
 import FirebaseMessaging
 import GoTrue
 import Supabase
@@ -57,10 +57,10 @@ struct RootView: View {
     .environmentObject(profileManager)
     .preferredColorScheme(profileManager.colorScheme)
     .onOpenURL { url in
-      Task { _ = try await client.supabaseClient.auth.session(from: url) }
+      Task { _ = try await client.supabase.auth.session(from: url) }
     }
     .task {
-      for await authEventChange in client.supabaseClient.auth.authEventChange {
+      for await authEventChange in client.supabase.auth.authEventChange {
         withAnimation {
           self.authEvent = authEventChange
         }
@@ -76,5 +76,65 @@ struct RootView: View {
         }
       }
     }
+  }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
+  ) -> Bool {
+    FirebaseApp.configure()
+    FirebaseConfiguration.shared.setLoggerLevel(.min)
+    UNUserNotificationCenter.current().delegate = self
+    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+    UNUserNotificationCenter.current().requestAuthorization(
+      options: authOptions
+    ) { _, _ in }
+
+    application.registerForRemoteNotifications()
+
+    Messaging.messaging().delegate = self
+    return true
+  }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+  func userNotificationCenter(
+    _: UNUserNotificationCenter,
+    willPresent _: UNNotification,
+    withCompletionHandler completionHandler:
+    @escaping (UNNotificationPresentationOptions) -> Void
+  ) {
+    completionHandler([[.banner, .sound]])
+  }
+
+  func userNotificationCenter(
+    _: UNUserNotificationCenter,
+    didReceive _: UNNotificationResponse,
+    withCompletionHandler completionHandler: @escaping () -> Void
+  ) {
+    completionHandler()
+  }
+
+  func application(
+    _: UIApplication,
+    didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+  ) {
+    Messaging.messaging().apnsToken = deviceToken
+  }
+}
+
+extension AppDelegate: MessagingDelegate {
+  func messaging(
+    _: Messaging,
+    didReceiveRegistrationToken fcmToken: String?
+  ) {
+    let tokenDict = ["token": fcmToken ?? ""]
+    NotificationCenter.default.post(
+      name: Firebase.Notification.Name("FCMToken"),
+      object: nil,
+      userInfo: tokenDict
+    )
   }
 }

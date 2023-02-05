@@ -4,7 +4,7 @@ import SwiftUI
 struct FlavorSheetView: View {
   @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel: ViewModel
-  @Binding var pickedFlavors: [Flavor]
+  @Binding private var pickedFlavors: [Flavor]
   @State private var searchText = ""
   @State private var showToast = false
   private let maxFlavors = 6

@@ -5,7 +5,7 @@ import SwiftUI
 struct ProfileView: View {
   let client: Client
   @State private var profile: Profile
-  @Binding var scrollToTop: Int
+  @Binding private var scrollToTop: Int
   @StateObject private var viewModel: ViewModel
   @State private var resetView: Int = 0
   @EnvironmentObject private var toastManager: ToastManager

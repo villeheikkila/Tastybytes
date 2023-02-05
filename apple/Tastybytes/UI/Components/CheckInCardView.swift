@@ -4,6 +4,7 @@ import WrappingHStack
 
 struct CheckInCardView: View {
   @State private var showFullPicture = false
+
   let client: Client
   let checkIn: CheckIn
   let loadedFrom: LoadedFrom
