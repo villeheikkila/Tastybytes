@@ -118,11 +118,7 @@ struct AuthenticationScreenView: View {
             .disableAutocorrection(true)
         }
         .focused($focusedField, equals: .password)
-        .padding()
-        .padding(5)
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
-        .padding(.vertical, 5)
+        .modifier(AuthenticationInput())
       }
     }
   }
@@ -141,14 +137,21 @@ struct AuthenticationScreenView: View {
             .autocapitalization(.none)
             .disableAutocorrection(true)
         }
+        .modifier(AuthenticationInput())
         .focused($focusedField, equals: .email)
-        .padding()
-        .padding(5)
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
-        .padding(.vertical, 5)
       }
     }
+  }
+}
+
+struct AuthenticationInput: ViewModifier {
+  func body(content: Content) -> some View {
+    content
+      .padding()
+      .padding(5)
+      .background(Color(.systemGray6))
+      .cornerRadius(12)
+      .padding(.vertical, 5)
   }
 }
 

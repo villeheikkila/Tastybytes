@@ -15,6 +15,7 @@ struct ProfileSettingsScreenView: View {
     Form {
       profileSection
       profileDisplaySettings
+        privacySection
     }
     .navigationTitle("Profile")
     .task {
