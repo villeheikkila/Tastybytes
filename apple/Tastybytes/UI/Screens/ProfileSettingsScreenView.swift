@@ -15,7 +15,7 @@ struct ProfileSettingsScreenView: View {
     Form {
       profileSection
       profileDisplaySettings
-        privacySection
+      privacySection
     }
     .navigationTitle("Profile")
     .task {
@@ -33,6 +33,7 @@ struct ProfileSettingsScreenView: View {
 
       if viewModel.showProfileUpdateButton {
         Button("Update", action: { viewModel.updateProfile(onSuccess: {
+          profileManager.refresh()
           toastManager.toggle(.success("Profile updated!"))
         }, onFailure: {
           error in toastManager.toggle(.error(error.localizedDescription))
@@ -50,10 +51,27 @@ struct ProfileSettingsScreenView: View {
     Section {
       Toggle("Use Name Instead of Username", isOn: $viewModel.showFullName)
         .onChange(of: [self.viewModel.showFullName].publisher.first()) { _ in
-          viewModel.updateDisplaySettings()
+          viewModel.updateDisplaySettings(onUpdate: {
+            profileManager.refresh()
+          })
         }
     } footer: {
       Text("This only takes effect if both first name and last name are provided.")
+    }
+  }
+
+  private var privacySection: some View {
+    Section {
+      Toggle("Public Profile", isOn: $viewModel.isPublicProfile)
+        .onChange(of: [self.viewModel.isPublicProfile].publisher.first()) { _ in
+          viewModel.updatePrivacySettings(onUpdate: {
+            profileManager.refresh()
+          })
+        }
+    } header: {
+      Text("Privacy")
+    } footer: {
+      Text("When disabled, only your friends can see your check-ins")
     }
   }
 }
@@ -90,6 +108,7 @@ extension ProfileSettingsScreenView {
     @Published var showFullName = false
     @Published var showEmailConfirmationButton = false
     @Published var showProfileUpdateButton = false
+    @Published var isPublicProfile = true
     private var profile: Profile.Extended?
 
     init(_ client: Client) {
@@ -116,6 +135,7 @@ extension ProfileSettingsScreenView {
       lastName = profile.lastName.orEmpty
       firstName = profile.firstName.orEmpty
       showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
+      isPublicProfile = profile.settings.publicProfile
     }
 
     func updateProfile(onSuccess: @escaping () -> Void, onFailure: @escaping (_ error: Error) -> Void) {
@@ -139,15 +159,34 @@ extension ProfileSettingsScreenView {
       }
     }
 
-    func updateDisplaySettings() {
+    func updatePrivacySettings(onUpdate: @escaping () -> Void) {
+      let update = ProfileSettings.UpdateRequest(publicProfile: isPublicProfile)
+
+      Task {
+        switch await client.profile.updateSettings(
+          update: update
+        ) {
+        case .success:
+          onUpdate()
+        case let .failure(error):
+          logger.warning("failed to update settings: \(error.localizedDescription)")
+        }
+      }
+    }
+
+    func updateDisplaySettings(onUpdate: @escaping () -> Void) {
       let update = Profile.UpdateRequest(
         showFullName: showFullName
       )
-
       Task {
-        _ = await client.profile.update(
+        switch await client.profile.update(
           update: update
-        )
+        ) {
+        case .success:
+          onUpdate()
+        case let .failure(error):
+          logger.warning("failed to update profile: \(error.localizedDescription)")
+        }
       }
     }
   }

@@ -13,7 +13,6 @@ struct ApplicationSettingsScreenView: View {
     Form {
       colorSchemeSection
       notificationSection
-      privacySection
     }
     .navigationTitle("Application")
     .navigationBarTitleDisplayMode(.inline)
@@ -31,7 +30,8 @@ struct ApplicationSettingsScreenView: View {
       Toggle("Use Dark Mode", isOn: $viewModel.isDarkMode)
         .onChange(of: [self.viewModel.isDarkMode].publisher.first()) { _ in
           viewModel.updateColorScheme { profileManager.refresh() }
-        }.disabled(viewModel.isSystemColor)
+        }
+        .disabled(viewModel.isSystemColor)
     } header: {
       Text("Color Scheme")
     }
@@ -55,26 +55,12 @@ struct ApplicationSettingsScreenView: View {
       Text("Notifications")
     }
   }
-
-  private var privacySection: some View {
-    Section {
-      Toggle("Public Profile", isOn: $viewModel.isPublicProfile)
-        .onChange(of: [self.viewModel.isPublicProfile].publisher.first()) { _ in
-          viewModel.updatePrivacySettings()
-        }
-    } header: {
-      Text("Privacy")
-    } footer: {
-      Text("When disabled, only your friends can see your check-ins")
-    }
-  }
 }
 
 extension ApplicationSettingsScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ApplicationSettingsScreenView")
     let client: Client
-    @Published var isPublicProfile = true
     @Published var isSystemColor = false
     @Published var isDarkMode = false
     @Published var reactionNotifications = true
@@ -106,7 +92,6 @@ extension ApplicationSettingsScreenView {
           self.reactionNotifications = profile.settings.sendReactionNotifications
           self.friendRequestNotifications = profile.settings.sendFriendRequestNotifications
           self.checkInTagNotifications = profile.settings.sendTaggedCheckInNotifications
-          self.isPublicProfile = profile.settings.publicProfile
 
           initialColorScheme = systemColorScheme
         case let .failure(error):
@@ -141,16 +126,6 @@ extension ApplicationSettingsScreenView {
         sendTaggedCheckInNotifications: checkInTagNotifications,
         sendFriendRequestNotifications: friendRequestNotifications
       )
-
-      Task {
-        _ = await client.profile.updateSettings(
-          update: update
-        )
-      }
-    }
-
-    func updatePrivacySettings() {
-      let update = ProfileSettings.UpdateRequest(publicProfile: isPublicProfile)
 
       Task {
         _ = await client.profile.updateSettings(
