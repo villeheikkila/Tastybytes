@@ -20,6 +20,9 @@ struct CompanyScreenView: View {
       productList
     }
     .navigationTitle(viewModel.company.name)
+    .refreshable {
+      viewModel.refresh()
+    }
     .navigationBarItems(trailing: navigationBarMenu)
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
@@ -31,7 +34,7 @@ struct CompanyScreenView: View {
         case .editBrand:
           if let editBrand = viewModel.editBrand {
             EditBrandSheetView(viewModel.client, brand: editBrand, brandOwner: viewModel.company) {
-              viewModel.refreshData(companyId: viewModel.company.id)
+              viewModel.refresh()
             }
           }
         case .mergeProduct:
@@ -67,7 +70,7 @@ struct CompanyScreenView: View {
       )
     }
     .task {
-      viewModel.refreshData(companyId: viewModel.company.id)
+      viewModel.refresh()
     }
   }
 
@@ -290,23 +293,25 @@ extension CompanyScreenView {
       }
     }
 
-    func refreshData(companyId: Int) {
+    func refresh() {
       Task {
-        switch await client.company.getJoinedById(id: companyId) {
+        async let companyPromise = client.company.getJoinedById(id: company.id)
+        async let summaryPromise = client.company.getSummaryById(id: company.id)
+
+        switch await companyPromise {
         case let .success(company):
           self.companyJoined = company
           self.newCompanyNameSuggestion = company.name
         case let .failure(error):
-          logger.error("failed to refresh data for company '\(companyId)': \(error.localizedDescription)")
+          logger.error("failed to refresh data for company '\(self.company.id)': \(error.localizedDescription)")
         }
-      }
 
-      Task {
-        switch await client.company.getSummaryById(id: companyId) {
+        switch await summaryPromise {
         case let .success(summary):
           self.summary = summary
         case let .failure(error):
-          logger.error("failed to load summary for company '\(companyId)' : \(error.localizedDescription)")
+          logger
+            .error("failed to load summary for company '\(self.company.id)' : \(error.localizedDescription)")
         }
       }
     }
@@ -323,11 +328,11 @@ extension CompanyScreenView {
     }
 
     func deleteProduct() {
-      if let productToDelete, let companyJoined {
+      if let productToDelete {
         Task {
           switch await client.product.delete(id: productToDelete.id) {
           case .success:
-            refreshData(companyId: companyJoined.id)
+            refresh()
             self.productToDelete = nil
           case let .failure(error):
             logger.error("failed to delete product '\(productToDelete.id)': \(error.localizedDescription)")
@@ -340,15 +345,7 @@ extension CompanyScreenView {
       Task {
         switch await client.brand.delete(id: brand.id) {
         case .success:
-          // TODO: Do not refetch the company on deletion
-          if let companyJoined {
-            switch await client.company.getJoinedById(id: companyJoined.id) {
-            case let .success(company):
-              refreshData(companyId: company.id)
-            case let .failure(error):
-              logger.error("failed to load company \(brand.id) after deleting a brand: \(error.localizedDescription)")
-            }
-          }
+          refresh()
         case let .failure(error):
           logger.error("failed to delete brand '\(brand.id)': \(error.localizedDescription)")
         }
