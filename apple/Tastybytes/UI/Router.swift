@@ -130,7 +130,7 @@ enum NavigatablePath {
   var url: URL {
     switch self {
     case let .profile(id):
-      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.profiles)/\(id)")!
+      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.profiles)/\(id.uuidString.lowercased())")!
     case let .checkIn(id):
       return URL(string: "\(Config.baseUrl)/\(PathIdentifier.checkins)/\(id)")!
     case let .product(id):
@@ -140,7 +140,7 @@ enum NavigatablePath {
     case let .brand(id):
       return URL(string: "\(Config.baseUrl)/\(PathIdentifier.brands)/\(id)")!
     case let .location(id):
-      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.locations)/\(id)")!
+      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.locations)/\(id.uuidString.lowercased())")!
     }
   }
 }

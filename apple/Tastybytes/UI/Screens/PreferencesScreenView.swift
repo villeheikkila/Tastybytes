@@ -19,7 +19,7 @@ struct PreferencesScreenView: View {
         }
 
         NavigationLink(destination: ApplicationSettingsScreenView(client)) {
-          Label("Application", systemImage: "gear")
+          Label("Application", systemImage: "app.badge.checkmark.fill")
         }
 
         NavigationLink(destination: AppIconScreenView()) {
