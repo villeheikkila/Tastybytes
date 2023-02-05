@@ -3,7 +3,6 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileView: View {
-  @State private var profile: Profile
   @Binding private var scrollToTop: Int
   @StateObject private var viewModel: ViewModel
   @State private var resetView: Int = 0
@@ -11,25 +10,26 @@ struct ProfileView: View {
   @EnvironmentObject private var profileManager: ProfileManager
 
   init(_ client: Client, profile: Profile, scrollToTop: Binding<Int>) {
-    _profile = State(initialValue: profile)
     _scrollToTop = scrollToTop
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    _viewModel = StateObject(wrappedValue: ViewModel(client, profile: profile))
   }
 
   var body: some View {
     CheckInListView(
       viewModel.client,
-      fetcher: .profile(profile),
+      fetcher: .profile(viewModel.profile),
       scrollToTop: $scrollToTop,
       resetView: $resetView,
-      onRefresh: {}
+      onRefresh: {
+        viewModel.refresh()
+      }
     ) {
       VStack(spacing: 20) {
         profileSummary
         ratingChart
         ratingSummary
-        if profileManager.getId() != profile.id,
-           !profileManager.hasFriendByUserId(userId: profile.id)
+        if profileManager.getId() != viewModel.profile.id,
+           !profileManager.hasFriendByUserId(userId: viewModel.profile.id)
         {
           sendFriendRequestButton
         }
@@ -42,7 +42,7 @@ struct ProfileView: View {
     HStack {
       Spacer()
       Button(action: {
-        profileManager.sendFriendRequest(receiver: profile.id) {
+        profileManager.sendFriendRequest(receiver: viewModel.profile.id) {
           toastManager.toggle(.success("Friend Request Sent!"))
         }
       }) {
@@ -54,7 +54,7 @@ struct ProfileView: View {
   }
 
   private var avatar: some View {
-    AvatarView(avatarUrl: profile.getAvatarURL(), size: 90, id: profile.id)
+    AvatarView(avatarUrl: viewModel.profile.getAvatarURL(), size: 90, id: viewModel.profile.id)
   }
 
   private var profileSummary: some View {
@@ -73,7 +73,7 @@ struct ProfileView: View {
       Spacer()
 
       VStack(alignment: .center) {
-        if profile.id == profileManager.getId() {
+        if viewModel.profile.id == profileManager.getId() {
           PhotosPicker(
             selection: $viewModel.selectedItem,
             matching: .images,
@@ -86,9 +86,7 @@ struct ProfileView: View {
         }
       }
       .onChange(of: viewModel.selectedItem) { newValue in
-        viewModel.uploadAvatar(userId: profileManager.getId(), newAvatar: newValue) {
-          fileName in profile.avatarUrl = fileName
-        }
+        viewModel.uploadAvatar(userId: profileManager.getId(), newAvatar: newValue)
       }
 
       Spacer()
@@ -106,10 +104,10 @@ struct ProfileView: View {
     }
     .padding(.top, 10)
     .task {
-      viewModel.getProfileData(userId: profile.id)
+      viewModel.refresh()
     }
     .contextMenu {
-      ShareLink("Share", item: NavigatablePath.profile(id: profile.id).url)
+      ShareLink("Share", item: NavigatablePath.profile(id: viewModel.profile.id).url)
     }
   }
 
@@ -183,7 +181,7 @@ struct ProfileView: View {
 
   private var links: some View {
     VStack {
-      NavigationLink(value: Route.friends(profile)) {
+      NavigationLink(value: Route.friends(viewModel.profile)) {
         HStack {
           Text("Friends")
             .font(.system(size: 16, weight: .medium, design: .default))
@@ -195,7 +193,7 @@ struct ProfileView: View {
         .contentShape(Rectangle())
       }
       Divider()
-      NavigationLink(value: Route.profileProducts(profile)) {
+      NavigationLink(value: Route.profileProducts(viewModel.profile)) {
         HStack {
           Text("Products")
             .font(.system(size: 16, weight: .medium, design: .default))
@@ -217,14 +215,16 @@ extension ProfileView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProfileView")
     let client: Client
+    @Published var profile: Profile
     @Published var profileSummary: ProfileSummary?
     @Published var selectedItem: PhotosPickerItem?
 
-    init(_ client: Client) {
+    init(_ client: Client, profile: Profile) {
       self.client = client
+      self.profile = profile
     }
 
-    func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?, onSuccess: @escaping (_ fileName: String) -> Void) {
+    func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) {
       Task {
         if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
            let image = UIImage(data: imageData),
@@ -232,7 +232,7 @@ extension ProfileView {
         {
           switch await client.profile.uploadAvatar(userId: userId, data: data) {
           case let .success(fileName):
-            onSuccess(fileName)
+            profile.avatarUrl = fileName
           case let .failure(error):
             logger
               .error(
@@ -243,9 +243,9 @@ extension ProfileView {
       }
     }
 
-    func getProfileData(userId: UUID) {
+    func refresh() {
       Task {
-        switch await client.checkIn.getSummaryByProfileId(id: userId) {
+        switch await client.checkIn.getSummaryByProfileId(id: profile.id) {
         case let .success(summary):
           withAnimation {
             self.profileSummary = summary
@@ -253,7 +253,7 @@ extension ProfileView {
         case let .failure(error):
           logger
             .error(
-              "fetching profile data for \(userId) failed: \(error.localizedDescription)"
+              "fetching profile data for \(self.profile.id) failed: \(error.localizedDescription)"
             )
         }
       }

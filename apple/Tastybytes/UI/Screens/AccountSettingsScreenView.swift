@@ -191,7 +191,6 @@ extension AccountSettingsScreenView {
       }
     }
 
-    // TODO: Do not log out on email change
     func sendEmailVerificationLink() {
       Task {
         _ = await client.auth.sendEmailVerification(email: email)
