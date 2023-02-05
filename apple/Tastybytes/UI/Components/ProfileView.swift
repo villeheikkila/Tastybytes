@@ -21,7 +21,7 @@ struct ProfileView: View {
       scrollToTop: $scrollToTop,
       resetView: $resetView,
       onRefresh: {
-        viewModel.refresh()
+        viewModel.getSummary()
       }
     ) {
       VStack(spacing: 20) {
@@ -104,7 +104,7 @@ struct ProfileView: View {
     }
     .padding(.top, 10)
     .task {
-      viewModel.refresh()
+      viewModel.getSummary()
     }
     .contextMenu {
       ShareLink("Share", item: NavigatablePath.profile(id: viewModel.profile.id).url)
@@ -243,7 +243,7 @@ extension ProfileView {
       }
     }
 
-    func refresh() {
+    func getSummary() {
       Task {
         switch await client.checkIn.getSummaryByProfileId(id: profile.id) {
         case let .success(summary):

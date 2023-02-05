@@ -38,9 +38,6 @@ struct ActivityTabView: View {
         .toolbar {
           toolbarContent
         }
-        .onAppear {
-          router.reset()
-        }
         .onOpenURL { url in
           if let detailPage = url.detailPage {
             router.fetchAndNavigateTo(client, detailPage)

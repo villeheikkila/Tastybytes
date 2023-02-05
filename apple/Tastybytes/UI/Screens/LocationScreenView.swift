@@ -19,7 +19,9 @@ struct LocationScreenView: View {
       fetcher: .location(viewModel.location),
       scrollToTop: $scrollToTop,
       resetView: $resetView,
-      onRefresh: {}
+      onRefresh: {
+        viewModel.getSummary()
+      }
     ) {
       if let summary = viewModel.summary, summary.averageRating != nil {
         Section {
