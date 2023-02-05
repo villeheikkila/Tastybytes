@@ -33,7 +33,9 @@ struct NotificationTabView: View {
             Spacer()
           }
         }
-        .onDelete(perform: notificationManager.deleteFromIndex)
+        .onDelete(perform: {
+          index in notificationManager.deleteFromIndex(at: index)
+        })
       }
       .refreshable {
         notificationManager.refresh(reset: true)

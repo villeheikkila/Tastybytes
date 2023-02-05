@@ -3,7 +3,6 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileView: View {
-  let client: Client
   @State private var profile: Profile
   @Binding private var scrollToTop: Int
   @StateObject private var viewModel: ViewModel
@@ -15,12 +14,11 @@ struct ProfileView: View {
     _profile = State(initialValue: profile)
     _scrollToTop = scrollToTop
     _viewModel = StateObject(wrappedValue: ViewModel(client))
-    self.client = client
   }
 
   var body: some View {
     CheckInListView(
-      client,
+      viewModel.client,
       fetcher: .profile(profile),
       scrollToTop: $scrollToTop,
       resetView: $resetView,
@@ -218,7 +216,7 @@ struct ProfileView: View {
 extension ProfileView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProfileView")
-    private let client: Client
+    let client: Client
     @Published var profileSummary: ProfileSummary?
     @Published var selectedItem: PhotosPickerItem?
 

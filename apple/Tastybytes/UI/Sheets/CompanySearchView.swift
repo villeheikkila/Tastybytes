@@ -73,7 +73,7 @@ extension CompanySheetView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CompanySheetView")
-    private let client: Client
+    let client: Client
     @Published var searchText: String = ""
     @Published var searchResults = [Company]()
     @Published var status: Status?

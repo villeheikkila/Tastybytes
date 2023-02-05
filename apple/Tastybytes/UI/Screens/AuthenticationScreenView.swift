@@ -175,7 +175,7 @@ extension AuthenticationScreenView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "AuthenticationScreenView")
-    private let client: Client
+    let client: Client
     @Published var scene: Scene
     @Published var isLoading = false
     @Published var email = ""

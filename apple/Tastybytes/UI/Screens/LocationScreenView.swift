@@ -3,7 +3,6 @@ import PhotosUI
 import SwiftUI
 
 struct LocationScreenView: View {
-  let client: Client
   @EnvironmentObject var router: Router
   @EnvironmentObject var profileManager: ProfileManager
   @StateObject private var viewModel: ViewModel
@@ -12,12 +11,11 @@ struct LocationScreenView: View {
 
   init(_ client: Client, location: Location) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, location: location))
-    self.client = client
   }
 
   var body: some View {
     CheckInListView(
-      client,
+      viewModel.client,
       fetcher: .location(viewModel.location),
       scrollToTop: $scrollToTop,
       resetView: $resetView,
@@ -73,7 +71,7 @@ struct LocationScreenView: View {
 extension LocationScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "LocationScreenView")
-    private let client: Client
+    let client: Client
     @Published var summary: Summary?
     @Published var showDeleteLocationConfirmation = false
     let location: Location

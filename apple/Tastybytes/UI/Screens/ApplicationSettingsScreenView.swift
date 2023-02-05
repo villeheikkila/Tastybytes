@@ -73,7 +73,7 @@ struct ApplicationSettingsScreenView: View {
 extension ApplicationSettingsScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ApplicationSettingsScreenView")
-    private let client: Client
+    let client: Client
     @Published var isPublicProfile = true
     @Published var isSystemColor = false
     @Published var isDarkMode = false

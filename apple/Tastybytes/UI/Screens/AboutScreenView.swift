@@ -106,7 +106,7 @@ struct AboutScreenView: View {
 extension AboutScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "AboutScreenView")
-    private let client: Client
+    let client: Client
     @Published var aboutPage: AboutPage?
 
     init(_ client: Client) {

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct ProductScreenView: View {
-  let client: Client
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
@@ -9,12 +8,11 @@ struct ProductScreenView: View {
 
   init(_ client: Client, product: Product.Joined) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, product: product))
-    self.client = client
   }
 
   var body: some View {
     CheckInListView(
-      client,
+      viewModel.client,
       fetcher: .product(viewModel.product),
       scrollToTop: $scrollToTop,
       resetView: $viewModel.resetView,
@@ -86,13 +84,13 @@ struct ProductScreenView: View {
       NavigationStack {
         switch sheet {
         case .checkIn:
-          CheckInSheetView(client, product: viewModel.product, onCreation: {
+          CheckInSheetView(viewModel.client, product: viewModel.product, onCreation: {
             _ in viewModel.refreshCheckIns()
           })
         case .editSuggestion:
-          ProductSheetView(client, mode: .editSuggestion, initialProduct: viewModel.product)
+          ProductSheetView(viewModel.client, mode: .editSuggestion, initialProduct: viewModel.product)
         case .editProduct:
-          ProductSheetView(client, mode: .edit, initialProduct: viewModel.product, onEdit: {
+          ProductSheetView(viewModel.client, mode: .edit, initialProduct: viewModel.product, onEdit: {
             viewModel.onEditCheckIn()
           })
         }
@@ -155,7 +153,7 @@ extension ProductScreenView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductScreenView")
-    private let client: Client
+    let client: Client
     @Published var product: Product.Joined
     @Published var activeSheet: Sheet?
     @Published var summary: Summary?

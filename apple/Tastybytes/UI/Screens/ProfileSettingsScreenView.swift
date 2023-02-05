@@ -60,7 +60,7 @@ struct ProfileSettingsScreenView: View {
 extension ProfileSettingsScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProfileSettingsScreenView")
-    private let client: Client
+    let client: Client
     @Published var selectedItem: PhotosPickerItem?
     @Published var username = "" {
       didSet {

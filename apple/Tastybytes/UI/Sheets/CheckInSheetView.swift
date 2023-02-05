@@ -4,7 +4,6 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInSheetView: View {
-  let client: Client
   @StateObject private var viewModel: ViewModel
   @Environment(\.dismiss) private var dismiss
   @State private var showPhotoMenu = false
@@ -18,7 +17,6 @@ struct CheckInSheetView: View {
 
   init(_ client: Client, product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
     _viewModel = StateObject(wrappedValue: ViewModel(client))
-    self.client = client
     self.product = product
     existingCheckIn = nil
     self.onCreation = onCreation
@@ -30,7 +28,6 @@ struct CheckInSheetView: View {
        onUpdate: @escaping (_ checkIn: CheckIn) -> Void)
   {
     _viewModel = StateObject(wrappedValue: ViewModel(client))
-    self.client = client
     product = checkIn.product
     existingCheckIn = checkIn
     onCreation = nil
@@ -182,15 +179,15 @@ struct CheckInSheetView: View {
       NavigationStack {
         switch sheet {
         case .friends:
-          FriendSheetView(client, taggedFriends: $viewModel.taggedFriends)
+          FriendSheetView(viewModel.client, taggedFriends: $viewModel.taggedFriends)
         case .flavors:
-          FlavorSheetView(client, pickedFlavors: $viewModel.pickedFlavors)
+          FlavorSheetView(viewModel.client, pickedFlavors: $viewModel.pickedFlavors)
         case .location:
-          LocationSearchView(client, onSelect: {
+          LocationSearchView(viewModel.client, onSelect: {
             location in viewModel.setLocation(location)
           })
         case .manufacturer:
-          CompanySheetView(client, onSelect: { company, _ in
+          CompanySheetView(viewModel.client, onSelect: { company, _ in
             viewModel.setManufacturer(company)
           })
         case .photoPicker:
@@ -267,7 +264,7 @@ extension CheckInSheetView {
 
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CheckInSheetView")
-    private let client: Client
+    let client: Client
     @Published var selectedItem: PhotosPickerItem?
     @Published var activeSheet: Sheet?
     @Published var showCamera = false
