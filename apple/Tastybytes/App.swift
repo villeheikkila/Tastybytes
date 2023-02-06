@@ -39,6 +39,8 @@ struct RootView: View {
         }
       case .passwordRecovery:
         AuthenticationScreenView(client, scene: .resetPassword)
+      case .userDeleted:
+        AuthenticationScreenView(client, scene: .accountDeleted)
       case nil:
         SplashScreenView()
       default:

@@ -1,5 +1,4 @@
 import Foundation
-import Supabase
 
 public enum Config {
   enum Keys {

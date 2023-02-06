@@ -14,7 +14,7 @@ struct AuthenticationScreenView: View {
   var body: some View {
     VStack(spacing: 20) {
       projectLogo
-      if viewModel.scene != .resetPassword {
+      if !(viewModel.scene == .resetPassword || viewModel.scene == .accountDeleted) {
         EmailTextFieldView(email: $viewModel.email, focusedField: _focusedField)
       }
       if viewModel.scene == .signIn || viewModel.scene == .signUp || viewModel.scene == .resetPassword {
@@ -23,11 +23,33 @@ struct AuthenticationScreenView: View {
       if viewModel.scene == .resetPassword {
         PasswordTextFieldView(password: $viewModel.passwordConfirmation, focusedField: _focusedField)
       }
+
+      if viewModel.scene == .accountDeleted {
+        accountDeletion
+      }
       actions
     }
     .padding(40)
     .task {
       splashScreenManager.dismiss()
+    }
+  }
+
+  private var accountDeletion: some View {
+    VStack {
+      HStack {
+        Spacer()
+        VStack(spacing: 12) {
+          Image(systemName: "trash.circle")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 48, height: 48)
+          Text("Account Deleted")
+            .font(.system(size: 24))
+        }
+        Spacer()
+      }
+      Spacer()
     }
   }
 
@@ -157,7 +179,7 @@ struct AuthenticationInput: ViewModifier {
 
 extension AuthenticationScreenView {
   enum Scene: String {
-    case signIn, signUp, magicLink, resetPassword, forgotPassword
+    case signIn, signUp, magicLink, resetPassword, forgotPassword, accountDeleted
 
     var primaryLabel: String {
       switch self {
@@ -166,6 +188,7 @@ extension AuthenticationScreenView {
       case .magicLink: return "Send magic link"
       case .resetPassword: return "Reset password"
       case .forgotPassword: return "Send reset password instructions"
+      case .accountDeleted: return "Go back to sign in page"
       }
     }
   }
@@ -238,7 +261,6 @@ extension AuthenticationScreenView {
           case .success:
             primaryActionSuccessMessage = "Confirmation email has been sent!"
             onSignUp()
-
           case let .failure(error):
             primaryActionError = error
           }
@@ -264,6 +286,8 @@ extension AuthenticationScreenView {
           case let .failure(error):
             primaryActionError = error
           }
+        case .accountDeleted:
+          setScene(.signIn)
         }
 
         if let primaryActionSuccessMessage {
