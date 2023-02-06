@@ -17,7 +17,7 @@ struct ProfileTabView: View {
 
   var body: some View {
     NavigationStack(path: $router.path) {
-      ProfileView(client, profile: profileManager.getProfile(), scrollToTop: $scrollToTop)
+      ProfileView(client, profile: profileManager.getProfile(), scrollToTop: $scrollToTop, isCurrentUser: true)
         .navigationTitle(profileManager.getProfile().preferredName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

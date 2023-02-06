@@ -3,15 +3,15 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileView: View {
-  @Binding private var scrollToTop: Int
   @StateObject private var viewModel: ViewModel
+  @Binding private var scrollToTop: Int
   @State private var resetView: Int = 0
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
 
-  init(_ client: Client, profile: Profile, scrollToTop: Binding<Int>) {
+  init(_ client: Client, profile: Profile, scrollToTop: Binding<Int>, isCurrentUser: Bool) {
     _scrollToTop = scrollToTop
-    _viewModel = StateObject(wrappedValue: ViewModel(client, profile: profile))
+    _viewModel = StateObject(wrappedValue: ViewModel(client, profile: profile, isCurrentUser: isCurrentUser))
   }
 
   var body: some View {
@@ -26,14 +26,18 @@ struct ProfileView: View {
     ) {
       VStack(spacing: 20) {
         profileSummary
-        ratingChart
-        ratingSummary
-        if profileManager.getId() != viewModel.profile.id,
+        if viewModel.isPublic {
+          ratingChart
+          ratingSummary
+          links
+        } else {
+          privateProfileSign
+        }
+        if !viewModel.isCurrentUser,
            !profileManager.hasFriendByUserId(userId: viewModel.profile.id)
         {
           sendFriendRequestButton
         }
-        links
       }
     }
   }
@@ -57,23 +61,40 @@ struct ProfileView: View {
     AvatarView(avatarUrl: viewModel.profile.getAvatarURL(), size: 90, id: viewModel.profile.id)
   }
 
+  private var privateProfileSign: some View {
+    VStack {
+      HStack {
+        Spacer()
+        VStack(spacing: 8) {
+          Image(systemName: "eye.slash.circle")
+            .imageScale(.large)
+          Text("Private profile")
+            .font(.system(size: 24))
+        }
+        Spacer()
+      }
+      .padding(.top, 20)
+    }
+  }
+
   private var profileSummary: some View {
     HStack(alignment: .center, spacing: 20) {
-      HStack {
-        VStack {
-          Text("Check-ins")
-            .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-          Text(String(viewModel.profileSummary?.totalCheckIns ?? 0))
-            .font(.system(size: 16, weight: .bold, design: .default))
+      if viewModel.isPublic {
+        HStack {
+          VStack {
+            Text("Check-ins")
+              .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
+            Text(String(viewModel.profileSummary?.totalCheckIns ?? 0))
+              .font(.system(size: 16, weight: .bold, design: .default))
+          }
+          .padding(.leading, 30)
+          .frame(width: 100)
         }
-        .padding(.leading, 30)
-        .frame(width: 100)
       }
-
       Spacer()
 
       VStack(alignment: .center) {
-        if viewModel.profile.id == profileManager.getId() {
+        if viewModel.isCurrentUser {
           PhotosPicker(
             selection: $viewModel.selectedItem,
             matching: .images,
@@ -91,15 +112,17 @@ struct ProfileView: View {
 
       Spacer()
 
-      HStack {
-        VStack {
-          Text("Unique")
-            .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
-          Text(String(viewModel.profileSummary?.uniqueCheckIns ?? 0))
-            .font(.system(size: 16, weight: .bold, design: .default))
+      if viewModel.isPublic {
+        HStack {
+          VStack {
+            Text("Unique")
+              .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
+            Text(String(viewModel.profileSummary?.uniqueCheckIns ?? 0))
+              .font(.system(size: 16, weight: .bold, design: .default))
+          }
+          .padding(.trailing, 30)
+          .frame(width: 100)
         }
-        .padding(.trailing, 30)
-        .frame(width: 100)
       }
     }
     .padding(.top, 10)
@@ -219,9 +242,14 @@ extension ProfileView {
     @Published var profileSummary: ProfileSummary?
     @Published var selectedItem: PhotosPickerItem?
 
-    init(_ client: Client, profile: Profile) {
+    let isCurrentUser: Bool
+    let isPublic: Bool
+
+    init(_ client: Client, profile: Profile, isCurrentUser: Bool) {
       self.client = client
       self.profile = profile
+      self.isCurrentUser = isCurrentUser
+      isPublic = isCurrentUser || !profile.isPrivate
     }
 
     func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) {
