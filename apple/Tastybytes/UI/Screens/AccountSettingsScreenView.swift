@@ -214,7 +214,6 @@ extension AccountSettingsScreenView {
       Task {
         switch await client.profile.deleteCurrentAccount() {
         case .success:
-          _ = await client.profile.deleteCurrentAccount()
           _ = await client.auth.logOut()
         case let .failure(error):
           logger.error("failed to delete current account: \(error.localizedDescription)")
