@@ -62,8 +62,8 @@ struct ProfileSettingsScreenView: View {
 
   private var privacySection: some View {
     Section {
-      Toggle("Public Profile", isOn: $viewModel.isPublicProfile)
-        .onChange(of: [self.viewModel.isPublicProfile].publisher.first()) { _ in
+      Toggle("Private Profile", isOn: $viewModel.isPrivateProfile)
+        .onChange(of: [self.viewModel.isPrivateProfile].publisher.first()) { _ in
           viewModel.updatePrivacySettings(onUpdate: {
             profileManager.refresh()
           })
@@ -108,7 +108,7 @@ extension ProfileSettingsScreenView {
     @Published var showFullName = false
     @Published var showEmailConfirmationButton = false
     @Published var showProfileUpdateButton = false
-    @Published var isPublicProfile = true
+    @Published var isPrivateProfile = true
     private var profile: Profile.Extended?
 
     init(_ client: Client) {
@@ -135,7 +135,7 @@ extension ProfileSettingsScreenView {
       lastName = profile.lastName.orEmpty
       firstName = profile.firstName.orEmpty
       showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
-      isPublicProfile = profile.settings.publicProfile
+      isPrivateProfile = profile.isPrivate
     }
 
     func updateProfile(onSuccess: @escaping () -> Void, onFailure: @escaping (_ error: Error) -> Void) {
@@ -160,10 +160,12 @@ extension ProfileSettingsScreenView {
     }
 
     func updatePrivacySettings(onUpdate: @escaping () -> Void) {
-      let update = ProfileSettings.UpdateRequest(publicProfile: isPublicProfile)
+      let update = Profile.UpdateRequest(
+        isPrivate: true
+      )
 
       Task {
-        switch await client.profile.updateSettings(
+        switch await client.profile.update(
           update: update
         ) {
         case .success:

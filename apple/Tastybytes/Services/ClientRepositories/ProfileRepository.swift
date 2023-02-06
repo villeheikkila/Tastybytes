@@ -47,6 +47,7 @@ struct SupabaseProfileRepository: ProfileRepository {
         .single()
         .execute()
         .value
+
       return .success(response)
     } catch {
       return .failure(error)

@@ -47,9 +47,9 @@ func parseDate(from: String) throws -> Date {
 }
 
 struct CSVFile: FileDocument {
-  static var readableContentTypes = [UTType.commaSeparatedText]
-  static var writableContentTypes = UTType.commaSeparatedText
-  var text = ""
+  static let readableContentTypes = [UTType.commaSeparatedText]
+  static let writableContentTypes = UTType.commaSeparatedText
+  let text: String
 
   init(initialText: String = "") {
     text = initialText
@@ -58,6 +58,8 @@ struct CSVFile: FileDocument {
   init(configuration: ReadConfiguration) throws {
     if let data = configuration.file.regularFileContents {
       text = String(decoding: data, as: UTF8.self)
+    } else {
+      text = ""
     }
   }
 

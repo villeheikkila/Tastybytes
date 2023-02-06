@@ -232,7 +232,12 @@ extension ProfileView {
         {
           switch await client.profile.uploadAvatar(userId: userId, data: data) {
           case let .success(fileName):
-            profile.avatarUrl = fileName
+            profile = Profile(
+              id: profile.id,
+              preferredName: profile.preferredName,
+              isPrivate: profile.isPrivate,
+              avatarUrl: fileName
+            )
           case let .failure(error):
             logger
               .error(

@@ -3,11 +3,13 @@ import Foundation
 struct Profile: Identifiable, Decodable, Hashable {
   let id: UUID
   let preferredName: String
-  var avatarUrl: String?
+  let isPrivate: Bool
+  let avatarUrl: String?
 
   enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case preferredName = "preferred_name"
+    case isPrivate = "is_private"
     case avatarUrl = "avatar_url"
   }
 
@@ -25,8 +27,8 @@ struct Profile: Identifiable, Decodable, Hashable {
 extension Profile {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "profiles"
-    let minimal = "id, preferred_name, avatar_url"
-    let saved = "id, preferred_name, username, first_name, last_name, avatar_url, name_display"
+    let minimal = "id, is_private, preferred_name, avatar_url"
+    let saved = "id, is_private, preferred_name, username, first_name, last_name, avatar_url, name_display"
 
     switch queryType {
     case .tableName:
@@ -55,20 +57,23 @@ extension Profile {
     let username: String
     let firstName: String?
     let lastName: String?
+    let isPrivate: Bool
     let avatarUrl: String?
     let preferredName: String
     let nameDisplay: NameDisplay
     let roles: [Role]
     let settings: ProfileSettings
 
+    // TODO: Get rid of this
     func getProfile() -> Profile {
-      Profile(id: id, preferredName: preferredName, avatarUrl: avatarUrl)
+      Profile(id: id, preferredName: preferredName, isPrivate: isPrivate, avatarUrl: avatarUrl)
     }
 
     enum CodingKeys: String, CodingKey, CaseIterable {
       case id
       case username
       case preferredName = "preferred_name"
+      case isPrivate = "is_private"
       case firstName = "first_name"
       case lastName = "last_name"
       case avatarUrl = "avatar_url"
@@ -83,6 +88,7 @@ extension Profile {
       id = try values.decode(UUID.self, forKey: .id)
       username = try values.decode(String.self, forKey: .username)
       preferredName = try values.decode(String.self, forKey: .preferredName)
+      isPrivate = try values.decode(Bool.self, forKey: .isPrivate)
       firstName = try values.decodeIfPresent(String.self, forKey: .firstName)
       lastName = try values.decodeIfPresent(String.self, forKey: .lastName)
       avatarUrl = try values.decodeIfPresent(String.self, forKey: .avatarUrl)
@@ -119,16 +125,22 @@ extension Profile {
     var firstName: String?
     var lastName: String?
     var nameDisplay: String?
+    var isPrivate: Bool?
 
     enum CodingKeys: String, CodingKey {
       case username
       case firstName = "first_name"
       case lastName = "last_name"
       case nameDisplay = "name_display"
+      case isPrivate = "is_private"
     }
 
     init(showFullName: Bool) {
       nameDisplay = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
+    }
+
+    init(isPrivate: Bool) {
+      self.isPrivate = isPrivate
     }
 
     init(username: String?, firstName: String?, lastName: String?) {
@@ -149,7 +161,6 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
   let sendReactionNotifications: Bool
   let sendTaggedCheckInNotifications: Bool
   let sendFriendRequestNotifications: Bool
-  let publicProfile: Bool
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
@@ -157,7 +168,6 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
     hasher.combine(sendReactionNotifications)
     hasher.combine(sendTaggedCheckInNotifications)
     hasher.combine(sendFriendRequestNotifications)
-    hasher.combine(publicProfile)
   }
 
   static func == (lhs: ProfileSettings, rhs: ProfileSettings) -> Bool {
@@ -170,7 +180,6 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
     case sendReactionNotifications = "send_reaction_notifications"
     case sendTaggedCheckInNotifications = "send_tagged_check_in_notifications"
     case sendFriendRequestNotifications = "send_friend_request_notifications"
-    case publicProfile = "public_profile"
   }
 }
 
@@ -216,7 +225,6 @@ extension ProfileSettings {
       case sendReactionNotifications = "send_reaction_notifications"
       case sendTaggedCheckInNotifications = "send_tagged_check_in_notifications"
       case sendFriendRequestNotifications = "send_friend_request_notifications"
-      case publicProfile = "public_profile"
     }
 
     init(sendReactionNotifications: Bool, sendTaggedCheckInNotifications: Bool, sendFriendRequestNotifications: Bool) {
@@ -233,10 +241,6 @@ extension ProfileSettings {
       } else {
         colorScheme = ColorScheme.light.rawValue
       }
-    }
-
-    init(publicProfile: Bool) {
-      self.publicProfile = publicProfile
     }
   }
 }
