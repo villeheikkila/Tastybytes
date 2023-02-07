@@ -71,7 +71,7 @@ struct ProfileSettingsScreenView: View {
     } header: {
       Text("Privacy")
     } footer: {
-      Text("When disabled, only your friends can see your check-ins")
+      Text("Private profile hides check-ins and profile page from everyone else but your friends")
     }
   }
 }
