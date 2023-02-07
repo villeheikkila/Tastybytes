@@ -28,7 +28,7 @@ extension Profile {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "profiles"
     let minimal = "id, is_private, preferred_name, avatar_url"
-    let saved = "id, is_private, preferred_name, username, first_name, last_name, avatar_url, name_display"
+    let saved = "id, first_name, last_name, username, avatar_url, name_display, preferred_name, is_private"
 
     switch queryType {
     case .tableName:
@@ -188,8 +188,7 @@ extension ProfileSettings {
     let tableName = "profile_settings"
     let saved =
       """
-      id, color_scheme, send_reaction_notifications, send_tagged_check_in_notifications,\
-              send_friend_request_notifications, public_profile
+      id, color_scheme, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications
       """
 
     switch queryType {
