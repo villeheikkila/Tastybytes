@@ -6,7 +6,7 @@ struct BarcodeScannerSheetView: View {
   let onComplete: (_ barcode: Barcode) -> Void
 
   var body: some View {
-    BarcodeScannerView(scanTypes: [.codabar, .code39, .ean8, .ean13]) { response in
+    ScannerView(scanTypes: [.codabar, .code39, .ean8, .ean13]) { response in
       if case let .success(result) = response {
         onComplete(result)
         dismiss()

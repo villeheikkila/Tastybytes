@@ -52,7 +52,7 @@ struct ProfileTabView: View {
               }
             }
           } else {
-            BarcodeScannerView(scanTypes: [.qr]) { response in
+            ScannerView(scanTypes: [.qr]) { response in
               if case let .success(result) = response {
                 let string = result.barcode.components(separatedBy: "/").last
                 if let string, let profileId = UUID(uuidString: string) {

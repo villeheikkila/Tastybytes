@@ -1,15 +1,15 @@
 import AVFoundation
 import SwiftUI
 
-struct BarcodeScannerView: UIViewControllerRepresentable {
+struct ScannerView: UIViewControllerRepresentable {
   var isTorchOn: Bool
-  var completion: (Result<Barcode, BardcodeScanError>) -> Void
+  var completion: (Result<Barcode, ScanError>) -> Void
   let scanTypes: [AVMetadataObject.ObjectType]
 
   init(
     isTorchOn: Bool = false,
     scanTypes: [AVMetadataObject.ObjectType],
-    completion: @escaping (Result<Barcode, BardcodeScanError>) -> Void
+    completion: @escaping (Result<Barcode, ScanError>) -> Void
   ) {
     self.isTorchOn = isTorchOn
     self.completion = completion
@@ -28,8 +28,8 @@ struct BarcodeScannerView: UIViewControllerRepresentable {
   }
 }
 
-extension BarcodeScannerView {
-  enum BardcodeScanError: Error {
+extension ScannerView {
+  enum ScanError: Error {
     case badInput
     case badOutput
     case initError(_ error: Error)
@@ -39,13 +39,13 @@ extension BarcodeScannerView {
   public class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
     AVCaptureMetadataOutputObjectsDelegate
   {
-    var parentView: BarcodeScannerView!
+    var parentView: ScannerView!
     var didFinishScanning = false
     var lastTime = Date(timeIntervalSince1970: 0)
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer!
 
-    public init(parentView: BarcodeScannerView) {
+    public init(parentView: ScannerView) {
       self.parentView = parentView
       super.init(nibName: nil, bundle: nil)
     }
@@ -274,7 +274,7 @@ extension BarcodeScannerView {
       parentView.completion(.success(result))
     }
 
-    func didFail(reason: BardcodeScanError) {
+    func didFail(reason: ScanError) {
       parentView.completion(.failure(reason))
     }
   }
