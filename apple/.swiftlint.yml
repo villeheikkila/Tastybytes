@@ -1,3 +1,5 @@
+opt_in_rules:
+  - force_unwrapping
 disabled_rules:
   - trailing_comma
   - identifier_name

@@ -123,7 +123,7 @@ struct OptionalNavigationLink<RootView: View>: View {
 
 func getLogger(category: String) -> Logger {
   Logger(
-    subsystem: Bundle.main.bundleIdentifier!,
+    subsystem: Bundle.main.bundleIdentifier ?? "app",
     category: category
   )
 }

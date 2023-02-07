@@ -94,8 +94,14 @@ extension Profile {
       avatarUrl = try values.decodeIfPresent(String.self, forKey: .avatarUrl)
       nameDisplay = try values.decode(NameDisplay.self, forKey: .nameDisplay)
       roles = try values.decode([Role].self, forKey: .roles)
-      settings = try values.decode([ProfileSettings].self, forKey: .settings)
-        .first! // TODO: Fix this when PostgREST 10 is used by Supabase
+
+      if let settings = try values.decode([ProfileSettings].self, forKey: .settings)
+        .first
+      {
+        self.settings = settings
+      } else {
+        fatalError("failed to decode profile settings")
+      }
     }
   }
 }
@@ -188,7 +194,8 @@ extension ProfileSettings {
     let tableName = "profile_settings"
     let saved =
       """
-      id, color_scheme, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications
+      id, color_scheme, send_reaction_notifications, send_tagged_check_in_notifications,\
+      send_friend_request_notifications
       """
 
     switch queryType {
