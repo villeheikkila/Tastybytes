@@ -127,3 +127,10 @@ func getLogger(category: String) -> Logger {
     category: category
   )
 }
+
+func generateQrCode(_ content: String) -> Data? {
+  guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return nil }
+  filter.setValue(content.data(using: .ascii, allowLossyConversion: false), forKey: "inputMessage")
+  guard let ciimage = filter.outputImage else { return nil }
+  return UIImage(ciImage: ciimage.transformed(by: CGAffineTransform(scaleX: 10, y: 10))).pngData()
+}

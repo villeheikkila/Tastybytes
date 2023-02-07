@@ -4,13 +4,16 @@ import SwiftUI
 struct BarcodeScannerView: UIViewControllerRepresentable {
   var isTorchOn: Bool
   var completion: (Result<Barcode, BardcodeScanError>) -> Void
+  let scanTypes: [AVMetadataObject.ObjectType]
 
   init(
     isTorchOn: Bool = false,
+    scanTypes: [AVMetadataObject.ObjectType],
     completion: @escaping (Result<Barcode, BardcodeScanError>) -> Void
   ) {
     self.isTorchOn = isTorchOn
     self.completion = completion
+    self.scanTypes = scanTypes
   }
 
   func makeUIViewController(context _: Context) -> ViewController {
@@ -174,7 +177,7 @@ extension BarcodeScannerView {
         captureSession!.addOutput(metadataOutput)
 
         metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-        metadataOutput.metadataObjectTypes = [.codabar, .code39, .ean8, .ean13]
+        metadataOutput.metadataObjectTypes = parentView.scanTypes
       } else {
         didFail(reason: .badOutput)
         return
