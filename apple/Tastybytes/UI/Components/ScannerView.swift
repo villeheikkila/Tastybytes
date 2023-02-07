@@ -39,11 +39,11 @@ extension ScannerView {
   public class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
     AVCaptureMetadataOutputObjectsDelegate
   {
-    var parentView: ScannerView!
+    var parentView: ScannerView?
     var didFinishScanning = false
     var lastTime = Date(timeIntervalSince1970: 0)
     var captureSession: AVCaptureSession?
-    var previewLayer: AVCaptureVideoPreviewLayer!
+    var previewLayer: AVCaptureVideoPreviewLayer?
 
     public init(parentView: ScannerView) {
       self.parentView = parentView
@@ -89,6 +89,8 @@ extension ScannerView {
       if previewLayer == nil {
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
       }
+
+      guard let previewLayer else { return }
 
       previewLayer.frame = view.layer.bounds
       previewLayer.videoGravity = .resizeAspectFill
@@ -164,8 +166,10 @@ extension ScannerView {
         return
       }
 
-      if captureSession!.canAddInput(videoInput) {
-        captureSession!.addInput(videoInput)
+      guard let captureSession else { return }
+
+      if captureSession.canAddInput(videoInput) {
+        captureSession.addInput(videoInput)
       } else {
         didFail(reason: .badInput)
         return
@@ -173,10 +177,11 @@ extension ScannerView {
 
       let metadataOutput = AVCaptureMetadataOutput()
 
-      if captureSession!.canAddOutput(metadataOutput) {
-        captureSession!.addOutput(metadataOutput)
+      if captureSession.canAddOutput(metadataOutput) {
+        captureSession.addOutput(metadataOutput)
 
         metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+        guard let parentView else { return }
         metadataOutput.metadataObjectTypes = parentView.scanTypes
       } else {
         didFail(reason: .badOutput)
@@ -212,7 +217,8 @@ extension ScannerView {
       else { return }
 
       let videoView = view
-      let screenSize = videoView!.bounds.size
+      guard let videoView else { return }
+      let screenSize = videoView.bounds.size
       let xPoint = touchPoint.location(in: videoView).y / screenSize.height
       let yPoint = 1.0 - touchPoint.location(in: videoView).x / screenSize.width
       let focusPoint = CGPoint(x: xPoint, y: yPoint)
@@ -271,10 +277,12 @@ extension ScannerView {
     func found(_ result: Barcode) {
       lastTime = Date()
       AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+      guard let parentView else { return }
       parentView.completion(.success(result))
     }
 
     func didFail(reason: ScanError) {
+      guard let parentView else { return }
       parentView.completion(.failure(reason))
     }
   }
