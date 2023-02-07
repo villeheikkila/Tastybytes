@@ -8,7 +8,7 @@ protocol AuthRepository {
   func logOut() async -> Result<Void, Error>
   func sendEmailVerification(email: String) async -> Result<Void, Error>
   func sendMagicLink(email: String) async -> Result<Void, Error>
-  func signUp(email: String, password: String) async -> Result<Void, Error>
+  func signUp(username: String, email: String, password: String) async -> Result<Void, Error>
   func signIn(email: String, password: String) async -> Result<Void, Error>
   func sendPasswordResetEmail(email: String) async -> Result<Void, Error>
   func updatePassword(newPassword: String) async -> Result<Void, Error>
@@ -51,11 +51,11 @@ struct SupabaseAuthRepository: AuthRepository {
     }
   }
 
-  func signUp(email: String, password: String) async -> Result<Void, Error> {
+  func signUp(username: String, email: String, password: String) async -> Result<Void, Error> {
     do {
       try await client
         .auth
-        .signUp(email: email, password: password)
+        .signUp(email: email, password: password, data: ["p_username": AnyJSON.string(username)])
 
       return .success(())
     } catch {

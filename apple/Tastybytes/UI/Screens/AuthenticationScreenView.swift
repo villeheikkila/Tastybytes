@@ -12,8 +12,11 @@ struct AuthenticationScreenView: View {
   }
 
   var body: some View {
-    VStack(spacing: 20) {
+    VStack(spacing: viewModel.scene == .signUp ? 4 : 20) {
       projectLogo
+      if viewModel.scene == .signUp {
+        UsernameTextFieldView(username: $viewModel.username, focusedField: _focusedField)
+      }
       if !(viewModel.scene == .resetPassword || viewModel.scene == .accountDeleted) {
         EmailTextFieldView(email: $viewModel.email, focusedField: _focusedField)
       }
@@ -145,6 +148,25 @@ struct AuthenticationScreenView: View {
     }
   }
 
+  private struct UsernameTextFieldView: View {
+    @Binding var username: String
+    @FocusState var focusedField: Field?
+
+    var body: some View {
+      VStack(alignment: .leading, spacing: 8) {
+        HStack {
+          Image(systemName: "person")
+          TextField("Username", text: $username)
+            .textContentType(.username)
+            .autocapitalization(.none)
+            .disableAutocorrection(true)
+        }
+        .modifier(AuthenticationInput())
+        .focused($focusedField, equals: .email)
+      }
+    }
+  }
+
   private struct EmailTextFieldView: View {
     @Binding var email: String
     @FocusState var focusedField: Field?
@@ -205,6 +227,7 @@ extension AuthenticationScreenView {
     @Published var scene: Scene
     @Published var isLoading = false
     @Published var email = ""
+    @Published var username = ""
     @Published var isValidNewPassword = false
     @Published var password = "" {
       didSet {
@@ -231,6 +254,7 @@ extension AuthenticationScreenView {
 
     private func onSignUp() {
       scene = .signIn
+      username = ""
       email = ""
       password = ""
     }
@@ -257,7 +281,7 @@ extension AuthenticationScreenView {
             primaryActionError = error
           }
         case .signUp:
-          switch await client.auth.signUp(email: email, password: password) {
+          switch await client.auth.signUp(username: username, email: email, password: password) {
           case .success:
             primaryActionSuccessMessage = "Confirmation email has been sent!"
             onSignUp()
