@@ -74,7 +74,7 @@ extension FlavorSheetView {
     }
 
     func loadFlavors() {
-      if availableFlavors.count == 0 {
+      if availableFlavors.isEmpty {
         Task {
           switch await client.flavor.getAll() {
           case let .success(flavors):

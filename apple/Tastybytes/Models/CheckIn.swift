@@ -17,7 +17,7 @@ struct CheckIn: Identifiable {
   let location: Location?
 
   var isEmpty: Bool {
-    [rating == nil, review.isNilOrEmpty, flavors.count == 0].allSatisfy { $0 }
+    [rating == nil, review.isNilOrEmpty, flavors.isEmpty].allSatisfy { $0 }
   }
 
   func getImageUrl() -> URL? {

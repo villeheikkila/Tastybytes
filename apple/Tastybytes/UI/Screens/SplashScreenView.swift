@@ -57,6 +57,8 @@ struct LaunchScreenView_Previews: PreviewProvider {
   }
 }
 
+// swiftlint: disable type_body_length
+// swiftlint: disable file_length
 struct LogoShape: Shape {
   func path(in rect: CGRect) -> Path {
     var path = Path()

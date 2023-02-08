@@ -1,5 +1,6 @@
 opt_in_rules:
   - force_unwrapping
+  - empty_count
 disabled_rules:
   - trailing_comma
   - identifier_name
@@ -10,7 +11,11 @@ disabled_rules:
   - opening_brace
   - nesting
   - cyclomatic_complexity
-  - type_body_length
-  - file_length
   - legacy_random
   - notification_center_detachment
+type_body_length:
+  - 300
+  - 400
+file_length:
+  warning: 500
+  error: 800

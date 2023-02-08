@@ -94,7 +94,7 @@ struct CheckInSheetView: View {
         Button(action: {
           viewModel.setActiveSheet(.flavors)
         }) {
-          if viewModel.pickedFlavors.count != 0 {
+          if !viewModel.pickedFlavors.isEmpty {
             WrappingHStack(viewModel.pickedFlavors, id: \.self) {
               flavor in ChipView(title: flavor.name.capitalized).padding(3)
             }
@@ -108,7 +108,7 @@ struct CheckInSheetView: View {
       .headerProminence(.increased)
 
       Section {
-        if viewModel.servingStyles.count > 0 {
+        if !viewModel.servingStyles.isEmpty {
           Picker("Serving Style", selection: $viewModel.servingStyleName) {
             Text("Not Selected").tag(ServingStyle.Name.none)
             ForEach(viewModel.servingStyles.map(\.name)) { servingStyle in
@@ -128,7 +128,7 @@ struct CheckInSheetView: View {
         Button(action: {
           viewModel.setActiveSheet(.friends)
         }) {
-          if viewModel.taggedFriends.count == 0 {
+          if viewModel.taggedFriends.isEmpty {
             Text("Tag friends")
           } else {
             WrappingHStack(viewModel.taggedFriends, id: \.self) {

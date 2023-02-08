@@ -112,7 +112,7 @@ struct ProductSheetView: View {
 
   private var categorySection: some View {
     Section {
-      if viewModel.categories.count > 0 {
+      if !viewModel.categories.isEmpty {
         Picker("Category", selection: $viewModel.categoryName) {
           ForEach(viewModel.categories.map(\.name)) { category in
             Text(category.label).tag(category)
@@ -129,7 +129,7 @@ struct ProductSheetView: View {
         viewModel.setActiveSheet(.subcategories)
       }) {
         HStack {
-          if viewModel.subcategories.count == 0 {
+          if viewModel.subcategories.isEmpty {
             Text("Subcategories")
           } else {
             HStack { ForEach(viewModel.subcategories) { subcategory in

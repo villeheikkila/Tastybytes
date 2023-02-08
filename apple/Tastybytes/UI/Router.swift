@@ -145,7 +145,7 @@ enum NavigatablePath {
   }
 
   var url: URL {
-    // swiftlint:disable force_unwrappingx
+    // swiftlint:disable force_unwrapping
     URL(string: urlString)!
   }
 }

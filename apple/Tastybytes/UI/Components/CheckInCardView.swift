@@ -166,7 +166,7 @@ struct CheckInCardView: View {
 
   @ViewBuilder
   private var taggedProfilesSection: some View {
-    if checkIn.taggedProfiles.count > 0 {
+    if !checkIn.taggedProfiles.isEmpty {
       VStack(spacing: 4) {
         HStack {
           Text(verbatim: "Tagged friends")
