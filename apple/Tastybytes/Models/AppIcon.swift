@@ -5,6 +5,21 @@ enum AppIcon: String {
   case energyDrink = "AppIconEnergyDrink"
   case kombucha = "AppIconKombucha"
 
+  var logo: String {
+    switch self {
+    case .ramune:
+      return "ProjectLogo"
+    case .cola:
+      return "ProjectLogoCola"
+    case .energyDrink:
+      return "ProjectLogoEnergyDrink"
+    case .juice:
+      return "ProjectLogoJuice"
+    case .kombucha:
+      return "ProjectLogoKombucha"
+    }
+  }
+
   var label: String {
     switch self {
     case .ramune:
