@@ -127,21 +127,26 @@ enum NavigatablePath {
   case location(id: UUID)
   case brand(id: Int)
 
-  var url: URL {
+  var urlString: String {
     switch self {
     case let .profile(id):
-      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.profiles)/\(id.uuidString.lowercased())")!
+      return "\(Config.baseUrl)/\(PathIdentifier.profiles)/\(id.uuidString.lowercased())"
     case let .checkIn(id):
-      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.checkins)/\(id)")!
+      return "\(Config.baseUrl)/\(PathIdentifier.checkins)/\(id)"
     case let .product(id):
-      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.products)/\(id)")!
+      return "\(Config.baseUrl)/\(PathIdentifier.products)/\(id)"
     case let .company(id):
-      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.companies)/\(id)")!
+      return "\(Config.baseUrl)/\(PathIdentifier.companies)/\(id)"
     case let .brand(id):
-      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.brands)/\(id)")!
+      return "\(Config.baseUrl)/\(PathIdentifier.brands)/\(id)"
     case let .location(id):
-      return URL(string: "\(Config.baseUrl)/\(PathIdentifier.locations)/\(id.uuidString.lowercased())")!
+      return "\(Config.baseUrl)/\(PathIdentifier.locations)/\(id.uuidString.lowercased())"
     }
+  }
+
+  var url: URL {
+    // swiftlint:disable force_unwrappingx
+    URL(string: urlString)!
   }
 }
 
