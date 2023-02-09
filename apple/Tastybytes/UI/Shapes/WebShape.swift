@@ -140,4 +140,3 @@ struct WebShape: Shape {
     return path
   }
 }
-

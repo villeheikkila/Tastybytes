@@ -9,10 +9,9 @@ struct OnboardTabsView: View {
 
   var body: some View {
     TabView {
-      TabView {
-        WelcomeTabView()
-        ProfileSettingsTabView(client)
-      }
+      WelcomeTabView()
+      ProfileSettingsTabView(client)
+      FinalStepView()
     }
     .tabViewStyle(.page)
   }

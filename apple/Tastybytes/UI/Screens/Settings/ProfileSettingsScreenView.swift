@@ -80,7 +80,6 @@ extension ProfileSettingsScreenView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProfileSettingsScreenView")
     let client: Client
-    @Published var selectedItem: PhotosPickerItem?
     @Published var username = "" {
       didSet {
         withAnimation {
@@ -106,7 +105,6 @@ extension ProfileSettingsScreenView {
     }
 
     @Published var showFullName = false
-    @Published var showEmailConfirmationButton = false
     @Published var showProfileUpdateButton = false
     @Published var isPrivateProfile = true
     private var profile: Profile.Extended?

@@ -140,6 +140,14 @@ extension Profile {
       self.firstName = firstName
       self.lastName = lastName
     }
+
+    init(username: String?, firstName: String?, lastName: String?, isPrivate: Bool, showFullName: Bool) {
+      self.username = username
+      self.firstName = firstName
+      self.lastName = lastName
+      self.isPrivate = isPrivate
+      nameDisplay = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
+    }
   }
 }
 

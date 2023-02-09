@@ -40,10 +40,11 @@
 		5C25AEBA29053B7E00793607 /* CompanyScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB929053B7E00793607 /* CompanyScreenView.swift */; };
 		5C25C66D29941B9F00C07953 /* OnboardTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C66C29941B9F00C07953 /* OnboardTabsView.swift */; };
 		5C25C6702995616D00C07953 /* WelcomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C66F2995616D00C07953 /* WelcomeTabView.swift */; };
-		5C25C672299561BD00C07953 /* InitialProfileSettingsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C671299561BD00C07953 /* InitialProfileSettingsTabView.swift */; };
+		5C25C672299561BD00C07953 /* SettingsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C671299561BD00C07953 /* SettingsTabView.swift */; };
 		5C25C68429956B8500C07953 /* LinkedInShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68329956B8500C07953 /* LinkedInShape.swift */; };
 		5C25C68629956BAF00C07953 /* GitHubShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68529956BAF00C07953 /* GitHubShape.swift */; };
 		5C25C68829956BD400C07953 /* WebShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68729956BD400C07953 /* WebShape.swift */; };
+		5C25C68A299572B700C07953 /* FinalStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C689299572B700C07953 /* FinalStepView.swift */; };
 		5C323E8D298C4D7300B005A9 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E8C298C4D7300B005A9 /* StringExtensions.swift */; };
 		5C323E8F298C500400B005A9 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E8E298C500400B005A9 /* URLExtensions.swift */; };
 		5C323E91298C501F00B005A9 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E90298C501F00B005A9 /* ArrayExtensions.swift */; };
@@ -166,10 +167,11 @@
 		5C25AEB929053B7E00793607 /* CompanyScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyScreenView.swift; sourceTree = "<group>"; };
 		5C25C66C29941B9F00C07953 /* OnboardTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardTabsView.swift; sourceTree = "<group>"; };
 		5C25C66F2995616D00C07953 /* WelcomeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeTabView.swift; sourceTree = "<group>"; };
-		5C25C671299561BD00C07953 /* InitialProfileSettingsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialProfileSettingsTabView.swift; sourceTree = "<group>"; };
+		5C25C671299561BD00C07953 /* SettingsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTabView.swift; sourceTree = "<group>"; };
 		5C25C68329956B8500C07953 /* LinkedInShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedInShape.swift; sourceTree = "<group>"; };
 		5C25C68529956BAF00C07953 /* GitHubShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubShape.swift; sourceTree = "<group>"; };
 		5C25C68729956BD400C07953 /* WebShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebShape.swift; sourceTree = "<group>"; };
+		5C25C689299572B700C07953 /* FinalStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalStepView.swift; sourceTree = "<group>"; };
 		5C323E8C298C4D7300B005A9 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		5C323E8E298C500400B005A9 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		5C323E90298C501F00B005A9 /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
@@ -299,7 +301,8 @@
 			children = (
 				5C25C66C29941B9F00C07953 /* OnboardTabsView.swift */,
 				5C25C66F2995616D00C07953 /* WelcomeTabView.swift */,
-				5C25C671299561BD00C07953 /* InitialProfileSettingsTabView.swift */,
+				5C25C671299561BD00C07953 /* SettingsTabView.swift */,
+				5C25C689299572B700C07953 /* FinalStepView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -800,7 +803,7 @@
 				5C663F27292E0F1D006F9A97 /* DocumentRepository.swift in Sources */,
 				5C0E3652292679630072EFBD /* BarcodeScannerSheet.swift in Sources */,
 				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,
-				5C25C672299561BD00C07953 /* InitialProfileSettingsTabView.swift in Sources */,
+				5C25C672299561BD00C07953 /* SettingsTabView.swift in Sources */,
 				5CB1C24128F99E1C000B0EB4 /* ProductListItemView.swift in Sources */,
 				5CC2FE8F29196A5D002BDF83 /* LocationSearchView.swift in Sources */,
 				5C0E365A29296FCB0072EFBD /* SubcategoryRepository.swift in Sources */,
@@ -810,6 +813,7 @@
 				5CFEE57728ED69B100A8DD66 /* App.swift in Sources */,
 				5CB1C24B28F9BE4F000B0EB4 /* ProductRepository.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
+				5C25C68A299572B700C07953 /* FinalStepView.swift in Sources */,
 				5CD10A3D28F75B7A0001CFC2 /* ProductScreenView.swift in Sources */,
 				5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */,
 				5CD10A4B28F980860001CFC2 /* CheckInComment.swift in Sources */,

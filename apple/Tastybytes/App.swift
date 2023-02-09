@@ -35,7 +35,11 @@ struct RootView: View {
       switch authEvent {
       case .signedIn:
         if profileManager.isLoggedIn {
-          TabsView(client)
+          OnboardTabsView(client)
+            .onAppear {
+              splashScreenManager.dismiss()
+            }
+          // TabsView(client)
         }
       case .passwordRecovery:
         AuthenticationScreenView(client, scene: .resetPassword)
