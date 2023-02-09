@@ -1,7 +1,7 @@
 import Supabase
 import SwiftUI
 
-protocol AppClient {
+protocol Client {
   var supabase: SupabaseClient { get }
 
   var profile: ProfileRepository { get }
@@ -13,14 +13,16 @@ protocol AppClient {
   var company: CompanyRepository { get }
   var friend: FriendRepository { get }
   var category: CategoryRepository { get }
+  var subcategory: SubcategoryRepository { get }
   var brand: BrandRepository { get }
   var subBrand: SubBrandRepository { get }
   var flavor: FlavorRepository { get }
   var notification: NotificationRepository { get }
   var location: LocationRepository { get }
+  var document: DocumentRepository { get }
 }
 
-class Client: AppClient {
+class AppClient: Client {
   let supabase: SupabaseClient
 
   let profile: ProfileRepository

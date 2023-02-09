@@ -16,6 +16,7 @@ struct WelcomeTabView: View {
       .padding(.horizontal)
       Spacer()
     }
+    .padding(.top, 40)
   }
 
   let features: [FeatureItem] = [FeatureItem(

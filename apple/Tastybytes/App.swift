@@ -7,7 +7,7 @@ import SwiftUI
 @main
 struct Main: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-  private let client = Client(url: Config.supabaseUrl, apiKey: Config.supabaseAnonKey)
+  private let client = AppClient(url: Config.supabaseUrl, apiKey: Config.supabaseAnonKey)
 
   var body: some Scene {
     WindowGroup {
