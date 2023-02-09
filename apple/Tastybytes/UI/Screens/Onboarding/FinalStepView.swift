@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct FinalStepView: View {
+  @EnvironmentObject private var viewModel: OnboardingViewModel
+  @EnvironmentObject private var profileManager: ProfileManager
+
   var body: some View {
     VStack {
       VStack(alignment: .leading) {
@@ -18,7 +21,11 @@ struct FinalStepView: View {
 
       HStack {
         Spacer()
-        Button(action: {}) {
+        Button(action: {
+          viewModel.updateProfile {
+            profileManager.refresh()
+          }
+        }) {
           Text("Continue to the app")
             .fontWeight(.medium)
         }
@@ -27,11 +34,5 @@ struct FinalStepView: View {
         Spacer()
       }.padding(.bottom, 80)
     }
-  }
-}
-
-struct FinalStepView_Previews: PreviewProvider {
-  static var previews: some View {
-    FinalStepView()
   }
 }

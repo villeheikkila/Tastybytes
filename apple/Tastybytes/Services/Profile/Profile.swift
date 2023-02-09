@@ -28,7 +28,8 @@ extension Profile {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "profiles"
     let minimal = "id, is_private, preferred_name, avatar_url"
-    let saved = "id, first_name, last_name, username, avatar_url, name_display, preferred_name, is_private"
+    let saved =
+      "id, first_name, last_name, username, avatar_url, name_display, preferred_name, is_private, is_onboarded"
 
     switch queryType {
     case .tableName:
@@ -58,6 +59,7 @@ extension Profile {
     let firstName: String?
     let lastName: String?
     let isPrivate: Bool
+    let isOnboarded: Bool
     let avatarUrl: String?
     let preferredName: String
     let nameDisplay: NameDisplay
@@ -74,6 +76,7 @@ extension Profile {
       case username
       case preferredName = "preferred_name"
       case isPrivate = "is_private"
+      case isOnboarded = "is_onboarded"
       case firstName = "first_name"
       case lastName = "last_name"
       case avatarUrl = "avatar_url"
@@ -89,6 +92,7 @@ extension Profile {
       username = try values.decode(String.self, forKey: .username)
       preferredName = try values.decode(String.self, forKey: .preferredName)
       isPrivate = try values.decode(Bool.self, forKey: .isPrivate)
+      isOnboarded = try values.decode(Bool.self, forKey: .isOnboarded)
       firstName = try values.decodeIfPresent(String.self, forKey: .firstName)
       lastName = try values.decodeIfPresent(String.self, forKey: .lastName)
       avatarUrl = try values.decodeIfPresent(String.self, forKey: .avatarUrl)
@@ -118,6 +122,7 @@ extension Profile {
     var lastName: String?
     var nameDisplay: String?
     var isPrivate: Bool?
+    var isOnboarded: Bool?
 
     enum CodingKeys: String, CodingKey {
       case username
@@ -125,6 +130,7 @@ extension Profile {
       case lastName = "last_name"
       case nameDisplay = "name_display"
       case isPrivate = "is_private"
+      case isOnboarded = "is_onboarded"
     }
 
     init(showFullName: Bool) {
@@ -141,12 +147,20 @@ extension Profile {
       self.lastName = lastName
     }
 
-    init(username: String?, firstName: String?, lastName: String?, isPrivate: Bool, showFullName: Bool) {
+    init(
+      username: String?,
+      firstName: String?,
+      lastName: String?,
+      isPrivate: Bool,
+      showFullName: Bool,
+      isOnboarded: Bool
+    ) {
       self.username = username
       self.firstName = firstName
       self.lastName = lastName
       self.isPrivate = isPrivate
       nameDisplay = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
+      self.isOnboarded = isOnboarded
     }
   }
 }

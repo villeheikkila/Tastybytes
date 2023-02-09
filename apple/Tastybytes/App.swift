@@ -34,12 +34,15 @@ struct RootView: View {
     ZStack {
       switch authEvent {
       case .signedIn:
-        if profileManager.isLoggedIn {
-          OnboardTabsView(client)
-            .onAppear {
-              splashScreenManager.dismiss()
-            }
-          // TabsView(client)
+        if profileManager.isLoggedIn, let isOnboarded = profileManager.get().isOnboarded {
+          if isOnboarded {
+            TabsView(client)
+          } else {
+            OnboardTabsView(client)
+              .onAppear {
+                splashScreenManager.dismiss()
+              }
+          }
         }
       case .passwordRecovery:
         AuthenticationScreenView(client, scene: .resetPassword)
