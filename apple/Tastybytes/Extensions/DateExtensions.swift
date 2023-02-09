@@ -10,10 +10,13 @@ extension Date {
 }
 
 extension Date {
-  func relativeTime(in _: Locale = .current) -> String {
+  func relativeTime() -> String {
     let now = Date.now
     let monthAgo = Calendar.current.date(byAdding: .month, value: -1, to: now)
-    if let monthAgo, self < monthAgo {
+    let minuteAgo = Calendar.current.date(byAdding: .minute, value: -1, to: now)
+    if let minuteAgo, self > minuteAgo {
+      return "Just now"
+    } else if let monthAgo, self < monthAgo {
       return formatted()
     } else {
       let formatter = RelativeDateTimeFormatter()
