@@ -5,7 +5,7 @@ struct Product: Identifiable, Decodable, Hashable {
   let isVerified: Bool
 
   static func == (lhs: Product, rhs: Product) -> Bool {
-    lhs.id == rhs.id
+    lhs.id == rhs.id && lhs.name == rhs.name && lhs.description == rhs.description && lhs.isVerified == rhs.isVerified
   }
 
   enum CodingKeys: String, CodingKey {
@@ -216,10 +216,16 @@ extension Product {
 
     func hash(into hasher: inout Hasher) {
       hasher.combine(id)
+      hasher.combine(name)
+      hasher.combine(description)
+      hasher.combine(isVerified)
+      hasher.combine(subBrand.id)
+      hasher.combine(subBrand.name)
     }
 
     static func == (lhs: Joined, rhs: Joined) -> Bool {
-      lhs.id == rhs.id
+      lhs.id == rhs.id && lhs.name == rhs.name && lhs.description == rhs.description && lhs.isVerified == rhs
+        .isVerified && lhs.subBrand.name == rhs.subBrand.name
     }
 
     enum CodingKeys: String, CodingKey {
