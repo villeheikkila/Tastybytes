@@ -28,7 +28,7 @@ struct ProductScreenView: View {
       }
     }
     .task {
-      viewModel.loadProductSummary()
+      viewModel.refresh()
     }
     .navigationBarItems(
       trailing: Menu {
@@ -181,7 +181,10 @@ extension ProductScreenView {
 
     func refresh() {
       Task {
-        switch await client.product.getById(id: product.id) {
+        async let productPromise = client.product.getById(id: product.id)
+        async let summaryPromise = client.product.getSummaryById(id: product.id)
+
+        switch await productPromise {
         case let .success(refreshedProduct):
           withAnimation {
             product = refreshedProduct
@@ -189,22 +192,19 @@ extension ProductScreenView {
         case let .failure(error):
           logger.error("failed to refresh product by id '\(self.product.id)': \(error.localizedDescription)")
         }
-      }
-    }
 
-    func refreshCheckIns() {
-      resetView += 1 // TODO: get rid of this hack 29.1.2023
-    }
-
-    func loadProductSummary() {
-      Task {
-        switch await client.product.getSummaryById(id: product.id) {
+        switch await summaryPromise {
         case let .success(summary):
           self.summary = summary
         case let .failure(error):
           logger.error("failed to load product summary for '\(self.product.id)': \(error.localizedDescription)")
         }
       }
+    }
+
+    func refreshCheckIns() {
+      refresh()
+      resetView += 1 // TODO: get rid of this hack 29.1.2023
     }
 
     func verifyProduct() {

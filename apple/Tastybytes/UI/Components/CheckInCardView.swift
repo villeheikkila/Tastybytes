@@ -102,7 +102,7 @@ struct CheckInCardView: View {
         }
 
         Text(checkIn.product.getDisplayName(.fullName))
-          .font(.system(size: 16, weight: .bold, design: .default))
+          .font(.headline)
           .foregroundColor(.primary)
 
         if let description = checkIn.product.description {
