@@ -102,7 +102,7 @@ struct TaggedInCheckInNotificationView: View {
   var body: some View {
     NavigationLink(value: Route.checkIn(checkIn)) {
       HStack {
-        AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 32, id: checkIn.profile.id)
+        AvatarView(avatarUrl: checkIn.profile.avatarUrl, size: 32, id: checkIn.profile.id)
         Text("\(checkIn.profile.preferredName) tagged you in a check-in of \(checkIn.product.getDisplayName(.full))")
         Spacer()
       }
@@ -117,7 +117,7 @@ struct FriendRequestNotificationView: View {
   var body: some View {
     NavigationLink(value: Route.currentUserFriends) {
       HStack {
-        AvatarView(avatarUrl: friend.sender.getAvatarURL(), size: 32, id: friend.sender.id)
+        AvatarView(avatarUrl: friend.sender.avatarUrl, size: 32, id: friend.sender.id)
         Text("\(friend.sender.preferredName) sent you a friend request!")
         Spacer()
       }
@@ -140,7 +140,7 @@ struct CheckInReactionNotificationView: View {
   var body: some View {
     NavigationLink(value: Route.checkIn(checkInReaction.checkIn)) {
       HStack {
-        AvatarView(avatarUrl: checkInReaction.profile.getAvatarURL(), size: 32, id: checkInReaction.profile.id)
+        AvatarView(avatarUrl: checkInReaction.profile.avatarUrl, size: 32, id: checkInReaction.profile.id)
         Text(
           """
           \(checkInReaction.profile.preferredName)\

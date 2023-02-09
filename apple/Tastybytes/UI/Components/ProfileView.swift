@@ -58,7 +58,7 @@ struct ProfileView: View {
   }
 
   private var avatar: some View {
-    AvatarView(avatarUrl: viewModel.profile.getAvatarURL(), size: 90, id: viewModel.profile.id)
+    AvatarView(avatarUrl: viewModel.profile.avatarUrl, size: 90, id: viewModel.profile.id)
   }
 
   private var privateProfileSign: some View {

@@ -19,3 +19,13 @@ extension URL {
     self.init(string: "\(string)")!
   }
 }
+
+extension URL {
+  init(userId: UUID, avatarUrl: String) {
+    let supabaseUrl = Config.supabaseUrl.absoluteString
+    let bucketId = "avatars"
+    let urlString =
+      "\(supabaseUrl)/storage/v1/object/public/\(bucketId)/\(userId.uuidString.lowercased())/\(avatarUrl)"
+    self.init(string: "\(urlString)")!
+  }
+}

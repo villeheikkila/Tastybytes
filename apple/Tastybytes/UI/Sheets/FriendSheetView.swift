@@ -18,7 +18,7 @@ struct FriendSheetView: View {
           toggleFriend(friend: friend)
         }
       }) {
-        AvatarView(avatarUrl: friend.getAvatarURL(), size: 32, id: friend.id)
+        AvatarView(avatarUrl: friend.avatarUrl, size: 32, id: friend.id)
         Text(friend.preferredName)
         Spacer()
         if taggedFriends.contains(friend) {

@@ -133,7 +133,7 @@ struct CheckInSheetView: View {
           } else {
             WrappingHStack(viewModel.taggedFriends, id: \.self) {
               friend in
-              AvatarView(avatarUrl: friend.getAvatarURL(), size: 24, id: friend.id)
+              AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
             }
           }
         }

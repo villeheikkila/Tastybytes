@@ -37,7 +37,7 @@ struct CheckInCardView: View {
       disabled: loadedFrom.isLoadedFromProfile(checkIn.profile)
     ) {
       HStack {
-        AvatarView(avatarUrl: checkIn.profile.getAvatarURL(), size: 24, id: checkIn.profile.id)
+        AvatarView(avatarUrl: checkIn.profile.avatarUrl, size: 24, id: checkIn.profile.id)
         Text(checkIn.profile.preferredName)
           .font(.system(size: 10, weight: .bold, design: .default))
           .foregroundColor(.primary)
@@ -181,7 +181,7 @@ struct CheckInCardView: View {
               value: Route.profile(taggedProfile),
               disabled: loadedFrom.isLoadedFromProfile(taggedProfile)
             ) {
-              AvatarView(avatarUrl: taggedProfile.getAvatarURL(), size: 24, id: taggedProfile.id)
+              AvatarView(avatarUrl: taggedProfile.avatarUrl, size: 24, id: taggedProfile.id)
             }
           }
           Spacer()

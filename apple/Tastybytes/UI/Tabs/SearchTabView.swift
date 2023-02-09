@@ -134,7 +134,7 @@ struct SearchTabView: View {
     ForEach(viewModel.profiles, id: \.self) { profile in
       NavigationLink(value: Route.profile(profile)) {
         HStack(alignment: .center) {
-          AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
+          AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
           VStack {
             HStack {
               Text(profile.preferredName)

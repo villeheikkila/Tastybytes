@@ -107,20 +107,6 @@ extension Profile {
 }
 
 extension Profile {
-  func getAvatarURL() -> URL? {
-    if let avatarUrl {
-      let supabaseUrl = Config.supabaseUrl.absoluteString
-      let bucketId = "avatars"
-      let urlString =
-        "\(supabaseUrl)/storage/v1/object/public/\(bucketId)/\(id.uuidString.lowercased())/\(avatarUrl)"
-      return URL(string: urlString)
-    } else {
-      return nil
-    }
-  }
-}
-
-extension Profile {
   enum NameDisplay: String, CaseIterable, Decodable, Equatable {
     case username
     case fullName = "full_name"

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct OnboardScreenView: View {
+struct WelcomeTabView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 60) {
       HStack {
@@ -15,24 +15,6 @@ struct OnboardScreenView: View {
       }
       .padding(.horizontal)
       Spacer()
-    }
-  }
-
-  var appIcon: some View {
-      HStack(spacing: 12) {
-      Image(AppIcon.ramune.logo)
-        .resizable()
-        .aspectRatio(contentMode: .fit)
-        .frame(width: 80, height: 80, alignment: .center)
-
-      VStack(alignment: .leading, spacing: 8) {
-        Text(Config.appName)
-          .font(.title)
-          .fontWeight(.bold)
-
-        Text("The definite app for storing and sharing tasting notes")
-          .foregroundColor(.secondary)
-      }
     }
   }
 
@@ -54,9 +36,27 @@ struct OnboardScreenView: View {
     systemName: "chart.xyaxis.line",
     color: .orange
   )]
+
+  var appIcon: some View {
+    HStack(spacing: 12) {
+      Image(AppIcon.ramune.logo)
+        .resizable()
+        .aspectRatio(contentMode: .fit)
+        .frame(width: 80, height: 80, alignment: .center)
+
+      VStack(alignment: .leading, spacing: 8) {
+        Text(Config.appName)
+          .font(.title)
+          .fontWeight(.bold)
+
+        Text("The definite app for storing and sharing tasting notes")
+          .foregroundColor(.secondary)
+      }
+    }
+  }
 }
 
-extension OnboardScreenView {
+extension WelcomeTabView {
   struct FeatureItem: Hashable {
     let title: String
     let description: String
@@ -84,11 +84,5 @@ extension OnboardScreenView {
         }
       }
     }
-  }
-}
-
-struct OnboardScreenView_Previews: PreviewProvider {
-  static var previews: some View {
-    OnboardScreenView()
   }
 }

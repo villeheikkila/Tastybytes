@@ -122,7 +122,7 @@ struct CheckInScreenView: View {
 
     var body: some View {
       HStack {
-        AvatarView(avatarUrl: comment.profile.getAvatarURL(), size: 32, id: comment.profile.id)
+        AvatarView(avatarUrl: comment.profile.avatarUrl, size: 32, id: comment.profile.id)
         VStack(alignment: .leading) {
           HStack {
             Text(comment.profile.preferredName).font(.system(size: 12, weight: .medium, design: .default))

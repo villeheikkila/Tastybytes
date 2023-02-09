@@ -19,7 +19,7 @@ struct UserSheetView<Actions: View>: View {
     List {
       ForEach(viewModel.searchResults, id: \.id) { profile in
         HStack {
-          AvatarView(avatarUrl: profile.getAvatarURL(), size: 32, id: profile.id)
+          AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
           Text(profile.preferredName)
           Spacer()
           HStack {
