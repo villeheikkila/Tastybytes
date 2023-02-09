@@ -376,6 +376,7 @@ extension ProductSheetView {
           case let .success(brandsWithSubBrands):
             self.categories = categories
             self.category = categories.first(where: { $0.id == initialProduct.category.id })
+            self.categoryName = category?.name ?? .beverage
             self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
             self.brandOwner = initialProduct.subBrand.brand.brandOwner
             self.brand = Brand.JoinedSubBrands(
