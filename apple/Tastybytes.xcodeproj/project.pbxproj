@@ -41,6 +41,9 @@
 		5C25C66D29941B9F00C07953 /* OnboardTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C66C29941B9F00C07953 /* OnboardTabsView.swift */; };
 		5C25C6702995616D00C07953 /* WelcomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C66F2995616D00C07953 /* WelcomeTabView.swift */; };
 		5C25C672299561BD00C07953 /* InitialProfileSettingsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C671299561BD00C07953 /* InitialProfileSettingsTabView.swift */; };
+		5C25C68429956B8500C07953 /* LinkedInShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68329956B8500C07953 /* LinkedInShape.swift */; };
+		5C25C68629956BAF00C07953 /* GitHubShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68529956BAF00C07953 /* GitHubShape.swift */; };
+		5C25C68829956BD400C07953 /* WebShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68729956BD400C07953 /* WebShape.swift */; };
 		5C323E8D298C4D7300B005A9 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E8C298C4D7300B005A9 /* StringExtensions.swift */; };
 		5C323E8F298C500400B005A9 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E8E298C500400B005A9 /* URLExtensions.swift */; };
 		5C323E91298C501F00B005A9 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E90298C501F00B005A9 /* ArrayExtensions.swift */; };
@@ -164,6 +167,9 @@
 		5C25C66C29941B9F00C07953 /* OnboardTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardTabsView.swift; sourceTree = "<group>"; };
 		5C25C66F2995616D00C07953 /* WelcomeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeTabView.swift; sourceTree = "<group>"; };
 		5C25C671299561BD00C07953 /* InitialProfileSettingsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialProfileSettingsTabView.swift; sourceTree = "<group>"; };
+		5C25C68329956B8500C07953 /* LinkedInShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedInShape.swift; sourceTree = "<group>"; };
+		5C25C68529956BAF00C07953 /* GitHubShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubShape.swift; sourceTree = "<group>"; };
+		5C25C68729956BD400C07953 /* WebShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebShape.swift; sourceTree = "<group>"; };
 		5C323E8C298C4D7300B005A9 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		5C323E8E298C500400B005A9 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		5C323E90298C501F00B005A9 /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
@@ -282,28 +288,6 @@
 		5C11ECBE28EF433700CCDE6A /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				5C08B6E128ED7B05009218D7 /* Company.swift */,
-				5C11ECBF28EF434700CCDE6A /* Profile.swift */,
-				5CFB563028F5974100F13A1E /* ProfileSummary.swift */,
-				5CD10A4A28F980860001CFC2 /* CheckInComment.swift */,
-				5C919E2128FF0CF60055CFD2 /* ProductVariant.swift */,
-				5C25AEB52903FBDE00793607 /* Role.swift */,
-				5CD10A4C28F985D00001CFC2 /* CheckIn.swift */,
-				5CD10A4E28F98C0B0001CFC2 /* Category.swift */,
-				5CD10A5028F98C8C0001CFC2 /* Subcategory.swift */,
-				5CD10A5228F98CFC0001CFC2 /* Brand.swift */,
-				5CD10A5428F98D220001CFC2 /* SubBrand.swift */,
-				5CD10A5628F98D490001CFC2 /* Product.swift */,
-				5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */,
-				5C7DC2B828FA07CF00AED6F1 /* Friend.swift */,
-				5C919E1728FED0E00055CFD2 /* ServingStyle.swift */,
-				5C919E1D28FF01480055CFD2 /* Flavor.swift */,
-				5C12B4382902CAF3001EE549 /* Notification.swift */,
-				5C25AEB72904038000793607 /* Permission.swift */,
-				5CC2FE902919774A002BDF83 /* Location.swift */,
-				5CC2FE972919CB19002BDF83 /* Country.swift */,
-				5C0E365329279B240072EFBD /* Barcode.swift */,
-				5C663F28292E1071006F9A97 /* Documents.swift */,
 				5C663F2C292FE614006F9A97 /* AppIcon.swift */,
 				5C43237C2986A6910085522E /* Summary.swift */,
 			);
@@ -318,6 +302,165 @@
 				5C25C671299561BD00C07953 /* InitialProfileSettingsTabView.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		5C25C6732995670F00C07953 /* Company */ = {
+			isa = PBXGroup;
+			children = (
+				5C08B6E128ED7B05009218D7 /* Company.swift */,
+				5CB1C24E28F9C52E000B0EB4 /* CompanyRepository.swift */,
+			);
+			path = Company;
+			sourceTree = "<group>";
+		};
+		5C25C6742995672700C07953 /* Brand */ = {
+			isa = PBXGroup;
+			children = (
+				5CD10A5228F98CFC0001CFC2 /* Brand.swift */,
+				5CED432F28FD6EBC003F8194 /* BrandRepository.swift */,
+			);
+			path = Brand;
+			sourceTree = "<group>";
+		};
+		5C25C6752995674500C07953 /* Friend */ = {
+			isa = PBXGroup;
+			children = (
+				5C7DC2B828FA07CF00AED6F1 /* Friend.swift */,
+				5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */,
+			);
+			path = Friend;
+			sourceTree = "<group>";
+		};
+		5C25C6762995674A00C07953 /* CheckIn */ = {
+			isa = PBXGroup;
+			children = (
+				5C919E1728FED0E00055CFD2 /* ServingStyle.swift */,
+				5C0E365329279B240072EFBD /* Barcode.swift */,
+				5CD10A4C28F985D00001CFC2 /* CheckIn.swift */,
+				5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */,
+				5CD10A4A28F980860001CFC2 /* CheckInComment.swift */,
+				5CB1C24628F9B551000B0EB4 /* CheckInCommentRepository.swift */,
+				5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */,
+				5CB1C24828F9BBAA000B0EB4 /* CheckInReactionRepository.swift */,
+			);
+			path = CheckIn;
+			sourceTree = "<group>";
+		};
+		5C25C6772995675200C07953 /* Subcategory */ = {
+			isa = PBXGroup;
+			children = (
+				5CD10A5028F98C8C0001CFC2 /* Subcategory.swift */,
+				5C0E365929296FCB0072EFBD /* SubcategoryRepository.swift */,
+			);
+			path = Subcategory;
+			sourceTree = "<group>";
+		};
+		5C25C6782995675C00C07953 /* Product */ = {
+			isa = PBXGroup;
+			children = (
+				5CD10A5628F98D490001CFC2 /* Product.swift */,
+				5C919E2128FF0CF60055CFD2 /* ProductVariant.swift */,
+			);
+			path = Product;
+			sourceTree = "<group>";
+		};
+		5C25C679299567EC00C07953 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				5C11ECBF28EF434700CCDE6A /* Profile.swift */,
+				5C25AEB72904038000793607 /* Permission.swift */,
+				5C25AEB52903FBDE00793607 /* Role.swift */,
+				5CFB563028F5974100F13A1E /* ProfileSummary.swift */,
+				5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		5C25C67A2995684F00C07953 /* SubBrand */ = {
+			isa = PBXGroup;
+			children = (
+				5CD10A5428F98D220001CFC2 /* SubBrand.swift */,
+				5CB1C24A28F9BE4F000B0EB4 /* ProductRepository.swift */,
+				5CED433328FDA357003F8194 /* SubBrandRepository.swift */,
+			);
+			path = SubBrand;
+			sourceTree = "<group>";
+		};
+		5C25C67B2995689F00C07953 /* Document */ = {
+			isa = PBXGroup;
+			children = (
+				5C663F28292E1071006F9A97 /* Documents.swift */,
+				5C663F26292E0F1D006F9A97 /* DocumentRepository.swift */,
+			);
+			path = Document;
+			sourceTree = "<group>";
+		};
+		5C25C67C299568D600C07953 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				5CD10A4E28F98C0B0001CFC2 /* Category.swift */,
+				5CED432928FD4E17003F8194 /* CategoryRepository.swift */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		5C25C67D299568FD00C07953 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				5CB1C24C28F9C087000B0EB4 /* AuthRepository.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		5C25C67E2995690C00C07953 /* Flavor */ = {
+			isa = PBXGroup;
+			children = (
+				5C919E1D28FF01480055CFD2 /* Flavor.swift */,
+				5C919E1B28FEFEA50055CFD2 /* FlavorRepository.swift */,
+			);
+			path = Flavor;
+			sourceTree = "<group>";
+		};
+		5C25C67F2995692C00C07953 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				5C12B4382902CAF3001EE549 /* Notification.swift */,
+				5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		5C25C6802995693F00C07953 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				5CC2FE972919CB19002BDF83 /* Country.swift */,
+				5CC2FE902919774A002BDF83 /* Location.swift */,
+				5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		5C25C681299569FB00C07953 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				5C3D8274298D5F3300E861DC /* AccountSettingsScreenView.swift */,
+				5C12B42E2902A190001EE549 /* ProfileSettingsScreenView.swift */,
+				5C12B4322902A4C9001EE549 /* BlockedUsersScreenView.swift */,
+				5C12B42C2902A12A001EE549 /* ApplicationSettingsScreenView.swift */,
+				5C663F2A292FBE10006F9A97 /* AppIconScreenView.swift */,
+				5CE90090292101C8003DE697 /* AboutScreenView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		5C25C68229956B7A00C07953 /* Shapes */ = {
+			isa = PBXGroup;
+			children = (
+				5C25C68329956B8500C07953 /* LinkedInShape.swift */,
+				5C25C68529956BAF00C07953 /* GitHubShape.swift */,
+				5C25C68729956BD400C07953 /* WebShape.swift */,
+			);
+			path = Shapes;
 			sourceTree = "<group>";
 		};
 		5C46E8652911E2CD0008F142 /* Sheets */ = {
@@ -352,29 +495,6 @@
 			path = Tabs;
 			sourceTree = "<group>";
 		};
-		5CA006CB29901A04003CC307 /* ClientRepositories */ = {
-			isa = PBXGroup;
-			children = (
-				5CB1C24C28F9C087000B0EB4 /* AuthRepository.swift */,
-				5CED432F28FD6EBC003F8194 /* BrandRepository.swift */,
-				5CED432928FD4E17003F8194 /* CategoryRepository.swift */,
-				5CB1C24628F9B551000B0EB4 /* CheckInCommentRepository.swift */,
-				5CB1C24828F9BBAA000B0EB4 /* CheckInReactionRepository.swift */,
-				5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */,
-				5CB1C24E28F9C52E000B0EB4 /* CompanyRepository.swift */,
-				5C663F26292E0F1D006F9A97 /* DocumentRepository.swift */,
-				5C919E1B28FEFEA50055CFD2 /* FlavorRepository.swift */,
-				5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */,
-				5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */,
-				5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */,
-				5CB1C24A28F9BE4F000B0EB4 /* ProductRepository.swift */,
-				5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */,
-				5CED433328FDA357003F8194 /* SubBrandRepository.swift */,
-				5C0E365929296FCB0072EFBD /* SubcategoryRepository.swift */,
-			);
-			path = ClientRepositories;
-			sourceTree = "<group>";
-		};
 		5CC2FE9229197D8A002BDF83 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -404,7 +524,20 @@
 		5CD10A5A28F9988C0001CFC2 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				5CA006CB29901A04003CC307 /* ClientRepositories */,
+				5C25C6802995693F00C07953 /* Location */,
+				5C25C67F2995692C00C07953 /* Notification */,
+				5C25C67E2995690C00C07953 /* Flavor */,
+				5C25C67D299568FD00C07953 /* Auth */,
+				5C25C67C299568D600C07953 /* Category */,
+				5C25C67B2995689F00C07953 /* Document */,
+				5C25C67A2995684F00C07953 /* SubBrand */,
+				5C25C679299567EC00C07953 /* Profile */,
+				5C25C6782995675C00C07953 /* Product */,
+				5C25C6772995675200C07953 /* Subcategory */,
+				5C25C6762995674A00C07953 /* CheckIn */,
+				5C25C6752995674500C07953 /* Friend */,
+				5C25C6742995672700C07953 /* Brand */,
+				5C25C6732995670F00C07953 /* Company */,
 				5C989DAA2901AAD500BBC5A7 /* Client.swift */,
 			);
 			path = Services;
@@ -414,6 +547,7 @@
 			isa = PBXGroup;
 			children = (
 				5CBC244F297C54B900A0002B /* Router.swift */,
+				5C25C68229956B7A00C07953 /* Shapes */,
 				5CFB562D28F5969300F13A1E /* Components */,
 				5CD10A5F28F99CF60001CFC2 /* Screens */,
 				5C46E8652911E2CD0008F142 /* Sheets */,
@@ -425,12 +559,9 @@
 		5CD10A5F28F99CF60001CFC2 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				5C25C681299569FB00C07953 /* Settings */,
 				5C25C66E2995615300C07953 /* Onboarding */,
-				5CE90090292101C8003DE697 /* AboutScreenView.swift */,
-				5C663F2A292FBE10006F9A97 /* AppIconScreenView.swift */,
-				5C12B42C2902A12A001EE549 /* ApplicationSettingsScreenView.swift */,
 				5C0E364B292308080072EFBD /* AuthenticationScreenView.swift */,
-				5C12B4322902A4C9001EE549 /* BlockedUsersScreenView.swift */,
 				5C25AEB929053B7E00793607 /* CompanyScreenView.swift */,
 				5CA006C7298DE33F003CC307 /* BrandScreenView.swift */,
 				5C11ECB228EEEDEF00CCDE6A /* FriendsScreenView.swift */,
@@ -439,10 +570,8 @@
 				5CD10A3C28F75B7A0001CFC2 /* ProductScreenView.swift */,
 				5CD10A3E28F760520001CFC2 /* CheckInScreenView.swift */,
 				5CB52D63292BBC14000BF55F /* ProfileProductListView.swift */,
-				5C12B42E2902A190001EE549 /* ProfileSettingsScreenView.swift */,
 				5CE9008B291FCB71003DE697 /* SplashScreenView.swift */,
 				5CBC2451297C60AE00A0002B /* ProfileScreenView.swift */,
-				5C3D8274298D5F3300E861DC /* AccountSettingsScreenView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -658,6 +787,7 @@
 				5C663F3329322016006F9A97 /* ServingStyleLabelView.swift in Sources */,
 				5C0E365429279B240072EFBD /* Barcode.swift in Sources */,
 				5CED432228FAC01C003F8194 /* UserSheetView.swift in Sources */,
+				5C25C68829956BD400C07953 /* WebShape.swift in Sources */,
 				5CED432C28FD69DE003F8194 /* CompanySearchView.swift in Sources */,
 				5CD10A5728F98D490001CFC2 /* Product.swift in Sources */,
 				5CD10A5328F98CFC0001CFC2 /* Brand.swift in Sources */,
@@ -696,6 +826,7 @@
 				5C11ECBD28EEF30600CCDE6A /* SearchTabView.swift in Sources */,
 				5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */,
 				5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */,
+				5C25C68429956B8500C07953 /* LinkedInShape.swift in Sources */,
 				5C919E2228FF0CF60055CFD2 /* ProductVariant.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsScreenView.swift in Sources */,
 				5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */,
@@ -756,6 +887,7 @@
 				5C323E91298C501F00B005A9 /* ArrayExtensions.swift in Sources */,
 				5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */,
 				5C0E364E2923C8CD0072EFBD /* ProfileManager.swift in Sources */,
+				5C25C68629956BAF00C07953 /* GitHubShape.swift in Sources */,
 				5CA006CD2992D0CF003CC307 /* CreateQRCodeView.swift in Sources */,
 				5C12B4352902C9D0001EE549 /* TabsView.swift in Sources */,
 				5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */,
