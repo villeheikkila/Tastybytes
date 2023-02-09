@@ -12,11 +12,9 @@ struct RatingPickerView: View {
         ForEach(0 ..< Int(rating), id: \.self) { _ in
           fullStar
         }
-
         if rating != floor(rating) {
           halfStar
         }
-
         ForEach(0 ..< Int(Double(5) - rating), id: \.self) { _ in
           emptyStar
         }
@@ -32,7 +30,6 @@ struct RatingPickerView: View {
       .onPreferenceChange(ControlSizeKey.self) { size in
         controlSize = size
       }
-
       Color.clear
         .frame(width: controlSize.width, height: controlSize.height)
         .contentShape(Rectangle())

@@ -159,7 +159,7 @@ extension ProfileSettingsScreenView {
 
     func updatePrivacySettings(onUpdate: @escaping () -> Void) {
       let update = Profile.UpdateRequest(
-        isPrivate: true
+        isPrivate: isPrivateProfile
       )
 
       Task {
