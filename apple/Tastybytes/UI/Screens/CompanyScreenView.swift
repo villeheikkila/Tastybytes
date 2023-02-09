@@ -250,7 +250,9 @@ extension CompanyScreenView {
 
     @Published var productToDelete: Product.JoinedCategory? {
       didSet {
-        showDeleteProductConfirmationDialog = true
+        if productToDelete != nil {
+          showDeleteProductConfirmationDialog = true
+        }
       }
     }
 
