@@ -64,8 +64,8 @@ struct RatingPickerView: View {
 
   private func rating(at position: CGPoint) -> Double {
     let singleStarWidth = starSize.width
-    let totalPaddingWidth = controlSize.width - CGFloat(5) * singleStarWidth
-    let singlePaddingWidth = totalPaddingWidth / (CGFloat(5) - 1)
+    let totalPaddingWidth = controlSize.width - Double(5) * singleStarWidth
+    let singlePaddingWidth = totalPaddingWidth / (Double(5) - 1)
     let starWithSpaceWidth = Double(singleStarWidth + singlePaddingWidth)
     let xAxis = Double(position.x)
 

@@ -3,7 +3,7 @@ import SwiftUI
 
 struct AvatarView: View {
   let avatarUrl: String?
-  let size: CGFloat
+  let size: Double
   let id: UUID
 
   var body: some View {

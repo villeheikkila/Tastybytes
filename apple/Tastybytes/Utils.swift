@@ -8,11 +8,11 @@ func getConsistentColor(seed: String) -> Color {
     total += Int(UInt32(unicodeScalar))
   }
   srand48(total * 200)
-  let red = CGFloat(drand48())
+  let red = Double(drand48())
   srand48(total)
-  let green = CGFloat(drand48())
+  let green = Double(drand48())
   srand48(total / 200)
-  let blue = CGFloat(drand48())
+  let blue = Double(drand48())
   return Color(red: red, green: green, blue: blue)
 }
 

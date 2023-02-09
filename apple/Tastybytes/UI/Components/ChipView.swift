@@ -3,7 +3,7 @@ import SwiftUI
 struct ChipView: View {
   let title: String
   let systemName: String? = nil
-  var cornerRadius: CGFloat = 15
+  var cornerRadius: Double = 15
 
   var body: some View {
     HStack {
