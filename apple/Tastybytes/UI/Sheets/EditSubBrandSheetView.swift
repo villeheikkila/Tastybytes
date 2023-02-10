@@ -4,10 +4,7 @@ import SwiftUI
 struct EditSubBrandSheetView: View {
   @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel: ViewModel
-  @State private var newSubBrandName: String
 
-  let brand: Brand.JoinedSubBrandsProductsCompany
-  let subBrand: SubBrand.JoinedProduct
   let onUpdate: () -> Void
 
   init(
@@ -16,30 +13,28 @@ struct EditSubBrandSheetView: View {
     subBrand: SubBrand.JoinedProduct,
     onUpdate: @escaping () -> Void
   ) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
-    self.brand = brand
-    self.subBrand = subBrand
+    _viewModel = StateObject(wrappedValue: ViewModel(client, subBrand: subBrand, brand: brand))
     self.onUpdate = onUpdate
-    _newSubBrandName = State(initialValue: subBrand.name.orEmpty)
   }
 
   var body: some View {
     List {
       Section {
-        TextField("Name", text: $newSubBrandName)
+        TextField("Name", text: $viewModel.newSubBrandName)
         Button("Edit") {
-          viewModel.editSubBrand(subBrand: subBrand, name: newSubBrandName, onSuccess: {
+          viewModel.editSubBrand(onSuccess: {
             onUpdate()
           })
         }
-        .disabled(!validateStringLength(str: newSubBrandName, type: .normal) || subBrand.name == newSubBrandName)
+        .disabled(viewModel.invalidNewName)
       } header: {
         Text("Name")
       }
 
-      if !brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id }.isEmpty {
+      if !viewModel.brand.subBrands.filter { $0.name != nil && $0.id != viewModel.subBrand.id }.isEmpty {
         Section {
-          ForEach(brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id }, id: \.self) { subBrand in
+          ForEach(viewModel.brand.subBrands.filter { $0.name != nil && $0.id != viewModel.subBrand.id },
+                  id: \.self) { subBrand in
             Button(action: {
               viewModel.mergeTo = subBrand
             }) {
@@ -53,7 +48,7 @@ struct EditSubBrandSheetView: View {
         }
       }
     }
-    .navigationTitle("Edit \(subBrand.name.orEmpty)")
+    .navigationTitle("Edit \(viewModel.subBrand.name.orEmpty)")
     .navigationBarItems(trailing: Button(action: {
       dismiss()
     }) {
@@ -66,10 +61,10 @@ struct EditSubBrandSheetView: View {
                         isPresented: $viewModel.showMergeSubBrandsConfirmation,
                         presenting: viewModel.mergeTo) { presenting in
       Button(
-        "Merge \(subBrand.name.orEmpty) to \(presenting.name ?? "default sub-brand")",
+        "Merge \(viewModel.subBrand.name.orEmpty) to \(presenting.name ?? "default sub-brand")",
         role: .destructive,
         action: {
-          viewModel.mergeToSubBrand(subBrand: subBrand, onSuccess: {
+          viewModel.mergeToSubBrand(subBrand: viewModel.subBrand, onSuccess: {
             onUpdate()
           })
         }
@@ -84,6 +79,10 @@ extension EditSubBrandSheetView {
     let client: Client
     @Published var showToast = false
     @Published var showMergeSubBrandsConfirmation = false
+    @Published var newSubBrandName: String
+    @Published var brand: Brand.JoinedSubBrandsProductsCompany
+    @Published var subBrand: SubBrand.JoinedProduct
+
     @Published var mergeTo: SubBrand.JoinedProduct? {
       didSet {
         if oldValue != nil {
@@ -94,8 +93,16 @@ extension EditSubBrandSheetView {
       }
     }
 
-    init(_ client: Client) {
+    init(_ client: Client, subBrand: SubBrand.JoinedProduct, brand: Brand.JoinedSubBrandsProductsCompany) {
       self.client = client
+      self.brand = brand
+      self.subBrand = subBrand
+      newSubBrandName = brand.name
+    }
+
+    var invalidNewName: Bool {
+      !validateStringLength(str: newSubBrandName, type: .normal) || subBrand
+        .name == newSubBrandName
     }
 
     func mergeToSubBrand(subBrand: SubBrand.JoinedProduct, onSuccess: @escaping () -> Void) {
@@ -117,16 +124,21 @@ extension EditSubBrandSheetView {
       }
     }
 
-    func editSubBrand(subBrand: SubBrand.JoinedProduct, name: String, onSuccess: @escaping () -> Void) {
+    func editSubBrand(onSuccess: @escaping () -> Void) {
       Task {
         switch await client.subBrand
-          .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: name)))
+          .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: newSubBrandName)))
         {
         case .success:
           showToast.toggle()
           onSuccess()
         case let .failure(error):
-          logger.error("failed to edit sub-brand '\(subBrand.id)' to '\(name)': \(error.localizedDescription)")
+          logger
+            .error(
+              """
+              failed to edit sub-brand '\(self.subBrand.id)' to '\(self.newSubBrandName)': \(error.localizedDescription)
+              """
+            )
         }
       }
     }
