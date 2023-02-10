@@ -279,6 +279,31 @@ extension Product {
       category = product.category
       barcodes = []
     }
+
+    init(
+      product: Product.JoinedCategory,
+      subBrand: SubBrand.JoinedProduct,
+      brand: Brand.JoinedSubBrandsProductsCompany
+    ) {
+      id = product.id
+      name = product.name
+      description = product.name
+      isVerified = product.isVerified
+      self.subBrand = SubBrand.JoinedBrand(
+        id: subBrand.id,
+        name: subBrand.name,
+        isVerified: subBrand.isVerified,
+        brand: Brand.JoinedCompany(
+          id: brand.id,
+          name: brand.name,
+          isVerified: brand.isVerified,
+          brandOwner: brand.brandOwner
+        )
+      )
+      subcategories = product.subcategories
+      category = product.category
+      barcodes = []
+    }
   }
 
   struct JoinedCategory: Identifiable, Decodable, Hashable {

@@ -45,7 +45,7 @@ import SwiftUI
           logger.error("request for company with \(id) failed: \(error.localizedDescription)")
         }
       case let .brand(id):
-        switch await client.brand.getById(id: id) {
+        switch await client.brand.getJoinedById(id: id) {
         case let .success(brand):
           self.navigate(to: .brand(brand), resetStack: true)
         case let .failure(error):
@@ -76,7 +76,7 @@ enum Route: Hashable {
   case checkIn(CheckIn)
   case location(Location)
   case company(Company)
-  case brand(Brand.JoinedSubBrandsProducts)
+  case brand(Brand.JoinedSubBrandsProductsCompany)
   case profileProducts(Profile)
   case settings
   case currentUserFriends

@@ -10,10 +10,15 @@ struct EditBrandSheetView: View {
   @State private var showToast = false
 
   let initialBrandOwner: Company
-  let brand: Brand.JoinedSubBrandsProducts
+  let brand: Brand.JoinedSubBrandsProductsCompany
   let onUpdate: () -> Void
 
-  init(_ client: Client, brand: Brand.JoinedSubBrandsProducts, brandOwner: Company, onUpdate: @escaping () -> Void) {
+  init(
+    _ client: Client,
+    brand: Brand.JoinedSubBrandsProductsCompany,
+    brandOwner: Company,
+    onUpdate: @escaping () -> Void
+  ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client))
     self.brand = brand
     initialBrandOwner = brandOwner
@@ -151,7 +156,7 @@ extension EditBrandSheetView {
     }
 
     func editBrand(
-      brand: Brand.JoinedSubBrandsProducts,
+      brand: Brand.JoinedSubBrandsProductsCompany,
       name: String,
       brandOwner: Company,
       onSuccess: @escaping () -> Void
@@ -187,14 +192,14 @@ struct EditSubBrandSheetView: View {
   @StateObject private var viewModel: ViewModel
   @State private var newSubBrandName: String
 
-  let brand: Brand.JoinedSubBrandsProducts
+  let brand: Brand.JoinedSubBrandsProductsCompany
   let subBrand: SubBrand.JoinedProduct
   let onUpdate: () -> Void
   let onClose: () -> Void
 
   init(
     _ client: Client,
-    brand: Brand.JoinedSubBrandsProducts,
+    brand: Brand.JoinedSubBrandsProductsCompany,
     subBrand: SubBrand.JoinedProduct,
     onUpdate: @escaping () -> Void,
     onClose: @escaping () -> Void

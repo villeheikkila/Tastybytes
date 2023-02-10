@@ -6,7 +6,7 @@ struct BrandScreenView: View {
   @EnvironmentObject private var router: Router
   @StateObject private var viewModel: ViewModel
 
-  init(_ client: Client, brand: Brand.JoinedSubBrandsProducts) {
+  init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, brand: brand))
   }
 
@@ -17,7 +17,6 @@ struct BrandScreenView: View {
           product in
           NavigationLink(value: Route.product(Product
               .Joined(
-                company: Company(id: 1, name: "test", logoUrl: nil, isVerified: false),
                 product: product,
                 subBrand: subBrand,
                 brand: viewModel.brand
@@ -27,6 +26,40 @@ struct BrandScreenView: View {
                 .lineLimit(nil)
               Spacer()
             }
+            .contextMenu {
+              if profileManager.hasPermission(.canMergeProducts) {
+                Button(action: {
+                  viewModel.productToMerge = product
+                }) {
+                  Text("Merge product to...")
+                }
+              }
+
+              if profileManager.hasPermission(.canDeleteProducts) {
+                Button(action: {
+                  viewModel.productToDelete = product
+                }) {
+                  Label("Delete", systemImage: "trash.fill")
+                    .foregroundColor(.red)
+                }
+                .disabled(product.isVerified)
+              }
+              Spacer()
+            }
+          }
+        }
+      }
+    }
+    .sheet(item: $viewModel.activeSheet) { sheet in
+      NavigationStack {
+        switch sheet {
+        case .editBrand:
+          if let editBrand = viewModel.editBrand {
+            EditBrandSheetView(viewModel.client, brand: editBrand, brandOwner: viewModel.brand.brandOwner) {}
+          }
+        case .mergeProduct:
+          if let productToMerge = viewModel.productToMerge {
+            MergeSheetView(viewModel.client, productToMerge: productToMerge)
           }
         }
       }
@@ -65,15 +98,53 @@ struct BrandScreenView: View {
 }
 
 extension BrandScreenView {
+  enum Sheet: Identifiable {
+    var id: Self { self }
+    case editBrand
+    case mergeProduct
+  }
+
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "BrandScreenView")
     let client: Client
-    @Published var brand: Brand.JoinedSubBrandsProducts
+    @Published var brand: Brand.JoinedSubBrandsProductsCompany
     @Published var showDeleteBrandConfirmationDialog = false
 
-    init(_ client: Client, brand: Brand.JoinedSubBrandsProducts) {
+    @Published var companyJoined: Company.Joined?
+    @Published var summary: Summary?
+    @Published var activeSheet: Sheet?
+    @Published var newCompanyNameSuggestion = ""
+    @Published var editBrand: Brand.JoinedSubBrandsProductsCompany?
+    @Published var productToMerge: Product.JoinedCategory? {
+      didSet {
+        setActiveSheet(.mergeProduct)
+      }
+    }
+
+    @Published var productToDelete: Product.JoinedCategory? {
+      didSet {
+        if productToDelete != nil {
+          showDeleteProductConfirmationDialog = true
+        }
+      }
+    }
+
+    @Published var showDeleteProductConfirmationDialog = false
+    @Published var brandToDelete: Brand.JoinedSubBrandsProducts? {
+      didSet {
+        showDeleteBrandConfirmationDialog = true
+      }
+    }
+
+    @Published var showDeleteCompanyConfirmationDialog = false
+
+    init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany) {
       self.client = client
       self.brand = brand
+    }
+
+    func setActiveSheet(_ sheet: Sheet) {
+      activeSheet = sheet
     }
 
     func deleteBrand(onDelete: @escaping () -> Void) {

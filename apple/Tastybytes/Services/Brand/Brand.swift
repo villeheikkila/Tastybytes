@@ -12,6 +12,12 @@ enum Brand {
       return queryWithTableName(tableName, joinWithComma(saved, SubBrand.getQuery(.joined(true))), withTableName)
     case let .joinedCompany(withTableName):
       return queryWithTableName(tableName, joinWithComma(saved, Company.getQuery(.saved(true))), withTableName)
+    case let .joinedSubBrandsCompany(withTableName):
+      return queryWithTableName(
+        tableName,
+        joinWithComma(saved, SubBrand.getQuery(.joined(true)), Company.getQuery(.saved(true))),
+        withTableName
+      )
     }
   }
 
@@ -20,6 +26,7 @@ enum Brand {
     case joined(_ withTableName: Bool)
     case joinedSubBrands(_ withTableName: Bool)
     case joinedCompany(_ withTableName: Bool)
+    case joinedSubBrandsCompany(_ withTableName: Bool)
   }
 }
 
@@ -86,6 +93,38 @@ extension Brand {
       case id
       case name
       case isVerified = "is_verified"
+      case subBrands = "sub_brands"
+    }
+  }
+
+  struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Decodable {
+    let id: Int
+    let name: String
+    let isVerified: Bool
+    let brandOwner: Company
+    let subBrands: [SubBrand.JoinedProduct]
+
+    init(brandOwner: Company, brand: JoinedSubBrandsProducts) {
+      id = brand.id
+      name = brand.name
+      isVerified = brand.isVerified
+      self.brandOwner = brandOwner
+      subBrands = brand.subBrands
+    }
+
+    func getNumberOfProducts() -> Int {
+      subBrands.flatMap(\.products).count
+    }
+
+    static func == (lhs: JoinedSubBrandsProductsCompany, rhs: JoinedSubBrandsProductsCompany) -> Bool {
+      lhs.id == rhs.id
+    }
+
+    enum CodingKeys: String, CodingKey {
+      case id
+      case name
+      case isVerified = "is_verified"
+      case brandOwner = "companies"
       case subBrands = "sub_brands"
     }
   }

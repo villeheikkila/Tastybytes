@@ -17,7 +17,32 @@ struct CompanyScreenView: View {
           SummaryView(summary: summary)
         }
       }
-      productList
+      if let companyJoined = viewModel.companyJoined {
+        Section {
+          ForEach(companyJoined.brands, id: \.id) { brand in
+            NavigationLink(value: Route
+              .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand))) {
+                HStack {
+                  Text("\(brand.name)")
+                  Spacer()
+                  Text("(\(brand.getNumberOfProducts()))")
+                }
+                .contextMenu {
+                  if profileManager.hasPermission(.canDeleteBrands) {
+                    Button(action: {
+                      viewModel.brandToDelete = brand
+                    }) {
+                      Label("Delete", systemImage: "trash.fill")
+                    }
+                    .disabled(brand.isVerified)
+                  }
+                }
+              }
+          }
+        } header: {
+          Text("Brands")
+        }.headerProminence(.increased)
+      }
     }
     .navigationTitle(viewModel.company.name)
     .refreshable {
@@ -31,12 +56,6 @@ struct CompanyScreenView: View {
           companyEditSuggestionSheet
         case .editCompany:
           companyEditSheet
-        case .editBrand:
-          if let editBrand = viewModel.editBrand {
-            EditBrandSheetView(viewModel.client, brand: editBrand, brandOwner: viewModel.company) {
-              viewModel.getProductsAndSummary()
-            }
-          }
         case .mergeProduct:
           if let productToMerge = viewModel.productToMerge {
             MergeSheetView(viewModel.client, productToMerge: productToMerge)
@@ -107,76 +126,6 @@ struct CompanyScreenView: View {
     }
   }
 
-  @ViewBuilder
-  private var productList: some View {
-    if let companyJoined = viewModel.companyJoined {
-      ForEach(companyJoined.brands, id: \.id) { brand in
-        Section {
-          ForEach(brand.subBrands, id: \.id) {
-            subBrand in
-            ForEach(subBrand.products, id: \.id) {
-              product in
-              NavigationLink(value: Route.product(Product
-                  .Joined(company: viewModel.company, product: product, subBrand: subBrand, brand: brand))) {
-                HStack {
-                  Text(joinOptionalStrings([brand.name, subBrand.name, product.name]))
-                    .lineLimit(nil)
-                  Spacer()
-                }
-                .contextMenu {
-                  if profileManager.hasPermission(.canMergeProducts) {
-                    Button(action: {
-                      viewModel.productToMerge = product
-                    }) {
-                      Text("Merge product to...")
-                    }
-                  }
-
-                  if profileManager.hasPermission(.canDeleteProducts) {
-                    Button(action: {
-                      viewModel.productToDelete = product
-                    }) {
-                      Label("Delete", systemImage: "trash.fill")
-                        .foregroundColor(.red)
-                    }
-                    .disabled(product.isVerified)
-                  }
-                }
-              }
-            }
-          }
-        } header: {
-          HStack {
-            Text("\(brand.name) (\(brand.getNumberOfProducts()))")
-            Spacer()
-            Menu {
-              if profileManager.hasPermission(.canEditBrands) {
-                Button(action: {
-                  viewModel.editBrand = brand
-                  viewModel.setActiveSheet(.editBrand)
-                }) {
-                  Label("Edit", systemImage: "pencil")
-                }
-              }
-
-              if profileManager.hasPermission(.canDeleteBrands) {
-                Button(action: {
-                  viewModel.brandToDelete = brand
-                }) {
-                  Label("Delete", systemImage: "trash.fill")
-                }
-                .disabled(brand.isVerified)
-              }
-            } label: {
-              Image(systemName: "ellipsis")
-            }
-          }
-        }
-        .headerProminence(.increased)
-      }
-    }
-  }
-
   private var companyEditSuggestionSheet: some View {
     Form {
       Section {
@@ -229,7 +178,6 @@ extension CompanyScreenView {
     var id: Self { self }
     case editSuggestionCompany
     case editCompany
-    case editBrand
     case mergeProduct
   }
 
