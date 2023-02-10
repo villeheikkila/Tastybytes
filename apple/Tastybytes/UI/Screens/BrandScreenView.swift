@@ -100,6 +100,9 @@ struct BrandScreenView: View {
         .headerProminence(.increased)
       }
     }
+    .refreshable {
+      viewModel.refresh()
+    }
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {
@@ -243,7 +246,16 @@ extension BrandScreenView {
       activeSheet = sheet
     }
 
-    func refresh() {}
+    func refresh() {
+      Task {
+        switch await client.brand.getJoinedById(id: brand.id) {
+        case let .success(brand):
+          self.brand = brand
+        case let .failure(error):
+          logger.error("request for brand with \(self.brand.id) failed: \(error.localizedDescription)")
+        }
+      }
+    }
 
     func verifyBrand() {
       Task {
