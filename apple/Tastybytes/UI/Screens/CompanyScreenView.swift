@@ -19,7 +19,10 @@ struct CompanyScreenView: View {
       }
       if let companyJoined = viewModel.companyJoined {
         Section {
-          ForEach(companyJoined.brands, id: \.id) { brand in
+          ForEach(
+            companyJoined.brands.sorted { lhs, rhs in lhs.getNumberOfProducts() > rhs.getNumberOfProducts() },
+            id: \.id
+          ) { brand in
             NavigationLink(value: Route
               .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand))) {
                 HStack {
