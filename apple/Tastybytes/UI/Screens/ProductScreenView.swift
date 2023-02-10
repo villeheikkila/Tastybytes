@@ -209,7 +209,7 @@ extension ProductScreenView {
 
     func verifyProduct() {
       Task {
-        switch await client.product.verifyProduct(productId: product.id) {
+        switch await client.product.verify(id: product.id) {
         case .success:
           refresh()
         case let .failure(error):

@@ -134,6 +134,14 @@ extension SubBrand {
     }
   }
 
+  struct VerifyRequest: Encodable {
+    let id: Int
+
+    enum CodingKeys: String, CodingKey {
+      case id = "p_sub_brand_id"
+    }
+  }
+
   enum Update {
     case brand(UpdateBrandRequest)
     case name(UpdateNameRequest)

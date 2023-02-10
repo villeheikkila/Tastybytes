@@ -12,7 +12,7 @@ protocol ProductRepository {
   func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
   func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error>
   func createUpdateSuggestion(productEditSuggestionParams: Product.EditRequest) async -> Result<IntId, Error>
-  func verifyProduct(productId: Int) async -> Result<Void, Error>
+  func verify(id: Int) async -> Result<Void, Error>
 }
 
 struct SupabaseProductRepository: ProductRepository {
@@ -191,11 +191,11 @@ struct SupabaseProductRepository: ProductRepository {
     }
   }
 
-  func verifyProduct(productId: Int) async -> Result<Void, Error> {
+  func verify(id: Int) async -> Result<Void, Error> {
     do {
       try await client
         .database
-        .rpc(fn: "fnc__verify_product", params: Product.VerifyRequest(id: productId))
+        .rpc(fn: "fnc__verify_product", params: Product.VerifyRequest(id: id))
         .single()
         .execute()
 

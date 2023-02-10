@@ -66,6 +66,14 @@ extension Company {
     let name: String
   }
 
+  struct VerifyRequest: Encodable {
+    let id: Int
+
+    enum CodingKeys: String, CodingKey {
+      case id = "p_company_id"
+    }
+  }
+
   struct SummaryRequest: Encodable {
     let id: Int
 

@@ -363,6 +363,7 @@
 			children = (
 				5CD10A5628F98D490001CFC2 /* Product.swift */,
 				5C919E2128FF0CF60055CFD2 /* ProductVariant.swift */,
+				5CB1C24A28F9BE4F000B0EB4 /* ProductRepository.swift */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -383,7 +384,6 @@
 			isa = PBXGroup;
 			children = (
 				5CD10A5428F98D220001CFC2 /* SubBrand.swift */,
-				5CB1C24A28F9BE4F000B0EB4 /* ProductRepository.swift */,
 				5CED433328FDA357003F8194 /* SubBrandRepository.swift */,
 			);
 			path = SubBrand;

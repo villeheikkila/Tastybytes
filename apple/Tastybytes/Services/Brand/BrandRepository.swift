@@ -7,6 +7,7 @@ protocol BrandRepository {
   func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error>
   func insert(newBrand: Brand.NewRequest) async -> Result<Brand.JoinedSubBrands, Error>
   func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error>
+  func verify(id: Int) async -> Result<Void, Error>
   func delete(id: Int) async -> Result<Void, Error>
 }
 
@@ -78,6 +79,20 @@ struct SupabaseBrandRepository: BrandRepository {
         .value
 
       return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func verify(id: Int) async -> Result<Void, Error> {
+    do {
+      try await client
+        .database
+        .rpc(fn: "fnc__verify_brand", params: Brand.VerifyRequest(id: id))
+        .single()
+        .execute()
+
+      return .success(())
     } catch {
       return .failure(error)
     }

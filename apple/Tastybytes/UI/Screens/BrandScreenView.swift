@@ -12,42 +12,53 @@ struct BrandScreenView: View {
 
   var body: some View {
     List {
-      ForEach(viewModel.brand.subBrands, id: \.self) { subBrand in
-        ForEach(subBrand.products, id: \.id) {
-          product in
-          NavigationLink(value: Route.product(Product
-              .Joined(
-                product: product,
-                subBrand: subBrand,
-                brand: viewModel.brand
-              ))) {
-            HStack {
-              Text(joinOptionalStrings([viewModel.brand.name, subBrand.name, product.name]))
-                .lineLimit(nil)
-              Spacer()
-            }
-            .contextMenu {
-              if profileManager.hasPermission(.canMergeProducts) {
-                Button(action: {
-                  viewModel.productToMerge = product
-                }) {
-                  Text("Merge product to...")
-                }
+      ForEach(viewModel.brand.subBrands.sorted { lhs, rhs -> Bool in
+        switch (lhs.name, rhs.name) {
+        case let (lhs?, rhs?): return lhs < rhs
+        case (nil, _): return true
+        case (_?, nil): return false
+        }
+      }, id: \.self) { subBrand in
+        Section {
+          ForEach(subBrand.products, id: \.id) {
+            product in
+            NavigationLink(value: Route.product(Product
+                .Joined(
+                  product: product,
+                  subBrand: subBrand,
+                  brand: viewModel.brand
+                ))) {
+              HStack {
+                Text(joinOptionalStrings([viewModel.brand.name, subBrand.name, product.name]))
+                  .lineLimit(nil)
+                Spacer()
               }
+              .contextMenu {
+                if profileManager.hasPermission(.canMergeProducts) {
+                  Button(action: {
+                    viewModel.productToMerge = product
+                  }) {
+                    Text("Merge product to...")
+                  }
+                }
 
-              if profileManager.hasPermission(.canDeleteProducts) {
-                Button(action: {
-                  viewModel.productToDelete = product
-                }) {
-                  Label("Delete", systemImage: "trash.fill")
-                    .foregroundColor(.red)
+                if profileManager.hasPermission(.canDeleteProducts) {
+                  Button(action: {
+                    viewModel.productToDelete = product
+                  }) {
+                    Label("Delete", systemImage: "trash.fill")
+                      .foregroundColor(.red)
+                  }
+                  .disabled(product.isVerified)
                 }
-                .disabled(product.isVerified)
+                Spacer()
               }
-              Spacer()
             }
           }
+        } header: {
+          Text(subBrand.name ?? "")
         }
+        .headerProminence(.increased)
       }
     }
     .sheet(item: $viewModel.activeSheet) { sheet in
@@ -83,6 +94,18 @@ struct BrandScreenView: View {
 
       Divider()
 
+      if viewModel.brand.isVerified {
+        Label("Verified", systemImage: "checkmark.circle")
+      } else if profileManager.hasPermission(.canVerify) {
+        Button(action: {
+          viewModel.verifyBrand()
+        }) {
+          Label("Verify", systemImage: "checkmark")
+        }
+      } else {
+        Label("Not verified", systemImage: "x.circle")
+      }
+
       if profileManager.hasPermission(.canDeleteBrands) {
         Button(action: {
           viewModel.showDeleteBrandConfirmationDialog.toggle()
@@ -108,12 +131,8 @@ extension BrandScreenView {
     private let logger = getLogger(category: "BrandScreenView")
     let client: Client
     @Published var brand: Brand.JoinedSubBrandsProductsCompany
-    @Published var showDeleteBrandConfirmationDialog = false
-
-    @Published var companyJoined: Company.Joined?
     @Published var summary: Summary?
     @Published var activeSheet: Sheet?
-    @Published var newCompanyNameSuggestion = ""
     @Published var editBrand: Brand.JoinedSubBrandsProductsCompany?
     @Published var productToMerge: Product.JoinedCategory? {
       didSet {
@@ -121,6 +140,7 @@ extension BrandScreenView {
       }
     }
 
+    @Published var showDeleteProductConfirmationDialog = false
     @Published var productToDelete: Product.JoinedCategory? {
       didSet {
         if productToDelete != nil {
@@ -129,7 +149,16 @@ extension BrandScreenView {
       }
     }
 
-    @Published var showDeleteProductConfirmationDialog = false
+    @Published var showDeleteSubBrandConfirmationDialog = false
+    @Published var subBrandToDelete: SubBrand.JoinedProduct? {
+      didSet {
+        if subBrandToDelete != nil {
+          showDeleteSubBrandConfirmationDialog = true
+        }
+      }
+    }
+
+    @Published var showDeleteBrandConfirmationDialog = false
     @Published var brandToDelete: Brand.JoinedSubBrandsProducts? {
       didSet {
         showDeleteBrandConfirmationDialog = true
@@ -145,6 +174,37 @@ extension BrandScreenView {
 
     func setActiveSheet(_ sheet: Sheet) {
       activeSheet = sheet
+    }
+
+    func verifyBrand() {
+      Task {
+        switch await client.brand.verify(id: brand.id) {
+        case .success:
+          brand = Brand.JoinedSubBrandsProductsCompany(
+            id: brand.id,
+            name: brand.name,
+            isVerified: true,
+            brandOwner: brand.brandOwner,
+            subBrands: brand.subBrands
+          )
+        case let .failure(error):
+          logger
+            .error("failed to verify brand by id '\(self.brand.id)': \(error.localizedDescription)")
+        }
+      }
+    }
+
+    func verifySubBrand(_ subBrand: SubBrand.JoinedProduct) {
+      Task {
+        switch await client.subBrand.verify(id: subBrand.id) {
+        case .success:
+          logger
+            .info("sub-brand succesfully verified")
+        case let .failure(error):
+          logger
+            .error("failed to verify brand by id '\(self.brand.id)': \(error.localizedDescription)")
+        }
+      }
     }
 
     func deleteBrand(onDelete: @escaping () -> Void) {

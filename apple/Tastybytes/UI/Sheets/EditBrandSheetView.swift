@@ -63,23 +63,6 @@ struct EditBrandSheetView: View {
             HStack {
               Text(subBrandName)
               Spacer()
-              Menu {
-                Button(action: {
-                  editSubBrand = subBrand
-                  viewModel.activeSheet = Sheet.editSubBrand
-                }) {
-                  Label("Edit", systemImage: "pencil")
-                }
-
-                Button(action: {
-                  viewModel.toDeleteSubBrand = subBrand
-                }) {
-                  Label("Delete", systemImage: "trash")
-                    .disabled(subBrand.isVerified)
-                }
-              } label: {
-                Image(systemName: "ellipsis")
-              }
             }
           }
         }

@@ -116,6 +116,14 @@ extension Brand {
       subBrands.flatMap(\.products).count
     }
 
+    init(id: Int, name: String, isVerified: Bool, brandOwner: Company, subBrands: [SubBrand.JoinedProduct]) {
+      self.id = id
+      self.name = name
+      self.isVerified = isVerified
+      self.brandOwner = brandOwner
+      self.subBrands = subBrands
+    }
+
     static func == (lhs: JoinedSubBrandsProductsCompany, rhs: JoinedSubBrandsProductsCompany) -> Bool {
       lhs.id == rhs.id
     }
@@ -158,6 +166,14 @@ extension Brand {
       self.id = id
       self.name = name
       self.brandOwnerId = brandOwnerId
+    }
+  }
+
+  struct VerifyRequest: Encodable {
+    let id: Int
+
+    enum CodingKeys: String, CodingKey {
+      case id = "p_brand_id"
     }
   }
 }

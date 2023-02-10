@@ -5,6 +5,7 @@ protocol SubBrandRepository {
   func insert(newSubBrand: SubBrand.NewRequest) async -> Result<SubBrand, Error>
   func update(updateRequest: SubBrand.Update) async -> Result<Void, Error>
   func delete(id: Int) async -> Result<Void, Error>
+  func verify(id: Int) async -> Result<Void, Error>
 }
 
 struct SupabaseSubBrandRepository: SubBrandRepository {
@@ -59,6 +60,20 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         .from(SubBrand.getQuery(.tableName))
         .delete()
         .eq(column: "id", value: id)
+        .execute()
+
+      return .success(())
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func verify(id: Int) async -> Result<Void, Error> {
+    do {
+      try await client
+        .database
+        .rpc(fn: "fnc__verify_sub_brand", params: SubBrand.VerifyRequest(id: id))
+        .single()
         .execute()
 
       return .success(())

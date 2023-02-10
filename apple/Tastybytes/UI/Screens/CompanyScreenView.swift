@@ -113,6 +113,18 @@ struct CompanyScreenView: View {
 
       Divider()
 
+      if viewModel.company.isVerified {
+        Label("Verified", systemImage: "checkmark.circle")
+      } else if profileManager.hasPermission(.canVerify) {
+        Button(action: {
+          viewModel.verifyCompany()
+        }) {
+          Label("Verify", systemImage: "checkmark")
+        }
+      } else {
+        Label("Not verified", systemImage: "x.circle")
+      }
+
       if profileManager.hasPermission(.canDeleteCompanies) {
         Button(action: {
           viewModel.showDeleteCompanyConfirmationDialog.toggle()
@@ -287,6 +299,18 @@ extension CompanyScreenView {
           case let .failure(error):
             logger.error("failed to delete product '\(productToDelete.id)': \(error.localizedDescription)")
           }
+        }
+      }
+    }
+
+    func verifyCompany() {
+      Task {
+        switch await client.company.verify(id: company.id) {
+        case .success:
+          company = Company(id: company.id, name: company.name, logoUrl: company.logoUrl, isVerified: true)
+        case let .failure(error):
+          logger
+            .error("failed to verify company by id '\(self.company.id)': \(error.localizedDescription)")
         }
       }
     }
