@@ -45,6 +45,7 @@
 		5C25C68629956BAF00C07953 /* GitHubShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68529956BAF00C07953 /* GitHubShape.swift */; };
 		5C25C68829956BD400C07953 /* WebShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68729956BD400C07953 /* WebShape.swift */; };
 		5C25C68A299572B700C07953 /* FinalStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C689299572B700C07953 /* FinalStepView.swift */; };
+		5C25C68C2996D22400C07953 /* EditSubBrandSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68B2996D22400C07953 /* EditSubBrandSheetView.swift */; };
 		5C323E8D298C4D7300B005A9 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E8C298C4D7300B005A9 /* StringExtensions.swift */; };
 		5C323E8F298C500400B005A9 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E8E298C500400B005A9 /* URLExtensions.swift */; };
 		5C323E91298C501F00B005A9 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E90298C501F00B005A9 /* ArrayExtensions.swift */; };
@@ -172,6 +173,7 @@
 		5C25C68529956BAF00C07953 /* GitHubShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubShape.swift; sourceTree = "<group>"; };
 		5C25C68729956BD400C07953 /* WebShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebShape.swift; sourceTree = "<group>"; };
 		5C25C689299572B700C07953 /* FinalStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalStepView.swift; sourceTree = "<group>"; };
+		5C25C68B2996D22400C07953 /* EditSubBrandSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubBrandSheetView.swift; sourceTree = "<group>"; };
 		5C323E8C298C4D7300B005A9 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		5C323E8E298C500400B005A9 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		5C323E90298C501F00B005A9 /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
@@ -482,6 +484,7 @@
 				5CED432D28FD6EA7003F8194 /* BrandSheetView.swift */,
 				5C663F2E29312CAE006F9A97 /* MergeSheetView.swift */,
 				5C663F3829355601006F9A97 /* EditBrandSheetView.swift */,
+				5C25C68B2996D22400C07953 /* EditSubBrandSheetView.swift */,
 			);
 			path = Sheets;
 			sourceTree = "<group>";
@@ -818,6 +821,7 @@
 				5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */,
 				5CD10A4B28F980860001CFC2 /* CheckInComment.swift in Sources */,
 				5C25AEB62903FBDE00793607 /* Role.swift in Sources */,
+				5C25C68C2996D22400C07953 /* EditSubBrandSheetView.swift in Sources */,
 				5C919E2028FF024A0055CFD2 /* FlavorSheetView.swift in Sources */,
 				5C323E8D298C4D7300B005A9 /* StringExtensions.swift in Sources */,
 				5C12B4372902CA04001EE549 /* NotificationTabView.swift in Sources */,

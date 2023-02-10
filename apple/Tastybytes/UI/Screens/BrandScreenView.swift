@@ -56,7 +56,46 @@ struct BrandScreenView: View {
             }
           }
         } header: {
-          Text(subBrand.name ?? "")
+          HStack {
+            if let name = subBrand.name {
+              Text(name)
+            }
+
+            Spacer()
+            Menu {
+              if profileManager.hasPermission(.canEditBrands) {
+                Button(action: {
+                  viewModel.editSubBrand = subBrand
+                }) {
+                  Label("Edit", systemImage: "pencil")
+                }
+              }
+
+              if subBrand.isVerified {
+                Label("Verified", systemImage: "checkmark.circle")
+              } else if profileManager.hasPermission(.canVerify) {
+                Button(action: {
+                  viewModel.verifySubBrand(subBrand)
+                }) {
+                  Label("Verify", systemImage: "checkmark")
+                }
+              } else {
+                Label("Not verified", systemImage: "x.circle")
+              }
+
+              if profileManager.hasPermission(.canDeleteBrands) {
+                Button(action: {
+                  viewModel.toDeleteSubBrand = subBrand
+                }) {
+                  Label("Delete", systemImage: "trash.fill")
+                }
+                .disabled(subBrand.isVerified)
+              }
+            } label: {
+              Image(systemName: "ellipsis")
+                .frame(width: 24, height: 24)
+            }
+          }
         }
         .headerProminence(.increased)
       }
@@ -65,8 +104,14 @@ struct BrandScreenView: View {
       NavigationStack {
         switch sheet {
         case .editBrand:
-          if let editBrand = viewModel.editBrand {
-            EditBrandSheetView(viewModel.client, brand: editBrand, brandOwner: viewModel.brand.brandOwner) {}
+          EditBrandSheetView(viewModel.client, brand: viewModel.brand) {
+            viewModel.refresh()
+          }
+        case .editSubBrand:
+          if let editSubBrand = viewModel.editSubBrand {
+            EditSubBrandSheetView(viewModel.client, brand: viewModel.brand, subBrand: editSubBrand) {
+              viewModel.refresh()
+            }
           }
         case .mergeProduct:
           if let productToMerge = viewModel.productToMerge {
@@ -77,6 +122,13 @@ struct BrandScreenView: View {
     }
     .navigationTitle(viewModel.brand.name)
     .navigationBarItems(trailing: navigationBarMenu)
+    .confirmationDialog("Delete Sub-brand",
+                        isPresented: $viewModel.showDeleteSubBrandConfirmation,
+                        presenting: viewModel.toDeleteSubBrand) { presenting in
+      Button("Delete \(presenting.name.orEmpty) and all related products", role: .destructive, action: {
+        viewModel.deleteSubBrand()
+      })
+    }
     .confirmationDialog("Delete Brand Confirmation",
                         isPresented: $viewModel.showDeleteBrandConfirmationDialog,
                         presenting: viewModel.brand) { presenting in
@@ -93,6 +145,14 @@ struct BrandScreenView: View {
       ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
 
       Divider()
+
+      if profileManager.hasPermission(.canEditBrands) {
+        Button(action: {
+          viewModel.setActiveSheet(.editBrand)
+        }) {
+          Label("Edit", systemImage: "pencil")
+        }
+      }
 
       if viewModel.brand.isVerified {
         Label("Verified", systemImage: "checkmark.circle")
@@ -124,6 +184,7 @@ extension BrandScreenView {
   enum Sheet: Identifiable {
     var id: Self { self }
     case editBrand
+    case editSubBrand
     case mergeProduct
   }
 
@@ -134,6 +195,12 @@ extension BrandScreenView {
     @Published var summary: Summary?
     @Published var activeSheet: Sheet?
     @Published var editBrand: Brand.JoinedSubBrandsProductsCompany?
+    @Published var editSubBrand: SubBrand.JoinedProduct? {
+      didSet {
+        setActiveSheet(.editSubBrand)
+      }
+    }
+
     @Published var productToMerge: Product.JoinedCategory? {
       didSet {
         setActiveSheet(.mergeProduct)
@@ -149,15 +216,6 @@ extension BrandScreenView {
       }
     }
 
-    @Published var showDeleteSubBrandConfirmationDialog = false
-    @Published var subBrandToDelete: SubBrand.JoinedProduct? {
-      didSet {
-        if subBrandToDelete != nil {
-          showDeleteSubBrandConfirmationDialog = true
-        }
-      }
-    }
-
     @Published var showDeleteBrandConfirmationDialog = false
     @Published var brandToDelete: Brand.JoinedSubBrandsProducts? {
       didSet {
@@ -165,7 +223,16 @@ extension BrandScreenView {
       }
     }
 
-    @Published var showDeleteCompanyConfirmationDialog = false
+    @Published var showDeleteSubBrandConfirmation = false
+    @Published var toDeleteSubBrand: SubBrand.JoinedProduct? {
+      didSet {
+        if oldValue == nil {
+          showDeleteSubBrandConfirmation = true
+        } else {
+          showDeleteSubBrandConfirmation = false
+        }
+      }
+    }
 
     init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany) {
       self.client = client
@@ -175,6 +242,8 @@ extension BrandScreenView {
     func setActiveSheet(_ sheet: Sheet) {
       activeSheet = sheet
     }
+
+    func refresh() {}
 
     func verifyBrand() {
       Task {
@@ -215,6 +284,19 @@ extension BrandScreenView {
         case let .failure(error):
           logger
             .error("failed to delete brand by id '\(self.brand.id)': \(error.localizedDescription)")
+        }
+      }
+    }
+
+    func deleteSubBrand() {
+      if let toDeleteSubBrand {
+        Task {
+          switch await client.subBrand.delete(id: toDeleteSubBrand.id) {
+          case .success:
+            logger.info("succesfully deleted sub-brand")
+          case let .failure(error):
+            logger.error("failed to delete brand '\(toDeleteSubBrand.id)': \(error.localizedDescription)")
+          }
         }
       }
     }
