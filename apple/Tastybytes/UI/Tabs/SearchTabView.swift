@@ -78,10 +78,8 @@ struct SearchTabView: View {
           }
           .presentationDetents([.medium])
         }
-        .searchable(text: $viewModel.searchTerm, tokens: $viewModel.tokens,
-                    prompt: viewModel.searchScope.prompt) { token in
-          Text(token.label)
-        }
+        .searchable(text: $viewModel.searchTerm,
+                    prompt: viewModel.searchScope.prompt)
         .disableAutocorrection(true)
         .searchScopes($viewModel.searchScope) {
           ForEach(SearchScope.allCases) { scope in
@@ -241,22 +239,7 @@ extension SearchTabView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "SearchTabView")
     let client: Client
-    @Published var searchTerm: String = "" {
-      didSet {
-        if let firstPartOfSearchString = searchTerm
-          .lowercased()
-          .split(separator: " ", maxSplits: 1)
-          .map(String.init)
-          .first
-        {
-          if let category = Category.Name(rawValue: firstPartOfSearchString) {
-            tokens = [category]
-            searchTerm = ""
-          }
-        }
-      }
-    }
-
+    @Published var searchTerm: String = ""
     @Published var products = [Product.Joined]()
     @Published var profiles = [Profile]()
     @Published var companies = [Company]()
@@ -265,7 +248,6 @@ extension SearchTabView {
     @Published var isSearched = false
     @Published var searchScope: SearchScope = .products
     @Published var barcode: Barcode?
-    @Published var tokens: [Category.Name] = []
     @Published var addBarcodeTo: Product.Joined? {
       didSet {
         showAddBarcodeConfirmation = true
@@ -310,7 +292,7 @@ extension SearchTabView {
 
     func searchProducts() {
       Task {
-        switch await client.product.search(searchTerm: searchTerm, categoryName: tokens.first) {
+        switch await client.product.search(searchTerm: searchTerm, categoryName: nil) {
         case let .success(searchResults):
           self.products = searchResults
           self.isSearched = true
@@ -318,7 +300,7 @@ extension SearchTabView {
           logger
             .error(
               """
-                "searching products with \(self.searchTerm) and \(self.tokens.first?.rawValue ?? "no tokens")\
+                "searching products with \(self.searchTerm)\
                 failed: \(error.localizedDescription)
               """
             )
