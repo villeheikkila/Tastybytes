@@ -68,6 +68,14 @@ struct ProductScreenView: View {
           Label("Not verified", systemImage: "x.circle")
         }
 
+        if profileManager.hasPermission(.canEditProducts) {
+          Button(action: {
+            viewModel.setActiveSheet(.barcodes)
+          }) {
+            Label("Barcodes", systemImage: "barcode")
+          }
+        }
+
         if profileManager.hasPermission(.canDeleteProducts) {
           Button(action: {
             viewModel.showDeleteConfirmation()
@@ -87,6 +95,16 @@ struct ProductScreenView: View {
           CheckInSheetView(viewModel.client, product: viewModel.product, onCreation: {
             _ in viewModel.refreshCheckIns()
           })
+        case .barcodes:
+          List {
+            ForEach(viewModel.product.barcodes) { barcode in
+              HStack {
+                Text(barcode.barcode)
+                Spacer()
+              }
+            }
+          }
+          .navigationTitle("Barcodes")
         case .editSuggestion:
           ProductSheetView(viewModel.client, mode: .editSuggestion, initialProduct: viewModel.product)
         case .editProduct:
@@ -147,6 +165,7 @@ extension ProductScreenView {
   enum Sheet: Identifiable {
     var id: Self { self }
     case checkIn
+    case barcodes
     case editSuggestion
     case editProduct
   }

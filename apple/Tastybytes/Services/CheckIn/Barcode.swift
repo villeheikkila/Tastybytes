@@ -62,6 +62,33 @@ extension ProductBarcode {
     }
   }
 
+  struct JoinedWithCreator: Identifiable, Hashable, Decodable {
+    let id: Int
+    let barcode: String
+    let type: AVMetadataObject.ObjectType
+    let profile: Profile
+
+    func hash(into hasher: inout Hasher) {
+      hasher.combine(id)
+    }
+
+    static func == (lhs: JoinedWithCreator, rhs: JoinedWithCreator) -> Bool {
+      lhs.id == rhs.id
+    }
+
+    enum CodingKeys: String, CodingKey {
+      case id, barcode, type, profiles
+    }
+
+    init(from decoder: Decoder) throws {
+      let values = try decoder.container(keyedBy: CodingKeys.self)
+      id = try values.decode(Int.self, forKey: .id)
+      barcode = try values.decode(String.self, forKey: .barcode)
+      type = AVMetadataObject.ObjectType(rawValue: try values.decode(String.self, forKey: .type))
+      profile = try values.decode(Profile.self, forKey: .profiles)
+    }
+  }
+
   struct Joined: Identifiable, Hashable, Decodable {
     let id: Int
     let barcode: String
