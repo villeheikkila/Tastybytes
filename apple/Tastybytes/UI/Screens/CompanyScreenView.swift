@@ -30,16 +30,6 @@ struct CompanyScreenView: View {
                   Spacer()
                   Text("(\(brand.getNumberOfProducts()))")
                 }
-                .contextMenu {
-                  if profileManager.hasPermission(.canDeleteBrands) {
-                    Button(action: {
-                      viewModel.brandToDelete = brand
-                    }) {
-                      Label("Delete", systemImage: "trash.fill")
-                    }
-                    .disabled(brand.isVerified)
-                  }
-                }
               }
           }
         } header: {
@@ -49,7 +39,7 @@ struct CompanyScreenView: View {
     }
     .navigationTitle(viewModel.company.name)
     .refreshable {
-      viewModel.getProductsAndSummary()
+      viewModel.getBrandsAndSummary()
     }
     .navigationBarItems(trailing: navigationBarMenu)
     .sheet(item: $viewModel.activeSheet) { sheet in
@@ -59,10 +49,6 @@ struct CompanyScreenView: View {
           companyEditSuggestionSheet
         case .editCompany:
           companyEditSheet
-        case .mergeProduct:
-          if let productToMerge = viewModel.productToMerge {
-            MergeSheetView(viewModel.client, productToMerge: productToMerge)
-          }
         }
       }
     }
@@ -73,11 +59,6 @@ struct CompanyScreenView: View {
         viewModel.verifyCompany(isVerified: false)
       })
     }
-    .confirmationDialog("Delete Brand Confirmation",
-                        isPresented: $viewModel.showDeleteBrandConfirmationDialog,
-                        presenting: viewModel.brandToDelete) { presenting in
-      Button("Delete \(presenting.name) brand", role: .destructive, action: { viewModel.deleteBrand(presenting) })
-    }
     .confirmationDialog("Delete Company Confirmation",
                         isPresented: $viewModel.showDeleteCompanyConfirmationDialog,
                         presenting: viewModel.company) { presenting in
@@ -87,19 +68,8 @@ struct CompanyScreenView: View {
         })
       })
     }
-    .confirmationDialog("Delete Product Confirmation",
-                        isPresented: $viewModel.showDeleteProductConfirmationDialog,
-                        presenting: viewModel.productToDelete) { presenting in
-      Button(
-        "Delete \(presenting.name) Product",
-        role: .destructive,
-        action: {
-          viewModel.deleteProduct()
-        }
-      )
-    }
     .task {
-      viewModel.getProductsAndSummary()
+      viewModel.getBrandsAndSummary()
     }
   }
 
@@ -204,7 +174,6 @@ extension CompanyScreenView {
     var id: Self { self }
     case editSuggestionCompany
     case editCompany
-    case mergeProduct
   }
 
   @MainActor class ViewModel: ObservableObject {
@@ -215,30 +184,7 @@ extension CompanyScreenView {
     @Published var summary: Summary?
     @Published var activeSheet: Sheet?
     @Published var newCompanyNameSuggestion = ""
-    @Published var editBrand: Brand.JoinedSubBrandsProducts?
-    @Published var productToMerge: Product.JoinedCategory? {
-      didSet {
-        setActiveSheet(.mergeProduct)
-      }
-    }
-
-    @Published var productToDelete: Product.JoinedCategory? {
-      didSet {
-        if productToDelete != nil {
-          showDeleteProductConfirmationDialog = true
-        }
-      }
-    }
-
-    @Published var showDeleteProductConfirmationDialog = false
-    @Published var brandToDelete: Brand.JoinedSubBrandsProducts? {
-      didSet {
-        showDeleteBrandConfirmationDialog = true
-      }
-    }
-
     @Published var showUnverifyCompanyConfirmation = false
-    @Published var showDeleteBrandConfirmationDialog = false
     @Published var showDeleteCompanyConfirmationDialog = false
 
     init(_ client: Client, company: Company) {
@@ -270,7 +216,7 @@ extension CompanyScreenView {
       }
     }
 
-    func getProductsAndSummary() {
+    func getBrandsAndSummary() {
       Task {
         async let companyPromise = client.company.getJoinedById(id: company.id)
         async let summaryPromise = client.company.getSummaryById(id: company.id)
@@ -304,20 +250,6 @@ extension CompanyScreenView {
       }
     }
 
-    func deleteProduct() {
-      if let productToDelete {
-        Task {
-          switch await client.product.delete(id: productToDelete.id) {
-          case .success:
-            getProductsAndSummary()
-            self.productToDelete = nil
-          case let .failure(error):
-            logger.error("failed to delete product '\(productToDelete.id)': \(error.localizedDescription)")
-          }
-        }
-      }
-    }
-
     func verifyCompany(isVerified: Bool) {
       Task {
         switch await client.company.verification(id: company.id, isVerified: isVerified) {
@@ -326,17 +258,6 @@ extension CompanyScreenView {
         case let .failure(error):
           logger
             .error("failed to verify company by id '\(self.company.id)': \(error.localizedDescription)")
-        }
-      }
-    }
-
-    func deleteBrand(_ brand: Brand.JoinedSubBrandsProducts) {
-      Task {
-        switch await client.brand.delete(id: brand.id) {
-        case .success:
-          getProductsAndSummary()
-        case let .failure(error):
-          logger.error("failed to delete brand '\(brand.id)': \(error.localizedDescription)")
         }
       }
     }
