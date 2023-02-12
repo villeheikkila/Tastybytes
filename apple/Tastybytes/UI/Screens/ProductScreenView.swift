@@ -29,7 +29,7 @@ struct ProductScreenView: View {
       }
     }
     .task {
-      viewModel.refresh()
+      viewModel.loadSummary()
     }
     .toolbar {
       toolbarContent
@@ -118,7 +118,7 @@ struct ProductScreenView: View {
         Button(action: {
           viewModel.setActiveSheet(.checkIn)
         }) {
-          Text("Check-in!").bold(
+          Label("Check-in", systemImage: "plus").bold(
           )
         }.disabled(!profileManager.hasPermission(.canCreateCheckIns))
 
@@ -223,6 +223,17 @@ extension ProductScreenView {
       activeSheet = nil
       refresh()
       refreshCheckIns()
+    }
+
+    func loadSummary() {
+      Task {
+        switch await client.product.getSummaryById(id: product.id) {
+        case let .success(summary):
+          self.summary = summary
+        case let .failure(error):
+          logger.error("failed to load product summary for '\(self.product.id)': \(error.localizedDescription)")
+        }
+      }
     }
 
     func refresh() {
