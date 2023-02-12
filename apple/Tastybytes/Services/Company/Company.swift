@@ -68,9 +68,11 @@ extension Company {
 
   struct VerifyRequest: Encodable {
     let id: Int
+    let isVerified: Bool
 
     enum CodingKeys: String, CodingKey {
       case id = "p_company_id"
+      case isVerified = "p_is_verified"
     }
   }
 

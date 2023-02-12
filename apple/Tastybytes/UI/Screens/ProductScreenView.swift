@@ -57,12 +57,16 @@ struct ProductScreenView: View {
         }
 
         if viewModel.product.isVerified {
-          Label("Verified", systemImage: "checkmark.circle")
+          Button(action: {
+            viewModel.showUnverifyProductConfirmation = true
+          }) {
+            Label("Verified", systemImage: "checkmark.circle")
+          }
         } else if profileManager.hasPermission(.canVerify) {
           Button(action: {
-            viewModel.verifyProduct()
+            viewModel.verifyProduct(isVerified: true)
           }) {
-            Label("Verify product", systemImage: "checkmark")
+            Label("Verify", systemImage: "checkmark")
           }
         } else {
           Label("Not verified", systemImage: "x.circle")
@@ -113,6 +117,13 @@ struct ProductScreenView: View {
           })
         }
       }
+    }
+    .confirmationDialog("Unverify Product",
+                        isPresented: $viewModel.showUnverifyProductConfirmation,
+                        presenting: viewModel.product) { presenting in
+      Button("Unverify \(presenting.name) product", role: .destructive, action: {
+        viewModel.verifyProduct(isVerified: false)
+      })
     }
     .confirmationDialog("Delete Product Confirmation",
                         isPresented: $viewModel.showDeleteProductConfirmationDialog,
@@ -177,6 +188,7 @@ extension ProductScreenView {
     @Published var activeSheet: Sheet?
     @Published var summary: Summary?
     @Published var showDeleteProductConfirmationDialog = false
+    @Published var showUnverifyProductConfirmation = false
     @Published var resetView: Int = 0
 
     init(_ client: Client, product: Product.Joined) {
@@ -226,9 +238,9 @@ extension ProductScreenView {
       resetView += 1 // TODO: get rid of this hack 29.1.2023
     }
 
-    func verifyProduct() {
+    func verifyProduct(isVerified: Bool) {
       Task {
-        switch await client.product.verify(id: product.id) {
+        switch await client.product.verification(id: product.id, isVerified: isVerified) {
         case .success:
           refresh()
         case let .failure(error):

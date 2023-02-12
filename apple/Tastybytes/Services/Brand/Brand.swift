@@ -171,9 +171,11 @@ extension Brand {
 
   struct VerifyRequest: Encodable {
     let id: Int
+    let isVerified: Bool
 
     enum CodingKeys: String, CodingKey {
       case id = "p_brand_id"
+      case isVerified = "p_is_verified"
     }
   }
 }

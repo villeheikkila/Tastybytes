@@ -66,6 +66,13 @@ struct CompanyScreenView: View {
         }
       }
     }
+    .confirmationDialog("Unverify Company",
+                        isPresented: $viewModel.showUnverifyCompanyConfirmation,
+                        presenting: viewModel.company) { presenting in
+      Button("Unverify \(presenting.name) company", role: .destructive, action: {
+        viewModel.verifyCompany(isVerified: false)
+      })
+    }
     .confirmationDialog("Delete Brand Confirmation",
                         isPresented: $viewModel.showDeleteBrandConfirmationDialog,
                         presenting: viewModel.brandToDelete) { presenting in
@@ -117,10 +124,14 @@ struct CompanyScreenView: View {
       Divider()
 
       if viewModel.company.isVerified {
-        Label("Verified", systemImage: "checkmark.circle")
+        Button(action: {
+          viewModel.showUnverifyCompanyConfirmation = true
+        }) {
+          Label("Verified", systemImage: "checkmark.circle")
+        }
       } else if profileManager.hasPermission(.canVerify) {
         Button(action: {
-          viewModel.verifyCompany()
+          viewModel.verifyCompany(isVerified: true)
         }) {
           Label("Verify", systemImage: "checkmark")
         }
@@ -226,6 +237,7 @@ extension CompanyScreenView {
       }
     }
 
+    @Published var showUnverifyCompanyConfirmation = false
     @Published var showDeleteBrandConfirmationDialog = false
     @Published var showDeleteCompanyConfirmationDialog = false
 
@@ -306,11 +318,11 @@ extension CompanyScreenView {
       }
     }
 
-    func verifyCompany() {
+    func verifyCompany(isVerified: Bool) {
       Task {
-        switch await client.company.verify(id: company.id) {
+        switch await client.company.verification(id: company.id, isVerified: isVerified) {
         case .success:
-          company = Company(id: company.id, name: company.name, logoUrl: company.logoUrl, isVerified: true)
+          company = Company(id: company.id, name: company.name, logoUrl: company.logoUrl, isVerified: isVerified)
         case let .failure(error):
           logger
             .error("failed to verify company by id '\(self.company.id)': \(error.localizedDescription)")

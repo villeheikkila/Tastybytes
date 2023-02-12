@@ -6,7 +6,7 @@ protocol CompanyRepository {
   func insert(newCompany: Company.NewRequest) async -> Result<Company, Error>
   func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error>
   func delete(id: Int) async -> Result<Void, Error>
-  func verify(id: Int) async -> Result<Void, Error>
+  func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
   func search(searchTerm: String) async -> Result<[Company], Error>
   func getSummaryById(id: Int) async -> Result<Summary, Error>
 }
@@ -100,11 +100,11 @@ struct SupabaseCompanyRepository: CompanyRepository {
     }
   }
 
-  func verify(id: Int) async -> Result<Void, Error> {
+  func verification(id: Int, isVerified: Bool) async -> Result<Void, Error> {
     do {
       try await client
         .database
-        .rpc(fn: "fnc__verify_company", params: Company.VerifyRequest(id: id))
+        .rpc(fn: "fnc__verify_company", params: Company.VerifyRequest(id: id, isVerified: isVerified))
         .single()
         .execute()
 

@@ -72,10 +72,14 @@ struct BrandScreenView: View {
               }
 
               if subBrand.isVerified {
-                Label("Verified", systemImage: "checkmark.circle")
+                Button(action: {
+                  viewModel.toUnverifySubBrand = subBrand
+                }) {
+                  Label("Verified", systemImage: "checkmark.circle")
+                }
               } else if profileManager.hasPermission(.canVerify) {
                 Button(action: {
-                  viewModel.verifySubBrand(subBrand)
+                  viewModel.verifySubBrand(subBrand, isVerified: true)
                 }) {
                   Label("Verify", systemImage: "checkmark")
                 }
@@ -125,6 +129,20 @@ struct BrandScreenView: View {
     }
     .navigationTitle(viewModel.brand.name)
     .navigationBarItems(trailing: navigationBarMenu)
+    .confirmationDialog("Unverify Sub-brand",
+                        isPresented: $viewModel.showSubBrandUnverificationConfirmation,
+                        presenting: viewModel.toUnverifySubBrand) { presenting in
+      Button("Unverify \(presenting.name ?? "default") sub-brand", role: .destructive, action: {
+        viewModel.verifySubBrand(presenting, isVerified: false)
+      })
+    }
+    .confirmationDialog("Unverify Brand",
+                        isPresented: $viewModel.showBrandUnverificationConfirmation,
+                        presenting: viewModel.brand) { presenting in
+      Button("Unverify \(presenting.name) brand", role: .destructive, action: {
+        viewModel.verifyBrand(isVerified: false)
+      })
+    }
     .confirmationDialog("Delete Sub-brand",
                         isPresented: $viewModel.showDeleteSubBrandConfirmation,
                         presenting: viewModel.toDeleteSubBrand) { presenting in
@@ -158,10 +176,14 @@ struct BrandScreenView: View {
       }
 
       if viewModel.brand.isVerified {
-        Label("Verified", systemImage: "checkmark.circle")
+        Button(action: {
+          viewModel.showBrandUnverificationConfirmation = true
+        }) {
+          Label("Verified", systemImage: "checkmark.circle")
+        }
       } else if profileManager.hasPermission(.canVerify) {
         Button(action: {
-          viewModel.verifyBrand()
+          viewModel.verifyBrand(isVerified: true)
         }) {
           Label("Verify", systemImage: "checkmark")
         }
@@ -198,6 +220,16 @@ extension BrandScreenView {
     @Published var summary: Summary?
     @Published var activeSheet: Sheet?
     @Published var editBrand: Brand.JoinedSubBrandsProductsCompany?
+    @Published var toUnverifySubBrand: SubBrand.JoinedProduct? {
+      didSet {
+        showSubBrandUnverificationConfirmation = true
+      }
+    }
+
+    @Published var showSubBrandUnverificationConfirmation = false
+
+    @Published var showBrandUnverificationConfirmation = false
+
     @Published var editSubBrand: SubBrand.JoinedProduct? {
       didSet {
         setActiveSheet(.editSubBrand)
@@ -257,14 +289,14 @@ extension BrandScreenView {
       }
     }
 
-    func verifyBrand() {
+    func verifyBrand(isVerified: Bool) {
       Task {
-        switch await client.brand.verify(id: brand.id) {
+        switch await client.brand.verification(id: brand.id, isVerified: isVerified) {
         case .success:
           brand = Brand.JoinedSubBrandsProductsCompany(
             id: brand.id,
             name: brand.name,
-            isVerified: true,
+            isVerified: isVerified,
             brandOwner: brand.brandOwner,
             subBrands: brand.subBrands
           )
@@ -275,10 +307,13 @@ extension BrandScreenView {
       }
     }
 
-    func verifySubBrand(_ subBrand: SubBrand.JoinedProduct) {
+    func verifySubBrand(_ subBrand: SubBrand.JoinedProduct, isVerified: Bool) {
+      print(subBrand)
+      print(isVerified)
       Task {
-        switch await client.subBrand.verify(id: subBrand.id) {
+        switch await client.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
         case .success:
+          refresh()
           logger
             .info("sub-brand succesfully verified")
         case let .failure(error):

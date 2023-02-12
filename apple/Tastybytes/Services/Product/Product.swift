@@ -181,9 +181,11 @@ extension Product {
 
   struct VerifyRequest: Encodable {
     let id: Int
+    let isVerified: Bool
 
     enum CodingKeys: String, CodingKey {
       case id = "p_product_id"
+      case isVerified = "p_is_verified"
     }
   }
 }
