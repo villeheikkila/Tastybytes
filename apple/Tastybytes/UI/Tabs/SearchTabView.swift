@@ -199,10 +199,12 @@ struct SearchTabView: View {
   @ToolbarContentBuilder
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: {
-        viewModel.showBarcodeScanner.toggle()
-      }) {
-        Image(systemName: "barcode.viewfinder")
+      if profileManager.hasPermission(.canAddBarcodes) {
+        Button(action: {
+          viewModel.showBarcodeScanner.toggle()
+        }) {
+          Image(systemName: "barcode.viewfinder")
+        }
       }
     }
   }

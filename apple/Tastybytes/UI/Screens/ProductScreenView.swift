@@ -31,76 +31,9 @@ struct ProductScreenView: View {
     .task {
       viewModel.refresh()
     }
-    .navigationBarItems(
-      trailing: Menu {
-        Button(action: {
-          viewModel.setActiveSheet(.checkIn)
-        }) {
-          Text("Check-in!").bold(
-          )
-        }.disabled(!profileManager.hasPermission(.canCreateCheckIns))
-
-        ShareLink("Share", item: NavigatablePath.product(id: viewModel.product.id).url)
-
-        if profileManager.hasPermission(.canAddBarcodes) {
-          Button(action: {
-            viewModel.setActiveSheet(.barcodeScanner)
-          }) {
-            Label("Add Barcode", systemImage: "barcode.viewfinder")
-          }
-        }
-        Divider()
-
-        if profileManager.hasPermission(.canEditCompanies) {
-          Button(action: {
-            viewModel.setActiveSheet(.editProduct)
-          }) {
-            Label("Edit", systemImage: "pencil")
-          }
-        } else {
-          Button(action: {
-            viewModel.setActiveSheet(.editSuggestion)
-          }) {
-            Label("Edit Suggestion", systemImage: "pencil")
-          }
-        }
-
-        if viewModel.product.isVerified {
-          Button(action: {
-            viewModel.showUnverifyProductConfirmation = true
-          }) {
-            Label("Verified", systemImage: "checkmark.circle")
-          }
-        } else if profileManager.hasPermission(.canVerify) {
-          Button(action: {
-            viewModel.verifyProduct(isVerified: true)
-          }) {
-            Label("Verify", systemImage: "checkmark")
-          }
-        } else {
-          Label("Not verified", systemImage: "x.circle")
-        }
-
-        if profileManager.hasPermission(.canDeleteBarcodes) {
-          Button(action: {
-            viewModel.setActiveSheet(.barcodes)
-          }) {
-            Label("Barcodes", systemImage: "barcode")
-          }
-        }
-
-        if profileManager.hasPermission(.canDeleteProducts) {
-          Button(action: {
-            viewModel.showDeleteConfirmation()
-          }) {
-            Label("Delete", systemImage: "trash.fill")
-          }
-          .disabled(viewModel.product.isVerified)
-        }
-      } label: {
-        Image(systemName: "ellipsis")
-      }
-    )
+    .toolbar {
+      toolbarContent
+    }
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {
@@ -175,6 +108,80 @@ struct ProductScreenView: View {
         }
       }.padding([.leading, .trailing], 10)
       Spacer()
+    }
+  }
+
+  @ToolbarContentBuilder
+  private var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
+      Menu {
+        Button(action: {
+          viewModel.setActiveSheet(.checkIn)
+        }) {
+          Text("Check-in!").bold(
+          )
+        }.disabled(!profileManager.hasPermission(.canCreateCheckIns))
+
+        ShareLink("Share", item: NavigatablePath.product(id: viewModel.product.id).url)
+
+        if profileManager.hasPermission(.canAddBarcodes) {
+          Button(action: {
+            viewModel.setActiveSheet(.barcodeScanner)
+          }) {
+            Label("Add Barcode", systemImage: "barcode.viewfinder")
+          }
+        }
+        Divider()
+
+        if profileManager.hasPermission(.canEditCompanies) {
+          Button(action: {
+            viewModel.setActiveSheet(.editProduct)
+          }) {
+            Label("Edit", systemImage: "pencil")
+          }
+        } else {
+          Button(action: {
+            viewModel.setActiveSheet(.editSuggestion)
+          }) {
+            Label("Edit Suggestion", systemImage: "pencil")
+          }
+        }
+
+        if viewModel.product.isVerified {
+          Button(action: {
+            viewModel.showUnverifyProductConfirmation = true
+          }) {
+            Label("Verified", systemImage: "checkmark.circle")
+          }
+        } else if profileManager.hasPermission(.canVerify) {
+          Button(action: {
+            viewModel.verifyProduct(isVerified: true)
+          }) {
+            Label("Verify", systemImage: "checkmark")
+          }
+        } else {
+          Label("Not verified", systemImage: "x.circle")
+        }
+
+        if profileManager.hasPermission(.canDeleteBarcodes) {
+          Button(action: {
+            viewModel.setActiveSheet(.barcodes)
+          }) {
+            Label("Barcodes", systemImage: "barcode")
+          }
+        }
+
+        if profileManager.hasPermission(.canDeleteProducts) {
+          Button(action: {
+            viewModel.showDeleteConfirmation()
+          }) {
+            Label("Delete", systemImage: "trash.fill")
+          }
+          .disabled(viewModel.product.isVerified)
+        }
+      } label: {
+        Image(systemName: "ellipsis")
+      }
     }
   }
 }
