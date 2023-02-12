@@ -289,7 +289,7 @@ extension Product {
     ) {
       id = product.id
       name = product.name
-      description = product.name
+      description = product.description
       isVerified = product.isVerified
       self.subBrand = SubBrand.JoinedBrand(
         id: subBrand.id,
