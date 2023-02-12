@@ -46,6 +46,8 @@
 		5C25C68829956BD400C07953 /* WebShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68729956BD400C07953 /* WebShape.swift */; };
 		5C25C68A299572B700C07953 /* FinalStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C689299572B700C07953 /* FinalStepView.swift */; };
 		5C25C68C2996D22400C07953 /* EditSubBrandSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68B2996D22400C07953 /* EditSubBrandSheetView.swift */; };
+		5C25C68E29991BEF00C07953 /* BarcodeManagementSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68D29991BEF00C07953 /* BarcodeManagementSheetView.swift */; };
+		5C25C69029991D0000C07953 /* ProductBarcodeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25C68F29991D0000C07953 /* ProductBarcodeRepository.swift */; };
 		5C323E8D298C4D7300B005A9 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E8C298C4D7300B005A9 /* StringExtensions.swift */; };
 		5C323E8F298C500400B005A9 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E8E298C500400B005A9 /* URLExtensions.swift */; };
 		5C323E91298C501F00B005A9 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E90298C501F00B005A9 /* ArrayExtensions.swift */; };
@@ -174,6 +176,8 @@
 		5C25C68729956BD400C07953 /* WebShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebShape.swift; sourceTree = "<group>"; };
 		5C25C689299572B700C07953 /* FinalStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalStepView.swift; sourceTree = "<group>"; };
 		5C25C68B2996D22400C07953 /* EditSubBrandSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubBrandSheetView.swift; sourceTree = "<group>"; };
+		5C25C68D29991BEF00C07953 /* BarcodeManagementSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeManagementSheetView.swift; sourceTree = "<group>"; };
+		5C25C68F29991D0000C07953 /* ProductBarcodeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductBarcodeRepository.swift; sourceTree = "<group>"; };
 		5C323E8C298C4D7300B005A9 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		5C323E8E298C500400B005A9 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		5C323E90298C501F00B005A9 /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
@@ -340,7 +344,6 @@
 			isa = PBXGroup;
 			children = (
 				5C919E1728FED0E00055CFD2 /* ServingStyle.swift */,
-				5C0E365329279B240072EFBD /* Barcode.swift */,
 				5CD10A4C28F985D00001CFC2 /* CheckIn.swift */,
 				5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */,
 				5CD10A4A28F980860001CFC2 /* CheckInComment.swift */,
@@ -366,6 +369,8 @@
 				5CD10A5628F98D490001CFC2 /* Product.swift */,
 				5C919E2128FF0CF60055CFD2 /* ProductVariant.swift */,
 				5CB1C24A28F9BE4F000B0EB4 /* ProductRepository.swift */,
+				5C0E365329279B240072EFBD /* Barcode.swift */,
+				5C25C68F29991D0000C07953 /* ProductBarcodeRepository.swift */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -475,6 +480,7 @@
 				5CED433528FDA8B9003F8194 /* SubcategorySheetView.swift */,
 				5CD10A4428F952030001CFC2 /* CheckInSheetView.swift */,
 				5CED433128FD76BB003F8194 /* SubBrandSheetView.swift */,
+				5C25C68D29991BEF00C07953 /* BarcodeManagementSheetView.swift */,
 				5CED432B28FD69DE003F8194 /* CompanySearchView.swift */,
 				5CED432128FAC01C003F8194 /* UserSheetView.swift */,
 				5C919E1928FEE2DE0055CFD2 /* FriendSheetView.swift */,
@@ -827,6 +833,7 @@
 				5C12B4372902CA04001EE549 /* NotificationTabView.swift in Sources */,
 				5C25C66D29941B9F00C07953 /* OnboardTabsView.swift in Sources */,
 				5C663F2B292FBE10006F9A97 /* AppIconScreenView.swift in Sources */,
+				5C25C68E29991BEF00C07953 /* BarcodeManagementSheetView.swift in Sources */,
 				5CBC2454297D3A5F00A0002B /* ProfileView.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileTabView.swift in Sources */,
 				5C12B4392902CAF3001EE549 /* Notification.swift in Sources */,
@@ -863,6 +870,7 @@
 				5CED432A28FD4E17003F8194 /* CategoryRepository.swift in Sources */,
 				5C3D8273298C5DA300E861DC /* OptionalExtensions.swift in Sources */,
 				5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */,
+				5C25C69029991D0000C07953 /* ProductBarcodeRepository.swift in Sources */,
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5CE9009329211AC9003DE697 /* NotificationManager.swift in Sources */,
 				5CBC2452297C60AE00A0002B /* ProfileScreenView.swift in Sources */,

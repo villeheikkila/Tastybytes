@@ -17,14 +17,14 @@ struct Main: App {
 }
 
 struct RootView: View {
-  let client: Client
+  let client: AppClient
   @StateObject private var splashScreenManager = SplashScreenManager()
   @StateObject private var profileManager: ProfileManager
   @StateObject private var toastManager = ToastManager()
   @StateObject private var notificationManager: NotificationManager
   @State private var authEvent: AuthChangeEvent?
 
-  init(_ client: Client) {
+  init(_ client: AppClient) {
     self.client = client
     _notificationManager = StateObject(wrappedValue: NotificationManager(client))
     _profileManager = StateObject(wrappedValue: ProfileManager(client))

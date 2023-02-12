@@ -100,15 +100,7 @@ struct ProductScreenView: View {
             _ in viewModel.refreshCheckIns()
           })
         case .barcodes:
-          List {
-            ForEach(viewModel.product.barcodes) { barcode in
-              HStack {
-                Text(barcode.barcode)
-                Spacer()
-              }
-            }
-          }
-          .navigationTitle("Barcodes")
+          BarcodeManagementSheetView(viewModel.client, product: viewModel.product)
         case .editSuggestion:
           ProductSheetView(viewModel.client, mode: .editSuggestion, initialProduct: viewModel.product)
         case .editProduct:

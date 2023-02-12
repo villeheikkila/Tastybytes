@@ -67,6 +67,7 @@ extension ProductBarcode {
     let barcode: String
     let type: AVMetadataObject.ObjectType
     let profile: Profile
+    let createdAt: Date
 
     func hash(into hasher: inout Hasher) {
       hasher.combine(id)
@@ -77,7 +78,7 @@ extension ProductBarcode {
     }
 
     enum CodingKeys: String, CodingKey {
-      case id, barcode, type, profiles
+      case id, barcode, type, profiles, createdAt = "created_at"
     }
 
     init(from decoder: Decoder) throws {
@@ -86,6 +87,7 @@ extension ProductBarcode {
       barcode = try values.decode(String.self, forKey: .barcode)
       type = AVMetadataObject.ObjectType(rawValue: try values.decode(String.self, forKey: .type))
       profile = try values.decode(Profile.self, forKey: .profiles)
+      createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
     }
   }
 
@@ -130,6 +132,12 @@ extension ProductBarcode {
         joinWithComma(saved, Product.getQuery(.joinedBrandSubcategories(true))),
         withTableName
       )
+    case let .joinedCreator(withTableName):
+      return queryWithTableName(
+        tableName,
+        joinWithComma(saved, "created_at", Profile.getQuery(.minimal(true))),
+        withTableName
+      )
     }
   }
 
@@ -137,5 +145,6 @@ extension ProductBarcode {
     case tableName
     case saved(_ withTableName: Bool)
     case joined(_ withTableName: Bool)
+    case joinedCreator(_ withTableName: Bool)
   }
 }

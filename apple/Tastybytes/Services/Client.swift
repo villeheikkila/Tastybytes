@@ -2,13 +2,12 @@ import Supabase
 import SwiftUI
 
 protocol Client {
-  var supabase: SupabaseClient { get }
-
   var profile: ProfileRepository { get }
   var checkIn: CheckInRepository { get }
   var checkInComment: CheckInCommentRepository { get }
   var checkInReactions: CheckInReactionsRepository { get }
   var product: ProductRepository { get }
+  var productBarcode: ProductBarcodeRepository { get }
   var auth: AuthRepository { get }
   var company: CompanyRepository { get }
   var friend: FriendRepository { get }
@@ -30,6 +29,7 @@ class AppClient: Client {
   let checkInComment: CheckInCommentRepository
   let checkInReactions: CheckInReactionsRepository
   let product: ProductRepository
+  let productBarcode: ProductBarcodeRepository
   let auth: AuthRepository
   let company: CompanyRepository
   let friend: FriendRepository
@@ -53,6 +53,7 @@ class AppClient: Client {
     checkInComment = SupabaseCheckInCommentRepository(client: client)
     checkInReactions = SupabaseCheckInReactionsRepository(client: client)
     product = SupabaseProductRepository(client: client)
+    productBarcode = SupabaseProductBarcodeRepository(client: client)
     auth = SupabaseAuthRepository(client: client)
     company = SupabaseCompanyRepository(client: client)
     friend = SupabaseFriendsRepository(client: client)

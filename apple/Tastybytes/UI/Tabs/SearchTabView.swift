@@ -274,7 +274,7 @@ extension SearchTabView {
     func addBarcodeToProduct(onComplete: @escaping () -> Void) {
       if let addBarcodeTo, let barcode {
         Task {
-          switch await client.product.addBarcodeToProduct(product: addBarcodeTo, barcode: barcode) {
+          switch await client.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
           case .success:
             self.barcode = nil
             self.addBarcodeTo = nil

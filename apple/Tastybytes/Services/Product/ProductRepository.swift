@@ -8,7 +8,6 @@ protocol ProductRepository {
   func delete(id: Int) async -> Result<Void, Error>
   func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
   func getSummaryById(id: Int) async -> Result<Summary, Error>
-  func addBarcodeToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error>
   func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
   func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error>
   func createUpdateSuggestion(productEditSuggestionParams: Product.EditRequest) async -> Result<IntId, Error>
@@ -125,20 +124,6 @@ struct SupabaseProductRepository: ProductRepository {
       case let .failure(error):
         return .failure(error)
       }
-    } catch {
-      return .failure(error)
-    }
-  }
-
-  func addBarcodeToProduct(product: Product.Joined, barcode: Barcode) async -> Result<Barcode, Error> {
-    do {
-      try await client
-        .database
-        .from(ProductBarcode.getQuery(.tableName))
-        .insert(values: ProductBarcode.NewRequest(product: product, barcode: barcode), returning: .representation)
-        .execute()
-
-      return .success(barcode)
     } catch {
       return .failure(error)
     }
