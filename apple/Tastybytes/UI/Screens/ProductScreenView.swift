@@ -3,6 +3,7 @@ import SwiftUI
 struct ProductScreenView: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var router: Router
   @State private var scrollToTop: Int = 0
 
@@ -40,6 +41,14 @@ struct ProductScreenView: View {
         }.disabled(!profileManager.hasPermission(.canCreateCheckIns))
 
         ShareLink("Share", item: NavigatablePath.product(id: viewModel.product.id).url)
+
+        if profileManager.hasPermission(.canAddBarcodes) {
+          Button(action: {
+            viewModel.setActiveSheet(.barcodeScanner)
+          }) {
+            Label("Add Barcode", systemImage: "barcode.viewfinder")
+          }
+        }
         Divider()
 
         if profileManager.hasPermission(.canEditCompanies) {
@@ -72,7 +81,7 @@ struct ProductScreenView: View {
           Label("Not verified", systemImage: "x.circle")
         }
 
-        if profileManager.hasPermission(.canEditProducts) {
+        if profileManager.hasPermission(.canDeleteBarcodes) {
           Button(action: {
             viewModel.setActiveSheet(.barcodes)
           }) {
@@ -107,8 +116,14 @@ struct ProductScreenView: View {
           ProductSheetView(viewModel.client, mode: .edit, initialProduct: viewModel.product, onEdit: {
             viewModel.onEditCheckIn()
           })
+        case .barcodeScanner:
+          BarcodeScannerSheetView(onComplete: {
+            barcode in viewModel.addBarcodeToProduct(barcode: barcode, onComplete: {
+              toastManager.toggle(.success("Barcode added"))
+            })
+          })
         }
-      }
+      }.if(sheet == .barcodeScanner, transform: { view in view.presentationDetents([.medium]) })
     }
     .confirmationDialog("Unverify Product",
                         isPresented: $viewModel.showUnverifyProductConfirmation,
@@ -171,6 +186,7 @@ extension ProductScreenView {
     case barcodes
     case editSuggestion
     case editProduct
+    case barcodeScanner
   }
 
   @MainActor class ViewModel: ObservableObject {
@@ -221,6 +237,20 @@ extension ProductScreenView {
           self.summary = summary
         case let .failure(error):
           logger.error("failed to load product summary for '\(self.product.id)': \(error.localizedDescription)")
+        }
+      }
+    }
+
+    func addBarcodeToProduct(barcode: Barcode, onComplete: @escaping () -> Void) {
+      Task {
+        switch await client.productBarcode.addToProduct(product: product, barcode: barcode) {
+        case .success:
+          onComplete()
+        case let .failure(error):
+          logger
+            .error(
+              "adding barcode \(barcode.barcode) to product \(self.product.id) failed: \(error.localizedDescription)"
+            )
         }
       }
     }

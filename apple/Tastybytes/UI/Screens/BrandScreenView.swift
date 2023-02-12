@@ -12,13 +12,7 @@ struct BrandScreenView: View {
 
   var body: some View {
     List {
-      ForEach(viewModel.brand.subBrands.sorted { lhs, rhs -> Bool in
-        switch (lhs.name, rhs.name) {
-        case let (lhs?, rhs?): return lhs < rhs
-        case (nil, _): return true
-        case (_?, nil): return false
-        }
-      }, id: \.self) { subBrand in
+      ForEach(viewModel.sortedSubBrands, id: \.self) { subBrand in
         Section {
           ForEach(subBrand.products, id: \.id) {
             product in
@@ -272,6 +266,18 @@ extension BrandScreenView {
     init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany) {
       self.client = client
       self.brand = brand
+    }
+
+    var sortedSubBrands: [SubBrand.JoinedProduct] {
+      brand.subBrands
+        .filter { !($0.name == nil && $0.products.isEmpty) }
+        .sorted { lhs, rhs -> Bool in
+          switch (lhs.name, rhs.name) {
+          case let (lhs?, rhs?): return lhs < rhs
+          case (nil, _): return true
+          case (_?, nil): return false
+          }
+        }
     }
 
     func setActiveSheet(_ sheet: Sheet) {

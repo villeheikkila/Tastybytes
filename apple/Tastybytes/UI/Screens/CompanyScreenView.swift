@@ -17,25 +17,23 @@ struct CompanyScreenView: View {
           SummaryView(summary: summary)
         }
       }
-      if let companyJoined = viewModel.companyJoined {
-        Section {
-          ForEach(
-            companyJoined.brands.sorted { lhs, rhs in lhs.getNumberOfProducts() > rhs.getNumberOfProducts() },
-            id: \.id
-          ) { brand in
-            NavigationLink(value: Route
-              .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand))) {
-                HStack {
-                  Text("\(brand.name)")
-                  Spacer()
-                  Text("(\(brand.getNumberOfProducts()))")
-                }
+      Section {
+        ForEach(
+          viewModel.sortedBrands,
+          id: \.id
+        ) { brand in
+          NavigationLink(value: Route
+            .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand))) {
+              HStack {
+                Text("\(brand.name)")
+                Spacer()
+                Text("(\(brand.getNumberOfProducts()))")
               }
-          }
-        } header: {
-          Text("Brands")
-        }.headerProminence(.increased)
-      }
+            }
+        }
+      } header: {
+        Text("Brands")
+      }.headerProminence(.increased)
     }
     .navigationTitle(viewModel.company.name)
     .refreshable {
@@ -190,6 +188,14 @@ extension CompanyScreenView {
     init(_ client: Client, company: Company) {
       self.client = client
       self.company = company
+    }
+
+    var sortedBrands: [Brand.JoinedSubBrandsProducts] {
+      if let companyJoined {
+        return companyJoined.brands.sorted { lhs, rhs in lhs.getNumberOfProducts() > rhs.getNumberOfProducts() }
+      } else {
+        return []
+      }
     }
 
     func setActiveSheet(_ sheet: Sheet) {

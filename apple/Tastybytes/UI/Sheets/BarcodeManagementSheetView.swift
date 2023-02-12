@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BarcodeManagementSheetView: View {
   @StateObject private var viewModel: ViewModel
+  @Environment(\.dismiss) private var dismiss
 
   init(_ client: Client, product: Product.Joined) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, product: product))
@@ -36,6 +37,11 @@ struct BarcodeManagementSheetView: View {
       viewModel.getBarcodes()
     }
     .navigationTitle("Barcodes")
+    .navigationBarItems(leading: Button(action: {
+      dismiss()
+    }) {
+      Text("Cancel").bold()
+    })
   }
 }
 
