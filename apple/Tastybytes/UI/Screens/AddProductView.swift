@@ -6,18 +6,15 @@ struct ProductSheetView: View {
   @StateObject private var viewModel: ViewModel
   @FocusState private var focusedField: Focusable?
 
-  let initialProduct: Product.Joined?
   let onEdit: (() -> Void)?
 
   init(
     _ client: Client,
     mode: Mode,
-    initialProduct: Product.Joined? = nil,
     initialBarcode: Barcode? = nil,
     onEdit: (() -> Void)? = nil
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, mode: mode, barcode: initialBarcode))
-    self.initialProduct = initialProduct
     self.onEdit = onEdit
   }
 
@@ -30,20 +27,16 @@ struct ProductSheetView: View {
       Button(viewModel.mode.doneLabel, action: {
         switch viewModel.mode {
         case .editSuggestion:
-          if let initialProduct {
-            viewModel.createProductEditSuggestion(product: initialProduct, onComplete: {
-              toastManager.toggle(.success("Edit suggestion sent!"))
-            })
-          }
+          viewModel.createProductEditSuggestion(onComplete: {
+            toastManager.toggle(.success("Edit suggestion sent!"))
+          })
         case .edit:
-          if let initialProduct {
-            viewModel.editProduct(product: initialProduct, onComplete: {
-              if let onEdit {
-                onEdit()
-              }
-            })
-          }
-        case .new:
+          viewModel.editProduct(onComplete: {
+            if let onEdit {
+              onEdit()
+            }
+          })
+        case .new, .addToBrand:
           viewModel.createProduct(onCreation: {
             product in router.navigate(to: .product(product), resetStack: true)
           })
@@ -102,11 +95,7 @@ struct ProductSheetView: View {
       }.if(sheet == .barcode, transform: { view in view.presentationDetents([.medium]) })
     }
     .task {
-      if let initialProduct {
-        viewModel.loadInitialProduct(initialProduct)
-      } else {
-        viewModel.loadCategories()
-      }
+      viewModel.loadMissingData()
     }
   }
 
@@ -217,8 +206,8 @@ struct ProductSheetView: View {
 }
 
 extension ProductSheetView {
-  enum Mode {
-    case new, edit, editSuggestion
+  enum Mode: Equatable {
+    case new, edit(Product.Joined), editSuggestion(Product.Joined), addToBrand(Brand.JoinedSubBrandsProductsCompany)
 
     var doneLabel: String {
       switch self {
@@ -226,7 +215,7 @@ extension ProductSheetView {
         return "Edit"
       case .editSuggestion:
         return "Send Edit suggestion"
-      case .new:
+      case .new, .addToBrand:
         return "Create"
       }
     }
@@ -237,7 +226,7 @@ extension ProductSheetView {
         return "Edit Product"
       case .editSuggestion:
         return "Edit Suggestion"
-      case .new:
+      case .new, .addToBrand:
         return "Add Product"
       }
     }
@@ -311,6 +300,8 @@ extension ProductSheetView {
 
     @Published var barcode: Barcode?
 
+    var productId: Int?
+
     init(_ client: Client, mode: Mode, barcode: Barcode?) {
       self.client = client
       self.mode = mode
@@ -363,17 +354,54 @@ extension ProductSheetView {
       toast.text
     }
 
-    func loadInitialProduct(_ initialProduct: Product.Joined?) {
-      guard let initialProduct else { return }
+    func loadMissingData() {
+      switch mode {
+      case let .edit(initialProduct), let .editSuggestion(initialProduct):
+        loadValuesFromExistingProduct(initialProduct)
+      case let .addToBrand(brand):
+        loadFromBrand(brand)
+      default:
+        ()
+      }
+    }
 
+    func loadFromBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) {
       Task {
-        // TODO: Load the missing data in parallel 18.1.2023
         switch await client.category.getAllWithSubcategories() {
         case let .success(categories):
-          switch await client.brand
-            .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
-          {
+          self.categories = categories
+          self.category = categories.first(where: { $0.name == .beverage })
+          self.categoryName = .beverage
+          self.subcategories = []
+          self.brandOwner = brand.brandOwner
+          self.brand = Brand.JoinedSubBrands(
+            id: brand.id,
+            name: brand.name,
+            isVerified: brand.isVerified,
+            subBrands: brand.subBrands
+              .map { subBrand in SubBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified) }
+          )
+          self.subBrand = nil
+        case let .failure(error):
+          logger.error("failed to load categories with subcategories: \(error.localizedDescription)")
+        }
+      }
+    }
+
+    func loadValuesFromExistingProduct(_ initialProduct: Product.Joined) {
+      Task {
+        async let subcategoriesPromise = client.category.getAllWithSubcategories()
+        async let brandOwnerPromise = client.brand
+          .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
+
+        let subcategories = await subcategoriesPromise
+        let brandOwner = await brandOwnerPromise
+
+        switch subcategories {
+        case let .success(categories):
+          switch brandOwner {
           case let .success(brandsWithSubBrands):
+            self.productId = initialProduct.id
             self.categories = categories
             self.category = categories.first(where: { $0.id == initialProduct.category.id })
             self.categoryName = category?.name ?? .beverage
@@ -440,10 +468,10 @@ extension ProductSheetView {
       }
     }
 
-    func createProductEditSuggestion(product: Product.Joined, onComplete: @escaping () -> Void) {
-      if let subBrand, let category {
+    func createProductEditSuggestion(onComplete: @escaping () -> Void) {
+      if let subBrand, let category, let productId {
         let productEditSuggestionParams = Product.EditRequest(
-          productId: product.id,
+          productId: productId,
           name: name,
           description: description,
           categoryId: category.id,
@@ -459,19 +487,21 @@ extension ProductSheetView {
             onComplete()
           case let .failure(error):
             logger
-              .error("failed to create product edit suggestion for '\(product.id)': \(error.localizedDescription)")
+              .error(
+                "failed to create product edit suggestion for '\(productId)': \(error.localizedDescription)"
+              )
           }
           onComplete()
         }
       }
     }
 
-    func editProduct(product: Product.Joined, onComplete: @escaping () -> Void) {
-      if let category, let brand {
+    func editProduct(onComplete: @escaping () -> Void) {
+      if let category, let brand, let productId {
         let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
         guard let subBrandWithNil else { return }
         let productEditParams = Product.EditRequest(
-          productId: product.id,
+          productId: productId,
           name: name,
           description: description,
           categoryId: category.id,
@@ -484,7 +514,7 @@ extension ProductSheetView {
           case .success:
             onComplete()
           case let .failure(error):
-            logger.error("failed to edit product '\(product.id)': \(error.localizedDescription)")
+            logger.error("failed to edit product '\(productId)': \(error.localizedDescription)")
           }
         }
       }

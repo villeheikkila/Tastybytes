@@ -118,6 +118,8 @@ struct BrandScreenView: View {
           if let productToMerge = viewModel.productToMerge {
             MergeSheetView(viewModel.client, productToMerge: productToMerge)
           }
+        case .addProduct:
+          ProductSheetView(viewModel.client, mode: .addToBrand(viewModel.brand))
         }
       }
     }
@@ -158,6 +160,14 @@ struct BrandScreenView: View {
   private var navigationBarMenu: some View {
     Menu {
       ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
+
+      if profileManager.hasPermission(.canCreateProducts) {
+        Button(action: {
+          viewModel.setActiveSheet(.addProduct)
+        }) {
+          Label("Add Product", systemImage: "plus")
+        }
+      }
 
       Divider()
 
@@ -205,6 +215,7 @@ extension BrandScreenView {
     case editBrand
     case editSubBrand
     case mergeProduct
+    case addProduct
   }
 
   @MainActor class ViewModel: ObservableObject {

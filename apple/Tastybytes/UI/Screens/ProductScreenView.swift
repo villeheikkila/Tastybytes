@@ -44,9 +44,9 @@ struct ProductScreenView: View {
         case .barcodes:
           BarcodeManagementSheetView(viewModel.client, product: viewModel.product)
         case .editSuggestion:
-          ProductSheetView(viewModel.client, mode: .editSuggestion, initialProduct: viewModel.product)
+          ProductSheetView(viewModel.client, mode: .editSuggestion(viewModel.product))
         case .editProduct:
-          ProductSheetView(viewModel.client, mode: .edit, initialProduct: viewModel.product, onEdit: {
+          ProductSheetView(viewModel.client, mode: .edit(viewModel.product), onEdit: {
             viewModel.onEditCheckIn()
           })
         case .barcodeScanner:
