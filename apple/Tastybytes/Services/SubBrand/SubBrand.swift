@@ -1,4 +1,10 @@
-struct SubBrand: Identifiable, Hashable, Decodable {
+protocol SubBrandProtocol {
+  var id: Int { get }
+  var name: String? { get }
+  var isVerified: Bool { get }
+}
+
+struct SubBrand: Identifiable, Hashable, Decodable, SubBrandProtocol {
   let id: Int
   let name: String?
   let isVerified: Bool
@@ -46,15 +52,11 @@ extension SubBrand {
 }
 
 extension SubBrand {
-  struct JoinedBrand: Identifiable, Hashable, Decodable {
+  struct JoinedBrand: Identifiable, Hashable, Decodable, SubBrandProtocol {
     let id: Int
     let name: String?
     let isVerified: Bool
     let brand: Brand.JoinedCompany
-
-    func getSubBrand() -> SubBrand {
-      SubBrand(id: id, name: name, isVerified: isVerified)
-    }
 
     func hash(into hasher: inout Hasher) {
       hasher.combine(id)

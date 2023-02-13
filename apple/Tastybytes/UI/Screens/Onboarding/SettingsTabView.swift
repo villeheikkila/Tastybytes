@@ -9,7 +9,6 @@ struct ProfileSettingsTabView: View {
       Text("Configure your profile")
         .font(.title2)
         .fixedSize(horizontal: false, vertical: true)
-
         .listRowBackground(Color.clear)
       if let profile = viewModel.profile {
         HStack {

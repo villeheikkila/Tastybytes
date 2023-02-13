@@ -82,7 +82,7 @@ extension ProductSheetView {
       }
     }
 
-    @Published var subBrand: SubBrand?
+    @Published var subBrand: SubBrandProtocol?
     @Published var name: String = ""
     @Published var description: String = ""
     @Published var hasSubBrand = false {
@@ -209,7 +209,7 @@ extension ProductSheetView {
               subBrands: brandsWithSubBrands
                 .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? []
             )
-            self.subBrand = initialProduct.subBrand.getSubBrand()
+            self.subBrand = initialProduct.subBrand
             self.name = initialProduct.name
             self.description = initialProduct.description.orEmpty
             self.hasSubBrand = initialProduct.subBrand.name != nil
