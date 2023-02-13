@@ -47,6 +47,10 @@ struct CompanyScreenView: View {
           companyEditSuggestionSheet
         case .editCompany:
           companyEditSheet
+        case .addBrand:
+          BrandSheetView(viewModel.client, brandOwner: viewModel.company, mode: .new, onSelect: {
+            brand, _ in router.fetchAndNavigateTo(viewModel.client, .brand(id: brand.id))
+          })
         }
       }
     }
@@ -74,6 +78,14 @@ struct CompanyScreenView: View {
   private var navigationBarMenu: some View {
     Menu {
       ShareLink("Share", item: NavigatablePath.company(id: viewModel.company.id).url)
+
+      if profileManager.hasPermission(.canCreateBrands) {
+        Button(action: {
+          viewModel.setActiveSheet(.addBrand)
+        }) {
+          Label("Add Brand", systemImage: "plus")
+        }
+      }
 
       if profileManager.hasPermission(.canEditCompanies) {
         Button(action: {
@@ -172,6 +184,7 @@ extension CompanyScreenView {
     var id: Self { self }
     case editSuggestionCompany
     case editCompany
+    case addBrand
   }
 
   @MainActor class ViewModel: ObservableObject {

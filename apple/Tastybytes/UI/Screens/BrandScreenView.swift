@@ -45,7 +45,6 @@ struct BrandScreenView: View {
                   }
                   .disabled(product.isVerified)
                 }
-                Spacer()
               }
             }
           }
@@ -142,7 +141,7 @@ struct BrandScreenView: View {
     .confirmationDialog("Delete Sub-brand",
                         isPresented: $viewModel.showDeleteSubBrandConfirmation,
                         presenting: viewModel.toDeleteSubBrand) { presenting in
-      Button("Delete \(presenting.name.orEmpty) and all related products", role: .destructive, action: {
+      Button("Delete \(presenting.name ?? "default sub-brand") and all related products", role: .destructive, action: {
         viewModel.deleteSubBrand()
       })
     }
@@ -357,6 +356,7 @@ extension BrandScreenView {
         Task {
           switch await client.subBrand.delete(id: toDeleteSubBrand.id) {
           case .success:
+            refresh()
             logger.info("succesfully deleted sub-brand")
           case let .failure(error):
             logger.error("failed to delete brand '\(toDeleteSubBrand.id)': \(error.localizedDescription)")

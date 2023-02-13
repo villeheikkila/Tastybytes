@@ -38,7 +38,7 @@ struct ProductSheetView: View {
           })
         case .new, .addToBrand:
           viewModel.createProduct(onCreation: {
-            product in router.navigate(to: .product(product), resetStack: true)
+            product in router.navigate(to: .product(product), resetStack: false)
           })
         }
       })
@@ -68,7 +68,7 @@ struct ProductSheetView: View {
           })
         case .brand:
           if let brandOwner = viewModel.brandOwner {
-            BrandSheetView(viewModel.client, brandOwner: brandOwner, onSelect: { brand, createdNew in
+            BrandSheetView(viewModel.client, brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
               if createdNew {
                 toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
               }

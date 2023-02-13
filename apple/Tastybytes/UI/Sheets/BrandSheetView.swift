@@ -11,20 +11,23 @@ struct BrandSheetView: View {
   init(
     _ client: Client,
     brandOwner: Company,
+    mode: Mode,
     onSelect: @escaping (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
   ) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    _viewModel = StateObject(wrappedValue: ViewModel(client, mode: mode))
     self.brandOwner = brandOwner
     self.onSelect = onSelect
   }
 
   var body: some View {
     List {
-      ForEach(viewModel.brandsWithSubBrands, id: \.self) { brand in
-        Button(action: {
-          onSelect(brand, false)
-        }) {
-          Text(brand.name)
+      if viewModel.mode == .select {
+        ForEach(viewModel.brandsWithSubBrands, id: \.self) { brand in
+          Button(action: {
+            onSelect(brand, false)
+          }) {
+            Text(brand.name)
+          }
         }
       }
 
@@ -55,15 +58,21 @@ struct BrandSheetView: View {
 }
 
 extension BrandSheetView {
+  enum Mode {
+    case select, new
+  }
+
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "BrandSheetView")
     let client: Client
     @Published var searchText = ""
     @Published var brandsWithSubBrands = [Brand.JoinedSubBrands]()
     @Published var brandName = ""
+    let mode: Mode
 
-    init(_ client: Client) {
+    init(_ client: Client, mode: Mode) {
       self.client = client
+      self.mode = mode
     }
 
     func loadBrands(_ brandOwner: Company) {
