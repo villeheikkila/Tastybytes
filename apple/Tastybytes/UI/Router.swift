@@ -93,7 +93,7 @@ enum Route: Hashable {
     case .currentUserFriends:
       CurrentUserFriendsScreenView(client)
     case .settings:
-      PreferencesScreenView(client)
+      SettingsScreenView(client)
     case let .location(location):
       LocationScreenView(client, location: location)
     case let .profileProducts(profile):
