@@ -100,13 +100,19 @@
 		5C7C35C1299AC986009A3C09 /* CheckInListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35C0299AC986009A3C09 /* CheckInListViewModel.swift */; };
 		5C7C35C6299ACB54009A3C09 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35C5299ACB54009A3C09 /* ScannerViewController.swift */; };
 		5C7C35C9299ACC2A009A3C09 /* LegacyPhotoPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35C8299ACC2A009A3C09 /* LegacyPhotoPickerCoordinator.swift */; };
-		5C7C35CC299ACC8E009A3C09 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35CB299ACC8E009A3C09 /* CameraViewController.swift */; };
+		5C7C35CC299ACC8E009A3C09 /* CameraViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35CB299ACC8E009A3C09 /* CameraViewCoordinator.swift */; };
 		5C7C35CE299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35CD299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift */; };
 		5C7C35D0299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35CF299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift */; };
 		5C7C35D2299ACE55009A3C09 /* BlockedUsersScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35D1299ACE55009A3C09 /* BlockedUsersScreenViewModel.swift */; };
 		5C7C35D4299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35D3299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift */; };
 		5C7C35D6299ACEAF009A3C09 /* AboutScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35D5299ACEAF009A3C09 /* AboutScreenViewModel.swift */; };
 		5C7C35D8299ACEFF009A3C09 /* OnboardTabsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35D7299ACEFF009A3C09 /* OnboardTabsViewModel.swift */; };
+		5C7C35DB299AE009009A3C09 /* SearchTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35DA299AE009009A3C09 /* SearchTabViewModel.swift */; };
+		5C7C35DD299AE042009A3C09 /* ProductItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35DC299AE042009A3C09 /* ProductItemView.swift */; };
+		5C7C35E0299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35DF299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift */; };
+		5C7C35E2299AE0B5009A3C09 /* FriendRequestNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */; };
+		5C7C35E4299AE0CD009A3C09 /* MessageNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35E3299AE0CD009A3C09 /* MessageNotificationView.swift */; };
+		5C7C35E6299AE0E1009A3C09 /* CheckInReactionNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35E5299AE0E1009A3C09 /* CheckInReactionNotificationView.swift */; };
 		5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */; };
 		5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B828FA07CF00AED6F1 /* Friend.swift */; };
 		5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1728FED0E00055CFD2 /* ServingStyle.swift */; };
@@ -269,13 +275,19 @@
 		5C7C35C0299AC986009A3C09 /* CheckInListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInListViewModel.swift; sourceTree = "<group>"; };
 		5C7C35C5299ACB54009A3C09 /* ScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
 		5C7C35C8299ACC2A009A3C09 /* LegacyPhotoPickerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyPhotoPickerCoordinator.swift; sourceTree = "<group>"; };
-		5C7C35CB299ACC8E009A3C09 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		5C7C35CB299ACC8E009A3C09 /* CameraViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewCoordinator.swift; sourceTree = "<group>"; };
 		5C7C35CD299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C35CF299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C35D1299ACE55009A3C09 /* BlockedUsersScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C35D3299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationSettingsScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C35D5299ACEAF009A3C09 /* AboutScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C35D7299ACEFF009A3C09 /* OnboardTabsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardTabsViewModel.swift; sourceTree = "<group>"; };
+		5C7C35DA299AE009009A3C09 /* SearchTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabViewModel.swift; sourceTree = "<group>"; };
+		5C7C35DC299AE042009A3C09 /* ProductItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductItemView.swift; sourceTree = "<group>"; };
+		5C7C35DF299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggedInCheckInNotificationView.swift; sourceTree = "<group>"; };
+		5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestNotificationView.swift; sourceTree = "<group>"; };
+		5C7C35E3299AE0CD009A3C09 /* MessageNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageNotificationView.swift; sourceTree = "<group>"; };
+		5C7C35E5299AE0E1009A3C09 /* CheckInReactionNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInReactionNotificationView.swift; sourceTree = "<group>"; };
 		5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsRepository.swift; sourceTree = "<group>"; };
 		5C7DC2B828FA07CF00AED6F1 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		5C919E1728FED0E00055CFD2 /* ServingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyle.swift; sourceTree = "<group>"; };
@@ -572,10 +584,10 @@
 		5C5DF97F297C148400D895CB /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				5C11ECBA28EEF24700CCDE6A /* ActivityTabView.swift */,
-				5C12B4362902CA04001EE549 /* NotificationTabView.swift */,
-				5C11ECB828EEF16000CCDE6A /* ProfileTabView.swift */,
-				5C11ECBC28EEF30600CCDE6A /* SearchTabView.swift */,
+				5C7C35EA299AE130009A3C09 /* Profile */,
+				5C7C35E9299AE127009A3C09 /* Activity */,
+				5C7C35DE299AE07C009A3C09 /* Notification */,
+				5C7C35D9299ADFF2009A3C09 /* Search */,
 				5C12B4342902C9D0001EE549 /* TabsView.swift */,
 			);
 			path = Tabs;
@@ -862,9 +874,47 @@
 			isa = PBXGroup;
 			children = (
 				5C0E36552927F09F0072EFBD /* CameraView.swift */,
-				5C7C35CB299ACC8E009A3C09 /* CameraViewController.swift */,
+				5C7C35CB299ACC8E009A3C09 /* CameraViewCoordinator.swift */,
 			);
 			path = Camera;
+			sourceTree = "<group>";
+		};
+		5C7C35D9299ADFF2009A3C09 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				5C11ECBC28EEF30600CCDE6A /* SearchTabView.swift */,
+				5C7C35DA299AE009009A3C09 /* SearchTabViewModel.swift */,
+				5C7C35DC299AE042009A3C09 /* ProductItemView.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		5C7C35DE299AE07C009A3C09 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				5C12B4362902CA04001EE549 /* NotificationTabView.swift */,
+				5C7C35DF299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift */,
+				5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */,
+				5C7C35E3299AE0CD009A3C09 /* MessageNotificationView.swift */,
+				5C7C35E5299AE0E1009A3C09 /* CheckInReactionNotificationView.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		5C7C35E9299AE127009A3C09 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				5C11ECBA28EEF24700CCDE6A /* ActivityTabView.swift */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		5C7C35EA299AE130009A3C09 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				5C11ECB828EEF16000CCDE6A /* ProfileTabView.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		5CC2FE9229197D8A002BDF83 /* Managers */ = {
@@ -1203,12 +1253,14 @@
 				5C25C66D29941B9F00C07953 /* OnboardTabsView.swift in Sources */,
 				5C7C3597299AC4B8009A3C09 /* CheckInSheetViewModel.swift in Sources */,
 				5C663F2B292FBE10006F9A97 /* AppIconScreenView.swift in Sources */,
+				5C7C35DD299AE042009A3C09 /* ProductItemView.swift in Sources */,
 				5C25C68E29991BEF00C07953 /* BarcodeManagementSheetView.swift in Sources */,
 				5CBC2454297D3A5F00A0002B /* ProfileView.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileTabView.swift in Sources */,
 				5C12B4392902CAF3001EE549 /* Notification.swift in Sources */,
 				5CD10A5C28F998BF0001CFC2 /* ProfileRepository.swift in Sources */,
 				5C11ECBD28EEF30600CCDE6A /* SearchTabView.swift in Sources */,
+				5C7C35E2299AE0B5009A3C09 /* FriendRequestNotificationView.swift in Sources */,
 				5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */,
 				5C7C3578299ABFBD009A3C09 /* FriendListItemSimpleView.swift in Sources */,
 				5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */,
@@ -1251,6 +1303,7 @@
 				5C3D8275298D5F3300E861DC /* AccountSettingsScreenView.swift in Sources */,
 				5CED432A28FD4E17003F8194 /* CategoryRepository.swift in Sources */,
 				5C3D8273298C5DA300E861DC /* OptionalExtensions.swift in Sources */,
+				5C7C35E4299AE0CD009A3C09 /* MessageNotificationView.swift in Sources */,
 				5C7C3593299AC426009A3C09 /* ScalingButton.swift in Sources */,
 				5C7C35B0299AC696009A3C09 /* LocationSearchViewModel.swift in Sources */,
 				5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */,
@@ -1258,6 +1311,7 @@
 				5C7C35D6299ACEAF009A3C09 /* AboutScreenViewModel.swift in Sources */,
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5CE9009329211AC9003DE697 /* NotificationManager.swift in Sources */,
+				5C7C35E0299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift in Sources */,
 				5CBC2452297C60AE00A0002B /* ProfileScreenView.swift in Sources */,
 				5CC2FE912919774A002BDF83 /* Location.swift in Sources */,
 				5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */,
@@ -1277,6 +1331,7 @@
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
 				5C0E365C292ADA290072EFBD /* SummaryView.swift in Sources */,
 				5C7C35D0299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift in Sources */,
+				5C7C35DB299AE009009A3C09 /* SearchTabViewModel.swift in Sources */,
 				5C25C6702995616D00C07953 /* WelcomeTabView.swift in Sources */,
 				5CD10A5528F98D220001CFC2 /* SubBrand.swift in Sources */,
 				5C12B4332902A4C9001EE549 /* BlockedUsersScreenView.swift in Sources */,
@@ -1294,11 +1349,12 @@
 				5C7C3588299AC1D9009A3C09 /* LocationScreenViewModel.swift in Sources */,
 				5C323E91298C501F00B005A9 /* ArrayExtensions.swift in Sources */,
 				5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */,
+				5C7C35E6299AE0E1009A3C09 /* CheckInReactionNotificationView.swift in Sources */,
 				5C0E364E2923C8CD0072EFBD /* ProfileManager.swift in Sources */,
 				5C25C68629956BAF00C07953 /* GitHubShape.swift in Sources */,
 				5CA006CD2992D0CF003CC307 /* CreateQRCodeView.swift in Sources */,
 				5C12B4352902C9D0001EE549 /* TabsView.swift in Sources */,
-				5C7C35CC299ACC8E009A3C09 /* CameraViewController.swift in Sources */,
+				5C7C35CC299ACC8E009A3C09 /* CameraViewCoordinator.swift in Sources */,
 				5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */,
 				5CA006C8298DE33F003CC307 /* BrandScreenView.swift in Sources */,
 			);
