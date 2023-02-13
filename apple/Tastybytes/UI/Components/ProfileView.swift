@@ -26,7 +26,7 @@ struct ProfileView: View {
     ) {
       VStack(spacing: 20) {
         profileSummary
-        if viewModel.isPublic {
+        if viewModel.isShownInFull || profileManager.hasFriendByUserId(userId: viewModel.profile.id) {
           ratingChart
           ratingSummary
           links
@@ -79,7 +79,7 @@ struct ProfileView: View {
 
   private var profileSummary: some View {
     HStack(alignment: .center, spacing: 20) {
-      if viewModel.isPublic {
+      if viewModel.isShownInFull {
         HStack {
           VStack {
             Text("Check-ins")
@@ -112,7 +112,7 @@ struct ProfileView: View {
 
       Spacer()
 
-      if viewModel.isPublic {
+      if viewModel.isShownInFull {
         HStack {
           VStack {
             Text("Unique")
@@ -243,13 +243,13 @@ extension ProfileView {
     @Published var selectedItem: PhotosPickerItem?
 
     let isCurrentUser: Bool
-    let isPublic: Bool
+    let isShownInFull: Bool
 
     init(_ client: Client, profile: Profile, isCurrentUser: Bool) {
       self.client = client
       self.profile = profile
       self.isCurrentUser = isCurrentUser
-      isPublic = isCurrentUser || !profile.isPrivate
+      isShownInFull = isCurrentUser || !profile.isPrivate
     }
 
     func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) {
