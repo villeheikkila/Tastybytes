@@ -7,7 +7,7 @@ import SwiftUI
 
   func navigate(to: Route, resetStack: Bool) {
     if resetStack {
-      path.removeLast(path.count)
+      path = []
     }
     path.append(to)
   }

@@ -1,5 +1,11 @@
 import SwiftUI
 
+enum Field {
+  case email
+  case password
+  case resetPassword
+}
+
 extension AuthenticationScreenView {
   enum Scene: String {
     case signIn, signUp, magicLink, resetPassword, forgotPassword, accountDeleted
@@ -14,12 +20,6 @@ extension AuthenticationScreenView {
       case .accountDeleted: return "Go back to sign in page"
       }
     }
-  }
-
-  enum Field {
-    case email
-    case password
-    case resetPassword
   }
 
   @MainActor class ViewModel: ObservableObject {

@@ -113,6 +113,12 @@
 		5C7C35E2299AE0B5009A3C09 /* FriendRequestNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */; };
 		5C7C35E4299AE0CD009A3C09 /* MessageNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35E3299AE0CD009A3C09 /* MessageNotificationView.swift */; };
 		5C7C35E6299AE0E1009A3C09 /* CheckInReactionNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35E5299AE0E1009A3C09 /* CheckInReactionNotificationView.swift */; };
+		5C7C35EC299AE441009A3C09 /* OptionalNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35EB299AE441009A3C09 /* OptionalNavigationLink.swift */; };
+		5C7C35EE299AE476009A3C09 /* IntId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35ED299AE476009A3C09 /* IntId.swift */; };
+		5C7C35F0299AE656009A3C09 /* EmailTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35EF299AE656009A3C09 /* EmailTextFieldView.swift */; };
+		5C7C35F2299AE67B009A3C09 /* UsernameTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35F1299AE67B009A3C09 /* UsernameTextFieldView.swift */; };
+		5C7C35F4299AE69D009A3C09 /* PasswordTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35F3299AE69D009A3C09 /* PasswordTextFieldView.swift */; };
+		5C7C35F6299AE7C5009A3C09 /* BlockedUserListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35F5299AE7C5009A3C09 /* BlockedUserListItemView.swift */; };
 		5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */; };
 		5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B828FA07CF00AED6F1 /* Friend.swift */; };
 		5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1728FED0E00055CFD2 /* ServingStyle.swift */; };
@@ -288,6 +294,12 @@
 		5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestNotificationView.swift; sourceTree = "<group>"; };
 		5C7C35E3299AE0CD009A3C09 /* MessageNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageNotificationView.swift; sourceTree = "<group>"; };
 		5C7C35E5299AE0E1009A3C09 /* CheckInReactionNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInReactionNotificationView.swift; sourceTree = "<group>"; };
+		5C7C35EB299AE441009A3C09 /* OptionalNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalNavigationLink.swift; sourceTree = "<group>"; };
+		5C7C35ED299AE476009A3C09 /* IntId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntId.swift; sourceTree = "<group>"; };
+		5C7C35EF299AE656009A3C09 /* EmailTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTextFieldView.swift; sourceTree = "<group>"; };
+		5C7C35F1299AE67B009A3C09 /* UsernameTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameTextFieldView.swift; sourceTree = "<group>"; };
+		5C7C35F3299AE69D009A3C09 /* PasswordTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextFieldView.swift; sourceTree = "<group>"; };
+		5C7C35F5299AE7C5009A3C09 /* BlockedUserListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserListItemView.swift; sourceTree = "<group>"; };
 		5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsRepository.swift; sourceTree = "<group>"; };
 		5C7DC2B828FA07CF00AED6F1 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		5C919E1728FED0E00055CFD2 /* ServingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyle.swift; sourceTree = "<group>"; };
@@ -537,6 +549,7 @@
 				5C7C35CD299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift */,
 				5C12B42E2902A190001EE549 /* ProfileSettingsScreenView.swift */,
 				5C7C35CF299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift */,
+				5C7C35F5299AE7C5009A3C09 /* BlockedUserListItemView.swift */,
 				5C12B4322902A4C9001EE549 /* BlockedUsersScreenView.swift */,
 				5C7C35D1299ACE55009A3C09 /* BlockedUsersScreenViewModel.swift */,
 				5C12B42C2902A12A001EE549 /* ApplicationSettingsScreenView.swift */,
@@ -632,6 +645,9 @@
 				5C0E364B292308080072EFBD /* AuthenticationScreenView.swift */,
 				5C7C357D299AC070009A3C09 /* AuthenticationScreenViewModel.swift */,
 				5C7C357F299AC0A6009A3C09 /* AuthenticationInput.swift */,
+				5C7C35EF299AE656009A3C09 /* EmailTextFieldView.swift */,
+				5C7C35F1299AE67B009A3C09 /* UsernameTextFieldView.swift */,
+				5C7C35F3299AE69D009A3C09 /* PasswordTextFieldView.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -848,6 +864,7 @@
 			isa = PBXGroup;
 			children = (
 				5C43237C2986A6910085522E /* Summary.swift */,
+				5C7C35ED299AE476009A3C09 /* IntId.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1015,6 +1032,7 @@
 				5C663F22292DFF66006F9A97 /* AppLogoView.swift */,
 				5CA006CC2992D0CF003CC307 /* CreateQRCodeView.swift */,
 				5CE9008B291FCB71003DE697 /* SplashScreenView.swift */,
+				5C7C35EB299AE441009A3C09 /* OptionalNavigationLink.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1195,6 +1213,7 @@
 			files = (
 				5C11ECBB28EEF24700CCDE6A /* ActivityTabView.swift in Sources */,
 				5C7C358E299AC25C009A3C09 /* BrandScreenViewModel.swift in Sources */,
+				5C7C35F2299AE67B009A3C09 /* UsernameTextFieldView.swift in Sources */,
 				5CC2FE9429197D9F002BDF83 /* LocationSearchManager.swift in Sources */,
 				5C0E36582928EA910072EFBD /* LegacyPhotoPicker.swift in Sources */,
 				5C663F3929355601006F9A97 /* EditBrandSheetView.swift in Sources */,
@@ -1239,6 +1258,7 @@
 				5C7C35AC299AC657009A3C09 /* BrandSheetViewModel.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* App.swift in Sources */,
 				5CB1C24B28F9BE4F000B0EB4 /* ProductRepository.swift in Sources */,
+				5C7C35EC299AE441009A3C09 /* OptionalNavigationLink.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
 				5C25C68A299572B700C07953 /* FinalStepView.swift in Sources */,
 				5CD10A3D28F75B7A0001CFC2 /* ProductScreenView.swift in Sources */,
@@ -1256,6 +1276,7 @@
 				5C7C35DD299AE042009A3C09 /* ProductItemView.swift in Sources */,
 				5C25C68E29991BEF00C07953 /* BarcodeManagementSheetView.swift in Sources */,
 				5CBC2454297D3A5F00A0002B /* ProfileView.swift in Sources */,
+				5C7C35EE299AE476009A3C09 /* IntId.swift in Sources */,
 				5C11ECB928EEF16000CCDE6A /* ProfileTabView.swift in Sources */,
 				5C12B4392902CAF3001EE549 /* Notification.swift in Sources */,
 				5CD10A5C28F998BF0001CFC2 /* ProfileRepository.swift in Sources */,
@@ -1269,6 +1290,7 @@
 				5C7C35BC299AC7AE009A3C09 /* ReactionsViewModel.swift in Sources */,
 				5C7C35D8299ACEFF009A3C09 /* OnboardTabsViewModel.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsScreenView.swift in Sources */,
+				5C7C35F6299AE7C5009A3C09 /* BlockedUserListItemView.swift in Sources */,
 				5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */,
 				5C663F2D292FE614006F9A97 /* AppIcon.swift in Sources */,
 				5CED433428FDA357003F8194 /* SubBrandRepository.swift in Sources */,
@@ -1278,6 +1300,7 @@
 				5C25AEB429031F9C00793607 /* DateExtensions.swift in Sources */,
 				5CED432828FD417E003F8194 /* AddProductView.swift in Sources */,
 				5C7C35C9299ACC2A009A3C09 /* LegacyPhotoPickerCoordinator.swift in Sources */,
+				5C7C35F0299AE656009A3C09 /* EmailTextFieldView.swift in Sources */,
 				5C7C3583299AC13D009A3C09 /* CheckInScreenViewModel.swift in Sources */,
 				5C7C3576299ABF98009A3C09 /* FriendListItemView.swift in Sources */,
 				5C25AEBA29053B7E00793607 /* CompanyScreenView.swift in Sources */,
@@ -1290,6 +1313,7 @@
 				5C0E364C292308080072EFBD /* AuthenticationScreenView.swift in Sources */,
 				5CED433028FD6EBC003F8194 /* BrandRepository.swift in Sources */,
 				5C7C3572299ABF26009A3C09 /* FriendsScreenViewModel.swift in Sources */,
+				5C7C35F4299AE69D009A3C09 /* PasswordTextFieldView.swift in Sources */,
 				5C7C35A6299AC5FE009A3C09 /* FriendSheetViewModel.swift in Sources */,
 				5C7C358B299AC21F009A3C09 /* CompanyScreenViewModel.swift in Sources */,
 				5CBC2450297C54B900A0002B /* Router.swift in Sources */,

@@ -69,10 +69,6 @@ struct CSVFile: FileDocument {
   }
 }
 
-struct IntId: Decodable {
-  let id: Int
-}
-
 func joinOptionalStrings(_ arr: [String?]) -> String {
   arr.compactMap { $0 }.joined(separator: " ")
 }
@@ -90,34 +86,6 @@ func getCurrentAppIcon() -> AppIcon {
     return AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune
   } else {
     return AppIcon.ramune
-  }
-}
-
-struct OptionalNavigationLink<RootView: View>: View {
-  let value: Route
-  let disabled: Bool
-  let view: () -> RootView
-
-  init(
-    value: Route,
-    disabled: Bool,
-    @ViewBuilder view: @escaping () -> RootView
-  ) {
-    self.view = view
-    self.value = value
-    self.disabled = disabled
-  }
-
-  var body: some View {
-    if disabled {
-      view()
-
-    } else {
-      NavigationLink(value: value) {
-        view()
-      }
-      .buttonStyle(.plain)
-    }
   }
 }
 
