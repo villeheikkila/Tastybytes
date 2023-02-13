@@ -14,6 +14,10 @@ struct ProfileView: View {
     _viewModel = StateObject(wrappedValue: ViewModel(client, profile: profile, isCurrentUser: isCurrentUser))
   }
 
+  var showInFull: Bool {
+    viewModel.isShownInFull || profileManager.hasFriendByUserId(userId: viewModel.profile.id)
+  }
+
   var body: some View {
     CheckInListView(
       viewModel.client,
@@ -26,7 +30,7 @@ struct ProfileView: View {
     ) {
       VStack(spacing: 20) {
         profileSummary
-        if viewModel.isShownInFull || profileManager.hasFriendByUserId(userId: viewModel.profile.id) {
+        if showInFull {
           ratingChart
           ratingSummary
           links
@@ -79,7 +83,7 @@ struct ProfileView: View {
 
   private var profileSummary: some View {
     HStack(alignment: .center, spacing: 20) {
-      if viewModel.isShownInFull {
+      if showInFull {
         HStack {
           VStack {
             Text("Check-ins")
@@ -94,7 +98,7 @@ struct ProfileView: View {
       Spacer()
 
       VStack(alignment: .center) {
-        if viewModel.isCurrentUser {
+        if showInFull {
           PhotosPicker(
             selection: $viewModel.selectedItem,
             matching: .images,
