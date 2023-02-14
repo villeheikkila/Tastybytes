@@ -156,7 +156,7 @@ extension ProductSheetView {
       case let .addToBrand(brand):
         loadFromBrand(brand)
       default:
-        ()
+        loadCategories()
       }
     }
 

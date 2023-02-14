@@ -1,21 +1,25 @@
 import SwiftUI
 
 struct ProductSheetView: View {
-  @EnvironmentObject private var router: Router
   @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var router: Router
   @StateObject private var viewModel: ViewModel
   @FocusState private var focusedField: Focusable?
 
   let onEdit: (() -> Void)?
+  let onCreate: ((_ product: Product.Joined) -> Void)?
 
   init(
     _ client: Client,
     mode: Mode,
     initialBarcode: Barcode? = nil,
-    onEdit: (() -> Void)? = nil
+    onEdit: (() -> Void)? = nil,
+    onCreate: ((_ product: Product.Joined) -> Void)? = nil
+
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, mode: mode, barcode: initialBarcode))
     self.onEdit = onEdit
+    self.onCreate = onCreate
   }
 
   var body: some View {
@@ -36,9 +40,16 @@ struct ProductSheetView: View {
               onEdit()
             }
           })
-        case .new, .addToBrand:
+        case .new:
           viewModel.createProduct(onCreation: {
-            product in router.navigate(to: .product(product), resetStack: false)
+            product in router.navigate(to: Route.product(product), resetStack: false)
+          })
+        case .addToBrand:
+          viewModel.createProduct(onCreation: {
+            product in
+            if let onCreate {
+              onCreate(product)
+            }
           })
         }
       })

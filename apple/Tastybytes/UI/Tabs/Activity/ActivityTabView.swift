@@ -40,7 +40,7 @@ struct ActivityTabView: View {
         }
         .onOpenURL { url in
           if let detailPage = url.detailPage {
-            router.fetchAndNavigateTo(client, detailPage)
+            router.fetchAndNavigateTo(client, detailPage, resetStack: true)
           }
         }
         .withRoutes(client)

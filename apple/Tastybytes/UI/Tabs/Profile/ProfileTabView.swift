@@ -56,7 +56,7 @@ struct ProfileTabView: View {
               if case let .success(result) = response {
                 let string = result.barcode.components(separatedBy: "/").last
                 if let string, let profileId = UUID(uuidString: string) {
-                  router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId))
+                  router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId), resetStack: false)
                   showProfileQrCode = false
                   showNameTagScanner = false
                 }

@@ -1,6 +1,3 @@
-drop trigger if exists "on_auth_user_created" on "auth"."users";
-
-
 drop policy "Enable insert for authenticated users only" on "public"."product_barcodes";
 
 drop policy "Enable read access for all users" on "public"."brand_edit_suggestions";

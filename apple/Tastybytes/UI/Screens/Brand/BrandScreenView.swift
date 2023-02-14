@@ -117,7 +117,11 @@ struct BrandScreenView: View {
             MergeSheetView(viewModel.client, productToMerge: productToMerge)
           }
         case .addProduct:
-          ProductSheetView(viewModel.client, mode: .addToBrand(viewModel.brand))
+          ProductSheetView(viewModel.client, mode: .addToBrand(viewModel.brand), onCreate: {
+            product in
+            viewModel.activeSheet = nil
+            router.navigate(to: Route.product(product), resetStack: false)
+          })
         }
       }
     }
