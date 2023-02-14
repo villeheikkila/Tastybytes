@@ -95,6 +95,7 @@ struct ProfileView: View {
           .frame(width: 100)
         }
       }
+
       Spacer()
 
       VStack(alignment: .center) {
@@ -116,7 +117,7 @@ struct ProfileView: View {
 
       Spacer()
 
-      if viewModel.isShownInFull {
+      if showInFull {
         HStack {
           VStack {
             Text("Unique")
