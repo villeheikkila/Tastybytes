@@ -43,11 +43,6 @@ struct CheckIn: Identifiable, Hashable {
     hasher.combine(location)
     hasher.combine(servingStyle)
   }
-
-  static func == (lhs: CheckIn, rhs: CheckIn) -> Bool {
-    lhs.id == rhs.id && lhs.rating == rhs.rating && lhs.review == rhs.review && lhs.imageUrl == rhs.imageUrl && lhs
-      .checkInReactions == rhs.checkInReactions && lhs.checkInReactions == rhs.checkInReactions
-  }
 }
 
 extension CheckIn {
