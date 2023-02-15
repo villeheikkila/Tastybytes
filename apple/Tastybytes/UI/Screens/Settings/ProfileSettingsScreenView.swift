@@ -73,5 +73,6 @@ struct ProfileSettingsScreenView: View {
     } footer: {
       Text("Private profile hides check-ins and profile page from everyone else but your friends")
     }
+    .headerProminence(.increased)
   }
 }

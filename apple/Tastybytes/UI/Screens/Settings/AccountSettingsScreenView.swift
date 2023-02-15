@@ -74,6 +74,7 @@ struct AccountSettingsScreenView: View {
     } footer: {
       Text("Password must be at least 8 characters")
     }
+    .headerProminence(.increased)
   }
 
   private var emailSection: some View {
@@ -89,7 +90,7 @@ struct AccountSettingsScreenView: View {
       }
 
     } header: {
-      Text("Account")
+      Text("Email")
     } footer: {
       Text("Email is only used for login and is not shown for other users.")
     }
