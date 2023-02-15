@@ -28,32 +28,33 @@ struct ProductSheetView: View {
       brandSection
       productSection
 
-      Button(viewModel.mode.doneLabel, action: {
+      ProgressButton(action: {
         switch viewModel.mode {
         case .editSuggestion:
-          viewModel.createProductEditSuggestion(onComplete: {
+          await viewModel.createProductEditSuggestion(onSuccess: {
             toastManager.toggle(.success("Edit suggestion sent!"))
           })
         case .edit:
-          viewModel.editProduct(onComplete: {
+          await viewModel.editProduct(onSuccess: {
             if let onEdit {
               onEdit()
             }
           })
         case .new:
-          viewModel.createProduct(onCreation: {
+          await viewModel.createProduct(onSuccess: {
             product in router.navigate(to: Route.product(product), resetStack: false)
           })
         case .addToBrand:
-          viewModel.createProduct(onCreation: {
+          await viewModel.createProduct(onSuccess: {
             product in
             if let onCreate {
               onCreate(product)
             }
           })
         }
-      })
-      .disabled(!viewModel.isValid())
+      }, label: {
+        Text(viewModel.mode.doneLabel)
+      }).disabled(viewModel.isLoading || !viewModel.isValid())
     }
     .navigationTitle(viewModel.mode.navigationTitle)
     .sheet(item: $viewModel.activeSheet) { sheet in

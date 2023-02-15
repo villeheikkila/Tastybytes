@@ -1,6 +1,6 @@
 import Foundation
 
-struct CheckIn: Identifiable {
+struct CheckIn: Identifiable, Hashable {
   let id: Int
   let rating: Double?
   let review: String?
@@ -31,6 +31,23 @@ struct CheckIn: Identifiable {
       return nil
     }
   }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+    hasher.combine(rating)
+    hasher.combine(review)
+    hasher.combine(imageUrl)
+    hasher.combine(checkInReactions)
+    hasher.combine(flavors)
+    hasher.combine(variant)
+    hasher.combine(location)
+    hasher.combine(servingStyle)
+  }
+
+  static func == (lhs: CheckIn, rhs: CheckIn) -> Bool {
+    lhs.id == rhs.id && lhs.rating == rhs.rating && lhs.review == rhs.review && lhs.imageUrl == rhs.imageUrl && lhs
+      .checkInReactions == rhs.checkInReactions && lhs.checkInReactions == rhs.checkInReactions
+  }
 }
 
 extension CheckIn {
@@ -58,19 +75,6 @@ extension CheckIn {
   enum QueryType {
     case tableName
     case joined(_ withTableName: Bool)
-  }
-}
-
-extension CheckIn: Hashable {
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-    hasher.combine(rating)
-    hasher.combine(review)
-    hasher.combine(imageUrl)
-  }
-
-  static func == (lhs: CheckIn, rhs: CheckIn) -> Bool {
-    lhs.id == rhs.id && lhs.rating == rhs.rating && lhs.review == rhs.review && lhs.imageUrl == rhs.imageUrl
   }
 }
 

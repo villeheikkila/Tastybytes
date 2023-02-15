@@ -204,29 +204,29 @@ struct CheckInSheetView: View {
       }) {
         Text("Cancel").bold()
       },
-      trailing: Button(action: {
-        switch action {
-        case .create:
-          if let onCreation {
-            viewModel.createCheckIn {
-              newCheckIn in
-              onCreation(newCheckIn)
-            }
-          }
-        case .update:
-          if let onUpdate {
-            viewModel.updateCheckIn {
-              updatedCheckIn in
-              onUpdate(updatedCheckIn)
-            }
-          }
-        }
-        dismiss()
-
-      }) {
-        Text(action == Action.create ? "Check-in!" : "Update Check-in!")
-          .bold()
-      }
+      trailing: ProgressButton(action: {
+                                 switch action {
+                                 case .create:
+                                   if let onCreation {
+                                     await viewModel.createCheckIn {
+                                       newCheckIn in
+                                       onCreation(newCheckIn)
+                                     }
+                                   }
+                                 case .update:
+                                   if let onUpdate {
+                                     await viewModel.updateCheckIn {
+                                       updatedCheckIn in
+                                       onUpdate(updatedCheckIn)
+                                     }
+                                   }
+                                 }
+                                 dismiss()
+                               },
+                               label: {
+                                 Text(action == Action.create ? "Check-in!" : "Update Check-in!")
+                                   .bold()
+                               })
     )
     .task {
       viewModel.loadInitialData()

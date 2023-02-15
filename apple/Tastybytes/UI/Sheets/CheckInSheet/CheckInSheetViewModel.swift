@@ -84,7 +84,7 @@ extension CheckInSheetView {
       image = pickedImage
     }
 
-    func updateCheckIn(_ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) {
+    func updateCheckIn(_ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) async {
       if let editCheckIn {
         let updateCheckInParams = CheckIn.UpdateRequest(
           checkIn: editCheckIn,
@@ -98,19 +98,17 @@ extension CheckInSheetView {
           location: location
         )
 
-        Task {
-          switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
-          case let .success(updatedCheckIn):
-            uploadImage(checkIn: updatedCheckIn)
-            onUpdate(updatedCheckIn)
-          case let .failure(error):
-            logger.error("failed to update check-in '\(editCheckIn.id)': \(error.localizedDescription)")
-          }
+        switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
+        case let .success(updatedCheckIn):
+          uploadImage(checkIn: updatedCheckIn)
+          onUpdate(updatedCheckIn)
+        case let .failure(error):
+          logger.error("failed to update check-in '\(editCheckIn.id)': \(error.localizedDescription)")
         }
       }
     }
 
-    func createCheckIn(_ onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
+    func createCheckIn(_ onCreation: @escaping (_ checkIn: CheckIn) -> Void) async {
       let newCheckParams = CheckIn.NewRequest(
         product: product,
         review: review,
@@ -122,14 +120,12 @@ extension CheckInSheetView {
         location: location
       )
 
-      Task {
-        switch await client.checkIn.create(newCheckInParams: newCheckParams) {
-        case let .success(newCheckIn):
-          uploadImage(checkIn: newCheckIn)
-          onCreation(newCheckIn)
-        case let .failure(error):
-          logger.error("failed to create check-in: \(error.localizedDescription)")
-        }
+      switch await client.checkIn.create(newCheckInParams: newCheckParams) {
+      case let .success(newCheckIn):
+        uploadImage(checkIn: newCheckIn)
+        onCreation(newCheckIn)
+      case let .failure(error):
+        logger.error("failed to create check-in: \(error.localizedDescription)")
       }
     }
 

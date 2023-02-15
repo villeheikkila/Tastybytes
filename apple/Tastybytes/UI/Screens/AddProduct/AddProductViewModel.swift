@@ -94,6 +94,7 @@ extension ProductSheetView {
     }
 
     @Published var barcode: Barcode?
+    @Published var isLoading = false
 
     var productId: Int?
 
@@ -109,6 +110,7 @@ extension ProductSheetView {
 
     func createSubcategory(newSubcategoryName: String) {
       if let categoryWithSubcategories = category {
+        isLoading = true
         Task {
           switch await client.subcategory
             .insert(newSubcategory: Subcategory
@@ -119,6 +121,7 @@ extension ProductSheetView {
           case let .failure(error):
             logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
           }
+          isLoading = false
         }
       }
     }
@@ -241,7 +244,7 @@ extension ProductSheetView {
       }
     }
 
-    func createProduct(onCreation: @escaping (_ product: Product.Joined) -> Void) {
+    func createProduct(onSuccess: @escaping (_ product: Product.Joined) -> Void) async {
       if let category, let brandId = brand?.id {
         let newProductParams = Product.NewRequest(
           name: name,
@@ -252,18 +255,16 @@ extension ProductSheetView {
           subCategoryIds: subcategories.map(\.id),
           barcode: barcode
         )
-        Task {
-          switch await client.product.create(newProductParams: newProductParams) {
-          case let .success(newProduct):
-            onCreation(newProduct)
-          case let .failure(error):
-            logger.error("failed to create new product: \(error.localizedDescription)")
-          }
+        switch await client.product.create(newProductParams: newProductParams) {
+        case let .success(newProduct):
+          onSuccess(newProduct)
+        case let .failure(error):
+          logger.error("failed to create new product: \(error.localizedDescription)")
         }
       }
     }
 
-    func createProductEditSuggestion(onComplete: @escaping () -> Void) {
+    func createProductEditSuggestion(onSuccess: @escaping () -> Void) async {
       if let subBrand, let category, let productId {
         let productEditSuggestionParams = Product.EditRequest(
           productId: productId,
@@ -274,24 +275,21 @@ extension ProductSheetView {
           subcategories: subcategories
         )
 
-        Task {
-          switch await client.product
-            .createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams)
-          {
-          case .success:
-            onComplete()
-          case let .failure(error):
-            logger
-              .error(
-                "failed to create product edit suggestion for '\(productId)': \(error.localizedDescription)"
-              )
-          }
-          onComplete()
+        switch await client.product
+          .createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams)
+        {
+        case .success:
+          onSuccess()
+        case let .failure(error):
+          logger
+            .error(
+              "failed to create product edit suggestion for '\(productId)': \(error.localizedDescription)"
+            )
         }
       }
     }
 
-    func editProduct(onComplete: @escaping () -> Void) {
+    func editProduct(onSuccess: @escaping () -> Void) async {
       if let category, let brand, let productId {
         let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
         guard let subBrandWithNil else { return }
@@ -304,13 +302,11 @@ extension ProductSheetView {
           subcategories: subcategories
         )
 
-        Task {
-          switch await client.product.editProduct(productEditParams: productEditParams) {
-          case .success:
-            onComplete()
-          case let .failure(error):
-            logger.error("failed to edit product '\(productId)': \(error.localizedDescription)")
-          }
+        switch await client.product.editProduct(productEditParams: productEditParams) {
+        case .success:
+          onSuccess()
+        case let .failure(error):
+          logger.error("failed to edit product '\(productId)': \(error.localizedDescription)")
         }
       }
     }
