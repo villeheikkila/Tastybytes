@@ -5,6 +5,7 @@ struct CompanyScreenView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
   @StateObject private var viewModel: ViewModel
+  @Environment(\.dismiss) private var dismiss
 
   init(_ client: Client, company: Company) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, company: company))
@@ -162,6 +163,11 @@ struct CompanyScreenView: View {
       }
     }
     .navigationTitle("Edit Company")
+    .navigationBarItems(trailing: Button(action: {
+      dismiss()
+    }) {
+      Text("Done").bold()
+    })
   }
 
   private var companyHeader: some View {

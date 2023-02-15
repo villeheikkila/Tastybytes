@@ -89,7 +89,6 @@
 		5C7C359D299AC530009A3C09 /* BarcodeManagementSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C359C299AC530009A3C09 /* BarcodeManagementSheetViewModel.swift */; };
 		5C7C35A0299AC5A8009A3C09 /* CompanySearchSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C359F299AC5A8009A3C09 /* CompanySearchSheetViewModel.swift */; };
 		5C7C35A3299AC5DB009A3C09 /* UserSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35A2299AC5DB009A3C09 /* UserSheetViewModel.swift */; };
-		5C7C35A6299AC5FE009A3C09 /* FriendSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35A5299AC5FE009A3C09 /* FriendSheetViewModel.swift */; };
 		5C7C35A9299AC628009A3C09 /* FlavorSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35A8299AC628009A3C09 /* FlavorSheetViewModel.swift */; };
 		5C7C35AC299AC657009A3C09 /* BrandSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35AB299AC657009A3C09 /* BrandSheetViewModel.swift */; };
 		5C7C35B0299AC696009A3C09 /* LocationSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35AF299AC696009A3C09 /* LocationSearchViewModel.swift */; };
@@ -271,7 +270,6 @@
 		5C7C359C299AC530009A3C09 /* BarcodeManagementSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeManagementSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C359F299AC5A8009A3C09 /* CompanySearchSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanySearchSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35A2299AC5DB009A3C09 /* UserSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSheetViewModel.swift; sourceTree = "<group>"; };
-		5C7C35A5299AC5FE009A3C09 /* FriendSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35A8299AC628009A3C09 /* FlavorSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35AB299AC657009A3C09 /* BrandSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35AF299AC696009A3C09 /* LocationSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchViewModel.swift; sourceTree = "<group>"; };
@@ -758,7 +756,6 @@
 			isa = PBXGroup;
 			children = (
 				5C919E1928FEE2DE0055CFD2 /* FriendSheetView.swift */,
-				5C7C35A5299AC5FE009A3C09 /* FriendSheetViewModel.swift */,
 			);
 			path = FriendSheet;
 			sourceTree = "<group>";
@@ -1317,7 +1314,6 @@
 				5CED433028FD6EBC003F8194 /* BrandRepository.swift in Sources */,
 				5C7C3572299ABF26009A3C09 /* FriendsScreenViewModel.swift in Sources */,
 				5C7C35F4299AE69D009A3C09 /* PasswordTextFieldView.swift in Sources */,
-				5C7C35A6299AC5FE009A3C09 /* FriendSheetViewModel.swift in Sources */,
 				5C7C358B299AC21F009A3C09 /* CompanyScreenViewModel.swift in Sources */,
 				5CBC2450297C54B900A0002B /* Router.swift in Sources */,
 				5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */,

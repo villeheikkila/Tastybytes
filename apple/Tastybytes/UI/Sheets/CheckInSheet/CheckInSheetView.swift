@@ -173,7 +173,7 @@ struct CheckInSheetView: View {
       NavigationStack {
         switch sheet {
         case .friends:
-          FriendSheetView(viewModel.client, taggedFriends: $viewModel.taggedFriends)
+          FriendSheetView(taggedFriends: $viewModel.taggedFriends)
         case .flavors:
           FlavorSheetView(viewModel.client, pickedFlavors: $viewModel.pickedFlavors)
         case .location:

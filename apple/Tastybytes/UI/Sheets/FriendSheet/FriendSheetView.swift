@@ -1,18 +1,12 @@
 import SwiftUI
 
 struct FriendSheetView: View {
-  @Binding private var taggedFriends: [Profile]
-  @StateObject private var viewModel: ViewModel
+  @Binding var taggedFriends: [Profile]
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
 
-  init(_ client: Client, taggedFriends: Binding<[Profile]>) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
-    _taggedFriends = taggedFriends
-  }
-
   var body: some View {
-    List(viewModel.friends, id: \.self) { friend in
+    List(profileManager.friends, id: \.self) { friend in
       Button(action: {
         withAnimation {
           toggleFriend(friend: friend)
@@ -33,9 +27,6 @@ struct FriendSheetView: View {
     }) {
       Text("Done").bold()
     })
-    .task {
-      viewModel.loadFriends(currentUserId: profileManager.getId())
-    }
   }
 
   private func toggleFriend(friend: Profile) {

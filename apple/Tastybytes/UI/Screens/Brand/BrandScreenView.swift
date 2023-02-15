@@ -5,6 +5,7 @@ struct BrandScreenView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
   @StateObject private var viewModel: ViewModel
+  @Environment(\.dismiss) private var dismiss
 
   init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, brand: brand))
@@ -121,6 +122,12 @@ struct BrandScreenView: View {
             product in
             viewModel.activeSheet = nil
             router.navigate(to: Route.product(product), resetStack: false)
+          })
+          .navigationTitle("Add Product")
+          .navigationBarItems(trailing: Button(action: {
+            dismiss()
+          }) {
+            Text("Cancel").bold()
           })
         }
       }
