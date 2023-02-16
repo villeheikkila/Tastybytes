@@ -72,8 +72,7 @@
 		5C7C356F299ABE08009A3C09 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C356E299ABE08009A3C09 /* ProfileViewModel.swift */; };
 		5C7C3572299ABF26009A3C09 /* FriendsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3571299ABF26009A3C09 /* FriendsScreenViewModel.swift */; };
 		5C7C3574299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */; };
-		5C7C3576299ABF98009A3C09 /* FriendListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3575299ABF98009A3C09 /* FriendListItemView.swift */; };
-		5C7C3578299ABFBD009A3C09 /* FriendListItemSimpleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3577299ABFBD009A3C09 /* FriendListItemSimpleView.swift */; };
+		5C7C3578299ABFBD009A3C09 /* FriendListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3577299ABFBD009A3C09 /* FriendListItemView.swift */; };
 		5C7C357B299AC00B009A3C09 /* AddProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C357A299AC00B009A3C09 /* AddProductViewModel.swift */; };
 		5C7C357E299AC070009A3C09 /* AuthenticationScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C357D299AC070009A3C09 /* AuthenticationScreenViewModel.swift */; };
 		5C7C3580299AC0A6009A3C09 /* AuthenticationInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C357F299AC0A6009A3C09 /* AuthenticationInput.swift */; };
@@ -254,8 +253,7 @@
 		5C7C356E299ABE08009A3C09 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		5C7C3571299ABF26009A3C09 /* FriendsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserFriendsScreenView.swift; sourceTree = "<group>"; };
-		5C7C3575299ABF98009A3C09 /* FriendListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListItemView.swift; sourceTree = "<group>"; };
-		5C7C3577299ABFBD009A3C09 /* FriendListItemSimpleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListItemSimpleView.swift; sourceTree = "<group>"; };
+		5C7C3577299ABFBD009A3C09 /* FriendListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListItemView.swift; sourceTree = "<group>"; };
 		5C7C357A299AC00B009A3C09 /* AddProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductViewModel.swift; sourceTree = "<group>"; };
 		5C7C357D299AC070009A3C09 /* AuthenticationScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C357F299AC0A6009A3C09 /* AuthenticationInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationInput.swift; sourceTree = "<group>"; };
@@ -626,8 +624,7 @@
 				5C11ECB228EEEDEF00CCDE6A /* FriendsScreenView.swift */,
 				5C7C3571299ABF26009A3C09 /* FriendsScreenViewModel.swift */,
 				5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */,
-				5C7C3575299ABF98009A3C09 /* FriendListItemView.swift */,
-				5C7C3577299ABFBD009A3C09 /* FriendListItemSimpleView.swift */,
+				5C7C3577299ABFBD009A3C09 /* FriendListItemView.swift */,
 			);
 			path = Friends;
 			sourceTree = "<group>";
@@ -1287,7 +1284,7 @@
 				5C11ECBD28EEF30600CCDE6A /* SearchTabView.swift in Sources */,
 				5C7C35E2299AE0B5009A3C09 /* FriendRequestNotificationView.swift in Sources */,
 				5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */,
-				5C7C3578299ABFBD009A3C09 /* FriendListItemSimpleView.swift in Sources */,
+				5C7C3578299ABFBD009A3C09 /* FriendListItemView.swift in Sources */,
 				5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */,
 				5C25C68429956B8500C07953 /* LinkedInShape.swift in Sources */,
 				5C919E2228FF0CF60055CFD2 /* ProductVariant.swift in Sources */,
@@ -1306,7 +1303,6 @@
 				5C7C35C9299ACC2A009A3C09 /* LegacyPhotoPickerCoordinator.swift in Sources */,
 				5C7C35F0299AE656009A3C09 /* EmailTextFieldView.swift in Sources */,
 				5C7C3583299AC13D009A3C09 /* CheckInScreenViewModel.swift in Sources */,
-				5C7C3576299ABF98009A3C09 /* FriendListItemView.swift in Sources */,
 				5C25AEBA29053B7E00793607 /* CompanyScreenView.swift in Sources */,
 				5C7C3580299AC0A6009A3C09 /* AuthenticationInput.swift in Sources */,
 				5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */,

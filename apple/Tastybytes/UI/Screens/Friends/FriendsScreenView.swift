@@ -14,17 +14,50 @@ struct FriendsScreenView: View {
     ScrollView {
       ForEach(viewModel.friends, id: \.self) { friend in
         if viewModel.profile == profileManager.getProfile() {
-          FriendListItemView(friend: friend,
-                             currentUser: profileManager.getProfile(),
-                             onAccept: { _ in
-                               viewModel.updateFriendRequest(friend: friend, newStatus: .accepted)
-                             },
-                             onBlock: { _ in viewModel.updateFriendRequest(friend: friend, newStatus: .blocked) },
-                             onDelete: { _ in
-                               viewModel.friendToBeRemoved = friend
-                             })
+          FriendListItemView(profile: friend.getFriend(userId: viewModel.profile.id)) {
+            HStack {
+              if friend.status == Friend.Status.pending {
+                Text("(\(friend.status.rawValue.capitalized))")
+                  .font(.footnote)
+                  .foregroundColor(.primary)
+              }
+              Spacer()
+              if friend.isPending(userId: profileManager.getProfile().id) {
+                HStack(alignment: .center) {
+                  Button(action: {
+                    viewModel.friendToBeRemoved = friend
+                  }) {
+                    Image(systemName: "person.fill.xmark")
+                      .imageScale(.large)
+                  }
+
+                  Button(action: {
+                    viewModel.updateFriendRequest(friend: friend, newStatus: .accepted)
+                  }) {
+                    Image(systemName: "person.badge.plus")
+                      .imageScale(.large)
+                  }
+                }
+              }
+            }
+          }
+          .contextMenu {
+            Button(action: {
+              viewModel.friendToBeRemoved = friend
+            }) {
+              Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
+            }
+
+            Button(action: {
+              viewModel.updateFriendRequest(friend: friend, newStatus: .blocked)
+            }) {
+              Label("Block", systemImage: "person.2.slash").imageScale(.large)
+            }
+          }
         } else {
-          FriendListItemSimpleView(profile: friend.getFriend(userId: viewModel.profile.id))
+          FriendListItemView(profile: friend.getFriend(userId: viewModel.profile.id)) {
+            Spacer()
+          }
         }
       }
       .navigationTitle("Friends")
