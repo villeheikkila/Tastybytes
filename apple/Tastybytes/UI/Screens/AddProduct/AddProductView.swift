@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ProductSheetView: View {
+struct AddProductView: View {
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var router: Router
   @StateObject private var viewModel: ViewModel
@@ -56,7 +56,6 @@ struct ProductSheetView: View {
         Text(viewModel.mode.doneLabel)
       }).disabled(viewModel.isLoading || !viewModel.isValid())
     }
-    .navigationTitle(viewModel.mode.navigationTitle)
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {

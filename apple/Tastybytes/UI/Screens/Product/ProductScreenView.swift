@@ -6,6 +6,7 @@ struct ProductScreenView: View {
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var router: Router
   @State private var scrollToTop: Int = 0
+  @Environment(\.dismiss) private var dismiss
 
   init(_ client: Client, product: Product.Joined) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, product: product))
@@ -44,11 +45,15 @@ struct ProductScreenView: View {
         case .barcodes:
           BarcodeManagementSheetView(viewModel.client, product: viewModel.product)
         case .editSuggestion:
-          ProductSheetView(viewModel.client, mode: .editSuggestion(viewModel.product))
+          DismissableSheet(title: "Edit Suggestion") {
+            AddProductView(viewModel.client, mode: .editSuggestion(viewModel.product))
+          }
         case .editProduct:
-          ProductSheetView(viewModel.client, mode: .edit(viewModel.product), onEdit: {
-            viewModel.onEditCheckIn()
-          })
+          DismissableSheet(title: "Edit Product") {
+            AddProductView(viewModel.client, mode: .edit(viewModel.product), onEdit: {
+              viewModel.onEditCheckIn()
+            })
+          }
         case .barcodeScanner:
           BarcodeScannerSheetView(onComplete: {
             barcode in viewModel.addBarcodeToProduct(barcode: barcode, onComplete: {

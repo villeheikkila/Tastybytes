@@ -99,7 +99,8 @@ enum Route: Hashable {
     case let .profileProducts(profile):
       ProfileProductListView(profile: profile)
     case let .addProduct(initialBarcode):
-      ProductSheetView(client, mode: .new, initialBarcode: initialBarcode)
+      AddProductView(client, mode: .new, initialBarcode: initialBarcode)
+        .navigationTitle("Add Product")
     case let .checkIn(checkIn):
       CheckInScreenView(client, checkIn: checkIn)
     case let .profile(profile):

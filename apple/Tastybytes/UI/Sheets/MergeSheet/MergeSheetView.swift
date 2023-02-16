@@ -31,6 +31,11 @@ struct MergeSheetView: View {
       }
     }
     .navigationTitle("Merge to...")
+    .navigationBarItems(trailing: Button(action: {
+      dismiss()
+    }) {
+      Text("Cancel").bold()
+    })
     .confirmationDialog("Product Merge Confirmation",
                         isPresented: $viewModel.isPresentingProductMergeConfirmation,
                         presenting: viewModel.mergeToProduct) { presenting in

@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension ProductSheetView {
+extension AddProductView {
   enum Mode: Equatable {
     case new, edit(Product.Joined), editSuggestion(Product.Joined), addToBrand(Brand.JoinedSubBrandsProductsCompany)
 
@@ -12,17 +12,6 @@ extension ProductSheetView {
         return "Send Edit suggestion"
       case .new, .addToBrand:
         return "Create"
-      }
-    }
-
-    var navigationTitle: String {
-      switch self {
-      case .edit:
-        return "Edit Product"
-      case .editSuggestion:
-        return "Edit Suggestion"
-      case .new, .addToBrand:
-        return "Add Product"
       }
     }
   }
