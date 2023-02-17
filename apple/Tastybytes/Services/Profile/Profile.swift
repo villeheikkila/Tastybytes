@@ -10,7 +10,7 @@ struct Profile: Identifiable, Decodable, Hashable {
     case id
     case preferredName = "preferred_name"
     case isPrivate = "is_private"
-    case avatarUrl = "avatar_url"
+    case avatarUrl = "avatar_file"
   }
 
   func hash(into hasher: inout Hasher) {
@@ -27,9 +27,9 @@ struct Profile: Identifiable, Decodable, Hashable {
 extension Profile {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "profiles"
-    let minimal = "id, is_private, preferred_name, avatar_url"
+    let minimal = "id, is_private, preferred_name, avatar_file"
     let saved =
-      "id, first_name, last_name, username, avatar_url, name_display, preferred_name, is_private, is_onboarded"
+      "id, first_name, last_name, username, avatar_file, name_display, preferred_name, is_private, is_onboarded"
 
     switch queryType {
     case .tableName:
@@ -79,7 +79,7 @@ extension Profile {
       case isOnboarded = "is_onboarded"
       case firstName = "first_name"
       case lastName = "last_name"
-      case avatarUrl = "avatar_url"
+      case avatarUrl = "avatar_file"
       case nameDisplay = "name_display"
       case notification = "notifications"
       case roles

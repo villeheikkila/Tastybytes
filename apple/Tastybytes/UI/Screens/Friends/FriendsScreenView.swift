@@ -55,9 +55,7 @@ struct FriendsScreenView: View {
             }
           }
         } else {
-          FriendListItemView(profile: friend.getFriend(userId: viewModel.profile.id)) {
-            Spacer()
-          }
+          FriendListItemView(profile: friend.getFriend(userId: viewModel.profile.id)) {}
         }
       }
       .navigationTitle("Friends")

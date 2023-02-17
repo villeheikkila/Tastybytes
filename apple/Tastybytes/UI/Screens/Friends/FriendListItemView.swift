@@ -2,11 +2,11 @@ import SwiftUI
 
 struct FriendListItemView<RootView: View>: View {
   let profile: Profile
-  let view: () -> RootView
+  let view: () -> RootView?
 
   init(
     profile: Profile,
-    @ViewBuilder view: @escaping () -> RootView
+    @ViewBuilder view: @escaping () -> RootView? = { nil }
   ) {
     self.view = view
     self.profile = profile
@@ -18,10 +18,10 @@ struct FriendListItemView<RootView: View>: View {
         AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
         Text(profile.preferredName)
           .foregroundColor(.primary)
-        if let view {
-          view()
-        } else {
+        if RootView.self == EmptyView.self {
           Spacer()
+        } else {
+          view()
         }
       }
     }

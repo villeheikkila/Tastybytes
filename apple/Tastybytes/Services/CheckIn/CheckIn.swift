@@ -48,7 +48,7 @@ struct CheckIn: Identifiable, Hashable {
 extension CheckIn {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "check_ins"
-    let saved = "id, rating, review, image_url, created_at, is_migrated"
+    let saved = "id, rating, review, image_file, created_at, is_migrated"
     let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
     let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
     let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
@@ -79,7 +79,7 @@ extension CheckIn: Decodable {
     case rating
     case review
     case isMigrated = "is_migrated"
-    case imageUrl = "image_url"
+    case imageUrl = "image_file"
     case createdAt = "created_at"
     case profile = "profiles"
     case product = "products"
