@@ -94,7 +94,7 @@ extension CompanyScreenView {
       Task {
         switch await client.company.verification(id: company.id, isVerified: isVerified) {
         case .success:
-          company = Company(id: company.id, name: company.name, logoUrl: company.logoUrl, isVerified: isVerified)
+          company = Company(id: company.id, name: company.name, logoFile: company.logoFile, isVerified: isVerified)
         case let .failure(error):
           logger
             .error("failed to verify company by id '\(self.company.id)': \(error.localizedDescription)")

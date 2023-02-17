@@ -4,7 +4,7 @@ struct CheckIn: Identifiable, Hashable {
   let id: Int
   let rating: Double?
   let review: String?
-  let imageUrl: String?
+  let imageFile: String?
   let createdAt: Date
   let isMigrated: Bool
   let profile: Profile
@@ -21,10 +21,10 @@ struct CheckIn: Identifiable, Hashable {
   }
 
   func getImageUrl() -> URL? {
-    if let imageUrl {
+    if let imageFile {
       let bucketId = "check-ins"
       let urlString =
-        "\(Config.supabaseUrl)/storage/v1/object/public/\(bucketId)/\(profile.id.uuidString.lowercased())/\(imageUrl)"
+        "\(Config.supabaseUrl)/storage/v1/object/public/\(bucketId)/\(profile.id.uuidString.lowercased())/\(imageFile)"
 
       return URL(string: urlString)
     } else {
@@ -36,7 +36,7 @@ struct CheckIn: Identifiable, Hashable {
     hasher.combine(id)
     hasher.combine(rating)
     hasher.combine(review)
-    hasher.combine(imageUrl)
+    hasher.combine(imageFile)
     hasher.combine(checkInReactions)
     hasher.combine(flavors)
     hasher.combine(variant)
@@ -79,7 +79,7 @@ extension CheckIn: Decodable {
     case rating
     case review
     case isMigrated = "is_migrated"
-    case imageUrl = "image_file"
+    case imageFile = "image_file"
     case createdAt = "created_at"
     case profile = "profiles"
     case product = "products"
@@ -110,7 +110,7 @@ extension CheckIn: Decodable {
     id = try values.decode(Int.self, forKey: .id)
     rating = try values.decodeIfPresent(Double.self, forKey: .rating)
     review = try values.decodeIfPresent(String.self, forKey: .review)
-    imageUrl = try values.decodeIfPresent(String.self, forKey: .imageUrl)
+    imageFile = try values.decodeIfPresent(String.self, forKey: .imageFile)
     isMigrated = try values.decode(Bool.self, forKey: .isMigrated)
     createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
     profile = try values.decode(Profile.self, forKey: .profile)

@@ -52,7 +52,7 @@ struct CheckInSheetView: View {
           self.focusedField = nil
         }
 
-        if viewModel.image != nil || viewModel.editCheckIn?.imageUrl != nil {
+        if viewModel.image != nil || viewModel.editCheckIn?.imageFile != nil {
           HStack {
             Spacer()
             if let image = viewModel.image {

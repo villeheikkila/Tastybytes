@@ -3,13 +3,13 @@ import Foundation
 struct Company: Identifiable, Codable, Hashable {
   let id: Int
   let name: String
-  let logoUrl: String?
+  let logoFile: String?
   let isVerified: Bool
 
   func getLogoUrl() -> URL? {
-    if let logoUrl {
+    if let logoFile {
       let bucketId = "logos"
-      let urlString = "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(logoUrl)"
+      let urlString = "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(logoFile)"
       return URL(string: urlString)
     } else {
       return nil
@@ -18,7 +18,7 @@ struct Company: Identifiable, Codable, Hashable {
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
-    hasher.combine(logoUrl)
+    hasher.combine(logoFile)
   }
 
   static func == (lhs: Company, rhs: Company) -> Bool {
@@ -28,7 +28,7 @@ struct Company: Identifiable, Codable, Hashable {
   enum CodingKeys: String, CodingKey {
     case id
     case name
-    case logoUrl = "logo_file"
+    case logoFile = "logo_file"
     case isVerified = "is_verified"
   }
 }
