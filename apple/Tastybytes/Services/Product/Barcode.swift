@@ -129,7 +129,7 @@ extension ProductBarcode {
     case let .joined(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(saved, Product.getQuery(.joinedBrandSubcategories(true))),
+        joinWithComma(saved, Product.getQuery(.joinedBrandSubcategoriesRatings(true))),
         withTableName
       )
     case let .joinedCreator(withTableName):

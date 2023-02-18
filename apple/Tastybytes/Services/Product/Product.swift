@@ -47,6 +47,20 @@ extension Product {
         ),
         withTableName
       )
+    case let .joinedBrandSubcategoriesProfileRatings(withTableName):
+      return queryWithTableName(
+        tableName,
+        joinWithComma(
+          saved,
+          "check_ins",
+          "average_rating",
+          SubBrand.getQuery(.joinedBrand(true)),
+          Category.getQuery(.saved(true)),
+          Subcategory.getQuery(.joinedCategory(true)),
+          ProductBarcode.getQuery(.saved(true))
+        ),
+        withTableName
+      )
     }
   }
 
@@ -55,6 +69,7 @@ extension Product {
     case saved(_ withTableName: Bool)
     case joinedBrandSubcategories(_ withTableName: Bool)
     case joinedBrandSubcategoriesRatings(_ withTableName: Bool)
+    case joinedBrandSubcategoriesProfileRatings(_ withTableName: Bool)
   }
 }
 

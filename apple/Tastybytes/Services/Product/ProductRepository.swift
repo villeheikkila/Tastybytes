@@ -5,6 +5,7 @@ protocol ProductRepository {
   func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error>
   func search(barcode: Barcode) async -> Result<[Product.Joined], Error>
   func getById(id: Int) async -> Result<Product.Joined, Error>
+  func getByProfile(id: UUID) async -> Result<[Product.Joined], Error>
   func delete(id: Int) async -> Result<Void, Error>
   func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
   func getSummaryById(id: Int) async -> Result<Summary, Error>
@@ -61,6 +62,22 @@ struct SupabaseProductRepository: ProductRepository {
         .eq(column: "id", value: id)
         .limit(count: 1)
         .single()
+        .execute()
+        .value
+
+      return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getByProfile(id: UUID) async -> Result<[Product.Joined], Error> {
+    do {
+      let response: [Product.Joined] = try await client
+        .database
+        .from("view__profile_product_ratings")
+        .select(columns: Product.getQuery(.joinedBrandSubcategoriesProfileRatings(false)))
+        .eq(column: "created_by", value: id.uuidString)
         .execute()
         .value
 
