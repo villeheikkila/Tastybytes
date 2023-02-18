@@ -10,6 +10,7 @@ extension SearchTabView {
     @Published var companies = [Company]()
     @Published var locations = [Location]()
     @Published var showBarcodeScanner = false
+    @Published var showFilters = false
     @Published var isSearched = false
     @Published var searchScope: SearchScope = .products
     @Published var barcode: Barcode?

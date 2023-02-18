@@ -2,6 +2,10 @@ struct Subcategory: Identifiable, Decodable, Hashable {
   let id: Int
   let name: String
 
+  var label: String {
+    name.capitalized
+  }
+
   static func == (lhs: Subcategory, rhs: Subcategory) -> Bool {
     lhs.id == rhs.id
   }

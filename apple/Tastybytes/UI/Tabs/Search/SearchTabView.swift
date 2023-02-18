@@ -58,6 +58,16 @@ struct SearchTabView: View {
           }
           .presentationDetents([.medium])
         }
+        .sheet(isPresented: $viewModel.showFilters) {
+          NavigationStack {
+            DismissableSheet(title: "Filter") {
+              SeachFilterSheetView(
+                viewModel.client
+              )
+            }
+          }
+          .presentationDetents([.medium])
+        }
         .searchable(text: $viewModel.searchTerm,
                     prompt: viewModel.searchScope.prompt)
         .disableAutocorrection(true)
@@ -206,6 +216,13 @@ struct SearchTabView: View {
 
   @ToolbarContentBuilder
   private var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarLeading) {
+      Button(action: {
+        viewModel.showFilters.toggle()
+      }) {
+        Image(systemName: "line.3.horizontal.decrease.circle")
+      }
+    }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if profileManager.hasPermission(.canAddBarcodes) {
         Button(action: {
