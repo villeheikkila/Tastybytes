@@ -51,7 +51,7 @@ struct SearchTabView: View {
           }
         })
         .overlay {
-          if viewModel.searchScope == .products {
+          if viewModel.searchScope == .products, viewModel.productFilter != nil {
             overlayContent
           }
         }
