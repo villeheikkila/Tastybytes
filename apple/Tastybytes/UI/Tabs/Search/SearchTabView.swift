@@ -130,22 +130,30 @@ struct SearchTabView: View {
   private var overlayContent: some View {
     VStack {
       Spacer()
-      VStack {
-        if let filters = viewModel.productFilter {
-          if let category = filters.category {
-            Text("Category: \(category.name.label)")
-          }
-          if let subcategory = filters.subcategory {
-            Text("Category: \(subcategory.name)")
-          }
-          if filters.onlyNonCheckedIn {
-            Text("Show only products you haven't tried")
+      HStack {
+        Spacer()
+        VStack {
+          if let filters = viewModel.productFilter {
+            HStack {
+              if let category = filters.category {
+                Text(category.name.label).bold()
+              }
+              if filters.category != nil, filters.subcategory != nil {
+                Image(systemName: "arrowtriangle.forward")
+              }
+              if let subcategory = filters.subcategory {
+                Text(subcategory.name).bold()
+              }
+            }
+            if filters.onlyNonCheckedIn {
+              Text("Show only products you haven't tried").fontWeight(.medium)
+            }
           }
         }
+        .padding([.top, .bottom], 10)
+        Spacer()
       }
-      .padding(.all, 10)
-      .background(Color(.systemBackground))
-      .cornerRadius(8, corners: [.topLeft, .topRight])
+      .background(.ultraThinMaterial)
     }
   }
 

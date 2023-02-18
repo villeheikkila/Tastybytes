@@ -114,8 +114,6 @@ extension BrandScreenView {
     }
 
     func verifySubBrand(_ subBrand: SubBrand.JoinedProduct, isVerified: Bool) {
-      print(subBrand)
-      print(isVerified)
       Task {
         switch await client.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
         case .success:
