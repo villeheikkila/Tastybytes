@@ -21,6 +21,7 @@ extension SearchTabView {
     }
 
     @Published var showAddBarcodeConfirmation = false
+    @Published var productFilter: Product.Filter?
 
     init(_ client: Client) {
       self.client = client
@@ -58,7 +59,7 @@ extension SearchTabView {
 
     func searchProducts() {
       Task {
-        switch await client.product.search(searchTerm: searchTerm, categoryName: nil) {
+        switch await client.product.search(searchTerm: searchTerm, filter: productFilter) {
         case let .success(searchResults):
           self.products = searchResults
           self.isSearched = true
@@ -136,7 +137,7 @@ extension SearchTabView {
     }
 
     func search() {
-      if searchTerm.count < 3 { return }
+      if searchTerm.count < 2 { return }
 
       switch searchScope {
       case .products:

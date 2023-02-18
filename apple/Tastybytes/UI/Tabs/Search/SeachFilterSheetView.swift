@@ -2,34 +2,80 @@ import SwiftUI
 
 struct SeachFilterSheetView: View {
   @StateObject private var viewModel: ViewModel
+  @Environment(\.dismiss) private var dismiss
+
+  let onApply: (_ filter: Product.Filter) -> Void
 
   init(
-    _ client: Client
+    _ client: Client,
+    onApply: @escaping (_ filter: Product.Filter) -> Void
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.onApply = onApply
   }
 
   var body: some View {
     Form {
-      Picker(selection: $viewModel.categoryFilter) {
-        Text("Select All").tag(Category.Name?(nil))
-        ForEach(viewModel.categoryOptions, id: \.self) { category in
-          Text(category.label).tag(Optional(category))
+      Section {
+        Picker(selection: $viewModel.categoryFilter) {
+          Text("Select All").tag(Category.JoinedSubcategories?(nil))
+          ForEach(viewModel.categories, id: \.self) { category in
+            Text(category.name.label).tag(Optional(category))
+          }
+        } label: {
+          Text("Category")
         }
-      } label: {
+        Picker(selection: $viewModel.subcategoryFilter) {
+          Text("Select All").tag(Subcategory?(nil))
+          if let categoryFilter = viewModel.categoryFilter {
+            ForEach(categoryFilter.subcategories) { subcategory in
+              Text(subcategory.name.capitalized).tag(Optional(subcategory))
+            }
+          }
+        } label: {
+          Text("Subcategory")
+        }.disabled(viewModel.categoryFilter == nil)
+      } header: {
         Text("Category")
       }
-//      Picker(selection: $viewModel.categoryFilter) {
-//        if let categoryFilter = viewModel.categoryFilter {
-//          ForEach(categoryFilter.subcategories) { subcategory in
-//            Text(subcategory.name.capitalized)
-//          }
-//        }
-//      } label: {
-//        Text("Subcategory")
-//      }.disabled(viewModel.categoryFilter == nil)
-    }.task {
+
+      Section {
+        Toggle("Only things I have not had", isOn: $viewModel.onlyNonCheckedIn)
+      } header: {
+        Text("Check-ins")
+      }
+    }
+    .navigationTitle("Filter")
+    .toolbar {
+      toolbarContent
+    }
+
+    .task {
       await viewModel.loadCategories()
+    }
+  }
+
+  @ToolbarContentBuilder
+  private var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarLeading) {
+      Button(action: {
+        dismiss()
+      }) {
+        Text("Cancel")
+          .bold()
+      }
+    }
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
+      Button(action: {
+        onApply(Product.Filter(
+          category: viewModel.categoryFilter,
+          subcategory: viewModel.subcategoryFilter,
+          onlyNonCheckedIn: viewModel.onlyNonCheckedIn
+        ))
+      }) {
+        Text("Apply")
+          .bold()
+      }
     }
   }
 }
@@ -62,10 +108,9 @@ extension SeachFilterSheetView {
     private let logger = getLogger(category: "SeachFilterSheetView")
     let client: Client
     @Published var categories: [Category.JoinedSubcategories] = []
-    @Published var categoryOptions: [Category.Name] = []
-    @Published var categoryFilter: Category.Name?
+    @Published var categoryFilter: Category.JoinedSubcategories?
     @Published var subcategoryFilter: Subcategory?
-
+    @Published var onlyNonCheckedIn: Bool = false
     init(_ client: Client) {
       self.client = client
     }
@@ -74,7 +119,6 @@ extension SeachFilterSheetView {
       switch await client.category.getAllWithSubcategories() {
       case let .success(categories):
         self.categories = categories
-        categoryOptions = categories.map(\.name)
       // categoryOptions = [CategoryOptions.selectAll] + categoryNames
       case let .failure(error):
         logger.error("failed to load categories: \(error.localizedDescription)")

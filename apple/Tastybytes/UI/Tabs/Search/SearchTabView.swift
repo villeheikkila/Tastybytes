@@ -50,6 +50,9 @@ struct SearchTabView: View {
             viewModel.resetSearch()
           }
         })
+        .overlay {
+          overlayContent
+        }
         .sheet(isPresented: $viewModel.showBarcodeScanner) {
           NavigationStack {
             BarcodeScannerSheetView(onComplete: {
@@ -60,11 +63,14 @@ struct SearchTabView: View {
         }
         .sheet(isPresented: $viewModel.showFilters) {
           NavigationStack {
-            DismissableSheet(title: "Filter") {
-              SeachFilterSheetView(
-                viewModel.client
-              )
-            }
+            SeachFilterSheetView(
+              viewModel.client,
+              onApply: {
+                filter in
+                viewModel.productFilter = filter
+                viewModel.showFilters = false
+              }
+            )
           }
           .presentationDetents([.medium])
         }
@@ -112,10 +118,32 @@ struct SearchTabView: View {
           }
           resetNavigationOnTab = nil
         }
+        .withRoutes(viewModel.client)
       }
-      .withRoutes(viewModel.client)
     }
     .environmentObject(router)
+  }
+
+  private var overlayContent: some View {
+    VStack {
+      Spacer()
+      VStack {
+        if let filters = viewModel.productFilter {
+          if let category = filters.category {
+            Text("Category: \(category.name.label)")
+          }
+          if let subcategory = filters.subcategory {
+            Text("Category: \(subcategory.name)")
+          }
+          if filters.onlyNonCheckedIn {
+            Text("Show only products you haven't tried")
+          }
+        }
+      }
+      .padding(.all, 10)
+      .background(Color(.systemBackground))
+      .cornerRadius(8, corners: [.topLeft, .topRight])
+    }
   }
 
   private var profileResults: some View {

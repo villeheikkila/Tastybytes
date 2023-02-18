@@ -2,7 +2,7 @@ import Foundation
 import Supabase
 
 protocol ProductRepository {
-  func search(searchTerm: String, categoryName: Category.Name?) async -> Result<[Product.Joined], Error>
+  func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error>
   func search(barcode: Barcode) async -> Result<[Product.Joined], Error>
   func getById(id: Int) async -> Result<Product.Joined, Error>
   func delete(id: Int) async -> Result<Void, Error>
@@ -17,13 +17,13 @@ protocol ProductRepository {
 struct SupabaseProductRepository: ProductRepository {
   let client: SupabaseClient
 
-  func search(searchTerm: String, categoryName: Category.Name?) async -> Result<[Product.Joined], Error> {
+  func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error> {
     do {
       let response: [Product.Joined] = try await client
         .database
         .rpc(
           fn: "fnc__search_products",
-          params: Product.SearchParams(searchTerm: searchTerm, categoryName: categoryName)
+          params: Product.SearchParams(searchTerm: searchTerm, filter: filter)
         )
         .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
         .execute()

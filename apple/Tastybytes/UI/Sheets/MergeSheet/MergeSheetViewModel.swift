@@ -32,7 +32,7 @@ extension MergeSheetView {
 
     func searchProducts(productToMerge: Product.JoinedCategory) {
       Task {
-        switch await client.product.search(searchTerm: productSearchTerm, categoryName: nil) {
+        switch await client.product.search(searchTerm: productSearchTerm, filter: nil) {
         case let .success(searchResults):
           self.productSearchResults = searchResults.filter { $0.id != productToMerge.id }
         case let .failure(error):

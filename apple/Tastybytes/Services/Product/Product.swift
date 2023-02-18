@@ -47,20 +47,36 @@ extension Product {
   struct SearchParams: Encodable {
     let searchTerm: String
     let categoryName: String?
+    let subCategoryId: Int?
+    let onlyNonCheckedIn: Bool
 
     enum CodingKeys: String, CodingKey {
-      case searchTerm = "p_search_term", categoryName = "p_category_name"
+      case searchTerm = "p_search_term"
+      case categoryName = "p_category_name"
+      case subCategoryId = "p_subcategory_id"
+      case onlyNonCheckedIn = "p_only_non_checked_in"
     }
 
-    init(searchTerm: String, categoryName: Category.Name?) {
+    init(searchTerm: String, filter: Filter?) {
       self.searchTerm = "%\(searchTerm.trimmingCharacters(in: .whitespacesAndNewlines))%"
 
-      if let categoryName {
-        self.categoryName = categoryName.rawValue
+      if let filter {
+        categoryName = filter.category?.name.rawValue
+        subCategoryId = filter.subcategory?.id
+        onlyNonCheckedIn = filter.onlyNonCheckedIn
+
       } else {
-        self.categoryName = nil
+        categoryName = nil
+        subCategoryId = nil
+        onlyNonCheckedIn = false
       }
     }
+  }
+
+  struct Filter {
+    let category: Category.JoinedSubcategories?
+    let subcategory: Subcategory?
+    let onlyNonCheckedIn: Bool
   }
 
   struct MergeProductsParams: Encodable {
