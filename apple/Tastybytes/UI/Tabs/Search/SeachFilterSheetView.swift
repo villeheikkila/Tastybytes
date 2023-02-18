@@ -47,6 +47,7 @@ struct SeachFilterSheetView: View {
       }
     }
     .navigationTitle("Filter")
+    .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       toolbarContent
     }

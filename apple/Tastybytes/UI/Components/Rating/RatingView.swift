@@ -14,32 +14,32 @@ struct RatingView: View {
   init(rating: Double, type: StarType = .large) {
     self.rating = rating
     self.type = type
-    width = type == .small ? 12 : 20
-    height = type == .small ? 12 : 20
+    width = type == .small ? 12 : 24
+    height = type == .small ? 12 : 24
   }
 
   var body: some View {
-      HStack(spacing: 3) {
-        ForEach(0 ..< Int(rating), id: \.self) { _ in
-          Image(systemName: "star.fill")
-            .resizable()
+    HStack(spacing: 3) {
+      ForEach(0 ..< Int(rating), id: \.self) { _ in
+        Image(systemName: "star.fill")
+          .resizable()
 
-            .frame(width: width, height: height)
-            .foregroundColor(.yellow)
-        }
+          .frame(width: width, height: height)
+          .foregroundColor(.yellow)
+      }
 
-        if rating != floor(rating) {
-          Image(systemName: "star.leadinghalf.fill")
-            .resizable()
-            .frame(width: width, height: height)
-            .foregroundColor(.yellow)
-        }
+      if rating != floor(rating) {
+        Image(systemName: "star.leadinghalf.fill")
+          .resizable()
+          .frame(width: width, height: height)
+          .foregroundColor(.yellow)
+      }
 
-        ForEach(0 ..< Int(Double(5) - rating), id: \.self) { _ in
-          Image(systemName: "star")
-            .resizable()
-            .frame(width: width, height: height)
-        }
+      ForEach(0 ..< Int(Double(5) - rating), id: \.self) { _ in
+        Image(systemName: "star")
+          .resizable()
+          .frame(width: width, height: height)
+      }
     }
   }
 }
