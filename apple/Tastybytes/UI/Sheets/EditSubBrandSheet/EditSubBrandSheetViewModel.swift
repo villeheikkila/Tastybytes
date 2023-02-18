@@ -24,7 +24,7 @@ extension EditSubBrandSheetView {
       self.client = client
       self.brand = brand
       self.subBrand = subBrand
-      newSubBrandName = brand.name
+      newSubBrandName = subBrand.name ?? ""
     }
 
     var invalidNewName: Bool {
