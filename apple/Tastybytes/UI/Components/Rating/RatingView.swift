@@ -8,40 +8,38 @@ struct RatingView: View {
   let rating: Double
   let type: StarType
 
+  let width: Double
+  let height: Double
+
   init(rating: Double, type: StarType = .large) {
     self.rating = rating
     self.type = type
+    width = type == .small ? 12 : 20
+    height = type == .small ? 12 : 20
   }
 
   var body: some View {
-    ZStack {
-      HStack {
+      HStack(spacing: 3) {
         ForEach(0 ..< Int(rating), id: \.self) { _ in
           Image(systemName: "star.fill")
-            .star(size: starSize, type: type)
+            .resizable()
+
+            .frame(width: width, height: height)
             .foregroundColor(.yellow)
         }
 
         if rating != floor(rating) {
           Image(systemName: "star.leadinghalf.fill")
-            .star(size: starSize, type: type)
+            .resizable()
+            .frame(width: width, height: height)
             .foregroundColor(.yellow)
         }
 
         ForEach(0 ..< Int(Double(5) - rating), id: \.self) { _ in
           Image(systemName: "star")
-            .star(size: starSize, type: type)
+            .resizable()
+            .frame(width: width, height: height)
         }
-      }
-      .onPreferenceChange(StarSizeKey.self) { size in
-        starSize = size
-      }
-      .onPreferenceChange(ControlSizeKey.self) { size in
-        controlSize = size
-      }
-      Color.clear
-        .frame(width: controlSize.width, height: controlSize.height)
-        .contentShape(Rectangle())
     }
   }
 }
@@ -49,31 +47,6 @@ struct RatingView: View {
 enum StarType {
   case large, small
 }
-
-private extension Image {
-  func star(size: CGSize, type: StarType) -> some View {
-    font(type == StarType.large ? .title : .none)
-      .background(
-        Color.clear.preference(
-          key: StarSizeKey.self,
-          value: type == StarType.large ? CGSize(width: 26, height: 14) : CGSize(width: 12, height: 12)
-        )
-      )
-      .frame(width: size.width, height: size.height)
-  }
-}
-
-private protocol SizeKey: PreferenceKey {}
-private extension SizeKey {
-  static var defaultValue: CGSize { .zero }
-  static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
-    let next = nextValue()
-    value = CGSize(width: max(value.width, next.width), height: max(value.height, next.height))
-  }
-}
-
-private struct StarSizeKey: SizeKey {}
-private struct ControlSizeKey: SizeKey {}
 
 struct RatingView_Previews: PreviewProvider {
   static var previews: some View {
