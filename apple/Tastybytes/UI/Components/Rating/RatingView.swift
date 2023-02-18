@@ -33,18 +33,12 @@ struct RatingView: View {
             .star(size: starSize, type: type)
         }
       }
-      .background(
-        GeometryReader { proxy in
-          Color.clear.preference(key: ControlSizeKey.self, value: proxy.size)
-        }
-      )
       .onPreferenceChange(StarSizeKey.self) { size in
         starSize = size
       }
       .onPreferenceChange(ControlSizeKey.self) { size in
         controlSize = size
       }
-
       Color.clear
         .frame(width: controlSize.width, height: controlSize.height)
         .contentShape(Rectangle())
@@ -60,9 +54,10 @@ private extension Image {
   func star(size: CGSize, type: StarType) -> some View {
     font(type == StarType.large ? .title : .none)
       .background(
-        GeometryReader { proxy in
-          Color.clear.preference(key: StarSizeKey.self, value: proxy.size)
-        }
+        Color.clear.preference(
+          key: StarSizeKey.self,
+          value: type == StarType.large ? CGSize(width: 26, height: 14) : CGSize(width: 12, height: 12)
+        )
       )
       .frame(width: size.width, height: size.height)
   }
@@ -79,3 +74,12 @@ private extension SizeKey {
 
 private struct StarSizeKey: SizeKey {}
 private struct ControlSizeKey: SizeKey {}
+
+struct RatingView_Previews: PreviewProvider {
+  static var previews: some View {
+    VStack {
+      RatingView(rating: 3.5, type: .small)
+      RatingView(rating: 3.5, type: .large)
+    }
+  }
+}

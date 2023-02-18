@@ -22,10 +22,10 @@ struct SupabaseProductRepository: ProductRepository {
       let response: [Product.Joined] = try await client
         .database
         .rpc(
-          fn: "fnc__search_products",
+          fn: "fnc__search_products_ng",
           params: Product.SearchParams(searchTerm: searchTerm, filter: filter)
         )
-        .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
+        .select(columns: Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
         .execute()
         .value
 

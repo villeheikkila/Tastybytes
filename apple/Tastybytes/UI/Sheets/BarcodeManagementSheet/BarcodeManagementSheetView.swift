@@ -9,7 +9,7 @@ struct BarcodeManagementSheetView: View {
   }
 
   var body: some View {
-    List {
+    Form {
       ForEach(viewModel.barcodes) { barcode in
         HStack {
           AvatarView(avatarUrl: barcode.profile.avatarUrl, size: 32, id: barcode.profile.id)

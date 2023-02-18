@@ -23,7 +23,7 @@ struct AddProductView: View {
   }
 
   var body: some View {
-    List {
+    Form {
       categorySection
       brandSection
       productSection

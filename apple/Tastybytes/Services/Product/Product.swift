@@ -33,6 +33,20 @@ extension Product {
                       Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true))),
         withTableName
       )
+    case let .joinedBrandSubcategoriesRatings(withTableName):
+      return queryWithTableName(
+        tableName,
+        joinWithComma(
+          saved,
+          "current_user_check_ins",
+          "average_rating",
+          SubBrand.getQuery(.joinedBrand(true)),
+          Category.getQuery(.saved(true)),
+          Subcategory.getQuery(.joinedCategory(true)),
+          ProductBarcode.getQuery(.saved(true))
+        ),
+        withTableName
+      )
     }
   }
 
@@ -40,6 +54,7 @@ extension Product {
     case tableName
     case saved(_ withTableName: Bool)
     case joinedBrandSubcategories(_ withTableName: Bool)
+    case joinedBrandSubcategoriesRatings(_ withTableName: Bool)
   }
 }
 
@@ -216,6 +231,8 @@ extension Product {
     let category: Category
     let subcategories: [Subcategory.JoinedCategory]
     let barcodes: [ProductBarcode]
+    let averageRating: Double?
+    let currentUserCheckIns: Int?
 
     func getDisplayName(_ part: NameParts) -> String {
       switch part {
@@ -255,6 +272,8 @@ extension Product {
       case category = "categories"
       case subcategories
       case barcodes = "product_barcodes"
+      case averageRating = "average_rating"
+      case currentUserCheckIns = "current_user_check_ins"
     }
 
     init(
@@ -275,6 +294,8 @@ extension Product {
       self.subcategories = subcategories
       self.category = category
       self.barcodes = barcodes
+      currentUserCheckIns = nil
+      averageRating = nil
     }
 
     init(
@@ -296,6 +317,8 @@ extension Product {
       subcategories = product.subcategories
       category = product.category
       barcodes = []
+      currentUserCheckIns = nil
+      averageRating = nil
     }
 
     init(
@@ -321,6 +344,8 @@ extension Product {
       subcategories = product.subcategories
       category = product.category
       barcodes = []
+      currentUserCheckIns = nil
+      averageRating = nil
     }
   }
 

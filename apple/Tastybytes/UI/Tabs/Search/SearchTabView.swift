@@ -51,7 +51,9 @@ struct SearchTabView: View {
           }
         })
         .overlay {
-          overlayContent
+          if viewModel.searchScope == .products {
+            overlayContent
+          }
         }
         .sheet(isPresented: $viewModel.showBarcodeScanner) {
           NavigationStack {
@@ -65,6 +67,7 @@ struct SearchTabView: View {
           NavigationStack {
             SeachFilterSheetView(
               viewModel.client,
+              initialFilter: viewModel.productFilter,
               onApply: {
                 filter in
                 viewModel.productFilter = filter
@@ -245,10 +248,12 @@ struct SearchTabView: View {
   @ToolbarContentBuilder
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      Button(action: {
-        viewModel.showFilters.toggle()
-      }) {
-        Image(systemName: "line.3.horizontal.decrease.circle")
+      if viewModel.searchScope == .products {
+        Button(action: {
+          viewModel.showFilters.toggle()
+        }) {
+          Image(systemName: "line.3.horizontal.decrease.circle")
+        }
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {

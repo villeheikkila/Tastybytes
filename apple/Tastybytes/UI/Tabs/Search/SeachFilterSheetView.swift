@@ -8,9 +8,10 @@ struct SeachFilterSheetView: View {
 
   init(
     _ client: Client,
+    initialFilter: Product.Filter?,
     onApply: @escaping (_ filter: Product.Filter) -> Void
   ) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    _viewModel = StateObject(wrappedValue: ViewModel(client, initialFilter: initialFilter))
     self.onApply = onApply
   }
 
@@ -111,8 +112,11 @@ extension SeachFilterSheetView {
     @Published var categoryFilter: Category.JoinedSubcategories?
     @Published var subcategoryFilter: Subcategory?
     @Published var onlyNonCheckedIn: Bool = false
-    init(_ client: Client) {
+    init(_ client: Client, initialFilter: Product.Filter?) {
       self.client = client
+      subcategoryFilter = initialFilter?.subcategory
+      categoryFilter = initialFilter?.category
+      onlyNonCheckedIn = initialFilter?.onlyNonCheckedIn ?? false
     }
 
     func loadCategories() async {

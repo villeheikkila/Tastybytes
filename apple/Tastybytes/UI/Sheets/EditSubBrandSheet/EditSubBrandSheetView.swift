@@ -18,7 +18,7 @@ struct EditSubBrandSheetView: View {
   }
 
   var body: some View {
-    List {
+    Form {
       Section {
         TextField("Name", text: $viewModel.newSubBrandName)
         Button("Edit") {
