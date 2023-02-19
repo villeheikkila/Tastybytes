@@ -1,12 +1,17 @@
 import SwiftUI
 
 extension ProductFilterSheetView {
+  enum Sections {
+    case category, checkIns, sortBy
+  }
+
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "SeachFilterSheetView")
     let client: Client
     @Published var categories: [Category.JoinedSubcategories] = []
     @Published var categoryFilter: Category.JoinedSubcategories?
     @Published var subcategoryFilter: Subcategory?
+    @Published var sortBy: Product.Filter.SortBy?
     @Published var onlyNonCheckedIn: Bool = false
 
     init(_ client: Client, initialFilter: Product.Filter?) {
@@ -14,6 +19,7 @@ extension ProductFilterSheetView {
       subcategoryFilter = initialFilter?.subcategory
       categoryFilter = initialFilter?.category
       onlyNonCheckedIn = initialFilter?.onlyNonCheckedIn ?? false
+      sortBy = initialFilter?.sortBy
     }
 
     func loadCategories() async {
@@ -26,11 +32,12 @@ extension ProductFilterSheetView {
     }
 
     func getFilter() -> Product.Filter? {
-      if categoryFilter != nil || subcategoryFilter != nil || onlyNonCheckedIn == true {
+      if categoryFilter != nil || subcategoryFilter != nil || onlyNonCheckedIn == true || sortBy != nil {
         return Product.Filter(
           category: categoryFilter,
           subcategory: subcategoryFilter,
-          onlyNonCheckedIn: onlyNonCheckedIn
+          onlyNonCheckedIn: onlyNonCheckedIn,
+          sortBy: sortBy
         )
       } else {
         return nil
@@ -43,6 +50,7 @@ extension ProductFilterSheetView {
         subcategoryFilter = nil
         onlyNonCheckedIn = false
         categoryFilter = nil
+        sortBy = nil
       }
     }
   }

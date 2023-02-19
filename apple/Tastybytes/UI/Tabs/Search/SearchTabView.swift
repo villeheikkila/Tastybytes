@@ -68,6 +68,7 @@ struct SearchTabView: View {
             ProductFilterSheetView(
               viewModel.client,
               initialFilter: viewModel.productFilter,
+              sections: [.category, .checkIns],
               onApply: {
                 filter in
                 viewModel.productFilter = filter

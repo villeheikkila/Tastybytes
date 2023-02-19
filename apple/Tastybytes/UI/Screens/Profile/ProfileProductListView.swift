@@ -22,6 +22,7 @@ struct ProfileProductListView: View {
         ProductFilterSheetView(
           viewModel.client,
           initialFilter: viewModel.productFilter,
+          sections: [.category, .sortBy],
           onApply: {
             filter in
             viewModel.productFilter = filter
@@ -102,7 +103,22 @@ extension ProfileProductListView {
     }
 
     var filteredProducts: [Product.Joined] {
-      products.filter { filterProduct($0) }
+      let filtered = products
+        .filter { filterProduct($0) }
+
+      if let sortBy = productFilter?.sortBy {
+        return filtered.sorted { sortProducts(sortBy, $0, $1) }
+      } else {
+        return filtered
+      }
+    }
+
+    func sortProducts(_ sortBy: Product.Filter.SortBy, _ lhs: Product.Joined, _ rhs: Product.Joined) -> Bool {
+      switch (lhs.averageRating, rhs.averageRating) {
+      case let (lhs?, rhs?): return sortBy == .lowestRated ? lhs < rhs : lhs > rhs
+      case (nil, _): return false
+      case (_?, nil): return true
+      }
     }
 
     func filterProduct(_ product: Product.Joined) -> Bool {
@@ -110,13 +126,13 @@ extension ProfileProductListView {
         joinOptionalStrings([product.getDisplayName(.brandOwner), product.getDisplayName(.fullName)])
         .contains(searchTerm) : true
 
-      let onlyNotHadPass = productFilter != nil ? true : true // TODO: implement in view
-      let categoryPass = productFilter != nil ? product.category.id == productFilter?.category?.id : true
+      let categoryPass = productFilter != nil && productFilter?.category?.id != nil ? product.category
+        .id == productFilter?.category?.id : true
       let subcategoryPass = productFilter != nil && productFilter?.subcategory?.id != nil ? product.subcategories
         .map(\.id)
         .contains(productFilter?.subcategory?.id ?? -1) : true
 
-      return namePass && onlyNotHadPass && categoryPass && subcategoryPass
+      return namePass && categoryPass && subcategoryPass
     }
 
     func loadProducts() async {

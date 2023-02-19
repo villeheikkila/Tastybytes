@@ -104,9 +104,25 @@ extension Product {
   }
 
   struct Filter {
+    enum SortBy: String, CaseIterable, Identifiable {
+      var id: Self { self }
+      case highestRated = "highest_rated"
+      case lowestRated = "lowest_rated"
+
+      var label: String {
+        switch self {
+        case .highestRated:
+          return "Highest Rated First"
+        case .lowestRated:
+          return "Lowest Rated First"
+        }
+      }
+    }
+
     let category: Category.JoinedSubcategories?
     let subcategory: Subcategory?
     let onlyNonCheckedIn: Bool
+    let sortBy: SortBy?
   }
 
   struct MergeProductsParams: Encodable {
