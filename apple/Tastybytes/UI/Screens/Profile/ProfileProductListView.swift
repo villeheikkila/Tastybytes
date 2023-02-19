@@ -31,7 +31,18 @@ struct ProfileProductListView: View {
         )
       }
       .presentationDetents([.medium])
-    }.toolbar {
+    }
+    .if(viewModel.productFilter != nil, transform: {
+      view in
+      view.overlay {
+        BottomOverlay {
+          if let productFilter = viewModel.productFilter {
+            ProductFilterOverlayView(filters: productFilter)
+          }
+        }
+      }
+    })
+    .toolbar {
       toolbar
     }
     .task {

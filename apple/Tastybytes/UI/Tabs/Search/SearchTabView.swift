@@ -50,11 +50,16 @@ struct SearchTabView: View {
             viewModel.resetSearch()
           }
         })
-        .overlay {
-          if viewModel.searchScope == .products, viewModel.productFilter != nil {
-            overlayContent
+        .if(viewModel.searchScope == .products && viewModel.productFilter != nil, transform: {
+          view in
+          view.overlay {
+            BottomOverlay {
+              if let productFilter = viewModel.productFilter {
+                ProductFilterOverlayView(filters: productFilter)
+              }
+            }
           }
-        }
+        })
         .sheet(isPresented: $viewModel.showBarcodeScanner) {
           NavigationStack {
             BarcodeScannerSheetView(onComplete: {
@@ -128,33 +133,23 @@ struct SearchTabView: View {
     .environmentObject(router)
   }
 
+  @ViewBuilder
   private var overlayContent: some View {
-    VStack {
-      Spacer()
+    if let filters = viewModel.productFilter {
       HStack {
-        Spacer()
-        VStack {
-          if let filters = viewModel.productFilter {
-            HStack {
-              if let category = filters.category {
-                Text(category.name.label).bold()
-              }
-              if filters.category != nil, filters.subcategory != nil {
-                Image(systemName: "arrowtriangle.forward")
-              }
-              if let subcategory = filters.subcategory {
-                Text(subcategory.name).bold()
-              }
-            }
-            if filters.onlyNonCheckedIn {
-              Text("Show only products you haven't tried").fontWeight(.medium)
-            }
-          }
+        if let category = filters.category {
+          Text(category.name.label).bold()
         }
-        .padding([.top, .bottom], 10)
-        Spacer()
+        if filters.category != nil, filters.subcategory != nil {
+          Image(systemName: "arrowtriangle.forward")
+        }
+        if let subcategory = filters.subcategory {
+          Text(subcategory.name).bold()
+        }
       }
-      .background(.ultraThinMaterial)
+      if filters.onlyNonCheckedIn {
+        Text("Show only products you haven't tried").fontWeight(.medium)
+      }
     }
   }
 
