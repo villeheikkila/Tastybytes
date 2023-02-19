@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SeachFilterSheetView: View {
+struct ProductFilterSheetView: View {
   @StateObject private var viewModel: ViewModel
   @Environment(\.dismiss) private var dismiss
 
@@ -77,8 +77,8 @@ struct SeachFilterSheetView: View {
       Button(action: {
         onApply(viewModel.getFilter())
       }) {
-        Image(systemName: "line.3.horizontal.decrease.circle.fill")
-          .font(.system(size: 14, weight: .bold, design: .default))
+        Label("Apply", systemImage: "line.3.horizontal.decrease.circle.fill")
+          .bold()
       }
     }
   }
@@ -103,52 +103,6 @@ enum CategoryOptions: Hashable, Identifiable {
       return "Select All"
     case let .category(category):
       return category.label
-    }
-  }
-}
-
-extension SeachFilterSheetView {
-  @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "SeachFilterSheetView")
-    let client: Client
-    @Published var categories: [Category.JoinedSubcategories] = []
-    @Published var categoryFilter: Category.JoinedSubcategories?
-    @Published var subcategoryFilter: Subcategory?
-    @Published var onlyNonCheckedIn: Bool = false
-
-    init(_ client: Client, initialFilter: Product.Filter?) {
-      self.client = client
-      subcategoryFilter = initialFilter?.subcategory
-      categoryFilter = initialFilter?.category
-      onlyNonCheckedIn = initialFilter?.onlyNonCheckedIn ?? false
-    }
-
-    func loadCategories() async {
-      switch await client.category.getAllWithSubcategories() {
-      case let .success(categories):
-        self.categories = categories
-      case let .failure(error):
-        logger.error("failed to load categories: \(error.localizedDescription)")
-      }
-    }
-
-    func getFilter() -> Product.Filter? {
-      if categoryFilter != nil || subcategoryFilter != nil || onlyNonCheckedIn == true {
-        return Product.Filter(
-          category: categoryFilter,
-          subcategory: subcategoryFilter,
-          onlyNonCheckedIn: onlyNonCheckedIn
-        )
-      } else {
-        return nil
-      }
-    }
-
-    func resetFilter() {
-      categoryFilter = nil
-      subcategoryFilter = nil
-      onlyNonCheckedIn = false
-      categoryFilter = nil
     }
   }
 }

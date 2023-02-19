@@ -19,7 +19,7 @@ struct ProfileProductListView: View {
     .navigationTitle("Products")
     .sheet(isPresented: $viewModel.showFilters) {
       NavigationStack {
-        SeachFilterSheetView(
+        ProductFilterSheetView(
           viewModel.client,
           initialFilter: viewModel.productFilter,
           onApply: {

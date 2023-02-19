@@ -65,7 +65,7 @@ struct SearchTabView: View {
         }
         .sheet(isPresented: $viewModel.showFilters) {
           NavigationStack {
-            SeachFilterSheetView(
+            ProductFilterSheetView(
               viewModel.client,
               initialFilter: viewModel.productFilter,
               onApply: {
