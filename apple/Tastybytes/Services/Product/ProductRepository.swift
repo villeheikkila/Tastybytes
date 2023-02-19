@@ -77,7 +77,7 @@ struct SupabaseProductRepository: ProductRepository {
         .database
         .from("view__profile_product_ratings")
         .select(columns: Product.getQuery(.joinedBrandSubcategoriesProfileRatings(false)))
-        .eq(column: "created_by", value: id.uuidString)
+        .eq(column: "check_in_created_by", value: id.uuidString)
         .execute()
         .value
 
