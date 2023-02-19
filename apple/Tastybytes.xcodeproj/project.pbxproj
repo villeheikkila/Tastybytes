@@ -55,6 +55,7 @@
 		5C353CBC29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBB29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift */; };
 		5C353CBE29A248300067C4EE /* BottomOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBD29A248300067C4EE /* BottomOverlay.swift */; };
 		5C353CC029A249660067C4EE /* ProductFilterOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */; };
+		5C353CC229A24C5F0067C4EE /* ContributionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CC129A24C5F0067C4EE /* ContributionsScreenView.swift */; };
 		5C3D8273298C5DA300E861DC /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */; };
 		5C3D8275298D5F3300E861DC /* AccountSettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3D8274298D5F3300E861DC /* AccountSettingsScreenView.swift */; };
 		5C43237D2986A6910085522E /* Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237C2986A6910085522E /* Summary.swift */; };
@@ -239,6 +240,7 @@
 		5C353CBB29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterSheetViewModel.swift; sourceTree = "<group>"; };
 		5C353CBD29A248300067C4EE /* BottomOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomOverlay.swift; sourceTree = "<group>"; };
 		5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterOverlayView.swift; sourceTree = "<group>"; };
+		5C353CC129A24C5F0067C4EE /* ContributionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionsScreenView.swift; sourceTree = "<group>"; };
 		5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtensions.swift; sourceTree = "<group>"; };
 		5C3D8274298D5F3300E861DC /* AccountSettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsScreenView.swift; sourceTree = "<group>"; };
 		5C43237C2986A6910085522E /* Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Summary.swift; sourceTree = "<group>"; };
@@ -567,6 +569,7 @@
 				5CE90090292101C8003DE697 /* AboutScreenView.swift */,
 				5C7C35D5299ACEAF009A3C09 /* AboutScreenViewModel.swift */,
 				5C11ECB528EEEFB300CCDE6A /* SettingsScreenView.swift */,
+				5C353CC129A24C5F0067C4EE /* ContributionsScreenView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1238,6 +1241,7 @@
 				5C0E36582928EA910072EFBD /* LegacyPhotoPicker.swift in Sources */,
 				5C663F3929355601006F9A97 /* EditBrandSheetView.swift in Sources */,
 				5C663F352932AEB9006F9A97 /* CategoryNameView.swift in Sources */,
+				5C353CC229A24C5F0067C4EE /* ContributionsScreenView.swift in Sources */,
 				5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */,
 				5CA7A53729A0E7750066F604 /* ProductFilterSheetView.swift in Sources */,
 				5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */,

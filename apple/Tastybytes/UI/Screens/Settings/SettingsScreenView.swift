@@ -29,6 +29,10 @@ struct SettingsScreenView: View {
         NavigationLink(destination: BlockedUsersScreenView(client)) {
           Label("Blocked Users", systemImage: "person.fill.xmark")
         }
+
+        NavigationLink(destination: ContributionsScreenView(client)) {
+          Label("Contributions", systemImage: "plus.rectangle.fill.on.rectangle.fill")
+        }
       }
 
       Section {

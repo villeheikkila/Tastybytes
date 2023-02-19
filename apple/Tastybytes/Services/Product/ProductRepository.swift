@@ -9,6 +9,7 @@ protocol ProductRepository {
   func delete(id: Int) async -> Result<Void, Error>
   func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
   func getSummaryById(id: Int) async -> Result<Summary, Error>
+  func getCreatedByUserId(id: UUID) async -> Result<[Product.Joined], Error>
   func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
   func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error>
   func createUpdateSuggestion(productEditSuggestionParams: Product.EditRequest) async -> Result<IntId, Error>
@@ -78,6 +79,22 @@ struct SupabaseProductRepository: ProductRepository {
         .from("view__profile_product_ratings")
         .select(columns: Product.getQuery(.joinedBrandSubcategoriesProfileRatings(false)))
         .eq(column: "check_in_created_by", value: id.uuidString)
+        .execute()
+        .value
+
+      return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getCreatedByUserId(id: UUID) async -> Result<[Product.Joined], Error> {
+    do {
+      let response: [Product.Joined] = try await client
+        .database
+        .from(Product.getQuery(.tableName))
+        .select(columns: Product.getQuery(.joinedBrandSubcategories(false)))
+        .eq(column: "created_by", value: id.uuidString)
         .execute()
         .value
 
