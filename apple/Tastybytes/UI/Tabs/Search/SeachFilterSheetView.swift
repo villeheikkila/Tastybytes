@@ -4,12 +4,12 @@ struct SeachFilterSheetView: View {
   @StateObject private var viewModel: ViewModel
   @Environment(\.dismiss) private var dismiss
 
-  let onApply: (_ filter: Product.Filter) -> Void
+  let onApply: (_ filter: Product.Filter?) -> Void
 
   init(
     _ client: Client,
     initialFilter: Product.Filter?,
-    onApply: @escaping (_ filter: Product.Filter) -> Void
+    onApply: @escaping (_ filter: Product.Filter?) -> Void
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, initialFilter: initialFilter))
     self.onApply = onApply
@@ -69,14 +69,16 @@ struct SeachFilterSheetView: View {
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Button(action: {
-        onApply(Product.Filter(
-          category: viewModel.categoryFilter,
-          subcategory: viewModel.subcategoryFilter,
-          onlyNonCheckedIn: viewModel.onlyNonCheckedIn
-        ))
+        viewModel.resetFilter()
       }) {
-        Text("Apply")
+        Text("Reset")
           .bold()
+      }
+      Button(action: {
+        onApply(viewModel.getFilter())
+      }) {
+        Image(systemName: "line.3.horizontal.decrease.circle.fill")
+          .font(.system(size: 14, weight: .bold, design: .default))
       }
     }
   }
@@ -113,6 +115,7 @@ extension SeachFilterSheetView {
     @Published var categoryFilter: Category.JoinedSubcategories?
     @Published var subcategoryFilter: Subcategory?
     @Published var onlyNonCheckedIn: Bool = false
+
     init(_ client: Client, initialFilter: Product.Filter?) {
       self.client = client
       subcategoryFilter = initialFilter?.subcategory
@@ -124,10 +127,28 @@ extension SeachFilterSheetView {
       switch await client.category.getAllWithSubcategories() {
       case let .success(categories):
         self.categories = categories
-      // categoryOptions = [CategoryOptions.selectAll] + categoryNames
       case let .failure(error):
         logger.error("failed to load categories: \(error.localizedDescription)")
       }
+    }
+
+    func getFilter() -> Product.Filter? {
+      if categoryFilter != nil || subcategoryFilter != nil || onlyNonCheckedIn == true {
+        return Product.Filter(
+          category: categoryFilter,
+          subcategory: subcategoryFilter,
+          onlyNonCheckedIn: onlyNonCheckedIn
+        )
+      } else {
+        return nil
+      }
+    }
+
+    func resetFilter() {
+      categoryFilter = nil
+      subcategoryFilter = nil
+      onlyNonCheckedIn = false
+      categoryFilter = nil
     }
   }
 }
