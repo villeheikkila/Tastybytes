@@ -2,10 +2,15 @@ import Foundation
 import Supabase
 import SupabaseStorage
 
+enum QueryType {
+  case paginated(Int, Int)
+  case all
+}
+
 protocol CheckInRepository {
   func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error>
   func getById(id: Int) async -> Result<CheckIn, Error>
-  func getByProfileId(id: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error>
+  func getByProfileId(id: UUID, queryType: QueryType) async -> Result<[CheckIn], Error>
   func getByProductId(id: Int, from: Int, to: Int) async -> Result<[CheckIn], Error>
   func getByLocation(locationId: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error>
   func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error>
@@ -34,19 +39,28 @@ struct SupabaseCheckInRepository: CheckInRepository {
     }
   }
 
-  func getByProfileId(id: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error> {
+  func getByProfileId(id: UUID, queryType: QueryType) async -> Result<[CheckIn], Error> {
     do {
-      let response: [CheckIn] = try await client
+      let queryBuilder = client
         .database
         .from(CheckIn.getQuery(.tableName))
         .select(columns: CheckIn.getQuery(.joined(false)))
         .eq(column: "created_by", value: id.uuidString.lowercased())
         .order(column: "id", ascending: false)
-        .range(from: from, to: to)
-        .execute()
-        .value
 
-      return .success(response)
+      switch queryType {
+      case .all:
+        let response: [CheckIn] = try await queryBuilder
+          .execute()
+          .value
+        return .success(response)
+      case let .paginated(from, to):
+        let response: [CheckIn] = try await queryBuilder
+          .range(from: from, to: to)
+          .execute()
+          .value
+        return .success(response)
+      }
     } catch {
       return .failure(error)
     }

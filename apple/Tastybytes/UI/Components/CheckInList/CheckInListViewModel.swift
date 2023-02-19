@@ -89,7 +89,7 @@ extension CheckInListView {
       case .activityFeed:
         return await client.checkIn.getActivityFeed(from: from, to: to)
       case let .profile(product):
-        return await client.checkIn.getByProfileId(id: product.id, from: from, to: to)
+        return await client.checkIn.getByProfileId(id: product.id, queryType: .paginated(from, to))
       case let .product(product):
         return await client.checkIn.getByProductId(id: product.id, from: from, to: to)
       case let .location(location):

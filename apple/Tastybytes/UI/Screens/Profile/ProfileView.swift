@@ -229,6 +229,17 @@ struct ProfileView: View {
           Image(systemName: "chevron.forward")
         }
         .padding([.leading, .trailing], 20)
+        .contentShape(Rectangle())
+      }
+      Divider()
+      NavigationLink(value: Route.profileStatistics(viewModel.profile)) {
+        HStack {
+          Text("Statistics")
+            .font(.system(size: 16, weight: .medium, design: .default))
+          Spacer()
+          Image(systemName: "chevron.forward")
+        }
+        .padding([.leading, .trailing], 20)
         .padding([.bottom], 10)
         .contentShape(Rectangle())
       }

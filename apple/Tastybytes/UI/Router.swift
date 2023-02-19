@@ -78,6 +78,7 @@ enum Route: Hashable {
   case company(Company)
   case brand(Brand.JoinedSubBrandsProductsCompany)
   case profileProducts(Profile)
+  case profileStatistics(Profile)
   case settings
   case currentUserFriends
   case friends(Profile)
@@ -98,6 +99,8 @@ enum Route: Hashable {
       LocationScreenView(client, location: location)
     case let .profileProducts(profile):
       ProfileProductListView(client, profile: profile)
+    case let .profileStatistics(profile):
+      ProfileStatisticsView(client, profile: profile)
     case let .addProduct(initialBarcode):
       AddProductView(client, mode: .new, initialBarcode: initialBarcode)
         .navigationTitle("Add Product")
