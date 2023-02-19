@@ -4,6 +4,26 @@ opt_in_rules:
   - trailing_newline
   - colon
   - comma
+  - duplicate_imports
+  - fatal_error_message
+  - first_where
+  - weak_delegate
+  - void_return
+  - fallthrough
+  - yoda_condition
+  - sorted_imports
+  - sorted_first_last
+  - identical_operands
+  - file_name_no_space
+  - empty_string
+  - discouraged_optional_collection
+  - discouraged_none_name
+  - contains_over_first_not_nil
+  - accessibility_label_for_image
+  - accessibility_trait_for_button
+  - anonymous_argument_in_multiline_closure
+  - implicit_return
+  - implicitly_unwrapped_optional
 disabled_rules:
   - trailing_comma
   - closure_parameter_position
