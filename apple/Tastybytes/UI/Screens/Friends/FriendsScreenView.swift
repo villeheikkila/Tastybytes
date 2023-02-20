@@ -11,7 +11,7 @@ struct FriendsScreenView: View {
   }
 
   var body: some View {
-    ScrollView {
+    List {
       ForEach(viewModel.friends, id: \.self) { friend in
         if viewModel.profile == profileManager.getProfile() {
           FriendListItemView(profile: friend.getFriend(userId: viewModel.profile.id)) {
@@ -24,19 +24,18 @@ struct FriendsScreenView: View {
               Spacer()
               if friend.isPending(userId: profileManager.getProfile().id) {
                 HStack(alignment: .center) {
-                  Button(action: {
-                    viewModel.friendToBeRemoved = friend
-                  }) {
-                    Image(systemName: "person.fill.xmark")
-                      .imageScale(.large)
-                  }
-
-                  Button(action: {
-                    viewModel.updateFriendRequest(friend: friend, newStatus: .accepted)
-                  }) {
-                    Image(systemName: "person.badge.plus")
-                      .imageScale(.large)
-                  }
+                  Image(systemName: "person.fill.xmark")
+                    .imageScale(.large)
+                    .accessibilityAddTraits(.isButton)
+                    .onTapGesture {
+                      viewModel.friendToBeRemoved = friend
+                    }
+                  Image(systemName: "person.badge.plus")
+                    .imageScale(.large)
+                    .accessibilityAddTraits(.isButton)
+                    .onTapGesture {
+                      viewModel.updateFriendRequest(friend: friend, newStatus: .accepted)
+                    }
                 }
               }
             }
@@ -47,7 +46,6 @@ struct FriendsScreenView: View {
             }) {
               Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
             }
-
             Button(action: {
               viewModel.updateFriendRequest(friend: friend, newStatus: .blocked)
             }) {
@@ -58,7 +56,7 @@ struct FriendsScreenView: View {
           FriendListItemView(profile: friend.getFriend(userId: viewModel.profile.id)) {}
         }
       }
-      .navigationTitle("Friends")
+      .navigationTitle("Friends (\(viewModel.friends.count))")
       .navigationBarTitleDisplayMode(.inline)
     }
     .refreshable {

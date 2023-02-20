@@ -18,7 +18,7 @@ struct CompanyScreenView: View {
           SummaryView(summary: summary)
         }
         .listRowSeparator(.hidden)
-        .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
+        .listRowInsets(EdgeInsets())
         .listRowBackground(Color.clear)
       }
       Section {
@@ -37,8 +37,11 @@ struct CompanyScreenView: View {
         }
       } header: {
         Text("Brands")
-      }.headerProminence(.increased)
+      }
+      .headerProminence(.increased)
     }
+    .listRowInsets(EdgeInsets())
+
     .navigationTitle(viewModel.company.name)
     .refreshable {
       viewModel.getBrandsAndSummary()
