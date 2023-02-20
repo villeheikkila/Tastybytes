@@ -132,7 +132,7 @@ struct BrandScreenView: View {
             AddProductView(viewModel.client, mode: .addToBrand(viewModel.brand), onCreate: {
               product in
               viewModel.activeSheet = nil
-              router.navigate(to: Route.product(product), resetStack: false)
+              router.navigate(to: .product(product), resetStack: false)
             })
           }
         }

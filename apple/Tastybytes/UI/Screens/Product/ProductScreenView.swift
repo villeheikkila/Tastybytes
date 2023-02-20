@@ -105,7 +105,7 @@ struct ProductScreenView: View {
         }
         .accessibilityAddTraits(.isLink)
         .onTapGesture {
-          router.navigate(to: Route.company(viewModel.product.subBrand.brand.brandOwner), resetStack: true)
+          router.navigate(to: .company(viewModel.product.subBrand.brand.brandOwner), resetStack: true)
         }
 
         HStack {

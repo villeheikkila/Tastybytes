@@ -42,7 +42,7 @@ struct AddProductView: View {
           })
         case .new:
           await viewModel.createProduct(onSuccess: {
-            product in router.navigate(to: Route.product(product), resetStack: false)
+            product in router.navigate(to: .product(product), resetStack: false)
           })
         case .addToBrand:
           await viewModel.createProduct(onSuccess: {

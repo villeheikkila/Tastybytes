@@ -238,7 +238,7 @@ struct SearchTabView: View {
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
-            router.navigate(to: Route.product(product), resetStack: false)
+            router.navigate(to: .product(product), resetStack: false)
           }
           .id(product.id)
       } else {

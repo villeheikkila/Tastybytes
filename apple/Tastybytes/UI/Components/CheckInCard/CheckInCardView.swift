@@ -48,7 +48,7 @@ struct CheckInCardView: View {
               .contentShape(Rectangle())
               .accessibilityAddTraits(.isLink)
               .onTapGesture {
-                router.navigate(to: Route.location(location), resetStack: false)
+                router.navigate(to: .location(location), resetStack: false)
               }
           }
       }
@@ -58,7 +58,7 @@ struct CheckInCardView: View {
         .contentShape(Rectangle())
         .accessibilityAddTraits(.isLink)
         .onTapGesture {
-          router.navigate(to: Route.profile(checkIn.profile), resetStack: false)
+          router.navigate(to: .profile(checkIn.profile), resetStack: false)
         }
     }
   }
@@ -125,7 +125,7 @@ struct CheckInCardView: View {
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
-            router.navigate(to: Route.company(checkIn.product.subBrand.brand.brandOwner), resetStack: false)
+            router.navigate(to: .company(checkIn.product.subBrand.brand.brandOwner), resetStack: false)
           }
 
         if let manufacturer = checkIn.variant?.manufacturer,
@@ -145,7 +145,7 @@ struct CheckInCardView: View {
         .contentShape(Rectangle())
         .accessibilityAddTraits(.isLink)
         .onTapGesture {
-          router.navigate(to: Route.product(checkIn.product), resetStack: false)
+          router.navigate(to: .product(checkIn.product), resetStack: false)
         }
     }
   }
@@ -176,7 +176,7 @@ struct CheckInCardView: View {
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
-            router.navigate(to: Route.checkIn(checkIn), resetStack: false)
+            router.navigate(to: .checkIn(checkIn), resetStack: false)
           }
       }
     }
@@ -201,7 +201,7 @@ struct CheckInCardView: View {
                   .contentShape(Rectangle())
                   .accessibilityAddTraits(.isLink)
                   .onTapGesture {
-                    router.navigate(to: Route.profile(taggedProfile), resetStack: false)
+                    router.navigate(to: .profile(taggedProfile), resetStack: false)
                   }
               }
           }
@@ -224,7 +224,7 @@ struct CheckInCardView: View {
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
-            router.navigate(to: Route.checkIn(checkIn), resetStack: false)
+            router.navigate(to: .checkIn(checkIn), resetStack: false)
           }
       }
       ReactionsView(client, checkIn: checkIn)

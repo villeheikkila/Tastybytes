@@ -22,7 +22,7 @@ struct FriendListItemView<RootView: View>: View {
       }
       .accessibilityAddTraits(.isLink)
       .onTapGesture {
-        router.navigate(to: Route.profile(profile), resetStack: false)
+        router.navigate(to: .profile(profile), resetStack: false)
       }
       if RootView.self == EmptyView.self {
         Spacer()
