@@ -3,7 +3,6 @@ struct ServingStyle: Identifiable, Hashable, Decodable {
     var id: Self { self }
     case bottle
     case can
-    case none
   }
 
   let id: Int

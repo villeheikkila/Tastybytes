@@ -33,7 +33,7 @@ struct ProductFilterSheetView: View {
           Picker(selection: $viewModel.subcategoryFilter) {
             Text("Select All").tag(Subcategory?(nil))
             if let categoryFilter = viewModel.categoryFilter {
-              ForEach(categoryFilter.subcategories) { subcategory in
+              ForEach(categoryFilter.subcategories, id: \.self) { subcategory in
                 Text(subcategory.name.capitalized).tag(Optional(subcategory))
               }
             }

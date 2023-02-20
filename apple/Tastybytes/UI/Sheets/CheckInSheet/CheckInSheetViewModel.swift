@@ -31,13 +31,6 @@ extension CheckInSheetView {
     @Published var review: String = ""
     @Published var rating: Double = 0
     @Published var manufacturer: Company?
-    @Published var servingStyleName: ServingStyle.Name = .none {
-      // TODO: Investigate if this can be avoided by passing ServingStyle directly to the picker
-      didSet {
-        servingStyle = servingStyles.first(where: { $0.name == servingStyleName })
-      }
-    }
-
     @Published var servingStyles = [ServingStyle]()
     @Published var servingStyle: ServingStyle?
     @Published var taggedFriends = [Profile]()
@@ -54,7 +47,7 @@ extension CheckInSheetView {
         review = editCheckIn.review.orEmpty
         rating = editCheckIn.rating ?? 0
         manufacturer = editCheckIn.variant?.manufacturer
-        servingStyleName = editCheckIn.servingStyle?.name ?? ServingStyle.Name.none
+        servingStyle = editCheckIn.servingStyle
         taggedFriends = editCheckIn.taggedProfiles
         pickedFlavors = editCheckIn.flavors
         location = editCheckIn.location

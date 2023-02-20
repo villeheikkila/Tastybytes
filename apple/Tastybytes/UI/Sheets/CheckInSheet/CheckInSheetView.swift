@@ -112,11 +112,13 @@ struct CheckInSheetView: View {
 
       Section {
         if !viewModel.servingStyles.isEmpty {
-          Picker("Serving Style", selection: $viewModel.servingStyleName) {
-            Text("Not Selected").tag(ServingStyle.Name.none)
-            ForEach(viewModel.servingStyles.map(\.name)) { servingStyle in
-              Text(servingStyle.rawValue.capitalized)
+          Picker(selection: $viewModel.servingStyle) {
+            Text("Not Selected").tag(ServingStyle?(nil))
+            ForEach(viewModel.servingStyles, id: \.self) { servingStyle in
+              Text(servingStyle.name.rawValue.capitalized).tag(Optional(servingStyle))
             }
+          } label: {
+            Text("Serving Style")
           }
         }
 
