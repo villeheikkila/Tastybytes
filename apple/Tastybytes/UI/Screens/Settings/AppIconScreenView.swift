@@ -12,6 +12,7 @@ struct AppIconScreenView: View {
           .aspectRatio(contentMode: .fill)
           .frame(width: 40, height: 40)
           .cornerRadius(8)
+          .accessibilityLabel("\(icon.label) app icon")
 
         Text(icon.label)
           .fontWeight(.medium)

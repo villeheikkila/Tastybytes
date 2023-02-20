@@ -16,7 +16,7 @@ opt_in_rules:
   - identical_operands
   - file_name_no_space
   - empty_string
-  - discouraged_optional_collection
+
   - discouraged_none_name
   - contains_over_first_not_nil
   - accessibility_label_for_image
@@ -49,3 +49,14 @@ identifier_name:
     error: 50
   min_length:
     warning: 2
+custom_rules:
+  DynamicProperty_private:
+    name: "Private SwiftUI DynamicProperty"
+    regex: "@(AccessibilityFocusState|AppStorage|EnvironmentObject|FocusedObject|FocusedObject|GestureState|Namespace|ScaledMetric|SceneStorage|State|StateObject)\\s*?\\n?(\\s|\\t)*?(var|public|internal|open)"
+    message: "SwiftUI DynamicProperty variables should always be marked private."
+    severity: warning
+  DynamicProperty_private_argument:
+    name: "Private SwiftUI DynamicProperty"
+    regex: "@(Environment|FetchRequest|FocusedValue|GestureState|NSApplicationDelegateAdaptor|ScaledMetric|SectionedFetchRequest)\\(.*\\)\\s*?\\n?(\\s|\\t)*?(var|public|internal|open)"
+    message: "SwiftUI DynamicProperty(with argument) variables should always be marked private."
+    severity: warning

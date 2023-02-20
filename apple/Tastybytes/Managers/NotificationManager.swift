@@ -82,11 +82,16 @@ import SwiftUI
     Task {
       switch await client.notification.markAllRead() {
       case .success:
-        self.notifications = self.notifications.map {
-          if $0.seenAt == nil {
-            return Notification(id: $0.id, createdAt: $0.createdAt, seenAt: Date(), content: $0.content)
+        self.notifications = self.notifications.map { notification in
+          if notification.seenAt == nil {
+            return Notification(
+              id: notification.id,
+              createdAt: notification.createdAt,
+              seenAt: Date(),
+              content: notification.content
+            )
           } else {
-            return $0
+            return notification
           }
         }
       case let .failure(error):
@@ -96,8 +101,8 @@ import SwiftUI
   }
 
   func markAllFriendRequestsAsRead() {
-    let containsFriendRequests = notifications.contains(where: {
-      switch $0.content {
+    let containsFriendRequests = notifications.contains(where: { notification in
+      switch notification.content {
       case .friendRequest:
         return true
       default:
@@ -125,8 +130,8 @@ import SwiftUI
   }
 
   func markCheckInAsRead(checkIn: CheckIn) {
-    let containsCheckIn = notifications.contains(where: {
-      switch $0.content {
+    let containsCheckIn = notifications.contains(where: { notification in
+      switch notification.content {
       case let .checkInReaction(cir):
         return cir.checkIn == checkIn
       case let .taggedCheckIn(tci):

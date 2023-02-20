@@ -102,7 +102,9 @@ struct ProductScreenView: View {
           Text(viewModel.product.getDisplayName(.brandOwner))
             .font(.system(size: 16, weight: .bold, design: .default))
             .foregroundColor(.secondary)
-        }.onTapGesture {
+        }
+        .accessibilityAddTraits(.isLink)
+        .onTapGesture {
           router.navigate(to: Route.company(viewModel.product.subBrand.brand.brandOwner), resetStack: true)
         }
 

@@ -3,8 +3,8 @@ import PhotosUI
 import SwiftUI
 
 struct LocationScreenView: View {
-  @EnvironmentObject var router: Router
-  @EnvironmentObject var profileManager: ProfileManager
+  @EnvironmentObject private var router: Router
+  @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var viewModel: ViewModel
   @State private var scrollToTop: Int = 0
   @State private var resetView: Int = 0

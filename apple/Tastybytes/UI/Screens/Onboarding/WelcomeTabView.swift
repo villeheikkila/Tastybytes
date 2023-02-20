@@ -44,6 +44,7 @@ struct WelcomeTabView: View {
         .resizable()
         .aspectRatio(contentMode: .fit)
         .frame(width: 80, height: 80, alignment: .center)
+        .accessibility(hidden: true)
 
       VStack(alignment: .leading, spacing: 8) {
         Text(Config.appName)

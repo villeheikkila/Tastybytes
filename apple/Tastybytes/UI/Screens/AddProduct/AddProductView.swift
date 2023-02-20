@@ -141,6 +141,7 @@ struct AddProductView: View {
     }
     header: {
       Text("Category")
+        .accessibilityAddTraits(.isButton)
         .onTapGesture {
           self.focusedField = nil
         }
@@ -180,6 +181,7 @@ struct AddProductView: View {
 
     } header: {
       Text("Brand")
+        .accessibilityAddTraits(.isButton)
         .onTapGesture {
           self.focusedField = nil
         }
@@ -208,6 +210,7 @@ struct AddProductView: View {
       }
     } header: {
       Text("Product")
+        .accessibilityAddTraits(.isButton)
         .onTapGesture {
           self.focusedField = nil
         }
