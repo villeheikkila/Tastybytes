@@ -100,7 +100,7 @@ extension SearchTabView {
           logger
             .error(
               """
-              searching products with barcode \(self.barcode?.barcode ?? "empty") failed:\
+              searching products with barcode \(barcode.barcode) failed:\
                 \(error.localizedDescription)
               """
             )
