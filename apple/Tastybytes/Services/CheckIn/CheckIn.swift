@@ -157,7 +157,7 @@ extension CheckIn {
       location: Location?
     ) {
       productId = product.id
-      self.review = review == "" ? nil : review
+      self.review = review.isNilOrEmpty ? nil : review
       manufacturerId = manufacturer?.id ?? nil
       servingStyleId = servingStyle?.id ?? nil
       friendIds = taggedFriends.map(\.id.uuidString)

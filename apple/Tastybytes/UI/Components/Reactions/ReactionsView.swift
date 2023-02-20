@@ -14,9 +14,7 @@ struct ReactionsView: View {
         reaction in AvatarView(avatarUrl: reaction.profile.avatarUrl, size: 16, id: reaction.profile.id)
       }
 
-      Button {
-        viewModel.toggleReaction(userId: profileManager.getId())
-      } label: {
+      HStack {
         Text("\(viewModel.checkInReactions.count)")
           .font(.system(size: 12, weight: .bold, design: .default))
           .foregroundColor(.primary)
@@ -25,7 +23,13 @@ struct ReactionsView: View {
           .frame(height: 16, alignment: .leading)
           .foregroundColor(Color(.systemYellow))
       }
-      .disabled(viewModel.isLoading)
     }
+    .if(!viewModel.isLoading, transform: { view in
+      view.accessibilityAddTraits(.isButton)
+        .onTapGesture {
+          viewModel.toggleReaction(userId: profileManager.getId())
+        }
+    })
+    .disabled(viewModel.isLoading)
   }
 }

@@ -6,6 +6,7 @@ struct AppLogoView: View {
       .resizable()
       .aspectRatio(contentMode: .fill)
       .frame(width: 120, height: 120)
+      .accessibility(hidden: true)
   }
 
   private func getCurrentProjectLogo() -> String {

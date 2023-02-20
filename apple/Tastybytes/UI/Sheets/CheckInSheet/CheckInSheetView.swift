@@ -48,6 +48,7 @@ struct CheckInSheetView: View {
             .font(.system(size: 16, weight: .bold, design: .default))
             .foregroundColor(.secondary)
         }
+        .accessibilityAddTraits(.isButton)
         .onTapGesture {
           self.focusedField = nil
         }
@@ -61,6 +62,7 @@ struct CheckInSheetView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 150, alignment: .top)
                 .shadow(radius: 4)
+                .accessibilityLabel("Image of the check-in")
             } else if let imageUrl = viewModel.editCheckIn?.getImageUrl() {
               CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
                 image
@@ -68,6 +70,7 @@ struct CheckInSheetView: View {
                   .aspectRatio(contentMode: .fit)
                   .frame(height: 150, alignment: .top)
                   .shadow(radius: 4)
+                  .accessibilityLabel("Image of the check-in")
               } placeholder: {
                 EmptyView()
               }

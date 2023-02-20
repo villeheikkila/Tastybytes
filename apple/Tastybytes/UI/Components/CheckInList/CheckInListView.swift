@@ -30,19 +30,18 @@ struct CheckInListView<Header>: View
 
   var body: some View {
     ScrollViewReader { proxy in
-      ScrollView {
-        Rectangle()
-          .frame(height: 0)
-          .id(topAnchor)
+      List {
         header()
-        LazyVStack(spacing: 8) {
-          checkInsList
-        }
+        checkInsList
         if viewModel.isLoading {
           ProgressView()
             .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+            .listRowSeparator(.hidden)
         }
       }
+      .scrollContentBackground(.hidden)
+      .edgesIgnoringSafeArea([.leading, .trailing])
+      .listStyle(.plain)
       .onAppear {
         scrollProxy = proxy
       }
@@ -59,8 +58,10 @@ struct CheckInListView<Header>: View
       }
 
       .onChange(of: scrollToTop, perform: { _ in
-        withAnimation {
-          scrollProxy?.scrollTo(topAnchor, anchor: .top)
+        if let first = viewModel.checkIns.first {
+          withAnimation {
+            scrollProxy?.scrollTo(first.id, anchor: .top)
+          }
         }
       })
       .onChange(of: resetView, perform: { _ in
@@ -92,6 +93,12 @@ struct CheckInListView<Header>: View
     ForEach(viewModel.checkIns, id: \.self) { checkIn in
       CheckInCardView(client: viewModel.client, checkIn: checkIn,
                       loadedFrom: getLoadedFrom)
+        .listRowInsets(.init(top: 4,
+                             leading: 0,
+                             bottom: 4,
+                             trailing: 0))
+        .listRowSeparator(.hidden)
+        .id(checkIn.id)
         .contextMenu {
           ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
           Divider()

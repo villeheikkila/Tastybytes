@@ -133,7 +133,7 @@ extension ProfileProductListView {
     }
 
     func filterProduct(_ product: Product.Joined) -> Bool {
-      let namePass = searchTerm != "" ?
+      let namePass = !searchTerm.isEmpty ?
         joinOptionalStrings([product.getDisplayName(.brandOwner), product.getDisplayName(.fullName)])
         .contains(searchTerm) : true
 

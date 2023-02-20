@@ -33,7 +33,6 @@ struct ProfileView: View {
         if showInFull {
           ratingChart
           ratingSummary
-          links
         } else {
           privateProfileSign
         }
@@ -43,6 +42,8 @@ struct ProfileView: View {
           sendFriendRequestButton
         }
       }
+      .listRowSeparator(.hidden)
+      links
     }
   }
 
@@ -207,45 +208,22 @@ struct ProfileView: View {
     }
   }
 
+  @ViewBuilder
   private var links: some View {
-    VStack {
-      NavigationLink(value: Route.friends(viewModel.profile)) {
-        HStack {
-          Text("Friends")
-            .font(.system(size: 16, weight: .medium, design: .default))
-          Spacer()
-          Image(systemName: "chevron.forward")
-        }
-        .padding([.leading, .trailing], 20)
-        .padding([.top], 10)
-        .contentShape(Rectangle())
-      }
-      Divider()
-      NavigationLink(value: Route.profileProducts(viewModel.profile)) {
-        HStack {
-          Text("Products")
-            .font(.system(size: 16, weight: .medium, design: .default))
-          Spacer()
-          Image(systemName: "chevron.forward")
-        }
-        .padding([.leading, .trailing], 20)
-        .contentShape(Rectangle())
-      }
-      Divider()
-      NavigationLink(value: Route.profileStatistics(viewModel.profile)) {
-        HStack {
-          Text("Statistics")
-            .font(.system(size: 16, weight: .medium, design: .default))
-          Spacer()
-          Image(systemName: "chevron.forward")
-        }
-        .padding([.leading, .trailing], 20)
-        .padding([.bottom], 10)
-        .contentShape(Rectangle())
-      }
+    NavigationLink(value: Route.friends(viewModel.profile)) {
+      Text("Friends")
+        .font(.system(size: 16, weight: .medium, design: .default))
     }
-    .background(Color(.tertiarySystemBackground))
-    .cornerRadius(10)
-    .shadow(color: Color.black.opacity(0.1), radius: 20, x: 0, y: 0)
+    .listRowBackground(Color(.secondarySystemBackground))
+    NavigationLink(value: Route.profileProducts(viewModel.profile)) {
+      Text("Products")
+        .font(.system(size: 16, weight: .medium, design: .default))
+    }
+    .listRowBackground(Color(.secondarySystemBackground))
+    NavigationLink(value: Route.profileStatistics(viewModel.profile)) {
+      Text("Statistics")
+        .font(.system(size: 16, weight: .medium, design: .default))
+    }
+    .listRowBackground(Color(.secondarySystemBackground))
   }
 }

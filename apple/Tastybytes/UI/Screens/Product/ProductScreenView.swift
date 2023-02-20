@@ -27,6 +27,8 @@ struct ProductScreenView: View {
         Section {
           SummaryView(summary: summary)
         }
+        .listRowSeparator(.hidden)
+        .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
       }
     }
     .task {
@@ -97,11 +99,11 @@ struct ProductScreenView: View {
         }
 
         HStack {
-          NavigationLink(value: Route.company(viewModel.product.subBrand.brand.brandOwner)) {
-            Text(viewModel.product.getDisplayName(.brandOwner))
-              .font(.system(size: 16, weight: .bold, design: .default))
-              .foregroundColor(.secondary)
-          }
+          Text(viewModel.product.getDisplayName(.brandOwner))
+            .font(.system(size: 16, weight: .bold, design: .default))
+            .foregroundColor(.secondary)
+        }.onTapGesture {
+          router.navigate(to: Route.company(viewModel.product.subBrand.brand.brandOwner), resetStack: true)
         }
 
         HStack {
@@ -114,6 +116,8 @@ struct ProductScreenView: View {
       }.padding([.leading, .trailing], 10)
       Spacer()
     }
+    .listRowSeparator(.hidden)
+    .listRowInsets(.init())
   }
 
   @ToolbarContentBuilder

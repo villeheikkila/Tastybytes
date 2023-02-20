@@ -17,6 +17,9 @@ struct CompanyScreenView: View {
         Section {
           SummaryView(summary: summary)
         }
+        .listRowSeparator(.hidden)
+        .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
+        .listRowBackground(Color.clear)
       }
       Section {
         ForEach(
