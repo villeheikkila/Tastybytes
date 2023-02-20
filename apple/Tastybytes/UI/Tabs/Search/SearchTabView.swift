@@ -83,6 +83,21 @@ struct SearchTabView: View {
           }
           .presentationDetents([.medium])
         }
+        .confirmationDialog(
+          "Add barcode confirmation",
+          isPresented: $viewModel.showAddBarcodeConfirmation,
+          presenting: viewModel.addBarcodeTo
+        ) {
+          presenting in
+          Button(
+            "Add barcode to \(presenting.getDisplayName(.fullName))",
+            action: {
+              viewModel.addBarcodeToProduct(onComplete: {
+                toastManager.toggle(.success("Barcode added!"))
+              })
+            }
+          )
+        }
         .searchable(text: $viewModel.searchTerm,
                     prompt: viewModel.searchScope.prompt)
         .disableAutocorrection(true)
@@ -219,10 +234,13 @@ struct SearchTabView: View {
   private var productResults: some View {
     ForEach(viewModel.products, id: \.id) { product in
       if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
-        NavigationLink(value: Route.product(product)) {
-          ProductItemView(product: product)
-        }
-        .id(product.id)
+        ProductItemView(product: product)
+          .contentShape(Rectangle())
+          .accessibilityAddTraits(.isLink)
+          .onTapGesture {
+            router.navigate(to: Route.product(product), resetStack: false)
+          }
+          .id(product.id)
       } else {
         Button(action: {
           viewModel.addBarcodeTo = product
@@ -230,21 +248,6 @@ struct SearchTabView: View {
           ProductItemView(product: product)
         }
         .buttonStyle(.plain)
-        .confirmationDialog(
-          "Add barcode confirmation",
-          isPresented: $viewModel.showAddBarcodeConfirmation,
-          presenting: viewModel.addBarcodeTo
-        ) {
-          presenting in
-          Button(
-            "Add barcode to \(presenting.getDisplayName(.fullName))",
-            action: {
-              viewModel.addBarcodeToProduct(onComplete: {
-                toastManager.toggle(.success("Barcode added!"))
-              })
-            }
-          )
-        }
       }
     }
   }

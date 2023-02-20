@@ -45,6 +45,7 @@ struct CheckInCardView: View {
           .foregroundColor(.primary)
           .if(!loadedFrom.isLoadedFromLocation(location)) { view in
             view
+              .contentShape(Rectangle())
               .accessibilityAddTraits(.isLink)
               .onTapGesture {
                 router.navigate(to: Route.location(location), resetStack: false)
@@ -54,6 +55,7 @@ struct CheckInCardView: View {
     }
     .if(!loadedFrom.isLoadedFromProfile(checkIn.profile)) { view in
       view
+        .contentShape(Rectangle())
         .accessibilityAddTraits(.isLink)
         .onTapGesture {
           router.navigate(to: Route.profile(checkIn.profile), resetStack: false)
@@ -120,6 +122,7 @@ struct CheckInCardView: View {
           .font(.system(size: 14, weight: .bold, design: .default))
           .foregroundColor(.secondary)
           .lineLimit(nil)
+          .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
             router.navigate(to: Route.company(checkIn.product.subBrand.brand.brandOwner), resetStack: false)
@@ -139,6 +142,7 @@ struct CheckInCardView: View {
     }
     .if(loadedFrom != .product) { view in
       view
+        .contentShape(Rectangle())
         .accessibilityAddTraits(.isLink)
         .onTapGesture {
           router.navigate(to: Route.product(checkIn.product), resetStack: false)
@@ -169,6 +173,7 @@ struct CheckInCardView: View {
       }
       .if(loadedFrom != .checkIn) { view in
         view
+          .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
             router.navigate(to: Route.checkIn(checkIn), resetStack: false)
@@ -193,6 +198,7 @@ struct CheckInCardView: View {
             AvatarView(avatarUrl: taggedProfile.avatarUrl, size: 24, id: taggedProfile.id)
               .if(!loadedFrom.isLoadedFromProfile(taggedProfile)) { view in
                 view
+                  .contentShape(Rectangle())
                   .accessibilityAddTraits(.isLink)
                   .onTapGesture {
                     router.navigate(to: Route.profile(taggedProfile), resetStack: false)
@@ -215,6 +221,7 @@ struct CheckInCardView: View {
       }
       .if(loadedFrom != .checkIn) { view in
         view
+          .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
             router.navigate(to: Route.checkIn(checkIn), resetStack: false)

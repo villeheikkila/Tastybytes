@@ -12,6 +12,14 @@ struct BrandScreenView: View {
 
   var body: some View {
     List {
+      if let summary = viewModel.summary, summary.averageRating != nil {
+        Section {
+          SummaryView(summary: summary)
+        }
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
+        .listRowInsets(.init())
+      }
       ForEach(viewModel.sortedSubBrands, id: \.self) { subBrand in
         Section {
           ForEach(subBrand.products, id: \.id) {
@@ -98,6 +106,9 @@ struct BrandScreenView: View {
     }
     .refreshable {
       viewModel.refresh()
+    }
+    .task {
+      await viewModel.getSummary()
     }
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {

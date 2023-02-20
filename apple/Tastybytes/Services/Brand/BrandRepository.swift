@@ -5,6 +5,7 @@ protocol BrandRepository {
   func getById(id: Int) async -> Result<Brand.JoinedSubBrandsProducts, Error>
   func getJoinedById(id: Int) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error>
   func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error>
+  func getSummaryById(id: Int) async -> Result<Summary, Error>
   func insert(newBrand: Brand.NewRequest) async -> Result<Brand.JoinedSubBrands, Error>
   func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error>
   func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
@@ -123,6 +124,24 @@ struct SupabaseBrandRepository: BrandRepository {
         .execute()
 
       return .success(())
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getSummaryById(id: Int) async -> Result<Summary, Error> {
+    do {
+      let response: Summary = try await client
+        .database
+        .from("view__brand_ratings")
+        .select()
+        .eq(column: "id", value: id)
+        .limit(count: 1)
+        .single()
+        .execute()
+        .value
+
+      return .success(response)
     } catch {
       return .failure(error)
     }

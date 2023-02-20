@@ -95,6 +95,17 @@ extension BrandScreenView {
       }
     }
 
+    func getSummary() async {
+      async let summaryPromise = client.brand.getSummaryById(id: brand.id)
+      switch await summaryPromise {
+      case let .success(summary):
+        self.summary = summary
+      case let .failure(error):
+        logger
+          .error("failed to load summary for brand: \(error.localizedDescription)")
+      }
+    }
+
     func verifyBrand(isVerified: Bool) {
       Task {
         switch await client.brand.verification(id: brand.id, isVerified: isVerified) {
