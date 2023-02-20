@@ -86,7 +86,18 @@ extension BrandScreenView {
 
     func refresh() {
       Task {
-        switch await client.brand.getJoinedById(id: brand.id) {
+        async let summaryPromise = client.brand.getSummaryById(id: brand.id)
+        async let brandPromise = client.brand.getJoinedById(id: brand.id)
+
+        switch await summaryPromise {
+        case let .success(summary):
+          self.summary = summary
+        case let .failure(error):
+          logger
+            .error("failed to load summary for brand: \(error.localizedDescription)")
+        }
+
+        switch await brandPromise {
         case let .success(brand):
           self.brand = brand
         case let .failure(error):

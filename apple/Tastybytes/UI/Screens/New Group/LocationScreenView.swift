@@ -27,6 +27,9 @@ struct LocationScreenView: View {
         Section {
           SummaryView(summary: summary)
         }
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
+        .listRowInsets(EdgeInsets())
       }
     }
     .navigationTitle(viewModel.location.name)

@@ -17,7 +17,9 @@ struct CheckInScreenView: View {
       commentSection
     }
     .overlay(
-      leaveCommentSection
+      BottomOverlay {
+        leaveCommentSection
+      }
     )
     .sheet(isPresented: $viewModel.showEditCheckInSheet) {
       NavigationStack {
@@ -102,18 +104,13 @@ struct CheckInScreenView: View {
   }
 
   private var leaveCommentSection: some View {
-    VStack {
-      Spacer()
-      HStack {
-        TextField("Leave a comment!", text: $viewModel.commentText)
-        Button(action: { viewModel.sendComment() }) {
-          Image(systemName: "paperplane.fill")
-        }
-        .disabled(viewModel.isInvalidComment())
+    HStack {
+      TextField("Leave a comment!", text: $viewModel.commentText)
+      Button(action: { viewModel.sendComment() }) {
+        Image(systemName: "paperplane.fill")
       }
-      .padding(.all, 10)
-      .background(Color(.systemBackground))
-      .cornerRadius(8, corners: [.topLeft, .topRight])
+      .disabled(viewModel.isInvalidComment())
     }
+    .padding(2)
   }
 }
