@@ -14,3 +14,15 @@ public extension Array where Element: Equatable {
     }
   }
 }
+
+extension Array {
+  func unique(selector: (Element, Element) -> Bool) -> [Element] {
+    reduce([Element]()) { result, element in
+      if let last = result.last {
+        return selector(last, element) ? result : result + [element]
+      } else {
+        return [element]
+      }
+    }
+  }
+}
