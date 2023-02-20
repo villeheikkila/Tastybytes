@@ -57,6 +57,8 @@
 		5C353CC029A249660067C4EE /* ProductFilterOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */; };
 		5C353CC229A24C5F0067C4EE /* ContributionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CC129A24C5F0067C4EE /* ContributionsScreenView.swift */; };
 		5C353CC429A2A5A50067C4EE /* ProfileStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CC329A2A5A50067C4EE /* ProfileStatisticsView.swift */; };
+		5C367EB429A3F386000A7149 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C367EB329A3F386000A7149 /* HapticManager.swift */; };
+		5C367EB629A3F87C000A7149 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C367EB529A3F87C000A7149 /* AppDelegate.swift */; };
 		5C3D8273298C5DA300E861DC /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */; };
 		5C3D8275298D5F3300E861DC /* AccountSettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3D8274298D5F3300E861DC /* AccountSettingsScreenView.swift */; };
 		5C43237D2986A6910085522E /* Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237C2986A6910085522E /* Summary.swift */; };
@@ -243,6 +245,8 @@
 		5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterOverlayView.swift; sourceTree = "<group>"; };
 		5C353CC129A24C5F0067C4EE /* ContributionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionsScreenView.swift; sourceTree = "<group>"; };
 		5C353CC329A2A5A50067C4EE /* ProfileStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsView.swift; sourceTree = "<group>"; };
+		5C367EB329A3F386000A7149 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		5C367EB529A3F87C000A7149 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtensions.swift; sourceTree = "<group>"; };
 		5C3D8274298D5F3300E861DC /* AccountSettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsScreenView.swift; sourceTree = "<group>"; };
 		5C43237C2986A6910085522E /* Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Summary.swift; sourceTree = "<group>"; };
@@ -965,6 +969,7 @@
 				5C0E36472922F21B0072EFBD /* ToastManager.swift */,
 				5CE9009229211AC9003DE697 /* NotificationManager.swift */,
 				5C0E364D2923C8CD0072EFBD /* ProfileManager.swift */,
+				5C367EB329A3F386000A7149 /* HapticManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1091,6 +1096,7 @@
 				5C46E8662911E5860008F142 /* Info.plist */,
 				5C43238029898A4C0085522E /* GoogleService-Info.plist */,
 				5CFEE57628ED69B100A8DD66 /* App.swift */,
+				5C367EB529A3F87C000A7149 /* AppDelegate.swift */,
 				5CCE914D28F45DE7005A6043 /* Utils.swift */,
 				5C46E8632911D9FD0008F142 /* Config.swift */,
 				5CC2FE9229197D8A002BDF83 /* Managers */,
@@ -1267,6 +1273,7 @@
 				5C7C35D2299ACE55009A3C09 /* BlockedUsersScreenViewModel.swift in Sources */,
 				5C0E36562927F09F0072EFBD /* CameraView.swift in Sources */,
 				5C323E8F298C500400B005A9 /* URLExtensions.swift in Sources */,
+				5C367EB629A3F87C000A7149 /* AppDelegate.swift in Sources */,
 				5C7C35C1299AC986009A3C09 /* CheckInListViewModel.swift in Sources */,
 				5CB1C24728F9B551000B0EB4 /* CheckInCommentRepository.swift in Sources */,
 				5C663F27292E0F1D006F9A97 /* DocumentRepository.swift in Sources */,
@@ -1403,6 +1410,7 @@
 				5C7C357E299AC070009A3C09 /* AuthenticationScreenViewModel.swift in Sources */,
 				5CED433628FDA8B9003F8194 /* SubcategorySheetView.swift in Sources */,
 				5C7C3588299AC1D9009A3C09 /* LocationScreenViewModel.swift in Sources */,
+				5C367EB429A3F386000A7149 /* HapticManager.swift in Sources */,
 				5C323E91298C501F00B005A9 /* ArrayExtensions.swift in Sources */,
 				5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */,
 				5C7C35E6299AE0E1009A3C09 /* CheckInReactionNotificationView.swift in Sources */,

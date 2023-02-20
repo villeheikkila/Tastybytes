@@ -3,6 +3,7 @@ import SwiftUI
 struct NotificationTabView: View {
   let client: Client
   @EnvironmentObject private var notificationManager: NotificationManager
+  @EnvironmentObject private var hapticManager: HapticManager
   @StateObject private var router = Router()
   @Binding private var resetNavigationOnTab: Tab?
 
@@ -20,6 +21,7 @@ struct NotificationTabView: View {
             switch notification.content {
             case let .message(message):
               MessageNotificationView(message: message)
+                .accessibilityAddTraits(.isButton)
                 .onTapGesture {
                   notificationManager.markAsRead(notification)
                 }
@@ -65,11 +67,13 @@ struct NotificationTabView: View {
     ToolbarItemGroup {
       Menu {
         Button(action: {
+          hapticManager.trigger(of: .impact(intensity: .low))
           notificationManager.markAllAsRead()
         }) {
           Label("Mark all read", systemImage: "envelope.open")
         }
         Button(action: {
+          hapticManager.trigger(of: .impact(intensity: .low))
           notificationManager.deleteAll()
         }) {
           Label("Delete all", systemImage: "trash")

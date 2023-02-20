@@ -4,6 +4,7 @@ struct TabsView: View {
   let client: Client
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var hapticManager: HapticManager
   @State private var selection = Tab.activity
   @State private var resetNavigationOnTab: Tab?
 
@@ -19,6 +20,7 @@ struct TabsView: View {
     TabView(selection: .init(get: {
       selection
     }, set: { newTab in
+      hapticManager.trigger(of: .selection)
       if newTab == selection {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
           resetNavigationOnTab = selection

@@ -3,6 +3,7 @@ import SwiftUI
 struct FriendsScreenView: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var noficationManager: NotificationManager
 
@@ -76,9 +77,12 @@ struct FriendsScreenView: View {
         UserSheetView(viewModel.client, actions: { profile in
           HStack {
             if !viewModel.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
-              Button(action: { viewModel.sendFriendRequest(receiver: profile.id, onSuccess: {
-                toastManager.toggle(.success("Friend Request Sent!"))
-              }) }) {
+              Button(action: {
+                hapticManager.trigger(of: .impact(intensity: .low))
+                viewModel.sendFriendRequest(receiver: profile.id, onSuccess: {
+                  toastManager.toggle(.success("Friend Request Sent!"))
+                })
+              }) {
                 Image(systemName: "person.badge.plus")
                   .imageScale(.large)
               }

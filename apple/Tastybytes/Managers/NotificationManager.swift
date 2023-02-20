@@ -1,3 +1,4 @@
+import Firebase
 import FirebaseMessaging
 import SwiftUI
 

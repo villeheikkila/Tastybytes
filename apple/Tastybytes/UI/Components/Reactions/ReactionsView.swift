@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ReactionsView: View {
   @EnvironmentObject private var profileManager: ProfileManager
+  @StateObject private var hapticManager = HapticManager()
   @StateObject private var viewModel: ViewModel
 
   init(_ client: Client, checkIn: CheckIn) {
@@ -27,6 +28,7 @@ struct ReactionsView: View {
     .if(!viewModel.isLoading, transform: { view in
       view.accessibilityAddTraits(.isButton)
         .onTapGesture {
+          hapticManager.trigger(of: .impact(intensity: .low))
           viewModel.toggleReaction(userId: profileManager.getId())
         }
     })
