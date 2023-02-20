@@ -85,7 +85,7 @@ struct CheckInCardView: View {
             }
           }
       } placeholder: {
-        EmptyView()
+        ProgressView()
       }
     }
   }
