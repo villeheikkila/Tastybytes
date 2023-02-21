@@ -8,6 +8,7 @@ struct ProfileView: View {
   @State private var resetView: Int = 0
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
+  private let topAnchor = "top"
 
   init(_ client: Client, profile: Profile, scrollToTop: Binding<Int>, isCurrentUser: Bool) {
     _scrollToTop = scrollToTop
@@ -26,10 +27,12 @@ struct ProfileView: View {
       resetView: $resetView,
       onRefresh: {
         viewModel.getSummary()
-      }
+      },
+      topAnchor: topAnchor
     ) {
       profileSummary
         .listRowSeparator(.hidden)
+        .id(topAnchor)
       VStack(spacing: 20) {
         if showInFull {
           ratingChart

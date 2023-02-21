@@ -10,9 +10,9 @@ struct CheckInListView<Header>: View
   @State private var scrollProxy: ScrollViewProxy?
   @Binding private var scrollToTop: Int
   @Binding private var resetView: Int
-  private let topAnchor = "top"
   let header: () -> Header
   let onRefresh: () -> Void
+  let topAnchor: String?
 
   init(
     _ client: Client,
@@ -20,11 +20,13 @@ struct CheckInListView<Header>: View
     scrollToTop: Binding<Int>,
     resetView: Binding<Int>,
     onRefresh: @escaping () -> Void,
+    topAnchor: String? = nil,
     @ViewBuilder header: @escaping () -> Header
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, fetcher: fetcher))
     _scrollToTop = scrollToTop
     _resetView = resetView
+    self.topAnchor = topAnchor
     self.header = header
     self.onRefresh = onRefresh
   }
@@ -62,7 +64,11 @@ struct CheckInListView<Header>: View
       .onChange(of: scrollToTop, perform: { _ in
         if let first = viewModel.checkIns.first {
           withAnimation {
-            scrollProxy?.scrollTo(first.id, anchor: .top)
+            if let topAnchor {
+              scrollProxy?.scrollTo(topAnchor, anchor: .top)
+            } else {
+              scrollProxy?.scrollTo(first.id, anchor: .top)
+            }
           }
         }
       })
