@@ -96,7 +96,7 @@ struct ProfileView: View {
               .font(.headline)
           }
           .padding(.leading, 30)
-          .frame(width: 100)
+          .frame(width: 120)
         }
       }
 
