@@ -34,19 +34,19 @@ struct CheckInSheetView: View {
     Form {
       Section {
         VStack(alignment: .leading) {
-          HStack {
-            CategoryNameView(category: viewModel.product.category)
-            ForEach(viewModel.product.subcategories, id: \.id) { subcategory in
-              ChipView(title: subcategory.name, cornerRadius: 5)
-            }
-          }
+          CategoryView(category: viewModel.product.category, subcategories: viewModel.product.subcategories)
 
           Text(viewModel.product.getDisplayName(.fullName))
-            .font(.system(size: 18, weight: .bold, design: .default))
+            .font(.headline)
             .foregroundColor(.primary)
 
+          if let description = viewModel.product.description {
+            Text(description)
+              .font(.caption)
+          }
+
           Text(viewModel.product.getDisplayName(.brandOwner))
-            .font(.system(size: 16, weight: .bold, design: .default))
+            .font(.subheadline)
             .foregroundColor(.secondary)
         }
         .accessibilityAddTraits(.isButton)
@@ -99,8 +99,8 @@ struct CheckInSheetView: View {
           viewModel.setActiveSheet(.flavors)
         }) {
           if !viewModel.pickedFlavors.isEmpty {
-            WrappingHStack(viewModel.pickedFlavors, id: \.self) {
-              flavor in ChipView(title: flavor.name.capitalized).padding(3)
+            WrappingHStack(viewModel.pickedFlavors, id: \.self, spacing: .constant(4)) {
+              flavor in ChipView(title: flavor.name.capitalized)
             }
           } else {
             Text("Flavors")

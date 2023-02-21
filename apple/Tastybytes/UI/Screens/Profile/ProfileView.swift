@@ -57,7 +57,7 @@ struct ProfileView: View {
         }
       }) {
         Text("Send Friend Request")
-          .font(.system(size: 14, weight: .bold, design: .default))
+          .font(.headline)
       }.buttonStyle(ScalingButton())
       Spacer()
     }
@@ -73,9 +73,11 @@ struct ProfileView: View {
         Spacer()
         VStack(spacing: 8) {
           Image(systemName: "eye.slash.circle")
-            .imageScale(.large)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 32, height: 32)
           Text("Private profile")
-            .font(.system(size: 24))
+            .font(.title3)
         }
         Spacer()
       }
@@ -89,9 +91,9 @@ struct ProfileView: View {
         HStack {
           VStack {
             Text("Check-ins")
-              .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
+              .font(.caption).bold().textCase(.uppercase)
             Text(String(viewModel.profileSummary?.totalCheckIns ?? 0))
-              .font(.system(size: 16, weight: .bold, design: .default))
+              .font(.headline)
           }
           .padding(.leading, 30)
           .frame(width: 100)
@@ -123,9 +125,9 @@ struct ProfileView: View {
         HStack {
           VStack {
             Text("Unique")
-              .font(.system(size: 12, weight: .medium, design: .default)).textCase(.uppercase)
+              .font(.caption).bold().textCase(.uppercase)
             Text(String(viewModel.profileSummary?.uniqueCheckIns ?? 0))
-              .font(.system(size: 16, weight: .bold, design: .default))
+              .font(.headline)
           }
           .padding(.trailing, 30)
           .frame(width: 100)
@@ -199,17 +201,17 @@ struct ProfileView: View {
     HStack {
       VStack {
         Text("Unrated")
-          .font(.system(size: 12, weight: .medium, design: .default))
+          .font(.caption).bold().textCase(.uppercase)
           .textCase(.uppercase)
         Text(String(viewModel.profileSummary?.unrated ?? 0))
-          .font(.system(size: 16, weight: .bold, design: .default))
+          .font(.headline)
       }
       VStack {
         Text("Average")
-          .font(.system(size: 12, weight: .medium, design: .default))
+          .font(.caption).bold().textCase(.uppercase)
           .textCase(.uppercase)
         Text(String(viewModel.profileSummary?.averageRating.toRatingString ?? "-"))
-          .font(.system(size: 16, weight: .bold, design: .default))
+          .font(.headline)
       }
     }
   }
@@ -218,17 +220,17 @@ struct ProfileView: View {
   private var links: some View {
     NavigationLink(value: Route.friends(viewModel.profile)) {
       Text("Friends")
-        .font(.system(size: 16, weight: .medium, design: .default))
+        .font(.subheadline)
     }
     .listRowBackground(Color(.secondarySystemBackground))
     NavigationLink(value: Route.profileProducts(viewModel.profile)) {
       Text("Products")
-        .font(.system(size: 16, weight: .medium, design: .default))
+        .font(.subheadline)
     }
     .listRowBackground(Color(.secondarySystemBackground))
     NavigationLink(value: Route.profileStatistics(viewModel.profile)) {
       Text("Statistics")
-        .font(.system(size: 16, weight: .medium, design: .default))
+        .font(.subheadline)
     }
     .listRowBackground(Color(.secondarySystemBackground))
   }

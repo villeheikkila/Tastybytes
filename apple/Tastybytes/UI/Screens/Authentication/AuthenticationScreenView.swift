@@ -48,7 +48,7 @@ struct AuthenticationScreenView: View {
             .scaledToFit()
             .frame(width: 48, height: 48)
           Text("Account Deleted")
-            .font(.system(size: 24))
+            .font(.title)
         }
         Spacer()
       }

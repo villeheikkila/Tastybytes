@@ -8,11 +8,11 @@ struct CheckInCommentView: View {
       AvatarView(avatarUrl: comment.profile.avatarUrl, size: 32, id: comment.profile.id)
       VStack(alignment: .leading) {
         HStack {
-          Text(comment.profile.preferredName).font(.system(size: 12, weight: .medium, design: .default))
+          Text(comment.profile.preferredName).font(.caption)
           Spacer()
-          Text(comment.createdAt.relativeTime()).font(.system(size: 8, weight: .medium, design: .default))
+          Text(comment.createdAt.relativeTime()).font(.caption2).bold()
         }
-        Text(comment.content).font(.system(size: 14, weight: .light, design: .default))
+        Text(comment.content).font(.callout)
       }
       Spacer()
     }

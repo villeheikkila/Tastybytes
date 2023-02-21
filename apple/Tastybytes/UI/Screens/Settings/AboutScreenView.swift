@@ -90,14 +90,14 @@ struct AboutScreenView: View {
     Section {
       HStack(alignment: .center) {
         Image(systemName: "c.circle")
-          .font(.system(size: 12, weight: .bold, design: .default))
+          .font(.caption).bold()
 
         if let currentYear = Calendar(identifier: .gregorian).dateComponents([.year], from: .now).year {
           Text(String(currentYear))
-            .font(.system(size: 12, weight: .bold, design: .default))
+            .font(.caption).bold()
         }
         Text("Ville Heikkilä")
-          .font(.system(size: 12, weight: .bold, design: .default))
+          .font(.caption).bold()
       }
     }
   }

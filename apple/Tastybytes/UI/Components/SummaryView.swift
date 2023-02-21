@@ -21,10 +21,10 @@ struct SummaryView: View {
       Text("")
       Spacer()
       Text("Check-ins")
-        .font(.system(size: 10, weight: .bold, design: .default))
+        .font(.caption).bold()
       Spacer()
       Text("Rating")
-        .font(.system(size: 10, weight: .bold, design: .default))
+        .font(.caption).bold()
     }
   }
 
@@ -33,10 +33,10 @@ struct SummaryView: View {
     if let averageRating = summary.averageRating {
       GridRow {
         Text("Everyone")
-          .font(.system(size: 10, weight: .bold, design: .default))
+          .font(.caption).bold()
         Spacer()
         Text(String(summary.totalCheckIns))
-          .font(.system(size: 10, weight: .medium, design: .default))
+          .font(.caption)
         Spacer()
         RatingView(rating: averageRating, type: .small)
       }
@@ -50,10 +50,10 @@ struct SummaryView: View {
     if let friendsAverageRating = summary.friendsAverageRating {
       GridRow {
         Text("Friends")
-          .font(.system(size: 10, weight: .bold, design: .default))
+          .font(.caption).bold()
         Spacer()
         Text(String(summary.friendsTotalCheckIns))
-          .font(.system(size: 10, weight: .medium, design: .default))
+          .font(.caption)
         Spacer()
         RatingView(rating: friendsAverageRating, type: .small)
       }
@@ -67,10 +67,10 @@ struct SummaryView: View {
     if let currentUserAverageRating = summary.currentUserAverageRating {
       GridRow {
         Text("You")
-          .font(.system(size: 10, weight: .bold, design: .default))
+          .font(.caption)
         Spacer()
         Text(String(summary.currentUserTotalCheckIns))
-          .font(.system(size: 10, weight: .medium, design: .default))
+          .font(.caption)
         Spacer()
         RatingView(rating: currentUserAverageRating, type: .small)
       }

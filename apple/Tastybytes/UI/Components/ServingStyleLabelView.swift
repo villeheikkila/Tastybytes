@@ -6,7 +6,7 @@ struct ServingStyleLabelView: View {
   var body: some View {
     HStack {
       Text(servingStyleName.rawValue.capitalized)
-        .font(.system(size: 12, weight: .bold, design: .default))
+        .font(.caption).bold()
     }
   }
 }

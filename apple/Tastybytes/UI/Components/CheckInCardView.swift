@@ -36,12 +36,12 @@ struct CheckInCardView: View {
     HStack {
       AvatarView(avatarUrl: checkIn.profile.avatarUrl, size: 24, id: checkIn.profile.id)
       Text(checkIn.profile.preferredName)
-        .font(.system(size: 10, weight: .bold, design: .default))
+        .font(.caption).bold()
         .foregroundColor(.primary)
       Spacer()
       if let location = checkIn.location {
         Text("\(location.name) \(location.country?.emoji ?? "")")
-          .font(.system(size: 10, weight: .bold, design: .default))
+          .font(.caption).bold()
           .foregroundColor(.primary)
           .if(!loadedFrom.isLoadedFromLocation(location)) { view in
             view
@@ -93,16 +93,10 @@ struct CheckInCardView: View {
   }
 
   private var productSection: some View {
-    VStack(alignment: .leading, spacing: 2) {
+    VStack(alignment: .leading, spacing: 4) {
       HStack {
-        CategoryNameView(category: checkIn.product.category)
-
-        ForEach(checkIn.product.subcategories, id: \.id) { subcategory in
-          ChipView(title: subcategory.name, cornerRadius: 5)
-        }
-
+        CategoryView(category: checkIn.product.category, subcategories: checkIn.product.subcategories)
         Spacer()
-
         if let servingStyle = checkIn.servingStyle {
           ServingStyleLabelView(servingStyleName: servingStyle.name)
         }
@@ -114,12 +108,12 @@ struct CheckInCardView: View {
 
       if let description = checkIn.product.description {
         Text(description)
-          .font(.system(size: 10, weight: .medium, design: .default))
+          .font(.caption)
       }
 
       HStack {
         Text(checkIn.product.getDisplayName(.brandOwner))
-          .font(.system(size: 14, weight: .bold, design: .default))
+          .font(.subheadline)
           .foregroundColor(.secondary)
           .lineLimit(nil)
           .contentShape(Rectangle())
@@ -132,7 +126,7 @@ struct CheckInCardView: View {
            manufacturer.id != checkIn.product.subBrand.brand.brandOwner.id
         {
           Text("(\(manufacturer.name))")
-            .font(.system(size: 14, weight: .bold, design: .default))
+            .font(.subheadline)
             .foregroundColor(.secondary)
             .lineLimit(nil)
         }
@@ -167,7 +161,7 @@ struct CheckInCardView: View {
         if let flavors = checkIn.flavors {
           WrappingHStack(flavors, id: \.self, spacing: .constant(4)) {
             flavor in
-            ChipView(title: flavor.name.capitalized, cornerRadius: 5)
+            ChipView(title: flavor.name.capitalized)
           }
         }
       }
@@ -215,8 +209,7 @@ struct CheckInCardView: View {
     HStack {
       HStack {
         Text(checkIn.isMigrated ? "legacy check-in" : checkIn.createdAt.relativeTime())
-          .font(.system(size: 10, weight: .medium, design: .default))
-
+          .font(.caption).bold()
         Spacer()
       }
       .if(loadedFrom != .checkIn) { view in

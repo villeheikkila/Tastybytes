@@ -14,16 +14,9 @@ struct ReactionsView: View {
       ForEach(viewModel.checkInReactions, id: \.id) {
         reaction in AvatarView(avatarUrl: reaction.profile.avatarUrl, size: 16, id: reaction.profile.id)
       }
-
-      HStack {
-        Text("\(viewModel.checkInReactions.count)")
-          .font(.system(size: 12, weight: .bold, design: .default))
-          .foregroundColor(.primary)
-
-        Image(systemName: "hand.thumbsup.fill")
-          .frame(height: 16, alignment: .leading)
-          .foregroundColor(Color(.systemYellow))
-      }
+      Image(systemName: "hand.thumbsup.fill")
+        .imageScale(.medium)
+        .foregroundColor(Color(.systemYellow))
     }
     .if(!viewModel.isLoading, transform: { view in
       view.accessibilityAddTraits(.isButton)

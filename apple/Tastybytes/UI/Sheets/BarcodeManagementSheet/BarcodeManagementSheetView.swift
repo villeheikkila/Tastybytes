@@ -14,13 +14,13 @@ struct BarcodeManagementSheetView: View {
       ForEach(viewModel.barcodes) { barcode in
         HStack {
           AvatarView(avatarUrl: barcode.profile.avatarUrl, size: 32, id: barcode.profile.id)
-          VStack(alignment: .leading) {
+          VStack(alignment: .leading, spacing: 2) {
             HStack {
-              Text(barcode.profile.preferredName).font(.system(size: 12, weight: .medium, design: .default))
+              Text(barcode.profile.preferredName).font(.caption)
               Spacer()
-              Text(barcode.createdAt.relativeTime()).font(.system(size: 8, weight: .medium, design: .default))
+              Text(barcode.createdAt.relativeTime()).font(.caption2)
             }
-            Text(barcode.barcode).font(.system(size: 14, weight: .light, design: .default))
+            Text(barcode.barcode).font(.callout)
           }
           Spacer()
         }

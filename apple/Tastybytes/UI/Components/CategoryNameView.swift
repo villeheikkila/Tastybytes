@@ -5,7 +5,7 @@ struct CategoryNameView: View {
 
   var body: some View {
     Text(category.name.label)
-      .font(.system(size: 12, weight: .bold, design: .default))
+      .font(.caption).bold()
   }
 }
 

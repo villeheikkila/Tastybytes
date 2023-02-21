@@ -33,10 +33,7 @@ struct BrandScreenView: View {
                 ))) {
               VStack {
                 HStack {
-                  CategoryNameView(category: product.category)
-                  ForEach(product.subcategories, id: \.id) { subcategory in
-                    ChipView(title: subcategory.name, cornerRadius: 5)
-                  }
+                  CategoryView(category: product.category, subcategories: product.subcategories)
                   Spacer()
                 }
                 HStack {

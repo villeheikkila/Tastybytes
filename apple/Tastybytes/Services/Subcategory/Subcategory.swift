@@ -1,4 +1,10 @@
-struct Subcategory: Identifiable, Decodable, Hashable {
+protocol SubcategoryProtocol {
+  var id: Int { get }
+  var name: String { get }
+  var label: String { get }
+}
+
+struct Subcategory: Identifiable, Decodable, Hashable, SubcategoryProtocol {
   let id: Int
   let name: String
 
@@ -34,10 +40,14 @@ extension Subcategory {
 }
 
 extension Subcategory {
-  struct JoinedCategory: Identifiable, Hashable, Decodable {
+  struct JoinedCategory: Identifiable, Hashable, Decodable, SubcategoryProtocol {
     let id: Int
     let name: String
     let category: Category
+
+    var label: String {
+      name.capitalized
+    }
 
     func getSubcategory() -> Subcategory {
       Subcategory(id: id, name: name)

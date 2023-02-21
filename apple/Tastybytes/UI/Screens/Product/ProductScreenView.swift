@@ -93,17 +93,17 @@ struct ProductScreenView: View {
     HStack {
       VStack(alignment: .leading) {
         Text(viewModel.product.getDisplayName(.fullName))
-          .font(.system(size: 18, weight: .bold, design: .default))
+          .font(.headline)
           .foregroundColor(.primary)
 
         if let description = viewModel.product.description {
           Text(description)
-            .font(.system(size: 12, weight: .medium, design: .default))
+            .font(.caption)
         }
 
         HStack {
           Text(viewModel.product.getDisplayName(.brandOwner))
-            .font(.system(size: 16, weight: .bold, design: .default))
+            .font(.subheadline)
             .foregroundColor(.secondary)
         }
         .accessibilityAddTraits(.isLink)
@@ -112,11 +112,7 @@ struct ProductScreenView: View {
         }
 
         HStack {
-          CategoryNameView(category: viewModel.product.category)
-
-          ForEach(viewModel.product.subcategories, id: \.id) { subcategory in
-            ChipView(title: subcategory.name, cornerRadius: 5)
-          }
+          CategoryView(category: viewModel.product.category, subcategories: viewModel.product.subcategories)
         }
       }.padding([.leading, .trailing], 10)
       Spacer()
