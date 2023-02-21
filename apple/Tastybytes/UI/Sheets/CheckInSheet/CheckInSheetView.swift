@@ -33,26 +33,11 @@ struct CheckInSheetView: View {
   var body: some View {
     Form {
       Section {
-        VStack(alignment: .leading) {
-          CategoryView(category: viewModel.product.category, subcategories: viewModel.product.subcategories)
-
-          Text(viewModel.product.getDisplayName(.fullName))
-            .font(.headline)
-            .foregroundColor(.primary)
-
-          if let description = viewModel.product.description {
-            Text(description)
-              .font(.caption)
+        ProductItemView(product: viewModel.product)
+          .accessibilityAddTraits(.isButton)
+          .onTapGesture {
+            self.focusedField = nil
           }
-
-          Text(viewModel.product.getDisplayName(.brandOwner))
-            .font(.subheadline)
-            .foregroundColor(.secondary)
-        }
-        .accessibilityAddTraits(.isButton)
-        .onTapGesture {
-          self.focusedField = nil
-        }
 
         if viewModel.image != nil || viewModel.editCheckIn?.imageFile != nil {
           HStack {

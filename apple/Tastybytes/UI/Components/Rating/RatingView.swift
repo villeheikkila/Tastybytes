@@ -8,8 +8,8 @@ struct RatingView: View {
   let rating: Double
   let type: StarType
 
-  let width: Double
-  let height: Double
+  private let width: Double
+  private let height: Double
 
   init(rating: Double, type: StarType = .large) {
     self.rating = rating

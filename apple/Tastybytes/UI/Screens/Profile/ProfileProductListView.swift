@@ -11,7 +11,7 @@ struct ProfileProductListView: View {
     List {
       ForEach(viewModel.filteredProducts, id: \.id) { product in
         NavigationLink(value: Route.product(product)) {
-          ProfileProductItemView(product: product)
+          ProductItemView(product: product)
         }
       }
     }
@@ -57,39 +57,6 @@ struct ProfileProductListView: View {
         viewModel.showFilters.toggle()
       }) {
         Image(systemName: "line.3.horizontal.decrease.circle")
-      }
-    }
-  }
-}
-
-struct ProfileProductItemView: View {
-  let product: Product.Joined
-
-  var body: some View {
-    VStack(alignment: .leading, spacing: 3) {
-      HStack {
-        Text(product.getDisplayName(.fullName))
-          .font(.headline)
-        Spacer()
-        if let currentUserCheckIns = product.currentUserCheckIns, currentUserCheckIns > 0 {
-          Image(systemName: "checkmark")
-        }
-      }
-      if let description = product.description {
-        Text(description)
-          .font(.caption)
-      }
-
-      Text(product.getDisplayName(.brandOwner))
-        .font(.subheadline)
-        .foregroundColor(.secondary)
-
-      HStack {
-        CategoryView(category: product.category, subcategories: product.subcategories)
-        Spacer()
-        if let averageRating = product.averageRating {
-          RatingView(rating: averageRating, type: .small)
-        }
       }
     }
   }

@@ -90,35 +90,9 @@ struct ProductScreenView: View {
   }
 
   private var productInfo: some View {
-    HStack {
-      VStack(alignment: .leading) {
-        Text(viewModel.product.getDisplayName(.fullName))
-          .font(.headline)
-          .foregroundColor(.primary)
-
-        if let description = viewModel.product.description {
-          Text(description)
-            .font(.caption)
-        }
-
-        HStack {
-          Text(viewModel.product.getDisplayName(.brandOwner))
-            .font(.subheadline)
-            .foregroundColor(.secondary)
-        }
-        .accessibilityAddTraits(.isLink)
-        .onTapGesture {
-          router.navigate(to: .company(viewModel.product.subBrand.brand.brandOwner), resetStack: true)
-        }
-
-        HStack {
-          CategoryView(category: viewModel.product.category, subcategories: viewModel.product.subcategories)
-        }
-      }.padding([.leading, .trailing], 10)
-      Spacer()
-    }
-    .listRowSeparator(.hidden)
-    .listRowInsets(.init())
+    ProductItemView(product: viewModel.product)
+      .listRowSeparator(.hidden)
+      .listRowInsets(.init())
   }
 
   @ToolbarContentBuilder
