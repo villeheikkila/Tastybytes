@@ -105,6 +105,7 @@ struct BrandScreenView: View {
         .headerProminence(.increased)
       }
     }
+    .listStyle(.grouped)
     .refreshable {
       viewModel.refresh()
     }

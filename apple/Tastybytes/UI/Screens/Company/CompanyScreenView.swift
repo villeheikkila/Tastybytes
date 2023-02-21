@@ -41,6 +41,7 @@ struct CompanyScreenView: View {
       }
       .headerProminence(.increased)
     }
+    .listStyle(.grouped)
     .navigationTitle(viewModel.company.name)
     .refreshable {
       viewModel.getBrandsAndSummary()
