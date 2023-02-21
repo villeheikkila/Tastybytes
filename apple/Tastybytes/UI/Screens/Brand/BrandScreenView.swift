@@ -23,8 +23,7 @@ struct BrandScreenView: View {
       }
       ForEach(viewModel.sortedSubBrands, id: \.self) { subBrand in
         Section {
-          ForEach(subBrand.products, id: \.id) {
-            product in
+          ForEach(subBrand.products, id: \.id) { product in
             NavigationLink(value: Route.product(Product
                 .Joined(
                   product: product,
@@ -144,8 +143,7 @@ struct BrandScreenView: View {
           }
         case .addProduct:
           DismissableSheet(title: "Add Product") {
-            AddProductView(viewModel.client, mode: .addToBrand(viewModel.brand), onCreate: {
-              product in
+            AddProductView(viewModel.client, mode: .addToBrand(viewModel.brand), onCreate: { product in
               viewModel.activeSheet = nil
               router.navigate(to: .product(product), resetStack: false)
             })

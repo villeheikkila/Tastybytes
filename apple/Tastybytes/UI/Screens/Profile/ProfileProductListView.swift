@@ -24,8 +24,7 @@ struct ProfileProductListView: View {
           viewModel.client,
           initialFilter: viewModel.productFilter,
           sections: [.category, .sortBy],
-          onApply: {
-            filter in
+          onApply: { filter in
             viewModel.productFilter = filter
             viewModel.showFilters = false
           }
@@ -33,8 +32,7 @@ struct ProfileProductListView: View {
       }
       .presentationDetents([.medium])
     }
-    .if(viewModel.productFilter != nil, transform: {
-      view in
+    .if(viewModel.productFilter != nil, transform: { view in
       view.overlay {
         BottomOverlay {
           if let productFilter = viewModel.productFilter {

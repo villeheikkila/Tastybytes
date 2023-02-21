@@ -24,8 +24,7 @@ struct CheckInScreenView: View {
     )
     .sheet(isPresented: $viewModel.showEditCheckInSheet) {
       NavigationStack {
-        CheckInSheetView(viewModel.client, checkIn: viewModel.checkIn, onUpdate: {
-          updatedCheckIn in
+        CheckInSheetView(viewModel.client, checkIn: viewModel.checkIn, onUpdate: { updatedCheckIn in
           viewModel.updateCheckIn(updatedCheckIn)
         })
       }
@@ -75,8 +74,7 @@ struct CheckInScreenView: View {
 
   private var commentSection: some View {
     VStack(spacing: 10) {
-      ForEach(viewModel.checkInComments.reversed(), id: \.id) {
-        comment in
+      ForEach(viewModel.checkInComments.reversed(), id: \.id) { comment in
         CheckInCommentView(comment: comment)
           .contextMenu {
             Button {

@@ -39,8 +39,8 @@ struct CompanySearchSheet: View {
           Section {
             TextField("Name", text: $viewModel.companyName)
             Button("Create") {
-              viewModel.createNewCompany(onSuccess: {
-                company in self.onSelect(company, true)
+              viewModel.createNewCompany(onSuccess: { company in
+                onSelect(company, true)
                 dismiss()
               })
             }

@@ -38,8 +38,8 @@ struct AccountSettingsScreenView: View {
         "Are you sure you want to permanently delete your account? All data will be lost.",
         role: .destructive,
         action: {
-          viewModel.deleteCurrentAccount(onError: {
-            message in toastManager.toggle(.error(message))
+          viewModel.deleteCurrentAccount(onError: { message in
+            toastManager.toggle(.error(message))
           })
           hapticManager.trigger(of: .notification(.success))
         }
@@ -101,8 +101,8 @@ struct AccountSettingsScreenView: View {
   private var deleteAccount: some View {
     Section {
       Button(action: {
-        viewModel.exportData(onError: {
-          message in toastManager.toggle(.error(message))
+        viewModel.exportData(onError: { message in
+          toastManager.toggle(.error(message))
         })
       }) {
         Label("Export CSV", systemImage: "square.and.arrow.up")

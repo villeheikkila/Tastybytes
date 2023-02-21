@@ -31,8 +31,8 @@ struct BlockedUsersScreenView: View {
             if !viewModel.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
               Button(action: { viewModel.blockUser(user: profile, onSuccess: {
                 toastManager.toggle(.success("User blocked"))
-              }, onFailure: {
-                error in toastManager.toggle(.error(error))
+              }, onFailure: { error in
+                toastManager.toggle(.error(error))
               }) }) {
                 Label("Block", systemImage: "person.fill.xmark")
                   .imageScale(.large)

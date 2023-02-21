@@ -44,8 +44,7 @@ struct SearchTabView: View {
           viewModel.search()
           viewModel.barcode = nil
         })
-        .onChange(of: viewModel.searchTerm, perform: {
-          term in
+        .onChange(of: viewModel.searchTerm, perform: { term in
           if term.isEmpty {
             viewModel.resetSearch()
           }
@@ -55,8 +54,7 @@ struct SearchTabView: View {
         ) { _ in
           viewModel.search()
         }
-        .if(viewModel.searchScope == .products && viewModel.productFilter != nil, transform: {
-          view in
+        .if(viewModel.searchScope == .products && viewModel.productFilter != nil, transform: { view in
           view.overlay {
             BottomOverlay {
               if let productFilter = viewModel.productFilter {
@@ -67,8 +65,8 @@ struct SearchTabView: View {
         })
         .sheet(isPresented: $viewModel.showBarcodeScanner) {
           NavigationStack {
-            BarcodeScannerSheetView(onComplete: {
-              barcode in viewModel.searchProductsByBardcode(barcode)
+            BarcodeScannerSheetView(onComplete: { barcode in
+              viewModel.searchProductsByBardcode(barcode)
             })
           }
           .presentationDetents([.medium])
@@ -79,8 +77,7 @@ struct SearchTabView: View {
               viewModel.client,
               initialFilter: viewModel.productFilter,
               sections: [.category, .checkIns],
-              onApply: {
-                filter in
+              onApply: { filter in
                 viewModel.productFilter = filter
                 viewModel.showFilters = false
               }
@@ -92,8 +89,7 @@ struct SearchTabView: View {
           "Add barcode confirmation",
           isPresented: $viewModel.showAddBarcodeConfirmation,
           presenting: viewModel.addBarcodeTo
-        ) {
-          presenting in
+        ) { presenting in
           Button(
             "Add barcode to \(presenting.getDisplayName(.fullName))",
             action: {

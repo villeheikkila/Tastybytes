@@ -15,8 +15,7 @@ struct NotificationTabView: View {
   var body: some View {
     NavigationStack(path: $router.path) {
       List {
-        ForEach(notificationManager.filteredNotifications) {
-          notification in
+        ForEach(notificationManager.filteredNotifications) { notification in
           HStack {
             switch notification.content {
             case let .message(message):
@@ -35,8 +34,8 @@ struct NotificationTabView: View {
             Spacer()
           }
         }
-        .onDelete(perform: {
-          index in notificationManager.deleteFromIndex(at: index)
+        .onDelete(perform: { index in
+          notificationManager.deleteFromIndex(at: index)
         })
       }
       .refreshable {

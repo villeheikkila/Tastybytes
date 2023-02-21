@@ -39,8 +39,8 @@ struct ContributionsScreenView: View {
 
   private var contributedProductsSheet: some View {
     List {
-      ForEach(viewModel.products, id: \.id) {
-        product in ProductItemView(product: product)
+      ForEach(viewModel.products, id: \.id) { product in
+        ProductItemView(product: product)
       }
     }
   }

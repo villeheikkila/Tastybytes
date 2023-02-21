@@ -35,8 +35,8 @@ struct ProfileSettingsScreenView: View {
         Button("Update", action: { viewModel.updateProfile(onSuccess: {
           profileManager.refresh()
           toastManager.toggle(.success("Profile updated!"))
-        }, onFailure: {
-          error in toastManager.toggle(.error(error.localizedDescription))
+        }, onFailure: { error in
+          toastManager.toggle(.error(error.localizedDescription))
         }) })
       }
     } header: {

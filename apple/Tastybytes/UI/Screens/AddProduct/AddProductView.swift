@@ -43,14 +43,12 @@ struct AddProductView: View {
             }
           })
         case .new:
-          await viewModel.createProduct(onSuccess: {
-            product in
+          await viewModel.createProduct(onSuccess: { product in
             hapticManager.trigger(of: .notification(.success))
             router.navigate(to: .product(product), resetStack: true)
           })
         case .addToBrand:
-          await viewModel.createProduct(onSuccess: {
-            product in
+          await viewModel.createProduct(onSuccess: { product in
             hapticManager.trigger(of: .notification(.success))
             if let onCreate {
               onCreate(product)
@@ -69,8 +67,8 @@ struct AddProductView: View {
             SubcategorySheetView(
               subcategories: $viewModel.subcategories,
               availableSubcategories: subcategoriesForCategory,
-              onCreate: {
-                newSubcategoryName in viewModel.createSubcategory(newSubcategoryName: newSubcategoryName)
+              onCreate: { newSubcategoryName in
+                viewModel.createSubcategory(newSubcategoryName: newSubcategoryName)
               }
             )
           }
@@ -104,8 +102,8 @@ struct AddProductView: View {
             })
           }
         case .barcode:
-          BarcodeScannerSheetView(onComplete: {
-            barcode in viewModel.barcode = barcode
+          BarcodeScannerSheetView(onComplete: { barcode in
+            viewModel.barcode = barcode
           })
         }
       }.if(sheet == .barcode, transform: { view in view.presentationDetents([.medium]) })

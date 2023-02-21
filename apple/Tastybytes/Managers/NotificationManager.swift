@@ -114,8 +114,7 @@ import SwiftUI
       Task {
         switch await client.notification.markAllFriendRequestsAsRead() {
         case let .success(updatedNotifications):
-          self.notifications = self.notifications.map {
-            notification in
+          self.notifications = self.notifications.map { notification in
             if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
               return updatedNotification
             } else {
@@ -145,8 +144,7 @@ import SwiftUI
       Task {
         switch await client.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id) {
         case let .success(updatedNotifications):
-          self.notifications = self.notifications.map {
-            notification in
+          self.notifications = self.notifications.map { notification in
             if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
               return updatedNotification
             } else {

@@ -84,8 +84,8 @@ struct CheckInSheetView: View {
           viewModel.setActiveSheet(.flavors)
         }) {
           if !viewModel.pickedFlavors.isEmpty {
-            WrappingHStack(viewModel.pickedFlavors, id: \.self, spacing: .constant(4)) {
-              flavor in ChipView(title: flavor.name.capitalized)
+            WrappingHStack(viewModel.pickedFlavors, id: \.self, spacing: .constant(4)) { flavor in
+              ChipView(title: flavor.name.capitalized)
             }
           } else {
             Text("Flavors")
@@ -122,8 +122,7 @@ struct CheckInSheetView: View {
           if viewModel.taggedFriends.isEmpty {
             Text("Tag friends")
           } else {
-            WrappingHStack(viewModel.taggedFriends, id: \.self) {
-              friend in
+            WrappingHStack(viewModel.taggedFriends, id: \.self) { friend in
               AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
             }
           }
@@ -168,16 +167,16 @@ struct CheckInSheetView: View {
         case .flavors:
           FlavorSheetView(viewModel.client, pickedFlavors: $viewModel.pickedFlavors)
         case .location:
-          LocationSearchView(viewModel.client, onSelect: {
-            location in viewModel.setLocation(location)
+          LocationSearchView(viewModel.client, onSelect: { location in
+            viewModel.setLocation(location)
           })
         case .manufacturer:
           CompanySearchSheet(viewModel.client, onSelect: { company, _ in
             viewModel.setManufacturer(company)
           })
         case .photoPicker:
-          LegacyPhotoPicker(onSelection: {
-            image in viewModel.setImageFromPicker(pickedImage: image)
+          LegacyPhotoPicker(onSelection: { image in
+            viewModel.setImageFromPicker(pickedImage: image)
           })
         }
       }
@@ -185,8 +184,8 @@ struct CheckInSheetView: View {
     .fullScreenCover(isPresented: $viewModel.showCamera, content: {
       CameraView(onClose: {
         viewModel.showCamera = false
-      }, onCapture: {
-        image in viewModel.setImageFromCamera(image)
+      }, onCapture: { image in
+        viewModel.setImageFromCamera(image)
       })
     })
     .navigationBarItems(
@@ -199,15 +198,13 @@ struct CheckInSheetView: View {
                                  switch action {
                                  case .create:
                                    if let onCreation {
-                                     await viewModel.createCheckIn {
-                                       newCheckIn in
+                                     await viewModel.createCheckIn { newCheckIn in
                                        onCreation(newCheckIn)
                                      }
                                    }
                                  case .update:
                                    if let onUpdate {
-                                     await viewModel.updateCheckIn {
-                                       updatedCheckIn in
+                                     await viewModel.updateCheckIn { updatedCheckIn in
                                        onUpdate(updatedCheckIn)
                                      }
                                    }

@@ -42,8 +42,8 @@ struct ProductScreenView: View {
       NavigationStack {
         switch sheet {
         case .checkIn:
-          CheckInSheetView(viewModel.client, product: viewModel.product, onCreation: {
-            _ in viewModel.refreshCheckIns()
+          CheckInSheetView(viewModel.client, product: viewModel.product, onCreation: { _ in
+            viewModel.refreshCheckIns()
           })
         case .barcodes:
           BarcodeManagementSheetView(viewModel.client, product: viewModel.product)
@@ -58,8 +58,8 @@ struct ProductScreenView: View {
             })
           }
         case .barcodeScanner:
-          BarcodeScannerSheetView(onComplete: {
-            barcode in viewModel.addBarcodeToProduct(barcode: barcode, onComplete: {
+          BarcodeScannerSheetView(onComplete: { barcode in
+            viewModel.addBarcodeToProduct(barcode: barcode, onComplete: {
               toastManager.toggle(.success("Barcode added"))
             })
           })

@@ -55,8 +55,7 @@ struct CompanyScreenView: View {
         case .editCompany:
           companyEditSheet
         case .addBrand:
-          BrandSheetView(viewModel.client, brandOwner: viewModel.company, mode: .new, onSelect: {
-            brand, _ in
+          BrandSheetView(viewModel.client, brandOwner: viewModel.company, mode: .new, onSelect: { brand, _ in
             viewModel.activeSheet = nil
             router.fetchAndNavigateTo(viewModel.client, .brand(id: brand.id), resetStack: false)
           })

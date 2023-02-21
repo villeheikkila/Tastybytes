@@ -35,8 +35,8 @@ struct BrandSheetView: View {
         Section {
           TextField("Name", text: $viewModel.brandName)
           Button("Create") {
-            viewModel.createNewBrand(brandOwner) {
-              brand in onSelect(brand, true)
+            viewModel.createNewBrand(brandOwner) { brand in
+              onSelect(brand, true)
             }
           }
           .disabled(!validateStringLength(str: viewModel.brandName, type: .normal))

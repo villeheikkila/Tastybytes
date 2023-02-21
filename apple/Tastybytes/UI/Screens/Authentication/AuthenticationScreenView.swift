@@ -71,10 +71,10 @@ struct AuthenticationScreenView: View {
 
   private var actions: some View {
     VStack(spacing: 12) {
-      Button(action: { viewModel.primaryActionTapped(onSuccess: {
-        message in toastManager.toggle(.success(message))
-      }, onFailure: {
-        message in toastManager.toggle(.error(message))
+      Button(action: { viewModel.primaryActionTapped(onSuccess: { message in
+        toastManager.toggle(.success(message))
+      }, onFailure: { message in
+        toastManager.toggle(.error(message))
       }) }) {
         HStack(spacing: 8) {
           if viewModel.isLoading {

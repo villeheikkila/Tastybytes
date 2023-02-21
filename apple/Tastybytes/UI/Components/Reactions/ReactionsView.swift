@@ -11,8 +11,8 @@ struct ReactionsView: View {
 
   var body: some View {
     HStack {
-      ForEach(viewModel.checkInReactions, id: \.id) {
-        reaction in AvatarView(avatarUrl: reaction.profile.avatarUrl, size: 16, id: reaction.profile.id)
+      ForEach(viewModel.checkInReactions, id: \.id) { reaction in
+        AvatarView(avatarUrl: reaction.profile.avatarUrl, size: 16, id: reaction.profile.id)
       }
       Image(systemName: "hand.thumbsup.fill")
         .imageScale(.medium)
