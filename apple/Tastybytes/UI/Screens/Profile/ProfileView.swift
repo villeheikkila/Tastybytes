@@ -28,8 +28,9 @@ struct ProfileView: View {
         viewModel.getSummary()
       }
     ) {
+      profileSummary
+        .listRowSeparator(.hidden)
       VStack(spacing: 20) {
-        profileSummary
         if showInFull {
           ratingChart
           ratingSummary
