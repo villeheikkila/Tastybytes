@@ -50,6 +50,11 @@ struct SearchTabView: View {
             viewModel.resetSearch()
           }
         })
+        .onReceive(
+          viewModel.$searchTerm.throttle(for: 0.5, scheduler: RunLoop.main, latest: true)
+        ) { _ in
+          viewModel.search()
+        }
         .if(viewModel.searchScope == .products && viewModel.productFilter != nil, transform: {
           view in
           view.overlay {
