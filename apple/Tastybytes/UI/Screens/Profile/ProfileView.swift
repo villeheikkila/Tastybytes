@@ -142,49 +142,54 @@ struct ProfileView: View {
 
   private var ratingChart: some View {
     Chart {
-      LineMark(
+      BarMark(
         x: .value("Rating", "0.5"),
         y: .value("Value", viewModel.profileSummary?.rating1 ?? 0)
       )
-      LineMark(
+      BarMark(
         x: .value("Rating", "1"),
         y: .value("Value", viewModel.profileSummary?.rating2 ?? 0)
       )
-      LineMark(
+      BarMark(
         x: .value("Rating", "1.5"),
         y: .value("Value", viewModel.profileSummary?.rating3 ?? 0)
       )
-      LineMark(
+      BarMark(
         x: .value("Rating", "2"),
         y: .value("Value", viewModel.profileSummary?.rating4 ?? 0)
       )
-      LineMark(
+      BarMark(
         x: .value("Rating", "2.5"),
         y: .value("Value", viewModel.profileSummary?.rating5 ?? 0)
       )
-      LineMark(
+      BarMark(
         x: .value("Rating", "3"),
         y: .value("Value", viewModel.profileSummary?.rating6 ?? 0)
       )
-      LineMark(
+      BarMark(
         x: .value("Rating", "3.5"),
         y: .value("Value", viewModel.profileSummary?.rating7 ?? 0)
       )
-      LineMark(
+      BarMark(
         x: .value("Rating", "4"),
         y: .value("Value", viewModel.profileSummary?.rating8 ?? 0)
       )
-      LineMark(
+      BarMark(
         x: .value("Rating", "4.5"),
         y: .value("Value", viewModel.profileSummary?.rating9 ?? 0)
       )
-      LineMark(
+      BarMark(
         x: .value("Rating", "5"),
         y: .value("Value", viewModel.profileSummary?.rating10 ?? 0)
       )
     }
     .chartLegend(.hidden)
     .chartYAxis(.hidden)
+    .chartXAxis {
+      AxisMarks(position: .bottom) { _ in
+        AxisValueLabel()
+      }
+    }
     .frame(height: 100)
     .padding([.leading, .trailing], 10)
   }
