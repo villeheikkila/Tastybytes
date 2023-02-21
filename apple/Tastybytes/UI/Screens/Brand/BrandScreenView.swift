@@ -41,6 +41,13 @@ struct BrandScreenView: View {
                     .lineLimit(nil)
                   Spacer()
                 }
+                if let description = product.description {
+                  HStack {
+                    Text(description)
+                      .font(.caption)
+                    Spacer()
+                  }
+                }
               }
               .contextMenu {
                 if profileManager.hasPermission(.canMergeProducts) {
