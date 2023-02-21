@@ -15,6 +15,7 @@ struct ProfileProductListView: View {
         }
       }
     }
+    .listStyle(.grouped)
     .searchable(text: $viewModel.searchTerm)
     .navigationTitle("Products")
     .sheet(isPresented: $viewModel.showFilters) {
