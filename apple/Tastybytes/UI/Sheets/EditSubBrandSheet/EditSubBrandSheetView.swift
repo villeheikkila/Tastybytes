@@ -3,6 +3,7 @@ import SwiftUI
 
 struct EditSubBrandSheetView: View {
   @Environment(\.dismiss) private var dismiss
+  @EnvironmentObject private var hapticManager: HapticManager
   @StateObject private var viewModel: ViewModel
 
   let onUpdate: () -> Void
@@ -65,6 +66,7 @@ struct EditSubBrandSheetView: View {
         role: .destructive,
         action: {
           viewModel.mergeToSubBrand(subBrand: viewModel.subBrand, onSuccess: {
+            hapticManager.trigger(of: .notification(.success))
             onUpdate()
           })
         }

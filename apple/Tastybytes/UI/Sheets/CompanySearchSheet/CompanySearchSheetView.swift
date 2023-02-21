@@ -54,7 +54,7 @@ struct CompanySearchSheet: View {
       }
     }
     .navigationTitle("Search companies")
-    .navigationBarItems(trailing: Button(action: {
+    .navigationBarItems(trailing: Button(role: .cancel, action: {
       dismiss()
     }) {
       Text("Cancel").bold()

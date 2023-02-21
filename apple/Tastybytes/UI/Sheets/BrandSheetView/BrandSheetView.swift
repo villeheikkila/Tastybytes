@@ -46,7 +46,7 @@ struct BrandSheetView: View {
       }
     }
     .navigationTitle("Add brand name")
-    .navigationBarItems(trailing: Button(action: {
+    .navigationBarItems(trailing: Button(role: .cancel, action: {
       dismiss()
     }) {
       Text("Cancel").bold()

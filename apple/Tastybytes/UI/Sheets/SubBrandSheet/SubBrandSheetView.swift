@@ -39,7 +39,7 @@ struct SubBrandSheetView: View {
       }
     }
     .navigationTitle("Sub-brands")
-    .navigationBarItems(trailing: Button(action: {
+    .navigationBarItems(trailing: Button(role: .cancel, action: {
       dismiss()
     }) {
       Text("Cancel").bold()

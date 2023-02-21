@@ -3,6 +3,7 @@ import SwiftUI
 
 struct BrandScreenView: View {
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
   @StateObject private var viewModel: ViewModel
 
@@ -45,7 +46,7 @@ struct BrandScreenView: View {
                 }
 
                 if profileManager.hasPermission(.canDeleteProducts) {
-                  Button(action: {
+                  Button(role: .destructive, action: {
                     viewModel.productToDelete = product
                   }) {
                     Label("Delete", systemImage: "trash.fill")
@@ -88,7 +89,7 @@ struct BrandScreenView: View {
               }
 
               if profileManager.hasPermission(.canDeleteBrands) {
-                Button(action: {
+                Button(role: .destructive, action: {
                   viewModel.toDeleteSubBrand = subBrand
                 }) {
                   Label("Delete", systemImage: "trash.fill")
@@ -143,23 +144,30 @@ struct BrandScreenView: View {
     .confirmationDialog("Unverify Sub-brand",
                         isPresented: $viewModel.showSubBrandUnverificationConfirmation,
                         presenting: viewModel.toUnverifySubBrand) { presenting in
-      Button("Unverify \(presenting.name ?? "default") sub-brand", role: .destructive, action: {
+      Button("Unverify \(presenting.name ?? "default") sub-brand", action: {
         viewModel.verifySubBrand(presenting, isVerified: false)
+        hapticManager.trigger(of: .notification(.success))
       })
     }
     .confirmationDialog("Unverify Brand",
                         isPresented: $viewModel.showBrandUnverificationConfirmation,
                         presenting: viewModel.brand) { presenting in
-      Button("Unverify \(presenting.name) brand", role: .destructive, action: {
+      Button("Unverify \(presenting.name) brand", action: {
         viewModel.verifyBrand(isVerified: false)
+        hapticManager.trigger(of: .notification(.success))
       })
     }
     .confirmationDialog("Delete Sub-brand",
                         isPresented: $viewModel.showDeleteSubBrandConfirmation,
                         presenting: viewModel.toDeleteSubBrand) { presenting in
-      Button("Delete \(presenting.name ?? "default sub-brand") and all related products", role: .destructive, action: {
-        viewModel.deleteSubBrand()
-      })
+      Button(
+        "Delete \(presenting.name ?? "default sub-brand") and all related products",
+        role: .destructive,
+        action: {
+          viewModel.deleteSubBrand()
+          hapticManager.trigger(of: .notification(.success))
+        }
+      )
     }
     .confirmationDialog("Delete Brand Confirmation",
                         isPresented: $viewModel.showDeleteBrandConfirmationDialog,
@@ -167,6 +175,7 @@ struct BrandScreenView: View {
       Button("Delete \(presenting.name) Brand", role: .destructive, action: {
         viewModel.deleteBrand(onDelete: {
           router.reset()
+          hapticManager.trigger(of: .notification(.success))
         })
       })
     }
@@ -211,7 +220,7 @@ struct BrandScreenView: View {
       }
 
       if profileManager.hasPermission(.canDeleteBrands) {
-        Button(action: {
+        Button(role: .destructive, action: {
           viewModel.showDeleteBrandConfirmationDialog.toggle()
         }) {
           Label("Delete", systemImage: "trash.fill")

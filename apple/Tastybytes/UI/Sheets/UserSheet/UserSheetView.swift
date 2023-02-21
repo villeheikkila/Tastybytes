@@ -29,7 +29,7 @@ struct UserSheetView<Actions: View>: View {
       }
     }
     .navigationTitle("Search users")
-    .navigationBarItems(trailing: Button(action: {
+    .navigationBarItems(trailing: Button(role: .cancel, action: {
       dismiss()
     }) {
       Text("Cancel").bold()

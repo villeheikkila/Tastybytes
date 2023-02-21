@@ -5,6 +5,7 @@ struct CheckInListView<Header>: View
 {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
+  @EnvironmentObject private var hapticManager: HapticManager
   @StateObject private var viewModel: ViewModel
   @State private var scrollProxy: ScrollViewProxy?
   @Binding private var scrollToTop: Int
@@ -53,6 +54,7 @@ struct CheckInListView<Header>: View
           role: .destructive,
           action: {
             viewModel.deleteCheckIn(checkIn: presenting)
+            hapticManager.trigger(of: .notification(.success))
           }
         )
       }
@@ -109,7 +111,7 @@ struct CheckInListView<Header>: View
               Label("Edit", systemImage: "pencil")
             }
 
-            Button(action: {
+            Button(role: .destructive, action: {
               viewModel.showDeleteConfirmationFor = checkIn
             }) {
               Label("Delete", systemImage: "trash.fill")

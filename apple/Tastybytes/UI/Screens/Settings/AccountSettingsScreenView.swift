@@ -5,6 +5,7 @@ import SwiftUI
 struct AccountSettingsScreenView: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var toastManager: ToastManager
 
   init(_ client: Client) {
@@ -40,6 +41,7 @@ struct AccountSettingsScreenView: View {
           viewModel.deleteCurrentAccount(onError: {
             message in toastManager.toggle(.error(message))
           })
+          hapticManager.trigger(of: .notification(.success))
         }
       )
     }
@@ -68,7 +70,6 @@ struct AccountSettingsScreenView: View {
       if viewModel.showPasswordConfirmation {
         Button("Update password", action: { viewModel.updatePassword() })
       }
-
     } header: {
       Text("Change password")
     } footer: {

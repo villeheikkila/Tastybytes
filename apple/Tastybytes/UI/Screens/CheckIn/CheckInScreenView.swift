@@ -6,6 +6,7 @@ struct CheckInScreenView: View {
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var hapticManager: HapticManager
 
   init(_ client: Client, checkIn: CheckIn) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, checkIn: checkIn))
@@ -42,7 +43,7 @@ struct CheckInScreenView: View {
             Label("Edit", systemImage: "pencil")
           }
 
-          Button(action: {
+          Button(role: .destructive, action: {
             viewModel.showDeleteConfirmation = true
           }) {
             Label("Delete", systemImage: "trash.fill")
@@ -59,7 +60,10 @@ struct CheckInScreenView: View {
         "Delete the check-in for \(presenting.product.getDisplayName(.fullName))",
         role: .destructive,
         action: {
-          viewModel.deleteCheckIn(onDelete: { router.removeLast() })
+          viewModel.deleteCheckIn(onDelete: {
+            hapticManager.trigger(of: .notification(.success))
+            router.removeLast()
+          })
         }
       )
     }

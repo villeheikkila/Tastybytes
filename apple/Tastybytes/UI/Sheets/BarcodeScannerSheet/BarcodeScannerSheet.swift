@@ -13,7 +13,7 @@ struct BarcodeScannerSheetView: View {
       }
     }
     .navigationTitle("Barcode Scanner")
-    .navigationBarItems(trailing: Button(action: {
+    .navigationBarItems(trailing: Button(role: .cancel, action: {
       dismiss()
     }) {
       Text("Cancel").bold()

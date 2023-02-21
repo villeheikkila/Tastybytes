@@ -9,7 +9,7 @@ import UIKit
     }
 
     case impact(intensity: Intensity?)
-    case notificaation(_ type: UINotificationFeedbackGenerator.FeedbackType)
+    case notification(_ type: UINotificationFeedbackGenerator.FeedbackType)
     case selection
   }
 
@@ -32,7 +32,7 @@ import UIKit
       } else {
         impactFeedbackGenerator.impactOccurred()
       }
-    case let .notificaation(type):
+    case let .notification(type):
       notificationFeedbackGenerator.notificationOccurred(type)
     case .selection:
       selectionFeedbackGenerator.selectionChanged()

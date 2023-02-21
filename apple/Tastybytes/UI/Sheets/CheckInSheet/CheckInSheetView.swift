@@ -6,6 +6,7 @@ import WrappingHStack
 struct CheckInSheetView: View {
   @StateObject private var viewModel: ViewModel
   @Environment(\.dismiss) private var dismiss
+  @EnvironmentObject private var hapticManager: HapticManager
   @State private var showPhotoMenu = false
   @FocusState private var focusedField: Focusable?
 
@@ -204,7 +205,7 @@ struct CheckInSheetView: View {
       })
     })
     .navigationBarItems(
-      leading: Button(action: {
+      leading: Button(role: .cancel, action: {
         dismiss()
       }) {
         Text("Cancel").bold()
@@ -226,6 +227,7 @@ struct CheckInSheetView: View {
                                      }
                                    }
                                  }
+                                 hapticManager.trigger(of: .notification(.success))
                                  dismiss()
                                },
                                label: {

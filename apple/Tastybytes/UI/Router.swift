@@ -56,7 +56,10 @@ import SwiftUI
         case let .success(profile):
           self.navigate(to: .profile(profile), resetStack: resetStack)
         case let .failure(error):
-          logger.error("request for profile with \(id.uuidString.lowercased()) failed: \(error.localizedDescription)")
+          logger
+            .error(
+              "request for profile with \(id.uuidString.lowercased()) failed: \(error.localizedDescription)"
+            )
         }
       case let .location(id):
         switch await client.location.getById(id: id) {

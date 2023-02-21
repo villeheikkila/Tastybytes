@@ -16,7 +16,7 @@ struct DismissableSheet<RootView: View>: View {
   var body: some View {
     view()
       .navigationTitle(title)
-      .navigationBarItems(leading: Button(action: {
+      .navigationBarItems(leading: Button(role: .cancel, action: {
         dismiss()
       }) {
         Text("Cancel").bold()

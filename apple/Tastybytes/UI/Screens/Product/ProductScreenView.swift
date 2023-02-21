@@ -4,6 +4,7 @@ struct ProductScreenView: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
   @State private var scrollToTop: Int = 0
   @Environment(\.dismiss) private var dismiss
@@ -69,6 +70,7 @@ struct ProductScreenView: View {
                         isPresented: $viewModel.showUnverifyProductConfirmation,
                         presenting: viewModel.product) { presenting in
       Button("Unverify \(presenting.name) product", role: .destructive, action: {
+        hapticManager.trigger(of: .notification(.success))
         viewModel.verifyProduct(isVerified: false)
       })
     }
@@ -79,6 +81,7 @@ struct ProductScreenView: View {
         "Delete \(presenting.getDisplayName(.fullName)) Product",
         role: .destructive,
         action: { viewModel.deleteProduct(onDelete: {
+          hapticManager.trigger(of: .notification(.success))
           router.removeLast()
         })
         }
@@ -183,7 +186,7 @@ struct ProductScreenView: View {
         }
 
         if profileManager.hasPermission(.canDeleteProducts) {
-          Button(action: {
+          Button(role: .destructive, action: {
             viewModel.showDeleteConfirmation()
           }) {
             Label("Delete", systemImage: "trash.fill")

@@ -3,6 +3,7 @@ import SwiftUI
 struct AddProductView: View {
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var router: Router
+  @EnvironmentObject private var hapticManager: HapticManager
   @StateObject private var viewModel: ViewModel
   @FocusState private var focusedField: Focusable?
 
@@ -36,17 +37,21 @@ struct AddProductView: View {
           })
         case .edit:
           await viewModel.editProduct(onSuccess: {
+            hapticManager.trigger(of: .notification(.success))
             if let onEdit {
               onEdit()
             }
           })
         case .new:
           await viewModel.createProduct(onSuccess: {
-            product in router.navigate(to: .product(product), resetStack: true)
+            product in
+            hapticManager.trigger(of: .notification(.success))
+            router.navigate(to: .product(product), resetStack: true)
           })
         case .addToBrand:
           await viewModel.createProduct(onSuccess: {
             product in
+            hapticManager.trigger(of: .notification(.success))
             if let onCreate {
               onCreate(product)
             }

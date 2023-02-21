@@ -42,7 +42,7 @@ struct FriendsScreenView: View {
             }
           }
           .contextMenu {
-            Button(action: {
+            Button(role: .destructive, action: {
               viewModel.friendToBeRemoved = friend
             }) {
               Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)

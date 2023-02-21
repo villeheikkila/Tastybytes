@@ -4,6 +4,7 @@ import SwiftUI
 
 struct LocationScreenView: View {
   @EnvironmentObject private var router: Router
+  @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var viewModel: ViewModel
   @State private var scrollToTop: Int = 0
@@ -43,9 +44,11 @@ struct LocationScreenView: View {
       Button(
         "Delete \(presenting.name) location",
         role: .destructive,
-        action: { viewModel.deleteLocation(presenting, onDelete: {
-          router.reset()
-        })
+        action: {
+          viewModel.deleteLocation(presenting, onDelete: {
+            router.reset()
+          })
+          hapticManager.trigger(of: .notification(.success))
         }
       )
     }
@@ -60,7 +63,7 @@ struct LocationScreenView: View {
       Menu {
         ShareLink("Share", item: NavigatablePath.location(id: viewModel.location.id).url)
         if profileManager.hasPermission(.canDeleteProducts) {
-          Button(action: {
+          Button(role: .destructive, action: {
             viewModel.showDeleteLocationConfirmation.toggle()
           }) {
             Label("Delete", systemImage: "trash.fill")

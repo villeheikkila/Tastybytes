@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BarcodeManagementSheetView: View {
   @StateObject private var viewModel: ViewModel
+  @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
 
   init(_ client: Client, product: Product.Joined) {
@@ -24,11 +25,11 @@ struct BarcodeManagementSheetView: View {
           Spacer()
         }
         .contextMenu {
-          Button(action: {
+          Button(role: .destructive, action: {
             viewModel.deleteBarcode(barcode)
+            hapticManager.trigger(of: .notification(.success))
           }) {
             Label("Delete", systemImage: "trash.fill")
-              .foregroundColor(.red)
           }
         }
       }
@@ -37,7 +38,7 @@ struct BarcodeManagementSheetView: View {
       viewModel.getBarcodes()
     }
     .navigationTitle("Barcodes")
-    .navigationBarItems(leading: Button(action: {
+    .navigationBarItems(leading: Button(role: .cancel, action: {
       dismiss()
     }) {
       Text("Cancel").bold()

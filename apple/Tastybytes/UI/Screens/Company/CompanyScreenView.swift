@@ -3,6 +3,7 @@ import SwiftUI
 
 struct CompanyScreenView: View {
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
   @StateObject private var viewModel: ViewModel
   @Environment(\.dismiss) private var dismiss
@@ -73,6 +74,7 @@ struct CompanyScreenView: View {
                         presenting: viewModel.company) { presenting in
       Button("Delete \(presenting.name) Company", role: .destructive, action: {
         viewModel.deleteCompany(viewModel.company, onDelete: {
+          hapticManager.trigger(of: .notification(.success))
           router.reset()
         })
       })
@@ -127,7 +129,7 @@ struct CompanyScreenView: View {
       }
 
       if profileManager.hasPermission(.canDeleteCompanies) {
-        Button(action: {
+        Button(role: .destructive, action: {
           viewModel.showDeleteCompanyConfirmationDialog.toggle()
         }) {
           Label("Delete", systemImage: "trash.fill")

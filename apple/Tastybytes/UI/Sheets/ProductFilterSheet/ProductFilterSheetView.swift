@@ -81,7 +81,7 @@ struct ProductFilterSheetView: View {
   @ToolbarContentBuilder
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      Button(action: {
+      Button(role: .cancel, action: {
         dismiss()
       }) {
         Text("Cancel")

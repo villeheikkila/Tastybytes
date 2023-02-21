@@ -3,6 +3,7 @@ import SwiftUI
 
 struct MergeSheetView: View {
   @StateObject private var viewModel: ViewModel
+  @EnvironmentObject private var hapticManager: HapticManager
   @State private var showDeleteCompanyConfirmationDialog = false
   @State private var showDeleteBrandConfirmationDialog = false
   @Environment(\.dismiss) private var dismiss
@@ -31,7 +32,7 @@ struct MergeSheetView: View {
       }
     }
     .navigationTitle("Merge to...")
-    .navigationBarItems(trailing: Button(action: {
+    .navigationBarItems(trailing: Button(role: .cancel, action: {
       dismiss()
     }) {
       Text("Cancel").bold()
@@ -41,6 +42,7 @@ struct MergeSheetView: View {
                         presenting: viewModel.mergeToProduct) { presenting in
       Button("Merge \(presenting.name) to \(presenting.getDisplayName(.fullName))", role: .destructive) {
         viewModel.mergeProducts(productToMerge: productToMerge, onSuccess: {
+          hapticManager.trigger(of: .notification(.success))
           dismiss()
         })
       }
