@@ -170,7 +170,9 @@ extension ScannerView {
           self.captureSession?.stopRunning()
         }
       }
+    }
 
+    deinit {
       NotificationCenter.default.removeObserver(self)
     }
 
