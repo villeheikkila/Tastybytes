@@ -42,14 +42,10 @@ struct FriendsScreenView: View {
             }
           }
           .contextMenu {
-            Button(role: .destructive, action: {
-              viewModel.friendToBeRemoved = friend
-            }) {
+            Button(role: .destructive, action: { viewModel.friendToBeRemoved = friend }) {
               Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
             }
-            Button(action: {
-              viewModel.updateFriendRequest(friend: friend, newStatus: .blocked)
-            }) {
+            Button(action: { viewModel.updateFriendRequest(friend: friend, newStatus: .blocked) }) {
               Label("Block", systemImage: "person.2.slash").imageScale(.large)
             }
           }

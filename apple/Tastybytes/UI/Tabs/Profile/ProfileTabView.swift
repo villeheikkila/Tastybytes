@@ -42,9 +42,7 @@ struct ProfileTabView: View {
         VStack(spacing: 20) {
           if !showNameTagScanner {
             CreateQRCodeView(qrCodeText: NavigatablePath.profile(id: profileManager.getId()).url.absoluteString)
-            Button(action: {
-              showNameTagScanner.toggle()
-            }) {
+            Button(action: { showNameTagScanner.toggle() }) {
               HStack {
                 Spacer()
                 Label("Scan Name Tag", systemImage: "qrcode.viewfinder")
@@ -62,9 +60,7 @@ struct ProfileTabView: View {
                 }
               }
             }
-            Button(action: {
-              showNameTagScanner.toggle()
-            }) {
+            Button(action: { showNameTagScanner.toggle() }) {
               HStack {
                 Spacer()
                 Label("Show Name Tag", systemImage: "qrcode")
@@ -92,9 +88,7 @@ struct ProfileTabView: View {
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: {
-        showProfileQrCode.toggle()
-      }) {
+      Button(action: { showProfileQrCode.toggle() }) {
         Image(systemName: "qrcode")
       }
       NavigationLink(value: Route.settings) {

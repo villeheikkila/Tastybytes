@@ -72,17 +72,13 @@ struct CheckInSheetView: View {
         TextField("How was it?", text: $viewModel.review, axis: .vertical)
           .focused($focusedField, equals: .review)
         RatingPickerView(rating: $viewModel.rating)
-        Button(action: {
-          showPhotoMenu.toggle()
-        }) {
+        Button(action: { showPhotoMenu.toggle() }) {
           Label(
             "\(viewModel.editCheckIn?.getImageUrl() == nil && viewModel.image == nil ? "Add" : "Change") Photo",
             systemImage: "photo"
           )
         }
-        Button(action: {
-          viewModel.setActiveSheet(.flavors)
-        }) {
+        Button(action: { viewModel.setActiveSheet(.flavors) }) {
           if !viewModel.pickedFlavors.isEmpty {
             WrappingHStack(viewModel.pickedFlavors, id: \.self, spacing: .constant(4)) { flavor in
               ChipView(title: flavor.name.capitalized)
@@ -108,17 +104,13 @@ struct CheckInSheetView: View {
           }
         }
 
-        Button(action: {
-          viewModel.setActiveSheet(.manufacturer)
-        }) {
+        Button(action: { viewModel.setActiveSheet(.manufacturer) }) {
           Text(viewModel.manufacturer?.name ?? "Manufactured by")
         }
       }
 
       Section {
-        Button(action: {
-          viewModel.setActiveSheet(.friends)
-        }) {
+        Button(action: { viewModel.setActiveSheet(.friends) }) {
           if viewModel.taggedFriends.isEmpty {
             Text("Tag friends")
           } else {
@@ -129,9 +121,7 @@ struct CheckInSheetView: View {
         }
       }
 
-      Button(action: {
-        viewModel.setActiveSheet(.location)
-      }) {
+      Button(action: { viewModel.setActiveSheet(.location) }) {
         if let location = viewModel.location {
           HStack {
             Text(location.name)
@@ -146,14 +136,10 @@ struct CheckInSheetView: View {
       }
     }
     .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
-      Button(action: {
-        viewModel.showCamera.toggle()
-      }) {
+      Button(action: { viewModel.showCamera.toggle() }) {
         Text("Camera")
       }
-      Button(action: {
-        viewModel.setActiveSheet(.photoPicker)
-      }) {
+      Button(action: { viewModel.setActiveSheet(.photoPicker) }) {
         Text("Photo Gallery")
       }
     } message: {
@@ -189,9 +175,7 @@ struct CheckInSheetView: View {
       })
     })
     .navigationBarItems(
-      leading: Button(role: .cancel, action: {
-        dismiss()
-      }) {
+      leading: Button(role: .cancel, action: { dismiss() }) {
         Text("Cancel").bold()
       },
       trailing: ProgressButton(action: {

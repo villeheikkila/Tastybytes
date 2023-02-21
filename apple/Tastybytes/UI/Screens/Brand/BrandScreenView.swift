@@ -50,17 +50,13 @@ struct BrandScreenView: View {
               }
               .contextMenu {
                 if profileManager.hasPermission(.canMergeProducts) {
-                  Button(action: {
-                    viewModel.productToMerge = product
-                  }) {
+                  Button(action: { viewModel.productToMerge = product }) {
                     Text("Merge product to...")
                   }
                 }
 
                 if profileManager.hasPermission(.canDeleteProducts) {
-                  Button(role: .destructive, action: {
-                    viewModel.productToDelete = product
-                  }) {
+                  Button(role: .destructive, action: { viewModel.productToDelete = product }) {
                     Label("Delete", systemImage: "trash.fill")
                       .foregroundColor(.red)
                   }
@@ -77,23 +73,17 @@ struct BrandScreenView: View {
             Spacer()
             Menu {
               if profileManager.hasPermission(.canEditBrands) {
-                Button(action: {
-                  viewModel.editSubBrand = subBrand
-                }) {
+                Button(action: { viewModel.editSubBrand = subBrand }) {
                   Label("Edit", systemImage: "pencil")
                 }
               }
 
               if subBrand.isVerified {
-                Button(action: {
-                  viewModel.toUnverifySubBrand = subBrand
-                }) {
+                Button(action: { viewModel.toUnverifySubBrand = subBrand }) {
                   Label("Verified", systemImage: "checkmark.circle")
                 }
               } else if profileManager.hasPermission(.canVerify) {
-                Button(action: {
-                  viewModel.verifySubBrand(subBrand, isVerified: true)
-                }) {
+                Button(action: { viewModel.verifySubBrand(subBrand, isVerified: true) }) {
                   Label("Verify", systemImage: "checkmark")
                 }
               } else {
@@ -101,9 +91,7 @@ struct BrandScreenView: View {
               }
 
               if profileManager.hasPermission(.canDeleteBrands) {
-                Button(role: .destructive, action: {
-                  viewModel.toDeleteSubBrand = subBrand
-                }) {
+                Button(role: .destructive, action: { viewModel.toDeleteSubBrand = subBrand }) {
                   Label("Delete", systemImage: "trash.fill")
                 }
                 .disabled(subBrand.isVerified)
@@ -198,9 +186,7 @@ struct BrandScreenView: View {
       ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
 
       if profileManager.hasPermission(.canCreateProducts) {
-        Button(action: {
-          viewModel.setActiveSheet(.addProduct)
-        }) {
+        Button(action: { viewModel.setActiveSheet(.addProduct) }) {
           Label("Add Product", systemImage: "plus")
         }
       }
@@ -208,23 +194,17 @@ struct BrandScreenView: View {
       Divider()
 
       if profileManager.hasPermission(.canEditBrands) {
-        Button(action: {
-          viewModel.setActiveSheet(.editBrand)
-        }) {
+        Button(action: { viewModel.setActiveSheet(.editBrand) }) {
           Label("Edit", systemImage: "pencil")
         }
       }
 
       if viewModel.brand.isVerified {
-        Button(action: {
-          viewModel.showBrandUnverificationConfirmation = true
-        }) {
+        Button(action: { viewModel.showBrandUnverificationConfirmation = true }) {
           Label("Verified", systemImage: "checkmark.circle")
         }
       } else if profileManager.hasPermission(.canVerify) {
-        Button(action: {
-          viewModel.verifyBrand(isVerified: true)
-        }) {
+        Button(action: { viewModel.verifyBrand(isVerified: true) }) {
           Label("Verify", systemImage: "checkmark")
         }
       } else {
@@ -232,9 +212,7 @@ struct BrandScreenView: View {
       }
 
       if profileManager.hasPermission(.canDeleteBrands) {
-        Button(role: .destructive, action: {
-          viewModel.showDeleteBrandConfirmationDialog.toggle()
-        }) {
+        Button(role: .destructive, action: { viewModel.showDeleteBrandConfirmationDialog.toggle() }) {
           Label("Delete", systemImage: "trash.fill")
         }
         .disabled(viewModel.brand.isVerified)

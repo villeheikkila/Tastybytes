@@ -10,9 +10,7 @@ struct ContributionsScreenView: View {
 
   var body: some View {
     List {
-      Button(action: {
-        viewModel.activeSheet = .products
-      }) {
+      Button(action: { viewModel.activeSheet = .products }) {
         HStack {
           Text("Products")
           Spacer()

@@ -42,11 +42,7 @@ struct SettingsScreenView: View {
       }
 
       Section {
-        Button(action: { Task {
-          Task {
-            await client.auth.logOut()
-          }
-        } }) {
+        Button(action: logOut) {
           Label("Log Out", systemImage: "arrow.uturn.left")
             .fontWeight(.medium)
         }
@@ -54,5 +50,9 @@ struct SettingsScreenView: View {
     }
     .navigationBarTitle("Preferences")
     .navigationBarTitleDisplayMode(.inline)
+  }
+
+  func logOut() {
+    Task { await client.auth.logOut() }
   }
 }

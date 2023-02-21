@@ -7,11 +7,7 @@ struct FriendSheetView: View {
 
   var body: some View {
     List(profileManager.friends, id: \.self) { friend in
-      Button(action: {
-        withAnimation {
-          toggleFriend(friend: friend)
-        }
-      }) {
+      Button(action: { toggleFriend(friend: friend) }) {
         AvatarView(avatarUrl: friend.avatarUrl, size: 32, id: friend.id)
         Text(friend.preferredName)
         Spacer()
@@ -22,18 +18,18 @@ struct FriendSheetView: View {
     }
     .buttonStyle(.plain)
     .navigationTitle("Friends")
-    .navigationBarItems(trailing: Button(action: {
-      dismiss()
-    }) {
+    .navigationBarItems(trailing: Button(action: { dismiss() }) {
       Text("Done").bold()
     })
   }
 
   private func toggleFriend(friend: Profile) {
-    if taggedFriends.contains(friend) {
-      taggedFriends.remove(object: friend)
-    } else {
-      taggedFriends.append(friend)
+    withAnimation {
+      if taggedFriends.contains(friend) {
+        taggedFriends.remove(object: friend)
+      } else {
+        taggedFriends.append(friend)
+      }
     }
   }
 }

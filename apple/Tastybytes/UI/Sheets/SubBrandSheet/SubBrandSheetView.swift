@@ -19,7 +19,7 @@ struct SubBrandSheetView: View {
   var body: some View {
     List {
       ForEach(viewModel.filteredSubBrands, id: \.self) { subBrand in
-        Button(action: { self.onSelect(subBrand, false) }) {
+        Button(action: { onSelect(subBrand, false) }) {
           if let name = subBrand.name {
             Text(name)
           }
@@ -39,9 +39,7 @@ struct SubBrandSheetView: View {
       }
     }
     .navigationTitle("Sub-brands")
-    .navigationBarItems(trailing: Button(role: .cancel, action: {
-      dismiss()
-    }) {
+    .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }) {
       Text("Cancel").bold()
     })
   }

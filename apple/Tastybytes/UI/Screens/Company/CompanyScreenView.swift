@@ -89,23 +89,17 @@ struct CompanyScreenView: View {
       ShareLink("Share", item: NavigatablePath.company(id: viewModel.company.id).url)
 
       if profileManager.hasPermission(.canCreateBrands) {
-        Button(action: {
-          viewModel.setActiveSheet(.addBrand)
-        }) {
+        Button(action: { viewModel.setActiveSheet(.addBrand) }) {
           Label("Add Brand", systemImage: "plus")
         }
       }
 
       if profileManager.hasPermission(.canEditCompanies) {
-        Button(action: {
-          viewModel.setActiveSheet(.editCompany)
-        }) {
+        Button(action: { viewModel.setActiveSheet(.editCompany) }) {
           Label("Edit", systemImage: "pencil")
         }
       } else {
-        Button(action: {
-          viewModel.setActiveSheet(.editSuggestionCompany)
-        }) {
+        Button(action: { viewModel.setActiveSheet(.editSuggestionCompany) }) {
           Label("Edit Suggestion", systemImage: "pencil")
         }
       }
@@ -113,15 +107,11 @@ struct CompanyScreenView: View {
       Divider()
 
       if viewModel.company.isVerified {
-        Button(action: {
-          viewModel.showUnverifyCompanyConfirmation = true
-        }) {
+        Button(action: { viewModel.showUnverifyCompanyConfirmation = true }) {
           Label("Verified", systemImage: "checkmark.circle")
         }
       } else if profileManager.hasPermission(.canVerify) {
-        Button(action: {
-          viewModel.verifyCompany(isVerified: true)
-        }) {
+        Button(action: { viewModel.verifyCompany(isVerified: true) }) {
           Label("Verify", systemImage: "checkmark")
         }
       } else {
@@ -129,9 +119,7 @@ struct CompanyScreenView: View {
       }
 
       if profileManager.hasPermission(.canDeleteCompanies) {
-        Button(role: .destructive, action: {
-          viewModel.showDeleteCompanyConfirmationDialog.toggle()
-        }) {
+        Button(role: .destructive, action: { viewModel.showDeleteCompanyConfirmationDialog.toggle() }) {
           Label("Delete", systemImage: "trash.fill")
         }
         .disabled(viewModel.company.isVerified)
@@ -169,9 +157,7 @@ struct CompanyScreenView: View {
       }
     }
     .navigationTitle("Edit Company")
-    .navigationBarItems(trailing: Button(action: {
-      dismiss()
-    }) {
+    .navigationBarItems(trailing: Button(action: { dismiss() }) {
       Text("Done").bold()
     })
   }

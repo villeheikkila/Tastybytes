@@ -38,9 +38,7 @@ struct BarcodeManagementSheetView: View {
       viewModel.getBarcodes()
     }
     .navigationTitle("Barcodes")
-    .navigationBarItems(leading: Button(role: .cancel, action: {
-      dismiss()
-    }) {
+    .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }) {
       Text("Cancel").bold()
     })
   }

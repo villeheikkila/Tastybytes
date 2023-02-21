@@ -30,9 +30,7 @@ struct EditBrandSheetView: View {
       }
 
       Section {
-        Button(action: {
-          viewModel.activeSheet = Sheet.brandOwner
-        }) {
+        Button(action: { viewModel.activeSheet = Sheet.brandOwner }) {
           Text(viewModel.brandOwner.name)
         }
         Button("Change brand owner") {
@@ -45,9 +43,7 @@ struct EditBrandSheetView: View {
       }
     }
     .navigationTitle("Edit Brand")
-    .navigationBarItems(trailing: Button(action: {
-      dismiss()
-    }) {
+    .navigationBarItems(trailing: Button(action: { dismiss() }) {
       Text("Done").bold()
     })
     .sheet(item: $viewModel.activeSheet) { sheet in NavigationStack {

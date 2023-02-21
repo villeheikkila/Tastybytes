@@ -22,28 +22,29 @@ struct ActivityTabView: View {
         fetcher: .activityFeed,
         scrollToTop: $scrollToTop,
         resetView: $resetView,
-        onRefresh: {}
-      ) {}
-        .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
-          if tab == .activity {
-            if router.path.isEmpty {
-              scrollToTop += 1
-            } else {
-              router.reset()
-            }
-            resetNavigationOnTab = nil
+        onRefresh: {},
+        header: {}
+      )
+      .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+        if tab == .activity {
+          if router.path.isEmpty {
+            scrollToTop += 1
+          } else {
+            router.reset()
           }
+          resetNavigationOnTab = nil
         }
-        .navigationTitle("Activity")
-        .toolbar {
-          toolbarContent
+      }
+      .navigationTitle("Activity")
+      .toolbar {
+        toolbarContent
+      }
+      .onOpenURL { url in
+        if let detailPage = url.detailPage {
+          router.fetchAndNavigateTo(client, detailPage, resetStack: true)
         }
-        .onOpenURL { url in
-          if let detailPage = url.detailPage {
-            router.fetchAndNavigateTo(client, detailPage, resetStack: true)
-          }
-        }
-        .withRoutes(client)
+      }
+      .withRoutes(client)
     }
     .environmentObject(router)
   }

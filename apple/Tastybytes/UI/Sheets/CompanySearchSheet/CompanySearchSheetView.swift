@@ -16,7 +16,7 @@ struct CompanySearchSheet: View {
     List {
       ForEach(viewModel.searchResults, id: \.id) { company in
         Button(action: {
-          self.onSelect(company, false)
+          onSelect(company, false)
           dismiss()
         }) {
           Text(company.name)
@@ -27,9 +27,7 @@ struct CompanySearchSheet: View {
         switch viewModel.status {
         case .searched:
           Section {
-            Button(action: {
-              viewModel.createNew()
-            }) {
+            Button(action: { viewModel.createNew() }) {
               Text("Add")
             }
           } header: {
@@ -54,9 +52,7 @@ struct CompanySearchSheet: View {
       }
     }
     .navigationTitle("Search companies")
-    .navigationBarItems(trailing: Button(role: .cancel, action: {
-      dismiss()
-    }) {
+    .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }) {
       Text("Cancel").bold()
     })
     .searchable(text: $viewModel.searchText)

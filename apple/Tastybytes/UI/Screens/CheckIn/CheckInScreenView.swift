@@ -36,15 +36,11 @@ struct CheckInScreenView: View {
         Divider()
 
         if viewModel.checkIn.profile.id == profileManager.getId() {
-          Button(action: {
-            viewModel.showEditCheckInSheet = true
-          }) {
+          Button(action: { viewModel.showEditCheckInSheet = true }) {
             Label("Edit", systemImage: "pencil")
           }
 
-          Button(role: .destructive, action: {
-            viewModel.showDeleteConfirmation = true
-          }) {
+          Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }) {
             Label("Delete", systemImage: "trash.fill")
           }
         }

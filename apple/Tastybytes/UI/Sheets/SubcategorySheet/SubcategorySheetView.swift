@@ -15,9 +15,7 @@ struct SubcategorySheetView: View {
 
   var body: some View {
     List(availableSubcategories, id: \.self) { subcategory in
-      Button(action: {
-        toggleSubcategory(subcategory: subcategory)
-      }) {
+      Button(action: { toggleSubcategory(subcategory: subcategory) }) {
         HStack {
           Text(subcategory.name)
           Spacer()
@@ -29,9 +27,7 @@ struct SubcategorySheetView: View {
     }
     .navigationTitle("Subcategories")
     .navigationBarItems(leading: addSubcategoryView,
-                        trailing: Button(action: {
-                          dismiss()
-                        }) {
+                        trailing: Button(action: { dismiss() }) {
                           Text("Done").bold()
                         })
     .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
@@ -63,9 +59,7 @@ struct SubcategorySheetView: View {
   @ViewBuilder
   private var addSubcategoryView: some View {
     if profileManager.hasPermission(.canDeleteBrands) {
-      Button(action: {
-        showAddSubcategory.toggle()
-      }) {
+      Button(action: { showAddSubcategory.toggle() }) {
         Image(systemName: "plus").bold()
       }
     }

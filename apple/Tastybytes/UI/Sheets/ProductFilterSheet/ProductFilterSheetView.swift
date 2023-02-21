@@ -81,23 +81,17 @@ struct ProductFilterSheetView: View {
   @ToolbarContentBuilder
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      Button(role: .cancel, action: {
-        dismiss()
-      }) {
+      Button(role: .cancel, action: { dismiss() }) {
         Text("Cancel")
           .bold()
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: {
-        viewModel.resetFilter()
-      }) {
+      Button(action: { viewModel.resetFilter() }) {
         Text("Reset")
           .bold()
       }
-      Button(action: {
-        onApply(viewModel.getFilter())
-      }) {
+      Button(action: { onApply(viewModel.getFilter()) }) {
         Label("Apply", systemImage: "line.3.horizontal.decrease.circle.fill")
           .bold()
       }

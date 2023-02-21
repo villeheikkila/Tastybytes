@@ -14,9 +14,7 @@ struct FlavorSheetView: View {
 
   var body: some View {
     List(viewModel.filteredFlavors, id: \.id) { flavor in
-      Button(action: {
-        toggleFlavor(flavor)
-      }) {
+      Button(action: { toggleFlavor(flavor) }) {
         HStack {
           Text(flavor.name.capitalized)
           Spacer()
@@ -30,9 +28,7 @@ struct FlavorSheetView: View {
       AlertToast(type: .error(.red), title: "You can only add \(viewModel.maxFlavors) flavors")
     }
     .navigationTitle("Flavors")
-    .navigationBarItems(trailing: Button(action: {
-      dismiss()
-    }) {
+    .navigationBarItems(trailing: Button(action: { dismiss() }) {
       Text("Done").bold()
     })
     .task {

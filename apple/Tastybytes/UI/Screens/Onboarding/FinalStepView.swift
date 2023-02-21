@@ -21,11 +21,7 @@ struct FinalStepView: View {
 
       HStack {
         Spacer()
-        Button(action: {
-          viewModel.updateProfile {
-            profileManager.refresh()
-          }
-        }) {
+        Button(action: { viewModel.updateProfile { profileManager.refresh() }}) {
           Text("Continue to the app")
             .fontWeight(.medium)
         }

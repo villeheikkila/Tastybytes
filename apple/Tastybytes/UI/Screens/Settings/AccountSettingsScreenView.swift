@@ -100,17 +100,13 @@ struct AccountSettingsScreenView: View {
 
   private var deleteAccount: some View {
     Section {
-      Button(action: {
-        viewModel.exportData(onError: { message in
-          toastManager.toggle(.error(message))
-        })
-      }) {
+      Button(action: { viewModel.exportData(onError: { message in
+        toastManager.toggle(.error(message))
+      }) }) {
         Label("Export CSV", systemImage: "square.and.arrow.up")
           .fontWeight(.medium)
       }
-      Button(role: .destructive, action: {
-        viewModel.showDeleteConfirmation = true
-      }) {
+      Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }) {
         if UIColor.responds(to: Selector(("_systemDestructiveTintColor"))) {
           if let destructive = UIColor.perform(Selector(("_systemDestructiveTintColor")))?
             .takeUnretainedValue() as? UIColor

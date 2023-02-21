@@ -54,11 +54,9 @@ struct ProfileView: View {
   private var sendFriendRequestButton: some View {
     HStack {
       Spacer()
-      Button(action: {
-        profileManager.sendFriendRequest(receiver: viewModel.profile.id) {
-          toastManager.toggle(.success("Friend Request Sent!"))
-        }
-      }) {
+      Button(action: { profileManager.sendFriendRequest(receiver: viewModel.profile.id) {
+        toastManager.toggle(.success("Friend Request Sent!"))
+      }}) {
         Text("Send Friend Request")
           .font(.headline)
       }.buttonStyle(ScalingButton())
