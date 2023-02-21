@@ -31,10 +31,19 @@ struct BrandScreenView: View {
                   subBrand: subBrand,
                   brand: viewModel.brand
                 ))) {
-              HStack {
-                Text(joinOptionalStrings([viewModel.brand.name, subBrand.name, product.name]))
-                  .lineLimit(nil)
-                Spacer()
+              VStack {
+                HStack {
+                  CategoryNameView(category: product.category)
+                  ForEach(product.subcategories, id: \.id) { subcategory in
+                    ChipView(title: subcategory.name, cornerRadius: 5)
+                  }
+                  Spacer()
+                }
+                HStack {
+                  Text(joinOptionalStrings([viewModel.brand.name, subBrand.name, product.name]))
+                    .lineLimit(nil)
+                  Spacer()
+                }
               }
               .contextMenu {
                 if profileManager.hasPermission(.canMergeProducts) {
