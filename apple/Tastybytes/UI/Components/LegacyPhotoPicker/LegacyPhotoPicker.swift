@@ -1,7 +1,6 @@
 import PhotosUI
 import SwiftUI
 
-// TODO: Drop this when SwiftUI PhotoPicker supports being nested under a menu 19.11.2022
 struct LegacyPhotoPicker: UIViewControllerRepresentable {
   let onSelection: (_ image: UIImage) -> Void
 

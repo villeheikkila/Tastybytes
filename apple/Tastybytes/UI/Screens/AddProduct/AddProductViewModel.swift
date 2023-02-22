@@ -49,14 +49,14 @@ extension AddProductView {
     @Published var categories = [Category.JoinedSubcategories]()
     @Published var activeSheet: Sheet?
     @Published var mode: Mode
-    @Published var categoryName: Category.Name = .beverage {
-      // TODO: Investigate if this can be avoided by passing ServingStyle directly to the picker
+    @Published var category: Category.JoinedSubcategories? {
       didSet {
-        category = categories.first(where: { $0.name == categoryName })
+        withAnimation {
+          subcategories.removeAll()
+        }
       }
     }
 
-    @Published var category: Category.JoinedSubcategories?
     @Published var subcategories: [Subcategory] = []
     @Published var brandOwner: Company? {
       didSet {
@@ -158,7 +158,6 @@ extension AddProductView {
         case let .success(categories):
           self.categories = categories
           self.category = categories.first(where: { $0.name == .beverage })
-          self.categoryName = .beverage
           self.subcategories = []
           self.brandOwner = brand.brandOwner
           self.brand = Brand.JoinedSubBrands(
@@ -191,7 +190,6 @@ extension AddProductView {
             self.productId = initialProduct.id
             self.categories = categories
             self.category = categories.first(where: { $0.id == initialProduct.category.id })
-            self.categoryName = category?.name ?? .beverage
             self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
             self.brandOwner = initialProduct.subBrand.brand.brandOwner
             self.brand = Brand.JoinedSubBrands(

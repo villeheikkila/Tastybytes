@@ -116,14 +116,10 @@ struct AddProductView: View {
   private var categorySection: some View {
     Section {
       if !viewModel.categories.isEmpty {
-        Picker("Category", selection: $viewModel.categoryName) {
-          ForEach(viewModel.categories.map(\.name)) { category in
-            Text(category.label).tag(category)
-          }
-        }
-        .onChange(of: viewModel.category) { _ in
-          withAnimation {
-            viewModel.subcategories.removeAll()
+        Picker("Category", selection: $viewModel.category) {
+          Text("None").tag(Category.JoinedSubcategories?(nil))
+          ForEach(viewModel.categories) { category in
+            Text(category.name.label).tag(Optional(category))
           }
         }
       }
