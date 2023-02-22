@@ -89,7 +89,7 @@ extension ProductScreenView {
 
     func refreshCheckIns() {
       refresh()
-      resetView += 1 // TODO: get rid of this hack 29.1.2023
+      resetView += 1
     }
 
     func verifyProduct(isVerified: Bool) {

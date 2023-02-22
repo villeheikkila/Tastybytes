@@ -8,7 +8,6 @@ struct LocationScreenView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var viewModel: ViewModel
   @State private var scrollToTop: Int = 0
-  @State private var resetView: Int = 0
 
   init(_ client: Client, location: Location) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, location: location))
@@ -19,7 +18,6 @@ struct LocationScreenView: View {
       viewModel.client,
       fetcher: .location(viewModel.location),
       scrollToTop: $scrollToTop,
-      resetView: $resetView,
       onRefresh: {
         viewModel.getSummary()
       },

@@ -9,7 +9,6 @@ struct CheckInListView<Header>: View
   @StateObject private var viewModel: ViewModel
   @State private var scrollProxy: ScrollViewProxy?
   @Binding private var scrollToTop: Int
-  @Binding private var resetView: Int
   let header: () -> Header
   let onRefresh: () -> Void
   let topAnchor: String?
@@ -18,14 +17,12 @@ struct CheckInListView<Header>: View
     _ client: Client,
     fetcher: Fetcher,
     scrollToTop: Binding<Int>,
-    resetView: Binding<Int>,
     onRefresh: @escaping () -> Void,
     topAnchor: String? = nil,
     @ViewBuilder header: @escaping () -> Header
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, fetcher: fetcher))
     _scrollToTop = scrollToTop
-    _resetView = resetView
     self.topAnchor = topAnchor
     self.header = header
     self.onRefresh = onRefresh
@@ -71,9 +68,6 @@ struct CheckInListView<Header>: View
             }
           }
         }
-      })
-      .onChange(of: resetView, perform: { _ in
-        viewModel.refresh()
       })
       .refreshable {
         viewModel.refresh()

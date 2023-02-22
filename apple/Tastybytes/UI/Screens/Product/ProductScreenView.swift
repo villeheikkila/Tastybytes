@@ -18,7 +18,6 @@ struct ProductScreenView: View {
       viewModel.client,
       fetcher: .product(viewModel.product),
       scrollToTop: $scrollToTop,
-      resetView: $viewModel.resetView,
       onRefresh: {
         viewModel.refresh()
       },
@@ -33,6 +32,7 @@ struct ProductScreenView: View {
         }
       }
     )
+    .id(viewModel.resetView)
     .task {
       viewModel.loadSummary()
     }

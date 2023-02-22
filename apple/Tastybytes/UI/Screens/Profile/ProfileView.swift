@@ -5,7 +5,6 @@ import SwiftUI
 struct ProfileView: View {
   @StateObject private var viewModel: ViewModel
   @Binding private var scrollToTop: Int
-  @State private var resetView: Int = 0
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   private let topAnchor = "top"
@@ -24,7 +23,6 @@ struct ProfileView: View {
       viewModel.client,
       fetcher: .profile(viewModel.profile),
       scrollToTop: $scrollToTop,
-      resetView: $resetView,
       onRefresh: {
         viewModel.getSummary()
       },
