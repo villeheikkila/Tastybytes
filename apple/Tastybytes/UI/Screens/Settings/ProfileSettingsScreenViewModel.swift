@@ -41,7 +41,7 @@ extension ProfileSettingsScreenView {
       ![
         username == profile?.username ?? "",
         firstName == profile?.firstName ?? "",
-        lastName == profile?.lastName ?? "",
+        lastName == profile?.lastName ?? ""
       ].allSatisfy { $0 }
     }
 

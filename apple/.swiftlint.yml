@@ -27,8 +27,6 @@ opt_in_rules:
   - private_over_fileprivate
   - redundant_nil_coalescing
 disabled_rules:
-  - trailing_comma
-  - function_body_length
   - opening_brace
   - nesting
   - cyclomatic_complexity
@@ -36,6 +34,9 @@ disabled_rules:
 type_body_length:
   - 300
   - 400
+function_body_length:
+  - 80
+  - 100
 file_length:
   warning: 500
   error: 800

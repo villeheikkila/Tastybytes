@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct GitHubShape: Shape {
+  // swiftlint:disable function_body_length
   func path(in rect: CGRect) -> Path {
     var path = Path()
     let width = rect.size.width

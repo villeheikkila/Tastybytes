@@ -39,7 +39,7 @@ func parseDate(from: String) throws -> Date {
 
   formatter.formatOptions = [
     .withInternetDateTime,
-    .withFractionalSeconds,
+    .withFractionalSeconds
   ]
 
   guard let date = formatter.date(from: from) else { throw DateParsingError.failure }
