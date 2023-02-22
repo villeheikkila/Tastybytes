@@ -26,6 +26,12 @@ opt_in_rules:
   - redundant_type_annotation
   - private_over_fileprivate
   - redundant_nil_coalescing
+  - joined_default_parameter
+  - explicit_init
+  - enum_case_associated_values_count
+  - convenience_type
+  - legacy_multiple
+  - toggle_bool
 disabled_rules:
   - opening_brace
   - nesting
