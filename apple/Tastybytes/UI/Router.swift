@@ -88,6 +88,7 @@ enum Route: Hashable {
   case addProduct(Barcode?)
 
   @ViewBuilder
+  @MainActor
   func view(_ client: Client) -> some View {
     switch self {
     case let .company(company):

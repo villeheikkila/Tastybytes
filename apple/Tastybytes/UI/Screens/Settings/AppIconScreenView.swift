@@ -35,4 +35,13 @@ struct AppIconScreenView: View {
       selection = getCurrentAppIcon()
     }
   }
+
+  @MainActor
+  func getCurrentAppIcon() -> AppIcon {
+    if let alternateAppIcon = UIApplication.shared.alternateIconName {
+      return AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune
+    } else {
+      return AppIcon.ramune
+    }
+  }
 }

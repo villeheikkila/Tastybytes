@@ -1,4 +1,4 @@
-import AVFoundation
+@preconcurrency import AVFoundation
 import SwiftUI
 
 extension ScannerView {
@@ -74,7 +74,9 @@ extension ScannerView {
 
       if captureSession.isRunning == false {
         DispatchQueue.global(qos: .userInteractive).async {
-          self.captureSession?.startRunning()
+          Task {
+            await self.captureSession?.startRunning()
+          }
         }
       }
     }
@@ -168,7 +170,9 @@ extension ScannerView {
 
       if captureSession?.isRunning == true {
         DispatchQueue.global(qos: .userInteractive).async {
-          self.captureSession?.stopRunning()
+          Task {
+            await self.captureSession?.stopRunning()
+          }
         }
       }
     }

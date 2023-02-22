@@ -9,6 +9,16 @@ struct AppLogoView: View {
       .accessibility(hidden: true)
   }
 
+  @MainActor
+  func getCurrentAppIcon() -> AppIcon {
+    if let alternateAppIcon = UIApplication.shared.alternateIconName {
+      return AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune
+    } else {
+      return AppIcon.ramune
+    }
+  }
+
+  @MainActor
   private func getCurrentProjectLogo() -> String {
     switch getCurrentAppIcon() {
     case .ramune:

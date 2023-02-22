@@ -81,14 +81,6 @@ func joinWithComma(_ arr: String...) -> String {
   arr.joined(separator: ", ")
 }
 
-func getCurrentAppIcon() -> AppIcon {
-  if let alternateAppIcon = UIApplication.shared.alternateIconName {
-    return AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune
-  } else {
-    return AppIcon.ramune
-  }
-}
-
 func getLogger(category: String) -> Logger {
   Logger(
     subsystem: Bundle.main.bundleIdentifier ?? "app",

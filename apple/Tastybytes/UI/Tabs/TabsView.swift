@@ -58,6 +58,7 @@ enum Tab: Int, Identifiable, Hashable {
   }
 
   @ViewBuilder
+  @MainActor
   func view(_ client: Client, _ resetNavigationOnTab: Binding<Tab?>) -> some View {
     switch self {
     case .activity:
