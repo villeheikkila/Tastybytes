@@ -11,11 +11,11 @@ struct ProfileProductListView: View {
     List {
       ForEach(viewModel.filteredProducts, id: \.id) { product in
         NavigationLink(value: Route.product(product)) {
-          ProductItemView(product: product)
+          ProductItemView(product: product, extras: [.rating])
         }
       }
     }
-    .listStyle(.grouped)
+    .listStyle(.plain)
     .searchable(text: $viewModel.searchTerm)
     .navigationTitle("Products")
     .sheet(isPresented: $viewModel.showFilters) {

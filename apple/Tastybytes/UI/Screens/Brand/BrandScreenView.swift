@@ -19,17 +19,15 @@ struct BrandScreenView: View {
         }
         .listRowSeparator(.hidden)
         .listRowBackground(Color.clear)
-        .listRowInsets(.init())
       }
       ForEach(viewModel.sortedSubBrands, id: \.self) { subBrand in
         Section {
           ForEach(subBrand.products, id: \.id) { product in
-            NavigationLink(value: Route.product(Product
-                .Joined(
-                  product: product,
-                  subBrand: subBrand,
-                  brand: viewModel.brand
-                ))) {
+            NavigationLink(value: Route.product(Product.Joined(
+              product: product,
+              subBrand: subBrand,
+              brand: viewModel.brand
+            ))) {
               VStack {
                 HStack {
                   CategoryView(category: product.category, subcategories: product.subcategories)
@@ -105,7 +103,7 @@ struct BrandScreenView: View {
         .headerProminence(.increased)
       }
     }
-    .listStyle(.grouped)
+    .listStyle(.plain)
     .refreshable {
       viewModel.refresh()
     }

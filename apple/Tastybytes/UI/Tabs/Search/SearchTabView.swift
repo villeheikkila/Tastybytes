@@ -39,7 +39,7 @@ struct SearchTabView: View {
         .onAppear {
           scrollProxy = proxy
         }
-        .listStyle(.grouped)
+        .listStyle(.plain)
         .onChange(of: viewModel.searchScope, perform: { _ in
           viewModel.search()
           viewModel.barcode = nil
@@ -233,7 +233,7 @@ struct SearchTabView: View {
   private var productResults: some View {
     ForEach(viewModel.products, id: \.id) { product in
       if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
-        ProductItemView(product: product)
+        ProductItemView(product: product, extras: [.checkInCheck, .rating])
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {

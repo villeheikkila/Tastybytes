@@ -26,7 +26,7 @@ struct MergeSheetView: View {
             viewModel.mergeToProduct = product
             viewModel.isPresentingProductMergeConfirmation.toggle()
           }, label: {
-            ProductItemView(product: product)
+            ProductItemView(product: product, extras: [.rating, .checkInCheck])
           }).buttonStyle(.plain)
         }
       }

@@ -28,7 +28,6 @@ struct LocationScreenView: View {
           }
           .listRowSeparator(.hidden)
           .listRowBackground(Color.clear)
-          .listRowInsets(EdgeInsets())
         }
       }
     )

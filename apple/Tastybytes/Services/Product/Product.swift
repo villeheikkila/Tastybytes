@@ -253,6 +253,12 @@ extension Product {
 }
 
 extension Product {
+  enum NameParts {
+    case brandOwner
+    case fullName
+    case full
+  }
+
   struct Joined: Identifiable, Hashable, Decodable {
     let id: Int
     let name: String
@@ -416,11 +422,5 @@ extension Product {
       self.category = category
       self.subcategories = subcategories
     }
-  }
-
-  enum NameParts {
-    case brandOwner
-    case fullName
-    case full
   }
 }

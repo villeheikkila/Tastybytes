@@ -22,13 +22,13 @@ struct ProductScreenView: View {
         viewModel.refresh()
       },
       header: {
-        productInfo
+        ProductItemView(product: viewModel.product)
+          .listRowSeparator(.hidden)
         if let summary = viewModel.summary, summary.averageRating != nil {
           Section {
             SummaryView(summary: summary)
           }
           .listRowSeparator(.hidden)
-          .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
         }
       }
     )
@@ -88,12 +88,6 @@ struct ProductScreenView: View {
         }
       )
     }
-  }
-
-  private var productInfo: some View {
-    ProductItemView(product: viewModel.product)
-      .listRowSeparator(.hidden)
-      .listRowInsets(.init())
   }
 
   @ToolbarContentBuilder

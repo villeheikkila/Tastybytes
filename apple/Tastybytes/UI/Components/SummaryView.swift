@@ -12,8 +12,6 @@ struct SummaryView: View {
       friendsSection
       youSection
     }
-    .padding([.leading, .trailing], 10)
-    .padding(.top, 5)
   }
 
   private var header: some View {

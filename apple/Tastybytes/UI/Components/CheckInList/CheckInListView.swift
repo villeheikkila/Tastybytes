@@ -40,7 +40,6 @@ struct CheckInListView<Header>: View
         }
       }
       .scrollContentBackground(.hidden)
-      .edgesIgnoringSafeArea([.leading, .trailing])
       .listStyle(.plain)
       .onAppear {
         scrollProxy = proxy
@@ -57,7 +56,6 @@ struct CheckInListView<Header>: View
           }
         )
       }
-
       .onChange(of: scrollToTop, perform: { _ in
         if let first = viewModel.checkIns.first {
           withAnimation {
@@ -96,9 +94,9 @@ struct CheckInListView<Header>: View
       CheckInCardView(client: viewModel.client, checkIn: checkIn,
                       loadedFrom: getLoadedFrom)
         .listRowInsets(.init(top: 4,
-                             leading: 0,
+                             leading: 8,
                              bottom: 4,
-                             trailing: 0))
+                             trailing: 8))
         .listRowSeparator(.hidden)
         .id(checkIn.id)
         .contextMenu {

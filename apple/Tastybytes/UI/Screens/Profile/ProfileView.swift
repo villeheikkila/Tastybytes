@@ -220,18 +220,15 @@ struct ProfileView: View {
   private var links: some View {
     NavigationLink(value: Route.friends(viewModel.profile)) {
       Text("Friends")
-        .font(.subheadline)
+        .font(.subheadline).bold()
     }
-    .listRowBackground(Color(.secondarySystemBackground))
     NavigationLink(value: Route.profileProducts(viewModel.profile)) {
       Text("Products")
-        .font(.subheadline)
+        .font(.subheadline).bold()
     }
-    .listRowBackground(Color(.secondarySystemBackground))
     NavigationLink(value: Route.profileStatistics(viewModel.profile)) {
       Text("Statistics")
-        .font(.subheadline)
+        .font(.subheadline).bold()
     }
-    .listRowBackground(Color(.secondarySystemBackground))
   }
 }

@@ -232,7 +232,6 @@ extension ProfileSettings {
     var sendReactionNotifications: Bool?
     var sendTaggedCheckInNotifications: Bool?
     var sendFriendRequestNotifications: Bool?
-    var publicProfile: Bool?
 
     enum CodingKeys: String, CodingKey {
       case colorScheme = "color_scheme"

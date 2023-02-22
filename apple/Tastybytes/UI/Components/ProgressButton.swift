@@ -9,39 +9,38 @@ struct ProgressButton<Label: View>: View {
   @State private var isLoading = false
 
   var body: some View {
-    Button(
-      action: {
-        if actionOptions.contains(.disableButton) {
-          isDisabled = true
-        }
+    Button(action: { buttonAction() }, label: { buttonLabel })
+      .disabled(isDisabled)
+  }
 
-        Task {
-          var progressViewTask: Task<Void, Error>?
-          if actionOptions.contains(.showProgressView) {
-            progressViewTask = Task {
-              try await Task.sleep(nanoseconds: 150_000_000)
-              isLoading = true
-            }
-          }
+  private func buttonAction() {
+    if actionOptions.contains(.disableButton) {
+      isDisabled = true
+    }
 
-          await action()
-          progressViewTask?.cancel()
-
-          isDisabled = false
-          isLoading = false
-        }
-      },
-      label: {
-        HStack {
-          label()
-          if isLoading {
-            ProgressView()
-              .padding(.leading, 10)
-          }
+    Task {
+      var progressViewTask: Task<Void, Error>?
+      if actionOptions.contains(.showProgressView) {
+        progressViewTask = Task {
+          try await Task.sleep(nanoseconds: 150_000_000)
+          isLoading = true
         }
       }
-    )
-    .disabled(isDisabled)
+      await action()
+      progressViewTask?.cancel()
+      isDisabled = false
+      isLoading = false
+    }
+  }
+
+  private var buttonLabel: some View {
+    HStack {
+      label()
+      if isLoading {
+        ProgressView()
+          .padding(.leading, 10)
+      }
+    }
   }
 }
 
