@@ -28,24 +28,12 @@ struct BrandScreenView: View {
               subBrand: subBrand,
               brand: viewModel.brand
             ))) {
-              VStack {
-                HStack {
-                  CategoryView(category: product.category, subcategories: product.subcategories)
-                  Spacer()
-                }
-                HStack {
-                  Text(joinOptionalStrings([viewModel.brand.name, subBrand.name, product.name]))
-                    .lineLimit(nil)
-                  Spacer()
-                }
-                if let description = product.description {
-                  HStack {
-                    Text(description)
-                      .font(.caption)
-                    Spacer()
-                  }
-                }
-              }
+              ProductItemView(product: Product.Joined(
+                product: product,
+                subBrand: subBrand,
+                brand: viewModel.brand
+              ))
+              .padding(2)
               .contextMenu {
                 if profileManager.hasPermission(.canMergeProducts) {
                   Button(action: { viewModel.productToMerge = product }, label: {

@@ -11,6 +11,7 @@ struct ReactionsView: View {
 
   var body: some View {
     HStack {
+      Spacer()
       ForEach(viewModel.checkInReactions, id: \.id) { reaction in
         AvatarView(avatarUrl: reaction.profile.avatarUrl, size: 16, id: reaction.profile.id)
       }
@@ -18,6 +19,8 @@ struct ReactionsView: View {
         .imageScale(.medium)
         .foregroundColor(Color(.systemYellow))
     }
+    .frame(maxWidth: 80)
+    .contentShape(Rectangle())
     .if(!viewModel.isLoading, transform: { view in
       view.accessibilityAddTraits(.isButton)
         .onTapGesture {

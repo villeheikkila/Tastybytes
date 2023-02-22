@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct ProductItemView: View {
+  @EnvironmentObject private var router: Router
   enum Extra {
-    case checkInCheck, rating
+    case checkInCheck, rating, companyLink
   }
 
   let product: Product.Joined
@@ -36,6 +37,14 @@ struct ProductItemView: View {
       Text(product.getDisplayName(.brandOwner))
         .font(.subheadline)
         .foregroundColor(.secondary)
+        .lineLimit(nil)
+        .if(extras.contains(.companyLink), transform: { view in
+          view.contentShape(Rectangle())
+            .accessibilityAddTraits(.isLink)
+            .onTapGesture {
+              router.navigate(to: .company(product.subBrand.brand.brandOwner), resetStack: false)
+            }
+        })
 
       HStack {
         CategoryView(category: product.category, subcategories: product.subcategories)

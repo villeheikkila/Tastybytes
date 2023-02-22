@@ -66,7 +66,6 @@ extension Profile {
     let roles: [Role]
     let settings: ProfileSettings
 
-    // TODO: Get rid of this
     func getProfile() -> Profile {
       Profile(id: id, preferredName: preferredName, isPrivate: isPrivate, avatarUrl: avatarUrl)
     }

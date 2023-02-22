@@ -1565,6 +1565,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Tastybytes/Preview Content\"";
 				DEVELOPMENT_TEAM = J9S7QG9SVR;
 				ENABLE_PREVIEWS = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tastybytes/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Tastybytes;
@@ -1589,9 +1591,14 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+					"-Weverything",
+				);
 			};
 			name = Debug;
 		};
@@ -1609,6 +1616,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Tastybytes/Preview Content\"";
 				DEVELOPMENT_TEAM = J9S7QG9SVR;
 				ENABLE_PREVIEWS = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tastybytes/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Tastybytes;
@@ -1633,9 +1642,14 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+					"-Weverything",
+				);
 			};
 			name = Release;
 		};

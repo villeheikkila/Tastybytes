@@ -22,7 +22,7 @@ struct ProductScreenView: View {
         viewModel.refresh()
       },
       header: {
-        ProductItemView(product: viewModel.product)
+        ProductItemView(product: viewModel.product, extras: [.companyLink])
           .listRowSeparator(.hidden)
         if let summary = viewModel.summary, summary.averageRating != nil {
           Section {
