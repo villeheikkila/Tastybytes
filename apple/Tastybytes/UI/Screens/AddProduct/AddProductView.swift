@@ -128,7 +128,7 @@ struct AddProductView: View {
         }
       }
 
-      Button(action: { viewModel.setActiveSheet(.subcategories) }) {
+      Button(action: { viewModel.setActiveSheet(.subcategories) }, label: {
         HStack {
           if viewModel.subcategories.isEmpty {
             Text("Subcategories")
@@ -138,7 +138,7 @@ struct AddProductView: View {
             }}
           }
         }
-      }
+      })
     }
     header: {
       Text("Category")
@@ -152,14 +152,13 @@ struct AddProductView: View {
 
   private var brandSection: some View {
     Section {
-      Button(action: { viewModel.setActiveSheet(.brandOwner) }) {
+      Button(action: { viewModel.setActiveSheet(.brandOwner) }, label: {
         Text(viewModel.brandOwner?.name ?? "Company")
-      }
-
+      })
       if viewModel.brandOwner != nil {
-        Button(action: { viewModel.setActiveSheet(.brand) }) {
+        Button(action: { viewModel.setActiveSheet(.brand) }, label: {
           Text(viewModel.brand?.name ?? "Brand")
-        }
+        })
         .disabled(viewModel.brandOwner == nil)
       }
 
@@ -168,9 +167,9 @@ struct AddProductView: View {
       }
 
       if viewModel.hasSubBrand {
-        Button(action: { viewModel.setActiveSheet(.subBrand) }) {
+        Button(action: { viewModel.setActiveSheet(.subBrand) }, label: {
           Text(viewModel.subBrand?.name ?? "Sub-brand")
-        }
+        })
         .disabled(viewModel.brand == nil)
       }
 
@@ -193,13 +192,9 @@ struct AddProductView: View {
         .focused($focusedField, equals: .description)
 
       if viewModel.mode == .new {
-        Button(action: { viewModel.setActiveSheet(.barcode) }) {
-          if viewModel.barcode != nil {
-            Text("Barcode Added!")
-          } else {
-            Text("Add Barcode")
-          }
-        }
+        Button(action: { viewModel.setActiveSheet(.barcode) }, label: {
+          Text(viewModel.barcode == nil ? "Add Barcode" : "Barcode Added!")
+        })
       }
     } header: {
       Text("Product")

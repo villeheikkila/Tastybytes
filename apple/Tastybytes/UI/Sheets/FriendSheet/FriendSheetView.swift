@@ -7,20 +7,20 @@ struct FriendSheetView: View {
 
   var body: some View {
     List(profileManager.friends, id: \.self) { friend in
-      Button(action: { toggleFriend(friend: friend) }) {
+      Button(action: { toggleFriend(friend: friend) }, label: {
         AvatarView(avatarUrl: friend.avatarUrl, size: 32, id: friend.id)
         Text(friend.preferredName)
         Spacer()
         if taggedFriends.contains(friend) {
           Image(systemName: "checkmark")
         }
-      }
+      })
     }
     .buttonStyle(.plain)
     .navigationTitle("Friends")
-    .navigationBarItems(trailing: Button(action: { dismiss() }) {
+    .navigationBarItems(trailing: Button(action: { dismiss() }, label: {
       Text("Done").bold()
-    })
+    }))
   }
 
   private func toggleFriend(friend: Profile) {

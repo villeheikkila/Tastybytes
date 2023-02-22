@@ -68,15 +68,15 @@ struct NotificationTabView: View {
         Button(action: {
           hapticManager.trigger(of: .impact(intensity: .low))
           notificationManager.markAllAsRead()
-        }) {
+        }, label: {
           Label("Mark all read", systemImage: "envelope.open")
-        }
+        })
         Button(action: {
           hapticManager.trigger(of: .impact(intensity: .low))
           notificationManager.deleteAll()
-        }) {
+        }, label: {
           Label("Delete all", systemImage: "trash")
-        }
+        })
       } label: {
         Image(systemName: "ellipsis")
       }

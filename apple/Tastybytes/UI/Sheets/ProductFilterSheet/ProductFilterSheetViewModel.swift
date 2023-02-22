@@ -12,7 +12,7 @@ extension ProductFilterSheetView {
     @Published var categoryFilter: Category.JoinedSubcategories?
     @Published var subcategoryFilter: Subcategory?
     @Published var sortBy: Product.Filter.SortBy?
-    @Published var onlyNonCheckedIn: Bool = false
+    @Published var onlyNonCheckedIn = false
 
     init(_ client: Client, initialFilter: Product.Filter?) {
       self.client = client

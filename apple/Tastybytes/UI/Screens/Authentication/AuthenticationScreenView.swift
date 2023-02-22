@@ -75,7 +75,7 @@ struct AuthenticationScreenView: View {
         toastManager.toggle(.success(message))
       }, onFailure: { message in
         toastManager.toggle(.error(message))
-      }) }) {
+      }) }, label: {
         HStack(spacing: 8) {
           if viewModel.isLoading {
             ProgressView()
@@ -88,7 +88,7 @@ struct AuthenticationScreenView: View {
         .background(
           RoundedRectangle(cornerRadius: 6, style: .continuous)
         )
-      }
+      })
       .disabled(viewModel.isLoading || (viewModel.scene == .resetPassword && !viewModel.isValidNewPassword))
 
       if viewModel.scene == .forgotPassword {

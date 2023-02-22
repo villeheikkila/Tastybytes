@@ -23,9 +23,9 @@ struct BrandSheetView: View {
     List {
       if viewModel.mode == .select {
         ForEach(viewModel.brandsWithSubBrands, id: \.self) { brand in
-          Button(action: { onSelect(brand, false) }) {
+          Button(action: { onSelect(brand, false) }, label: {
             Text(brand.name)
-          }
+          })
         }
       }
 
@@ -44,9 +44,9 @@ struct BrandSheetView: View {
       }
     }
     .navigationTitle("Add brand name")
-    .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }) {
+    .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Cancel").bold()
-    })
+    }))
     .task {
       viewModel.loadBrands(brandOwner)
     }

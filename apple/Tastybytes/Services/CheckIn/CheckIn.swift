@@ -158,8 +158,8 @@ extension CheckIn {
     ) {
       productId = product.id
       self.review = review.isNilOrEmpty ? nil : review
-      manufacturerId = manufacturer?.id ?? nil
-      servingStyleId = servingStyle?.id ?? nil
+      manufacturerId = manufacturer?.id
+      servingStyleId = servingStyle?.id
       friendIds = taggedFriends.map(\.id.uuidString)
       flavorIds = flavors.map(\.id)
       self.rating = rating
@@ -204,8 +204,8 @@ extension CheckIn {
       checkInId = checkIn.id
       productId = product.id
       self.review = review
-      manufacturerId = manufacturer?.id ?? nil
-      servingStyleId = servingStyle?.id ?? nil
+      manufacturerId = manufacturer?.id
+      servingStyleId = servingStyle?.id
       friendIds = taggedFriends.map(\.id.uuidString)
       flavorIds = flavors.map(\.id)
       self.rating = rating

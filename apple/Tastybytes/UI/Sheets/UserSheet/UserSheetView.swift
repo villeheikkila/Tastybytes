@@ -29,9 +29,9 @@ struct UserSheetView<Actions: View>: View {
       }
     }
     .navigationTitle("Search users")
-    .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }) {
+    .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Cancel").bold()
-    })
+    }))
     .searchable(text: $viewModel.searchText)
     .onSubmit(of: .search) { viewModel.searchUsers(currentUserId: profileManager.getId()) }
   }

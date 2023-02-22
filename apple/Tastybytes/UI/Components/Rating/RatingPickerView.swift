@@ -4,7 +4,7 @@ struct RatingPickerView: View {
   @Binding var rating: Double
   @State private var starSize: CGSize = .zero
   @State private var controlSize: CGSize = .zero
-  @GestureState private var dragging: Bool = false
+  @GestureState private var dragging = false
 
   var body: some View {
     ZStack {

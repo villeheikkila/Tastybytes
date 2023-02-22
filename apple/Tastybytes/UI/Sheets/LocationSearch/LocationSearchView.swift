@@ -19,7 +19,7 @@ struct LocationSearchView: View {
           onSelect(savedLocation)
           dismiss()
         })
-      }) {
+      }, label: {
         VStack(alignment: .leading) {
           Text(location.name)
           if let title = location.title {
@@ -27,13 +27,13 @@ struct LocationSearchView: View {
               .foregroundColor(.secondary)
           }
         }
-      }
+      })
     }
     .navigationBarItems(trailing: Button(role: .cancel, action: {
       dismiss()
-    }) {
+    }, label: {
       Text("Cancel").bold()
-    })
+    }))
     .navigationTitle("Location")
     .searchable(text: $viewModel.searchText)
     .task {

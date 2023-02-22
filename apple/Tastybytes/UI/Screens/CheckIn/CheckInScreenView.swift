@@ -36,13 +36,12 @@ struct CheckInScreenView: View {
         Divider()
 
         if viewModel.checkIn.profile.id == profileManager.getId() {
-          Button(action: { viewModel.showEditCheckInSheet = true }) {
+          Button(action: { viewModel.showEditCheckInSheet = true }, label: {
             Label("Edit", systemImage: "pencil")
-          }
-
-          Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }) {
+          })
+          Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }, label: {
             Label("Delete", systemImage: "trash.fill")
-          }
+          })
         }
       } label: {
         Image(systemName: "ellipsis")
@@ -104,9 +103,9 @@ struct CheckInScreenView: View {
   private var leaveCommentSection: some View {
     HStack {
       TextField("Leave a comment!", text: $viewModel.commentText)
-      Button(action: { viewModel.sendComment() }) {
+      Button(action: { viewModel.sendComment() }, label: {
         Image(systemName: "paperplane.fill")
-      }
+      })
       .disabled(viewModel.isInvalidComment())
     }
     .padding(2)

@@ -10,13 +10,13 @@ struct ContributionsScreenView: View {
 
   var body: some View {
     List {
-      Button(action: { viewModel.activeSheet = .products }) {
+      Button(action: { viewModel.activeSheet = .products }, label: {
         HStack {
           Text("Products")
           Spacer()
           Text(String(viewModel.products.count))
         }
-      }
+      })
     }
     .navigationTitle("Your Contributions")
     .navigationBarTitleDisplayMode(.inline)

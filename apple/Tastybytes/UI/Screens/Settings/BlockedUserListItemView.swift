@@ -11,11 +11,9 @@ struct BlockedUserListItemView: View {
         HStack {
           Text(profile.preferredName)
           Spacer()
-          Button(action: {
-            onUnblockUser()
-          }) {
+          Button(action: { onUnblockUser() }, label: {
             Label("Unblock", systemImage: "hand.raised.slash.fill")
-          }
+          })
         }
       }
     }

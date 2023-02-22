@@ -1,10 +1,6 @@
 import SwiftUI
 
 struct RatingView: View {
-  @State private var starSize: CGSize = .zero
-  @State private var controlSize: CGSize = .zero
-  @GestureState private var dragging: Bool = false
-
   let rating: Double
   let type: StarType
 

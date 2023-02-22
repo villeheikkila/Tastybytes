@@ -28,27 +28,28 @@ struct ProfileView: View {
       onRefresh: {
         viewModel.getSummary()
       },
-      topAnchor: topAnchor
-    ) {
-      profileSummary
+      topAnchor: topAnchor,
+      header: {
+        profileSummary
+          .listRowSeparator(.hidden)
+          .id(topAnchor)
+        VStack(spacing: 20) {
+          if showInFull {
+            ratingChart
+            ratingSummary
+          } else {
+            privateProfileSign
+          }
+          if !viewModel.isCurrentUser,
+             !profileManager.hasFriendByUserId(userId: viewModel.profile.id)
+          {
+            sendFriendRequestButton
+          }
+        }
         .listRowSeparator(.hidden)
-        .id(topAnchor)
-      VStack(spacing: 20) {
-        if showInFull {
-          ratingChart
-          ratingSummary
-        } else {
-          privateProfileSign
-        }
-        if !viewModel.isCurrentUser,
-           !profileManager.hasFriendByUserId(userId: viewModel.profile.id)
-        {
-          sendFriendRequestButton
-        }
+        links
       }
-      .listRowSeparator(.hidden)
-      links
-    }
+    )
   }
 
   private var sendFriendRequestButton: some View {
@@ -56,10 +57,10 @@ struct ProfileView: View {
       Spacer()
       Button(action: { profileManager.sendFriendRequest(receiver: viewModel.profile.id) {
         toastManager.toggle(.success("Friend Request Sent!"))
-      }}) {
+      }}, label: {
         Text("Send Friend Request")
           .font(.headline)
-      }.buttonStyle(ScalingButton())
+      }).buttonStyle(ScalingButton())
       Spacer()
     }
   }

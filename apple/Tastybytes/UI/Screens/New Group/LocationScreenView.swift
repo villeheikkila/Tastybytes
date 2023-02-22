@@ -22,17 +22,18 @@ struct LocationScreenView: View {
       resetView: $resetView,
       onRefresh: {
         viewModel.getSummary()
-      }
-    ) {
-      if let summary = viewModel.summary, summary.averageRating != nil {
-        Section {
-          SummaryView(summary: summary)
+      },
+      header: {
+        if let summary = viewModel.summary, summary.averageRating != nil {
+          Section {
+            SummaryView(summary: summary)
+          }
+          .listRowSeparator(.hidden)
+          .listRowBackground(Color.clear)
+          .listRowInsets(EdgeInsets())
         }
-        .listRowSeparator(.hidden)
-        .listRowBackground(Color.clear)
-        .listRowInsets(EdgeInsets())
       }
-    }
+    )
     .navigationTitle(viewModel.location.name)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -63,9 +64,9 @@ struct LocationScreenView: View {
       Menu {
         ShareLink("Share", item: NavigatablePath.location(id: viewModel.location.id).url)
         if profileManager.hasPermission(.canDeleteProducts) {
-          Button(role: .destructive, action: { viewModel.showDeleteLocationConfirmation.toggle() }) {
+          Button(role: .destructive, action: { viewModel.showDeleteLocationConfirmation.toggle() }, label: {
             Label("Delete", systemImage: "trash.fill")
-          }
+          })
         }
       } label: {
         Image(systemName: "ellipsis")

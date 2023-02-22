@@ -28,9 +28,7 @@ struct BarcodeManagementSheetView: View {
           Button(role: .destructive, action: {
             viewModel.deleteBarcode(barcode)
             hapticManager.trigger(of: .notification(.success))
-          }) {
-            Label("Delete", systemImage: "trash.fill")
-          }
+          }, label: { Label("Delete", systemImage: "trash.fill") })
         }
       }
     }
@@ -38,8 +36,8 @@ struct BarcodeManagementSheetView: View {
       viewModel.getBarcodes()
     }
     .navigationTitle("Barcodes")
-    .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }) {
+    .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Cancel").bold()
-    })
+    }))
   }
 }

@@ -42,12 +42,12 @@ struct FriendsScreenView: View {
             }
           }
           .contextMenu {
-            Button(role: .destructive, action: { viewModel.friendToBeRemoved = friend }) {
+            Button(role: .destructive, action: { viewModel.friendToBeRemoved = friend }, label: {
               Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
-            }
-            Button(action: { viewModel.updateFriendRequest(friend: friend, newStatus: .blocked) }) {
+            })
+            Button(action: { viewModel.updateFriendRequest(friend: friend, newStatus: .blocked) }, label: {
               Label("Block", systemImage: "person.2.slash").imageScale(.large)
-            }
+            })
           }
         } else {
           FriendListItemView(profile: friend.getFriend(userId: viewModel.profile.id)) {}
@@ -78,10 +78,10 @@ struct FriendsScreenView: View {
                 viewModel.sendFriendRequest(receiver: profile.id, onSuccess: {
                   toastManager.toggle(.success("Friend Request Sent!"))
                 })
-              }) {
+              }, label: {
                 Image(systemName: "person.badge.plus")
                   .imageScale(.large)
-              }
+              })
             }
           }
           .errorAlert(error: $viewModel.modalError)
@@ -108,9 +108,9 @@ struct FriendsScreenView: View {
   private var addFriendButton: some View {
     HStack {
       if viewModel.profile == profileManager.getProfile() {
-        Button(action: { viewModel.showUserSearchSheet.toggle() }) {
+        Button(action: { viewModel.showUserSearchSheet.toggle() }, label: {
           Image(systemName: "plus").imageScale(.large)
-        }
+        })
       }
     }
   }

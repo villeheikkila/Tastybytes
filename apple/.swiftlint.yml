@@ -23,11 +23,13 @@ opt_in_rules:
   - anonymous_argument_in_multiline_closure
   - implicit_return
   - implicitly_unwrapped_optional
+  - redundant_type_annotation
+  - private_over_fileprivate
+  - redundant_nil_coalescing
 disabled_rules:
   - trailing_comma
   - function_body_length
   - todo
-  - multiple_closures_with_trailing_closure
   - opening_brace
   - nesting
   - cyclomatic_complexity
@@ -57,3 +59,7 @@ custom_rules:
     regex: "@(Environment|FetchRequest|FocusedValue|GestureState|NSApplicationDelegateAdaptor|ScaledMetric|SectionedFetchRequest)\\(.*\\)\\s*?\\n?(\\s|\\t)*?(var|public|internal|open)"
     message: "SwiftUI DynamicProperty(with argument) variables should always be marked private."
     severity: warning
+
+private_over_fileprivate:
+  validate_extensions: true
+  severity: error

@@ -33,10 +33,10 @@ struct BlockedUsersScreenView: View {
                 toastManager.toggle(.success("User blocked"))
               }, onFailure: { error in
                 toastManager.toggle(.error(error))
-              }) }) {
+              }) }, label: {
                 Label("Block", systemImage: "person.fill.xmark")
                   .imageScale(.large)
-              }
+              })
             }
           }
         })
@@ -51,9 +51,9 @@ struct BlockedUsersScreenView: View {
 
   private var blockUser: some View {
     HStack {
-      Button(action: { viewModel.showUserSearchSheet.toggle() }) {
+      Button(action: { viewModel.showUserSearchSheet.toggle() }, label: {
         Image(systemName: "plus").imageScale(.large)
-      }
+      })
     }
   }
 }

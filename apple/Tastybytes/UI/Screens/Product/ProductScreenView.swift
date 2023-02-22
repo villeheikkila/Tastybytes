@@ -21,17 +21,18 @@ struct ProductScreenView: View {
       resetView: $viewModel.resetView,
       onRefresh: {
         viewModel.refresh()
-      }
-    ) {
-      productInfo
-      if let summary = viewModel.summary, summary.averageRating != nil {
-        Section {
-          SummaryView(summary: summary)
+      },
+      header: {
+        productInfo
+        if let summary = viewModel.summary, summary.averageRating != nil {
+          Section {
+            SummaryView(summary: summary)
+          }
+          .listRowSeparator(.hidden)
+          .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
         }
-        .listRowSeparator(.hidden)
-        .listRowInsets(.init(top: 0, leading: 0, bottom: 10, trailing: 0))
       }
-    }
+    )
     .task {
       viewModel.loadSummary()
     }
@@ -99,53 +100,51 @@ struct ProductScreenView: View {
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
-        Button(action: { viewModel.setActiveSheet(.checkIn) }) {
-          Label("Check-in", systemImage: "plus").bold(
-          )
-        }.disabled(!profileManager.hasPermission(.canCreateCheckIns))
+        Button(action: { viewModel.setActiveSheet(.checkIn) }, label: {
+          Label("Check-in", systemImage: "plus").bold()
+        }).disabled(!profileManager.hasPermission(.canCreateCheckIns))
 
         ShareLink("Share", item: NavigatablePath.product(id: viewModel.product.id).url)
 
         if profileManager.hasPermission(.canAddBarcodes) {
-          Button(action: { viewModel.setActiveSheet(.barcodeScanner) }) {
+          Button(action: { viewModel.setActiveSheet(.barcodeScanner) }, label: {
             Label("Add Barcode", systemImage: "barcode.viewfinder")
-          }
+          })
         }
         Divider()
 
         if profileManager.hasPermission(.canEditCompanies) {
-          Button(action: { viewModel.setActiveSheet(.editProduct) }) {
+          Button(action: { viewModel.setActiveSheet(.editProduct) }, label: {
             Label("Edit", systemImage: "pencil")
-          }
+          })
         } else {
-          Button(action: { viewModel.setActiveSheet(.editSuggestion) }) {
+          Button(action: { viewModel.setActiveSheet(.editSuggestion) }, label: {
             Label("Edit Suggestion", systemImage: "pencil")
-          }
+          })
         }
 
         if viewModel.product.isVerified {
-          Button(action: { viewModel.showUnverifyProductConfirmation = true }) {
+          Button(action: { viewModel.showUnverifyProductConfirmation = true }, label: {
             Label("Verified", systemImage: "checkmark.circle")
-          }
+          })
         } else if profileManager.hasPermission(.canVerify) {
-          Button(action: { viewModel.verifyProduct(isVerified: true) }) {
+          Button(action: { viewModel.verifyProduct(isVerified: true) }, label: {
             Label("Verify", systemImage: "checkmark")
-          }
+          })
         } else {
           Label("Not verified", systemImage: "x.circle")
         }
 
         if profileManager.hasPermission(.canDeleteBarcodes) {
-          Button(action: { viewModel.setActiveSheet(.barcodes) }) {
+          Button(action: { viewModel.setActiveSheet(.barcodes) }, label: {
             Label("Barcodes", systemImage: "barcode")
-          }
+          })
         }
 
         if profileManager.hasPermission(.canDeleteProducts) {
-          Button(role: .destructive, action: { viewModel.showDeleteConfirmation() }) {
+          Button(role: .destructive, action: { viewModel.showDeleteConfirmation() }, label: {
             Label("Delete", systemImage: "trash.fill")
-          }
-          .disabled(viewModel.product.isVerified)
+          }).disabled(viewModel.product.isVerified)
         }
       } label: {
         Image(systemName: "ellipsis")

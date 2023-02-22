@@ -102,11 +102,11 @@ struct AccountSettingsScreenView: View {
     Section {
       Button(action: { viewModel.exportData(onError: { message in
         toastManager.toggle(.error(message))
-      }) }) {
+      }) }, label: {
         Label("Export CSV", systemImage: "square.and.arrow.up")
           .fontWeight(.medium)
-      }
-      Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }) {
+      })
+      Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }, label: {
         if UIColor.responds(to: Selector(("_systemDestructiveTintColor"))) {
           if let destructive = UIColor.perform(Selector(("_systemDestructiveTintColor")))?
             .takeUnretainedValue() as? UIColor
@@ -118,7 +118,7 @@ struct AccountSettingsScreenView: View {
             Text("Delete Account")
           }
         }
-      }
+      })
     }
   }
 }

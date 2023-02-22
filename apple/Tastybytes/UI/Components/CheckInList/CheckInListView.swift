@@ -111,13 +111,12 @@ struct CheckInListView<Header>: View
           ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
           Divider()
           if checkIn.profile.id == profileManager.getId() {
-            Button(action: { viewModel.editCheckIn = checkIn }) {
+            Button(action: { viewModel.editCheckIn = checkIn }, label: {
               Label("Edit", systemImage: "pencil")
-            }
-
-            Button(role: .destructive, action: { viewModel.showDeleteConfirmationFor = checkIn }) {
+            })
+            Button(role: .destructive, action: { viewModel.showDeleteConfirmationFor = checkIn }, label: {
               Label("Delete", systemImage: "trash.fill")
-            }
+            })
           }
         }
         .onAppear {

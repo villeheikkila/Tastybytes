@@ -42,13 +42,13 @@ struct ProfileTabView: View {
         VStack(spacing: 20) {
           if !showNameTagScanner {
             CreateQRCodeView(qrCodeText: NavigatablePath.profile(id: profileManager.getId()).url.absoluteString)
-            Button(action: { showNameTagScanner.toggle() }) {
+            Button(action: { showNameTagScanner.toggle() }, label: {
               HStack {
                 Spacer()
                 Label("Scan Name Tag", systemImage: "qrcode.viewfinder")
                 Spacer()
               }
-            }
+            })
           } else {
             ScannerView(scanTypes: [.qr]) { response in
               if case let .success(result) = response {
@@ -60,13 +60,14 @@ struct ProfileTabView: View {
                 }
               }
             }
-            Button(action: { showNameTagScanner.toggle() }) {
+            Button(action: { showNameTagScanner.toggle() }, label: {
               HStack {
                 Spacer()
                 Label("Show Name Tag", systemImage: "qrcode")
                 Spacer()
               }
-            }
+
+            })
           }
         }
         .navigationTitle("Name Tag")
@@ -88,9 +89,9 @@ struct ProfileTabView: View {
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: { showProfileQrCode.toggle() }) {
+      Button(action: { showProfileQrCode.toggle() }, label: {
         Image(systemName: "qrcode")
-      }
+      })
       NavigationLink(value: Route.settings) {
         Image(systemName: "gear").imageScale(.large)
       }

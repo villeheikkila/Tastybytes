@@ -204,9 +204,9 @@ struct SearchTabView: View {
         with the name or by creating a new product.
         """
       )
-      Button(action: { viewModel.resetBarcode() }) {
+      Button(action: { viewModel.resetBarcode() }, label: {
         Text("Dismiss barcode")
-      }
+      })
     }
   }
 
@@ -241,9 +241,9 @@ struct SearchTabView: View {
           }
           .id(product.id)
       } else {
-        Button(action: { viewModel.addBarcodeTo = product }) {
+        Button(action: { viewModel.addBarcodeTo = product }, label: {
           ProductItemView(product: product)
-        }
+        })
         .buttonStyle(.plain)
       }
     }
@@ -253,16 +253,16 @@ struct SearchTabView: View {
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       if viewModel.searchScope == .products {
-        Button(action: { viewModel.showFilters.toggle() }) {
+        Button(action: { viewModel.showFilters.toggle() }, label: {
           Image(systemName: "line.3.horizontal.decrease.circle")
-        }
+        })
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if profileManager.hasPermission(.canAddBarcodes) {
-        Button(action: { viewModel.showBarcodeScanner.toggle() }) {
+        Button(action: { viewModel.showBarcodeScanner.toggle() }, label: {
           Image(systemName: "barcode.viewfinder")
-        }
+        })
       }
     }
   }

@@ -72,13 +72,13 @@ struct CheckInSheetView: View {
         TextField("How was it?", text: $viewModel.review, axis: .vertical)
           .focused($focusedField, equals: .review)
         RatingPickerView(rating: $viewModel.rating)
-        Button(action: { showPhotoMenu.toggle() }) {
+        Button(action: { showPhotoMenu.toggle() }, label: {
           Label(
             "\(viewModel.editCheckIn?.getImageUrl() == nil && viewModel.image == nil ? "Add" : "Change") Photo",
             systemImage: "photo"
           )
-        }
-        Button(action: { viewModel.setActiveSheet(.flavors) }) {
+        })
+        Button(action: { viewModel.setActiveSheet(.flavors) }, label: {
           if !viewModel.pickedFlavors.isEmpty {
             WrappingHStack(viewModel.pickedFlavors, id: \.self, spacing: .constant(4)) { flavor in
               ChipView(title: flavor.name.capitalized)
@@ -86,7 +86,7 @@ struct CheckInSheetView: View {
           } else {
             Text("Flavors")
           }
-        }
+        })
       } header: {
         Text("Review")
       }
@@ -104,13 +104,13 @@ struct CheckInSheetView: View {
           }
         }
 
-        Button(action: { viewModel.setActiveSheet(.manufacturer) }) {
+        Button(action: { viewModel.setActiveSheet(.manufacturer) }, label: {
           Text(viewModel.manufacturer?.name ?? "Manufactured by")
-        }
+        })
       }
 
       Section {
-        Button(action: { viewModel.setActiveSheet(.friends) }) {
+        Button(action: { viewModel.setActiveSheet(.friends) }, label: {
           if viewModel.taggedFriends.isEmpty {
             Text("Tag friends")
           } else {
@@ -118,10 +118,10 @@ struct CheckInSheetView: View {
               AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
             }
           }
-        }
+        })
       }
 
-      Button(action: { viewModel.setActiveSheet(.location) }) {
+      Button(action: { viewModel.setActiveSheet(.location) }, label: {
         if let location = viewModel.location {
           HStack {
             Text(location.name)
@@ -133,15 +133,15 @@ struct CheckInSheetView: View {
         } else {
           Text("Location")
         }
-      }
+      })
     }
     .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
-      Button(action: { viewModel.showCamera.toggle() }) {
+      Button(action: { viewModel.showCamera.toggle() }, label: {
         Text("Camera")
-      }
-      Button(action: { viewModel.setActiveSheet(.photoPicker) }) {
+      })
+      Button(action: { viewModel.setActiveSheet(.photoPicker) }, label: {
         Text("Photo Gallery")
-      }
+      })
     } message: {
       Text("Pick a photo")
     }
@@ -175,9 +175,9 @@ struct CheckInSheetView: View {
       })
     })
     .navigationBarItems(
-      leading: Button(role: .cancel, action: { dismiss() }) {
+      leading: Button(role: .cancel, action: { dismiss() }, label: {
         Text("Cancel").bold()
-      },
+      }),
       trailing: ProgressButton(action: {
                                  switch action {
                                  case .create:

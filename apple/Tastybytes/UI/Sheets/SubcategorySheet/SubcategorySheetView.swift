@@ -15,7 +15,7 @@ struct SubcategorySheetView: View {
 
   var body: some View {
     List(availableSubcategories, id: \.self) { subcategory in
-      Button(action: { toggleSubcategory(subcategory: subcategory) }) {
+      Button(action: { toggleSubcategory(subcategory: subcategory) }, label: {
         HStack {
           Text(subcategory.name)
           Spacer()
@@ -23,13 +23,13 @@ struct SubcategorySheetView: View {
             Image(systemName: "checkmark")
           }
         }
-      }
+      })
     }
     .navigationTitle("Subcategories")
     .navigationBarItems(leading: addSubcategoryView,
-                        trailing: Button(action: { dismiss() }) {
+                        trailing: Button(action: { dismiss() }, label: {
                           Text("Done").bold()
-                        })
+                        }))
     .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
       AlertToast(type: .error(.red), title: "You can only add \(maxSubcategories) subcategories")
     }
@@ -59,9 +59,9 @@ struct SubcategorySheetView: View {
   @ViewBuilder
   private var addSubcategoryView: some View {
     if profileManager.hasPermission(.canDeleteBrands) {
-      Button(action: { showAddSubcategory.toggle() }) {
+      Button(action: { showAddSubcategory.toggle() }, label: {
         Image(systemName: "plus").bold()
-      }
+      })
     }
   }
 }
