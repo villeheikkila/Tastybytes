@@ -29,7 +29,6 @@ opt_in_rules:
 disabled_rules:
   - trailing_comma
   - function_body_length
-  - todo
   - opening_brace
   - nesting
   - cyclomatic_complexity
