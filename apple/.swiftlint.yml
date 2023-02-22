@@ -32,6 +32,30 @@ opt_in_rules:
   - convenience_type
   - legacy_multiple
   - toggle_bool
+  - discouraged_object_literal
+  - flatmap_over_map_reduce
+  - untyped_error_in_catch
+  - operator_usage_whitespace
+  - optional_enum_case_matching
+  - modifier_order
+  - contains_over_filter_count
+  - contains_over_filter_is_empty
+  - contains_over_range_nil_comparison
+  - empty_collection_literal
+  - overridden_super_call
+  - prohibited_super_call
+  - prefer_zero_over_explicit_init
+  - static_operator
+  - unneeded_parentheses_in_closure_argument
+  - anyobject_protocol
+  - attributes
+  - last_where
+  - closure_end_indentation
+  - closure_spacing
+  - empty_xctest_method
+  - function_default_parameter_at_end
+  - pattern_matching_keywords
+  - single_test_class
 disabled_rules:
   - opening_brace
   - nesting
@@ -69,3 +93,8 @@ custom_rules:
 private_over_fileprivate:
   validate_extensions: true
   severity: error
+
+force_unwrapping:
+  severity: error
+
+redundant_type_annotation: error

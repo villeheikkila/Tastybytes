@@ -2,18 +2,18 @@ import AVFoundation
 import SwiftUI
 
 struct ScannerView: UIViewControllerRepresentable {
-  var isTorchOn: Bool
-  var completion: (Result<Barcode, ScanError>) -> Void
+  let completion: (Result<Barcode, ScanError>) -> Void
   let scanTypes: [AVMetadataObject.ObjectType]
+  let isTorchOn: Bool
 
   init(
-    isTorchOn: Bool = false,
     scanTypes: [AVMetadataObject.ObjectType],
-    completion: @escaping (Result<Barcode, ScanError>) -> Void
+    completion: @escaping (Result<Barcode, ScanError>) -> Void,
+    isTorchOn: Bool = false
   ) {
-    self.isTorchOn = isTorchOn
     self.completion = completion
     self.scanTypes = scanTypes
+    self.isTorchOn = isTorchOn
   }
 
   func makeUIViewController(context _: Context) -> Controller {

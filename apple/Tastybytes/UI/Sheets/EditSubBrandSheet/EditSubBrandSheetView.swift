@@ -32,7 +32,7 @@ struct EditSubBrandSheetView: View {
         Text("Name")
       }
 
-      if !viewModel.brand.subBrands.filter { $0.name != nil && $0.id != viewModel.subBrand.id }.isEmpty {
+      if !viewModel.brand.subBrands.contains(where: { $0.name != nil && $0.id != viewModel.subBrand.id }) {
         Section {
           ForEach(viewModel.brand.subBrands.filter { $0.name != nil && $0.id != viewModel.subBrand.id },
                   id: \.self) { subBrand in

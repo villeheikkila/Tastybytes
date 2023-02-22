@@ -26,15 +26,14 @@ struct CompanyScreenView: View {
         ForEach(
           viewModel.sortedBrands,
           id: \.id
-        ) { brand in
-          NavigationLink(value: Route
+        ) { brand in NavigationLink(value: Route
             .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand))) {
-              HStack {
-                Text("\(brand.name)")
-                Spacer()
-                Text("(\(brand.getNumberOfProducts()))")
-              }
-            }
+          HStack {
+            Text("\(brand.name)")
+            Spacer()
+            Text("(\(brand.getNumberOfProducts()))")
+          }
+        }
         }
       } header: {
         Text("Brands")

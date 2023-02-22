@@ -129,9 +129,11 @@ struct AddProductView: View {
           if viewModel.subcategories.isEmpty {
             Text("Subcategories")
           } else {
-            HStack { ForEach(viewModel.subcategories) { subcategory in
-              ChipView(title: subcategory.name)
-            }}
+            HStack {
+              ForEach(viewModel.subcategories) { subcategory in
+                ChipView(title: subcategory.name)
+              }
+            }
           }
         }
       })

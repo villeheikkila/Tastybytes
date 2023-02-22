@@ -45,7 +45,7 @@ extension LocationSearchView {
     }
 
     private func searchForLocation(text _: String) {
-      service.searchLocation(resultType: .pointOfInterest, searchText: searchText)
+      service.searchLocation(searchText: searchText, resultType: .pointOfInterest)
     }
   }
 }

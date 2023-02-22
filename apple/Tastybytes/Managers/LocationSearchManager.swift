@@ -12,9 +12,7 @@ final class LocationSearchManager {
     self.center = center
   }
 
-  func searchLocation(resultType: MKLocalSearch.ResultType = .pointOfInterest,
-                      searchText: String)
-  {
+  func searchLocation(searchText: String, resultType: MKLocalSearch.ResultType = .pointOfInterest) {
     let request = MKLocalSearch.Request()
     request.naturalLanguageQuery = searchText
     request.pointOfInterestFilter = .includingAll
