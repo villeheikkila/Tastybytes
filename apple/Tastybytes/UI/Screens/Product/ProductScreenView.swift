@@ -24,6 +24,12 @@ struct ProductScreenView: View {
       header: {
         ProductItemView(product: viewModel.product, extras: [.companyLink])
           .listRowSeparator(.hidden)
+        Button(action: { viewModel.activeSheet = .checkIn }, label: {
+          Text("Check-in!")
+            .foregroundColor(.primary)
+            .fontWeight(.medium)
+        })
+
         if let summary = viewModel.summary, summary.averageRating != nil {
           Section {
             SummaryView(summary: summary)
