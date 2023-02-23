@@ -53,7 +53,8 @@ struct ProfileProductListView: View {
   private var toolbar: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Button(action: { viewModel.showFilters.toggle() }, label: {
-        Image(systemName: "line.3.horizontal.decrease.circle")
+        Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
+          .labelStyle(.iconOnly)
       })
     }
   }

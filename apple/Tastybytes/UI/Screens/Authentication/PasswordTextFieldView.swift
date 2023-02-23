@@ -8,6 +8,7 @@ struct PasswordTextFieldView: View {
     VStack(alignment: .leading) {
       HStack {
         Image(systemName: "key")
+          .accessibility(hidden: true)
         SecureField("Password", text: $password)
           .textContentType(.password)
           .autocapitalization(.none)

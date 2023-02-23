@@ -123,12 +123,16 @@ struct CheckInListView<Header>: View
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       NavigationLink(value: Route.currentUserFriends) {
-        Image(systemName: "person.2").imageScale(.large)
+        Label("Friends Page", systemImage: "person.2")
+          .labelStyle(.iconOnly)
+          .imageScale(.large)
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       NavigationLink(value: Route.settings) {
-        Image(systemName: "gear").imageScale(.large)
+        Label("Settings Page", systemImage: "gear")
+          .labelStyle(.iconOnly)
+          .imageScale(.large)
       }
     }
   }

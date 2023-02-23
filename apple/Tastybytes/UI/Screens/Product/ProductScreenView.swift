@@ -147,7 +147,8 @@ struct ProductScreenView: View {
           }).disabled(viewModel.product.isVerified)
         }
       } label: {
-        Image(systemName: "ellipsis")
+        Label("Options menu", systemImage: "ellipsis")
+          .labelStyle(.iconOnly)
       }
     }
   }

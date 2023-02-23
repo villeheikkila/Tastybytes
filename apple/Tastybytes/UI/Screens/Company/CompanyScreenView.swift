@@ -123,7 +123,8 @@ struct CompanyScreenView: View {
         .disabled(viewModel.company.isVerified)
       }
     } label: {
-      Image(systemName: "ellipsis")
+      Label("Options menu", systemImage: "ellipsis")
+        .labelStyle(.iconOnly)
     }
   }
 
@@ -168,8 +169,10 @@ struct CompanyScreenView: View {
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(width: 52, height: 52)
+            .accessibility(hidden: true)
         } placeholder: {
           Image(systemName: "photo")
+            .accessibility(hidden: true)
         }
       }
       Spacer()

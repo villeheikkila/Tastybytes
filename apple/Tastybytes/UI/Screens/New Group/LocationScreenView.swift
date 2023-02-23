@@ -66,7 +66,8 @@ struct LocationScreenView: View {
           })
         }
       } label: {
-        Image(systemName: "ellipsis")
+        Label("Options menu", systemImage: "ellipsis")
+          .labelStyle(.iconOnly)
       }
     }
   }

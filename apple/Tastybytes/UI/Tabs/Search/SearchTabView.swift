@@ -182,6 +182,7 @@ struct SearchTabView: View {
         }
         if filters.category != nil, filters.subcategory != nil {
           Image(systemName: "arrowtriangle.forward")
+            .accessibility(hidden: true)
         }
         if let subcategory = filters.subcategory {
           Text(subcategory.name).bold()
@@ -278,14 +279,16 @@ struct SearchTabView: View {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       if viewModel.searchScope == .products {
         Button(action: { viewModel.showFilters.toggle() }, label: {
-          Image(systemName: "line.3.horizontal.decrease.circle")
+          Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
+            .labelStyle(.iconOnly)
         })
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if profileManager.hasPermission(.canAddBarcodes) {
         Button(action: { viewModel.showBarcodeScanner.toggle() }, label: {
-          Image(systemName: "barcode.viewfinder")
+          Label("Scan a barcode", systemImage: "barcode.viewfinder")
+            .labelStyle(.iconOnly)
         })
       }
     }

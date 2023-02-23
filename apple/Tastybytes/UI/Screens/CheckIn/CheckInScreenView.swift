@@ -44,7 +44,8 @@ struct CheckInScreenView: View {
           })
         }
       } label: {
-        Image(systemName: "ellipsis")
+        Label("Options menu", systemImage: "ellipsis")
+          .labelStyle(.iconOnly)
       }
     )
     .confirmationDialog("Delete Check-in Confirmation",
@@ -104,7 +105,8 @@ struct CheckInScreenView: View {
     HStack {
       TextField("Leave a comment!", text: $viewModel.commentText)
       Button(action: { viewModel.sendComment() }, label: {
-        Image(systemName: "paperplane.fill")
+        Label("Send the comment", systemImage: "paperplane.fill")
+          .labelStyle(.iconOnly)
       })
       .disabled(viewModel.isInvalidComment())
     }

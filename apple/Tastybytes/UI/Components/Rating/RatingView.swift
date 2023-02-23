@@ -19,9 +19,9 @@ struct RatingView: View {
       ForEach(0 ..< Int(rating), id: \.self) { _ in
         Image(systemName: "star.fill")
           .resizable()
-
           .frame(width: width, height: height)
           .foregroundColor(.yellow)
+          .accessibility(hidden: true)
       }
 
       if rating != floor(rating) {
@@ -29,14 +29,16 @@ struct RatingView: View {
           .resizable()
           .frame(width: width, height: height)
           .foregroundColor(.yellow)
+          .accessibility(hidden: true)
       }
 
       ForEach(0 ..< Int(Double(5) - rating), id: \.self) { _ in
         Image(systemName: "star")
           .resizable()
           .frame(width: width, height: height)
+          .accessibility(hidden: true)
       }
-    }
+    }.accessibilityLabel("\(rating) stars")
   }
 }
 

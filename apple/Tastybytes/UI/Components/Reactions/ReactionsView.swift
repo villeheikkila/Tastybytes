@@ -15,7 +15,8 @@ struct ReactionsView: View {
       ForEach(viewModel.checkInReactions, id: \.id) { reaction in
         AvatarView(avatarUrl: reaction.profile.avatarUrl, size: 16, id: reaction.profile.id)
       }
-      Image(systemName: "hand.thumbsup.fill")
+      Label("React to check-in", systemImage: "hand.thumbsup.fill")
+        .labelStyle(.iconOnly)
         .imageScale(.medium)
         .foregroundColor(Color(.systemYellow))
     }

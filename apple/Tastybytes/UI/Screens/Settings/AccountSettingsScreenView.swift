@@ -54,6 +54,7 @@ struct AccountSettingsScreenView: View {
     Section {
       HStack {
         Image(systemName: "key")
+          .accessibility(hidden: true)
         SecureField("New Password", text: $viewModel.newPassword)
           .textContentType(.password)
           .autocapitalization(.none)
@@ -61,6 +62,7 @@ struct AccountSettingsScreenView: View {
       }
       HStack {
         Image(systemName: "key")
+          .accessibility(hidden: true)
         SecureField("Confirm New Password", text: $viewModel.newPasswordConfirmation)
           .textContentType(.password)
           .autocapitalization(.none)

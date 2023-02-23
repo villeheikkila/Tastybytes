@@ -89,7 +89,8 @@ struct AboutScreenView: View {
   var footer: some View {
     Section {
       HStack(alignment: .center) {
-        Image(systemName: "c.circle")
+        Label("Copyright", systemImage: "c.circle")
+          .labelStyle(.iconOnly)
           .font(.caption).bold()
 
         if let currentYear = Calendar(identifier: .gregorian).dateComponents([.year], from: .now).year {

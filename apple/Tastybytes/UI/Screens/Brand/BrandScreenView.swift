@@ -83,7 +83,8 @@ struct BrandScreenView: View {
                 .disabled(subBrand.isVerified)
               }
             } label: {
-              Image(systemName: "ellipsis")
+              Label("Options menu", systemImage: "ellipsis")
+                .labelStyle(.iconOnly)
                 .frame(width: 24, height: 24)
             }
           }
@@ -204,7 +205,8 @@ struct BrandScreenView: View {
         .disabled(viewModel.brand.isVerified)
       }
     } label: {
-      Image(systemName: "ellipsis")
+      Label("Options menu", systemImage: "ellipsis")
+        .labelStyle(.iconOnly)
     }
   }
 }

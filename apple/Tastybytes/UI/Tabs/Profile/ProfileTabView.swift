@@ -85,15 +85,18 @@ struct ProfileTabView: View {
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       NavigationLink(value: Route.currentUserFriends) {
-        Image(systemName: "person.2").imageScale(.large)
+        Label("Friends page", systemImage: "person.2")
+          .labelStyle(.iconOnly)
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Button(action: { showProfileQrCode.toggle() }, label: {
-        Image(systemName: "qrcode")
+        Label("Show name tag", systemImage: "qrcode")
+          .labelStyle(.iconOnly)
       })
       NavigationLink(value: Route.settings) {
-        Image(systemName: "gear").imageScale(.large)
+        Label("Settings page", systemImage: "gear")
+          .labelStyle(.iconOnly)
       }
     }
   }

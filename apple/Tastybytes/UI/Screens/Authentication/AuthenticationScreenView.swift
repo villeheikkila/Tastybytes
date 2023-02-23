@@ -47,6 +47,7 @@ struct AuthenticationScreenView: View {
             .resizable()
             .scaledToFit()
             .frame(width: 48, height: 48)
+            .accessibility(hidden: true)
           Text("Account Deleted")
             .font(.title)
         }

@@ -8,6 +8,7 @@ struct EmailTextFieldView: View {
     VStack(alignment: .leading, spacing: 8) {
       HStack {
         Image(systemName: "envelope")
+          .accessibility(hidden: true)
         TextField("Email address", text: $email)
           .keyboardType(.emailAddress)
           .textContentType(.emailAddress)

@@ -12,7 +12,8 @@ struct FriendSheetView: View {
         Text(friend.preferredName)
         Spacer()
         if taggedFriends.contains(friend) {
-          Image(systemName: "checkmark")
+          Label("Tag friend", systemImage: "checkmark")
+            .labelStyle(.iconOnly)
         }
       })
     }

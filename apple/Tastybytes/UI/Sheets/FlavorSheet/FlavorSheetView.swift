@@ -19,7 +19,8 @@ struct FlavorSheetView: View {
           Text(flavor.name.capitalized)
           Spacer()
           if pickedFlavors.contains(flavor) {
-            Image(systemName: "checkmark")
+            Label("Pick the flavor", systemImage: "checkmark")
+              .labelStyle(.iconOnly)
           }
         }
       })

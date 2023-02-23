@@ -25,13 +25,13 @@ struct FriendsScreenView: View {
               Spacer()
               if friend.isPending(userId: profileManager.getProfile().id) {
                 HStack(alignment: .center) {
-                  Image(systemName: "person.fill.xmark")
+                  Label("Remove friend request", systemImage: "person.fill.xmark")
                     .imageScale(.large)
                     .accessibilityAddTraits(.isButton)
                     .onTapGesture {
                       viewModel.friendToBeRemoved = friend
                     }
-                  Image(systemName: "person.badge.plus")
+                  Label("Accept friend request", systemImage: "person.badge.plus")
                     .imageScale(.large)
                     .accessibilityAddTraits(.isButton)
                     .onTapGesture {
@@ -79,7 +79,8 @@ struct FriendsScreenView: View {
                   toastManager.toggle(.success("Friend Request Sent!"))
                 })
               }, label: {
-                Image(systemName: "person.badge.plus")
+                Label("Add as a friend", systemImage: "person.badge.plus")
+                  .labelStyle(.iconOnly)
                   .imageScale(.large)
               })
             }
@@ -109,7 +110,9 @@ struct FriendsScreenView: View {
     HStack {
       if viewModel.profile == profileManager.getProfile() {
         Button(action: { viewModel.showUserSearchSheet.toggle() }, label: {
-          Image(systemName: "plus").imageScale(.large)
+          Label("Add friend", systemImage: "plus")
+            .labelStyle(.iconOnly)
+            .imageScale(.large)
         })
       }
     }

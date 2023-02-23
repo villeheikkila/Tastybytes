@@ -10,6 +10,7 @@ struct ProductFilterOverlayView: View {
       }
       if filters.category != nil, filters.subcategory != nil {
         Image(systemName: "arrowtriangle.forward")
+          .accessibility(hidden: true)
       }
       if let subcategory = filters.subcategory {
         Text(subcategory.name).bold()

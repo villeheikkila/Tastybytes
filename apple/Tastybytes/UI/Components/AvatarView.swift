@@ -16,6 +16,7 @@ struct AvatarView: View {
       .clipShape(Circle())
       .aspectRatio(contentMode: .fill)
       .frame(width: size, height: size)
+      .accessibility(hidden: true)
     } else {
       Image(systemName: "person.fill")
         .resizable()
@@ -24,6 +25,7 @@ struct AvatarView: View {
         .aspectRatio(contentMode: .fill)
         .frame(width: size, height: size)
         .foregroundColor(getConsistentColor(seed: id.uuidString))
+        .accessibility(hidden: true)
     }
   }
 }

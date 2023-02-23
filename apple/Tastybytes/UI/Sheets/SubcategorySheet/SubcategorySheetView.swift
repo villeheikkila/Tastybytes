@@ -20,7 +20,8 @@ struct SubcategorySheetView: View {
           Text(subcategory.name)
           Spacer()
           if subcategories.contains(subcategory) {
-            Image(systemName: "checkmark")
+            Label("Select subcategory", systemImage: "checkmark")
+              .labelStyle(.iconOnly)
           }
         }
       })
@@ -60,7 +61,9 @@ struct SubcategorySheetView: View {
   private var addSubcategoryView: some View {
     if profileManager.hasPermission(.canDeleteBrands) {
       Button(action: { showAddSubcategory.toggle() }, label: {
-        Image(systemName: "plus").bold()
+        Label("Add subcategory", systemImage: "plus")
+          .labelStyle(.iconOnly)
+          .bold()
       })
     }
   }

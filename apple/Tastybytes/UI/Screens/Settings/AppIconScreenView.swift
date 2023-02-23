@@ -20,7 +20,8 @@ struct AppIconScreenView: View {
         Spacer()
 
         if icon == selection {
-          Image(systemName: "checkmark")
+          Label("Selected", systemImage: "checkmark")
+            .labelStyle(.iconOnly)
         }
       }
       .padding(4)

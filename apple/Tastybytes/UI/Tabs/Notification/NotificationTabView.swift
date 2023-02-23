@@ -78,7 +78,8 @@ struct NotificationTabView: View {
           Label("Delete all", systemImage: "trash")
         })
       } label: {
-        Image(systemName: "ellipsis")
+        Label("Options menu", systemImage: "ellipsis")
+          .labelStyle(.iconOnly)
       }
     }
     ToolbarTitleMenu {

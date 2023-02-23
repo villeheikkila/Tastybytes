@@ -52,7 +52,9 @@ struct BlockedUsersScreenView: View {
   private var blockUser: some View {
     HStack {
       Button(action: { viewModel.showUserSearchSheet.toggle() }, label: {
-        Image(systemName: "plus").imageScale(.large)
+        Label("Show block user sheet", systemImage: "plus")
+          .labelStyle(.iconOnly)
+          .imageScale(.large)
       })
     }
   }
