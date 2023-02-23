@@ -115,7 +115,6 @@ struct CheckInCardView: View {
         Text(checkIn.product.getDisplayName(.brandOwner))
           .font(.subheadline)
           .foregroundColor(.secondary)
-          .lineLimit(nil)
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
@@ -128,7 +127,6 @@ struct CheckInCardView: View {
           Text("(\(manufacturer.name))")
             .font(.subheadline)
             .foregroundColor(.secondary)
-            .lineLimit(nil)
         }
 
         Spacer()

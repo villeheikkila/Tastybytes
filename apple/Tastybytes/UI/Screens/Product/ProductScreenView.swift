@@ -22,19 +22,19 @@ struct ProductScreenView: View {
         viewModel.refresh()
       },
       header: {
-        ProductItemView(product: viewModel.product, extras: [.companyLink])
-          .listRowSeparator(.hidden)
-        Button(action: { viewModel.activeSheet = .checkIn }, label: {
-          Text("Check-in!")
-            .foregroundColor(.primary)
-            .fontWeight(.medium)
-        })
+        Section {
+          ProductItemView(product: viewModel.product, extras: [.companyLink])
+          Button(action: { viewModel.activeSheet = .checkIn }, label: {
+            Label("Check-in!", systemImage: "plus")
+              .foregroundColor(.primary)
+              .fontWeight(.medium)
+          })
+        }.listRowSeparator(.visible)
 
         if let summary = viewModel.summary, summary.averageRating != nil {
           Section {
             SummaryView(summary: summary)
-          }
-          .listRowSeparator(.hidden)
+          }.listRowSeparator(.visible)
         }
       }
     )

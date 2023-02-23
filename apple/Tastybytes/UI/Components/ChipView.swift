@@ -7,9 +7,10 @@ struct ChipView: View {
   var body: some View {
     HStack {
       if let systemName {
-        Image(systemName: systemName).font(.title3)
+        Label(title, systemImage: systemName).font(.caption2).bold()
+      } else {
+        Text(title).font(.caption2).bold()
       }
-      Text(title).font(.caption2).bold()
     }
     .padding(.all, 2)
     .foregroundColor(.white)

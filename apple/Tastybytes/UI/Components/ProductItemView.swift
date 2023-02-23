@@ -37,7 +37,6 @@ struct ProductItemView: View {
       Text(product.getDisplayName(.brandOwner))
         .font(.subheadline)
         .foregroundColor(.secondary)
-        .lineLimit(nil)
         .if(extras.contains(.companyLink), transform: { view in
           view.contentShape(Rectangle())
             .accessibilityAddTraits(.isLink)
