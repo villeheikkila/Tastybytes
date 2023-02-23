@@ -19,22 +19,7 @@ struct SearchTabView: View {
     NavigationStack(path: $router.path) {
       ScrollViewReader { proxy in
         List {
-          switch viewModel.searchScope {
-          case .products:
-            productResults
-            if viewModel.isSearched {
-              if viewModel.barcode != nil {
-                addBarcodeNotice
-              }
-              addProductNotice
-            }
-          case .companies:
-            companyResults
-          case .users:
-            profileResults
-          case .locations:
-            locationResults
-          }
+          content
         }
         .onAppear {
           scrollProxy = proxy
@@ -147,6 +132,45 @@ struct SearchTabView: View {
       }
     }
     .environmentObject(router)
+  }
+
+  @ViewBuilder
+  private var content: some View {
+    switch viewModel.searchScope {
+    case .products:
+      if viewModel.products.isEmpty {
+        Button(action: {
+          viewModel.getTrendingProductFeed()
+        }, label: {
+          Label("Trending", systemImage: "chart.line.uptrend.xyaxis").bold()
+        })
+        .listRowSeparator(.visible)
+
+        Button(
+          action: {
+            viewModel.getTopRatedProductFeed()
+          },
+          label: {
+            Label("Top Rated", systemImage: "line.horizontal.star.fill.line.horizontal").bold()
+          }
+        )
+
+      } else {
+        productResults
+      }
+      if viewModel.isSearched {
+        if viewModel.barcode != nil {
+          addBarcodeNotice
+        }
+        addProductNotice
+      }
+    case .companies:
+      companyResults
+    case .users:
+      profileResults
+    case .locations:
+      locationResults
+    }
   }
 
   @ViewBuilder

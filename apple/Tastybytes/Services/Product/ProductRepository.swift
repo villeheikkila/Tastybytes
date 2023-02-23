@@ -1,11 +1,16 @@
 import Foundation
 import Supabase
 
+enum ProductFeedType {
+  case topRated, trending
+}
+
 protocol ProductRepository {
   func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error>
   func search(barcode: Barcode) async -> Result<[Product.Joined], Error>
   func getById(id: Int) async -> Result<Product.Joined, Error>
   func getByProfile(id: UUID) async -> Result<[Product.Joined], Error>
+  func getFeed(_ type: ProductFeedType) async -> Result<[Product.Joined], Error>
   func delete(id: Int) async -> Result<Void, Error>
   func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
   func getSummaryById(id: Int) async -> Result<Summary, Error>
@@ -20,18 +25,54 @@ struct SupabaseProductRepository: ProductRepository {
   let client: SupabaseClient
 
   func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error> {
-    do {
-      let response: [Product.Joined] = try await client
-        .database
-        .rpc(
-          fn: "fnc__search_products",
-          params: Product.SearchParams(searchTerm: searchTerm, filter: filter)
-        )
-        .select(columns: Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
-        .execute()
-        .value
+    let queryBuilder = client
+      .database
+      .rpc(
+        fn: "fnc__search_products",
+        params: Product.SearchParams(searchTerm: searchTerm, filter: filter)
+      )
+      .select(columns: Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
 
-      return .success(response)
+    do {
+      if let filter, let sortBy = filter.sortBy {
+        let response: [Product.Joined] = try await queryBuilder
+          .order(column: "average_rating", ascending: sortBy == .highestRated ? false : true)
+          .execute()
+          .value
+        return .success(response)
+
+      } else {
+        let response: [Product.Joined] = try await queryBuilder
+          .execute()
+          .value
+        return .success(response)
+      }
+
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getFeed(_ type: ProductFeedType) async -> Result<[Product.Joined], Error> {
+    let queryBuilder = client
+      .database
+      .from("view__product_ratings")
+      .select(columns: Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
+
+    do {
+      if type == .topRated {
+        let response: [Product.Joined] = try await queryBuilder
+          .order(column: "average_rating", ascending: false)
+          .execute()
+          .value
+        return .success(response)
+      } else {
+        let response: [Product.Joined] = try await queryBuilder
+          .execute()
+          .value
+        return .success(response)
+      }
+
     } catch {
       return .failure(error)
     }
