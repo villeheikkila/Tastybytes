@@ -6,7 +6,7 @@ enum Field {
   case resetPassword
 }
 
-extension AuthenticationScreenView {
+extension AuthenticationScreen {
   enum Scene: String {
     case signIn, signUp, magicLink, resetPassword, forgotPassword, accountDeleted
 
@@ -23,7 +23,7 @@ extension AuthenticationScreenView {
   }
 
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "AuthenticationScreenView")
+    private let logger = getLogger(category: "AuthenticationScreen")
     let client: Client
     @Published var scene: Scene
     @Published var isLoading = false

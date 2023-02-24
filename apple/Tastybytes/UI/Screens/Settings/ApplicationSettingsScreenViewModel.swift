@@ -1,8 +1,8 @@
 import SwiftUI
 
-extension ApplicationSettingsScreenView {
+extension ApplicationSettingsScreen {
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "ApplicationSettingsScreenView")
+    private let logger = getLogger(category: "ApplicationSettingsScreen")
     let client: Client
     @Published var isSystemColor = false
     @Published var isDarkMode = false

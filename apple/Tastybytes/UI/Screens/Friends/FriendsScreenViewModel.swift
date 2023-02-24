@@ -1,8 +1,8 @@
 import SwiftUI
 
-extension FriendsScreenView {
+extension FriendsScreen {
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "FriendsScreenView")
+    private let logger = getLogger(category: "FriendsScreen")
     let client: Client
     @Published var searchText: String = ""
     @Published var products = [Profile]()

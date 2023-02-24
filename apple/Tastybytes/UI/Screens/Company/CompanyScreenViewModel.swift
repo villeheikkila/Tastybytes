@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension CompanyScreenView {
+extension CompanyScreen {
   enum Sheet: Identifiable {
     var id: Self { self }
     case editSuggestionCompany
@@ -9,7 +9,7 @@ extension CompanyScreenView {
   }
 
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "CompanyScreenView")
+    private let logger = getLogger(category: "CompanyScreen")
     let client: Client
     @Published var company: Company
     @Published var companyJoined: Company.Joined?

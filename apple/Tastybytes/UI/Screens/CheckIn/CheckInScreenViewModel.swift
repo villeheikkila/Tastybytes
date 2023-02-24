@@ -1,8 +1,8 @@
 import SwiftUI
 
-extension CheckInScreenView {
+extension CheckInScreen {
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "CheckInScreenView")
+    private let logger = getLogger(category: "CheckInScreen")
     let client: Client
     @Published var checkIn: CheckIn
     @Published var checkInComments = [CheckInComment]()

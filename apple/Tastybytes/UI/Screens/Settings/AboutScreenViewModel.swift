@@ -1,8 +1,8 @@
 import SwiftUI
 
-extension AboutScreenView {
+extension AboutScreen {
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "AboutScreenView")
+    private let logger = getLogger(category: "AboutScreen")
     let client: Client
     @Published var aboutPage: AboutPage?
 

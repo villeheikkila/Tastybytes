@@ -2,7 +2,7 @@ import PhotosUI
 import SwiftUI
 
 @MainActor class OnboardingViewModel: ObservableObject {
-  private let logger = getLogger(category: "ProfileSettingsTabView")
+  private let logger = getLogger(category: "ProfileSettingsTab")
   let client: Client
   @Published var profile: Profile.Extended?
   @Published var selectedItem: PhotosPickerItem?

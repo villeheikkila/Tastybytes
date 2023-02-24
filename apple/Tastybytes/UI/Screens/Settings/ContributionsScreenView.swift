@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ContributionsScreenView: View {
+struct ContributionsScreen: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
 
@@ -44,7 +44,7 @@ struct ContributionsScreenView: View {
   }
 }
 
-extension ContributionsScreenView {
+extension ContributionsScreen {
   enum Sheet: Identifiable {
     var id: Self { self }
 
@@ -52,7 +52,7 @@ extension ContributionsScreenView {
   }
 
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "ContributionsScreenView")
+    private let logger = getLogger(category: "ContributionsScreen")
     let client: Client
     @Published var products: [Product.Joined] = []
     @Published var activeSheet: Sheet?

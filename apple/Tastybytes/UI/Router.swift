@@ -93,15 +93,15 @@ enum Route: Hashable {
   func view(_ client: Client) -> some View {
     switch self {
     case let .company(company):
-      CompanyScreenView(client, company: company)
+      CompanyScreen(client, company: company)
     case let .brand(brand):
-      BrandScreenView(client, brand: brand)
+      BrandScreen(client, brand: brand)
     case .currentUserFriends:
-      CurrentUserFriendsScreenView(client)
+      CurrentUserFriendsScreen(client)
     case .settings:
-      SettingsScreenView(client)
+      SettingsScreen(client)
     case let .location(location):
-      LocationScreenView(client, location: location)
+      LocationScreen(client, location: location)
     case let .profileProducts(profile):
       ProfileProductListView(client, profile: profile)
     case let .profileStatistics(profile):
@@ -110,13 +110,13 @@ enum Route: Hashable {
       AddProductView(client, mode: .new, initialBarcode: initialBarcode)
         .navigationTitle("Add Product")
     case let .checkIn(checkIn):
-      CheckInScreenView(client, checkIn: checkIn)
+      CheckInScreen(client, checkIn: checkIn)
     case let .profile(profile):
-      ProfileScreenView(client, profile: profile)
+      ProfileScreen(client, profile: profile)
     case let .product(product):
-      ProductScreenView(client, product: product)
+      ProductScreen(client, product: product)
     case let .friends(profile):
-      FriendsScreenView(client, profile: profile)
+      FriendsScreen(client, profile: profile)
     case let .productFeed(feed):
       ProductFeedScreen(client, feed: feed)
     }

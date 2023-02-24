@@ -1,8 +1,8 @@
 import SwiftUI
 
-extension AccountSettingsScreenView {
+extension AccountSettingsScreen {
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "AccountSettingsScreenView")
+    private let logger = getLogger(category: "AccountSettingsScreen")
     let client: Client
     @Published var csvExport: CSVFile?
     @Published var showingExporter = false

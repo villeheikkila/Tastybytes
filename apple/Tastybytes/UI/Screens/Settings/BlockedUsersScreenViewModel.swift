@@ -1,8 +1,8 @@
 import SwiftUI
 
-extension BlockedUsersScreenView {
+extension BlockedUsersScreen {
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "BlockedUsersScreenView")
+    private let logger = getLogger(category: "BlockedUsersScreen")
     let client: Client
     @Published var blockedUsers = [Friend]()
     @Published var error: Error?

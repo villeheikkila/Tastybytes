@@ -81,7 +81,7 @@ struct CheckInListView<Header>: View
     }
     .sheet(item: $viewModel.editCheckIn) { checkIn in
       NavigationStack {
-        CheckInSheetView(viewModel.client, checkIn: checkIn, onUpdate: { updatedCheckIn in
+        CheckInSheet(viewModel.client, checkIn: checkIn, onUpdate: { updatedCheckIn in
           viewModel.onCheckInUpdate(updatedCheckIn)
         })
       }

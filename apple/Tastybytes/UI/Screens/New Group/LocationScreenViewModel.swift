@@ -1,8 +1,8 @@
 import SwiftUI
 
-extension LocationScreenView {
+extension LocationScreen {
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "LocationScreenView")
+    private let logger = getLogger(category: "LocationScreen")
     let client: Client
     @Published var summary: Summary?
     @Published var showDeleteLocationConfirmation = false

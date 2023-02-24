@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CurrentUserFriendsScreenView: View {
+struct CurrentUserFriendsScreen: View {
   let client: Client
   @EnvironmentObject private var profileManager: ProfileManager
 
@@ -9,6 +9,6 @@ struct CurrentUserFriendsScreenView: View {
   }
 
   var body: some View {
-    FriendsScreenView(client, profile: profileManager.getProfile())
+    FriendsScreen(client, profile: profileManager.getProfile())
   }
 }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SplashScreenView: View {
+struct SplashScreen: View {
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @State private var firstAnimation = false
   @State private var secondAnimation = false
@@ -50,9 +50,9 @@ struct SplashScreenView: View {
   }
 }
 
-struct LaunchScreenView_Previews: PreviewProvider {
+struct LaunchScreen_Previews: PreviewProvider {
   static var previews: some View {
-    SplashScreenView()
+    SplashScreen()
       .environmentObject(SplashScreenManager())
   }
 }

@@ -50,7 +50,7 @@ struct DiscoverTab: View {
         })
         .sheet(isPresented: $viewModel.showBarcodeScanner) {
           NavigationStack {
-            BarcodeScannerSheetView(onComplete: { barcode in
+            BarcodeScannerSheet(onComplete: { barcode in
               viewModel.searchProductsByBardcode(barcode)
             })
           }
@@ -58,7 +58,7 @@ struct DiscoverTab: View {
         }
         .sheet(isPresented: $viewModel.showFilters) {
           NavigationStack {
-            ProductFilterSheetView(
+            ProductFilterSheet(
               viewModel.client,
               initialFilter: viewModel.productFilter,
               sections: [.category, .checkIns],

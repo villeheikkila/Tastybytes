@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension ProductScreenView {
+extension ProductScreen {
   enum Sheet: Identifiable {
     var id: Self { self }
     case checkIn
@@ -11,7 +11,7 @@ extension ProductScreenView {
   }
 
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "ProductScreenView")
+    private let logger = getLogger(category: "ProductScreen")
     let client: Client
     @Published var product: Product.Joined
     @Published var activeSheet: Sheet?

@@ -9,9 +9,9 @@ struct OnboardTabsView: View {
 
   var body: some View {
     TabView {
-      WelcomeTabView()
-      ProfileSettingsTabView()
-      FinalStepView()
+      WelcomeTab()
+      ProfileSettingsTab()
+      FinalStepTab()
     }
     .environmentObject(onboardingViewModel)
     .tabViewStyle(.page)

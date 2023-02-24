@@ -1,8 +1,8 @@
 import SwiftUI
 
-extension BarcodeManagementSheetView {
+extension BarcodeManagementSheet {
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "BarcodeManagementSheetView")
+    private let logger = getLogger(category: "BarcodeManagementSheet")
     let client: Client
     let product: Product.Joined
     @Published var barcodes: [ProductBarcode.JoinedWithCreator] = []

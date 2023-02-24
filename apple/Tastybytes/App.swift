@@ -46,16 +46,16 @@ struct RootView: View {
           }
         }
       case .passwordRecovery:
-        AuthenticationScreenView(client, scene: .resetPassword)
+        AuthenticationScreen(client, scene: .resetPassword)
       case .userDeleted:
-        AuthenticationScreenView(client, scene: .accountDeleted)
+        AuthenticationScreen(client, scene: .accountDeleted)
       case nil:
-        SplashScreenView()
+        SplashScreen()
       default:
-        AuthenticationScreenView(client, scene: .signIn)
+        AuthenticationScreen(client, scene: .signIn)
       }
       if splashScreenManager.state != .finished {
-        SplashScreenView()
+        SplashScreen()
       }
     }
     .toast(isPresenting: $toastManager.show) {

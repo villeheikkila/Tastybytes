@@ -1,8 +1,8 @@
 import SwiftUI
 
-extension ProfileSettingsScreenView {
+extension ProfileSettingsScreen {
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "ProfileSettingsScreenView")
+    private let logger = getLogger(category: "ProfileSettingsScreen")
     let client: Client
     @Published var username = "" {
       didSet {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension BrandScreenView {
+extension BrandScreen {
   enum Sheet: Identifiable {
     var id: Self { self }
     case editBrand
@@ -10,7 +10,7 @@ extension BrandScreenView {
   }
 
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "BrandScreenView")
+    private let logger = getLogger(category: "BrandScreen")
     let client: Client
     @Published var brand: Brand.JoinedSubBrandsProductsCompany
     @Published var summary: Summary?
