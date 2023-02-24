@@ -36,6 +36,7 @@
 		5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */; };
 		5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 5C13F21A291A7C3A00599892 /* FirebaseMessaging */; };
 		5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146E529A9315D0005422D /* ProductFeedScreen.swift */; };
+		5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EA29A96C090005422D /* NameTagSheet.swift */; };
 		5C25AEB229031B9D00793607 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 5C25AEB129031B9D00793607 /* WrappingHStack */; };
 		5C25AEB429031F9C00793607 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB329031F9C00793607 /* DateExtensions.swift */; };
 		5C25AEB62903FBDE00793607 /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB52903FBDE00793607 /* Role.swift */; };
@@ -227,6 +228,7 @@
 		5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRepository.swift; sourceTree = "<group>"; };
 		5C13F21E291A8D8E00599892 /* TastybytesDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TastybytesDebug.entitlements; sourceTree = "<group>"; };
 		5C2146E529A9315D0005422D /* ProductFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreen.swift; sourceTree = "<group>"; };
+		5C2146EA29A96C090005422D /* NameTagSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTagSheet.swift; sourceTree = "<group>"; };
 		5C25AEB329031F9C00793607 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		5C25AEB52903FBDE00793607 /* Role.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
 		5C25AEB72904038000793607 /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
@@ -429,6 +431,14 @@
 			path = ProductFeed;
 			sourceTree = "<group>";
 		};
+		5C2146E929A96BEB0005422D /* NameTagSheet */ = {
+			isa = PBXGroup;
+			children = (
+				5C2146EA29A96C090005422D /* NameTagSheet.swift */,
+			);
+			path = NameTagSheet;
+			sourceTree = "<group>";
+		};
 		5C25C66E2995615300C07953 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -623,6 +633,7 @@
 		5C46E8652911E2CD0008F142 /* Sheets */ = {
 			isa = PBXGroup;
 			children = (
+				5C2146E929A96BEB0005422D /* NameTagSheet */,
 				5C353CBA29A23C790067C4EE /* ProductFilterSheet */,
 				5C7C35B7299AC723009A3C09 /* EditSubBrandSheet */,
 				5C7C35B4299AC6FE009A3C09 /* EditBrandSheet */,
@@ -1421,6 +1432,7 @@
 				5C0E36482922F21B0072EFBD /* ToastManager.swift in Sources */,
 				5C12B42D2902A12A001EE549 /* ApplicationSettingsScreenView.swift in Sources */,
 				5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */,
+				5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */,
 				5CB1C24D28F9C087000B0EB4 /* AuthRepository.swift in Sources */,
 				5C7C35CE299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift in Sources */,
 				5C7C357E299AC070009A3C09 /* AuthenticationScreenViewModel.swift in Sources */,

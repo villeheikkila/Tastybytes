@@ -17,6 +17,7 @@ extension FriendsScreenView {
     }
 
     @Published var showRemoveFriendConfirmation = false
+    @Published var showProfileQrCode = false
 
     let profile: Profile
 

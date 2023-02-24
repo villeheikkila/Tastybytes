@@ -65,9 +65,9 @@ struct FriendsScreenView: View {
         noficationManager.markAllFriendRequestsAsRead()
       }
     }
-    .navigationBarItems(
-      trailing: addFriendButton
-    )
+    .toolbar {
+      toolbarContent
+    }
     .sheet(isPresented: $viewModel.showUserSearchSheet) {
       NavigationStack {
         UserSheetView(viewModel.client, actions: { profile in
@@ -90,6 +90,17 @@ struct FriendsScreenView: View {
       }
       .presentationDetents([.medium])
     }
+    .sheet(isPresented: $viewModel.showProfileQrCode) {
+      NavigationStack {
+        NameTagSheet(onSuccess: { profileId in
+          viewModel.sendFriendRequest(receiver: profileId, onSuccess: {
+            hapticManager.trigger(of: .notification(.success))
+            toastManager.toggle(.success("Friend Request Sent!"))
+          })
+        })
+      }
+      .presentationDetents([.medium])
+    }
     .errorAlert(error: $viewModel.error)
     .confirmationDialog("Delete Friend Confirmation",
                         isPresented: $viewModel.showRemoveFriendConfirmation,
@@ -106,9 +117,16 @@ struct FriendsScreenView: View {
     }
   }
 
-  private var addFriendButton: some View {
-    HStack {
+  @ToolbarContentBuilder
+  private var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
       if viewModel.profile == profileManager.getProfile() {
+        Button(action: { viewModel.showProfileQrCode.toggle() }, label: {
+          Label("Show name tag or send friend request by QR code", systemImage: "qrcode")
+            .labelStyle(.iconOnly)
+            .imageScale(.large)
+        })
+
         Button(action: { viewModel.showUserSearchSheet.toggle() }, label: {
           Label("Add friend", systemImage: "plus")
             .labelStyle(.iconOnly)

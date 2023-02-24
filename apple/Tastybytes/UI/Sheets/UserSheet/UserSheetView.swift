@@ -29,7 +29,7 @@ struct UserSheetView<Actions: View>: View {
       }
     }
     .navigationTitle("Search users")
-    .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }, label: {
+    .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Cancel").bold()
     }))
     .searchable(text: $viewModel.searchText)

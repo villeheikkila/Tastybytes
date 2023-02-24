@@ -74,9 +74,7 @@ extension ScannerView {
 
       if captureSession.isRunning == false {
         DispatchQueue.global(qos: .userInteractive).async {
-          Task {
-            self.captureSession?.startRunning()
-          }
+          self.captureSession?.startRunning()
         }
       }
     }
