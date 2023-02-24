@@ -86,6 +86,7 @@ enum Route: Hashable {
   case currentUserFriends
   case friends(Profile)
   case addProduct(Barcode?)
+  case productFeed(ProductFeedType)
 
   @ViewBuilder
   @MainActor
@@ -116,6 +117,8 @@ enum Route: Hashable {
       ProductScreenView(client, product: product)
     case let .friends(profile):
       FriendsScreenView(client, profile: profile)
+    case let .productFeed(feed):
+      ProductFeedScreen(client, feed: feed)
     }
   }
 }

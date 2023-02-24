@@ -35,6 +35,8 @@
 		5C12B4392902CAF3001EE549 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4382902CAF3001EE549 /* Notification.swift */; };
 		5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */; };
 		5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 5C13F21A291A7C3A00599892 /* FirebaseMessaging */; };
+		5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146E529A9315D0005422D /* ProductFeedScreen.swift */; };
+		5C2146E829A932120005422D /* ProductFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146E729A932120005422D /* ProductFeedViewModel.swift */; };
 		5C25AEB229031B9D00793607 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 5C25AEB129031B9D00793607 /* WrappingHStack */; };
 		5C25AEB429031F9C00793607 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB329031F9C00793607 /* DateExtensions.swift */; };
 		5C25AEB62903FBDE00793607 /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB52903FBDE00793607 /* Role.swift */; };
@@ -225,6 +227,8 @@
 		5C12B4382902CAF3001EE549 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRepository.swift; sourceTree = "<group>"; };
 		5C13F21E291A8D8E00599892 /* TastybytesDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TastybytesDebug.entitlements; sourceTree = "<group>"; };
+		5C2146E529A9315D0005422D /* ProductFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreen.swift; sourceTree = "<group>"; };
+		5C2146E729A932120005422D /* ProductFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedViewModel.swift; sourceTree = "<group>"; };
 		5C25AEB329031F9C00793607 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		5C25AEB52903FBDE00793607 /* Role.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
 		5C25AEB72904038000793607 /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
@@ -417,6 +421,15 @@
 				5C09BECA29A54AF800331AEB /* Comfortaa-Bold.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		5C2146E429A931490005422D /* ProductFeed */ = {
+			isa = PBXGroup;
+			children = (
+				5C2146E529A9315D0005422D /* ProductFeedScreen.swift */,
+				5C2146E729A932120005422D /* ProductFeedViewModel.swift */,
+			);
+			path = ProductFeed;
 			sourceTree = "<group>";
 		};
 		5C25C66E2995615300C07953 /* Onboarding */ = {
@@ -1027,6 +1040,7 @@
 		5CD10A5F28F99CF60001CFC2 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				5C2146E429A931490005422D /* ProductFeed */,
 				5C7C3581299AC11E009A3C09 /* CheckIn */,
 				5C7C358F299AC299009A3C09 /* Product */,
 				5C7C358C299AC23F009A3C09 /* Brand */,
@@ -1328,6 +1342,7 @@
 				5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */,
 				5C25C68429956B8500C07953 /* LinkedInShape.swift in Sources */,
 				5C919E2228FF0CF60055CFD2 /* ProductVariant.swift in Sources */,
+				5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */,
 				5C7C35BC299AC7AE009A3C09 /* ReactionsViewModel.swift in Sources */,
 				5C7C35D8299ACEFF009A3C09 /* OnboardTabsViewModel.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsScreenView.swift in Sources */,
@@ -1388,6 +1403,7 @@
 				5C7C35A0299AC5A8009A3C09 /* CompanySearchSheetViewModel.swift in Sources */,
 				5CB52D64292BBC14000BF55F /* ProfileProductListView.swift in Sources */,
 				5C46E8642911D9FD0008F142 /* Config.swift in Sources */,
+				5C2146E829A932120005422D /* ProductFeedViewModel.swift in Sources */,
 				5C989DAB2901AAD500BBC5A7 /* Client.swift in Sources */,
 				5C663F372933B8FA006F9A97 /* LocationScreenView.swift in Sources */,
 				5CE9008C291FCB71003DE697 /* SplashScreenView.swift in Sources */,

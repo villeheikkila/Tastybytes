@@ -1,8 +1,18 @@
 import Foundation
 import Supabase
 
-enum ProductFeedType {
+enum ProductFeedType: Hashable, Identifiable {
+  var id: String { label }
   case topRated, trending
+
+  var label: String {
+    switch self {
+    case .topRated:
+      return "Top Rated"
+    case .trending:
+      return "Trending"
+    }
+  }
 }
 
 protocol ProductRepository {

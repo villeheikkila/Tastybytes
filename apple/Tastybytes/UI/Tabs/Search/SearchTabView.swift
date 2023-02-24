@@ -128,8 +128,7 @@ struct SearchTabView: View {
           }
           resetNavigationOnTab = nil
         }
-        .withRoutes(viewModel.client)
-      }
+      }.withRoutes(viewModel.client)
     }
     .environmentObject(router)
   }
@@ -139,22 +138,18 @@ struct SearchTabView: View {
     switch viewModel.searchScope {
     case .products:
       if viewModel.products.isEmpty {
-        Button(action: {
-          viewModel.getTrendingProductFeed()
-        }, label: {
-          Label("Trending", systemImage: "chart.line.uptrend.xyaxis").bold()
-        })
-        .listRowSeparator(.visible)
+        Section {
+          NavigationLink(value: Route.productFeed(.trending)) {
+            Label("Trending", systemImage: "chart.line.uptrend.xyaxis").bold()
+          }
+          .listRowSeparator(.visible)
 
-        Button(
-          action: {
-            viewModel.getTopRatedProductFeed()
-          },
-          label: {
+          NavigationLink(value: Route.productFeed(.topRated)) {
             Label("Top Rated", systemImage: "line.horizontal.star.fill.line.horizontal").bold()
           }
-        )
-
+        } header: {
+          Text("Discover")
+        }.headerProminence(.increased)
       } else {
         productResults
       }
