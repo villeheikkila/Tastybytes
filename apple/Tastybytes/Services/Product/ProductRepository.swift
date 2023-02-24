@@ -68,6 +68,7 @@ struct SupabaseProductRepository: ProductRepository {
         return .success(response)
       } else {
         let response: [Product.Joined] = try await queryBuilder
+          .order(column: "check_ins_during_previous_month", ascending: false)
           .execute()
           .value
         return .success(response)
