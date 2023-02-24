@@ -10,7 +10,7 @@ struct ProductFeedScreen: View {
 
   var body: some View {
     List {
-      ForEach(viewModel.products.unique(selector: { $0.id == $1.id }), id: \.id) { product in
+      ForEach(viewModel.filteredProducts, id: \.id) { product in
         ProductItemView(product: product, extras: [.checkInCheck, .rating])
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
@@ -36,57 +36,26 @@ struct ProductFeedScreen: View {
     .refreshable {
       await viewModel.refresh()
     }
-    .navigationTitle(viewModel.feed.label)
+    .navigationTitle(viewModel.title)
+    .toolbar {
+      toolbarContent
+    }
     .task {
+      await viewModel.loadCategories()
       await viewModel.refresh()
     }
   }
-}
 
-extension ProductFeedScreen {
-  @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "ProductFeedView")
-    let client: Client
-    @Published var products = [Product.Joined]()
-    @Published var isLoading = false
-    private let pageSize = 10
-    private var page = 0
-
-    let feed: ProductFeedType
-
-    init(_ client: Client, feed: ProductFeedType) {
-      self.client = client
-      self.feed = feed
-    }
-
-    func refresh() async {
-      page = 0
-      products = [Product.Joined]()
-      await fetchProductFeedItems()
-    }
-
-    func getPagination(page: Int, size: Int) -> (Int, Int) {
-      let limit = size + 1
-      let from = page * limit
-      let to = from + size
-      return (from, to)
-    }
-
-    func fetchProductFeedItems(onComplete: (() -> Void)? = nil) async {
-      let (from, to) = getPagination(page: page, size: pageSize)
-
-      isLoading = true
-
-      switch await client.product.getFeed(feed, from: from, to: to) {
-      case let .success(additionalProducts):
-        products.append(contentsOf: additionalProducts)
-        page += 1
-        isLoading = false
-        if let onComplete {
-          onComplete()
-        }
-      case let .failure(error):
-        logger.error("fetching check-ins failed: \(error.localizedDescription)")
+  @ToolbarContentBuilder
+  private var toolbarContent: some ToolbarContent {
+    ToolbarTitleMenu {
+      Button(action: { viewModel.categoryFilter = nil }, label: {
+        Text(viewModel.feed.label)
+      })
+      ForEach(viewModel.categories, id: \.self) { category in
+        Button(action: { viewModel.categoryFilter = category }, label: {
+          Text(category.name.label)
+        })
       }
     }
   }

@@ -12,6 +12,7 @@ struct BottomOverlay<RootView: View>: View {
   var body: some View {
     VStack {
       Spacer()
+
       HStack {
         Spacer()
         VStack {
