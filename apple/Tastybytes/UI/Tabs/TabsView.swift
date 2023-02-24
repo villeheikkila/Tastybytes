@@ -64,7 +64,7 @@ enum Tab: Int, Identifiable, Hashable {
     case .activity:
       ActivityTabView(client, resetNavigationOnTab: resetNavigationOnTab)
     case .search:
-      SearchTabView(client, resetNavigationOnTab: resetNavigationOnTab)
+      DiscoverTab(client, resetNavigationOnTab: resetNavigationOnTab)
     case .notifications:
       NotificationTabView(client, resetNavigationOnTab: resetNavigationOnTab)
     case .profile:
@@ -78,7 +78,7 @@ enum Tab: Int, Identifiable, Hashable {
     case .activity:
       Label("Activity", systemImage: "list.star")
     case .search:
-      Label("Search", systemImage: "magnifyingglass")
+      Label("Discover", systemImage: "magnifyingglass")
     case .notifications:
       Label("Notifications", systemImage: "bell")
     case .profile:

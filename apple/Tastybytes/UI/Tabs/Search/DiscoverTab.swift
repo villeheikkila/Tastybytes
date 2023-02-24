@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SearchTabView: View {
+struct DiscoverTab: View {
   @StateObject private var viewModel: ViewModel
   @Binding private var resetNavigationOnTab: Tab?
   @EnvironmentObject private var toastManager: ToastManager
@@ -95,7 +95,7 @@ struct SearchTabView: View {
         .onSubmit(of: .search) {
           viewModel.search()
         }
-        .navigationTitle("Search")
+        .navigationTitle("Discover")
         .toolbar {
           toolbarContent
         }
@@ -148,7 +148,7 @@ struct SearchTabView: View {
             Label("Top Rated", systemImage: "line.horizontal.star.fill.line.horizontal").bold()
           }
         } header: {
-          Text("Discover")
+          Text("Feeds")
         }.headerProminence(.increased)
       } else {
         productResults

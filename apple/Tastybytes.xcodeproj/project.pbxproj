@@ -25,7 +25,7 @@
 		5C11ECB628EEEFB300CCDE6A /* SettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB528EEEFB300CCDE6A /* SettingsScreenView.swift */; };
 		5C11ECB928EEF16000CCDE6A /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECB828EEF16000CCDE6A /* ProfileTabView.swift */; };
 		5C11ECBB28EEF24700CCDE6A /* ActivityTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECBA28EEF24700CCDE6A /* ActivityTabView.swift */; };
-		5C11ECBD28EEF30600CCDE6A /* SearchTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECBC28EEF30600CCDE6A /* SearchTabView.swift */; };
+		5C11ECBD28EEF30600CCDE6A /* DiscoverTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECBC28EEF30600CCDE6A /* DiscoverTab.swift */; };
 		5C11ECC028EF434700CCDE6A /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C11ECBF28EF434700CCDE6A /* Profile.swift */; };
 		5C12B42D2902A12A001EE549 /* ApplicationSettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B42C2902A12A001EE549 /* ApplicationSettingsScreenView.swift */; };
 		5C12B42F2902A191001EE549 /* ProfileSettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B42E2902A190001EE549 /* ProfileSettingsScreenView.swift */; };
@@ -116,7 +116,7 @@
 		5C7C35D4299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35D3299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift */; };
 		5C7C35D6299ACEAF009A3C09 /* AboutScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35D5299ACEAF009A3C09 /* AboutScreenViewModel.swift */; };
 		5C7C35D8299ACEFF009A3C09 /* OnboardTabsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35D7299ACEFF009A3C09 /* OnboardTabsViewModel.swift */; };
-		5C7C35DB299AE009009A3C09 /* SearchTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35DA299AE009009A3C09 /* SearchTabViewModel.swift */; };
+		5C7C35DB299AE009009A3C09 /* DiscoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35DA299AE009009A3C09 /* DiscoverViewModel.swift */; };
 		5C7C35DD299AE042009A3C09 /* ProductItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35DC299AE042009A3C09 /* ProductItemView.swift */; };
 		5C7C35E0299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35DF299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift */; };
 		5C7C35E2299AE0B5009A3C09 /* FriendRequestNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */; };
@@ -216,7 +216,7 @@
 		5C11ECB528EEEFB300CCDE6A /* SettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenView.swift; sourceTree = "<group>"; };
 		5C11ECB828EEF16000CCDE6A /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
 		5C11ECBA28EEF24700CCDE6A /* ActivityTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTabView.swift; sourceTree = "<group>"; };
-		5C11ECBC28EEF30600CCDE6A /* SearchTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabView.swift; sourceTree = "<group>"; };
+		5C11ECBC28EEF30600CCDE6A /* DiscoverTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTab.swift; sourceTree = "<group>"; };
 		5C11ECBF28EF434700CCDE6A /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		5C11ECC128EF768A00CCDE6A /* .xcconfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = .xcconfig.xcconfig; sourceTree = "<group>"; };
 		5C12B42C2902A12A001EE549 /* ApplicationSettingsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationSettingsScreenView.swift; sourceTree = "<group>"; };
@@ -308,7 +308,7 @@
 		5C7C35D3299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationSettingsScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C35D5299ACEAF009A3C09 /* AboutScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C35D7299ACEFF009A3C09 /* OnboardTabsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardTabsViewModel.swift; sourceTree = "<group>"; };
-		5C7C35DA299AE009009A3C09 /* SearchTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabViewModel.swift; sourceTree = "<group>"; };
+		5C7C35DA299AE009009A3C09 /* DiscoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewModel.swift; sourceTree = "<group>"; };
 		5C7C35DC299AE042009A3C09 /* ProductItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductItemView.swift; sourceTree = "<group>"; };
 		5C7C35DF299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggedInCheckInNotificationView.swift; sourceTree = "<group>"; };
 		5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestNotificationView.swift; sourceTree = "<group>"; };
@@ -947,8 +947,8 @@
 		5C7C35D9299ADFF2009A3C09 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				5C11ECBC28EEF30600CCDE6A /* SearchTabView.swift */,
-				5C7C35DA299AE009009A3C09 /* SearchTabViewModel.swift */,
+				5C11ECBC28EEF30600CCDE6A /* DiscoverTab.swift */,
+				5C7C35DA299AE009009A3C09 /* DiscoverViewModel.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -1343,7 +1343,7 @@
 				5C11ECB928EEF16000CCDE6A /* ProfileTabView.swift in Sources */,
 				5C12B4392902CAF3001EE549 /* Notification.swift in Sources */,
 				5CD10A5C28F998BF0001CFC2 /* ProfileRepository.swift in Sources */,
-				5C11ECBD28EEF30600CCDE6A /* SearchTabView.swift in Sources */,
+				5C11ECBD28EEF30600CCDE6A /* DiscoverTab.swift in Sources */,
 				5C7C35E2299AE0B5009A3C09 /* FriendRequestNotificationView.swift in Sources */,
 				5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */,
 				5C7C3578299ABFBD009A3C09 /* FriendListItemView.swift in Sources */,
@@ -1421,7 +1421,7 @@
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
 				5C0E365C292ADA290072EFBD /* SummaryView.swift in Sources */,
 				5C7C35D0299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift in Sources */,
-				5C7C35DB299AE009009A3C09 /* SearchTabViewModel.swift in Sources */,
+				5C7C35DB299AE009009A3C09 /* DiscoverViewModel.swift in Sources */,
 				5C25C6702995616D00C07953 /* WelcomeTabView.swift in Sources */,
 				5CD10A5528F98D220001CFC2 /* SubBrand.swift in Sources */,
 				5C12B4332902A4C9001EE549 /* BlockedUsersScreenView.swift in Sources */,

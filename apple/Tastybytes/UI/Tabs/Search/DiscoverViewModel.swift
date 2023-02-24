@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension SearchTabView {
+extension DiscoverTab {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "SearchTabView")
     let client: Client
