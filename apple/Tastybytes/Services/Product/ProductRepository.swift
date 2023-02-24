@@ -20,7 +20,7 @@ protocol ProductRepository {
   func search(barcode: Barcode) async -> Result<[Product.Joined], Error>
   func getById(id: Int) async -> Result<Product.Joined, Error>
   func getByProfile(id: UUID) async -> Result<[Product.Joined], Error>
-  func getFeed(_ type: ProductFeedType) async -> Result<[Product.Joined], Error>
+  func getFeed(_ type: ProductFeedType, from: Int, to: Int) async -> Result<[Product.Joined], Error>
   func delete(id: Int) async -> Result<Void, Error>
   func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
   func getSummaryById(id: Int) async -> Result<Summary, Error>
@@ -63,11 +63,12 @@ struct SupabaseProductRepository: ProductRepository {
     }
   }
 
-  func getFeed(_ type: ProductFeedType) async -> Result<[Product.Joined], Error> {
+  func getFeed(_ type: ProductFeedType, from: Int, to: Int) async -> Result<[Product.Joined], Error> {
     let queryBuilder = client
       .database
       .from("view__product_ratings")
       .select(columns: Product.getQuery(.joinedBrandSubcategoriesRatings(false)))
+      .range(from: from, to: to)
 
     do {
       if type == .topRated {
