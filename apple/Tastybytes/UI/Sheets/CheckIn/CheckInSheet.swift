@@ -76,15 +76,17 @@ struct CheckInSheet: View {
           Label(
             "\(viewModel.editCheckIn?.getImageUrl() == nil && viewModel.image == nil ? "Add" : "Change") Photo",
             systemImage: "photo"
-          )
+          ).fontWeight(.medium)
+
         })
         Button(action: { viewModel.setActiveSheet(.flavors) }, label: {
           if !viewModel.pickedFlavors.isEmpty {
             WrappingHStack(viewModel.pickedFlavors, id: \.self, spacing: .constant(4)) { flavor in
-              ChipView(title: flavor.name.capitalized)
+              ChipView(title: flavor.label)
             }
           } else {
             Text("Flavors")
+              .fontWeight(.medium)
           }
         })
       } header: {
@@ -101,11 +103,13 @@ struct CheckInSheet: View {
             }
           } label: {
             Text("Serving Style")
+              .fontWeight(.medium)
           }
         }
 
         Button(action: { viewModel.setActiveSheet(.manufacturer) }, label: {
-          Text(viewModel.manufacturer?.name ?? "Manufactured by")
+          Text(viewModel.manufacturer?.name ?? "Manufactured By")
+            .fontWeight(.medium)
         })
       }
 
@@ -113,6 +117,7 @@ struct CheckInSheet: View {
         Button(action: { viewModel.setActiveSheet(.friends) }, label: {
           if viewModel.taggedFriends.isEmpty {
             Text("Tag friends")
+              .fontWeight(.medium)
           } else {
             WrappingHStack(viewModel.taggedFriends, id: \.self) { friend in
               AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
@@ -132,6 +137,7 @@ struct CheckInSheet: View {
           }
         } else {
           Text("Location")
+            .fontWeight(.medium)
         }
       })
     }

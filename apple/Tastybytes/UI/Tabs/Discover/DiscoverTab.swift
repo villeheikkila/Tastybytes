@@ -238,7 +238,7 @@ struct DiscoverTab: View {
       Text(
         """
         \(viewModel.products.isEmpty ? "No results were found" : "If none of the results match"),\
-        you can assign the barcode to a product by searching again\
+        you can assign the barcode to a product by searching again \
         with the name or by creating a new product.
         """
       )

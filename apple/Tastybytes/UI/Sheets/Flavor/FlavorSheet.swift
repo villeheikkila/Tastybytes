@@ -32,7 +32,7 @@ struct FlavorSheet: View {
         ForEach(viewModel.filteredFlavors.filter { !pickedFlavors.contains($0) }, id: \.id) { flavor in
           Button(action: { toggleFlavor(flavor) }, label: {
             HStack {
-              Text(flavor.name.capitalized)
+              Text(flavor.label)
               Spacer()
               if pickedFlavors.contains(flavor) {
                 Label("Pick the flavor", systemImage: "checkmark")

@@ -158,7 +158,7 @@ struct CheckInCardView: View {
 
         if let flavors = checkIn.flavors {
           WrappingHStack(flavors, id: \.self, spacing: .constant(4)) { flavor in
-            ChipView(title: flavor.name.capitalized)
+            ChipView(title: flavor.label)
           }
         }
       }

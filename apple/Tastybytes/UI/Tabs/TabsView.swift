@@ -4,6 +4,7 @@ struct TabsView: View {
   let client: Client
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var profileManager: ProfileManager
   @State private var selection = Tab.activity
   @State private var resetNavigationOnTab: Tab?
 
@@ -13,6 +14,14 @@ struct TabsView: View {
 
   private var tabs: [Tab] {
     [.activity, .search, .notifications, .profile]
+  }
+
+  private func shownTabs(profile: Profile.Extended) -> [Tab] {
+    if profile.roles.contains(where: { $0.name == "admin" }) {
+      return [.activity, .search, .notifications, .admin, .profile]
+    } else {
+      return [.activity, .search, .notifications, .profile]
+    }
   }
 
   var body: some View {
@@ -28,7 +37,7 @@ struct TabsView: View {
         selection = newTab
       }
     })) {
-      ForEach(tabs) { tab in
+      ForEach(shownTabs(profile: profileManager.get())) { tab in
         tab.view(client, $resetNavigationOnTab)
           .tabItem {
             tab.label
@@ -50,7 +59,7 @@ struct TabsView: View {
 }
 
 enum Tab: Int, Identifiable, Hashable {
-  case activity, search, notifications, profile
+  case activity, search, notifications, admin, profile
 
   var id: Int {
     rawValue
@@ -66,6 +75,8 @@ enum Tab: Int, Identifiable, Hashable {
       DiscoverTab(client, resetNavigationOnTab: resetNavigationOnTab)
     case .notifications:
       NotificationTab(client, resetNavigationOnTab: resetNavigationOnTab)
+    case .admin:
+      AdminTab(client)
     case .profile:
       ProfileTab(client, resetNavigationOnTab: resetNavigationOnTab)
     }
@@ -80,6 +91,8 @@ enum Tab: Int, Identifiable, Hashable {
       Label("Discover", systemImage: "magnifyingglass")
     case .notifications:
       Label("Notifications", systemImage: "bell")
+    case .admin:
+      Label("Admin", systemImage: "exclamationmark.lock.fill")
     case .profile:
       Label("Profile", systemImage: "person.fill")
     }

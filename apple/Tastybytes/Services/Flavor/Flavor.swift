@@ -2,6 +2,10 @@ struct Flavor: Identifiable, Decodable, Hashable {
   let id: Int
   let name: String
 
+  var label: String {
+    name.capitalized
+  }
+
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }
@@ -27,5 +31,9 @@ extension Flavor {
   enum QueryType {
     case tableName
     case saved(_ withTableName: Bool)
+  }
+
+  struct NewRequest: Encodable {
+    let name: String
   }
 }

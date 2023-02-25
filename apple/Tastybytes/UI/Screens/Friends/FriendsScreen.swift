@@ -44,6 +44,12 @@ struct FriendsScreen: View {
             }
           }
           .swipeActions {
+            if friend.isPending(userId: profileManager.getProfile().id) {
+              Button(action: { viewModel.updateFriendRequest(friend: friend, newStatus: .accepted) }, label: {
+                Label("Accept friend request", systemImage: "person.badge.plus")
+                  .imageScale(.large)
+              }).tint(.green)
+            }
             Button(role: .destructive, action: { viewModel.friendToBeRemoved = friend }, label: {
               Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
             })
