@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Config {
+enum Config {
   enum Keys {
     enum Plist {
       static let supabaseUrl = "SUPABASE_URL"

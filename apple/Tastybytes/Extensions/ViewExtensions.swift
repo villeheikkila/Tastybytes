@@ -29,17 +29,6 @@ extension View {
   }
 }
 
-public extension View {
-  func fullBackground(imageName: String) -> some View {
-    background(
-      Image(imageName)
-        .resizable()
-        .scaledToFill()
-        .edgesIgnoringSafeArea(.all)
-    )
-  }
-}
-
 extension View {
   @ViewBuilder func `if`(_ condition: @autoclosure () -> Bool, transform: (Self) -> some View) -> some View {
     if condition() {

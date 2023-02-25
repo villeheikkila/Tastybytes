@@ -1,12 +1,13 @@
 import SwiftUI
 
-enum Field {
-  case email
-  case password
-  case resetPassword
-}
-
 extension AuthenticationScreen {
+  enum Field {
+    case username
+    case email
+    case password
+    case resetPassword
+  }
+
   enum Scene: String {
     case signIn, signUp, magicLink, resetPassword, forgotPassword, accountDeleted
 

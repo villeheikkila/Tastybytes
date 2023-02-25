@@ -7,7 +7,7 @@ extension Array where Element: Equatable {
   }
 }
 
-public extension Array where Element: Equatable {
+extension Array where Element: Equatable {
   mutating func replace(_ element: Element, with new: Element) {
     if let toReplace = firstIndex(where: { $0 == element }) {
       self[toReplace] = new

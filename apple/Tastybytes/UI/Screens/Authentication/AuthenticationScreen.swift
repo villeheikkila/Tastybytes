@@ -15,16 +15,20 @@ struct AuthenticationScreen: View {
     VStack(spacing: viewModel.scene == .signUp ? 4 : 20) {
       projectLogo
       if viewModel.scene == .signUp {
-        UsernameTextFieldView(username: $viewModel.username, focusedField: _focusedField)
+        UsernameTextFieldView(username: $viewModel.username)
+          .focused($focusedField, equals: .username)
       }
       if !(viewModel.scene == .resetPassword || viewModel.scene == .accountDeleted) {
-        EmailTextFieldView(email: $viewModel.email, focusedField: _focusedField)
+        EmailTextFieldView(email: $viewModel.email)
+          .focused($focusedField, equals: .password)
       }
       if viewModel.scene == .signIn || viewModel.scene == .signUp || viewModel.scene == .resetPassword {
-        PasswordTextFieldView(password: $viewModel.password, focusedField: _focusedField)
+        PasswordTextFieldView(password: $viewModel.password)
+          .focused($focusedField, equals: .password)
       }
       if viewModel.scene == .resetPassword {
-        PasswordTextFieldView(password: $viewModel.passwordConfirmation, focusedField: _focusedField)
+        PasswordTextFieldView(password: $viewModel.passwordConfirmation)
+          .focused($focusedField, equals: .resetPassword)
       }
 
       if viewModel.scene == .accountDeleted {

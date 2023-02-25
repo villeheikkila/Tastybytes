@@ -8,7 +8,6 @@ extension BrandSheet {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "BrandSheet")
     let client: Client
-    @Published var searchText = ""
     @Published var brandsWithSubBrands = [Brand.JoinedSubBrands]()
     @Published var brandName = ""
     let mode: Mode

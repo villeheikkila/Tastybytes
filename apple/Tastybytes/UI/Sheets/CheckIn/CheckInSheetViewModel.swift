@@ -25,7 +25,6 @@ extension CheckInSheet {
     let client: Client
     @Published var product: Product.Joined
     @Published var editCheckIn: CheckIn?
-    @Published var selectedItem: PhotosPickerItem?
     @Published var activeSheet: Sheet?
     @Published var showCamera = false
     @Published var review: String = ""

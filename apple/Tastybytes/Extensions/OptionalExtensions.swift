@@ -6,9 +6,3 @@ extension String? {
     self == nil || self == ""
   }
 }
-
-extension Bool? {
-  var isNilOrFalse: Bool {
-    self == nil || self == false
-  }
-}

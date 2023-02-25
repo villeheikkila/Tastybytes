@@ -34,11 +34,6 @@ struct Category: Identifiable, Decodable, Hashable {
   let id: Int
   let name: Name
 
-  init(id: Int, name: Name) {
-    self.id = id
-    self.name = name
-  }
-
   enum CodingKeys: String, CodingKey {
     case id
     case name

@@ -3,7 +3,6 @@ import SwiftUI
 struct TabsView: View {
   let client: Client
   @EnvironmentObject private var notificationManager: NotificationManager
-  @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var hapticManager: HapticManager
   @State private var selection = Tab.activity
   @State private var resetNavigationOnTab: Tab?

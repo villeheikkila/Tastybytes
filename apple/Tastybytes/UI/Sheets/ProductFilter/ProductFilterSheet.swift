@@ -98,26 +98,3 @@ struct ProductFilterSheet: View {
     }
   }
 }
-
-enum CategoryOptions: Hashable, Identifiable {
-  var id: String {
-    switch self {
-    case .selectAll:
-      return "select_all"
-    case let .category(category):
-      return category.rawValue
-    }
-  }
-
-  case category(Category.Name)
-  case selectAll
-
-  var label: String {
-    switch self {
-    case .selectAll:
-      return "Select All"
-    case let .category(category):
-      return category.label
-    }
-  }
-}

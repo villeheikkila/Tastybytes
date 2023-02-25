@@ -3,7 +3,6 @@ import SwiftUI
 struct NameTagSheet: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var showNameTagScanner = false
-  @State private var showProfileQrCode = false
 
   let onSuccess: (_ profileId: UUID) -> Void
 

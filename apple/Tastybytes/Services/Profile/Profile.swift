@@ -164,10 +164,6 @@ extension Profile {
   }
 }
 
-enum ProfileError: Error {
-  case csvExportFailure
-}
-
 struct ProfileSettings: Identifiable, Decodable, Hashable {
   let id: UUID
   let colorScheme: ColorScheme

@@ -4,8 +4,6 @@ import SwiftUI
 struct MergeSheet: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var hapticManager: HapticManager
-  @State private var showDeleteCompanyConfirmationDialog = false
-  @State private var showDeleteBrandConfirmationDialog = false
   @Environment(\.dismiss) private var dismiss
 
   let productToMerge: Product.JoinedCategory

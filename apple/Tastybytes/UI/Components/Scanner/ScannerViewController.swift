@@ -9,7 +9,7 @@ extension ScannerView {
     case permissionDenied
   }
 
-  public class Controller: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+  class Controller: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
     AVCaptureMetadataOutputObjectsDelegate
   {
     var parentView: ScannerView?
@@ -18,7 +18,7 @@ extension ScannerView {
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
 
-    public init(parentView: ScannerView) {
+    init(parentView: ScannerView) {
       self.parentView = parentView
       super.init(nibName: nil, bundle: nil)
     }
@@ -27,14 +27,14 @@ extension ScannerView {
       super.init(coder: coder)
     }
 
-    override public func viewDidLoad() {
+    override func viewDidLoad() {
       super.viewDidLoad()
       addOrientationDidChangeObserver()
       setBackgroundColor()
       handleCameraPermission()
     }
 
-    override public func viewWillLayoutSubviews() {
+    override func viewWillLayoutSubviews() {
       previewLayer?.frame = view.layer.bounds
     }
 
@@ -45,12 +45,12 @@ extension ScannerView {
       connection.videoOrientation = AVCaptureVideoOrientation(rawValue: orientation.rawValue) ?? .portrait
     }
 
-    override public func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
       super.viewDidAppear(animated)
       updateOrientation()
     }
 
-    override public func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
       super.viewWillAppear(animated)
       setupSession()
     }
@@ -163,7 +163,7 @@ extension ScannerView {
       }
     }
 
-    override public func viewDidDisappear(_ animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
       super.viewDidDisappear(animated)
 
       if captureSession?.isRunning == true {
@@ -179,15 +179,15 @@ extension ScannerView {
       NotificationCenter.default.removeObserver(self)
     }
 
-    override public var prefersStatusBarHidden: Bool {
+    override var prefersStatusBarHidden: Bool {
       true
     }
 
-    override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
       .all
     }
 
-    override public func touchesBegan(_ touches: Set<UITouch>, with _: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with _: UIEvent?) {
       guard touches.first?.view == view,
             let touchPoint = touches.first,
             let device = AVCaptureDevice.default(for: .video),
@@ -224,12 +224,12 @@ extension ScannerView {
       }
     }
 
-    public func reset() {
+    func reset() {
       didFinishScanning = false
       lastTime = Date(timeIntervalSince1970: 0)
     }
 
-    public func metadataOutput(
+    func metadataOutput(
       _: AVCaptureMetadataOutput,
       didOutput metadataObjects: [AVMetadataObject],
       from _: AVCaptureConnection

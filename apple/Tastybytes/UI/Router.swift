@@ -3,7 +3,7 @@ import SwiftUI
 
 @MainActor class Router: ObservableObject {
   private let logger = getLogger(category: "Router")
-  @Published public var path: [Route] = []
+  @Published var path: [Route] = []
 
   func navigate(to: Route, resetStack: Bool) {
     if resetStack {

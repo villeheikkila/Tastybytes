@@ -2,8 +2,7 @@ import SwiftUI
 
 struct SplashScreen: View {
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
-  @State private var firstAnimation = false
-  @State private var secondAnimation = false
+  @State private var dismissAnimation = false
   @State private var startFadeoutAnimation = false
   @State private var size = 0.8
   @State private var opacity = 0.5
@@ -38,9 +37,9 @@ struct SplashScreen: View {
         self.opacity = 1.00
       }
     case .dismissing:
-      if secondAnimation == false {
+      if dismissAnimation == false {
         withAnimation(.linear) {
-          self.secondAnimation = true
+          self.dismissAnimation = true
           startFadeoutAnimation = true
         }
       }
