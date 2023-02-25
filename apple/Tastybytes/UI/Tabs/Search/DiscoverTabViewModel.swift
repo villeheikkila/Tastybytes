@@ -1,6 +1,11 @@
 import SwiftUI
 
 extension DiscoverTab {
+  enum Sheet: Identifiable {
+    var id: Self { self }
+    case checkIn
+  }
+
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "SearchTab")
     let client: Client
@@ -22,6 +27,13 @@ extension DiscoverTab {
 
     @Published var showAddBarcodeConfirmation = false
     @Published var productFilter: Product.Filter?
+    @Published var checkInProduct: Product.Joined? {
+      didSet {
+        activeSheet = .checkIn
+      }
+    }
+
+    @Published var activeSheet: Sheet?
 
     init(_ client: Client) {
       self.client = client

@@ -70,6 +70,18 @@ struct DiscoverTab: View {
           }
           .presentationDetents([.medium])
         }
+        .sheet(item: $viewModel.activeSheet) { sheet in
+          NavigationStack {
+            switch sheet {
+            case .checkIn:
+              if let checkInProduct = viewModel.checkInProduct {
+                CheckInSheet(viewModel.client, product: checkInProduct, onCreation: { checkIn in
+                  router.navigate(to: Route.checkIn(checkIn), resetStack: false)
+                })
+              }
+            }
+          }
+        }
         .confirmationDialog(
           "Add barcode confirmation",
           isPresented: $viewModel.showAddBarcodeConfirmation,
@@ -254,6 +266,11 @@ struct DiscoverTab: View {
     ForEach(viewModel.products, id: \.id) { product in
       if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
         ProductItemView(product: product, extras: [.checkInCheck, .rating])
+          .swipeActions {
+            Button(action: { viewModel.checkInProduct = product }, label: {
+              Label("Check-in", systemImage: "plus")
+            }).tint(.green)
+          }
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {

@@ -18,7 +18,7 @@ struct CheckInSheet: View {
     _viewModel = StateObject(wrappedValue: ViewModel(client, product: product, editCheckIn: nil))
     self.onCreation = onCreation
     onUpdate = nil
-    action = Action.create
+    action = .create
   }
 
   init(_ client: Client, checkIn: CheckIn,
@@ -27,7 +27,7 @@ struct CheckInSheet: View {
     _viewModel = StateObject(wrappedValue: ViewModel(client, product: checkIn.product, editCheckIn: checkIn))
     onCreation = nil
     self.onUpdate = onUpdate
-    action = Action.update
+    action = .update
   }
 
   var body: some View {
@@ -197,7 +197,7 @@ struct CheckInSheet: View {
                                  dismiss()
                                },
                                label: {
-                                 Text(action == Action.create ? "Check-in!" : "Update Check-in!")
+                                 Text(action == .create ? "Check-in!" : "Update Check-in!")
                                    .bold()
                                })
     )
