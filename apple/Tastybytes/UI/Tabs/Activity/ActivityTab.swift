@@ -8,6 +8,7 @@ struct ActivityTab: View {
   @StateObject private var router = Router()
   @State private var scrollToTop: Int = 0
   @Binding private var resetNavigationOnTab: Tab?
+  @EnvironmentObject private var notificationManager: NotificationManager
 
   init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {
     self.client = client
@@ -54,6 +55,7 @@ struct ActivityTab: View {
         Label("Friends page", systemImage: "person.2")
           .labelStyle(.iconOnly)
           .imageScale(.large)
+          .customBadge(notificationManager.getUnreadFriendRequestCount())
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {

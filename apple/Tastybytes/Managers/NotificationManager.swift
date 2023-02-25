@@ -50,6 +50,19 @@ import SwiftUI
       .count
   }
 
+  func getUnreadFriendRequestCount() -> Int {
+    notifications
+      .filter { notification in
+        switch notification.content {
+        case .friendRequest:
+          return notification.seenAt == nil
+        default:
+          return false
+        }
+      }
+      .count
+  }
+
   func refresh(reset: Bool = false) {
     Task {
       switch await client.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
