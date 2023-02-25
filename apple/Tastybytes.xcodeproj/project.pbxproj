@@ -662,7 +662,7 @@
 				5C7C35EA299AE130009A3C09 /* Profile */,
 				5C7C35E9299AE127009A3C09 /* Activity */,
 				5C7C35DE299AE07C009A3C09 /* Notification */,
-				5C7C35D9299ADFF2009A3C09 /* Search */,
+				5C7C35D9299ADFF2009A3C09 /* Discover */,
 				5C12B4342902C9D0001EE549 /* TabsView.swift */,
 			);
 			path = Tabs;
@@ -947,13 +947,13 @@
 			path = Camera;
 			sourceTree = "<group>";
 		};
-		5C7C35D9299ADFF2009A3C09 /* Search */ = {
+		5C7C35D9299ADFF2009A3C09 /* Discover */ = {
 			isa = PBXGroup;
 			children = (
 				5C11ECBC28EEF30600CCDE6A /* DiscoverTab.swift */,
 				5C7C35DA299AE009009A3C09 /* DiscoverTabViewModel.swift */,
 			);
-			path = Search;
+			path = Discover;
 			sourceTree = "<group>";
 		};
 		5C7C35DE299AE07C009A3C09 /* Notification */ = {

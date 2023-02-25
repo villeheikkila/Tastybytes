@@ -244,9 +244,21 @@ struct DiscoverTab: View {
 
   private var addProductNotice: some View {
     Section {
-      NavigationLink("Add new", value: Route.addProduct(viewModel.barcode))
-        .fontWeight(.medium)
-        .disabled(!profileManager.hasPermission(.canCreateProducts))
+      HStack {
+        Text("Add new")
+          .fontWeight(.medium)
+        Spacer()
+      }
+      .if(profileManager.hasPermission(.canCreateProducts), transform: { view in
+        view
+          .contentShape(Rectangle())
+          .accessibilityAddTraits(.isLink)
+          .onTapGesture {
+            let barcode = viewModel.barcode
+            viewModel.barcode = nil
+            router.navigate(to: .addProduct(barcode), resetStack: false)
+          }
+      })
     } header: {
       Text("Didn't find a product you were looking for?")
     }
