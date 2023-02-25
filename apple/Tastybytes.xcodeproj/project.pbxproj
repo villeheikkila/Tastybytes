@@ -37,6 +37,8 @@
 		5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 5C13F21A291A7C3A00599892 /* FirebaseMessaging */; };
 		5C20A50D29AA316900ABBA74 /* CustomBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A50C29AA316900ABBA74 /* CustomBadge.swift */; };
 		5C20A51029AA5A0500ABBA74 /* AdminTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */; };
+		5C20A51229AA6A5000ABBA74 /* FlavorManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51129AA6A5000ABBA74 /* FlavorManagement.swift */; };
+		5C20A51429AA6AA700ABBA74 /* ProductVerificationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51329AA6AA700ABBA74 /* ProductVerificationScreen.swift */; };
 		5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146E529A9315D0005422D /* ProductFeedScreen.swift */; };
 		5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EA29A96C090005422D /* NameTagSheet.swift */; };
 		5C2146ED29A97CB40005422D /* ProductFeedScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EC29A97CB40005422D /* ProductFeedScreenViewModel.swift */; };
@@ -232,6 +234,8 @@
 		5C13F21E291A8D8E00599892 /* TastybytesDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TastybytesDebug.entitlements; sourceTree = "<group>"; };
 		5C20A50C29AA316900ABBA74 /* CustomBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBadge.swift; sourceTree = "<group>"; };
 		5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminTab.swift; sourceTree = "<group>"; };
+		5C20A51129AA6A5000ABBA74 /* FlavorManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorManagement.swift; sourceTree = "<group>"; };
+		5C20A51329AA6AA700ABBA74 /* ProductVerificationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductVerificationScreen.swift; sourceTree = "<group>"; };
 		5C2146E529A9315D0005422D /* ProductFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreen.swift; sourceTree = "<group>"; };
 		5C2146EA29A96C090005422D /* NameTagSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTagSheet.swift; sourceTree = "<group>"; };
 		5C2146EC29A97CB40005422D /* ProductFeedScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreenViewModel.swift; sourceTree = "<group>"; };
@@ -433,6 +437,8 @@
 			isa = PBXGroup;
 			children = (
 				5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */,
+				5C20A51129AA6A5000ABBA74 /* FlavorManagement.swift */,
+				5C20A51329AA6AA700ABBA74 /* ProductVerificationScreen.swift */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
@@ -1294,6 +1300,7 @@
 				5C663F3929355601006F9A97 /* EditBrandSheet.swift in Sources */,
 				5C663F352932AEB9006F9A97 /* CategoryNameView.swift in Sources */,
 				5C353CC229A24C5F0067C4EE /* ContributionsScreenView.swift in Sources */,
+				5C20A51229AA6A5000ABBA74 /* FlavorManagement.swift in Sources */,
 				5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */,
 				5CA7A53729A0E7750066F604 /* ProductFilterSheet.swift in Sources */,
 				5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */,
@@ -1373,6 +1380,7 @@
 				5C7C35D8299ACEFF009A3C09 /* OnboardTabsViewModel.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsScreen.swift in Sources */,
 				5C7C35F6299AE7C5009A3C09 /* BlockedUserListItemView.swift in Sources */,
+				5C20A51429AA6AA700ABBA74 /* ProductVerificationScreen.swift in Sources */,
 				5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */,
 				5C663F2D292FE614006F9A97 /* AppIcon.swift in Sources */,
 				5CED433428FDA357003F8194 /* SubBrandRepository.swift in Sources */,
