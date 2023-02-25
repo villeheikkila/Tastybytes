@@ -41,6 +41,14 @@ struct FriendsScreen: View {
               }
             }
           }
+          .swipeActions {
+            Button(role: .destructive, action: { viewModel.friendToBeRemoved = friend }, label: {
+              Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
+            })
+            Button(action: { viewModel.updateFriendRequest(friend: friend, newStatus: .blocked) }, label: {
+              Label("Block", systemImage: "person.2.slash").imageScale(.large)
+            })
+          }
           .contextMenu {
             Button(role: .destructive, action: { viewModel.friendToBeRemoved = friend }, label: {
               Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
