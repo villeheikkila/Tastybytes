@@ -13,17 +13,37 @@ struct FlavorSheet: View {
   }
 
   var body: some View {
-    List(viewModel.filteredFlavors, id: \.id) { flavor in
-      Button(action: { toggleFlavor(flavor) }, label: {
-        HStack {
-          Text(flavor.name.capitalized)
-          Spacer()
-          if pickedFlavors.contains(flavor) {
-            Label("Pick the flavor", systemImage: "checkmark")
-              .labelStyle(.iconOnly)
+    List {
+      if !pickedFlavors.isEmpty {
+        Section {
+          ForEach(pickedFlavors, id: \.id) { pickedFlavor in
+            Button(action: { toggleFlavor(pickedFlavor) }, label: {
+              HStack {
+                Text(pickedFlavor.name.capitalized)
+                Spacer()
+              }
+            })
           }
+        } header: {
+          Text("Picked flavors")
         }
-      })
+      }
+      Section {
+        ForEach(viewModel.filteredFlavors.filter { !pickedFlavors.contains($0) }, id: \.id) { flavor in
+          Button(action: { toggleFlavor(flavor) }, label: {
+            HStack {
+              Text(flavor.name.capitalized)
+              Spacer()
+              if pickedFlavors.contains(flavor) {
+                Label("Pick the flavor", systemImage: "checkmark")
+                  .labelStyle(.iconOnly)
+              }
+            }
+          })
+        }
+      } header: {
+        Text("Available flavors")
+      }
     }
     .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
       AlertToast(type: .error(.red), title: "You can only add \(viewModel.maxFlavors) flavors")
