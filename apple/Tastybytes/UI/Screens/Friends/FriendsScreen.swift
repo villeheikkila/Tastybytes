@@ -27,12 +27,14 @@ struct FriendsScreen: View {
                 HStack(alignment: .center) {
                   Label("Remove friend request", systemImage: "person.fill.xmark")
                     .imageScale(.large)
+                    .labelStyle(.iconOnly)
                     .accessibilityAddTraits(.isButton)
                     .onTapGesture {
                       viewModel.friendToBeRemoved = friend
                     }
                   Label("Accept friend request", systemImage: "person.badge.plus")
                     .imageScale(.large)
+                    .labelStyle(.iconOnly)
                     .accessibilityAddTraits(.isButton)
                     .onTapGesture {
                       viewModel.updateFriendRequest(friend: friend, newStatus: .accepted)
