@@ -140,7 +140,13 @@ struct DiscoverTab: View {
           }
           resetNavigationOnTab = nil
         }
-      }.withRoutes(viewModel.client)
+      }
+      .withRoutes(viewModel.client)
+      .onOpenURL { url in
+        if let detailPage = url.detailPage {
+          router.fetchAndNavigateTo(viewModel.client, detailPage, resetStack: true)
+        }
+      }
     }
     .environmentObject(router)
   }

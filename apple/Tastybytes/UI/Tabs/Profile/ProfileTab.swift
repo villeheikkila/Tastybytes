@@ -44,6 +44,11 @@ struct ProfileTab: View {
       }
       .presentationDetents([.medium])
     }
+    .onOpenURL { url in
+      if let detailPage = url.detailPage {
+        router.fetchAndNavigateTo(client, detailPage, resetStack: true)
+      }
+    }
     .environmentObject(router)
   }
 

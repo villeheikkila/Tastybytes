@@ -48,6 +48,11 @@ struct NotificationTab: View {
       .toolbar {
         toolbarContent
       }
+      .onOpenURL { url in
+        if let detailPage = url.detailPage {
+          router.fetchAndNavigateTo(client, detailPage, resetStack: true)
+        }
+      }
       .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
         if tab == .notifications {
           if router.path.isEmpty {
