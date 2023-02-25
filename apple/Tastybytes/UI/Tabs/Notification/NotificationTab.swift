@@ -32,7 +32,9 @@ struct NotificationTab: View {
               CheckInReactionNotificationView(checkInReaction: checkInReaction)
             }
             Spacer()
-          }
+          }.if(notification.seenAt != nil, transform: { view in
+            view.listRowBackground(Color.clear)
+          })
         }
         .onDelete(perform: { index in
           notificationManager.deleteFromIndex(at: index)

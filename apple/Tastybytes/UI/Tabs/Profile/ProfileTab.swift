@@ -50,16 +50,12 @@ struct ProfileTab: View {
   @ToolbarContentBuilder
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      NavigationLink(value: Route.currentUserFriends) {
-        Label("Friends page", systemImage: "person.2")
-          .labelStyle(.iconOnly)
-      }
-    }
-    ToolbarItemGroup(placement: .navigationBarTrailing) {
       Button(action: { showProfileQrCode.toggle() }, label: {
         Label("Show name tag", systemImage: "qrcode")
           .labelStyle(.iconOnly)
       })
+    }
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
       NavigationLink(value: Route.settings) {
         Label("Settings page", systemImage: "gear")
           .labelStyle(.iconOnly)
