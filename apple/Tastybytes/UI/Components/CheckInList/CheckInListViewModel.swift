@@ -26,6 +26,10 @@ extension CheckInListView {
 
     let fetcher: Fetcher
 
+    var uniqueCheckIns: [CheckIn] {
+      checkIns.unique(selector: { $0.id == $1.id })
+    }
+
     init(_ client: Client, fetcher: Fetcher) {
       self.fetcher = fetcher
       self.client = client

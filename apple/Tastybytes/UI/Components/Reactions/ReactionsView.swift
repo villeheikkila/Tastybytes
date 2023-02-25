@@ -15,10 +15,13 @@ struct ReactionsView: View {
       ForEach(viewModel.checkInReactions, id: \.id) { reaction in
         AvatarView(avatarUrl: reaction.profile.avatarUrl, size: 16, id: reaction.profile.id)
       }
-      Label("React to check-in", systemImage: "hand.thumbsup.fill")
-        .labelStyle(.iconOnly)
-        .imageScale(.medium)
-        .foregroundColor(Color(.systemYellow))
+      Label(
+        "React to check-in",
+        systemImage: viewModel.hasReacted(profileManager.getProfile()) ? "hand.thumbsup.fill" : "hand.thumbsup"
+      )
+      .labelStyle(.iconOnly)
+      .imageScale(.medium)
+      .foregroundColor(Color(.systemYellow))
     }
     .frame(maxWidth: 80)
     .contentShape(Rectangle())

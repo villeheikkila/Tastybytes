@@ -9,6 +9,10 @@ extension ReactionsView {
 
     let checkIn: CheckIn
 
+    func hasReacted(_ profile: Profile) -> Bool {
+      checkInReactions.contains(where: { $0.profile.id == profile.id })
+    }
+
     init(_ client: Client, checkIn: CheckIn) {
       self.client = client
       self.checkIn = checkIn
