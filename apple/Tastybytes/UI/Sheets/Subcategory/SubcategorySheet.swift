@@ -8,24 +8,37 @@ struct SubcategorySheet: View {
   @State private var showToast = false
   @State private var showAddSubcategory = false
   @State private var newSubcategoryName = ""
+  @State private var searchTerm = ""
+  let category: Category.JoinedSubcategories
 
   private let maxSubcategories = 4
-  let availableSubcategories: [Subcategory]
   let onCreate: (_ newSubcategoryName: String) -> Void
 
+  var shownSubcategories: [Subcategory] {
+    category.subcategories.sorted().filter { searchTerm.isEmpty || $0.name.contains(searchTerm) }
+  }
+
   var body: some View {
-    List(availableSubcategories, id: \.self) { subcategory in
-      Button(action: { toggleSubcategory(subcategory: subcategory) }, label: {
-        HStack {
-          Text(subcategory.name)
-          Spacer()
-          if subcategories.contains(subcategory) {
-            Label("Select subcategory", systemImage: "checkmark")
-              .labelStyle(.iconOnly)
-          }
+    List {
+      Section {
+        ForEach(shownSubcategories,
+                id: \.self) { subcategory in
+          Button(action: { toggleSubcategory(subcategory: subcategory) }, label: {
+            HStack {
+              Text(subcategory.name)
+              Spacer()
+              if subcategories.contains(subcategory) {
+                Label("Select subcategory", systemImage: "checkmark")
+                  .labelStyle(.iconOnly)
+              }
+            }
+          })
         }
-      })
+      } header: {
+        Text("Subcategories of \(category.name.label)")
+      }
     }
+    .searchable(text: $searchTerm)
     .navigationTitle("Subcategories")
     .navigationBarItems(leading: addSubcategoryView,
                         trailing: Button(action: { dismiss() }, label: {

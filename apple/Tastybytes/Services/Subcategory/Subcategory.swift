@@ -4,7 +4,7 @@ protocol SubcategoryProtocol {
   var label: String { get }
 }
 
-struct Subcategory: Identifiable, Decodable, Hashable, SubcategoryProtocol {
+struct Subcategory: Identifiable, Decodable, Hashable, SubcategoryProtocol, Comparable {
   let id: Int
   let name: String
 
@@ -14,6 +14,10 @@ struct Subcategory: Identifiable, Decodable, Hashable, SubcategoryProtocol {
 
   static func == (lhs: Subcategory, rhs: Subcategory) -> Bool {
     lhs.id == rhs.id
+  }
+
+  static func < (lhs: Subcategory, rhs: Subcategory) -> Bool {
+    lhs.name < rhs.name
   }
 }
 

@@ -63,10 +63,10 @@ struct AddProductView: View {
       NavigationStack {
         switch sheet {
         case .subcategories:
-          if let subcategoriesForCategory = viewModel.category?.subcategories {
+          if let category = viewModel.category {
             SubcategorySheet(
               subcategories: $viewModel.subcategories,
-              availableSubcategories: subcategoriesForCategory,
+              category: category,
               onCreate: { newSubcategoryName in
                 viewModel.createSubcategory(newSubcategoryName: newSubcategoryName)
               }
@@ -118,8 +118,11 @@ struct AddProductView: View {
       if !viewModel.categories.isEmpty {
         Picker("Category", selection: $viewModel.category) {
           Text("None").tag(Category.JoinedSubcategories?(nil))
+            .fontWeight(.medium)
           ForEach(viewModel.categories) { category in
-            Text(category.name.label).tag(Optional(category))
+            Text(category.name.label)
+              .fontWeight(.medium)
+              .tag(Optional(category))
           }
         }
       }
@@ -128,6 +131,7 @@ struct AddProductView: View {
         HStack {
           if viewModel.subcategories.isEmpty {
             Text("Subcategories")
+              .fontWeight(.medium)
           } else {
             HStack {
               ForEach(viewModel.subcategories) { subcategory in
@@ -140,6 +144,7 @@ struct AddProductView: View {
     }
     header: {
       Text("Category")
+        .fontWeight(.medium)
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
           self.focusedField = nil
@@ -152,10 +157,12 @@ struct AddProductView: View {
     Section {
       Button(action: { viewModel.setActiveSheet(.brandOwner) }, label: {
         Text(viewModel.brandOwner?.name ?? "Company")
+          .fontWeight(.medium)
       })
       if viewModel.brandOwner != nil {
         Button(action: { viewModel.setActiveSheet(.brand) }, label: {
           Text(viewModel.brand?.name ?? "Brand")
+            .fontWeight(.medium)
         })
         .disabled(viewModel.brandOwner == nil)
       }
@@ -167,12 +174,14 @@ struct AddProductView: View {
       if viewModel.hasSubBrand {
         Button(action: { viewModel.setActiveSheet(.subBrand) }, label: {
           Text(viewModel.subBrand?.name ?? "Sub-brand")
+            .fontWeight(.medium)
         })
         .disabled(viewModel.brand == nil)
       }
 
     } header: {
       Text("Brand")
+        .fontWeight(.medium)
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
           self.focusedField = nil
@@ -184,14 +193,17 @@ struct AddProductView: View {
   private var productSection: some View {
     Section {
       TextField("Name", text: $viewModel.name)
+        .fontWeight(.medium)
         .focused($focusedField, equals: .name)
 
       TextField("Description (optional)", text: $viewModel.description)
+        .fontWeight(.medium)
         .focused($focusedField, equals: .description)
 
       if viewModel.mode == .new {
         Button(action: { viewModel.setActiveSheet(.barcode) }, label: {
           Text(viewModel.barcode == nil ? "Add Barcode" : "Barcode Added!")
+            .fontWeight(.medium)
         })
       }
     } header: {
