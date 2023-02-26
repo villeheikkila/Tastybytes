@@ -13,7 +13,7 @@ struct AdminTab: View {
         NavigationLink(destination: FlavorManagementScreen(client)) {
           Label("Flavors", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
-        NavigationLink(destination: FlavorManagementScreen(client)) {
+        NavigationLink(destination: ProductVerificationScreen(client)) {
           Label("Products", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
       }

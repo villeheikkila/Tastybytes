@@ -3,7 +3,7 @@ import Supabase
 
 enum ProductFeedType: Hashable, Identifiable {
   var id: String { label }
-  case topRated, trending
+  case topRated, trending, unverified
 
   var label: String {
     switch self {
@@ -11,6 +11,8 @@ enum ProductFeedType: Hashable, Identifiable {
       return "Top Rated"
     case .trending:
       return "Trending"
+    case .unverified:
+      return "Unverified"
     }
   }
 }
@@ -77,17 +79,25 @@ struct SupabaseProductRepository: ProductRepository {
     }
 
     do {
-      if type == .topRated {
+      switch type {
+      case .topRated:
         let response: [Product.Joined] = try await queryBuilder
           .range(from: from, to: to)
           .order(column: "average_rating", ascending: false)
           .execute()
           .value
         return .success(response)
-      } else {
+      case .trending:
         let response: [Product.Joined] = try await queryBuilder
           .range(from: from, to: to)
           .order(column: "check_ins_during_previous_month", ascending: false)
+          .execute()
+          .value
+        return .success(response)
+      case .unverified:
+        let response: [Product.Joined] = try await queryBuilder
+          .eq(column: "is_verified", value: false)
+          .range(from: from, to: to)
           .execute()
           .value
         return .success(response)

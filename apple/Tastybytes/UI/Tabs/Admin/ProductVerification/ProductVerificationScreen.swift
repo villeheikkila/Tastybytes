@@ -17,40 +17,20 @@ struct ProductVerificationScreen: View {
           .onTapGesture {
             router.navigate(to: .product(product), resetStack: false)
           }
+          .swipeActions {
+            Button(action: { viewModel.verifyProduct(product) }, label: {
+              Label("Verify", systemImage: "checkmark")
+            }).tint(.green)
+          }
       }
     }
+    .listStyle(.plain)
     .navigationBarTitle("Unverified Products")
     .refreshable {
       await viewModel.loadProducts()
     }
     .task {
       await viewModel.loadProducts()
-    }
-  }
-}
-
-extension ProductVerificationScreen {
-  @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "FlavorManagementView")
-    let client: Client
-    @Published var products = [Product.Joined]()
-
-    init(_ client: Client) {
-      self.client = client
-    }
-
-    func loadProducts() async {
-      switch await client.product.getFeed(.topRated, from: 0, to: 100, categoryFilterId: nil) {
-      case let .success(products):
-        withAnimation {
-          self.products = products
-        }
-      case let .failure(error):
-        logger
-          .error(
-            "fetching flavors failed: \(error.localizedDescription)"
-          )
-      }
     }
   }
 }
