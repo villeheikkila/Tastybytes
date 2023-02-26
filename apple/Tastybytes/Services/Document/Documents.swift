@@ -1,5 +1,3 @@
-import Foundation
-
 struct Document: Decodable {
   let document: String
 

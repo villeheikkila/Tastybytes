@@ -1,4 +1,3 @@
-import Foundation
 
 struct Summary: Decodable, Hashable {
   let totalCheckIns: Int

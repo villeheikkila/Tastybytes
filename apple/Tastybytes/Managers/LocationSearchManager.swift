@@ -1,6 +1,5 @@
 import Combine
 import CoreLocation
-import Foundation
 import MapKit
 
 final class LocationSearchManager {

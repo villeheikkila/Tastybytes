@@ -1,4 +1,3 @@
-import Foundation
 import MapKit
 
 struct Location: Identifiable, Codable, Hashable {

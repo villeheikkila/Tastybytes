@@ -1,5 +1,4 @@
 import Charts
-import GoTrue
 import PhotosUI
 import SwiftUI
 

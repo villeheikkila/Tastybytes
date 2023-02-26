@@ -1,7 +1,5 @@
-import Foundation
 import GoTrue
 import Supabase
-import SupabaseStorage
 
 protocol AuthRepository {
   func getUser() async -> Result<User, Error>

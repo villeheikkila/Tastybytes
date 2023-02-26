@@ -1,5 +1,4 @@
 import Foundation
-import GoTrue
 import Realtime
 import Supabase
 import SupabaseStorage

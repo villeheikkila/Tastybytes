@@ -1,5 +1,3 @@
-import Foundation
-
 struct CheckInReaction: Identifiable, Decodable, Hashable {
   let id: Int
   let profile: Profile

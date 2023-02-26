@@ -1,4 +1,3 @@
-import GoTrue
 import PhotosUI
 import SwiftUI
 

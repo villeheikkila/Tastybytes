@@ -1,5 +1,3 @@
-import Foundation
-
 struct ProductVariant: Identifiable, Codable, Hashable {
   let id: Int
   let manufacturer: Company
