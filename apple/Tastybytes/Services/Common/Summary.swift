@@ -1,4 +1,3 @@
-
 struct Summary: Decodable, Hashable {
   let totalCheckIns: Int
   let averageRating: Double?

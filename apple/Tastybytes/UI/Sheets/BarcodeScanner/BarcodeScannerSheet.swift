@@ -8,10 +8,6 @@ struct BarcodeScannerSheet: View {
 
   let onComplete: (_ barcode: Barcode) -> Void
 
-  func createBarcodeFromTextInput() -> Barcode {
-    Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13)
-  }
-    
   func isValidEAN13(input: String) -> Bool {
     if input.count != 13 { return false }
     let parts = input.compactMap(\.wholeNumberValue)
@@ -30,9 +26,12 @@ struct BarcodeScannerSheet: View {
         Form {
           TextField("Barcode (EAN13)", text: $barcodeInput)
             .keyboardType(.decimalPad)
-          Button(action: { onComplete(createBarcodeFromTextInput()) }, label: {
-            Text("Submit")
-          }).disabled(!isValidEAN13(input: barcodeInput))
+          Button(
+            action: { onComplete(Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13)) },
+            label: {
+              Text("Submit")
+            }
+          ).disabled(!isValidEAN13(input: barcodeInput))
         }
 
       } else {
