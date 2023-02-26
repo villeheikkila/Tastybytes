@@ -41,6 +41,7 @@
 		5C20A51429AA6AA700ABBA74 /* ProductVerificationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51329AA6AA700ABBA74 /* ProductVerificationScreen.swift */; };
 		5C20A51729AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51629AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift */; };
 		5C20A51A29AB52DA00ABBA74 /* ProductVerificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51929AB52DA00ABBA74 /* ProductVerificationViewModel.swift */; };
+		5C20A52229AB55BA00ABBA74 /* ContributionsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A52129AB55BA00ABBA74 /* ContributionsScreenViewModel.swift */; };
 		5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146E529A9315D0005422D /* ProductFeedScreen.swift */; };
 		5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EA29A96C090005422D /* NameTagSheet.swift */; };
 		5C2146ED29A97CB40005422D /* ProductFeedScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EC29A97CB40005422D /* ProductFeedScreenViewModel.swift */; };
@@ -240,6 +241,7 @@
 		5C20A51329AA6AA700ABBA74 /* ProductVerificationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductVerificationScreen.swift; sourceTree = "<group>"; };
 		5C20A51629AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorManagementScreenViewModel.swift; sourceTree = "<group>"; };
 		5C20A51929AB52DA00ABBA74 /* ProductVerificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductVerificationViewModel.swift; sourceTree = "<group>"; };
+		5C20A52129AB55BA00ABBA74 /* ContributionsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionsScreenViewModel.swift; sourceTree = "<group>"; };
 		5C2146E529A9315D0005422D /* ProductFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreen.swift; sourceTree = "<group>"; };
 		5C2146EA29A96C090005422D /* NameTagSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTagSheet.swift; sourceTree = "<group>"; };
 		5C2146EC29A97CB40005422D /* ProductFeedScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreenViewModel.swift; sourceTree = "<group>"; };
@@ -441,19 +443,19 @@
 			isa = PBXGroup;
 			children = (
 				5C20A51829AB52B200ABBA74 /* ProductVerification */,
-				5C20A51529AB527B00ABBA74 /* Flavor */,
+				5C20A51529AB527B00ABBA74 /* FlavorManagement */,
 				5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
 		};
-		5C20A51529AB527B00ABBA74 /* Flavor */ = {
+		5C20A51529AB527B00ABBA74 /* FlavorManagement */ = {
 			isa = PBXGroup;
 			children = (
 				5C20A51129AA6A5000ABBA74 /* FlavorManagementScreen.swift */,
 				5C20A51629AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift */,
 			);
-			path = Flavor;
+			path = FlavorManagement;
 			sourceTree = "<group>";
 		};
 		5C20A51829AB52B200ABBA74 /* ProductVerification */ = {
@@ -463,6 +465,70 @@
 				5C20A51929AB52DA00ABBA74 /* ProductVerificationViewModel.swift */,
 			);
 			path = ProductVerification;
+			sourceTree = "<group>";
+		};
+		5C20A51B29AB54FD00ABBA74 /* AccountSettings */ = {
+			isa = PBXGroup;
+			children = (
+				5C3D8274298D5F3300E861DC /* AccountSettingsScreen.swift */,
+				5C7C35CD299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift */,
+			);
+			path = AccountSettings;
+			sourceTree = "<group>";
+		};
+		5C20A51C29AB550B00ABBA74 /* ProfileSettings */ = {
+			isa = PBXGroup;
+			children = (
+				5C12B42E2902A190001EE549 /* ProfileSettingsScreen.swift */,
+				5C7C35CF299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift */,
+			);
+			path = ProfileSettings;
+			sourceTree = "<group>";
+		};
+		5C20A51D29AB551D00ABBA74 /* BlockedUser */ = {
+			isa = PBXGroup;
+			children = (
+				5C7C35D1299ACE55009A3C09 /* BlockedUsersScreenViewModel.swift */,
+				5C7C35F5299AE7C5009A3C09 /* BlockedUserListItemView.swift */,
+				5C12B4322902A4C9001EE549 /* BlockedUsersScreen.swift */,
+			);
+			path = BlockedUser;
+			sourceTree = "<group>";
+		};
+		5C20A51E29AB558200ABBA74 /* AppIcon */ = {
+			isa = PBXGroup;
+			children = (
+				5C663F2A292FBE10006F9A97 /* AppIconScreen.swift */,
+				5C663F2C292FE614006F9A97 /* AppIcon.swift */,
+			);
+			path = AppIcon;
+			sourceTree = "<group>";
+		};
+		5C20A51F29AB559300ABBA74 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				5CE90090292101C8003DE697 /* AboutScreen.swift */,
+				5C7C35D5299ACEAF009A3C09 /* AboutScreenViewModel.swift */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
+		5C20A52029AB559F00ABBA74 /* Contributions */ = {
+			isa = PBXGroup;
+			children = (
+				5C353CC129A24C5F0067C4EE /* ContributionsScreenView.swift */,
+				5C20A52129AB55BA00ABBA74 /* ContributionsScreenViewModel.swift */,
+			);
+			path = Contributions;
+			sourceTree = "<group>";
+		};
+		5C20A52329AB55E800ABBA74 /* ApplicationSettings */ = {
+			isa = PBXGroup;
+			children = (
+				5C7C35D3299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift */,
+				5C12B42C2902A12A001EE549 /* ApplicationSettingsScreen.swift */,
+			);
+			path = ApplicationSettings;
 			sourceTree = "<group>";
 		};
 		5C2146E429A931490005422D /* ProductFeed */ = {
@@ -634,21 +700,14 @@
 		5C25C681299569FB00C07953 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				5C3D8274298D5F3300E861DC /* AccountSettingsScreen.swift */,
-				5C7C35CD299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift */,
-				5C12B42E2902A190001EE549 /* ProfileSettingsScreen.swift */,
-				5C7C35CF299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift */,
-				5C7C35F5299AE7C5009A3C09 /* BlockedUserListItemView.swift */,
-				5C12B4322902A4C9001EE549 /* BlockedUsersScreen.swift */,
-				5C7C35D1299ACE55009A3C09 /* BlockedUsersScreenViewModel.swift */,
-				5C12B42C2902A12A001EE549 /* ApplicationSettingsScreen.swift */,
-				5C7C35D3299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift */,
-				5C663F2A292FBE10006F9A97 /* AppIconScreen.swift */,
-				5C663F2C292FE614006F9A97 /* AppIcon.swift */,
-				5CE90090292101C8003DE697 /* AboutScreen.swift */,
-				5C7C35D5299ACEAF009A3C09 /* AboutScreenViewModel.swift */,
+				5C20A52329AB55E800ABBA74 /* ApplicationSettings */,
+				5C20A52029AB559F00ABBA74 /* Contributions */,
+				5C20A51F29AB559300ABBA74 /* About */,
+				5C20A51E29AB558200ABBA74 /* AppIcon */,
+				5C20A51D29AB551D00ABBA74 /* BlockedUser */,
+				5C20A51C29AB550B00ABBA74 /* ProfileSettings */,
+				5C20A51B29AB54FD00ABBA74 /* AccountSettings */,
 				5C11ECB528EEEFB300CCDE6A /* SettingsScreen.swift */,
-				5C353CC129A24C5F0067C4EE /* ContributionsScreenView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1420,6 +1479,7 @@
 				5C7C3580299AC0A6009A3C09 /* AuthenticationInput.swift in Sources */,
 				5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */,
 				5CED433228FD76BB003F8194 /* SubBrandSheet.swift in Sources */,
+				5C20A52229AB55BA00ABBA74 /* ContributionsScreenViewModel.swift in Sources */,
 				5CED432E28FD6EA7003F8194 /* BrandSheet.swift in Sources */,
 				5CD10A5928F98D8A0001CFC2 /* CheckInReaction.swift in Sources */,
 				5C7C35A3299AC5DB009A3C09 /* UserSheetViewModel.swift in Sources */,
