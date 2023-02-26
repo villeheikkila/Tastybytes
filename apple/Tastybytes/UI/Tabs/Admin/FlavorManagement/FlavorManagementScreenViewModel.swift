@@ -5,9 +5,28 @@ extension FlavorManagementScreen {
     private let logger = getLogger(category: "FlavorManagementView")
     let client: Client
     @Published var flavors = [Flavor]()
-
+    @Published var showAddFlavor = false
+    @Published var newFlavorName = ""
     init(_ client: Client) {
       self.client = client
+    }
+
+    func addFlavor() {
+      Task {
+        switch await client.flavor.insert(newFlavor: Flavor.NewRequest(name: newFlavorName)) {
+        case let .success(newFlavor):
+          withAnimation {
+            flavors.append(newFlavor)
+            newFlavorName = ""
+            showAddFlavor = false
+          }
+        case let .failure(error):
+          logger
+            .error(
+              "failed to delete flavor: \(error.localizedDescription)"
+            )
+        }
+      }
     }
 
     func deleteFlavor(_ flavor: Flavor) {

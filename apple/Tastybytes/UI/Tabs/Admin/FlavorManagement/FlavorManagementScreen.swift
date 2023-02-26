@@ -20,6 +20,24 @@ struct FlavorManagementScreen: View {
       }
     }
     .navigationBarTitle("Flavors")
+    .sheet(isPresented: $viewModel.showAddFlavor, content: {
+      NavigationStack {
+        DismissableSheet(title: "Add Flavor") {
+          Form {
+            TextField("Name", text: $viewModel.newFlavorName)
+            Button(action: { viewModel.addFlavor() }, label: {
+              Text("Add")
+            })
+          }
+        }
+      }.presentationDetents([.medium])
+    })
+    .navigationBarItems(
+      trailing: Button(role: .destructive, action: { viewModel.showAddFlavor = true }, label: {
+        Label("Add flavors", systemImage: "plus")
+          .labelStyle(.iconOnly)
+      })
+    )
     .refreshable {
       await viewModel.loadFlavors()
     }
