@@ -31,6 +31,13 @@ extension ProductVerificationScreen {
       }
     }
 
+    func onEditProduct() {
+      editProduct = nil
+      Task {
+        await loadProducts()
+      }
+    }
+
     func deleteProduct(onDelete: @escaping () -> Void) {
       if let deleteProduct {
         Task {
@@ -45,7 +52,7 @@ extension ProductVerificationScreen {
     }
 
     func loadProducts() async {
-      switch await client.product.getFeed(.unverified, from: 0, to: 1000, categoryFilterId: nil) {
+      switch await client.product.getUnverified() {
       case let .success(products):
         withAnimation {
           self.products = products

@@ -3,7 +3,7 @@ import Supabase
 
 enum ProductFeedType: Hashable, Identifiable {
   var id: String { label }
-  case topRated, trending, unverified
+  case topRated, trending
 
   var label: String {
     switch self {
@@ -11,8 +11,6 @@ enum ProductFeedType: Hashable, Identifiable {
       return "Top Rated"
     case .trending:
       return "Trending"
-    case .unverified:
-      return "Unverified"
     }
   }
 }
@@ -26,6 +24,7 @@ protocol ProductRepository {
     -> Result<[Product.Joined], Error>
   func delete(id: Int) async -> Result<Void, Error>
   func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
+  func getUnverified() async -> Result<[Product.Joined], Error>
   func getSummaryById(id: Int) async -> Result<Summary, Error>
   func getCreatedByUserId(id: UUID) async -> Result<[Product.Joined], Error>
   func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
@@ -94,15 +93,25 @@ struct SupabaseProductRepository: ProductRepository {
           .execute()
           .value
         return .success(response)
-      case .unverified:
-        let response: [Product.Joined] = try await queryBuilder
-          .eq(column: "is_verified", value: false)
-          .range(from: from, to: to)
-          .execute()
-          .value
-        return .success(response)
       }
 
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getUnverified() async -> Result<[Product.Joined], Error> {
+    do {
+      let response: [Product.Joined] = try await client
+        .database
+        .from(Product.getQuery(.tableName))
+        .select(columns: Product.getQuery(.joinedBrandSubcategoriesCreator(false)))
+        .eq(column: "is_verified", value: false)
+        .order(column: "created_at", ascending: false)
+        .execute()
+        .value
+
+      return .success(response)
     } catch {
       return .failure(error)
     }

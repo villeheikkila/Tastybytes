@@ -12,23 +12,37 @@ struct ProductVerificationScreen: View {
   var body: some View {
     List {
       ForEach(viewModel.products, id: \.id) { product in
-        ProductItemView(product: product)
-          .contentShape(Rectangle())
-          .accessibilityAddTraits(.isLink)
-          .onTapGesture {
-            router.navigate(to: .product(product), resetStack: false)
+
+        VStack {
+          if let createdBy = product.createdBy {
+            HStack {
+              AvatarView(avatarUrl: createdBy.avatarUrl, size: 16, id: createdBy.id)
+              Text(createdBy.preferredName).font(.caption).bold()
+              Spacer()
+              // swiftlint:disable force_try
+              if let createdAt = product.createdAt, let date = try! parseDate(from: createdAt) {
+                Text(date.relativeTime()).font(.caption).bold()
+              }
+            }
+            ProductItemView(product: product)
+              .contentShape(Rectangle())
+              .accessibilityAddTraits(.isLink)
+              .onTapGesture {
+                router.navigate(to: .product(product), resetStack: false)
+              }
+              .swipeActions {
+                Button(action: { viewModel.verifyProduct(product) }, label: {
+                  Label("Verify", systemImage: "checkmark")
+                }).tint(.green)
+                Button(action: { viewModel.editProduct = product }, label: {
+                  Label("Edit", systemImage: "pencil")
+                }).tint(.yellow)
+                Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
+                  Label("Delete", systemImage: "trash")
+                })
+              }
           }
-          .swipeActions {
-            Button(action: { viewModel.verifyProduct(product) }, label: {
-              Label("Verify", systemImage: "checkmark")
-            }).tint(.green)
-            Button(action: { viewModel.editProduct = product }, label: {
-              Label("Edit", systemImage: "pencil")
-            }).tint(.yellow)
-            Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
-              Label("Delete", systemImage: "trash")
-            })
-          }
+        }
       }
     }
     .listStyle(.plain)
@@ -36,9 +50,7 @@ struct ProductVerificationScreen: View {
       NavigationStack {
         DismissableSheet(title: "Edit Product") {
           AddProductView(viewModel.client, mode: .edit(editProduct), onEdit: {
-            Task {
-              await viewModel.loadProducts()
-            }
+            viewModel.onEditProduct()
           })
         }
       }
