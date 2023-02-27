@@ -61,7 +61,7 @@ struct ProductScreen: View {
         case .editProduct:
           DismissableSheet(title: "Edit Product") {
             AddProductView(viewModel.client, mode: .edit(viewModel.product), onEdit: {
-              viewModel.onEditCheckIn()
+              viewModel.onEditProduct()
             })
           }
         case .barcodeScanner:

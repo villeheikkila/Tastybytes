@@ -33,7 +33,7 @@ extension ProductScreen {
       showDeleteProductConfirmationDialog.toggle()
     }
 
-    func onEditCheckIn() {
+    func onEditProduct() {
       activeSheet = nil
       refresh()
       refreshCheckIns()

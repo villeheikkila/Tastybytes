@@ -5,6 +5,14 @@ extension ProductVerificationScreen {
     private let logger = getLogger(category: "ProductVerificationScreen")
     let client: Client
     @Published var products = [Product.Joined]()
+    @Published var editProduct: Product.Joined?
+    @Published var deleteProduct: Product.Joined? {
+      didSet {
+        showDeleteProductConfirmationDialog = true
+      }
+    }
+
+    @Published var showDeleteProductConfirmationDialog = false
 
     init(_ client: Client) {
       self.client = client
@@ -19,6 +27,19 @@ extension ProductVerificationScreen {
           }
         case let .failure(error):
           logger.error("failed to verify product \(product.id): \(error.localizedDescription)")
+        }
+      }
+    }
+
+    func deleteProduct(onDelete: @escaping () -> Void) {
+      if let deleteProduct {
+        Task {
+          switch await client.product.delete(id: deleteProduct.id) {
+          case .success:
+            onDelete()
+          case let .failure(error):
+            logger.error("failed to delete product \(deleteProduct.id): \(error.localizedDescription)")
+          }
         }
       }
     }
