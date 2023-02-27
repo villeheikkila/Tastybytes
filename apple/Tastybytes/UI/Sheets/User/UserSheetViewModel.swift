@@ -19,13 +19,12 @@ extension UserSheet {
             self.searchResults = searchResults
           }
         case let .failure(error):
-          logger
-            .error(
-              """
-              sarching users by \(currentUserId) with search term \(self.searchText)\
-               failed: \(error.localizedDescription)
-              """
-            )
+          logger.error(
+            """
+            sarching users by \(currentUserId) with search term \(self.searchText)\
+             failed: \(error.localizedDescription)
+            """
+          )
         }
       }
     }

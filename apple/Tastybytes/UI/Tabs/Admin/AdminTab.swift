@@ -18,7 +18,7 @@ struct AdminTab: View {
           Label("Flavors", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
         NavigationLink(value: Route.productVerificationScreen) {
-          Label("Products", systemImage: "plus.rectangle.fill.on.rectangle.fill")
+          Label("Product Verification", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
       }
       .withRoutes(client)

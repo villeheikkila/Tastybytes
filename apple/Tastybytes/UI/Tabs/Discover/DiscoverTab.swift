@@ -96,7 +96,7 @@ struct DiscoverTab: View {
             }
           )
         }
-        .searchable(text: $viewModel.searchTerm,
+        .searchable(text: $viewModel.searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                     prompt: viewModel.searchScope.prompt)
         .disableAutocorrection(true)
         .searchScopes($viewModel.searchScope) {
