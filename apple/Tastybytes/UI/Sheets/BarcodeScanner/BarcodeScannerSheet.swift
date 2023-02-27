@@ -8,18 +8,6 @@ struct BarcodeScannerSheet: View {
 
   let onComplete: (_ barcode: Barcode) -> Void
 
-  func isValidEAN13(input: String) -> Bool {
-    if input.count != 13 { return false }
-    let parts = input.compactMap(\.wholeNumberValue)
-    if parts.count != 13 { return false }
-    let evenSumMultiplied = (parts[0] + parts[2] + parts[4] + parts[6] + parts[8] + parts[10]) * 3
-    let oddSum = parts[1] + parts[3] + parts[5] + parts[7] + parts[9] + parts[11]
-    let reminder = (evenSumMultiplied + oddSum) % 10
-    let checkValue = reminder == 0 ? reminder : 10 - reminder
-    let checkDigit = parts[12]
-    return checkValue == checkDigit
-  }
-
   var body: some View {
     Group {
       if showBarcodeTextField {

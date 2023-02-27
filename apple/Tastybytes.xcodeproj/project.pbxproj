@@ -42,6 +42,7 @@
 		5C20A51729AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51629AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift */; };
 		5C20A51A29AB52DA00ABBA74 /* ProductVerificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51929AB52DA00ABBA74 /* ProductVerificationViewModel.swift */; };
 		5C20A52229AB55BA00ABBA74 /* ContributionsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A52129AB55BA00ABBA74 /* ContributionsScreenViewModel.swift */; };
+		5C20A52529AC8AB800ABBA74 /* BarcodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A52429AC8AB800ABBA74 /* BarcodeUtils.swift */; };
 		5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146E529A9315D0005422D /* ProductFeedScreen.swift */; };
 		5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EA29A96C090005422D /* NameTagSheet.swift */; };
 		5C2146ED29A97CB40005422D /* ProductFeedScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EC29A97CB40005422D /* ProductFeedScreenViewModel.swift */; };
@@ -242,6 +243,7 @@
 		5C20A51629AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorManagementScreenViewModel.swift; sourceTree = "<group>"; };
 		5C20A51929AB52DA00ABBA74 /* ProductVerificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductVerificationViewModel.swift; sourceTree = "<group>"; };
 		5C20A52129AB55BA00ABBA74 /* ContributionsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionsScreenViewModel.swift; sourceTree = "<group>"; };
+		5C20A52429AC8AB800ABBA74 /* BarcodeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeUtils.swift; sourceTree = "<group>"; };
 		5C2146E529A9315D0005422D /* ProductFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreen.swift; sourceTree = "<group>"; };
 		5C2146EA29A96C090005422D /* NameTagSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTagSheet.swift; sourceTree = "<group>"; };
 		5C2146EC29A97CB40005422D /* ProductFeedScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreenViewModel.swift; sourceTree = "<group>"; };
@@ -944,6 +946,7 @@
 			isa = PBXGroup;
 			children = (
 				5C0E3651292679630072EFBD /* BarcodeScannerSheet.swift */,
+				5C20A52429AC8AB800ABBA74 /* BarcodeUtils.swift */,
 			);
 			path = BarcodeScanner;
 			sourceTree = "<group>";
@@ -1377,6 +1380,7 @@
 				5C7C358E299AC25C009A3C09 /* BrandScreenViewModel.swift in Sources */,
 				5C7C35F2299AE67B009A3C09 /* UsernameTextFieldView.swift in Sources */,
 				5CC2FE9429197D9F002BDF83 /* LocationSearchManager.swift in Sources */,
+				5C20A52529AC8AB800ABBA74 /* BarcodeUtils.swift in Sources */,
 				5C0E36582928EA910072EFBD /* LegacyPhotoPicker.swift in Sources */,
 				5C663F3929355601006F9A97 /* EditBrandSheet.swift in Sources */,
 				5C663F352932AEB9006F9A97 /* CategoryNameView.swift in Sources */,
