@@ -34,7 +34,7 @@ struct ProfileProductListView: View {
     }
     .if(viewModel.productFilter != nil, transform: { view in
       view.overlay {
-        BottomOverlay {
+        MaterialOverlay(alignment: .bottom) {
           if let productFilter = viewModel.productFilter {
             ProductFilterOverlayView(filters: productFilter)
           }

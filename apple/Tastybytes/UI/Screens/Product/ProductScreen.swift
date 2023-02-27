@@ -25,11 +25,11 @@ struct ProductScreen: View {
         Section {
           ProductItemView(product: viewModel.product, extras: [.companyLink])
           Button(action: { viewModel.activeSheet = .checkIn }, label: {
-            Label("Check-in!", systemImage: "plus")
-              .foregroundColor(.primary)
+            Text("Check-in!")
+              .foregroundStyle(Color.accentColor)
               .fontWeight(.medium)
           })
-        }.listRowSeparator(.visible)
+        }.listRowSeparator(.hidden)
 
         if let summary = viewModel.summary, summary.averageRating != nil {
           Section {

@@ -18,7 +18,7 @@ struct CheckInScreen: View {
       commentSection
     }
     .overlay(
-      BottomOverlay {
+      MaterialOverlay(alignment: .bottom) {
         leaveCommentSection
       }
     )
