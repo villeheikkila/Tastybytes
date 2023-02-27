@@ -159,7 +159,7 @@ struct CheckInSheet: View {
         case .flavors:
           FlavorSheet(viewModel.client, pickedFlavors: $viewModel.pickedFlavors)
         case .location:
-          LocationSearch(viewModel.client, onSelect: { location in
+          LocationSearchSheet(viewModel.client, onSelect: { location in
             viewModel.setLocation(location)
           })
         case .manufacturer:

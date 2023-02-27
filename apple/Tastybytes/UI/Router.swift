@@ -87,6 +87,8 @@ enum Route: Hashable {
   case friends(Profile)
   case addProduct(Barcode?)
   case productFeed(ProductFeedType)
+  case flavorManagementScreen
+  case productVerificationScreen
 
   @ViewBuilder
   @MainActor
@@ -119,6 +121,10 @@ enum Route: Hashable {
       FriendsScreen(client, profile: profile)
     case let .productFeed(feed):
       ProductFeedScreen(client, feed: feed)
+    case .flavorManagementScreen:
+      FlavorManagementScreen(client)
+    case .productVerificationScreen:
+      ProductVerificationScreen(client)
     }
   }
 }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct LocationSearch: View {
+struct LocationSearchSheet: View {
   @StateObject private var viewModel: ViewModel
   @StateObject private var locationManager = LocationManager()
   @Environment(\.dismiss) private var dismiss

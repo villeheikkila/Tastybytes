@@ -110,7 +110,7 @@
 		5C7C35A3299AC5DB009A3C09 /* UserSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35A2299AC5DB009A3C09 /* UserSheetViewModel.swift */; };
 		5C7C35A9299AC628009A3C09 /* FlavorSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35A8299AC628009A3C09 /* FlavorSheetViewModel.swift */; };
 		5C7C35AC299AC657009A3C09 /* BrandSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35AB299AC657009A3C09 /* BrandSheetViewModel.swift */; };
-		5C7C35B0299AC696009A3C09 /* LocationSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35AF299AC696009A3C09 /* LocationSearchViewModel.swift */; };
+		5C7C35B0299AC696009A3C09 /* LocationSearchSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35AF299AC696009A3C09 /* LocationSearchSheetViewModel.swift */; };
 		5C7C35B3299AC6EC009A3C09 /* MergeSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35B2299AC6EC009A3C09 /* MergeSheetViewModel.swift */; };
 		5C7C35B6299AC70E009A3C09 /* EditBrandSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35B5299AC70E009A3C09 /* EditBrandSheetViewModel.swift */; };
 		5C7C35B9299AC736009A3C09 /* EditSubBrandSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35B8299AC736009A3C09 /* EditSubBrandSheetViewModel.swift */; };
@@ -162,7 +162,7 @@
 		5CBC2450297C54B900A0002B /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBC244F297C54B900A0002B /* Router.swift */; };
 		5CBC2452297C60AE00A0002B /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBC2451297C60AE00A0002B /* ProfileScreen.swift */; };
 		5CBC2454297D3A5F00A0002B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBC2453297D3A5F00A0002B /* ProfileView.swift */; };
-		5CC2FE8F29196A5D002BDF83 /* LocationSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE8E29196A5D002BDF83 /* LocationSearch.swift */; };
+		5CC2FE8F29196A5D002BDF83 /* LocationSearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE8E29196A5D002BDF83 /* LocationSearchSheet.swift */; };
 		5CC2FE912919774A002BDF83 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE902919774A002BDF83 /* Location.swift */; };
 		5CC2FE9429197D9F002BDF83 /* LocationSearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9329197D9F002BDF83 /* LocationSearchManager.swift */; };
 		5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */; };
@@ -311,7 +311,7 @@
 		5C7C35A2299AC5DB009A3C09 /* UserSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35A8299AC628009A3C09 /* FlavorSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35AB299AC657009A3C09 /* BrandSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSheetViewModel.swift; sourceTree = "<group>"; };
-		5C7C35AF299AC696009A3C09 /* LocationSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchViewModel.swift; sourceTree = "<group>"; };
+		5C7C35AF299AC696009A3C09 /* LocationSearchSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35B2299AC6EC009A3C09 /* MergeSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35B5299AC70E009A3C09 /* EditBrandSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBrandSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35B8299AC736009A3C09 /* EditSubBrandSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubBrandSheetViewModel.swift; sourceTree = "<group>"; };
@@ -363,7 +363,7 @@
 		5CBC244F297C54B900A0002B /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		5CBC2451297C60AE00A0002B /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
 		5CBC2453297D3A5F00A0002B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		5CC2FE8E29196A5D002BDF83 /* LocationSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearch.swift; sourceTree = "<group>"; };
+		5CC2FE8E29196A5D002BDF83 /* LocationSearchSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchSheet.swift; sourceTree = "<group>"; };
 		5CC2FE902919774A002BDF83 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		5CC2FE9329197D9F002BDF83 /* LocationSearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchManager.swift; sourceTree = "<group>"; };
 		5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRepository.swift; sourceTree = "<group>"; };
@@ -954,8 +954,8 @@
 		5C7C35AE299AC682009A3C09 /* LocationSearch */ = {
 			isa = PBXGroup;
 			children = (
-				5CC2FE8E29196A5D002BDF83 /* LocationSearch.swift */,
-				5C7C35AF299AC696009A3C09 /* LocationSearchViewModel.swift */,
+				5CC2FE8E29196A5D002BDF83 /* LocationSearchSheet.swift */,
+				5C7C35AF299AC696009A3C09 /* LocationSearchSheetViewModel.swift */,
 			);
 			path = LocationSearch;
 			sourceTree = "<group>";
@@ -1417,7 +1417,7 @@
 				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,
 				5C7C3591299AC2B2009A3C09 /* ProductScreenViewModel.swift in Sources */,
 				5C25C672299561BD00C07953 /* SettingsTab.swift in Sources */,
-				5CC2FE8F29196A5D002BDF83 /* LocationSearch.swift in Sources */,
+				5CC2FE8F29196A5D002BDF83 /* LocationSearchSheet.swift in Sources */,
 				5C0E365A29296FCB0072EFBD /* SubcategoryRepository.swift in Sources */,
 				5CA7A535299E8ECB0066F604 /* DismissableSheetView.swift in Sources */,
 				5C20A51029AA5A0500ABBA74 /* AdminTab.swift in Sources */,
@@ -1508,7 +1508,7 @@
 				5C3D8273298C5DA300E861DC /* OptionalExtensions.swift in Sources */,
 				5C7C35E4299AE0CD009A3C09 /* MessageNotificationView.swift in Sources */,
 				5C7C3593299AC426009A3C09 /* ScalingButton.swift in Sources */,
-				5C7C35B0299AC696009A3C09 /* LocationSearchViewModel.swift in Sources */,
+				5C7C35B0299AC696009A3C09 /* LocationSearchSheetViewModel.swift in Sources */,
 				5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */,
 				5C25C69029991D0000C07953 /* ProductBarcodeRepository.swift in Sources */,
 				5C7C35D6299ACEAF009A3C09 /* AboutScreenViewModel.swift in Sources */,

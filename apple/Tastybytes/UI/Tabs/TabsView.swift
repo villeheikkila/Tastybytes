@@ -76,7 +76,7 @@ enum Tab: Int, Identifiable, Hashable {
     case .notifications:
       NotificationTab(client, resetNavigationOnTab: resetNavigationOnTab)
     case .admin:
-      AdminTab(client)
+      AdminTab(client, resetNavigationOnTab: resetNavigationOnTab)
     case .profile:
       ProfileTab(client, resetNavigationOnTab: resetNavigationOnTab)
     }
