@@ -23,32 +23,29 @@ struct BrandScreen: View {
       ForEach(viewModel.sortedSubBrands, id: \.self) { subBrand in
         Section {
           ForEach(subBrand.products, id: \.id) { product in
-            NavigationLink(value: Route.product(Product.Joined(
+            let productJoined = Product.Joined(
               product: product,
               subBrand: subBrand,
               brand: viewModel.brand
-            ))) {
-              ProductItemView(product: Product.Joined(
-                product: product,
-                subBrand: subBrand,
-                brand: viewModel.brand
-              ))
-              .padding(2)
-              .contextMenu {
-                if profileManager.hasPermission(.canMergeProducts) {
-                  Button(action: { viewModel.productToMerge = product }, label: {
-                    Text("Merge product to...")
-                  })
-                }
+            )
+            NavigationLink(value: Route.product(productJoined)) {
+              ProductItemView(product: productJoined)
+                .padding(2)
+                .contextMenu {
+                  if profileManager.hasPermission(.canMergeProducts) {
+                    Button(action: { viewModel.productToMerge = product }, label: {
+                      Text("Merge product to...")
+                    })
+                  }
 
-                if profileManager.hasPermission(.canDeleteProducts) {
-                  Button(role: .destructive, action: { viewModel.productToDelete = product }, label: {
-                    Label("Delete", systemImage: "trash.fill")
-                      .foregroundColor(.red)
-                  })
-                  .disabled(product.isVerified)
+                  if profileManager.hasPermission(.canDeleteProducts) {
+                    Button(role: .destructive, action: { viewModel.productToDelete = product }, label: {
+                      Label("Delete", systemImage: "trash.fill")
+                        .foregroundColor(.red)
+                    })
+                    .disabled(product.isVerified)
+                  }
                 }
-              }
             }
           }
         } header: {
