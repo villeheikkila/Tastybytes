@@ -14,7 +14,7 @@ extension BarcodeManagementSheet {
 
     func deleteBarcode(_ barcode: ProductBarcode.JoinedWithCreator) {
       Task {
-        switch await client.productBarcode.delete(id: product.id) {
+        switch await client.productBarcode.delete(id: barcode.id) {
         case .success:
           withAnimation {
             self.barcodes.remove(object: barcode)

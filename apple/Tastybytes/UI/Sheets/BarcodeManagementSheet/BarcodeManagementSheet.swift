@@ -24,15 +24,25 @@ struct BarcodeManagementSheet: View {
           }
           Spacer()
         }
+        .swipeActions {
+          Button(role: .destructive, action: {
+            viewModel.deleteBarcode(barcode)
+            hapticManager.trigger(of: .notification(.success))
+          }, label: {
+            Label("Delete", systemImage: "trash.fill")
+          })
+        }
         .contextMenu {
           Button(role: .destructive, action: {
             viewModel.deleteBarcode(barcode)
             hapticManager.trigger(of: .notification(.success))
-          }, label: { Label("Delete", systemImage: "trash.fill") })
+          }, label: {
+            Label("Delete", systemImage: "trash.fill")
+          })
         }
       }
     }
-    .onAppear {
+    .task {
       viewModel.getBarcodes()
     }
     .navigationTitle("Barcodes")
