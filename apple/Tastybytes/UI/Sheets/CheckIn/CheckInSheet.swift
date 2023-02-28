@@ -141,6 +141,7 @@ struct CheckInSheet: View {
         }
       })
     }
+    .scrollDisabled(true)
     .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
       Button(action: { viewModel.showCamera.toggle() }, label: {
         Text("Camera")
