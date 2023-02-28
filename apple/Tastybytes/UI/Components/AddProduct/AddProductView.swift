@@ -59,7 +59,6 @@ struct AddProductView: View {
         Text(viewModel.mode.doneLabel)
       }).disabled(viewModel.isLoading || !viewModel.isValid())
     }
-    .scrollDisabled(true)
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {
