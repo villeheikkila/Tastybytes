@@ -84,7 +84,6 @@
 		5C663F29292E1071006F9A97 /* Documents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F28292E1071006F9A97 /* Documents.swift */; };
 		5C663F2B292FBE10006F9A97 /* AppIconScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F2A292FBE10006F9A97 /* AppIconScreen.swift */; };
 		5C663F2D292FE614006F9A97 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F2C292FE614006F9A97 /* AppIcon.swift */; };
-		5C663F2F29312CAE006F9A97 /* MergeSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F2E29312CAE006F9A97 /* MergeSheetView.swift */; };
 		5C663F3329322016006F9A97 /* ServingStyleLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F3229322016006F9A97 /* ServingStyleLabelView.swift */; };
 		5C663F352932AEB9006F9A97 /* CategoryNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F342932AEB9006F9A97 /* CategoryNameView.swift */; };
 		5C663F372933B8FA006F9A97 /* LocationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F362933B8FA006F9A97 /* LocationScreen.swift */; };
@@ -111,7 +110,7 @@
 		5C7C35A9299AC628009A3C09 /* FlavorSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35A8299AC628009A3C09 /* FlavorSheetViewModel.swift */; };
 		5C7C35AC299AC657009A3C09 /* BrandSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35AB299AC657009A3C09 /* BrandSheetViewModel.swift */; };
 		5C7C35B0299AC696009A3C09 /* LocationSearchSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35AF299AC696009A3C09 /* LocationSearchSheetViewModel.swift */; };
-		5C7C35B3299AC6EC009A3C09 /* MergeSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35B2299AC6EC009A3C09 /* MergeSheetViewModel.swift */; };
+		5C7C35B3299AC6EC009A3C09 /* DuplicateProductSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35B2299AC6EC009A3C09 /* DuplicateProductSheetViewModel.swift */; };
 		5C7C35B6299AC70E009A3C09 /* EditBrandSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35B5299AC70E009A3C09 /* EditBrandSheetViewModel.swift */; };
 		5C7C35B9299AC736009A3C09 /* EditSubBrandSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35B8299AC736009A3C09 /* EditSubBrandSheetViewModel.swift */; };
 		5C7C35BC299AC7AE009A3C09 /* ReactionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35BB299AC7AE009A3C09 /* ReactionsViewModel.swift */; };
@@ -167,7 +166,7 @@
 		5CC2FE9429197D9F002BDF83 /* LocationSearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9329197D9F002BDF83 /* LocationSearchManager.swift */; };
 		5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */; };
 		5CC2FE982919CB19002BDF83 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE972919CB19002BDF83 /* Country.swift */; };
-		5CC6B9A529AE9DB000A62158 /* MergeToSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC6B9A429AE9DB000A62158 /* MergeToSheet.swift */; };
+		5CC6B9A529AE9DB000A62158 /* DuplicateProductSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC6B9A429AE9DB000A62158 /* DuplicateProductSheet.swift */; };
 		5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE914D28F45DE7005A6043 /* Utils.swift */; };
 		5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */; };
 		5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */; };
@@ -286,7 +285,6 @@
 		5C663F28292E1071006F9A97 /* Documents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Documents.swift; sourceTree = "<group>"; };
 		5C663F2A292FBE10006F9A97 /* AppIconScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconScreen.swift; sourceTree = "<group>"; };
 		5C663F2C292FE614006F9A97 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
-		5C663F2E29312CAE006F9A97 /* MergeSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeSheetView.swift; sourceTree = "<group>"; };
 		5C663F3229322016006F9A97 /* ServingStyleLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyleLabelView.swift; sourceTree = "<group>"; };
 		5C663F342932AEB9006F9A97 /* CategoryNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryNameView.swift; sourceTree = "<group>"; };
 		5C663F362933B8FA006F9A97 /* LocationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationScreen.swift; sourceTree = "<group>"; };
@@ -313,7 +311,7 @@
 		5C7C35A8299AC628009A3C09 /* FlavorSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35AB299AC657009A3C09 /* BrandSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35AF299AC696009A3C09 /* LocationSearchSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchSheetViewModel.swift; sourceTree = "<group>"; };
-		5C7C35B2299AC6EC009A3C09 /* MergeSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeSheetViewModel.swift; sourceTree = "<group>"; };
+		5C7C35B2299AC6EC009A3C09 /* DuplicateProductSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35B5299AC70E009A3C09 /* EditBrandSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBrandSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35B8299AC736009A3C09 /* EditSubBrandSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubBrandSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35BB299AC7AE009A3C09 /* ReactionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsViewModel.swift; sourceTree = "<group>"; };
@@ -371,7 +369,7 @@
 		5CC2FE972919CB19002BDF83 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
 		5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
-		5CC6B9A429AE9DB000A62158 /* MergeToSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeToSheet.swift; sourceTree = "<group>"; };
+		5CC6B9A429AE9DB000A62158 /* DuplicateProductSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductSheet.swift; sourceTree = "<group>"; };
 		5CCE914D28F45DE7005A6043 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardView.swift; sourceTree = "<group>"; };
@@ -965,9 +963,8 @@
 		5C7C35B1299AC6DA009A3C09 /* Merge */ = {
 			isa = PBXGroup;
 			children = (
-				5C663F2E29312CAE006F9A97 /* MergeSheetView.swift */,
-				5C7C35B2299AC6EC009A3C09 /* MergeSheetViewModel.swift */,
-				5CC6B9A429AE9DB000A62158 /* MergeToSheet.swift */,
+				5CC6B9A429AE9DB000A62158 /* DuplicateProductSheet.swift */,
+				5C7C35B2299AC6EC009A3C09 /* DuplicateProductSheetViewModel.swift */,
 			);
 			path = Merge;
 			sourceTree = "<group>";
@@ -1397,7 +1394,7 @@
 				5C663F3329322016006F9A97 /* ServingStyleLabelView.swift in Sources */,
 				5C0E365429279B240072EFBD /* Barcode.swift in Sources */,
 				5C7C35D4299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift in Sources */,
-				5C7C35B3299AC6EC009A3C09 /* MergeSheetViewModel.swift in Sources */,
+				5C7C35B3299AC6EC009A3C09 /* DuplicateProductSheetViewModel.swift in Sources */,
 				5C7C35C6299ACB54009A3C09 /* ScannerViewController.swift in Sources */,
 				5CED432228FAC01C003F8194 /* UserSheet.swift in Sources */,
 				5C25C68829956BD400C07953 /* WebShape.swift in Sources */,
@@ -1505,7 +1502,6 @@
 				5C7C359A299AC504009A3C09 /* SubBrandSheetViewModel.swift in Sources */,
 				5C25AEB82904038000793607 /* Permission.swift in Sources */,
 				5C663F29292E1071006F9A97 /* Documents.swift in Sources */,
-				5C663F2F29312CAE006F9A97 /* MergeSheetView.swift in Sources */,
 				5C3D8275298D5F3300E861DC /* AccountSettingsScreen.swift in Sources */,
 				5CED432A28FD4E17003F8194 /* CategoryRepository.swift in Sources */,
 				5C3D8273298C5DA300E861DC /* OptionalExtensions.swift in Sources */,
@@ -1522,7 +1518,7 @@
 				5CBC2452297C60AE00A0002B /* ProfileScreen.swift in Sources */,
 				5CC2FE912919774A002BDF83 /* Location.swift in Sources */,
 				5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */,
-				5CC6B9A529AE9DB000A62158 /* MergeToSheet.swift in Sources */,
+				5CC6B9A529AE9DB000A62158 /* DuplicateProductSheet.swift in Sources */,
 				5C7C3574299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift in Sources */,
 				5C43237D2986A6910085522E /* Summary.swift in Sources */,
 				5C12B42F2902A191001EE549 /* ProfileSettingsScreen.swift in Sources */,

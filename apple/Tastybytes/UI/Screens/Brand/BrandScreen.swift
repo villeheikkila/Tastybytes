@@ -33,7 +33,7 @@ struct BrandScreen: View {
                 .padding(2)
                 .contextMenu {
                   if profileManager.hasPermission(.canMergeProducts) {
-                    Button(action: { viewModel.productToMerge = product }, label: {
+                    Button(action: { viewModel.productToMerge = productJoined }, label: {
                       Text("Merge product to...")
                     })
                   }
@@ -111,7 +111,7 @@ struct BrandScreen: View {
           }
         case .mergeProduct:
           if let productToMerge = viewModel.productToMerge {
-            MergeSheet(viewModel.client, productToMerge: productToMerge)
+            DuplicateProductSheet(viewModel.client, mode: .mergeDuplicate, product: productToMerge)
           }
         case .addProduct:
           DismissableSheet(title: "Add Product") {

@@ -30,7 +30,7 @@ extension BrandScreen {
       }
     }
 
-    @Published var productToMerge: Product.JoinedCategory? {
+    @Published var productToMerge: Product.Joined? {
       didSet {
         setActiveSheet(.mergeProduct)
       }
