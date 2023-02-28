@@ -37,14 +37,6 @@ extension Brand {
     let isVerified: Bool
     let subBrands: [SubBrand]
 
-    func hash(into hasher: inout Hasher) {
-      hasher.combine(id)
-    }
-
-    static func == (lhs: JoinedSubBrands, rhs: JoinedSubBrands) -> Bool {
-      lhs.id == rhs.id
-    }
-
     enum CodingKeys: String, CodingKey {
       case id
       case name
@@ -58,14 +50,6 @@ extension Brand {
     let name: String
     let isVerified: Bool
     let brandOwner: Company
-
-    func hash(into hasher: inout Hasher) {
-      hasher.combine(id)
-    }
-
-    static func == (lhs: JoinedCompany, rhs: JoinedCompany) -> Bool {
-      lhs.id == rhs.id
-    }
 
     enum CodingKeys: String, CodingKey {
       case id
@@ -83,10 +67,6 @@ extension Brand {
 
     func getNumberOfProducts() -> Int {
       subBrands.flatMap(\.products).count
-    }
-
-    static func == (lhs: JoinedSubBrandsProducts, rhs: JoinedSubBrandsProducts) -> Bool {
-      lhs.id == rhs.id
     }
 
     enum CodingKeys: String, CodingKey {
@@ -122,10 +102,6 @@ extension Brand {
       self.isVerified = isVerified
       self.brandOwner = brandOwner
       self.subBrands = subBrands
-    }
-
-    static func == (lhs: JoinedSubBrandsProductsCompany, rhs: JoinedSubBrandsProductsCompany) -> Bool {
-      lhs.id == rhs.id
     }
 
     enum CodingKeys: String, CodingKey {

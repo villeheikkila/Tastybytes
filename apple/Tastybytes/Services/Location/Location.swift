@@ -26,14 +26,6 @@ struct Location: Identifiable, Codable, Hashable {
     self.country = country
   }
 
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-  }
-
-  static func == (lhs: Location, rhs: Location) -> Bool {
-    lhs.id == rhs.id
-  }
-
   enum CodingKeys: String, CodingKey {
     case id
     case name

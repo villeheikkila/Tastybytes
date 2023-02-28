@@ -1,6 +1,6 @@
 import Foundation
 
-struct Friend: Identifiable, Decodable {
+struct Friend: Identifiable, Decodable, Hashable {
   let id: Int
   let sender: Profile
   let receiver: Profile
@@ -33,12 +33,6 @@ struct Friend: Identifiable, Decodable {
 
   func containsUser(userId: UUID) -> Bool {
     sender.id == userId || receiver.id == userId
-  }
-}
-
-extension Friend: Hashable {
-  static func == (lhs: Friend, rhs: Friend) -> Bool {
-    lhs.id == rhs.id && lhs.status == rhs.status
   }
 }
 

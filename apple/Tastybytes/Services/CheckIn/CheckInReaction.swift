@@ -18,14 +18,6 @@ struct CheckInReaction: Identifiable, Decodable, Hashable {
     id = try values.decode(Int.self, forKey: .id)
     profile = try values.decode(Profile.self, forKey: .profile)
   }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-  }
-
-  static func == (lhs: CheckInReaction, rhs: CheckInReaction) -> Bool {
-    lhs.id == rhs.id
-  }
 }
 
 extension CheckInReaction {
@@ -59,14 +51,6 @@ extension CheckInReaction {
     let id: Int
     let profile: Profile
     let checkIn: CheckIn
-
-    func hash(into hasher: inout Hasher) {
-      hasher.combine(id)
-    }
-
-    static func == (lhs: JoinedCheckIn, rhs: JoinedCheckIn) -> Bool {
-      lhs.id == rhs.id
-    }
 
     enum CodingKeys: String, CodingKey {
       case id

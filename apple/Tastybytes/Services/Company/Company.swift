@@ -16,15 +16,6 @@ struct Company: Identifiable, Codable, Hashable {
     }
   }
 
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-    hasher.combine(logoFile)
-  }
-
-  static func == (lhs: Company, rhs: Company) -> Bool {
-    lhs.id == rhs.id
-  }
-
   enum CodingKeys: String, CodingKey {
     case id
     case name
@@ -90,10 +81,6 @@ extension Company {
     let logoUrl: String?
     let subsidiaries: [Company]
     let brands: [Brand.JoinedSubBrandsProducts]
-
-    static func == (lhs: Joined, rhs: Joined) -> Bool {
-      lhs.id == rhs.id
-    }
 
     enum CodingKeys: String, CodingKey {
       case id

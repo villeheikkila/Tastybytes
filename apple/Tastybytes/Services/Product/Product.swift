@@ -4,10 +4,6 @@ struct Product: Identifiable, Decodable, Hashable {
   let description: String?
   let isVerified: Bool
 
-  static func == (lhs: Product, rhs: Product) -> Bool {
-    lhs.id == rhs.id && lhs.name == rhs.name && lhs.description == rhs.description && lhs.isVerified == rhs.isVerified
-  }
-
   enum CodingKeys: String, CodingKey {
     case id
     case name
@@ -303,20 +299,6 @@ extension Product {
       }
     }
 
-    func hash(into hasher: inout Hasher) {
-      hasher.combine(id)
-      hasher.combine(name)
-      hasher.combine(description)
-      hasher.combine(isVerified)
-      hasher.combine(subBrand.id)
-      hasher.combine(subBrand.name)
-    }
-
-    static func == (lhs: Joined, rhs: Joined) -> Bool {
-      lhs.id == rhs.id && lhs.name == rhs.name && lhs.description == rhs.description && lhs.isVerified == rhs
-        .isVerified && lhs.subBrand.name == rhs.subBrand.name
-    }
-
     enum CodingKeys: String, CodingKey {
       case id
       case name
@@ -418,10 +400,6 @@ extension Product {
     let isVerified: Bool
     let category: Category
     let subcategories: [Subcategory.JoinedCategory]
-
-    static func == (lhs: JoinedCategory, rhs: JoinedCategory) -> Bool {
-      lhs.id == rhs.id
-    }
 
     enum CodingKeys: String, CodingKey {
       case id

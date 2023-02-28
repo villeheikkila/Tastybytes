@@ -1,21 +1,10 @@
 import Foundation
 
-struct CheckInComment: Identifiable {
+struct CheckInComment: Identifiable, Hashable {
   let id: Int
   var content: String
   let createdAt: Date
   let profile: Profile
-}
-
-extension CheckInComment: Hashable {
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-    hasher.combine(content)
-  }
-
-  static func == (lhs: CheckInComment, rhs: CheckInComment) -> Bool {
-    lhs.id == rhs.id && lhs.content == rhs.content
-  }
 }
 
 extension CheckInComment: Decodable {

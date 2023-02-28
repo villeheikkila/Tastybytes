@@ -1,6 +1,6 @@
 import Foundation
 
-struct Notification: Identifiable {
+struct Notification: Identifiable, Hashable {
   enum Content: Hashable {
     case message(String)
     case friendRequest(Friend)
@@ -35,17 +35,6 @@ extension Notification {
   enum QueryType {
     case tableName
     case joined
-  }
-}
-
-extension Notification: Hashable {
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-    hasher.combine(seenAt)
-  }
-
-  static func == (lhs: Notification, rhs: Notification) -> Bool {
-    lhs.id == rhs.id && lhs.seenAt == rhs.seenAt
   }
 }
 
@@ -94,10 +83,6 @@ extension Notification {
   struct CheckInTaggedProfiles: Identifiable, Decodable {
     let id: Int
     let checkIn: CheckIn
-
-    static func == (lhs: CheckInTaggedProfiles, rhs: CheckInTaggedProfiles) -> Bool {
-      lhs.id == rhs.id
-    }
 
     enum CodingKeys: String, CodingKey {
       case id

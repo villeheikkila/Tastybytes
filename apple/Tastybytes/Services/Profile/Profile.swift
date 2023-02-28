@@ -12,16 +12,6 @@ struct Profile: Identifiable, Decodable, Hashable {
     case isPrivate = "is_private"
     case avatarUrl = "avatar_file"
   }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-    hasher.combine(preferredName)
-    hasher.combine(avatarUrl)
-  }
-
-  static func == (lhs: Profile, rhs: Profile) -> Bool {
-    lhs.id == rhs.id
-  }
 }
 
 extension Profile {
@@ -171,18 +161,6 @@ struct ProfileSettings: Identifiable, Decodable, Hashable {
   let sendTaggedCheckInNotifications: Bool
   let sendFriendRequestNotifications: Bool
 
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-    hasher.combine(colorScheme)
-    hasher.combine(sendReactionNotifications)
-    hasher.combine(sendTaggedCheckInNotifications)
-    hasher.combine(sendFriendRequestNotifications)
-  }
-
-  static func == (lhs: ProfileSettings, rhs: ProfileSettings) -> Bool {
-    lhs.id == rhs.id
-  }
-
   enum CodingKeys: String, CodingKey {
     case id
     case colorScheme = "color_scheme"
@@ -260,10 +238,6 @@ extension Profile {
 
     init(firebaseRegistrationToken: String) {
       self.firebaseRegistrationToken = firebaseRegistrationToken
-    }
-
-    static func == (lhs: PushNotificationToken, rhs: PushNotificationToken) -> Bool {
-      lhs.firebaseRegistrationToken == rhs.firebaseRegistrationToken
     }
 
     enum CodingKeys: String, CodingKey {

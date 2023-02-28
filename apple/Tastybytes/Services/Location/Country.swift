@@ -4,14 +4,6 @@ struct Country: Identifiable, Hashable, Decodable {
   let name: String
   let emoji: String
 
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(countryCode)
-  }
-
-  static func == (lhs: Country, rhs: Country) -> Bool {
-    lhs.countryCode == rhs.countryCode
-  }
-
   init(countryCode: String, name: String, emoji: String) {
     self.countryCode = countryCode
     self.name = name

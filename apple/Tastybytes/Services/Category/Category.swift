@@ -38,10 +38,6 @@ struct Category: Identifiable, Decodable, Hashable {
     case id
     case name
   }
-
-  static func == (lhs: Category, rhs: Category) -> Bool {
-    lhs.id == rhs.id
-  }
 }
 
 extension Category {
@@ -86,14 +82,6 @@ extension Category {
       self.name = name
       self.subcategories = subcategories
     }
-
-    func hash(into hasher: inout Hasher) {
-      hasher.combine(id)
-    }
-
-    static func == (lhs: JoinedSubcategories, rhs: JoinedSubcategories) -> Bool {
-      lhs.id == rhs.id
-    }
   }
 
   struct JoinedServingStyles: Identifiable, Decodable, Hashable {
@@ -105,10 +93,6 @@ extension Category {
       case id
       case name
       case servingStyles = "serving_styles"
-    }
-
-    static func == (lhs: JoinedServingStyles, rhs: JoinedServingStyles) -> Bool {
-      lhs.id == rhs.id
     }
   }
 }

@@ -6,14 +6,6 @@ struct Permission: Identifiable, Decodable, Hashable {
     case id
     case name
   }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-  }
-
-  static func == (lhs: Permission, rhs: Permission) -> Bool {
-    lhs.id == rhs.id
-  }
 }
 
 extension Permission {

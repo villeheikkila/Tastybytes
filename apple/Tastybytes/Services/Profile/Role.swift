@@ -8,14 +8,6 @@ struct Role: Identifiable, Decodable, Hashable {
     case name
     case permissions
   }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-  }
-
-  static func == (lhs: Role, rhs: Role) -> Bool {
-    lhs.id == rhs.id
-  }
 }
 
 extension Role {

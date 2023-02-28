@@ -25,14 +25,6 @@ struct ProductBarcode: Identifiable, Hashable, Decodable {
     return type == code.type && barcode == code.barcode
   }
 
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-  }
-
-  static func == (lhs: ProductBarcode, rhs: ProductBarcode) -> Bool {
-    lhs.id == rhs.id
-  }
-
   enum CodingKeys: String, CodingKey {
     case id, barcode, type
   }
@@ -68,14 +60,6 @@ extension ProductBarcode {
     let type: AVMetadataObject.ObjectType
     let profile: Profile
     let createdAt: Date
-
-    func hash(into hasher: inout Hasher) {
-      hasher.combine(id)
-    }
-
-    static func == (lhs: JoinedWithCreator, rhs: JoinedWithCreator) -> Bool {
-      lhs.id == rhs.id
-    }
 
     enum CodingKeys: String, CodingKey {
       case id, barcode, type, profiles, createdAt = "created_at"

@@ -5,14 +5,6 @@ struct Flavor: Identifiable, Decodable, Hashable {
   var label: String {
     name.capitalized
   }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-  }
-
-  static func == (lhs: Flavor, rhs: Flavor) -> Bool {
-    lhs.id == rhs.id
-  }
 }
 
 extension Flavor {

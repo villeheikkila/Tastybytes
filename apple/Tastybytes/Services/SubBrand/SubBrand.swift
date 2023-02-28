@@ -58,14 +58,6 @@ extension SubBrand {
     let isVerified: Bool
     let brand: Brand.JoinedCompany
 
-    func hash(into hasher: inout Hasher) {
-      hasher.combine(id)
-    }
-
-    static func == (lhs: JoinedBrand, rhs: JoinedBrand) -> Bool {
-      lhs.id == rhs.id
-    }
-
     init(id: Int, name: String?, isVerified: Bool, brand: Brand.JoinedCompany) {
       self.id = id
       self.name = name

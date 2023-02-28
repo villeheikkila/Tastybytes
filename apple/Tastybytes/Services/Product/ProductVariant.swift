@@ -6,14 +6,6 @@ struct ProductVariant: Identifiable, Codable, Hashable {
     case id
     case manufacturer = "companies"
   }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-  }
-
-  static func == (lhs: ProductVariant, rhs: ProductVariant) -> Bool {
-    lhs.id == rhs.id
-  }
 }
 
 extension ProductVariant {

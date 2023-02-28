@@ -14,13 +14,4 @@ struct Summary: Decodable, Hashable {
     case currentUserTotalCheckIns = "current_user_check_ins"
     case currentUserAverageRating = "current_user_average_rating"
   }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(totalCheckIns)
-    hasher.combine(averageRating)
-    hasher.combine(friendsTotalCheckIns)
-    hasher.combine(friendsAverageRating)
-    hasher.combine(currentUserTotalCheckIns)
-    hasher.combine(currentUserAverageRating)
-  }
 }

@@ -12,14 +12,6 @@ struct ServingStyle: Identifiable, Hashable, Decodable {
     case id
     case name
   }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-  }
-
-  static func == (lhs: ServingStyle, rhs: ServingStyle) -> Bool {
-    lhs.id == rhs.id
-  }
 }
 
 extension ServingStyle {

@@ -12,10 +12,6 @@ struct Subcategory: Identifiable, Decodable, Hashable, SubcategoryProtocol, Comp
     name.capitalized
   }
 
-  static func == (lhs: Subcategory, rhs: Subcategory) -> Bool {
-    lhs.id == rhs.id
-  }
-
   static func < (lhs: Subcategory, rhs: Subcategory) -> Bool {
     lhs.name < rhs.name
   }
@@ -55,14 +51,6 @@ extension Subcategory {
 
     func getSubcategory() -> Subcategory {
       Subcategory(id: id, name: name)
-    }
-
-    func hash(into hasher: inout Hasher) {
-      hasher.combine(id)
-    }
-
-    static func == (lhs: JoinedCategory, rhs: JoinedCategory) -> Bool {
-      lhs.id == rhs.id
     }
 
     enum CodingKeys: String, CodingKey {

@@ -31,18 +31,6 @@ struct CheckIn: Identifiable, Hashable {
       return nil
     }
   }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-    hasher.combine(rating)
-    hasher.combine(review)
-    hasher.combine(imageFile)
-    hasher.combine(checkInReactions)
-    hasher.combine(flavors)
-    hasher.combine(variant)
-    hasher.combine(location)
-    hasher.combine(servingStyle)
-  }
 }
 
 extension CheckIn {
