@@ -5,21 +5,21 @@ struct AppIconScreen: View {
   @State private var selection: AppIcon?
 
   var body: some View {
-    List(appIcons, id: \.self, selection: $selection) { icon in
+    List(appIcons, id: \.self, selection: $selection) { appIcon in
       HStack(spacing: 12) {
-        Image(uiImage: .init(named: icon.rawValue) ?? .init())
+        Image(appIcon.icon)
           .resizable()
           .aspectRatio(contentMode: .fill)
           .frame(width: 40, height: 40)
           .cornerRadius(8)
-          .accessibilityLabel("\(icon.label) app icon")
+          .accessibilityLabel("\(appIcon.label) app icon")
 
-        Text(icon.label)
+        Text(appIcon.label)
           .fontWeight(.medium)
 
         Spacer()
 
-        if icon == selection {
+        if appIcon == selection {
           Label("Selected", systemImage: "checkmark")
             .labelStyle(.iconOnly)
         }

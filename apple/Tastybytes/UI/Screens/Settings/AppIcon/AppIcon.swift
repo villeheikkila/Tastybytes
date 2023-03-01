@@ -34,4 +34,19 @@ enum AppIcon: String {
       return "Cola"
     }
   }
+
+  var icon: String {
+    switch self {
+    case .ramune:
+      return "Ramune"
+    case .juice:
+      return "Juice"
+    case .energyDrink:
+      return "EnergyDrink"
+    case .kombucha:
+      return "Kombucha"
+    case .cola:
+      return "Cola"
+    }
+  }
 }
