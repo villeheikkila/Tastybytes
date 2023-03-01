@@ -34,10 +34,13 @@ struct BarcodeScannerSheet: View {
     .navigationTitle("Barcode Scanner")
     .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Cancel").bold()
-    }), trailing: Button(action: { showBarcodeTextField = true }, label: {
-      Label("Add barcode manually", systemImage: "character.cursor.ibeam")
-        .labelStyle(.iconOnly)
-        .imageScale(.large)
+    }), trailing: Button(action: { withAnimation { showBarcodeTextField.toggle() } }, label: {
+      Label(
+        showBarcodeTextField ? "Show scanner" : "Add barcode manually",
+        systemImage: showBarcodeTextField ? "barcode.viewfinder" : "character.cursor.ibeam"
+      )
+      .labelStyle(.iconOnly)
+      .imageScale(.large)
     }))
   }
 }
