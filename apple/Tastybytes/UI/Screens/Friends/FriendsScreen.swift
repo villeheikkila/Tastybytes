@@ -120,7 +120,8 @@ struct FriendsScreen: View {
     .errorAlert(error: $viewModel.error)
     .confirmationDialog("Delete Friend Confirmation",
                         isPresented: $viewModel.showRemoveFriendConfirmation,
-                        presenting: viewModel.friendToBeRemoved) { presenting in
+                        presenting: viewModel.friendToBeRemoved)
+    { presenting in
       Button(
         "Remove \(presenting.getFriend(userId: profileManager.getId()).preferredName) from friends",
         role: .destructive,

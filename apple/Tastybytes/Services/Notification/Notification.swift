@@ -52,7 +52,7 @@ extension Notification: Decodable {
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     id = try values.decode(Int.self, forKey: .id)
-    createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
+    createdAt = try parseDate(from: values.decode(String.self, forKey: .createdAt))
 
     if let date = try values.decodeIfPresent(String.self, forKey: .seenAt) {
       seenAt = try parseDate(from: date)

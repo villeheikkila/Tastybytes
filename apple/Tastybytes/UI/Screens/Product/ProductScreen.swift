@@ -75,7 +75,8 @@ struct ProductScreen: View {
     }
     .confirmationDialog("Unverify Product",
                         isPresented: $viewModel.showUnverifyProductConfirmation,
-                        presenting: viewModel.product) { presenting in
+                        presenting: viewModel.product)
+    { presenting in
       Button("Unverify \(presenting.name) product", role: .destructive, action: {
         hapticManager.trigger(of: .notification(.success))
         viewModel.verifyProduct(isVerified: false)
@@ -83,7 +84,8 @@ struct ProductScreen: View {
     }
     .confirmationDialog("Delete Product Confirmation",
                         isPresented: $viewModel.showDeleteProductConfirmationDialog,
-                        presenting: viewModel.product) { presenting in
+                        presenting: viewModel.product)
+    { presenting in
       Button(
         "Delete \(presenting.getDisplayName(.fullName)) Product",
         role: .destructive,

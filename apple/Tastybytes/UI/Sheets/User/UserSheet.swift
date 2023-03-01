@@ -23,7 +23,7 @@ struct UserSheet<Actions: View>: View {
           Text(profile.preferredName)
           Spacer()
           HStack {
-            self.actions(profile)
+            actions(profile)
           }
         }
       }

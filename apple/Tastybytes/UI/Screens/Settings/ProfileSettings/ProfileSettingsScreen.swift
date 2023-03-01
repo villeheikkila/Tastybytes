@@ -49,7 +49,7 @@ struct ProfileSettingsScreen: View {
   private var profileDisplaySettings: some View {
     Section {
       Toggle("Use Name Instead of Username", isOn: $viewModel.showFullName)
-        .onChange(of: [self.viewModel.showFullName].publisher.first()) { _ in
+        .onChange(of: [viewModel.showFullName].publisher.first()) { _ in
           viewModel.updateDisplaySettings(onUpdate: {
             profileManager.refresh()
           })
@@ -62,7 +62,7 @@ struct ProfileSettingsScreen: View {
   private var privacySection: some View {
     Section {
       Toggle("Private Profile", isOn: $viewModel.isPrivateProfile)
-        .onChange(of: [self.viewModel.isPrivateProfile].publisher.first()) { _ in
+        .onChange(of: [viewModel.isPrivateProfile].publisher.first()) { _ in
           viewModel.updatePrivacySettings(onUpdate: {
             profileManager.refresh()
           })

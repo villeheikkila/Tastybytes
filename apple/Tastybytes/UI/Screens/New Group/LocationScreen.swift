@@ -38,7 +38,8 @@ struct LocationScreen: View {
     }
     .confirmationDialog("Delete Location Confirmation",
                         isPresented: $viewModel.showDeleteLocationConfirmation,
-                        presenting: viewModel.location) { presenting in
+                        presenting: viewModel.location)
+    { presenting in
       Button(
         "Delete \(presenting.name) location",
         role: .destructive,

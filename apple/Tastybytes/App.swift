@@ -73,7 +73,7 @@ struct RootView: View {
     .task {
       for await authEventChange in client.supabase.auth.authEventChange {
         withAnimation {
-          self.authEvent = authEventChange
+          authEvent = authEventChange
         }
         switch authEvent {
         case .signedIn:

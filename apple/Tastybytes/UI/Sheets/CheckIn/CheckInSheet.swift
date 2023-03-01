@@ -36,7 +36,7 @@ struct CheckInSheet: View {
         ProductItemView(product: viewModel.product)
           .accessibilityAddTraits(.isButton)
           .onTapGesture {
-            self.focusedField = nil
+            focusedField = nil
           }
 
         if viewModel.image != nil || viewModel.editCheckIn?.imageFile != nil {

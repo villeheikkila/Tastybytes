@@ -33,7 +33,7 @@ struct ProductBarcode: Identifiable, Hashable, Decodable {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     id = try values.decode(Int.self, forKey: .id)
     barcode = try values.decode(String.self, forKey: .barcode)
-    type = AVMetadataObject.ObjectType(rawValue: try values.decode(String.self, forKey: .type))
+    type = try AVMetadataObject.ObjectType(rawValue: values.decode(String.self, forKey: .type))
   }
 }
 
@@ -69,9 +69,9 @@ extension ProductBarcode {
       let values = try decoder.container(keyedBy: CodingKeys.self)
       id = try values.decode(Int.self, forKey: .id)
       barcode = try values.decode(String.self, forKey: .barcode)
-      type = AVMetadataObject.ObjectType(rawValue: try values.decode(String.self, forKey: .type))
+      type = try AVMetadataObject.ObjectType(rawValue: values.decode(String.self, forKey: .type))
       profile = try values.decode(Profile.self, forKey: .profiles)
-      createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
+      createdAt = try parseDate(from: values.decode(String.self, forKey: .createdAt))
     }
   }
 
@@ -94,7 +94,7 @@ extension ProductBarcode {
       let values = try decoder.container(keyedBy: CodingKeys.self)
       id = try values.decode(Int.self, forKey: .id)
       barcode = try values.decode(String.self, forKey: .barcode)
-      type = AVMetadataObject.ObjectType(rawValue: try values.decode(String.self, forKey: .type))
+      type = try AVMetadataObject.ObjectType(rawValue: values.decode(String.self, forKey: .type))
       product = try values.decode(Product.Joined.self, forKey: .product)
     }
   }

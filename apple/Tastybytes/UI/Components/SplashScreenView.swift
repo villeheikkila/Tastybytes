@@ -33,13 +33,13 @@ struct SplashScreen: View {
     switch splashScreenManager.state {
     case .showing:
       withAnimation(.easeIn(duration: 1.2)) {
-        self.size = 0.9
-        self.opacity = 1.00
+        size = 0.9
+        opacity = 1.00
       }
     case .dismissing:
       if dismissAnimation == false {
         withAnimation(.linear) {
-          self.dismissAnimation = true
+          dismissAnimation = true
           startFadeoutAnimation = true
         }
       }

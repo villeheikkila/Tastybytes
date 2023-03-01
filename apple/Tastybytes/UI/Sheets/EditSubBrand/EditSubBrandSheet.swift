@@ -35,7 +35,8 @@ struct EditSubBrandSheet: View {
       if !viewModel.brand.subBrands.contains(where: { $0.name != nil && $0.id != viewModel.subBrand.id }) {
         Section {
           ForEach(viewModel.brand.subBrands.filter { $0.name != nil && $0.id != viewModel.subBrand.id },
-                  id: \.self) { subBrand in
+                  id: \.self)
+          { subBrand in
             Button(action: { viewModel.mergeTo = subBrand }, label: {
               if let name = subBrand.name {
                 Text(name)
@@ -56,7 +57,8 @@ struct EditSubBrandSheet: View {
     }
     .confirmationDialog("Merge Sub-brands Confirmation",
                         isPresented: $viewModel.showMergeSubBrandsConfirmation,
-                        presenting: viewModel.mergeTo) { presenting in
+                        presenting: viewModel.mergeTo)
+    { presenting in
       Button(
         "Merge \(viewModel.subBrand.name.orEmpty) to \(presenting.name ?? "default sub-brand")",
         role: .destructive,

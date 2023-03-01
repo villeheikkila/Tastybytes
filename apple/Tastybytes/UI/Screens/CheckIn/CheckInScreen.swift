@@ -50,7 +50,8 @@ struct CheckInScreen: View {
     )
     .confirmationDialog("Delete Check-in Confirmation",
                         isPresented: $viewModel.showDeleteConfirmation,
-                        presenting: viewModel.checkIn) { presenting in
+                        presenting: viewModel.checkIn)
+    { presenting in
       Button(
         "Delete the check-in for \(presenting.product.getDisplayName(.fullName))",
         role: .destructive,

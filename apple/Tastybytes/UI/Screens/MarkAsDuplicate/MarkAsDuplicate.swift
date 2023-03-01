@@ -39,7 +39,8 @@ struct MarkAsDuplicate: View {
     }
     .confirmationDialog("Product Merge Confirmation",
                         isPresented: $viewModel.showMergeToProductConfirmation,
-                        presenting: viewModel.mergeToProduct) { presenting in
+                        presenting: viewModel.mergeToProduct)
+    { presenting in
       Button("Merge \(presenting.name) to \(presenting.getDisplayName(.fullName))", role: .destructive) {
         viewModel.markAsDuplicate(onSuccess: {
           hapticManager.trigger(of: .notification(.success))

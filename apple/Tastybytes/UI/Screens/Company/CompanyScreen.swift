@@ -26,7 +26,8 @@ struct CompanyScreen: View {
           viewModel.sortedBrands,
           id: \.id
         ) { brand in NavigationLink(value: Route
-            .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand))) {
+            .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand)))
+        {
           HStack {
             Text("\(brand.name)")
             Spacer()
@@ -62,14 +63,16 @@ struct CompanyScreen: View {
     }
     .confirmationDialog("Unverify Company",
                         isPresented: $viewModel.showUnverifyCompanyConfirmation,
-                        presenting: viewModel.company) { presenting in
+                        presenting: viewModel.company)
+    { presenting in
       Button("Unverify \(presenting.name) company", role: .destructive, action: {
         viewModel.verifyCompany(isVerified: false)
       })
     }
     .confirmationDialog("Delete Company Confirmation",
                         isPresented: $viewModel.showDeleteCompanyConfirmationDialog,
-                        presenting: viewModel.company) { presenting in
+                        presenting: viewModel.company)
+    { presenting in
       Button("Delete \(presenting.name) Company", role: .destructive, action: {
         viewModel.deleteCompany(viewModel.company, onDelete: {
           hapticManager.trigger(of: .notification(.success))

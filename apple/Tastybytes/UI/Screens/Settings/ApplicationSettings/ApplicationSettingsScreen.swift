@@ -24,11 +24,11 @@ struct ApplicationSettingsScreen: View {
   private var colorSchemeSection: some View {
     Section {
       Toggle("Use System Color Scheme", isOn: $viewModel.isSystemColor)
-        .onChange(of: [self.viewModel.isSystemColor].publisher.first()) { _ in
+        .onChange(of: [viewModel.isSystemColor].publisher.first()) { _ in
           viewModel.updateColorScheme { profileManager.refresh() }
         }
       Toggle("Use Dark Mode", isOn: $viewModel.isDarkMode)
-        .onChange(of: [self.viewModel.isDarkMode].publisher.first()) { _ in
+        .onChange(of: [viewModel.isDarkMode].publisher.first()) { _ in
           viewModel.updateColorScheme { profileManager.refresh() }
         }
         .disabled(viewModel.isSystemColor)
@@ -40,15 +40,15 @@ struct ApplicationSettingsScreen: View {
   private var notificationSection: some View {
     Section {
       Toggle("Reactions", isOn: $viewModel.reactionNotifications)
-        .onChange(of: [self.viewModel.reactionNotifications].publisher.first()) { _ in
+        .onChange(of: [viewModel.reactionNotifications].publisher.first()) { _ in
           viewModel.updateNotificationSettings()
         }
       Toggle("Friend Requests", isOn: $viewModel.friendRequestNotifications)
-        .onChange(of: [self.viewModel.friendRequestNotifications].publisher.first()) { _ in
+        .onChange(of: [viewModel.friendRequestNotifications].publisher.first()) { _ in
           viewModel.updateNotificationSettings()
         }
       Toggle("Check-in Tags", isOn: $viewModel.checkInTagNotifications)
-        .onChange(of: [self.viewModel.checkInTagNotifications].publisher.first()) { _ in
+        .onChange(of: [viewModel.checkInTagNotifications].publisher.first()) { _ in
           viewModel.updateNotificationSettings()
         }
     } header: {

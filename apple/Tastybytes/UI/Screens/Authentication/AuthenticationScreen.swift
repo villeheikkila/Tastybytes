@@ -70,7 +70,7 @@ struct AuthenticationScreen: View {
     }
     .accessibilityAddTraits(.isButton)
     .onTapGesture {
-      self.focusedField = nil
+      focusedField = nil
     }
   }
 

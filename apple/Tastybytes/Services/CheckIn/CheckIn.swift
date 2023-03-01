@@ -100,7 +100,7 @@ extension CheckIn: Decodable {
     review = try values.decodeIfPresent(String.self, forKey: .review)
     imageFile = try values.decodeIfPresent(String.self, forKey: .imageFile)
     isMigrated = try values.decode(Bool.self, forKey: .isMigrated)
-    createdAt = try parseDate(from: try values.decode(String.self, forKey: .createdAt))
+    createdAt = try parseDate(from: values.decode(String.self, forKey: .createdAt))
     profile = try values.decode(Profile.self, forKey: .profile)
     product = try values.decode(Product.Joined.self, forKey: .product)
     checkInReactions = try values.decode([CheckInReaction].self, forKey: .checkInReactions)

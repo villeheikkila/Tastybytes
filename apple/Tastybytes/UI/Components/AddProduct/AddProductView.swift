@@ -147,7 +147,7 @@ struct AddProductView: View {
         .fontWeight(.medium)
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
-          self.focusedField = nil
+          focusedField = nil
         }
     }
     .headerProminence(.increased)
@@ -184,7 +184,7 @@ struct AddProductView: View {
         .fontWeight(.medium)
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
-          self.focusedField = nil
+          focusedField = nil
         }
     }
     .headerProminence(.increased)
@@ -210,7 +210,7 @@ struct AddProductView: View {
       Text("Product")
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
-          self.focusedField = nil
+          focusedField = nil
         }
     }
     .headerProminence(.increased)

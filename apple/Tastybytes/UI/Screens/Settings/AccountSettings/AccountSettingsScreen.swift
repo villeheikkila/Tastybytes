@@ -21,7 +21,8 @@ struct AccountSettingsScreen: View {
     .fileExporter(isPresented: $viewModel.showingExporter,
                   document: viewModel.csvExport,
                   contentType: UTType.commaSeparatedText,
-                  defaultFilename: viewModel.getCSVExportName()) { result in
+                  defaultFilename: viewModel.getCSVExportName())
+    { result in
       switch result {
       case .success:
         toastManager.toggle(.success("Data was exported as CSV"))

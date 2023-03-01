@@ -127,7 +127,8 @@ struct BrandScreen: View {
     .navigationBarItems(trailing: navigationBarMenu)
     .confirmationDialog("Unverify Sub-brand",
                         isPresented: $viewModel.showSubBrandUnverificationConfirmation,
-                        presenting: viewModel.toUnverifySubBrand) { presenting in
+                        presenting: viewModel.toUnverifySubBrand)
+    { presenting in
       Button("Unverify \(presenting.name ?? "default") sub-brand", action: {
         viewModel.verifySubBrand(presenting, isVerified: false)
         hapticManager.trigger(of: .notification(.success))
@@ -135,7 +136,8 @@ struct BrandScreen: View {
     }
     .confirmationDialog("Unverify Brand",
                         isPresented: $viewModel.showBrandUnverificationConfirmation,
-                        presenting: viewModel.brand) { presenting in
+                        presenting: viewModel.brand)
+    { presenting in
       Button("Unverify \(presenting.name) brand", action: {
         viewModel.verifyBrand(isVerified: false)
         hapticManager.trigger(of: .notification(.success))
@@ -143,7 +145,8 @@ struct BrandScreen: View {
     }
     .confirmationDialog("Delete Sub-brand",
                         isPresented: $viewModel.showDeleteSubBrandConfirmation,
-                        presenting: viewModel.toDeleteSubBrand) { presenting in
+                        presenting: viewModel.toDeleteSubBrand)
+    { presenting in
       Button(
         "Delete \(presenting.name ?? "default sub-brand") and all related products",
         role: .destructive,
@@ -155,7 +158,8 @@ struct BrandScreen: View {
     }
     .confirmationDialog("Delete Brand Confirmation",
                         isPresented: $viewModel.showDeleteBrandConfirmationDialog,
-                        presenting: viewModel.brand) { presenting in
+                        presenting: viewModel.brand)
+    { presenting in
       Button("Delete \(presenting.name) Brand", role: .destructive, action: {
         viewModel.deleteBrand(onDelete: {
           router.reset()

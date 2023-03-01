@@ -57,7 +57,8 @@ struct ProductVerificationScreen: View {
     })
     .confirmationDialog("Delete Product Confirmation",
                         isPresented: $viewModel.showDeleteProductConfirmationDialog,
-                        presenting: viewModel.deleteProduct) { presenting in
+                        presenting: viewModel.deleteProduct)
+    { presenting in
       Button(
         "Delete \(presenting.getDisplayName(.fullName)) Product",
         role: .destructive,

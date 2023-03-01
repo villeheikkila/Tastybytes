@@ -46,7 +46,8 @@ struct CheckInListView<Header>: View
       }
       .confirmationDialog("Delete Check-in Confirmation",
                           isPresented: $viewModel.showDeleteCheckInConfirmationDialog,
-                          presenting: viewModel.showDeleteConfirmationFor) { presenting in
+                          presenting: viewModel.showDeleteConfirmationFor)
+      { presenting in
         Button(
           "Delete the check-in for \(presenting.product.getDisplayName(.fullName))",
           role: .destructive,
