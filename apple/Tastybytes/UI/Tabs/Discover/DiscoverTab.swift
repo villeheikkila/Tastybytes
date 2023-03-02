@@ -282,25 +282,22 @@ struct DiscoverTab: View {
 
   private var productResults: some View {
     ForEach(viewModel.products) { product in
-      if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
-        ProductItemView(product: product, extras: [.checkInCheck, .rating])
-          .swipeActions {
-            Button(action: { viewModel.checkInProduct = product }, label: {
-              Label("Check-in", systemImage: "plus")
-            }).tint(.green)
-          }
-          .contentShape(Rectangle())
-          .accessibilityAddTraits(.isLink)
-          .onTapGesture {
+      ProductItemView(product: product, extras: [.checkInCheck, .rating])
+        .swipeActions {
+          Button(action: { viewModel.checkInProduct = product }, label: {
+            Label("Check-in", systemImage: "plus")
+          }).tint(.green)
+        }
+        .contentShape(Rectangle())
+        .accessibilityAddTraits(.isLink)
+        .onTapGesture {
+          if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
             router.navigate(to: .product(product), resetStack: false)
+          } else {
+            viewModel.addBarcodeTo = product
           }
-          .id(product.id)
-      } else {
-        Button(action: { viewModel.addBarcodeTo = product }, label: {
-          ProductItemView(product: product)
-        })
-        .buttonStyle(.plain)
-      }
+        }
+        .id(product.id)
     }
   }
 
