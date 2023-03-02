@@ -8,7 +8,7 @@ extension LocationSearchSheet {
     let client: Client
     var service: LocationSearchManager
     private var cancellable: AnyCancellable?
-    @Published var viewData = [Location]()
+    @Published var locations = [Location]()
     @Published var searchText = "" {
       didSet {
         searchForLocation(text: searchText)
@@ -19,7 +19,7 @@ extension LocationSearchSheet {
       self.client = client
       service = LocationSearchManager()
       cancellable = service.localSearchPublisher.sink { mapItems in
-        self.viewData = mapItems.map { Location(mapItem: $0) }
+        self.locations = mapItems.map { Location(mapItem: $0) }
       }
     }
 

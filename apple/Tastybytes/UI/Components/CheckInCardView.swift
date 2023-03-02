@@ -157,7 +157,7 @@ struct CheckInCardView: View {
         }
 
         if let flavors = checkIn.flavors {
-          WrappingHStack(flavors, id: \.self, spacing: .constant(4)) { flavor in
+          WrappingHStack(flavors, spacing: .constant(4)) { flavor in
             ChipView(title: flavor.label)
           }
         }
@@ -184,7 +184,7 @@ struct CheckInCardView: View {
           Spacer()
         }
         HStack(spacing: 4) {
-          ForEach(checkIn.taggedProfiles, id: \.id) { taggedProfile in
+          ForEach(checkIn.taggedProfiles) { taggedProfile in
             AvatarView(avatarUrl: taggedProfile.avatarUrl, size: 24, id: taggedProfile.id)
               .if(!loadedFrom.isLoadedFromProfile(taggedProfile)) { view in
                 view

@@ -71,7 +71,7 @@ struct CheckInScreen: View {
 
   private var commentSection: some View {
     VStack(spacing: 10) {
-      ForEach(viewModel.checkInComments.reversed(), id: \.id) { comment in
+      ForEach(viewModel.checkInComments.reversed()) { comment in
         CheckInCommentView(comment: comment)
           .contextMenu {
             Button {

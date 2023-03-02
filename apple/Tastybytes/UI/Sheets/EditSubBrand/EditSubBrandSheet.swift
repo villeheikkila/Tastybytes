@@ -34,9 +34,7 @@ struct EditSubBrandSheet: View {
 
       if !viewModel.brand.subBrands.contains(where: { $0.name != nil && $0.id != viewModel.subBrand.id }) {
         Section {
-          ForEach(viewModel.brand.subBrands.filter { $0.name != nil && $0.id != viewModel.subBrand.id },
-                  id: \.self)
-          { subBrand in
+          ForEach(viewModel.brand.subBrands.filter { $0.name != nil && $0.id != viewModel.subBrand.id }) { subBrand in
             Button(action: { viewModel.mergeTo = subBrand }, label: {
               if let name = subBrand.name {
                 Text(name)

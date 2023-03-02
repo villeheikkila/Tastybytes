@@ -91,7 +91,7 @@ struct CheckInListView<Header>: View
 
   @ViewBuilder
   private var checkInsList: some View {
-    ForEach(viewModel.uniqueCheckIns, id: \.self) { checkIn in
+    ForEach(viewModel.uniqueCheckIns) { checkIn in
       CheckInCardView(client: viewModel.client, checkIn: checkIn,
                       loadedFrom: getLoadedFrom)
         .listRowInsets(.init(top: 4,

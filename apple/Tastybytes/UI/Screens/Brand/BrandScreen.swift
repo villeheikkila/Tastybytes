@@ -20,9 +20,9 @@ struct BrandScreen: View {
         .listRowSeparator(.hidden)
         .listRowBackground(Color.clear)
       }
-      ForEach(viewModel.sortedSubBrands, id: \.self) { subBrand in
+      ForEach(viewModel.sortedSubBrands) { subBrand in
         Section {
-          ForEach(subBrand.products, id: \.id) { product in
+          ForEach(subBrand.products) { product in
             let productJoined = Product.Joined(
               product: product,
               subBrand: subBrand,

@@ -13,7 +13,7 @@ struct LocationSearchSheet: View {
   }
 
   var body: some View {
-    List(viewModel.viewData, id: \.self) { location in
+    List(viewModel.locations) { location in
       Button(action: {
         viewModel.storeLocation(location, onSuccess: { savedLocation in
           onSelect(savedLocation)

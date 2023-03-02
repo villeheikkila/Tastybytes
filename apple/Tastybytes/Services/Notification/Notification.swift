@@ -124,7 +124,11 @@ extension Notification {
   }
 }
 
-enum NotificationType: String, CaseIterable {
+enum NotificationType: String, CaseIterable, Identifiable {
+  var id: Self {
+    self
+  }
+
   case message, friendRequest, taggedCheckIn, checkInReaction
 
   var label: String {

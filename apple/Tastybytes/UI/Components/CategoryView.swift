@@ -7,7 +7,7 @@ struct CategoryView: View {
   var body: some View {
     HStack(spacing: 4) {
       CategoryNameView(category: category)
-      ForEach(subcategories, id: \.id) { subcategory in
+      ForEach(subcategories, id: \.name) { subcategory in
         ChipView(title: subcategory.name)
       }
     }

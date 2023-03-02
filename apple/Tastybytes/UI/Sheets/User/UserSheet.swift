@@ -17,7 +17,7 @@ struct UserSheet<Actions: View>: View {
 
   var body: some View {
     List {
-      ForEach(viewModel.searchResults, id: \.id) { profile in
+      ForEach(viewModel.searchResults) { profile in
         HStack {
           AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
           Text(profile.preferredName)

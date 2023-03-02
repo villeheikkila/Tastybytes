@@ -22,10 +22,7 @@ struct CompanyScreen: View {
         .listRowBackground(Color.clear)
       }
       Section {
-        ForEach(
-          viewModel.sortedBrands,
-          id: \.id
-        ) { brand in NavigationLink(value: Route
+        ForEach(viewModel.sortedBrands) { brand in NavigationLink(value: Route
             .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand)))
         {
           HStack {

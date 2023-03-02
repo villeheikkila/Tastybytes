@@ -6,7 +6,7 @@ struct FriendSheet: View {
   @Environment(\.dismiss) private var dismiss
 
   var body: some View {
-    List(profileManager.friends, id: \.self) { friend in
+    List(profileManager.friends) { friend in
       Button(action: { toggleFriend(friend: friend) }, label: {
         AvatarView(avatarUrl: friend.avatarUrl, size: 32, id: friend.id)
         Text(friend.preferredName)

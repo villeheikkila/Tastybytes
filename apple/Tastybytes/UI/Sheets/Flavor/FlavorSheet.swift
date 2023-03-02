@@ -16,7 +16,7 @@ struct FlavorSheet: View {
     List {
       if !pickedFlavors.isEmpty {
         Section {
-          ForEach(pickedFlavors, id: \.id) { pickedFlavor in
+          ForEach(pickedFlavors) { pickedFlavor in
             Button(action: { toggleFlavor(pickedFlavor) }, label: {
               HStack {
                 Text(pickedFlavor.name.capitalized)
@@ -29,7 +29,7 @@ struct FlavorSheet: View {
         }
       }
       Section {
-        ForEach(viewModel.filteredFlavors.filter { !pickedFlavors.contains($0) }, id: \.id) { flavor in
+        ForEach(viewModel.filteredFlavors.filter { !pickedFlavors.contains($0) }) { flavor in
           Button(action: { toggleFlavor(flavor) }, label: {
             HStack {
               Text(flavor.label)

@@ -14,7 +14,7 @@ struct BlockedUsersScreen: View {
       if viewModel.blockedUsers.isEmpty {
         Text("You haven't blocked any users")
       }
-      ForEach(viewModel.blockedUsers, id: \.self) { friend in
+      ForEach(viewModel.blockedUsers) { friend in
         BlockedUserListItemView(profile: friend.getFriend(userId: profileManager.getId()), onUnblockUser: {
           viewModel.unblockUser(friend)
         })

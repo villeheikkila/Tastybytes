@@ -9,7 +9,7 @@ struct ProfileProductListView: View {
 
   var body: some View {
     List {
-      ForEach(viewModel.filteredProducts, id: \.id) { product in
+      ForEach(viewModel.filteredProducts) { product in
         NavigationLink(value: Route.product(product)) {
           ProductItemView(product: product, extras: [.rating])
         }

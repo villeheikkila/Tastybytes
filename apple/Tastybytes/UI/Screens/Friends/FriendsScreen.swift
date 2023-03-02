@@ -13,7 +13,7 @@ struct FriendsScreen: View {
 
   var body: some View {
     List {
-      ForEach(viewModel.friends, id: \.self) { friend in
+      ForEach(viewModel.friends) { friend in
         if viewModel.profile == profileManager.getProfile() {
           FriendListItemView(profile: friend.getFriend(userId: viewModel.profile.id)) {
             HStack {

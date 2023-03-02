@@ -19,7 +19,7 @@ struct DuplicateProductSheet: View {
           """
         ).listRowSeparator(.hidden)
       }
-      ForEach(viewModel.products, id: \.id) { product in
+      ForEach(viewModel.products) { product in
         Button(action: { viewModel.mergeToProduct = product }, label: {
           ProductItemView(product: product)
         })

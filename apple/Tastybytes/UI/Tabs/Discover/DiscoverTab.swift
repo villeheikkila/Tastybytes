@@ -24,6 +24,17 @@ struct DiscoverTab: View {
         .onAppear {
           scrollProxy = proxy
         }
+        .searchable(text: $viewModel.searchTerm, placement: .navigationBarDrawer(displayMode: .always),
+                    prompt: viewModel.searchScope.prompt)
+        .disableAutocorrection(true)
+        .searchScopes($viewModel.searchScope) {
+          ForEach(SearchScope.allCases) { scope in
+            Text(scope.label).tag(scope)
+          }
+        }
+        .onSubmit(of: .search) {
+          viewModel.search()
+        }
         .listStyle(.plain)
         .onChange(of: viewModel.searchScope, perform: { _ in
           viewModel.search()
@@ -95,17 +106,6 @@ struct DiscoverTab: View {
               })
             }
           )
-        }
-        .searchable(text: $viewModel.searchTerm, placement: .navigationBarDrawer(displayMode: .always),
-                    prompt: viewModel.searchScope.prompt)
-        .disableAutocorrection(true)
-        .searchScopes($viewModel.searchScope) {
-          ForEach(SearchScope.allCases) { scope in
-            Text(scope.label).tag(scope)
-          }
-        }
-        .onSubmit(of: .search) {
-          viewModel.search()
         }
         .navigationTitle("Discover")
         .toolbar {
@@ -208,7 +208,7 @@ struct DiscoverTab: View {
   }
 
   private var profileResults: some View {
-    ForEach(viewModel.profiles, id: \.self) { profile in
+    ForEach(viewModel.profiles) { profile in
       NavigationLink(value: Route.profile(profile)) {
         HStack(alignment: .center) {
           AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
@@ -225,7 +225,7 @@ struct DiscoverTab: View {
   }
 
   private var companyResults: some View {
-    ForEach(viewModel.companies, id: \.self) { company in
+    ForEach(viewModel.companies) { company in
       NavigationLink(value: Route.company(company)) {
         Text(company.name)
       }
@@ -272,7 +272,7 @@ struct DiscoverTab: View {
   }
 
   private var locationResults: some View {
-    ForEach(viewModel.locations, id: \.self) { location in
+    ForEach(viewModel.locations) { location in
       NavigationLink(value: Route.location(location)) {
         Text(location.name)
       }
@@ -281,7 +281,7 @@ struct DiscoverTab: View {
   }
 
   private var productResults: some View {
-    ForEach(viewModel.products, id: \.id) { product in
+    ForEach(viewModel.products) { product in
       if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
         ProductItemView(product: product, extras: [.checkInCheck, .rating])
           .swipeActions {

@@ -10,7 +10,7 @@ struct ProductFeedScreen: View {
 
   var body: some View {
     List {
-      ForEach(viewModel.filteredProducts, id: \.id) { product in
+      ForEach(viewModel.filteredProducts) { product in
         ProductItemView(product: product, extras: [.checkInCheck, .rating])
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
@@ -52,7 +52,7 @@ struct ProductFeedScreen: View {
       Button(action: { viewModel.categoryFilter = nil }, label: {
         Text(viewModel.feed.label)
       })
-      ForEach(viewModel.categories, id: \.self) { category in
+      ForEach(viewModel.categories) { category in
         Button(action: { viewModel.categoryFilter = category }, label: {
           Text(category.name.label)
         })

@@ -21,9 +21,7 @@ struct SubcategorySheet: View {
   var body: some View {
     List {
       Section {
-        ForEach(shownSubcategories,
-                id: \.self)
-        { subcategory in
+        ForEach(shownSubcategories) { subcategory in
           Button(action: { toggleSubcategory(subcategory: subcategory) }, label: {
             HStack {
               Text(subcategory.name)

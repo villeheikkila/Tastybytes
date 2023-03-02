@@ -24,7 +24,7 @@ struct ProductFilterSheet: View {
         Section {
           Picker(selection: $viewModel.categoryFilter) {
             Text("Select All").tag(Category.JoinedSubcategories?(nil))
-            ForEach(viewModel.categories, id: \.self) { category in
+            ForEach(viewModel.categories) { category in
               Text(category.name.label).tag(Optional(category))
             }
           } label: {
@@ -33,7 +33,7 @@ struct ProductFilterSheet: View {
           Picker(selection: $viewModel.subcategoryFilter) {
             Text("Select All").tag(Subcategory?(nil))
             if let categoryFilter = viewModel.categoryFilter {
-              ForEach(categoryFilter.subcategories, id: \.self) { subcategory in
+              ForEach(categoryFilter.subcategories) { subcategory in
                 Text(subcategory.name.capitalized).tag(Optional(subcategory))
               }
             }

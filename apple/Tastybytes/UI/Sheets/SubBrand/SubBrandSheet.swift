@@ -18,7 +18,7 @@ struct SubBrandSheet: View {
 
   var body: some View {
     List {
-      ForEach(viewModel.filteredSubBrands, id: \.self) { subBrand in
+      ForEach(viewModel.filteredSubBrands) { subBrand in
         if let name = subBrand.name {
           Button(action: { onSelect(subBrand, false) }, label: {
             Text(name)

@@ -81,7 +81,7 @@ struct CheckInSheet: View {
         })
         Button(action: { viewModel.setActiveSheet(.flavors) }, label: {
           if !viewModel.pickedFlavors.isEmpty {
-            WrappingHStack(viewModel.pickedFlavors, id: \.self, spacing: .constant(4)) { flavor in
+            WrappingHStack(viewModel.pickedFlavors, spacing: .constant(4)) { flavor in
               ChipView(title: flavor.label)
             }
           } else {
@@ -98,7 +98,7 @@ struct CheckInSheet: View {
         if !viewModel.servingStyles.isEmpty {
           Picker(selection: $viewModel.servingStyle) {
             Text("Not Selected").tag(ServingStyle?(nil))
-            ForEach(viewModel.servingStyles, id: \.self) { servingStyle in
+            ForEach(viewModel.servingStyles) { servingStyle in
               Text(servingStyle.name.rawValue.capitalized).tag(Optional(servingStyle))
             }
           } label: {
@@ -119,7 +119,7 @@ struct CheckInSheet: View {
             Text("Tag friends")
               .fontWeight(.medium)
           } else {
-            WrappingHStack(viewModel.taggedFriends, id: \.self) { friend in
+            WrappingHStack(viewModel.taggedFriends) { friend in
               AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
             }
           }

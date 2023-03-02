@@ -11,7 +11,7 @@ struct ProductVerificationScreen: View {
 
   var body: some View {
     List {
-      ForEach(viewModel.products, id: \.id) { product in
+      ForEach(viewModel.products) { product in
 
         VStack {
           if let createdBy = product.createdBy {

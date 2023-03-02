@@ -92,13 +92,7 @@ create materialized view "public"."materialized_view_product_search" as  SELECT 
      LEFT JOIN brands b ON ((sb.brand_id = b.id)));
 
 
-CREATE OR REPLACE FUNCTION public.fnc__get_current_profile()
- RETURNS profiles
- LANGUAGE sql
-AS $function$
-select * from profiles where id = auth.uid() limit 1;
-$function$
-;
+
 
 CREATE OR REPLACE FUNCTION public.fnc__search_products(p_search_term text, p_only_non_checked_in boolean, p_category_name text DEFAULT NULL::text, p_subcategory_id bigint DEFAULT NULL::bigint)
  RETURNS SETOF view__product_ratings

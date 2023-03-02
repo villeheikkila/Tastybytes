@@ -22,7 +22,7 @@ struct BrandSheet: View {
   var body: some View {
     List {
       if viewModel.mode == .select {
-        ForEach(viewModel.brandsWithSubBrands, id: \.self) { brand in
+        ForEach(viewModel.brandsWithSubBrands) { brand in
           Button(action: { onSelect(brand, false) }, label: {
             Text(brand.name)
           })

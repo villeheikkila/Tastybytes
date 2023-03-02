@@ -96,7 +96,7 @@ struct NotificationTab: View {
         Label("Show All", systemImage: "bell.fill")
       }
       Divider()
-      ForEach(NotificationType.allCases, id: \.self) { type in
+      ForEach(NotificationType.allCases) { type in
         Button {
           notificationManager.filter = type
         } label: {

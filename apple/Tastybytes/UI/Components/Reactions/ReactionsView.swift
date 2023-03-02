@@ -12,7 +12,7 @@ struct ReactionsView: View {
   var body: some View {
     HStack {
       Spacer()
-      ForEach(viewModel.checkInReactions, id: \.id) { reaction in
+      ForEach(viewModel.checkInReactions) { reaction in
         AvatarView(avatarUrl: reaction.profile.avatarUrl, size: 16, id: reaction.profile.id)
       }
       Label(

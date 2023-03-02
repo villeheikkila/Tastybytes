@@ -14,7 +14,7 @@ struct CompanySearchSheet: View {
 
   var body: some View {
     List {
-      ForEach(viewModel.searchResults, id: \.id) { company in
+      ForEach(viewModel.searchResults) { company in
         Button(action: {
           onSelect(company, false)
           dismiss()
