@@ -24,6 +24,11 @@ struct ProfileTab: View {
           toolbarContent
         }
         .withRoutes(client)
+        .onOpenURL { url in
+          if let detailPage = url.detailPage {
+            router.fetchAndNavigateTo(client, detailPage, resetStack: true)
+          }
+        }
     }
     .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
       if tab == .profile {
@@ -42,11 +47,6 @@ struct ProfileTab: View {
         })
       }
       .presentationDetents([.medium])
-    }
-    .onOpenURL { url in
-      if let detailPage = url.detailPage {
-        router.fetchAndNavigateTo(client, detailPage, resetStack: true)
-      }
     }
     .environmentObject(router)
   }

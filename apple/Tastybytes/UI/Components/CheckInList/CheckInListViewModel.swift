@@ -75,7 +75,9 @@ extension CheckInListView {
 
         switch await checkInFetcher(from: from, to: to) {
         case let .success(checkIns):
-          self.checkIns.append(contentsOf: checkIns)
+          withAnimation {
+            self.checkIns.append(contentsOf: checkIns)
+          }
           self.page += 1
           self.isLoading = false
 

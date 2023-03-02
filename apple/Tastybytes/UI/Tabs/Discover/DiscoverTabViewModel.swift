@@ -73,7 +73,9 @@ extension DiscoverTab {
       Task {
         switch await client.product.search(searchTerm: searchTerm, filter: productFilter) {
         case let .success(searchResults):
-          self.products = searchResults
+          withAnimation {
+            self.products = searchResults
+          }
           self.isSearched = true
         case let .failure(error):
           logger
@@ -91,7 +93,9 @@ extension DiscoverTab {
       Task {
         switch await client.profile.search(searchTerm: searchTerm, currentUserId: nil) {
         case let .success(searchResults):
-          self.profiles = searchResults
+          withAnimation {
+            self.profiles = searchResults
+          }
         case let .failure(error):
           logger
             .error(
@@ -106,7 +110,9 @@ extension DiscoverTab {
         switch await client.product.search(barcode: barcode) {
         case let .success(searchResults):
           self.barcode = barcode
-          self.products = searchResults
+          withAnimation {
+            self.products = searchResults
+          }
           self.isSearched = true
         case let .failure(error):
           logger
@@ -124,7 +130,9 @@ extension DiscoverTab {
       Task {
         switch await client.company.search(searchTerm: searchTerm) {
         case let .success(searchResults):
-          self.companies = searchResults
+          withAnimation {
+            self.companies = searchResults
+          }
         case let .failure(error):
           logger
             .error(
@@ -138,7 +146,9 @@ extension DiscoverTab {
       Task {
         switch await client.location.search(searchTerm: searchTerm) {
         case let .success(searchResults):
-          self.locations = searchResults
+          withAnimation {
+            self.locations = searchResults
+          }
         case let .failure(error):
           logger
             .error(

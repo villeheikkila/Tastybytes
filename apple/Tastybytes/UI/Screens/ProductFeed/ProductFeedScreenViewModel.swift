@@ -66,7 +66,9 @@ extension ProductFeedScreen {
 
       switch await client.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id) {
       case let .success(additionalProducts):
-        products.append(contentsOf: additionalProducts)
+        withAnimation {
+          products.append(contentsOf: additionalProducts)
+        }
         page += 1
         isLoading = false
         if let onComplete {

@@ -107,39 +107,39 @@ struct DiscoverTab: View {
             }
           )
         }
-        .navigationTitle("Discover")
-        .toolbar {
-          toolbarContent
-        }
-        .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
-          if tab == .search {
-            if router.path.isEmpty {
-              withAnimation {
-                switch viewModel.searchScope {
-                case .products:
-                  if let id = viewModel.products.first?.id {
-                    scrollProxy?.scrollTo(id, anchor: .top)
-                  }
-                case .companies:
-                  if let id = viewModel.companies.first?.id {
-                    scrollProxy?.scrollTo(id, anchor: .top)
-                  }
-                case .users:
-                  if let id = viewModel.profiles.first?.id {
-                    scrollProxy?.scrollTo(id, anchor: .top)
-                  }
-                case .locations:
-                  if let id = viewModel.locations.first?.id {
-                    scrollProxy?.scrollTo(id, anchor: .top)
-                  }
+      }
+      .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+        if tab == .search {
+          if router.path.isEmpty {
+            withAnimation {
+              switch viewModel.searchScope {
+              case .products:
+                if let id = viewModel.products.first?.id {
+                  scrollProxy?.scrollTo(id, anchor: .top)
+                }
+              case .companies:
+                if let id = viewModel.companies.first?.id {
+                  scrollProxy?.scrollTo(id, anchor: .top)
+                }
+              case .users:
+                if let id = viewModel.profiles.first?.id {
+                  scrollProxy?.scrollTo(id, anchor: .top)
+                }
+              case .locations:
+                if let id = viewModel.locations.first?.id {
+                  scrollProxy?.scrollTo(id, anchor: .top)
                 }
               }
             }
-          } else {
-            router.reset()
           }
-          resetNavigationOnTab = nil
+        } else {
+          router.reset()
         }
+        resetNavigationOnTab = nil
+      }
+      .navigationTitle("Discover")
+      .toolbar {
+        toolbarContent
       }
       .withRoutes(viewModel.client)
       .onOpenURL { url in
