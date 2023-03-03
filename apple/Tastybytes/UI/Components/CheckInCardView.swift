@@ -26,7 +26,7 @@ struct CheckInCardView: View {
       .padding([.leading, .trailing], 10)
     }
     .padding([.top, .bottom], 10)
-    .background(Color(.tertiarySystemBackground))
+    .background(.regularMaterial)
     .clipped()
     .cornerRadius(8)
     .shadow(color: Color.black.opacity(0.1), radius: 4, x: 2, y: 2)
@@ -87,7 +87,15 @@ struct CheckInCardView: View {
             }
           }
       } placeholder: {
-        ProgressView()
+        if let blurHash = checkIn.blurHash, let blurhashImage = UIImage(
+          blurHash: blurHash,
+          size: CGSize(width: UIScreen.main.bounds.width - 16, height: 200)
+        ) {
+          Image(uiImage: blurhashImage)
+            .accessibility(hidden: true)
+        } else {
+          ProgressView()
+        }
       }
     }
   }

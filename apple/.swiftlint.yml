@@ -61,6 +61,7 @@ disabled_rules:
   - nesting
   - cyclomatic_complexity
   - legacy_random
+  - large_tuple
 type_body_length:
   - 300
   - 400
@@ -77,7 +78,7 @@ identifier_name:
     warning: 45
     error: 50
   min_length:
-    warning: 2
+    warning: 1
 custom_rules:
   DynamicProperty_private:
     name: "Private SwiftUI DynamicProperty"

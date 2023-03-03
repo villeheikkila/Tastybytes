@@ -208,6 +208,15 @@
       }
     },
     {
+      "identity" : "unifiedblurhash",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/iankoex/UnifiedBlurHash.git",
+      "state" : {
+        "revision" : "e9193b062f98df0b7c26057085e33e49ba5b9d53",
+        "version" : "1.0.1"
+      }
+    },
+    {
       "identity" : "urlqueryencoder",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/URLQueryEncoder",

@@ -6,6 +6,7 @@ struct CheckIn: Identifiable, Hashable {
   let review: String?
   let imageFile: String?
   let createdAt: Date
+  let blurHash: String?
   let isMigrated: Bool
   let profile: Profile
   let product: Product.Joined
@@ -36,7 +37,7 @@ struct CheckIn: Identifiable, Hashable {
 extension CheckIn {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "check_ins"
-    let saved = "id, rating, review, image_file, created_at, is_migrated"
+    let saved = "id, rating, review, image_file, created_at, is_migrated, blur_hash"
     let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
     let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
     let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
@@ -66,6 +67,7 @@ extension CheckIn: Decodable {
     case id
     case rating
     case review
+    case blurHash = "blur_hash"
     case isMigrated = "is_migrated"
     case imageFile = "image_file"
     case createdAt = "created_at"
@@ -99,6 +101,7 @@ extension CheckIn: Decodable {
     rating = try values.decodeIfPresent(Double.self, forKey: .rating)
     review = try values.decodeIfPresent(String.self, forKey: .review)
     imageFile = try values.decodeIfPresent(String.self, forKey: .imageFile)
+    blurHash = try values.decodeIfPresent(String.self, forKey: .blurHash)
     isMigrated = try values.decode(Bool.self, forKey: .isMigrated)
     createdAt = try parseDate(from: values.decode(String.self, forKey: .createdAt))
     profile = try values.decode(Profile.self, forKey: .profile)
@@ -117,6 +120,7 @@ extension CheckIn {
     let productId: Int
     let rating: Double?
     let review: String?
+    let blurHash: String?
     let manufacturerId: Int?
     let servingStyleId: Int?
     let friendIds: [String]?
@@ -127,6 +131,7 @@ extension CheckIn {
       case productId = "p_product_id"
       case rating = "p_rating"
       case review = "p_review"
+      case blurHash = "p_blur_hash"
       case manufacturerId = "p_manufacturer_id"
       case servingStyleId = "p_serving_style_id"
       case friendIds = "p_friend_ids"
@@ -142,7 +147,8 @@ extension CheckIn {
       manufacturer: Company?,
       flavors: [Flavor],
       rating: Double,
-      location: Location?
+      location: Location?,
+      blurHash: String?
     ) {
       productId = product.id
       self.review = review.isNilOrEmpty ? nil : review
@@ -152,6 +158,7 @@ extension CheckIn {
       flavorIds = flavors.map(\.id)
       self.rating = rating
       locationId = location?.id.uuidString
+      self.blurHash = blurHash
     }
   }
 
@@ -160,6 +167,7 @@ extension CheckIn {
     let productId: Int
     let rating: Double?
     let review: String?
+    let blurHash: String?
     let manufacturerId: Int?
     let servingStyleId: Int?
     let friendIds: [String]?
@@ -176,6 +184,7 @@ extension CheckIn {
       case friendIds = "p_friend_ids"
       case flavorIds = "p_flavor_ids"
       case locationId = "p_location_id"
+      case blurHash = "p_blur_hash"
     }
 
     init(
@@ -187,7 +196,8 @@ extension CheckIn {
       manufacturer: Company?,
       flavors: [Flavor],
       rating: Double,
-      location: Location?
+      location: Location?,
+      blurHash: String?
     ) {
       checkInId = checkIn.id
       productId = product.id
@@ -198,6 +208,7 @@ extension CheckIn {
       flavorIds = flavors.map(\.id)
       self.rating = rating
       locationId = location?.id.uuidString
+      self.blurHash = blurHash
     }
   }
 }

@@ -167,6 +167,8 @@
 		5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */; };
 		5CC2FE982919CB19002BDF83 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE972919CB19002BDF83 /* Country.swift */; };
 		5CC6B9A529AE9DB000A62158 /* DuplicateProductSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC6B9A429AE9DB000A62158 /* DuplicateProductSheet.swift */; };
+		5CC6B9AC29B234E700A62158 /* UnifiedBlurHash in Frameworks */ = {isa = PBXBuildFile; productRef = 5CC6B9AB29B234E700A62158 /* UnifiedBlurHash */; };
+		5CC6B9AE29B2360D00A62158 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC6B9AD29B2360D00A62158 /* UIImageExtensions.swift */; };
 		5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE914D28F45DE7005A6043 /* Utils.swift */; };
 		5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */; };
 		5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */; };
@@ -370,6 +372,7 @@
 		5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
 		5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
 		5CC6B9A429AE9DB000A62158 /* DuplicateProductSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductSheet.swift; sourceTree = "<group>"; };
+		5CC6B9AD29B2360D00A62158 /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
 		5CCE914D28F45DE7005A6043 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardView.swift; sourceTree = "<group>"; };
@@ -419,6 +422,7 @@
 				5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */,
 				5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */,
 				5C08B6E028ED7956009218D7 /* Supabase in Frameworks */,
+				5CC6B9AC29B234E700A62158 /* UnifiedBlurHash in Frameworks */,
 				5CFB563628F5A76600F13A1E /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1110,6 +1114,7 @@
 				5C323E90298C501F00B005A9 /* ArrayExtensions.swift */,
 				5C323E92298C50D400B005A9 /* DoubleExtensions.swift */,
 				5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */,
+				5CC6B9AD29B2360D00A62158 /* UIImageExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1273,6 +1278,7 @@
 				5CED432428FBF6B0003F8194 /* AlertToast */,
 				5C25AEB129031B9D00793607 /* WrappingHStack */,
 				5C13F21A291A7C3A00599892 /* FirebaseMessaging */,
+				5CC6B9AB29B234E700A62158 /* UnifiedBlurHash */,
 			);
 			productName = tasted;
 			productReference = 5CFEE57328ED69B100A8DD66 /* Tastybytes.app */;
@@ -1308,6 +1314,7 @@
 				5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				5C25AEB029031B9D00793607 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 				5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				5CC6B9AA29B234E700A62158 /* XCRemoteSwiftPackageReference "UnifiedBlurHash" */,
 			);
 			productRefGroup = 5CFEE57428ED69B100A8DD66 /* Products */;
 			projectDirPath = "";
@@ -1473,6 +1480,7 @@
 				5CB1C24928F9BBAA000B0EB4 /* CheckInReactionRepository.swift in Sources */,
 				5C11ECB628EEEFB300CCDE6A /* SettingsScreen.swift in Sources */,
 				5CD10A4728F9522D0001CFC2 /* RatingPickerView.swift in Sources */,
+				5CC6B9AE29B2360D00A62158 /* UIImageExtensions.swift in Sources */,
 				5C25AEB429031F9C00793607 /* DateExtensions.swift in Sources */,
 				5CED432828FD417E003F8194 /* AddProductView.swift in Sources */,
 				5C7C35C9299ACC2A009A3C09 /* LegacyPhotoPickerCoordinator.swift in Sources */,
@@ -1835,6 +1843,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		5CC6B9AA29B234E700A62158 /* XCRemoteSwiftPackageReference "UnifiedBlurHash" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/iankoex/UnifiedBlurHash.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast.git";
@@ -1876,6 +1892,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5C25AEB029031B9D00793607 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
 			productName = WrappingHStack;
+		};
+		5CC6B9AB29B234E700A62158 /* UnifiedBlurHash */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5CC6B9AA29B234E700A62158 /* XCRemoteSwiftPackageReference "UnifiedBlurHash" */;
+			productName = UnifiedBlurHash;
 		};
 		5CED432428FBF6B0003F8194 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;

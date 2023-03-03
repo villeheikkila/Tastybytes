@@ -35,7 +35,18 @@ extension CheckInSheet {
     @Published var taggedFriends = [Profile]()
     @Published var pickedFlavors = [Flavor]()
     @Published var location: Location?
-    @Published var image: UIImage?
+    @Published var image: UIImage? {
+      didSet {
+        Task {
+          if let image {
+            self.blurHash = await image.resized(to: CGSize(width: 100, height: 100))?
+              .blurHash(numberOfComponents: (5, 5))
+          }
+        }
+      }
+    }
+
+    var blurHash: String?
 
     init(_ client: Client, product: Product.Joined, editCheckIn: CheckIn?) {
       self.client = client
@@ -73,7 +84,11 @@ extension CheckInSheet {
     }
 
     func setImageFromPicker(pickedImage: UIImage) {
-      image = pickedImage
+      Task {
+        await MainActor.run {
+          self.image = pickedImage
+        }
+      }
     }
 
     func updateCheckIn(_ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) async {
@@ -87,7 +102,8 @@ extension CheckInSheet {
           manufacturer: manufacturer,
           flavors: pickedFlavors,
           rating: rating,
-          location: location
+          location: location,
+          blurHash: blurHash
         )
 
         switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
@@ -109,7 +125,8 @@ extension CheckInSheet {
         manufacturer: manufacturer,
         flavors: pickedFlavors,
         rating: rating,
-        location: location
+        location: location,
+        blurHash: blurHash
       )
 
       switch await client.checkIn.create(newCheckInParams: newCheckParams) {
