@@ -33,7 +33,6 @@ struct SupabaseCheckInRepository: CheckInRepository {
         .execute()
         .value
 
-      print(response)
       return .success(response)
     } catch {
       return .failure(error)

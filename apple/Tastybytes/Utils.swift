@@ -256,12 +256,28 @@ private func pow(_ base: Int, _ exponent: Int) -> Int {
 }
 
 extension UIImage {
-  func resized(to newSize: CGSize) -> UIImage? {
-    let renderer = UIGraphicsImageRenderer(size: newSize)
-
-    let image = renderer.image { _ in
-      self.draw(in: CGRect(origin: .zero, size: newSize))
-    }
-    return image
+  func resize(to newHeight: Double) -> UIImage? {
+    let scale = newHeight / size.height
+    let newWidth = size.width * scale
+    UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
+    draw(in: CGRectMake(0, 0, newWidth, newHeight))
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return newImage
   }
+}
+
+struct BlurHash {
+  let hash: String
+  let height: Double
+  let width: Double
+}
+
+func decodeBlutHash(_ str: String) -> BlurHash? {
+  let components = str.components(separatedBy: ":::")
+  guard let dimensions = components.first?.components(separatedBy: ":") else { return nil }
+  guard let width = Double(dimensions[0]) else { return nil }
+  guard let height = Double(dimensions[1]) else { return nil }
+  let hash = components[1]
+  return BlurHash(hash: hash, height: height, width: width)
 }

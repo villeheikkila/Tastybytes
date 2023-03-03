@@ -87,11 +87,17 @@ struct CheckInCardView: View {
             }
           }
       } placeholder: {
-        if let blurHash = checkIn.blurHash, let blurhashImage = UIImage(
-          blurHash: blurHash,
-          size: CGSize(width: UIScreen.main.bounds.width - 16, height: 200)
-        ) {
+        if let hash = checkIn.blurHash, let blurHash = decodeBlutHash(hash),
+           let blurhashImage = UIImage(
+             blurHash: blurHash.hash,
+             size: CGSize(width: blurHash.width, height: blurHash.height)
+           )
+        {
           Image(uiImage: blurhashImage)
+            .resizable()
+            .scaledToFill()
+            .frame(height: 200)
+            .clipped()
             .accessibility(hidden: true)
         } else {
           ProgressView()

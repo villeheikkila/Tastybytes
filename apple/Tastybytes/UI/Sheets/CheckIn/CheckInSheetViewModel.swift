@@ -38,9 +38,10 @@ extension CheckInSheet {
     @Published var image: UIImage? {
       didSet {
         Task {
-          if let image {
-            self.blurHash = await image.resized(to: CGSize(width: 100, height: 100))?
-              .blurHash(numberOfComponents: (5, 5))
+          if let image, let hash = image.resize(to: 200)?
+            .blurHash(numberOfComponents: (5, 5))
+          {
+            self.blurHash = "\(image.size.width):\(image.size.height):::\(hash)"
           }
         }
       }
