@@ -87,7 +87,7 @@ struct CheckInCardView: View {
             }
           }
       } placeholder: {
-        if let hash = checkIn.blurHash, let blurHash = decodeBlutHash(hash),
+        if let blurHash = checkIn.blurHash,
            let blurhashImage = UIImage(
              blurHash: blurHash.hash,
              size: CGSize(width: blurHash.width, height: blurHash.height)

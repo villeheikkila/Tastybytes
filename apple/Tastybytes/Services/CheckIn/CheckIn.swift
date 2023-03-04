@@ -6,7 +6,7 @@ struct CheckIn: Identifiable, Hashable {
   let review: String?
   let imageFile: String?
   let createdAt: Date
-  let blurHash: String?
+  let blurHash: BlurHash?
   let isMigrated: Bool
   let profile: Profile
   let product: Product.Joined
@@ -63,6 +63,12 @@ extension CheckIn {
 }
 
 extension CheckIn: Decodable {
+  struct BlurHash: Hashable {
+    let hash: String
+    let height: Double
+    let width: Double
+  }
+
   enum CodingKeys: String, CodingKey {
     case id
     case rating
@@ -101,7 +107,21 @@ extension CheckIn: Decodable {
     rating = try values.decodeIfPresent(Double.self, forKey: .rating)
     review = try values.decodeIfPresent(String.self, forKey: .review)
     imageFile = try values.decodeIfPresent(String.self, forKey: .imageFile)
-    blurHash = try values.decodeIfPresent(String.self, forKey: .blurHash)
+    let blurHashString = try values.decodeIfPresent(String.self, forKey: .blurHash)
+    if let blurHashString {
+      func decodeBlurHash(_ str: String) -> BlurHash? {
+        let components = str.components(separatedBy: ":::")
+        guard let dimensions = components.first?.components(separatedBy: ":") else { return nil }
+        guard let width = Double(dimensions[0]) else { return nil }
+        guard let height = Double(dimensions[1]) else { return nil }
+        let hash = components[1]
+        return BlurHash(hash: hash, height: height, width: width)
+      }
+
+      blurHash = decodeBlurHash(blurHashString)
+    } else {
+      blurHash = nil
+    }
     isMigrated = try values.decode(Bool.self, forKey: .isMigrated)
     createdAt = try parseDate(from: values.decode(String.self, forKey: .createdAt))
     profile = try values.decode(Profile.self, forKey: .profile)
