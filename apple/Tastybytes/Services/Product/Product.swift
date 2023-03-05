@@ -84,6 +84,25 @@ extension Product {
   }
 }
 
+enum ProductDuplicateSuggestion {
+  static func getQuery(_ queryType: QueryType) -> String {
+    let tableName = "product_edit_suggestion_subcategories"
+    let saved = "product_id, duplicate_of_product_id"
+
+    switch queryType {
+    case .tableName:
+      return tableName
+    case let .saved(withTableName):
+      return queryWithTableName(tableName, saved, withTableName)
+    }
+  }
+
+  enum QueryType {
+    case tableName
+    case saved(_ withTableName: Bool)
+  }
+}
+
 extension Product {
   struct SearchParams: Encodable {
     let searchTerm: String

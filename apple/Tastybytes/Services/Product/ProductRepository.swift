@@ -263,11 +263,27 @@ struct SupabaseProductRepository: ProductRepository {
     do {
       try await client
         .database
-        .from("product_duplicate_suggestion")
+        .from(ProductDuplicateSuggestion.getQuery(.tableName))
         .insert(
           values: Product.DuplicateRequest(productId: productId, duplicateOfProductId: duplicateOfProductId),
           returning: .none
         )
+        .execute()
+        .value
+
+      return .success(())
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getProductDuplicateSuggestions(productId: Int) async -> Result<Void, Error> {
+    do {
+      try await client
+        .database
+        .from(ProductDuplicateSuggestion.getQuery(.tableName))
+        .select(columns: ProductDuplicateSuggestion.getQuery(.saved(false)))
+        .eq(column: "product_id", value: productId)
         .execute()
         .value
 
