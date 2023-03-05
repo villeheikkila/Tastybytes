@@ -5,7 +5,7 @@ extension BrandScreen {
     var id: Self { self }
     case editBrand
     case editSubBrand
-    case mergeProduct
+    case duplicateProduct
     case addProduct
   }
 
@@ -30,9 +30,9 @@ extension BrandScreen {
       }
     }
 
-    @Published var productToMerge: Product.Joined? {
+    @Published var duplicateProduct: Product.Joined? {
       didSet {
-        setActiveSheet(.mergeProduct)
+        setActiveSheet(.duplicateProduct)
       }
     }
 

@@ -102,6 +102,15 @@ extension CheckIn: Decodable {
       }
     }
 
+    func decodeBlurHash(_ str: String) -> BlurHash? {
+      let components = str.components(separatedBy: ":::")
+      guard let dimensions = components.first?.components(separatedBy: ":") else { return nil }
+      guard let width = Double(dimensions[0]) else { return nil }
+      guard let height = Double(dimensions[1]) else { return nil }
+      let hash = components[1]
+      return BlurHash(hash: hash, height: height, width: width)
+    }
+
     let values = try decoder.container(keyedBy: CodingKeys.self)
     id = try values.decode(Int.self, forKey: .id)
     rating = try values.decodeIfPresent(Double.self, forKey: .rating)
@@ -109,15 +118,6 @@ extension CheckIn: Decodable {
     imageFile = try values.decodeIfPresent(String.self, forKey: .imageFile)
     let blurHashString = try values.decodeIfPresent(String.self, forKey: .blurHash)
     if let blurHashString {
-      func decodeBlurHash(_ str: String) -> BlurHash? {
-        let components = str.components(separatedBy: ":::")
-        guard let dimensions = components.first?.components(separatedBy: ":") else { return nil }
-        guard let width = Double(dimensions[0]) else { return nil }
-        guard let height = Double(dimensions[1]) else { return nil }
-        let hash = components[1]
-        return BlurHash(hash: hash, height: height, width: width)
-      }
-
       blurHash = decodeBlurHash(blurHashString)
     } else {
       blurHash = nil

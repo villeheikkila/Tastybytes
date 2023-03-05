@@ -34,7 +34,7 @@ struct DuplicateProductSheet: View {
     }
     .navigationTitle(viewModel.mode == .mergeDuplicate ? "Merge duplicates" : "Mark a duplicate")
     .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
-      Text("Close")
+      Text("Close").bold()
     }))
     .onReceive(
       viewModel.$searchTerm.throttle(for: 0.5, scheduler: RunLoop.main, latest: true)

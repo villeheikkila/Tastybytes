@@ -64,6 +64,12 @@ struct ProductScreen: View {
               viewModel.onEditProduct()
             })
           }
+        case .duplicateProduct:
+          DuplicateProductSheet(
+            viewModel.client,
+            mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
+            product: viewModel.product
+          )
         case .barcodeScanner:
           BarcodeScannerSheet(onComplete: { barcode in
             viewModel.addBarcodeToProduct(barcode: barcode, onComplete: {
@@ -124,6 +130,14 @@ struct ProductScreen: View {
             Label("Edit Suggestion", systemImage: "pencil")
           })
         }
+
+        Button(action: { viewModel.activeSheet = .duplicateProduct }, label: {
+          if profileManager.hasPermission(.canMergeProducts) {
+            Label("Merge to...", systemImage: "doc.on.doc")
+          } else {
+            Label("Mark as duplicate", systemImage: "doc.on.doc")
+          }
+        })
 
         if viewModel.product.isVerified {
           Button(action: { viewModel.showUnverifyProductConfirmation = true }, label: {

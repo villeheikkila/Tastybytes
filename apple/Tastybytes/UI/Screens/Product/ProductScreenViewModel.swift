@@ -8,6 +8,7 @@ extension ProductScreen {
     case editSuggestion
     case editProduct
     case barcodeScanner
+    case duplicateProduct
   }
 
   @MainActor class ViewModel: ObservableObject {
@@ -19,6 +20,11 @@ extension ProductScreen {
     @Published var showDeleteProductConfirmationDialog = false
     @Published var showUnverifyProductConfirmation = false
     @Published var resetView: Int = 0
+    @Published var duplicateProduct: Product.Joined? {
+      didSet {
+        activeSheet = .duplicateProduct
+      }
+    }
 
     init(_ client: Client, product: Product.Joined) {
       self.product = product

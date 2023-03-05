@@ -32,11 +32,13 @@ struct BrandScreen: View {
               ProductItemView(product: productJoined)
                 .padding(2)
                 .contextMenu {
-                  if profileManager.hasPermission(.canMergeProducts) {
-                    Button(action: { viewModel.productToMerge = productJoined }, label: {
-                      Text("Merge product to...")
-                    })
-                  }
+                  Button(action: { viewModel.duplicateProduct = productJoined }, label: {
+                    if profileManager.hasPermission(.canMergeProducts) {
+                      Label("Merge to...", systemImage: "doc.on.doc")
+                    } else {
+                      Label("Mark as duplicate", systemImage: "doc.on.doc")
+                    }
+                  })
 
                   if profileManager.hasPermission(.canDeleteProducts) {
                     Button(role: .destructive, action: { viewModel.productToDelete = product }, label: {
@@ -109,9 +111,13 @@ struct BrandScreen: View {
               viewModel.refresh()
             }
           }
-        case .mergeProduct:
-          if let productToMerge = viewModel.productToMerge {
-            DuplicateProductSheet(viewModel.client, mode: .mergeDuplicate, product: productToMerge)
+        case .duplicateProduct:
+          if let duplicateProduct = viewModel.duplicateProduct {
+            DuplicateProductSheet(
+              viewModel.client,
+              mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
+              product: duplicateProduct
+            )
           }
         case .addProduct:
           DismissableSheet(title: "Add Product") {
