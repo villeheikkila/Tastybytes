@@ -5,6 +5,7 @@ import WrappingHStack
 struct CheckInCardView: View {
   @EnvironmentObject private var router: Router
   @State private var showFullPicture = false
+  @State private var blurHashPlaceHolder: UIImage?
 
   let client: Client
   let checkIn: CheckIn
@@ -30,6 +31,15 @@ struct CheckInCardView: View {
     .clipped()
     .cornerRadius(8)
     .shadow(color: Color.black.opacity(0.1), radius: 4, x: 2, y: 2)
+    .task {
+      if let blurHash = checkIn.blurHash {
+        let blurHashImage = UIImage(
+          blurHash: blurHash.hash,
+          size: CGSize(width: blurHash.width / 5, height: blurHash.height / 5)
+        )?.resize(to: blurHash.height)
+        blurHashPlaceHolder = blurHashImage
+      }
+    }
   }
 
   private var header: some View {
@@ -87,13 +97,8 @@ struct CheckInCardView: View {
             }
           }
       } placeholder: {
-        if let blurHash = checkIn.blurHash,
-           let blurhashImage = UIImage(
-             blurHash: blurHash.hash,
-             size: CGSize(width: blurHash.width, height: blurHash.height)
-           )
-        {
-          Image(uiImage: blurhashImage)
+        if let blurHashPlaceHolder {
+          Image(uiImage: blurHashPlaceHolder)
             .resizable()
             .scaledToFill()
             .frame(height: 200)

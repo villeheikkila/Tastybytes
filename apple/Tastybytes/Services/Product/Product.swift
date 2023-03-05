@@ -192,6 +192,16 @@ extension Product {
     }
   }
 
+  struct DuplicateRequest: Encodable {
+    let productId: Int
+    let duplicateOfProductId: Int
+
+    enum CodingKeys: String, CodingKey {
+      case productId = "product_id"
+      case duplicateOfProductId = "duplicate_of_product_id"
+    }
+  }
+
   struct EditRequest: Encodable {
     let productId: Int
     let name: String
