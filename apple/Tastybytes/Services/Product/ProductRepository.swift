@@ -28,6 +28,7 @@ protocol ProductRepository {
   func getSummaryById(id: Int) async -> Result<Summary, Error>
   func getCreatedByUserId(id: UUID) async -> Result<[Product.Joined], Error>
   func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
+  func markAsDuplicate(productId: Int, duplicateOfProductId: Int) async -> Result<Void, Error>
   func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error>
   func createUpdateSuggestion(productEditSuggestionParams: Product.EditRequest) async -> Result<IntId, Error>
   func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
@@ -251,6 +252,24 @@ struct SupabaseProductRepository: ProductRepository {
           params: Product.MergeProductsParams(productId: productId, toProductId: toProductId)
         )
         .execute()
+
+      return .success(())
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func markAsDuplicate(productId: Int, duplicateOfProductId: Int) async -> Result<Void, Error> {
+    do {
+      try await client
+        .database
+        .from("product_duplicate_suggestion")
+        .insert(
+          values: Product.DuplicateRequest(productId: productId, duplicateOfProductId: duplicateOfProductId),
+          returning: .none
+        )
+        .execute()
+        .value
 
       return .success(())
     } catch {

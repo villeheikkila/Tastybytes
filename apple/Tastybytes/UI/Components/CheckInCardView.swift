@@ -31,13 +31,15 @@ struct CheckInCardView: View {
     .clipped()
     .cornerRadius(8)
     .shadow(color: Color.black.opacity(0.1), radius: 4, x: 2, y: 2)
-    .task {
+    .onAppear {
       if let blurHash = checkIn.blurHash {
-        let blurHashImage = UIImage(
-          blurHash: blurHash.hash,
-          size: CGSize(width: blurHash.width / 5, height: blurHash.height / 5)
-        )?.resize(to: blurHash.height)
-        blurHashPlaceHolder = blurHashImage
+        Task {
+          let blurHashImage = UIImage(
+            blurHash: blurHash.hash,
+            size: CGSize(width: blurHash.width / 5, height: blurHash.height / 5)
+          )?.resize(to: blurHash.height)
+          blurHashPlaceHolder = blurHashImage
+        }
       }
     }
   }

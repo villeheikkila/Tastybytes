@@ -19,7 +19,7 @@ struct DuplicateProductSheet: View {
           """
         ).listRowSeparator(.hidden)
       }
-      ForEach(viewModel.products) { product in
+      ForEach(viewModel.products.filter { $0.id != viewModel.product.id }) { product in
         Button(action: { viewModel.mergeToProduct = product }, label: {
           ProductItemView(product: product)
         })
@@ -45,7 +45,13 @@ struct DuplicateProductSheet: View {
                         isPresented: $viewModel.showMergeToProductConfirmation,
                         presenting: viewModel.mergeToProduct)
     { presenting in
-      Button("Merge \(presenting.name) to \(presenting.getDisplayName(.fullName))", role: .destructive) {
+      Button(
+        """
+        \(viewModel.mode == .mergeDuplicate ? "Merge" : "Mark") \(presenting.name) \(viewModel
+          .mode == .mergeDuplicate ? "to" : "as duplicate of") \(presenting.getDisplayName(.fullName))
+        """,
+        role: .destructive
+      ) {
         viewModel.primaryAction(onSuccess: {
           hapticManager.trigger(of: .notification(.success))
           dismiss()
