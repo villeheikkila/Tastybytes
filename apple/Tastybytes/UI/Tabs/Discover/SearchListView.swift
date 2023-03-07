@@ -52,7 +52,7 @@ struct SearchListView: View {
         }
       })
       .onReceive(
-        viewModel.$searchTerm.throttle(for: 0.5, scheduler: RunLoop.main, latest: true)
+        viewModel.$searchTerm.debounce(for: 0.2, scheduler: RunLoop.main)
       ) { _ in
         viewModel.search()
       }
