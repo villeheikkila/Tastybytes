@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension DiscoverTab {
+extension SearchListView {
   enum Sheet: Identifiable {
     var id: Self { self }
     case checkIn
