@@ -50,6 +50,13 @@ extension ProductFeedScreen {
       return (from, to)
     }
 
+    func loadIntialData() async {
+      if categories.isEmpty {
+        await loadCategories()
+        await refresh()
+      }
+    }
+
     func loadCategories() async {
       switch await client.category.getAllWithSubcategories() {
       case let .success(categories):

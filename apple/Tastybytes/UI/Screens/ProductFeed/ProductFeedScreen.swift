@@ -41,8 +41,7 @@ struct ProductFeedScreen: View {
       toolbarContent
     }
     .task {
-      await viewModel.loadCategories()
-      await viewModel.refresh()
+      await viewModel.loadIntialData()
     }
   }
 

@@ -40,7 +40,9 @@ struct ProductScreen: View {
     )
     .id(viewModel.resetView)
     .task {
-      viewModel.loadSummary()
+      if viewModel.summary == nil {
+        viewModel.loadSummary()
+      }
     }
     .toolbar {
       toolbarContent

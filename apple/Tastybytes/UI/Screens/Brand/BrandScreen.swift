@@ -96,7 +96,9 @@ struct BrandScreen: View {
       viewModel.refresh()
     }
     .task {
-      await viewModel.getSummary()
+      if viewModel.summary == nil {
+        await viewModel.getSummary()
+      }
     }
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {

@@ -74,7 +74,9 @@ struct ProductVerificationScreen: View {
       await viewModel.loadProducts()
     }
     .task {
-      await viewModel.loadProducts()
+      if viewModel.products.isEmpty {
+        await viewModel.loadProducts()
+      }
     }
   }
 }

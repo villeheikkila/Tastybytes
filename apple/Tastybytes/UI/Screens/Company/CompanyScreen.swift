@@ -78,7 +78,9 @@ struct CompanyScreen: View {
       })
     }
     .task {
-      viewModel.getBrandsAndSummary()
+      if viewModel.summary == nil {
+        viewModel.getBrandsAndSummary()
+      }
     }
   }
 

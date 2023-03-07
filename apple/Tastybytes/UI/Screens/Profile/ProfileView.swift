@@ -137,7 +137,9 @@ struct ProfileView: View {
     }
     .padding(.top, 10)
     .task {
-      viewModel.getSummary()
+      if viewModel.profileSummary == nil {
+        viewModel.getSummary()
+      }
     }
     .contextMenu {
       ShareLink("Share", item: NavigatablePath.profile(id: viewModel.profile.id).url)
