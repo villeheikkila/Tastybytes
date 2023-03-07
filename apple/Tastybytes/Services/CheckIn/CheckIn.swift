@@ -1,6 +1,6 @@
 import Foundation
 
-struct CheckIn: Identifiable, Hashable {
+struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
   let id: Int
   let rating: Double?
   let review: String?
@@ -31,42 +31,6 @@ struct CheckIn: Identifiable, Hashable {
     } else {
       return nil
     }
-  }
-}
-
-extension CheckIn {
-  static func getQuery(_ queryType: QueryType) -> String {
-    let tableName = "check_ins"
-    let saved = "id, rating, review, image_file, created_at, is_migrated, blur_hash"
-    let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
-    let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
-    let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
-
-    switch queryType {
-    case .tableName:
-      return tableName
-    case let .joined(withTableName):
-      return queryWithTableName(
-        tableName,
-        joinWithComma(saved, Profile.getQuery(.minimal(true)), Product.getQuery(.joinedBrandSubcategories(true)),
-                      CheckInReaction.getQuery(.joinedProfile(true)), checkInTaggedProfilesJoined, checkInFlavorsJoined,
-                      productVariantJoined, ServingStyle.getQuery(.saved(true)), Location.getQuery(.joined(true))),
-        withTableName
-      )
-    }
-  }
-
-  enum QueryType {
-    case tableName
-    case joined(_ withTableName: Bool)
-  }
-}
-
-extension CheckIn: Decodable {
-  struct BlurHash: Hashable {
-    let hash: String
-    let height: Double
-    let width: Double
   }
 
   enum CodingKeys: String, CodingKey {
@@ -136,7 +100,41 @@ extension CheckIn: Decodable {
 }
 
 extension CheckIn {
-  struct NewRequest: Encodable {
+  static func getQuery(_ queryType: QueryType) -> String {
+    let tableName = "check_ins"
+    let saved = "id, rating, review, image_file, created_at, is_migrated, blur_hash"
+    let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
+    let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
+    let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
+
+    switch queryType {
+    case .tableName:
+      return tableName
+    case let .joined(withTableName):
+      return queryWithTableName(
+        tableName,
+        joinWithComma(saved, Profile.getQuery(.minimal(true)), Product.getQuery(.joinedBrandSubcategories(true)),
+                      CheckInReaction.getQuery(.joinedProfile(true)), checkInTaggedProfilesJoined, checkInFlavorsJoined,
+                      productVariantJoined, ServingStyle.getQuery(.saved(true)), Location.getQuery(.joined(true))),
+        withTableName
+      )
+    }
+  }
+
+  enum QueryType {
+    case tableName
+    case joined(_ withTableName: Bool)
+  }
+}
+
+extension CheckIn {
+  struct BlurHash: Hashable, Sendable {
+    let hash: String
+    let height: Double
+    let width: Double
+  }
+
+  struct NewRequest: Encodable, Sendable {
     let productId: Int
     let rating: Double?
     let review: String?
@@ -182,7 +180,7 @@ extension CheckIn {
     }
   }
 
-  struct UpdateRequest: Encodable {
+  struct UpdateRequest: Encodable, Sendable {
     let checkInId: Int
     let productId: Int
     let rating: Double?

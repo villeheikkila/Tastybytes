@@ -124,7 +124,7 @@ extension Notification {
   }
 }
 
-enum NotificationType: String, CaseIterable, Identifiable {
+enum NotificationType: String, CaseIterable, Identifiable, Sendable {
   var id: Self {
     self
   }

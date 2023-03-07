@@ -1,5 +1,5 @@
-struct ServingStyle: Identifiable, Hashable, Decodable {
-  enum Name: String, CaseIterable, Decodable, Identifiable, Equatable {
+struct ServingStyle: Identifiable, Hashable, Decodable, Sendable {
+  enum Name: String, CaseIterable, Decodable, Identifiable, Equatable, Sendable {
     var id: Self { self }
     case bottle
     case can

@@ -1,4 +1,4 @@
-struct Country: Identifiable, Hashable, Decodable {
+struct Country: Identifiable, Hashable, Decodable, Sendable {
   var id: String { countryCode }
   let countryCode: String
   let name: String

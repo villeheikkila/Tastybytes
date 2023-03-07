@@ -1,6 +1,6 @@
 import Foundation
 
-struct Profile: Identifiable, Decodable, Hashable {
+struct Profile: Identifiable, Decodable, Hashable, Sendable {
   let id: UUID
   let preferredName: String
   let isPrivate: Bool
@@ -43,7 +43,7 @@ extension Profile {
 }
 
 extension Profile {
-  struct Extended: Identifiable, Decodable {
+  struct Extended: Identifiable, Decodable, Sendable {
     let id: UUID
     let username: String
     let firstName: String?
@@ -100,12 +100,12 @@ extension Profile {
 }
 
 extension Profile {
-  enum NameDisplay: String, CaseIterable, Decodable, Equatable {
+  enum NameDisplay: String, CaseIterable, Decodable, Equatable, Sendable {
     case username
     case fullName = "full_name"
   }
 
-  struct UpdateRequest: Encodable {
+  struct UpdateRequest: Encodable, Sendable {
     var username: String?
     var firstName: String?
     var lastName: String?
@@ -154,7 +154,7 @@ extension Profile {
   }
 }
 
-struct ProfileSettings: Identifiable, Decodable, Hashable {
+struct ProfileSettings: Identifiable, Decodable, Hashable, Sendable {
   let id: UUID
   let colorScheme: ColorScheme
   let sendReactionNotifications: Bool
@@ -194,13 +194,13 @@ extension ProfileSettings {
 }
 
 extension ProfileSettings {
-  enum ColorScheme: String, CaseIterable, Decodable, Equatable {
+  enum ColorScheme: String, CaseIterable, Decodable, Equatable, Sendable {
     case system
     case light
     case dark
   }
 
-  struct UpdateRequest: Encodable {
+  struct UpdateRequest: Encodable, Sendable {
     var colorScheme: String?
     var sendReactionNotifications: Bool?
     var sendTaggedCheckInNotifications: Bool?
@@ -232,7 +232,7 @@ extension ProfileSettings {
 }
 
 extension Profile {
-  struct PushNotificationToken: Identifiable, Codable, Hashable {
+  struct PushNotificationToken: Identifiable, Codable, Hashable, Sendable {
     var id: String { firebaseRegistrationToken }
     let firebaseRegistrationToken: String
 

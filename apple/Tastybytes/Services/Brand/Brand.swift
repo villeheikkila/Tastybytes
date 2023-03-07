@@ -31,7 +31,7 @@ enum Brand {
 }
 
 extension Brand {
-  struct JoinedSubBrands: Identifiable, Hashable, Decodable {
+  struct JoinedSubBrands: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let name: String
     let isVerified: Bool
@@ -45,7 +45,7 @@ extension Brand {
     }
   }
 
-  struct JoinedCompany: Identifiable, Hashable, Decodable {
+  struct JoinedCompany: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let name: String
     let isVerified: Bool
@@ -59,7 +59,7 @@ extension Brand {
     }
   }
 
-  struct JoinedSubBrandsProducts: Identifiable, Hashable, Decodable {
+  struct JoinedSubBrandsProducts: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let name: String
     let isVerified: Bool
@@ -77,7 +77,7 @@ extension Brand {
     }
   }
 
-  struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Decodable {
+  struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let name: String
     let isVerified: Bool
@@ -115,7 +115,7 @@ extension Brand {
 }
 
 extension Brand {
-  struct NewRequest: Encodable {
+  struct NewRequest: Encodable, Sendable {
     let name: String
     let brandOwnerId: Int
 
@@ -129,7 +129,7 @@ extension Brand {
     }
   }
 
-  struct UpdateRequest: Encodable {
+  struct UpdateRequest: Encodable, Sendable {
     let id: Int
     let name: String
     let brandOwnerId: Int
@@ -145,7 +145,7 @@ extension Brand {
     }
   }
 
-  struct VerifyRequest: Encodable {
+  struct VerifyRequest: Encodable, Sendable {
     let id: Int
     let isVerified: Bool
 

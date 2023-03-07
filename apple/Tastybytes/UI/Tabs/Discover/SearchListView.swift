@@ -30,6 +30,7 @@ struct SearchListView: View {
       .onAppear {
         scrollProxy = proxy
       }
+      .listStyle(.plain)
       .searchable(text: $viewModel.searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                   prompt: viewModel.searchScope.prompt)
       .disableAutocorrection(true)
@@ -41,7 +42,6 @@ struct SearchListView: View {
       .onSubmit(of: .search) {
         viewModel.search()
       }
-      .listStyle(.plain)
       .onChange(of: viewModel.searchScope, perform: { _ in
         viewModel.search()
         viewModel.barcode = nil

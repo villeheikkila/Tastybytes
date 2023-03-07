@@ -1,4 +1,4 @@
-struct CheckInReaction: Identifiable, Decodable, Hashable {
+struct CheckInReaction: Identifiable, Decodable, Hashable, Sendable {
   let id: Int
   let profile: Profile
 
@@ -47,7 +47,7 @@ extension CheckInReaction {
 }
 
 extension CheckInReaction {
-  struct JoinedCheckIn: Identifiable, Hashable, Decodable {
+  struct JoinedCheckIn: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let profile: Profile
     let checkIn: CheckIn
@@ -61,7 +61,7 @@ extension CheckInReaction {
 }
 
 extension CheckInReaction {
-  struct NewRequest: Encodable {
+  struct NewRequest: Encodable, Sendable {
     let checkInId: Int
 
     enum CodingKeys: String, CodingKey {
@@ -69,7 +69,7 @@ extension CheckInReaction {
     }
   }
 
-  struct DeleteRequest: Encodable {
+  struct DeleteRequest: Encodable, Sendable {
     let id: Int
 
     enum CodingKeys: String, CodingKey {

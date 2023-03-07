@@ -4,7 +4,7 @@ protocol SubcategoryProtocol {
   var label: String { get }
 }
 
-struct Subcategory: Identifiable, Decodable, Hashable, SubcategoryProtocol, Comparable {
+struct Subcategory: Identifiable, Decodable, Hashable, Sendable, SubcategoryProtocol, Comparable {
   let id: Int
   let name: String
 
@@ -40,7 +40,7 @@ extension Subcategory {
 }
 
 extension Subcategory {
-  struct JoinedCategory: Identifiable, Hashable, Decodable, SubcategoryProtocol {
+  struct JoinedCategory: Identifiable, Hashable, Decodable, Sendable, SubcategoryProtocol {
     let id: Int
     let name: String
     let category: Category

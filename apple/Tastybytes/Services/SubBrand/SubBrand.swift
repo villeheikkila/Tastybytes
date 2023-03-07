@@ -4,7 +4,7 @@ protocol SubBrandProtocol {
   var isVerified: Bool { get }
 }
 
-struct SubBrand: Identifiable, Hashable, Decodable, SubBrandProtocol {
+struct SubBrand: Identifiable, Hashable, Decodable, Sendable, SubBrandProtocol {
   let id: Int
   let name: String?
   let isVerified: Bool
@@ -52,7 +52,7 @@ extension SubBrand {
 }
 
 extension SubBrand {
-  struct JoinedBrand: Identifiable, Hashable, Decodable, SubBrandProtocol {
+  struct JoinedBrand: Identifiable, Hashable, Decodable, Sendable, SubBrandProtocol {
     let id: Int
     let name: String?
     let isVerified: Bool
@@ -73,7 +73,7 @@ extension SubBrand {
     }
   }
 
-  struct JoinedProduct: Identifiable, Hashable, Decodable {
+  struct JoinedProduct: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let name: String?
     let isVerified: Bool
@@ -93,7 +93,7 @@ extension SubBrand {
     let name: String
     let brandId: Int
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey, Sendable {
       case name
       case brandId = "brand_id"
     }
@@ -104,7 +104,7 @@ extension SubBrand {
     }
   }
 
-  struct UpdateNameRequest: Encodable {
+  struct UpdateNameRequest: Encodable, Sendable {
     let id: Int
     let name: String
 
@@ -114,7 +114,7 @@ extension SubBrand {
     }
   }
 
-  struct UpdateBrandRequest: Encodable {
+  struct UpdateBrandRequest: Encodable, Sendable {
     let id: Int
     let brandId: Int
 
@@ -128,7 +128,7 @@ extension SubBrand {
     }
   }
 
-  struct VerifyRequest: Encodable {
+  struct VerifyRequest: Encodable, Sendable {
     let id: Int
     let isVerified: Bool
 

@@ -1,6 +1,6 @@
 import Foundation
 
-struct ProfileSummary: Decodable {
+struct ProfileSummary: Decodable, Sendable {
   let totalCheckIns: Int
   let uniqueCheckIns: Int
   let averageRating: Double?

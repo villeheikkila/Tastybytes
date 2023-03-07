@@ -1,4 +1,4 @@
-struct Role: Identifiable, Decodable, Hashable {
+struct Role: Identifiable, Decodable, Hashable, Sendable {
   let id: Int
   let name: String
   let permissions: [Permission]

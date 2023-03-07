@@ -1,4 +1,4 @@
-struct ProductVariant: Identifiable, Codable, Hashable {
+struct ProductVariant: Identifiable, Codable, Hashable, Sendable {
   let id: Int
   let manufacturer: Company
 

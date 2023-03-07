@@ -1,4 +1,4 @@
-struct Document: Decodable {
+struct Document: Decodable, Sendable {
   let document: String
 
   static func getQuery(_ queryType: QueryType) -> String {
@@ -24,7 +24,7 @@ struct Document: Decodable {
 }
 
 extension Document {
-  struct About: Decodable {
+  struct About: Decodable, Sendable {
     let document: AboutPage
   }
 }

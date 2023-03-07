@@ -1,13 +1,11 @@
 import Foundation
 
-struct CheckInComment: Identifiable, Hashable {
+struct CheckInComment: Identifiable, Hashable, Decodable, Sendable {
   let id: Int
   var content: String
   let createdAt: Date
   let profile: Profile
-}
 
-extension CheckInComment: Decodable {
   enum CodingKeys: String, CodingKey {
     case id
     case content
@@ -36,7 +34,7 @@ extension CheckInComment {
 }
 
 extension CheckInComment {
-  struct NewRequest: Encodable {
+  struct NewRequest: Encodable, Sendable {
     let content: String
     let checkInId: Int
 
@@ -45,7 +43,7 @@ extension CheckInComment {
     }
   }
 
-  struct UpdateRequest: Encodable {
+  struct UpdateRequest: Encodable, Sendable {
     let id: Int
     let content: String
   }

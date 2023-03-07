@@ -1,4 +1,4 @@
-struct Flavor: Identifiable, Decodable, Hashable {
+struct Flavor: Identifiable, Decodable, Hashable, Sendable {
   let id: Int
   let name: String
 

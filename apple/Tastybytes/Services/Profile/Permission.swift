@@ -1,4 +1,4 @@
-struct Permission: Identifiable, Decodable, Hashable {
+struct Permission: Identifiable, Decodable, Hashable, Sendable {
   let id: Int
   let name: PermissionName
 
@@ -27,7 +27,7 @@ extension Permission {
   }
 }
 
-enum PermissionName: String, Decodable, Equatable {
+enum PermissionName: String, Decodable, Equatable, Sendable {
   case canDeleteProducts = "can_delete_products"
   case canDeleteCompanies = "can_delete_companies"
   case canDeleteBrands = "can_delete_brands"

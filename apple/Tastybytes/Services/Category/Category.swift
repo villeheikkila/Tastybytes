@@ -1,5 +1,5 @@
 struct Category: Identifiable, Decodable, Hashable {
-  enum Name: String, Identifiable, CaseIterable, Decodable, Equatable {
+  enum Name: String, Identifiable, CaseIterable, Decodable, Equatable, Sendable {
     var id: Self { self }
     case chips
     case candy
@@ -66,7 +66,7 @@ extension Category {
 }
 
 extension Category {
-  struct JoinedSubcategories: Identifiable, Decodable, Hashable {
+  struct JoinedSubcategories: Identifiable, Decodable, Hashable, Sendable {
     let id: Int
     let name: Name
     let subcategories: [Subcategory]
@@ -84,7 +84,7 @@ extension Category {
     }
   }
 
-  struct JoinedServingStyles: Identifiable, Decodable, Hashable {
+  struct JoinedServingStyles: Identifiable, Decodable, Hashable, Sendable {
     let id: Int
     let name: Name
     let servingStyles: [ServingStyle]

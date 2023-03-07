@@ -1,6 +1,6 @@
 import AVFoundation
 
-struct Barcode: Encodable, Hashable {
+struct Barcode: Encodable, Hashable, Sendable {
   let barcode: String
   let type: AVMetadataObject.ObjectType
 
@@ -15,7 +15,7 @@ struct Barcode: Encodable, Hashable {
   }
 }
 
-struct ProductBarcode: Identifiable, Hashable, Decodable {
+struct ProductBarcode: Identifiable, Hashable, Decodable, Sendable {
   let id: Int
   let barcode: String
   let type: AVMetadataObject.ObjectType
@@ -38,7 +38,7 @@ struct ProductBarcode: Identifiable, Hashable, Decodable {
 }
 
 extension ProductBarcode {
-  struct NewRequest: Encodable {
+  struct NewRequest: Encodable, Sendable {
     let barcode: String
     let type: String
     let productId: Int
@@ -54,7 +54,7 @@ extension ProductBarcode {
     }
   }
 
-  struct JoinedWithCreator: Identifiable, Hashable, Decodable {
+  struct JoinedWithCreator: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let barcode: String
     let type: AVMetadataObject.ObjectType
@@ -75,7 +75,7 @@ extension ProductBarcode {
     }
   }
 
-  struct Joined: Identifiable, Hashable, Decodable {
+  struct Joined: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let barcode: String
     let type: AVMetadataObject.ObjectType

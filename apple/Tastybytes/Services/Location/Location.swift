@@ -1,6 +1,6 @@
-import MapKit
+@preconcurrency import MapKit
 
-struct Location: Identifiable, Codable, Hashable {
+struct Location: Identifiable, Codable, Hashable, Sendable {
   let id: UUID
   let name: String
   let title: String?
@@ -84,7 +84,7 @@ extension Location {
 }
 
 extension Location {
-  struct New: Encodable {
+  struct New: Encodable, Sendable {
     let name: String
     let title: String?
     let longitude: Double
@@ -97,7 +97,7 @@ extension Location {
     }
   }
 
-  struct SummaryRequest: Encodable {
+  struct SummaryRequest: Encodable, Sendable {
     let id: UUID
 
     enum CodingKeys: String, CodingKey {

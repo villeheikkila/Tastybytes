@@ -4,8 +4,8 @@ extension UIImage {
   func resize(to newHeight: Double) -> UIImage? {
     let scale = newHeight / size.height
     let newWidth = size.width * scale
-    UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
-    draw(in: CGRectMake(0, 0, newWidth, newHeight))
+    UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+    draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
     let newImage = UIGraphicsGetImageFromCurrentImageContext()
     UIGraphicsEndImageContext()
     return newImage
@@ -58,11 +58,12 @@ extension UIImage {
           height: height,
           bytesPerRow: bytesPerRow,
           bytesPerPixel: cgImage.bitsPerPixel / 8,
-          pixelOffset: 0
-        ) {
-          normalisation * cos(Float.pi * Float(x) * $0 / Float(width)) as Float *
-            cos(Float.pi * Float(y) * $1 / Float(height)) as Float
-        }
+          pixelOffset: 0,
+          basisFunction: { f1, f2 in
+            normalisation * cos(Float.pi * Float(x) * f1 / Float(width)) as Float *
+              cos(Float.pi * Float(y) * f2 / Float(height)) as Float
+          }
+        )
         factors.append(factor)
       }
     }
@@ -95,6 +96,7 @@ extension UIImage {
     return hash
   }
 
+  // swiftlint:disable function_parameter_count
   private func multiplyBasisFunction(
     pixels: UnsafePointer<UInt8>,
     width: Int,

@@ -1,3 +1,3 @@
-struct IntId: Decodable {
+struct IntId: Decodable, Sendable {
   let id: Int
 }
