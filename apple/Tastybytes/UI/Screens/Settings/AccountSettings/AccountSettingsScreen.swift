@@ -56,7 +56,7 @@ struct AccountSettingsScreen: View {
         Image(systemName: "key")
           .accessibility(hidden: true)
         SecureField("New Password", text: $viewModel.newPassword)
-          .textContentType(.password)
+          .textContentType(.newPassword)
           .autocapitalization(.none)
           .disableAutocorrection(true)
       }
@@ -64,7 +64,7 @@ struct AccountSettingsScreen: View {
         Image(systemName: "key")
           .accessibility(hidden: true)
         SecureField("Confirm New Password", text: $viewModel.newPasswordConfirmation)
-          .textContentType(.password)
+          .textContentType(.newPassword)
           .autocapitalization(.none)
           .disableAutocorrection(true)
       }

@@ -23,11 +23,14 @@ struct AuthenticationScreen: View {
           .focused($focusedField, equals: .password)
       }
       if viewModel.scene == .signIn || viewModel.scene == .signUp || viewModel.scene == .resetPassword {
-        PasswordTextFieldView(password: $viewModel.password)
-          .focused($focusedField, equals: .password)
+        PasswordTextFieldView(
+          password: $viewModel.password,
+          mode: viewModel.scene == .resetPassword ? .newPassword : .password
+        )
+        .focused($focusedField, equals: .password)
       }
       if viewModel.scene == .resetPassword {
-        PasswordTextFieldView(password: $viewModel.passwordConfirmation)
+        PasswordTextFieldView(password: $viewModel.passwordConfirmation, mode: .newPassword)
           .focused($focusedField, equals: .resetPassword)
       }
 
