@@ -4,6 +4,8 @@ extension DiscoverTab {
   enum Sheet: Identifiable {
     var id: Self { self }
     case checkIn
+    case barcodeScanner
+    case filters
   }
 
   @MainActor class ViewModel: ObservableObject {
@@ -14,8 +16,6 @@ extension DiscoverTab {
     @Published var profiles = [Profile]()
     @Published var companies = [Company]()
     @Published var locations = [Location]()
-    @Published var showBarcodeScanner = false
-    @Published var showFilters = false
     @Published var isSearched = false
     @Published var searchScope: SearchScope = .products
     @Published var barcode: Barcode?

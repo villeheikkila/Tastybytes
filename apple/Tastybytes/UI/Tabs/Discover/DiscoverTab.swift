@@ -59,28 +59,6 @@ struct DiscoverTab: View {
             }
           }
         })
-        .sheet(isPresented: $viewModel.showBarcodeScanner) {
-          NavigationStack {
-            BarcodeScannerSheet(onComplete: { barcode in
-              viewModel.searchProductsByBardcode(barcode)
-            })
-          }
-          .presentationDetents([.medium])
-        }
-        .sheet(isPresented: $viewModel.showFilters) {
-          NavigationStack {
-            ProductFilterSheet(
-              viewModel.client,
-              initialFilter: viewModel.productFilter,
-              sections: [.category, .checkIns],
-              onApply: { filter in
-                viewModel.productFilter = filter
-                viewModel.showFilters = false
-              }
-            )
-          }
-          .presentationDetents([.medium])
-        }
         .sheet(item: $viewModel.activeSheet) { sheet in
           NavigationStack {
             switch sheet {
@@ -90,7 +68,23 @@ struct DiscoverTab: View {
                   router.navigate(to: Route.checkIn(checkIn), resetStack: false)
                 })
               }
+            case .barcodeScanner:
+              BarcodeScannerSheet(onComplete: { barcode in
+                viewModel.searchProductsByBardcode(barcode)
+              })
+            case .filters:
+              ProductFilterSheet(
+                viewModel.client,
+                initialFilter: viewModel.productFilter,
+                sections: [.category, .checkIns],
+                onApply: { filter in
+                  viewModel.productFilter = filter
+                  viewModel.activeSheet = nil
+                }
+              )
             }
+          }.if(sheet != .checkIn) { view in
+            view.presentationDetents([.medium])
           }
         }
         .confirmationDialog(
@@ -305,7 +299,7 @@ struct DiscoverTab: View {
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       if viewModel.searchScope == .products {
-        Button(action: { viewModel.showFilters.toggle() }, label: {
+        Button(action: { viewModel.activeSheet = .filters }, label: {
           Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
             .labelStyle(.iconOnly)
         })
@@ -313,7 +307,7 @@ struct DiscoverTab: View {
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if profileManager.hasPermission(.canAddBarcodes) {
-        Button(action: { viewModel.showBarcodeScanner.toggle() }, label: {
+        Button(action: { viewModel.activeSheet = .barcodeScanner }, label: {
           Label("Scan a barcode", systemImage: "barcode.viewfinder")
             .labelStyle(.iconOnly)
         })

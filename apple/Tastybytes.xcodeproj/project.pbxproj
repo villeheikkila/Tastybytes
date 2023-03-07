@@ -78,6 +78,8 @@
 		5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237E2986FAA40085522E /* CheckInListView.swift */; };
 		5C43238129898A4C0085522E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C43238029898A4C0085522E /* GoogleService-Info.plist */; };
 		5C46E8642911D9FD0008F142 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C46E8632911D9FD0008F142 /* Config.swift */; };
+		5C61E82D29B5C52600D10AA3 /* DuplicataProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E82C29B5C52600D10AA3 /* DuplicataProductScreen.swift */; };
+		5C61E82F29B5C55200D10AA3 /* DuplicateProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E82E29B5C55200D10AA3 /* DuplicateProductViewModel.swift */; };
 		5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F22292DFF66006F9A97 /* AppLogoView.swift */; };
 		5C663F25292E0100006F9A97 /* AppNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F24292E0100006F9A97 /* AppNameView.swift */; };
 		5C663F27292E0F1D006F9A97 /* DocumentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F26292E0F1D006F9A97 /* DocumentRepository.swift */; };
@@ -281,6 +283,8 @@
 		5C43238029898A4C0085522E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5C46E8632911D9FD0008F142 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		5C46E8662911E5860008F142 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		5C61E82C29B5C52600D10AA3 /* DuplicataProductScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicataProductScreen.swift; sourceTree = "<group>"; };
+		5C61E82E29B5C55200D10AA3 /* DuplicateProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductViewModel.swift; sourceTree = "<group>"; };
 		5C663F22292DFF66006F9A97 /* AppLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogoView.swift; sourceTree = "<group>"; };
 		5C663F24292E0100006F9A97 /* AppNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNameView.swift; sourceTree = "<group>"; };
 		5C663F26292E0F1D006F9A97 /* DocumentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentRepository.swift; sourceTree = "<group>"; };
@@ -448,6 +452,7 @@
 		5C20A50E29AA59E700ABBA74 /* Admin */ = {
 			isa = PBXGroup;
 			children = (
+				5C61E82B29B5C51100D10AA3 /* DuplicataProductScreen */,
 				5C20A51829AB52B200ABBA74 /* ProductVerification */,
 				5C20A51529AB527B00ABBA74 /* FlavorManagement */,
 				5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */,
@@ -772,6 +777,15 @@
 				5C12B4342902C9D0001EE549 /* TabsView.swift */,
 			);
 			path = Tabs;
+			sourceTree = "<group>";
+		};
+		5C61E82B29B5C51100D10AA3 /* DuplicataProductScreen */ = {
+			isa = PBXGroup;
+			children = (
+				5C61E82C29B5C52600D10AA3 /* DuplicataProductScreen.swift */,
+				5C61E82E29B5C55200D10AA3 /* DuplicateProductViewModel.swift */,
+			);
+			path = DuplicataProductScreen;
 			sourceTree = "<group>";
 		};
 		5C7C356D299ABDE9009A3C09 /* Profile */ = {
@@ -1439,6 +1453,7 @@
 				5CB1C24B28F9BE4F000B0EB4 /* ProductRepository.swift in Sources */,
 				5C7C35EC299AE441009A3C09 /* OptionalNavigationLink.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
+				5C61E82D29B5C52600D10AA3 /* DuplicataProductScreen.swift in Sources */,
 				5C20A51729AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift in Sources */,
 				5C25C68A299572B700C07953 /* FinalStepTab.swift in Sources */,
 				5CD10A3D28F75B7A0001CFC2 /* ProductScreen.swift in Sources */,
@@ -1512,6 +1527,7 @@
 				5C663F29292E1071006F9A97 /* Documents.swift in Sources */,
 				5C3D8275298D5F3300E861DC /* AccountSettingsScreen.swift in Sources */,
 				5CED432A28FD4E17003F8194 /* CategoryRepository.swift in Sources */,
+				5C61E82F29B5C55200D10AA3 /* DuplicateProductViewModel.swift in Sources */,
 				5C3D8273298C5DA300E861DC /* OptionalExtensions.swift in Sources */,
 				5C7C35E4299AE0CD009A3C09 /* MessageNotificationView.swift in Sources */,
 				5C7C3593299AC426009A3C09 /* ScalingButton.swift in Sources */,

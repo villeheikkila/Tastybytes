@@ -9,6 +9,7 @@ extension DuplicateProductSheet {
     private let logger = getLogger(category: "MarkAsDuplicate")
     let client: Client
     @Published var products = [Product.Joined]()
+    @Published var currentUserProductDuplicateSuggestions = [ProductDuplicateSuggestion]()
     @Published var mergeToProduct: Product.Joined? {
       didSet {
         showMergeToProductConfirmation = true

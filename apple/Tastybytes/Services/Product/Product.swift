@@ -84,7 +84,10 @@ extension Product {
   }
 }
 
-enum ProductDuplicateSuggestion {
+struct ProductDuplicateSuggestion {
+  let product: Product.Joined
+  let duplicateOf: Product.Joined
+
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "product_edit_suggestion_subcategories"
     let saved = "product_id, duplicate_of_product_id"

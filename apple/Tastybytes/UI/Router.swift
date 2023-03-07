@@ -89,6 +89,7 @@ enum Route: Hashable {
   case productFeed(ProductFeedType)
   case flavorManagementScreen
   case productVerificationScreen
+  case duplicateProducts
 }
 
 extension View {
@@ -126,6 +127,8 @@ extension View {
         FlavorManagementScreen(client)
       case .productVerificationScreen:
         ProductVerificationScreen(client)
+      case .duplicateProducts:
+        DuplicateProductScreen(client)
       }
     }
   }

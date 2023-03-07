@@ -20,6 +20,9 @@ struct AdminTab: View {
         NavigationLink(value: Route.productVerificationScreen) {
           Label("Product Verification", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
+        NavigationLink(value: Route.duplicateProducts) {
+          Label("Duplicates", systemImage: "plus.rectangle.fill.on.rectangle.fill")
+        }
       }
       .withRoutes(client)
       .navigationBarTitle("Admin")
