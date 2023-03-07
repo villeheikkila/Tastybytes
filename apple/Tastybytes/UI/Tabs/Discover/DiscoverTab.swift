@@ -3,8 +3,6 @@ import SwiftUI
 struct DiscoverTab: View {
   @StateObject private var router = Router()
   @Binding private var resetNavigationOnTab: Tab?
-  @EnvironmentObject private var toastManager: ToastManager
-  @EnvironmentObject private var profileManager: ProfileManager
   @State private var scrollToTop: Int = 0
 
   let client: Client

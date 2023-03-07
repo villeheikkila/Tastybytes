@@ -16,7 +16,16 @@ struct SearchListView: View {
   var body: some View {
     ScrollViewReader { proxy in
       List {
-        content
+        switch viewModel.searchScope {
+        case .products:
+          productResults
+        case .companies:
+          companyResults
+        case .users:
+          profileResults
+        case .locations:
+          locationResults
+        }
       }
       .onAppear {
         scrollProxy = proxy
@@ -92,15 +101,15 @@ struct SearchListView: View {
         }
       )
     }
-    .if(viewModel.searchScope == .products && viewModel.productFilter != nil, transform: { view in
-      view.overlay {
+    .overlay {
+      if viewModel.searchScope == .products, viewModel.productFilter != nil {
         MaterialOverlay(alignment: .bottom) {
           if let productFilter = viewModel.productFilter {
             ProductFilterOverlayView(filters: productFilter)
           }
         }
       }
-    })
+    }
     .onChange(of: scrollToTop) { _ in
       withAnimation {
         switch viewModel.searchScope {
@@ -122,41 +131,6 @@ struct SearchListView: View {
           }
         }
       }
-    }
-  }
-
-  @ViewBuilder
-  private var content: some View {
-    switch viewModel.searchScope {
-    case .products:
-      if viewModel.products.isEmpty {
-        Section {
-          NavigationLink(value: Route.productFeed(.trending)) {
-            Label("Trending", systemImage: "chart.line.uptrend.xyaxis").bold()
-          }
-          .listRowSeparator(.visible)
-
-          NavigationLink(value: Route.productFeed(.topRated)) {
-            Label("Top Rated", systemImage: "line.horizontal.star.fill.line.horizontal").bold()
-          }
-        } header: {
-          Text("Feeds")
-        }.headerProminence(.increased)
-      } else {
-        productResults
-      }
-      if viewModel.isSearched {
-        if viewModel.barcode != nil {
-          addBarcodeNotice
-        }
-        addProductNotice
-      }
-    case .companies:
-      companyResults
-    case .users:
-      profileResults
-    case .locations:
-      locationResults
     }
   }
 
@@ -207,44 +181,6 @@ struct SearchListView: View {
     }
   }
 
-  private var addBarcodeNotice: some View {
-    Section {
-      Text(
-        """
-        \(viewModel.products.isEmpty ? "No results were found" : "If none of the results match"),\
-        you can assign the barcode to a product by searching again \
-        with the name or by creating a new product.
-        """
-      )
-      Button(action: { viewModel.resetBarcode() }, label: {
-        Text("Dismiss barcode")
-      })
-    }
-  }
-
-  private var addProductNotice: some View {
-    Section {
-      HStack {
-        Text("Add new")
-          .fontWeight(.medium)
-        Spacer()
-      }
-      .if(profileManager.hasPermission(.canCreateProducts), transform: { view in
-        view
-          .contentShape(Rectangle())
-          .accessibilityAddTraits(.isLink)
-          .onTapGesture {
-            let barcode = viewModel.barcode
-            viewModel.barcode = nil
-            router.navigate(to: .addProduct(barcode), resetStack: false)
-          }
-      })
-    } header: {
-      Text("Didn't find a product you were looking for?")
-    }
-    .textCase(nil)
-  }
-
   private var locationResults: some View {
     ForEach(viewModel.locations) { location in
       NavigationLink(value: Route.location(location)) {
@@ -254,24 +190,74 @@ struct SearchListView: View {
     }
   }
 
+  @ViewBuilder
   private var productResults: some View {
-    ForEach(viewModel.products) { product in
-      ProductItemView(product: product, extras: [.checkInCheck, .rating])
-        .swipeActions {
-          Button(action: { viewModel.checkInProduct = product }, label: {
-            Label("Check-in", systemImage: "plus")
-          }).tint(.green)
+    if viewModel.barcode != nil {
+      Section {
+        Text(
+          """
+          \(viewModel.products.isEmpty ? "No results were found" : "If none of the results match"),\
+          you can assign the barcode to a product by searching again \
+          with the name or by creating a new product.
+          """
+        )
+        Button(action: { viewModel.resetBarcode() }, label: {
+          Text("Dismiss barcode")
+        })
+      }
+    }
+
+    if viewModel.products.isEmpty {
+      Section {
+        NavigationLink(value: Route.productFeed(.trending)) {
+          Label("Trending", systemImage: "chart.line.uptrend.xyaxis").bold()
+        }
+        .listRowSeparator(.visible)
+
+        NavigationLink(value: Route.productFeed(.topRated)) {
+          Label("Top Rated", systemImage: "line.horizontal.star.fill.line.horizontal").bold()
+        }
+      } header: {
+        Text("Feeds")
+      }.headerProminence(.increased)
+    } else {
+      ForEach(viewModel.products) { product in
+        ProductItemView(product: product, extras: [.checkInCheck, .rating])
+          .swipeActions {
+            Button(action: { viewModel.checkInProduct = product }, label: {
+              Label("Check-in", systemImage: "plus")
+            }).tint(.green)
+          }
+          .contentShape(Rectangle())
+          .accessibilityAddTraits(.isLink)
+          .onTapGesture {
+            if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
+              router.navigate(to: .product(product), resetStack: false)
+            } else {
+              viewModel.addBarcodeTo = product
+            }
+          }
+          .id(product.id)
+      }
+    }
+    if viewModel.isSearched, profileManager.hasPermission(.canCreateProducts) {
+      Section {
+        HStack {
+          Text("Add new")
+            .fontWeight(.medium)
+          Spacer()
         }
         .contentShape(Rectangle())
         .accessibilityAddTraits(.isLink)
         .onTapGesture {
-          if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
-            router.navigate(to: .product(product), resetStack: false)
-          } else {
-            viewModel.addBarcodeTo = product
-          }
+          let barcode = viewModel.barcode
+          viewModel.barcode = nil
+          router.navigate(to: .addProduct(barcode), resetStack: false)
         }
-        .id(product.id)
+      } header: {
+        Text("Didn't find a product you were looking for?")
+      }
+      .textCase(nil)
     }
   }
 
