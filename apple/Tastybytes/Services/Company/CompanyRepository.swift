@@ -120,7 +120,7 @@ struct SupabaseCompanyRepository: CompanyRepository {
         .database
         .from(Company.getQuery(.tableName))
         .select(columns: Company.getQuery(.saved(false)))
-        .ilike(column: "name", value: "%\(searchTerm)%")
+        .textSearch(column: "name", query: searchTerm + ":*")
         .execute()
         .value
 

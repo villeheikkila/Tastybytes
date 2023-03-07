@@ -121,7 +121,7 @@ extension Product {
     }
 
     init(searchTerm: String, filter: Filter?) {
-      self.searchTerm = "%\(searchTerm.trimmingCharacters(in: .whitespacesAndNewlines))%"
+      self.searchTerm = "\(searchTerm.trimmingCharacters(in: .whitespacesAndNewlines))"
 
       if let filter {
         categoryName = filter.category?.name.rawValue

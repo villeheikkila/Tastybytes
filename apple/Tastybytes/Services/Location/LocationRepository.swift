@@ -67,7 +67,7 @@ struct SupabaseLocationRepository: LocationRepository {
         .database
         .from(Location.getQuery(.tableName))
         .select(columns: Location.getQuery(.joined(false)))
-        .ilike(column: "name", value: "%\(searchTerm)%")
+        .textSearch(column: "name", query: searchTerm + ":*")
         .execute()
         .value
 
