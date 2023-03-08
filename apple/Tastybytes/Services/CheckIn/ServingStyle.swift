@@ -8,6 +8,10 @@ struct ServingStyle: Identifiable, Hashable, Decodable, Sendable {
   let id: Int
   let name: Name
 
+  var label: String {
+    name.rawValue.capitalized
+  }
+
   enum CodingKeys: String, CodingKey {
     case id
     case name

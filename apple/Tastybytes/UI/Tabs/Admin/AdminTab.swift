@@ -14,6 +14,9 @@ struct AdminTab: View {
   var body: some View {
     NavigationStack(path: $router.path) {
       List {
+        NavigationLink(value: Route.categoryManagement) {
+          Label("Categories", systemImage: "plus.rectangle.fill.on.rectangle.fill")
+        }
         NavigationLink(value: Route.flavorManagementScreen) {
           Label("Flavors", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }

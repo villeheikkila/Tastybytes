@@ -54,6 +54,12 @@ extension Category {
       return queryWithTableName(tableName, joinWithComma(saved, Subcategory.getQuery(.saved(true))), withTableName)
     case let .joinedServingStyles(withTableName):
       return queryWithTableName(tableName, joinWithComma(saved, ServingStyle.getQuery(.saved(true))), withTableName)
+    case let .joinedSubcaategoriesServingStyles(withTableName):
+      return queryWithTableName(
+        tableName,
+        joinWithComma(saved, Subcategory.getQuery(.saved(true)), ServingStyle.getQuery(.saved(true))),
+        withTableName
+      )
     }
   }
 
@@ -62,6 +68,7 @@ extension Category {
     case saved(_ withTableName: Bool)
     case joinedSubcategories(_ withTableName: Bool)
     case joinedServingStyles(_ withTableName: Bool)
+    case joinedSubcaategoriesServingStyles(_ withTableName: Bool)
   }
 }
 
@@ -76,11 +83,19 @@ extension Category {
       case name
       case subcategories
     }
+  }
 
-    init(id: Int, name: Name, subcategories: [Subcategory]) {
-      self.id = id
-      self.name = name
-      self.subcategories = subcategories
+  struct JoinedSubcategoriesServingStyles: Identifiable, Decodable, Hashable, Sendable {
+    let id: Int
+    let name: Name
+    let subcategories: [Subcategory]
+    let servingStyles: [ServingStyle]
+
+    enum CodingKeys: String, CodingKey {
+      case id
+      case name
+      case subcategories
+      case servingStyles = "serving_styles"
     }
   }
 

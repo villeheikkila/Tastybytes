@@ -99,7 +99,7 @@ struct CheckInSheet: View {
           Picker(selection: $viewModel.servingStyle) {
             Text("Not Selected").tag(ServingStyle?(nil))
             ForEach(viewModel.servingStyles) { servingStyle in
-              Text(servingStyle.name.rawValue.capitalized).tag(Optional(servingStyle))
+              Text(servingStyle.label).tag(Optional(servingStyle))
             }
           } label: {
             Text("Serving Style")
