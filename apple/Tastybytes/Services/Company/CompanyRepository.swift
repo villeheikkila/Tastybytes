@@ -3,6 +3,7 @@ import Supabase
 protocol CompanyRepository {
   func getById(id: Int) async -> Result<Company, Error>
   func getJoinedById(id: Int) async -> Result<Company.Joined, Error>
+  func getUnverified() async -> Result<[Company], Error>
   func insert(newCompany: Company.NewRequest) async -> Result<Company, Error>
   func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error>
   func delete(id: Int) async -> Result<Void, Error>
@@ -58,6 +59,23 @@ struct SupabaseCompanyRepository: CompanyRepository {
         .insert(values: newCompany, returning: .representation)
         .select(columns: Company.getQuery(.saved(false)))
         .single()
+        .execute()
+        .value
+
+      return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getUnverified() async -> Result<[Company], Error> {
+    do {
+      let response: [Company] = try await client
+        .database
+        .from(Company.getQuery(.tableName))
+        .select(columns: Company.getQuery(.saved(false)))
+        .eq(column: "is_verified", value: false)
+        .order(column: "created_at", ascending: false)
         .execute()
         .value
 

@@ -24,24 +24,24 @@ struct DuplicateProductScreen: View {
                 Text(date.relativeTime()).font(.caption).bold()
               }
             }
-            ProductItemView(product: product)
-              .contentShape(Rectangle())
-              .accessibilityAddTraits(.isLink)
-              .onTapGesture {
-                router.navigate(to: .product(product), resetStack: false)
-              }
-              .swipeActions {
-                Button(action: { viewModel.verifyProduct(product) }, label: {
-                  Label("Verify", systemImage: "checkmark")
-                }).tint(.green)
-                Button(action: { viewModel.editProduct = product }, label: {
-                  Label("Edit", systemImage: "pencil")
-                }).tint(.yellow)
-                Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
-                  Label("Delete", systemImage: "trash")
-                })
-              }
           }
+          ProductItemView(product: product)
+            .contentShape(Rectangle())
+            .accessibilityAddTraits(.isLink)
+            .onTapGesture {
+              router.navigate(to: .product(product), resetStack: false)
+            }
+            .swipeActions {
+              Button(action: { viewModel.verifyProduct(product) }, label: {
+                Label("Verify", systemImage: "checkmark")
+              }).tint(.green)
+              Button(action: { viewModel.editProduct = product }, label: {
+                Label("Edit", systemImage: "pencil")
+              }).tint(.yellow)
+              Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
+                Label("Delete", systemImage: "trash")
+              })
+            }
         }
       }
     }

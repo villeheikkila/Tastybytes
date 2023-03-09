@@ -35,7 +35,6 @@ extension Product {
         joinWithComma(
           saved,
           "created_at",
-          Profile.getQuery(.minimal(true)),
           SubBrand.getQuery(.joinedBrand(true)),
           Category.getQuery(.saved(true)),
           Subcategory.getQuery(.joinedCategory(true)),

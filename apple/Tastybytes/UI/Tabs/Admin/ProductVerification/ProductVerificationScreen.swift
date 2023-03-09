@@ -11,38 +11,15 @@ struct ProductVerificationScreen: View {
 
   var body: some View {
     List {
-      ForEach(viewModel.products) { product in
-
-        VStack {
-          if let createdBy = product.createdBy {
-            HStack {
-              AvatarView(avatarUrl: createdBy.avatarUrl, size: 16, id: createdBy.id)
-              Text(createdBy.preferredName).font(.caption).bold()
-              Spacer()
-              // swiftlint:disable force_try
-              if let createdAt = product.createdAt, let date = try! parseDate(from: createdAt) {
-                Text(date.relativeTime()).font(.caption).bold()
-              }
-            }
-            ProductItemView(product: product)
-              .contentShape(Rectangle())
-              .accessibilityAddTraits(.isLink)
-              .onTapGesture {
-                router.navigate(to: .product(product), resetStack: false)
-              }
-              .swipeActions {
-                Button(action: { viewModel.verifyProduct(product) }, label: {
-                  Label("Verify", systemImage: "checkmark")
-                }).tint(.green)
-                Button(action: { viewModel.editProduct = product }, label: {
-                  Label("Edit", systemImage: "pencil")
-                }).tint(.yellow)
-                Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
-                  Label("Delete", systemImage: "trash")
-                })
-              }
-          }
-        }
+      switch viewModel.verificationType {
+      case .products:
+        unverifiedProducts
+      case .companies:
+        unverifiedCompanies
+      case .brands:
+        unverifiedBrands
+      case .subBrands:
+        unverifiedSubBrands
       }
     }
     .listStyle(.plain)
@@ -69,13 +46,100 @@ struct ProductVerificationScreen: View {
         }
       )
     }
-    .navigationBarTitle("Unverified Products")
+    .navigationBarTitle("Unverified \(viewModel.verificationType.label)")
+    .toolbar {
+      toolbar
+    }
+    .onChange(of: viewModel.verificationType, perform: { _ in
+      Task {
+        await viewModel.loadData()
+      }
+    })
     .refreshable {
-      await viewModel.loadProducts()
+      await viewModel.refreshData()
     }
     .task {
-      if viewModel.products.isEmpty {
-        await viewModel.loadProducts()
+      await viewModel.loadData()
+    }
+  }
+
+  var unverifiedCompanies: some View {
+    ForEach(viewModel.companies) { company in
+      NavigationLink(value: Route.company(company)) {
+        Text(company.name)
+      }
+      .swipeActions {
+        Button(action: { viewModel.verifyCompany(company) }, label: {
+          Label("Verify", systemImage: "checkmark")
+        }).tint(.green)
+      }
+    }
+  }
+
+  var unverifiedSubBrands: some View {
+    HStack {}
+  }
+
+  var unverifiedBrands: some View {
+    ForEach(viewModel.brands) { brand in
+      NavigationLink(value: Route.brand(brand)) {
+        HStack {
+          Text("\(brand.brandOwner.name): \(brand.name)")
+          Spacer()
+          Text("(\(brand.getNumberOfProducts()))")
+        }
+      }
+      .swipeActions {
+        Button(action: { viewModel.verifyBrand(brand) }, label: {
+          Label("Verify", systemImage: "checkmark")
+        }).tint(.green)
+      }
+    }
+  }
+
+  var unverifiedProducts: some View {
+    ForEach(viewModel.products) { product in
+      VStack {
+        if let createdBy = product.createdBy {
+          HStack {
+            AvatarView(avatarUrl: createdBy.avatarUrl, size: 16, id: createdBy.id)
+            Text(createdBy.preferredName).font(.caption).bold()
+            Spacer()
+            // swiftlint:disable force_try
+            if let createdAt = product.createdAt, let date = try! parseDate(from: createdAt) {
+              Text(date.relativeTime()).font(.caption).bold()
+            }
+          }
+        }
+        ProductItemView(product: product)
+          .contentShape(Rectangle())
+          .accessibilityAddTraits(.isLink)
+          .onTapGesture {
+            router.navigate(to: .product(product), resetStack: false)
+          }
+          .swipeActions {
+            Button(action: { viewModel.verifyProduct(product) }, label: {
+              Label("Verify", systemImage: "checkmark")
+            }).tint(.green)
+            Button(action: { viewModel.editProduct = product }, label: {
+              Label("Edit", systemImage: "pencil")
+            }).tint(.yellow)
+            Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
+              Label("Delete", systemImage: "trash")
+            })
+          }
+      }
+    }
+  }
+
+  var toolbar: some ToolbarContent {
+    ToolbarTitleMenu {
+      ForEach(VerificationType.allCases) { type in
+        Button {
+          viewModel.verificationType = type
+        } label: {
+          Text("Unverified \(type.label)")
+        }
       }
     }
   }

@@ -4,6 +4,7 @@ protocol BrandRepository {
   func getById(id: Int) async -> Result<Brand.JoinedSubBrandsProducts, Error>
   func getJoinedById(id: Int) async -> Result<Brand.JoinedSubBrandsProductsCompany, Error>
   func getByBrandOwnerId(brandOwnerId: Int) async -> Result<[Brand.JoinedSubBrands], Error>
+  func getUnverified() async -> Result<[Brand.JoinedSubBrandsProductsCompany], Error>
   func getSummaryById(id: Int) async -> Result<Summary, Error>
   func insert(newBrand: Brand.NewRequest) async -> Result<Brand.JoinedSubBrands, Error>
   func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error>
@@ -41,6 +42,23 @@ struct SupabaseBrandRepository: BrandRepository {
         .eq(column: "id", value: id)
         .limit(count: 1)
         .single()
+        .execute()
+        .value
+
+      return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getUnverified() async -> Result<[Brand.JoinedSubBrandsProductsCompany], Error> {
+    do {
+      let response: [Brand.JoinedSubBrandsProductsCompany] = try await client
+        .database
+        .from(Brand.getQuery(.tableName))
+        .select(columns: Brand.getQuery(.joinedSubBrandsCompany(false)))
+        .eq(column: "is_verified", value: false)
+        .order(column: "created_at", ascending: false)
         .execute()
         .value
 
