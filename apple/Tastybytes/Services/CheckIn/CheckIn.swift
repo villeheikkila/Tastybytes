@@ -5,7 +5,6 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
   let rating: Double?
   let review: String?
   let imageFile: String?
-  let createdAt: Date
   let checkInAt: Date?
   let blurHash: BlurHash?
   let profile: Profile
@@ -39,7 +38,6 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
     case review
     case blurHash = "blur_hash"
     case imageFile = "image_file"
-    case createdAt = "created_at"
     case checkInAt = "check_in_at"
     case profile = "profiles"
     case product = "products"
@@ -86,7 +84,6 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
     } else {
       blurHash = nil
     }
-    createdAt = try parseDate(from: values.decode(String.self, forKey: .createdAt))
     let checkInAtString = try values.decodeIfPresent(String.self, forKey: .checkInAt)
     if let checkInAtString {
       checkInAt = try parseDate(from: checkInAtString)
@@ -107,7 +104,7 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
 extension CheckIn {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "check_ins"
-    let saved = "id, rating, review, image_file, created_at, check_in_at, is_migrated, blur_hash"
+    let saved = "id, rating, review, image_file, check_in_at, is_migrated, blur_hash"
     let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
     let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
     let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"

@@ -225,8 +225,13 @@ struct CheckInCardView: View {
   private var footer: some View {
     HStack {
       HStack {
-        Text(checkIn.checkInAt == nil ? "legacy check-in" : checkIn.createdAt.relativeTime())
-          .font(.caption).bold()
+        if let checkInAt = checkIn.checkInAt {
+          Text(checkInAt.relativeTime())
+            .font(.caption).bold()
+        } else {
+          Text("legacy check-in")
+            .font(.caption).bold()
+        }
         Spacer()
       }
       .if(loadedFrom != .checkIn) { view in
