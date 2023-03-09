@@ -7,6 +7,7 @@ struct CheckInSheet: View {
   @StateObject private var viewModel: ViewModel
   @Environment(\.dismiss) private var dismiss
   @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var profileManager: ProfileManager
   @State private var showPhotoMenu = false
   @FocusState private var focusedField: Focusable?
 
@@ -127,19 +128,25 @@ struct CheckInSheet: View {
       }
 
       Button(action: { viewModel.setActiveSheet(.location) }, label: {
-        if let location = viewModel.location {
-          HStack {
+        HStack {
+          if let location = viewModel.location {
             Text(location.name)
             if let title = location.title {
               Text(title)
                 .foregroundColor(.secondary)
             }
+          } else {
+            Text("Location")
+              .fontWeight(.medium)
           }
-        } else {
-          Text("Location")
-            .fontWeight(.medium)
+          Spacer()
         }
       })
+      if profileManager.hasPermission(.canSetCheckInDate) {
+        DatePicker(selection: $viewModel.checkInAt, in: ...Date.now) {
+          Text("Check-in Date")
+        }
+      }
     }
     .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
       Button(action: { viewModel.showCamera.toggle() }, label: {

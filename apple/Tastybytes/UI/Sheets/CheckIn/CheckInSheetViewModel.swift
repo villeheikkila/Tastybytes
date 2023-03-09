@@ -35,6 +35,7 @@ extension CheckInSheet {
     @Published var taggedFriends = [Profile]()
     @Published var pickedFlavors = [Flavor]()
     @Published var location: Location?
+    @Published var checkInAt = Date.now
     @Published var image: UIImage? {
       didSet {
         Task {
