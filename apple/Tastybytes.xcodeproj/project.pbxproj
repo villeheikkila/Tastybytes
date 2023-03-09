@@ -38,9 +38,9 @@
 		5C20A50D29AA316900ABBA74 /* CustomBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A50C29AA316900ABBA74 /* CustomBadge.swift */; };
 		5C20A51029AA5A0500ABBA74 /* AdminTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */; };
 		5C20A51229AA6A5000ABBA74 /* FlavorManagementScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51129AA6A5000ABBA74 /* FlavorManagementScreen.swift */; };
-		5C20A51429AA6AA700ABBA74 /* ProductVerificationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51329AA6AA700ABBA74 /* ProductVerificationScreen.swift */; };
+		5C20A51429AA6AA700ABBA74 /* VerificationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51329AA6AA700ABBA74 /* VerificationScreen.swift */; };
 		5C20A51729AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51629AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift */; };
-		5C20A51A29AB52DA00ABBA74 /* ProductVerificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51929AB52DA00ABBA74 /* ProductVerificationViewModel.swift */; };
+		5C20A51A29AB52DA00ABBA74 /* VerificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A51929AB52DA00ABBA74 /* VerificationViewModel.swift */; };
 		5C20A52229AB55BA00ABBA74 /* ContributionsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A52129AB55BA00ABBA74 /* ContributionsScreenViewModel.swift */; };
 		5C20A52529AC8AB800ABBA74 /* BarcodeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A52429AC8AB800ABBA74 /* BarcodeUtils.swift */; };
 		5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146E529A9315D0005422D /* ProductFeedScreen.swift */; };
@@ -245,9 +245,9 @@
 		5C20A50C29AA316900ABBA74 /* CustomBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBadge.swift; sourceTree = "<group>"; };
 		5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminTab.swift; sourceTree = "<group>"; };
 		5C20A51129AA6A5000ABBA74 /* FlavorManagementScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorManagementScreen.swift; sourceTree = "<group>"; };
-		5C20A51329AA6AA700ABBA74 /* ProductVerificationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductVerificationScreen.swift; sourceTree = "<group>"; };
+		5C20A51329AA6AA700ABBA74 /* VerificationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationScreen.swift; sourceTree = "<group>"; };
 		5C20A51629AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorManagementScreenViewModel.swift; sourceTree = "<group>"; };
-		5C20A51929AB52DA00ABBA74 /* ProductVerificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductVerificationViewModel.swift; sourceTree = "<group>"; };
+		5C20A51929AB52DA00ABBA74 /* VerificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationViewModel.swift; sourceTree = "<group>"; };
 		5C20A52129AB55BA00ABBA74 /* ContributionsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionsScreenViewModel.swift; sourceTree = "<group>"; };
 		5C20A52429AC8AB800ABBA74 /* BarcodeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeUtils.swift; sourceTree = "<group>"; };
 		5C2146E529A9315D0005422D /* ProductFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreen.swift; sourceTree = "<group>"; };
@@ -458,7 +458,7 @@
 			children = (
 				5C61E83729B8FE4B00D10AA3 /* CategoryManagement */,
 				5C61E82B29B5C51100D10AA3 /* DuplicataProductScreen */,
-				5C20A51829AB52B200ABBA74 /* ProductVerification */,
+				5C20A51829AB52B200ABBA74 /* Verification */,
 				5C20A51529AB527B00ABBA74 /* FlavorManagement */,
 				5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */,
 			);
@@ -474,13 +474,13 @@
 			path = FlavorManagement;
 			sourceTree = "<group>";
 		};
-		5C20A51829AB52B200ABBA74 /* ProductVerification */ = {
+		5C20A51829AB52B200ABBA74 /* Verification */ = {
 			isa = PBXGroup;
 			children = (
-				5C20A51329AA6AA700ABBA74 /* ProductVerificationScreen.swift */,
-				5C20A51929AB52DA00ABBA74 /* ProductVerificationViewModel.swift */,
+				5C20A51329AA6AA700ABBA74 /* VerificationScreen.swift */,
+				5C20A51929AB52DA00ABBA74 /* VerificationViewModel.swift */,
 			);
-			path = ProductVerification;
+			path = Verification;
 			sourceTree = "<group>";
 		};
 		5C20A51B29AB54FD00ABBA74 /* AccountSettings */ = {
@@ -1504,7 +1504,7 @@
 				5C7C35D8299ACEFF009A3C09 /* OnboardTabsViewModel.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsScreen.swift in Sources */,
 				5C7C35F6299AE7C5009A3C09 /* BlockedUserListItemView.swift in Sources */,
-				5C20A51429AA6AA700ABBA74 /* ProductVerificationScreen.swift in Sources */,
+				5C20A51429AA6AA700ABBA74 /* VerificationScreen.swift in Sources */,
 				5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */,
 				5C663F2D292FE614006F9A97 /* AppIcon.swift in Sources */,
 				5CED433428FDA357003F8194 /* SubBrandRepository.swift in Sources */,
@@ -1562,7 +1562,7 @@
 				5C7C3574299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift in Sources */,
 				5C43237D2986A6910085522E /* Summary.swift in Sources */,
 				5C12B42F2902A191001EE549 /* ProfileSettingsScreen.swift in Sources */,
-				5C20A51A29AB52DA00ABBA74 /* ProductVerificationViewModel.swift in Sources */,
+				5C20A51A29AB52DA00ABBA74 /* VerificationViewModel.swift in Sources */,
 				5CA7A533299D3F010066F604 /* ProgressButton.swift in Sources */,
 				5C7C35A0299AC5A8009A3C09 /* CompanySearchSheetViewModel.swift in Sources */,
 				5CB52D64292BBC14000BF55F /* ProfileProductListView.swift in Sources */,

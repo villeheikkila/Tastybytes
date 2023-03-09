@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ProductVerificationScreen: View {
+struct VerificationScreen: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var hapticManager: HapticManager

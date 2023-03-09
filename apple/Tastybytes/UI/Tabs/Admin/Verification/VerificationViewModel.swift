@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension ProductVerificationScreen {
+extension VerificationScreen {
   enum VerificationType: String, CaseIterable, Identifiable {
     var id: Self { self }
 

@@ -20,8 +20,8 @@ struct AdminTab: View {
         NavigationLink(value: Route.flavorManagementScreen) {
           Label("Flavors", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
-        NavigationLink(value: Route.productVerificationScreen) {
-          Label("Product Verification", systemImage: "plus.rectangle.fill.on.rectangle.fill")
+        NavigationLink(value: Route.verificationScreen) {
+          Label("Verification", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
         NavigationLink(value: Route.duplicateProducts) {
           Label("Duplicates", systemImage: "plus.rectangle.fill.on.rectangle.fill")
