@@ -35,7 +35,7 @@ extension CheckInSheet {
     @Published var taggedFriends = [Profile]()
     @Published var pickedFlavors = [Flavor]()
     @Published var location: Location?
-    @Published var checkInAt = Date.now
+    @Published var checkInAt: Date = .now
     @Published var image: UIImage? {
       didSet {
         Task {
@@ -63,6 +63,7 @@ extension CheckInSheet {
         taggedFriends = editCheckIn.taggedProfiles
         pickedFlavors = editCheckIn.flavors
         location = editCheckIn.location
+        checkInAt = editCheckIn.checkInAt ?? Date.now
       }
     }
 
@@ -105,7 +106,8 @@ extension CheckInSheet {
           flavors: pickedFlavors,
           rating: rating,
           location: location,
-          blurHash: blurHash
+          blurHash: blurHash,
+          checkInAt: checkInAt
         )
 
         switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
@@ -128,7 +130,8 @@ extension CheckInSheet {
         flavors: pickedFlavors,
         rating: rating,
         location: location,
-        blurHash: blurHash
+        blurHash: blurHash,
+        checkInAt: checkInAt
       )
 
       switch await client.checkIn.create(newCheckInParams: newCheckParams) {

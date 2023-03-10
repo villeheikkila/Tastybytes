@@ -104,7 +104,7 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
 extension CheckIn {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "check_ins"
-    let saved = "id, rating, review, image_file, check_in_at, is_migrated, blur_hash"
+    let saved = "id, rating, review, image_file, check_in_at, blur_hash"
     let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
     let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
     let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
@@ -146,6 +146,7 @@ extension CheckIn {
     let friendIds: [String]?
     let flavorIds: [Int]?
     let locationId: String?
+    let checkInAt: Date?
 
     enum CodingKeys: String, CodingKey {
       case productId = "p_product_id"
@@ -157,6 +158,7 @@ extension CheckIn {
       case friendIds = "p_friend_ids"
       case flavorIds = "p_flavor_ids"
       case locationId = "p_location_id"
+      case checkInAt = "p_check_in_at"
     }
 
     init(
@@ -168,7 +170,8 @@ extension CheckIn {
       flavors: [Flavor],
       rating: Double,
       location: Location?,
-      blurHash: String?
+      blurHash: String?,
+      checkInAt: Date?
     ) {
       productId = product.id
       self.review = review.isNilOrEmpty ? nil : review
@@ -179,6 +182,7 @@ extension CheckIn {
       self.rating = rating
       locationId = location?.id.uuidString
       self.blurHash = blurHash
+      self.checkInAt = checkInAt
     }
   }
 
@@ -193,6 +197,7 @@ extension CheckIn {
     let friendIds: [String]?
     let flavorIds: [Int]?
     let locationId: String?
+    let checkInAt: Date?
 
     enum CodingKeys: String, CodingKey {
       case checkInId = "p_check_in_id"
@@ -205,6 +210,7 @@ extension CheckIn {
       case flavorIds = "p_flavor_ids"
       case locationId = "p_location_id"
       case blurHash = "p_blur_hash"
+      case checkInAt = "p_check_in_at"
     }
 
     init(
@@ -217,7 +223,8 @@ extension CheckIn {
       flavors: [Flavor],
       rating: Double,
       location: Location?,
-      blurHash: String?
+      blurHash: String?,
+      checkInAt: Date?
     ) {
       checkInId = checkIn.id
       productId = product.id
@@ -229,6 +236,7 @@ extension CheckIn {
       self.rating = rating
       locationId = location?.id.uuidString
       self.blurHash = blurHash
+      self.checkInAt = checkInAt
     }
   }
 }
