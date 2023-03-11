@@ -46,6 +46,17 @@ func parseDate(from: String) throws -> Date {
   return date
 }
 
+func formatDateToTimestampTz(from: Date) -> String {
+  let formatter = ISO8601DateFormatter()
+
+  formatter.formatOptions = [
+    .withInternetDateTime,
+    .withFractionalSeconds
+  ]
+
+  return formatter.string(from: from)
+}
+
 struct CSVFile: FileDocument {
   static let readableContentTypes = [UTType.commaSeparatedText]
   static let writableContentTypes = UTType.commaSeparatedText

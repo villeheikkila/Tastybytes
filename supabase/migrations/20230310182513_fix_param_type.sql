@@ -45,7 +45,7 @@ BEGIN
       product_variant_id = v_product_variant_id,
       location_id        = p_location_id,
       blur_hash          = p_blur_hash,
-      check_in_at        = (cast(p_check_in_at as text) || ' 00:00:01')::timestamptz
+      check_in_at        = p_check_in_at::timestamptz
   where id = p_check_in_id
     and created_by = auth.uid();
 

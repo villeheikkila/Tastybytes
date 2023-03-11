@@ -146,7 +146,7 @@ extension CheckIn {
     let friendIds: [String]?
     let flavorIds: [Int]?
     let locationId: String?
-    let checkInAt: Date?
+    let checkInAt: String?
 
     enum CodingKeys: String, CodingKey {
       case productId = "p_product_id"
@@ -182,7 +182,11 @@ extension CheckIn {
       self.rating = rating
       locationId = location?.id.uuidString
       self.blurHash = blurHash
-      self.checkInAt = checkInAt
+      if let checkInAt {
+        self.checkInAt = formatDateToTimestampTz(from: checkInAt)
+      } else {
+        self.checkInAt = nil
+      }
     }
   }
 
@@ -197,7 +201,7 @@ extension CheckIn {
     let friendIds: [String]?
     let flavorIds: [Int]?
     let locationId: String?
-    let checkInAt: Date?
+    let checkInAt: String?
 
     enum CodingKeys: String, CodingKey {
       case checkInId = "p_check_in_id"
@@ -236,7 +240,11 @@ extension CheckIn {
       self.rating = rating
       locationId = location?.id.uuidString
       self.blurHash = blurHash
-      self.checkInAt = checkInAt
+      if let checkInAt {
+        self.checkInAt = formatDateToTimestampTz(from: checkInAt)
+      } else {
+        self.checkInAt = nil
+      }
     }
   }
 }
