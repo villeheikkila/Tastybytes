@@ -8,6 +8,19 @@ struct Role: Identifiable, Decodable, Hashable, Sendable {
     case name
     case permissions
   }
+
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+
+    id = try container.decode(Int.self, forKey: .id)
+    name = try container.decode(String.self, forKey: .name)
+
+    do {
+      permissions = try container.decode([Permission].self, forKey: .permissions)
+    } catch {
+      permissions = []
+    }
+  }
 }
 
 extension Role {

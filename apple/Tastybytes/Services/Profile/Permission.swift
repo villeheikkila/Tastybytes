@@ -52,17 +52,4 @@ enum PermissionName: String, Decodable, Equatable, Sendable {
   case canDeleteBarcodes = "can_delete_barcodes"
   case canSetCheckInDate = "can_set_check_in_date"
   case canEditSubcategories = "can_edit_subcategories"
-
-  init(from decoder: Decoder) throws {
-    let container = try decoder.singleValueContainer()
-    let rawString = try container.decode(String.self)
-    if let permission = PermissionName(rawValue: rawString) {
-      self = permission
-    } else {
-      throw DecodingError.dataCorruptedError(
-        in: container,
-        debugDescription: "Cannot initialize PermissionName from invalid String value \(rawString)"
-      )
-    }
-  }
 }
