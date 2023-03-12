@@ -146,7 +146,7 @@ struct SearchListView: View {
             .accessibility(hidden: true)
         }
         if let subcategory = filters.subcategory {
-          Text(subcategory.name).bold()
+          Text(subcategory.label).bold()
         }
       }
       if filters.onlyNonCheckedIn {

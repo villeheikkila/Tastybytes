@@ -1,12 +1,14 @@
 protocol SubcategoryProtocol {
   var id: Int { get }
   var name: String { get }
+  var isVerified: Bool { get }
   var label: String { get }
 }
 
 struct Subcategory: Identifiable, Decodable, Hashable, Sendable, SubcategoryProtocol, Comparable {
   let id: Int
   let name: String
+  let isVerified: Bool
 
   var label: String {
     name.capitalized
@@ -15,12 +17,18 @@ struct Subcategory: Identifiable, Decodable, Hashable, Sendable, SubcategoryProt
   static func < (lhs: Subcategory, rhs: Subcategory) -> Bool {
     lhs.name < rhs.name
   }
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case name
+    case isVerified = "is_verified"
+  }
 }
 
 extension Subcategory {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "subcategories"
-    let saved = "id, name"
+    let saved = "id, name, is_verified"
 
     switch queryType {
     case .tableName:
@@ -43,6 +51,7 @@ extension Subcategory {
   struct JoinedCategory: Identifiable, Hashable, Decodable, Sendable, SubcategoryProtocol {
     let id: Int
     let name: String
+    let isVerified: Bool
     let category: Category
 
     var label: String {
@@ -50,12 +59,13 @@ extension Subcategory {
     }
 
     func getSubcategory() -> Subcategory {
-      Subcategory(id: id, name: name)
+      Subcategory(id: id, name: name, isVerified: isVerified)
     }
 
     enum CodingKeys: String, CodingKey {
       case id
       case name
+      case isVerified = "is_verified"
       case category = "categories"
     }
   }
@@ -73,6 +83,30 @@ extension Subcategory {
     init(name: String, category: Category.JoinedSubcategories) {
       self.name = name
       categoryId = category.id
+    }
+  }
+
+  struct VerifyRequest: Encodable, Sendable {
+    let id: Int
+    let isVerified: Bool
+
+    enum CodingKeys: String, CodingKey {
+      case id = "p_subcategory_id"
+      case isVerified = "p_is_verified"
+    }
+  }
+
+  struct UpdateRequest: Encodable, Sendable {
+    let id: Int
+    let name: String
+
+    enum CodingKeys: String, CodingKey {
+      case id, name
+    }
+
+    init(id: Int, name: String) {
+      self.id = id
+      self.name = name
     }
   }
 }
