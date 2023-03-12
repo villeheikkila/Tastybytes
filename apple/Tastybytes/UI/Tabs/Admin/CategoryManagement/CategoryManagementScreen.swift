@@ -34,13 +34,37 @@ struct CategoryManagementScreen: View {
             }
           }
         } header: {
-          Text(category.label)
+          HStack {
+            Text(category.label)
+            Spacer()
+            Menu {
+              Button(action: { viewModel.editServingStyle = category }, label: {
+                Label("Edit Serving Styles", systemImage: "pencil")
+              })
+            } label: {
+              Label("Options menu", systemImage: "ellipsis")
+                .labelStyle(.iconOnly)
+                .frame(width: 24, height: 24)
+            }
+          }
         }.headerProminence(.increased)
       }
     }
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {
+        case .editServingStyles:
+          if let editServingStyle = viewModel.editServingStyle {
+            DismissableSheet(title: "Edit serving styles for \(editServingStyle.label)") {
+              List {
+                ForEach(editServingStyle.servingStyles) { servingStyle in
+                  HStack {
+                    Text(servingStyle.label)
+                  }
+                }
+              }
+            }
+          }
         case .editSubcategory:
           if let editSubcategory = viewModel.editSubcategory {
             DismissableSheet(title: "Edit \(editSubcategory.label)") {
@@ -76,6 +100,7 @@ extension CategoryManagementScreen {
   enum Sheet: Identifiable {
     var id: Self { self }
     case editSubcategory
+    case editServingStyles
   }
 
   @MainActor class ViewModel: ObservableObject {
@@ -101,6 +126,11 @@ extension CategoryManagementScreen {
     }
 
     @Published var showDeleteSubcategoryConfirmation = false
+    @Published var editServingStyle: Category.JoinedSubcategoriesServingStyles? {
+      didSet {
+        activeSheet = .editServingStyles
+      }
+    }
 
     init(_ client: Client) {
       self.client = client
