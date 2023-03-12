@@ -35,26 +35,36 @@ enum DateParsingError: Error {
 }
 
 func parseDate(from: String) throws -> Date {
-  let formatter = ISO8601DateFormatter()
+  let dateFormatter = DateFormatter()
+  dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
 
-  formatter.formatOptions = [
-    .withInternetDateTime,
-    .withFractionalSeconds
+  let formatStrings = [
+    "yyyy-MM-dd HH:mm:ss.SSSSSSZZZZZ",
+    "yyyy-MM-dd HH:mm:ss.SSSZZZZZ",
+    "yyyy-MM-dd'T'HH:mm:ssZZZZZ",
+    "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
   ]
 
-  guard let date = formatter.date(from: from) else { throw DateParsingError.failure }
+  var date: Date?
+  for formatString in formatStrings {
+    dateFormatter.dateFormat = formatString
+    if let parsedDate = dateFormatter.date(from: from) {
+      date = parsedDate
+      break
+    }
+  }
+
+  guard let date else { throw DateParsingError.failure }
   return date
 }
 
 func formatDateToTimestampTz(from: Date) -> String {
-  let formatter = ISO8601DateFormatter()
+  let dateFormatter = DateFormatter()
+  dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
+  dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
 
-  formatter.formatOptions = [
-    .withInternetDateTime,
-    .withFractionalSeconds
-  ]
-
-  return formatter.string(from: from)
+  print(dateFormatter.string(from: from))
+  return dateFormatter.string(from: from)
 }
 
 struct CSVFile: FileDocument {
