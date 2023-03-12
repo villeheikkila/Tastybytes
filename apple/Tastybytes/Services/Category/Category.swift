@@ -1,38 +1,10 @@
 struct Category: Identifiable, Decodable, Hashable {
-  enum Name: String, Identifiable, CaseIterable, Decodable, Equatable, Sendable {
-    var id: Self { self }
-    case chips
-    case candy
-    case chewingGum = "chewing_gum"
-    case fruit
-    case popcorn
-    case ingredient
-    case beverage
-    case convenienceFood = "convenience_food"
-    case cheese
-    case snacks
-    case juice
-    case chocolate
-    case cocoa
-    case iceCream = "ice_cream"
-    case pizza
-    case protein
-    case milk
-    case alcoholicBeverage = "alcoholic_beverage"
-    case cereal
-    case pastry
-    case spice
-    case noodles
-    case tea
-    case coffee
-
-    var label: String {
-      rawValue.replacingOccurrences(of: "_", with: " ").capitalized
-    }
-  }
-
   let id: Int
-  let name: Name
+  let name: String
+
+  var label: String {
+    name.replacingOccurrences(of: "_", with: " ").capitalized
+  }
 
   enum CodingKeys: String, CodingKey {
     case id
@@ -75,8 +47,12 @@ extension Category {
 extension Category {
   struct JoinedSubcategories: Identifiable, Decodable, Hashable, Sendable {
     let id: Int
-    let name: Name
+    let name: String
     let subcategories: [Subcategory]
+
+    var label: String {
+      name.replacingOccurrences(of: "_", with: " ").capitalized
+    }
 
     enum CodingKeys: String, CodingKey {
       case id
@@ -87,9 +63,13 @@ extension Category {
 
   struct JoinedSubcategoriesServingStyles: Identifiable, Decodable, Hashable, Sendable {
     let id: Int
-    let name: Name
+    let name: String
     let subcategories: [Subcategory]
     let servingStyles: [ServingStyle]
+
+    var label: String {
+      name.replacingOccurrences(of: "_", with: " ").capitalized
+    }
 
     enum CodingKeys: String, CodingKey {
       case id
@@ -101,8 +81,12 @@ extension Category {
 
   struct JoinedServingStyles: Identifiable, Decodable, Hashable, Sendable {
     let id: Int
-    let name: Name
+    let name: String
     let servingStyles: [ServingStyle]
+
+    var label: String {
+      name.replacingOccurrences(of: "_", with: " ").capitalized
+    }
 
     enum CodingKeys: String, CodingKey {
       case id

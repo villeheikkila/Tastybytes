@@ -123,7 +123,7 @@ extension Product {
       self.searchTerm = "\(searchTerm.trimmingCharacters(in: .whitespacesAndNewlines))"
 
       if let filter {
-        categoryName = filter.category?.name.rawValue
+        categoryName = filter.category?.name
         subCategoryId = filter.subcategory?.id
         onlyNonCheckedIn = filter.onlyNonCheckedIn
 

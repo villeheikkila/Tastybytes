@@ -148,7 +148,7 @@ extension AddProductView {
       case let .addToBrand(brand):
         loadFromBrand(brand)
       default:
-        loadCategories()
+        loadCategories("beverage")
       }
     }
 
@@ -157,7 +157,7 @@ extension AddProductView {
         switch await client.category.getAllWithSubcategories() {
         case let .success(categories):
           self.categories = categories
-          self.category = categories.first(where: { $0.name == .beverage })
+          self.category = categories.first(where: { $0.name == "beverage" })
           self.subcategories = []
           self.brandOwner = brand.brandOwner
           self.brand = Brand.JoinedSubBrands(
@@ -213,7 +213,7 @@ extension AddProductView {
       }
     }
 
-    func loadCategories(_ initialCategory: Category.Name = Category.Name.beverage) {
+    func loadCategories(_ initialCategory: String) {
       Task {
         switch await client.category.getAllWithSubcategories() {
         case let .success(categories):
@@ -223,7 +223,7 @@ extension AddProductView {
           logger
             .error(
               """
-              failed to load category with subcategories for '\(initialCategory.rawValue)': \(error
+              failed to load category with subcategories for '\(initialCategory)': \(error
                 .localizedDescription)
               """
             )

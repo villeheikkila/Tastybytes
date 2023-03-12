@@ -25,7 +25,7 @@ struct ProductFilterSheet: View {
           Picker(selection: $viewModel.categoryFilter) {
             Text("Select All").tag(Category.JoinedSubcategories?(nil))
             ForEach(viewModel.categories) { category in
-              Text(category.name.label).tag(Optional(category))
+              Text(category.label).tag(Optional(category))
             }
           } label: {
             Text("Category")

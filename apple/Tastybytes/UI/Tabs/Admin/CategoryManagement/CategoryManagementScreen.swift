@@ -21,7 +21,7 @@ struct CategoryManagementScreen: View {
             Text("Subcategories")
           }
         } header: {
-          Text(category.name.label)
+          Text(category.label)
         }
       }
     }.task {
