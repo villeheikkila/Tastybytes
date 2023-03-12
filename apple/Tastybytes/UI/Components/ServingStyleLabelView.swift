@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct ServingStyleLabelView: View {
-  let servingStyleName: ServingStyle.Name
+  let servingStyle: ServingStyle
 
   var body: some View {
     HStack {
-      Text(servingStyleName.rawValue.capitalized)
+      Text(servingStyle.label)
         .font(.caption).bold()
     }
   }
@@ -13,6 +13,6 @@ struct ServingStyleLabelView: View {
 
 struct ServingStyleLabelView_Previews: PreviewProvider {
   static var previews: some View {
-    ServingStyleLabelView(servingStyleName: ServingStyle.Name.bottle)
+    ServingStyleLabelView(servingStyle: ServingStyle(id: 0, name: "bottle"))
   }
 }

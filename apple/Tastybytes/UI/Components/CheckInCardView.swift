@@ -119,7 +119,7 @@ struct CheckInCardView: View {
         CategoryView(category: checkIn.product.category, subcategories: checkIn.product.subcategories)
         Spacer()
         if let servingStyle = checkIn.servingStyle {
-          ServingStyleLabelView(servingStyleName: servingStyle.name)
+          ServingStyleLabelView(servingStyle: servingStyle)
         }
       }
 

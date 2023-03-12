@@ -1,15 +1,9 @@
 struct ServingStyle: Identifiable, Hashable, Decodable, Sendable {
-  enum Name: String, CaseIterable, Decodable, Identifiable, Equatable, Sendable {
-    var id: Self { self }
-    case bottle
-    case can
-  }
-
   let id: Int
-  let name: Name
+  let name: String
 
   var label: String {
-    name.rawValue.capitalized
+    name.capitalized
   }
 
   enum CodingKeys: String, CodingKey {
