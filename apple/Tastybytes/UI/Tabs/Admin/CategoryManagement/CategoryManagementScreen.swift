@@ -51,12 +51,15 @@ struct CategoryManagementScreen: View {
         }.headerProminence(.increased)
       }
     }
+    .refreshable {
+        viewModel.loadCategories() 
+    }
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {
         case .editServingStyles:
           if let editServingStyle = viewModel.editServingStyle {
-            ServingStyleManagementSheet(viewModel.client, category: editServingStyle)
+            CategoryServingStyleSheet(viewModel.client, category: editServingStyle)
           }
         case .editSubcategory:
           if let editSubcategory = viewModel.editSubcategory {

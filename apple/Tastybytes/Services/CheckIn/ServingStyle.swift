@@ -33,6 +33,7 @@ extension ServingStyle {
 
 extension ServingStyle {
   struct UpdateRequest: Encodable {
+    let id: Int
     let name: String
   }
 

@@ -35,7 +35,7 @@ struct FlavorSheet: View {
               Text(flavor.label)
               Spacer()
               if pickedFlavors.contains(flavor) {
-                Label("Pick the flavor", systemImage: "checkmark")
+                Label("Picked flavor", systemImage: "checkmark")
                   .labelStyle(.iconOnly)
               }
             }

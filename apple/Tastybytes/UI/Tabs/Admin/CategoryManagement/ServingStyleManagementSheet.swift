@@ -4,73 +4,89 @@ struct ServingStyleManagementSheet: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
+  @Binding var pickedServingStyles: [ServingStyle]
+  let onSelect: (_ servingStyle: ServingStyle) -> Void
 
-  init(_ client: Client, category: Category.JoinedSubcategoriesServingStyles) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, category: category))
+  init(
+    _ client: Client,
+    pickedServingStyles: Binding<[ServingStyle]>,
+    onSelect: @escaping (_ servingStyle: ServingStyle) -> Void
+  ) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    _pickedServingStyles = pickedServingStyles
+    self.onSelect = onSelect
   }
 
   var body: some View {
-    List {
-      ForEach(viewModel.servingStyles) { servingStyle in
-        HStack {
-          Text(servingStyle.label)
-        }
-        .swipeActions {
-          Button(action: { viewModel.editServingStyle = servingStyle }, label: {
-            Label("Edit", systemImage: "pencil")
-          }).tint(.yellow)
-          Button(role: .destructive, action: { viewModel.toDeleteServingStyle = servingStyle }, label: {
-            Label("Delete", systemImage: "trash")
+    NavigationStack {
+      List {
+        ForEach(viewModel.servingStyles) { servingStyle in
+          Button(action: { onSelect(servingStyle) }, label: {
+            HStack {
+              Text(servingStyle.label)
+              Spacer()
+              if pickedServingStyles.contains(servingStyle) {
+                Label("Picked serving style", systemImage: "checkmark")
+                  .labelStyle(.iconOnly)
+              }
+            }
           })
+          .swipeActions {
+            Button(action: { viewModel.editServingStyle = servingStyle }, label: {
+              Label("Edit", systemImage: "pencil")
+            }).tint(.yellow)
+            Button(role: .destructive, action: { viewModel.toDeleteServingStyle = servingStyle }, label: {
+              Label("Delete", systemImage: "trash")
+            })
+          }
+        }
+        Section {
+          TextField("Name", text: $viewModel.newServingStyleName)
+          Button("Create") {
+            viewModel.createServingStyle()
+          }
+          .disabled(!validateStringLength(str: viewModel.newServingStyleName, type: .normal))
+        } header: {
+          Text("Add new serving style")
         }
       }
-
-      Section {
-        TextField("Name", text: $viewModel.newServingStyleName)
-        Button("Create") {
-          viewModel.createServingStyle()
-        }
-        .disabled(!validateStringLength(str: viewModel.newServingStyleName, type: .normal))
-      } header: {
-        Text("Add new serving style")
-      }
-    }
-    .navigationTitle("\(viewModel.category.label) Serving Styles")
-    .navigationBarTitleDisplayMode(.inline)
-    .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
-      Text("Cancel").bold()
-    }))
-    .alert("Edit Serving Style", isPresented: $viewModel.showEditServingStyle, actions: {
-      TextField("TextField", text: $viewModel.servingStyleName)
-      Button("Cancel", role: .cancel, action: {})
-      Button("Edit", action: {
-        viewModel.saveEditServingStyle()
+      .navigationBarTitle("Pick Serving Style")
+      .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }, label: {
+        Text("Done").bold()
+      }))
+      .alert("Edit Serving Style", isPresented: $viewModel.showEditServingStyle, actions: {
+        TextField("TextField", text: $viewModel.servingStyleName)
+        Button("Cancel", role: .cancel, action: {})
+        Button("Edit", action: {
+          viewModel.saveEditServingStyle()
+        })
       })
-    })
-    .confirmationDialog("Delete Serving Style",
-                        isPresented: $viewModel.showDeleteServingStyleConfirmation,
-                        presenting: viewModel.toDeleteServingStyle)
-    { presenting in
-      Button(
-        "Delete \(presenting.name) serving style",
-        role: .destructive,
-        action: {
-          viewModel.deleteServingStyle(onDelete: {
-            hapticManager.trigger(of: .notification(.success))
-          })
-        }
-      )
+      .confirmationDialog("Delete Serving Style",
+                          isPresented: $viewModel.showDeleteServingStyleConfirmation,
+                          presenting: viewModel.toDeleteServingStyle)
+      { presenting in
+        Button(
+          "Delete \(presenting.name) serving style",
+          role: .destructive,
+          action: {
+            viewModel.deleteServingStyle(onDelete: {
+              hapticManager.trigger(of: .notification(.success))
+            })
+          }
+        )
+      }
+      .task {
+        viewModel.getAllServingStyles()
+      }
     }
   }
 }
 
 extension ServingStyleManagementSheet {
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "ServingStyleManagementSheet")
+    private let logger = getLogger(category: "ServingStyleManagement2Sheet")
     let client: Client
-    let category: Category.JoinedSubcategoriesServingStyles
-    @Published var servingStyles: [ServingStyle]
-
+    @Published var servingStyles = [ServingStyle]()
     @Published var servingStyleName = ""
     @Published var newServingStyleName = ""
     @Published var toDeleteServingStyle: ServingStyle? {
@@ -89,10 +105,24 @@ extension ServingStyleManagementSheet {
 
     @Published var showEditServingStyle = false
 
-    init(_ client: Client, category: Category.JoinedSubcategoriesServingStyles) {
+    init(_ client: Client) {
       self.client = client
-      self.category = category
-      servingStyles = category.servingStyles
+    }
+
+    func getAllServingStyles() {
+      Task {
+        switch await client.servingStyle.getAll() {
+        case let .success(servingStyles):
+          withAnimation {
+            self.servingStyles = servingStyles
+          }
+        case let .failure(error):
+          logger
+            .error(
+              "failed to create new serving style with name \(self.newServingStyleName): \(error.localizedDescription)"
+            )
+        }
+      }
     }
 
     func createServingStyle() {
@@ -101,6 +131,7 @@ extension ServingStyleManagementSheet {
         case let .success(servingStyle):
           withAnimation {
             servingStyles.append(servingStyle)
+            newServingStyleName = ""
           }
         case let .failure(error):
           logger
@@ -133,7 +164,9 @@ extension ServingStyleManagementSheet {
     func saveEditServingStyle() {
       if let editServingStyle {
         Task {
-          switch await client.servingStyle.update(update: ServingStyle.UpdateRequest(name: servingStyleName)) {
+          switch await client.servingStyle
+            .update(update: ServingStyle.UpdateRequest(id: editServingStyle.id, name: servingStyleName))
+          {
           case let .success(servingStyle):
             withAnimation {
               servingStyles.replace(editServingStyle, with: servingStyle)
@@ -141,7 +174,7 @@ extension ServingStyleManagementSheet {
           case let .failure(error):
             logger
               .error(
-                "failed to edit '\(editServingStyle.id)': \(error.localizedDescription)"
+                "failed to edit '\(editServingStyle.id) with name \(self.servingStyleName)': \(error.localizedDescription)"
               )
           }
         }

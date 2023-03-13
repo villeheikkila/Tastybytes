@@ -1,6 +1,7 @@
 import Supabase
 
 protocol ServingStyleRepository {
+  func getAll() async -> Result<[ServingStyle], Error>
   func insert(servingStyle: ServingStyle.NewRequest) async -> Result<ServingStyle, Error>
   func update(update: ServingStyle.UpdateRequest) async -> Result<ServingStyle, Error>
   func delete(id: Int) async -> Result<Void, Error>
@@ -9,12 +10,29 @@ protocol ServingStyleRepository {
 struct SupabaseServingStyleRepository: ServingStyleRepository {
   let client: SupabaseClient
 
+  func getAll() async -> Result<[ServingStyle], Error> {
+    do {
+      let response: [ServingStyle] = try await client
+        .database
+        .from(ServingStyle.getQuery(.tableName))
+        .select(columns: ServingStyle.getQuery(.saved(false)))
+        .execute()
+        .value
+
+      return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
   func insert(servingStyle: ServingStyle.NewRequest) async -> Result<ServingStyle, Error> {
     do {
       let response: ServingStyle = try await client
         .database
         .from(ServingStyle.getQuery(.tableName))
         .insert(values: servingStyle, returning: .representation)
+        .select(columns: ServingStyle.getQuery(.saved(false)))
+        .single()
         .execute()
         .value
 

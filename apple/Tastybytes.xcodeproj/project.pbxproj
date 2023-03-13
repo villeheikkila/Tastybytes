@@ -84,8 +84,9 @@
 		5C61E83429B7B56000D10AA3 /* SearchListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83329B7B56000D10AA3 /* SearchListViewModel.swift */; };
 		5C61E83929B8FE7300D10AA3 /* CategoryManagementScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83829B8FE7300D10AA3 /* CategoryManagementScreen.swift */; };
 		5C61E83B29BF8B0900D10AA3 /* CategoryManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83A29BF8B0800D10AA3 /* CategoryManagementViewModel.swift */; };
-		5C61E83D29BF8B2F00D10AA3 /* ServingStyleManagementSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83C29BF8B2F00D10AA3 /* ServingStyleManagementSheet.swift */; };
+		5C61E83D29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83C29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift */; };
 		5C61E83F29BF909D00D10AA3 /* ServingStyleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83E29BF909D00D10AA3 /* ServingStyleRepository.swift */; };
+		5C61E84129BFA82D00D10AA3 /* ServingStyleManagementSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E84029BFA82D00D10AA3 /* ServingStyleManagementSheet.swift */; };
 		5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F22292DFF66006F9A97 /* AppLogoView.swift */; };
 		5C663F25292E0100006F9A97 /* AppNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F24292E0100006F9A97 /* AppNameView.swift */; };
 		5C663F27292E0F1D006F9A97 /* DocumentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F26292E0F1D006F9A97 /* DocumentRepository.swift */; };
@@ -294,8 +295,9 @@
 		5C61E83329B7B56000D10AA3 /* SearchListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListViewModel.swift; sourceTree = "<group>"; };
 		5C61E83829B8FE7300D10AA3 /* CategoryManagementScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManagementScreen.swift; sourceTree = "<group>"; };
 		5C61E83A29BF8B0800D10AA3 /* CategoryManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManagementViewModel.swift; sourceTree = "<group>"; };
-		5C61E83C29BF8B2F00D10AA3 /* ServingStyleManagementSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyleManagementSheet.swift; sourceTree = "<group>"; };
+		5C61E83C29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryServingStyleSheet.swift; sourceTree = "<group>"; };
 		5C61E83E29BF909D00D10AA3 /* ServingStyleRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyleRepository.swift; sourceTree = "<group>"; };
+		5C61E84029BFA82D00D10AA3 /* ServingStyleManagementSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyleManagementSheet.swift; sourceTree = "<group>"; };
 		5C663F22292DFF66006F9A97 /* AppLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogoView.swift; sourceTree = "<group>"; };
 		5C663F24292E0100006F9A97 /* AppNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNameView.swift; sourceTree = "<group>"; };
 		5C663F26292E0F1D006F9A97 /* DocumentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentRepository.swift; sourceTree = "<group>"; };
@@ -805,7 +807,8 @@
 			children = (
 				5C61E83829B8FE7300D10AA3 /* CategoryManagementScreen.swift */,
 				5C61E83A29BF8B0800D10AA3 /* CategoryManagementViewModel.swift */,
-				5C61E83C29BF8B2F00D10AA3 /* ServingStyleManagementSheet.swift */,
+				5C61E83C29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift */,
+				5C61E84029BFA82D00D10AA3 /* ServingStyleManagementSheet.swift */,
 			);
 			path = CategoryManagement;
 			sourceTree = "<group>";
@@ -1431,6 +1434,7 @@
 				5C353CC229A24C5F0067C4EE /* ContributionsScreenView.swift in Sources */,
 				5C20A51229AA6A5000ABBA74 /* FlavorManagementScreen.swift in Sources */,
 				5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */,
+				5C61E84129BFA82D00D10AA3 /* ServingStyleManagementSheet.swift in Sources */,
 				5CA7A53729A0E7750066F604 /* ProductFilterSheet.swift in Sources */,
 				5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */,
 				5C7C35A9299AC628009A3C09 /* FlavorSheetViewModel.swift in Sources */,
@@ -1608,7 +1612,7 @@
 				5C367EB429A3F386000A7149 /* HapticManager.swift in Sources */,
 				5C323E91298C501F00B005A9 /* ArrayExtensions.swift in Sources */,
 				5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */,
-				5C61E83D29BF8B2F00D10AA3 /* ServingStyleManagementSheet.swift in Sources */,
+				5C61E83D29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift in Sources */,
 				5C7C35E6299AE0E1009A3C09 /* CheckInReactionNotificationView.swift in Sources */,
 				5C0E364E2923C8CD0072EFBD /* ProfileManager.swift in Sources */,
 				5C25C68629956BAF00C07953 /* GitHubShape.swift in Sources */,

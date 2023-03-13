@@ -15,11 +15,14 @@ struct Category: Identifiable, Decodable, Hashable {
 extension Category {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "categories"
+    let servingStyleTableName = "category_serving_styles"
     let saved = "id, name"
 
     switch queryType {
     case .tableName:
       return tableName
+    case .servingStyleTableName:
+      return servingStyleTableName
     case let .saved(withTableName):
       return queryWithTableName(tableName, saved, withTableName)
     case let .joinedSubcategories(withTableName):
@@ -37,6 +40,7 @@ extension Category {
 
   enum QueryType {
     case tableName
+    case servingStyleTableName
     case saved(_ withTableName: Bool)
     case joinedSubcategories(_ withTableName: Bool)
     case joinedServingStyles(_ withTableName: Bool)
@@ -92,6 +96,16 @@ extension Category {
       case id
       case name
       case servingStyles = "serving_styles"
+    }
+  }
+
+  struct NewServingStyleRequest: Encodable, Sendable {
+    let categoryId: Int
+    let servingStyleId: Int
+
+    enum CodingKeys: String, CodingKey {
+      case categoryId = "category_id"
+      case servingStyleId = "serving_style_id"
     }
   }
 }
