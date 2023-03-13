@@ -10,13 +10,14 @@ struct FlavorManagementScreen: View {
   var body: some View {
     List {
       ForEach(viewModel.flavors) { flavor in
-        Text(flavor.label).swipeActions {
-          Button(role: .destructive, action: {
-            viewModel.deleteFlavor(flavor)
-          }, label: {
-            Label("Delete", systemImage: "trash")
-          })
-        }
+        Text(flavor.label)
+          .swipeActions {
+            Button(role: .destructive, action: {
+              viewModel.deleteFlavor(flavor)
+            }, label: {
+              Label("Delete", systemImage: "trash")
+            })
+          }
       }
     }
     .navigationBarTitle("Flavors")

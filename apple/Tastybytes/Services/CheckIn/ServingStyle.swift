@@ -30,3 +30,13 @@ extension ServingStyle {
     case saved(_ withTableName: Bool)
   }
 }
+
+extension ServingStyle {
+  struct UpdateRequest: Encodable {
+    let name: String
+  }
+
+  struct NewRequest: Encodable {
+    let name: String
+  }
+}

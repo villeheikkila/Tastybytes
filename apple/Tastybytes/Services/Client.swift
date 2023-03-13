@@ -13,6 +13,7 @@ protocol Client {
   var friend: FriendRepository { get }
   var category: CategoryRepository { get }
   var subcategory: SubcategoryRepository { get }
+  var servingStyle: ServingStyleRepository { get }
   var brand: BrandRepository { get }
   var subBrand: SubBrandRepository { get }
   var flavor: FlavorRepository { get }
@@ -35,6 +36,7 @@ class AppClient: Client {
   let friend: FriendRepository
   let category: CategoryRepository
   let subcategory: SubcategoryRepository
+  let servingStyle: ServingStyleRepository
   let brand: BrandRepository
   let subBrand: SubBrandRepository
   let flavor: FlavorRepository
@@ -59,6 +61,7 @@ class AppClient: Client {
     friend = SupabaseFriendsRepository(client: client)
     category = SupabaseCategoryRepository(client: client)
     subcategory = SupabaseSubcategoryRepository(client: client)
+    servingStyle = SupabaseServingStyleRepository(client: client)
     brand = SupabaseBrandRepository(client: client)
     subBrand = SupabaseSubBrandRepository(client: client)
     flavor = SupabaseFlavorRepository(client: client)
