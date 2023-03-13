@@ -52,7 +52,7 @@ struct CategoryManagementScreen: View {
       }
     }
     .refreshable {
-        viewModel.loadCategories() 
+        await viewModel.loadCategories() 
     }
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
