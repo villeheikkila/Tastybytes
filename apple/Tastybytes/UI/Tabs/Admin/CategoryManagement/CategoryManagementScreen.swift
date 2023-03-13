@@ -51,12 +51,25 @@ struct CategoryManagementScreen: View {
         }.headerProminence(.increased)
       }
     }
+    .navigationBarTitle("Categories")
+    .navigationBarItems(trailing: Button(action: { viewModel.activeSheet = .addCategory }, label: {
+      Label("Add Category", systemImage: "plus")
+        .labelStyle(.iconOnly)
+        .bold()
+    }))
     .refreshable {
-        await viewModel.loadCategories() 
+      await viewModel.loadCategories()
     }
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {
+        case .addCategory:
+          DismissableSheet(title: "Add Category") {
+            Form {
+              TextField("Name", text: $viewModel.newCategoryName)
+              Button(action: { viewModel.addCategory() }, label: { Text("Add") })
+            }
+          }
         case .editServingStyles:
           if let editServingStyle = viewModel.editServingStyle {
             CategoryServingStyleSheet(viewModel.client, category: editServingStyle)
@@ -74,7 +87,10 @@ struct CategoryManagementScreen: View {
             }
           }
         }
-      }.if(sheet == .editSubcategory, transform: { view in view.presentationDetents([.medium]) })
+      }.if(
+        sheet == .editSubcategory || sheet == .addCategory,
+        transform: { view in view.presentationDetents([.medium]) }
+      )
     }
     .confirmationDialog("Delete Subcategory Confirmation",
                         isPresented: $viewModel.showDeleteSubcategoryConfirmation,

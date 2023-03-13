@@ -3,6 +3,7 @@ import SwiftUI
 extension CategoryManagementScreen {
   enum Sheet: Identifiable {
     var id: Self { self }
+    case addCategory
     case editSubcategory
     case editServingStyles
   }
@@ -35,6 +36,8 @@ extension CategoryManagementScreen {
         activeSheet = .editServingStyles
       }
     }
+
+    @Published var newCategoryName = ""
 
     init(_ client: Client) {
       self.client = client
@@ -84,6 +87,20 @@ extension CategoryManagementScreen {
             logger
               .error("failed to delete subcategory \(deleteSubcategory.name): \(error.localizedDescription)")
           }
+        }
+      }
+    }
+
+    func addCategory() {
+      Task {
+        switch await client.category.insert(newCategory: Category.NewRequest(name: newCategoryName)) {
+        case .success:
+          await loadCategories()
+        case let .failure(error):
+          logger
+            .error(
+              "failed to add new category with name \(self.newCategoryName): \(error.localizedDescription)"
+            )
         }
       }
     }

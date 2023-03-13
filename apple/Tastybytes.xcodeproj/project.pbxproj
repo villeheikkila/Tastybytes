@@ -87,6 +87,8 @@
 		5C61E83D29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83C29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift */; };
 		5C61E83F29BF909D00D10AA3 /* ServingStyleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83E29BF909D00D10AA3 /* ServingStyleRepository.swift */; };
 		5C61E84129BFA82D00D10AA3 /* ServingStyleManagementSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E84029BFA82D00D10AA3 /* ServingStyleManagementSheet.swift */; };
+		5C61E84429BFBDFB00D10AA3 /* ServingStyleManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E84329BFBDFB00D10AA3 /* ServingStyleManagementViewModel.swift */; };
+		5C61E84629BFBE2500D10AA3 /* CategoryServingStyleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E84529BFBE2500D10AA3 /* CategoryServingStyleViewModel.swift */; };
 		5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F22292DFF66006F9A97 /* AppLogoView.swift */; };
 		5C663F25292E0100006F9A97 /* AppNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F24292E0100006F9A97 /* AppNameView.swift */; };
 		5C663F27292E0F1D006F9A97 /* DocumentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F26292E0F1D006F9A97 /* DocumentRepository.swift */; };
@@ -298,6 +300,8 @@
 		5C61E83C29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryServingStyleSheet.swift; sourceTree = "<group>"; };
 		5C61E83E29BF909D00D10AA3 /* ServingStyleRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyleRepository.swift; sourceTree = "<group>"; };
 		5C61E84029BFA82D00D10AA3 /* ServingStyleManagementSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyleManagementSheet.swift; sourceTree = "<group>"; };
+		5C61E84329BFBDFB00D10AA3 /* ServingStyleManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyleManagementViewModel.swift; sourceTree = "<group>"; };
+		5C61E84529BFBE2500D10AA3 /* CategoryServingStyleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryServingStyleViewModel.swift; sourceTree = "<group>"; };
 		5C663F22292DFF66006F9A97 /* AppLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogoView.swift; sourceTree = "<group>"; };
 		5C663F24292E0100006F9A97 /* AppNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNameView.swift; sourceTree = "<group>"; };
 		5C663F26292E0F1D006F9A97 /* DocumentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentRepository.swift; sourceTree = "<group>"; };
@@ -760,6 +764,7 @@
 		5C46E8652911E2CD0008F142 /* Sheets */ = {
 			isa = PBXGroup;
 			children = (
+				5C61E84229BFBDB500D10AA3 /* ServingStyle */,
 				5C2146E929A96BEB0005422D /* NameTag */,
 				5C353CBA29A23C790067C4EE /* ProductFilter */,
 				5C7C35B7299AC723009A3C09 /* EditSubBrand */,
@@ -807,10 +812,19 @@
 			children = (
 				5C61E83829B8FE7300D10AA3 /* CategoryManagementScreen.swift */,
 				5C61E83A29BF8B0800D10AA3 /* CategoryManagementViewModel.swift */,
-				5C61E83C29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift */,
-				5C61E84029BFA82D00D10AA3 /* ServingStyleManagementSheet.swift */,
 			);
 			path = CategoryManagement;
+			sourceTree = "<group>";
+		};
+		5C61E84229BFBDB500D10AA3 /* ServingStyle */ = {
+			isa = PBXGroup;
+			children = (
+				5C61E84029BFA82D00D10AA3 /* ServingStyleManagementSheet.swift */,
+				5C61E84329BFBDFB00D10AA3 /* ServingStyleManagementViewModel.swift */,
+				5C61E83C29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift */,
+				5C61E84529BFBE2500D10AA3 /* CategoryServingStyleViewModel.swift */,
+			);
+			path = ServingStyle;
 			sourceTree = "<group>";
 		};
 		5C7C356D299ABDE9009A3C09 /* Profile */ = {
@@ -1464,6 +1478,7 @@
 				5C0E3652292679630072EFBD /* BarcodeScannerSheet.swift in Sources */,
 				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,
 				5C7C3591299AC2B2009A3C09 /* ProductScreenViewModel.swift in Sources */,
+				5C61E84429BFBDFB00D10AA3 /* ServingStyleManagementViewModel.swift in Sources */,
 				5C25C672299561BD00C07953 /* SettingsTab.swift in Sources */,
 				5CC2FE8F29196A5D002BDF83 /* LocationSearchSheet.swift in Sources */,
 				5C0E365A29296FCB0072EFBD /* SubcategoryRepository.swift in Sources */,
@@ -1589,6 +1604,7 @@
 				5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */,
 				5C61E83229B7B41400D10AA3 /* SearchListView.swift in Sources */,
 				5C7C357B299AC00B009A3C09 /* AddProductViewModel.swift in Sources */,
+				5C61E84629BFBE2500D10AA3 /* CategoryServingStyleViewModel.swift in Sources */,
 				5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */,
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
 				5C0E365C292ADA290072EFBD /* SummaryView.swift in Sources */,

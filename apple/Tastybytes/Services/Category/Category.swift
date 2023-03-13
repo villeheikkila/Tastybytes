@@ -99,6 +99,10 @@ extension Category {
     }
   }
 
+  struct NewRequest: Encodable, Sendable {
+    let name: String
+  }
+
   struct NewServingStyleRequest: Encodable, Sendable {
     let categoryId: Int
     let servingStyleId: Int

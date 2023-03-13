@@ -3,6 +3,7 @@ import Supabase
 protocol CategoryRepository {
   func getAllWithSubcategories() async -> Result<[Category.JoinedSubcategories], Error>
   func getAllWithSubcategoriesServingStyles() async -> Result<[Category.JoinedSubcategoriesServingStyles], Error>
+  func insert(newCategory: Category.NewRequest) async -> Result<Void, Error>
   func getServingStylesByCategory(categoryId: Int) async -> Result<Category.JoinedServingStyles, Error>
   func addServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error>
   func deleteServingStyle(categoryId: Int, servingStyleId: Int) async -> Result<Void, Error>
@@ -56,6 +57,20 @@ struct SupabaseCategoryRepository: CategoryRepository {
         .value
 
       return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func insert(newCategory: Category.NewRequest) async -> Result<Void, Error> {
+    do {
+      try await client
+        .database
+        .from(Category.getQuery(.tableName))
+        .insert(values: newCategory, returning: .representation)
+        .execute()
+
+      return .success(())
     } catch {
       return .failure(error)
     }
