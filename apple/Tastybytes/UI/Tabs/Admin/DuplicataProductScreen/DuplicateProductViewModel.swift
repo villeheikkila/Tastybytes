@@ -39,14 +39,13 @@ extension DuplicateProductScreen {
     }
 
     func deleteProduct(onDelete: @escaping () -> Void) {
-      if let deleteProduct {
-        Task {
-          switch await client.product.delete(id: deleteProduct.id) {
-          case .success:
-            onDelete()
-          case let .failure(error):
-            logger.error("failed to delete product \(deleteProduct.id): \(error.localizedDescription)")
-          }
+      guard let deleteProduct else { return }
+      Task {
+        switch await client.product.delete(id: deleteProduct.id) {
+        case .success:
+          onDelete()
+        case let .failure(error):
+          logger.error("failed to delete product \(deleteProduct.id): \(error.localizedDescription)")
         }
       }
     }

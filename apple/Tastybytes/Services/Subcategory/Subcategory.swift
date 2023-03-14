@@ -84,6 +84,11 @@ extension Subcategory {
       self.name = name
       categoryId = category.id
     }
+
+    init(name: String, category: Category.JoinedSubcategoriesServingStyles) {
+      self.name = name
+      categoryId = category.id
+    }
   }
 
   struct VerifyRequest: Encodable, Sendable {

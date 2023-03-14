@@ -57,29 +57,28 @@ extension CheckInScreen {
     }
 
     func updateComment() {
-      if let editComment {
-        let updatedComment = CheckInComment.UpdateRequest(id: editComment.id, content: editCommentText)
-        Task {
-          switch await client.checkInComment.update(updateCheckInComment: updatedComment) {
-          case let .success(updatedComment):
-            withAnimation {
-              if let index = self.checkInComments.firstIndex(where: { $0.id == updatedComment.id }) {
-                self.checkInComments[index] = updatedComment
-              }
+      guard let editComment else { return }
+      let updatedComment = CheckInComment.UpdateRequest(id: editComment.id, content: editCommentText)
+      Task {
+        switch await client.checkInComment.update(updateCheckInComment: updatedComment) {
+        case let .success(updatedComment):
+          withAnimation {
+            if let index = self.checkInComments.firstIndex(where: { $0.id == updatedComment.id }) {
+              self.checkInComments[index] = updatedComment
             }
-          case let .failure(error):
-            logger
-              .error(
-                """
-                failed to update comment \(editComment.id) with text\
-                  '\(self.editCommentText)': \(error.localizedDescription)
-                """
-              )
           }
+        case let .failure(error):
+          logger
+            .error(
+              """
+              failed to update comment \(editComment.id) with text\
+                '\(self.editCommentText)': \(error.localizedDescription)
+              """
+            )
         }
-
-        editCommentText = ""
       }
+
+      editCommentText = ""
     }
 
     func deleteComment(_ comment: CheckInComment) {

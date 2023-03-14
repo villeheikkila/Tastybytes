@@ -42,6 +42,9 @@ struct CategoryManagementScreen: View {
               Button(action: { viewModel.editServingStyle = category }, label: {
                 Label("Edit Serving Styles", systemImage: "pencil")
               })
+              Button(action: { viewModel.toAddSubcategory = category }, label: {
+                Label("Add Subcategory", systemImage: "plus")
+              })
             } label: {
               Label("Options menu", systemImage: "ellipsis")
                 .labelStyle(.iconOnly)
@@ -67,8 +70,25 @@ struct CategoryManagementScreen: View {
           DismissableSheet(title: "Add Category") {
             Form {
               TextField("Name", text: $viewModel.newCategoryName)
-              Button(action: { viewModel.addCategory() }, label: { Text("Add") })
+              Button(action: { viewModel.addCategory() }, label: {
+                Text("Add")
+              }).disabled(viewModel.newCategoryName.isEmpty)
             }
+          }
+        case .addSubcategory:
+          if let toAddSubcategory = viewModel.toAddSubcategory {
+            DismissableSheet(title: toAddSubcategory.label) {
+              Form {
+                Section {
+                  TextField("Name", text: $viewModel.newSubcategoryName)
+                  Button(action: { viewModel.addSubcategory() }, label: {
+                    Text("Add")
+                  }).disabled(viewModel.newSubcategoryName.isEmpty)
+                } header: {
+                  Text("Add Subcategory")
+                }
+              }
+            }.navigationBarTitleDisplayMode(.inline)
           }
         case .editServingStyles:
           if let editServingStyle = viewModel.editServingStyle {
@@ -82,13 +102,13 @@ struct CategoryManagementScreen: View {
                 Button(
                   action: { viewModel.saveEditSubcategoryChanges() },
                   label: { Text("Save changes").disabled(editSubcategory.name == viewModel.editSubcategoryName) }
-                )
+                ).disabled(viewModel.editSubcategoryName.isEmpty)
               }
             }
           }
         }
       }.if(
-        sheet == .editSubcategory || sheet == .addCategory,
+        sheet == .editSubcategory || sheet == .addCategory || sheet == .addSubcategory,
         transform: { view in view.presentationDetents([.medium]) }
       )
     }

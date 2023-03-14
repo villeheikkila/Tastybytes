@@ -41,23 +41,22 @@ extension CategoryServingStyleSheet {
     }
 
     func deleteServingStyle(onDelete: @escaping () -> Void) {
-      if let toDeleteServingStyle {
-        Task {
-          switch await client.category.deleteServingStyle(
-            categoryId: category.id,
-            servingStyleId: toDeleteServingStyle.id
-          ) {
-          case .success:
-            withAnimation {
-              servingStyles.remove(object: toDeleteServingStyle)
-            }
-            onDelete()
-          case let .failure(error):
-            logger
-              .error(
-                "failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)"
-              )
+      guard let toDeleteServingStyle else { return }
+      Task {
+        switch await client.category.deleteServingStyle(
+          categoryId: category.id,
+          servingStyleId: toDeleteServingStyle.id
+        ) {
+        case .success:
+          withAnimation {
+            servingStyles.remove(object: toDeleteServingStyle)
           }
+          onDelete()
+        case let .failure(error):
+          logger
+            .error(
+              "failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)"
+            )
         }
       }
     }

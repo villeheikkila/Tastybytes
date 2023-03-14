@@ -4,6 +4,7 @@ extension CategoryManagementScreen {
   enum Sheet: Identifiable {
     var id: Self { self }
     case addCategory
+    case addSubcategory
     case editSubcategory
     case editServingStyles
   }
@@ -14,6 +15,17 @@ extension CategoryManagementScreen {
     let client: Client
     @Published var categories = [Category.JoinedSubcategoriesServingStyles]()
     @Published var activeSheet: Sheet?
+    @Published var toAddSubcategory: Category.JoinedSubcategoriesServingStyles? {
+      didSet {
+        if toAddSubcategory != nil {
+          activeSheet = .addSubcategory
+        } else {
+          newSubcategoryName = ""
+        }
+      }
+    }
+
+    @Published var newSubcategoryName = ""
     @Published var verifySubcategory: Subcategory?
     @Published var editSubcategory: Subcategory? {
       didSet {
@@ -58,35 +70,33 @@ extension CategoryManagementScreen {
     }
 
     func saveEditSubcategoryChanges() {
-      if let editSubcategory {
-        Task {
-          switch await client.subcategory
-            .update(updateRequest: Subcategory
-              .UpdateRequest(id: editSubcategory.id, name: editSubcategoryName))
-          {
-          case .success:
-            await loadCategories()
-            activeSheet = nil
-          case let .failure(error):
-            logger
-              .error(
-                "failed to update subcategory \(editSubcategory.id): \(error.localizedDescription)"
-              )
-          }
+      guard let editSubcategory else { return }
+      Task {
+        switch await client.subcategory
+          .update(updateRequest: Subcategory
+            .UpdateRequest(id: editSubcategory.id, name: editSubcategoryName))
+        {
+        case .success:
+          await loadCategories()
+          activeSheet = nil
+        case let .failure(error):
+          logger
+            .error(
+              "failed to update subcategory \(editSubcategory.id): \(error.localizedDescription)"
+            )
         }
       }
     }
 
     func deleteSubcategories() {
-      if let deleteSubcategory {
-        Task {
-          switch await client.subcategory.delete(id: deleteSubcategory.id) {
-          case .success:
-            await loadCategories()
-          case let .failure(error):
-            logger
-              .error("failed to delete subcategory \(deleteSubcategory.name): \(error.localizedDescription)")
-          }
+      guard let deleteSubcategory else { return }
+      Task {
+        switch await client.subcategory.delete(id: deleteSubcategory.id) {
+        case .success:
+          await loadCategories()
+        case let .failure(error):
+          logger
+            .error("failed to delete subcategory \(deleteSubcategory.name): \(error.localizedDescription)")
         }
       }
     }
@@ -100,6 +110,24 @@ extension CategoryManagementScreen {
           logger
             .error(
               "failed to add new category with name \(self.newCategoryName): \(error.localizedDescription)"
+            )
+        }
+      }
+    }
+
+    func addSubcategory() {
+      guard let toAddSubcategory else { return }
+      Task {
+        switch await client.subcategory
+          .insert(newSubcategory: Subcategory
+            .NewRequest(name: newSubcategoryName, category: toAddSubcategory))
+        {
+        case .success:
+          await loadCategories()
+        case let .failure(error):
+          logger
+            .error(
+              "failed to create subcategory '\(self.newCategoryName)' to category \(toAddSubcategory.name): \(error.localizedDescription)"
             )
         }
       }
