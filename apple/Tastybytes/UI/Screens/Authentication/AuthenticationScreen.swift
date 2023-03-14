@@ -18,11 +18,11 @@ struct AuthenticationScreen: View {
         UsernameTextFieldView(username: $viewModel.username)
           .focused($focusedField, equals: .username)
       }
-      if !(viewModel.scene == .resetPassword || viewModel.scene == .accountDeleted) {
+      if [.resetPassword, .accountDeleted].contains(viewModel.scene) {
         EmailTextFieldView(email: $viewModel.email)
           .focused($focusedField, equals: .password)
       }
-      if viewModel.scene == .signIn || viewModel.scene == .signUp || viewModel.scene == .resetPassword {
+      if [.signIn, .signUp, .resetPassword].contains(viewModel.scene) {
         PasswordTextFieldView(
           password: $viewModel.password,
           mode: viewModel.scene == .resetPassword ? .newPassword : .password
@@ -108,7 +108,7 @@ struct AuthenticationScreen: View {
         }
       }
 
-      if viewModel.scene == .signIn || viewModel.scene == .signUp {
+      if [.signIn, .signUp].contains(viewModel.scene) {
         Button(
           viewModel.scene == .signIn
             ? "Don't have an account? Sign up"

@@ -107,10 +107,8 @@ struct CategoryManagementScreen: View {
             }
           }
         }
-      }.if(
-        sheet == .editSubcategory || sheet == .addCategory || sheet == .addSubcategory,
-        transform: { view in view.presentationDetents([.medium]) }
-      )
+      }.if([.editSubcategory, .addCategory, .addSubcategory].contains(sheet),
+           transform: { view in view.presentationDetents([.medium]) })
     }
     .confirmationDialog("Delete Subcategory Confirmation",
                         isPresented: $viewModel.showDeleteSubcategoryConfirmation,
