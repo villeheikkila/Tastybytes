@@ -42,17 +42,16 @@ extension BlockedUsersScreen {
     }
 
     func loadBlockedUsers(userId: UUID?) {
-      if let userId {
-        Task {
-          switch await client.friend.getByUserId(userId: userId, status: .blocked) {
-          case let .success(blockedUsers):
-            withAnimation {
-              self.blockedUsers = blockedUsers
-            }
-          case let .failure(error):
-            logger.warning("failed to load blocked users: \(error.localizedDescription)")
-            self.error = error
+      guard let userId else { return }
+      Task {
+        switch await client.friend.getByUserId(userId: userId, status: .blocked) {
+        case let .success(blockedUsers):
+          withAnimation {
+            self.blockedUsers = blockedUsers
           }
+        case let .failure(error):
+          logger.warning("failed to load blocked users: \(error.localizedDescription)")
+          self.error = error
         }
       }
     }

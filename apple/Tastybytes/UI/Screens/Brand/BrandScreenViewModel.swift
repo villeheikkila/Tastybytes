@@ -162,15 +162,14 @@ extension BrandScreen {
     }
 
     func deleteSubBrand() {
-      if let toDeleteSubBrand {
-        Task {
-          switch await client.subBrand.delete(id: toDeleteSubBrand.id) {
-          case .success:
-            refresh()
-            logger.info("succesfully deleted sub-brand")
-          case let .failure(error):
-            logger.error("failed to delete brand '\(toDeleteSubBrand.id)': \(error.localizedDescription)")
-          }
+      guard let toDeleteSubBrand else { return }
+      Task {
+        switch await client.subBrand.delete(id: toDeleteSubBrand.id) {
+        case .success:
+          refresh()
+          logger.info("succesfully deleted sub-brand")
+        case let .failure(error):
+          logger.error("failed to delete brand '\(toDeleteSubBrand.id)': \(error.localizedDescription)")
         }
       }
     }

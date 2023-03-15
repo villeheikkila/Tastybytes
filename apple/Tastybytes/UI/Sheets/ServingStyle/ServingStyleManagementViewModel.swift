@@ -61,40 +61,38 @@ extension ServingStyleManagementSheet {
     }
 
     func deleteServingStyle(onDelete: @escaping () -> Void) {
-      if let toDeleteServingStyle {
-        Task {
-          switch await client.servingStyle.delete(id: toDeleteServingStyle.id) {
-          case .success:
-            withAnimation {
-              servingStyles.remove(object: toDeleteServingStyle)
-            }
-            onDelete()
-          case let .failure(error):
-            logger
-              .error(
-                "failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)"
-              )
+      guard let toDeleteServingStyle else { return }
+      Task {
+        switch await client.servingStyle.delete(id: toDeleteServingStyle.id) {
+        case .success:
+          withAnimation {
+            servingStyles.remove(object: toDeleteServingStyle)
           }
+          onDelete()
+        case let .failure(error):
+          logger
+            .error(
+              "failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)"
+            )
         }
       }
     }
 
     func saveEditServingStyle() {
-      if let editServingStyle {
-        Task {
-          switch await client.servingStyle
-            .update(update: ServingStyle.UpdateRequest(id: editServingStyle.id, name: servingStyleName))
-          {
-          case let .success(servingStyle):
-            withAnimation {
-              servingStyles.replace(editServingStyle, with: servingStyle)
-            }
-          case let .failure(error):
-            logger
-              .error(
-                "failed to edit '\(editServingStyle.id) with name \(self.servingStyleName)': \(error.localizedDescription)"
-              )
+      guard let editServingStyle else { return }
+      Task {
+        switch await client.servingStyle
+          .update(update: ServingStyle.UpdateRequest(id: editServingStyle.id, name: servingStyleName))
+        {
+        case let .success(servingStyle):
+          withAnimation {
+            servingStyles.replace(editServingStyle, with: servingStyle)
           }
+        case let .failure(error):
+          logger
+            .error(
+              "failed to edit '\(editServingStyle.id) with name \(self.servingStyleName)': \(error.localizedDescription)"
+            )
         }
       }
     }

@@ -22,19 +22,18 @@ extension FlavorSheet {
     }
 
     func loadFlavors() {
-      if availableFlavors.isEmpty {
-        Task {
-          switch await client.flavor.getAll() {
-          case let .success(flavors):
-            withAnimation {
-              self.availableFlavors = flavors
-            }
-          case let .failure(error):
-            logger
-              .error(
-                "fetching flavors failed: \(error.localizedDescription)"
-              )
+      guard availableFlavors.isEmpty else { return }
+      Task {
+        switch await client.flavor.getAll() {
+        case let .success(flavors):
+          withAnimation {
+            self.availableFlavors = flavors
           }
+        case let .failure(error):
+          logger
+            .error(
+              "fetching flavors failed: \(error.localizedDescription)"
+            )
         }
       }
     }

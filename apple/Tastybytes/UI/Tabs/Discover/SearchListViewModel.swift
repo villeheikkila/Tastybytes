@@ -51,20 +51,19 @@ extension SearchListView {
     }
 
     func addBarcodeToProduct(onComplete: @escaping () -> Void) {
-      if let addBarcodeTo, let barcode {
-        Task {
-          switch await client.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
-          case .success:
-            self.barcode = nil
-            self.addBarcodeTo = nil
-            self.showAddBarcodeConfirmation = false
-            onComplete()
-          case let .failure(error):
-            logger
-              .error(
-                "adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed: \(error.localizedDescription)"
-              )
-          }
+      guard let addBarcodeTo, let barcode else { return }
+      Task {
+        switch await client.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
+        case .success:
+          self.barcode = nil
+          self.addBarcodeTo = nil
+          self.showAddBarcodeConfirmation = false
+          onComplete()
+        case let .failure(error):
+          logger
+            .error(
+              "adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed: \(error.localizedDescription)"
+            )
         }
       }
     }

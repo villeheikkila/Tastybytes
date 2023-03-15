@@ -58,13 +58,11 @@ struct CheckInListView<Header>: View
         )
       }
       .onChange(of: scrollToTop, perform: { _ in
-        if let first = viewModel.checkIns.first {
-          withAnimation {
-            if let topAnchor {
-              scrollProxy?.scrollTo(topAnchor, anchor: .top)
-            } else {
-              scrollProxy?.scrollTo(first.id, anchor: .top)
-            }
+        withAnimation {
+          if let topAnchor {
+            scrollProxy?.scrollTo(topAnchor, anchor: .top)
+          } else if let first = viewModel.checkIns.first {
+            scrollProxy?.scrollTo(first.id, anchor: .top)
           }
         }
       })

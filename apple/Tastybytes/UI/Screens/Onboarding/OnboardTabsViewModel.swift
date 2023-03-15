@@ -58,19 +58,19 @@ import SwiftUI
 
   func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) {
     Task {
-      if let imageData = try await newAvatar?.loadTransferable(type: Data.self),
-         let image = UIImage(data: imageData),
-         let data = image.jpegData(compressionQuality: 0.1)
-      {
-        switch await client.profile.uploadAvatar(userId: userId, data: data) {
-        case let .success(fileName):
-          self.avatarFileName = fileName
-        case let .failure(error):
-          logger
-            .error(
-              "uplodaing avatar for \(userId) failed: \(error.localizedDescription)"
-            )
-        }
+      guard let imageData = try await newAvatar?.loadTransferable(type: Data.self),
+            let image = UIImage(data: imageData),
+            let data = image.jpegData(compressionQuality: 0.1)
+      else { return }
+
+      switch await client.profile.uploadAvatar(userId: userId, data: data) {
+      case let .success(fileName):
+        self.avatarFileName = fileName
+      case let .failure(error):
+        logger
+          .error(
+            "uplodaing avatar for \(userId) failed: \(error.localizedDescription)"
+          )
       }
     }
   }

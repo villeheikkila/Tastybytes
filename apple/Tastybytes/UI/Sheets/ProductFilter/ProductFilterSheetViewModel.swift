@@ -32,16 +32,14 @@ extension ProductFilterSheet {
     }
 
     func getFilter() -> Product.Filter? {
-      if categoryFilter != nil || subcategoryFilter != nil || onlyNonCheckedIn == true || sortBy != nil {
-        return Product.Filter(
-          category: categoryFilter,
-          subcategory: subcategoryFilter,
-          onlyNonCheckedIn: onlyNonCheckedIn,
-          sortBy: sortBy
-        )
-      } else {
-        return nil
-      }
+      guard categoryFilter == nil, subcategoryFilter == nil, onlyNonCheckedIn == false,
+            sortBy == nil else { return nil }
+      return Product.Filter(
+        category: categoryFilter,
+        subcategory: subcategoryFilter,
+        onlyNonCheckedIn: onlyNonCheckedIn,
+        sortBy: sortBy
+      )
     }
 
     func resetFilter() {

@@ -98,20 +98,19 @@ extension AddProductView {
     }
 
     func createSubcategory(newSubcategoryName: String) {
-      if let categoryWithSubcategories = category {
-        isLoading = true
-        Task {
-          switch await client.subcategory
-            .insert(newSubcategory: Subcategory
-              .NewRequest(name: newSubcategoryName, category: categoryWithSubcategories))
-          {
-          case .success:
-            self.loadCategories(categoryWithSubcategories.name)
-          case let .failure(error):
-            logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
-          }
-          isLoading = false
+      guard let categoryWithSubcategories = category else { return }
+      isLoading = true
+      Task {
+        switch await client.subcategory
+          .insert(newSubcategory: Subcategory
+            .NewRequest(name: newSubcategoryName, category: categoryWithSubcategories))
+        {
+        case .success:
+          self.loadCategories(categoryWithSubcategories.name)
+        case let .failure(error):
+          logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
         }
+        isLoading = false
       }
     }
 
@@ -232,69 +231,66 @@ extension AddProductView {
     }
 
     func createProduct(onSuccess: @escaping (_ product: Product.Joined) -> Void) async {
-      if let category, let brandId = brand?.id {
-        let newProductParams = Product.NewRequest(
-          name: name,
-          description: description,
-          categoryId: category.id,
-          brandId: brandId,
-          subBrandId: subBrand?.id,
-          subCategoryIds: subcategories.map(\.id),
-          barcode: barcode
-        )
-        switch await client.product.create(newProductParams: newProductParams) {
-        case let .success(newProduct):
-          onSuccess(newProduct)
-        case let .failure(error):
-          logger.error("failed to create new product: \(error.localizedDescription)")
-        }
+      guard let category, let brandId = brand?.id else { return }
+      let newProductParams = Product.NewRequest(
+        name: name,
+        description: description,
+        categoryId: category.id,
+        brandId: brandId,
+        subBrandId: subBrand?.id,
+        subCategoryIds: subcategories.map(\.id),
+        barcode: barcode
+      )
+      switch await client.product.create(newProductParams: newProductParams) {
+      case let .success(newProduct):
+        onSuccess(newProduct)
+      case let .failure(error):
+        logger.error("failed to create new product: \(error.localizedDescription)")
       }
     }
 
     func createProductEditSuggestion(onSuccess: @escaping () -> Void) async {
-      if let subBrand, let category, let productId {
-        let productEditSuggestionParams = Product.EditRequest(
-          productId: productId,
-          name: name,
-          description: description,
-          categoryId: category.id,
-          subBrandId: subBrand.id,
-          subcategories: subcategories
-        )
+      guard let subBrand, let category, let productId else { return }
+      let productEditSuggestionParams = Product.EditRequest(
+        productId: productId,
+        name: name,
+        description: description,
+        categoryId: category.id,
+        subBrandId: subBrand.id,
+        subcategories: subcategories
+      )
 
-        switch await client.product
-          .createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams)
-        {
-        case .success:
-          onSuccess()
-        case let .failure(error):
-          logger
-            .error(
-              "failed to create product edit suggestion for '\(productId)': \(error.localizedDescription)"
-            )
-        }
+      switch await client.product
+        .createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams)
+      {
+      case .success:
+        onSuccess()
+      case let .failure(error):
+        logger
+          .error(
+            "failed to create product edit suggestion for '\(productId)': \(error.localizedDescription)"
+          )
       }
     }
 
     func editProduct(onSuccess: @escaping () -> Void) async {
-      if let category, let brand, let productId {
-        let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
-        guard let subBrandWithNil else { return }
-        let productEditParams = Product.EditRequest(
-          productId: productId,
-          name: name,
-          description: description,
-          categoryId: category.id,
-          subBrandId: subBrandWithNil.id,
-          subcategories: subcategories
-        )
+      guard let category, let brand, let productId else { return }
+      let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
+      guard let subBrandWithNil else { return }
+      let productEditParams = Product.EditRequest(
+        productId: productId,
+        name: name,
+        description: description,
+        categoryId: category.id,
+        subBrandId: subBrandWithNil.id,
+        subcategories: subcategories
+      )
 
-        switch await client.product.editProduct(productEditParams: productEditParams) {
-        case .success:
-          onSuccess()
-        case let .failure(error):
-          logger.error("failed to edit product '\(productId)': \(error.localizedDescription)")
-        }
+      switch await client.product.editProduct(productEditParams: productEditParams) {
+      case .success:
+        onSuccess()
+      case let .failure(error):
+        logger.error("failed to edit product '\(productId)': \(error.localizedDescription)")
       }
     }
   }

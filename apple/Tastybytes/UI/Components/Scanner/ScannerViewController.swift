@@ -234,14 +234,13 @@ extension ScannerView {
       didOutput metadataObjects: [AVMetadataObject],
       from _: AVCaptureConnection
     ) {
-      if let metadataObject = metadataObjects.first {
-        guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
-        guard let stringValue = readableObject.stringValue else { return }
-        guard didFinishScanning == false else { return }
-        let result = Barcode(barcode: stringValue, type: readableObject.type)
-        found(result)
-        didFinishScanning = true
-      }
+      guard let metadataObject = metadataObjects.first else { return }
+      guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
+      guard let stringValue = readableObject.stringValue else { return }
+      guard didFinishScanning == false else { return }
+      let result = Barcode(barcode: stringValue, type: readableObject.type)
+      found(result)
+      didFinishScanning = true
     }
 
     func isPastScanInterval() -> Bool {

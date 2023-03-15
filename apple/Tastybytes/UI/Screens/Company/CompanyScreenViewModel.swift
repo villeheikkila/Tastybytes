@@ -27,9 +27,8 @@ extension CompanyScreen {
     var sortedBrands: [Brand.JoinedSubBrandsProducts] {
       if let companyJoined {
         return companyJoined.brands.sorted { lhs, rhs in lhs.getNumberOfProducts() > rhs.getNumberOfProducts() }
-      } else {
-        return []
       }
+      return []
     }
 
     func setActiveSheet(_ sheet: Sheet) {
@@ -39,19 +38,18 @@ extension CompanyScreen {
     func sendCompanyEditSuggestion() {}
 
     func editCompany() {
-      if let companyJoined {
-        Task {
-          switch await client.company
-            .update(updateRequest: Company.UpdateRequest(id: companyJoined.id, name: newCompanyNameSuggestion))
-          {
-          case let .success(updatedCompany):
-            withAnimation {
-              self.companyJoined = updatedCompany
-            }
-            self.activeSheet = nil
-          case let .failure(error):
-            logger.error("failed to edit company \(companyJoined.id): \(error.localizedDescription)")
+      guard let companyJoined else { return }
+      Task {
+        switch await client.company
+          .update(updateRequest: Company.UpdateRequest(id: companyJoined.id, name: newCompanyNameSuggestion))
+        {
+        case let .success(updatedCompany):
+          withAnimation {
+            self.companyJoined = updatedCompany
           }
+          self.activeSheet = nil
+        case let .failure(error):
+          logger.error("failed to edit company \(companyJoined.id): \(error.localizedDescription)")
         }
       }
     }

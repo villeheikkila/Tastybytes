@@ -63,9 +63,8 @@ extension CheckInListView {
     }
 
     func onCheckInUpdate(_ checkIn: CheckIn) {
-      if let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) {
-        checkIns[index] = checkIn
-      }
+      guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
+      checkIns[index] = checkIn
     }
 
     func fetchActivityFeedItems(onComplete: (() -> Void)? = nil) {

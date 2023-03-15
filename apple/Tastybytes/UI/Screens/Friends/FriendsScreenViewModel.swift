@@ -52,13 +52,10 @@ extension FriendsScreen {
       Task {
         switch await client.friend.update(id: friend.id, friendUpdate: friendUpdate) {
         case let .success(updatedFriend):
-
-          if updatedFriend.status != Friend.Status.blocked {
-            withAnimation {
+          withAnimation {
+            if updatedFriend.status != Friend.Status.blocked {
               self.friends.replace(friend, with: updatedFriend)
-            }
-          } else {
-            withAnimation {
+            } else {
               self.friends.remove(object: friend)
             }
           }

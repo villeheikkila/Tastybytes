@@ -39,7 +39,7 @@ extension CheckInSheet {
     @Published var image: UIImage? {
       didSet {
         Task {
-          if let image, let hash = image.resize(to: 200)?
+          if let image, let hash = image.resize(to: 100)?
             .blurHash(numberOfComponents: (5, 5))
           {
             self.blurHash = "\(image.size.width):\(image.size.height):::\(hash)"
@@ -95,28 +95,27 @@ extension CheckInSheet {
     }
 
     func updateCheckIn(_ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) async {
-      if let editCheckIn {
-        let updateCheckInParams = CheckIn.UpdateRequest(
-          checkIn: editCheckIn,
-          product: product,
-          review: review,
-          taggedFriends: taggedFriends,
-          servingStyle: servingStyle,
-          manufacturer: manufacturer,
-          flavors: pickedFlavors,
-          rating: rating,
-          location: location,
-          blurHash: blurHash,
-          checkInAt: checkInAt
-        )
+      guard let editCheckIn else { return }
+      let updateCheckInParams = CheckIn.UpdateRequest(
+        checkIn: editCheckIn,
+        product: product,
+        review: review,
+        taggedFriends: taggedFriends,
+        servingStyle: servingStyle,
+        manufacturer: manufacturer,
+        flavors: pickedFlavors,
+        rating: rating,
+        location: location,
+        blurHash: blurHash,
+        checkInAt: checkInAt
+      )
 
-        switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
-        case let .success(updatedCheckIn):
-          uploadImage(checkIn: updatedCheckIn)
-          onUpdate(updatedCheckIn)
-        case let .failure(error):
-          logger.error("failed to update check-in '\(editCheckIn.id)': \(error.localizedDescription)")
-        }
+      switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
+      case let .success(updatedCheckIn):
+        uploadImage(checkIn: updatedCheckIn)
+        onUpdate(updatedCheckIn)
+      case let .failure(error):
+        logger.error("failed to update check-in '\(editCheckIn.id)': \(error.localizedDescription)")
       }
     }
 
@@ -145,13 +144,12 @@ extension CheckInSheet {
 
     func uploadImage(checkIn: CheckIn) {
       Task {
-        if let data = image?.jpegData(compressionQuality: 0.1) {
-          switch await client.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
-          case let .failure(error):
-            logger.error("failed to uplaod image to check-in '\(checkIn.id)': \(error.localizedDescription)")
-          default:
-            break
-          }
+        guard let data = image?.jpegData(compressionQuality: 0.1) else { return }
+        switch await client.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
+        case let .failure(error):
+          logger.error("failed to uplaod image to check-in '\(checkIn.id)': \(error.localizedDescription)")
+        default:
+          break
         }
       }
     }

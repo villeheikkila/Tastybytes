@@ -38,40 +38,38 @@ extension DuplicateProductSheet {
     }
 
     func reportDuplicate(onSuccess: @escaping () -> Void) {
-      if let mergeToProduct {
-        Task {
-          switch await client.product.markAsDuplicate(
-            productId: product.id,
-            duplicateOfProductId: mergeToProduct.id
-          ) {
-          case .success:
-            onSuccess()
-          case let .failure(error):
-            logger.error(
-              """
-              reporting duplicate product \(self.mergeToProduct?.id ?? 0) of \(mergeToProduct.id) failed:\
-              \(error.localizedDescription)
-              """
-            )
-          }
+      guard let mergeToProduct else { return }
+      Task {
+        switch await client.product.markAsDuplicate(
+          productId: product.id,
+          duplicateOfProductId: mergeToProduct.id
+        ) {
+        case .success:
+          onSuccess()
+        case let .failure(error):
+          logger.error(
+            """
+            reporting duplicate product \(self.mergeToProduct?.id ?? 0) of \(mergeToProduct.id) failed:\
+            \(error.localizedDescription)
+            """
+          )
         }
       }
     }
 
     func mergeProducts(onSuccess: @escaping () -> Void) {
-      if let mergeToProduct {
-        Task {
-          switch await client.product.mergeProducts(productId: product.id, toProductId: mergeToProduct.id) {
-          case .success:
-            onSuccess()
-          case let .failure(error):
-            logger.error(
-              """
-              merging product \(self.mergeToProduct?.id ?? 0) to \(mergeToProduct.id) failed:\
-              \(error.localizedDescription)
-              """
-            )
-          }
+      guard let mergeToProduct else { return }
+      Task {
+        switch await client.product.mergeProducts(productId: product.id, toProductId: mergeToProduct.id) {
+        case .success:
+          onSuccess()
+        case let .failure(error):
+          logger.error(
+            """
+            merging product \(self.mergeToProduct?.id ?? 0) to \(mergeToProduct.id) failed:\
+            \(error.localizedDescription)
+            """
+          )
         }
       }
     }

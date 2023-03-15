@@ -14,27 +14,20 @@ import SwiftUI
   private var profile: Profile.Extended?
 
   func get() -> Profile.Extended {
-    if let profile {
-      return profile
-    } else {
-      fatalError("ProfileManager.get() can only be used on authenticated routes.")
-    }
+    guard let profile else { fatalError("ProfileManager.get() can only be used on authenticated routes.") }
+    return profile
   }
 
   func getProfile() -> Profile {
-    if let profile = profile?.getProfile() {
-      return profile
-    } else {
-      fatalError("ProfileManager.getProfile() can only be used on authenticated routes.")
-    }
+    guard let profile = profile?.getProfile()
+    else { fatalError("ProfileManager.getProfile() can only be used on authenticated routes.") }
+    return profile
   }
 
   func getId() -> UUID {
-    if let id = profile?.id {
-      return id
-    } else {
-      fatalError("ProfileManager.getProfile() can only be used on authenticated routes.")
-    }
+    guard let id = profile?.id
+    else { fatalError("ProfileManager.getProfile() can only be used on authenticated routes.") }
+    return id
   }
 
   func refresh() {
@@ -54,12 +47,9 @@ import SwiftUI
   }
 
   func hasPermission(_ permission: PermissionName) -> Bool {
-    if let roles = profile?.roles {
-      let permissions = roles.flatMap(\.permissions)
-      return permissions.contains(where: { $0.name == permission })
-    } else {
-      return false
-    }
+    guard let roles = profile?.roles else { return false }
+    let permissions = roles.flatMap(\.permissions)
+    return permissions.contains(where: { $0.name == permission })
   }
 
   func setPreferredColorScheme(settings: ProfileSettings) {

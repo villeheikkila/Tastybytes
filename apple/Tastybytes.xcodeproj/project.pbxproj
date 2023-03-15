@@ -140,7 +140,6 @@
 		5C7C35E2299AE0B5009A3C09 /* FriendRequestNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */; };
 		5C7C35E4299AE0CD009A3C09 /* MessageNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35E3299AE0CD009A3C09 /* MessageNotificationView.swift */; };
 		5C7C35E6299AE0E1009A3C09 /* CheckInReactionNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35E5299AE0E1009A3C09 /* CheckInReactionNotificationView.swift */; };
-		5C7C35EC299AE441009A3C09 /* OptionalNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35EB299AE441009A3C09 /* OptionalNavigationLink.swift */; };
 		5C7C35EE299AE476009A3C09 /* IntId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35ED299AE476009A3C09 /* IntId.swift */; };
 		5C7C35F0299AE656009A3C09 /* EmailTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35EF299AE656009A3C09 /* EmailTextFieldView.swift */; };
 		5C7C35F2299AE67B009A3C09 /* UsernameTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35F1299AE67B009A3C09 /* UsernameTextFieldView.swift */; };
@@ -353,7 +352,6 @@
 		5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestNotificationView.swift; sourceTree = "<group>"; };
 		5C7C35E3299AE0CD009A3C09 /* MessageNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageNotificationView.swift; sourceTree = "<group>"; };
 		5C7C35E5299AE0E1009A3C09 /* CheckInReactionNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInReactionNotificationView.swift; sourceTree = "<group>"; };
-		5C7C35EB299AE441009A3C09 /* OptionalNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalNavigationLink.swift; sourceTree = "<group>"; };
 		5C7C35ED299AE476009A3C09 /* IntId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntId.swift; sourceTree = "<group>"; };
 		5C7C35EF299AE656009A3C09 /* EmailTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTextFieldView.swift; sourceTree = "<group>"; };
 		5C7C35F1299AE67B009A3C09 /* UsernameTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameTextFieldView.swift; sourceTree = "<group>"; };
@@ -1247,7 +1245,6 @@
 				5C663F22292DFF66006F9A97 /* AppLogoView.swift */,
 				5CA006CC2992D0CF003CC307 /* CreateQRCodeView.swift */,
 				5CE9008B291FCB71003DE697 /* SplashScreenView.swift */,
-				5C7C35EB299AE441009A3C09 /* OptionalNavigationLink.swift */,
 				5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */,
 				5C663F3229322016006F9A97 /* ServingStyleLabelView.swift */,
 				5CA7A534299E8ECB0066F604 /* DismissableSheetView.swift */,
@@ -1494,7 +1491,6 @@
 				5CFEE57728ED69B100A8DD66 /* App.swift in Sources */,
 				5CB1C24B28F9BE4F000B0EB4 /* ProductRepository.swift in Sources */,
 				5C61E83429B7B56000D10AA3 /* SearchListViewModel.swift in Sources */,
-				5C7C35EC299AE441009A3C09 /* OptionalNavigationLink.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
 				5C61E82D29B5C52600D10AA3 /* DuplicataProductScreen.swift in Sources */,
 				5C20A51729AB52A000ABBA74 /* FlavorManagementScreenViewModel.swift in Sources */,

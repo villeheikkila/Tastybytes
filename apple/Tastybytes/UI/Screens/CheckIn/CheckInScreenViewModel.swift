@@ -62,10 +62,9 @@ extension CheckInScreen {
       Task {
         switch await client.checkInComment.update(updateCheckInComment: updatedComment) {
         case let .success(updatedComment):
+          guard let index = self.checkInComments.firstIndex(where: { $0.id == updatedComment.id }) else { return }
           withAnimation {
-            if let index = self.checkInComments.firstIndex(where: { $0.id == updatedComment.id }) {
-              self.checkInComments[index] = updatedComment
-            }
+            self.checkInComments[index] = updatedComment
           }
         case let .failure(error):
           logger

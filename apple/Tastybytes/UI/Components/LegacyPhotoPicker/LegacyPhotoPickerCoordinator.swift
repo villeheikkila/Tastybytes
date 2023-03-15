@@ -18,9 +18,8 @@ extension LegacyPhotoPicker {
 
       if provider.canLoadObject(ofClass: UIImage.self) {
         provider.loadObject(ofClass: UIImage.self) { image, _ in
-          if let image = image as? UIImage {
-            self.onSelection(image)
-          }
+          guard let image = image as? UIImage else { return }
+          self.onSelection(image)
         }
       }
     }

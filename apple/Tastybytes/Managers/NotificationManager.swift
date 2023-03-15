@@ -96,16 +96,15 @@ import SwiftUI
       switch await client.notification.markAllRead() {
       case .success:
         self.notifications = self.notifications.map { notification in
-          if notification.seenAt == nil {
-            return Notification(
-              id: notification.id,
-              createdAt: notification.createdAt,
-              seenAt: Date(),
-              content: notification.content
-            )
-          } else {
+          if notification.seenAt != nil {
             return notification
           }
+          return Notification(
+            id: notification.id,
+            createdAt: notification.createdAt,
+            seenAt: Date(),
+            content: notification.content
+          )
         }
       case let .failure(error):
         logger.error("failed: \(error.localizedDescription)")
@@ -183,19 +182,18 @@ import SwiftUI
   }
 
   func deleteFromIndex(at: IndexSet) {
-    if let index = at.first {
-      let notificationId = notifications[index].id
+    guard let index = at.first else { return }
+    let notificationId = notifications[index].id
 
-      Task {
-        switch await client.notification.delete(id: notificationId) {
-        case .success:
-          withAnimation {
-            _ = self.notifications.remove(at: index)
-          }
-        case let .failure(error):
-          logger
-            .error("failed to delete notification '\(self.notifications[index].id)': \(error.localizedDescription)")
+    Task {
+      switch await client.notification.delete(id: notificationId) {
+      case .success:
+        withAnimation {
+          _ = self.notifications.remove(at: index)
         }
+      case let .failure(error):
+        logger
+          .error("failed to delete notification '\(self.notifications[index].id)': \(error.localizedDescription)")
       }
     }
   }
