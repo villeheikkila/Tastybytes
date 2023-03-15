@@ -18,9 +18,9 @@ struct AuthenticationScreen: View {
         UsernameTextFieldView(username: $viewModel.username)
           .focused($focusedField, equals: .username)
       }
-      if [.resetPassword, .accountDeleted].contains(viewModel.scene) {
+      if [.signIn, .signUp, .resetPassword, .accountDeleted].contains(viewModel.scene) {
         EmailTextFieldView(email: $viewModel.email)
-          .focused($focusedField, equals: .password)
+          .focused($focusedField, equals: .email)
       }
       if [.signIn, .signUp, .resetPassword].contains(viewModel.scene) {
         PasswordTextFieldView(

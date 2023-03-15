@@ -17,6 +17,7 @@ extension CheckInSheet {
     case friends
     case flavors
     case location
+    case purchaseLocation
     case photoPicker
   }
 
@@ -35,6 +36,7 @@ extension CheckInSheet {
     @Published var taggedFriends = [Profile]()
     @Published var pickedFlavors = [Flavor]()
     @Published var location: Location?
+    @Published var purchaseLocation: Location?
     @Published var checkInAt: Date = .now
     @Published var image: UIImage? {
       didSet {
@@ -65,18 +67,6 @@ extension CheckInSheet {
         location = editCheckIn.location
         checkInAt = editCheckIn.checkInAt ?? Date.now
       }
-    }
-
-    func setActiveSheet(_ sheet: Sheet) {
-      activeSheet = sheet
-    }
-
-    func setLocation(_ location: Location) {
-      self.location = location
-    }
-
-    func setManufacturer(_ company: Company) {
-      manufacturer = company
     }
 
     func setImageFromCamera(_ image: UIImage) {

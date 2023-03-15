@@ -26,13 +26,13 @@ extension BrandScreen {
     @Published var showBrandUnverificationConfirmation = false
     @Published var editSubBrand: SubBrand.JoinedProduct? {
       didSet {
-        setActiveSheet(.editSubBrand)
+        activeSheet = .editSubBrand
       }
     }
 
     @Published var duplicateProduct: Product.Joined? {
       didSet {
-        setActiveSheet(.duplicateProduct)
+        activeSheet = .duplicateProduct
       }
     }
 
@@ -78,10 +78,6 @@ extension BrandScreen {
           case (_?, nil): return false
           }
         }
-    }
-
-    func setActiveSheet(_ sheet: Sheet) {
-      activeSheet = sheet
     }
 
     func refresh() {

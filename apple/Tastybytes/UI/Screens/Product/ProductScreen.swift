@@ -110,25 +110,25 @@ struct ProductScreen: View {
   private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
-        Button(action: { viewModel.setActiveSheet(.checkIn) }, label: {
+        Button(action: { viewModel.activeSheet = .checkIn }, label: {
           Label("Check-in", systemImage: "plus").bold()
         }).disabled(!profileManager.hasPermission(.canCreateCheckIns))
 
         ShareLink("Share", item: NavigatablePath.product(id: viewModel.product.id).url)
 
         if profileManager.hasPermission(.canAddBarcodes) {
-          Button(action: { viewModel.setActiveSheet(.barcodeScanner) }, label: {
+          Button(action: { viewModel.activeSheet = .barcodeScanner }, label: {
             Label("Add Barcode", systemImage: "barcode.viewfinder")
           })
         }
         Divider()
 
         if profileManager.hasPermission(.canEditCompanies) {
-          Button(action: { viewModel.setActiveSheet(.editProduct) }, label: {
+          Button(action: { viewModel.activeSheet = .editProduct }, label: {
             Label("Edit", systemImage: "pencil")
           })
         } else {
-          Button(action: { viewModel.setActiveSheet(.editSuggestion) }, label: {
+          Button(action: { viewModel.activeSheet = .editSuggestion }, label: {
             Label("Edit Suggestion", systemImage: "pencil")
           })
         }
@@ -154,7 +154,7 @@ struct ProductScreen: View {
         }
 
         if profileManager.hasPermission(.canDeleteBarcodes) {
-          Button(action: { viewModel.setActiveSheet(.barcodes) }, label: {
+          Button(action: { viewModel.activeSheet = .barcodes }, label: {
             Label("Barcodes", systemImage: "barcode")
           })
         }

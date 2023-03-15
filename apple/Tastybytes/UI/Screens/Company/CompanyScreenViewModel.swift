@@ -31,10 +31,6 @@ extension CompanyScreen {
       return []
     }
 
-    func setActiveSheet(_ sheet: Sheet) {
-      activeSheet = sheet
-    }
-
     func sendCompanyEditSuggestion() {}
 
     func editCompany() {

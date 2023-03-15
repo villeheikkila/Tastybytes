@@ -182,7 +182,7 @@ struct BrandScreen: View {
       ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
 
       if profileManager.hasPermission(.canCreateProducts) {
-        Button(action: { viewModel.setActiveSheet(.addProduct) }, label: {
+        Button(action: { viewModel.activeSheet = .addProduct }, label: {
           Label("Add Product", systemImage: "plus")
         })
       }
@@ -190,7 +190,7 @@ struct BrandScreen: View {
       Divider()
 
       if profileManager.hasPermission(.canEditBrands) {
-        Button(action: { viewModel.setActiveSheet(.editBrand) }, label: {
+        Button(action: { viewModel.activeSheet = .editBrand }, label: {
           Label("Edit", systemImage: "pencil")
         })
       }

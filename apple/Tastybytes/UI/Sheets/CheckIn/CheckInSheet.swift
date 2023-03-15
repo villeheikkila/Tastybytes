@@ -80,7 +80,7 @@ struct CheckInSheet: View {
           ).fontWeight(.medium)
 
         })
-        Button(action: { viewModel.setActiveSheet(.flavors) }, label: {
+        Button(action: { viewModel.activeSheet = .flavors }, label: {
           if !viewModel.pickedFlavors.isEmpty {
             WrappingHStack(viewModel.pickedFlavors, spacing: .constant(4)) { flavor in
               ChipView(title: flavor.label)
@@ -108,14 +108,14 @@ struct CheckInSheet: View {
           }
         }
 
-        Button(action: { viewModel.setActiveSheet(.manufacturer) }, label: {
+        Button(action: { viewModel.activeSheet = .manufacturer }, label: {
           Text(viewModel.manufacturer?.name ?? "Manufactured By")
             .fontWeight(.medium)
         })
       }
 
       Section {
-        Button(action: { viewModel.setActiveSheet(.friends) }, label: {
+        Button(action: { viewModel.activeSheet = .friends }, label: {
           if viewModel.taggedFriends.isEmpty {
             Text("Tag friends")
               .fontWeight(.medium)
@@ -127,7 +127,7 @@ struct CheckInSheet: View {
         })
       }
 
-      Button(action: { viewModel.setActiveSheet(.location) }, label: {
+      Button(action: { viewModel.activeSheet = .location }, label: {
         HStack {
           if let location = viewModel.location {
             Text(location.name)
@@ -143,6 +143,21 @@ struct CheckInSheet: View {
         }
       })
       if profileManager.hasPermission(.canSetCheckInDate) {
+        Button(action: { viewModel.activeSheet = .purchaseLocation }, label: {
+          HStack {
+            if let location = viewModel.location {
+              Text(location.name)
+              if let title = location.title {
+                Text(title)
+                  .foregroundColor(.secondary)
+              }
+            } else {
+              Text("Purchase Locations")
+                .fontWeight(.medium)
+            }
+            Spacer()
+          }
+        })
         DatePicker(selection: $viewModel.checkInAt, in: ...Date.now) {
           Text("Check-in Date")
         }
@@ -152,7 +167,7 @@ struct CheckInSheet: View {
       Button(action: { viewModel.showCamera.toggle() }, label: {
         Text("Camera")
       })
-      Button(action: { viewModel.setActiveSheet(.photoPicker) }, label: {
+      Button(action: { viewModel.activeSheet = .photoPicker }, label: {
         Text("Photo Gallery")
       })
     } message: {
@@ -167,11 +182,15 @@ struct CheckInSheet: View {
           FlavorSheet(viewModel.client, pickedFlavors: $viewModel.pickedFlavors)
         case .location:
           LocationSearchSheet(viewModel.client, onSelect: { location in
-            viewModel.setLocation(location)
+            viewModel.location = location
+          })
+        case .purchaseLocation:
+          LocationSearchSheet(viewModel.client, onSelect: { location in
+            viewModel.purchaseLocation = location
           })
         case .manufacturer:
           CompanySearchSheet(viewModel.client, onSelect: { company, _ in
-            viewModel.setManufacturer(company)
+            viewModel.manufacturer = company
           })
         case .photoPicker:
           LegacyPhotoPicker(onSelection: { image in

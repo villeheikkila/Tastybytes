@@ -120,10 +120,6 @@ extension AddProductView {
       activeSheet = nil
     }
 
-    func setActiveSheet(_ sheet: Sheet) {
-      activeSheet = sheet
-    }
-
     func setBrandOwner(_ brandOwner: Company) {
       self.brandOwner = brandOwner
     }

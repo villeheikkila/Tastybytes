@@ -89,17 +89,17 @@ struct CompanyScreen: View {
       ShareLink("Share", item: NavigatablePath.company(id: viewModel.company.id).url)
 
       if profileManager.hasPermission(.canCreateBrands) {
-        Button(action: { viewModel.setActiveSheet(.addBrand) }, label: {
+        Button(action: { viewModel.activeSheet = .addBrand }, label: {
           Label("Add Brand", systemImage: "plus")
         })
       }
 
       if profileManager.hasPermission(.canEditCompanies) {
-        Button(action: { viewModel.setActiveSheet(.editCompany) }, label: {
+        Button(action: { viewModel.activeSheet = .editCompany }, label: {
           Label("Edit", systemImage: "pencil")
         })
       } else {
-        Button(action: { viewModel.setActiveSheet(.editSuggestionCompany) }, label: {
+        Button(action: { viewModel.activeSheet = .editSuggestionCompany }, label: {
           Label("Edit Suggestion", systemImage: "pencil")
         })
       }

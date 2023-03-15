@@ -31,10 +31,6 @@ extension ProductScreen {
       self.client = client
     }
 
-    func setActiveSheet(_ sheet: Sheet) {
-      activeSheet = sheet
-    }
-
     func showDeleteConfirmation() {
       showDeleteProductConfirmationDialog.toggle()
     }

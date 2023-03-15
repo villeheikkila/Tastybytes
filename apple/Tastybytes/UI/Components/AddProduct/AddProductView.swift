@@ -127,7 +127,7 @@ struct AddProductView: View {
         }
       }
 
-      Button(action: { viewModel.setActiveSheet(.subcategories) }, label: {
+      Button(action: { viewModel.activeSheet = .subcategories }, label: {
         HStack {
           if viewModel.subcategories.isEmpty {
             Text("Subcategories")
@@ -155,12 +155,12 @@ struct AddProductView: View {
 
   private var brandSection: some View {
     Section {
-      Button(action: { viewModel.setActiveSheet(.brandOwner) }, label: {
+      Button(action: { viewModel.activeSheet = .brandOwner }, label: {
         Text(viewModel.brandOwner?.name ?? "Company")
           .fontWeight(.medium)
       })
       if viewModel.brandOwner != nil {
-        Button(action: { viewModel.setActiveSheet(.brand) }, label: {
+        Button(action: { viewModel.activeSheet = .brand }, label: {
           Text(viewModel.brand?.name ?? "Brand")
             .fontWeight(.medium)
         })
@@ -172,7 +172,7 @@ struct AddProductView: View {
       }
 
       if viewModel.hasSubBrand {
-        Button(action: { viewModel.setActiveSheet(.subBrand) }, label: {
+        Button(action: { viewModel.activeSheet = .subBrand }, label: {
           Text(viewModel.subBrand?.name ?? "Sub-brand")
             .fontWeight(.medium)
         })
@@ -201,7 +201,7 @@ struct AddProductView: View {
         .focused($focusedField, equals: .description)
 
       if viewModel.mode == .new {
-        Button(action: { viewModel.setActiveSheet(.barcode) }, label: {
+        Button(action: { viewModel.activeSheet = .barcode }, label: {
           Text(viewModel.barcode == nil ? "Add Barcode" : "Barcode Added!")
             .fontWeight(.medium)
         })
