@@ -96,6 +96,7 @@ extension CheckInSheet {
         flavors: pickedFlavors,
         rating: rating,
         location: location,
+        purchaseLocation: purchaseLocation,
         blurHash: blurHash,
         checkInAt: checkInAt
       )
@@ -119,6 +120,7 @@ extension CheckInSheet {
         flavors: pickedFlavors,
         rating: rating,
         location: location,
+        purchaseLocation: purchaseLocation,
         blurHash: blurHash,
         checkInAt: checkInAt
       )

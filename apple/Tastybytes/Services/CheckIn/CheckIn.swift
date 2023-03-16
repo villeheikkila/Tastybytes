@@ -146,6 +146,7 @@ extension CheckIn {
     let friendIds: [String]?
     let flavorIds: [Int]?
     let locationId: String?
+    let purchaseLocationId: String?
     let checkInAt: String?
 
     enum CodingKeys: String, CodingKey {
@@ -170,6 +171,7 @@ extension CheckIn {
       flavors: [Flavor],
       rating: Double,
       location: Location?,
+      purchaseLocation: Location?,
       blurHash: String?,
       checkInAt: Date?
     ) {
@@ -181,6 +183,7 @@ extension CheckIn {
       flavorIds = flavors.map(\.id)
       self.rating = rating
       locationId = location?.id.uuidString
+      purchaseLocationId = purchaseLocation?.id.uuidString
       self.blurHash = blurHash
       if let checkInAt {
         self.checkInAt = formatDateToTimestampTz(from: checkInAt)
@@ -201,6 +204,7 @@ extension CheckIn {
     let friendIds: [String]?
     let flavorIds: [Int]?
     let locationId: String?
+    let purchaseLocationId: String?
     let checkInAt: String?
 
     enum CodingKeys: String, CodingKey {
@@ -227,6 +231,7 @@ extension CheckIn {
       flavors: [Flavor],
       rating: Double,
       location: Location?,
+      purchaseLocation: Location?,
       blurHash: String?,
       checkInAt: Date?
     ) {
@@ -239,6 +244,7 @@ extension CheckIn {
       flavorIds = flavors.map(\.id)
       self.rating = rating
       locationId = location?.id.uuidString
+      purchaseLocationId = purchaseLocation?.id.uuidString
       self.blurHash = blurHash
       if let checkInAt {
         self.checkInAt = formatDateToTimestampTz(from: checkInAt)
