@@ -1,4 +1,6 @@
+import Foundation
 import Supabase
+import SupabaseStorage
 
 protocol CompanyRepository {
   func getById(id: Int) async -> Result<Company, Error>
@@ -10,6 +12,7 @@ protocol CompanyRepository {
   func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
   func search(searchTerm: String) async -> Result<[Company], Error>
   func getSummaryById(id: Int) async -> Result<Summary, Error>
+  func uploadLogo(companyId: Int, data: Data) async -> Result<String, Error>
 }
 
 struct SupabaseCompanyRepository: CompanyRepository {
@@ -63,6 +66,30 @@ struct SupabaseCompanyRepository: CompanyRepository {
         .value
 
       return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func uploadLogo(companyId: Int, data: Data) async -> Result<String, Error> {
+    do {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "yyyy_MM_dd_HH_mm"
+      let date = Date()
+      let timestamp = formatter.string(from: date)
+      let fileName = "\(companyId)_\(timestamp).jpeg"
+      print(fileName)
+      let file = File(
+        name: fileName, data: data, fileName: fileName, contentType: "image/jpeg"
+      )
+      _ = try await client
+        .storage
+        .from(id: "logos")
+        .upload(
+          path: fileName, file: file, fileOptions: nil
+        )
+
+      return .success(fileName)
     } catch {
       return .failure(error)
     }

@@ -1,3 +1,4 @@
+import PhotosUI
 import SwiftUI
 
 extension CompanyScreen {
@@ -18,6 +19,13 @@ extension CompanyScreen {
     @Published var newCompanyNameSuggestion = ""
     @Published var showUnverifyCompanyConfirmation = false
     @Published var showDeleteCompanyConfirmationDialog = false
+    @Published var selectedItem: PhotosPickerItem? {
+      didSet {
+        if selectedItem != nil {
+          uploadCompanyImage()
+        }
+      }
+    }
 
     init(_ client: Client, company: Company) {
       self.client = client
@@ -46,6 +54,30 @@ extension CompanyScreen {
           self.activeSheet = nil
         case let .failure(error):
           logger.error("failed to edit company \(companyJoined.id): \(error.localizedDescription)")
+        }
+      }
+    }
+
+    func uploadCompanyImage() {
+      Task {
+        guard let imageData = try await selectedItem?.loadTransferable(type: Data.self),
+              let image = UIImage(data: imageData),
+              let data = image.jpegData(compressionQuality: 0.1)
+        else { return }
+
+        switch await client.company.uploadLogo(companyId: company.id, data: data) {
+        case let .success(fileName):
+          company = Company(
+            id: company.id,
+            name: company.name,
+            logoFile: fileName,
+            isVerified: company.isVerified
+          )
+        case let .failure(error):
+          logger
+            .error(
+              "uplodaing company logo failed: \(error.localizedDescription)"
+            )
         }
       }
     }

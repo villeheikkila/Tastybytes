@@ -56,4 +56,5 @@ enum PermissionName: String, Decodable, Equatable, Sendable {
   case canDeleteServingStyles = "can_delete_serving_styles"
   case canAddServingStyles = "can_add_serving_styles"
   case canAddCategories = "can_add_categories"
+  case canAddCompanyLogo = "can_add_company_logo"
 }

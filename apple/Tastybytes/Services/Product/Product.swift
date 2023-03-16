@@ -383,7 +383,13 @@ extension Product {
         id: subBrand.id,
         name: subBrand.name,
         isVerified: subBrand.isVerified,
-        brand: Brand.JoinedCompany(id: brand.id, name: brand.name, isVerified: brand.isVerified, brandOwner: company)
+        brand: Brand.JoinedCompany(
+          id: brand.id,
+          name: brand.name,
+          logoFile: brand.logoFile,
+          isVerified: brand.isVerified,
+          brandOwner: company
+        )
       )
       subcategories = product.subcategories
       category = product.category
@@ -410,6 +416,7 @@ extension Product {
         brand: Brand.JoinedCompany(
           id: brand.id,
           name: brand.name,
+          logoFile: brand.logoFile,
           isVerified: brand.isVerified,
           brandOwner: brand.brandOwner
         )

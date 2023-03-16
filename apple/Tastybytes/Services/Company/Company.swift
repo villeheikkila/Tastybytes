@@ -1,11 +1,10 @@
 import Foundation
 
-struct Company: Identifiable, Codable, Hashable {
-  let id: Int
-  let name: String
-  let logoFile: String?
-  let isVerified: Bool
+protocol CompanyLogo {
+  var logoFile: String? { get }
+}
 
+extension CompanyLogo {
   func getLogoUrl() -> URL? {
     if let logoFile {
       let bucketId = "logos"
@@ -15,6 +14,13 @@ struct Company: Identifiable, Codable, Hashable {
       return nil
     }
   }
+}
+
+struct Company: Identifiable, Codable, Hashable, CompanyLogo {
+  let id: Int
+  let name: String
+  let logoFile: String?
+  let isVerified: Bool
 
   enum CodingKeys: String, CodingKey {
     case id

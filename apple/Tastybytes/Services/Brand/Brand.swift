@@ -34,12 +34,14 @@ extension Brand {
   struct JoinedSubBrands: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let name: String
+    let logoFile: String?
     let isVerified: Bool
     let subBrands: [SubBrand]
 
     enum CodingKeys: String, CodingKey {
       case id
       case name
+      case logoFile = "logo_file"
       case isVerified = "is_verified"
       case subBrands = "sub_brands"
     }
@@ -48,12 +50,14 @@ extension Brand {
   struct JoinedCompany: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let name: String
+    let logoFile: String?
     let isVerified: Bool
     let brandOwner: Company
 
     enum CodingKeys: String, CodingKey {
       case id
       case name
+      case logoFile = "logo_file"
       case isVerified = "is_verified"
       case brandOwner = "companies"
     }
@@ -62,6 +66,7 @@ extension Brand {
   struct JoinedSubBrandsProducts: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let name: String
+    let logoFile: String?
     let isVerified: Bool
     let subBrands: [SubBrand.JoinedProduct]
 
@@ -72,6 +77,7 @@ extension Brand {
     enum CodingKeys: String, CodingKey {
       case id
       case name
+      case logoFile = "logo_file"
       case isVerified = "is_verified"
       case subBrands = "sub_brands"
     }
@@ -80,6 +86,7 @@ extension Brand {
   struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let name: String
+    let logoFile: String?
     let isVerified: Bool
     let brandOwner: Company
     let subBrands: [SubBrand.JoinedProduct]
@@ -89,6 +96,7 @@ extension Brand {
       name = brand.name
       isVerified = brand.isVerified
       self.brandOwner = brandOwner
+      logoFile = brand.logoFile
       subBrands = brand.subBrands
     }
 
@@ -102,11 +110,13 @@ extension Brand {
       self.isVerified = isVerified
       self.brandOwner = brandOwner
       self.subBrands = subBrands
+      logoFile = nil
     }
 
     enum CodingKeys: String, CodingKey {
       case id
       case name
+      case logoFile = "logo_file"
       case isVerified = "is_verified"
       case brandOwner = "companies"
       case subBrands = "sub_brands"

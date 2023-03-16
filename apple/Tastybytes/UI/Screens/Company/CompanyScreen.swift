@@ -1,4 +1,5 @@
 import CachedAsyncImage
+import PhotosUI
 import SwiftUI
 
 struct CompanyScreen: View {
@@ -38,11 +39,12 @@ struct CompanyScreen: View {
       .headerProminence(.increased)
     }
     .listStyle(.plain)
-    .navigationTitle(viewModel.company.name)
     .refreshable {
       viewModel.getBrandsAndSummary()
     }
-    .navigationBarItems(trailing: navigationBarMenu)
+    .toolbar {
+      toolbar
+    }
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {
@@ -81,6 +83,31 @@ struct CompanyScreen: View {
       if viewModel.summary == nil {
         viewModel.getBrandsAndSummary()
       }
+    }
+  }
+
+  @ToolbarContentBuilder
+  private var toolbar: some ToolbarContent {
+    ToolbarItem(placement: .principal) {
+      HStack(alignment: .center, spacing: 18) {
+        if let logoUrl = viewModel.company.getLogoUrl() {
+          CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+            image
+              .resizable()
+              .aspectRatio(contentMode: .fill)
+              .frame(width: 32, height: 32)
+              .accessibility(hidden: true)
+          } placeholder: {
+            Image(systemName: "photo")
+              .accessibility(hidden: true)
+          }
+        }
+        Text(viewModel.company.name)
+          .font(.headline)
+      }
+    }
+    ToolbarItem(placement: .navigationBarTrailing) {
+      navigationBarMenu
     }
   }
 
@@ -148,6 +175,29 @@ struct CompanyScreen: View {
   private var companyEditSheet: some View {
     Form {
       Section {
+        if profileManager.hasPermission(.canAddCompanyLogo) {
+          PhotosPicker(
+            selection: $viewModel.selectedItem,
+            matching: .images,
+            photoLibrary: .shared()
+          ) {
+            if let logoUrl = viewModel.company.getLogoUrl() {
+              CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+                image
+                  .resizable()
+                  .aspectRatio(contentMode: .fill)
+                  .frame(width: 52, height: 52)
+                  .accessibility(hidden: true)
+              } placeholder: {
+                Image(systemName: "photo")
+                  .accessibility(hidden: true)
+              }
+            } else {
+              Image(systemName: "photo")
+                .accessibility(hidden: true)
+            }
+          }
+        }
         TextField("Name", text: $viewModel.newCompanyNameSuggestion)
         Button("Edit") {
           viewModel.editCompany()

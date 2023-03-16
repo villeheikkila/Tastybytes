@@ -158,6 +158,7 @@ extension AddProductView {
           self.brand = Brand.JoinedSubBrands(
             id: brand.id,
             name: brand.name,
+            logoFile: brand.logoFile,
             isVerified: brand.isVerified,
             subBrands: brand.subBrands
               .map { subBrand in SubBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified) }
@@ -190,6 +191,7 @@ extension AddProductView {
             self.brand = Brand.JoinedSubBrands(
               id: initialProduct.subBrand.brand.id,
               name: initialProduct.subBrand.brand.name,
+              logoFile: initialProduct.subBrand.brand.logoFile,
               isVerified: initialProduct.subBrand.brand.isVerified,
               subBrands: brandsWithSubBrands
                 .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? []

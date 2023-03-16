@@ -1,9 +1,3 @@
-alter table "auth"."users" add column "deleted_at" timestamp with time zone;
-
-alter table "auth"."users" alter column "phone" set data type text using "phone"::text;
-
-alter table "auth"."users" alter column "phone_change" set data type text using "phone_change"::text;
-
 CREATE INDEX refresh_token_session_id ON auth.refresh_tokens USING btree (session_id);
 
 set check_function_bodies = off;
@@ -289,19 +283,6 @@ to authenticated
 using ((auth.uid() = id))
 with check ((auth.uid() = id));
 
-
-
-alter table "storage"."objects" drop constraint "objects_owner_fkey";
-
-alter table "storage"."buckets" add column "allowed_mime_types" text[];
-
-alter table "storage"."buckets" add column "avif_autodetection" boolean default false;
-
-alter table "storage"."buckets" add column "file_size_limit" bigint;
-
-alter table "storage"."objects" add constraint "objects_owner_fkey" FOREIGN KEY (owner) REFERENCES auth.users(id) ON DELETE SET NULL not valid;
-
-alter table "storage"."objects" validate constraint "objects_owner_fkey";
 
 create policy "Allow deleting own avatar"
 on "storage"."objects"
