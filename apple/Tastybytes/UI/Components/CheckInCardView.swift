@@ -1,6 +1,52 @@
 import CachedAsyncImage
+import Combine
 import SwiftUI
 import WrappingHStack
+
+struct BlurHashPlaceholder: View {
+  let blurHash: CheckIn.BlurHash?
+  @State private var image: UIImage?
+  @State private var task: Task<Void, Never>?
+
+  var body: some View {
+    Group {
+      if let image {
+        Image(uiImage: image)
+          .resizable()
+          .scaledToFill()
+          .frame(height: 200)
+          .clipped()
+          .accessibility(hidden: true)
+      } else {
+        ProgressView()
+      }
+    }
+    .onDisappear {
+      task?.cancel()
+    }
+    .task {
+      guard let blurHash else { return }
+      task = Task {
+        await withTaskGroup(of: UIImage?.self) { group in
+          group.addTask(priority: .background) {
+            await withCheckedContinuation { continuation in
+              DispatchQueue.global().async {
+                let decodedImage = UIImage(
+                  blurHash: blurHash.hash,
+                  size: CGSize(width: 50, height: 50)
+                )
+                continuation.resume(returning: decodedImage)
+              }
+            }
+          }
+          for await decodedImage in group {
+            image = decodedImage
+          }
+        }
+      }
+    }
+  }
+}
 
 struct CheckInCardView: View {
   @EnvironmentObject private var router: Router
@@ -31,17 +77,6 @@ struct CheckInCardView: View {
     .clipped()
     .cornerRadius(8)
     .shadow(color: Color.black.opacity(0.1), radius: 4, x: 2, y: 2)
-//    .onAppear {
-//      if let blurHash = checkIn.blurHash {
-//        Task {
-//          let blurHashImage = UIImage(
-//            blurHash: blurHash.hash,
-//            size: CGSize(width: blurHash.width / 5, height: blurHash.height / 5)
-//          )?.resize(to: blurHash.height)
-//          blurHashPlaceHolder = blurHashImage
-//        }
-//      }
-//    }
   }
 
   private var header: some View {
@@ -99,17 +134,8 @@ struct CheckInCardView: View {
             }
           }
       } placeholder: {
-        if let blurHashPlaceHolder {
-          Image(uiImage: blurHashPlaceHolder)
-            .resizable()
-            .scaledToFill()
-            .frame(height: 200)
-            .clipped()
-            .accessibility(hidden: true)
-        } else {
-          ProgressView()
-        }
-      }
+        BlurHashPlaceholder(blurHash: checkIn.blurHash)
+      }.frame(height: 200)
     }
   }
 
