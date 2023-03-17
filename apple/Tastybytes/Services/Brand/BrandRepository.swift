@@ -1,4 +1,6 @@
+import Foundation
 import Supabase
+import SupabaseStorage
 
 protocol BrandRepository {
   func getById(id: Int) async -> Result<Brand.JoinedSubBrandsProducts, Error>
@@ -10,6 +12,7 @@ protocol BrandRepository {
   func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error>
   func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
   func delete(id: Int) async -> Result<Void, Error>
+  func uploadLogo(brandId: Int, data: Data) async -> Result<String, Error>
 }
 
 struct SupabaseBrandRepository: BrandRepository {
@@ -159,6 +162,29 @@ struct SupabaseBrandRepository: BrandRepository {
         .value
 
       return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func uploadLogo(brandId: Int, data: Data) async -> Result<String, Error> {
+    do {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "yyyy_MM_dd_HH_mm"
+      let date = Date()
+      let timestamp = formatter.string(from: date)
+      let fileName = "\(brandId)_\(timestamp).jpeg"
+      let file = File(
+        name: fileName, data: data, fileName: fileName, contentType: "image/jpeg"
+      )
+      _ = try await client
+        .storage
+        .from(id: "brand_logos")
+        .upload(
+          path: fileName, file: file, fileOptions: nil
+        )
+
+      return .success(fileName)
     } catch {
       return .failure(error)
     }

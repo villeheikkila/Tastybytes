@@ -1,9 +1,12 @@
 import AlertToast
+import CachedAsyncImage
+import PhotosUI
 import SwiftUI
 
 struct EditBrandSheet: View {
   @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel: ViewModel
+  @EnvironmentObject private var profileManager: ProfileManager
 
   let onUpdate: () -> Void
 
@@ -12,13 +15,36 @@ struct EditBrandSheet: View {
     brand: Brand.JoinedSubBrandsProductsCompany,
     onUpdate: @escaping () -> Void
   ) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, brand: brand))
+    _viewModel = StateObject(wrappedValue: ViewModel(client, brand: brand, onUpdate: onUpdate))
     self.onUpdate = onUpdate
   }
 
   var body: some View {
     Form {
       Section {
+        if profileManager.hasPermission(.canAddCompanyLogo) {
+          PhotosPicker(
+            selection: $viewModel.selectedLogo,
+            matching: .images,
+            photoLibrary: .shared()
+          ) {
+            if let logoUrl = viewModel.brand.getLogoUrl() {
+              CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+                image
+                  .resizable()
+                  .aspectRatio(contentMode: .fill)
+                  .frame(width: 52, height: 52)
+                  .accessibility(hidden: true)
+              } placeholder: {
+                Image(systemName: "photo")
+                  .accessibility(hidden: true)
+              }
+            } else {
+              Image(systemName: "photo")
+                .accessibility(hidden: true)
+            }
+          }
+        }
         TextField("Name", text: $viewModel.name)
         Button("Edit") {
           viewModel.editBrand {

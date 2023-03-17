@@ -1,10 +1,13 @@
 import AlertToast
+import CachedAsyncImage
+import PhotosUI
 import SwiftUI
 
 struct EditSubBrandSheet: View {
   @Environment(\.dismiss) private var dismiss
   @EnvironmentObject private var hapticManager: HapticManager
   @StateObject private var viewModel: ViewModel
+  @EnvironmentObject var profileManager: ProfileManager
 
   let onUpdate: () -> Void
 

@@ -1,3 +1,21 @@
+import Foundation
+
+protocol BrandLogo {
+  var logoFile: String? { get }
+}
+
+extension BrandLogo {
+  func getLogoUrl() -> URL? {
+    if let logoFile {
+      let bucketId = "brand_logos"
+      let urlString = "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(logoFile)"
+      return URL(string: urlString)
+    } else {
+      return nil
+    }
+  }
+}
+
 enum Brand {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "brands"
@@ -31,7 +49,7 @@ enum Brand {
 }
 
 extension Brand {
-  struct JoinedSubBrands: Identifiable, Hashable, Decodable, Sendable {
+  struct JoinedSubBrands: Identifiable, Hashable, Decodable, Sendable, BrandLogo {
     let id: Int
     let name: String
     let logoFile: String?
@@ -47,7 +65,7 @@ extension Brand {
     }
   }
 
-  struct JoinedCompany: Identifiable, Hashable, Decodable, Sendable {
+  struct JoinedCompany: Identifiable, Hashable, Decodable, Sendable, BrandLogo {
     let id: Int
     let name: String
     let logoFile: String?
@@ -63,7 +81,7 @@ extension Brand {
     }
   }
 
-  struct JoinedSubBrandsProducts: Identifiable, Hashable, Decodable, Sendable {
+  struct JoinedSubBrandsProducts: Identifiable, Hashable, Decodable, Sendable, BrandLogo {
     let id: Int
     let name: String
     let logoFile: String?
@@ -83,7 +101,7 @@ extension Brand {
     }
   }
 
-  struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Decodable, Sendable {
+  struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Decodable, Sendable, BrandLogo {
     let id: Int
     let name: String
     let logoFile: String?

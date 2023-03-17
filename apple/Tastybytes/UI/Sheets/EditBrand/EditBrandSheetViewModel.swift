@@ -1,3 +1,4 @@
+import PhotosUI
 import SwiftUI
 
 extension EditBrandSheet {
@@ -15,13 +16,23 @@ extension EditBrandSheet {
     @Published var showToast = false
     @Published var initialBrandOwner: Company
     @Published var brand: Brand.JoinedSubBrandsProductsCompany
+    @Published var selectedLogo: PhotosPickerItem? {
+      didSet {
+        if selectedLogo != nil {
+          uploadLogo()
+        }
+      }
+    }
 
-    init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany) {
+    let onUpdate: () -> Void
+
+    init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: @escaping () -> Void) {
       self.client = client
       self.brand = brand
       initialBrandOwner = brand.brandOwner
       brandOwner = brand.brandOwner
       name = brand.name
+      self.onUpdate = onUpdate
     }
 
     func editBrand(
@@ -36,6 +47,25 @@ extension EditBrandSheet {
           onSuccess()
         case let .failure(error):
           logger.error("failed to edit brand '\(self.brand.id)': \(error.localizedDescription)")
+        }
+      }
+    }
+
+    func uploadLogo() {
+      Task {
+        guard let imageData = try await selectedLogo?.loadTransferable(type: Data.self),
+              let image = UIImage(data: imageData),
+              let data = image.jpegData(compressionQuality: 0.1)
+        else { return }
+
+        switch await client.brand.uploadLogo(brandId: brand.id, data: data) {
+        case let .success(fileName):
+          onUpdate()
+        case let .failure(error):
+          logger
+            .error(
+              "uplodaing company logo failed: \(error.localizedDescription)"
+            )
         }
       }
     }

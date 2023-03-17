@@ -131,8 +131,9 @@ struct BrandScreen: View {
         }
       }
     }
-    .navigationTitle(viewModel.brand.name)
-    .navigationBarItems(trailing: navigationBarMenu)
+    .toolbar {
+      toolbar
+    }
     .confirmationDialog("Unverify Sub-brand",
                         isPresented: $viewModel.showSubBrandUnverificationConfirmation,
                         presenting: viewModel.toUnverifySubBrand)
@@ -174,6 +175,31 @@ struct BrandScreen: View {
           hapticManager.trigger(of: .notification(.success))
         })
       })
+    }
+  }
+
+  @ToolbarContentBuilder
+  private var toolbar: some ToolbarContent {
+    ToolbarItem(placement: .principal) {
+      HStack(alignment: .center, spacing: 18) {
+        if let logoUrl = viewModel.brand.getLogoUrl() {
+          CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+            image
+              .resizable()
+              .aspectRatio(contentMode: .fill)
+              .frame(width: 32, height: 32)
+              .accessibility(hidden: true)
+          } placeholder: {
+            Image(systemName: "photo")
+              .accessibility(hidden: true)
+          }
+        }
+        Text(viewModel.brand.name)
+          .font(.headline)
+      }
+    }
+    ToolbarItem(placement: .navigationBarTrailing) {
+      navigationBarMenu
     }
   }
 
