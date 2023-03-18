@@ -100,6 +100,7 @@
 		5C663F372933B8FA006F9A97 /* LocationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F362933B8FA006F9A97 /* LocationScreen.swift */; };
 		5C663F3929355601006F9A97 /* EditBrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F3829355601006F9A97 /* EditBrandSheet.swift */; };
 		5C66745129C64A4C005380B7 /* PhotosUIExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C66745029C64A4C005380B7 /* PhotosUIExtension.swift */; };
+		5C66745329C672F1005380B7 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C66745229C672F1005380B7 /* DateExtension.swift */; };
 		5C7C356F299ABE08009A3C09 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C356E299ABE08009A3C09 /* ProfileViewModel.swift */; };
 		5C7C3572299ABF26009A3C09 /* FriendsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3571299ABF26009A3C09 /* FriendsScreenViewModel.swift */; };
 		5C7C3574299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */; };
@@ -313,6 +314,7 @@
 		5C663F362933B8FA006F9A97 /* LocationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationScreen.swift; sourceTree = "<group>"; };
 		5C663F3829355601006F9A97 /* EditBrandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBrandSheet.swift; sourceTree = "<group>"; };
 		5C66745029C64A4C005380B7 /* PhotosUIExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosUIExtension.swift; sourceTree = "<group>"; };
+		5C66745229C672F1005380B7 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		5C7C356E299ABE08009A3C09 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		5C7C3571299ABF26009A3C09 /* FriendsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserFriendsScreenView.swift; sourceTree = "<group>"; };
@@ -1170,6 +1172,7 @@
 				5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */,
 				5CC6B9AD29B2360D00A62158 /* UIImageExtensions.swift */,
 				5C66745029C64A4C005380B7 /* PhotosUIExtension.swift */,
+				5C66745229C672F1005380B7 /* DateExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1582,6 +1585,7 @@
 				5C25C69029991D0000C07953 /* ProductBarcodeRepository.swift in Sources */,
 				5C7C35D6299ACEAF009A3C09 /* AboutScreenViewModel.swift in Sources */,
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
+				5C66745329C672F1005380B7 /* DateExtension.swift in Sources */,
 				5CE9009329211AC9003DE697 /* NotificationManager.swift in Sources */,
 				5C7C35E0299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift in Sources */,
 				5C2146ED29A97CB40005422D /* ProductFeedScreenViewModel.swift in Sources */,

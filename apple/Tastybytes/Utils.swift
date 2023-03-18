@@ -30,43 +30,6 @@ func validateStringLength(str: String, type: StrinLengthType) -> Bool {
   }
 }
 
-enum DateParsingError: Error {
-  case failure
-}
-
-func parseDate(from: String) throws -> Date {
-  let dateFormatter = DateFormatter()
-  dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-
-  let formatStrings = [
-    "yyyy-MM-dd HH:mm:ss.SSSSSSZZZZZ",
-    "yyyy-MM-dd HH:mm:ss.SSSZZZZZ",
-    "yyyy-MM-dd'T'HH:mm:ssZZZZZ",
-    "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
-  ]
-
-  var date: Date?
-  for formatString in formatStrings {
-    dateFormatter.dateFormat = formatString
-    if let parsedDate = dateFormatter.date(from: from) {
-      date = parsedDate
-      break
-    }
-  }
-
-  guard let date else { throw DateParsingError.failure }
-  return date
-}
-
-func formatDateToTimestampTz(from: Date) -> String {
-  let dateFormatter = DateFormatter()
-  dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
-  dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-
-  print(dateFormatter.string(from: from))
-  return dateFormatter.string(from: from)
-}
-
 struct CSVFile: FileDocument {
   static let readableContentTypes = [UTType.commaSeparatedText]
   static let writableContentTypes = UTType.commaSeparatedText
@@ -90,10 +53,6 @@ struct CSVFile: FileDocument {
   }
 }
 
-func joinOptionalStrings(_ arr: [String?]) -> String {
-  arr.compactMap { $0 }.joined(separator: " ")
-}
-
 func queryWithTableName(_ tableName: String, _ query: String, _ withTableName: Bool) -> String {
   withTableName ? "\(tableName) (\(query))" : query
 }
@@ -107,11 +66,4 @@ func getLogger(category: String) -> Logger {
     subsystem: Bundle.main.bundleIdentifier ?? "app",
     category: category
   )
-}
-
-func generateQrCode(_ content: String) -> Data? {
-  guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return nil }
-  filter.setValue(content.data(using: .ascii, allowLossyConversion: false), forKey: "inputMessage")
-  guard let ciimage = filter.outputImage else { return nil }
-  return UIImage(ciImage: ciimage.transformed(by: CGAffineTransform(scaleX: 10, y: 10))).pngData()
 }

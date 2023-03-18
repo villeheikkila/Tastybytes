@@ -71,7 +71,7 @@ extension ProductBarcode {
       barcode = try values.decode(String.self, forKey: .barcode)
       type = try AVMetadataObject.ObjectType(rawValue: values.decode(String.self, forKey: .type))
       profile = try values.decode(Profile.self, forKey: .profiles)
-      createdAt = try parseDate(from: values.decode(String.self, forKey: .createdAt))
+      createdAt = try Date(timestamptzString: values.decode(String.self, forKey: .createdAt))
     }
   }
 

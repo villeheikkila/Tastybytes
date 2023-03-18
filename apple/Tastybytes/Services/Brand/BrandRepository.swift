@@ -174,15 +174,12 @@ struct SupabaseBrandRepository: BrandRepository {
       let date = Date()
       let timestamp = formatter.string(from: date)
       let fileName = "\(brandId)_\(timestamp).jpeg"
-      let file = File(
-        name: fileName, data: data, fileName: fileName, contentType: "image/jpeg"
-      )
+      let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
+
       _ = try await client
         .storage
         .from(id: Brand.getQuery(.logosBucket))
-        .upload(
-          path: fileName, file: file, fileOptions: nil
-        )
+        .upload(path: fileName, file: file, fileOptions: nil)
 
       return .success(fileName)
     } catch {

@@ -187,17 +187,13 @@ struct SupabaseCheckInRepository: CheckInRepository {
   }
 
   func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<Void, Error> {
-    let file = File(
-      name: "\(id).jpeg", data: data, fileName: "\(id).jpeg", contentType: "image/jpeg"
-    )
-
     do {
+      let file = File(name: "\(id).jpeg", data: data, fileName: "\(id).jpeg", contentType: "image/jpeg")
+
       _ = try await client
         .storage
         .from(id: CheckIn.getQuery(.imageBucket))
-        .upload(
-          path: "\(userId.uuidString.lowercased())/\(id).jpeg", file: file, fileOptions: nil
-        )
+        .upload(path: "\(userId.uuidString.lowercased())/\(id).jpeg", file: file, fileOptions: nil)
 
       return .success(())
     } catch {

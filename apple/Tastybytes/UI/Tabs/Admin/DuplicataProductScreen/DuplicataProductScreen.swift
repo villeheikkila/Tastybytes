@@ -20,7 +20,7 @@ struct DuplicateProductScreen: View {
               Text(createdBy.preferredName).font(.caption).bold()
               Spacer()
               // swiftlint:disable force_try
-              if let createdAt = product.createdAt, let date = try! parseDate(from: createdAt) {
+              if let createdAt = product.createdAt, let date = try! Date(timestamptzString: createdAt) {
                 Text(date.relativeTime()).font(.caption).bold()
               }
             }

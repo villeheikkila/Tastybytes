@@ -333,14 +333,12 @@ extension Product {
       switch part {
       case .full:
         return [subBrand.brand.brandOwner.name, subBrand.brand.name, subBrand.name, name]
-          .compactMap { $0 }
-          .joined(separator: " ")
+          .joinOptionalSpace()
       case .brandOwner:
         return subBrand.brand.brandOwner.name
       case .fullName:
         return [subBrand.brand.name, subBrand.name, name]
-          .compactMap { $0 }
-          .joined(separator: " ")
+          .joinOptionalSpace()
       }
     }
 

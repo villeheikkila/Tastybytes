@@ -82,7 +82,7 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
     }
     let checkInAtString = try values.decodeIfPresent(String.self, forKey: .checkInAt)
     if let checkInAtString {
-      checkInAt = try parseDate(from: checkInAtString)
+      checkInAt = try Date(timestamptzString: checkInAtString)
     } else {
       checkInAt = nil
     }
@@ -186,7 +186,7 @@ extension CheckIn {
       purchaseLocationId = purchaseLocation?.id.uuidString
       self.blurHash = blurHash
       if let checkInAt {
-        self.checkInAt = formatDateToTimestampTz(from: checkInAt)
+        self.checkInAt = checkInAt.formatDateToTimestampTz()
       } else {
         self.checkInAt = nil
       }
@@ -247,7 +247,7 @@ extension CheckIn {
       purchaseLocationId = purchaseLocation?.id.uuidString
       self.blurHash = blurHash
       if let checkInAt {
-        self.checkInAt = formatDateToTimestampTz(from: checkInAt)
+        self.checkInAt = checkInAt.formatDateToTimestampTz()
       } else {
         self.checkInAt = nil
       }
