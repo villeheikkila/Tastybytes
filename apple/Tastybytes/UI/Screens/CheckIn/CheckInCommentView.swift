@@ -10,7 +10,7 @@ struct CheckInCommentView: View {
         HStack {
           Text(comment.profile.preferredName).font(.caption)
           Spacer()
-          Text(comment.createdAt.relativeTime()).font(.caption2).bold()
+          Text(comment.createdAt.customFormat(.relativeTime)).font(.caption2).bold()
         }
         Text(comment.content).font(.callout)
       }

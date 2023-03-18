@@ -49,7 +49,7 @@ import SwiftUI
   func hasPermission(_ permission: PermissionName) -> Bool {
     guard let roles = profile?.roles else { return false }
     let permissions = roles.flatMap(\.permissions)
-    return permissions.contains(where: { $0.name == permission })
+    return permissions.contains(where: { $0.name == permission.rawValue })
   }
 
   func setPreferredColorScheme(settings: ProfileSettings) {

@@ -41,11 +41,7 @@ extension AccountSettingsScreen {
     }
 
     func getCSVExportName() -> String {
-      let formatter = DateFormatter()
-      formatter.dateFormat = "yyyy_MM_dd_HH_mm"
-      let date = Date()
-      let timestamp = formatter.string(from: date)
-      return "\(Config.appName.lowercased())_export_\(timestamp).csv"
+      "\(Config.appName.lowercased())_export_\(Date().customFormat(.fileNameSuffix)).csv"
     }
 
     func getInitialValues(profile _: Profile.Extended) {

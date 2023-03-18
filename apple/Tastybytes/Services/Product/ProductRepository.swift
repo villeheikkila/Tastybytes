@@ -208,11 +208,7 @@ struct SupabaseProductRepository: ProductRepository {
 
   func uploadLogo(productId: Int, data: Data) async -> Result<String, Error> {
     do {
-      let formatter = DateFormatter()
-      formatter.dateFormat = "yyyy_MM_dd_HH_mm"
-      let date = Date()
-      let timestamp = formatter.string(from: date)
-      let fileName = "\(productId)_\(timestamp).jpeg"
+      let fileName = "\(productId)_\(Date().customFormat(.fileNameSuffix)).jpeg"
       let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
 
       _ = try await client

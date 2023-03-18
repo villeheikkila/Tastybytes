@@ -252,7 +252,7 @@ struct CheckInCardView: View {
     HStack {
       HStack {
         if let checkInAt = checkIn.checkInAt {
-          Text(checkInAt.relativeTime())
+          Text(checkInAt.customFormat(.relativeTime))
             .font(.caption).bold()
         } else {
           Text("legacy check-in")

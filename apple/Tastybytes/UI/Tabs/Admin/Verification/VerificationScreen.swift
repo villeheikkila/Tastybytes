@@ -107,7 +107,7 @@ struct VerificationScreen: View {
             Spacer()
             // swiftlint:disable force_try
             if let createdAt = product.createdAt, let date = try! Date(timestamptzString: createdAt) {
-              Text(date.relativeTime()).font(.caption).bold()
+              Text(date.customFormat(.relativeTime)).font(.caption).bold()
             }
           }
         }

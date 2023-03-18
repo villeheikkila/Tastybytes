@@ -194,7 +194,7 @@ extension CheckIn {
       purchaseLocationId = purchaseLocation?.id.uuidString
       self.blurHash = blurHash
       if let checkInAt {
-        self.checkInAt = checkInAt.formatDateToTimestampTz()
+        self.checkInAt = checkInAt.customFormat(.timestampTz)
       } else {
         self.checkInAt = nil
       }
@@ -255,7 +255,7 @@ extension CheckIn {
       purchaseLocationId = purchaseLocation?.id.uuidString
       self.blurHash = blurHash
       if let checkInAt {
-        self.checkInAt = checkInAt.formatDateToTimestampTz()
+        self.checkInAt = checkInAt.customFormat(.timestampTz)
       } else {
         self.checkInAt = nil
       }

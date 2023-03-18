@@ -1,6 +1,6 @@
 struct Permission: Identifiable, Decodable, Hashable, Sendable {
   let id: Int
-  let name: PermissionName
+  let name: String
 
   enum CodingKeys: String, CodingKey {
     case id
