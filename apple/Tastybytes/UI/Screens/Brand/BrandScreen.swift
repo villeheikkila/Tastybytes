@@ -182,7 +182,7 @@ struct BrandScreen: View {
   private var toolbar: some ToolbarContent {
     ToolbarItem(placement: .principal) {
       HStack(alignment: .center, spacing: 18) {
-        if let logoUrl = viewModel.brand.getLogoUrl() {
+        if let logoUrl = viewModel.brand.logoUrl {
           CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
             image
               .resizable()

@@ -90,7 +90,7 @@ struct CompanyScreen: View {
   private var toolbar: some ToolbarContent {
     ToolbarItem(placement: .principal) {
       HStack(alignment: .center, spacing: 18) {
-        if let logoUrl = viewModel.company.getLogoUrl() {
+        if let logoUrl = viewModel.company.logoUrl {
           CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
             image
               .resizable()
@@ -180,7 +180,7 @@ struct CompanyScreen: View {
             matching: .images,
             photoLibrary: .shared()
           ) {
-            if let logoUrl = viewModel.company.getLogoUrl() {
+            if let logoUrl = viewModel.company.logoUrl {
               CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
                 image
                   .resizable()
@@ -214,7 +214,7 @@ struct CompanyScreen: View {
 
   private var companyHeader: some View {
     HStack(spacing: 10) {
-      if let logoUrl = viewModel.company.getLogoUrl() {
+      if let logoUrl = viewModel.company.logoUrl {
         CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
           image
             .resizable()

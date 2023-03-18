@@ -112,7 +112,7 @@ struct CheckInCardView: View {
 
   @ViewBuilder
   private var checkInImage: some View {
-    if let imageUrl = checkIn.getImageUrl() {
+    if let imageUrl = checkIn.imageUrl {
       CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
         image
           .resizable()

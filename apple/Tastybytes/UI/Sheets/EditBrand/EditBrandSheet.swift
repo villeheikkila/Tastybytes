@@ -28,7 +28,7 @@ struct EditBrandSheet: View {
             matching: .images,
             photoLibrary: .shared()
           ) {
-            if let logoUrl = viewModel.brand.getLogoUrl() {
+            if let logoUrl = viewModel.brand.logoUrl {
               CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
                 image
                   .resizable()

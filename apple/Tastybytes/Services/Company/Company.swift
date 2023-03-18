@@ -5,7 +5,7 @@ protocol CompanyLogo {
 }
 
 extension CompanyLogo {
-  func getLogoUrl() -> URL? {
+  var logoUrl: URL? {
     guard let logoFile else { return nil }
     return URL(bucketId: Company.getQuery(.logoBucket), fileName: logoFile)
   }

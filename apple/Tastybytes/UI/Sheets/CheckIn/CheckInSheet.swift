@@ -50,7 +50,7 @@ struct CheckInSheet: View {
                 .frame(height: 150, alignment: .top)
                 .shadow(radius: 4)
                 .accessibilityLabel("Image of the check-in")
-            } else if let imageUrl = viewModel.editCheckIn?.getImageUrl() {
+            } else if let imageUrl = viewModel.editCheckIn?.imageUrl {
               CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
                 image
                   .resizable()
@@ -75,7 +75,7 @@ struct CheckInSheet: View {
         RatingPickerView(rating: $viewModel.rating)
         Button(action: { showPhotoMenu.toggle() }, label: {
           Label(
-            "\(viewModel.editCheckIn?.getImageUrl() == nil && viewModel.image == nil ? "Add" : "Change") Photo",
+            "\(viewModel.editCheckIn?.imageUrl == nil && viewModel.image == nil ? "Add" : "Change") Photo",
             systemImage: "photo"
           ).fontWeight(.medium)
 

@@ -20,7 +20,7 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
     [rating == nil, review.isNilOrEmpty, flavors.isEmpty].allSatisfy { $0 }
   }
 
-  func getImageUrl() -> URL? {
+  var imageUrl: URL? {
     guard let imageFile else { return nil }
     return URL(
       bucketId: CheckIn.getQuery(.imageBucket),
