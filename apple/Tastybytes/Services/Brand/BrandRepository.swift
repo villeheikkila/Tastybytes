@@ -179,7 +179,7 @@ struct SupabaseBrandRepository: BrandRepository {
       )
       _ = try await client
         .storage
-        .from(id: "brand_logos")
+        .from(id: Brand.getQuery(.logosBucket))
         .upload(
           path: fileName, file: file, fileOptions: nil
         )

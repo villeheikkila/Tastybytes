@@ -22,7 +22,7 @@ struct EditBrandSheet: View {
   var body: some View {
     Form {
       Section {
-        if profileManager.hasPermission(.canAddCompanyLogo) {
+        if profileManager.hasPermission(.canAddBrandLogo) {
           PhotosPicker(
             selection: $viewModel.selectedLogo,
             matching: .images,

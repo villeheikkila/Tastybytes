@@ -7,8 +7,9 @@ protocol BrandLogo {
 extension BrandLogo {
   func getLogoUrl() -> URL? {
     if let logoFile {
-      let bucketId = "brand_logos"
+      let bucketId = Brand.getQuery(.logosBucket)
       let urlString = "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(logoFile)"
+      print(urlString)
       return URL(string: urlString)
     } else {
       return nil
@@ -19,11 +20,14 @@ extension BrandLogo {
 enum Brand {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "brands"
-    let saved = "id, name, is_verified"
+    let saved = "id, name, is_verified, logo_file"
+    let logosBucketId = "brand-logos"
 
     switch queryType {
     case .tableName:
       return tableName
+    case .logosBucket:
+      return logosBucketId
     case let .joinedSubBrands(withTableName):
       return queryWithTableName(tableName, joinWithComma(saved, SubBrand.getQuery(.saved(true))), withTableName)
     case let .joined(withTableName):
@@ -41,6 +45,7 @@ enum Brand {
 
   enum QueryType {
     case tableName
+    case logosBucket
     case joined(_ withTableName: Bool)
     case joinedSubBrands(_ withTableName: Bool)
     case joinedCompany(_ withTableName: Bool)
