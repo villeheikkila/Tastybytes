@@ -3,11 +3,13 @@ struct Product: Identifiable, Decodable, Hashable, Sendable {
   let name: String
   let description: String?
   let isVerified: Bool
+  let logoFile: String?
 
   enum CodingKeys: String, CodingKey {
     case id
     case name
     case description
+    case logoFile = "logo_file"
     case isVerified = "is_verified"
   }
 }
@@ -15,11 +17,14 @@ struct Product: Identifiable, Decodable, Hashable, Sendable {
 extension Product {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "products"
-    let saved = "id, name, description, is_verified"
+    let saved = "id, name, description, logo_file, is_verified"
+    let logoBucketId = "product-logos"
 
     switch queryType {
     case .tableName:
       return tableName
+    case .logoBucket:
+      return logoBucketId
     case let .saved(withTableName):
       return queryWithTableName(tableName, saved, withTableName)
     case let .joinedBrandSubcategories(withTableName):
@@ -75,6 +80,7 @@ extension Product {
 
   enum QueryType {
     case tableName
+    case logoBucket
     case saved(_ withTableName: Bool)
     case joinedBrandSubcategories(_ withTableName: Bool)
     case joinedBrandSubcategoriesCreator(_ withTableName: Bool)
@@ -305,6 +311,7 @@ extension Product {
     let id: Int
     let name: String
     let description: String?
+    let logoFile: String?
     let isVerified: Bool
     let subBrand: SubBrand.JoinedBrand
     let category: Category
@@ -334,6 +341,7 @@ extension Product {
       case id
       case name
       case description
+      case logoFile = "logo_file"
       case isVerified = "is_verified"
       case subBrand = "sub_brands"
       case category = "categories"
@@ -349,6 +357,7 @@ extension Product {
       id: Int,
       name: String,
       description: String,
+      logoFile: String?,
       isVerified: Bool,
       subBrand: SubBrand.JoinedBrand,
       category: Category,
@@ -358,6 +367,7 @@ extension Product {
       self.id = id
       self.name = name
       self.description = description
+      self.logoFile = logoFile
       self.isVerified = isVerified
       self.subBrand = subBrand
       self.subcategories = subcategories
@@ -378,6 +388,7 @@ extension Product {
       id = product.id
       name = product.name
       description = product.description
+      logoFile = product.logoFile
       isVerified = product.isVerified
       self.subBrand = SubBrand.JoinedBrand(
         id: subBrand.id,
@@ -408,6 +419,7 @@ extension Product {
       id = product.id
       name = product.name
       description = product.description
+      logoFile = product.logoFile
       isVerified = product.isVerified
       self.subBrand = SubBrand.JoinedBrand(
         id: subBrand.id,
@@ -435,6 +447,7 @@ extension Product {
     let id: Int
     let name: String
     let description: String?
+    let logoFile: String?
     let isVerified: Bool
     let category: Category
     let subcategories: [Subcategory.JoinedCategory]
@@ -443,6 +456,7 @@ extension Product {
       case id
       case name
       case description
+      case logoFile = "logo_file"
       case isVerified = "is_verified"
       case category = "categories"
       case subcategories
@@ -451,14 +465,16 @@ extension Product {
     init(
       id: Int,
       name: String,
-      category: Category,
       description: String?,
+      logoFile: String?,
       isVerified: Bool,
+      category: Category,
       subcategories: [Subcategory.JoinedCategory]
     ) {
       self.id = id
       self.name = name
       self.description = description
+      self.logoFile = logoFile
       self.isVerified = isVerified
       self.category = category
       self.subcategories = subcategories

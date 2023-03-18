@@ -1,3 +1,4 @@
+import PhotosUI
 import SwiftUI
 
 extension AddProductView {
@@ -85,6 +86,13 @@ extension AddProductView {
     @Published var barcode: Barcode?
     @Published var isLoading = false
 
+    @Published var selectedLogo: PhotosPickerItem? {
+      didSet {
+        uploadLogo()
+      }
+    }
+
+    @Published var logoFile: String?
     var productId: Int?
 
     init(_ client: Client, mode: Mode, barcode: Barcode?) {
@@ -200,6 +208,7 @@ extension AddProductView {
             self.name = initialProduct.name
             self.description = initialProduct.description.orEmpty
             self.hasSubBrand = initialProduct.subBrand.name != nil
+            self.logoFile = initialProduct.logoFile
           case let .failure(error):
             logger
               .error("failed to load brand owner for product '\(initialProduct.id)': \(error.localizedDescription)")
@@ -268,6 +277,19 @@ extension AddProductView {
           .error(
             "failed to create product edit suggestion for '\(productId)': \(error.localizedDescription)"
           )
+      }
+    }
+
+    func uploadLogo() {
+      guard let productId else { return }
+      Task {
+        guard let data = await selectedLogo?.getJPEG() else { return }
+        switch await client.product.uploadLogo(productId: productId, data: data) {
+        case let .success(filename):
+          self.logoFile = filename
+        case let .failure(error):
+          logger.error("uplodaing company logo failed: \(error.localizedDescription)")
+        }
       }
     }
 

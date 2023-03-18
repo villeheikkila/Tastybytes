@@ -1,5 +1,6 @@
 import Foundation
 import Supabase
+import SupabaseStorage
 
 enum ProductFeedType: Hashable, Identifiable {
   var id: String { label }
@@ -26,6 +27,7 @@ protocol ProductRepository {
   func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
   func getUnverified() async -> Result<[Product.Joined], Error>
   // func getDuplicateSuggestions() async -> Result<[ProductDuplicateSuggestion.Joined], Error>
+  func uploadLogo(productId: Int, data: Data) async -> Result<String, Error>
   func getSummaryById(id: Int) async -> Result<Summary, Error>
   func getCreatedByUserId(id: UUID) async -> Result<[Product.Joined], Error>
   func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
@@ -199,6 +201,29 @@ struct SupabaseProductRepository: ProductRepository {
         .value
 
       return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func uploadLogo(productId: Int, data: Data) async -> Result<String, Error> {
+    do {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "yyyy_MM_dd_HH_mm"
+      let date = Date()
+      let timestamp = formatter.string(from: date)
+      let fileName = "\(productId)_\(timestamp).jpeg"
+      let file = File(
+        name: fileName, data: data, fileName: fileName, contentType: "image/jpeg"
+      )
+      _ = try await client
+        .storage
+        .from(id: Product.getQuery(.logoBucket))
+        .upload(
+          path: fileName, file: file, fileOptions: nil
+        )
+
+      return .success(fileName)
     } catch {
       return .failure(error)
     }

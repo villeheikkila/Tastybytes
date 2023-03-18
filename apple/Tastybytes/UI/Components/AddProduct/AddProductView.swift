@@ -1,7 +1,10 @@
+import CachedAsyncImage
+import PhotosUI
 import SwiftUI
 
 struct AddProductView: View {
   @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var hapticManager: HapticManager
   @StateObject private var viewModel: ViewModel
@@ -25,6 +28,9 @@ struct AddProductView: View {
 
   var body: some View {
     Form {
+      if profileManager.hasPermission(.canAddProductLogo) {
+        logoSection
+      }
       categorySection
       brandSection
       productSection
@@ -111,6 +117,37 @@ struct AddProductView: View {
     .task {
       viewModel.loadMissingData()
     }
+  }
+
+  private var logoSection: some View {
+    Section {
+      PhotosPicker(
+        selection: $viewModel.selectedLogo,
+        matching: .images,
+        photoLibrary: .shared()
+      ) {
+        if let logoFile = viewModel.logoFile, let logoUrl = URL(
+          bucketId: Product.getQuery(.logoBucket),
+          fileName: logoFile
+        ) {
+          CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+            image
+              .resizable()
+              .aspectRatio(contentMode: .fill)
+              .frame(width: 52, height: 52)
+              .accessibility(hidden: true)
+          } placeholder: {
+            Image(systemName: "photo")
+              .accessibility(hidden: true)
+          }
+        } else {
+          Image(systemName: "photo")
+            .accessibility(hidden: true)
+        }
+      }
+    }
+    .listRowSeparator(.hidden)
+    .listRowBackground(Color.clear)
   }
 
   private var categorySection: some View {

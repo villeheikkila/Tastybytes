@@ -78,13 +78,12 @@ struct SupabaseCompanyRepository: CompanyRepository {
       let date = Date()
       let timestamp = formatter.string(from: date)
       let fileName = "\(companyId)_\(timestamp).jpeg"
-      print(fileName)
       let file = File(
         name: fileName, data: data, fileName: fileName, contentType: "image/jpeg"
       )
       _ = try await client
         .storage
-        .from(id: "logos")
+        .from(id: Company.getQuery(.logoBucket))
         .upload(
           path: fileName, file: file, fileOptions: nil
         )

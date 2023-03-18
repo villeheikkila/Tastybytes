@@ -34,11 +34,14 @@ extension Company {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "companies"
     let saved = "id, name, logo_file, is_verified"
+    let logoBucketId = "logos"
     let owner = queryWithTableName(tableName, saved, true)
 
     switch queryType {
     case .tableName:
       return tableName
+    case .logoBucket:
+      return logoBucketId
     case let .saved(withTableName):
       return queryWithTableName(tableName, saved, withTableName)
     case let .joinedBrandSubcategoriesOwner(withTableName):
@@ -48,6 +51,7 @@ extension Company {
 
   enum QueryType {
     case tableName
+    case logoBucket
     case saved(_ withTableName: Bool)
     case joinedBrandSubcategoriesOwner(_ withTableName: Bool)
   }

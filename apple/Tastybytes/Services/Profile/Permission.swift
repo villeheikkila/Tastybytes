@@ -58,4 +58,5 @@ enum PermissionName: String, Decodable, Equatable, Sendable {
   case canAddCategories = "can_add_categories"
   case canAddCompanyLogo = "can_add_company_logo"
   case canAddBrandLogo = "can_add_brand_logo"
+  case canAddProductLogo = "can_add_product_logo"
 }
