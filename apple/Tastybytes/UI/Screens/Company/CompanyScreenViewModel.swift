@@ -60,11 +60,7 @@ extension CompanyScreen {
 
     func uploadCompanyImage() {
       Task {
-        guard let imageData = try await selectedItem?.loadTransferable(type: Data.self),
-              let image = UIImage(data: imageData),
-              let data = image.jpegData(compressionQuality: 0.1)
-        else { return }
-
+        guard let data = await selectedItem?.getJPEG() else { return }
         switch await client.company.uploadLogo(companyId: company.id, data: data) {
         case let .success(fileName):
           company = Company(

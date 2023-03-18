@@ -6,14 +6,8 @@ protocol BrandLogo {
 
 extension BrandLogo {
   func getLogoUrl() -> URL? {
-    if let logoFile {
-      let bucketId = Brand.getQuery(.logosBucket)
-      let urlString = "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(logoFile)"
-      print(urlString)
-      return URL(string: urlString)
-    } else {
-      return nil
-    }
+    guard let logoFile else { return nil }
+    return URL(bucketId: Brand.getQuery(.logosBucket), fileName: logoFile)
   }
 }
 

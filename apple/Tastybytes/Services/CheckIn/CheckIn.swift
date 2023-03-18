@@ -21,15 +21,11 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
   }
 
   func getImageUrl() -> URL? {
-    if let imageFile {
-      let bucketId = "check-ins"
-      let urlString =
-        "\(Config.supabaseUrl)/storage/v1/object/public/\(bucketId)/\(profile.id.uuidString.lowercased())/\(imageFile)"
-
-      return URL(string: urlString)
-    } else {
-      return nil
-    }
+    guard let imageFile else { return nil }
+    return URL(
+      bucketId: CheckIn.getQuery(.imageBucket),
+      fileName: "\(profile.id.uuidString.lowercased())/\(imageFile)"
+    )
   }
 
   enum CodingKeys: String, CodingKey {
@@ -108,10 +104,13 @@ extension CheckIn {
     let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
     let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
     let checkInFlavorsJoined = "check_in_flavors (\(Flavor.getQuery(.saved(true))))"
+    let bucketId = "check-ins"
 
     switch queryType {
     case .tableName:
       return tableName
+    case .imageBucket:
+      return bucketId
     case let .joined(withTableName):
       return queryWithTableName(
         tableName,
@@ -125,6 +124,7 @@ extension CheckIn {
 
   enum QueryType {
     case tableName
+    case imageBucket
     case joined(_ withTableName: Bool)
   }
 }

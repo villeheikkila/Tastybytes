@@ -58,11 +58,7 @@ import SwiftUI
 
   func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) {
     Task {
-      guard let imageData = try await newAvatar?.loadTransferable(type: Data.self),
-            let image = UIImage(data: imageData),
-            let data = image.jpegData(compressionQuality: 0.1)
-      else { return }
-
+      guard let data = await newAvatar?.getJPEG() else { return }
       switch await client.profile.uploadAvatar(userId: userId, data: data) {
       case let .success(fileName):
         self.avatarFileName = fileName

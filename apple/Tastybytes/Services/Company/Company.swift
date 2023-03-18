@@ -6,13 +6,8 @@ protocol CompanyLogo {
 
 extension CompanyLogo {
   func getLogoUrl() -> URL? {
-    if let logoFile {
-      let bucketId = "logos"
-      let urlString = "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(logoFile)"
-      return URL(string: urlString)
-    } else {
-      return nil
-    }
+    guard let logoFile else { return nil }
+    return URL(bucketId: Company.getQuery(.logoBucket), fileName: logoFile)
   }
 }
 

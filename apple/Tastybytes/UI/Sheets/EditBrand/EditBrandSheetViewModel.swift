@@ -53,11 +53,7 @@ extension EditBrandSheet {
 
     func uploadLogo() {
       Task {
-        guard let imageData = try await selectedLogo?.loadTransferable(type: Data.self),
-              let image = UIImage(data: imageData),
-              let data = image.jpegData(compressionQuality: 0.1)
-        else { return }
-
+        guard let data = await selectedLogo?.getJPEG() else { return }
         switch await client.brand.uploadLogo(brandId: brand.id, data: data) {
         case let .success(fileName):
           onUpdate()
