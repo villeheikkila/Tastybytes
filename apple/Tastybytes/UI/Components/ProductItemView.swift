@@ -1,9 +1,9 @@
+import CachedAsyncImage
 import SwiftUI
-
 struct ProductItemView: View {
   @EnvironmentObject private var router: Router
   enum Extra {
-    case checkInCheck, rating, companyLink
+    case checkInCheck, rating, companyLink, logo
   }
 
   let product: Product.Joined
@@ -15,42 +15,55 @@ struct ProductItemView: View {
   }
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 3) {
-      HStack {
-        Text(product.getDisplayName(.fullName))
-          .font(.headline)
-        Spacer()
-        if let currentUserCheckIns = product.currentUserCheckIns, currentUserCheckIns > 0,
-           extras.contains(.checkInCheck)
-        {
-          Label("Checked-in", systemImage: "checkmark.circle")
-            .labelStyle(.iconOnly)
-            .symbolRenderingMode(.palette)
-            .foregroundStyle(.green, .secondary)
-            .imageScale(.small)
+    HStack(spacing: 24) {
+      if extras.contains(.logo), let logoUrl = product.logoUrl {
+        CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+          image
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 68, height: 68)
+            .accessibility(hidden: true)
+        } placeholder: {
+          ProgressView()
         }
       }
-      if let description = product.description {
-        Text(description)
-          .font(.caption)
-      }
+      VStack(alignment: .leading, spacing: 3) {
+        HStack {
+          Text(product.getDisplayName(.fullName))
+            .font(.headline)
+          Spacer()
+          if let currentUserCheckIns = product.currentUserCheckIns, currentUserCheckIns > 0,
+             extras.contains(.checkInCheck)
+          {
+            Label("Checked-in", systemImage: "checkmark.circle")
+              .labelStyle(.iconOnly)
+              .symbolRenderingMode(.palette)
+              .foregroundStyle(.green, .secondary)
+              .imageScale(.small)
+          }
+        }
+        if let description = product.description {
+          Text(description)
+            .font(.caption)
+        }
 
-      Text(product.getDisplayName(.brandOwner))
-        .font(.subheadline)
-        .foregroundColor(.secondary)
-        .if(extras.contains(.companyLink), transform: { view in
-          view.contentShape(Rectangle())
-            .accessibilityAddTraits(.isLink)
-            .onTapGesture {
-              router.navigate(to: .company(product.subBrand.brand.brandOwner), resetStack: false)
-            }
-        })
+        Text(product.getDisplayName(.brandOwner))
+          .font(.subheadline)
+          .foregroundColor(.secondary)
+          .if(extras.contains(.companyLink), transform: { view in
+            view.contentShape(Rectangle())
+              .accessibilityAddTraits(.isLink)
+              .onTapGesture {
+                router.navigate(to: .company(product.subBrand.brand.brandOwner), resetStack: false)
+              }
+          })
 
-      HStack {
-        CategoryView(category: product.category, subcategories: product.subcategories)
-        Spacer()
-        if let averageRating = product.averageRating, extras.contains(.rating) {
-          RatingView(rating: averageRating, type: .small)
+        HStack {
+          CategoryView(category: product.category, subcategories: product.subcategories)
+          Spacer()
+          if let averageRating = product.averageRating, extras.contains(.rating) {
+            RatingView(rating: averageRating, type: .small)
+          }
         }
       }
     }

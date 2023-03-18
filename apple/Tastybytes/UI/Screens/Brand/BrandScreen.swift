@@ -190,8 +190,7 @@ struct BrandScreen: View {
               .frame(width: 32, height: 32)
               .accessibility(hidden: true)
           } placeholder: {
-            Image(systemName: "photo")
-              .accessibility(hidden: true)
+            ProgressView()
           }
         }
         Text(viewModel.brand.name)

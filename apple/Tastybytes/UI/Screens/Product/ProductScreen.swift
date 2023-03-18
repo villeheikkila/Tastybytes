@@ -23,7 +23,7 @@ struct ProductScreen: View {
       },
       header: {
         Section {
-          ProductItemView(product: viewModel.product, extras: [.companyLink])
+          ProductItemView(product: viewModel.product, extras: [.companyLink, .logo])
           Button(action: { viewModel.activeSheet = .checkIn }, label: {
             Text("Check-in!")
               .foregroundStyle(Color.accentColor)

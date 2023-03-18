@@ -1,3 +1,5 @@
+import Foundation
+
 struct Product: Identifiable, Decodable, Hashable, Sendable {
   let id: Int
   let name: String
@@ -321,6 +323,11 @@ extension Product {
     let currentUserCheckIns: Int?
     let createdBy: Profile?
     let createdAt: String?
+
+    var logoUrl: URL? {
+      guard let logoFile else { return nil }
+      return URL(bucketId: Product.getQuery(.logoBucket), fileName: logoFile)
+    }
 
     func getDisplayName(_ part: NameParts) -> String {
       switch part {
