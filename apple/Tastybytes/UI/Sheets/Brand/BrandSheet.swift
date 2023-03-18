@@ -43,7 +43,7 @@ struct BrandSheet: View {
         }
       }
     }
-    .navigationTitle("Add brand name")
+    .navigationTitle("\(viewModel.mode == .select ? "Select" : "Add") brand")
     .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Cancel").bold()
     }))

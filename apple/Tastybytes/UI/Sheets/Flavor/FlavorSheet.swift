@@ -28,6 +28,13 @@ struct FlavorSheet: View {
           Text("Picked flavors")
         }
       }
+
+      if !viewModel.searchTerm.isEmpty, !viewModel.filteredFlavors.contains { !pickedFlavors.contains($0) } {
+        Section {
+          Text("No flavors found with the search term")
+        }
+      }
+
       Section {
         ForEach(viewModel.filteredFlavors.filter { !pickedFlavors.contains($0) }) { flavor in
           Button(action: { toggleFlavor(flavor) }, label: {
@@ -42,7 +49,9 @@ struct FlavorSheet: View {
           })
         }
       } header: {
-        Text("Available flavors")
+        if viewModel.filteredFlavors.contains { !pickedFlavors.contains($0) } {
+          Text("Available flavors")
+        }
       }
     }
     .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
