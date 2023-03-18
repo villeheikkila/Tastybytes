@@ -45,7 +45,7 @@ struct ServingStyleManagementSheet: View {
           Button("Create") {
             viewModel.createServingStyle()
           }
-          .disabled(!validateStringLength(str: viewModel.newServingStyleName, type: .normal))
+          .disabled(!viewModel.newServingStyleName.isValidLength(.normal))
         } header: {
           Text("Add new serving style")
         }

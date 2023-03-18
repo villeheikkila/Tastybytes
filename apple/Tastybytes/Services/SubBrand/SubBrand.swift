@@ -35,11 +35,11 @@ extension SubBrand {
     case let .joined(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(saved, Product.getQuery(.joinedBrandSubcategories(true))),
+        [saved, Product.getQuery(.joinedBrandSubcategories(true))].joinComma(),
         withTableName
       )
     case let .joinedBrand(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, Brand.getQuery(.joinedCompany(true))), withTableName)
+      return queryWithTableName(tableName, [saved, Brand.getQuery(.joinedCompany(true))].joinComma(), withTableName)
     }
   }
 

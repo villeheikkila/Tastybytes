@@ -44,7 +44,7 @@ extension Profile {
     case let .extended(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(saved, ProfileSettings.getQuery(.saved(true)), Role.getQuery(.joined(true))),
+        [saved, ProfileSettings.getQuery(.saved(true)), Role.getQuery(.joined(true))].joinComma(),
         withTableName
       )
     }

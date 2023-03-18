@@ -32,7 +32,7 @@ extension Role {
     case .tableName:
       return tableName
     case let .joined(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, Permission.getQuery(.saved(true))), withTableName)
+      return queryWithTableName(tableName, [saved, Permission.getQuery(.saved(true))].joinComma(), withTableName)
     }
   }
 

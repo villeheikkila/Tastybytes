@@ -32,7 +32,7 @@ struct SubBrandSheet: View {
           Button("Create") {
             viewModel.createNewSubBrand(onSelect)
           }
-          .disabled(!validateStringLength(str: viewModel.subBrandName, type: .normal))
+          .disabled(!viewModel.subBrandName.isValidLength(.normal))
         } header: {
           Text("Add new sub-brand for \(viewModel.brandWithSubBrands.name)")
         }

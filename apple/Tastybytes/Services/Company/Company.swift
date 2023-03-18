@@ -40,7 +40,7 @@ extension Company {
     case let .saved(withTableName):
       return queryWithTableName(tableName, saved, withTableName)
     case let .joinedBrandSubcategoriesOwner(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, owner, Brand.getQuery(.joined(true))), withTableName)
+      return queryWithTableName(tableName, [saved, owner, Brand.getQuery(.joined(true))].joinComma(), withTableName)
     }
   }
 

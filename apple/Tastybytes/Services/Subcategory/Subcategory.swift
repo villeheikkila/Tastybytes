@@ -36,7 +36,7 @@ extension Subcategory {
     case let .saved(withTableName):
       return queryWithTableName(tableName, saved, withTableName)
     case let .joinedCategory(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, Category.getQuery(.saved(true))), withTableName)
+      return queryWithTableName(tableName, [saved, Category.getQuery(.saved(true))].joinComma(), withTableName)
     }
   }
 

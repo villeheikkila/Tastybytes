@@ -28,7 +28,7 @@ extension EditSubBrandSheet {
     }
 
     var invalidNewName: Bool {
-      !validateStringLength(str: newSubBrandName, type: .normal) || subBrand
+      !newSubBrandName.isValidLength(.normal) || subBrand
         .name == newSubBrandName
     }
 

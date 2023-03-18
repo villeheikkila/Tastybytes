@@ -23,15 +23,15 @@ enum Brand {
     case .logosBucket:
       return logosBucketId
     case let .joinedSubBrands(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, SubBrand.getQuery(.saved(true))), withTableName)
+      return queryWithTableName(tableName, [saved, SubBrand.getQuery(.saved(true))].joinComma(), withTableName)
     case let .joined(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, SubBrand.getQuery(.joined(true))), withTableName)
+      return queryWithTableName(tableName, [saved, SubBrand.getQuery(.joined(true))].joinComma(), withTableName)
     case let .joinedCompany(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, Company.getQuery(.saved(true))), withTableName)
+      return queryWithTableName(tableName, [saved, Company.getQuery(.saved(true))].joinComma(), withTableName)
     case let .joinedSubBrandsCompany(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(saved, SubBrand.getQuery(.joined(true)), Company.getQuery(.saved(true))),
+        [saved, SubBrand.getQuery(.joined(true)), Company.getQuery(.saved(true))].joinComma(),
         withTableName
       )
     }

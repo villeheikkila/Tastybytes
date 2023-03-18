@@ -37,7 +37,7 @@ struct BrandSheet: View {
               onSelect(brand, true)
             }
           }
-          .disabled(!validateStringLength(str: viewModel.brandName, type: .normal))
+          .disabled(!viewModel.brandName.isValidLength(.normal))
         } header: {
           Text("Add new brand for \(brandOwner.name)")
         }

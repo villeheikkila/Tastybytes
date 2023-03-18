@@ -137,7 +137,7 @@ extension AddProductView {
     }
 
     func isValid() -> Bool {
-      brandOwner != nil && brand != nil && validateStringLength(str: name, type: .normal)
+      brandOwner != nil && brand != nil && name.isValidLength(.normal)
     }
 
     func getToastText(_ toast: Toast) -> String {

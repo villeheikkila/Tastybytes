@@ -52,7 +52,7 @@ struct CompanySearchSheet: View {
                 dismiss()
               })
             }
-            .disabled(!validateStringLength(str: viewModel.companyName, type: .normal))
+            .disabled(!viewModel.companyName.isValidLength(.normal))
           } header: {
             Text("Add new company")
           }

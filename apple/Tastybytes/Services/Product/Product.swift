@@ -32,27 +32,27 @@ extension Product {
     case let .joinedBrandSubcategories(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(saved, SubBrand.getQuery(.joinedBrand(true)), Category.getQuery(.saved(true)),
-                      Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true))),
+        [saved, SubBrand.getQuery(.joinedBrand(true)), Category.getQuery(.saved(true)),
+         Subcategory.getQuery(.joinedCategory(true)), ProductBarcode.getQuery(.saved(true))].joinComma(),
         withTableName
       )
     case let .joinedBrandSubcategoriesCreator(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(
+        [
           saved,
           "created_at",
           SubBrand.getQuery(.joinedBrand(true)),
           Category.getQuery(.saved(true)),
           Subcategory.getQuery(.joinedCategory(true)),
           ProductBarcode.getQuery(.saved(true))
-        ),
+        ].joinComma(),
         withTableName
       )
     case let .joinedBrandSubcategoriesRatings(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(
+        [
           saved,
           "current_user_check_ins",
           "average_rating",
@@ -60,13 +60,13 @@ extension Product {
           Category.getQuery(.saved(true)),
           Subcategory.getQuery(.joinedCategory(true)),
           ProductBarcode.getQuery(.saved(true))
-        ),
+        ].joinComma(),
         withTableName
       )
     case let .joinedBrandSubcategoriesProfileRatings(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(
+        [
           saved,
           "check_ins",
           "average_rating",
@@ -74,7 +74,7 @@ extension Product {
           Category.getQuery(.saved(true)),
           Subcategory.getQuery(.joinedCategory(true)),
           ProductBarcode.getQuery(.saved(true))
-        ),
+        ].joinComma(),
         withTableName
       )
     }

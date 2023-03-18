@@ -1,5 +1,26 @@
 import SwiftUI
 
+extension String {
+  enum StrinLengthType {
+    case normal
+    case long
+  }
+
+  func isValidLength(_ type: StrinLengthType) -> Bool {
+    switch type {
+    case .normal:
+      return isValidLength(minLength: 1, maxLength: 100)
+    case .long:
+      return isValidLength(minLength: 1, maxLength: 1024)
+    }
+  }
+
+  func isValidLength(minLength: Int, maxLength: Int) -> Bool {
+    let length = count
+    return length >= minLength && length <= maxLength
+  }
+}
+
 extension String? {
   var orEmpty: String {
     self ?? ""

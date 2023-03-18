@@ -73,7 +73,7 @@ extension Location {
     case .tableName:
       return tableName
     case let .joined(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, Country.getQuery(.saved(true))), withTableName)
+      return queryWithTableName(tableName, [saved, Country.getQuery(.saved(true))].joinComma(), withTableName)
     }
   }
 

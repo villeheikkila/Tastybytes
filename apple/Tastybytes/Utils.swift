@@ -16,20 +16,6 @@ func getConsistentColor(seed: String) -> Color {
   return Color(red: red, green: green, blue: blue)
 }
 
-enum StrinLengthType {
-  case normal
-  case long
-}
-
-func validateStringLength(str: String, type: StrinLengthType) -> Bool {
-  switch type {
-  case .normal:
-    return str.count > 1 && str.count <= 100
-  case .long:
-    return str.count > 1 && str.count <= 1024
-  }
-}
-
 struct CSVFile: FileDocument {
   static let readableContentTypes = [UTType.commaSeparatedText]
   static let writableContentTypes = UTType.commaSeparatedText
@@ -55,10 +41,6 @@ struct CSVFile: FileDocument {
 
 func queryWithTableName(_ tableName: String, _ query: String, _ withTableName: Bool) -> String {
   withTableName ? "\(tableName) (\(query))" : query
-}
-
-func joinWithComma(_ arr: String...) -> String {
-  arr.joined(separator: ", ")
 }
 
 func getLogger(category: String) -> Logger {

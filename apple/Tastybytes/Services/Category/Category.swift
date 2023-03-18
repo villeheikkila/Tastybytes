@@ -26,13 +26,13 @@ extension Category {
     case let .saved(withTableName):
       return queryWithTableName(tableName, saved, withTableName)
     case let .joinedSubcategories(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, Subcategory.getQuery(.saved(true))), withTableName)
+      return queryWithTableName(tableName, [saved, Subcategory.getQuery(.saved(true))].joinComma(), withTableName)
     case let .joinedServingStyles(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, ServingStyle.getQuery(.saved(true))), withTableName)
+      return queryWithTableName(tableName, [saved, ServingStyle.getQuery(.saved(true))].joinComma(), withTableName)
     case let .joinedSubcaategoriesServingStyles(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(saved, Subcategory.getQuery(.saved(true)), ServingStyle.getQuery(.saved(true))),
+        [saved, Subcategory.getQuery(.saved(true)), ServingStyle.getQuery(.saved(true))].joinComma(),
         withTableName
       )
     }

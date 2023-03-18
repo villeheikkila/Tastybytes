@@ -163,7 +163,7 @@ struct CompanyScreen: View {
         Button("Send") {
           viewModel.sendCompanyEditSuggestion()
         }
-        .disabled(!validateStringLength(str: viewModel.newCompanyNameSuggestion, type: .normal))
+        .disabled(!viewModel.newCompanyNameSuggestion.isValidLength(.normal))
       } header: {
         Text("What should the company be called?")
       }
@@ -201,7 +201,7 @@ struct CompanyScreen: View {
         Button("Edit") {
           viewModel.editCompany()
         }
-        .disabled(!validateStringLength(str: viewModel.newCompanyNameSuggestion, type: .normal))
+        .disabled(!viewModel.newCompanyNameSuggestion.isValidLength(.normal))
       } header: {
         Text("Company name")
       }

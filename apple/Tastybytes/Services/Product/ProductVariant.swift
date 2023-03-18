@@ -15,7 +15,7 @@ extension ProductVariant {
 
     switch queryType {
     case let .joined(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, Company.getQuery(.saved(true))), withTableName)
+      return queryWithTableName(tableName, [saved, Company.getQuery(.saved(true))].joinComma(), withTableName)
     }
   }
 

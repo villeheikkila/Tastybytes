@@ -31,11 +31,11 @@ extension CheckInReaction {
     case let .joinedProfileCheckIn(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(saved, Profile.getQuery(.minimal(true)), CheckIn.getQuery(.joined(true))),
+        [saved, Profile.getQuery(.minimal(true)), CheckIn.getQuery(.joined(true))].joinComma(),
         withTableName
       )
     case let .joinedProfile(withTableName):
-      return queryWithTableName(tableName, joinWithComma(saved, Profile.getQuery(.minimal(true))), withTableName)
+      return queryWithTableName(tableName, [saved, Profile.getQuery(.minimal(true))].joinComma(), withTableName)
     }
   }
 

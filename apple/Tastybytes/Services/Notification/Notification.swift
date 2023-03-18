@@ -23,12 +23,12 @@ extension Notification {
     case .tableName:
       return tableName
     case .joined:
-      return joinWithComma(
+      return [
         saved,
         CheckInReaction.getQuery(.joinedProfileCheckIn(true)),
         CheckInTaggedProfiles.getQuery(.joined(true)),
         Friend.getQuery(.joined(true))
-      )
+      ].joinComma()
     }
   }
 
@@ -97,7 +97,7 @@ extension Notification {
       case .tableName:
         return tableName
       case let .joined(withTableName):
-        return queryWithTableName(tableName, joinWithComma(saved, CheckIn.getQuery(.joined(true))), withTableName)
+        return queryWithTableName(tableName, [saved, CheckIn.getQuery(.joined(true))].joinComma(), withTableName)
       }
     }
 

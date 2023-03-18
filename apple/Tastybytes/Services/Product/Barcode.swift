@@ -113,13 +113,13 @@ extension ProductBarcode {
     case let .joined(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(saved, Product.getQuery(.joinedBrandSubcategories(true))),
+        [saved, Product.getQuery(.joinedBrandSubcategories(true))].joinComma(),
         withTableName
       )
     case let .joinedCreator(withTableName):
       return queryWithTableName(
         tableName,
-        joinWithComma(saved, "created_at", Profile.getQuery(.minimal(true))),
+        [saved, "created_at", Profile.getQuery(.minimal(true))].joinComma(),
         withTableName
       )
     }

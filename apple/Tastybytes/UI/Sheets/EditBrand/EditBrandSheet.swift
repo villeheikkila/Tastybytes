@@ -50,7 +50,7 @@ struct EditBrandSheet: View {
           viewModel.editBrand {
             onUpdate()
           }
-        }.disabled(!validateStringLength(str: viewModel.name, type: .normal) || viewModel.brand.name == viewModel.name)
+        }.disabled(!viewModel.name.isValidLength(.normal) || viewModel.brand.name == viewModel.name)
       } header: {
         Text("Brand name")
       }
