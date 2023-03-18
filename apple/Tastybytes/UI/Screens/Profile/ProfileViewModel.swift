@@ -23,12 +23,12 @@ extension ProfileView {
       Task {
         guard let data = await newAvatar?.getJPEG() else { return }
         switch await client.profile.uploadAvatar(userId: userId, data: data) {
-        case let .success(fileName):
+        case let .success(avatarFile):
           profile = Profile(
             id: profile.id,
             preferredName: profile.preferredName,
             isPrivate: profile.isPrivate,
-            avatarUrl: fileName
+            avatarFile: avatarFile
           )
         case let .failure(error):
           logger

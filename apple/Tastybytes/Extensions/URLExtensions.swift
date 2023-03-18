@@ -21,16 +21,6 @@ extension URL {
 }
 
 extension URL {
-  init(userId: UUID, avatarUrl: String) {
-    let supabaseUrl = Config.supabaseUrl.absoluteString
-    let bucketId = "avatars"
-    let urlString =
-      "\(supabaseUrl)/storage/v1/object/public/\(bucketId)/\(userId.uuidString.lowercased())/\(avatarUrl)"
-    self.init(string: "\(urlString)")!
-  }
-}
-
-extension URL {
   init(bucketId: String, fileName: String) {
     let urlString = "\(Config.supabaseUrl.absoluteString)/storage/v1/object/public/\(bucketId)/\(fileName)"
     self.init(string: urlString)!

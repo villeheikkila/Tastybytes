@@ -162,7 +162,7 @@ struct SupabaseProfileRepository: ProfileRepository {
       )
       _ = try await client
         .storage
-        .from(id: "avatars")
+        .from(id: Profile.getQuery(.avatarBucket))
         .upload(
           path: "\(userId.uuidString.lowercased())/\(fileName)", file: file, fileOptions: nil
         )

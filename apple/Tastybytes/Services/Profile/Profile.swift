@@ -1,16 +1,28 @@
 import Foundation
 
-struct Profile: Identifiable, Decodable, Hashable, Sendable {
+protocol AvatarURL {
+  var id: UUID { get }
+  var avatarFile: String? { get }
+}
+
+extension AvatarURL {
+  var avatarUrl: URL? {
+    guard let avatarFile else { return nil }
+    return URL(bucketId: Profile.getQuery(.avatarBucket), fileName: "\(id.uuidString.lowercased())/\(avatarFile)")
+  }
+}
+
+struct Profile: Identifiable, Decodable, Hashable, Sendable, AvatarURL {
   let id: UUID
   let preferredName: String
   let isPrivate: Bool
-  let avatarUrl: String?
+  let avatarFile: String?
 
   enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case preferredName = "preferred_name"
     case isPrivate = "is_private"
-    case avatarUrl = "avatar_file"
+    case avatarFile = "avatar_file"
   }
 }
 
@@ -20,10 +32,13 @@ extension Profile {
     let minimal = "id, is_private, preferred_name, avatar_file"
     let saved =
       "id, first_name, last_name, username, avatar_file, name_display, preferred_name, is_private, is_onboarded"
+    let avatarBucketId = "avatars"
 
     switch queryType {
     case .tableName:
       return tableName
+    case .avatarBucket:
+      return avatarBucketId
     case let .minimal(withTableName):
       return queryWithTableName(tableName, minimal, withTableName)
     case let .extended(withTableName):
@@ -37,27 +52,28 @@ extension Profile {
 
   enum QueryType {
     case tableName
+    case avatarBucket
     case minimal(_ withTableName: Bool)
     case extended(_ withTableName: Bool)
   }
 }
 
 extension Profile {
-  struct Extended: Identifiable, Decodable, Sendable {
+  struct Extended: Identifiable, Decodable, Sendable, AvatarURL {
     let id: UUID
     let username: String
     let firstName: String?
     let lastName: String?
     let isPrivate: Bool
     let isOnboarded: Bool
-    let avatarUrl: String?
+    let avatarFile: String?
     let preferredName: String
     let nameDisplay: NameDisplay
     let roles: [Role]
     let settings: ProfileSettings
 
     func getProfile() -> Profile {
-      Profile(id: id, preferredName: preferredName, isPrivate: isPrivate, avatarUrl: avatarUrl)
+      Profile(id: id, preferredName: preferredName, isPrivate: isPrivate, avatarFile: avatarFile)
     }
 
     enum CodingKeys: String, CodingKey, CaseIterable {
@@ -68,7 +84,7 @@ extension Profile {
       case isOnboarded = "is_onboarded"
       case firstName = "first_name"
       case lastName = "last_name"
-      case avatarUrl = "avatar_file"
+      case avatarFile = "avatar_file"
       case nameDisplay = "name_display"
       case notification = "notifications"
       case roles
@@ -84,7 +100,7 @@ extension Profile {
       isOnboarded = try values.decode(Bool.self, forKey: .isOnboarded)
       firstName = try values.decodeIfPresent(String.self, forKey: .firstName)
       lastName = try values.decodeIfPresent(String.self, forKey: .lastName)
-      avatarUrl = try values.decodeIfPresent(String.self, forKey: .avatarUrl)
+      avatarFile = try values.decodeIfPresent(String.self, forKey: .avatarFile)
       nameDisplay = try values.decode(NameDisplay.self, forKey: .nameDisplay)
       roles = try values.decode([Role].self, forKey: .roles)
 

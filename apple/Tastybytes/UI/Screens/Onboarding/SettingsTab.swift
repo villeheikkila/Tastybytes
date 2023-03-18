@@ -18,7 +18,7 @@ struct ProfileSettingsTab: View {
             matching: .images,
             photoLibrary: .shared()
           ) {
-            AvatarView(avatarUrl: viewModel.avatarFileName, size: 120, id: profile.id)
+            AvatarView(avatarUrl: viewModel.avatarUrl, size: 120, id: profile.id)
           }
           .onChange(of: viewModel.selectedItem) { newValue in
             viewModel.uploadAvatar(userId: profile.id, newAvatar: newValue)

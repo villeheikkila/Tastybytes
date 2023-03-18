@@ -194,7 +194,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
     do {
       _ = try await client
         .storage
-        .from(id: "check-ins")
+        .from(id: CheckIn.getQuery(.imageBucket))
         .upload(
           path: "\(userId.uuidString.lowercased())/\(id).jpeg", file: file, fileOptions: nil
         )

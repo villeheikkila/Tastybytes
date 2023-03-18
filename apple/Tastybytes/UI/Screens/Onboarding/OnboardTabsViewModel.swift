@@ -11,7 +11,7 @@ import SwiftUI
   @Published var lastName = ""
   @Published var showFullName = false
   @Published var isPrivateProfile = false
-  @Published var avatarFileName: String?
+  @Published var avatarUrl: URL?
 
   init(client: Client) {
     self.client = client
@@ -27,7 +27,7 @@ import SwiftUI
         firstName = profile.firstName.orEmpty
         showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
         isPrivateProfile = profile.isPrivate
-        avatarFileName = profile.avatarUrl
+        avatarUrl = profile.avatarUrl
       case let .failure(error):
         logger.error("failed to load profile: \(error.localizedDescription)")
       }
@@ -61,7 +61,10 @@ import SwiftUI
       guard let data = await newAvatar?.getJPEG() else { return }
       switch await client.profile.uploadAvatar(userId: userId, data: data) {
       case let .success(fileName):
-        self.avatarFileName = fileName
+        self.avatarUrl = URL(
+          bucketId: Profile.getQuery(.avatarBucket),
+          fileName: "\(userId.uuidString.lowercased())/\(fileName)"
+        )
       case let .failure(error):
         logger
           .error(
