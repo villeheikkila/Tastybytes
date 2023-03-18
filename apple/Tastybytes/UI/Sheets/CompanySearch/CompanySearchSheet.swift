@@ -14,6 +14,16 @@ struct CompanySearchSheet: View {
 
   var body: some View {
     List {
+      if viewModel.showEmptyResults {
+        Section {
+          Text("No companies found with the searched name.")
+          if profileManager.hasPermission(.canCreateCompanies) {
+            Button(action: { viewModel.createNew() }, label: {
+              Text("Create new company")
+            })
+          }
+        }
+      }
       ForEach(viewModel.searchResults) { company in
         Button(action: {
           onSelect(company, false)
@@ -23,7 +33,7 @@ struct CompanySearchSheet: View {
         })
       }
 
-      if profileManager.hasPermission(.canCreateCompanies) {
+      if profileManager.hasPermission(.canCreateCompanies), !viewModel.showEmptyResults {
         switch viewModel.status {
         case .searched:
           Section {
@@ -55,7 +65,14 @@ struct CompanySearchSheet: View {
     .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Cancel").bold()
     }))
-    .searchable(text: $viewModel.searchText)
+    .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
     .onSubmit(of: .search) { viewModel.searchCompanies() }
+    .onReceive(
+      viewModel.$searchText.debounce(for: 0.2, scheduler: RunLoop.main)
+    ) { _ in
+      if viewModel.searchText.count > 1 {
+        viewModel.searchCompanies()
+      }
+    }
   }
 }

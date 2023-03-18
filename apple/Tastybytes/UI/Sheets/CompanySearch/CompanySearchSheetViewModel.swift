@@ -9,10 +9,18 @@ extension CompanySearchSheet {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CompanySheet")
     let client: Client
-    @Published var searchText: String = ""
+    @Published var searchText: String = "" {
+      didSet {
+        if searchText.isEmpty {
+          searchResults = []
+        }
+      }
+    }
+
     @Published var searchResults = [Company]()
     @Published var status: Status?
     @Published var companyName = ""
+    @Published var isLoading = false
 
     init(_ client: Client) {
       self.client = client
@@ -21,6 +29,10 @@ extension CompanySearchSheet {
     func createNew() {
       companyName = searchText
       status = Status.add
+    }
+
+    var showEmptyResults: Bool {
+      !isLoading && searchResults.isEmpty && status == .searched && !searchText.isEmpty
     }
 
     func searchCompanies() {
@@ -38,6 +50,7 @@ extension CompanySearchSheet {
 
     func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) {
       let newCompany = Company.NewRequest(name: companyName)
+      isLoading = true
       Task {
         switch await client.company.insert(newCompany: newCompany) {
         case let .success(newCompany):
@@ -46,6 +59,7 @@ extension CompanySearchSheet {
           logger.error("failed to create new company with name '\(self.companyName)': \(error.localizedDescription)")
         }
       }
+      isLoading = false
     }
   }
 }
