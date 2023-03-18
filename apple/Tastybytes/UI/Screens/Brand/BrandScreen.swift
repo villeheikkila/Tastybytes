@@ -132,7 +132,7 @@ struct BrandScreen: View {
       }
     }
     .toolbar {
-      toolbar
+      toolbarContent
     }
     .confirmationDialog("Unverify Sub-brand",
                         isPresented: $viewModel.showSubBrandUnverificationConfirmation,
@@ -179,7 +179,7 @@ struct BrandScreen: View {
   }
 
   @ToolbarContentBuilder
-  private var toolbar: some ToolbarContent {
+  private var toolbarContent: some ToolbarContent {
     ToolbarItem(placement: .principal) {
       HStack(alignment: .center, spacing: 18) {
         if let logoUrl = viewModel.brand.logoUrl {

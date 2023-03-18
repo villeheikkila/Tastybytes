@@ -42,7 +42,7 @@ struct ProfileProductListView: View {
       }
     })
     .toolbar {
-      toolbar
+      toolbarContent
     }
     .task {
       await viewModel.loadProducts()
@@ -50,7 +50,7 @@ struct ProfileProductListView: View {
   }
 
   @ToolbarContentBuilder
-  private var toolbar: some ToolbarContent {
+  private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Button(action: { viewModel.showFilters.toggle() }, label: {
         Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")

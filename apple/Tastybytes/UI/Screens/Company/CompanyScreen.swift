@@ -43,7 +43,7 @@ struct CompanyScreen: View {
       viewModel.getBrandsAndSummary()
     }
     .toolbar {
-      toolbar
+      toolbarContent
     }
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
@@ -87,7 +87,7 @@ struct CompanyScreen: View {
   }
 
   @ToolbarContentBuilder
-  private var toolbar: some ToolbarContent {
+  private var toolbarContent: some ToolbarContent {
     ToolbarItem(placement: .principal) {
       HStack(alignment: .center, spacing: 18) {
         if let logoUrl = viewModel.company.logoUrl {

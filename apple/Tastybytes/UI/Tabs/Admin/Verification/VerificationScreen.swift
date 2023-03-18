@@ -48,7 +48,7 @@ struct VerificationScreen: View {
     }
     .navigationBarTitle("Unverified \(viewModel.verificationType.label)")
     .toolbar {
-      toolbar
+      toolbarContent
     }
     .onChange(of: viewModel.verificationType, perform: { _ in
       Task {
@@ -63,7 +63,7 @@ struct VerificationScreen: View {
     }
   }
 
-  var unverifiedCompanies: some View {
+  private var unverifiedCompanies: some View {
     ForEach(viewModel.companies) { company in
       NavigationLink(value: Route.company(company)) {
         Text(company.name)
@@ -76,11 +76,11 @@ struct VerificationScreen: View {
     }
   }
 
-  var unverifiedSubBrands: some View {
+  private var unverifiedSubBrands: some View {
     HStack {}
   }
 
-  var unverifiedBrands: some View {
+  private var unverifiedBrands: some View {
     ForEach(viewModel.brands) { brand in
       NavigationLink(value: Route.brand(brand)) {
         HStack {
@@ -97,7 +97,7 @@ struct VerificationScreen: View {
     }
   }
 
-  var unverifiedProducts: some View {
+  private var unverifiedProducts: some View {
     ForEach(viewModel.products) { product in
       VStack {
         if let createdBy = product.createdBy {
@@ -132,7 +132,7 @@ struct VerificationScreen: View {
     }
   }
 
-  var toolbar: some ToolbarContent {
+  private var toolbarContent: some ToolbarContent {
     ToolbarTitleMenu {
       ForEach(VerificationType.allCases) { type in
         Button {
