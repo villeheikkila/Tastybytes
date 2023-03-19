@@ -9,7 +9,7 @@ struct Badge: View {
         .bold()
         .font(.caption)
         .padding(5)
-        .background(Color.red)
+        .background(.red)
         .foregroundColor(.white)
         .clipShape(Circle())
         .alignmentGuide(.trailing) { $0[.trailing] - $0.width * 0.6 }

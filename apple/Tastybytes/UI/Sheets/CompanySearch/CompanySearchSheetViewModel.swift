@@ -7,7 +7,7 @@ extension CompanySearchSheet {
   }
 
   @MainActor class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "CompanySheet")
+    private let logger = getLogger(category: "CompanySearchSheet")
     let client: Client
     @Published var searchText: String = "" {
       didSet {
