@@ -106,7 +106,7 @@ struct CheckInCardView: View {
         } placeholder: {
           ProgressView()
         }
-        .padding([.leading, .trailing], 3)
+        .padding(.leading, 10)
       }
       VStack(alignment: .leading, spacing: 4) {
         HStack {
