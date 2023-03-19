@@ -225,7 +225,7 @@ struct CheckInSheet: View {
                                      }
                                    }
                                  }
-                                 hapticManager.trigger(of: .notification(.success))
+                                 hapticManager.trigger(.notification(.success))
                                  dismiss()
                                },
                                label: {

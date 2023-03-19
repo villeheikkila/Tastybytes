@@ -28,7 +28,7 @@ struct TabsView: View {
     TabView(selection: .init(get: {
       selection
     }, set: { newTab in
-      hapticManager.trigger(of: .selection)
+      hapticManager.trigger(.selection)
       if newTab == selection {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
           resetNavigationOnTab = selection

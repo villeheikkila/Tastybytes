@@ -65,7 +65,7 @@ struct EditSubBrandSheet: View {
         role: .destructive,
         action: {
           viewModel.mergeToSubBrand(subBrand: viewModel.subBrand, onSuccess: {
-            hapticManager.trigger(of: .notification(.success))
+            hapticManager.trigger(.notification(.success))
             onUpdate()
           })
         }

@@ -53,7 +53,7 @@ struct DuplicateProductSheet: View {
         role: .destructive
       ) {
         viewModel.primaryAction(onSuccess: {
-          hapticManager.trigger(of: .notification(.success))
+          hapticManager.trigger(.notification(.success))
           dismiss()
         })
       }

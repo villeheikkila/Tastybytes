@@ -39,7 +39,9 @@ struct CompanyScreen: View {
     }
     .listStyle(.plain)
     .refreshable {
-      viewModel.getBrandsAndSummary()
+      await hapticManager.wrapWithHaptics {
+        await viewModel.getBrandsAndSummary()
+      }
     }
     .toolbar {
       toolbarContent
@@ -73,14 +75,14 @@ struct CompanyScreen: View {
     { presenting in
       Button("Delete \(presenting.name) Company", role: .destructive, action: {
         viewModel.deleteCompany(viewModel.company, onDelete: {
-          hapticManager.trigger(of: .notification(.success))
+          hapticManager.trigger(.notification(.success))
           router.reset()
         })
       })
     }
     .task {
       if viewModel.summary == nil {
-        viewModel.getBrandsAndSummary()
+        await viewModel.getBrandsAndSummary()
       }
     }
   }

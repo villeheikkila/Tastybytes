@@ -86,7 +86,7 @@ struct ProductScreen: View {
                         presenting: viewModel.product)
     { presenting in
       Button("Unverify \(presenting.name) product", role: .destructive, action: {
-        hapticManager.trigger(of: .notification(.success))
+        hapticManager.trigger(.notification(.success))
         viewModel.verifyProduct(isVerified: false)
       })
     }
@@ -98,7 +98,7 @@ struct ProductScreen: View {
         "Delete \(presenting.getDisplayName(.fullName)) Product",
         role: .destructive,
         action: { viewModel.deleteProduct(onDelete: {
-          hapticManager.trigger(of: .notification(.success))
+          hapticManager.trigger(.notification(.success))
           router.removeLast()
         })
         }

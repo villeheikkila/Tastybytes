@@ -10,14 +10,14 @@ struct CheckInListView<Header>: View
   @State private var scrollProxy: ScrollViewProxy?
   @Binding private var scrollToTop: Int
   let header: Header
-  let onRefresh: () -> Void
+  let onRefresh: () async -> Void
   let topAnchor: String?
 
   init(
     _ client: Client,
     fetcher: Fetcher,
     scrollToTop: Binding<Int>,
-    onRefresh: @escaping () -> Void,
+    onRefresh: @escaping () async -> Void,
     topAnchor: String? = nil,
     @ViewBuilder header: @escaping () -> Header
   ) {
@@ -53,7 +53,7 @@ struct CheckInListView<Header>: View
           role: .destructive,
           action: {
             viewModel.deleteCheckIn(checkIn: presenting)
-            hapticManager.trigger(of: .notification(.success))
+            hapticManager.trigger(.notification(.success))
           }
         )
       }
@@ -67,11 +67,13 @@ struct CheckInListView<Header>: View
         }
       })
       .refreshable {
-        viewModel.refresh()
-        onRefresh()
+        await hapticManager.wrapWithHaptics {
+          await viewModel.refresh()
+          await onRefresh()
+        }
       }
       .task {
-        viewModel.fetchActivityFeedItems(onComplete: {
+        await viewModel.fetchActivityFeedItems(onComplete: {
           if splashScreenManager.state != .finished {
             splashScreenManager.dismiss()
           }
@@ -112,7 +114,9 @@ struct CheckInListView<Header>: View
         }
         .onAppear {
           if checkIn == viewModel.checkIns.last, viewModel.isLoading != true {
-            viewModel.fetchActivityFeedItems()
+            Task {
+              await viewModel.fetchActivityFeedItems()
+            }
           }
         }
     }

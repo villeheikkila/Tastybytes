@@ -63,18 +63,16 @@ import SwiftUI
       .count
   }
 
-  func refresh(reset: Bool = false) {
-    Task {
-      switch await client.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
-      case let .success(newNotifications):
-        if reset {
-          self.notifications = newNotifications
-        } else {
-          self.notifications.append(contentsOf: newNotifications)
-        }
-      case let .failure(error):
-        logger.error("failed: \(error.localizedDescription)")
+  func refresh(reset: Bool = false) async {
+    switch await client.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
+    case let .success(newNotifications):
+      if reset {
+        notifications = newNotifications
+      } else {
+        notifications.append(contentsOf: newNotifications)
       }
+    case let .failure(error):
+      logger.error("failed: \(error.localizedDescription)")
     }
   }
 

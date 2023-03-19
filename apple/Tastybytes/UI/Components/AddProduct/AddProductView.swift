@@ -43,19 +43,19 @@ struct AddProductView: View {
           })
         case .edit:
           await viewModel.editProduct(onSuccess: {
-            hapticManager.trigger(of: .notification(.success))
+            hapticManager.trigger(.notification(.success))
             if let onEdit {
               onEdit()
             }
           })
         case .new:
           await viewModel.createProduct(onSuccess: { product in
-            hapticManager.trigger(of: .notification(.success))
+            hapticManager.trigger(.notification(.success))
             router.navigate(to: .product(product), resetStack: true)
           })
         case .addToBrand:
           await viewModel.createProduct(onSuccess: { product in
-            hapticManager.trigger(of: .notification(.success))
+            hapticManager.trigger(.notification(.success))
             if let onCreate {
               onCreate(product)
             }

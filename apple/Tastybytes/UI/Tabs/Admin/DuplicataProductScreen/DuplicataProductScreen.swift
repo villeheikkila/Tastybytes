@@ -63,7 +63,7 @@ struct DuplicateProductScreen: View {
         "Delete \(presenting.getDisplayName(.fullName)) Product",
         role: .destructive,
         action: { viewModel.deleteProduct(onDelete: {
-          hapticManager.trigger(of: .notification(.success))
+          hapticManager.trigger(.notification(.success))
           router.removeLast()
         })
         }
@@ -71,7 +71,9 @@ struct DuplicateProductScreen: View {
     }
     .navigationBarTitle("Unverified Products")
     .refreshable {
-      await viewModel.loadProducts()
+      await hapticManager.wrapWithHaptics {
+        await viewModel.loadProducts()
+      }
     }
     .task {
       await viewModel.loadProducts()

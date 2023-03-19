@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProductFeedScreen: View {
   @StateObject private var viewModel: ViewModel
+  @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
 
   init(_ client: Client, feed: ProductFeedType) {
@@ -34,7 +35,9 @@ struct ProductFeedScreen: View {
     .scrollContentBackground(.hidden)
     .listStyle(.plain)
     .refreshable {
-      await viewModel.refresh()
+      await hapticManager.wrapWithHaptics {
+        await viewModel.refresh()
+      }
     }
     .navigationTitle(viewModel.title)
     .toolbar {

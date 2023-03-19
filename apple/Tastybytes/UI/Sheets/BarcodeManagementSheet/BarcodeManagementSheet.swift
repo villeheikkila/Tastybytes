@@ -27,7 +27,7 @@ struct BarcodeManagementSheet: View {
         .swipeActions {
           Button(role: .destructive, action: {
             viewModel.deleteBarcode(barcode)
-            hapticManager.trigger(of: .notification(.success))
+            hapticManager.trigger(.notification(.success))
           }, label: {
             Label("Delete", systemImage: "trash.fill")
           })
@@ -35,7 +35,7 @@ struct BarcodeManagementSheet: View {
         .contextMenu {
           Button(role: .destructive, action: {
             viewModel.deleteBarcode(barcode)
-            hapticManager.trigger(of: .notification(.success))
+            hapticManager.trigger(.notification(.success))
           }, label: {
             Label("Delete", systemImage: "trash.fill")
           })

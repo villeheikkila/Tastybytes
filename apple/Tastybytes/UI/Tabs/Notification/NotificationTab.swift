@@ -41,7 +41,9 @@ struct NotificationTab: View {
         })
       }
       .refreshable {
-        notificationManager.refresh(reset: true)
+        await hapticManager.wrapWithHaptics {
+          await notificationManager.refresh(reset: true)
+        }
       }
       .navigationTitle(notificationManager.filter?.label ?? "Notifications")
       .navigationBarTitleDisplayMode(.inline)
@@ -73,13 +75,13 @@ struct NotificationTab: View {
     ToolbarItemGroup {
       Menu {
         Button(action: {
-          hapticManager.trigger(of: .impact(intensity: .low))
+          hapticManager.trigger(.impact(intensity: .low))
           notificationManager.markAllAsRead()
         }, label: {
           Label("Mark all read", systemImage: "envelope.open")
         })
         Button(action: {
-          hapticManager.trigger(of: .impact(intensity: .low))
+          hapticManager.trigger(.impact(intensity: .low))
           notificationManager.deleteAll()
         }, label: {
           Label("Delete all", systemImage: "trash")

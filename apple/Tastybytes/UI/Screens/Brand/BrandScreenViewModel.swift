@@ -80,25 +80,23 @@ extension BrandScreen {
         }
     }
 
-    func refresh() {
-      Task {
-        async let summaryPromise = client.brand.getSummaryById(id: brand.id)
-        async let brandPromise = client.brand.getJoinedById(id: brand.id)
+    func refresh() async {
+      async let summaryPromise = client.brand.getSummaryById(id: brand.id)
+      async let brandPromise = client.brand.getJoinedById(id: brand.id)
 
-        switch await summaryPromise {
-        case let .success(summary):
-          self.summary = summary
-        case let .failure(error):
-          logger
-            .error("failed to load summary for brand: \(error.localizedDescription)")
-        }
+      switch await summaryPromise {
+      case let .success(summary):
+        self.summary = summary
+      case let .failure(error):
+        logger
+          .error("failed to load summary for brand: \(error.localizedDescription)")
+      }
 
-        switch await brandPromise {
-        case let .success(brand):
-          self.brand = brand
-        case let .failure(error):
-          logger.error("request for brand with \(self.brand.id) failed: \(error.localizedDescription)")
-        }
+      switch await brandPromise {
+      case let .success(brand):
+        self.brand = brand
+      case let .failure(error):
+        logger.error("request for brand with \(brand.id) failed: \(error.localizedDescription)")
       }
     }
 
@@ -135,7 +133,7 @@ extension BrandScreen {
       Task {
         switch await client.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
         case .success:
-          refresh()
+          await refresh()
           logger
             .info("sub-brand succesfully verified")
         case let .failure(error):
@@ -162,7 +160,7 @@ extension BrandScreen {
       Task {
         switch await client.subBrand.delete(id: toDeleteSubBrand.id) {
         case .success:
-          refresh()
+          await refresh()
           logger.info("succesfully deleted sub-brand")
         case let .failure(error):
           logger.error("failed to delete brand '\(toDeleteSubBrand.id)': \(error.localizedDescription)")

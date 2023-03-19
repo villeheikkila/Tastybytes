@@ -79,7 +79,7 @@ struct RootView: View {
         case .signedIn:
           Task {
             profileManager.refresh()
-            notificationManager.refresh()
+            await notificationManager.refresh()
             notificationManager.refreshAPNS()
           }
         default:

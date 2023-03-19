@@ -70,7 +70,7 @@ struct ServingStyleManagementSheet: View {
           role: .destructive,
           action: {
             viewModel.deleteServingStyle(onDelete: {
-              hapticManager.trigger(of: .notification(.success))
+              hapticManager.trigger(.notification(.success))
             })
           }
         )

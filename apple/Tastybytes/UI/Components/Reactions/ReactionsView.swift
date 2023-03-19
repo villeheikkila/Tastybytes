@@ -28,7 +28,7 @@ struct ReactionsView: View {
     .if(!viewModel.isLoading, transform: { view in
       view.accessibilityAddTraits(.isButton)
         .onTapGesture {
-          hapticManager.trigger(of: .impact(intensity: .low))
+          hapticManager.trigger(.impact(intensity: .low))
           viewModel.toggleReaction(userId: profileManager.getId())
         }
     })

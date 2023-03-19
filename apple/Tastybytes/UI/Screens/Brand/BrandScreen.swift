@@ -93,7 +93,9 @@ struct BrandScreen: View {
     }
     .listStyle(.plain)
     .refreshable {
-      viewModel.refresh()
+      await hapticManager.wrapWithHaptics {
+        await viewModel.refresh()
+      }
     }
     .task {
       if viewModel.summary == nil {
@@ -105,12 +107,12 @@ struct BrandScreen: View {
         switch sheet {
         case .editBrand:
           EditBrandSheet(viewModel.client, brand: viewModel.brand) {
-            viewModel.refresh()
+            Task { await viewModel.refresh() }
           }
         case .editSubBrand:
           if let editSubBrand = viewModel.editSubBrand {
             EditSubBrandSheet(viewModel.client, brand: viewModel.brand, subBrand: editSubBrand) {
-              viewModel.refresh()
+              Task { await viewModel.refresh() }
             }
           }
         case .duplicateProduct:
@@ -140,7 +142,7 @@ struct BrandScreen: View {
     { presenting in
       Button("Unverify \(presenting.name ?? "default") sub-brand", action: {
         viewModel.verifySubBrand(presenting, isVerified: false)
-        hapticManager.trigger(of: .notification(.success))
+        hapticManager.trigger(.notification(.success))
       })
     }
     .confirmationDialog("Unverify Brand",
@@ -149,7 +151,7 @@ struct BrandScreen: View {
     { presenting in
       Button("Unverify \(presenting.name) brand", action: {
         viewModel.verifyBrand(isVerified: false)
-        hapticManager.trigger(of: .notification(.success))
+        hapticManager.trigger(.notification(.success))
       })
     }
     .confirmationDialog("Delete Sub-brand",
@@ -161,7 +163,7 @@ struct BrandScreen: View {
         role: .destructive,
         action: {
           viewModel.deleteSubBrand()
-          hapticManager.trigger(of: .notification(.success))
+          hapticManager.trigger(.notification(.success))
         }
       )
     }
@@ -172,7 +174,7 @@ struct BrandScreen: View {
       Button("Delete \(presenting.name) Brand", role: .destructive, action: {
         viewModel.deleteBrand(onDelete: {
           router.reset()
-          hapticManager.trigger(of: .notification(.success))
+          hapticManager.trigger(.notification(.success))
         })
       })
     }

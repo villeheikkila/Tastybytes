@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FlavorManagementScreen: View {
   @StateObject private var viewModel: ViewModel
+  @EnvironmentObject private var hapticManager: HapticManager
 
   init(_ client: Client) {
     _viewModel = StateObject(wrappedValue: ViewModel(client))
@@ -40,7 +41,9 @@ struct FlavorManagementScreen: View {
       })
     )
     .refreshable {
-      await viewModel.loadFlavors()
+      await hapticManager.wrapWithHaptics {
+        await viewModel.loadFlavors()
+      }
     }
     .task {
       await viewModel.loadFlavors()

@@ -73,10 +73,12 @@ struct FriendsScreen: View {
       .navigationBarTitleDisplayMode(.inline)
     }
     .refreshable {
-      viewModel.loadFriends(currentUser: profileManager.getProfile())
+      await hapticManager.wrapWithHaptics {
+        await viewModel.loadFriends(currentUser: profileManager.getProfile())
+      }
     }
     .task {
-      viewModel.loadFriends(currentUser: profileManager.getProfile())
+      await viewModel.loadFriends(currentUser: profileManager.getProfile())
       if viewModel.profile == profileManager.getProfile() {
         noficationManager.markAllFriendRequestsAsRead()
       }
@@ -90,7 +92,7 @@ struct FriendsScreen: View {
           HStack {
             if !viewModel.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
               Button(action: {
-                hapticManager.trigger(of: .impact(intensity: .low))
+                hapticManager.trigger(.impact(intensity: .low))
                 viewModel.sendFriendRequest(receiver: profile.id, onSuccess: {
                   toastManager.toggle(.success("Friend Request Sent!"))
                 })
@@ -110,7 +112,7 @@ struct FriendsScreen: View {
       NavigationStack {
         NameTagSheet(onSuccess: { profileId in
           viewModel.sendFriendRequest(receiver: profileId, onSuccess: {
-            hapticManager.trigger(of: .notification(.success))
+            hapticManager.trigger(.notification(.success))
             toastManager.toggle(.success("Friend Request Sent!"))
           })
         })

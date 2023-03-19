@@ -41,7 +41,7 @@ struct AccountSettingsScreen: View {
           viewModel.deleteCurrentAccount(onError: { message in
             toastManager.toggle(.error(message))
           })
-          hapticManager.trigger(of: .notification(.success))
+          hapticManager.trigger(.notification(.success))
         }
       )
     }

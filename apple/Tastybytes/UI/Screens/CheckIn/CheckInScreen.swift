@@ -57,7 +57,7 @@ struct CheckInScreen: View {
         role: .destructive,
         action: {
           viewModel.deleteCheckIn(onDelete: {
-            hapticManager.trigger(of: .notification(.success))
+            hapticManager.trigger(.notification(.success))
             router.removeLast()
           })
         }

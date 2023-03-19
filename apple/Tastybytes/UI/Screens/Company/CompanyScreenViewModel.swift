@@ -78,7 +78,7 @@ extension CompanyScreen {
       }
     }
 
-    func getBrandsAndSummary() {
+    func getBrandsAndSummary() async {
       Task {
         async let companyPromise = client.company.getJoinedById(id: company.id)
         async let summaryPromise = client.company.getSummaryById(id: company.id)

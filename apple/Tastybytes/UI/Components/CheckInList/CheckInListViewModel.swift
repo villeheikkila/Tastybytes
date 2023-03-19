@@ -35,10 +35,10 @@ extension CheckInListView {
       self.client = client
     }
 
-    func refresh() {
+    func refresh() async {
       page = 0
       checkIns = [CheckIn]()
-      fetchActivityFeedItems()
+      await fetchActivityFeedItems()
     }
 
     func getPagination(page: Int, size: Int) -> (Int, Int) {
@@ -67,25 +67,23 @@ extension CheckInListView {
       checkIns[index] = checkIn
     }
 
-    func fetchActivityFeedItems(onComplete: (() -> Void)? = nil) {
+    func fetchActivityFeedItems(onComplete: (() -> Void)? = nil) async {
       let (from, to) = getPagination(page: page, size: pageSize)
-      Task {
-        self.isLoading = true
+      isLoading = true
 
-        switch await checkInFetcher(from: from, to: to) {
-        case let .success(checkIns):
-          withAnimation {
-            self.checkIns.append(contentsOf: checkIns)
-          }
-          self.page += 1
-          self.isLoading = false
-
-          if let onComplete {
-            onComplete()
-          }
-        case let .failure(error):
-          logger.error("fetching check-ins failed: \(error.localizedDescription)")
+      switch await checkInFetcher(from: from, to: to) {
+      case let .success(checkIns):
+        withAnimation {
+          self.checkIns.append(contentsOf: checkIns)
         }
+        page += 1
+        isLoading = false
+
+        if let onComplete {
+          onComplete()
+        }
+      case let .failure(error):
+        logger.error("fetching check-ins failed: \(error.localizedDescription)")
       }
     }
 

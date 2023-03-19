@@ -47,7 +47,7 @@ struct LocationScreen: View {
           viewModel.deleteLocation(presenting, onDelete: {
             router.reset()
           })
-          hapticManager.trigger(of: .notification(.success))
+          hapticManager.trigger(.notification(.success))
         }
       )
     }

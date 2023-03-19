@@ -87,17 +87,15 @@ extension FriendsScreen {
       }
     }
 
-    func loadFriends(currentUser: Profile) {
-      Task {
-        switch await client.friend.getByUserId(
-          userId: profile.id,
-          status: currentUser.id == profile.id ? .none : Friend.Status.accepted
-        ) {
-        case let .success(friends):
-          self.friends = friends
-        case let .failure(error):
-          self.error = error
-        }
+    func loadFriends(currentUser: Profile) async {
+      switch await client.friend.getByUserId(
+        userId: profile.id,
+        status: currentUser.id == profile.id ? .none : Friend.Status.accepted
+      ) {
+      case let .success(friends):
+        self.friends = friends
+      case let .failure(error):
+        self.error = error
       }
     }
   }

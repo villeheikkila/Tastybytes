@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CategoryManagementScreen: View {
   @StateObject private var viewModel: ViewModel
+  @EnvironmentObject private var hapticManager: HapticManager
 
   init(_ client: Client) {
     _viewModel = StateObject(wrappedValue: ViewModel(client))
@@ -61,7 +62,9 @@ struct CategoryManagementScreen: View {
         .bold()
     }))
     .refreshable {
-      await viewModel.loadCategories()
+      await hapticManager.wrapWithHaptics {
+        await viewModel.loadCategories()
+      }
     }
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {

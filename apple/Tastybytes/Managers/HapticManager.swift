@@ -22,7 +22,13 @@ import UIKit
     impactFeedbackGenerator.prepare()
   }
 
-  func trigger(of type: HapticType) {
+  func wrapWithHaptics(_ asyncFunction: @escaping () async -> Void) async {
+    trigger(.impact(intensity: .low))
+    await asyncFunction()
+    trigger(.impact(intensity: .high))
+  }
+
+  func trigger(_ type: HapticType) {
     guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
 
     switch type {
