@@ -77,11 +77,9 @@ struct RootView: View {
         }
         switch authEvent {
         case .signedIn:
-          Task {
-            profileManager.refresh()
-            await notificationManager.refresh()
-            notificationManager.refreshAPNS()
-          }
+          await profileManager.refresh()
+          await notificationManager.refresh()
+          notificationManager.refreshAPNS()
         default:
           break
         }

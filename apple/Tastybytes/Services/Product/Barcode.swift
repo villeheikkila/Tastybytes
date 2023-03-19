@@ -1,12 +1,12 @@
 import AVFoundation
 
 struct Barcode: Encodable, Hashable, Sendable {
-  let barcode: String
-  let type: AVMetadataObject.ObjectType
-
   enum CodingKeys: String, CodingKey {
     case barcode, type
   }
+
+    let barcode: String
+    let type: AVMetadataObject.ObjectType
 
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
@@ -16,18 +16,13 @@ struct Barcode: Encodable, Hashable, Sendable {
 }
 
 struct ProductBarcode: Identifiable, Hashable, Decodable, Sendable {
-  let id: Int
-  let barcode: String
-  let type: AVMetadataObject.ObjectType
-
-  func isBarcode(_ code: Barcode?) -> Bool {
-    guard let code else { return false }
-    return type == code.type && barcode == code.barcode
-  }
-
   enum CodingKeys: String, CodingKey {
     case id, barcode, type
   }
+
+  let id: Int
+  let barcode: String
+  let type: AVMetadataObject.ObjectType
 
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -35,17 +30,22 @@ struct ProductBarcode: Identifiable, Hashable, Decodable, Sendable {
     barcode = try values.decode(String.self, forKey: .barcode)
     type = try AVMetadataObject.ObjectType(rawValue: values.decode(String.self, forKey: .type))
   }
+
+  func isBarcode(_ code: Barcode?) -> Bool {
+    guard let code else { return false }
+    return type == code.type && barcode == code.barcode
+  }
 }
 
 extension ProductBarcode {
   struct NewRequest: Encodable, Sendable {
-    let barcode: String
-    let type: String
-    let productId: Int
-
     enum CodingKeys: String, CodingKey {
       case barcode, type, productId = "product_id"
     }
+
+      let barcode: String
+      let type: String
+      let productId: Int
 
     init(product: Product.Joined, barcode: Barcode) {
       productId = product.id

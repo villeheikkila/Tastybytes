@@ -30,19 +30,17 @@ import SwiftUI
     return id
   }
 
-  func refresh() {
-    Task {
-      switch await client.profile.getCurrentUser() {
-      case let .success(currentUserProfile):
-        self.profile = currentUserProfile
-        setPreferredColorScheme(settings: currentUserProfile.settings)
-        self.isLoggedIn = true
-        loadFriends()
-      case let .failure(error):
-        logger.error("error while loading current user profile: \(error.localizedDescription)")
-        self.isLoggedIn = false
-        _ = await client.auth.logOut()
-      }
+  func refresh() async {
+    switch await client.profile.getCurrentUser() {
+    case let .success(currentUserProfile):
+      profile = currentUserProfile
+      setPreferredColorScheme(settings: currentUserProfile.settings)
+      isLoggedIn = true
+      loadFriends()
+    case let .failure(error):
+      logger.error("error while loading current user profile: \(error.localizedDescription)")
+      isLoggedIn = false
+      _ = await client.auth.logOut()
     }
   }
 

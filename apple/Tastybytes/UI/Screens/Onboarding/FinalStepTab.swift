@@ -21,7 +21,7 @@ struct FinalStepTab: View {
 
       HStack {
         Spacer()
-        Button(action: { viewModel.updateProfile { profileManager.refresh() } }, label: {
+        Button(action: { viewModel.updateProfile { Task { await profileManager.refresh() } } }, label: {
           Text("Continue to the app")
             .fontWeight(.medium)
         })

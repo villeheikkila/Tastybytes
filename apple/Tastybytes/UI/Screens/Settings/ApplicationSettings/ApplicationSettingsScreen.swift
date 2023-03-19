@@ -25,11 +25,11 @@ struct ApplicationSettingsScreen: View {
     Section {
       Toggle("Use System Color Scheme", isOn: $viewModel.isSystemColor)
         .onChange(of: [viewModel.isSystemColor].publisher.first()) { _ in
-          viewModel.updateColorScheme { profileManager.refresh() }
+          viewModel.updateColorScheme { Task { await profileManager.refresh() } }
         }
       Toggle("Use Dark Mode", isOn: $viewModel.isDarkMode)
         .onChange(of: [viewModel.isDarkMode].publisher.first()) { _ in
-          viewModel.updateColorScheme { profileManager.refresh() }
+          viewModel.updateColorScheme { Task { await profileManager.refresh() } }
         }
         .disabled(viewModel.isSystemColor)
     } header: {

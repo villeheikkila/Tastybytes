@@ -1,8 +1,6 @@
 import SwiftUI
 
-struct CheckInListView<Header>: View
-  where Header: View
-{
+struct CheckInListView<Header>: View where Header: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var hapticManager: HapticManager

@@ -55,7 +55,7 @@ extension EditBrandSheet {
       Task {
         guard let data = await selectedLogo?.getJPEG() else { return }
         switch await client.brand.uploadLogo(brandId: brand.id, data: data) {
-        case let .success(fileName):
+        case .success:
           onUpdate()
         case let .failure(error):
           logger
