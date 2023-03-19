@@ -3,51 +3,6 @@ import Combine
 import SwiftUI
 import WrappingHStack
 
-struct BlurHashPlaceholder: View {
-  let blurHash: CheckIn.BlurHash?
-  @State private var image: UIImage?
-  @State private var task: Task<Void, Never>?
-
-  var body: some View {
-    Group {
-      if let image {
-        Image(uiImage: image)
-          .resizable()
-          .scaledToFill()
-          .frame(height: 200)
-          .clipped()
-          .accessibility(hidden: true)
-      } else {
-        ProgressView()
-      }
-    }
-    .onDisappear {
-      task?.cancel()
-    }
-    .task {
-      guard let blurHash else { return }
-      task = Task {
-        await withTaskGroup(of: UIImage?.self) { group in
-          group.addTask(priority: .background) {
-            await withCheckedContinuation { continuation in
-              DispatchQueue.global().async {
-                let decodedImage = UIImage(
-                  blurHash: blurHash.hash,
-                  size: CGSize(width: 50, height: 50)
-                )
-                continuation.resume(returning: decodedImage)
-              }
-            }
-          }
-          for await decodedImage in group {
-            image = decodedImage
-          }
-        }
-      }
-    }
-  }
-}
-
 struct CheckInCardView: View {
   @EnvironmentObject private var router: Router
   @State private var showFullPicture = false
@@ -140,43 +95,57 @@ struct CheckInCardView: View {
   }
 
   private var productSection: some View {
-    VStack(alignment: .leading, spacing: 4) {
-      HStack {
-        CategoryView(category: checkIn.product.category, subcategories: checkIn.product.subcategories)
-        Spacer()
-        if let servingStyle = checkIn.servingStyle {
-          ServingStyleLabelView(servingStyle: servingStyle)
+    HStack(spacing: 12) {
+      if let logoUrl = checkIn.product.logoUrl {
+        CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+          image
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 32, height: 32)
+            .accessibility(hidden: true)
+        } placeholder: {
+          ProgressView()
         }
+        .padding([.leading, .trailing], 3)
       }
-
-      Text(checkIn.product.getDisplayName(.fullName))
-        .font(.headline)
-        .foregroundColor(.primary)
-
-      if let description = checkIn.product.description {
-        Text(description)
-          .font(.caption)
-      }
-
-      HStack {
-        Text(checkIn.product.getDisplayName(.brandOwner))
-          .font(.subheadline)
-          .foregroundColor(.secondary)
-          .contentShape(Rectangle())
-          .accessibilityAddTraits(.isLink)
-          .onTapGesture {
-            router.navigate(to: .company(checkIn.product.subBrand.brand.brandOwner), resetStack: false)
+      VStack(alignment: .leading, spacing: 4) {
+        HStack {
+          CategoryView(category: checkIn.product.category, subcategories: checkIn.product.subcategories)
+          Spacer()
+          if let servingStyle = checkIn.servingStyle {
+            ServingStyleLabelView(servingStyle: servingStyle)
           }
+        }
 
-        if let manufacturer = checkIn.variant?.manufacturer,
-           manufacturer.id != checkIn.product.subBrand.brand.brandOwner.id
-        {
-          Text("(\(manufacturer.name))")
+        Text(checkIn.product.getDisplayName(.fullName))
+          .font(.headline)
+          .foregroundColor(.primary)
+
+        if let description = checkIn.product.description {
+          Text(description)
+            .font(.caption)
+        }
+
+        HStack {
+          Text(checkIn.product.getDisplayName(.brandOwner))
             .font(.subheadline)
             .foregroundColor(.secondary)
-        }
+            .contentShape(Rectangle())
+            .accessibilityAddTraits(.isLink)
+            .onTapGesture {
+              router.navigate(to: .company(checkIn.product.subBrand.brand.brandOwner), resetStack: false)
+            }
 
-        Spacer()
+          if let manufacturer = checkIn.variant?.manufacturer,
+             manufacturer.id != checkIn.product.subBrand.brand.brandOwner.id
+          {
+            Text("(\(manufacturer.name))")
+              .font(.subheadline)
+              .foregroundColor(.secondary)
+          }
+
+          Spacer()
+        }
       }
     }
     .if(loadedFrom != .product) { view in
