@@ -63,7 +63,7 @@ struct SearchListView: View {
         case .checkIn:
           if let checkInProduct = viewModel.checkInProduct {
             CheckInSheet(viewModel.client, product: checkInProduct, onCreation: { checkIn in
-              router.navigate(to: Route.checkIn(checkIn), resetStack: false)
+              router.navigate(to: .checkIn(checkIn), resetStack: false)
             })
           }
         case .barcodeScanner:
@@ -157,7 +157,7 @@ struct SearchListView: View {
 
   private var profileResults: some View {
     ForEach(viewModel.profiles) { profile in
-      NavigationLink(value: Route.profile(profile)) {
+      RouteLink(to: .profile(profile)) {
         HStack(alignment: .center) {
           AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
           VStack {
@@ -174,7 +174,7 @@ struct SearchListView: View {
 
   private var companyResults: some View {
     ForEach(viewModel.companies) { company in
-      NavigationLink(value: Route.company(company)) {
+      RouteLink(to: .company(company)) {
         Text(company.name)
       }
       .id(company.id)
@@ -183,7 +183,7 @@ struct SearchListView: View {
 
   private var locationResults: some View {
     ForEach(viewModel.locations) { location in
-      NavigationLink(value: Route.location(location)) {
+      RouteLink(to: .location(location)) {
         Text(location.name)
       }
       .id(location.id)
@@ -209,12 +209,12 @@ struct SearchListView: View {
 
     if viewModel.products.isEmpty {
       Section {
-        NavigationLink(value: Route.productFeed(.trending)) {
+        RouteLink(to: .productFeed(.trending)) {
           Label("Trending", systemImage: "chart.line.uptrend.xyaxis").bold()
         }
         .listRowSeparator(.visible)
 
-        NavigationLink(value: Route.productFeed(.topRated)) {
+        RouteLink(to: .productFeed(.topRated)) {
           Label("Top Rated", systemImage: "line.horizontal.star.fill.line.horizontal").bold()
         }
       } header: {

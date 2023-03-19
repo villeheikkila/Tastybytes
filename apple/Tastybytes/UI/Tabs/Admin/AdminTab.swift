@@ -14,16 +14,16 @@ struct AdminTab: View {
   var body: some View {
     NavigationStack(path: $router.path) {
       List {
-        NavigationLink(value: Route.categoryManagement) {
+        RouteLink(to: .categoryManagement) {
           Label("Categories", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
-        NavigationLink(value: Route.flavorManagementScreen) {
+        RouteLink(to: .flavorManagementScreen) {
           Label("Flavors", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
-        NavigationLink(value: Route.verificationScreen) {
+        RouteLink(to: .verificationScreen) {
           Label("Verification", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
-        NavigationLink(value: Route.duplicateProducts) {
+        RouteLink(to: .duplicateProducts) {
           Label("Duplicates", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
       }

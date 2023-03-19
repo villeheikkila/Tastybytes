@@ -99,3 +99,20 @@ force_unwrapping:
   severity: error
 
 redundant_type_annotation: error
+
+type_contents_order:
+  order:
+    - case
+    - associated_type
+    - type_alias
+    - subtype
+    - [type_property, instance_property, ib_outlet, ib_inspectable]
+    - [
+        initializer,
+        deinitializer,
+        type_method,
+        view_life_cycle_method,
+        subscript,
+        other_method,
+        ib_action,
+      ]

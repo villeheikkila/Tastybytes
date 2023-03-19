@@ -221,15 +221,15 @@ struct ProfileView: View {
 
   @ViewBuilder
   private var links: some View {
-    NavigationLink(value: Route.friends(viewModel.profile)) {
+    RouteLink(to: .friends(viewModel.profile)) {
       Text("Friends")
         .font(.subheadline).bold()
     }
-    NavigationLink(value: Route.profileProducts(viewModel.profile)) {
+    RouteLink(to: .profileProducts(viewModel.profile)) {
       Text("Products")
         .font(.subheadline).bold()
     }
-    NavigationLink(value: Route.profileStatistics(viewModel.profile)) {
+    RouteLink(to: .profileStatistics(viewModel.profile)) {
       Text("Statistics")
         .font(.subheadline).bold()
     }
