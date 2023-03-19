@@ -227,12 +227,7 @@ extension AddProductView {
           self.category = categories.first(where: { $0.name == initialCategory })
         case let .failure(error):
           logger
-            .error(
-              """
-              failed to load category with subcategories for '\(initialCategory)': \(error
-                .localizedDescription)
-              """
-            )
+            .error("failed to load category with subcategories for '\(initialCategory)': \(error.localizedDescription)")
         }
       }
     }

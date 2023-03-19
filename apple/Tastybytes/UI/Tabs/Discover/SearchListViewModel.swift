@@ -77,13 +77,7 @@ extension SearchListView {
           }
           self.isSearched = true
         case let .failure(error):
-          logger
-            .error(
-              """
-                "searching products with \(self.searchTerm)\
-                failed: \(error.localizedDescription)
-              """
-            )
+          logger.error("searching products with \(self.searchTerm) failed: \(error.localizedDescription)")
         }
       }
     }
@@ -115,12 +109,7 @@ extension SearchListView {
           self.isSearched = true
         case let .failure(error):
           logger
-            .error(
-              """
-              searching products with barcode \(barcode.barcode) failed:\
-                \(error.localizedDescription)
-              """
-            )
+            .error("searching products with barcode \(barcode.barcode) failed: \(error.localizedDescription)")
         }
       }
     }

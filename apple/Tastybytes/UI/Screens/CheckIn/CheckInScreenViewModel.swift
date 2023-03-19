@@ -69,10 +69,7 @@ extension CheckInScreen {
         case let .failure(error):
           logger
             .error(
-              """
-              failed to update comment \(editComment.id) with text\
-                '\(self.editCommentText)': \(error.localizedDescription)
-              """
+              "failed to update comment \(editComment.id) with text '\(self.editCommentText)': \(error.localizedDescription)"
             )
         }
       }
@@ -106,12 +103,7 @@ extension CheckInScreen {
           self.commentText = ""
         case let .failure(error):
           logger
-            .error(
-              """
-              failed to send comment '\(self.commentText)' to\
-                            check-in '\(self.checkIn.id)': \(error.localizedDescription)
-              """
-            )
+            .error("failed to send comment '\(self.commentText)' to check-in '\(self.checkIn.id)': \(error.localizedDescription)")
         }
       }
     }

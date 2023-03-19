@@ -62,10 +62,7 @@ extension FriendsScreen {
         case let .failure(error):
           logger
             .warning(
-              """
-              failed to update friend request '\(friend.id)' with status '\(newStatus.rawValue)':\
-               \(error.localizedDescription)
-              """
+              "failed to update friend request '\(friend.id)' with status '\(newStatus.rawValue)':\(error.localizedDescription)"
             )
           self.error = error
         }

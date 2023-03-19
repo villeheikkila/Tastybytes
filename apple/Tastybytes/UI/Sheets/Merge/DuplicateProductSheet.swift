@@ -12,12 +12,10 @@ struct DuplicateProductSheet: View {
   var body: some View {
     List {
       if viewModel.products.isEmpty, viewModel.mode == .reportDuplicate {
-        Text(
-          """
-          Search for duplicate of \(viewModel.product.getDisplayName(.fullName)). \
-          Your request will be reviewed and products will be combined if appropriate.
-          """
-        ).listRowSeparator(.hidden)
+        Text("""
+        Search for duplicate of \(viewModel.product
+          .getDisplayName(.fullName)). Your request will be reviewed and products will be combined if appropriate.
+        """).listRowSeparator(.hidden)
       }
       ForEach(viewModel.products.filter { $0.id != viewModel.product.id }) { product in
         Button(action: { viewModel.mergeToProduct = product }, label: {

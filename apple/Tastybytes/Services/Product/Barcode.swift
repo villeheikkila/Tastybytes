@@ -5,8 +5,8 @@ struct Barcode: Encodable, Hashable, Sendable {
     case barcode, type
   }
 
-    let barcode: String
-    let type: AVMetadataObject.ObjectType
+  let barcode: String
+  let type: AVMetadataObject.ObjectType
 
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
@@ -43,9 +43,9 @@ extension ProductBarcode {
       case barcode, type, productId = "product_id"
     }
 
-      let barcode: String
-      let type: String
-      let productId: Int
+    let barcode: String
+    let type: String
+    let productId: Int
 
     init(product: Product.Joined, barcode: Barcode) {
       productId = product.id

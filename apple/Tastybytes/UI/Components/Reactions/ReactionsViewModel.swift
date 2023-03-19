@@ -44,12 +44,7 @@ extension ReactionsView {
             }
           case let .failure(error):
             logger
-              .error(
-                """
-                adding check-in reaction for check-in \(self.checkIn.id) by \(userId) failed:\
-                                \(error.localizedDescription)
-                """
-              )
+              .error("adding check-in reaction for check-in \(self.checkIn.id) by \(userId) failed:\(error.localizedDescription)")
           }
         }
         isLoading = false

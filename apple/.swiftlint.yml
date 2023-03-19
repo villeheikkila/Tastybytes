@@ -56,13 +56,15 @@ opt_in_rules:
   - function_default_parameter_at_end
   - pattern_matching_keywords
   - single_test_class
-  - type_contents_order
 disabled_rules:
   - opening_brace
   - nesting
   - cyclomatic_complexity
   - legacy_random
   - large_tuple
+line_length:
+  - 140
+  - 200
 type_body_length:
   - 300
   - 400

@@ -60,11 +60,7 @@ extension EditSubBrandSheet {
           onSuccess()
         case let .failure(error):
           logger
-            .error(
-              """
-              failed to edit sub-brand '\(self.subBrand.id)' to '\(self.newSubBrandName)': \(error.localizedDescription)
-              """
-            )
+            .error("failed to edit sub-brand '\(self.subBrand.id)' to '\(self.newSubBrandName)': \(error.localizedDescription)")
         }
       }
     }
