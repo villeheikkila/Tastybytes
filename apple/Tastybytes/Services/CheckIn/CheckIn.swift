@@ -123,7 +123,7 @@ extension CheckIn {
           checkInFlavorsJoined,
           productVariantJoined,
           ServingStyle.getQuery(.saved(true)),
-          Location.getQuery(.joined(true))
+          "locations:location_id (\(Location.getQuery(.joined(false))))"
         ].joinComma(),
         withTableName
       )
