@@ -65,6 +65,7 @@ extension CheckInSheet {
         taggedFriends = editCheckIn.taggedProfiles
         pickedFlavors = editCheckIn.flavors
         location = editCheckIn.location
+        purchaseLocation = editCheckIn.purchaseLocation
         checkInAt = editCheckIn.checkInAt ?? Date.now
       }
     }

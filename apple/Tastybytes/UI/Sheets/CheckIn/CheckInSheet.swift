@@ -145,7 +145,7 @@ struct CheckInSheet: View {
       if profileManager.hasPermission(.canSetCheckInDate) {
         Button(action: { viewModel.activeSheet = .purchaseLocation }, label: {
           HStack {
-            if let location = viewModel.location {
+            if let location = viewModel.purchaseLocation {
               Text(location.name)
               if let title = location.title {
                 Text(title)

@@ -15,6 +15,7 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
   let variant: ProductVariant?
   let servingStyle: ServingStyle?
   let location: Location?
+  let purchaseLocation: Location?
 
   var isEmpty: Bool {
     [rating == nil, review.isNilOrEmpty, flavors.isEmpty].allSatisfy { $0 }
@@ -43,6 +44,7 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
     case variant = "product_variants"
     case servingStyle = "serving_styles"
     case location = "locations"
+    case purchaseLocation = "purchase_location"
   }
 
   init(from decoder: Decoder) throws {
@@ -94,6 +96,7 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
     variant = try values.decodeIfPresent(ProductVariant.self, forKey: .variant)
     servingStyle = try values.decodeIfPresent(ServingStyle.self, forKey: .servingStyle)
     location = try values.decodeIfPresent(Location.self, forKey: .location)
+    purchaseLocation = try values.decodeIfPresent(Location.self, forKey: .purchaseLocation)
   }
 }
 
@@ -123,7 +126,8 @@ extension CheckIn {
           checkInFlavorsJoined,
           productVariantJoined,
           ServingStyle.getQuery(.saved(true)),
-          "locations:location_id (\(Location.getQuery(.joined(false))))"
+          "locations:location_id (\(Location.getQuery(.joined(false))))",
+          "purchase_location:purchase_location_id (\(Location.getQuery(.joined(false))))"
         ].joinComma(),
         withTableName
       )
@@ -167,6 +171,7 @@ extension CheckIn {
       case friendIds = "p_friend_ids"
       case flavorIds = "p_flavor_ids"
       case locationId = "p_location_id"
+      case purchaseLocationId = "p_purchase_location_id"
       case checkInAt = "p_check_in_at"
     }
 
@@ -225,6 +230,7 @@ extension CheckIn {
       case friendIds = "p_friend_ids"
       case flavorIds = "p_flavor_ids"
       case locationId = "p_location_id"
+      case purchaseLocationId = "p_purchase_location_id"
       case blurHash = "p_blur_hash"
       case checkInAt = "p_check_in_at"
     }
