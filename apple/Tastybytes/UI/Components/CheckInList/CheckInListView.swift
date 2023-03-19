@@ -9,7 +9,7 @@ struct CheckInListView<Header>: View
   @StateObject private var viewModel: ViewModel
   @State private var scrollProxy: ScrollViewProxy?
   @Binding private var scrollToTop: Int
-  let header: () -> Header
+  let header: Header
   let onRefresh: () -> Void
   let topAnchor: String?
 
@@ -24,14 +24,14 @@ struct CheckInListView<Header>: View
     _viewModel = StateObject(wrappedValue: ViewModel(client, fetcher: fetcher))
     _scrollToTop = scrollToTop
     self.topAnchor = topAnchor
-    self.header = header
+    self.header = header()
     self.onRefresh = onRefresh
   }
 
   var body: some View {
     ScrollViewReader { proxy in
       List {
-        header()
+        header
         checkInsList
         if viewModel.isLoading {
           ProgressView()
@@ -136,7 +136,7 @@ struct CheckInListView<Header>: View
     }
   }
 
-  var getLoadedFrom: CheckInCardView.LoadedFrom {
+  private var getLoadedFrom: CheckInCardView.LoadedFrom {
     switch viewModel.fetcher {
     case let .profile(profile):
       return .profile(profile)

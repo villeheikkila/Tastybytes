@@ -1,6 +1,11 @@
 import SwiftUI
 
 struct ProgressButton<Label: View>: View {
+  enum ActionOption: CaseIterable {
+    case disableButton
+    case showProgressView
+  }
+
   var action: () async -> Void
   var actionOptions = Set(ActionOption.allCases)
   @ViewBuilder var label: () -> Label
@@ -41,13 +46,6 @@ struct ProgressButton<Label: View>: View {
           .padding(.leading, 10)
       }
     }
-  }
-}
-
-extension ProgressButton {
-  enum ActionOption: CaseIterable {
-    case disableButton
-    case showProgressView
   }
 }
 

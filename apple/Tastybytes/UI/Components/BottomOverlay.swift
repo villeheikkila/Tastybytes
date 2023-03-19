@@ -5,14 +5,14 @@ struct MaterialOverlay<RootView: View>: View {
     case top, bottom
   }
 
-  let view: () -> RootView
+  let view: RootView
   let alignment: Alignment
 
   init(
     alignment: Alignment,
     @ViewBuilder view: @escaping () -> RootView
   ) {
-    self.view = view
+    self.view = view()
     self.alignment = alignment
   }
 
@@ -25,7 +25,7 @@ struct MaterialOverlay<RootView: View>: View {
       HStack {
         Spacer()
         VStack {
-          view()
+          view
         }
         .padding([.top, .bottom], 10)
         Spacer()
