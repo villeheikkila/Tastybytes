@@ -20,9 +20,7 @@ struct ProductFeedScreen: View {
           }
           .onAppear {
             if product == viewModel.products.last, viewModel.isLoading != true {
-              Task {
-                await viewModel.fetchProductFeedItems()
-              }
+              Task { await viewModel.fetchProductFeedItems() }
             }
           }
       }

@@ -81,8 +81,9 @@ extension BrandScreen {
     }
 
     func refresh() async {
-      async let summaryPromise = client.brand.getSummaryById(id: brand.id)
-      async let brandPromise = client.brand.getJoinedById(id: brand.id)
+      let brandId = brand.id
+      async let summaryPromise = client.brand.getSummaryById(id: brandId)
+      async let brandPromise = client.brand.getJoinedById(id: brandId)
 
       switch await summaryPromise {
       case let .success(summary):
@@ -96,7 +97,7 @@ extension BrandScreen {
       case let .success(brand):
         self.brand = brand
       case let .failure(error):
-        logger.error("request for brand with \(brand.id) failed: \(error.localizedDescription)")
+        logger.error("request for brand with \(brandId) failed: \(error.localizedDescription)")
       }
     }
 
