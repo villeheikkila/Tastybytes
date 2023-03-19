@@ -100,6 +100,7 @@
 		5C663F372933B8FA006F9A97 /* LocationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F362933B8FA006F9A97 /* LocationScreen.swift */; };
 		5C663F3929355601006F9A97 /* EditBrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C663F3829355601006F9A97 /* EditBrandSheet.swift */; };
 		5C66745129C64A4C005380B7 /* PhotosUIExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C66745029C64A4C005380B7 /* PhotosUIExtension.swift */; };
+		5C66745529C6FB9A005380B7 /* RouteLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C66745429C6FB9A005380B7 /* RouteLink.swift */; };
 		5C7C356F299ABE08009A3C09 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C356E299ABE08009A3C09 /* ProfileViewModel.swift */; };
 		5C7C3572299ABF26009A3C09 /* FriendsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3571299ABF26009A3C09 /* FriendsScreenViewModel.swift */; };
 		5C7C3574299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */; };
@@ -177,7 +178,6 @@
 		5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */; };
 		5CC2FE982919CB19002BDF83 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE972919CB19002BDF83 /* Country.swift */; };
 		5CC6B9A529AE9DB000A62158 /* DuplicateProductSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC6B9A429AE9DB000A62158 /* DuplicateProductSheet.swift */; };
-		5CC6B9AC29B234E700A62158 /* UnifiedBlurHash in Frameworks */ = {isa = PBXBuildFile; productRef = 5CC6B9AB29B234E700A62158 /* UnifiedBlurHash */; };
 		5CC6B9AE29B2360D00A62158 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC6B9AD29B2360D00A62158 /* UIImageExtensions.swift */; };
 		5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE914D28F45DE7005A6043 /* Utils.swift */; };
 		5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */; };
@@ -313,6 +313,7 @@
 		5C663F362933B8FA006F9A97 /* LocationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationScreen.swift; sourceTree = "<group>"; };
 		5C663F3829355601006F9A97 /* EditBrandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBrandSheet.swift; sourceTree = "<group>"; };
 		5C66745029C64A4C005380B7 /* PhotosUIExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosUIExtension.swift; sourceTree = "<group>"; };
+		5C66745429C6FB9A005380B7 /* RouteLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteLink.swift; sourceTree = "<group>"; };
 		5C7C356E299ABE08009A3C09 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		5C7C3571299ABF26009A3C09 /* FriendsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserFriendsScreenView.swift; sourceTree = "<group>"; };
@@ -442,7 +443,6 @@
 				5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */,
 				5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */,
 				5C08B6E028ED7956009218D7 /* Supabase in Frameworks */,
-				5CC6B9AC29B234E700A62158 /* UnifiedBlurHash in Frameworks */,
 				5CFB563628F5A76600F13A1E /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1255,6 +1255,7 @@
 				5C09BEC829A53E0100331AEB /* CategoryView.swift */,
 				5C7C35DC299AE042009A3C09 /* ProductItemView.swift */,
 				5C20A50C29AA316900ABBA74 /* CustomBadge.swift */,
+				5C66745429C6FB9A005380B7 /* RouteLink.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1332,7 +1333,6 @@
 				5CED432428FBF6B0003F8194 /* AlertToast */,
 				5C25AEB129031B9D00793607 /* WrappingHStack */,
 				5C13F21A291A7C3A00599892 /* FirebaseMessaging */,
-				5CC6B9AB29B234E700A62158 /* UnifiedBlurHash */,
 			);
 			productName = tasted;
 			productReference = 5CFEE57328ED69B100A8DD66 /* Tastybytes.app */;
@@ -1368,7 +1368,6 @@
 				5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				5C25AEB029031B9D00793607 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 				5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				5CC6B9AA29B234E700A62158 /* XCRemoteSwiftPackageReference "UnifiedBlurHash" */,
 			);
 			productRefGroup = 5CFEE57428ED69B100A8DD66 /* Products */;
 			projectDirPath = "";
@@ -1548,6 +1547,7 @@
 				5C7C3583299AC13D009A3C09 /* CheckInScreenViewModel.swift in Sources */,
 				5C25AEBA29053B7E00793607 /* CompanyScreen.swift in Sources */,
 				5C353CBC29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift in Sources */,
+				5C66745529C6FB9A005380B7 /* RouteLink.swift in Sources */,
 				5C7C3580299AC0A6009A3C09 /* AuthenticationInput.swift in Sources */,
 				5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */,
 				5CED433228FD76BB003F8194 /* SubBrandSheet.swift in Sources */,
@@ -1907,14 +1907,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		5CC6B9AA29B234E700A62158 /* XCRemoteSwiftPackageReference "UnifiedBlurHash" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/iankoex/UnifiedBlurHash.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast.git";
@@ -1956,11 +1948,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5C25AEB029031B9D00793607 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
 			productName = WrappingHStack;
-		};
-		5CC6B9AB29B234E700A62158 /* UnifiedBlurHash */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5CC6B9AA29B234E700A62158 /* XCRemoteSwiftPackageReference "UnifiedBlurHash" */;
-			productName = UnifiedBlurHash;
 		};
 		5CED432428FBF6B0003F8194 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;

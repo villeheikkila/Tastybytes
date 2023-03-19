@@ -73,7 +73,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
 
   func uploadLogo(companyId: Int, data: Data) async -> Result<String, Error> {
     do {
-      let formatter = DateFormatter()
       let fileName = "\(companyId)_\(Date().customFormat(.fileNameSuffix)).jpeg"
       let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
 

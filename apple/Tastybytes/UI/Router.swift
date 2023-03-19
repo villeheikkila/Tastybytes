@@ -137,22 +137,6 @@ extension View {
   }
 }
 
-struct RouteLink<Label: View>: View {
-  let route: Route
-  let label: Label
-
-  init(to route: Route, @ViewBuilder label: () -> Label) {
-    self.route = route
-    self.label = label()
-  }
-
-  var body: some View {
-    NavigationLink(value: route) {
-      label
-    }
-  }
-}
-
 enum NavigatablePath {
   case product(id: Int)
   case checkIn(id: Int)
