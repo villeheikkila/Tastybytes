@@ -20,7 +20,7 @@ struct CheckInCardView: View {
       }
       .padding([.leading, .trailing], 10)
       checkInImage
-      VStack {
+      VStack(spacing: 4) {
         checkInSection
         taggedProfilesSection
         footer
@@ -161,7 +161,7 @@ struct CheckInCardView: View {
   @ViewBuilder
   private var checkInSection: some View {
     if !checkIn.isEmpty {
-      VStack(alignment: .leading, spacing: 6) {
+      VStack(alignment: .leading, spacing: 8) {
         if let rating = checkIn.rating {
           RatingView(rating: rating)
         }
@@ -176,6 +176,10 @@ struct CheckInCardView: View {
           WrappingHStack(flavors, spacing: .constant(4)) { flavor in
             ChipView(title: flavor.label)
           }
+        }
+
+        if let purchaseLocation = checkIn.purchaseLocation {
+          Text("Purchased from __\(purchaseLocation.name)__")
         }
       }
       .if(loadedFrom != .checkIn) { view in

@@ -126,23 +126,27 @@ struct CheckInSheet: View {
           }
         })
       }
-
-      Button(action: { viewModel.activeSheet = .location }, label: {
-        HStack {
-          if let location = viewModel.location {
-            Text(location.name)
-            if let title = location.title {
-              Text(title)
-                .foregroundColor(.secondary)
+      Section {
+        Button(action: { viewModel.activeSheet = .location }, label: {
+          HStack {
+            if let location = viewModel.location {
+              Text(location.name)
+              if let title = location.title {
+                Text(title)
+                  .foregroundColor(.secondary)
+              }
+            } else {
+              Text("Location")
+                .fontWeight(.medium)
             }
-          } else {
-            Text("Location")
-              .fontWeight(.medium)
+            Spacer()
           }
-          Spacer()
-        }
-      })
-      if profileManager.hasPermission(.canSetCheckInDate) {
+        })
+      } header: {
+        Text("Location")
+      }
+
+      Section {
         Button(action: { viewModel.activeSheet = .purchaseLocation }, label: {
           HStack {
             if let location = viewModel.purchaseLocation {
@@ -152,12 +156,17 @@ struct CheckInSheet: View {
                   .foregroundColor(.secondary)
               }
             } else {
-              Text("Purchase Locations")
+              Text("Purchase Location")
                 .fontWeight(.medium)
             }
             Spacer()
           }
         })
+      } header: {
+        Text("Purchased from")
+      }
+
+      if profileManager.hasPermission(.canSetCheckInDate) {
         DatePicker(selection: $viewModel.checkInAt, in: ...Date.now) {
           Text("Check-in Date")
         }

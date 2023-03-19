@@ -18,7 +18,7 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
   let purchaseLocation: Location?
 
   var isEmpty: Bool {
-    [rating == nil, review.isNilOrEmpty, flavors.isEmpty].allSatisfy { $0 }
+    [rating == nil, review.isNilOrEmpty, flavors.isEmpty, purchaseLocation == nil].allSatisfy { $0 }
   }
 
   var imageUrl: URL? {
