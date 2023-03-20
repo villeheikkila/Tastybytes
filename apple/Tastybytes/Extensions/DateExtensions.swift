@@ -2,7 +2,7 @@ import Foundation
 
 extension Date {
   enum CustomFormat {
-    case fileNameSuffix, relativeTime, timestampTz
+    case fileNameSuffix, relativeTime, timestampTz, date
   }
 
   func customFormat(_ type: CustomFormat) -> String {
@@ -27,6 +27,11 @@ extension Date {
     case .timestampTz:
       let dateFormatter = DateFormatter()
       dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
+      dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+      return dateFormatter.string(from: self)
+    case .date:
+      let dateFormatter = DateFormatter()
+      dateFormatter.dateFormat = "yyyy-MM-dd"
       dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
       return dateFormatter.string(from: self)
     }

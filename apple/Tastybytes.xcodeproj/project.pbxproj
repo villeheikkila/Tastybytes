@@ -196,6 +196,7 @@
 		5CD10A5728F98D490001CFC2 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5628F98D490001CFC2 /* Product.swift */; };
 		5CD10A5928F98D8A0001CFC2 /* CheckInReaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */; };
 		5CD10A5C28F998BF0001CFC2 /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */; };
+		5CD8D35129C8CFB7001C5930 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 5CD8D35029C8CFB7001C5930 /* SFSafeSymbols */; };
 		5CE9008C291FCB71003DE697 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008B291FCB71003DE697 /* SplashScreenView.swift */; };
 		5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */; };
 		5CE90091292101C8003DE697 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE90090292101C8003DE697 /* AboutScreen.swift */; };
@@ -441,6 +442,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CD8D35129C8CFB7001C5930 /* SFSafeSymbols in Frameworks */,
 				5C25AEB229031B9D00793607 /* WrappingHStack in Frameworks */,
 				5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */,
 				5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */,
@@ -1336,6 +1338,7 @@
 				5CED432428FBF6B0003F8194 /* AlertToast */,
 				5C25AEB129031B9D00793607 /* WrappingHStack */,
 				5C13F21A291A7C3A00599892 /* FirebaseMessaging */,
+				5CD8D35029C8CFB7001C5930 /* SFSafeSymbols */,
 			);
 			productName = tasted;
 			productReference = 5CFEE57328ED69B100A8DD66 /* Tastybytes.app */;
@@ -1371,6 +1374,7 @@
 				5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				5C25AEB029031B9D00793607 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 				5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				5CD8D34F29C8CFB7001C5930 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 			);
 			productRefGroup = 5CFEE57428ED69B100A8DD66 /* Products */;
 			projectDirPath = "";
@@ -1911,6 +1915,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		5CD8D34F29C8CFB7001C5930 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast.git";
@@ -1952,6 +1964,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5C25AEB029031B9D00793607 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
 			productName = WrappingHStack;
+		};
+		5CD8D35029C8CFB7001C5930 /* SFSafeSymbols */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5CD8D34F29C8CFB7001C5930 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
+			productName = SFSafeSymbols;
 		};
 		5CED432428FBF6B0003F8194 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -17,21 +17,48 @@ struct Profile: Identifiable, Decodable, Hashable, Sendable, AvatarURL {
   let preferredName: String
   let isPrivate: Bool
   let avatarFile: String?
+  let joinedAt: Date
+
+  init(id: UUID, preferredName: String, isPrivate: Bool, avatarFile: String?, joinedAt: Date) {
+    self.id = id
+    self.preferredName = preferredName
+    self.isPrivate = isPrivate
+    self.avatarFile = avatarFile
+    self.joinedAt = joinedAt
+  }
 
   enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case preferredName = "preferred_name"
     case isPrivate = "is_private"
     case avatarFile = "avatar_file"
+    case joinedAt = "joined_at"
+  }
+
+  init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    id = try values.decode(UUID.self, forKey: .id)
+    let joinedAtRaw = try values.decode(String.self, forKey: .joinedAt)
+
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    if let date = dateFormatter.date(from: joinedAtRaw) {
+      joinedAt = date
+    } else {
+      joinedAt = Date()
+    }
+    preferredName = try values.decode(String.self, forKey: .preferredName)
+    isPrivate = try values.decode(Bool.self, forKey: .isPrivate)
+    avatarFile = try values.decodeIfPresent(String.self, forKey: .avatarFile)
   }
 }
 
 extension Profile {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "profiles"
-    let minimal = "id, is_private, preferred_name, avatar_file"
+    let minimal = "id, is_private, preferred_name, avatar_file, joined_at"
     let saved =
-      "id, first_name, last_name, username, avatar_file, name_display, preferred_name, is_private, is_onboarded"
+      "id, first_name, last_name, username, avatar_file, name_display, preferred_name, is_private, is_onboarded, joined_at"
     let avatarBucketId = "avatars"
 
     switch queryType {
@@ -64,6 +91,7 @@ extension Profile {
     let username: String
     let firstName: String?
     let lastName: String?
+    let joinedAt: Date
     let isPrivate: Bool
     let isOnboarded: Bool
     let avatarFile: String?
@@ -73,12 +101,13 @@ extension Profile {
     let settings: ProfileSettings
 
     func getProfile() -> Profile {
-      Profile(id: id, preferredName: preferredName, isPrivate: isPrivate, avatarFile: avatarFile)
+      Profile(id: id, preferredName: preferredName, isPrivate: isPrivate, avatarFile: avatarFile, joinedAt: joinedAt)
     }
 
     enum CodingKeys: String, CodingKey, CaseIterable {
       case id
       case username
+      case joinedAt = "joined_at"
       case preferredName = "preferred_name"
       case isPrivate = "is_private"
       case isOnboarded = "is_onboarded"
@@ -95,6 +124,15 @@ extension Profile {
       let values = try decoder.container(keyedBy: CodingKeys.self)
       id = try values.decode(UUID.self, forKey: .id)
       username = try values.decode(String.self, forKey: .username)
+      let joinedAtRaw = try values.decode(String.self, forKey: .joinedAt)
+
+      let dateFormatter = DateFormatter()
+      dateFormatter.dateFormat = "yyyy-MM-dd"
+      if let date = dateFormatter.date(from: joinedAtRaw) {
+        joinedAt = date
+      } else {
+        joinedAt = Date()
+      }
       preferredName = try values.decode(String.self, forKey: .preferredName)
       isPrivate = try values.decode(Bool.self, forKey: .isPrivate)
       isOnboarded = try values.decode(Bool.self, forKey: .isOnboarded)

@@ -28,7 +28,8 @@ extension ProfileView {
             id: profile.id,
             preferredName: profile.preferredName,
             isPrivate: profile.isPrivate,
-            avatarFile: avatarFile
+            avatarFile: avatarFile,
+            joinedAt: profile.joinedAt
           )
         case let .failure(error):
           logger

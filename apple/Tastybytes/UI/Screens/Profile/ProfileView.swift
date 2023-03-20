@@ -35,6 +35,7 @@ struct ProfileView: View {
           if showInFull {
             ratingChart
             ratingSummary
+            joinedAtSection
           } else {
             privateProfileSign
           }
@@ -216,6 +217,12 @@ struct ProfileView: View {
         Text(String(viewModel.profileSummary?.averageRating.toRatingString ?? "-"))
           .font(.headline)
       }
+    }
+  }
+
+  private var joinedAtSection: some View {
+    HStack {
+      Text("Member since \(viewModel.profile.joinedAt.customFormat(.date))").bold()
     }
   }
 
