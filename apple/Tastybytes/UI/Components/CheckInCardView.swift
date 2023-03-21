@@ -7,6 +7,7 @@ struct CheckInCardView: View {
   @EnvironmentObject private var router: Router
   @State private var showFullPicture = false
   @State private var blurHashPlaceHolder: UIImage?
+  @Environment(\.colorScheme) private var colorScheme
 
   let client: Client
   let checkIn: CheckIn
@@ -28,7 +29,7 @@ struct CheckInCardView: View {
       .padding([.leading, .trailing], 10)
     }
     .padding([.top, .bottom], 10)
-    .background(.regularMaterial)
+    .background(colorScheme == .dark ? .thinMaterial : .ultraThin)
     .clipped()
     .cornerRadius(8)
     .shadow(color: Color.black.opacity(0.1), radius: 4, x: 2, y: 2)

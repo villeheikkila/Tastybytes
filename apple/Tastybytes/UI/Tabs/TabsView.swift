@@ -5,11 +5,13 @@ struct TabsView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
+  @StateObject private var friendManager: FriendManager
   @State private var selection = Tab.activity
   @State private var resetNavigationOnTab: Tab?
 
-  init(_ client: Client) {
+  init(_ client: Client, profile: Profile) {
     self.client = client
+    _friendManager = StateObject(wrappedValue: FriendManager(client, profile: profile))
   }
 
   private var tabs: [Tab] {
@@ -45,7 +47,9 @@ struct TabsView: View {
           .tag(tab)
           .badge(getBadgeByTab(tab))
       }
-    }
+    }.task {
+      await friendManager.loadFriends()
+    }.environmentObject(friendManager)
   }
 
   private func getBadgeByTab(_ tab: Tab) -> Int {

@@ -25,11 +25,11 @@ struct SupabaseFriendsRepository: FriendRepository {
         case .blocked:
           queryBuilder = queryBuilder.eq(column: "status", value: status.rawValue)
             .eq(column: "blocked_by", value: userId)
-        default:
+        case .accepted:
           queryBuilder = queryBuilder.eq(column: "status", value: status.rawValue)
+        default:
+          ()
         }
-      } else {
-        queryBuilder = queryBuilder.not(column: "status", operator: .eq, value: Friend.Status.blocked.rawValue)
       }
 
       let response: [Friend] = try await queryBuilder

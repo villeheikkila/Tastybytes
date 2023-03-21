@@ -37,7 +37,7 @@ struct RootView: View {
       case .signedIn:
         if profileManager.isLoggedIn, let isOnboarded = profileManager.get().isOnboarded {
           if isOnboarded {
-            TabsView(client)
+            TabsView(client, profile: profileManager.getProfile())
           } else {
             OnboardTabsView(client)
               .onAppear {

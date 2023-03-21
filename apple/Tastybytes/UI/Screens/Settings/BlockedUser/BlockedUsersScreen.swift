@@ -1,22 +1,24 @@
 import SwiftUI
 
 struct BlockedUsersScreen: View {
-  @StateObject private var viewModel: ViewModel
-  @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var friendManager: FriendManager
   @EnvironmentObject private var toastManager: ToastManager
+  @State private var showUserSearchSheet = false
+
+  let client: Client
 
   init(_ client: Client) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.client = client
   }
 
   var body: some View {
     List {
-      if viewModel.blockedUsers.isEmpty {
+      if friendManager.blockedUsers.isEmpty {
         Text("You haven't blocked any users")
       }
-      ForEach(viewModel.blockedUsers) { friend in
-        BlockedUserListItemView(profile: friend.getFriend(userId: profileManager.getId()), onUnblockUser: {
-          viewModel.unblockUser(friend)
+      ForEach(friendManager.blockedUsers) { friend in
+        BlockedUserListItemView(profile: friend.getFriend(userId: friendManager.profile.id), onUnblockUser: {
+          friendManager.unblockUser(friend)
         })
       }
     }
@@ -24,13 +26,14 @@ struct BlockedUsersScreen: View {
     .navigationBarItems(
       trailing: blockUser
     )
-    .sheet(isPresented: $viewModel.showUserSearchSheet) {
+    .sheet(isPresented: $showUserSearchSheet) {
       NavigationStack {
-        UserSheet(viewModel.client, actions: { profile in
+        UserSheet(client, actions: { profile in
           HStack {
-            if !viewModel.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
-              Button(action: { viewModel.blockUser(user: profile, onSuccess: {
+            if !friendManager.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
+              Button(action: { friendManager.blockUser(user: profile, onSuccess: {
                 toastManager.toggle(.success("User blocked"))
+                showUserSearchSheet = false
               }, onFailure: { error in
                 toastManager.toggle(.error(error))
               }) }, label: {
@@ -44,14 +47,14 @@ struct BlockedUsersScreen: View {
       .presentationDetents([.medium])
     }
     .navigationBarTitleDisplayMode(.inline)
-    .task {
-      viewModel.loadBlockedUsers(userId: profileManager.getId())
+    .refreshable {
+      await friendManager.loadFriends()
     }
   }
 
   private var blockUser: some View {
     HStack {
-      Button(action: { viewModel.showUserSearchSheet.toggle() }, label: {
+      Button(action: { showUserSearchSheet.toggle() }, label: {
         Label("Show block user sheet", systemImage: "plus")
           .labelStyle(.iconOnly)
           .imageScale(.large)

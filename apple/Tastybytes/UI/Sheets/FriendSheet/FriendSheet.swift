@@ -2,11 +2,11 @@ import SwiftUI
 
 struct FriendSheet: View {
   @Binding var taggedFriends: [Profile]
-  @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var friendManager: FriendManager
   @Environment(\.dismiss) private var dismiss
 
   var body: some View {
-    List(profileManager.friends) { friend in
+    List(friendManager.acceptedFriends) { friend in
       Button(action: { toggleFriend(friend: friend) }, label: {
         AvatarView(avatarUrl: friend.avatarUrl, size: 32, id: friend.id)
         Text(friend.preferredName)

@@ -7,6 +7,7 @@ struct ProfileView: View {
   @Binding private var scrollToTop: Int
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var friendManager: FriendManager
   private let topAnchor = "top"
 
   init(_ client: Client, profile: Profile, scrollToTop: Binding<Int>, isCurrentUser: Bool) {
@@ -15,7 +16,7 @@ struct ProfileView: View {
   }
 
   var showInFull: Bool {
-    viewModel.isShownInFull || profileManager.hasFriendByUserId(userId: viewModel.profile.id)
+    viewModel.isShownInFull || friendManager.isFriend(viewModel.profile)
   }
 
   var body: some View {
@@ -40,13 +41,15 @@ struct ProfileView: View {
             privateProfileSign
           }
           if !viewModel.isCurrentUser,
-             !profileManager.hasFriendByUserId(userId: viewModel.profile.id)
+             !friendManager.isFriend(viewModel.profile)
           {
             sendFriendRequestButton
           }
         }
         .listRowSeparator(.hidden)
-        links
+        if showInFull {
+          links
+        }
       }
     )
   }
@@ -54,7 +57,7 @@ struct ProfileView: View {
   private var sendFriendRequestButton: some View {
     HStack {
       Spacer()
-      Button(action: { profileManager.sendFriendRequest(receiver: viewModel.profile.id) {
+      Button(action: { friendManager.sendFriendRequest(receiver: viewModel.profile.id) {
         toastManager.toggle(.success("Friend Request Sent!"))
       }}, label: {
         Text("Send Friend Request")
@@ -228,7 +231,7 @@ struct ProfileView: View {
 
   @ViewBuilder
   private var links: some View {
-    RouteLink(to: .friends(viewModel.profile)) {
+    RouteLink(to: profileManager.getProfile() == viewModel.profile ? .currentUserFriends : .friends(viewModel.profile)) {
       Text("Friends")
         .font(.subheadline).bold()
     }
