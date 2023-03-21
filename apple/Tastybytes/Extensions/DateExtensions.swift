@@ -31,7 +31,8 @@ extension Date {
       return dateFormatter.string(from: self)
     case .date:
       let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "yyyy-MM-dd"
+      dateFormatter.locale = Locale(identifier: "en_US")
+      dateFormatter.dateFormat = "d MMM yyyy"
       dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
       return dateFormatter.string(from: self)
     }

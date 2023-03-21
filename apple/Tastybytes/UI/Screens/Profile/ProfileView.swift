@@ -222,7 +222,7 @@ struct ProfileView: View {
 
   private var joinedAtSection: some View {
     HStack {
-      Text("Member since \(viewModel.profile.joinedAt.customFormat(.date))").bold()
+      Text("Joined \(viewModel.profile.joinedAt.customFormat(.date))").bold()
     }
   }
 

@@ -5,7 +5,6 @@ extension FriendsScreen {
     private let logger = getLogger(category: "FriendsScreen")
     let client: Client
     @Published var searchText: String = ""
-    @Published var products = [Profile]()
     @Published var friends = [Friend]()
     @Published var showUserSearchSheet = false
     @Published var error: Error?
