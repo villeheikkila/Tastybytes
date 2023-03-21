@@ -71,6 +71,7 @@ struct AuthenticationScreen: View {
       AppNameView()
       Spacer()
     }
+    .contentShape(Rectangle())
     .accessibilityAddTraits(.isButton)
     .onTapGesture {
       focusedField = nil

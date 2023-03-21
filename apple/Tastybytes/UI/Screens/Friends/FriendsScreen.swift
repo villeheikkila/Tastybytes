@@ -112,8 +112,12 @@ struct FriendsScreen: View {
       NavigationStack {
         NameTagSheet(onSuccess: { profileId in
           viewModel.sendFriendRequest(receiver: profileId, onSuccess: {
+            viewModel.showProfileQrCode = false
             hapticManager.trigger(.notification(.success))
             toastManager.toggle(.success("Friend Request Sent!"))
+            Task {
+              await viewModel.loadFriends(currentUser: profileManager.getProfile())
+            }
           })
         })
       }
