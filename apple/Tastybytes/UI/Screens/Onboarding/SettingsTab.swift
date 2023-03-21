@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ProfileSettingsTab: View {
   @EnvironmentObject private var viewModel: OnboardingViewModel
+  @FocusState var focusedField: OnboardField?
 
   var body: some View {
     Form {
@@ -30,8 +31,11 @@ struct ProfileSettingsTab: View {
           TextField("Username", text: $viewModel.username)
             .autocapitalization(.none)
             .disableAutocorrection(true)
+            .focused($focusedField, equals: .username)
           TextField("First Name", text: $viewModel.firstName)
+            .focused($focusedField, equals: .firstName)
           TextField("Last Name", text: $viewModel.lastName)
+            .focused($focusedField, equals: .lastName)
         } header: {
           Text("Profile")
         } footer: {
@@ -53,6 +57,9 @@ struct ProfileSettingsTab: View {
           Text("Private profile hides check-ins and profile page from everyone else but your friends")
         }
       }
+    }
+    .onTapGesture {
+      focusedField = nil
     }
     .task {
       viewModel.loadProfile()
