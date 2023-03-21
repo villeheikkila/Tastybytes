@@ -11,6 +11,8 @@ struct ProfileSettingsTab: View {
         .font(.title2)
         .fixedSize(horizontal: false, vertical: true)
         .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
+
       if let profile = viewModel.profile {
         HStack {
           Spacer()
