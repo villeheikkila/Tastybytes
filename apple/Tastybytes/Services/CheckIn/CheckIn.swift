@@ -84,7 +84,7 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
     }
     let checkInAtString = try values.decodeIfPresent(String.self, forKey: .checkInAt)
     if let checkInAtString {
-      checkInAt = try Date(timestamptzString: checkInAtString)
+      checkInAt = Date(timestamptzString: checkInAtString)
     } else {
       checkInAt = nil
     }

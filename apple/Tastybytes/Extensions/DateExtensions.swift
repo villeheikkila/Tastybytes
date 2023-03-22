@@ -39,12 +39,12 @@ extension Date {
   }
 }
 
-extension Date {
-  enum DateParsingError: Error {
-    case unsupportedFormat
-  }
+enum DateParsingError: Error {
+  case unsupportedFormat
+}
 
-  init(timestamptzString: String) throws {
+extension Date {
+  init?(timestamptzString: String) {
     let dateFormatter = DateFormatter()
     dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
 
@@ -67,7 +67,7 @@ extension Date {
     if let date {
       self = date
     } else {
-      throw DateParsingError.unsupportedFormat
+      return nil
     }
   }
 }

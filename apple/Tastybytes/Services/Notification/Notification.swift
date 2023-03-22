@@ -52,10 +52,16 @@ extension Notification: Decodable {
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     id = try values.decode(Int.self, forKey: .id)
-    createdAt = try Date(timestamptzString: values.decode(String.self, forKey: .createdAt))
+
+    let timestamp = try values.decode(String.self, forKey: .createdAt)
+    if let createdAt = Date(timestamptzString: timestamp) {
+      self.createdAt = createdAt
+    } else {
+      throw DateParsingError.unsupportedFormat
+    }
 
     if let date = try values.decodeIfPresent(String.self, forKey: .seenAt) {
-      seenAt = try Date(timestamptzString: date)
+      seenAt = Date(timestamptzString: date)
     } else {
       seenAt = nil
     }

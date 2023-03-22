@@ -71,7 +71,12 @@ extension ProductBarcode {
       barcode = try values.decode(String.self, forKey: .barcode)
       type = try AVMetadataObject.ObjectType(rawValue: values.decode(String.self, forKey: .type))
       profile = try values.decode(Profile.self, forKey: .profiles)
-      createdAt = try Date(timestamptzString: values.decode(String.self, forKey: .createdAt))
+      let timestamp = try values.decode(String.self, forKey: .createdAt)
+      if let createdAt = Date(timestamptzString: timestamp) {
+        self.createdAt = createdAt
+      } else {
+        throw DateParsingError.unsupportedFormat
+      }
     }
   }
 
