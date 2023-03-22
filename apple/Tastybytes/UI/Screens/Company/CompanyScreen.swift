@@ -174,8 +174,8 @@ struct CompanyScreen: View {
 
   private var companyEditSheet: some View {
     Form {
-      Section {
-        if profileManager.hasPermission(.canAddCompanyLogo) {
+      if profileManager.hasPermission(.canAddCompanyLogo) {
+        Section {
           PhotosPicker(
             selection: $viewModel.selectedItem,
             matching: .images,
@@ -197,7 +197,13 @@ struct CompanyScreen: View {
                 .accessibility(hidden: true)
             }
           }
+        } header: {
+          Text("Logo")
         }
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
+      }
+      Section {
         TextField("Name", text: $viewModel.newCompanyNameSuggestion)
         Button("Edit") {
           viewModel.editCompany()

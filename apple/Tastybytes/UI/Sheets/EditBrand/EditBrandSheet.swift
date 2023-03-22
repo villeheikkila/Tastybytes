@@ -21,8 +21,8 @@ struct EditBrandSheet: View {
 
   var body: some View {
     Form {
-      Section {
-        if profileManager.hasPermission(.canAddBrandLogo) {
+      if profileManager.hasPermission(.canAddBrandLogo) {
+        Section {
           PhotosPicker(
             selection: $viewModel.selectedLogo,
             matching: .images,
@@ -44,7 +44,14 @@ struct EditBrandSheet: View {
                 .accessibility(hidden: true)
             }
           }
+        } header: {
+          Text("Logo")
         }
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
+      }
+
+      Section {
         TextField("Name", text: $viewModel.name)
         Button("Edit") {
           viewModel.editBrand {
