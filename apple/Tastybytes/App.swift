@@ -35,8 +35,8 @@ struct RootView: View {
     ZStack {
       switch authEvent {
       case .signedIn:
-        if profileManager.isLoggedIn, let isOnboarded = profileManager.get().isOnboarded {
-          if isOnboarded {
+        if profileManager.isLoggedIn {
+          if profileManager.get().isOnboarded {
             TabsView(client, profile: profileManager.getProfile())
           } else {
             OnboardTabsView(client)

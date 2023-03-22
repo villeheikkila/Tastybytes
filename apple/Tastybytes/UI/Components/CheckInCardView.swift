@@ -173,10 +173,8 @@ struct CheckInCardView: View {
             .foregroundColor(.primary)
         }
 
-        if let flavors = checkIn.flavors {
-          WrappingHStack(flavors, spacing: .constant(4)) { flavor in
-            ChipView(title: flavor.label)
-          }
+        WrappingHStack(checkIn.flavors, spacing: .constant(4)) { flavor in
+          ChipView(title: flavor.label)
         }
 
         if let purchaseLocation = checkIn.purchaseLocation {

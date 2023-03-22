@@ -43,7 +43,7 @@ struct AboutScreen: View {
       }
 
       Section {
-        if let githubUrl = aboutPage.githubUrl, let githubUrl = URL(string: githubUrl) {
+        if let githubUrl = URL(string: aboutPage.githubUrl) {
           Link(destination: githubUrl) {
             HStack {
               GitHubShape()
@@ -56,7 +56,7 @@ struct AboutScreen: View {
             }
           }
         }
-        if let portfolioUrl = aboutPage.portfolioUrl, let portfolioUrl = URL(string: portfolioUrl) {
+        if let portfolioUrl = URL(string: aboutPage.portfolioUrl) {
           Link(destination: portfolioUrl) {
             HStack {
               WebShape()
@@ -69,7 +69,7 @@ struct AboutScreen: View {
             }
           }
         }
-        if let linkedInUrl = aboutPage.linkedInUrl, let linkedInUrl = URL(string: linkedInUrl) {
+        if let linkedInUrl = URL(string: aboutPage.linkedInUrl) {
           Link(destination: linkedInUrl) {
             HStack {
               LinkedInShape()
