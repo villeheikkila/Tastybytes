@@ -6,6 +6,7 @@ struct ProfileSettingsTab: View {
   @FocusState var focusedField: OnboardField?
 
   var body: some View {
+    // swiftlint:disable accessibility_trait_for_button
     Form {
       Text("Configure your profile")
         .font(.title2)
