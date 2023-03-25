@@ -5,7 +5,6 @@ extension ProductFeedScreen {
     private let logger = getLogger(category: "ProductFeedView")
     let client: Client
     @Published var products = [Product.Joined]()
-    @Published var categories = [Category.JoinedSubcategories]()
     @Published var categoryFilter: Category.JoinedSubcategories? {
       didSet {
         Task {
@@ -48,22 +47,6 @@ extension ProductFeedScreen {
       let from = page * limit
       let to = from + size
       return (from, to)
-    }
-
-    func loadIntialData() async {
-      if categories.isEmpty {
-        await loadCategories()
-        await refresh()
-      }
-    }
-
-    func loadCategories() async {
-      switch await client.category.getAllWithSubcategories() {
-      case let .success(categories):
-        self.categories = categories
-      case let .failure(error):
-        logger.error("failed to load categories: \(error.localizedDescription)")
-      }
     }
 
     func fetchProductFeedItems(onComplete: (() -> Void)? = nil) async {

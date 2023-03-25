@@ -4,6 +4,7 @@ struct ProductFeedScreen: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
+  @EnvironmentObject private var appDataManager: AppDataManager
 
   init(_ client: Client, feed: ProductFeedType) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, feed: feed))
@@ -42,7 +43,9 @@ struct ProductFeedScreen: View {
       toolbarContent
     }
     .task {
-      await viewModel.loadIntialData()
+      if viewModel.products.isEmpty {
+        await viewModel.refresh()
+      }
     }
   }
 
@@ -52,7 +55,7 @@ struct ProductFeedScreen: View {
       Button(action: { viewModel.categoryFilter = nil }, label: {
         Text(viewModel.feed.label)
       })
-      ForEach(viewModel.categories) { category in
+      ForEach(appDataManager.categories) { category in
         Button(action: { viewModel.categoryFilter = category }, label: {
           Text(category.label)
         })

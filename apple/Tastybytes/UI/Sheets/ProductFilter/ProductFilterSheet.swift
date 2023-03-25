@@ -3,6 +3,7 @@ import SwiftUI
 struct ProductFilterSheet: View {
   @StateObject private var viewModel: ViewModel
   @Environment(\.dismiss) private var dismiss
+  @EnvironmentObject private var appDataManager: AppDataManager
 
   let sections: [Sections]
   let onApply: (_ filter: Product.Filter?) -> Void
@@ -24,7 +25,7 @@ struct ProductFilterSheet: View {
         Section {
           Picker(selection: $viewModel.categoryFilter) {
             Text("Select All").tag(Category.JoinedSubcategories?(nil))
-            ForEach(viewModel.categories) { category in
+            ForEach(appDataManager.categories) { category in
               Text(category.label).tag(Optional(category))
             }
           } label: {
@@ -71,10 +72,6 @@ struct ProductFilterSheet: View {
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       toolbarContent
-    }
-
-    .task {
-      await viewModel.loadCategories()
     }
   }
 
