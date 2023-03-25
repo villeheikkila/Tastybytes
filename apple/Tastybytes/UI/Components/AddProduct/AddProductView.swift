@@ -7,6 +7,7 @@ struct AddProductView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var appDataManager: AppDataManager
   @StateObject private var viewModel: ViewModel
   @FocusState private var focusedField: Focusable?
 
@@ -74,7 +75,9 @@ struct AddProductView: View {
               subcategories: $viewModel.subcategories,
               category: category,
               onCreate: { newSubcategoryName in
-                viewModel.createSubcategory(newSubcategoryName: newSubcategoryName)
+                viewModel.createSubcategory(newSubcategoryName: newSubcategoryName, onCreate: {
+                  Task { await appDataManager.initialize() }
+                })
               }
             )
           }
@@ -115,7 +118,7 @@ struct AddProductView: View {
       }.if(sheet == .barcode, transform: { view in view.presentationDetents([.medium]) })
     }
     .task {
-      viewModel.loadMissingData()
+      await viewModel.loadMissingData(categories: appDataManager.categories)
     }
   }
 
@@ -152,15 +155,13 @@ struct AddProductView: View {
 
   private var categorySection: some View {
     Section {
-      if !viewModel.categories.isEmpty {
-        Picker("Category", selection: $viewModel.category) {
-          Text("None").tag(Category.JoinedSubcategories?(nil))
+      Picker("Category", selection: $viewModel.category) {
+        Text("None").tag(Category.JoinedSubcategories?(nil))
+          .fontWeight(.medium)
+        ForEach(appDataManager.categories) { category in
+          Text(category.label)
             .fontWeight(.medium)
-          ForEach(viewModel.categories) { category in
-            Text(category.label)
-              .fontWeight(.medium)
-              .tag(Optional(category))
-          }
+            .tag(Optional(category))
         }
       }
 

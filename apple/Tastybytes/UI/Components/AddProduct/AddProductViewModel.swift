@@ -47,7 +47,6 @@ extension AddProductView {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductSheet")
     let client: Client
-    @Published var categories = [Category.JoinedSubcategories]()
     @Published var activeSheet: Sheet?
     @Published var mode: Mode
     @Published var category: Category.JoinedSubcategories? {
@@ -105,7 +104,7 @@ extension AddProductView {
       category?.subcategories
     }
 
-    func createSubcategory(newSubcategoryName: String) {
+    func createSubcategory(newSubcategoryName: String, onCreate: @escaping () -> Void) {
       guard let categoryWithSubcategories = category else { return }
       isLoading = true
       Task {
@@ -114,7 +113,7 @@ extension AddProductView {
             .NewRequest(name: newSubcategoryName, category: categoryWithSubcategories))
         {
         case .success:
-          self.loadCategories(categoryWithSubcategories.name)
+          onCreate()
         case let .failure(error):
           logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
         }
@@ -144,91 +143,57 @@ extension AddProductView {
       toast.text
     }
 
-    func loadMissingData() {
+    func loadMissingData(categories: [Category.JoinedSubcategories]) async {
       switch mode {
       case let .edit(initialProduct), let .editSuggestion(initialProduct):
-        loadValuesFromExistingProduct(initialProduct)
+        await loadValuesFromExistingProduct(initialProduct, categories: categories)
       case let .addToBrand(brand):
-        loadFromBrand(brand)
-      default:
-        loadCategories("beverage")
+        loadFromBrand(brand, categories: categories)
+      case .new:
+        category = categories.first(where: { $0.name == "beverage" })
       }
     }
 
-    func loadFromBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) {
-      Task {
-        switch await client.category.getAllWithSubcategories() {
-        case let .success(categories):
-          self.categories = categories
-          self.category = categories.first(where: { $0.name == "beverage" })
-          self.subcategories = []
-          self.brandOwner = brand.brandOwner
-          self.brand = Brand.JoinedSubBrands(
-            id: brand.id,
-            name: brand.name,
-            logoFile: brand.logoFile,
-            isVerified: brand.isVerified,
-            subBrands: brand.subBrands
-              .map { subBrand in SubBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified) }
-          )
-          self.subBrand = nil
-        case let .failure(error):
-          logger.error("failed to load categories with subcategories: \(error.localizedDescription)")
-        }
-      }
+    func loadFromBrand(_ brand: Brand.JoinedSubBrandsProductsCompany, categories: [Category.JoinedSubcategories]) {
+      category = categories.first(where: { $0.name == "beverage" })
+      subcategories = []
+      brandOwner = brand.brandOwner
+      self.brand = Brand.JoinedSubBrands(
+        id: brand.id,
+        name: brand.name,
+        logoFile: brand.logoFile,
+        isVerified: brand.isVerified,
+        subBrands: brand.subBrands
+          .map { subBrand in SubBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified) }
+      )
+      subBrand = nil
     }
 
-    func loadValuesFromExistingProduct(_ initialProduct: Product.Joined) {
-      Task {
-        async let subcategoriesPromise = client.category.getAllWithSubcategories()
-        async let brandOwnerPromise = client.brand
-          .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
-
-        let subcategories = await subcategoriesPromise
-        let brandOwner = await brandOwnerPromise
-
-        switch subcategories {
-        case let .success(categories):
-          switch brandOwner {
-          case let .success(brandsWithSubBrands):
-            self.productId = initialProduct.id
-            self.categories = categories
-            self.category = categories.first(where: { $0.id == initialProduct.category.id })
-            self.subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
-            self.brandOwner = initialProduct.subBrand.brand.brandOwner
-            self.brand = Brand.JoinedSubBrands(
-              id: initialProduct.subBrand.brand.id,
-              name: initialProduct.subBrand.brand.name,
-              logoFile: initialProduct.subBrand.brand.logoFile,
-              isVerified: initialProduct.subBrand.brand.isVerified,
-              subBrands: brandsWithSubBrands
-                .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? []
-            )
-            self.subBrand = initialProduct.subBrand
-            self.name = initialProduct.name
-            self.description = initialProduct.description.orEmpty
-            self.hasSubBrand = initialProduct.subBrand.name != nil
-            self.logoFile = initialProduct.logoFile
-          case let .failure(error):
-            logger
-              .error("failed to load brand owner for product '\(initialProduct.id)': \(error.localizedDescription)")
-          }
-        case let .failure(error):
-          logger.error("failed to load categories with subcategories: \(error.localizedDescription)")
-        }
-      }
-    }
-
-    func loadCategories(_ initialCategory: String) {
-      Task {
-        switch await client.category.getAllWithSubcategories() {
-        case let .success(categories):
-          self.categories = categories
-          self.category = categories.first(where: { $0.name == initialCategory })
-        case let .failure(error):
-          logger
-            .error("failed to load category with subcategories for '\(initialCategory)': \(error.localizedDescription)")
-        }
+    func loadValuesFromExistingProduct(_ initialProduct: Product.Joined, categories: [Category.JoinedSubcategories]) async {
+      switch await client.brand
+        .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
+      {
+      case let .success(brandsWithSubBrands):
+        productId = initialProduct.id
+        category = categories.first(where: { $0.id == initialProduct.category.id })
+        subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
+        brandOwner = initialProduct.subBrand.brand.brandOwner
+        brand = Brand.JoinedSubBrands(
+          id: initialProduct.subBrand.brand.id,
+          name: initialProduct.subBrand.brand.name,
+          logoFile: initialProduct.subBrand.brand.logoFile,
+          isVerified: initialProduct.subBrand.brand.isVerified,
+          subBrands: brandsWithSubBrands
+            .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? []
+        )
+        subBrand = initialProduct.subBrand
+        name = initialProduct.name
+        description = initialProduct.description.orEmpty
+        hasSubBrand = initialProduct.subBrand.name != nil
+        logoFile = initialProduct.logoFile
+      case let .failure(error):
+        logger
+          .error("failed to load brand owner for product '\(initialProduct.id)': \(error.localizedDescription)")
       }
     }
 
