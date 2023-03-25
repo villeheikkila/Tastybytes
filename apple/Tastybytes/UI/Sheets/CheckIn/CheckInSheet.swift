@@ -188,7 +188,7 @@ struct CheckInSheet: View {
         case .friends:
           FriendSheet(taggedFriends: $viewModel.taggedFriends)
         case .flavors:
-          FlavorSheet(viewModel.client, pickedFlavors: $viewModel.pickedFlavors)
+          FlavorSheet(pickedFlavors: $viewModel.pickedFlavors)
         case .location:
           LocationSearchSheet(viewModel.client, onSelect: { location in
             viewModel.location = location

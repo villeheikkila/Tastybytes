@@ -3,14 +3,12 @@ import SwiftUI
 
 struct FlavorSheet: View {
   @Environment(\.dismiss) private var dismiss
-  @StateObject private var viewModel: ViewModel
-  @Binding private var pickedFlavors: [Flavor]
+  @EnvironmentObject private var appDataManager: AppDataManager
+  @Binding var pickedFlavors: [Flavor]
   @State private var showToast = false
+  @State private var searchTerm = ""
 
-  init(_ client: Client, pickedFlavors: Binding<[Flavor]>) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
-    _pickedFlavors = pickedFlavors
-  }
+  private let maxFlavors = 4
 
   var body: some View {
     List {
@@ -29,14 +27,14 @@ struct FlavorSheet: View {
         }
       }
 
-      if !viewModel.searchTerm.isEmpty, !viewModel.filteredFlavors.contains { !pickedFlavors.contains($0) } {
+      if !searchTerm.isEmpty, !filteredFlavors.contains { !pickedFlavors.contains($0) } {
         Section {
           Text("No flavors found with the search term")
         }
       }
 
       Section {
-        ForEach(viewModel.filteredFlavors.filter { !pickedFlavors.contains($0) }) { flavor in
+        ForEach(filteredFlavors.filter { !pickedFlavors.contains($0) }) { flavor in
           Button(action: { toggleFlavor(flavor) }, label: {
             HStack {
               Text(flavor.label)
@@ -49,28 +47,33 @@ struct FlavorSheet: View {
           })
         }
       } header: {
-        if viewModel.filteredFlavors.contains { !pickedFlavors.contains($0) } {
+        if filteredFlavors.contains { !pickedFlavors.contains($0) } {
           Text("Available flavors")
         }
       }
     }
     .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
-      AlertToast(type: .error(.red), title: "You can only add \(viewModel.maxFlavors) flavors")
+      AlertToast(type: .error(.red), title: "You can only add \(maxFlavors) flavors")
     }
     .navigationTitle("Flavors")
     .navigationBarItems(trailing: Button(action: { dismiss() }, label: {
       Text("Done").bold()
     }))
-    .task {
-      viewModel.loadFlavors()
+    .searchable(text: $searchTerm)
+  }
+
+  private var filteredFlavors: [Flavor] {
+    if searchTerm.isEmpty {
+      return appDataManager.flavors
+    } else {
+      return appDataManager.flavors.filter { $0.name.lowercased().contains(searchTerm.lowercased()) }
     }
-    .searchable(text: $viewModel.searchTerm)
   }
 
   private func toggleFlavor(_ flavor: Flavor) {
     if pickedFlavors.contains(flavor) {
       pickedFlavors.remove(object: flavor)
-    } else if pickedFlavors.count < viewModel.maxFlavors {
+    } else if pickedFlavors.count < maxFlavors {
       pickedFlavors.append(flavor)
     } else {
       showToast = true
