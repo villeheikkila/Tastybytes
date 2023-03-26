@@ -31,6 +31,11 @@ struct ContributionsScreen: View {
           Spacer()
           Text(String(contributions.subBrands))
         }
+        HStack {
+          Text("Barcodes")
+          Spacer()
+          Text(String(contributions.barcodes))
+        }
       }
     }
     .navigationTitle("Your Contributions")
