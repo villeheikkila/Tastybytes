@@ -13,6 +13,7 @@ protocol ProfileRepository {
   func uploadPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<Void, Error>
   func deleteCurrentAccount() async -> Result<Void, Error>
   func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error>
+  func getContributions(userId: UUID) async -> Result<Contributions, Error>
 }
 
 struct SupabaseProfileRepository: ProfileRepository {
@@ -113,6 +114,23 @@ struct SupabaseProfileRepository: ProfileRepository {
         .execute()
 
       return .success(())
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getContributions(userId: UUID) async -> Result<Contributions, Error> {
+    do {
+      let response: Contributions = try await client
+        .database
+        .rpc(fn: Contributions.getQuery(.rpcName), params: Contributions.ContributionsParams(id: userId))
+        .select(columns: Contributions.getQuery(.value))
+        .limit(count: 1)
+        .single()
+        .execute()
+        .value
+
+      return .success(response)
     } catch {
       return .failure(error)
     }

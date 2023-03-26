@@ -285,6 +285,43 @@ extension ProfileSettings {
   }
 }
 
+struct Contributions: Decodable, Sendable {
+  let products: Int
+  let companies: Int
+  let brands: Int
+  let subBrands: Int
+  let barcodes: Int
+
+  enum CodingKeys: String, CodingKey, CaseIterable {
+    case products
+    case companies
+    case brands
+    case subBrands = "sub_brands"
+    case barcodes
+  }
+
+  struct ContributionsParams: Encodable, Sendable {
+    let id: UUID
+
+    enum CodingKeys: String, CodingKey {
+      case id = "p_uid"
+    }
+  }
+
+  enum QueryPart {
+    case rpcName, value
+  }
+
+  static func getQuery(_ queryType: QueryPart) -> String {
+    switch queryType {
+    case .rpcName:
+      return "fnc_get_contributions_by_user"
+    case .value:
+      return "products, companies, brands, sub_brands, barcodes"
+    }
+  }
+}
+
 extension Profile {
   struct PushNotificationToken: Identifiable, Codable, Hashable, Sendable {
     var id: String { firebaseRegistrationToken }

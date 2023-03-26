@@ -10,7 +10,7 @@ extension ContributionsScreen {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ContributionsScreen")
     let client: Client
-    @Published var products: [Product.Joined] = []
+    @Published var contributions: Contributions?
     @Published var activeSheet: Sheet?
 
     init(_ client: Client) {
@@ -19,13 +19,13 @@ extension ContributionsScreen {
 
     func loadContributions(userId: UUID) {
       Task {
-        switch await client.product.getCreatedByUserId(id: userId) {
-        case let .success(products):
+        switch await client.profile.getContributions(userId: userId) {
+        case let .success(contributions):
           withAnimation {
-            self.products = products
+            self.contributions = contributions
           }
         case let .failure(error):
-          logger.warning("failed to load blocked users: \(error.localizedDescription)")
+          logger.warning("failed to load contributions: \(error.localizedDescription)")
         }
       }
     }

@@ -10,36 +10,33 @@ struct ContributionsScreen: View {
 
   var body: some View {
     List {
-      Button(action: { viewModel.activeSheet = .products }, label: {
+      if let contributions = viewModel.contributions {
         HStack {
           Text("Products")
           Spacer()
-          Text(String(viewModel.products.count))
+          Text(String(contributions.products))
         }
-      })
+        HStack {
+          Text("Companies")
+          Spacer()
+          Text(String(contributions.companies))
+        }
+        HStack {
+          Text("Brands")
+          Spacer()
+          Text(String(contributions.brands))
+        }
+        HStack {
+          Text("Sub-brands")
+          Spacer()
+          Text(String(contributions.subBrands))
+        }
+      }
     }
     .navigationTitle("Your Contributions")
     .navigationBarTitleDisplayMode(.inline)
-    .sheet(item: $viewModel.activeSheet) { sheet in
-      NavigationStack {
-        switch sheet {
-        case .products:
-          DismissableSheet(title: "Products") {
-            contributedProductsSheet
-          }
-        }
-      }
-    }
     .task {
       viewModel.loadContributions(userId: profileManager.getId())
-    }
-  }
-
-  private var contributedProductsSheet: some View {
-    List {
-      ForEach(viewModel.products) { product in
-        ProductItemView(product: product)
-      }
     }
   }
 }
