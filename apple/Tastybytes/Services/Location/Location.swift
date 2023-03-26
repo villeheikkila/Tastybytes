@@ -84,6 +84,20 @@ extension Location {
 }
 
 extension Location {
+  struct SuggestionParams: Encodable, Sendable {
+    let longitude: Double
+    let latitude: Double
+
+    enum CodingKeys: String, CodingKey {
+      case longitude = "p_longitude", latitude = "p_latitude"
+    }
+
+    init(location: CLLocation) {
+      latitude = location.coordinate.latitude
+      longitude = location.coordinate.longitude
+    }
+  }
+
   struct New: Encodable, Sendable {
     let name: String
     let title: String?

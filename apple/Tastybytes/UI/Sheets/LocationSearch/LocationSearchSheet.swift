@@ -14,8 +14,8 @@ struct LocationSearchSheet: View {
 
   var body: some View {
     List(viewModel.locations) { location in
-      Button(action: {
-        viewModel.storeLocation(location, onSuccess: { savedLocation in
+      ProgressButton(action: {
+        await viewModel.storeLocation(location, onSuccess: { savedLocation in
           onSelect(savedLocation)
           dismiss()
         })
@@ -37,7 +37,9 @@ struct LocationSearchSheet: View {
     .navigationTitle("Location")
     .searchable(text: $viewModel.searchText)
     .task {
-      viewModel.setInitialLocation(locationManager.lastLocation)
+      guard let lastLocation = locationManager.lastLocation else { return }
+      viewModel.setInitialLocation(lastLocation)
+      await viewModel.getSuggestions(lastLocation)
     }
   }
 }

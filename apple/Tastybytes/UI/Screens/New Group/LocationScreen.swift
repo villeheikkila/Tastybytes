@@ -18,9 +18,7 @@ struct LocationScreen: View {
       viewModel.client,
       fetcher: .location(viewModel.location),
       scrollToTop: $scrollToTop,
-      onRefresh: {
-        viewModel.getSummary()
-      },
+      onRefresh: { viewModel.getSummary() },
       header: {
         if let summary = viewModel.summary, summary.averageRating != nil {
           Section {

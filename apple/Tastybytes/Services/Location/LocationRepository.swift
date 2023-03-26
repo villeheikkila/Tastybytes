@@ -7,6 +7,7 @@ protocol LocationRepository {
   func delete(id: UUID) async -> Result<Void, Error>
   func search(searchTerm: String) async -> Result<[Location], Error>
   func getSummaryById(id: UUID) async -> Result<Summary, Error>
+  func getSuggestions(location: Location.SuggestionParams) async -> Result<[Location], Error>
 }
 
 struct SupabaseLocationRepository: LocationRepository {
@@ -37,6 +38,22 @@ struct SupabaseLocationRepository: LocationRepository {
         .eq(column: "id", value: id)
         .limit(count: 1)
         .single()
+        .execute()
+        .value
+
+      return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getSuggestions(location: Location.SuggestionParams) async -> Result<[Location], Error> {
+    do {
+      let response: [Location] = try await client
+        .database
+        .rpc(fn: "fnc__get_location_suggestions", params: location)
+        .select(columns: Location.getQuery(.joined(false)))
+        .limit(count: 10)
         .execute()
         .value
 

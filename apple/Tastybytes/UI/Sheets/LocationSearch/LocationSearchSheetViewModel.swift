@@ -23,17 +23,22 @@ extension LocationSearchSheet {
       }
     }
 
-    func storeLocation(_ location: Location, onSuccess: @escaping (_ savedLocation: Location) -> Void) {
-      Task {
-        switch await client.location.insert(location: location) {
-        case let .success(savedLocation):
-          onSuccess(savedLocation)
-        case let .failure(error):
-          logger
-            .error(
-              "saving location \(location.name) failed: \(error.localizedDescription)"
-            )
-        }
+    func getSuggestions(_ location: CLLocation?) async {
+      guard let location else { return }
+      switch await client.location.getSuggestions(location: Location.SuggestionParams(location: location)) {
+      case let .success(suggestedLocations):
+        locations = suggestedLocations
+      case let .failure(error):
+        logger.error("failed to load location suggestions: \(error.localizedDescription)")
+      }
+    }
+
+    func storeLocation(_ location: Location, onSuccess: @escaping (_ savedLocation: Location) -> Void) async {
+      switch await client.location.insert(location: location) {
+      case let .success(savedLocation):
+        onSuccess(savedLocation)
+      case let .failure(error):
+        logger.error("saving location \(location.name) failed: \(error.localizedDescription)")
       }
     }
 
