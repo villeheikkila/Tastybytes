@@ -11,11 +11,16 @@ struct ProfileStatisticsView: View {
     List {
       Section {
         ForEach(viewModel.categoryStatistics) { category in
-          HStack {
-            CategoryNameView(category: category)
-            Spacer()
-            Text("(\(category.count))").font(.caption).bold()
-          }
+          DisclosureGroup(content: {
+            SubcategoryStatistics(viewModel.client, profile: viewModel.profile, category: category)
+          }, label: {
+            HStack {
+              CategoryNameView(category: category)
+              Spacer()
+              Text("(\(category.count))").font(.caption).bold()
+            }
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 16))
+          })
         }
       } header: {
         Text("Category")
@@ -28,6 +33,56 @@ struct ProfileStatisticsView: View {
       await viewModel.loadStatistics()
     }
     .navigationTitle("Statistics")
+  }
+}
+
+struct SubcategoryStatistics: View {
+  @StateObject private var viewModel: ViewModel
+
+  init(_ client: Client, profile: Profile, category: CategoryStatistics) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client, profile: profile, category: category))
+  }
+
+  var body: some View {
+    VStack {
+      ForEach(viewModel.subcategoryStatistics) { subcategory in
+        HStack {
+          Text(subcategory.label).font(.caption).bold()
+          Spacer()
+          Text("(\(subcategory.count))").font(.caption).bold()
+        }
+      }
+    }.task {
+      await viewModel.loadSubcategoryStatistics()
+    }
+  }
+}
+
+extension SubcategoryStatistics {
+  @MainActor class ViewModel: ObservableObject {
+    let logger = getLogger(category: "SubcategoryStatistics")
+    let client: Client
+    let profile: Profile
+    let category: CategoryStatistics
+
+    @Published var subcategoryStatistics = [CategoryStatistics]()
+
+    init(_ client: Client, profile: Profile, category: CategoryStatistics) {
+      self.client = client
+      self.profile = profile
+      self.category = category
+    }
+
+    func loadSubcategoryStatistics() async {
+      switch await client.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id) {
+      case let .success(subcategoryStatistics):
+        withAnimation {
+          self.subcategoryStatistics = subcategoryStatistics
+        }
+      case let .failure(error):
+        logger.error("failed loading subcategory statistics: \(error.localizedDescription)")
+      }
+    }
   }
 }
 

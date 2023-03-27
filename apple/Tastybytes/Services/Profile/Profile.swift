@@ -341,14 +341,26 @@ struct CategoryStatistics: Identifiable, Decodable, Sendable, CategoryName {
     }
   }
 
+  struct SubcategoryStatisticsParams: Encodable, Sendable {
+    let userId: UUID
+    let categoryId: Int
+
+    enum CodingKeys: String, CodingKey {
+      case userId = "p_user_id"
+      case categoryId = "p_category_id"
+    }
+  }
+
   enum QueryPart {
-    case rpcName, value
+    case categoryRpcName, subcategoryRpcName, value
   }
 
   static func getQuery(_ queryType: QueryPart) -> String {
     switch queryType {
-    case .rpcName:
+    case .categoryRpcName:
       return "fnc__get_category_stats"
+    case .subcategoryRpcName:
+      return "fnc__get_subcategory_stats"
     case .value:
       return "id, name, count"
     }

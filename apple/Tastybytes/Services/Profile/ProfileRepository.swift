@@ -15,6 +15,7 @@ protocol ProfileRepository {
   func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error>
   func getContributions(userId: UUID) async -> Result<Contributions, Error>
   func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error>
+  func getSubcategoryStatistics(userId: UUID, categoryId: Int) async -> Result<[CategoryStatistics], Error>
 }
 
 struct SupabaseProfileRepository: ProfileRepository {
@@ -141,7 +142,25 @@ struct SupabaseProfileRepository: ProfileRepository {
     do {
       let response: [CategoryStatistics] = try await client
         .database
-        .rpc(fn: CategoryStatistics.getQuery(.rpcName), params: CategoryStatistics.CategoryStatisticsParams(id: userId))
+        .rpc(fn: CategoryStatistics.getQuery(.categoryRpcName), params: CategoryStatistics.CategoryStatisticsParams(id: userId))
+        .select(columns: CategoryStatistics.getQuery(.value))
+        .execute()
+        .value
+
+      return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getSubcategoryStatistics(userId: UUID, categoryId: Int) async -> Result<[CategoryStatistics], Error> {
+    do {
+      let response: [CategoryStatistics] = try await client
+        .database
+        .rpc(
+          fn: CategoryStatistics.getQuery(.subcategoryRpcName),
+          params: CategoryStatistics.SubcategoryStatisticsParams(userId: userId, categoryId: categoryId)
+        )
         .select(columns: CategoryStatistics.getQuery(.value))
         .execute()
         .value
