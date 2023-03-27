@@ -22,8 +22,7 @@ extension ProductFilterSheet {
     }
 
     func getFilter() -> Product.Filter? {
-      guard categoryFilter == nil, subcategoryFilter == nil, onlyNonCheckedIn == false,
-            sortBy == nil else { return nil }
+      guard !(categoryFilter == nil && subcategoryFilter == nil && onlyNonCheckedIn == false && sortBy == nil) else { return nil }
       return Product.Filter(
         category: categoryFilter,
         subcategory: subcategoryFilter,

@@ -17,7 +17,7 @@ struct ProfileProductListView: View {
     }
     .listStyle(.plain)
     .searchable(text: $viewModel.searchTerm)
-    .navigationTitle("Products")
+    .navigationTitle("Products (\(viewModel.filteredProducts.count))")
     .sheet(isPresented: $viewModel.showFilters) {
       NavigationStack {
         ProductFilterSheet(
@@ -101,6 +101,7 @@ extension ProfileProductListView {
 
       let categoryPass = productFilter != nil && productFilter?.category?.id != nil ? product.category
         .id == productFilter?.category?.id : true
+
       let subcategoryPass = productFilter != nil && productFilter?.subcategory?.id != nil ? product.subcategories
         .map(\.id)
         .contains(productFilter?.subcategory?.id ?? -1) : true
