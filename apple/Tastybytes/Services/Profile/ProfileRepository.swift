@@ -14,6 +14,7 @@ protocol ProfileRepository {
   func deleteCurrentAccount() async -> Result<Void, Error>
   func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error>
   func getContributions(userId: UUID) async -> Result<Contributions, Error>
+  func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error>
 }
 
 struct SupabaseProfileRepository: ProfileRepository {
@@ -127,6 +128,21 @@ struct SupabaseProfileRepository: ProfileRepository {
         .select(columns: Contributions.getQuery(.value))
         .limit(count: 1)
         .single()
+        .execute()
+        .value
+
+      return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error> {
+    do {
+      let response: [CategoryStatistics] = try await client
+        .database
+        .rpc(fn: CategoryStatistics.getQuery(.rpcName), params: CategoryStatistics.CategoryStatisticsParams(id: userId))
+        .select(columns: CategoryStatistics.getQuery(.value))
         .execute()
         .value
 

@@ -1,10 +1,16 @@
-struct Category: Identifiable, Decodable, Hashable {
-  let id: Int
-  let name: String
+protocol CategoryName {
+  var name: String { get }
+}
 
+extension CategoryName {
   var label: String {
     name.replacingOccurrences(of: "_", with: " ").capitalized
   }
+}
+
+struct Category: Identifiable, Decodable, Hashable, CategoryName {
+  let id: Int
+  let name: String
 
   enum CodingKeys: String, CodingKey {
     case id

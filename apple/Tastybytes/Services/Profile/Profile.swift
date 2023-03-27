@@ -315,9 +315,42 @@ struct Contributions: Decodable, Sendable {
   static func getQuery(_ queryType: QueryPart) -> String {
     switch queryType {
     case .rpcName:
-      return "fnc_get_contributions_by_user"
+      return "fnc__get_contributions_by_user"
     case .value:
       return "products, companies, brands, sub_brands, barcodes"
+    }
+  }
+}
+
+struct CategoryStatistics: Identifiable, Decodable, Sendable, CategoryName {
+  let id: Int
+  let name: String
+  let count: Int
+
+  enum CodingKeys: String, CodingKey, CaseIterable {
+    case id
+    case name
+    case count
+  }
+
+  struct CategoryStatisticsParams: Encodable, Sendable {
+    let id: UUID
+
+    enum CodingKeys: String, CodingKey {
+      case id = "p_user_id"
+    }
+  }
+
+  enum QueryPart {
+    case rpcName, value
+  }
+
+  static func getQuery(_ queryType: QueryPart) -> String {
+    switch queryType {
+    case .rpcName:
+      return "fnc__get_category_stats"
+    case .value:
+      return "id, name, count"
     }
   }
 }

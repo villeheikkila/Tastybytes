@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CategoryNameView: View {
-  let category: Category
+  let category: CategoryName
 
   var body: some View {
     Text(category.label)

@@ -38,6 +38,7 @@ struct CheckInListView<Header>: View where Header: View {
         }
       }
       .scrollContentBackground(.hidden)
+      .scrollIndicators(.hidden)
       .listStyle(.plain)
       .onAppear {
         scrollProxy = proxy

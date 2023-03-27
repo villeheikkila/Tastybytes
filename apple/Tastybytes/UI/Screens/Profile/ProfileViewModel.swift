@@ -32,10 +32,7 @@ extension ProfileView {
             joinedAt: profile.joinedAt
           )
         case let .failure(error):
-          logger
-            .error(
-              "uplodaing avatar for \(userId) failed: \(error.localizedDescription)"
-            )
+          logger.error("uplodaing avatar for \(userId) failed: \(error.localizedDescription)")
         }
       }
     }
