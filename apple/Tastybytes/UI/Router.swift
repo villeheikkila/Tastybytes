@@ -1,7 +1,8 @@
 import os
 import SwiftUI
 
-@MainActor class Router: ObservableObject {
+@MainActor
+class Router: ObservableObject {
   private let logger = getLogger(category: "Router")
   @Published var path: [Route] = []
 
@@ -165,6 +166,7 @@ enum NavigatablePath {
   var url: URL {
     // swiftlint:disable force_unwrapping
     URL(string: urlString)!
+    // swiftlint:enable force_unwrapping
   }
 }
 

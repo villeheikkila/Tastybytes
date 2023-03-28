@@ -1,6 +1,7 @@
 import SwiftUI
 
-@MainActor class AppDataManager: ObservableObject {
+@MainActor
+class AppDataManager: ObservableObject {
   private let logger = getLogger(category: "AppDataManager")
   let client: Client
   @Published var categories = [Category.JoinedSubcategories]()

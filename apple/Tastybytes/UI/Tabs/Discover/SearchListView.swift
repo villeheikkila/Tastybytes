@@ -134,8 +134,7 @@ struct SearchListView: View {
     }
   }
 
-  @ViewBuilder
-  private var overlayContent: some View {
+  @ViewBuilder private var overlayContent: some View {
     if let filters = viewModel.productFilter {
       HStack {
         if let category = filters.category {
@@ -190,8 +189,7 @@ struct SearchListView: View {
     }
   }
 
-  @ViewBuilder
-  private var productResults: some View {
+  @ViewBuilder private var productResults: some View {
     if viewModel.barcode != nil {
       Section {
         Text(
@@ -261,8 +259,7 @@ struct SearchListView: View {
     }
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       if viewModel.searchScope == .products {
         Button(action: { viewModel.activeSheet = .filters }, label: {

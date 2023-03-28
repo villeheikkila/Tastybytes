@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension SubBrandSheet {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "SubBrandSheet")
     let client: Client
     let brandWithSubBrands: Brand.JoinedSubBrands

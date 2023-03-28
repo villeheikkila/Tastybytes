@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension LocationScreen {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "LocationScreen")
     let client: Client
     @Published var summary: Summary?

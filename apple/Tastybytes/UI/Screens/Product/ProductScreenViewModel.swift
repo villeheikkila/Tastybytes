@@ -11,7 +11,8 @@ extension ProductScreen {
     case duplicateProduct
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductScreen")
     let client: Client
     @Published var product: Product.Joined

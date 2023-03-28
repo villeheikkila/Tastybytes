@@ -70,8 +70,7 @@ struct NotificationTab: View {
     .environmentObject(router)
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup {
       Menu {
         Button(action: {

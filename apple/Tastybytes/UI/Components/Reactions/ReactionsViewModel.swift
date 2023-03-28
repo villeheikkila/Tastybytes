@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension ReactionsView {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ReactionsView")
     let client: Client
     @Published var checkInReactions = [CheckInReaction]()

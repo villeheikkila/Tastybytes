@@ -127,4 +127,5 @@ struct GitHubShape: Shape {
     path.closeSubpath()
     return path
   }
+  // swiftlint:enable function_body_length
 }

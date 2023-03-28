@@ -75,8 +75,7 @@ struct ProductFilterSheet: View {
     }
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       Button(role: .cancel, action: { dismiss() }, label: {
         Text("Cancel")

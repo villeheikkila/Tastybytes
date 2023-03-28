@@ -2,7 +2,8 @@ import PhotosUI
 import SwiftUI
 
 extension ProfileView {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProfileView")
     let client: Client
     @Published var profile: Profile

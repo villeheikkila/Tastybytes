@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension ServingStyleManagementSheet {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ServingStyleManagement2Sheet")
     let client: Client
     @Published var servingStyles = [ServingStyle]()

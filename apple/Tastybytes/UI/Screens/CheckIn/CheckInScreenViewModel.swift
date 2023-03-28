@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension CheckInScreen {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CheckInScreen")
     let client: Client
     @Published var checkIn: CheckIn

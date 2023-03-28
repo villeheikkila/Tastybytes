@@ -65,8 +65,7 @@ extension WelcomeTab {
     let systemName: String
     let color: Color
 
-    @ViewBuilder
-    var view: some View {
+    @ViewBuilder var view: some View {
       HStack(alignment: .center, spacing: 8) {
         Image(systemName: systemName)
           .font(.largeTitle)

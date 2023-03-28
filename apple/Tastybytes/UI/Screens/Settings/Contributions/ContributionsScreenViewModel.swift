@@ -7,7 +7,8 @@ extension ContributionsScreen {
     case products
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ContributionsScreen")
     let client: Client
     @Published var contributions: Contributions?

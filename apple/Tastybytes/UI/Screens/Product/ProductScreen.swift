@@ -106,8 +106,7 @@ struct ProductScreen: View {
     }
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
         Button(action: { viewModel.activeSheet = .checkIn }, label: {

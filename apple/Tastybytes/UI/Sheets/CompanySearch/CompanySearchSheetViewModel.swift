@@ -6,7 +6,8 @@ extension CompanySearchSheet {
     case searched
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CompanySearchSheet")
     let client: Client
     @Published var searchText: String = "" {

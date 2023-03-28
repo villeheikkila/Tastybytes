@@ -3,7 +3,8 @@ import MapKit
 import SwiftUI
 
 extension LocationSearchSheet {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "LocationSearchView")
     let client: Client
     var service: LocationSearchManager

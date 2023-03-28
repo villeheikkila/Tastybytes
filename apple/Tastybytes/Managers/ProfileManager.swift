@@ -1,6 +1,7 @@
 import SwiftUI
 
-@MainActor class ProfileManager: ObservableObject {
+@MainActor
+class ProfileManager: ObservableObject {
   private let logger = getLogger(category: "ProfileManager")
   let client: Client
   @Published private(set) var isLoggedIn = false

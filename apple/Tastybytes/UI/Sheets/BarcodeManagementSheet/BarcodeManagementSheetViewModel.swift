@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension BarcodeManagementSheet {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "BarcodeManagementSheet")
     let client: Client
     let product: Product.Joined

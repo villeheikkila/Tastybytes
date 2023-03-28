@@ -8,7 +8,8 @@ extension CheckInListView {
     case location(Location)
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CheckInListView")
     let client: Client
     @Published var showDeleteConfirmationFor: CheckIn? {

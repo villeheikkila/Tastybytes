@@ -56,7 +56,8 @@ extension MarkAsDuplicate {
     case mergeDuplicate, reportDuplicate
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "MarkAsDuplicate")
     let client: Client
     @Published var products = [Product.Joined]()

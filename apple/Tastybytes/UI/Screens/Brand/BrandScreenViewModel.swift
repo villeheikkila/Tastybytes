@@ -9,7 +9,8 @@ extension BrandScreen {
     case addProduct
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "BrandScreen")
     let client: Client
     @Published var brand: Brand.JoinedSubBrandsProductsCompany

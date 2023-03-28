@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension EditSubBrandSheet {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "EditSubBrandSheet")
     let client: Client
     @Published var showToast = false

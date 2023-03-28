@@ -5,7 +5,8 @@ extension ProductFilterSheet {
     case category, checkIns, sortBy
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "SeachFilterSheet")
     let client: Client
     @Published var categoryFilter: Category.JoinedSubcategories?

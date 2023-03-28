@@ -49,8 +49,7 @@ struct ProfileProductListView: View {
     }
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Button(action: { viewModel.showFilters.toggle() }, label: {
         Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
@@ -61,7 +60,8 @@ struct ProfileProductListView: View {
 }
 
 extension ProfileProductListView {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     let logger = getLogger(category: "ProfileProductListView")
     let client: Client
     let profile: Profile

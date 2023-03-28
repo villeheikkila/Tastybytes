@@ -7,7 +7,8 @@ extension EditBrandSheet {
     case brandOwner
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "EditBrandSheet")
     let client: Client
     @Published var activeSheet: Sheet?

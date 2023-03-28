@@ -1,6 +1,7 @@
 import SwiftUI
 
-@MainActor class SplashScreenManager: ObservableObject {
+@MainActor
+class SplashScreenManager: ObservableObject {
   enum SplashScreenState {
     case showing, dismissing, finished
   }

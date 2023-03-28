@@ -54,8 +54,7 @@ struct LocationScreen: View {
     }
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
         ShareLink("Share", item: NavigatablePath.location(id: viewModel.location.id).url)

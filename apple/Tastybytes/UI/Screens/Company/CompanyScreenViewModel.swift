@@ -9,7 +9,8 @@ extension CompanyScreen {
     case addBrand
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CompanyScreen")
     let client: Client
     @Published var company: Company

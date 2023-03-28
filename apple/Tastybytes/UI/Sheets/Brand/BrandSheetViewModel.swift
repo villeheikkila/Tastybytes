@@ -5,7 +5,8 @@ extension BrandSheet {
     case select, new
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "BrandSheet")
     let client: Client
     @Published var brandsWithSubBrands = [Brand.JoinedSubBrands]()

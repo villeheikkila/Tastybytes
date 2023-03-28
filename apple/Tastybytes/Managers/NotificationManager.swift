@@ -2,7 +2,8 @@ import Firebase
 import FirebaseMessaging
 import SwiftUI
 
-@MainActor class NotificationManager: ObservableObject {
+@MainActor
+class NotificationManager: ObservableObject {
   private let logger = getLogger(category: "NotificationManager")
   let client: Client
 

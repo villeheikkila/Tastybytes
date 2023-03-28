@@ -29,6 +29,7 @@ struct BadgeViewModifier: ViewModifier {
           Badge(count: count)
         }
       })
+    // swiftlint:enable empty_count
   }
 }
 

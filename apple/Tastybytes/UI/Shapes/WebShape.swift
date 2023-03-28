@@ -140,4 +140,5 @@ struct WebShape: Shape {
     )
     return path
   }
+  // swiftlint:enable function_body_length
 }

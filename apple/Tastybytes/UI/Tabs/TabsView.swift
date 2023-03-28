@@ -92,8 +92,7 @@ enum Tab: Int, Identifiable, Hashable {
     }
   }
 
-  @ViewBuilder
-  var label: some View {
+  @ViewBuilder var label: some View {
     switch self {
     case .activity:
       Label("Activity", systemImage: "list.star")

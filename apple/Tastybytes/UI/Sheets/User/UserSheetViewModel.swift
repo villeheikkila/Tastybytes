@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension UserSheet {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "UserSheet")
     let client: Client
     @Published var searchText: String = ""

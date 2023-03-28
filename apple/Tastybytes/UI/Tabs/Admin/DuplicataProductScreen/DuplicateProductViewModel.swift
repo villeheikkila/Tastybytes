@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension DuplicateProductScreen {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductVerificationScreen")
     let client: Client
     @Published var products = [Product.Joined]()

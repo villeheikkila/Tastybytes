@@ -66,8 +66,7 @@ struct CheckInCardView: View {
     }
   }
 
-  @ViewBuilder
-  private var checkInImage: some View {
+  @ViewBuilder private var checkInImage: some View {
     if let imageUrl = checkIn.imageUrl {
       CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
         image
@@ -159,8 +158,7 @@ struct CheckInCardView: View {
     }
   }
 
-  @ViewBuilder
-  private var checkInSection: some View {
+  @ViewBuilder private var checkInSection: some View {
     if !checkIn.isEmpty {
       VStack(alignment: .leading, spacing: 8) {
         if let rating = checkIn.rating {
@@ -192,8 +190,7 @@ struct CheckInCardView: View {
     }
   }
 
-  @ViewBuilder
-  private var taggedProfilesSection: some View {
+  @ViewBuilder private var taggedProfilesSection: some View {
     if !checkIn.taggedProfiles.isEmpty {
       VStack(spacing: 4) {
         HStack {

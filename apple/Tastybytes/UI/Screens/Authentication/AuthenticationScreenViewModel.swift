@@ -23,7 +23,8 @@ extension AuthenticationScreen {
     }
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "AuthenticationScreen")
     let client: Client
     @Published var scene: Scene

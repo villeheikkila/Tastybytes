@@ -69,8 +69,7 @@ struct SubcategorySheet: View {
     }
   }
 
-  @ViewBuilder
-  private var addSubcategoryView: some View {
+  @ViewBuilder private var addSubcategoryView: some View {
     if profileManager.hasPermission(.canDeleteBrands) {
       Button(action: { showAddSubcategory.toggle() }, label: {
         Label("Add subcategory", systemImage: "plus")

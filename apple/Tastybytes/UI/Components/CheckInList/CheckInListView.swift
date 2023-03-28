@@ -88,8 +88,7 @@ struct CheckInListView<Header>: View where Header: View {
     }
   }
 
-  @ViewBuilder
-  private var checkInsList: some View {
+  @ViewBuilder private var checkInsList: some View {
     ForEach(viewModel.uniqueCheckIns) { checkIn in
       CheckInCardView(client: viewModel.client, checkIn: checkIn,
                       loadedFrom: getLoadedFrom)
@@ -121,8 +120,7 @@ struct CheckInListView<Header>: View where Header: View {
     }
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       RouteLink(to: .currentUserFriends) {
         Label("Friends Page", systemImage: "person.2")

@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension FlavorManagementScreen {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "FlavorManagementView")
     let client: Client
     @Published var flavors = [Flavor]()

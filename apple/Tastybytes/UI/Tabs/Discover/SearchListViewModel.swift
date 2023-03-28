@@ -8,7 +8,8 @@ extension SearchListView {
     case filters
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "SearchTab")
     let client: Client
     @Published var searchTerm: String = ""

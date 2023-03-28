@@ -21,7 +21,8 @@ extension CheckInSheet {
     case photoPicker
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CheckInSheet")
     let client: Client
     @Published var product: Product.Joined

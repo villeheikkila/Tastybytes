@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension ProfileSettingsScreen {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProfileSettingsScreen")
     let client: Client
     @Published var username = "" {

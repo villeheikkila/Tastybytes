@@ -34,8 +34,7 @@ struct FriendsScreen: View {
     }
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if !friendManager.isFriend(viewModel.profile) {
         Button(action: { friendManager.sendFriendRequest(receiver: viewModel.profile.id) {

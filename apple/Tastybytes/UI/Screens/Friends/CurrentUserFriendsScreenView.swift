@@ -141,8 +141,7 @@ struct CurrentUserFriendsScreen: View {
     }
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Button(action: { showProfileQrCode.toggle() }, label: {
         Label("Show name tag or send friend request by QR code", systemImage: "qrcode")

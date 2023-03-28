@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension ApplicationSettingsScreen {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ApplicationSettingsScreen")
     let client: Client
     @Published var isSystemColor = false

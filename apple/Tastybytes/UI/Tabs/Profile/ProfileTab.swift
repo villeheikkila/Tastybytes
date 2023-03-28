@@ -51,8 +51,7 @@ struct ProfileTab: View {
     .environmentObject(router)
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       Button(action: { showProfileQrCode.toggle() }, label: {
         Label("Show name tag", systemImage: "qrcode")

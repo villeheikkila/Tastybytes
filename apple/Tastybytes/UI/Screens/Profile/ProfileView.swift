@@ -229,8 +229,7 @@ struct ProfileView: View {
     }
   }
 
-  @ViewBuilder
-  private var links: some View {
+  @ViewBuilder private var links: some View {
     RouteLink(to: profileManager.getProfile() == viewModel.profile ? .currentUserFriends : .friends(viewModel.profile)) {
       Text("Friends")
         .font(.subheadline).bold()

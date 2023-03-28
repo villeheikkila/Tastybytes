@@ -9,7 +9,8 @@ extension CategoryManagementScreen {
     case editServingStyles
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CategoryManagementScreen")
 
     let client: Client

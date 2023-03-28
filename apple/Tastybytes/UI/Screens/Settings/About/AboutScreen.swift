@@ -35,8 +35,7 @@ struct AboutScreen: View {
     }
   }
 
-  @ViewBuilder
-  var aboutSection: some View {
+  @ViewBuilder var aboutSection: some View {
     if let aboutPage = viewModel.aboutPage {
       Section {
         Text(aboutPage.summary)

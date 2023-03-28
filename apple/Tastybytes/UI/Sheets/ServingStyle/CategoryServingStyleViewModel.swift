@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension CategoryServingStyleSheet {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ServingStyleManagementSheet")
     let client: Client
     let category: Category.JoinedSubcategoriesServingStyles

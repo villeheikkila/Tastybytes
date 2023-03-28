@@ -20,7 +20,8 @@ extension VerificationScreen {
     }
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductVerificationScreen")
     let client: Client
 

@@ -44,7 +44,8 @@ extension AddProductView {
     }
   }
 
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductSheet")
     let client: Client
     @Published var activeSheet: Sheet?

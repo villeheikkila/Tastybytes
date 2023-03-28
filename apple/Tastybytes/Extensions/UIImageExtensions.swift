@@ -106,6 +106,7 @@ extension UIImage {
     pixelOffset: Int,
     basisFunction: (Float, Float) -> Float
   ) -> (Float, Float, Float) {
+    // swiftlint:enable function_parameter_count
     var r: Float = 0
     var g: Float = 0
     var b: Float = 0

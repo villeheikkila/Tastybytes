@@ -49,8 +49,7 @@ struct ProductFeedScreen: View {
     }
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarTitleMenu {
       Button(action: { viewModel.categoryFilter = nil }, label: {
         Text(viewModel.feed.label)

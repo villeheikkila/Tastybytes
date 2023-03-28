@@ -1,7 +1,8 @@
 import SwiftUI
 
 extension ProductFeedScreen {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductFeedView")
     let client: Client
     @Published var products = [Product.Joined]()

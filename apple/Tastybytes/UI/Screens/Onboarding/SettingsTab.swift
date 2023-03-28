@@ -67,5 +67,6 @@ struct ProfileSettingsTab: View {
     .task {
       viewModel.loadProfile()
     }
+    // swiftlint:enable accessibility_trait_for_button
   }
 }

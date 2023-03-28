@@ -48,8 +48,7 @@ struct ActivityTab: View {
     .environmentObject(router)
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       RouteLink(to: .currentUserFriends) {
         Label("Friends page", systemImage: "person.2")

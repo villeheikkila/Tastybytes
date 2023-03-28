@@ -59,7 +59,8 @@ struct SubcategoryStatistics: View {
 }
 
 extension SubcategoryStatistics {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     let logger = getLogger(category: "SubcategoryStatistics")
     let client: Client
     let profile: Profile
@@ -87,7 +88,8 @@ extension SubcategoryStatistics {
 }
 
 extension ProfileStatisticsView {
-  @MainActor class ViewModel: ObservableObject {
+  @MainActor
+  class ViewModel: ObservableObject {
     let logger = getLogger(category: "ProfileStatisticsView")
     let client: Client
     let profile: Profile

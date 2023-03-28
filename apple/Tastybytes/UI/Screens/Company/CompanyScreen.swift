@@ -87,8 +87,7 @@ struct CompanyScreen: View {
     }
   }
 
-  @ToolbarContentBuilder
-  private var toolbarContent: some ToolbarContent {
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItem(placement: .principal) {
       HStack(alignment: .center, spacing: 18) {
         if let logoUrl = viewModel.company.logoUrl {
