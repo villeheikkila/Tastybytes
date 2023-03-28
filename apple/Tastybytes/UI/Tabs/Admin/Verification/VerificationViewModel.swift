@@ -23,9 +23,11 @@ extension VerificationScreen {
   @MainActor class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductVerificationScreen")
     let client: Client
+
     @Published var products = [Product.Joined]()
     @Published var companies = [Company]()
     @Published var brands = [Brand.JoinedSubBrandsProductsCompany]()
+    @Published var subBrands = [SubBrand.JoinedBrand]()
     @Published var editProduct: Product.Joined?
     @Published var verificationType: VerificationType = .products
     @Published var deleteProduct: Product.Joined? {
@@ -49,6 +51,19 @@ extension VerificationScreen {
           }
         case let .failure(error):
           logger.error("failed to verify brand \(brand.id): \(error.localizedDescription)")
+        }
+      }
+    }
+
+    func verifySubBrand(_ subBrand: SubBrand.JoinedBrand) {
+      Task {
+        switch await client.subBrand.verification(id: subBrand.id, isVerified: true) {
+        case .success:
+          withAnimation {
+            subBrands.remove(object: subBrand)
+          }
+        case let .failure(error):
+          logger.error("failed to verify brand \(subBrand.id): \(error.localizedDescription)")
         }
       }
     }
@@ -107,7 +122,7 @@ extension VerificationScreen {
       case .brands:
         await loadBrands()
       case .subBrands:
-        ()
+        await loadSubBrands()
       }
     }
 
@@ -126,7 +141,9 @@ extension VerificationScreen {
           await loadBrands()
         }
       case .subBrands:
-        ()
+        if subBrands.isEmpty {
+          await loadSubBrands()
+        }
       }
     }
 
@@ -137,10 +154,18 @@ extension VerificationScreen {
           self.brands = brands
         }
       case let .failure(error):
-        logger
-          .error(
-            "loading unverfied brands failed: \(error.localizedDescription)"
-          )
+        logger.error("loading unverfied brands failed: \(error.localizedDescription)")
+      }
+    }
+
+    func loadSubBrands() async {
+      switch await client.subBrand.getUnverified() {
+      case let .success(subBrands):
+        withAnimation {
+          self.subBrands = subBrands
+        }
+      case let .failure(error):
+        logger.error("loading unverfied sub-brands failed: \(error.localizedDescription)")
       }
     }
 
@@ -151,10 +176,7 @@ extension VerificationScreen {
           self.companies = companies
         }
       case let .failure(error):
-        logger
-          .error(
-            "loading unverfied companies failed: \(error.localizedDescription)"
-          )
+        logger.error("loading unverfied companies failed: \(error.localizedDescription)")
       }
     }
 
@@ -165,10 +187,7 @@ extension VerificationScreen {
           self.products = products
         }
       case let .failure(error):
-        logger
-          .error(
-            "loading unverfied products failed: \(error.localizedDescription)"
-          )
+        logger.error("loading unverfied products failed: \(error.localizedDescription)")
       }
     }
   }

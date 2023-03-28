@@ -5,6 +5,7 @@ protocol SubBrandRepository {
   func update(updateRequest: SubBrand.Update) async -> Result<Void, Error>
   func delete(id: Int) async -> Result<Void, Error>
   func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
+  func getUnverified() async -> Result<[SubBrand.JoinedBrand], Error>
 }
 
 struct SupabaseSubBrandRepository: SubBrandRepository {
@@ -76,6 +77,23 @@ struct SupabaseSubBrandRepository: SubBrandRepository {
         .execute()
 
       return .success(())
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getUnverified() async -> Result<[SubBrand.JoinedBrand], Error> {
+    do {
+      let response: [SubBrand.JoinedBrand] = try await client
+        .database
+        .from(SubBrand.getQuery(.tableName))
+        .select(columns: SubBrand.getQuery(.joinedBrand(false)))
+        .eq(column: "is_verified", value: false)
+        .order(column: "created_at", ascending: false)
+        .execute()
+        .value
+
+      return .success(response)
     } catch {
       return .failure(error)
     }

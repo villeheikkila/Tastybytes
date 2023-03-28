@@ -79,7 +79,21 @@ struct VerificationScreen: View {
   }
 
   private var unverifiedSubBrands: some View {
-    HStack {}
+    ForEach(viewModel.subBrands) { subBrand in
+      HStack {
+        Text("\(subBrand.brand.brandOwner.name): \(subBrand.brand.name): \(subBrand.name ?? "-")")
+        Spacer()
+      }
+      .onTapGesture {
+        router.fetchAndNavigateTo(viewModel.client, .brand(id: subBrand.brand.id), resetStack: false)
+      }
+      .accessibilityAddTraits(.isButton)
+      .swipeActions {
+        Button(action: { viewModel.verifySubBrand(subBrand) }, label: {
+          Label("Verify", systemImage: "checkmark")
+        }).tint(.green)
+      }
+    }
   }
 
   private var unverifiedBrands: some View {
