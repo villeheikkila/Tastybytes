@@ -97,7 +97,7 @@ extension VerificationScreen {
     func onEditProduct() {
       editProduct = nil
       Task {
-        await loadProducts()
+        await loadData(refresh: true)
       }
     }
 
@@ -106,6 +106,7 @@ extension VerificationScreen {
       Task {
         switch await client.product.delete(id: deleteProduct.id) {
         case .success:
+          await loadData(refresh: true)
           onDelete()
         case let .failure(error):
           logger.error("failed to delete product \(deleteProduct.id): \(error.localizedDescription)")
@@ -113,81 +114,52 @@ extension VerificationScreen {
       }
     }
 
-    func refreshData() async {
+    func loadData(refresh: Bool = false) async {
       switch verificationType {
       case .products:
-        await loadProducts()
-      case .companies:
-        await loadCompanies()
-      case .brands:
-        await loadBrands()
-      case .subBrands:
-        await loadSubBrands()
-      }
-    }
-
-    func loadData() async {
-      switch verificationType {
-      case .products:
-        if products.isEmpty {
-          await loadProducts()
+        if refresh || products.isEmpty {
+          switch await client.product.getUnverified() {
+          case let .success(products):
+            withAnimation {
+              self.products = products
+            }
+          case let .failure(error):
+            logger.error("loading unverfied products failed: \(error.localizedDescription)")
+          }
         }
       case .companies:
-        if companies.isEmpty {
-          await loadCompanies()
+        if refresh || companies.isEmpty {
+          switch await client.company.getUnverified() {
+          case let .success(companies):
+            withAnimation {
+              self.companies = companies
+            }
+          case let .failure(error):
+            logger.error("loading unverfied companies failed: \(error.localizedDescription)")
+          }
         }
       case .brands:
-        if brands.isEmpty {
-          await loadBrands()
+        if refresh || brands.isEmpty {
+          switch await client.brand.getUnverified() {
+          case let .success(brands):
+            withAnimation {
+              self.brands = brands
+            }
+          case let .failure(error):
+            logger.error("loading unverfied brands failed: \(error.localizedDescription)")
+          }
         }
       case .subBrands:
-        if subBrands.isEmpty {
-          await loadSubBrands()
+        if refresh || subBrands.isEmpty {
+          switch await client.subBrand.getUnverified() {
+          case let .success(subBrands):
+            withAnimation {
+              self.subBrands = subBrands
+            }
+          case let .failure(error):
+            logger.error("loading unverfied sub-brands failed: \(error.localizedDescription)")
+          }
         }
-      }
-    }
-
-    func loadBrands() async {
-      switch await client.brand.getUnverified() {
-      case let .success(brands):
-        withAnimation {
-          self.brands = brands
-        }
-      case let .failure(error):
-        logger.error("loading unverfied brands failed: \(error.localizedDescription)")
-      }
-    }
-
-    func loadSubBrands() async {
-      switch await client.subBrand.getUnverified() {
-      case let .success(subBrands):
-        withAnimation {
-          self.subBrands = subBrands
-        }
-      case let .failure(error):
-        logger.error("loading unverfied sub-brands failed: \(error.localizedDescription)")
-      }
-    }
-
-    func loadCompanies() async {
-      switch await client.company.getUnverified() {
-      case let .success(companies):
-        withAnimation {
-          self.companies = companies
-        }
-      case let .failure(error):
-        logger.error("loading unverfied companies failed: \(error.localizedDescription)")
-      }
-    }
-
-    func loadProducts() async {
-      switch await client.product.getUnverified() {
-      case let .success(products):
-        withAnimation {
-          self.products = products
-        }
-      case let .failure(error):
-        logger.error("loading unverfied products failed: \(error.localizedDescription)")
       }
     }
   }

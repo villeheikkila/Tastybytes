@@ -41,7 +41,6 @@ struct VerificationScreen: View {
         role: .destructive,
         action: { viewModel.deleteProduct(onDelete: {
           hapticManager.trigger(.notification(.success))
-          router.removeLast()
         })
         }
       )
@@ -57,7 +56,7 @@ struct VerificationScreen: View {
     })
     .refreshable {
       await hapticManager.wrapWithHaptics {
-        await viewModel.refreshData()
+        await viewModel.loadData(refresh: true)
       }
     }
     .task {
