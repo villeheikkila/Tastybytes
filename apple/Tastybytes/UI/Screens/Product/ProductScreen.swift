@@ -34,7 +34,7 @@ struct ProductScreen: View {
         if let summary = viewModel.summary, summary.averageRating != nil {
           Section {
             SummaryView(summary: summary)
-          }.listRowSeparator(.visible)
+          }.listRowSeparator(.hidden)
         }
       }
     )

@@ -6,11 +6,18 @@ struct SummaryView: View {
   var body: some View {
     Grid(alignment: .leading) {
       header
-      Divider()
-        .gridCellUnsizedAxes(.horizontal)
-      everyoneSection
-      friendsSection
-      youSection
+      Divider().gridCellUnsizedAxes(.horizontal)
+      if let averageRating = summary.averageRating {
+        SummaryRow(title: "Everyone", count: summary.totalCheckIns, rating: averageRating)
+        Divider().gridCellUnsizedAxes(.horizontal)
+      }
+      if let friendsAverageRating = summary.friendsAverageRating {
+        SummaryRow(title: "Friends", count: summary.friendsTotalCheckIns, rating: friendsAverageRating)
+        Divider().gridCellUnsizedAxes(.horizontal)
+      }
+      if let currentUserAverageRating = summary.currentUserAverageRating {
+        SummaryRow(title: "You", count: summary.currentUserTotalCheckIns, rating: currentUserAverageRating)
+      }
     }
   }
 
@@ -25,56 +32,21 @@ struct SummaryView: View {
         .font(.caption).bold()
     }
   }
+}
 
-  @ViewBuilder private var everyoneSection: some View {
-    if let averageRating = summary.averageRating {
-      GridRow {
-        Text("Everyone")
-          .font(.caption).bold()
-        Spacer()
-        Text(String(summary.totalCheckIns))
-          .font(.caption)
-        Spacer()
-        RatingView(rating: averageRating, type: .small)
-        Text(String(averageRating))
-          .font(.caption).bold()
-      }
-      Divider()
-        .gridCellUnsizedAxes(.horizontal)
-    }
-  }
+struct SummaryRow: View {
+  let title: String
+  let count: Int
+  let rating: Double
 
-  @ViewBuilder private var friendsSection: some View {
-    if let friendsAverageRating = summary.friendsAverageRating {
-      GridRow {
-        Text("Friends")
-          .font(.caption).bold()
-        Spacer()
-        Text(String(summary.friendsTotalCheckIns))
-          .font(.caption)
-        Spacer()
-        RatingView(rating: friendsAverageRating, type: .small)
-        Text(String(friendsAverageRating))
-          .font(.caption).bold()
-      }
-      Divider()
-        .gridCellUnsizedAxes(.horizontal)
-    }
-  }
-
-  @ViewBuilder private var youSection: some View {
-    if let currentUserAverageRating = summary.currentUserAverageRating {
-      GridRow {
-        Text("You")
-          .font(.caption)
-        Spacer()
-        Text(String(summary.currentUserTotalCheckIns))
-          .font(.caption)
-        Spacer()
-        RatingView(rating: currentUserAverageRating, type: .small)
-        Text(String(currentUserAverageRating))
-          .font(.caption).bold()
-      }
+  var body: some View {
+    GridRow {
+      Text(title).font(.caption).bold()
+      Spacer()
+      Text(String(count)).font(.caption)
+      Spacer()
+      RatingView(rating: rating, type: .small)
+      Text(String(rating)).font(.caption).bold()
     }
   }
 }
