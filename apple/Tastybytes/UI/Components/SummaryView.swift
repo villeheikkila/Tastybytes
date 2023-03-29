@@ -36,6 +36,8 @@ struct SummaryView: View {
           .font(.caption)
         Spacer()
         RatingView(rating: averageRating, type: .small)
+        Text(String(averageRating))
+          .font(.caption).bold()
       }
       Divider()
         .gridCellUnsizedAxes(.horizontal)
@@ -52,6 +54,8 @@ struct SummaryView: View {
           .font(.caption)
         Spacer()
         RatingView(rating: friendsAverageRating, type: .small)
+        Text(String(friendsAverageRating))
+          .font(.caption).bold()
       }
       Divider()
         .gridCellUnsizedAxes(.horizontal)
@@ -68,6 +72,8 @@ struct SummaryView: View {
           .font(.caption)
         Spacer()
         RatingView(rating: currentUserAverageRating, type: .small)
+        Text(String(currentUserAverageRating))
+          .font(.caption).bold()
       }
     }
   }

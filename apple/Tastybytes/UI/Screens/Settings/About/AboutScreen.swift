@@ -10,8 +10,7 @@ struct AboutScreen: View {
   var body: some View {
     VStack {
       List {
-        header
-          .listRowBackground(Color.clear)
+        header.listRowBackground(Color.clear)
         aboutSection
         footer
       }
