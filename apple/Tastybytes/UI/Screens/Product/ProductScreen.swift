@@ -25,7 +25,7 @@ struct ProductScreen: View {
         Section {
           ProductItemView(product: viewModel.product, extras: [.companyLink, .logo])
           Button(action: { viewModel.activeSheet = .checkIn }, label: {
-            Text("Check-in!")
+            Label("Check-in!", systemImage: "plus.app")
               .foregroundStyle(Color.accentColor)
               .fontWeight(.medium)
           })
