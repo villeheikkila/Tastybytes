@@ -17,9 +17,9 @@ struct ProfileStatisticsView: View {
             HStack {
               CategoryNameView(category: category)
               Spacer()
-              Text("(\(String(category.count)))").font(.caption).bold()
+              Text(String(category.count)).font(.caption).bold()
             }
-            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 16))
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 32))
           })
         }
       } header: {
@@ -46,15 +46,23 @@ struct SubcategoryStatistics: View {
   }
 
   var body: some View {
-    VStack {
+    Section {
+      if viewModel.isLoading {
+        ProgressView()
+          .frame(maxWidth: .infinity)
+          .padding([.top, .bottom], 8)
+      }
       ForEach(viewModel.subcategoryStatistics) { subcategory in
         HStack {
           Text(subcategory.label).font(.caption).bold()
           Spacer()
-          Text("(\(String(subcategory.count)))").font(.caption).bold()
+          Text(String(subcategory.count)).font(.caption).bold()
         }
       }
-    }.task {
+    } header: {
+      Label("Subcategories", systemImage: "tag").font(.caption).bold()
+    }
+    .task {
       await viewModel.loadSubcategoryStatistics()
     }
   }
@@ -69,6 +77,7 @@ extension SubcategoryStatistics {
     let category: CategoryStatistics
 
     @Published var subcategoryStatistics = [CategoryStatistics]()
+    @Published var isLoading = false
 
     init(_ client: Client, profile: Profile, category: CategoryStatistics) {
       self.client = client
@@ -77,6 +86,7 @@ extension SubcategoryStatistics {
     }
 
     func loadSubcategoryStatistics() async {
+      isLoading = true
       switch await client.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id) {
       case let .success(subcategoryStatistics):
         withAnimation {
@@ -85,6 +95,7 @@ extension SubcategoryStatistics {
       case let .failure(error):
         logger.error("failed loading subcategory statistics: \(error.localizedDescription)")
       }
+      isLoading = false
     }
   }
 }
