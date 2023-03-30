@@ -87,7 +87,7 @@ enum Route: Hashable {
   case currentUserFriends
   case friends(Profile)
   case addProduct(Barcode?)
-  case productFeed(ProductFeedType)
+  case productFeed(Product.FeedType)
   case flavorManagementScreen
   case verificationScreen
   case duplicateProducts

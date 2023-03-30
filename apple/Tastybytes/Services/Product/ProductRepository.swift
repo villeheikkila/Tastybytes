@@ -2,28 +2,12 @@ import Foundation
 import Supabase
 import SupabaseStorage
 
-enum ProductFeedType: Hashable, Identifiable {
-  var id: String { label }
-  case topRated, trending, latest
-
-  var label: String {
-    switch self {
-    case .topRated:
-      return "Top Rated"
-    case .trending:
-      return "Trending"
-    case .latest:
-      return "Latest"
-    }
-  }
-}
-
 protocol ProductRepository {
   func search(searchTerm: String, filter: Product.Filter?) async -> Result<[Product.Joined], Error>
   func search(barcode: Barcode) async -> Result<[Product.Joined], Error>
   func getById(id: Int) async -> Result<Product.Joined, Error>
   func getByProfile(id: UUID) async -> Result<[Product.Joined], Error>
-  func getFeed(_ type: ProductFeedType, from: Int, to: Int, categoryFilterId: Int?) async
+  func getFeed(_ type: Product.FeedType, from: Int, to: Int, categoryFilterId: Int?) async
     -> Result<[Product.Joined], Error>
   func delete(id: Int) async -> Result<Void, Error>
   func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
@@ -71,7 +55,7 @@ struct SupabaseProductRepository: ProductRepository {
     }
   }
 
-  func getFeed(_ type: ProductFeedType, from: Int, to: Int,
+  func getFeed(_ type: Product.FeedType, from: Int, to: Int,
                categoryFilterId: Int?) async -> Result<[Product.Joined], Error>
   {
     var queryBuilder = client
@@ -107,7 +91,6 @@ struct SupabaseProductRepository: ProductRepository {
           .value
         return .success(response)
       }
-
     } catch {
       return .failure(error)
     }

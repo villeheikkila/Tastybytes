@@ -6,7 +6,7 @@ struct ProductFeedScreen: View {
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var appDataManager: AppDataManager
 
-  init(_ client: Client, feed: ProductFeedType) {
+  init(_ client: Client, feed: Product.FeedType) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, feed: feed))
   }
 

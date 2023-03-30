@@ -30,9 +30,9 @@ extension ProductFeedScreen {
       }
     }
 
-    let feed: ProductFeedType
+    let feed: Product.FeedType
 
-    init(_ client: Client, feed: ProductFeedType) {
+    init(_ client: Client, feed: Product.FeedType) {
       self.client = client
       self.feed = feed
     }

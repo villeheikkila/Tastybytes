@@ -309,6 +309,22 @@ extension Product {
     case full
   }
 
+  enum FeedType: Hashable, Identifiable {
+    var id: String { label }
+    case topRated, trending, latest
+
+    var label: String {
+      switch self {
+      case .topRated:
+        return "Top Rated"
+      case .trending:
+        return "Trending"
+      case .latest:
+        return "Latest"
+      }
+    }
+  }
+
   struct Joined: Identifiable, Hashable, Decodable, Sendable {
     let id: Int
     let name: String
