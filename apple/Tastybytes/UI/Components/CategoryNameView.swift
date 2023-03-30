@@ -11,6 +11,6 @@ struct CategoryNameView: View {
 
 struct CategoryNameView_Previews: PreviewProvider {
   static var previews: some View {
-    CategoryNameView(category: Category(id: 0, name: "beverage"))
+    CategoryNameView(category: Category(id: 0, name: "beverage", icon: "🥤"))
   }
 }

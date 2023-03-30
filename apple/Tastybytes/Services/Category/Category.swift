@@ -1,28 +1,25 @@
 protocol CategoryName {
   var name: String { get }
+  var icon: String { get }
 }
 
 extension CategoryName {
   var label: String {
-    name.replacingOccurrences(of: "_", with: " ").capitalized
+    "\(icon) \(name.replacingOccurrences(of: "_", with: " ").capitalized)"
   }
 }
 
 struct Category: Identifiable, Decodable, Hashable, CategoryName {
   let id: Int
   let name: String
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case name
-  }
+  let icon: String
 }
 
 extension Category {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "categories"
     let servingStyleTableName = "category_serving_styles"
-    let saved = "id, name"
+    let saved = "id, name, icon"
 
     switch queryType {
     case .tableName:
@@ -58,16 +55,11 @@ extension Category {
   struct JoinedSubcategories: Identifiable, Decodable, Hashable, Sendable {
     let id: Int
     let name: String
+    let icon: String
     let subcategories: [Subcategory]
 
     var label: String {
       name.replacingOccurrences(of: "_", with: " ").capitalized
-    }
-
-    enum CodingKeys: String, CodingKey {
-      case id
-      case name
-      case subcategories
     }
   }
 

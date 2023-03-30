@@ -12,7 +12,7 @@ struct ProfileStatisticsView: View {
       Section {
         ForEach(viewModel.categoryStatistics) { category in
           DisclosureGroup(content: {
-            SubcategoryStatistics(viewModel.client, profile: viewModel.profile, category: category)
+            SubcategoryStatisticsView(viewModel.client, profile: viewModel.profile, category: category)
           }, label: {
             HStack {
               CategoryNameView(category: category)
@@ -38,7 +38,7 @@ struct ProfileStatisticsView: View {
   }
 }
 
-struct SubcategoryStatistics: View {
+struct SubcategoryStatisticsView: View {
   @StateObject private var viewModel: ViewModel
 
   init(_ client: Client, profile: Profile, category: CategoryStatistics) {
@@ -54,7 +54,7 @@ struct SubcategoryStatistics: View {
       }
       ForEach(viewModel.subcategoryStatistics) { subcategory in
         HStack {
-          Text(subcategory.label).font(.caption).bold()
+          Text(subcategory.name).font(.caption).bold()
           Spacer()
           Text(String(subcategory.count)).font(.caption).bold()
         }
@@ -68,7 +68,7 @@ struct SubcategoryStatistics: View {
   }
 }
 
-extension SubcategoryStatistics {
+extension SubcategoryStatisticsView {
   @MainActor
   class ViewModel: ObservableObject {
     let logger = getLogger(category: "SubcategoryStatistics")
@@ -76,7 +76,7 @@ extension SubcategoryStatistics {
     let profile: Profile
     let category: CategoryStatistics
 
-    @Published var subcategoryStatistics = [CategoryStatistics]()
+    @Published var subcategoryStatistics = [SubcategoryStatistics]()
     @Published var isLoading = false
 
     init(_ client: Client, profile: Profile, category: CategoryStatistics) {

@@ -15,7 +15,7 @@ protocol ProfileRepository {
   func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error>
   func getContributions(userId: UUID) async -> Result<Contributions, Error>
   func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error>
-  func getSubcategoryStatistics(userId: UUID, categoryId: Int) async -> Result<[CategoryStatistics], Error>
+  func getSubcategoryStatistics(userId: UUID, categoryId: Int) async -> Result<[SubcategoryStatistics], Error>
 }
 
 struct SupabaseProfileRepository: ProfileRepository {
@@ -142,7 +142,7 @@ struct SupabaseProfileRepository: ProfileRepository {
     do {
       let response: [CategoryStatistics] = try await client
         .database
-        .rpc(fn: CategoryStatistics.getQuery(.categoryRpcName), params: CategoryStatistics.CategoryStatisticsParams(id: userId))
+        .rpc(fn: CategoryStatistics.getQuery(.rpcName), params: CategoryStatistics.CategoryStatisticsParams(id: userId))
         .select(columns: CategoryStatistics.getQuery(.value))
         .execute()
         .value
@@ -153,15 +153,15 @@ struct SupabaseProfileRepository: ProfileRepository {
     }
   }
 
-  func getSubcategoryStatistics(userId: UUID, categoryId: Int) async -> Result<[CategoryStatistics], Error> {
+  func getSubcategoryStatistics(userId: UUID, categoryId: Int) async -> Result<[SubcategoryStatistics], Error> {
     do {
-      let response: [CategoryStatistics] = try await client
+      let response: [SubcategoryStatistics] = try await client
         .database
         .rpc(
-          fn: CategoryStatistics.getQuery(.subcategoryRpcName),
-          params: CategoryStatistics.SubcategoryStatisticsParams(userId: userId, categoryId: categoryId)
+          fn: SubcategoryStatistics.getQuery(.rpcName),
+          params: SubcategoryStatistics.SubcategoryStatisticsParams(userId: userId, categoryId: categoryId)
         )
-        .select(columns: CategoryStatistics.getQuery(.value))
+        .select(columns: SubcategoryStatistics.getQuery(.value))
         .execute()
         .value
 
