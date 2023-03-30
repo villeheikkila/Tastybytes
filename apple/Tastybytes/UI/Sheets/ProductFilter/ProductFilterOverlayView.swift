@@ -13,7 +13,7 @@ struct ProductFilterOverlayView: View {
           .accessibility(hidden: true)
       }
       if let subcategory = filters.subcategory {
-        Text(subcategory.label).bold()
+        Text(subcategory.name).bold()
       }
     }
     if let sortBy = filters.sortBy {

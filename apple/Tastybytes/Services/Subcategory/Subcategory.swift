@@ -2,17 +2,12 @@ protocol SubcategoryProtocol {
   var id: Int { get }
   var name: String { get }
   var isVerified: Bool { get }
-  var label: String { get }
 }
 
 struct Subcategory: Identifiable, Decodable, Hashable, Sendable, SubcategoryProtocol, Comparable {
   let id: Int
   let name: String
   let isVerified: Bool
-
-  var label: String {
-    name.capitalized
-  }
 
   static func < (lhs: Subcategory, rhs: Subcategory) -> Bool {
     lhs.name < rhs.name
@@ -53,10 +48,6 @@ extension Subcategory {
     let name: String
     let isVerified: Bool
     let category: Category
-
-    var label: String {
-      name.capitalized
-    }
 
     func getSubcategory() -> Subcategory {
       Subcategory(id: id, name: name, isVerified: isVerified)

@@ -14,7 +14,7 @@ struct CategoryManagementScreen: View {
         Section {
           ForEach(category.subcategories) { subcategory in
             HStack {
-              Text(subcategory.label)
+              Text(subcategory.name)
             }
             .swipeActions {
               Button(
@@ -99,7 +99,7 @@ struct CategoryManagementScreen: View {
           }
         case .editSubcategory:
           if let editSubcategory = viewModel.editSubcategory {
-            DismissableSheet(title: "Edit \(editSubcategory.label)") {
+            DismissableSheet(title: "Edit \(editSubcategory.name)") {
               Form {
                 TextField("Name", text: $viewModel.editSubcategoryName)
                 Button(
@@ -118,7 +118,7 @@ struct CategoryManagementScreen: View {
                         presenting: viewModel.deleteSubcategory)
     { presenting in
       Button(
-        "Delete \(presenting.label) Subcategory",
+        "Delete \(presenting.name) Subcategory",
         role: .destructive,
         action: { viewModel.deleteSubcategories() }
       )

@@ -24,7 +24,7 @@ struct SubcategorySheet: View {
         ForEach(shownSubcategories) { subcategory in
           Button(action: { toggleSubcategory(subcategory: subcategory) }, label: {
             HStack {
-              Text(subcategory.label)
+              Text(subcategory.name)
               Spacer()
               if subcategories.contains(subcategory) {
                 Label("Select subcategory", systemImage: "checkmark")

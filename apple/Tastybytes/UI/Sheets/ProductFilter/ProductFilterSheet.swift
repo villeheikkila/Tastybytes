@@ -35,7 +35,7 @@ struct ProductFilterSheet: View {
             Text("Select All").tag(Subcategory?(nil))
             if let categoryFilter = viewModel.categoryFilter {
               ForEach(categoryFilter.subcategories) { subcategory in
-                Text(subcategory.label).tag(Optional(subcategory))
+                Text(subcategory.name).tag(Optional(subcategory))
               }
             }
           } label: {
