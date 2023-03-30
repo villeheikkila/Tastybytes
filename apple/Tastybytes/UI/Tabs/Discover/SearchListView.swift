@@ -208,12 +208,18 @@ struct SearchListView: View {
     if viewModel.products.isEmpty {
       Section {
         RouteLink(to: .productFeed(.trending)) {
-          Label("Trending", systemImage: "chart.line.uptrend.xyaxis").bold()
+          Label(ProductFeedType.trending.label, systemImage: "chart.line.uptrend.xyaxis").bold()
+            .listRowSeparator(.visible)
         }
-        .listRowSeparator(.visible)
 
         RouteLink(to: .productFeed(.topRated)) {
-          Label("Top Rated", systemImage: "line.horizontal.star.fill.line.horizontal").bold()
+          Label(ProductFeedType.topRated.label, systemImage: "line.horizontal.star.fill.line.horizontal").bold()
+            .listRowSeparator(.visible)
+        }
+
+        RouteLink(to: .productFeed(.latest)) {
+          Label(ProductFeedType.latest.label, systemImage: "bolt.horizontal.circle").bold()
+            .listRowSeparator(.visible)
         }
       } header: {
         Text("Feeds")

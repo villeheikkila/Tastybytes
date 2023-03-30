@@ -4,7 +4,7 @@ import SupabaseStorage
 
 enum ProductFeedType: Hashable, Identifiable {
   var id: String { label }
-  case topRated, trending
+  case topRated, trending, latest
 
   var label: String {
     switch self {
@@ -12,6 +12,8 @@ enum ProductFeedType: Hashable, Identifiable {
       return "Top Rated"
     case .trending:
       return "Trending"
+    case .latest:
+      return "Latest"
     }
   }
 }
@@ -94,6 +96,13 @@ struct SupabaseProductRepository: ProductRepository {
         let response: [Product.Joined] = try await queryBuilder
           .range(from: from, to: to)
           .order(column: "check_ins_during_previous_month", ascending: false)
+          .execute()
+          .value
+        return .success(response)
+      case .latest:
+        let response: [Product.Joined] = try await queryBuilder
+          .range(from: from, to: to)
+          .order(column: "created_at", ascending: false)
           .execute()
           .value
         return .success(response)
