@@ -231,15 +231,15 @@ struct ProfileView: View {
 
   @ViewBuilder private var links: some View {
     RouteLink(to: profileManager.getProfile() == viewModel.profile ? .currentUserFriends : .friends(viewModel.profile)) {
-      Text("Friends")
+      Label("Friends", systemImage: "person.crop.rectangle.stack")
         .font(.subheadline).bold()
     }
     RouteLink(to: .profileProducts(viewModel.profile)) {
-      Text("Products")
+      Label("Products", systemImage: "checkmark.rectangle")
         .font(.subheadline).bold()
     }
     RouteLink(to: .profileStatistics(viewModel.profile)) {
-      Text("Statistics")
+      Label("Statistics", systemImage: "chart.bar.xaxis")
         .font(.subheadline).bold()
     }
   }

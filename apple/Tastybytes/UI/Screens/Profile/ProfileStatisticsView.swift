@@ -23,7 +23,9 @@ struct ProfileStatisticsView: View {
           })
         }
       } header: {
-        Text("Category")
+        if !viewModel.categoryStatistics.isEmpty {
+          Text("Category")
+        }
       }.headerProminence(.increased)
     }
     .refreshable {
