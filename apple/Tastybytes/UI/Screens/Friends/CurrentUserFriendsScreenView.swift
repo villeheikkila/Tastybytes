@@ -123,7 +123,9 @@ struct CurrentUserFriendsScreen: View {
           })
         })
       }
-      .presentationDetents([.medium])
+      .presentationDetents([.height(320)])
+      .presentationBackground(.thickMaterial)
+      .presentationCornerRadius(30)
     }
     .confirmationDialog("Delete Friend Confirmation",
                         isPresented: $showRemoveFriendConfirmation,

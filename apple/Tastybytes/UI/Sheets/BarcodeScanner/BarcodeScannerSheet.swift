@@ -10,19 +10,21 @@ struct BarcodeScannerSheet: View {
   let onComplete: (_ barcode: Barcode) -> Void
 
   var body: some View {
-    Group {
+    VStack {
       if showBarcodeTextField {
         Form {
           TextField("Barcode (EAN13)", text: $barcodeInput)
             .keyboardType(.decimalPad)
           Button(
-            action: { onComplete(Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13)) },
+            action: {
+              onComplete(Barcode(barcode: barcodeInput, type: AVMetadataObject.ObjectType.ean13))
+              dismiss()
+            },
             label: {
               Text("Submit")
             }
           ).disabled(!isValidEAN13(input: barcodeInput))
         }
-
       } else {
         ScannerView(scanTypes: [.codabar, .code39, .ean8, .ean13], completion: { response in
           if case let .success(result) = response {

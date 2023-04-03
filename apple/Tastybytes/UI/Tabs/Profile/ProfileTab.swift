@@ -46,7 +46,9 @@ struct ProfileTab: View {
           router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId), resetStack: false)
         })
       }
-      .presentationDetents([.medium])
+      .presentationDetents([.height(320)])
+      .presentationBackground(.thickMaterial)
+      .presentationCornerRadius(30)
     }
     .environmentObject(router)
   }

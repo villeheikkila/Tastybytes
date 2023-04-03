@@ -81,7 +81,10 @@ struct SearchListView: View {
             }
           )
         }
-      }.presentationDetents([sheet != .checkIn ? .medium : .large])
+      }
+      .presentationDetents([sheet != .checkIn ? .medium : .large])
+      .presentationBackground(.thickMaterial)
+      .presentationCornerRadius(sheet == .barcodeScanner ? 30 : nil)
     }
     .navigationTitle("Discover")
     .toolbar {
