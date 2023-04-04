@@ -106,10 +106,10 @@ struct SearchListView: View {
     }
     .overlay {
       if viewModel.searchScope == .products, viewModel.productFilter != nil {
-        MaterialOverlay(alignment: .bottom) {
-          if let productFilter = viewModel.productFilter {
-            ProductFilterOverlayView(filters: productFilter)
-          }
+        if let productFilter = viewModel.productFilter {
+          ProductFilterOverlayView(filters: productFilter, onReset: {
+            viewModel.productFilter = nil
+          })
         }
       }
     }
@@ -133,26 +133,6 @@ struct SearchListView: View {
             scrollProxy?.scrollTo(id, anchor: .top)
           }
         }
-      }
-    }
-  }
-
-  @ViewBuilder private var overlayContent: some View {
-    if let filters = viewModel.productFilter {
-      HStack {
-        if let category = filters.category {
-          Text(category.label).bold()
-        }
-        if filters.category != nil, filters.subcategory != nil {
-          Image(systemName: "arrowtriangle.forward")
-            .accessibility(hidden: true)
-        }
-        if let subcategory = filters.subcategory {
-          Text(subcategory.name).bold()
-        }
-      }
-      if filters.onlyNonCheckedIn {
-        Text("Show only products you haven't tried").fontWeight(.medium)
       }
     }
   }

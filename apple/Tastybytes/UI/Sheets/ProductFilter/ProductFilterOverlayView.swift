@@ -2,26 +2,50 @@ import SwiftUI
 
 struct ProductFilterOverlayView: View {
   let filters: Product.Filter
+  let onReset: () -> Void
 
   var body: some View {
-    HStack {
-      if let category = filters.category {
-        Text(category.label).bold()
-      }
-      if filters.category != nil, filters.subcategory != nil {
-        Image(systemName: "arrowtriangle.forward")
-          .accessibility(hidden: true)
-      }
-      if let subcategory = filters.subcategory {
-        Text(subcategory.name).bold()
-      }
-    }
-    if let sortBy = filters.sortBy {
-      Text("Sorted by \(sortBy.label)").bold()
-    }
+    VStack {
+      Spacer()
 
-    if filters.onlyNonCheckedIn {
-      Text("Show only products you haven't tried").fontWeight(.medium)
+      HStack {
+        VStack {
+          HStack {
+            if let category = filters.category {
+              Text(category.label).bold()
+            }
+            if filters.category != nil, filters.subcategory != nil {
+              Image(systemName: "arrowtriangle.forward")
+                .accessibility(hidden: true)
+            }
+            if let subcategory = filters.subcategory {
+              Text(subcategory.name).bold()
+            }
+            Spacer()
+          }
+          if let sortBy = filters.sortBy {
+            HStack {
+              Text("Sorted by \(sortBy.label)").bold()
+              Spacer()
+            }
+          }
+
+          if filters.onlyNonCheckedIn {
+            HStack {
+              Text("Showing only products you haven't tried").fontWeight(.medium)
+              Spacer()
+            }
+          }
+        }
+        Spacer()
+        Button(action: { onReset() }, label: {
+          Label("Reset filter", systemImage: "x.circle")
+            .labelStyle(.iconOnly)
+            .imageScale(.large)
+        })
+      }
+      .padding()
+      .background(.ultraThinMaterial)
     }
   }
 }

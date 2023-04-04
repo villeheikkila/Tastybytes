@@ -25,9 +25,14 @@ struct ProductScreen: View {
         Section {
           ProductItemView(product: viewModel.product, extras: [.companyLink, .logo])
           Button(action: { viewModel.activeSheet = .checkIn }, label: {
-            Label("Check-in!", systemImage: "plus.app")
+            HStack {
+              Group {
+                Image(systemName: "plus.app")
+                Text("Check-in!")
+              }
               .foregroundStyle(Color.accentColor)
               .fontWeight(.medium)
+            }
           })
         }.listRowSeparator(.hidden)
 

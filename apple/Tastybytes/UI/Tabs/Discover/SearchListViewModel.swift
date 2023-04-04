@@ -27,7 +27,12 @@ extension SearchListView {
     }
 
     @Published var showAddBarcodeConfirmation = false
-    @Published var productFilter: Product.Filter?
+    @Published var productFilter: Product.Filter? {
+      didSet {
+        search()
+      }
+    }
+
     @Published var checkInProduct: Product.Joined? {
       didSet {
         activeSheet = .checkIn

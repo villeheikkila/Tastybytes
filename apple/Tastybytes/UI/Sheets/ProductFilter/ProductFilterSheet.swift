@@ -67,7 +67,11 @@ struct ProductFilterSheet: View {
           Text("Sort By")
         }
       }
+      Button(action: { viewModel.resetFilter() }, label: {
+        Text("Reset").bold()
+      })
     }
+    .scrollDisabled(true)
     .navigationTitle("Filter")
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -83,13 +87,8 @@ struct ProductFilterSheet: View {
       })
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: { viewModel.resetFilter() }, label: {
-        Text("Reset")
-          .bold()
-      })
       Button(action: { onApply(viewModel.getFilter()) }, label: {
-        Label("Apply", systemImage: "line.3.horizontal.decrease.circle.fill")
-          .bold()
+        Text("Apply").bold()
       })
     }
   }
