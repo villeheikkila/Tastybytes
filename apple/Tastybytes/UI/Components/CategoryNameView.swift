@@ -6,6 +6,7 @@ struct CategoryNameView: View {
   var body: some View {
     Text(category.label)
       .font(.caption).bold()
+      .grayscale(1)
   }
 }
 
