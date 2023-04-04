@@ -40,10 +40,10 @@ struct SearchListView: View {
         }
       }
       .onSubmit(of: .search) {
-        viewModel.search()
+        Task { await viewModel.search() }
       }
       .onChange(of: viewModel.searchScope, perform: { _ in
-        viewModel.search()
+        Task { await viewModel.search() }
         viewModel.barcode = nil
       })
       .onChange(of: viewModel.searchTerm, perform: { term in
@@ -54,7 +54,7 @@ struct SearchListView: View {
       .onReceive(
         viewModel.$searchTerm.debounce(for: 0.2, scheduler: RunLoop.main)
       ) { _ in
-        viewModel.search()
+        Task { await viewModel.search() }
       }
     }
     .sheet(item: $viewModel.activeSheet) { sheet in
@@ -68,7 +68,9 @@ struct SearchListView: View {
           }
         case .barcodeScanner:
           BarcodeScannerSheet(onComplete: { barcode in
-            viewModel.searchProductsByBardcode(barcode)
+            Task {
+              await viewModel.searchProductsByBardcode(barcode)
+            }
           })
         case .filters:
           ProductFilterSheet(
@@ -95,10 +97,10 @@ struct SearchListView: View {
       isPresented: $viewModel.showAddBarcodeConfirmation,
       presenting: viewModel.addBarcodeTo
     ) { presenting in
-      Button(
+      ProgressButton(
         "Add barcode to \(presenting.getDisplayName(.fullName))",
         action: {
-          viewModel.addBarcodeToProduct(onComplete: {
+          await viewModel.addBarcodeToProduct(onComplete: {
             toastManager.toggle(.success("Barcode added!"))
           })
         }

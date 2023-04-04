@@ -29,7 +29,7 @@ extension SearchListView {
     @Published var showAddBarcodeConfirmation = false
     @Published var productFilter: Product.Filter? {
       didSet {
-        search()
+        Task { await search() }
       }
     }
 
@@ -56,114 +56,102 @@ extension SearchListView {
       barcode = nil
     }
 
-    func addBarcodeToProduct(onComplete: @escaping () -> Void) {
+    func addBarcodeToProduct(onComplete: @escaping () -> Void) async {
       guard let addBarcodeTo, let barcode else { return }
-      Task {
-        switch await client.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
-        case .success:
-          self.barcode = nil
-          self.addBarcodeTo = nil
-          self.showAddBarcodeConfirmation = false
-          onComplete()
-        case let .failure(error):
-          logger
-            .error(
-              "adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed: \(error.localizedDescription)"
-            )
-        }
+      switch await client.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
+      case .success:
+        self.barcode = nil
+        self.addBarcodeTo = nil
+        showAddBarcodeConfirmation = false
+        onComplete()
+      case let .failure(error):
+        logger
+          .error(
+            "adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed: \(error.localizedDescription)"
+          )
       }
     }
 
-    func searchProducts() {
-      Task {
-        switch await client.product.search(searchTerm: searchTerm, filter: productFilter) {
-        case let .success(searchResults):
-          withAnimation {
-            self.products = searchResults
-          }
-          self.isSearched = true
-        case let .failure(error):
-          logger.error("searching products with \(self.searchTerm) failed: \(error.localizedDescription)")
+    func searchProducts() async {
+      switch await client.product.search(searchTerm: searchTerm, filter: productFilter) {
+      case let .success(searchResults):
+        withAnimation {
+          self.products = searchResults
         }
+        isSearched = true
+      case let .failure(error):
+        logger.error("searching products with \(searchTerm) failed: \(error.localizedDescription)")
       }
     }
 
-    func searchProfiles() {
-      Task {
-        switch await client.profile.search(searchTerm: searchTerm, currentUserId: nil) {
-        case let .success(searchResults):
-          withAnimation {
-            self.profiles = searchResults
-          }
-        case let .failure(error):
-          logger
-            .error(
-              "searching profiles with search term \(self.searchTerm) failed: \(error.localizedDescription)"
-            )
+    func searchProfiles() async {
+      switch await client.profile.search(searchTerm: searchTerm, currentUserId: nil) {
+      case let .success(searchResults):
+        withAnimation {
+          self.profiles = searchResults
         }
+      case let .failure(error):
+        logger
+          .error(
+            "searching profiles with search term \(searchTerm) failed: \(error.localizedDescription)"
+          )
       }
     }
 
-    func searchProductsByBardcode(_ barcode: Barcode) {
-      Task {
-        switch await client.product.search(barcode: barcode) {
-        case let .success(searchResults):
-          self.barcode = barcode
-          withAnimation {
-            self.products = searchResults
-          }
-          self.isSearched = true
-        case let .failure(error):
-          logger
-            .error("searching products with barcode \(barcode.barcode) failed: \(error.localizedDescription)")
+    func searchProductsByBardcode(_ barcode: Barcode) async {
+      switch await client.product.search(barcode: barcode) {
+      case let .success(searchResults):
+        self.barcode = barcode
+        withAnimation {
+          self.products = searchResults
         }
+        isSearched = true
+      case let .failure(error):
+        logger
+          .error("searching products with barcode \(barcode.barcode) failed: \(error.localizedDescription)")
       }
     }
 
-    func searchCompanies() {
-      Task {
-        switch await client.company.search(searchTerm: searchTerm) {
-        case let .success(searchResults):
-          withAnimation {
-            self.companies = searchResults
-          }
-        case let .failure(error):
-          logger
-            .error(
-              "searching companies with search term \(self.searchTerm) failed: \(error.localizedDescription)"
-            )
+    func searchCompanies() async {
+      switch await client.company.search(searchTerm: searchTerm) {
+      case let .success(searchResults):
+        withAnimation {
+          self.companies = searchResults
         }
+      case let .failure(error):
+        logger
+          .error(
+            "searching companies with search term \(searchTerm) failed: \(error.localizedDescription)"
+          )
       }
     }
 
-    func searchLocations() {
-      Task {
-        switch await client.location.search(searchTerm: searchTerm) {
-        case let .success(searchResults):
-          withAnimation {
-            self.locations = searchResults
-          }
-        case let .failure(error):
-          logger
-            .error(
-              "searching locations with search term \(self.searchTerm) failed: \(error.localizedDescription)"
-            )
+    func searchLocations() async {
+      switch await client.location.search(searchTerm: searchTerm) {
+      case let .success(searchResults):
+        withAnimation {
+          self.locations = searchResults
         }
+      case let .failure(error):
+        logger
+          .error(
+            "searching locations with search term \(searchTerm) failed: \(error.localizedDescription)"
+          )
       }
     }
 
-    func search() {
+    func search() async {
       if searchTerm.count < 2 { return }
 
       switch searchScope {
       case .products:
-        searchProducts()
+        await searchProducts()
       case .companies:
-        searchCompanies()
+        await searchCompanies()
       case .users:
-        searchProfiles()
+        await searchProfiles()
       case .locations:
-        searchLocations()
+        await searchLocations()
       }
     }
   }
