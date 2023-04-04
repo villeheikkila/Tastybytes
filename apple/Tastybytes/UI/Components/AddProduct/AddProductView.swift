@@ -159,7 +159,7 @@ struct AddProductView: View {
         Text("None").tag(Category.JoinedSubcategories?(nil))
           .fontWeight(.medium)
         ForEach(appDataManager.categories) { category in
-          Text(category.label)
+          Text(category.name)
             .fontWeight(.medium)
             .tag(Optional(category))
         }

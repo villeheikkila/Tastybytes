@@ -37,7 +37,7 @@ struct CategoryManagementScreen: View {
           }
         } header: {
           HStack {
-            Text(category.label)
+            Text(category.name)
             Spacer()
             Menu {
               Button(action: { viewModel.editServingStyle = category }, label: {
@@ -80,7 +80,7 @@ struct CategoryManagementScreen: View {
           }
         case .addSubcategory:
           if let toAddSubcategory = viewModel.toAddSubcategory {
-            DismissableSheet(title: toAddSubcategory.label) {
+            DismissableSheet(title: toAddSubcategory.name) {
               Form {
                 Section {
                   TextField("Name", text: $viewModel.newSubcategoryName)

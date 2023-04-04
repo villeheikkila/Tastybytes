@@ -12,7 +12,7 @@ struct ProductFilterOverlayView: View {
         VStack {
           HStack {
             if let category = filters.category {
-              Text(category.label).bold()
+              Text(category.name).bold()
             }
             if filters.category != nil, filters.subcategory != nil {
               Image(systemName: "arrowtriangle.forward")

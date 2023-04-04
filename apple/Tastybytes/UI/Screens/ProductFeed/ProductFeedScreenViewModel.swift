@@ -24,7 +24,7 @@ extension ProductFeedScreen {
 
     var title: String {
       if let categoryFilter {
-        return "\(feed.label): \(categoryFilter.label)"
+        return "\(feed.label): \(categoryFilter.name)"
       } else {
         return feed.label
       }

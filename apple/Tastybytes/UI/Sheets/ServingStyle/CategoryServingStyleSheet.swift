@@ -22,7 +22,7 @@ struct CategoryServingStyleSheet: View {
         }
       }
     }
-    .navigationTitle("\(viewModel.category.label) Serving Styles")
+    .navigationTitle("\(viewModel.category.name) Serving Styles")
     .navigationBarTitleDisplayMode(.inline)
     .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Done").bold()
@@ -42,7 +42,7 @@ struct CategoryServingStyleSheet: View {
                         presenting: viewModel.toDeleteServingStyle)
     { presenting in
       Button(
-        "Remove \(presenting.name) from \(viewModel.category.label)",
+        "Remove \(presenting.name) from \(viewModel.category.name)",
         role: .destructive,
         action: {
           viewModel.deleteServingStyle(onDelete: {

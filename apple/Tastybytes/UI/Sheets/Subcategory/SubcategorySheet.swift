@@ -34,7 +34,7 @@ struct SubcategorySheet: View {
           })
         }
       } header: {
-        Text("Subcategories of \(category.label)")
+        Text("Subcategories of \(category.name)")
       }
     }
     .searchable(text: $searchTerm)

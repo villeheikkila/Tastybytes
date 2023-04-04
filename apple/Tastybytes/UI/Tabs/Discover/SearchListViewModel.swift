@@ -52,6 +52,19 @@ extension SearchListView {
       locations = []
     }
 
+    var currentScopeIsEmpty: Bool {
+      switch searchScope {
+      case .companies:
+        return companies.isEmpty
+      case .locations:
+        return locations.isEmpty
+      case .products:
+        return products.isEmpty
+      case .users:
+        return profiles.isEmpty
+      }
+    }
+
     func resetBarcode() {
       barcode = nil
     }

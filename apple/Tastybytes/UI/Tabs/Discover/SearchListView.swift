@@ -16,6 +16,9 @@ struct SearchListView: View {
   var body: some View {
     ScrollViewReader { proxy in
       List {
+        if viewModel.currentScopeIsEmpty {
+          searchScopeList
+        }
         switch viewModel.searchScope {
         case .products:
           productResults
@@ -137,6 +140,29 @@ struct SearchListView: View {
         }
       }
     }
+  }
+
+  private var searchScopeList: some View {
+    Section {
+      Button(action: { viewModel.searchScope = .products }, label: {
+        Label("Products", systemImage: "grid").bold()
+          .listRowSeparator(.visible)
+      })
+      Button(action: { viewModel.searchScope = .companies }, label: {
+        Label("Companies", systemImage: "network").bold()
+          .listRowSeparator(.visible)
+      })
+      Button(action: { viewModel.searchScope = .users }, label: {
+        Label("Users", systemImage: "person").bold()
+          .listRowSeparator(.visible)
+      })
+      Button(action: { viewModel.searchScope = .locations }, label: {
+        Label("Locations", systemImage: "location").bold()
+          .listRowSeparator(.visible)
+      })
+    } header: {
+      Text("Search")
+    }.headerProminence(.increased)
   }
 
   private var profileResults: some View {

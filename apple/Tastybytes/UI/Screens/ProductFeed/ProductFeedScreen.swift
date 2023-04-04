@@ -56,7 +56,7 @@ struct ProductFeedScreen: View {
       })
       ForEach(appDataManager.categories) { category in
         Button(action: { viewModel.categoryFilter = category }, label: {
-          Text(category.label)
+          Text(category.name)
         })
       }
     }

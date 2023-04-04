@@ -57,10 +57,6 @@ extension Category {
     let name: String
     let icon: String
     let subcategories: [Subcategory]
-
-    var label: String {
-      name.replacingOccurrences(of: "_", with: " ").capitalized
-    }
   }
 
   struct JoinedSubcategoriesServingStyles: Identifiable, Decodable, Hashable, Sendable {
@@ -68,10 +64,6 @@ extension Category {
     let name: String
     let subcategories: [Subcategory]
     let servingStyles: [ServingStyle]
-
-    var label: String {
-      name.replacingOccurrences(of: "_", with: " ").capitalized
-    }
 
     enum CodingKeys: String, CodingKey {
       case id
@@ -85,10 +77,6 @@ extension Category {
     let id: Int
     let name: String
     let servingStyles: [ServingStyle]
-
-    var label: String {
-      name.replacingOccurrences(of: "_", with: " ").capitalized
-    }
 
     enum CodingKeys: String, CodingKey {
       case id
