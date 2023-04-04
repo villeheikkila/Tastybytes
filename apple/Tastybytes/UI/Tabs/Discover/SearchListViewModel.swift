@@ -65,10 +65,7 @@ extension SearchListView {
         showAddBarcodeConfirmation = false
         onComplete()
       case let .failure(error):
-        logger
-          .error(
-            "adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed: \(error.localizedDescription)"
-          )
+        logger.error("adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed: \(error.localizedDescription)")
       }
     }
 
@@ -80,7 +77,7 @@ extension SearchListView {
         }
         isSearched = true
       case let .failure(error):
-        logger.error("searching products with \(searchTerm) failed: \(error.localizedDescription)")
+        logger.error("searching products failed: \(error.localizedDescription)")
       }
     }
 
@@ -91,10 +88,7 @@ extension SearchListView {
           self.profiles = searchResults
         }
       case let .failure(error):
-        logger
-          .error(
-            "searching profiles with search term \(searchTerm) failed: \(error.localizedDescription)"
-          )
+        logger.error("searching profiles failed: \(error.localizedDescription)")
       }
     }
 
@@ -119,10 +113,7 @@ extension SearchListView {
           self.companies = searchResults
         }
       case let .failure(error):
-        logger
-          .error(
-            "searching companies with search term \(searchTerm) failed: \(error.localizedDescription)"
-          )
+        logger.error("searching companies failed: \(error.localizedDescription)")
       }
     }
 
@@ -133,10 +124,7 @@ extension SearchListView {
           self.locations = searchResults
         }
       case let .failure(error):
-        logger
-          .error(
-            "searching locations with search term \(searchTerm) failed: \(error.localizedDescription)"
-          )
+        logger.error("searching locations failed: \(error.localizedDescription)")
       }
     }
 

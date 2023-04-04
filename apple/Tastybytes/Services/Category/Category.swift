@@ -5,7 +5,7 @@ protocol CategoryName {
 
 extension CategoryName {
   var label: String {
-    "\(icon) \(name.replacingOccurrences(of: "_", with: " ").capitalized)"
+    "\(icon) \(name)"
   }
 }
 
