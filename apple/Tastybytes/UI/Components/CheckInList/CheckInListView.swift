@@ -4,6 +4,7 @@ struct CheckInListView<Header>: View where Header: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var router: Router
   @StateObject private var viewModel: ViewModel
   @State private var scrollProxy: ScrollViewProxy?
   @Binding private var scrollToTop: Int
@@ -79,13 +80,6 @@ struct CheckInListView<Header>: View where Header: View {
         })
       }
     }
-    .sheet(item: $viewModel.editCheckIn) { checkIn in
-      NavigationStack {
-        CheckInSheet(viewModel.client, checkIn: checkIn, onUpdate: { updatedCheckIn in
-          viewModel.onCheckInUpdate(updatedCheckIn)
-        })
-      }
-    }
   }
 
   @ViewBuilder private var checkInsList: some View {
@@ -102,7 +96,9 @@ struct CheckInListView<Header>: View where Header: View {
           ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
           Divider()
           if checkIn.profile.id == profileManager.getId() {
-            Button(action: { viewModel.editCheckIn = checkIn }, label: {
+            Button(action: { router.sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
+              viewModel.onCheckInUpdate(updatedCheckIn)
+            }) }, label: {
               Label("Edit", systemImage: "pencil")
             })
             Button(role: .destructive, action: { viewModel.showDeleteConfirmationFor = checkIn }, label: {

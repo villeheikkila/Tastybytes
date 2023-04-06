@@ -24,7 +24,9 @@ struct ProductScreen: View {
       header: {
         Section {
           ProductItemView(product: viewModel.product, extras: [.companyLink, .logo])
-          Button(action: { viewModel.activeSheet = .checkIn }, label: {
+          Button(action: { router.sheet = .newCheckIn(viewModel.product, onCreation: { _ in
+            viewModel.refreshCheckIns()
+          }) }, label: {
             HStack {
               Group {
                 Image(systemName: "plus.app")
@@ -55,10 +57,6 @@ struct ProductScreen: View {
     .sheet(item: $viewModel.activeSheet) { sheet in
       NavigationStack {
         switch sheet {
-        case .checkIn:
-          CheckInSheet(viewModel.client, product: viewModel.product, onCreation: { _ in
-            viewModel.refreshCheckIns()
-          })
         case .barcodes:
           BarcodeManagementSheet(viewModel.client, product: viewModel.product)
         case .editSuggestion:
@@ -114,7 +112,9 @@ struct ProductScreen: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
-        Button(action: { viewModel.activeSheet = .checkIn }, label: {
+        Button(action: { router.sheet = .newCheckIn(viewModel.product, onCreation: { _ in
+          viewModel.refreshCheckIns()
+        }) }, label: {
           Label("Check-in", systemImage: "plus").bold()
         }).disabled(!profileManager.hasPermission(.canCreateCheckIns))
 

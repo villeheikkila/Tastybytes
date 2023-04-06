@@ -3,7 +3,6 @@ import SwiftUI
 extension ProductScreen {
   enum Sheet: Identifiable {
     var id: Self { self }
-    case checkIn
     case barcodes
     case editSuggestion
     case editProduct

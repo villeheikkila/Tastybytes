@@ -8,7 +8,6 @@ extension CheckInScreen {
     @Published var checkIn: CheckIn
     @Published var checkInComments = [CheckInComment]()
     @Published var showDeleteConfirmation = false
-    @Published var showEditCheckInSheet = false
     @Published var showEditCommentPrompt = false
     @Published var commentText = ""
     @Published var editCommentText = ""
@@ -26,7 +25,6 @@ extension CheckInScreen {
 
     func updateCheckIn(_ checkIn: CheckIn) {
       self.checkIn = checkIn
-      showEditCheckInSheet = false
     }
 
     func isInvalidComment() -> Bool {

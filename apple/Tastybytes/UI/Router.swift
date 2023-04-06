@@ -97,11 +97,17 @@ enum Route: Hashable {
 
 enum Sheet: Identifiable {
   case report(ReportableEntity)
+  case checkIn(CheckIn, onUpdate: (_ checkIn: CheckIn) -> Void)
+  case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) -> Void)
 
   var id: String {
     switch self {
     case .report:
       return "report"
+    case .checkIn:
+      return "check-in"
+    case .newCheckIn:
+      return "new-check-in"
     }
   }
 }
@@ -155,6 +161,10 @@ extension View {
         switch destination {
         case let .report(entity):
           ReportSheet(client, entity: entity)
+        case let .checkIn(checkIn, onUpdate):
+          CheckInSheet(client, checkIn: checkIn, onUpdate: onUpdate)
+        case let .newCheckIn(product, onCreation):
+          CheckInSheet(client, product: product, onCreation: onCreation)
         }
       }
     }

@@ -22,13 +22,6 @@ struct CheckInScreen: View {
         leaveCommentSection
       }
     )
-    .sheet(isPresented: $viewModel.showEditCheckInSheet) {
-      NavigationStack {
-        CheckInSheet(viewModel.client, checkIn: viewModel.checkIn, onUpdate: { updatedCheckIn in
-          viewModel.updateCheckIn(updatedCheckIn)
-        })
-      }
-    }
     .navigationBarItems(
       trailing: Menu {
         ShareLink("Share", item: NavigatablePath.checkIn(id: viewModel.checkIn.id).url)
@@ -38,7 +31,9 @@ struct CheckInScreen: View {
         ReportButton(entity: .checkIn(viewModel.checkIn))
 
         if viewModel.checkIn.profile.id == profileManager.getId() {
-          Button(action: { viewModel.showEditCheckInSheet = true }, label: {
+          Button(action: { router.sheet = .checkIn(viewModel.checkIn, onUpdate: { updatedCheckIn in
+            viewModel.updateCheckIn(updatedCheckIn)
+          }) }, label: {
             Label("Edit", systemImage: "pencil")
           })
           Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }, label: {
