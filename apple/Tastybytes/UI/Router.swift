@@ -5,6 +5,7 @@ import SwiftUI
 class Router: ObservableObject {
   private let logger = getLogger(category: "Router")
   @Published var path: [Route] = []
+  @Published var sheet: Sheet?
 
   func navigate(to: Route, resetStack: Bool) {
     if resetStack {
@@ -94,6 +95,17 @@ enum Route: Hashable {
   case categoryManagement
 }
 
+enum Sheet: Identifiable {
+  case report(ReportableEntity)
+
+  var id: String {
+    switch self {
+    case .report:
+      return "report"
+    }
+  }
+}
+
 extension View {
   func withRoutes(_ client: Client) -> some View {
     navigationDestination(for: Route.self) { route in
@@ -133,6 +145,17 @@ extension View {
         DuplicateProductScreen(client)
       case .categoryManagement:
         CategoryManagementScreen(client)
+      }
+    }
+  }
+
+  func withSheets(_ client: Client, sheetRoute: Binding<Sheet?>) -> some View {
+    sheet(item: sheetRoute) { destination in
+      NavigationStack {
+        switch destination {
+        case let .report(entity):
+          ReportSheet(client, entity: entity)
+        }
       }
     }
   }

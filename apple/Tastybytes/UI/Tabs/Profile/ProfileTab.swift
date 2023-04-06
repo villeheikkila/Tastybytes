@@ -24,6 +24,7 @@ struct ProfileTab: View {
           toolbarContent
         }
         .withRoutes(client)
+        .withSheets(client, sheetRoute: $router.sheet)
         .onOpenURL { url in
           if let detailPage = url.detailPage {
             router.fetchAndNavigateTo(client, detailPage, resetStack: true)

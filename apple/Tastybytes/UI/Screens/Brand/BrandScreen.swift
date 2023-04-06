@@ -75,6 +75,8 @@ struct BrandScreen: View {
                 Label("Not verified", systemImage: "x.circle")
               }
 
+              ReportButton(entity: .subBrand(viewModel.brand, subBrand))
+
               if profileManager.hasPermission(.canDeleteBrands) {
                 Button(role: .destructive, action: { viewModel.toDeleteSubBrand = subBrand }, label: {
                   Label("Delete", systemImage: "trash.fill")
@@ -232,6 +234,8 @@ struct BrandScreen: View {
       } else {
         Label("Not verified", systemImage: "x.circle")
       }
+
+      ReportButton(entity: .brand(viewModel.brand))
 
       if profileManager.hasPermission(.canDeleteBrands) {
         Button(role: .destructive, action: { viewModel.showDeleteBrandConfirmationDialog.toggle() }, label: {

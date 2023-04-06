@@ -44,6 +44,7 @@ struct ActivityTab: View {
         }
       }
       .withRoutes(client)
+      .withSheets(client, sheetRoute: $router.sheet)
     }
     .environmentObject(router)
   }

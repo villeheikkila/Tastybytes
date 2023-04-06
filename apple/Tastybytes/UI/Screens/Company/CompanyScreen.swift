@@ -144,6 +144,8 @@ struct CompanyScreen: View {
         Label("Not verified", systemImage: "x.circle")
       }
 
+      ReportButton(entity: .company(viewModel.company))
+
       if profileManager.hasPermission(.canDeleteCompanies) {
         Button(role: .destructive, action: { viewModel.showDeleteCompanyConfirmationDialog.toggle() }, label: {
           Label("Delete", systemImage: "trash.fill")

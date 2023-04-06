@@ -35,6 +35,8 @@ struct CheckInScreen: View {
 
         Divider()
 
+        ReportButton(entity: .checkIn(viewModel.checkIn))
+
         if viewModel.checkIn.profile.id == profileManager.getId() {
           Button(action: { viewModel.showEditCheckInSheet = true }, label: {
             Label("Edit", systemImage: "pencil")
@@ -74,20 +76,24 @@ struct CheckInScreen: View {
       ForEach(viewModel.checkInComments.reversed()) { comment in
         CheckInCommentView(comment: comment)
           .contextMenu {
-            Button {
-              withAnimation {
-                viewModel.editComment = comment
+            if comment.profile == profileManager.getProfile() {
+              Button {
+                withAnimation {
+                  viewModel.editComment = comment
+                }
+              } label: {
+                Label("Edit Comment", systemImage: "pencil")
               }
-            } label: {
-              Label("Edit Comment", systemImage: "pencil")
-            }
 
-            Button {
-              withAnimation {
-                viewModel.deleteComment(comment)
+              Button {
+                withAnimation {
+                  viewModel.deleteComment(comment)
+                }
+              } label: {
+                Label("Delete Comment", systemImage: "trash.fill")
               }
-            } label: {
-              Label("Delete Comment", systemImage: "trash.fill")
+            } else {
+              ReportButton(entity: .comment(comment))
             }
           }
       }
