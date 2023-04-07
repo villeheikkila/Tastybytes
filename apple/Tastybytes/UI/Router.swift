@@ -173,7 +173,7 @@ enum Sheet: Identifiable {
 
   var detents: Set<PresentationDetent> {
     switch self {
-    case .barcodeScanner, .productFilter, .report:
+    case .barcodeScanner, .productFilter:
       return [.medium]
     case .nameTag:
       return [.height(320)]

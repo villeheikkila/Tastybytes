@@ -18,7 +18,7 @@ struct ReportSheet: View {
         Text("Content in question")
       }
       Section {
-        TextField("Reason", text: $viewModel.message)
+        TextField("Reason", text: $viewModel.message, axis: .vertical)
           .lineLimit(8, reservesSpace: true)
         ProgressButton(action: {
           await viewModel.submitReport(onSubmit: {
