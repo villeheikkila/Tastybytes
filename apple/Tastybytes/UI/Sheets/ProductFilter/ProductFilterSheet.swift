@@ -87,7 +87,10 @@ struct ProductFilterSheet: View {
       })
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: { onApply(viewModel.getFilter()) }, label: {
+      Button(action: {
+        onApply(viewModel.getFilter())
+        dismiss()
+      }, label: {
         Text("Apply").bold()
       })
     }

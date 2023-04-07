@@ -75,14 +75,8 @@ struct ProductScreen: View {
             mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
             product: viewModel.product
           )
-        case .barcodeScanner:
-          BarcodeScannerSheet(onComplete: { barcode in
-            viewModel.addBarcodeToProduct(barcode: barcode, onComplete: {
-              toastManager.toggle(.success("Barcode added"))
-            })
-          })
         }
-      }.if(sheet == .barcodeScanner, transform: { view in view.presentationDetents([.medium]) })
+      }
     }
     .confirmationDialog("Unverify Product",
                         isPresented: $viewModel.showUnverifyProductConfirmation,
@@ -121,7 +115,9 @@ struct ProductScreen: View {
         ShareLink("Share", item: NavigatablePath.product(id: viewModel.product.id).url)
 
         if profileManager.hasPermission(.canAddBarcodes) {
-          Button(action: { viewModel.activeSheet = .barcodeScanner }, label: {
+          Button(action: { router.sheet = .barcodeScanner(onComplete: { _ in
+            toastManager.toggle(.success("Barcode added"))
+          }) }, label: {
             Label("Add Barcode", systemImage: "barcode.viewfinder")
           })
         }

@@ -95,23 +95,6 @@ enum Route: Hashable {
   case categoryManagement
 }
 
-enum Sheet: Identifiable {
-  case report(ReportableEntity)
-  case checkIn(CheckIn, onUpdate: (_ checkIn: CheckIn) -> Void)
-  case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) -> Void)
-
-  var id: String {
-    switch self {
-    case .report:
-      return "report"
-    case .checkIn:
-      return "check-in"
-    case .newCheckIn:
-      return "new-check-in"
-    }
-  }
-}
-
 extension View {
   func withRoutes(_ client: Client) -> some View {
     navigationDestination(for: Route.self) { route in
@@ -165,8 +148,72 @@ extension View {
           CheckInSheet(client, checkIn: checkIn, onUpdate: onUpdate)
         case let .newCheckIn(product, onCreation):
           CheckInSheet(client, product: product, onCreation: onCreation)
+        case let .barcodeScanner(onComplete: onComplete):
+          BarcodeScannerSheet(onComplete: onComplete)
+        case let .productFilter(initialFilter, sections, onApply):
+          ProductFilterSheet(client, initialFilter: initialFilter, sections: sections, onApply: onApply)
+        case let .nameTag(onSuccess):
+          NameTagSheet(onSuccess: onSuccess)
         }
       }
+      .presentationDetents(destination.detents)
+      .presentationCornerRadius(destination.cornerRadius)
+      .presentationBackground(destination.background)
+    }
+  }
+}
+
+enum Sheet: Identifiable {
+  case report(ReportableEntity)
+  case checkIn(CheckIn, onUpdate: (_ checkIn: CheckIn) -> Void)
+  case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) -> Void)
+  case barcodeScanner(onComplete: (_ barcode: Barcode) -> Void)
+  case productFilter(initialFilter: Product.Filter?, sections: [Sections], onApply: (_ filter: Product.Filter?) -> Void)
+  case nameTag(onSuccess: (_ profileId: UUID) -> Void)
+
+  var detents: Set<PresentationDetent> {
+    switch self {
+    case .barcodeScanner, .productFilter, .report:
+      return [.medium]
+    case .nameTag:
+      return [.height(320)]
+    default:
+      return [.large]
+    }
+  }
+
+  var background: Material {
+    switch self {
+    case .productFilter, .nameTag, .barcodeScanner:
+      return .thickMaterial
+    default:
+      return .ultraThick
+    }
+  }
+
+  var cornerRadius: CGFloat? {
+    switch self {
+    case .barcodeScanner, .nameTag:
+      return 30
+    default:
+      return nil
+    }
+  }
+
+  var id: String {
+    switch self {
+    case .report:
+      return "report"
+    case .checkIn:
+      return "check_in"
+    case .newCheckIn:
+      return "new_check_in"
+    case .productFilter:
+      return "product_filter"
+    case .barcodeScanner:
+      return "barcode_scanner"
+    case .nameTag:
+      return "name_tag"
     }
   }
 }

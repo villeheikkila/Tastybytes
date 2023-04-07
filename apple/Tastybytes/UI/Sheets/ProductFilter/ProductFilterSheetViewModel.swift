@@ -1,10 +1,10 @@
 import SwiftUI
 
-extension ProductFilterSheet {
-  enum Sections {
-    case category, checkIns, sortBy
-  }
+enum Sections {
+  case category, checkIns, sortBy
+}
 
+extension ProductFilterSheet {
   @MainActor
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "SeachFilterSheet")

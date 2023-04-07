@@ -6,7 +6,6 @@ extension ProductScreen {
     case barcodes
     case editSuggestion
     case editProduct
-    case barcodeScanner
     case duplicateProduct
   }
 

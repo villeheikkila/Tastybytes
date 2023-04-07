@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProfileProductListView: View {
   @StateObject private var viewModel: ViewModel
+  @EnvironmentObject private var router: Router
 
   init(_ client: Client, profile: Profile) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, profile: profile))
@@ -18,20 +19,6 @@ struct ProfileProductListView: View {
     .listStyle(.plain)
     .searchable(text: $viewModel.searchTerm)
     .navigationTitle("Products (\(viewModel.filteredProducts.count))")
-    .sheet(isPresented: $viewModel.showFilters) {
-      NavigationStack {
-        ProductFilterSheet(
-          viewModel.client,
-          initialFilter: viewModel.productFilter,
-          sections: [.category, .sortBy],
-          onApply: { filter in
-            viewModel.productFilter = filter
-            viewModel.showFilters = false
-          }
-        )
-      }
-      .presentationDetents([.medium])
-    }
     .if(viewModel.productFilter != nil, transform: { view in
       view.overlay {
         if let productFilter = viewModel.productFilter {
@@ -51,10 +38,18 @@ struct ProfileProductListView: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: { viewModel.showFilters.toggle() }, label: {
-        Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
-          .labelStyle(.iconOnly)
-      })
+      Button(
+        action: {
+          router
+            .sheet = .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .sortBy], onApply: { filter in
+              viewModel.productFilter = filter
+            })
+        },
+        label: {
+          Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
+            .labelStyle(.iconOnly)
+        }
+      )
     }
   }
 }
@@ -66,7 +61,6 @@ extension ProfileProductListView {
     let client: Client
     let profile: Profile
     @Published var products: [Product.Joined] = []
-    @Published var showFilters = false
     @Published var searchTerm = ""
     @Published var productFilter: Product.Filter?
 

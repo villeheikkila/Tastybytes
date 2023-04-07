@@ -1,16 +1,9 @@
 import SwiftUI
 
 extension SearchListView {
-  enum Sheet: Identifiable {
-    var id: Self { self }
-    case checkIn
-    case barcodeScanner
-    case filters
-  }
-
   @MainActor
   class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "SearchTab")
+    private let logger = getLogger(category: "SearchListView")
     let client: Client
     @Published var searchTerm: String = ""
     @Published var products = [Product.Joined]()
@@ -32,14 +25,6 @@ extension SearchListView {
         Task { await search() }
       }
     }
-
-    @Published var checkInProduct: Product.Joined? {
-      didSet {
-        activeSheet = .checkIn
-      }
-    }
-
-    @Published var activeSheet: Sheet?
 
     init(_ client: Client) {
       self.client = client

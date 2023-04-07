@@ -56,7 +56,9 @@ struct ProfileTab: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      Button(action: { showProfileQrCode.toggle() }, label: {
+      Button(action: { router.sheet = .nameTag(onSuccess: { profileId in
+        router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId), resetStack: false)
+      }) }, label: {
         Label("Show name tag", systemImage: "qrcode")
           .labelStyle(.iconOnly)
       })

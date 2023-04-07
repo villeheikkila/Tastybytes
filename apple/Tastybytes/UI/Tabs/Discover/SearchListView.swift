@@ -60,37 +60,6 @@ struct SearchListView: View {
         Task { await viewModel.search() }
       }
     }
-    .sheet(item: $viewModel.activeSheet) { sheet in
-      NavigationStack {
-        switch sheet {
-        case .checkIn:
-          if let checkInProduct = viewModel.checkInProduct {
-            CheckInSheet(viewModel.client, product: checkInProduct, onCreation: { checkIn in
-              router.navigate(to: .checkIn(checkIn), resetStack: false)
-            })
-          }
-        case .barcodeScanner:
-          BarcodeScannerSheet(onComplete: { barcode in
-            Task {
-              await viewModel.searchProductsByBardcode(barcode)
-            }
-          })
-        case .filters:
-          ProductFilterSheet(
-            viewModel.client,
-            initialFilter: viewModel.productFilter,
-            sections: [.category, .checkIns],
-            onApply: { filter in
-              viewModel.productFilter = filter
-              viewModel.activeSheet = nil
-            }
-          )
-        }
-      }
-      .presentationDetents([sheet != .checkIn ? .medium : .large])
-      .presentationBackground(.thickMaterial)
-      .presentationCornerRadius(sheet == .barcodeScanner ? 30 : nil)
-    }
     .navigationTitle("Discover")
     .toolbar {
       toolbarContent
@@ -239,7 +208,9 @@ struct SearchListView: View {
       ForEach(viewModel.products) { product in
         ProductItemView(product: product, extras: [.checkInCheck, .rating])
           .swipeActions {
-            Button(action: { viewModel.checkInProduct = product }, label: {
+            Button(action: { router.sheet = .newCheckIn(product, onCreation: { checkIn in
+              router.navigate(to: .checkIn(checkIn), resetStack: false)
+            }) }, label: {
               Label("Check-in", systemImage: "plus")
             }).tint(.green)
           }
@@ -279,15 +250,26 @@ struct SearchListView: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       if viewModel.searchScope == .products {
-        Button(action: { viewModel.activeSheet = .filters }, label: {
-          Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
-            .labelStyle(.iconOnly)
-        })
+        Button(
+          action: {
+            router
+              .sheet = .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .checkIns],
+                                      onApply: { filter in
+                                        viewModel.productFilter = filter
+                                      })
+          },
+          label: {
+            Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
+              .labelStyle(.iconOnly)
+          }
+        )
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if profileManager.hasPermission(.canAddBarcodes) {
-        Button(action: { viewModel.activeSheet = .barcodeScanner }, label: {
+        Button(action: { router.sheet = .barcodeScanner(onComplete: { barcode in
+          Task { await viewModel.searchProductsByBardcode(barcode) }
+        }) }, label: {
           Label("Scan a barcode", systemImage: "barcode.viewfinder")
             .labelStyle(.iconOnly)
         })
