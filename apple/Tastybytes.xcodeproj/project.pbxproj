@@ -168,6 +168,9 @@
 		5CB1C24D28F9C087000B0EB4 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24C28F9C087000B0EB4 /* AuthRepository.swift */; };
 		5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24E28F9C52E000B0EB4 /* CompanyRepository.swift */; };
 		5CB4E02A29DF3A1700135ADA /* ReportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB4E02929DF3A1700135ADA /* ReportSheet.swift */; };
+		5CB4E02D29E087A900135ADA /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB4E02C29E087A900135ADA /* Report.swift */; };
+		5CB4E03029E08AFB00135ADA /* ReportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB4E02F29E08AFB00135ADA /* ReportRepository.swift */; };
+		5CB4E03229E093AA00135ADA /* ReportButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB4E03129E093AA00135ADA /* ReportButtonView.swift */; };
 		5CB52D64292BBC14000BF55F /* ProfileProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB52D63292BBC14000BF55F /* ProfileProductListView.swift */; };
 		5CBC2450297C54B900A0002B /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBC244F297C54B900A0002B /* Router.swift */; };
 		5CBC2452297C60AE00A0002B /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBC2451297C60AE00A0002B /* ProfileScreen.swift */; };
@@ -384,6 +387,9 @@
 		5CB1C24C28F9C087000B0EB4 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
 		5CB1C24E28F9C52E000B0EB4 /* CompanyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyRepository.swift; sourceTree = "<group>"; };
 		5CB4E02929DF3A1700135ADA /* ReportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSheet.swift; sourceTree = "<group>"; };
+		5CB4E02C29E087A900135ADA /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
+		5CB4E02F29E08AFB00135ADA /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
+		5CB4E03129E093AA00135ADA /* ReportButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportButtonView.swift; sourceTree = "<group>"; };
 		5CB52D63292BBC14000BF55F /* ProfileProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileProductListView.swift; sourceTree = "<group>"; };
 		5CBC244F297C54B900A0002B /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		5CBC2451297C60AE00A0002B /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
@@ -1154,8 +1160,18 @@
 			isa = PBXGroup;
 			children = (
 				5CB4E02929DF3A1700135ADA /* ReportSheet.swift */,
+				5CB4E03129E093AA00135ADA /* ReportButtonView.swift */,
 			);
 			path = ReportSheet;
+			sourceTree = "<group>";
+		};
+		5CB4E02B29E0878C00135ADA /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				5CB4E02C29E087A900135ADA /* Report.swift */,
+				5CB4E02F29E08AFB00135ADA /* ReportRepository.swift */,
+			);
+			path = Report;
 			sourceTree = "<group>";
 		};
 		5CC2FE9229197D8A002BDF83 /* Managers */ = {
@@ -1192,6 +1208,7 @@
 		5CD10A5A28F9988C0001CFC2 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				5CB4E02B29E0878C00135ADA /* Report */,
 				5C7C35C2299ACA7B009A3C09 /* Common */,
 				5C25C6802995693F00C07953 /* Location */,
 				5C25C67F2995692C00C07953 /* Notification */,
@@ -1488,6 +1505,7 @@
 				5C323E8F298C500400B005A9 /* URLExtensions.swift in Sources */,
 				5C367EB629A3F87C000A7149 /* AppDelegate.swift in Sources */,
 				5C7C35C1299AC986009A3C09 /* CheckInListViewModel.swift in Sources */,
+				5CB4E03229E093AA00135ADA /* ReportButtonView.swift in Sources */,
 				5CB1C24728F9B551000B0EB4 /* CheckInCommentRepository.swift in Sources */,
 				5C663F27292E0F1D006F9A97 /* DocumentRepository.swift in Sources */,
 				5C7C359D299AC530009A3C09 /* BarcodeManagementSheetViewModel.swift in Sources */,
@@ -1569,10 +1587,12 @@
 				5C7C3580299AC0A6009A3C09 /* AuthenticationInput.swift in Sources */,
 				5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */,
 				5CED433228FD76BB003F8194 /* SubBrandSheet.swift in Sources */,
+				5CB4E03029E08AFB00135ADA /* ReportRepository.swift in Sources */,
 				5C20A52229AB55BA00ABBA74 /* ContributionsScreenViewModel.swift in Sources */,
 				5CED432E28FD6EA7003F8194 /* BrandSheet.swift in Sources */,
 				5CD10A5928F98D8A0001CFC2 /* CheckInReaction.swift in Sources */,
 				5C7C35A3299AC5DB009A3C09 /* UserSheetViewModel.swift in Sources */,
+				5CB4E02D29E087A900135ADA /* Report.swift in Sources */,
 				5C0E364C292308080072EFBD /* AuthenticationScreen.swift in Sources */,
 				5CED433028FD6EBC003F8194 /* BrandRepository.swift in Sources */,
 				5C7C3572299ABF26009A3C09 /* FriendsScreenViewModel.swift in Sources */,

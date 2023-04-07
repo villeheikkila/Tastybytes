@@ -2,7 +2,7 @@ import Foundation
 import Supabase
 import SupabaseStorage
 
-enum QueryType {
+enum CheckInQueryType {
   case paginated(Int, Int)
   case all
 }
@@ -10,7 +10,7 @@ enum QueryType {
 protocol CheckInRepository {
   func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error>
   func getById(id: Int) async -> Result<CheckIn, Error>
-  func getByProfileId(id: UUID, queryType: QueryType) async -> Result<[CheckIn], Error>
+  func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error>
   func getByProductId(id: Int, from: Int, to: Int) async -> Result<[CheckIn], Error>
   func getByLocation(locationId: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error>
   func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error>
@@ -39,7 +39,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
     }
   }
 
-  func getByProfileId(id: UUID, queryType: QueryType) async -> Result<[CheckIn], Error> {
+  func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error> {
     do {
       let queryBuilder = client
         .database

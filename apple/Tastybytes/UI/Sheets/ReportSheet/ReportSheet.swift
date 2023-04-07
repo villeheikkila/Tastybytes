@@ -1,33 +1,43 @@
+import AlertToast
 import SwiftUI
 
 struct ReportSheet: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var router: Router
+  @Environment(\.dismiss) private var dismiss
 
-  init(_ client: Client, entity: ReportableEntity) {
+  init(_ client: Client, entity: Report.Entity) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, entity: entity))
   }
-
-  @State private var commentText: String = ""
 
   var body: some View {
     Form {
       Section {
         reportedEntityView
+      } header: {
+        Text("Content in question")
       }
       Section {
-        TextField("Message", text: $commentText, axis: .vertical)
-        Button(action: { viewModel.submitReport() }, label: {
+        TextField("Reason", text: $viewModel.message)
+          .lineLimit(8, reservesSpace: true)
+        ProgressButton(action: {
+          await viewModel.submitReport(onSubmit: {
+            dismiss()
+          })
+        }, label: {
           Text("Submit").bold()
         })
       } header: {
         Text("Report")
       }
     }
-    .navigationTitle("Report")
+    .navigationTitle("Report \(viewModel.entity.label)")
     .navigationBarItems(leading: Button(role: .cancel, action: { router.sheet = nil }, label: {
       Text("Close").bold()
     }))
+    .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
+      AlertToast(type: .complete(.green), title: "Report submitted!")
+    }
   }
 
   @ViewBuilder
@@ -60,33 +70,22 @@ extension ReportSheet {
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ReportSheet")
     let client: Client
-    let entity: ReportableEntity
+    let entity: Report.Entity
+    @Published var message = ""
+    @Published var showToast = false
 
-    init(_ client: Client, entity: ReportableEntity) {
+    init(_ client: Client, entity: Report.Entity) {
       self.client = client
       self.entity = entity
     }
 
-    func submitReport() {}
-  }
-}
-
-enum ReportableEntity: Hashable {
-  case product(Product.Joined)
-  case company(Company)
-  case brand(Brand.JoinedSubBrandsProductsCompany)
-  case subBrand(Brand.JoinedSubBrandsProductsCompany, SubBrand.JoinedProduct)
-  case checkIn(CheckIn)
-  case comment(CheckInComment)
-}
-
-struct ReportButton: View {
-  @EnvironmentObject private var router: Router
-  let entity: ReportableEntity
-
-  var body: some View {
-    Button(action: { router.sheet = .report(entity) }, label: {
-      Label("Report", systemImage: "exclamationmark.bubble.fill")
-    })
+    func submitReport(onSubmit _: @escaping () -> Void) async {
+      switch await client.report.insert(report: Report.NewRequest(message: message, entity: entity)) {
+      case .success:
+        showToast = true
+      case let .failure(error):
+        logger.error("submitting report failed: \(error.localizedDescription)")
+      }
+    }
   }
 }

@@ -22,10 +22,7 @@ extension FlavorManagementScreen {
             showAddFlavor = false
           }
         case let .failure(error):
-          logger
-            .error(
-              "failed to delete flavor: \(error.localizedDescription)"
-            )
+          logger.error("failed to delete flavor: \(error.localizedDescription)")
         }
       }
     }
@@ -38,10 +35,7 @@ extension FlavorManagementScreen {
             flavors.remove(object: flavor)
           }
         case let .failure(error):
-          logger
-            .error(
-              "failed to delete flavor: \(error.localizedDescription)"
-            )
+          logger.error("failed to delete flavor: \(error.localizedDescription)")
         }
       }
     }
@@ -53,10 +47,7 @@ extension FlavorManagementScreen {
           self.flavors = flavors
         }
       case let .failure(error):
-        logger
-          .error(
-            "fetching flavors failed: \(error.localizedDescription)"
-          )
+        logger.error("fetching flavors failed: \(error.localizedDescription)")
       }
     }
   }

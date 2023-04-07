@@ -20,6 +20,7 @@ protocol Client {
   var notification: NotificationRepository { get }
   var location: LocationRepository { get }
   var document: DocumentRepository { get }
+  var report: ReportRepository { get }
 }
 
 class AppClient: Client {
@@ -43,6 +44,7 @@ class AppClient: Client {
   let notification: NotificationRepository
   let location: LocationRepository
   let document: DocumentRepository
+  let report: ReportRepository
 
   init(url: URL, apiKey: String) {
     let client = SupabaseClient(
@@ -68,5 +70,6 @@ class AppClient: Client {
     notification = SupabaseNotificationRepository(client: client)
     location = SupabaseLocationRepository(client: client)
     document = SupabaseDocumentRepository(client: client)
+    report = SupabaseReportRepository(client: client)
   }
 }

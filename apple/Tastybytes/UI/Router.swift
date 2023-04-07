@@ -164,7 +164,7 @@ extension View {
 }
 
 enum Sheet: Identifiable {
-  case report(ReportableEntity)
+  case report(Report.Entity)
   case checkIn(CheckIn, onUpdate: (_ checkIn: CheckIn) -> Void)
   case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) -> Void)
   case barcodeScanner(onComplete: (_ barcode: Barcode) -> Void)
