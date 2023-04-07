@@ -30,11 +30,17 @@ extension SearchListView {
       self.client = client
     }
 
-    func resetSearch() {
-      profiles = []
-      products = []
-      companies = []
-      locations = []
+    func resetSearch() async {
+      do {
+        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
+        withAnimation {
+          profiles = []
+          products = []
+          companies = []
+          locations = []
+          isSearched = false
+        }
+      } catch { logger.error("timer failed ") }
     }
 
     var currentScopeIsEmpty: Bool {
@@ -44,7 +50,7 @@ extension SearchListView {
       case .locations:
         return locations.isEmpty
       case .products:
-        return products.isEmpty
+        return products.isEmpty && addBarcodeTo == nil && !isSearched
       case .users:
         return profiles.isEmpty
       }

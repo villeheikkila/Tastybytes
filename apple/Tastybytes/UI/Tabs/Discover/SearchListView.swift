@@ -51,7 +51,9 @@ struct SearchListView: View {
       })
       .onChange(of: viewModel.searchTerm, perform: { term in
         if term.isEmpty {
-          viewModel.resetSearch()
+          Task {
+            await viewModel.resetSearch()
+          }
         }
       })
       .onReceive(
@@ -185,7 +187,7 @@ struct SearchListView: View {
       }
     }
 
-    if viewModel.products.isEmpty {
+    if viewModel.currentScopeIsEmpty {
       Section {
         RouteLink(to: .productFeed(.trending)) {
           Label(Product.FeedType.trending.label, systemImage: "chart.line.uptrend.xyaxis").bold()
