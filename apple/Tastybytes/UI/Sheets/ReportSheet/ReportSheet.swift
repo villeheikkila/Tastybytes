@@ -60,7 +60,7 @@ struct ReportSheet: View {
     case let .comment(comment):
       CheckInCommentView(comment: comment)
     case let .checkIn(checkIn):
-      CheckInCardView(client: viewModel.client, checkIn: checkIn, loadedFrom: .product)
+      CheckInEntityView(checkIn: checkIn)
     }
   }
 }
