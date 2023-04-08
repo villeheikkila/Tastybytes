@@ -5,7 +5,6 @@ import WrappingHStack
 
 struct CheckInEntityView: View {
   @EnvironmentObject private var router: Router
-  @Environment(\.colorScheme) private var colorScheme
 
   let checkIn: CheckIn
 
@@ -15,20 +14,13 @@ struct CheckInEntityView: View {
         header
         productSection
       }
-      .padding([.leading, .trailing], 10)
       checkInImage
       VStack(spacing: 4) {
         checkInSection
         taggedProfilesSection
         footer
       }
-      .padding([.leading, .trailing], 10)
     }
-    .padding([.top, .bottom], 10)
-    .background(colorScheme == .dark ? .thinMaterial : .ultraThin)
-    .clipped()
-    .cornerRadius(8)
-    .shadow(color: Color.black.opacity(0.1), radius: 4, x: 2, y: 2)
   }
 
   private var header: some View {

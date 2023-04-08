@@ -94,6 +94,13 @@ struct CheckInListView<Header>: View where Header: View {
         .id(checkIn.id)
         .contextMenu {
           ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
+          Button("Open Company") {
+            router.navigate(to: .company(checkIn.product.subBrand.brand.brandOwner), resetStack: false)
+          }
+
+          Button("Open Check-in") {
+            router.navigate(to: .checkIn(checkIn), resetStack: false)
+          }
           Divider()
           if checkIn.profile.id == profileManager.getId() {
             Button(action: { router.sheet = .checkIn(checkIn, onUpdate: { updatedCheckIn in
@@ -105,6 +112,7 @@ struct CheckInListView<Header>: View where Header: View {
               Label("Delete", systemImage: "trash.fill")
             })
           }
+          ReportButton(entity: .checkIn(checkIn))
         }
         .onAppear {
           if checkIn == viewModel.checkIns.last, viewModel.isLoading != true {

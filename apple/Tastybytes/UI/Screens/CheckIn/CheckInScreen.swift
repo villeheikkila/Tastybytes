@@ -28,7 +28,9 @@ struct CheckInScreen: View {
 
         Divider()
 
-        ReportButton(entity: .checkIn(viewModel.checkIn))
+        if profileManager.getId() != viewModel.checkIn.profile.id {
+          ReportButton(entity: .checkIn(viewModel.checkIn))
+        }
 
         if viewModel.checkIn.profile.id == profileManager.getId() {
           Button(action: { router.sheet = .checkIn(viewModel.checkIn, onUpdate: { updatedCheckIn in
