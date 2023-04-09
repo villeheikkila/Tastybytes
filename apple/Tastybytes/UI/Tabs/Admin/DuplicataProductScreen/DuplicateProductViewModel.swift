@@ -6,7 +6,6 @@ extension DuplicateProductScreen {
     private let logger = getLogger(category: "ProductVerificationScreen")
     let client: Client
     @Published var products = [Product.Joined]()
-    @Published var editProduct: Product.Joined?
     @Published var deleteProduct: Product.Joined? {
       didSet {
         showDeleteProductConfirmationDialog = true
@@ -29,13 +28,6 @@ extension DuplicateProductScreen {
         case let .failure(error):
           logger.error("failed to verify product \(product.id): \(error.localizedDescription)")
         }
-      }
-    }
-
-    func onEditProduct() {
-      editProduct = nil
-      Task {
-        await loadProducts()
       }
     }
 

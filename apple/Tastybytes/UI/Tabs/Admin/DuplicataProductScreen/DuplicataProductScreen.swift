@@ -34,7 +34,11 @@ struct DuplicateProductScreen: View {
               Button(action: { viewModel.verifyProduct(product) }, label: {
                 Label("Verify", systemImage: "checkmark")
               }).tint(.green)
-              Button(action: { viewModel.editProduct = product }, label: {
+              Button(action: { router.openSheet(.editProduct(product: product, onEdit: {
+                Task {
+                  await viewModel.loadProducts()
+                }
+              })) }, label: {
                 Label("Edit", systemImage: "pencil")
               }).tint(.yellow)
               Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
@@ -45,15 +49,6 @@ struct DuplicateProductScreen: View {
       }
     }
     .listStyle(.plain)
-    .sheet(item: $viewModel.editProduct, content: { editProduct in
-      NavigationStack {
-        DismissableSheet(title: "Edit Product") {
-          AddProductView(viewModel.client, mode: .edit(editProduct), onEdit: {
-            viewModel.onEditProduct()
-          })
-        }
-      }
-    })
     .confirmationDialog("Delete Product Confirmation",
                         isPresented: $viewModel.showDeleteProductConfirmationDialog,
                         presenting: viewModel.deleteProduct)

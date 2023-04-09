@@ -41,9 +41,10 @@ struct ProfileProductListView: View {
       Button(
         action: {
           router
-            .sheet = .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .sortBy], onApply: { filter in
-              viewModel.productFilter = filter
-            })
+            .openSheet(.productFilter(initialFilter: viewModel.productFilter, sections: [.category, .sortBy],
+                                      onApply: { filter in
+                                        viewModel.productFilter = filter
+                                      }))
         },
         label: {
           Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
