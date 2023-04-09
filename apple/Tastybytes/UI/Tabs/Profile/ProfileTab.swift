@@ -4,7 +4,6 @@ import SwiftUI
 
 struct ProfileTab: View {
   let client: Client
-  @StateObject private var router = Router()
   @State private var scrollToTop = 0
   @EnvironmentObject private var profileManager: ProfileManager
   @Binding private var resetNavigationOnTab: Tab?
@@ -15,48 +14,36 @@ struct ProfileTab: View {
   }
 
   var body: some View {
-    NavigationStack(path: $router.path) {
+    InitializeRouter(client) { router in
       ProfileView(client, profile: profileManager.getProfile(), scrollToTop: $scrollToTop, isCurrentUser: true)
         .navigationTitle(profileManager.getProfile().preferredName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-          toolbarContent
-        }
-        .withRoutes(client)
-        .withSheets(client, sheetRoute: $router.sheet, nestedSheetRoute: $router.nestedSheet)
-        .onOpenURL { url in
-          if let detailPage = url.detailPage {
-            router.fetchAndNavigateTo(client, detailPage, resetStack: true)
+          ToolbarItemGroup(placement: .navigationBarLeading) {
+            Button(action: { router.openSheet(.nameTag(onSuccess: { profileId in
+              router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId), resetStack: false)
+            })) }, label: {
+              Label("Show name tag", systemImage: "qrcode")
+                .labelStyle(.iconOnly)
+            })
+          }
+          ToolbarItemGroup(placement: .navigationBarTrailing) {
+            RouteLink(to: .settings) {
+              Label("Settings page", systemImage: "gear")
+                .labelStyle(.iconOnly)
+            }
           }
         }
-    }
-    .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
-      if tab == .profile {
-        if router.path.isEmpty {
-          scrollToTop += 1
-        } else {
-          router.reset()
+        .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+          if tab == .profile {
+            if router.path.isEmpty {
+              scrollToTop += 1
+            } else {
+              router.reset()
+            }
+            resetNavigationOnTab = nil
+          }
         }
-        resetNavigationOnTab = nil
-      }
-    }
-    .environmentObject(router)
-  }
-
-  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-    ToolbarItemGroup(placement: .navigationBarLeading) {
-      Button(action: { router.openSheet(.nameTag(onSuccess: { profileId in
-        router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId), resetStack: false)
-      })) }, label: {
-        Label("Show name tag", systemImage: "qrcode")
-          .labelStyle(.iconOnly)
-      })
-    }
-    ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouteLink(to: .settings) {
-        Label("Settings page", systemImage: "gear")
-          .labelStyle(.iconOnly)
-      }
     }
   }
 }

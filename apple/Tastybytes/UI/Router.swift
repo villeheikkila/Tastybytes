@@ -1,6 +1,31 @@
 import os
 import SwiftUI
 
+struct InitializeRouter<Content: View>: View {
+  @StateObject private var router = Router()
+  let client: Client
+  var content: (_ router: Router) -> Content
+
+  init(_ client: Client, content: @escaping (_ router: Router) -> Content) {
+    self.client = client
+    self.content = content
+  }
+
+  var body: some View {
+    NavigationStack(path: $router.path) {
+      content(router)
+        .withRoutes(client)
+        .withSheets(client, sheetRoute: $router.sheet, nestedSheetRoute: $router.nestedSheet)
+        .onOpenURL { url in
+          if let detailPage = url.detailPage {
+            router.fetchAndNavigateTo(client, detailPage, resetStack: true)
+          }
+        }
+    }
+    .environmentObject(router)
+  }
+}
+
 @MainActor
 class Router: ObservableObject {
   private let logger = getLogger(category: "Router")

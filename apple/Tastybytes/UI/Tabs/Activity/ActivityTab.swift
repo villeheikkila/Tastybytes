@@ -5,7 +5,6 @@ import WrappingHStack
 
 struct ActivityTab: View {
   let client: Client
-  @StateObject private var router = Router()
   @State private var scrollToTop: Int = 0
   @Binding private var resetNavigationOnTab: Tab?
   @EnvironmentObject private var notificationManager: NotificationManager
@@ -16,7 +15,7 @@ struct ActivityTab: View {
   }
 
   var body: some View {
-    NavigationStack(path: $router.path) {
+    InitializeRouter(client) { router in
       CheckInListView(
         client,
         fetcher: .activityFeed,
@@ -38,15 +37,7 @@ struct ActivityTab: View {
       .toolbar {
         toolbarContent
       }
-      .onOpenURL { url in
-        if let detailPage = url.detailPage {
-          router.fetchAndNavigateTo(client, detailPage, resetStack: true)
-        }
-      }
-      .withRoutes(client)
-      .withSheets(client, sheetRoute: $router.sheet, nestedSheetRoute: $router.nestedSheet)
     }
-    .environmentObject(router)
   }
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

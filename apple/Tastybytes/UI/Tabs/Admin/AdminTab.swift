@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct AdminTab: View {
-  @StateObject private var router = Router()
   @Binding private var resetNavigationOnTab: Tab?
 
   let client: Client
@@ -12,7 +11,7 @@ struct AdminTab: View {
   }
 
   var body: some View {
-    NavigationStack(path: $router.path) {
+    InitializeRouter(client) { router in
       List {
         RouteLink(to: .categoryManagement) {
           Label("Categories", systemImage: "plus.rectangle.fill.on.rectangle.fill")
@@ -27,22 +26,19 @@ struct AdminTab: View {
           Label("Duplicates", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
       }
-      .withRoutes(client)
-      .withSheets(client, sheetRoute: $router.sheet, nestedSheetRoute: $router.nestedSheet)
       .navigationBarTitle("Admin")
       .navigationBarTitleDisplayMode(.inline)
-    }
-    .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
-      if tab == .admin {
-        router.reset()
-        resetNavigationOnTab = nil
+      .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+        if tab == .admin {
+          router.reset()
+          resetNavigationOnTab = nil
+        }
+      }
+      .onOpenURL { url in
+        if let detailPage = url.detailPage {
+          router.fetchAndNavigateTo(client, detailPage, resetStack: true)
+        }
       }
     }
-    .onOpenURL { url in
-      if let detailPage = url.detailPage {
-        router.fetchAndNavigateTo(client, detailPage, resetStack: true)
-      }
-    }
-    .environmentObject(router)
   }
 }

@@ -4,7 +4,6 @@ struct NotificationTab: View {
   let client: Client
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var hapticManager: HapticManager
-  @StateObject private var router = Router()
   @Binding private var resetNavigationOnTab: Tab?
 
   init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {
@@ -13,7 +12,7 @@ struct NotificationTab: View {
   }
 
   var body: some View {
-    NavigationStack(path: $router.path) {
+    InitializeRouter(client) { router in
       List {
         ForEach(notificationManager.filteredNotifications) { notification in
           HStack {
@@ -50,11 +49,6 @@ struct NotificationTab: View {
       .toolbar {
         toolbarContent
       }
-      .onOpenURL { url in
-        if let detailPage = url.detailPage {
-          router.fetchAndNavigateTo(client, detailPage, resetStack: true)
-        }
-      }
       .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
         if tab == .notifications {
           if router.path.isEmpty {
@@ -65,10 +59,7 @@ struct NotificationTab: View {
           resetNavigationOnTab = nil
         }
       }
-      .withRoutes(client)
-      .withSheets(client, sheetRoute: $router.sheet, nestedSheetRoute: $router.nestedSheet)
     }
-    .environmentObject(router)
   }
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
