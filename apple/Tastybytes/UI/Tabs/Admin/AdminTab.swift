@@ -28,7 +28,7 @@ struct AdminTab: View {
         }
       }
       .withRoutes(client)
-      .withSheets(client, sheetRoute: $router.sheet)
+      .withSheets(client, sheetRoute: $router.sheet, nestedSheetRoute: $router.nestedSheet)
       .navigationBarTitle("Admin")
       .navigationBarTitleDisplayMode(.inline)
     }

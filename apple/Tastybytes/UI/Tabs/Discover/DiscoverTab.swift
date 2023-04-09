@@ -16,7 +16,7 @@ struct DiscoverTab: View {
     NavigationStack(path: $router.path) {
       SearchListView(client, scrollToTop: $scrollToTop)
         .withRoutes(client)
-        .withSheets(client, sheetRoute: $router.sheet)
+        .withSheets(client, sheetRoute: $router.sheet, nestedSheetRoute: $router.nestedSheet)
         .onOpenURL { url in
           if let detailPage = url.detailPage {
             router.fetchAndNavigateTo(client, detailPage, resetStack: true)

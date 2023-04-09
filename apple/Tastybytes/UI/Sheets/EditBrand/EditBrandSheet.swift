@@ -7,6 +7,7 @@ struct EditBrandSheet: View {
   @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var router: Router
 
   let onUpdate: () -> Void
 
@@ -63,7 +64,9 @@ struct EditBrandSheet: View {
       }
 
       Section {
-        Button(action: { viewModel.activeSheet = Sheet.brandOwner }, label: {
+        Button(action: { router.openSheet(.companySearch(onSelect: { company, _ in
+          viewModel.brandOwner = company
+        })) }, label: {
           Text(viewModel.brandOwner.name)
         })
         Button("Change brand owner") {
@@ -79,16 +82,6 @@ struct EditBrandSheet: View {
     .navigationBarItems(trailing: Button(action: { dismiss() }, label: {
       Text("Done").bold()
     }))
-    .sheet(item: $viewModel.activeSheet) { sheet in NavigationStack {
-      switch sheet {
-      case .brandOwner:
-        CompanySearchSheet(viewModel.client, onSelect: { company, _ in
-          viewModel.brandOwner = company
-          viewModel.activeSheet = nil
-        })
-      }
-    }
-    }
     .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
       AlertToast(type: .complete(.green), title: "Brand updated!")
     }

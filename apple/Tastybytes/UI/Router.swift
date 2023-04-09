@@ -6,6 +6,7 @@ class Router: ObservableObject {
   private let logger = getLogger(category: "Router")
   @Published var path: [Route] = []
   @Published var sheet: Sheet?
+  @Published var nestedSheet: Sheet?
 
   func navigate(to: Route, resetStack: Bool) {
     if resetStack {
@@ -14,8 +15,12 @@ class Router: ObservableObject {
     path.append(to)
   }
 
-  func openSheet(_ sheet: Sheet) {
-    self.sheet = sheet
+  func openSheet(_ to: Sheet) {
+    if sheet != nil {
+      nestedSheet = to
+    } else {
+      sheet = to
+    }
   }
 
   func reset() {
@@ -142,57 +147,75 @@ extension View {
     }
   }
 
-  func withSheets(_ client: Client, sheetRoute: Binding<Sheet?>) -> some View {
-    sheet(item: sheetRoute) { destination in
+  func withSheets(_ client: Client, sheetRoute: Binding<Sheet?>, nestedSheetRoute: Binding<Sheet?>) -> some View {
+    sheet(item: sheetRoute) { sheet in
       NavigationStack {
-        switch destination {
-        case let .report(entity):
-          ReportSheet(client, entity: entity)
-        case let .checkIn(checkIn, onUpdate):
-          CheckInSheet(client, checkIn: checkIn, onUpdate: onUpdate)
-        case let .newCheckIn(product, onCreation):
-          CheckInSheet(client, product: product, onCreation: onCreation)
-        case let .barcodeScanner(onComplete: onComplete):
-          BarcodeScannerSheet(onComplete: onComplete)
-        case let .productFilter(initialFilter, sections, onApply):
-          ProductFilterSheet(client, initialFilter: initialFilter, sections: sections, onApply: onApply)
-        case let .nameTag(onSuccess):
-          NameTagSheet(onSuccess: onSuccess)
-        case let .addBrand(brandOwner: brandOwner, mode: mode, onSelect: onSelect):
-          BrandSheet(client, brandOwner: brandOwner, mode: mode, onSelect: onSelect)
-        case let .brand(brandOwner, mode, onSelect):
-          BrandSheet(client, brandOwner: brandOwner, mode: mode, onSelect: onSelect)
-        case let .subBrand(brandWithSubBrands, onSelect):
-          SubBrandSheet(client, brandWithSubBrands: brandWithSubBrands, onSelect: onSelect)
-        case let .subcategory(subcategories, category, onCreate):
-          SubcategorySheet(subcategories: subcategories, category: category, onCreate: onCreate)
-        case let .companySearch(onSelect):
-          CompanySearchSheet(client, onSelect: onSelect)
-        case let .barcodeManagement(product):
-          BarcodeManagementSheet(client, product: product)
-        case let .productEditSuggestion(product: product):
-          DismissableSheet(title: "Edit Suggestion") {
-            AddProductView(client, mode: .editSuggestion(product))
+        Group {
+          SheetStack(client: client, sheet: sheet)
+        }.sheet(item: nestedSheetRoute, content: { nestedSheet in
+          NavigationStack {
+            SheetStack(client: client, sheet: nestedSheet)
           }
-        case let .editProduct(product: product, onEdit: onEdit):
-          DismissableSheet(title: "Edit Product") {
-            AddProductView(client, mode: .edit(product), onEdit: onEdit)
-          }
-        case let .addProductToBrand(brand: brand, onCreate: onCreate):
-          DismissableSheet(title: "Add Product") {
-            AddProductView(client, mode: .addToBrand(brand), onCreate: onCreate)
-          }
-        case let .duplicateProduct(mode: mode, product: product):
-          DuplicateProductSheet(client, mode: mode, product: product)
-        case let .editBrand(brand: brand, onUpdate):
-          EditBrandSheet(client, brand: brand, onUpdate: onUpdate)
-        case let .editSubBrand(brand: brand, subBrand: subBrand, onUpdate):
-          EditSubBrandSheet(client, brand: brand, subBrand: subBrand, onUpdate: onUpdate)
-        }
+          .presentationDetents(nestedSheet.detents)
+          .presentationCornerRadius(nestedSheet.cornerRadius)
+          .presentationBackground(nestedSheet.background)
+        })
       }
-      .presentationDetents(destination.detents)
-      .presentationCornerRadius(destination.cornerRadius)
-      .presentationBackground(destination.background)
+      .presentationDetents(sheet.detents)
+      .presentationCornerRadius(sheet.cornerRadius)
+      .presentationBackground(sheet.background)
+    }
+  }
+}
+
+struct SheetStack: View {
+  let client: Client
+  let sheet: Sheet
+
+  var body: some View {
+    switch sheet {
+    case let .report(entity):
+      ReportSheet(client, entity: entity)
+    case let .checkIn(checkIn, onUpdate):
+      CheckInSheet(client, checkIn: checkIn, onUpdate: onUpdate)
+    case let .newCheckIn(product, onCreation):
+      CheckInSheet(client, product: product, onCreation: onCreation)
+    case let .barcodeScanner(onComplete: onComplete):
+      BarcodeScannerSheet(onComplete: onComplete)
+    case let .productFilter(initialFilter, sections, onApply):
+      ProductFilterSheet(client, initialFilter: initialFilter, sections: sections, onApply: onApply)
+    case let .nameTag(onSuccess):
+      NameTagSheet(onSuccess: onSuccess)
+    case let .addBrand(brandOwner: brandOwner, mode: mode, onSelect: onSelect):
+      BrandSheet(client, brandOwner: brandOwner, mode: mode, onSelect: onSelect)
+    case let .brand(brandOwner, mode, onSelect):
+      BrandSheet(client, brandOwner: brandOwner, mode: mode, onSelect: onSelect)
+    case let .subBrand(brandWithSubBrands, onSelect):
+      SubBrandSheet(client, brandWithSubBrands: brandWithSubBrands, onSelect: onSelect)
+    case let .subcategory(subcategories, category, onCreate):
+      SubcategorySheet(subcategories: subcategories, category: category, onCreate: onCreate)
+    case let .companySearch(onSelect):
+      CompanySearchSheet(client, onSelect: onSelect)
+    case let .barcodeManagement(product):
+      BarcodeManagementSheet(client, product: product)
+    case let .productEditSuggestion(product: product):
+      DismissableSheet(title: "Edit Suggestion") {
+        AddProductView(client, mode: .editSuggestion(product))
+      }
+    case let .editProduct(product: product, onEdit: onEdit):
+      DismissableSheet(title: "Edit Product") {
+        AddProductView(client, mode: .edit(product), onEdit: onEdit)
+      }
+    case let .addProductToBrand(brand: brand, onCreate: onCreate):
+      DismissableSheet(title: "Add Product") {
+        AddProductView(client, mode: .addToBrand(brand), onCreate: onCreate)
+      }
+    case let .duplicateProduct(mode: mode, product: product):
+      DuplicateProductSheet(client, mode: mode, product: product)
+    case let .editBrand(brand: brand, onUpdate):
+      EditBrandSheet(client, brand: brand, onUpdate: onUpdate)
+    case let .editSubBrand(brand: brand, subBrand: subBrand, onUpdate):
+      EditSubBrandSheet(client, brand: brand, subBrand: subBrand, onUpdate: onUpdate)
     }
   }
 }

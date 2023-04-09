@@ -44,7 +44,7 @@ struct ActivityTab: View {
         }
       }
       .withRoutes(client)
-      .withSheets(client, sheetRoute: $router.sheet)
+      .withSheets(client, sheetRoute: $router.sheet, nestedSheetRoute: $router.nestedSheet)
     }
     .environmentObject(router)
   }
