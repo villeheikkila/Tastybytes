@@ -31,12 +31,7 @@ class Router: ObservableObject {
   private let logger = getLogger(category: "Router")
   @Published var path: [Route] = []
   @Published var sheet: Sheet?
-
-  @Published var nestedSheet: Sheet? {
-    didSet {
-      print("The value of myProperty changed from \(oldValue) to \(nestedSheet)")
-    }
-  }
+  @Published var nestedSheet: Sheet?
 
   func navigate(to: Route, resetStack: Bool) {
     if resetStack {
