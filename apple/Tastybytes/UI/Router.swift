@@ -176,8 +176,16 @@ extension View {
           DismissableSheet(title: "Edit Product") {
             AddProductView(client, mode: .edit(product))
           }
+        case let .addProductToBrand(brand: brand, onCreate: onCreate):
+          DismissableSheet(title: "Add Product") {
+            AddProductView(client, mode: .addToBrand(brand), onCreate: onCreate)
+          }
         case let .duplicateProduct(mode: mode, product: product):
           DuplicateProductSheet(client, mode: mode, product: product)
+        case let .editBrand(brand: brand, onUpdate):
+          EditBrandSheet(client, brand: brand, onUpdate: onUpdate)
+        case let .editSubBrand(brand: brand, subBrand: subBrand, onUpdate):
+          EditSubBrandSheet(client, brand: brand, subBrand: subBrand, onUpdate: onUpdate)
         }
       }
       .presentationDetents(destination.detents)
@@ -205,10 +213,13 @@ enum Sheet: Identifiable {
   )
   case subBrand(brandWithSubBrands: Brand.JoinedSubBrands,
                 onSelect: (_ subBrand: SubBrand, _ createdNew: Bool) -> Void)
+  case addProductToBrand(brand: Brand.JoinedSubBrandsProductsCompany, onCreate: ((_ product: Product.Joined) -> Void)?)
   case editProduct(product: Product.Joined)
   case productEditSuggestion(product: Product.Joined)
   case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
   case barcodeManagement(product: Product.Joined)
+  case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: () -> Void)
+  case editSubBrand(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct, onUpdate: () -> Void)
 
   var detents: Set<PresentationDetent> {
     switch self {
@@ -269,6 +280,12 @@ enum Sheet: Identifiable {
       return "duplicate_product"
     case .barcodeManagement:
       return "barcode_management"
+    case .editBrand:
+      return "edit_brand"
+    case .editSubBrand:
+      return "edit_sub_brand"
+    case .addProductToBrand:
+      return "add_product_to_brand"
     }
   }
 }

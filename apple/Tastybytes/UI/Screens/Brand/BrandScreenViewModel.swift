@@ -1,21 +1,12 @@
 import SwiftUI
 
 extension BrandScreen {
-  enum Sheet: Identifiable {
-    var id: Self { self }
-    case editBrand
-    case editSubBrand
-    case duplicateProduct
-    case addProduct
-  }
-
   @MainActor
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "BrandScreen")
     let client: Client
     @Published var brand: Brand.JoinedSubBrandsProductsCompany
     @Published var summary: Summary?
-    @Published var activeSheet: Sheet?
     @Published var editBrand: Brand.JoinedSubBrandsProductsCompany?
     @Published var toUnverifySubBrand: SubBrand.JoinedProduct? {
       didSet {
@@ -25,18 +16,6 @@ extension BrandScreen {
 
     @Published var showSubBrandUnverificationConfirmation = false
     @Published var showBrandUnverificationConfirmation = false
-    @Published var editSubBrand: SubBrand.JoinedProduct? {
-      didSet {
-        activeSheet = .editSubBrand
-      }
-    }
-
-    @Published var duplicateProduct: Product.Joined? {
-      didSet {
-        activeSheet = .duplicateProduct
-      }
-    }
-
     @Published var showDeleteProductConfirmationDialog = false
     @Published var productToDelete: Product.JoinedCategory? {
       didSet {

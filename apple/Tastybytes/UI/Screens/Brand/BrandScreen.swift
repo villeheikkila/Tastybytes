@@ -32,13 +32,19 @@ struct BrandScreen: View {
               ProductItemView(product: productJoined)
                 .padding(2)
                 .contextMenu {
-                  Button(action: { viewModel.duplicateProduct = productJoined }, label: {
-                    if profileManager.hasPermission(.canMergeProducts) {
-                      Label("Merge to...", systemImage: "doc.on.doc")
-                    } else {
-                      Label("Mark as duplicate", systemImage: "doc.on.doc")
+                  Button(
+                    action: { router.openSheet(.duplicateProduct(
+                      mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
+                      product: productJoined
+                    )) },
+                    label: {
+                      if profileManager.hasPermission(.canMergeProducts) {
+                        Label("Merge to...", systemImage: "doc.on.doc")
+                      } else {
+                        Label("Mark as duplicate", systemImage: "doc.on.doc")
+                      }
                     }
-                  })
+                  )
 
                   if profileManager.hasPermission(.canDeleteProducts) {
                     Button(role: .destructive, action: { viewModel.productToDelete = product }, label: {
@@ -58,7 +64,11 @@ struct BrandScreen: View {
             Spacer()
             Menu {
               if profileManager.hasPermission(.canEditBrands) {
-                Button(action: { viewModel.editSubBrand = subBrand }, label: {
+                Button(action: {
+                  router.openSheet(.editSubBrand(brand: viewModel.brand, subBrand: subBrand, onUpdate: {
+                    Task { await viewModel.refresh() }
+                  }))
+                }, label: {
                   Label("Edit", systemImage: "pencil")
                 })
               }
@@ -102,37 +112,6 @@ struct BrandScreen: View {
     .task {
       if viewModel.summary == nil {
         await viewModel.getSummary()
-      }
-    }
-    .sheet(item: $viewModel.activeSheet) { sheet in
-      NavigationStack {
-        switch sheet {
-        case .editBrand:
-          EditBrandSheet(viewModel.client, brand: viewModel.brand) {
-            Task { await viewModel.refresh() }
-          }
-        case .editSubBrand:
-          if let editSubBrand = viewModel.editSubBrand {
-            EditSubBrandSheet(viewModel.client, brand: viewModel.brand, subBrand: editSubBrand) {
-              Task { await viewModel.refresh() }
-            }
-          }
-        case .duplicateProduct:
-          if let duplicateProduct = viewModel.duplicateProduct {
-            DuplicateProductSheet(
-              viewModel.client,
-              mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
-              product: duplicateProduct
-            )
-          }
-        case .addProduct:
-          DismissableSheet(title: "Add Product") {
-            AddProductView(viewModel.client, mode: .addToBrand(viewModel.brand), onCreate: { product in
-              viewModel.activeSheet = nil
-              router.navigate(to: .product(product), resetStack: false)
-            })
-          }
-        }
       }
     }
     .toolbar {
@@ -210,7 +189,9 @@ struct BrandScreen: View {
       ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
 
       if profileManager.hasPermission(.canCreateProducts) {
-        Button(action: { viewModel.activeSheet = .addProduct }, label: {
+        Button(action: { router.openSheet(.addProductToBrand(brand: viewModel.brand, onCreate: { product in
+          router.navigate(to: .product(product), resetStack: false)
+        })) }, label: {
           Label("Add Product", systemImage: "plus")
         })
       }
@@ -218,7 +199,9 @@ struct BrandScreen: View {
       Divider()
 
       if profileManager.hasPermission(.canEditBrands) {
-        Button(action: { viewModel.activeSheet = .editBrand }, label: {
+        Button(action: { router.openSheet(.editBrand(brand: viewModel.brand, onUpdate: {
+          Task { await viewModel.refresh() }
+        })) }, label: {
           Label("Edit", systemImage: "pencil")
         })
       }
