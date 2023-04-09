@@ -172,9 +172,9 @@ extension View {
           DismissableSheet(title: "Edit Suggestion") {
             AddProductView(client, mode: .editSuggestion(product))
           }
-        case let .editProduct(product: product):
+        case let .editProduct(product: product, onEdit: onEdit):
           DismissableSheet(title: "Edit Product") {
-            AddProductView(client, mode: .edit(product))
+            AddProductView(client, mode: .edit(product), onEdit: onEdit)
           }
         case let .addProductToBrand(brand: brand, onCreate: onCreate):
           DismissableSheet(title: "Add Product") {
@@ -214,7 +214,7 @@ enum Sheet: Identifiable {
   case subBrand(brandWithSubBrands: Brand.JoinedSubBrands,
                 onSelect: (_ subBrand: SubBrand, _ createdNew: Bool) -> Void)
   case addProductToBrand(brand: Brand.JoinedSubBrandsProductsCompany, onCreate: ((_ product: Product.Joined) -> Void)?)
-  case editProduct(product: Product.Joined)
+  case editProduct(product: Product.Joined, onEdit: (() -> Void)? = nil)
   case productEditSuggestion(product: Product.Joined)
   case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
   case barcodeManagement(product: Product.Joined)

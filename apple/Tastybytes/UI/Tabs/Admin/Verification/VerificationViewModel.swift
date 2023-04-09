@@ -29,7 +29,6 @@ extension VerificationScreen {
     @Published var companies = [Company]()
     @Published var brands = [Brand.JoinedSubBrandsProductsCompany]()
     @Published var subBrands = [SubBrand.JoinedBrand]()
-    @Published var editProduct: Product.Joined?
     @Published var verificationType: VerificationType = .products
     @Published var deleteProduct: Product.Joined? {
       didSet {
@@ -92,13 +91,6 @@ extension VerificationScreen {
         case let .failure(error):
           logger.error("failed to verify product \(product.id): \(error.localizedDescription)")
         }
-      }
-    }
-
-    func onEditProduct() {
-      editProduct = nil
-      Task {
-        await loadData(refresh: true)
       }
     }
 
