@@ -53,11 +53,6 @@ struct CompanyScreen: View {
           companyEditSuggestionSheet
         case .editCompany:
           companyEditSheet
-        case .addBrand:
-          BrandSheet(viewModel.client, brandOwner: viewModel.company, mode: .new, onSelect: { brand, _ in
-            viewModel.activeSheet = nil
-            router.fetchAndNavigateTo(viewModel.client, .brand(id: brand.id), resetStack: false)
-          })
         }
       }
     }
@@ -115,7 +110,9 @@ struct CompanyScreen: View {
       ShareLink("Share", item: NavigatablePath.company(id: viewModel.company.id).url)
 
       if profileManager.hasPermission(.canCreateBrands) {
-        Button(action: { viewModel.activeSheet = .addBrand }, label: {
+        Button(action: { router.openSheet(.addBrand(brandOwner: viewModel.company, mode: .new, onSelect: { brand, _ in
+          router.fetchAndNavigateTo(viewModel.client, .brand(id: brand.id), resetStack: false)
+        })) }, label: {
           Label("Add Brand", systemImage: "plus")
         })
       }

@@ -6,7 +6,6 @@ extension CompanyScreen {
     var id: Self { self }
     case editSuggestionCompany
     case editCompany
-    case addBrand
   }
 
   @MainActor

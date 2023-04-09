@@ -158,6 +158,8 @@ extension View {
           ProductFilterSheet(client, initialFilter: initialFilter, sections: sections, onApply: onApply)
         case let .nameTag(onSuccess):
           NameTagSheet(onSuccess: onSuccess)
+        case let .addBrand(brandOwner: brandOwner, mode: mode, onSelect: onSelect):
+          BrandSheet(client, brandOwner: brandOwner, mode: mode, onSelect: onSelect)
         case let .brand(brandOwner, mode, onSelect):
           BrandSheet(client, brandOwner: brandOwner, mode: mode, onSelect: onSelect)
         case let .subBrand(brandWithSubBrands, onSelect):
@@ -206,6 +208,9 @@ enum Sheet: Identifiable {
   case brand(brandOwner: Company,
              mode: BrandSheet.Mode,
              onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void)
+  case addBrand(brandOwner: Company,
+                mode: BrandSheet.Mode,
+                onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void)
   case subcategory(
     subcategories: Binding<[Subcategory]>,
     category: Category.JoinedSubcategories,
@@ -268,6 +273,8 @@ enum Sheet: Identifiable {
       return "company_search"
     case .brand:
       return "brand"
+    case .addBrand:
+      return "add_brand"
     case .subBrand:
       return "sub_brand"
     case .subcategory:

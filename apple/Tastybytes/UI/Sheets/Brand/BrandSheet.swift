@@ -12,7 +12,7 @@ struct BrandSheet: View {
     _ client: Client,
     brandOwner: Company,
     mode: Mode,
-    onSelect: @escaping (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
+    onSelect: @escaping (_ brand: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, mode: mode))
     self.brandOwner = brandOwner
