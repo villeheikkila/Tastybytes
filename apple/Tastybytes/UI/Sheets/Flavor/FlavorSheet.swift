@@ -27,7 +27,7 @@ struct FlavorSheet: View {
         }
       }
 
-      if !searchTerm.isEmpty, !filteredFlavors.contains { !pickedFlavors.contains($0) } {
+      if !searchTerm.isEmpty, !filteredFlavors.contains(where: { flavor in !pickedFlavors.contains(flavor) }) {
         Section {
           Text("No flavors found with the search term")
         }
@@ -47,7 +47,7 @@ struct FlavorSheet: View {
           })
         }
       } header: {
-        if filteredFlavors.contains { !pickedFlavors.contains($0) } {
+        if filteredFlavors.contains(where: { flavor in !pickedFlavors.contains(flavor) }) {
           Text("Available flavors")
         }
       }

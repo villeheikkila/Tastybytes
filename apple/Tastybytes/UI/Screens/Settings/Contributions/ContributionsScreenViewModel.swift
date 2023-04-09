@@ -1,12 +1,6 @@
 import SwiftUI
 
 extension ContributionsScreen {
-  enum Sheet: Identifiable {
-    var id: Self { self }
-
-    case products
-  }
-
   @MainActor
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ContributionsScreen")

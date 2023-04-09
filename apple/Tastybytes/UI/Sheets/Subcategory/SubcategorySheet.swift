@@ -27,7 +27,7 @@ struct SubcategorySheet: View {
               Text(subcategory.name)
               Spacer()
               if subcategories.contains(subcategory) {
-                Label("Select subcategory", systemImage: "checkmark")
+                Label("Selected subcategory", systemImage: "checkmark")
                   .labelStyle(.iconOnly)
               }
             }

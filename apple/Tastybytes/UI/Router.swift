@@ -31,7 +31,12 @@ class Router: ObservableObject {
   private let logger = getLogger(category: "Router")
   @Published var path: [Route] = []
   @Published var sheet: Sheet?
-  @Published var nestedSheet: Sheet?
+
+  @Published var nestedSheet: Sheet? {
+    didSet {
+      print("The value of myProperty changed from \(oldValue) to \(nestedSheet)")
+    }
+  }
 
   func navigate(to: Route, resetStack: Bool) {
     if resetStack {
@@ -175,16 +180,15 @@ extension View {
   func withSheets(_ client: Client, sheetRoute: Binding<Sheet?>, nestedSheetRoute: Binding<Sheet?>) -> some View {
     sheet(item: sheetRoute) { sheet in
       NavigationStack {
-        Group {
-          SheetStack(client: client, sheet: sheet)
-        }.sheet(item: nestedSheetRoute, content: { nestedSheet in
-          NavigationStack {
-            SheetStack(client: client, sheet: nestedSheet)
-          }
-          .presentationDetents(nestedSheet.detents)
-          .presentationCornerRadius(nestedSheet.cornerRadius)
-          .presentationBackground(nestedSheet.background)
-        })
+        SheetStack(client: client, sheet: sheet)
+          .sheet(item: nestedSheetRoute, content: { nestedSheet in
+            NavigationStack {
+              SheetStack(client: client, sheet: nestedSheet)
+            }
+            .presentationDetents(nestedSheet.detents)
+            .presentationCornerRadius(nestedSheet.cornerRadius)
+            .presentationBackground(nestedSheet.background)
+          })
       }
       .presentationDetents(sheet.detents)
       .presentationCornerRadius(sheet.cornerRadius)
@@ -257,7 +261,7 @@ struct SheetStack: View {
   }
 }
 
-enum Sheet: Identifiable {
+enum Sheet: Identifiable, Equatable {
   case report(Report.Entity)
   case checkIn(CheckIn, onUpdate: (_ checkIn: CheckIn) -> Void)
   case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) -> Void)
@@ -373,6 +377,10 @@ enum Sheet: Identifiable {
     case .servingStyleManagement:
       return "serving_style_management"
     }
+  }
+
+  static func == (lhs: Sheet, rhs: Sheet) -> Bool {
+    lhs.id == rhs.id
   }
 }
 
