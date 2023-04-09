@@ -210,9 +210,9 @@ struct SearchListView: View {
       ForEach(viewModel.products) { product in
         ProductItemView(product: product, extras: [.checkInCheck, .rating])
           .swipeActions {
-            Button(action: { router.sheet = .newCheckIn(product, onCreation: { checkIn in
+            Button(action: { router.openSheet(.newCheckIn(product, onCreation: { checkIn in
               router.navigate(to: .checkIn(checkIn), resetStack: false)
-            }) }, label: {
+            })) }, label: {
               Label("Check-in", systemImage: "plus")
             }).tint(.green)
           }
@@ -269,9 +269,9 @@ struct SearchListView: View {
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if profileManager.hasPermission(.canAddBarcodes) {
-        Button(action: { router.sheet = .barcodeScanner(onComplete: { barcode in
+        Button(action: { router.openSheet(.barcodeScanner(onComplete: { barcode in
           Task { await viewModel.searchProductsByBardcode(barcode) }
-        }) }, label: {
+        })) }, label: {
           Label("Scan a barcode", systemImage: "barcode.viewfinder")
             .labelStyle(.iconOnly)
         })

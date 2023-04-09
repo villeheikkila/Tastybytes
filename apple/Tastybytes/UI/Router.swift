@@ -14,6 +14,10 @@ class Router: ObservableObject {
     path.append(to)
   }
 
+  func openSheet(_ sheet: Sheet) {
+    self.sheet = sheet
+  }
+
   func reset() {
     path = []
   }
@@ -162,6 +166,18 @@ extension View {
           SubcategorySheet(subcategories: subcategories, category: category, onCreate: onCreate)
         case let .companySearch(onSelect):
           CompanySearchSheet(client, onSelect: onSelect)
+        case let .barcodeManagement(product):
+          BarcodeManagementSheet(client, product: product)
+        case let .productEditSuggestion(product: product):
+          DismissableSheet(title: "Edit Suggestion") {
+            AddProductView(client, mode: .editSuggestion(product))
+          }
+        case let .editProduct(product: product):
+          DismissableSheet(title: "Edit Product") {
+            AddProductView(client, mode: .edit(product))
+          }
+        case let .duplicateProduct(mode: mode, product: product):
+          DuplicateProductSheet(client, mode: mode, product: product)
         }
       }
       .presentationDetents(destination.detents)
@@ -189,6 +205,10 @@ enum Sheet: Identifiable {
   )
   case subBrand(brandWithSubBrands: Brand.JoinedSubBrands,
                 onSelect: (_ subBrand: SubBrand, _ createdNew: Bool) -> Void)
+  case editProduct(product: Product.Joined)
+  case productEditSuggestion(product: Product.Joined)
+  case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
+  case barcodeManagement(product: Product.Joined)
 
   var detents: Set<PresentationDetent> {
     switch self {
@@ -241,6 +261,14 @@ enum Sheet: Identifiable {
       return "sub_brand"
     case .subcategory:
       return "subcategory"
+    case .editProduct:
+      return "product"
+    case .productEditSuggestion:
+      return "product_edit_suggestion"
+    case .duplicateProduct:
+      return "duplicate_product"
+    case .barcodeManagement:
+      return "barcode_management"
     }
   }
 }

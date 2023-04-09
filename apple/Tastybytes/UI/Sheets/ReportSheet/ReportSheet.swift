@@ -3,7 +3,6 @@ import SwiftUI
 
 struct ReportSheet: View {
   @StateObject private var viewModel: ViewModel
-  @EnvironmentObject private var router: Router
   @Environment(\.dismiss) private var dismiss
 
   init(_ client: Client, entity: Report.Entity) {
@@ -32,7 +31,7 @@ struct ReportSheet: View {
       }
     }
     .navigationTitle("Report \(viewModel.entity.label)")
-    .navigationBarItems(leading: Button(role: .cancel, action: { router.sheet = nil }, label: {
+    .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Close").bold()
     }))
     .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {

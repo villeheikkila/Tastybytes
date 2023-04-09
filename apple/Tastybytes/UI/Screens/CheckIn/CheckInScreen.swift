@@ -33,9 +33,9 @@ struct CheckInScreen: View {
         }
 
         if viewModel.checkIn.profile.id == profileManager.getId() {
-          Button(action: { router.sheet = .checkIn(viewModel.checkIn, onUpdate: { updatedCheckIn in
+          Button(action: { router.openSheet(.checkIn(viewModel.checkIn, onUpdate: { updatedCheckIn in
             viewModel.updateCheckIn(updatedCheckIn)
-          }) }, label: {
+          })) }, label: {
             Label("Edit", systemImage: "pencil")
           })
           Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }, label: {

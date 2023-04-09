@@ -128,7 +128,7 @@ struct CurrentUserFriendsScreen: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: { router.sheet = .nameTag(onSuccess: { profileId in
+      Button(action: { router.openSheet(.nameTag(onSuccess: { profileId in
         friendManager.sendFriendRequest(receiver: profileId, onSuccess: {
           hapticManager.trigger(.notification(.success))
           toastManager.toggle(.success("Friend Request Sent!"))
@@ -136,7 +136,7 @@ struct CurrentUserFriendsScreen: View {
             await friendManager.loadFriends()
           }
         })
-      }) }, label: {
+      })) }, label: {
         Label("Show name tag or send friend request by QR code", systemImage: "qrcode")
           .labelStyle(.iconOnly)
           .imageScale(.large)

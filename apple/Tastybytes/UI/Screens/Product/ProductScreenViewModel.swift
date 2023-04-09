@@ -1,29 +1,15 @@
 import SwiftUI
 
 extension ProductScreen {
-  enum Sheet: Identifiable {
-    var id: Self { self }
-    case barcodes
-    case editSuggestion
-    case editProduct
-    case duplicateProduct
-  }
-
   @MainActor
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductScreen")
     let client: Client
     @Published var product: Product.Joined
-    @Published var activeSheet: Sheet?
     @Published var summary: Summary?
     @Published var showDeleteProductConfirmationDialog = false
     @Published var showUnverifyProductConfirmation = false
     @Published var resetView: Int = 0
-    @Published var duplicateProduct: Product.Joined? {
-      didSet {
-        activeSheet = .duplicateProduct
-      }
-    }
 
     init(_ client: Client, product: Product.Joined) {
       self.product = product
@@ -35,7 +21,6 @@ extension ProductScreen {
     }
 
     func onEditProduct() {
-      activeSheet = nil
       refresh()
       refreshCheckIns()
     }

@@ -45,9 +45,9 @@ struct ProfileTab: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      Button(action: { router.sheet = .nameTag(onSuccess: { profileId in
+      Button(action: { router.openSheet(.nameTag(onSuccess: { profileId in
         router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId), resetStack: false)
-      }) }, label: {
+      })) }, label: {
         Label("Show name tag", systemImage: "qrcode")
           .labelStyle(.iconOnly)
       })

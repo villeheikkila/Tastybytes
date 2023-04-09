@@ -24,9 +24,9 @@ struct ProductScreen: View {
       header: {
         Section {
           ProductItemView(product: viewModel.product, extras: [.companyLink, .logo])
-          Button(action: { router.sheet = .newCheckIn(viewModel.product, onCreation: { _ in
+          Button(action: { router.openSheet(.newCheckIn(viewModel.product, onCreation: { _ in
             viewModel.refreshCheckIns()
-          }) }, label: {
+          })) }, label: {
             HStack {
               Group {
                 Image(systemName: "plus.app")
@@ -53,30 +53,6 @@ struct ProductScreen: View {
     }
     .toolbar {
       toolbarContent
-    }
-    .sheet(item: $viewModel.activeSheet) { sheet in
-      NavigationStack {
-        switch sheet {
-        case .barcodes:
-          BarcodeManagementSheet(viewModel.client, product: viewModel.product)
-        case .editSuggestion:
-          DismissableSheet(title: "Edit Suggestion") {
-            AddProductView(viewModel.client, mode: .editSuggestion(viewModel.product))
-          }
-        case .editProduct:
-          DismissableSheet(title: "Edit Product") {
-            AddProductView(viewModel.client, mode: .edit(viewModel.product), onEdit: {
-              viewModel.onEditProduct()
-            })
-          }
-        case .duplicateProduct:
-          DuplicateProductSheet(
-            viewModel.client,
-            mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
-            product: viewModel.product
-          )
-        }
-      }
     }
     .confirmationDialog("Unverify Product",
                         isPresented: $viewModel.showUnverifyProductConfirmation,
@@ -106,40 +82,46 @@ struct ProductScreen: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
-        Button(action: { router.sheet = .newCheckIn(viewModel.product, onCreation: { _ in
+        Button(action: { router.openSheet(.newCheckIn(viewModel.product, onCreation: { _ in
           viewModel.refreshCheckIns()
-        }) }, label: {
+        })) }, label: {
           Label("Check-in", systemImage: "plus").bold()
         }).disabled(!profileManager.hasPermission(.canCreateCheckIns))
 
         ShareLink("Share", item: NavigatablePath.product(id: viewModel.product.id).url)
 
         if profileManager.hasPermission(.canAddBarcodes) {
-          Button(action: { router.sheet = .barcodeScanner(onComplete: { _ in
+          Button(action: { router.openSheet(.barcodeScanner(onComplete: { _ in
             toastManager.toggle(.success("Barcode added"))
-          }) }, label: {
+          })) }, label: {
             Label("Add Barcode", systemImage: "barcode.viewfinder")
           })
         }
         Divider()
 
         if profileManager.hasPermission(.canEditCompanies) {
-          Button(action: { viewModel.activeSheet = .editProduct }, label: {
+          Button(action: { router.openSheet(.editProduct(product: viewModel.product)) }, label: {
             Label("Edit", systemImage: "pencil")
           })
         } else {
-          Button(action: { viewModel.activeSheet = .editSuggestion }, label: {
+          Button(action: { router.openSheet(.productEditSuggestion(product: viewModel.product)) }, label: {
             Label("Edit Suggestion", systemImage: "pencil")
           })
         }
 
-        Button(action: { viewModel.activeSheet = .duplicateProduct }, label: {
-          if profileManager.hasPermission(.canMergeProducts) {
-            Label("Merge to...", systemImage: "doc.on.doc")
-          } else {
-            Label("Mark as duplicate", systemImage: "doc.on.doc")
+        Button(
+          action: { router.openSheet(.duplicateProduct(
+            mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
+            product: viewModel.product
+          )) },
+          label: {
+            if profileManager.hasPermission(.canMergeProducts) {
+              Label("Merge to...", systemImage: "doc.on.doc")
+            } else {
+              Label("Mark as duplicate", systemImage: "doc.on.doc")
+            }
           }
-        })
+        )
 
         if viewModel.product.isVerified {
           Button(action: { viewModel.showUnverifyProductConfirmation = true }, label: {
@@ -154,7 +136,7 @@ struct ProductScreen: View {
         }
 
         if profileManager.hasPermission(.canDeleteBarcodes) {
-          Button(action: { viewModel.activeSheet = .barcodes }, label: {
+          Button(action: { router.openSheet(.barcodeManagement(product: viewModel.product)) }, label: {
             Label("Barcodes", systemImage: "barcode")
           })
         }
