@@ -3,6 +3,7 @@ import SwiftUI
 struct CategoryServingStyleSheet: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var router: Router
   @Environment(\.dismiss) private var dismiss
 
   init(_ client: Client, category: Category.JoinedSubcategoriesServingStyles) {
@@ -26,17 +27,16 @@ struct CategoryServingStyleSheet: View {
     .navigationBarTitleDisplayMode(.inline)
     .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Done").bold()
-    }), trailing: Button(action: { viewModel.showServingStylePicker = true }, label: {
-      Label("Add Barcode", systemImage: "plus").bold()
-    }))
-    .sheet(isPresented: $viewModel.showServingStylePicker) {
-      ServingStyleManagementSheet(
-        viewModel.client,
-        pickedServingStyles: $viewModel.servingStyles,
-        onSelect: { servingStyle in viewModel.addServingStyleToCategory(servingStyle)
-        }
-      )
-    }
+    }), trailing: Button(
+      action: {
+        router.openSheet(.servingStyleManagement(pickedServingStyles: $viewModel.servingStyles, onSelect: { servingStyle in
+          viewModel.addServingStyleToCategory(servingStyle)
+        }))
+      },
+      label: {
+        Label("Add Barcode", systemImage: "plus").bold()
+      }
+    ))
     .confirmationDialog("Delete Serving Style",
                         isPresented: $viewModel.showDeleteServingStyleConfirmation,
                         presenting: viewModel.toDeleteServingStyle)

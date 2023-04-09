@@ -8,6 +8,7 @@ struct CheckInSheet: View {
   @Environment(\.dismiss) private var dismiss
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var router: Router
   @State private var showPhotoMenu = false
   @FocusState private var focusedField: Focusable?
 
@@ -80,7 +81,7 @@ struct CheckInSheet: View {
           ).fontWeight(.medium)
 
         })
-        Button(action: { viewModel.activeSheet = .flavors }, label: {
+        Button(action: { router.openSheet(.flavors(pickedFlavors: $viewModel.pickedFlavors)) }, label: {
           if !viewModel.pickedFlavors.isEmpty {
             WrappingHStack(viewModel.pickedFlavors, spacing: .constant(4)) { flavor in
               ChipView(title: flavor.label)
@@ -108,14 +109,16 @@ struct CheckInSheet: View {
           }
         }
 
-        Button(action: { viewModel.activeSheet = .manufacturer }, label: {
+        Button(action: { router.openSheet(.companySearch(onSelect: { company, _ in
+          viewModel.manufacturer = company
+        })) }, label: {
           Text(viewModel.manufacturer?.name ?? "Manufactured By")
             .fontWeight(.medium)
         })
       }
 
       Section {
-        Button(action: { viewModel.activeSheet = .friends }, label: {
+        Button(action: { router.openSheet(.friends(taggedFriends: $viewModel.taggedFriends)) }, label: {
           if viewModel.taggedFriends.isEmpty {
             Text("Tag friends")
               .fontWeight(.medium)
@@ -126,8 +129,11 @@ struct CheckInSheet: View {
           }
         })
       }
+
       Section {
-        Button(action: { viewModel.activeSheet = .location }, label: {
+        Button(action: { router.openSheet(.locationSearch(onSelect: { location in
+          viewModel.location = location
+        })) }, label: {
           HStack {
             if let location = viewModel.location {
               Text(location.name)
@@ -147,7 +153,9 @@ struct CheckInSheet: View {
       }
 
       Section {
-        Button(action: { viewModel.activeSheet = .purchaseLocation }, label: {
+        Button(action: { router.openSheet(.locationSearch(onSelect: { location in
+          viewModel.purchaseLocation = location
+        })) }, label: {
           HStack {
             if let location = viewModel.purchaseLocation {
               Text(location.name)
@@ -176,37 +184,13 @@ struct CheckInSheet: View {
       Button(action: { viewModel.showCamera.toggle() }, label: {
         Text("Camera")
       })
-      Button(action: { viewModel.activeSheet = .photoPicker }, label: {
+      Button(action: { router.openSheet(.legacyPhotoPicker(onSelection: { image in
+        viewModel.setImageFromPicker(pickedImage: image)
+      })) }, label: {
         Text("Photo Gallery")
       })
     } message: {
       Text("Pick a photo")
-    }
-    .sheet(item: $viewModel.activeSheet) { sheet in
-      NavigationStack {
-        switch sheet {
-        case .friends:
-          FriendSheet(taggedFriends: $viewModel.taggedFriends)
-        case .flavors:
-          FlavorSheet(pickedFlavors: $viewModel.pickedFlavors)
-        case .location:
-          LocationSearchSheet(viewModel.client, onSelect: { location in
-            viewModel.location = location
-          })
-        case .purchaseLocation:
-          LocationSearchSheet(viewModel.client, onSelect: { location in
-            viewModel.purchaseLocation = location
-          })
-        case .manufacturer:
-          CompanySearchSheet(viewModel.client, onSelect: { company, _ in
-            viewModel.manufacturer = company
-          })
-        case .photoPicker:
-          LegacyPhotoPicker(onSelection: { image in
-            viewModel.setImageFromPicker(pickedImage: image)
-          })
-        }
-      }
     }
     .fullScreenCover(isPresented: $viewModel.showCamera, content: {
       CameraView(onClose: {

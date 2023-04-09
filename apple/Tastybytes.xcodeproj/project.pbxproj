@@ -202,6 +202,7 @@
 		5CD8D35329CA5B2D001C5930 /* FriendManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD8D35229CA5B2D001C5930 /* FriendManager.swift */; };
 		5CD8D35529CDF58F001C5930 /* AppDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD8D35429CDF58F001C5930 /* AppDataManager.swift */; };
 		5CDC9F8529E136A500B6082F /* CheckInEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F8429E136A500B6082F /* CheckInEntityView.swift */; };
+		5CDC9F8829E350F800B6082F /* NewFlavorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F8729E350F800B6082F /* NewFlavorSheet.swift */; };
 		5CE9008C291FCB71003DE697 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008B291FCB71003DE697 /* SplashScreenView.swift */; };
 		5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */; };
 		5CE90091292101C8003DE697 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE90090292101C8003DE697 /* AboutScreen.swift */; };
@@ -423,6 +424,7 @@
 		5CD8D35229CA5B2D001C5930 /* FriendManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendManager.swift; sourceTree = "<group>"; };
 		5CD8D35429CDF58F001C5930 /* AppDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataManager.swift; sourceTree = "<group>"; };
 		5CDC9F8429E136A500B6082F /* CheckInEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInEntityView.swift; sourceTree = "<group>"; };
+		5CDC9F8729E350F800B6082F /* NewFlavorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFlavorSheet.swift; sourceTree = "<group>"; };
 		5CE9008B291FCB71003DE697 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenManager.swift; sourceTree = "<group>"; };
 		5CE9008F291FE7C1003DE697 /* TastybytesRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TastybytesRelease.entitlements; sourceTree = "<group>"; };
@@ -777,6 +779,7 @@
 		5C46E8652911E2CD0008F142 /* Sheets */ = {
 			isa = PBXGroup;
 			children = (
+				5CDC9F8629E350E700B6082F /* New Group */,
 				5CB4E02829DF3A0300135ADA /* ReportSheet */,
 				5C61E84229BFBDB500D10AA3 /* ServingStyle */,
 				5C2146E929A96BEB0005422D /* NameTag */,
@@ -999,6 +1002,7 @@
 			isa = PBXGroup;
 			children = (
 				5C919E1F28FF024A0055CFD2 /* FlavorSheet.swift */,
+				5CDC9F8729E350F800B6082F /* NewFlavorSheet.swift */,
 			);
 			path = Flavor;
 			sourceTree = "<group>";
@@ -1263,6 +1267,13 @@
 			path = Screens;
 			sourceTree = "<group>";
 		};
+		5CDC9F8629E350E700B6082F /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		5CFB562D28F5969300F13A1E /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -1518,6 +1529,7 @@
 				5C61E84429BFBDFB00D10AA3 /* ServingStyleManagementViewModel.swift in Sources */,
 				5C25C672299561BD00C07953 /* SettingsTab.swift in Sources */,
 				5CC2FE8F29196A5D002BDF83 /* LocationSearchSheet.swift in Sources */,
+				5CDC9F8829E350F800B6082F /* NewFlavorSheet.swift in Sources */,
 				5C0E365A29296FCB0072EFBD /* SubcategoryRepository.swift in Sources */,
 				5CA7A535299E8ECB0066F604 /* DismissableSheetView.swift in Sources */,
 				5C20A51029AA5A0500ABBA74 /* AdminTab.swift in Sources */,

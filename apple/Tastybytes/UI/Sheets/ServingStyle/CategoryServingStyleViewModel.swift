@@ -14,7 +14,6 @@ extension CategoryServingStyleSheet {
     }
 
     @Published var showDeleteServingStyleConfirmation = false
-    @Published var showServingStylePicker = false
 
     init(_ client: Client, category: Category.JoinedSubcategoriesServingStyles) {
       self.client = client

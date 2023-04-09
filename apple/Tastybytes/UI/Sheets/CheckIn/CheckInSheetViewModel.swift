@@ -11,23 +11,12 @@ extension CheckInSheet {
     case update
   }
 
-  enum Sheet: Identifiable {
-    var id: Self { self }
-    case manufacturer
-    case friends
-    case flavors
-    case location
-    case purchaseLocation
-    case photoPicker
-  }
-
   @MainActor
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CheckInSheet")
     let client: Client
     @Published var product: Product.Joined
     @Published var editCheckIn: CheckIn?
-    @Published var activeSheet: Sheet?
     @Published var showCamera = false
     @Published var review: String = ""
     @Published var rating: Double = 0

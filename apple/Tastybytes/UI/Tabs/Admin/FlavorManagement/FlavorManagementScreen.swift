@@ -3,6 +3,7 @@ import SwiftUI
 struct FlavorManagementScreen: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var router: Router
 
   init(_ client: Client) {
     _viewModel = StateObject(wrappedValue: ViewModel(client))
@@ -22,20 +23,10 @@ struct FlavorManagementScreen: View {
       }
     }
     .navigationBarTitle("Flavors")
-    .sheet(isPresented: $viewModel.showAddFlavor, content: {
-      NavigationStack {
-        DismissableSheet(title: "Add Flavor") {
-          Form {
-            TextField("Name", text: $viewModel.newFlavorName)
-            Button(action: { viewModel.addFlavor() }, label: {
-              Text("Add")
-            })
-          }
-        }
-      }.presentationDetents([.medium])
-    })
     .navigationBarItems(
-      trailing: Button(role: .destructive, action: { viewModel.showAddFlavor = true }, label: {
+      trailing: Button(role: .destructive, action: { router.openSheet(.newFlavor(onSubmit: { newFlavor in
+        viewModel.addFlavor(name: newFlavor)
+      })) }, label: {
         Label("Add flavors", systemImage: "plus")
           .labelStyle(.iconOnly)
       })

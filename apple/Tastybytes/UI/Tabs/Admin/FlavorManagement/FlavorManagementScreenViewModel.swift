@@ -6,20 +6,16 @@ extension FlavorManagementScreen {
     private let logger = getLogger(category: "FlavorManagementView")
     let client: Client
     @Published var flavors = [Flavor]()
-    @Published var showAddFlavor = false
-    @Published var newFlavorName = ""
     init(_ client: Client) {
       self.client = client
     }
 
-    func addFlavor() {
+    func addFlavor(name: String) {
       Task {
-        switch await client.flavor.insert(newFlavor: Flavor.NewRequest(name: newFlavorName)) {
+        switch await client.flavor.insert(newFlavor: Flavor.NewRequest(name: name)) {
         case let .success(newFlavor):
           withAnimation {
             flavors.append(newFlavor)
-            newFlavorName = ""
-            showAddFlavor = false
           }
         case let .failure(error):
           logger.error("failed to delete flavor: \(error.localizedDescription)")

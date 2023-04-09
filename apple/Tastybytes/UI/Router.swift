@@ -216,6 +216,18 @@ struct SheetStack: View {
       EditBrandSheet(client, brand: brand, onUpdate: onUpdate)
     case let .editSubBrand(brand: brand, subBrand: subBrand, onUpdate):
       EditSubBrandSheet(client, brand: brand, subBrand: subBrand, onUpdate: onUpdate)
+    case let .friends(taggedFriends: taggedFriends):
+      FriendSheet(taggedFriends: taggedFriends)
+    case let .flavors(pickedFlavors: pickedFlavors):
+      FlavorSheet(pickedFlavors: pickedFlavors)
+    case let .locationSearch(onSelect: onSelect):
+      LocationSearchSheet(client, onSelect: onSelect)
+    case let .legacyPhotoPicker(onSelection: onSelection):
+      LegacyPhotoPicker(onSelection: onSelection)
+    case let .newFlavor(onSubmit: onSubmit):
+      NewFlavorSheet(onSubmit: onSubmit)
+    case let .servingStyleManagement(pickedServingStyles: pickedServingStyles, onSelect: onSelect):
+      ServingStyleManagementSheet(client, pickedServingStyles: pickedServingStyles, onSelect: onSelect)
     }
   }
 }
@@ -248,10 +260,17 @@ enum Sheet: Identifiable {
   case barcodeManagement(product: Product.Joined)
   case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: () -> Void)
   case editSubBrand(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct, onUpdate: () -> Void)
+  case friends(taggedFriends: Binding<[Profile]>)
+  case flavors(pickedFlavors: Binding<[Flavor]>)
+  case locationSearch(onSelect: (_ location: Location) -> Void)
+  case legacyPhotoPicker(onSelection: (_ image: UIImage) -> Void)
+  case newFlavor(onSubmit: (_ newFlavor: String) -> Void)
+  case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
+                              onSelect: (_ servingStyle: ServingStyle) -> Void)
 
   var detents: Set<PresentationDetent> {
     switch self {
-    case .barcodeScanner, .productFilter:
+    case .barcodeScanner, .productFilter, .newFlavor:
       return [.medium]
     case .nameTag:
       return [.height(320)]
@@ -316,6 +335,18 @@ enum Sheet: Identifiable {
       return "edit_sub_brand"
     case .addProductToBrand:
       return "add_product_to_brand"
+    case .friends:
+      return "friends"
+    case .flavors:
+      return "flavors"
+    case .locationSearch:
+      return "location_search"
+    case .legacyPhotoPicker:
+      return "legacy_photo_picker"
+    case .newFlavor:
+      return "new_flavor"
+    case .servingStyleManagement:
+      return "serving_style_management"
     }
   }
 }
