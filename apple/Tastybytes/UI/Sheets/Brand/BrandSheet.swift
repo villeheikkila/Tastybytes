@@ -23,7 +23,10 @@ struct BrandSheet: View {
     List {
       if viewModel.mode == .select {
         ForEach(viewModel.brandsWithSubBrands) { brand in
-          Button(action: { onSelect(brand, false) }, label: {
+          Button(action: {
+            onSelect(brand, false)
+            dismiss()
+          }, label: {
             Text(brand.name)
           })
         }

@@ -66,57 +66,6 @@ struct AddProductView: View {
         Text(viewModel.mode.doneLabel)
       }).disabled(viewModel.isLoading || !viewModel.isValid())
     }
-    .sheet(item: $viewModel.activeSheet) { sheet in
-      NavigationStack {
-        switch sheet {
-        case .subcategories:
-          if let category = viewModel.category {
-            SubcategorySheet(
-              subcategories: $viewModel.subcategories,
-              category: category,
-              onCreate: { newSubcategoryName in
-                viewModel.createSubcategory(newSubcategoryName: newSubcategoryName, onCreate: {
-                  Task { await appDataManager.initialize() }
-                })
-              }
-            )
-          }
-        case .brandOwner:
-          CompanySearchSheet(viewModel.client, onSelect: { company, createdNew in
-            viewModel.setBrandOwner(company)
-            if createdNew {
-              toastManager.toggle(.success(viewModel.getToastText(.createdCompany)))
-            }
-            viewModel.dismissSheet()
-          })
-        case .brand:
-          if let brandOwner = viewModel.brandOwner {
-            BrandSheet(viewModel.client, brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
-              if createdNew {
-                toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
-              }
-              viewModel.setBrand(brand: brand)
-            })
-          }
-
-        case .subBrand:
-          if let brand = viewModel.brand {
-            SubBrandSheet(viewModel.client, brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
-              if createdNew {
-                toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
-              }
-              viewModel.subBrand = subBrand
-              viewModel.dismissSheet()
-
-            })
-          }
-        case .barcode:
-          BarcodeScannerSheet(onComplete: { barcode in
-            viewModel.barcode = barcode
-          })
-        }
-      }.if(sheet == .barcode, transform: { view in view.presentationDetents([.medium]) })
-    }
     .task {
       await viewModel.loadMissingData(categories: appDataManager.categories)
     }
@@ -165,7 +114,19 @@ struct AddProductView: View {
         }
       }
 
-      Button(action: { viewModel.activeSheet = .subcategories }, label: {
+      Button(action: {
+        if let category = viewModel.category {
+          router.sheet = .subcategory(
+            subcategories: $viewModel.subcategories,
+            category: category,
+            onCreate: { newSubcategoryName in
+              viewModel.createSubcategory(newSubcategoryName: newSubcategoryName, onCreate: {
+                Task { await appDataManager.initialize() }
+              })
+            }
+          )
+        }
+      }, label: {
         HStack {
           if viewModel.subcategories.isEmpty {
             Text("Subcategories")
@@ -193,12 +154,23 @@ struct AddProductView: View {
 
   private var brandSection: some View {
     Section {
-      Button(action: { viewModel.activeSheet = .brandOwner }, label: {
+      Button(action: { router.sheet = .companySearch(onSelect: { company, createdNew in
+        viewModel.setBrandOwner(company)
+        if createdNew {
+          toastManager.toggle(.success(viewModel.getToastText(.createdCompany)))
+        }
+      }) }, label: {
         Text(viewModel.brandOwner?.name ?? "Company")
           .fontWeight(.medium)
       })
-      if viewModel.brandOwner != nil {
-        Button(action: { viewModel.activeSheet = .brand }, label: {
+      if let brandOwner = viewModel.brandOwner {
+        Button(action: { router.sheet = .brand(brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
+          if createdNew {
+            toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
+          }
+          viewModel.setBrand(brand: brand)
+        })
+        }, label: {
           Text(viewModel.brand?.name ?? "Brand")
             .fontWeight(.medium)
         })
@@ -209,8 +181,13 @@ struct AddProductView: View {
         Toggle("Has sub-brand?", isOn: $viewModel.hasSubBrand)
       }
 
-      if viewModel.hasSubBrand {
-        Button(action: { viewModel.activeSheet = .subBrand }, label: {
+      if viewModel.hasSubBrand, let brand = viewModel.brand {
+        Button(action: { router.sheet = .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
+          if createdNew {
+            toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
+          }
+          viewModel.subBrand = subBrand
+        }) }, label: {
           Text(viewModel.subBrand?.name ?? "Sub-brand")
             .fontWeight(.medium)
         })
@@ -239,7 +216,9 @@ struct AddProductView: View {
         .focused($focusedField, equals: .description)
 
       if viewModel.mode == .new {
-        Button(action: { viewModel.activeSheet = .barcode }, label: {
+        Button(action: { router.sheet = .barcodeScanner(onComplete: { barcode in
+          viewModel.barcode = barcode
+        }) }, label: {
           Text(viewModel.barcode == nil ? "Add Barcode" : "Barcode Added!")
             .fontWeight(.medium)
         })

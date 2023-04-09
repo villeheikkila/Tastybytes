@@ -21,11 +21,6 @@ extension AddProductView {
     case name, description
   }
 
-  enum Sheet: Identifiable {
-    var id: Self { self }
-    case subcategories, brandOwner, brand, subBrand, barcode
-  }
-
   enum Toast: Identifiable {
     var id: Self { self }
     case createdCompany
@@ -48,7 +43,6 @@ extension AddProductView {
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ProductSheet")
     let client: Client
-    @Published var activeSheet: Sheet?
     @Published var mode: Mode
     @Published var category: Category.JoinedSubcategories? {
       didSet {
@@ -125,15 +119,10 @@ extension AddProductView {
     func setBrand(brand: Brand.JoinedSubBrands) {
       self.brand = brand
       subBrand = brand.subBrands.first(where: { $0.name == nil })
-      activeSheet = nil
     }
 
     func setBrandOwner(_ brandOwner: Company) {
       self.brandOwner = brandOwner
-    }
-
-    func dismissSheet() {
-      activeSheet = nil
     }
 
     func isValid() -> Bool {

@@ -6,7 +6,6 @@ struct ProfileTab: View {
   let client: Client
   @StateObject private var router = Router()
   @State private var scrollToTop = 0
-  @State private var showProfileQrCode = false
   @EnvironmentObject private var profileManager: ProfileManager
   @Binding private var resetNavigationOnTab: Tab?
 
@@ -40,16 +39,6 @@ struct ProfileTab: View {
         }
         resetNavigationOnTab = nil
       }
-    }
-    .sheet(isPresented: $showProfileQrCode) {
-      NavigationStack {
-        NameTagSheet(onSuccess: { profileId in
-          router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId), resetStack: false)
-        })
-      }
-      .presentationDetents([.height(320)])
-      .presentationBackground(.thickMaterial)
-      .presentationCornerRadius(30)
     }
     .environmentObject(router)
   }

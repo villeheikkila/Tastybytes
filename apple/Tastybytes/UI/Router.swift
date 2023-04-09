@@ -154,6 +154,14 @@ extension View {
           ProductFilterSheet(client, initialFilter: initialFilter, sections: sections, onApply: onApply)
         case let .nameTag(onSuccess):
           NameTagSheet(onSuccess: onSuccess)
+        case let .brand(brandOwner, mode, onSelect):
+          BrandSheet(client, brandOwner: brandOwner, mode: mode, onSelect: onSelect)
+        case let .subBrand(brandWithSubBrands, onSelect):
+          SubBrandSheet(client, brandWithSubBrands: brandWithSubBrands, onSelect: onSelect)
+        case let .subcategory(subcategories, category, onCreate):
+          SubcategorySheet(subcategories: subcategories, category: category, onCreate: onCreate)
+        case let .companySearch(onSelect):
+          CompanySearchSheet(client, onSelect: onSelect)
         }
       }
       .presentationDetents(destination.detents)
@@ -170,6 +178,17 @@ enum Sheet: Identifiable {
   case barcodeScanner(onComplete: (_ barcode: Barcode) -> Void)
   case productFilter(initialFilter: Product.Filter?, sections: [Sections], onApply: (_ filter: Product.Filter?) -> Void)
   case nameTag(onSuccess: (_ profileId: UUID) -> Void)
+  case companySearch(onSelect: (_ company: Company, _ createdNew: Bool) -> Void)
+  case brand(brandOwner: Company,
+             mode: BrandSheet.Mode,
+             onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void)
+  case subcategory(
+    subcategories: Binding<[Subcategory]>,
+    category: Category.JoinedSubcategories,
+    onCreate: (_ newSubcategoryName: String) -> Void
+  )
+  case subBrand(brandWithSubBrands: Brand.JoinedSubBrands,
+                onSelect: (_ subBrand: SubBrand, _ createdNew: Bool) -> Void)
 
   var detents: Set<PresentationDetent> {
     switch self {
@@ -214,6 +233,14 @@ enum Sheet: Identifiable {
       return "barcode_scanner"
     case .nameTag:
       return "name_tag"
+    case .companySearch:
+      return "company_search"
+    case .brand:
+      return "brand"
+    case .subBrand:
+      return "sub_brand"
+    case .subcategory:
+      return "subcategory"
     }
   }
 }

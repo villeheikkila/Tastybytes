@@ -6,6 +6,7 @@ struct CurrentUserFriendsScreen: View {
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var noficationManager: NotificationManager
+  @EnvironmentObject private var router: Router
   @State private var friendToBeRemoved: Friend? {
     didSet {
       showRemoveFriendConfirmation = true
@@ -13,7 +14,6 @@ struct CurrentUserFriendsScreen: View {
   }
 
   @State private var showRemoveFriendConfirmation = false
-  @State private var showProfileQrCode = false
   @State private var showUserSearchSheet = false
 
   let client: Client
@@ -110,23 +110,6 @@ struct CurrentUserFriendsScreen: View {
       }
       .presentationDetents([.medium])
     }
-    .sheet(isPresented: $showProfileQrCode) {
-      NavigationStack {
-        NameTagSheet(onSuccess: { profileId in
-          friendManager.sendFriendRequest(receiver: profileId, onSuccess: {
-            showProfileQrCode = false
-            hapticManager.trigger(.notification(.success))
-            toastManager.toggle(.success("Friend Request Sent!"))
-            Task {
-              await friendManager.loadFriends()
-            }
-          })
-        })
-      }
-      .presentationDetents([.height(320)])
-      .presentationBackground(.thickMaterial)
-      .presentationCornerRadius(30)
-    }
     .confirmationDialog("Delete Friend Confirmation",
                         isPresented: $showRemoveFriendConfirmation,
                         presenting: friendToBeRemoved)
@@ -145,7 +128,15 @@ struct CurrentUserFriendsScreen: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: { showProfileQrCode.toggle() }, label: {
+      Button(action: { router.sheet = .nameTag(onSuccess: { profileId in
+        friendManager.sendFriendRequest(receiver: profileId, onSuccess: {
+          hapticManager.trigger(.notification(.success))
+          toastManager.toggle(.success("Friend Request Sent!"))
+          Task {
+            await friendManager.loadFriends()
+          }
+        })
+      }) }, label: {
         Label("Show name tag or send friend request by QR code", systemImage: "qrcode")
           .labelStyle(.iconOnly)
           .imageScale(.large)

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct NameTagSheet: View {
   @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(\.dismiss) private var dismiss
   @State private var showNameTagScanner = false
 
   let onSuccess: (_ profileId: UUID) -> Void
@@ -22,6 +23,7 @@ struct NameTagSheet: View {
           if case let .success(result) = response {
             let string = result.barcode.components(separatedBy: "/").last
             if let string, let profileId = UUID(uuidString: string) {
+              dismiss()
               onSuccess(profileId)
             }
           }
