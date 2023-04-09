@@ -181,18 +181,18 @@ extension View {
     sheet(item: sheetRoute) { sheet in
       NavigationStack {
         SheetStack(client: client, sheet: sheet)
-          .sheet(item: nestedSheetRoute, content: { nestedSheet in
-            NavigationStack {
-              SheetStack(client: client, sheet: nestedSheet)
-            }
-            .presentationDetents(nestedSheet.detents)
-            .presentationCornerRadius(nestedSheet.cornerRadius)
-            .presentationBackground(nestedSheet.background)
-          })
       }
       .presentationDetents(sheet.detents)
       .presentationCornerRadius(sheet.cornerRadius)
       .presentationBackground(sheet.background)
+      .sheet(item: nestedSheetRoute, content: { nestedSheet in
+        NavigationStack {
+          SheetStack(client: client, sheet: nestedSheet)
+            .presentationDetents(nestedSheet.detents)
+            .presentationCornerRadius(nestedSheet.cornerRadius)
+            .presentationBackground(nestedSheet.background)
+        }
+      })
     }
   }
 }
