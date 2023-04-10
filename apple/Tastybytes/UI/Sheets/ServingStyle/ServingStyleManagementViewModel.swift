@@ -3,7 +3,7 @@ import SwiftUI
 extension ServingStyleManagementSheet {
   @MainActor
   class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "ServingStyleManagement2Sheet")
+    private let logger = getLogger(category: "ServingStyleManagementSheet")
     let client: Client
     @Published var servingStyles = [ServingStyle]()
     @Published var servingStyleName = ""

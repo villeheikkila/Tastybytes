@@ -3,7 +3,7 @@ import SwiftUI
 extension CategoryServingStyleSheet {
   @MainActor
   class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "ServingStyleManagementSheet")
+    private let logger = getLogger(category: "CategoryServingStyleSheet")
     let client: Client
     let category: Category.JoinedSubcategoriesServingStyles
     @Published var servingStyles: [ServingStyle]
