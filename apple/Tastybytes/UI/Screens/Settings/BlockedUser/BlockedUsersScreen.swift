@@ -3,6 +3,7 @@ import SwiftUI
 struct BlockedUsersScreen: View {
   @EnvironmentObject private var friendManager: FriendManager
   @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var router: Router
   @State private var showUserSearchSheet = false
 
   let client: Client
@@ -26,26 +27,6 @@ struct BlockedUsersScreen: View {
     .navigationBarItems(
       trailing: blockUser
     )
-    .sheet(isPresented: $showUserSearchSheet) {
-      NavigationStack {
-        UserSheet(client, actions: { profile in
-          HStack {
-            if !friendManager.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
-              Button(action: { friendManager.blockUser(user: profile, onSuccess: {
-                toastManager.toggle(.success("User blocked"))
-                showUserSearchSheet = false
-              }, onFailure: { error in
-                toastManager.toggle(.error(error))
-              }) }, label: {
-                Label("Block", systemImage: "person.fill.xmark")
-                  .imageScale(.large)
-              })
-            }
-          }
-        })
-      }
-      .presentationDetents([.medium])
-    }
     .navigationBarTitleDisplayMode(.inline)
     .refreshable {
       await friendManager.loadFriends()
@@ -54,7 +35,9 @@ struct BlockedUsersScreen: View {
 
   private var blockUser: some View {
     HStack {
-      Button(action: { showUserSearchSheet.toggle() }, label: {
+      Button(action: { router.openSheet(.userSheet(mode: .block, onSubmit: {
+        toastManager.toggle(.success("User blocked"))
+      })) }, label: {
         Label("Show block user sheet", systemImage: "plus")
           .labelStyle(.iconOnly)
           .imageScale(.large)

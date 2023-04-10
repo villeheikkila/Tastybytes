@@ -86,10 +86,7 @@ class FriendManager: ObservableObject {
     case let .success(friends):
       self.friends = friends
     case let .failure(error):
-      logger
-        .warning(
-          "failed to load friends for current user: \(error.localizedDescription)"
-        )
+      logger.error("failed to load friends for current user: \(error.localizedDescription)")
     }
   }
 
@@ -101,12 +98,12 @@ class FriendManager: ObservableObject {
           self.friends.remove(object: friend)
         }
       case let .failure(error):
-        logger.warning("failed to unblock user \(friend.id): \(error.localizedDescription)")
+        logger.error("failed to unblock user \(friend.id): \(error.localizedDescription)")
       }
     }
   }
 
-  func blockUser(user: Profile, onSuccess: @escaping () -> Void, onFailure: @escaping (_ error: String) -> Void) {
+  func blockUser(user: Profile, onSuccess: @escaping () -> Void) {
     Task {
       if let friend = friends.first(where: { $0.getFriend(userId: profile.id) == user }) {
         updateFriendRequest(friend: friend, newStatus: Friend.Status.blocked)
@@ -118,8 +115,7 @@ class FriendManager: ObservableObject {
           }
           onSuccess()
         case let .failure(error):
-          logger.warning("failed to block user \(user.id): \(error.localizedDescription)")
-          onFailure(error.localizedDescription)
+          logger.error("failed to block user \(user.id): \(error.localizedDescription)")
         }
       }
     }

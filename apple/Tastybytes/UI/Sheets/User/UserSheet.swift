@@ -1,18 +1,28 @@
 import SwiftUI
 
-struct UserSheet<Actions: View>: View {
+struct UserSheet: View {
+  enum Mode {
+    case add
+    case block
+  }
+
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var friendManager: FriendManager
+  @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
 
-  let actions: (_ profile: Profile) -> Actions
+  let onSubmit: () -> Void
+  let mode: Mode
 
   init(
     _ client: Client,
-    actions: @escaping (_ profile: Profile) -> Actions
+    mode: Mode,
+    onSubmit: @escaping () -> Void
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client))
-    self.actions = actions
+    self.mode = mode
+    self.onSubmit = onSubmit
   }
 
   var body: some View {
@@ -23,7 +33,34 @@ struct UserSheet<Actions: View>: View {
           Text(profile.preferredName)
           Spacer()
           HStack {
-            actions(profile)
+            if mode == .add {
+              HStack {
+                if !friendManager.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
+                  Button(action: {
+                    hapticManager.trigger(.impact(intensity: .low))
+                    friendManager.sendFriendRequest(receiver: profile.id, onSuccess: {
+                      dismiss()
+                      onSubmit()
+                    })
+                  }, label: {
+                    Label("Add as a friend", systemImage: "person.badge.plus")
+                      .labelStyle(.iconOnly)
+                      .imageScale(.large)
+                  })
+                }
+              }
+            }
+            if mode == .block {
+              if !friendManager.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
+                Button(action: { friendManager.blockUser(user: profile, onSuccess: {
+                  onSubmit()
+                  dismiss()
+                }) }, label: {
+                  Label("Block", systemImage: "person.fill.xmark")
+                    .imageScale(.large)
+                })
+              }
+            }
           }
         }
       }
@@ -33,6 +70,7 @@ struct UserSheet<Actions: View>: View {
       Text("Cancel").bold()
     }))
     .searchable(text: $viewModel.searchText)
+    .disableAutocorrection(true)
     .onSubmit(of: .search) { viewModel.searchUsers(currentUserId: profileManager.getId()) }
   }
 }

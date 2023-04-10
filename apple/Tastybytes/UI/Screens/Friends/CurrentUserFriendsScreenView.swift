@@ -88,28 +88,6 @@ struct CurrentUserFriendsScreen: View {
     .toolbar {
       toolbarContent
     }
-    .sheet(isPresented: $showUserSearchSheet) {
-      NavigationStack {
-        UserSheet(client, actions: { profile in
-          HStack {
-            if !friendManager.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
-              Button(action: {
-                hapticManager.trigger(.impact(intensity: .low))
-                friendManager.sendFriendRequest(receiver: profile.id, onSuccess: {
-                  showUserSearchSheet = false
-                  toastManager.toggle(.success("Friend Request Sent!"))
-                })
-              }, label: {
-                Label("Add as a friend", systemImage: "person.badge.plus")
-                  .labelStyle(.iconOnly)
-                  .imageScale(.large)
-              })
-            }
-          }
-        })
-      }
-      .presentationDetents([.medium])
-    }
     .confirmationDialog("Delete Friend Confirmation",
                         isPresented: $showRemoveFriendConfirmation,
                         presenting: friendToBeRemoved)
@@ -142,7 +120,9 @@ struct CurrentUserFriendsScreen: View {
           .imageScale(.large)
       })
 
-      Button(action: { showUserSearchSheet.toggle() }, label: {
+      Button(action: { router.openSheet(.userSheet(mode: .add, onSubmit: {
+        toastManager.toggle(.success("Friend Request Sent!"))
+      })) }, label: {
         Label("Add friend", systemImage: "plus")
           .labelStyle(.iconOnly)
           .imageScale(.large)

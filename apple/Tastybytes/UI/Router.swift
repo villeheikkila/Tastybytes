@@ -233,10 +233,11 @@ enum Sheet: Identifiable, Equatable {
   case addCategory(onSubmit: (_ newCategoryName: String) -> Void)
   case editCompany(company: Company, onSuccess: () -> Void)
   case companyEditSuggestion(company: Company, onSubmit: () -> Void)
+  case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
 
   var detents: Set<PresentationDetent> {
     switch self {
-    case .barcodeScanner, .productFilter, .newFlavor, .editSubcategory, .addCategory, .addSubcategory:
+    case .barcodeScanner, .productFilter, .newFlavor, .editSubcategory, .addCategory, .addSubcategory, .userSheet:
       return [.medium]
     case .nameTag:
       return [.height(320)]
@@ -325,6 +326,8 @@ enum Sheet: Identifiable, Equatable {
       return "edit_company"
     case .companyEditSuggestion:
       return "company_edit_suggestion"
+    case .userSheet:
+      return "user"
     }
   }
 
@@ -401,6 +404,8 @@ enum Sheet: Identifiable, Equatable {
       EditCompanySheet(client, company: company, onSuccess: onSuccess)
     case let .companyEditSuggestion(company: company, onSubmit: onSubmit):
       CompanyEditSuggestionSheet(client, company: company, onSubmit: onSubmit)
+    case let .userSheet(mode: mode, onSubmit: onSubmit):
+      UserSheet(client, mode: mode, onSubmit: onSubmit)
     }
   }
 }
