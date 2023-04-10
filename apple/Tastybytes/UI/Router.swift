@@ -6,7 +6,7 @@ struct InitializeRouter<Content: View>: View {
   let client: Client
   var content: (_ router: Router) -> Content
 
-  init(_ client: Client, content: @escaping (_ router: Router) -> Content) {
+  init(_ client: Client, @ViewBuilder content: @escaping (_ router: Router) -> Content) {
     self.client = client
     self.content = content
   }
@@ -14,8 +14,25 @@ struct InitializeRouter<Content: View>: View {
   var body: some View {
     NavigationStack(path: $router.path) {
       content(router)
-        .withRoutes(client)
-        .withSheets(client, sheetRoute: $router.sheet, nestedSheetRoute: $router.nestedSheet)
+        .navigationDestination(for: Screen.self) { screen in
+          screen.view(client)
+        }
+        .sheet(item: $router.sheet) { sheet in
+          NavigationStack {
+            sheet.view(client)
+          }
+          .presentationDetents(sheet.detents)
+          .presentationCornerRadius(sheet.cornerRadius)
+          .presentationBackground(sheet.background)
+          .sheet(item: $router.nestedSheet, content: { nestedSheet in
+            NavigationStack {
+              nestedSheet.view(client)
+                .presentationDetents(nestedSheet.detents)
+                .presentationCornerRadius(nestedSheet.cornerRadius)
+                .presentationBackground(nestedSheet.background)
+            }
+          })
+        }
         .onOpenURL { url in
           if let detailPage = url.detailPage {
             router.fetchAndNavigateTo(client, detailPage, resetStack: true)
@@ -29,11 +46,11 @@ struct InitializeRouter<Content: View>: View {
 @MainActor
 class Router: ObservableObject {
   private let logger = getLogger(category: "Router")
-  @Published var path: [Route] = []
+  @Published var path: [Screen] = []
   @Published var sheet: Sheet?
   @Published var nestedSheet: Sheet?
 
-  func navigate(to: Route, resetStack: Bool) {
+  func navigate(to: Screen, resetStack: Bool) {
     if resetStack {
       path = []
     }
@@ -105,89 +122,6 @@ class Router: ObservableObject {
           logger.error("request for location with \(id) failed: \(error.localizedDescription)")
         }
       }
-    }
-  }
-}
-
-enum Route: Hashable {
-  case product(Product.Joined)
-  case profile(Profile)
-  case checkIn(CheckIn)
-  case location(Location)
-  case company(Company)
-  case brand(Brand.JoinedSubBrandsProductsCompany)
-  case profileProducts(Profile)
-  case profileStatistics(Profile)
-  case settings
-  case currentUserFriends
-  case friends(Profile)
-  case addProduct(Barcode?)
-  case productFeed(Product.FeedType)
-  case flavorManagementScreen
-  case verificationScreen
-  case duplicateProducts
-  case categoryManagement
-}
-
-extension View {
-  func withRoutes(_ client: Client) -> some View {
-    navigationDestination(for: Route.self) { route in
-      switch route {
-      case let .company(company):
-        CompanyScreen(client, company: company)
-      case let .brand(brand):
-        BrandScreen(client, brand: brand)
-      case .currentUserFriends:
-        CurrentUserFriendsScreen(client)
-      case .settings:
-        SettingsScreen(client)
-      case let .location(location):
-        LocationScreen(client, location: location)
-      case let .profileProducts(profile):
-        ProfileProductListView(client, profile: profile)
-      case let .profileStatistics(profile):
-        ProfileStatisticsView(client, profile: profile)
-      case let .addProduct(initialBarcode):
-        AddProductView(client, mode: .new, initialBarcode: initialBarcode)
-          .navigationTitle("Add Product")
-      case let .checkIn(checkIn):
-        CheckInScreen(client, checkIn: checkIn)
-      case let .profile(profile):
-        ProfileScreen(client, profile: profile)
-      case let .product(product):
-        ProductScreen(client, product: product)
-      case let .friends(profile):
-        FriendsScreen(client, profile: profile)
-      case let .productFeed(feed):
-        ProductFeedScreen(client, feed: feed)
-      case .flavorManagementScreen:
-        FlavorManagementScreen(client)
-      case .verificationScreen:
-        VerificationScreen(client)
-      case .duplicateProducts:
-        DuplicateProductScreen(client)
-      case .categoryManagement:
-        CategoryManagementScreen(client)
-      }
-    }
-  }
-
-  func withSheets(_ client: Client, sheetRoute: Binding<Sheet?>, nestedSheetRoute: Binding<Sheet?>) -> some View {
-    sheet(item: sheetRoute) { sheet in
-      NavigationStack {
-        sheet.view(client)
-      }
-      .presentationDetents(sheet.detents)
-      .presentationCornerRadius(sheet.cornerRadius)
-      .presentationBackground(sheet.background)
-      .sheet(item: nestedSheetRoute, content: { nestedSheet in
-        NavigationStack {
-          nestedSheet.view(client)
-            .presentationDetents(nestedSheet.detents)
-            .presentationCornerRadius(nestedSheet.cornerRadius)
-            .presentationBackground(nestedSheet.background)
-        }
-      })
     }
   }
 }

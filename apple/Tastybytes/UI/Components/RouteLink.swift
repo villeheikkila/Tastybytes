@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct RouteLink<Label: View>: View {
-  let route: Route
+  let route: Screen
   let label: Label
 
-  init(to route: Route, @ViewBuilder label: () -> Label) {
+  init(to route: Screen, @ViewBuilder label: () -> Label) {
     self.route = route
     self.label = label()
   }
