@@ -50,13 +50,13 @@ class Router: ObservableObject {
   @Published var sheet: Sheet?
   @Published var nestedSheet: Sheet?
 
-  func navigate(screen: Screen, resetStack: Bool) {
+  func navigate(screen: Screen, resetStack: Bool = false) {
     if resetStack {
       path = []
     }
     path.append(screen)
   }
-    
+
   func navigate(sheet: Sheet) {
     if self.sheet != nil, nestedSheet != nil {
       logger.error("opening more than one nested sheet is not supported")
@@ -77,7 +77,7 @@ class Router: ObservableObject {
     path.removeLast()
   }
 
-  func fetchAndNavigateTo(_ client: Client, _ destination: NavigatablePath, resetStack: Bool) {
+  func fetchAndNavigateTo(_ client: Client, _ destination: NavigatablePath, resetStack: Bool = false) {
     Task {
       switch destination {
       case let .product(id):

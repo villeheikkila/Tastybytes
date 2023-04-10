@@ -75,7 +75,7 @@ struct VerificationScreen: View {
         Spacer()
       }
       .onTapGesture {
-        router.fetchAndNavigateTo(viewModel.client, .brand(id: subBrand.brand.id), resetStack: false)
+        router.fetchAndNavigateTo(viewModel.client, .brand(id: subBrand.brand.id))
       }
       .accessibilityAddTraits(.isButton)
       .swipeActions {
@@ -120,7 +120,7 @@ struct VerificationScreen: View {
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
-            router.navigate(screen: .product(product), resetStack: false)
+            router.navigate(screen: .product(product))
           }
           .swipeActions {
             Button(action: { viewModel.verifyProduct(product) }, label: {

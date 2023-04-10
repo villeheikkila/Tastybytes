@@ -211,7 +211,7 @@ struct SearchListView: View {
         ProductItemView(product: product, extras: [.checkInCheck, .rating])
           .swipeActions {
             Button(action: { router.navigate(sheet: .newCheckIn(product, onCreation: { checkIn in
-              router.navigate(screen: .checkIn(checkIn), resetStack: false)
+              router.navigate(screen: .checkIn(checkIn))
             })) }, label: {
               Label("Check-in", systemImage: "plus")
             }).tint(.green)
@@ -220,7 +220,7 @@ struct SearchListView: View {
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
             if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
-              router.navigate(screen: .product(product), resetStack: false)
+              router.navigate(screen: .product(product))
             } else {
               viewModel.addBarcodeTo = product
             }
@@ -240,7 +240,7 @@ struct SearchListView: View {
         .onTapGesture {
           let barcode = viewModel.barcode
           viewModel.barcode = nil
-          router.navigate(screen: .addProduct(barcode), resetStack: false)
+          router.navigate(screen: .addProduct(barcode))
         }
       } header: {
         Text("Didn't find a product you were looking for?")

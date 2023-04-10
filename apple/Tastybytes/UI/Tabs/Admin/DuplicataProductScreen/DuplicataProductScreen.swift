@@ -28,7 +28,7 @@ struct DuplicateProductScreen: View {
             .contentShape(Rectangle())
             .accessibilityAddTraits(.isLink)
             .onTapGesture {
-              router.navigate(screen: .product(product), resetStack: false)
+              router.navigate(screen: .product(product))
             }
             .swipeActions {
               Button(action: { viewModel.verifyProduct(product) }, label: {

@@ -102,7 +102,7 @@ struct CompanyScreen: View {
 
       if profileManager.hasPermission(.canCreateBrands) {
         Button(action: { router.navigate(sheet: .addBrand(brandOwner: viewModel.company, mode: .new, onSelect: { brand, _ in
-          router.fetchAndNavigateTo(viewModel.client, .brand(id: brand.id), resetStack: false)
+          router.fetchAndNavigateTo(viewModel.client, .brand(id: brand.id))
         })) }, label: {
           Label("Add Brand", systemImage: "plus")
         })

@@ -17,7 +17,7 @@ struct ProductFeedScreen: View {
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
-            router.navigate(screen: .product(product), resetStack: false)
+            router.navigate(screen: .product(product))
           }
           .onAppear {
             if product == viewModel.products.last, viewModel.isLoading != true {

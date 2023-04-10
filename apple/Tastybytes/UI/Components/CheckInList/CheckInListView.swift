@@ -95,11 +95,11 @@ struct CheckInListView<Header>: View where Header: View {
         .contextMenu {
           ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
           Button("Open Company") {
-            router.navigate(screen: .company(checkIn.product.subBrand.brand.brandOwner), resetStack: false)
+            router.navigate(screen: .company(checkIn.product.subBrand.brand.brandOwner))
           }
 
           Button("Open Check-in") {
-            router.navigate(screen: .checkIn(checkIn), resetStack: false)
+            router.navigate(screen: .checkIn(checkIn))
           }
           Divider()
           if checkIn.profile.id == profileManager.getId() {

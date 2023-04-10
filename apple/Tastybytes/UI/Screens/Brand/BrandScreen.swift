@@ -190,7 +190,7 @@ struct BrandScreen: View {
 
       if profileManager.hasPermission(.canCreateProducts) {
         Button(action: { router.navigate(sheet: .addProductToBrand(brand: viewModel.brand, onCreate: { product in
-          router.navigate(screen: .product(product), resetStack: false)
+          router.navigate(screen: .product(product))
         })) }, label: {
           Label("Add Product", systemImage: "plus")
         })

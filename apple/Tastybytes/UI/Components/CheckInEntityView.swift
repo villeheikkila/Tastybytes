@@ -92,7 +92,7 @@ struct CheckInEntityView: View {
             .contentShape(Rectangle())
             .accessibilityAddTraits(.isLink)
             .onTapGesture {
-              router.navigate(screen: .company(checkIn.product.subBrand.brand.brandOwner), resetStack: false)
+              router.navigate(screen: .company(checkIn.product.subBrand.brand.brandOwner))
             }
 
           if let manufacturer = checkIn.variant?.manufacturer,
