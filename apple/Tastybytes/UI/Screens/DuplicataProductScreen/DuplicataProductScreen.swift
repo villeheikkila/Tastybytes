@@ -31,7 +31,7 @@ struct DuplicateProductScreen: View {
               router.navigate(screen: .product(product))
             }
             .swipeActions {
-              Button(action: { viewModel.verifyProduct(product) }, label: {
+              ProgressButton(action: { await viewModel.verifyProduct(product) }, label: {
                 Label("Verify", systemImage: "checkmark")
               }).tint(.green)
               Button(action: { router.navigate(sheet: .editProduct(product: product, onEdit: {

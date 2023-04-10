@@ -64,7 +64,7 @@ struct CheckInScreen: View {
       )
     }
     .task {
-      viewModel.loadCheckInComments()
+      await viewModel.loadCheckInComments()
       notificationManager.markCheckInAsRead(checkIn: viewModel.checkIn)
     }
   }

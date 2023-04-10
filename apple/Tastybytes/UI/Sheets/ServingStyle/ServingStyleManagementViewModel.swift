@@ -28,36 +28,26 @@ extension ServingStyleManagementSheet {
       self.client = client
     }
 
-    func getAllServingStyles() {
-      Task {
-        switch await client.servingStyle.getAll() {
-        case let .success(servingStyles):
-          withAnimation {
-            self.servingStyles = servingStyles
-          }
-        case let .failure(error):
-          logger
-            .error(
-              "failed to create new serving style with name \(self.newServingStyleName): \(error.localizedDescription)"
-            )
+    func getAllServingStyles() async {
+      switch await client.servingStyle.getAll() {
+      case let .success(servingStyles):
+        withAnimation {
+          self.servingStyles = servingStyles
         }
+      case let .failure(error):
+        logger.error("failed to load all serving styles: \(error.localizedDescription)")
       }
     }
 
-    func createServingStyle() {
-      Task {
-        switch await client.servingStyle.insert(servingStyle: ServingStyle.NewRequest(name: newServingStyleName)) {
-        case let .success(servingStyle):
-          withAnimation {
-            servingStyles.append(servingStyle)
-            newServingStyleName = ""
-          }
-        case let .failure(error):
-          logger
-            .error(
-              "failed to create new serving style with name \(self.newServingStyleName): \(error.localizedDescription)"
-            )
+    func createServingStyle() async {
+      switch await client.servingStyle.insert(servingStyle: ServingStyle.NewRequest(name: newServingStyleName)) {
+      case let .success(servingStyle):
+        withAnimation {
+          servingStyles.append(servingStyle)
+          newServingStyleName = ""
         }
+      case let .failure(error):
+        logger.error("failed to create new serving style: \(error.localizedDescription)")
       }
     }
 

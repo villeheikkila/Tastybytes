@@ -18,16 +18,14 @@ extension DuplicateProductScreen {
       self.client = client
     }
 
-    func verifyProduct(_ product: Product.Joined) {
-      Task {
-        switch await client.product.verification(id: product.id, isVerified: true) {
-        case .success:
-          withAnimation {
-            products.remove(object: product)
-          }
-        case let .failure(error):
-          logger.error("failed to verify product \(product.id): \(error.localizedDescription)")
+    func verifyProduct(_ product: Product.Joined) async {
+      switch await client.product.verification(id: product.id, isVerified: true) {
+      case .success:
+        withAnimation {
+          products.remove(object: product)
         }
+      case let .failure(error):
+        logger.error("failed to verify product \(product.id): \(error.localizedDescription)")
       }
     }
 

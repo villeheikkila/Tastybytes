@@ -227,7 +227,7 @@ struct CheckInSheet: View {
                                })
     )
     .task {
-      viewModel.loadInitialData()
+      await viewModel.loadInitialData()
     }
   }
 }

@@ -42,16 +42,14 @@ extension CheckInScreen {
       }
     }
 
-    func loadCheckInComments() {
-      Task {
-        switch await client.checkInComment.getByCheckInId(id: checkIn.id) {
-        case let .success(checkIns):
-          withAnimation {
-            self.checkInComments = checkIns
-          }
-        case let .failure(error):
-          logger.error("faile to load check-in comments for '\(self.checkIn.id)': \(error.localizedDescription)")
+    func loadCheckInComments() async {
+      switch await client.checkInComment.getByCheckInId(id: checkIn.id) {
+      case let .success(checkIns):
+        withAnimation {
+          self.checkInComments = checkIns
         }
+      case let .failure(error):
+        logger.error("failed to load check-in comments': \(error.localizedDescription)")
       }
     }
 

@@ -32,8 +32,7 @@ extension BrandSheet {
       case let .success(brandWithSubBrands):
         onCreation(brandWithSubBrands)
       case let .failure(error):
-        logger
-          .error("failed to create new brand for \(brandOwner.id) with name \(brandName): \(error.localizedDescription)")
+        logger.error("failed to create new brand for \(brandOwner.id): \(error.localizedDescription)")
       }
     }
   }

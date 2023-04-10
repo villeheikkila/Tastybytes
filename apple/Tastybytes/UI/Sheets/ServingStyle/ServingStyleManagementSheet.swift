@@ -41,8 +41,8 @@ struct ServingStyleManagementSheet: View {
       }
       Section {
         TextField("Name", text: $viewModel.newServingStyleName)
-        Button("Create") {
-          viewModel.createServingStyle()
+        ProgressButton("Create") {
+          await viewModel.createServingStyle()
         }
         .disabled(!viewModel.newServingStyleName.isValidLength(.normal))
       } header: {
@@ -77,7 +77,7 @@ struct ServingStyleManagementSheet: View {
       )
     }
     .task {
-      viewModel.getAllServingStyles()
+      await viewModel.getAllServingStyles()
     }
   }
 }

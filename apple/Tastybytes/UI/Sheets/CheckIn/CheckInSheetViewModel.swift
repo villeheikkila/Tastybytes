@@ -137,17 +137,15 @@ extension CheckInSheet {
       }
     }
 
-    func loadInitialData() {
-      Task {
-        switch await client.category.getServingStylesByCategory(categoryId: product.category.id) {
-        case let .success(categoryServingStyles):
-          self.servingStyles = categoryServingStyles.servingStyles
-        case let .failure(error):
-          logger
-            .error(
-              "failed to load serving styles by category '\(self.product.category.id)': \(error.localizedDescription)"
-            )
-        }
+    func loadInitialData() async {
+      switch await client.category.getServingStylesByCategory(categoryId: product.category.id) {
+      case let .success(categoryServingStyles):
+        servingStyles = categoryServingStyles.servingStyles
+      case let .failure(error):
+        logger
+          .error(
+            "failed to load serving styles by category: \(error.localizedDescription)"
+          )
       }
     }
   }

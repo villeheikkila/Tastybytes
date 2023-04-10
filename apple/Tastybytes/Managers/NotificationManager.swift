@@ -111,7 +111,7 @@ class NotificationManager: ObservableObject {
     }
   }
 
-  func markAllFriendRequestsAsRead() {
+  func markAllFriendRequestsAsRead() async {
     let containsFriendRequests = notifications.contains(where: { notification in
       switch notification.content {
       case .friendRequest:
@@ -122,19 +122,17 @@ class NotificationManager: ObservableObject {
     })
 
     if containsFriendRequests {
-      Task {
-        switch await client.notification.markAllFriendRequestsAsRead() {
-        case let .success(updatedNotifications):
-          self.notifications = self.notifications.map { notification in
-            if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
-              return updatedNotification
-            } else {
-              return notification
-            }
+      switch await client.notification.markAllFriendRequestsAsRead() {
+      case let .success(updatedNotifications):
+        notifications = notifications.map { notification in
+          if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
+            return updatedNotification
+          } else {
+            return notification
           }
-        case let .failure(error):
-          logger.error("failed: \(error.localizedDescription)")
         }
+      case let .failure(error):
+        logger.error("failed: \(error.localizedDescription)")
       }
     }
   }
