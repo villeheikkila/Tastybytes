@@ -120,13 +120,13 @@ struct VerificationScreen: View {
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
-            router.navigate(to: .product(product), resetStack: false)
+            router.navigate(screen: .product(product), resetStack: false)
           }
           .swipeActions {
             Button(action: { viewModel.verifyProduct(product) }, label: {
               Label("Verify", systemImage: "checkmark")
             }).tint(.green)
-            Button(action: { router.openSheet(.editProduct(product: product, onEdit: {
+            Button(action: { router.navigate(sheet: .editProduct(product: product, onEdit: {
               Task {
                 await viewModel.loadData(refresh: true)
               }

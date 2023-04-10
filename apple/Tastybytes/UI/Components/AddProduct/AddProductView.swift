@@ -51,7 +51,7 @@ struct AddProductView: View {
         case .new:
           await viewModel.createProduct(onSuccess: { product in
             hapticManager.trigger(.notification(.success))
-            router.navigate(to: .product(product), resetStack: true)
+            router.navigate(screen: .product(product), resetStack: true)
           })
         case .addToBrand:
           await viewModel.createProduct(onSuccess: { product in
@@ -115,7 +115,7 @@ struct AddProductView: View {
 
       Button(action: {
         if let category = viewModel.category {
-          router.openSheet(.subcategory(
+          router.navigate(sheet: .subcategory(
             subcategories: $viewModel.subcategories,
             category: category,
             onCreate: { newSubcategoryName in
@@ -153,7 +153,7 @@ struct AddProductView: View {
 
   private var brandSection: some View {
     Section {
-      Button(action: { router.openSheet(.companySearch(onSelect: { company, createdNew in
+      Button(action: { router.navigate(sheet: .companySearch(onSelect: { company, createdNew in
         viewModel.setBrandOwner(company)
         if createdNew {
           toastManager.toggle(.success(viewModel.getToastText(.createdCompany)))
@@ -163,7 +163,7 @@ struct AddProductView: View {
           .fontWeight(.medium)
       })
       if let brandOwner = viewModel.brandOwner {
-        Button(action: { router.openSheet(.brand(brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
+        Button(action: { router.navigate(sheet: .brand(brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
           if createdNew {
             toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
           }
@@ -181,7 +181,7 @@ struct AddProductView: View {
       }
 
       if viewModel.hasSubBrand, let brand = viewModel.brand {
-        Button(action: { router.openSheet(.subBrand(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
+        Button(action: { router.navigate(sheet: .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
           if createdNew {
             toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
           }
@@ -215,7 +215,7 @@ struct AddProductView: View {
         .focused($focusedField, equals: .description)
 
       if viewModel.mode == .new {
-        Button(action: { router.openSheet(.barcodeScanner(onComplete: { barcode in
+        Button(action: { router.navigate(sheet: .barcodeScanner(onComplete: { barcode in
           viewModel.barcode = barcode
         })) }, label: {
           Text(viewModel.barcode == nil ? "Add Barcode" : "Barcode Added!")

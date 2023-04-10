@@ -81,7 +81,7 @@ struct CheckInSheet: View {
           ).fontWeight(.medium)
 
         })
-        Button(action: { router.openSheet(.flavors(pickedFlavors: $viewModel.pickedFlavors)) }, label: {
+        Button(action: { router.navigate(sheet: .flavors(pickedFlavors: $viewModel.pickedFlavors)) }, label: {
           if !viewModel.pickedFlavors.isEmpty {
             WrappingHStack(viewModel.pickedFlavors, spacing: .constant(4)) { flavor in
               ChipView(title: flavor.label)
@@ -109,7 +109,7 @@ struct CheckInSheet: View {
           }
         }
 
-        Button(action: { router.openSheet(.companySearch(onSelect: { company, _ in
+        Button(action: { router.navigate(sheet: .companySearch(onSelect: { company, _ in
           viewModel.manufacturer = company
         })) }, label: {
           Text(viewModel.manufacturer?.name ?? "Manufactured By")
@@ -118,7 +118,7 @@ struct CheckInSheet: View {
       }
 
       Section {
-        Button(action: { router.openSheet(.friends(taggedFriends: $viewModel.taggedFriends)) }, label: {
+        Button(action: { router.navigate(sheet: .friends(taggedFriends: $viewModel.taggedFriends)) }, label: {
           if viewModel.taggedFriends.isEmpty {
             Text("Tag friends")
               .fontWeight(.medium)
@@ -131,7 +131,7 @@ struct CheckInSheet: View {
       }
 
       Section {
-        Button(action: { router.openSheet(.locationSearch(onSelect: { location in
+        Button(action: { router.navigate(sheet: .locationSearch(onSelect: { location in
           viewModel.location = location
         })) }, label: {
           HStack {
@@ -153,7 +153,7 @@ struct CheckInSheet: View {
       }
 
       Section {
-        Button(action: { router.openSheet(.locationSearch(onSelect: { location in
+        Button(action: { router.navigate(sheet: .locationSearch(onSelect: { location in
           viewModel.purchaseLocation = location
         })) }, label: {
           HStack {
@@ -184,7 +184,7 @@ struct CheckInSheet: View {
       Button(action: { viewModel.showCamera.toggle() }, label: {
         Text("Camera")
       })
-      Button(action: { router.openSheet(.legacyPhotoPicker(onSelection: { image in
+      Button(action: { router.navigate(sheet: .legacyPhotoPicker(onSelection: { image in
         viewModel.setImageFromPicker(pickedImage: image)
       })) }, label: {
         Text("Photo Gallery")

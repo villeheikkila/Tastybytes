@@ -24,7 +24,7 @@ struct ProductScreen: View {
       header: {
         Section {
           ProductItemView(product: viewModel.product, extras: [.companyLink, .logo])
-          Button(action: { router.openSheet(.newCheckIn(viewModel.product, onCreation: { _ in
+          Button(action: { router.navigate(sheet: .newCheckIn(viewModel.product, onCreation: { _ in
             viewModel.refreshCheckIns()
           })) }, label: {
             HStack {
@@ -82,7 +82,7 @@ struct ProductScreen: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
-        Button(action: { router.openSheet(.newCheckIn(viewModel.product, onCreation: { _ in
+        Button(action: { router.navigate(sheet: .newCheckIn(viewModel.product, onCreation: { _ in
           viewModel.refreshCheckIns()
         })) }, label: {
           Label("Check-in", systemImage: "plus").bold()
@@ -91,7 +91,7 @@ struct ProductScreen: View {
         ShareLink("Share", item: NavigatablePath.product(id: viewModel.product.id).url)
 
         if profileManager.hasPermission(.canAddBarcodes) {
-          Button(action: { router.openSheet(.barcodeScanner(onComplete: { _ in
+          Button(action: { router.navigate(sheet: .barcodeScanner(onComplete: { _ in
             toastManager.toggle(.success("Barcode added"))
           })) }, label: {
             Label("Add Barcode", systemImage: "barcode.viewfinder")
@@ -100,17 +100,17 @@ struct ProductScreen: View {
         Divider()
 
         if profileManager.hasPermission(.canEditCompanies) {
-          Button(action: { router.openSheet(.editProduct(product: viewModel.product)) }, label: {
+          Button(action: { router.navigate(sheet: .editProduct(product: viewModel.product)) }, label: {
             Label("Edit", systemImage: "pencil")
           })
         } else {
-          Button(action: { router.openSheet(.productEditSuggestion(product: viewModel.product)) }, label: {
+          Button(action: { router.navigate(sheet: .productEditSuggestion(product: viewModel.product)) }, label: {
             Label("Edit Suggestion", systemImage: "pencil")
           })
         }
 
         Button(
-          action: { router.openSheet(.duplicateProduct(
+          action: { router.navigate(sheet: .duplicateProduct(
             mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
             product: viewModel.product
           )) },
@@ -136,7 +136,7 @@ struct ProductScreen: View {
         }
 
         if profileManager.hasPermission(.canDeleteBarcodes) {
-          Button(action: { router.openSheet(.barcodeManagement(product: viewModel.product)) }, label: {
+          Button(action: { router.navigate(sheet: .barcodeManagement(product: viewModel.product)) }, label: {
             Label("Barcodes", systemImage: "barcode")
           })
         }

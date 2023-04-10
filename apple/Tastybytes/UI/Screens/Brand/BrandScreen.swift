@@ -33,7 +33,7 @@ struct BrandScreen: View {
                 .padding(2)
                 .contextMenu {
                   Button(
-                    action: { router.openSheet(.duplicateProduct(
+                    action: { router.navigate(sheet: .duplicateProduct(
                       mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                       product: productJoined
                     )) },
@@ -65,7 +65,7 @@ struct BrandScreen: View {
             Menu {
               if profileManager.hasPermission(.canEditBrands) {
                 Button(action: {
-                  router.openSheet(.editSubBrand(brand: viewModel.brand, subBrand: subBrand, onUpdate: {
+                  router.navigate(sheet: .editSubBrand(brand: viewModel.brand, subBrand: subBrand, onUpdate: {
                     Task { await viewModel.refresh() }
                   }))
                 }, label: {
@@ -189,8 +189,8 @@ struct BrandScreen: View {
       ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
 
       if profileManager.hasPermission(.canCreateProducts) {
-        Button(action: { router.openSheet(.addProductToBrand(brand: viewModel.brand, onCreate: { product in
-          router.navigate(to: .product(product), resetStack: false)
+        Button(action: { router.navigate(sheet: .addProductToBrand(brand: viewModel.brand, onCreate: { product in
+          router.navigate(screen: .product(product), resetStack: false)
         })) }, label: {
           Label("Add Product", systemImage: "plus")
         })
@@ -199,7 +199,7 @@ struct BrandScreen: View {
       Divider()
 
       if profileManager.hasPermission(.canEditBrands) {
-        Button(action: { router.openSheet(.editBrand(brand: viewModel.brand, onUpdate: {
+        Button(action: { router.navigate(sheet: .editBrand(brand: viewModel.brand, onUpdate: {
           Task { await viewModel.refresh() }
         })) }, label: {
           Label("Edit", systemImage: "pencil")

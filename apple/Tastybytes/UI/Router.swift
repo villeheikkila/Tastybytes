@@ -50,18 +50,22 @@ class Router: ObservableObject {
   @Published var sheet: Sheet?
   @Published var nestedSheet: Sheet?
 
-  func navigate(to: Screen, resetStack: Bool) {
+  func navigate(screen: Screen, resetStack: Bool) {
     if resetStack {
       path = []
     }
-    path.append(to)
+    path.append(screen)
   }
-
-  func openSheet(_ to: Sheet) {
-    if sheet != nil {
-      nestedSheet = to
+    
+  func navigate(sheet: Sheet) {
+    if self.sheet != nil, nestedSheet != nil {
+      logger.error("opening more than one nested sheet is not supported")
+      return
+    }
+    if self.sheet != nil {
+      nestedSheet = sheet
     } else {
-      sheet = to
+      self.sheet = sheet
     }
   }
 
@@ -79,35 +83,35 @@ class Router: ObservableObject {
       case let .product(id):
         switch await client.product.getById(id: id) {
         case let .success(product):
-          self.navigate(to: .product(product), resetStack: resetStack)
+          self.navigate(screen: .product(product), resetStack: resetStack)
         case let .failure(error):
           logger.error("request for product with \(id) failed: \(error.localizedDescription)")
         }
       case let .checkIn(id):
         switch await client.checkIn.getById(id: id) {
         case let .success(checkIn):
-          self.navigate(to: .checkIn(checkIn), resetStack: resetStack)
+          self.navigate(screen: .checkIn(checkIn), resetStack: resetStack)
         case let .failure(error):
           logger.error("request for check-in with \(id) failed: \(error.localizedDescription)")
         }
       case let .company(id):
         switch await client.company.getById(id: id) {
         case let .success(company):
-          self.navigate(to: .company(company), resetStack: resetStack)
+          self.navigate(screen: .company(company), resetStack: resetStack)
         case let .failure(error):
           logger.error("request for company with \(id) failed: \(error.localizedDescription)")
         }
       case let .brand(id):
         switch await client.brand.getJoinedById(id: id) {
         case let .success(brand):
-          self.navigate(to: .brand(brand), resetStack: resetStack)
+          self.navigate(screen: .brand(brand), resetStack: resetStack)
         case let .failure(error):
           logger.error("request for brand with \(id) failed: \(error.localizedDescription)")
         }
       case let .profile(id):
         switch await client.profile.getById(id: id) {
         case let .success(profile):
-          self.navigate(to: .profile(profile), resetStack: resetStack)
+          self.navigate(screen: .profile(profile), resetStack: resetStack)
         case let .failure(error):
           logger
             .error(
@@ -117,7 +121,7 @@ class Router: ObservableObject {
       case let .location(id):
         switch await client.location.getById(id: id) {
         case let .success(location):
-          self.navigate(to: .location(location), resetStack: resetStack)
+          self.navigate(screen: .location(location), resetStack: resetStack)
         case let .failure(error):
           logger.error("request for location with \(id) failed: \(error.localizedDescription)")
         }

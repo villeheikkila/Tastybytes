@@ -5,7 +5,7 @@ struct ReportButton: View {
   let entity: Report.Entity
 
   var body: some View {
-    Button(action: { router.openSheet(.report(entity)) }, label: {
+    Button(action: { router.navigate(sheet: .report(entity)) }, label: {
       Label("Report", systemImage: "exclamationmark.bubble.fill")
     })
   }

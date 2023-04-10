@@ -29,7 +29,7 @@ struct CategoryServingStyleSheet: View {
       Text("Done").bold()
     }), trailing: Button(
       action: {
-        router.openSheet(.servingStyleManagement(pickedServingStyles: $viewModel.servingStyles, onSelect: { servingStyle in
+        router.navigate(sheet: .servingStyleManagement(pickedServingStyles: $viewModel.servingStyles, onSelect: { servingStyle in
           viewModel.addServingStyleToCategory(servingStyle)
         }))
       },

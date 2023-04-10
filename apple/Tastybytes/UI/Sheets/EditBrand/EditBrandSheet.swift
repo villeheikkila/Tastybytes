@@ -64,7 +64,7 @@ struct EditBrandSheet: View {
       }
 
       Section {
-        Button(action: { router.openSheet(.companySearch(onSelect: { company, _ in
+        Button(action: { router.navigate(sheet: .companySearch(onSelect: { company, _ in
           viewModel.brandOwner = company
         })) }, label: {
           Text(viewModel.brandOwner.name)

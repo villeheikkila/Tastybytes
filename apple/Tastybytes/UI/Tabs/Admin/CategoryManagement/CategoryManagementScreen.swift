@@ -28,7 +28,7 @@ struct CategoryManagementScreen: View {
                   }
                 }
               ).tint(subcategory.isVerified ? .yellow : .green)
-              Button(action: { router.openSheet(.editSubcategory(subcategory: subcategory, onSubmit: { newName in
+              Button(action: { router.navigate(sheet: .editSubcategory(subcategory: subcategory, onSubmit: { newName in
                 viewModel.saveEditSubcategoryChanges(subCategory: subcategory, newName: newName)
               })) }, label: {
                 Label("Edit", systemImage: "pencil")
@@ -43,10 +43,10 @@ struct CategoryManagementScreen: View {
             Text(category.name)
             Spacer()
             Menu {
-              Button(action: { router.openSheet(.categoryServingStyle(category: category)) }, label: {
+              Button(action: { router.navigate(sheet: .categoryServingStyle(category: category)) }, label: {
                 Label("Edit Serving Styles", systemImage: "pencil")
               })
-              Button(action: { router.openSheet(.addSubcategory(category: category, onSubmit: { newSubcategoryName in
+              Button(action: { router.navigate(sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
                 viewModel.addSubcategory(category: category, name: newSubcategoryName)
               })) }, label: {
                 Label("Add Subcategory", systemImage: "plus")
@@ -61,7 +61,7 @@ struct CategoryManagementScreen: View {
       }
     }
     .navigationBarTitle("Categories")
-    .navigationBarItems(trailing: Button(action: { router.openSheet(.addCategory(onSubmit: { newCategoryName in
+    .navigationBarItems(trailing: Button(action: { router.navigate(sheet: .addCategory(onSubmit: { newCategoryName in
       viewModel.addCategory(name: newCategoryName)
     })) }, label: {
       Label("Add Category", systemImage: "plus")

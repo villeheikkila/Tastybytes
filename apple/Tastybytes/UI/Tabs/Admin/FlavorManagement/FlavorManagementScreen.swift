@@ -24,7 +24,7 @@ struct FlavorManagementScreen: View {
     }
     .navigationBarTitle("Flavors")
     .navigationBarItems(
-      trailing: Button(role: .destructive, action: { router.openSheet(.newFlavor(onSubmit: { newFlavor in
+      trailing: Button(role: .destructive, action: { router.navigate(sheet: .newFlavor(onSubmit: { newFlavor in
         viewModel.addFlavor(name: newFlavor)
       })) }, label: {
         Label("Add flavors", systemImage: "plus")

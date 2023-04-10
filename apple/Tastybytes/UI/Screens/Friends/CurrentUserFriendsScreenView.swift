@@ -106,7 +106,7 @@ struct CurrentUserFriendsScreen: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: { router.openSheet(.nameTag(onSuccess: { profileId in
+      Button(action: { router.navigate(sheet: .nameTag(onSuccess: { profileId in
         friendManager.sendFriendRequest(receiver: profileId, onSuccess: {
           hapticManager.trigger(.notification(.success))
           toastManager.toggle(.success("Friend Request Sent!"))
@@ -120,7 +120,7 @@ struct CurrentUserFriendsScreen: View {
           .imageScale(.large)
       })
 
-      Button(action: { router.openSheet(.userSheet(mode: .add, onSubmit: {
+      Button(action: { router.navigate(sheet: .userSheet(mode: .add, onSubmit: {
         toastManager.toggle(.success("Friend Request Sent!"))
       })) }, label: {
         Label("Add friend", systemImage: "plus")

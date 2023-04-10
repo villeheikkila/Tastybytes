@@ -54,7 +54,7 @@ struct ProductItemView: View {
             view.contentShape(Rectangle())
               .accessibilityAddTraits(.isLink)
               .onTapGesture {
-                router.navigate(to: .company(product.subBrand.brand.brandOwner), resetStack: false)
+                router.navigate(screen: .company(product.subBrand.brand.brandOwner), resetStack: false)
               }
           })
 

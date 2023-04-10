@@ -33,7 +33,7 @@ struct CheckInScreen: View {
         }
 
         if viewModel.checkIn.profile.id == profileManager.getId() {
-          Button(action: { router.openSheet(.checkIn(viewModel.checkIn, onUpdate: { updatedCheckIn in
+          Button(action: { router.navigate(sheet: .checkIn(viewModel.checkIn, onUpdate: { updatedCheckIn in
             viewModel.updateCheckIn(updatedCheckIn)
           })) }, label: {
             Label("Edit", systemImage: "pencil")
