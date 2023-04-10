@@ -18,6 +18,13 @@ enum Screen: Hashable {
   case verificationScreen
   case duplicateProducts
   case categoryManagement
+  case profileSettings
+  case accountSettings
+  case applicationSettings
+  case appIcon
+  case blockedUsers
+  case contributions
+  case about
 
   @ViewBuilder
   func view(_ client: Client) -> some View {
@@ -29,7 +36,7 @@ enum Screen: Hashable {
     case .currentUserFriends:
       CurrentUserFriendsScreen(client)
     case .settings:
-      SettingsScreen(client)
+      SettingsScreen()
     case let .location(location):
       LocationScreen(client, location: location)
     case let .profileProducts(profile):
@@ -57,6 +64,20 @@ enum Screen: Hashable {
       DuplicateProductScreen(client)
     case .categoryManagement:
       CategoryManagementScreen(client)
+    case .profileSettings:
+      ProfileSettingsScreen(client)
+    case .accountSettings:
+      AccountSettingsScreen(client)
+    case .applicationSettings:
+      ApplicationSettingsScreen(client)
+    case .appIcon:
+      AppIconScreen()
+    case .blockedUsers:
+      BlockedUsersScreen(client)
+    case .contributions:
+      ContributionsScreen(client)
+    case .about:
+      AboutScreen(client)
     }
   }
 }

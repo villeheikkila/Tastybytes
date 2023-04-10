@@ -59,4 +59,8 @@ class ProfileManager: ObservableObject {
       colorScheme = nil
     }
   }
+
+  func logOut() async {
+    await client.auth.logOut()
+  }
 }

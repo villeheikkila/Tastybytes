@@ -1,58 +1,47 @@
 import SwiftUI
 
 struct SettingsScreen: View {
-  let client: Client
-
-  init(_ client: Client) {
-    self.client = client
-  }
+  @EnvironmentObject private var profileManager: ProfileManager
 
   var body: some View {
     List {
       Section {
-        NavigationLink(destination: ProfileSettingsScreen(client)) {
+        RouteLink(to: .profileSettings) {
           Label("Profile", systemImage: "person.crop.circle")
         }
-
-        NavigationLink(destination: AccountSettingsScreen(client)) {
+        RouteLink(to: .accountSettings) {
           Label("Account", systemImage: "gear")
         }
-
-        NavigationLink(destination: ApplicationSettingsScreen(client)) {
+        RouteLink(to: .applicationSettings) {
           Label("Application", systemImage: "app.badge.checkmark.fill")
         }
-
-        NavigationLink(destination: AppIconScreen()) {
+        RouteLink(to: .appIcon) {
           Label("App Icon", systemImage: "app.fill")
         }
-
-        NavigationLink(destination: BlockedUsersScreen(client)) {
+        RouteLink(to: .blockedUsers) {
           Label("Blocked Users", systemImage: "person.fill.xmark")
         }
-
-        NavigationLink(destination: ContributionsScreen(client)) {
+        RouteLink(to: .contributions) {
           Label("Contributions", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
       }
 
       Section {
-        NavigationLink(destination: AboutScreen(client)) {
+        RouteLink(to: .about) {
           Label("About", systemImage: "info.circle")
         }
       }
 
       Section {
-        Button(action: logOut) {
+        ProgressButton(action: {
+          await profileManager.logOut()
+        }, label: {
           Label("Log Out", systemImage: "arrow.uturn.left")
             .fontWeight(.medium)
-        }
+        })
       }
     }
     .navigationBarTitle("Preferences")
     .navigationBarTitleDisplayMode(.inline)
-  }
-
-  func logOut() {
-    Task { await client.auth.logOut() }
   }
 }
