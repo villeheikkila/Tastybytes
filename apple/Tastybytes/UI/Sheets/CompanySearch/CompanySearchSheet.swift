@@ -46,8 +46,8 @@ struct CompanySearchSheet: View {
         case .add:
           Section {
             TextField("Name", text: $viewModel.companyName)
-            Button("Create") {
-              viewModel.createNewCompany(onSuccess: { company in
+            ProgressButton("Create") {
+              await viewModel.createNewCompany(onSuccess: { company in
                 onSelect(company, true)
                 dismiss()
               })

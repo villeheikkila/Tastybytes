@@ -35,8 +35,8 @@ struct BrandSheet: View {
       if profileManager.hasPermission(.canCreateBrands) {
         Section {
           TextField("Name", text: $viewModel.brandName)
-          Button("Create") {
-            viewModel.createNewBrand(brandOwner) { brand in
+          ProgressButton("Create") {
+            await viewModel.createNewBrand(brandOwner) { brand in
               onSelect(brand, true)
               dismiss()
             }
@@ -52,7 +52,7 @@ struct BrandSheet: View {
       Text("Cancel").bold()
     }))
     .task {
-      viewModel.loadBrands(brandOwner)
+      await viewModel.loadBrands(brandOwner)
     }
   }
 }

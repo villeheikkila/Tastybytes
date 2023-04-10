@@ -49,18 +49,14 @@ extension CompanySearchSheet {
       }
     }
 
-    func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) {
+    func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) async {
       let newCompany = Company.NewRequest(name: companyName)
-      isLoading = true
-      Task {
-        switch await client.company.insert(newCompany: newCompany) {
-        case let .success(newCompany):
-          onSuccess(newCompany)
-        case let .failure(error):
-          logger.error("failed to create new company with name '\(self.companyName)': \(error.localizedDescription)")
-        }
+      switch await client.company.insert(newCompany: newCompany) {
+      case let .success(newCompany):
+        onSuccess(newCompany)
+      case let .failure(error):
+        logger.error("failed to create new company': \(error.localizedDescription)")
       }
-      isLoading = false
     }
   }
 }
