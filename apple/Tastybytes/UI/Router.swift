@@ -43,6 +43,22 @@ struct InitializeRouter<Content: View>: View {
   }
 }
 
+struct RouteLink<Label: View>: View {
+  let screen: Screen
+  let label: Label
+
+  init(screen: Screen, @ViewBuilder label: () -> Label) {
+    self.screen = screen
+    self.label = label()
+  }
+
+  var body: some View {
+    NavigationLink(value: screen) {
+      label
+    }
+  }
+}
+
 @MainActor
 class Router: ObservableObject {
   private let logger = getLogger(category: "Router")
