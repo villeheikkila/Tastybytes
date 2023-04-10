@@ -88,10 +88,12 @@ struct CurrentUserFriendsScreen: View {
     .toolbar {
       toolbarContent
     }
-    .confirmationDialog("Delete Friend Confirmation",
-                        isPresented: $showRemoveFriendConfirmation,
-                        presenting: friendToBeRemoved)
-    { presenting in
+    .confirmationDialog(
+      "Remove user from your friends, you will no longer be able to see each other's check-ins on your activity feed nor be able to tag each other on check-ins",
+      isPresented: $showRemoveFriendConfirmation,
+      titleVisibility: .visible,
+      presenting: friendToBeRemoved
+    ) { presenting in
       Button(
         "Remove \(presenting.getFriend(userId: profileManager.getId()).preferredName) from friends",
         role: .destructive,

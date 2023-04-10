@@ -47,12 +47,13 @@ struct CheckInScreen: View {
           .labelStyle(.iconOnly)
       }
     )
-    .confirmationDialog("Delete Check-in Confirmation",
+    .confirmationDialog("Are you sure you want to delete check-in? The data will be permanently lost.",
                         isPresented: $viewModel.showDeleteConfirmation,
+                        titleVisibility: .visible,
                         presenting: viewModel.checkIn)
     { presenting in
       Button(
-        "Delete the check-in for \(presenting.product.getDisplayName(.fullName))",
+        "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
         role: .destructive,
         action: {
           viewModel.deleteCheckIn(onDelete: {

@@ -73,12 +73,13 @@ struct CategoryManagementScreen: View {
         await viewModel.loadCategories()
       }
     }
-    .confirmationDialog("Delete Subcategory Confirmation",
+    .confirmationDialog("Are you sure you want to delete subcategory?",
                         isPresented: $viewModel.showDeleteSubcategoryConfirmation,
+                        titleVisibility: .visible,
                         presenting: viewModel.deleteSubcategory)
     { presenting in
       Button(
-        "Delete \(presenting.name) Subcategory",
+        "Delete \(presenting.name)",
         role: .destructive,
         action: { viewModel.deleteSubcategories() }
       )

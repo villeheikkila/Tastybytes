@@ -137,12 +137,13 @@ struct BrandScreen: View {
         hapticManager.trigger(.notification(.success))
       })
     }
-    .confirmationDialog("Delete Sub-brand",
+    .confirmationDialog("Are you sure you want to delete sub-brand and all related products?",
                         isPresented: $viewModel.showDeleteSubBrandConfirmation,
+                        titleVisibility: .visible,
                         presenting: viewModel.toDeleteSubBrand)
     { presenting in
       Button(
-        "Delete \(presenting.name ?? "default sub-brand") and all related products",
+        "Delete \(presenting.name ?? "default sub-brand")",
         role: .destructive,
         action: {
           viewModel.deleteSubBrand()
@@ -150,11 +151,12 @@ struct BrandScreen: View {
         }
       )
     }
-    .confirmationDialog("Delete Brand Confirmation",
+    .confirmationDialog("Are you sure you want to delete brand and all related sub-brands and products?",
                         isPresented: $viewModel.showDeleteBrandConfirmationDialog,
+                        titleVisibility: .visible,
                         presenting: viewModel.brand)
     { presenting in
-      Button("Delete \(presenting.name) Brand", role: .destructive, action: {
+      Button("Delete \(presenting.name)", role: .destructive, action: {
         viewModel.deleteBrand(onDelete: {
           router.reset()
           hapticManager.trigger(.notification(.success))
@@ -223,7 +225,7 @@ struct BrandScreen: View {
       ReportButton(entity: .brand(viewModel.brand))
 
       if profileManager.hasPermission(.canDeleteBrands) {
-        Button(role: .destructive, action: { viewModel.showDeleteBrandConfirmationDialog.toggle() }, label: {
+        Button(role: .destructive, action: { viewModel.showDeleteBrandConfirmationDialog = true }, label: {
           Label("Delete", systemImage: "trash.fill")
         })
         .disabled(viewModel.brand.isVerified)

@@ -38,6 +38,7 @@ struct BrandSheet: View {
           Button("Create") {
             viewModel.createNewBrand(brandOwner) { brand in
               onSelect(brand, true)
+              dismiss()
             }
           }
           .disabled(!viewModel.brandName.isValidLength(.normal))

@@ -31,11 +31,12 @@ struct AccountSettingsScreen: View {
       }
     }
     .confirmationDialog(
-      "Delete Account Confirmation",
-      isPresented: $viewModel.showDeleteConfirmation
+      "Are you sure you want to permanently delete your account? All data will be lost.",
+      isPresented: $viewModel.showDeleteConfirmation,
+      titleVisibility: .visible
     ) {
       Button(
-        "Are you sure you want to permanently delete your account? All data will be lost.",
+        "Delete Account",
         role: .destructive,
         action: {
           viewModel.deleteCurrentAccount(onError: { message in

@@ -32,8 +32,11 @@ struct SubBrandSheet: View {
       if profileManager.hasPermission(.canCreateBrands) {
         Section {
           TextField("Name", text: $viewModel.subBrandName)
-          Button("Create") {
-            viewModel.createNewSubBrand(onSelect)
+          ProgressButton("Create") {
+            await viewModel.createNewSubBrand { subBrand, createdNew in
+              onSelect(subBrand, createdNew)
+              dismiss()
+            }
           }
           .disabled(!viewModel.subBrandName.isValidLength(.normal))
         } header: {

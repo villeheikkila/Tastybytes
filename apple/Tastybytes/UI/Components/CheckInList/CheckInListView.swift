@@ -44,12 +44,13 @@ struct CheckInListView<Header>: View where Header: View {
       .onAppear {
         scrollProxy = proxy
       }
-      .confirmationDialog("Delete Check-in Confirmation",
+      .confirmationDialog("Are you sure you want to delete check-in? The data will be permanently lost.",
                           isPresented: $viewModel.showDeleteCheckInConfirmationDialog,
+                          titleVisibility: .visible,
                           presenting: viewModel.showDeleteConfirmationFor)
       { presenting in
         Button(
-          "Delete the check-in for \(presenting.product.getDisplayName(.fullName))",
+          "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
           role: .destructive,
           action: {
             viewModel.deleteCheckIn(checkIn: presenting)

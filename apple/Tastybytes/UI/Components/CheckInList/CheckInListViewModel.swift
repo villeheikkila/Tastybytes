@@ -53,7 +53,6 @@ extension CheckInListView {
       Task {
         switch await client.checkIn.delete(id: checkIn.id) {
         case .success:
-          showDeleteCheckInConfirmationDialog = false
           withAnimation {
             checkIns.remove(object: checkIn)
           }

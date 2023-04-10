@@ -18,20 +18,15 @@ extension SubBrandSheet {
     }
 
     func createNewSubBrand(
-      _ onSelect: @escaping (_ subBrand: SubBrand, _ createdNew: Bool) -> Void
-    ) {
-      Task {
-        switch await client.subBrand
-          .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brandWithSubBrands.id))
-        {
-        case let .success(newSubBrand):
-          onSelect(newSubBrand, true)
-        case let .failure(error):
-          logger
-            .error(
-              "saving sub-brand \(self.subBrandName) failed: \(error.localizedDescription)"
-            )
-        }
+      onSelect: @escaping (_ subBrand: SubBrand, _ createdNew: Bool) -> Void
+    ) async {
+      switch await client.subBrand
+        .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brandWithSubBrands.id))
+      {
+      case let .success(newSubBrand):
+        onSelect(newSubBrand, true)
+      case let .failure(error):
+        logger.error("saving sub-brand failed: \(error.localizedDescription)")
       }
     }
   }

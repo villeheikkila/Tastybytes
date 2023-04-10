@@ -37,10 +37,12 @@ struct CategoryServingStyleSheet: View {
         Label("Add Barcode", systemImage: "plus").bold()
       }
     ))
-    .confirmationDialog("Delete Serving Style",
-                        isPresented: $viewModel.showDeleteServingStyleConfirmation,
-                        presenting: viewModel.toDeleteServingStyle)
-    { presenting in
+    .confirmationDialog(
+      "Are you sure you want to delete the serving style? The serving style information for affected check-ins will be permanently lost",
+      isPresented: $viewModel.showDeleteServingStyleConfirmation,
+      titleVisibility: .visible,
+      presenting: viewModel.toDeleteServingStyle
+    ) { presenting in
       Button(
         "Remove \(presenting.name) from \(viewModel.category.name)",
         role: .destructive,

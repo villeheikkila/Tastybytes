@@ -55,8 +55,9 @@ struct EditSubBrandSheet: View {
     .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
       AlertToast(type: .complete(.green), title: "Sub-brand updated!")
     }
-    .confirmationDialog("Merge Sub-brands Confirmation",
+    .confirmationDialog("Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted",
                         isPresented: $viewModel.showMergeSubBrandsConfirmation,
+                        titleVisibility: .visible,
                         presenting: viewModel.mergeTo)
     { presenting in
       Button(

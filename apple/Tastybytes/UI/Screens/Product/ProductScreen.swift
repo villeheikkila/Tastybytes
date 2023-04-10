@@ -63,12 +63,13 @@ struct ProductScreen: View {
         viewModel.verifyProduct(isVerified: false)
       })
     }
-    .confirmationDialog("Delete Product Confirmation",
+    .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
                         isPresented: $viewModel.showDeleteProductConfirmationDialog,
+                        titleVisibility: .visible,
                         presenting: viewModel.product)
     { presenting in
       Button(
-        "Delete \(presenting.getDisplayName(.fullName)) Product",
+        "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
         action: { viewModel.deleteProduct(onDelete: {
           hapticManager.trigger(.notification(.success))

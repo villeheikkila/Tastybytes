@@ -34,12 +34,14 @@ struct LocationScreen: View {
     .toolbar {
       toolbarContent
     }
-    .confirmationDialog("Delete Location Confirmation",
-                        isPresented: $viewModel.showDeleteLocationConfirmation,
-                        presenting: viewModel.location)
-    { presenting in
+    .confirmationDialog(
+      "Are you sure you want to delete the location, the location information for check-ins with this location will be permanently lost",
+      isPresented: $viewModel.showDeleteLocationConfirmation,
+      titleVisibility: .visible,
+      presenting: viewModel.location
+    ) { presenting in
       Button(
-        "Delete \(presenting.name) location",
+        "Delete \(presenting.name)",
         role: .destructive,
         action: {
           viewModel.deleteLocation(presenting, onDelete: {
