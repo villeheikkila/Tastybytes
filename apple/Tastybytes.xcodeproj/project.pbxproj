@@ -202,7 +202,12 @@
 		5CD8D35329CA5B2D001C5930 /* FriendManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD8D35229CA5B2D001C5930 /* FriendManager.swift */; };
 		5CD8D35529CDF58F001C5930 /* AppDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD8D35429CDF58F001C5930 /* AppDataManager.swift */; };
 		5CDC9F8529E136A500B6082F /* CheckInEntityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F8429E136A500B6082F /* CheckInEntityView.swift */; };
-		5CDC9F8829E350F800B6082F /* NewFlavorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F8729E350F800B6082F /* NewFlavorSheet.swift */; };
+		5CDC9F8A29E3D89600B6082F /* AddCategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F8929E3D89600B6082F /* AddCategorySheet.swift */; };
+		5CDC9F8C29E3D8AB00B6082F /* AddSubcategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F8B29E3D8AB00B6082F /* AddSubcategorySheet.swift */; };
+		5CDC9F9029E3D8F500B6082F /* EditSubcategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F8F29E3D8F500B6082F /* EditSubcategorySheet.swift */; };
+		5CDC9F9329E3D91600B6082F /* NewFlavorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F9229E3D91600B6082F /* NewFlavorSheet.swift */; };
+		5CDC9F9629E3DFB000B6082F /* CompanyEditSuggestionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F9529E3DFB000B6082F /* CompanyEditSuggestionSheet.swift */; };
+		5CDC9F9929E3E1EE00B6082F /* EditCompanySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F9829E3E1EE00B6082F /* EditCompanySheet.swift */; };
 		5CE9008C291FCB71003DE697 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008B291FCB71003DE697 /* SplashScreenView.swift */; };
 		5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */; };
 		5CE90091292101C8003DE697 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE90090292101C8003DE697 /* AboutScreen.swift */; };
@@ -424,7 +429,12 @@
 		5CD8D35229CA5B2D001C5930 /* FriendManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendManager.swift; sourceTree = "<group>"; };
 		5CD8D35429CDF58F001C5930 /* AppDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataManager.swift; sourceTree = "<group>"; };
 		5CDC9F8429E136A500B6082F /* CheckInEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInEntityView.swift; sourceTree = "<group>"; };
-		5CDC9F8729E350F800B6082F /* NewFlavorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFlavorSheet.swift; sourceTree = "<group>"; };
+		5CDC9F8929E3D89600B6082F /* AddCategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategorySheet.swift; sourceTree = "<group>"; };
+		5CDC9F8B29E3D8AB00B6082F /* AddSubcategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubcategorySheet.swift; sourceTree = "<group>"; };
+		5CDC9F8F29E3D8F500B6082F /* EditSubcategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubcategorySheet.swift; sourceTree = "<group>"; };
+		5CDC9F9229E3D91600B6082F /* NewFlavorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFlavorSheet.swift; sourceTree = "<group>"; };
+		5CDC9F9529E3DFB000B6082F /* CompanyEditSuggestionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyEditSuggestionSheet.swift; sourceTree = "<group>"; };
+		5CDC9F9829E3E1EE00B6082F /* EditCompanySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCompanySheet.swift; sourceTree = "<group>"; };
 		5CE9008B291FCB71003DE697 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenManager.swift; sourceTree = "<group>"; };
 		5CE9008F291FE7C1003DE697 /* TastybytesRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TastybytesRelease.entitlements; sourceTree = "<group>"; };
@@ -779,21 +789,26 @@
 		5C46E8652911E2CD0008F142 /* Sheets */ = {
 			isa = PBXGroup;
 			children = (
-				5CDC9F8629E350E700B6082F /* New Group */,
+				5CDC9F9729E3E1DB00B6082F /* EditCompany */,
+				5CDC9F9429E3DFA100B6082F /* CompanyEditSuggestion */,
+				5CDC9F9129E3D90A00B6082F /* NewFlavor */,
+				5CDC9F8E29E3D8D800B6082F /* EditSubcategory */,
+				5CDC9F8D29E3D8B100B6082F /* AddSubcategory */,
+				5CDC9F8629E350E700B6082F /* AddCategory */,
 				5CB4E02829DF3A0300135ADA /* ReportSheet */,
 				5C61E84229BFBDB500D10AA3 /* ServingStyle */,
 				5C2146E929A96BEB0005422D /* NameTag */,
 				5C353CBA29A23C790067C4EE /* ProductFilter */,
 				5C7C35B7299AC723009A3C09 /* EditSubBrand */,
 				5C7C35B4299AC6FE009A3C09 /* EditBrand */,
-				5C7C35B1299AC6DA009A3C09 /* Merge */,
+				5C7C35B1299AC6DA009A3C09 /* DuplicateProduct */,
 				5C7C35AE299AC682009A3C09 /* LocationSearch */,
 				5C7C35AD299AC66B009A3C09 /* BarcodeScanner */,
 				5C7C35AA299AC641009A3C09 /* Brand */,
 				5C7C35A7299AC613009A3C09 /* Flavor */,
 				5C7C35A4299AC5EE009A3C09 /* Friend */,
 				5C7C359E299AC548009A3C09 /* CompanySearch */,
-				5C7C359B299AC519009A3C09 /* BarcodeManagementSheet */,
+				5C7C359B299AC519009A3C09 /* BarcodeManagement */,
 				5C7C3595299AC49A009A3C09 /* CheckIn */,
 				5C7C3594299AC455009A3C09 /* Subcategory */,
 				5C7C3598299AC4EB009A3C09 /* SubBrand */,
@@ -963,13 +978,13 @@
 			path = SubBrand;
 			sourceTree = "<group>";
 		};
-		5C7C359B299AC519009A3C09 /* BarcodeManagementSheet */ = {
+		5C7C359B299AC519009A3C09 /* BarcodeManagement */ = {
 			isa = PBXGroup;
 			children = (
 				5C25C68D29991BEF00C07953 /* BarcodeManagementSheet.swift */,
 				5C7C359C299AC530009A3C09 /* BarcodeManagementSheetViewModel.swift */,
 			);
-			path = BarcodeManagementSheet;
+			path = BarcodeManagement;
 			sourceTree = "<group>";
 		};
 		5C7C359E299AC548009A3C09 /* CompanySearch */ = {
@@ -1002,7 +1017,6 @@
 			isa = PBXGroup;
 			children = (
 				5C919E1F28FF024A0055CFD2 /* FlavorSheet.swift */,
-				5CDC9F8729E350F800B6082F /* NewFlavorSheet.swift */,
 			);
 			path = Flavor;
 			sourceTree = "<group>";
@@ -1034,13 +1048,13 @@
 			path = LocationSearch;
 			sourceTree = "<group>";
 		};
-		5C7C35B1299AC6DA009A3C09 /* Merge */ = {
+		5C7C35B1299AC6DA009A3C09 /* DuplicateProduct */ = {
 			isa = PBXGroup;
 			children = (
 				5CC6B9A429AE9DB000A62158 /* DuplicateProductSheet.swift */,
 				5C7C35B2299AC6EC009A3C09 /* DuplicateProductSheetViewModel.swift */,
 			);
-			path = Merge;
+			path = DuplicateProduct;
 			sourceTree = "<group>";
 		};
 		5C7C35B4299AC6FE009A3C09 /* EditBrand */ = {
@@ -1267,11 +1281,52 @@
 			path = Screens;
 			sourceTree = "<group>";
 		};
-		5CDC9F8629E350E700B6082F /* New Group */ = {
+		5CDC9F8629E350E700B6082F /* AddCategory */ = {
 			isa = PBXGroup;
 			children = (
+				5CDC9F8929E3D89600B6082F /* AddCategorySheet.swift */,
 			);
-			path = "New Group";
+			path = AddCategory;
+			sourceTree = "<group>";
+		};
+		5CDC9F8D29E3D8B100B6082F /* AddSubcategory */ = {
+			isa = PBXGroup;
+			children = (
+				5CDC9F8B29E3D8AB00B6082F /* AddSubcategorySheet.swift */,
+			);
+			path = AddSubcategory;
+			sourceTree = "<group>";
+		};
+		5CDC9F8E29E3D8D800B6082F /* EditSubcategory */ = {
+			isa = PBXGroup;
+			children = (
+				5CDC9F8F29E3D8F500B6082F /* EditSubcategorySheet.swift */,
+			);
+			path = EditSubcategory;
+			sourceTree = "<group>";
+		};
+		5CDC9F9129E3D90A00B6082F /* NewFlavor */ = {
+			isa = PBXGroup;
+			children = (
+				5CDC9F9229E3D91600B6082F /* NewFlavorSheet.swift */,
+			);
+			path = NewFlavor;
+			sourceTree = "<group>";
+		};
+		5CDC9F9429E3DFA100B6082F /* CompanyEditSuggestion */ = {
+			isa = PBXGroup;
+			children = (
+				5CDC9F9529E3DFB000B6082F /* CompanyEditSuggestionSheet.swift */,
+			);
+			path = CompanyEditSuggestion;
+			sourceTree = "<group>";
+		};
+		5CDC9F9729E3E1DB00B6082F /* EditCompany */ = {
+			isa = PBXGroup;
+			children = (
+				5CDC9F9829E3E1EE00B6082F /* EditCompanySheet.swift */,
+			);
+			path = EditCompany;
 			sourceTree = "<group>";
 		};
 		5CFB562D28F5969300F13A1E /* Components */ = {
@@ -1495,12 +1550,15 @@
 				5C663F352932AEB9006F9A97 /* CategoryNameView.swift in Sources */,
 				5C353CC229A24C5F0067C4EE /* ContributionsScreenView.swift in Sources */,
 				5C20A51229AA6A5000ABBA74 /* FlavorManagementScreen.swift in Sources */,
+				5CDC9F8A29E3D89600B6082F /* AddCategorySheet.swift in Sources */,
 				5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */,
 				5C61E84129BFA82D00D10AA3 /* ServingStyleManagementSheet.swift in Sources */,
+				5CDC9F9029E3D8F500B6082F /* EditSubcategorySheet.swift in Sources */,
 				5CA7A53729A0E7750066F604 /* ProductFilterSheet.swift in Sources */,
 				5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */,
 				5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */,
 				5C663F3329322016006F9A97 /* ServingStyleLabelView.swift in Sources */,
+				5CDC9F9929E3E1EE00B6082F /* EditCompanySheet.swift in Sources */,
 				5C0E365429279B240072EFBD /* Barcode.swift in Sources */,
 				5C7C35D4299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift in Sources */,
 				5C7C35B3299AC6EC009A3C09 /* DuplicateProductSheetViewModel.swift in Sources */,
@@ -1510,6 +1568,7 @@
 				5CED432C28FD69DE003F8194 /* CompanySearchSheet.swift in Sources */,
 				5CD10A5728F98D490001CFC2 /* Product.swift in Sources */,
 				5C7C3585299AC166009A3C09 /* CheckInCommentView.swift in Sources */,
+				5CDC9F8C29E3D8AB00B6082F /* AddSubcategorySheet.swift in Sources */,
 				5CD10A5328F98CFC0001CFC2 /* Brand.swift in Sources */,
 				5CB4E02A29DF3A1700135ADA /* ReportSheet.swift in Sources */,
 				5C323E93298C50D400B005A9 /* DoubleExtensions.swift in Sources */,
@@ -1518,6 +1577,7 @@
 				5C0E36562927F09F0072EFBD /* CameraView.swift in Sources */,
 				5C323E8F298C500400B005A9 /* URLExtensions.swift in Sources */,
 				5C367EB629A3F87C000A7149 /* AppDelegate.swift in Sources */,
+				5CDC9F9329E3D91600B6082F /* NewFlavorSheet.swift in Sources */,
 				5C7C35C1299AC986009A3C09 /* CheckInListViewModel.swift in Sources */,
 				5CB4E03229E093AA00135ADA /* ReportButtonView.swift in Sources */,
 				5CB1C24728F9B551000B0EB4 /* CheckInCommentRepository.swift in Sources */,
@@ -1529,7 +1589,6 @@
 				5C61E84429BFBDFB00D10AA3 /* ServingStyleManagementViewModel.swift in Sources */,
 				5C25C672299561BD00C07953 /* SettingsTab.swift in Sources */,
 				5CC2FE8F29196A5D002BDF83 /* LocationSearchSheet.swift in Sources */,
-				5CDC9F8829E350F800B6082F /* NewFlavorSheet.swift in Sources */,
 				5C0E365A29296FCB0072EFBD /* SubcategoryRepository.swift in Sources */,
 				5CA7A535299E8ECB0066F604 /* DismissableSheetView.swift in Sources */,
 				5C20A51029AA5A0500ABBA74 /* AdminTab.swift in Sources */,
@@ -1556,6 +1615,7 @@
 				5C25AEB62903FBDE00793607 /* Role.swift in Sources */,
 				5C25C68C2996D22400C07953 /* EditSubBrandSheet.swift in Sources */,
 				5C919E2028FF024A0055CFD2 /* FlavorSheet.swift in Sources */,
+				5CDC9F9629E3DFB000B6082F /* CompanyEditSuggestionSheet.swift in Sources */,
 				5C323E8D298C4D7300B005A9 /* StringExtensions.swift in Sources */,
 				5C7C35B6299AC70E009A3C09 /* EditBrandSheetViewModel.swift in Sources */,
 				5C12B4372902CA04001EE549 /* NotificationTab.swift in Sources */,

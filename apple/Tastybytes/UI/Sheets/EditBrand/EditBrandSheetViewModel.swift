@@ -2,16 +2,10 @@ import PhotosUI
 import SwiftUI
 
 extension EditBrandSheet {
-  enum Sheet: Identifiable {
-    var id: Self { self }
-    case brandOwner
-  }
-
   @MainActor
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "EditBrandSheet")
     let client: Client
-    @Published var activeSheet: Sheet?
     @Published var name: String
     @Published var brandOwner: Company
     @Published var showToast = false

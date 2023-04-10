@@ -1,42 +1,13 @@
 import SwiftUI
 
 extension CategoryManagementScreen {
-  enum Sheet: Identifiable {
-    var id: Self { self }
-    case addCategory
-    case addSubcategory
-    case editSubcategory
-    case editServingStyles
-  }
-
   @MainActor
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CategoryManagementScreen")
 
     let client: Client
     @Published var categories = [Category.JoinedSubcategoriesServingStyles]()
-    @Published var activeSheet: Sheet?
-    @Published var toAddSubcategory: Category.JoinedSubcategoriesServingStyles? {
-      didSet {
-        if toAddSubcategory != nil {
-          activeSheet = .addSubcategory
-        } else {
-          newSubcategoryName = ""
-        }
-      }
-    }
-
-    @Published var newSubcategoryName = ""
     @Published var verifySubcategory: Subcategory?
-    @Published var editSubcategory: Subcategory? {
-      didSet {
-        activeSheet = .editSubcategory
-        editSubcategoryName = editSubcategory?.name ?? ""
-      }
-    }
-
-    @Published var editSubcategoryName: String = ""
-
     @Published var deleteSubcategory: Subcategory? {
       didSet {
         showDeleteSubcategoryConfirmation = true
@@ -44,13 +15,6 @@ extension CategoryManagementScreen {
     }
 
     @Published var showDeleteSubcategoryConfirmation = false
-    @Published var editServingStyle: Category.JoinedSubcategoriesServingStyles? {
-      didSet {
-        activeSheet = .editServingStyles
-      }
-    }
-
-    @Published var newCategoryName = ""
 
     init(_ client: Client) {
       self.client = client
@@ -70,20 +34,18 @@ extension CategoryManagementScreen {
       }
     }
 
-    func saveEditSubcategoryChanges() {
-      guard let editSubcategory else { return }
+    func saveEditSubcategoryChanges(subCategory: Subcategory, newName: String) {
       Task {
         switch await client.subcategory
           .update(updateRequest: Subcategory
-            .UpdateRequest(id: editSubcategory.id, name: editSubcategoryName))
+            .UpdateRequest(id: subCategory.id, name: newName))
         {
         case .success:
           await loadCategories()
-          activeSheet = nil
         case let .failure(error):
           logger
             .error(
-              "failed to update subcategory \(editSubcategory.id): \(error.localizedDescription)"
+              "failed to update subcategory \(subCategory.id): \(error.localizedDescription)"
             )
         }
       }
@@ -102,34 +64,30 @@ extension CategoryManagementScreen {
       }
     }
 
-    func addCategory() {
+    func addCategory(name: String) {
       Task {
-        switch await client.category.insert(newCategory: Category.NewRequest(name: newCategoryName)) {
+        switch await client.category.insert(newCategory: Category.NewRequest(name: name)) {
         case .success:
           await loadCategories()
         case let .failure(error):
           logger
             .error(
-              "failed to add new category with name \(self.newCategoryName): \(error.localizedDescription)"
+              "failed to add new category with name \(name): \(error.localizedDescription)"
             )
         }
       }
     }
 
-    func addSubcategory() {
-      guard let toAddSubcategory else { return }
+    func addSubcategory(category: Category.JoinedSubcategoriesServingStyles, name: String) {
       Task {
         switch await client.subcategory
           .insert(newSubcategory: Subcategory
-            .NewRequest(name: newSubcategoryName, category: toAddSubcategory))
+            .NewRequest(name: name, category: category))
         {
         case .success:
           await loadCategories()
         case let .failure(error):
-          logger
-            .error(
-              "failed to create subcategory '\(self.newCategoryName)' to category \(toAddSubcategory.name): \(error.localizedDescription)"
-            )
+          logger.error("failed to create subcategory '\(name)' to category \(category.name): \(error.localizedDescription)")
         }
       }
     }

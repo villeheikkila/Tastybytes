@@ -5,6 +5,7 @@ import SwiftUI
 struct CompanyScreen: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var router: Router
   @StateObject private var viewModel: ViewModel
   @Environment(\.dismiss) private var dismiss
@@ -45,16 +46,6 @@ struct CompanyScreen: View {
     }
     .toolbar {
       toolbarContent
-    }
-    .sheet(item: $viewModel.activeSheet) { sheet in
-      NavigationStack {
-        switch sheet {
-        case .editSuggestionCompany:
-          companyEditSuggestionSheet
-        case .editCompany:
-          companyEditSheet
-        }
-      }
     }
     .confirmationDialog("Unverify Company",
                         isPresented: $viewModel.showUnverifyCompanyConfirmation,
@@ -118,11 +109,20 @@ struct CompanyScreen: View {
       }
 
       if profileManager.hasPermission(.canEditCompanies) {
-        Button(action: { viewModel.activeSheet = .editCompany }, label: {
+        Button(action: { router.openSheet(.editCompany(company: viewModel.company, onSuccess: {
+          Task {
+            await hapticManager.wrapWithHaptics {
+              await viewModel.getBrandsAndSummary()
+            }
+          }
+          toastManager.toggle(.success("Company updated"))
+        })) }, label: {
           Label("Edit", systemImage: "pencil")
         })
       } else {
-        Button(action: { viewModel.activeSheet = .editSuggestionCompany }, label: {
+        Button(action: { router.openSheet(.companyEditSuggestion(company: viewModel.company, onSubmit: {
+          toastManager.toggle(.success("Edit suggestion sent!"))
+        })) }, label: {
           Label("Edit Suggestion", systemImage: "pencil")
         })
       }
@@ -153,68 +153,6 @@ struct CompanyScreen: View {
       Label("Options menu", systemImage: "ellipsis")
         .labelStyle(.iconOnly)
     }
-  }
-
-  private var companyEditSuggestionSheet: some View {
-    Form {
-      Section {
-        TextField("Name", text: $viewModel.newCompanyNameSuggestion)
-        Button("Send") {
-          viewModel.sendCompanyEditSuggestion()
-        }
-        .disabled(!viewModel.newCompanyNameSuggestion.isValidLength(.normal))
-      } header: {
-        Text("What should the company be called?")
-      }
-    }
-    .navigationTitle("Edit suggestion")
-  }
-
-  private var companyEditSheet: some View {
-    Form {
-      if profileManager.hasPermission(.canAddCompanyLogo) {
-        Section {
-          PhotosPicker(
-            selection: $viewModel.selectedItem,
-            matching: .images,
-            photoLibrary: .shared()
-          ) {
-            if let logoUrl = viewModel.company.logoUrl {
-              CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
-                image
-                  .resizable()
-                  .aspectRatio(contentMode: .fill)
-                  .frame(width: 52, height: 52)
-                  .accessibility(hidden: true)
-              } placeholder: {
-                Image(systemName: "photo")
-                  .accessibility(hidden: true)
-              }
-            } else {
-              Image(systemName: "photo")
-                .accessibility(hidden: true)
-            }
-          }
-        } header: {
-          Text("Logo")
-        }
-        .listRowSeparator(.hidden)
-        .listRowBackground(Color.clear)
-      }
-      Section {
-        TextField("Name", text: $viewModel.newCompanyNameSuggestion)
-        Button("Edit") {
-          viewModel.editCompany()
-        }
-        .disabled(!viewModel.newCompanyNameSuggestion.isValidLength(.normal))
-      } header: {
-        Text("Company name")
-      }
-    }
-    .navigationTitle("Edit Company")
-    .navigationBarItems(trailing: Button(action: { dismiss() }, label: {
-      Text("Done").bold()
-    }))
   }
 
   private var companyHeader: some View {

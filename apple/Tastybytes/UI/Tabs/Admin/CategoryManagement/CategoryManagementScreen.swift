@@ -3,6 +3,7 @@ import SwiftUI
 struct CategoryManagementScreen: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var router: Router
 
   init(_ client: Client) {
     _viewModel = StateObject(wrappedValue: ViewModel(client))
@@ -27,7 +28,9 @@ struct CategoryManagementScreen: View {
                   }
                 }
               ).tint(subcategory.isVerified ? .yellow : .green)
-              Button(action: { viewModel.editSubcategory = subcategory }, label: {
+              Button(action: { router.openSheet(.editSubcategory(subcategory: subcategory, onSubmit: { newName in
+                viewModel.saveEditSubcategoryChanges(subCategory: subcategory, newName: newName)
+              })) }, label: {
                 Label("Edit", systemImage: "pencil")
               }).tint(.yellow)
               Button(role: .destructive, action: { viewModel.deleteSubcategory = subcategory }, label: {
@@ -40,10 +43,12 @@ struct CategoryManagementScreen: View {
             Text(category.name)
             Spacer()
             Menu {
-              Button(action: { viewModel.editServingStyle = category }, label: {
+              Button(action: { router.openSheet(.categoryServingStyle(category: category)) }, label: {
                 Label("Edit Serving Styles", systemImage: "pencil")
               })
-              Button(action: { viewModel.toAddSubcategory = category }, label: {
+              Button(action: { router.openSheet(.addSubcategory(category: category, onSubmit: { newSubcategoryName in
+                viewModel.addSubcategory(category: category, name: newSubcategoryName)
+              })) }, label: {
                 Label("Add Subcategory", systemImage: "plus")
               })
             } label: {
@@ -56,7 +61,9 @@ struct CategoryManagementScreen: View {
       }
     }
     .navigationBarTitle("Categories")
-    .navigationBarItems(trailing: Button(action: { viewModel.activeSheet = .addCategory }, label: {
+    .navigationBarItems(trailing: Button(action: { router.openSheet(.addCategory(onSubmit: { newCategoryName in
+      viewModel.addCategory(name: newCategoryName)
+    })) }, label: {
       Label("Add Category", systemImage: "plus")
         .labelStyle(.iconOnly)
         .bold()
@@ -65,53 +72,6 @@ struct CategoryManagementScreen: View {
       await hapticManager.wrapWithHaptics {
         await viewModel.loadCategories()
       }
-    }
-    .sheet(item: $viewModel.activeSheet) { sheet in
-      NavigationStack {
-        switch sheet {
-        case .addCategory:
-          DismissableSheet(title: "Add Category") {
-            Form {
-              TextField("Name", text: $viewModel.newCategoryName)
-              Button(action: { viewModel.addCategory() }, label: {
-                Text("Add")
-              }).disabled(viewModel.newCategoryName.isEmpty)
-            }
-          }
-        case .addSubcategory:
-          if let toAddSubcategory = viewModel.toAddSubcategory {
-            DismissableSheet(title: toAddSubcategory.name) {
-              Form {
-                Section {
-                  TextField("Name", text: $viewModel.newSubcategoryName)
-                  Button(action: { viewModel.addSubcategory() }, label: {
-                    Text("Add")
-                  }).disabled(viewModel.newSubcategoryName.isEmpty)
-                } header: {
-                  Text("Add Subcategory")
-                }
-              }
-            }.navigationBarTitleDisplayMode(.inline)
-          }
-        case .editServingStyles:
-          if let editServingStyle = viewModel.editServingStyle {
-            CategoryServingStyleSheet(viewModel.client, category: editServingStyle)
-          }
-        case .editSubcategory:
-          if let editSubcategory = viewModel.editSubcategory {
-            DismissableSheet(title: "Edit \(editSubcategory.name)") {
-              Form {
-                TextField("Name", text: $viewModel.editSubcategoryName)
-                Button(
-                  action: { viewModel.saveEditSubcategoryChanges() },
-                  label: { Text("Save changes").disabled(editSubcategory.name == viewModel.editSubcategoryName) }
-                ).disabled(viewModel.editSubcategoryName.isEmpty)
-              }
-            }
-          }
-        }
-      }.if([.editSubcategory, .addCategory, .addSubcategory].contains(sheet),
-           transform: { view in view.presentationDetents([.medium]) })
     }
     .confirmationDialog("Delete Subcategory Confirmation",
                         isPresented: $viewModel.showDeleteSubcategoryConfirmation,

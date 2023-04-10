@@ -227,10 +227,16 @@ enum Sheet: Identifiable, Equatable {
   case newFlavor(onSubmit: (_ newFlavor: String) -> Void)
   case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
                               onSelect: (_ servingStyle: ServingStyle) -> Void)
+  case categoryServingStyle(category: Category.JoinedSubcategoriesServingStyles)
+  case editSubcategory(subcategory: Subcategory, onSubmit: (_ subcategoryName: String) -> Void)
+  case addSubcategory(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) -> Void)
+  case addCategory(onSubmit: (_ newCategoryName: String) -> Void)
+  case editCompany(company: Company, onSuccess: () -> Void)
+  case companyEditSuggestion(company: Company, onSubmit: () -> Void)
 
   var detents: Set<PresentationDetent> {
     switch self {
-    case .barcodeScanner, .productFilter, .newFlavor:
+    case .barcodeScanner, .productFilter, .newFlavor, .editSubcategory, .addCategory, .addSubcategory:
       return [.medium]
     case .nameTag:
       return [.height(320)]
@@ -307,6 +313,18 @@ enum Sheet: Identifiable, Equatable {
       return "new_flavor"
     case .servingStyleManagement:
       return "serving_style_management"
+    case .categoryServingStyle:
+      return "category_serving_style"
+    case .addCategory:
+      return "add_category"
+    case .addSubcategory:
+      return "add_subcategory"
+    case .editSubcategory:
+      return "edit_subcategory"
+    case .editCompany:
+      return "edit_company"
+    case .companyEditSuggestion:
+      return "company_edit_suggestion"
     }
   }
 
@@ -371,6 +389,18 @@ enum Sheet: Identifiable, Equatable {
       NewFlavorSheet(onSubmit: onSubmit)
     case let .servingStyleManagement(pickedServingStyles: pickedServingStyles, onSelect: onSelect):
       ServingStyleManagementSheet(client, pickedServingStyles: pickedServingStyles, onSelect: onSelect)
+    case let .categoryServingStyle(category: category):
+      CategoryServingStyleSheet(client, category: category)
+    case let .editSubcategory(subcategory: subcategory, onSubmit: onSubmit):
+      EditSubcategorySheet(subcategory: subcategory, onSubmit: onSubmit)
+    case let .addSubcategory(category: category, onSubmit: onSubmit):
+      AddSubcategorySheet(category: category, onSubmit: onSubmit)
+    case let .addCategory(onSubmit: onSubmit):
+      AddCategorySheet(onSubmit: onSubmit)
+    case let .editCompany(company: company, onSuccess: onSuccess):
+      EditCompanySheet(client, company: company, onSuccess: onSuccess)
+    case let .companyEditSuggestion(company: company, onSubmit: onSubmit):
+      CompanyEditSuggestionSheet(client, company: company, onSubmit: onSubmit)
     }
   }
 }

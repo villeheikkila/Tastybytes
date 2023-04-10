@@ -2,12 +2,6 @@ import PhotosUI
 import SwiftUI
 
 extension CompanyScreen {
-  enum Sheet: Identifiable {
-    var id: Self { self }
-    case editSuggestionCompany
-    case editCompany
-  }
-
   @MainActor
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "CompanyScreen")
@@ -15,17 +9,8 @@ extension CompanyScreen {
     @Published var company: Company
     @Published var companyJoined: Company.Joined?
     @Published var summary: Summary?
-    @Published var activeSheet: Sheet?
-    @Published var newCompanyNameSuggestion = ""
     @Published var showUnverifyCompanyConfirmation = false
     @Published var showDeleteCompanyConfirmationDialog = false
-    @Published var selectedItem: PhotosPickerItem? {
-      didSet {
-        if selectedItem != nil {
-          uploadCompanyImage()
-        }
-      }
-    }
 
     init(_ client: Client, company: Company) {
       self.client = client
@@ -39,45 +24,6 @@ extension CompanyScreen {
       return []
     }
 
-    func sendCompanyEditSuggestion() {}
-
-    func editCompany() {
-      guard let companyJoined else { return }
-      Task {
-        switch await client.company
-          .update(updateRequest: Company.UpdateRequest(id: companyJoined.id, name: newCompanyNameSuggestion))
-        {
-        case let .success(updatedCompany):
-          withAnimation {
-            self.companyJoined = updatedCompany
-          }
-          self.activeSheet = nil
-        case let .failure(error):
-          logger.error("failed to edit company \(companyJoined.id): \(error.localizedDescription)")
-        }
-      }
-    }
-
-    func uploadCompanyImage() {
-      Task {
-        guard let data = await selectedItem?.getJPEG() else { return }
-        switch await client.company.uploadLogo(companyId: company.id, data: data) {
-        case let .success(fileName):
-          company = Company(
-            id: company.id,
-            name: company.name,
-            logoFile: fileName,
-            isVerified: company.isVerified
-          )
-        case let .failure(error):
-          logger
-            .error(
-              "uplodaing company logo failed: \(error.localizedDescription)"
-            )
-        }
-      }
-    }
-
     func getBrandsAndSummary() async {
       Task {
         async let companyPromise = client.company.getJoinedById(id: company.id)
@@ -86,7 +32,6 @@ extension CompanyScreen {
         switch await companyPromise {
         case let .success(company):
           self.companyJoined = company
-          self.newCompanyNameSuggestion = company.name
         case let .failure(error):
           logger.error("failed to refresh data for company '\(self.company.id)': \(error.localizedDescription)")
         }
