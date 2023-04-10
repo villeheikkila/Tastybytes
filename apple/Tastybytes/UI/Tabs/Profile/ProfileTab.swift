@@ -28,7 +28,7 @@ struct ProfileTab: View {
             })
           }
           ToolbarItemGroup(placement: .navigationBarTrailing) {
-            RouteLink(to: .settings) {
+            RouteLink(screen: .settings) {
               Label("Settings page", systemImage: "gear")
                 .labelStyle(.iconOnly)
             }

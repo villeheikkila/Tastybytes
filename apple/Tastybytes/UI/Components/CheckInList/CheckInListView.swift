@@ -126,14 +126,14 @@ struct CheckInListView<Header>: View where Header: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      RouteLink(to: .currentUserFriends) {
+      RouteLink(screen: .currentUserFriends) {
         Label("Friends Page", systemImage: "person.2")
           .labelStyle(.iconOnly)
           .imageScale(.large)
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouteLink(to: .settings) {
+      RouteLink(screen: .settings) {
         Label("Settings Page", systemImage: "gear")
           .labelStyle(.iconOnly)
           .imageScale(.large)

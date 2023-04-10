@@ -13,16 +13,16 @@ struct AdminTab: View {
   var body: some View {
     InitializeRouter(client) { router in
       List {
-        RouteLink(to: .categoryManagement) {
+        RouteLink(screen: .categoryManagement) {
           Label("Categories", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
-        RouteLink(to: .flavorManagementScreen) {
+        RouteLink(screen: .flavorManagementScreen) {
           Label("Flavors", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
-        RouteLink(to: .verificationScreen) {
+        RouteLink(screen: .verificationScreen) {
           Label("Verification", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
-        RouteLink(to: .duplicateProducts) {
+        RouteLink(screen: .duplicateProducts) {
           Label("Duplicates", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
       }

@@ -138,7 +138,7 @@ struct SearchListView: View {
 
   private var profileResults: some View {
     ForEach(viewModel.profiles) { profile in
-      RouteLink(to: .profile(profile)) {
+      RouteLink(screen: .profile(profile)) {
         HStack(alignment: .center) {
           AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
           VStack {
@@ -155,7 +155,7 @@ struct SearchListView: View {
 
   private var companyResults: some View {
     ForEach(viewModel.companies) { company in
-      RouteLink(to: .company(company)) {
+      RouteLink(screen: .company(company)) {
         Text(company.name)
       }
       .id(company.id)
@@ -164,7 +164,7 @@ struct SearchListView: View {
 
   private var locationResults: some View {
     ForEach(viewModel.locations) { location in
-      RouteLink(to: .location(location)) {
+      RouteLink(screen: .location(location)) {
         Text(location.name)
       }
       .id(location.id)
@@ -189,17 +189,17 @@ struct SearchListView: View {
 
     if viewModel.currentScopeIsEmpty {
       Section {
-        RouteLink(to: .productFeed(.trending)) {
+        RouteLink(screen: .productFeed(.trending)) {
           Label(Product.FeedType.trending.label, systemImage: "chart.line.uptrend.xyaxis").bold()
             .listRowSeparator(.visible)
         }
 
-        RouteLink(to: .productFeed(.topRated)) {
+        RouteLink(screen: .productFeed(.topRated)) {
           Label(Product.FeedType.topRated.label, systemImage: "line.horizontal.star.fill.line.horizontal").bold()
             .listRowSeparator(.visible)
         }
 
-        RouteLink(to: .productFeed(.latest)) {
+        RouteLink(screen: .productFeed(.latest)) {
           Label(Product.FeedType.latest.label, systemImage: "bolt.horizontal.circle").bold()
             .listRowSeparator(.visible)
         }

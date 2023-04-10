@@ -25,7 +25,7 @@ struct CompanyScreen: View {
       }
       Section {
         ForEach(viewModel.sortedBrands) { brand in
-          RouteLink(to: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand))) {
+          RouteLink(screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand))) {
             HStack {
               Text("\(brand.name)")
               Spacer()

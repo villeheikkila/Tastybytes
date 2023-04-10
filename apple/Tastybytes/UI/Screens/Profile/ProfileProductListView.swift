@@ -11,7 +11,7 @@ struct ProfileProductListView: View {
   var body: some View {
     List {
       ForEach(viewModel.filteredProducts) { product in
-        RouteLink(to: .product(product)) {
+        RouteLink(screen: .product(product)) {
           ProductItemView(product: product, extras: [.rating])
         }
       }

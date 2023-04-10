@@ -4,7 +4,7 @@ struct CheckInReactionNotificationView: View {
   let checkInReaction: CheckInReaction.JoinedCheckIn
 
   var body: some View {
-    RouteLink(to: .checkIn(checkInReaction.checkIn)) {
+    RouteLink(screen: .checkIn(checkInReaction.checkIn)) {
       HStack {
         AvatarView(avatarUrl: checkInReaction.profile.avatarUrl, size: 32, id: checkInReaction.profile.id)
         Text(

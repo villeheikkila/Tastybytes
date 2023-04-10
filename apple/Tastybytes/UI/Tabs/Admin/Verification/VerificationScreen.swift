@@ -57,7 +57,7 @@ struct VerificationScreen: View {
 
   private var unverifiedCompanies: some View {
     ForEach(viewModel.companies) { company in
-      RouteLink(to: .company(company)) {
+      RouteLink(screen: .company(company)) {
         Text(company.name)
       }
       .swipeActions {
@@ -88,7 +88,7 @@ struct VerificationScreen: View {
 
   private var unverifiedBrands: some View {
     ForEach(viewModel.brands) { brand in
-      RouteLink(to: .brand(brand)) {
+      RouteLink(screen: .brand(brand)) {
         HStack {
           Text("\(brand.brandOwner.name): \(brand.name)")
           Spacer()

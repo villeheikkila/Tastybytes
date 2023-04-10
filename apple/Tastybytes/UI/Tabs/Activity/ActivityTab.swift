@@ -42,7 +42,7 @@ struct ActivityTab: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      RouteLink(to: .currentUserFriends) {
+      RouteLink(screen: .currentUserFriends) {
         Label("Friends page", systemImage: "person.2")
           .labelStyle(.iconOnly)
           .imageScale(.large)
@@ -50,7 +50,7 @@ struct ActivityTab: View {
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouteLink(to: .settings) {
+      RouteLink(screen: .settings) {
         Label("Settings page", systemImage: "gear")
           .labelStyle(.iconOnly)
           .imageScale(.large)

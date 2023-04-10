@@ -28,7 +28,7 @@ struct BrandScreen: View {
               subBrand: subBrand,
               brand: viewModel.brand
             )
-            RouteLink(to: .product(productJoined)) {
+            RouteLink(screen: .product(productJoined)) {
               ProductItemView(product: productJoined)
                 .padding(2)
                 .contextMenu {
