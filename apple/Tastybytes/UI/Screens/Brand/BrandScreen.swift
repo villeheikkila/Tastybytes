@@ -80,7 +80,7 @@ struct BrandScreen: View {
                   Label("Verified", systemImage: "checkmark.circle")
                 })
               } else if profileManager.hasPermission(.canVerify) {
-                Button(action: { viewModel.verifySubBrand(subBrand, isVerified: true) }, label: {
+                ProgressButton(action: { await viewModel.verifySubBrand(subBrand, isVerified: true) }, label: {
                   Label("Verify", systemImage: "checkmark")
                 })
               } else {
@@ -123,8 +123,8 @@ struct BrandScreen: View {
                         isPresented: $viewModel.showSubBrandUnverificationConfirmation,
                         presenting: viewModel.toUnverifySubBrand)
     { presenting in
-      Button("Unverify \(presenting.name ?? "default") sub-brand", action: {
-        viewModel.verifySubBrand(presenting, isVerified: false)
+      ProgressButton("Unverify \(presenting.name ?? "default") sub-brand", action: {
+        await viewModel.verifySubBrand(presenting, isVerified: false)
         hapticManager.trigger(.notification(.success))
       })
     }
@@ -132,8 +132,8 @@ struct BrandScreen: View {
                         isPresented: $viewModel.showBrandUnverificationConfirmation,
                         presenting: viewModel.brand)
     { presenting in
-      Button("Unverify \(presenting.name) brand", action: {
-        viewModel.verifyBrand(isVerified: false)
+      ProgressButton("Unverify \(presenting.name) brand", action: {
+        await viewModel.verifyBrand(isVerified: false)
         hapticManager.trigger(.notification(.success))
       })
     }
@@ -215,7 +215,7 @@ struct BrandScreen: View {
           Label("Verified", systemImage: "checkmark.circle")
         })
       } else if profileManager.hasPermission(.canVerify) {
-        Button(action: { viewModel.verifyBrand(isVerified: true) }, label: {
+        ProgressButton(action: { await viewModel.verifyBrand(isVerified: true) }, label: {
           Label("Verify", systemImage: "checkmark")
         })
       } else {

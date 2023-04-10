@@ -92,35 +92,31 @@ extension BrandScreen {
       }
     }
 
-    func verifyBrand(isVerified: Bool) {
-      Task {
-        switch await client.brand.verification(id: brand.id, isVerified: isVerified) {
-        case .success:
-          brand = Brand.JoinedSubBrandsProductsCompany(
-            id: brand.id,
-            name: brand.name,
-            isVerified: isVerified,
-            brandOwner: brand.brandOwner,
-            subBrands: brand.subBrands
-          )
-        case let .failure(error):
-          logger
-            .error("failed to verify brand by id '\(self.brand.id)': \(error.localizedDescription)")
-        }
+    func verifyBrand(isVerified: Bool) async {
+      switch await client.brand.verification(id: brand.id, isVerified: isVerified) {
+      case .success:
+        brand = Brand.JoinedSubBrandsProductsCompany(
+          id: brand.id,
+          name: brand.name,
+          isVerified: isVerified,
+          brandOwner: brand.brandOwner,
+          subBrands: brand.subBrands
+        )
+      case let .failure(error):
+        logger
+          .error("failed to verify brand': \(error.localizedDescription)")
       }
     }
 
-    func verifySubBrand(_ subBrand: SubBrand.JoinedProduct, isVerified: Bool) {
-      Task {
-        switch await client.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
-        case .success:
-          await refresh()
-          logger
-            .info("sub-brand succesfully verified")
-        case let .failure(error):
-          logger
-            .error("failed to verify brand by id '\(self.brand.id)': \(error.localizedDescription)")
-        }
+    func verifySubBrand(_ subBrand: SubBrand.JoinedProduct, isVerified: Bool) async {
+      switch await client.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
+      case .success:
+        await refresh()
+        logger
+          .info("sub-brand succesfully verified")
+      case let .failure(error):
+        logger
+          .error("failed to verify brand': \(error.localizedDescription)")
       }
     }
 

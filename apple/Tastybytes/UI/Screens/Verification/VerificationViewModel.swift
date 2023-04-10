@@ -68,29 +68,25 @@ extension VerificationScreen {
       }
     }
 
-    func verifyCompany(_ company: Company) {
-      Task {
-        switch await client.company.verification(id: company.id, isVerified: true) {
-        case .success:
-          withAnimation {
-            companies.remove(object: company)
-          }
-        case let .failure(error):
-          logger.error("failed to verify company \(company.id): \(error.localizedDescription)")
+    func verifyCompany(_ company: Company) async {
+      switch await client.company.verification(id: company.id, isVerified: true) {
+      case .success:
+        withAnimation {
+          companies.remove(object: company)
         }
+      case let .failure(error):
+        logger.error("failed to verify company: \(error.localizedDescription)")
       }
     }
 
-    func verifyProduct(_ product: Product.Joined) {
-      Task {
-        switch await client.product.verification(id: product.id, isVerified: true) {
-        case .success:
-          withAnimation {
-            products.remove(object: product)
-          }
-        case let .failure(error):
-          logger.error("failed to verify product \(product.id): \(error.localizedDescription)")
+    func verifyProduct(_ product: Product.Joined) async {
+      switch await client.product.verification(id: product.id, isVerified: true) {
+      case .success:
+        withAnimation {
+          products.remove(object: product)
         }
+      case let .failure(error):
+        logger.error("failed to verify product: \(error.localizedDescription)")
       }
     }
 

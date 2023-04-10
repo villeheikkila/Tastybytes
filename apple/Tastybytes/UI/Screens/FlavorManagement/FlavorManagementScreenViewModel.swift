@@ -10,16 +10,14 @@ extension FlavorManagementScreen {
       self.client = client
     }
 
-    func addFlavor(name: String) {
-      Task {
-        switch await client.flavor.insert(newFlavor: Flavor.NewRequest(name: name)) {
-        case let .success(newFlavor):
-          withAnimation {
-            flavors.append(newFlavor)
-          }
-        case let .failure(error):
-          logger.error("failed to delete flavor: \(error.localizedDescription)")
+    func addFlavor(name: String) async {
+      switch await client.flavor.insert(newFlavor: Flavor.NewRequest(name: name)) {
+      case let .success(newFlavor):
+        withAnimation {
+          flavors.append(newFlavor)
         }
+      case let .failure(error):
+        logger.error("failed to delete flavor: \(error.localizedDescription)")
       }
     }
 

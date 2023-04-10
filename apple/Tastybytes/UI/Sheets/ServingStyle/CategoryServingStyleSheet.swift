@@ -47,9 +47,11 @@ struct CategoryServingStyleSheet: View {
         "Remove \(presenting.name) from \(viewModel.category.name)",
         role: .destructive,
         action: {
-          viewModel.deleteServingStyle(onDelete: {
-            hapticManager.trigger(.notification(.success))
-          })
+          Task {
+            await viewModel.deleteServingStyle(onDelete: {
+              hapticManager.trigger(.notification(.success))
+            })
+          }
         }
       )
     }
