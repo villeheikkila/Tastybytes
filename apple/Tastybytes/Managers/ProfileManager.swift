@@ -61,6 +61,6 @@ class ProfileManager: ObservableObject {
   }
 
   func logOut() async {
-    await client.auth.logOut()
+    _ = await client.auth.logOut()
   }
 }

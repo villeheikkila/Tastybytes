@@ -40,7 +40,7 @@ extension SearchListView {
           locations = []
           isSearched = false
         }
-      } catch { logger.error("timer for failed") }
+      } catch { logger.error("timer failed") }
     }
 
     var currentScopeIsEmpty: Bool {

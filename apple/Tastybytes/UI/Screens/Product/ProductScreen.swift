@@ -110,10 +110,12 @@ struct ProductScreen: View {
         }
 
         Button(
-          action: { router.navigate(sheet: .duplicateProduct(
-            mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
-            product: viewModel.product
-          )) },
+          action: {
+            router.navigate(sheet: .duplicateProduct(
+              mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
+              product: viewModel.product
+            ))
+          },
           label: {
             if profileManager.hasPermission(.canMergeProducts) {
               Label("Merge to...", systemImage: "doc.on.doc")

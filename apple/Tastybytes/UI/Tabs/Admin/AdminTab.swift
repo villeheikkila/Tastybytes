@@ -16,10 +16,10 @@ struct AdminTab: View {
         RouteLink(screen: .categoryManagement) {
           Label("Categories", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
-        RouteLink(screen: .flavorManagementScreen) {
+        RouteLink(screen: .flavorManagement) {
           Label("Flavors", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
-        RouteLink(screen: .verificationScreen) {
+        RouteLink(screen: .verification) {
           Label("Verification", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
         RouteLink(screen: .duplicateProducts) {

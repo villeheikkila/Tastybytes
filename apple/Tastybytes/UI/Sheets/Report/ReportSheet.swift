@@ -39,8 +39,7 @@ struct ReportSheet: View {
     }
   }
 
-  @ViewBuilder
-  private var reportedEntityView: some View {
+  @ViewBuilder private var reportedEntityView: some View {
     switch viewModel.entity {
     case let .product(product):
       ProductItemView(product: product, extras: [.companyLink, .logo])

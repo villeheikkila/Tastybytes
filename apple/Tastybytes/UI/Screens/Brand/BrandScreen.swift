@@ -33,10 +33,12 @@ struct BrandScreen: View {
                 .padding(2)
                 .contextMenu {
                   Button(
-                    action: { router.navigate(sheet: .duplicateProduct(
-                      mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
-                      product: productJoined
-                    )) },
+                    action: {
+                      router.navigate(sheet: .duplicateProduct(
+                        mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
+                        product: productJoined
+                      ))
+                    },
                     label: {
                       if profileManager.hasPermission(.canMergeProducts) {
                         Label("Merge to...", systemImage: "doc.on.doc")

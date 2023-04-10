@@ -498,10 +498,6 @@
 		5C20A50E29AA59E700ABBA74 /* Admin */ = {
 			isa = PBXGroup;
 			children = (
-				5C61E83729B8FE4B00D10AA3 /* CategoryManagement */,
-				5C61E82B29B5C51100D10AA3 /* DuplicataProductScreen */,
-				5C20A51829AB52B200ABBA74 /* Verification */,
-				5C20A51529AB527B00ABBA74 /* FlavorManagement */,
 				5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */,
 			);
 			path = Admin;
@@ -1273,6 +1269,10 @@
 			isa = PBXGroup;
 			children = (
 				5CDC9F9C29E4572000B6082F /* Screen.swift */,
+				5C20A51529AB527B00ABBA74 /* FlavorManagement */,
+				5C20A51829AB52B200ABBA74 /* Verification */,
+				5C61E82B29B5C51100D10AA3 /* DuplicataProductScreen */,
+				5C61E83729B8FE4B00D10AA3 /* CategoryManagement */,
 				5C7C357C299AC055009A3C09 /* Authentication */,
 				5C7C358C299AC23F009A3C09 /* Brand */,
 				5C7C3581299AC11E009A3C09 /* CheckIn */,

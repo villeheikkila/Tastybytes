@@ -14,8 +14,8 @@ enum Screen: Hashable {
   case friends(Profile)
   case addProduct(Barcode?)
   case productFeed(Product.FeedType)
-  case flavorManagementScreen
-  case verificationScreen
+  case flavorManagement
+  case verification
   case duplicateProducts
   case categoryManagement
   case profileSettings
@@ -56,9 +56,9 @@ enum Screen: Hashable {
       FriendsScreen(client, profile: profile)
     case let .productFeed(feed):
       ProductFeedScreen(client, feed: feed)
-    case .flavorManagementScreen:
+    case .flavorManagement:
       FlavorManagementScreen(client)
-    case .verificationScreen:
+    case .verification:
       VerificationScreen(client)
     case .duplicateProducts:
       DuplicateProductScreen(client)
