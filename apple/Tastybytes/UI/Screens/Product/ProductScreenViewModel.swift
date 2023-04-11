@@ -44,14 +44,14 @@ extension ProductScreen {
           product = refreshedProduct
         }
       case let .failure(error):
-        logger.error("failed to refresh product by id '\(product.id)': \(error.localizedDescription)")
+        logger.error("failed to refresh product by id: \(error.localizedDescription)")
       }
 
       switch await summaryPromise {
       case let .success(summary):
         self.summary = summary
       case let .failure(error):
-        logger.error("failed to load product summary for '\(product.id)': \(error.localizedDescription)")
+        logger.error("failed to load product summary: \(error.localizedDescription)")
       }
     }
 
