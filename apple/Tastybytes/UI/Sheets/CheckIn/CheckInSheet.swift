@@ -10,6 +10,7 @@ struct CheckInSheet: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
   @State private var showPhotoMenu = false
+  @State var pickedFlavors = [Flavor]()
   @FocusState private var focusedField: Focusable?
 
   let onCreation: ((_ checkIn: CheckIn) -> Void)?
@@ -81,7 +82,7 @@ struct CheckInSheet: View {
           ).fontWeight(.medium)
 
         })
-        Button(action: { router.navigate(sheet: .flavors(pickedFlavors: $viewModel.pickedFlavors)) }, label: {
+        Button(action: { router.navigate(sheet: .flavors(pickedFlavors: $pickedFlavors)) }, label: {
           if !viewModel.pickedFlavors.isEmpty {
             WrappingHStack(viewModel.pickedFlavors, spacing: .constant(4)) { flavor in
               ChipView(title: flavor.label)
@@ -226,6 +227,9 @@ struct CheckInSheet: View {
                                    .bold()
                                })
     )
+    .onChange(of: pickedFlavors, perform: { newValue in
+      viewModel.pickedFlavors = newValue
+    })
     .task {
       await viewModel.loadInitialData()
     }

@@ -26,10 +26,9 @@ struct SubcategorySheet: View {
             HStack {
               Text(subcategory.name)
               Spacer()
-              if subcategories.contains(subcategory) {
-                Label("Selected subcategory", systemImage: "checkmark")
-                  .labelStyle(.iconOnly)
-              }
+              Label("Selected subcategory", systemImage: "checkmark")
+                .labelStyle(.iconOnly)
+                .opacity(subcategories.contains(subcategory) ? 1 : 0)
             }
           })
         }

@@ -10,6 +10,7 @@ struct AddProductView: View {
   @EnvironmentObject private var appDataManager: AppDataManager
   @StateObject private var viewModel: ViewModel
   @FocusState private var focusedField: Focusable?
+  @State private var subcategories: [Subcategory] = []
 
   let onEdit: (() -> Void)?
   let onCreate: ((_ product: Product.Joined) -> Void)?
@@ -34,40 +35,46 @@ struct AddProductView: View {
       categorySection
       brandSection
       productSection
-
-      ProgressButton(action: {
-        switch viewModel.mode {
-        case .editSuggestion:
-          await viewModel.createProductEditSuggestion(onSuccess: {
-            toastManager.toggle(.success("Edit suggestion sent!"))
-          })
-        case .edit:
-          await viewModel.editProduct(onSuccess: {
-            hapticManager.trigger(.notification(.success))
-            if let onEdit {
-              onEdit()
-            }
-          })
-        case .new:
-          await viewModel.createProduct(onSuccess: { product in
-            hapticManager.trigger(.notification(.success))
-            router.navigate(screen: .product(product), resetStack: true)
-          })
-        case .addToBrand:
-          await viewModel.createProduct(onSuccess: { product in
-            hapticManager.trigger(.notification(.success))
-            if let onCreate {
-              onCreate(product)
-            }
-          })
-        }
-      }, label: {
-        Text(viewModel.mode.doneLabel).fontWeight(.medium)
-      }).disabled(viewModel.isLoading || !viewModel.isValid())
+      action
     }
+    .onChange(of: subcategories, perform: { newValue in
+      viewModel.subcategories = newValue
+    })
     .task {
       await viewModel.loadMissingData(categories: appDataManager.categories)
     }
+  }
+
+  private var action: some View {
+    ProgressButton(action: {
+      switch viewModel.mode {
+      case .editSuggestion:
+        await viewModel.createProductEditSuggestion(onSuccess: {
+          toastManager.toggle(.success("Edit suggestion sent!"))
+        })
+      case .edit:
+        await viewModel.editProduct(onSuccess: {
+          hapticManager.trigger(.notification(.success))
+          if let onEdit {
+            onEdit()
+          }
+        })
+      case .new:
+        await viewModel.createProduct(onSuccess: { product in
+          hapticManager.trigger(.notification(.success))
+          router.navigate(screen: .product(product), resetStack: true)
+        })
+      case .addToBrand:
+        await viewModel.createProduct(onSuccess: { product in
+          hapticManager.trigger(.notification(.success))
+          if let onCreate {
+            onCreate(product)
+          }
+        })
+      }
+    }, label: {
+      Text(viewModel.mode.doneLabel).fontWeight(.medium)
+    }).disabled(viewModel.isLoading || !viewModel.isValid())
   }
 
   private var logoSection: some View {
@@ -116,7 +123,7 @@ struct AddProductView: View {
       Button(action: {
         if let category = viewModel.category {
           router.navigate(sheet: .subcategory(
-            subcategories: $viewModel.subcategories,
+            subcategories: $subcategories,
             category: category,
             onCreate: { newSubcategoryName in
               viewModel.createSubcategory(newSubcategoryName: newSubcategoryName, onCreate: {
@@ -138,7 +145,7 @@ struct AddProductView: View {
             }
           }
         }
-      })
+      }).disabled(viewModel.category == nil)
     }
     header: {
       Text("Category")
