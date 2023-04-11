@@ -20,7 +20,7 @@ extension ReactionsView {
       checkInReactions = checkIn.checkInReactions
     }
 
-    func toggleReaction(userId: UUID) {
+    func toggleReaction(userId: UUID) async {
       isLoading = true
       Task {
         if let reaction = checkInReactions.first(where: { $0.profile.id == userId }) {

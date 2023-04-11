@@ -21,33 +21,29 @@ extension CategoryManagementScreen {
     }
 
     func verifySubcategory(_ subcategory: Subcategory, isVerified: Bool) async {
-      Task {
-        switch await client.subcategory.verification(id: subcategory.id, isVerified: isVerified) {
-        case .success:
-          await loadCategories()
-        case let .failure(error):
-          logger
-            .error(
-              "failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id): \(error.localizedDescription)"
-            )
-        }
+      switch await client.subcategory.verification(id: subcategory.id, isVerified: isVerified) {
+      case .success:
+        await loadCategories()
+      case let .failure(error):
+        logger
+          .error(
+            "failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id): \(error.localizedDescription)"
+          )
       }
     }
 
-    func saveEditSubcategoryChanges(subCategory: Subcategory, newName: String) {
-      Task {
-        switch await client.subcategory
-          .update(updateRequest: Subcategory
-            .UpdateRequest(id: subCategory.id, name: newName))
-        {
-        case .success:
-          await loadCategories()
-        case let .failure(error):
-          logger
-            .error(
-              "failed to update subcategory \(subCategory.id): \(error.localizedDescription)"
-            )
-        }
+    func saveEditSubcategoryChanges(subCategory: Subcategory, newName: String) async {
+      switch await client.subcategory
+        .update(updateRequest: Subcategory
+          .UpdateRequest(id: subCategory.id, name: newName))
+      {
+      case .success:
+        await loadCategories()
+      case let .failure(error):
+        logger
+          .error(
+            "failed to update subcategory \(subCategory.id): \(error.localizedDescription)"
+          )
       }
     }
 
@@ -61,31 +57,27 @@ extension CategoryManagementScreen {
       }
     }
 
-    func addCategory(name: String) {
-      Task {
-        switch await client.category.insert(newCategory: Category.NewRequest(name: name)) {
-        case .success:
-          await loadCategories()
-        case let .failure(error):
-          logger
-            .error(
-              "failed to add new category with name \(name): \(error.localizedDescription)"
-            )
-        }
+    func addCategory(name: String) async {
+      switch await client.category.insert(newCategory: Category.NewRequest(name: name)) {
+      case .success:
+        await loadCategories()
+      case let .failure(error):
+        logger
+          .error(
+            "failed to add new category with name \(name): \(error.localizedDescription)"
+          )
       }
     }
 
-    func addSubcategory(category: Category.JoinedSubcategoriesServingStyles, name: String) {
-      Task {
-        switch await client.subcategory
-          .insert(newSubcategory: Subcategory
-            .NewRequest(name: name, category: category))
-        {
-        case .success:
-          await loadCategories()
-        case let .failure(error):
-          logger.error("failed to create subcategory '\(name)' to category \(category.name): \(error.localizedDescription)")
-        }
+    func addSubcategory(category: Category.JoinedSubcategoriesServingStyles, name: String) async {
+      switch await client.subcategory
+        .insert(newSubcategory: Subcategory
+          .NewRequest(name: name, category: category))
+      {
+      case .success:
+        await loadCategories()
+      case let .failure(error):
+        logger.error("failed to create subcategory '\(name)' to category \(category.name): \(error.localizedDescription)")
       }
     }
 

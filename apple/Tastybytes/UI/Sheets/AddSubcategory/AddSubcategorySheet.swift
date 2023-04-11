@@ -6,11 +6,14 @@ struct AddSubcategorySheet: View {
   let onSubmit: (_ newSubcategoryName: String) -> Void
 
   var body: some View {
-    DismissableSheet(title: "Add subcategory to \(category.name)") {
+    DismissableSheet(title: "Add subcategory to \(category.name)") { dismiss in
       Form {
         Section {
           TextField("Name", text: $newSubcategoryName)
-          Button(action: { onSubmit(newSubcategoryName) }, label: {
+          Button(action: {
+            onSubmit(newSubcategoryName)
+            dismiss()
+          }, label: {
             Text("Add")
           }).disabled(newSubcategoryName.isEmpty)
         } header: {

@@ -43,14 +43,14 @@ struct DuplicateProductSheet: View {
                         isPresented: $viewModel.showMergeToProductConfirmation,
                         presenting: viewModel.mergeToProduct)
     { presenting in
-      Button(
+      ProgressButton(
         """
         \(viewModel.mode == .mergeDuplicate ? "Merge" : "Mark") \(presenting.name) \(viewModel
           .mode == .mergeDuplicate ? "to" : "as duplicate of") \(presenting.getDisplayName(.fullName))
         """,
         role: .destructive
       ) {
-        viewModel.primaryAction(onSuccess: {
+        await viewModel.primaryAction(onSuccess: {
           hapticManager.trigger(.notification(.success))
           dismiss()
         })

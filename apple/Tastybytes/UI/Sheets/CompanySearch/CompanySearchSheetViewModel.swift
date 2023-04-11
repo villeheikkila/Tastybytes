@@ -36,16 +36,13 @@ extension CompanySearchSheet {
       !isLoading && searchResults.isEmpty && status == .searched && !searchText.isEmpty
     }
 
-    func searchCompanies() {
-      Task {
-        switch await client.company.search(searchTerm: searchText) {
-        case let .success(searchResults):
-          self.searchResults = searchResults
-          self.status = Status.searched
-        case let .failure(error):
-          logger
-            .error("failed to search companies with search term '\(self.searchText)': \(error.localizedDescription)")
-        }
+    func searchCompanies() async {
+      switch await client.company.search(searchTerm: searchText) {
+      case let .success(searchResults):
+        self.searchResults = searchResults
+        status = Status.searched
+      case let .failure(error):
+        logger.error("failed to search companies: \(error.localizedDescription)")
       }
     }
 

@@ -45,8 +45,9 @@ struct CurrentUserFriendsScreen: View {
                   .imageScale(.large)
                   .labelStyle(.iconOnly)
                   .accessibilityAddTraits(.isButton)
-                  .onTapGesture {
-                    friendManager.updateFriendRequest(friend: friend, newStatus: .accepted)
+                  .onTapGesture { Task {
+                    await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted)
+                  }
                   }
               }
             }
@@ -54,14 +55,14 @@ struct CurrentUserFriendsScreen: View {
         }
         .swipeActions {
           if friend.isPending(userId: profileManager.getProfile().id) {
-            Button(action: { friendManager.updateFriendRequest(friend: friend, newStatus: .accepted) }, label: {
+            ProgressButton(action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted) }, label: {
               Label("Accept friend request", systemImage: "person.badge.plus").imageScale(.large)
             }).tint(.green)
           }
           Button(role: .destructive, action: { friendToBeRemoved = friend }, label: {
             Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
           })
-          Button(action: { friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }, label: {
+          ProgressButton(action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }, label: {
             Label("Block", systemImage: "person.2.slash").imageScale(.large)
           })
         }
@@ -69,7 +70,7 @@ struct CurrentUserFriendsScreen: View {
           Button(role: .destructive, action: { friendToBeRemoved = friend }, label: {
             Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
           })
-          Button(action: { friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }, label: {
+          ProgressButton(action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }, label: {
             Label("Block", systemImage: "person.2.slash").imageScale(.large)
           })
         }
@@ -109,13 +110,12 @@ struct CurrentUserFriendsScreen: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Button(action: { router.navigate(sheet: .nameTag(onSuccess: { profileId in
-        friendManager.sendFriendRequest(receiver: profileId, onSuccess: {
-          hapticManager.trigger(.notification(.success))
-          toastManager.toggle(.success("Friend Request Sent!"))
-          Task {
-            await friendManager.loadFriends()
-          }
-        })
+        Task {
+          await friendManager.sendFriendRequest(receiver: profileId, onSuccess: {
+            hapticManager.trigger(.notification(.success))
+            toastManager.toggle(.success("Friend Request Sent!"))
+          })
+        }
       })) }, label: {
         Label("Show name tag or send friend request by QR code", systemImage: "qrcode")
           .labelStyle(.iconOnly)

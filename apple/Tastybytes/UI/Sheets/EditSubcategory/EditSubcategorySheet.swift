@@ -12,11 +12,14 @@ struct EditSubcategorySheet: View {
   }
 
   var body: some View {
-    DismissableSheet(title: "Edit \(subcategory.name)") {
+    DismissableSheet(title: "Edit \(subcategory.name)") { dismiss in
       Form {
         TextField("Name", text: $subcategoryName)
         Button(
-          action: { onSubmit(subcategoryName) },
+          action: {
+            onSubmit(subcategoryName)
+            dismiss()
+          },
           label: { Text("Save changes") }
         ).disabled(subcategoryName.isEmpty || subcategory.name == subcategoryName)
       }

@@ -66,12 +66,12 @@ struct CompanySearchSheet: View {
       Text("Cancel").bold()
     }))
     .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
-    .onSubmit(of: .search) { viewModel.searchCompanies() }
+    .onSubmit(of: .search) { Task { await viewModel.searchCompanies() } }
     .onReceive(
       viewModel.$searchText.debounce(for: 0.2, scheduler: RunLoop.main)
     ) { _ in
       if viewModel.searchText.count > 1 {
-        viewModel.searchCompanies()
+        Task { await viewModel.searchCompanies() }
       }
     }
   }

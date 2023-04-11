@@ -36,12 +36,12 @@ struct UserSheet: View {
             if mode == .add {
               HStack {
                 if !friendManager.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
-                  Button(action: {
-                    hapticManager.trigger(.impact(intensity: .low))
-                    friendManager.sendFriendRequest(receiver: profile.id, onSuccess: {
+                  ProgressButton(action: {
+                    await friendManager.sendFriendRequest(receiver: profile.id, onSuccess: {
                       dismiss()
                       onSubmit()
                     })
+                    hapticManager.trigger(.impact(intensity: .low))
                   }, label: {
                     Label("Add as a friend", systemImage: "person.badge.plus")
                       .labelStyle(.iconOnly)
@@ -52,7 +52,7 @@ struct UserSheet: View {
             }
             if mode == .block {
               if !friendManager.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
-                Button(action: { friendManager.blockUser(user: profile, onSuccess: {
+                ProgressButton(action: { await friendManager.blockUser(user: profile, onSuccess: {
                   onSubmit()
                   dismiss()
                 }) }, label: {
@@ -71,6 +71,7 @@ struct UserSheet: View {
     }))
     .searchable(text: $viewModel.searchText)
     .disableAutocorrection(true)
-    .onSubmit(of: .search) { viewModel.searchUsers(currentUserId: profileManager.getId()) }
+    .onSubmit(of: .search) { Task { await viewModel.searchUsers(currentUserId: profileManager.getId()) }
+    }
   }
 }

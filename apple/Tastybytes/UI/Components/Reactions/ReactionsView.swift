@@ -29,7 +29,7 @@ struct ReactionsView: View {
       view.accessibilityAddTraits(.isButton)
         .onTapGesture {
           hapticManager.trigger(.impact(intensity: .low))
-          viewModel.toggleReaction(userId: profileManager.getId())
+          Task { await viewModel.toggleReaction(userId: profileManager.getId()) }
         }
     })
     .disabled(viewModel.isLoading)

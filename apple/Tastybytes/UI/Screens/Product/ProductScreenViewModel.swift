@@ -55,25 +55,21 @@ extension ProductScreen {
       }
     }
 
-    func addBarcodeToProduct(barcode: Barcode, onComplete: @escaping () -> Void) {
-      Task {
-        switch await client.productBarcode.addToProduct(product: product, barcode: barcode) {
-        case .success:
-          onComplete()
-        case let .failure(error):
-          logger
-            .error(
-              "adding barcode \(barcode.barcode) to product \(self.product.id) failed: \(error.localizedDescription)"
-            )
-        }
+    func addBarcodeToProduct(barcode: Barcode, onComplete: @escaping () -> Void) async {
+      switch await client.productBarcode.addToProduct(product: product, barcode: barcode) {
+      case .success:
+        onComplete()
+      case let .failure(error):
+        logger
+          .error(
+            "adding barcode \(barcode.barcode) failed: \(error.localizedDescription)"
+          )
       }
     }
 
-    func refreshCheckIns() {
-      Task {
-        await refresh()
-        resetView += 1
-      }
+    func refreshCheckIns() async {
+      await refresh()
+      resetView += 1
     }
 
     func verifyProduct(isVerified: Bool) async {

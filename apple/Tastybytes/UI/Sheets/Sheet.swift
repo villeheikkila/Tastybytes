@@ -71,16 +71,26 @@ enum Sheet: Identifiable, Equatable {
     case let .barcodeManagement(product):
       BarcodeManagementSheet(client, product: product)
     case let .productEditSuggestion(product: product):
-      DismissableSheet(title: "Edit Suggestion") {
+      DismissableSheet(title: "Edit Suggestion") { _ in
         AddProductView(client, mode: .editSuggestion(product))
       }
     case let .editProduct(product: product, onEdit: onEdit):
-      DismissableSheet(title: "Edit Product") {
-        AddProductView(client, mode: .edit(product), onEdit: onEdit)
+      DismissableSheet(title: "Edit Product") { dismiss in
+        AddProductView(client, mode: .edit(product), onEdit: {
+          if let onEdit {
+            onEdit()
+          }
+          dismiss()
+        })
       }
     case let .addProductToBrand(brand: brand, onCreate: onCreate):
-      DismissableSheet(title: "Add Product") {
-        AddProductView(client, mode: .addToBrand(brand), onCreate: onCreate)
+      DismissableSheet(title: "Add Product") { dismiss in
+        AddProductView(client, mode: .addToBrand(brand), onCreate: { product in
+          if let onCreate {
+            onCreate(product)
+          }
+          dismiss()
+        })
       }
     case let .duplicateProduct(mode: mode, product: product):
       DuplicateProductSheet(client, mode: mode, product: product)

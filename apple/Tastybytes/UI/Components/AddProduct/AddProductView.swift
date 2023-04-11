@@ -62,7 +62,7 @@ struct AddProductView: View {
           })
         }
       }, label: {
-        Text(viewModel.mode.doneLabel)
+        Text(viewModel.mode.doneLabel).fontWeight(.medium)
       }).disabled(viewModel.isLoading || !viewModel.isValid())
     }
     .task {

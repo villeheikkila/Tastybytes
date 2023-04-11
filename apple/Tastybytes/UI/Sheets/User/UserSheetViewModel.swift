@@ -12,21 +12,14 @@ extension UserSheet {
       self.client = client
     }
 
-    func searchUsers(currentUserId: UUID) {
-      Task {
-        switch await client.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
-        case let .success(searchResults):
-          withAnimation {
-            self.searchResults = searchResults
-          }
-        case let .failure(error):
-          logger.error(
-            """
-            sarching users by \(currentUserId) with search term \(self.searchText)\
-             failed: \(error.localizedDescription)
-            """
-          )
+    func searchUsers(currentUserId: UUID) async {
+      switch await client.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
+      case let .success(searchResults):
+        withAnimation {
+          self.searchResults = searchResults
         }
+      case let .failure(error):
+        logger.error("failed searching users: \(error.localizedDescription)")
       }
     }
   }

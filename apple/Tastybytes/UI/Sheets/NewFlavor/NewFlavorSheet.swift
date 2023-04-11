@@ -6,10 +6,13 @@ struct NewFlavorSheet: View {
   let onSubmit: (_ name: String) -> Void
 
   var body: some View {
-    DismissableSheet(title: "Add Flavor") {
+    DismissableSheet(title: "Add Flavor") { dismiss in
       Form {
         TextField("Name", text: $name)
-        Button(action: { onSubmit(name) }, label: {
+        Button(action: {
+          onSubmit(name)
+          dismiss()
+        }, label: {
           Text("Add")
         })
       }

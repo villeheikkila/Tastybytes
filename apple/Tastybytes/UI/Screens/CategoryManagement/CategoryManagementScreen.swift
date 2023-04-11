@@ -29,7 +29,7 @@ struct CategoryManagementScreen: View {
                 }
               ).tint(subcategory.isVerified ? .yellow : .green)
               Button(action: { router.navigate(sheet: .editSubcategory(subcategory: subcategory, onSubmit: { newName in
-                viewModel.saveEditSubcategoryChanges(subCategory: subcategory, newName: newName)
+                Task { await viewModel.saveEditSubcategoryChanges(subCategory: subcategory, newName: newName) }
               })) }, label: {
                 Label("Edit", systemImage: "pencil")
               }).tint(.yellow)
@@ -47,7 +47,7 @@ struct CategoryManagementScreen: View {
                 Label("Edit Serving Styles", systemImage: "pencil")
               })
               Button(action: { router.navigate(sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
-                viewModel.addSubcategory(category: category, name: newSubcategoryName)
+                Task { await viewModel.addSubcategory(category: category, name: newSubcategoryName) }
               })) }, label: {
                 Label("Add Subcategory", systemImage: "plus")
               })
@@ -62,7 +62,7 @@ struct CategoryManagementScreen: View {
     }
     .navigationBarTitle("Categories")
     .navigationBarItems(trailing: Button(action: { router.navigate(sheet: .addCategory(onSubmit: { newCategoryName in
-      viewModel.addCategory(name: newCategoryName)
+      Task { await viewModel.addCategory(name: newCategoryName) }
     })) }, label: {
       Label("Add Category", systemImage: "plus")
         .labelStyle(.iconOnly)
