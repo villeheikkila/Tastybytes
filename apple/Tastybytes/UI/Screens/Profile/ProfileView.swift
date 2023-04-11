@@ -25,7 +25,7 @@ struct ProfileView: View {
       fetcher: .profile(viewModel.profile),
       scrollToTop: $scrollToTop,
       onRefresh: {
-        viewModel.getSummary()
+        await viewModel.getSummary()
       },
       topAnchor: topAnchor,
       header: {
@@ -142,7 +142,7 @@ struct ProfileView: View {
     .padding(.top, 10)
     .task {
       if viewModel.profileSummary == nil {
-        viewModel.getSummary()
+        await viewModel.getSummary()
       }
     }
     .contextMenu {

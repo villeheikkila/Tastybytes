@@ -71,7 +71,7 @@ extension AuthenticationScreen {
       onFailure: @escaping (_ message: String) -> Void
     ) {
       Task {
-        self.isLoading.toggle()
+        self.isLoading = true
         var primaryActionSuccessMessage: String?
         var primaryActionError: Error?
 

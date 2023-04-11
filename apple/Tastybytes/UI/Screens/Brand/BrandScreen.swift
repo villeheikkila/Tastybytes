@@ -142,11 +142,11 @@ struct BrandScreen: View {
                         titleVisibility: .visible,
                         presenting: viewModel.toDeleteSubBrand)
     { presenting in
-      Button(
+      ProgressButton(
         "Delete \(presenting.name ?? "default sub-brand")",
         role: .destructive,
         action: {
-          viewModel.deleteSubBrand()
+          await viewModel.deleteSubBrand()
           hapticManager.trigger(.notification(.success))
         }
       )
@@ -156,8 +156,8 @@ struct BrandScreen: View {
                         titleVisibility: .visible,
                         presenting: viewModel.brand)
     { presenting in
-      Button("Delete \(presenting.name)", role: .destructive, action: {
-        viewModel.deleteBrand(onDelete: {
+      ProgressButton("Delete \(presenting.name)", role: .destructive, action: {
+        await viewModel.deleteBrand(onDelete: {
           router.reset()
           hapticManager.trigger(.notification(.success))
         })

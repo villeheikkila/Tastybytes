@@ -51,21 +51,16 @@ extension ServingStyleManagementSheet {
       }
     }
 
-    func deleteServingStyle(onDelete: @escaping () -> Void) {
+    func deleteServingStyle(onDelete: @escaping () -> Void) async {
       guard let toDeleteServingStyle else { return }
-      Task {
-        switch await client.servingStyle.delete(id: toDeleteServingStyle.id) {
-        case .success:
-          withAnimation {
-            servingStyles.remove(object: toDeleteServingStyle)
-          }
-          onDelete()
-        case let .failure(error):
-          logger
-            .error(
-              "failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)"
-            )
+      switch await client.servingStyle.delete(id: toDeleteServingStyle.id) {
+      case .success:
+        withAnimation {
+          servingStyles.remove(object: toDeleteServingStyle)
         }
+        onDelete()
+      case let .failure(error):
+        logger.error("failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)")
       }
     }
 

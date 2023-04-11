@@ -20,7 +20,7 @@ extension CategoryManagementScreen {
       self.client = client
     }
 
-    func verifySubcategory(_ subcategory: Subcategory, isVerified: Bool) {
+    func verifySubcategory(_ subcategory: Subcategory, isVerified: Bool) async {
       Task {
         switch await client.subcategory.verification(id: subcategory.id, isVerified: isVerified) {
         case .success:
@@ -51,16 +51,13 @@ extension CategoryManagementScreen {
       }
     }
 
-    func deleteSubcategories() {
+    func deleteSubcategory() async {
       guard let deleteSubcategory else { return }
-      Task {
-        switch await client.subcategory.delete(id: deleteSubcategory.id) {
-        case .success:
-          await loadCategories()
-        case let .failure(error):
-          logger
-            .error("failed to delete subcategory \(deleteSubcategory.name): \(error.localizedDescription)")
-        }
+      switch await client.subcategory.delete(id: deleteSubcategory.id) {
+      case .success:
+        await loadCategories()
+      case let .failure(error):
+        logger.error("failed to delete subcategory \(deleteSubcategory.name): \(error.localizedDescription)")
       }
     }
 

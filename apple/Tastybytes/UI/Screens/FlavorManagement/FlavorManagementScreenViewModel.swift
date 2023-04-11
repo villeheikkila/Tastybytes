@@ -21,16 +21,14 @@ extension FlavorManagementScreen {
       }
     }
 
-    func deleteFlavor(_ flavor: Flavor) {
-      Task {
-        switch await client.flavor.delete(id: flavor.id) {
-        case .success:
-          withAnimation {
-            flavors.remove(object: flavor)
-          }
-        case let .failure(error):
-          logger.error("failed to delete flavor: \(error.localizedDescription)")
+    func deleteFlavor(_ flavor: Flavor) async {
+      switch await client.flavor.delete(id: flavor.id) {
+      case .success:
+        withAnimation {
+          flavors.remove(object: flavor)
         }
+      case let .failure(error):
+        logger.error("failed to delete flavor: \(error.localizedDescription)")
       }
     }
 

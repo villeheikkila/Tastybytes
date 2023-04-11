@@ -18,7 +18,7 @@ struct ProfileSettingsScreen: View {
     }
     .navigationTitle("Profile")
     .task {
-      viewModel.getInitialValues(profile: profileManager.get())
+      await viewModel.getInitialValues(profile: profileManager.get())
     }
   }
 
@@ -31,7 +31,7 @@ struct ProfileSettingsScreen: View {
       TextField("Last Name", text: $viewModel.lastName)
 
       if viewModel.showProfileUpdateButton {
-        Button("Update", action: { viewModel.updateProfile(onSuccess: {
+        ProgressButton("Update", action: { await viewModel.updateProfile(onSuccess: {
           Task { await profileManager.refresh() }
           toastManager.toggle(.success("Profile updated!"))
         }, onFailure: { error in

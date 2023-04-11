@@ -51,16 +51,16 @@ struct CompanyScreen: View {
                         isPresented: $viewModel.showUnverifyCompanyConfirmation,
                         presenting: viewModel.company)
     { presenting in
-      Button("Unverify \(presenting.name) company", role: .destructive, action: {
-        viewModel.verifyCompany(isVerified: false)
+      ProgressButton("Unverify \(presenting.name) company", action: {
+        await viewModel.verifyCompany(isVerified: false)
       })
     }
     .confirmationDialog("Delete Company Confirmation",
                         isPresented: $viewModel.showDeleteCompanyConfirmationDialog,
                         presenting: viewModel.company)
     { presenting in
-      Button("Delete \(presenting.name) Company", role: .destructive, action: {
-        viewModel.deleteCompany(viewModel.company, onDelete: {
+      ProgressButton("Delete \(presenting.name) Company", role: .destructive, action: {
+        await viewModel.deleteCompany(viewModel.company, onDelete: {
           hapticManager.trigger(.notification(.success))
           router.reset()
         })
@@ -134,7 +134,7 @@ struct CompanyScreen: View {
           Label("Verified", systemImage: "checkmark.circle")
         })
       } else if profileManager.hasPermission(.canVerify) {
-        Button(action: { viewModel.verifyCompany(isVerified: true) }, label: {
+        ProgressButton(action: { await viewModel.verifyCompany(isVerified: true) }, label: {
           Label("Verify", systemImage: "checkmark")
         })
       } else {

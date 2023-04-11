@@ -42,29 +42,25 @@ extension VerificationScreen {
       self.client = client
     }
 
-    func verifyBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) {
-      Task {
-        switch await client.brand.verification(id: brand.id, isVerified: true) {
-        case .success:
-          withAnimation {
-            brands.remove(object: brand)
-          }
-        case let .failure(error):
-          logger.error("failed to verify brand \(brand.id): \(error.localizedDescription)")
+    func verifyBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
+      switch await client.brand.verification(id: brand.id, isVerified: true) {
+      case .success:
+        withAnimation {
+          brands.remove(object: brand)
         }
+      case let .failure(error):
+        logger.error("failed to verify brand \(brand.id): \(error.localizedDescription)")
       }
     }
 
-    func verifySubBrand(_ subBrand: SubBrand.JoinedBrand) {
-      Task {
-        switch await client.subBrand.verification(id: subBrand.id, isVerified: true) {
-        case .success:
-          withAnimation {
-            subBrands.remove(object: subBrand)
-          }
-        case let .failure(error):
-          logger.error("failed to verify brand \(subBrand.id): \(error.localizedDescription)")
+    func verifySubBrand(_ subBrand: SubBrand.JoinedBrand) async {
+      switch await client.subBrand.verification(id: subBrand.id, isVerified: true) {
+      case .success:
+        withAnimation {
+          subBrands.remove(object: subBrand)
         }
+      case let .failure(error):
+        logger.error("failed to verify brand \(subBrand.id): \(error.localizedDescription)")
       }
     }
 
@@ -90,16 +86,14 @@ extension VerificationScreen {
       }
     }
 
-    func deleteProduct(onDelete: @escaping () -> Void) {
+    func deleteProduct(onDelete: @escaping () -> Void) async {
       guard let deleteProduct else { return }
-      Task {
-        switch await client.product.delete(id: deleteProduct.id) {
-        case .success:
-          await loadData(refresh: true)
-          onDelete()
-        case let .failure(error):
-          logger.error("failed to delete product \(deleteProduct.id): \(error.localizedDescription)")
-        }
+      switch await client.product.delete(id: deleteProduct.id) {
+      case .success:
+        await loadData(refresh: true)
+        onDelete()
+      case let .failure(error):
+        logger.error("failed to delete product: \(error.localizedDescription)")
       }
     }
 

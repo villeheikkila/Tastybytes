@@ -20,42 +20,38 @@ extension ProductScreen {
       showDeleteProductConfirmationDialog.toggle()
     }
 
-    func onEditProduct() {
-      refresh()
-      refreshCheckIns()
+    func onEditProduct() async {
+      await refresh()
+      await refreshCheckIns()
     }
 
-    func loadSummary() {
-      Task {
-        switch await client.product.getSummaryById(id: product.id) {
-        case let .success(summary):
-          self.summary = summary
-        case let .failure(error):
-          logger.error("failed to load product summary for '\(self.product.id)': \(error.localizedDescription)")
-        }
+    func loadSummary() async {
+      switch await client.product.getSummaryById(id: product.id) {
+      case let .success(summary):
+        self.summary = summary
+      case let .failure(error):
+        logger.error("failed to load product summary: \(error.localizedDescription)")
       }
     }
 
-    func refresh() {
-      Task {
-        async let productPromise = client.product.getById(id: product.id)
-        async let summaryPromise = client.product.getSummaryById(id: product.id)
+    func refresh() async {
+      async let productPromise = client.product.getById(id: product.id)
+      async let summaryPromise = client.product.getSummaryById(id: product.id)
 
-        switch await productPromise {
-        case let .success(refreshedProduct):
-          withAnimation {
-            product = refreshedProduct
-          }
-        case let .failure(error):
-          logger.error("failed to refresh product by id '\(self.product.id)': \(error.localizedDescription)")
+      switch await productPromise {
+      case let .success(refreshedProduct):
+        withAnimation {
+          product = refreshedProduct
         }
+      case let .failure(error):
+        logger.error("failed to refresh product by id '\(product.id)': \(error.localizedDescription)")
+      }
 
-        switch await summaryPromise {
-        case let .success(summary):
-          self.summary = summary
-        case let .failure(error):
-          logger.error("failed to load product summary for '\(self.product.id)': \(error.localizedDescription)")
-        }
+      switch await summaryPromise {
+      case let .success(summary):
+        self.summary = summary
+      case let .failure(error):
+        logger.error("failed to load product summary for '\(product.id)': \(error.localizedDescription)")
       }
     }
 
@@ -74,29 +70,27 @@ extension ProductScreen {
     }
 
     func refreshCheckIns() {
-      refresh()
-      resetView += 1
-    }
-
-    func verifyProduct(isVerified: Bool) {
       Task {
-        switch await client.product.verification(id: product.id, isVerified: isVerified) {
-        case .success:
-          refresh()
-        case let .failure(error):
-          logger.error("failed to verify product \(self.product.id): \(error.localizedDescription)")
-        }
+        await refresh()
+        resetView += 1
       }
     }
 
-    func deleteProduct(onDelete: @escaping () -> Void) {
-      Task {
-        switch await client.product.delete(id: product.id) {
-        case .success:
-          onDelete()
-        case let .failure(error):
-          logger.error("failed to delete product \(self.product.id): \(error.localizedDescription)")
-        }
+    func verifyProduct(isVerified: Bool) async {
+      switch await client.product.verification(id: product.id, isVerified: isVerified) {
+      case .success:
+        await refresh()
+      case let .failure(error):
+        logger.error("failed to verify product: \(error.localizedDescription)")
+      }
+    }
+
+    func deleteProduct(onDelete: @escaping () -> Void) async {
+      switch await client.product.delete(id: product.id) {
+      case .success:
+        onDelete()
+      case let .failure(error):
+        logger.error("failed to delete product: \(error.localizedDescription)")
       }
     }
   }

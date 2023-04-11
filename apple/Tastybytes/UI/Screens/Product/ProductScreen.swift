@@ -19,7 +19,7 @@ struct ProductScreen: View {
       fetcher: .product(viewModel.product),
       scrollToTop: $scrollToTop,
       onRefresh: {
-        viewModel.refresh()
+        await viewModel.refresh()
       },
       header: {
         Section {
@@ -48,7 +48,7 @@ struct ProductScreen: View {
     .id(viewModel.resetView)
     .task {
       if viewModel.summary == nil {
-        viewModel.loadSummary()
+        await viewModel.loadSummary()
       }
     }
     .toolbar {
@@ -58,9 +58,9 @@ struct ProductScreen: View {
                         isPresented: $viewModel.showUnverifyProductConfirmation,
                         presenting: viewModel.product)
     { presenting in
-      Button("Unverify \(presenting.name) product", role: .destructive, action: {
+      ProgressButton("Unverify \(presenting.name) product", role: .destructive, action: {
+        await viewModel.verifyProduct(isVerified: false)
         hapticManager.trigger(.notification(.success))
-        viewModel.verifyProduct(isVerified: false)
       })
     }
     .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
@@ -68,10 +68,10 @@ struct ProductScreen: View {
                         titleVisibility: .visible,
                         presenting: viewModel.product)
     { presenting in
-      Button(
+      ProgressButton(
         "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
-        action: { viewModel.deleteProduct(onDelete: {
+        action: { await viewModel.deleteProduct(onDelete: {
           hapticManager.trigger(.notification(.success))
           router.removeLast()
         })
@@ -131,7 +131,7 @@ struct ProductScreen: View {
             Label("Verified", systemImage: "checkmark.circle")
           })
         } else if profileManager.hasPermission(.canVerify) {
-          Button(action: { viewModel.verifyProduct(isVerified: true) }, label: {
+          ProgressButton(action: { await viewModel.verifyProduct(isVerified: true) }, label: {
             Label("Verify", systemImage: "checkmark")
           })
         } else {

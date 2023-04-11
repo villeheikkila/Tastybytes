@@ -35,11 +35,11 @@ struct AccountSettingsScreen: View {
       isPresented: $viewModel.showDeleteConfirmation,
       titleVisibility: .visible
     ) {
-      Button(
+      ProgressButton(
         "Delete Account",
         role: .destructive,
         action: {
-          viewModel.deleteCurrentAccount(onError: { message in
+          await viewModel.deleteCurrentAccount(onError: { message in
             toastManager.toggle(.error(message))
           })
           hapticManager.trigger(.notification(.success))
@@ -47,7 +47,7 @@ struct AccountSettingsScreen: View {
       )
     }
     .task {
-      viewModel.getInitialValues(profile: profileManager.get())
+      await viewModel.getInitialValues(profile: profileManager.get())
     }
   }
 
@@ -71,7 +71,7 @@ struct AccountSettingsScreen: View {
       }
 
       if viewModel.showPasswordConfirmation {
-        Button("Update password", action: { viewModel.updatePassword() })
+        ProgressButton("Update password", action: { await viewModel.updatePassword() })
       }
     } header: {
       Text("Change password")
@@ -90,7 +90,7 @@ struct AccountSettingsScreen: View {
         .disableAutocorrection(true)
 
       if viewModel.showEmailConfirmationButton {
-        Button("Send Verification Link", action: { viewModel.sendEmailVerificationLink() })
+        ProgressButton("Send Verification Link", action: { await viewModel.sendEmailVerificationLink() })
       }
 
     } header: {
@@ -103,7 +103,7 @@ struct AccountSettingsScreen: View {
 
   private var deleteAccount: some View {
     Section {
-      Button(action: { viewModel.exportData(onError: { message in
+      ProgressButton(action: { await viewModel.exportData(onError: { message in
         toastManager.toggle(.error(message))
       }) }, label: {
         Label("Export CSV", systemImage: "square.and.arrow.up")

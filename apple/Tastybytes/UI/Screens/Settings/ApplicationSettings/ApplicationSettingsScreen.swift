@@ -17,7 +17,7 @@ struct ApplicationSettingsScreen: View {
     .navigationTitle("Application")
     .navigationBarTitleDisplayMode(.inline)
     .task {
-      viewModel.setInitialValues(systemColorScheme: systemColorScheme, profile: profileManager.get())
+      await viewModel.setInitialValues(systemColorScheme: systemColorScheme, profile: profileManager.get())
     }
   }
 

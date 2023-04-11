@@ -46,10 +46,8 @@ extension ProfileSettingsScreen {
       ].allSatisfy { $0 }
     }
 
-    func getInitialValues(profile: Profile.Extended) {
-      Task {
-        self.updateFormValues(profile: profile)
-      }
+    func getInitialValues(profile: Profile.Extended) async {
+      await updateFormValues(profile: profile)
     }
 
     func updateFormValues(profile: Profile.Extended) {
@@ -61,24 +59,22 @@ extension ProfileSettingsScreen {
       isPrivateProfile = profile.isPrivate
     }
 
-    func updateProfile(onSuccess: @escaping () -> Void, onFailure: @escaping (_ error: Error) -> Void) {
+    func updateProfile(onSuccess: @escaping () -> Void, onFailure: @escaping (_ error: Error) -> Void) async {
       let update = Profile.UpdateRequest(
         username: username,
         firstName: firstName,
         lastName: lastName
       )
 
-      Task {
-        switch await client.profile.update(
-          update: update
-        ) {
-        case let .success(profile):
-          self.updateFormValues(profile: profile)
-          onSuccess()
-        case let .failure(error):
-          logger.warning("failed to update profile: \(error.localizedDescription)")
-          onFailure(error)
-        }
+      switch await client.profile.update(
+        update: update
+      ) {
+      case let .success(profile):
+        updateFormValues(profile: profile)
+        onSuccess()
+      case let .failure(error):
+        logger.warning("failed to update profile: \(error.localizedDescription)")
+        onFailure(error)
       }
     }
 

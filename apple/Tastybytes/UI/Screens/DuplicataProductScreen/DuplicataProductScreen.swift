@@ -54,10 +54,10 @@ struct DuplicateProductScreen: View {
                         titleVisibility: .visible,
                         presenting: viewModel.deleteProduct)
     { presenting in
-      Button(
+      ProgressButton(
         "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
-        action: { viewModel.deleteProduct(onDelete: {
+        action: { await viewModel.deleteProduct(onDelete: {
           hapticManager.trigger(.notification(.success))
           router.removeLast()
         })

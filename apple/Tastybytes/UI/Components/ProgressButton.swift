@@ -6,15 +6,28 @@ struct ProgressButton<Label: View>: View {
     case showProgressView
   }
 
+  let role: ButtonRole?
   var action: () async -> Void
   var actionOptions = Set(ActionOption.allCases)
   @ViewBuilder var label: () -> Label
+
+  init(
+    role: ButtonRole? = nil,
+    action: @escaping () async -> Void,
+    actionOptions: Set<ActionOption> = Set(),
+    @ViewBuilder label: @escaping () -> Label
+  ) {
+    self.role = role
+    self.action = action
+    self.actionOptions = actionOptions
+    self.label = label
+  }
 
   @State private var isDisabled = false
   @State private var isLoading = false
 
   var body: some View {
-    Button(action: { buttonAction() }, label: { buttonLabel })
+    Button(role: role, action: { buttonAction() }, label: { buttonLabel })
       .disabled(isDisabled)
   }
 
@@ -51,10 +64,11 @@ struct ProgressButton<Label: View>: View {
 
 extension ProgressButton where Label == Text {
   init(_ label: String,
+       role: ButtonRole? = nil,
        actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
        action: @escaping () async -> Void)
   {
-    self.init(action: action) {
+    self.init(role: role, action: action) {
       Text(label)
     }
   }
@@ -62,10 +76,11 @@ extension ProgressButton where Label == Text {
 
 extension ProgressButton where Label == Image {
   init(systemImageName: String,
+       role: ButtonRole? = nil,
        actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
        action: @escaping () async -> Void)
   {
-    self.init(action: action) {
+    self.init(role: role, action: action) {
       Image(systemName: systemImageName)
     }
   }

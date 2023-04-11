@@ -28,10 +28,10 @@ struct VerificationScreen: View {
                         titleVisibility: .visible,
                         presenting: viewModel.deleteProduct)
     { presenting in
-      Button(
+      ProgressButton(
         "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
-        action: { viewModel.deleteProduct(onDelete: {
+        action: { await viewModel.deleteProduct(onDelete: {
           hapticManager.trigger(.notification(.success))
         })
         }
@@ -80,7 +80,7 @@ struct VerificationScreen: View {
       }
       .accessibilityAddTraits(.isButton)
       .swipeActions {
-        Button(action: { viewModel.verifySubBrand(subBrand) }, label: {
+        ProgressButton(action: { await viewModel.verifySubBrand(subBrand) }, label: {
           Label("Verify", systemImage: "checkmark")
         }).tint(.green)
       }
@@ -97,7 +97,7 @@ struct VerificationScreen: View {
         }
       }
       .swipeActions {
-        Button(action: { viewModel.verifyBrand(brand) }, label: {
+        ProgressButton(action: { await viewModel.verifyBrand(brand) }, label: {
           Label("Verify", systemImage: "checkmark")
         }).tint(.green)
       }

@@ -66,11 +66,11 @@ struct ServingStyleManagementSheet: View {
       titleVisibility: .visible,
       presenting: viewModel.toDeleteServingStyle
     ) { presenting in
-      Button(
+      ProgressButton(
         "Delete \(presenting.name)",
         role: .destructive,
         action: {
-          viewModel.deleteServingStyle(onDelete: {
+          await viewModel.deleteServingStyle(onDelete: {
             hapticManager.trigger(.notification(.success))
           })
         }

@@ -17,7 +17,7 @@ struct AboutScreen: View {
     }
     .navigationTitle("About")
     .task {
-      viewModel.getAboutPage()
+      await viewModel.getAboutPage()
     }
   }
 

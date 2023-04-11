@@ -14,8 +14,8 @@ struct FlavorManagementScreen: View {
       ForEach(viewModel.flavors) { flavor in
         Text(flavor.label)
           .swipeActions {
-            Button(role: .destructive, action: {
-              viewModel.deleteFlavor(flavor)
+            ProgressButton(role: .destructive, action: {
+              await viewModel.deleteFlavor(flavor)
             }, label: {
               Label("Delete", systemImage: "trash")
             })
@@ -24,7 +24,7 @@ struct FlavorManagementScreen: View {
     }
     .navigationBarTitle("Flavors")
     .navigationBarItems(
-      trailing: Button(role: .destructive, action: { router.navigate(sheet: .newFlavor(onSubmit: { newFlavor in
+      trailing: Button(action: { router.navigate(sheet: .newFlavor(onSubmit: { newFlavor in
         Task { await viewModel.addFlavor(name: newFlavor) }
       })) }, label: {
         Label("Add flavors", systemImage: "plus")

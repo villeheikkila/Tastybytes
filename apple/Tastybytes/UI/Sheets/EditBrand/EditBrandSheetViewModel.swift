@@ -32,17 +32,15 @@ extension EditBrandSheet {
 
     func editBrand(
       onSuccess: @escaping () -> Void
-    ) {
-      Task {
-        switch await client.brand
-          .update(updateRequest: Brand.UpdateRequest(id: brand.id, name: name, brandOwnerId: brandOwner.id))
-        {
-        case .success:
-          showToast.toggle()
-          onSuccess()
-        case let .failure(error):
-          logger.error("failed to edit brand '\(self.brand.id)': \(error.localizedDescription)")
-        }
+    ) async {
+      switch await client.brand
+        .update(updateRequest: Brand.UpdateRequest(id: brand.id, name: name, brandOwnerId: brandOwner.id))
+      {
+      case .success:
+        showToast.toggle()
+        onSuccess()
+      case let .failure(error):
+        logger.error("failed to edit brand': \(error.localizedDescription)")
       }
     }
 

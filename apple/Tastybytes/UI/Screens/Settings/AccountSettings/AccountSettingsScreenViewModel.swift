@@ -45,52 +45,42 @@ extension AccountSettingsScreen {
       "\(Config.appName.lowercased())_export_\(Date().customFormat(.fileNameSuffix)).csv"
     }
 
-    func getInitialValues(profile _: Profile.Extended) {
-      Task {
-        switch await client.auth.getUser() {
-        case let .success(user):
-          initialEmail = user.email.orEmpty
-          self.email = user.email.orEmpty
-        case let .failure(error):
-          logger.error("failed to get current user data: \(error.localizedDescription)")
-        }
+    func getInitialValues(profile _: Profile.Extended) async {
+      switch await client.auth.getUser() {
+      case let .success(user):
+        initialEmail = user.email.orEmpty
+        email = user.email.orEmpty
+      case let .failure(error):
+        logger.error("failed to get current user data: \(error.localizedDescription)")
       }
     }
 
-    func updatePassword() {
-      Task {
-        _ = await client.auth.updatePassword(newPassword: newPassword)
+    func updatePassword() async {
+      _ = await client.auth.updatePassword(newPassword: newPassword)
+    }
+
+    func sendEmailVerificationLink() async {
+      _ = await client.auth.sendEmailVerification(email: email)
+    }
+
+    func exportData(onError: @escaping (_ error: String) -> Void) async {
+      switch await client.profile.currentUserExport() {
+      case let .success(csvText):
+        csvExport = CSVFile(initialText: csvText)
+        showingExporter = true
+      case let .failure(error):
+        logger.error("failed to export check-in csv: \(error.localizedDescription)")
+        onError(error.localizedDescription)
       }
     }
 
-    func sendEmailVerificationLink() {
-      Task {
-        _ = await client.auth.sendEmailVerification(email: email)
-      }
-    }
-
-    func exportData(onError: @escaping (_ error: String) -> Void) {
-      Task {
-        switch await client.profile.currentUserExport() {
-        case let .success(csvText):
-          self.csvExport = CSVFile(initialText: csvText)
-          self.showingExporter = true
-        case let .failure(error):
-          logger.error("failed to export check-in csv: \(error.localizedDescription)")
-          onError(error.localizedDescription)
-        }
-      }
-    }
-
-    func deleteCurrentAccount(onError: @escaping (_ error: String) -> Void) {
-      Task {
-        switch await client.profile.deleteCurrentAccount() {
-        case .success:
-          _ = await client.auth.logOut()
-        case let .failure(error):
-          logger.error("failed to delete current account: \(error.localizedDescription)")
-          onError(error.localizedDescription)
-        }
+    func deleteCurrentAccount(onError: @escaping (_ error: String) -> Void) async {
+      switch await client.profile.deleteCurrentAccount() {
+      case .success:
+        _ = await client.auth.logOut()
+      case let .failure(error):
+        logger.error("failed to delete current account: \(error.localizedDescription)")
+        onError(error.localizedDescription)
       }
     }
   }

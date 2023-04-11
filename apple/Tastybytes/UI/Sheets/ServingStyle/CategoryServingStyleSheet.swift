@@ -30,7 +30,7 @@ struct CategoryServingStyleSheet: View {
     }), trailing: Button(
       action: {
         router.navigate(sheet: .servingStyleManagement(pickedServingStyles: $viewModel.servingStyles, onSelect: { servingStyle in
-          viewModel.addServingStyleToCategory(servingStyle)
+          Task { await viewModel.addServingStyleToCategory(servingStyle) }
         }))
       },
       label: {
@@ -43,15 +43,13 @@ struct CategoryServingStyleSheet: View {
       titleVisibility: .visible,
       presenting: viewModel.toDeleteServingStyle
     ) { presenting in
-      Button(
+      ProgressButton(
         "Remove \(presenting.name) from \(viewModel.category.name)",
         role: .destructive,
         action: {
-          Task {
-            await viewModel.deleteServingStyle(onDelete: {
-              hapticManager.trigger(.notification(.success))
-            })
-          }
+          await viewModel.deleteServingStyle(onDelete: {
+            hapticManager.trigger(.notification(.success))
+          })
         }
       )
     }

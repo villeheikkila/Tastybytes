@@ -38,19 +38,14 @@ extension ProfileView {
       }
     }
 
-    func getSummary() {
-      Task {
-        switch await client.checkIn.getSummaryByProfileId(id: profile.id) {
-        case let .success(summary):
-          withAnimation {
-            self.profileSummary = summary
-          }
-        case let .failure(error):
-          logger
-            .error(
-              "fetching profile data for \(self.profile.id) failed: \(error.localizedDescription)"
-            )
+    func getSummary() async {
+      switch await client.checkIn.getSummaryByProfileId(id: profile.id) {
+      case let .success(summary):
+        withAnimation {
+          self.profileSummary = summary
         }
+      case let .failure(error):
+        logger.error("fetching profile data failed: \(error.localizedDescription)")
       }
     }
   }

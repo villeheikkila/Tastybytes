@@ -21,22 +21,20 @@ extension CategoryServingStyleSheet {
       servingStyles = category.servingStyles
     }
 
-    func addServingStyleToCategory(_ servingStyle: ServingStyle) {
-      Task {
-        switch await client.category.addServingStyle(
-          categoryId: category.id,
-          servingStyleId: servingStyle.id
-        ) {
-        case .success:
-          withAnimation {
-            servingStyles.append(servingStyle)
-          }
-        case let .failure(error):
-          logger
-            .error(
-              "failed to add serving style '\(servingStyle.id) to \(self.category.id) category': \(error.localizedDescription)"
-            )
+    func addServingStyleToCategory(_ servingStyle: ServingStyle) async {
+      switch await client.category.addServingStyle(
+        categoryId: category.id,
+        servingStyleId: servingStyle.id
+      ) {
+      case .success:
+        withAnimation {
+          servingStyles.append(servingStyle)
         }
+      case let .failure(error):
+        logger
+          .error(
+            "failed to add serving style to category': \(error.localizedDescription)"
+          )
       }
     }
 

@@ -18,7 +18,7 @@ struct LocationScreen: View {
       viewModel.client,
       fetcher: .location(viewModel.location),
       scrollToTop: $scrollToTop,
-      onRefresh: { viewModel.getSummary() },
+      onRefresh: { await viewModel.getSummary() },
       header: {
         if let summary = viewModel.summary, summary.averageRating != nil {
           Section {
@@ -40,11 +40,11 @@ struct LocationScreen: View {
       titleVisibility: .visible,
       presenting: viewModel.location
     ) { presenting in
-      Button(
+      ProgressButton(
         "Delete \(presenting.name)",
         role: .destructive,
         action: {
-          viewModel.deleteLocation(presenting, onDelete: {
+          await viewModel.deleteLocation(presenting, onDelete: {
             router.reset()
           })
           hapticManager.trigger(.notification(.success))
@@ -52,7 +52,7 @@ struct LocationScreen: View {
       )
     }
     .task {
-      viewModel.getSummary()
+      await viewModel.getSummary()
     }
   }
 

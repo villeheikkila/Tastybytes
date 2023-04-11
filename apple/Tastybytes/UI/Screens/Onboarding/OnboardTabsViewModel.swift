@@ -18,20 +18,18 @@ class OnboardingViewModel: ObservableObject {
     self.client = client
   }
 
-  func loadProfile() {
-    Task {
-      switch await client.profile.getCurrentUser() {
-      case let .success(profile):
-        self.profile = profile
-        username = profile.username
-        lastName = profile.lastName.orEmpty
-        firstName = profile.firstName.orEmpty
-        showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
-        isPrivateProfile = profile.isPrivate
-        avatarUrl = profile.avatarUrl
-      case let .failure(error):
-        logger.error("failed to load profile: \(error.localizedDescription)")
-      }
+  func loadProfile() async {
+    switch await client.profile.getCurrentUser() {
+    case let .success(profile):
+      self.profile = profile
+      username = profile.username
+      lastName = profile.lastName.orEmpty
+      firstName = profile.firstName.orEmpty
+      showFullName = profile.nameDisplay == Profile.NameDisplay.fullName
+      isPrivateProfile = profile.isPrivate
+      avatarUrl = profile.avatarUrl
+    case let .failure(error):
+      logger.error("failed to load profile: \(error.localizedDescription)")
     }
   }
 

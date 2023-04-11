@@ -69,8 +69,7 @@ extension BrandScreen {
       case let .success(summary):
         self.summary = summary
       case let .failure(error):
-        logger
-          .error("failed to load summary for brand: \(error.localizedDescription)")
+        logger.error("failed to load summary for brand: \(error.localizedDescription)")
       }
 
       switch await brandPromise {
@@ -87,8 +86,7 @@ extension BrandScreen {
       case let .success(summary):
         self.summary = summary
       case let .failure(error):
-        logger
-          .error("failed to load summary for brand: \(error.localizedDescription)")
+        logger.error("failed to load summary for brand: \(error.localizedDescription)")
       }
     }
 
@@ -103,8 +101,7 @@ extension BrandScreen {
           subBrands: brand.subBrands
         )
       case let .failure(error):
-        logger
-          .error("failed to verify brand': \(error.localizedDescription)")
+        logger.error("failed to verify brand': \(error.localizedDescription)")
       }
     }
 
@@ -112,36 +109,29 @@ extension BrandScreen {
       switch await client.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
       case .success:
         await refresh()
-        logger
-          .info("sub-brand succesfully verified")
+        logger.info("sub-brand succesfully verified")
       case let .failure(error):
-        logger
-          .error("failed to verify brand': \(error.localizedDescription)")
+        logger.error("failed to verify brand': \(error.localizedDescription)")
       }
     }
 
-    func deleteBrand(onDelete: @escaping () -> Void) {
-      Task {
-        switch await client.brand.delete(id: brand.id) {
-        case .success:
-          onDelete()
-        case let .failure(error):
-          logger
-            .error("failed to delete brand by id '\(self.brand.id)': \(error.localizedDescription)")
-        }
+    func deleteBrand(onDelete: @escaping () -> Void) async {
+      switch await client.brand.delete(id: brand.id) {
+      case .success:
+        onDelete()
+      case let .failure(error):
+        logger.error("failed to delete brand: \(error.localizedDescription)")
       }
     }
 
-    func deleteSubBrand() {
+    func deleteSubBrand() async {
       guard let toDeleteSubBrand else { return }
-      Task {
-        switch await client.subBrand.delete(id: toDeleteSubBrand.id) {
-        case .success:
-          await refresh()
-          logger.info("succesfully deleted sub-brand")
-        case let .failure(error):
-          logger.error("failed to delete brand '\(toDeleteSubBrand.id)': \(error.localizedDescription)")
-        }
+      switch await client.subBrand.delete(id: toDeleteSubBrand.id) {
+      case .success:
+        await refresh()
+        logger.info("succesfully deleted sub-brand")
+      case let .failure(error):
+        logger.error("failed to delete brand '\(toDeleteSubBrand.id)': \(error.localizedDescription)")
       }
     }
   }

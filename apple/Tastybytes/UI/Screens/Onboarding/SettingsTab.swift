@@ -65,7 +65,7 @@ struct ProfileSettingsTab: View {
       focusedField = nil
     }
     .task {
-      viewModel.loadProfile()
+      await viewModel.loadProfile()
     }
     // swiftlint:enable accessibility_trait_for_button
   }

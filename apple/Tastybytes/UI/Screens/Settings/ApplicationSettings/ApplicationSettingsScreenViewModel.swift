@@ -17,30 +17,28 @@ extension ApplicationSettingsScreen {
       self.client = client
     }
 
-    func setInitialValues(systemColorScheme: ColorScheme, profile _: Profile.Extended?) {
-      Task {
-        switch await client.profile.getCurrentUser() {
-        case let .success(profile):
-          switch profile.settings.colorScheme {
-          case .light:
-            self.isDarkMode = false
-            self.isSystemColor = false
-          case .dark:
-            self.isDarkMode = true
-            self.isSystemColor = false
-          case .system:
-            self.isDarkMode = initialColorScheme == ColorScheme.dark
-            self.isSystemColor = true
-          }
-
-          self.reactionNotifications = profile.settings.sendReactionNotifications
-          self.friendRequestNotifications = profile.settings.sendFriendRequestNotifications
-          self.checkInTagNotifications = profile.settings.sendTaggedCheckInNotifications
-
-          initialColorScheme = systemColorScheme
-        case let .failure(error):
-          logger.error("fetching current user failed: \(error.localizedDescription)")
+    func setInitialValues(systemColorScheme: ColorScheme, profile _: Profile.Extended?) async {
+      switch await client.profile.getCurrentUser() {
+      case let .success(profile):
+        switch profile.settings.colorScheme {
+        case .light:
+          isDarkMode = false
+          isSystemColor = false
+        case .dark:
+          isDarkMode = true
+          isSystemColor = false
+        case .system:
+          isDarkMode = initialColorScheme == ColorScheme.dark
+          isSystemColor = true
         }
+
+        reactionNotifications = profile.settings.sendReactionNotifications
+        friendRequestNotifications = profile.settings.sendFriendRequestNotifications
+        checkInTagNotifications = profile.settings.sendTaggedCheckInNotifications
+
+        initialColorScheme = systemColorScheme
+      case let .failure(error):
+        logger.error("fetching current user failed: \(error.localizedDescription)")
       }
     }
 

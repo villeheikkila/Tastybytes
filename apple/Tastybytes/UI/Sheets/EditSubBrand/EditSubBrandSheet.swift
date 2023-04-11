@@ -24,8 +24,8 @@ struct EditSubBrandSheet: View {
     Form {
       Section {
         TextField("Name", text: $viewModel.newSubBrandName)
-        Button("Edit") {
-          viewModel.editSubBrand(onSuccess: {
+        ProgressButton("Edit") {
+          await viewModel.editSubBrand(onSuccess: {
             onUpdate()
           })
         }
@@ -60,11 +60,11 @@ struct EditSubBrandSheet: View {
                         titleVisibility: .visible,
                         presenting: viewModel.mergeTo)
     { presenting in
-      Button(
+      ProgressButton(
         "Merge \(viewModel.subBrand.name.orEmpty) to \(presenting.name ?? "default sub-brand")",
         role: .destructive,
         action: {
-          viewModel.mergeToSubBrand(subBrand: viewModel.subBrand, onSuccess: {
+          await viewModel.mergeToSubBrand(subBrand: viewModel.subBrand, onSuccess: {
             hapticManager.trigger(.notification(.success))
             onUpdate()
           })

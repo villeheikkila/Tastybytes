@@ -54,8 +54,8 @@ struct EditBrandSheet: View {
 
       Section {
         TextField("Name", text: $viewModel.name)
-        Button("Edit") {
-          viewModel.editBrand {
+        ProgressButton("Edit") {
+          await viewModel.editBrand {
             onUpdate()
           }
         }.disabled(!viewModel.name.isValidLength(.normal) || viewModel.brand.name == viewModel.name)
@@ -69,8 +69,8 @@ struct EditBrandSheet: View {
         })) }, label: {
           Text(viewModel.brandOwner.name)
         })
-        Button("Change brand owner") {
-          viewModel.editBrand {
+        ProgressButton("Change brand owner") {
+          await viewModel.editBrand {
             onUpdate()
           }
         }.disabled(viewModel.brandOwner.id == viewModel.initialBrandOwner.id)

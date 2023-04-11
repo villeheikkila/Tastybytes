@@ -52,11 +52,11 @@ struct CheckInScreen: View {
                         titleVisibility: .visible,
                         presenting: viewModel.checkIn)
     { presenting in
-      Button(
+      ProgressButton(
         "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
         role: .destructive,
         action: {
-          viewModel.deleteCheckIn(onDelete: {
+          await viewModel.deleteCheckIn(onDelete: {
             hapticManager.trigger(.notification(.success))
             router.removeLast()
           })
@@ -83,10 +83,8 @@ struct CheckInScreen: View {
                 Label("Edit Comment", systemImage: "pencil")
               }
 
-              Button {
-                withAnimation {
-                  viewModel.deleteComment(comment)
-                }
+              ProgressButton {
+                await viewModel.deleteComment(comment)
               } label: {
                 Label("Delete Comment", systemImage: "trash.fill")
               }
@@ -99,8 +97,8 @@ struct CheckInScreen: View {
     .alert("Edit Comment", isPresented: $viewModel.showEditCommentPrompt, actions: {
       TextField("TextField", text: $viewModel.editCommentText)
       Button("Cancel", role: .cancel, action: {})
-      Button("Edit", action: {
-        viewModel.updateComment()
+      ProgressButton("Edit", action: {
+        await viewModel.updateComment()
       })
     })
     .padding([.leading, .trailing], 5)
@@ -109,7 +107,7 @@ struct CheckInScreen: View {
   private var leaveCommentSection: some View {
     HStack {
       TextField("Leave a comment!", text: $viewModel.commentText)
-      Button(action: { viewModel.sendComment() }, label: {
+      ProgressButton(action: { await viewModel.sendComment() }, label: {
         Label("Send the comment", systemImage: "paperplane.fill")
           .labelStyle(.iconOnly)
       })

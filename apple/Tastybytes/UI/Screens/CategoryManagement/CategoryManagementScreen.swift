@@ -18,8 +18,8 @@ struct CategoryManagementScreen: View {
               Text(subcategory.name)
             }
             .swipeActions {
-              Button(
-                action: { viewModel.verifySubcategory(subcategory, isVerified: !subcategory.isVerified) },
+              ProgressButton(
+                action: { await viewModel.verifySubcategory(subcategory, isVerified: !subcategory.isVerified) },
                 label: {
                   if subcategory.isVerified {
                     Label("Unverify", systemImage: "x.square")
@@ -78,10 +78,10 @@ struct CategoryManagementScreen: View {
                         titleVisibility: .visible,
                         presenting: viewModel.deleteSubcategory)
     { presenting in
-      Button(
+      ProgressButton(
         "Delete \(presenting.name)",
         role: .destructive,
-        action: { viewModel.deleteSubcategories() }
+        action: { await viewModel.deleteSubcategory() }
       )
     }
     .task {

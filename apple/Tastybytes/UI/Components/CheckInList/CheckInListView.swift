@@ -49,11 +49,11 @@ struct CheckInListView<Header>: View where Header: View {
                           titleVisibility: .visible,
                           presenting: viewModel.showDeleteConfirmationFor)
       { presenting in
-        Button(
+        ProgressButton(
           "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
           role: .destructive,
           action: {
-            viewModel.deleteCheckIn(checkIn: presenting)
+            await viewModel.deleteCheckIn(checkIn: presenting)
             hapticManager.trigger(.notification(.success))
           }
         )

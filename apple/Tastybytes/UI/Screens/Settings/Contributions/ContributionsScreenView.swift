@@ -41,7 +41,7 @@ struct ContributionsScreen: View {
     .navigationTitle("Your Contributions")
     .navigationBarTitleDisplayMode(.inline)
     .task {
-      viewModel.loadContributions(userId: profileManager.getId())
+      await viewModel.loadContributions(userId: profileManager.getId())
     }
   }
 }

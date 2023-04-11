@@ -12,16 +12,14 @@ extension ContributionsScreen {
       self.client = client
     }
 
-    func loadContributions(userId: UUID) {
-      Task {
-        switch await client.profile.getContributions(userId: userId) {
-        case let .success(contributions):
-          withAnimation {
-            self.contributions = contributions
-          }
-        case let .failure(error):
-          logger.warning("failed to load contributions: \(error.localizedDescription)")
+    func loadContributions(userId: UUID) async {
+      switch await client.profile.getContributions(userId: userId) {
+      case let .success(contributions):
+        withAnimation {
+          self.contributions = contributions
         }
+      case let .failure(error):
+        logger.warning("failed to load contributions: \(error.localizedDescription)")
       }
     }
   }

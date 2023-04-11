@@ -11,17 +11,15 @@ extension AboutScreen {
       self.client = client
     }
 
-    func getAboutPage() {
-      Task {
-        switch await client.document.getAboutPage() {
-        case let .success(aboutPage):
-          self.aboutPage = aboutPage
-        case let .failure(error):
-          logger
-            .error(
-              "fetching about page failed: \(error.localizedDescription)"
-            )
-        }
+    func getAboutPage() async {
+      switch await client.document.getAboutPage() {
+      case let .success(aboutPage):
+        self.aboutPage = aboutPage
+      case let .failure(error):
+        logger
+          .error(
+            "fetching about page failed: \(error.localizedDescription)"
+          )
       }
     }
   }

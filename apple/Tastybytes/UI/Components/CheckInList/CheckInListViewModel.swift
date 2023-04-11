@@ -49,16 +49,14 @@ extension CheckInListView {
       return (from, to)
     }
 
-    func deleteCheckIn(checkIn: CheckIn) {
-      Task {
-        switch await client.checkIn.delete(id: checkIn.id) {
-        case .success:
-          withAnimation {
-            checkIns.remove(object: checkIn)
-          }
-        case let .failure(error):
-          logger.error("deleting check-in \(checkIn.id) failed: \(error.localizedDescription)")
+    func deleteCheckIn(checkIn: CheckIn) async {
+      switch await client.checkIn.delete(id: checkIn.id) {
+      case .success:
+        withAnimation {
+          checkIns.remove(object: checkIn)
         }
+      case let .failure(error):
+        logger.error("deleting check-in failed: \(error.localizedDescription)")
       }
     }
 
