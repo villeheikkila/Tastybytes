@@ -129,16 +129,12 @@ struct CompanyScreen: View {
 
       Divider()
 
-      if viewModel.company.isVerified {
-        Button(action: { viewModel.showUnverifyCompanyConfirmation = true }, label: {
-          Label("Verified", systemImage: "checkmark.circle")
-        })
-      } else if profileManager.hasPermission(.canVerify) {
-        ProgressButton(action: { await viewModel.verifyCompany(isVerified: true) }, label: {
-          Label("Verify", systemImage: "checkmark")
-        })
-      } else {
-        Label("Not verified", systemImage: "x.circle")
+      VerificationButton(isVerified: viewModel.company.isVerified) {
+        if viewModel.company.isVerified {
+          viewModel.showUnverifyCompanyConfirmation = true
+        } else {
+          await viewModel.verifyCompany(isVerified: true)
+        }
       }
 
       ReportButton(entity: .company(viewModel.company))
