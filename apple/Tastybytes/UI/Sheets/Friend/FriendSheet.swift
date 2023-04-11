@@ -11,10 +11,9 @@ struct FriendSheet: View {
         AvatarView(avatarUrl: friend.avatarUrl, size: 32, id: friend.id)
         Text(friend.preferredName)
         Spacer()
-        if taggedFriends.contains(friend) {
-          Label("Tag friend", systemImage: "checkmark")
-            .labelStyle(.iconOnly)
-        }
+        Label("Tag friend", systemImage: "checkmark")
+          .labelStyle(.iconOnly)
+          .opacity(taggedFriends.contains(friend) ? 1 : 0)
       })
     }
     .buttonStyle(.plain)

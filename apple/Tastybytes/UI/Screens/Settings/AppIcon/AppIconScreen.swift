@@ -19,10 +19,9 @@ struct AppIconScreen: View {
 
         Spacer()
 
-        if appIcon == selection {
-          Label("Selected", systemImage: "checkmark")
-            .labelStyle(.iconOnly)
-        }
+        Label("Selected", systemImage: "checkmark")
+          .labelStyle(.iconOnly)
+          .opacity(appIcon == selection ? 1 : 0)
       }
       .padding(4)
     }
