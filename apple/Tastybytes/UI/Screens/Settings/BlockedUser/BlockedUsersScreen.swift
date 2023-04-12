@@ -3,7 +3,6 @@ import SwiftUI
 struct BlockedUsersScreen: View {
   @EnvironmentObject private var friendManager: FriendManager
   @EnvironmentObject private var toastManager: ToastManager
-  @EnvironmentObject private var router: Router
   @State private var showUserSearchSheet = false
 
   let client: Client

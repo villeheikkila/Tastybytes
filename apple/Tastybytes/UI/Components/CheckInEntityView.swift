@@ -4,8 +4,6 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInEntityView: View {
-  @EnvironmentObject private var router: Router
-
   let checkIn: CheckIn
 
   var body: some View {

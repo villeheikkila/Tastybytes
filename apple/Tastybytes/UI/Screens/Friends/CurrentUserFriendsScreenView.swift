@@ -6,7 +6,6 @@ struct CurrentUserFriendsScreen: View {
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var noficationManager: NotificationManager
-  @EnvironmentObject private var router: Router
   @State private var friendToBeRemoved: Friend? {
     didSet {
       showRemoveFriendConfirmation = true

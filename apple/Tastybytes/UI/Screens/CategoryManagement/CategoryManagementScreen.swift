@@ -3,7 +3,6 @@ import SwiftUI
 struct CategoryManagementScreen: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var hapticManager: HapticManager
-  @EnvironmentObject private var router: Router
 
   init(_ client: Client) {
     _viewModel = StateObject(wrappedValue: ViewModel(client))

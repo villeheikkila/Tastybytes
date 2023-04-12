@@ -3,7 +3,6 @@ import SwiftUI
 struct CategoryServingStyleSheet: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var hapticManager: HapticManager
-  @EnvironmentObject private var router: Router
   @Environment(\.dismiss) private var dismiss
 
   init(_ client: Client, category: Category.JoinedSubcategoriesServingStyles) {

@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ProfileProductListView: View {
   @StateObject private var viewModel: ViewModel
-  @EnvironmentObject private var router: Router
 
   init(_ client: Client, profile: Profile) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, profile: profile))

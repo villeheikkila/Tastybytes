@@ -8,9 +8,8 @@ struct CheckInSheet: View {
   @Environment(\.dismiss) private var dismiss
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var router: Router
   @State private var showPhotoMenu = false
-  @State var pickedFlavors = [Flavor]()
+  @State private var pickedFlavors = [Flavor]()
   @FocusState private var focusedField: Focusable?
 
   let onCreation: ((_ checkIn: CheckIn) -> Void)?

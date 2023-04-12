@@ -7,7 +7,6 @@ struct EditBrandSheet: View {
   @Environment(\.dismiss) private var dismiss
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var router: Router
 
   let onUpdate: () -> Void
 
