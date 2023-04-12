@@ -129,13 +129,11 @@ struct CompanyScreen: View {
 
       Divider()
 
-      VerificationButton(isVerified: viewModel.company.isVerified) {
-        if viewModel.company.isVerified {
-          viewModel.showUnverifyCompanyConfirmation = true
-        } else {
-          await viewModel.verifyCompany(isVerified: true)
-        }
-      }
+      VerificationButton(isVerified: viewModel.company.isVerified, verify: {
+        await viewModel.verifyCompany(isVerified: true)
+      }, unverify: {
+        viewModel.showUnverifyCompanyConfirmation = true
+      })
 
       ReportButton(entity: .company(viewModel.company))
 

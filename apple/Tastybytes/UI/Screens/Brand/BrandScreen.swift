@@ -75,17 +75,11 @@ struct BrandScreen: View {
                 })
               }
 
-              if subBrand.isVerified {
-                Button(action: { viewModel.toUnverifySubBrand = subBrand }, label: {
-                  Label("Verified", systemImage: "checkmark.circle")
-                })
-              } else if profileManager.hasPermission(.canVerify) {
-                ProgressButton(action: { await viewModel.verifySubBrand(subBrand, isVerified: true) }, label: {
-                  Label("Verify", systemImage: "checkmark")
-                })
-              } else {
-                Label("Not verified", systemImage: "x.circle")
-              }
+              VerificationButton(isVerified: subBrand.isVerified, verify: {
+                await viewModel.verifySubBrand(subBrand, isVerified: true)
+              }, unverify: {
+                viewModel.toUnverifySubBrand = subBrand
+              })
 
               ReportButton(entity: .subBrand(viewModel.brand, subBrand))
 
@@ -210,17 +204,11 @@ struct BrandScreen: View {
         })
       }
 
-      if viewModel.brand.isVerified {
-        Button(action: { viewModel.showBrandUnverificationConfirmation = true }, label: {
-          Label("Verified", systemImage: "checkmark.circle")
-        })
-      } else if profileManager.hasPermission(.canVerify) {
-        ProgressButton(action: { await viewModel.verifyBrand(isVerified: true) }, label: {
-          Label("Verify", systemImage: "checkmark")
-        })
-      } else {
-        Label("Not verified", systemImage: "x.circle")
-      }
+      VerificationButton(isVerified: viewModel.brand.isVerified, verify: {
+        await viewModel.verifyBrand(isVerified: true)
+      }, unverify: {
+        viewModel.showBrandUnverificationConfirmation = true
+      })
 
       ReportButton(entity: .brand(viewModel.brand))
 

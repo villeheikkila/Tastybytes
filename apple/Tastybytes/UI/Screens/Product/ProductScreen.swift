@@ -126,17 +126,11 @@ struct ProductScreen: View {
           }
         )
 
-        if viewModel.product.isVerified {
-          Button(action: { viewModel.showUnverifyProductConfirmation = true }, label: {
-            Label("Verified", systemImage: "checkmark.circle")
-          })
-        } else if profileManager.hasPermission(.canVerify) {
-          ProgressButton(action: { await viewModel.verifyProduct(isVerified: true) }, label: {
-            Label("Verify", systemImage: "checkmark")
-          })
-        } else {
-          Label("Not verified", systemImage: "x.circle")
-        }
+        VerificationButton(isVerified: viewModel.product.isVerified, verify: {
+          await viewModel.verifyProduct(isVerified: true)
+        }, unverify: {
+          viewModel.showUnverifyProductConfirmation = true
+        })
 
         if profileManager.hasPermission(.canDeleteBarcodes) {
           Button(action: { router.navigate(sheet: .barcodeManagement(product: viewModel.product)) }, label: {

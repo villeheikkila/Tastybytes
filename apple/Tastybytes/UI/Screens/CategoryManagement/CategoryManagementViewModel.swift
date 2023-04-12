@@ -26,9 +26,7 @@ extension CategoryManagementScreen {
         await loadCategories()
       case let .failure(error):
         logger
-          .error(
-            "failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id): \(error.localizedDescription)"
-          )
+          .error("failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id): \(error.localizedDescription)")
       }
     }
 
@@ -40,10 +38,7 @@ extension CategoryManagementScreen {
       case .success:
         await loadCategories()
       case let .failure(error):
-        logger
-          .error(
-            "failed to update subcategory \(subCategory.id): \(error.localizedDescription)"
-          )
+        logger.error("failed to update subcategory \(subCategory.id): \(error.localizedDescription)")
       }
     }
 
@@ -63,9 +58,7 @@ extension CategoryManagementScreen {
         await loadCategories()
       case let .failure(error):
         logger
-          .error(
-            "failed to add new category with name \(name): \(error.localizedDescription)"
-          )
+          .error("failed to add new category with name \(name): \(error.localizedDescription)")
       }
     }
 
