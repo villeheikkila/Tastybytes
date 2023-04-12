@@ -27,12 +27,10 @@ struct CategoryServingStyleSheet: View {
     .navigationBarTitleDisplayMode(.inline)
     .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Done").bold()
-    }), trailing: Button(
-      action: {
-        router.navigate(sheet: .servingStyleManagement(pickedServingStyles: $viewModel.servingStyles, onSelect: { servingStyle in
-          Task { await viewModel.addServingStyleToCategory(servingStyle) }
-        }))
-      },
+    }), trailing: RouteLink(
+      sheet: .servingStyleManagement(pickedServingStyles: $viewModel.servingStyles, onSelect: { servingStyle in
+        Task { await viewModel.addServingStyleToCategory(servingStyle) }
+      }),
       label: {
         Label("Add Barcode", systemImage: "plus").bold()
       }

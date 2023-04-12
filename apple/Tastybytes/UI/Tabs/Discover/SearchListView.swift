@@ -252,18 +252,14 @@ struct SearchListView: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       if viewModel.searchScope == .products {
-        Button(
-          action: {
-            router.navigate(sheet: .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .checkIns],
-                                                  onApply: { filter in
-                                                    viewModel.productFilter = filter
-                                                  }))
-          },
-          label: {
-            Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
-              .labelStyle(.iconOnly)
-          }
-        )
+        RouteLink(sheet: .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .checkIns],
+                                        onApply: { filter in
+                                          viewModel.productFilter = filter
+                                        }),
+                  label: {
+                    Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
+                      .labelStyle(.iconOnly)
+                  })
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {

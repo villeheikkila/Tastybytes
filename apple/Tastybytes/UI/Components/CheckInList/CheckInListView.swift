@@ -95,13 +95,8 @@ struct CheckInListView<Header>: View where Header: View {
         .id(checkIn.id)
         .contextMenu {
           ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
-          Button("Open Company") {
-            router.navigate(screen: .company(checkIn.product.subBrand.brand.brandOwner))
-          }
-
-          Button("Open Check-in") {
-            router.navigate(screen: .checkIn(checkIn))
-          }
+          RouteLink("Open Company", screen: .company(checkIn.product.subBrand.brand.brandOwner))
+          RouteLink("Open Check-in", screen: .checkIn(checkIn))
           Divider()
           if checkIn.profile.id == profileManager.getId() {
             RouteLink(sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in

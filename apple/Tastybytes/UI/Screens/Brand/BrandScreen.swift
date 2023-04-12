@@ -61,11 +61,9 @@ struct BrandScreen: View {
             Spacer()
             Menu {
               if profileManager.hasPermission(.canEditBrands) {
-                Button(action: {
-                  router.navigate(sheet: .editSubBrand(brand: viewModel.brand, subBrand: subBrand, onUpdate: {
-                    Task { await viewModel.refresh() }
-                  }))
-                }, label: {
+                RouteLink(sheet: .editSubBrand(brand: viewModel.brand, subBrand: subBrand, onUpdate: {
+                  Task { await viewModel.refresh() }
+                }), label: {
                   Label("Edit", systemImage: "pencil")
                 })
               }
