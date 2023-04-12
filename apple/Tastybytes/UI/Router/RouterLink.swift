@@ -1,7 +1,8 @@
 import SwiftUI
 
-struct RouteLink<Label: View>: View {
+struct RouterLink<Label: View>: View {
   @EnvironmentObject private var router: Router
+
   let screen: Screen?
   let sheet: Sheet?
   let asTapGesture: Bool
@@ -41,7 +42,7 @@ struct RouteLink<Label: View>: View {
   }
 }
 
-extension RouteLink where Label == Text {
+extension RouterLink where Label == Text {
   init(_ label: String, screen: Screen, asTapGesture: Bool = false) {
     self.init(screen: screen, asTapGesture: asTapGesture) {
       Text(label)
@@ -49,7 +50,7 @@ extension RouteLink where Label == Text {
   }
 }
 
-extension RouteLink where Label == Image {
+extension RouterLink where Label == Image {
   init(systemImageName: String, screen: Screen, asTapGesture: Bool = false) {
     self.init(screen: screen, asTapGesture: asTapGesture) {
       Image(systemName: systemImageName)
@@ -57,7 +58,7 @@ extension RouteLink where Label == Image {
   }
 }
 
-extension RouteLink where Label == Text {
+extension RouterLink where Label == Text {
   init(_ label: String, sheet: Sheet, asTapGesture: Bool = false) {
     self.init(sheet: sheet, asTapGesture: asTapGesture) {
       Text(label)
@@ -65,7 +66,7 @@ extension RouteLink where Label == Text {
   }
 }
 
-extension RouteLink where Label == Image {
+extension RouterLink where Label == Image {
   init(systemImageName: String, sheet: Sheet, asTapGesture: Bool = false) {
     self.init(sheet: sheet, asTapGesture: asTapGesture) {
       Image(systemName: systemImageName)

@@ -95,11 +95,11 @@ struct CheckInListView<Header>: View where Header: View {
         .id(checkIn.id)
         .contextMenu {
           ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
-          RouteLink("Open Company", screen: .company(checkIn.product.subBrand.brand.brandOwner))
-          RouteLink("Open Check-in", screen: .checkIn(checkIn))
+          RouterLink("Open Company", screen: .company(checkIn.product.subBrand.brand.brandOwner))
+          RouterLink("Open Check-in", screen: .checkIn(checkIn))
           Divider()
           if checkIn.profile.id == profileManager.getId() {
-            RouteLink(sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+            RouterLink(sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
               viewModel.onCheckInUpdate(updatedCheckIn)
             }), label: {
               Label("Edit", systemImage: "pencil")
@@ -123,14 +123,14 @@ struct CheckInListView<Header>: View where Header: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      RouteLink(screen: .currentUserFriends) {
+      RouterLink(screen: .currentUserFriends) {
         Label("Friends Page", systemImage: "person.2")
           .labelStyle(.iconOnly)
           .imageScale(.large)
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouteLink(screen: .settings) {
+      RouterLink(screen: .settings) {
         Label("Settings Page", systemImage: "gear")
           .labelStyle(.iconOnly)
           .imageScale(.large)

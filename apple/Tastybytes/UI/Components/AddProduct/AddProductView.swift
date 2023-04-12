@@ -160,7 +160,7 @@ struct AddProductView: View {
 
   private var brandSection: some View {
     Section {
-      RouteLink(sheet: .companySearch(onSelect: { company, createdNew in
+      RouterLink(sheet: .companySearch(onSelect: { company, createdNew in
         viewModel.setBrandOwner(company)
         if createdNew {
           toastManager.toggle(.success(viewModel.getToastText(.createdCompany)))
@@ -170,7 +170,7 @@ struct AddProductView: View {
           .fontWeight(.medium)
       })
       if let brandOwner = viewModel.brandOwner {
-        RouteLink(sheet: .brand(brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
+        RouterLink(sheet: .brand(brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
           if createdNew {
             toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
           }
@@ -187,7 +187,7 @@ struct AddProductView: View {
       }
 
       if viewModel.hasSubBrand, let brand = viewModel.brand {
-        RouteLink(sheet: .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
+        RouterLink(sheet: .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
           if createdNew {
             toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
           }
@@ -221,7 +221,7 @@ struct AddProductView: View {
         .focused($focusedField, equals: .description)
 
       if viewModel.mode == .new {
-        RouteLink(sheet: .barcodeScanner(onComplete: { barcode in
+        RouterLink(sheet: .barcodeScanner(onComplete: { barcode in
           viewModel.barcode = barcode
         }), label: {
           Text(viewModel.barcode == nil ? "Add Barcode" : "Barcode Added!")

@@ -10,7 +10,7 @@ struct ProfileProductListView: View {
   var body: some View {
     List {
       ForEach(viewModel.filteredProducts) { product in
-        RouteLink(screen: .product(product)) {
+        RouterLink(screen: .product(product)) {
           ProductItemView(product: product, extras: [.rating])
         }
       }
@@ -37,14 +37,14 @@ struct ProfileProductListView: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouteLink(sheet: .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .sortBy],
-                                      onApply: { filter in
-                                        viewModel.productFilter = filter
-                                      }),
-                label: {
-                  Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
-                    .labelStyle(.iconOnly)
-                })
+      RouterLink(sheet: .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .sortBy],
+                                       onApply: { filter in
+                                         viewModel.productFilter = filter
+                                       }),
+                 label: {
+                   Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
+                     .labelStyle(.iconOnly)
+                 })
     }
   }
 }

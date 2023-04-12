@@ -25,7 +25,7 @@ struct CompanyScreen: View {
       }
       Section {
         ForEach(viewModel.sortedBrands) { brand in
-          RouteLink(screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand))) {
+          RouterLink(screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand))) {
             HStack {
               Text("\(brand.name)")
               Spacer()
@@ -101,7 +101,7 @@ struct CompanyScreen: View {
       ShareLink("Share", item: NavigatablePath.company(id: viewModel.company.id).url)
 
       if profileManager.hasPermission(.canCreateBrands) {
-        RouteLink(sheet: .addBrand(brandOwner: viewModel.company, mode: .new, onSelect: { brand, _ in
+        RouterLink(sheet: .addBrand(brandOwner: viewModel.company, mode: .new, onSelect: { brand, _ in
           router.fetchAndNavigateTo(viewModel.client, .brand(id: brand.id))
         }), label: {
           Label("Add Brand", systemImage: "plus")
@@ -109,7 +109,7 @@ struct CompanyScreen: View {
       }
 
       if profileManager.hasPermission(.canEditCompanies) {
-        RouteLink(sheet: .editCompany(company: viewModel.company, onSuccess: {
+        RouterLink(sheet: .editCompany(company: viewModel.company, onSuccess: {
           Task {
             await hapticManager.wrapWithHaptics {
               await viewModel.getBrandsAndSummary()
@@ -120,7 +120,7 @@ struct CompanyScreen: View {
           Label("Edit", systemImage: "pencil")
         })
       } else {
-        RouteLink(sheet: .companyEditSuggestion(company: viewModel.company, onSubmit: {
+        RouterLink(sheet: .companyEditSuggestion(company: viewModel.company, onSubmit: {
           toastManager.toggle(.success("Edit suggestion sent!"))
         }), label: {
           Label("Edit Suggestion", systemImage: "pencil")

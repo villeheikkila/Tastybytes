@@ -24,7 +24,7 @@ struct ProductScreen: View {
       header: {
         Section {
           ProductItemView(product: viewModel.product, extras: [.companyLink, .logo])
-          RouteLink(sheet: .newCheckIn(viewModel.product, onCreation: { _ in
+          RouterLink(sheet: .newCheckIn(viewModel.product, onCreation: { _ in
             Task { await viewModel.refreshCheckIns() }
           }), label: {
             HStack {
@@ -83,7 +83,7 @@ struct ProductScreen: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
-        RouteLink(sheet: .newCheckIn(viewModel.product, onCreation: { _ in
+        RouterLink(sheet: .newCheckIn(viewModel.product, onCreation: { _ in
           Task { await viewModel.refreshCheckIns() }
         }), label: {
           Label("Check-in", systemImage: "plus").bold()
@@ -92,7 +92,7 @@ struct ProductScreen: View {
         ShareLink("Share", item: NavigatablePath.product(id: viewModel.product.id).url)
 
         if profileManager.hasPermission(.canAddBarcodes) {
-          RouteLink(sheet: .barcodeScanner(onComplete: { _ in
+          RouterLink(sheet: .barcodeScanner(onComplete: { _ in
             toastManager.toggle(.success("Barcode added"))
           }), label: {
             Label("Add Barcode", systemImage: "barcode.viewfinder")
@@ -101,16 +101,16 @@ struct ProductScreen: View {
         Divider()
 
         if profileManager.hasPermission(.canEditCompanies) {
-          RouteLink(sheet: .editProduct(product: viewModel.product), label: {
+          RouterLink(sheet: .editProduct(product: viewModel.product), label: {
             Label("Edit", systemImage: "pencil")
           })
         } else {
-          RouteLink(sheet: .productEditSuggestion(product: viewModel.product), label: {
+          RouterLink(sheet: .productEditSuggestion(product: viewModel.product), label: {
             Label("Edit Suggestion", systemImage: "pencil")
           })
         }
 
-        RouteLink(sheet: .duplicateProduct(
+        RouterLink(sheet: .duplicateProduct(
           mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
           product: viewModel.product
         ), label: {
@@ -128,7 +128,7 @@ struct ProductScreen: View {
         })
 
         if profileManager.hasPermission(.canDeleteBarcodes) {
-          RouteLink(sheet: .barcodeManagement(product: viewModel.product), label: {
+          RouterLink(sheet: .barcodeManagement(product: viewModel.product), label: {
             Label("Barcodes", systemImage: "barcode")
           })
         }

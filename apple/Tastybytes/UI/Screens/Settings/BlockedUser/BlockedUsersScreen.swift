@@ -34,7 +34,7 @@ struct BlockedUsersScreen: View {
 
   private var blockUser: some View {
     HStack {
-      RouteLink(sheet: .userSheet(mode: .block, onSubmit: {
+      RouterLink(sheet: .userSheet(mode: .block, onSubmit: {
         toastManager.toggle(.success("User blocked"))
       }), label: {
         Label("Show block user sheet", systemImage: "plus")

@@ -230,15 +230,15 @@ struct ProfileView: View {
   }
 
   @ViewBuilder private var links: some View {
-    RouteLink(screen: profileManager.getProfile() == viewModel.profile ? .currentUserFriends : .friends(viewModel.profile)) {
+    RouterLink(screen: profileManager.getProfile() == viewModel.profile ? .currentUserFriends : .friends(viewModel.profile)) {
       Label("Friends", systemImage: "person.crop.rectangle.stack")
         .font(.subheadline).bold()
     }
-    RouteLink(screen: .profileProducts(viewModel.profile)) {
+    RouterLink(screen: .profileProducts(viewModel.profile)) {
       Label("Products", systemImage: "checkmark.rectangle")
         .font(.subheadline).bold()
     }
-    RouteLink(screen: .profileStatistics(viewModel.profile)) {
+    RouterLink(screen: .profileStatistics(viewModel.profile)) {
       Label("Statistics", systemImage: "chart.bar.xaxis")
         .font(.subheadline).bold()
     }

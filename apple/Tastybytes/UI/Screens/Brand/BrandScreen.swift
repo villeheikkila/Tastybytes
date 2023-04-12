@@ -28,11 +28,11 @@ struct BrandScreen: View {
               subBrand: subBrand,
               brand: viewModel.brand
             )
-            RouteLink(screen: .product(productJoined)) {
+            RouterLink(screen: .product(productJoined)) {
               ProductItemView(product: productJoined)
                 .padding(2)
                 .contextMenu {
-                  RouteLink(sheet: .duplicateProduct(
+                  RouterLink(sheet: .duplicateProduct(
                     mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
                     product: productJoined
                   ), label: {
@@ -61,7 +61,7 @@ struct BrandScreen: View {
             Spacer()
             Menu {
               if profileManager.hasPermission(.canEditBrands) {
-                RouteLink(sheet: .editSubBrand(brand: viewModel.brand, subBrand: subBrand, onUpdate: {
+                RouterLink(sheet: .editSubBrand(brand: viewModel.brand, subBrand: subBrand, onUpdate: {
                   Task { await viewModel.refresh() }
                 }), label: {
                   Label("Edit", systemImage: "pencil")
@@ -180,7 +180,7 @@ struct BrandScreen: View {
       ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
 
       if profileManager.hasPermission(.canCreateProducts) {
-        RouteLink(sheet: .addProductToBrand(brand: viewModel.brand, onCreate: { product in
+        RouterLink(sheet: .addProductToBrand(brand: viewModel.brand, onCreate: { product in
           router.navigate(screen: .product(product))
         }), label: {
           Label("Add Product", systemImage: "plus")
@@ -190,7 +190,7 @@ struct BrandScreen: View {
       Divider()
 
       if profileManager.hasPermission(.canEditBrands) {
-        RouteLink(sheet: .editBrand(brand: viewModel.brand, onUpdate: {
+        RouterLink(sheet: .editBrand(brand: viewModel.brand, onUpdate: {
           Task { await viewModel.refresh() }
         }), label: {
           Label("Edit", systemImage: "pencil")

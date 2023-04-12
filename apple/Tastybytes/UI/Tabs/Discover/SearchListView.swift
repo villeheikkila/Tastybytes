@@ -138,7 +138,7 @@ struct SearchListView: View {
 
   private var profileResults: some View {
     ForEach(viewModel.profiles) { profile in
-      RouteLink(screen: .profile(profile)) {
+      RouterLink(screen: .profile(profile)) {
         HStack(alignment: .center) {
           AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
           VStack {
@@ -155,7 +155,7 @@ struct SearchListView: View {
 
   private var companyResults: some View {
     ForEach(viewModel.companies) { company in
-      RouteLink(screen: .company(company)) {
+      RouterLink(screen: .company(company)) {
         Text(company.name)
       }
       .id(company.id)
@@ -164,7 +164,7 @@ struct SearchListView: View {
 
   private var locationResults: some View {
     ForEach(viewModel.locations) { location in
-      RouteLink(screen: .location(location)) {
+      RouterLink(screen: .location(location)) {
         Text(location.name)
       }
       .id(location.id)
@@ -189,17 +189,17 @@ struct SearchListView: View {
 
     if viewModel.currentScopeIsEmpty {
       Section {
-        RouteLink(screen: .productFeed(.trending)) {
+        RouterLink(screen: .productFeed(.trending)) {
           Label(Product.FeedType.trending.label, systemImage: "chart.line.uptrend.xyaxis").bold()
             .listRowSeparator(.visible)
         }
 
-        RouteLink(screen: .productFeed(.topRated)) {
+        RouterLink(screen: .productFeed(.topRated)) {
           Label(Product.FeedType.topRated.label, systemImage: "line.horizontal.star.fill.line.horizontal").bold()
             .listRowSeparator(.visible)
         }
 
-        RouteLink(screen: .productFeed(.latest)) {
+        RouterLink(screen: .productFeed(.latest)) {
           Label(Product.FeedType.latest.label, systemImage: "bolt.horizontal.circle").bold()
             .listRowSeparator(.visible)
         }
@@ -210,7 +210,7 @@ struct SearchListView: View {
       ForEach(viewModel.products) { product in
         ProductItemView(product: product, extras: [.checkInCheck, .rating])
           .swipeActions {
-            RouteLink(sheet: .newCheckIn(product, onCreation: { checkIn in
+            RouterLink(sheet: .newCheckIn(product, onCreation: { checkIn in
               router.navigate(screen: .checkIn(checkIn))
             }), label: {
               Label("Check-in", systemImage: "plus")
@@ -252,19 +252,19 @@ struct SearchListView: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       if viewModel.searchScope == .products {
-        RouteLink(sheet: .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .checkIns],
-                                        onApply: { filter in
-                                          viewModel.productFilter = filter
-                                        }),
-                  label: {
-                    Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
-                      .labelStyle(.iconOnly)
-                  })
+        RouterLink(sheet: .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .checkIns],
+                                         onApply: { filter in
+                                           viewModel.productFilter = filter
+                                         }),
+                   label: {
+                     Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
+                       .labelStyle(.iconOnly)
+                   })
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if profileManager.hasPermission(.canAddBarcodes) {
-        RouteLink(sheet: .barcodeScanner(onComplete: { barcode in
+        RouterLink(sheet: .barcodeScanner(onComplete: { barcode in
           Task { await viewModel.searchProductsByBardcode(barcode) }
         }), label: {
           Label("Scan a barcode", systemImage: "barcode.viewfinder")

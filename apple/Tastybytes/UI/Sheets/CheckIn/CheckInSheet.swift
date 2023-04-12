@@ -81,7 +81,7 @@ struct CheckInSheet: View {
           ).fontWeight(.medium)
 
         })
-        RouteLink(sheet: .flavors(pickedFlavors: $pickedFlavors), label: {
+        RouterLink(sheet: .flavors(pickedFlavors: $pickedFlavors), label: {
           if !viewModel.pickedFlavors.isEmpty {
             WrappingHStack(viewModel.pickedFlavors, spacing: .constant(4)) { flavor in
               ChipView(title: flavor.label)
@@ -109,7 +109,7 @@ struct CheckInSheet: View {
           }
         }
 
-        RouteLink(sheet: .companySearch(onSelect: { company, _ in
+        RouterLink(sheet: .companySearch(onSelect: { company, _ in
           viewModel.manufacturer = company
         }), label: {
           Text(viewModel.manufacturer?.name ?? "Manufactured By")
@@ -118,7 +118,7 @@ struct CheckInSheet: View {
       }
 
       Section {
-        RouteLink(sheet: .friends(taggedFriends: $viewModel.taggedFriends), label: {
+        RouterLink(sheet: .friends(taggedFriends: $viewModel.taggedFriends), label: {
           if viewModel.taggedFriends.isEmpty {
             Text("Tag friends")
               .fontWeight(.medium)
@@ -131,7 +131,7 @@ struct CheckInSheet: View {
       }
 
       Section {
-        RouteLink(sheet: .locationSearch(onSelect: { location in
+        RouterLink(sheet: .locationSearch(onSelect: { location in
           viewModel.location = location
         }), label: {
           HStack {
@@ -153,7 +153,7 @@ struct CheckInSheet: View {
       }
 
       Section {
-        RouteLink(sheet: .locationSearch(onSelect: { location in
+        RouterLink(sheet: .locationSearch(onSelect: { location in
           viewModel.purchaseLocation = location
         }), label: {
           HStack {
@@ -184,7 +184,7 @@ struct CheckInSheet: View {
       Button(action: { viewModel.showCamera.toggle() }, label: {
         Text("Camera")
       })
-      RouteLink(sheet: .legacyPhotoPicker(onSelection: { image in
+      RouterLink(sheet: .legacyPhotoPicker(onSelection: { image in
         viewModel.setImageFromPicker(pickedImage: image)
       }), label: {
         Text("Photo Gallery")

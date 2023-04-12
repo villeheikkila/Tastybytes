@@ -26,7 +26,7 @@ struct CategoryServingStyleSheet: View {
     .navigationBarTitleDisplayMode(.inline)
     .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
       Text("Done").bold()
-    }), trailing: RouteLink(
+    }), trailing: RouterLink(
       sheet: .servingStyleManagement(pickedServingStyles: $viewModel.servingStyles, onSelect: { servingStyle in
         Task { await viewModel.addServingStyleToCategory(servingStyle) }
       }),

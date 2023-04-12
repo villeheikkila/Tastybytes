@@ -34,7 +34,7 @@ struct DuplicateProductScreen: View {
               ProgressButton(action: { await viewModel.verifyProduct(product) }, label: {
                 Label("Verify", systemImage: "checkmark")
               }).tint(.green)
-              RouteLink(sheet: .editProduct(product: product, onEdit: {
+              RouterLink(sheet: .editProduct(product: product, onEdit: {
                 Task {
                   await viewModel.loadProducts()
                 }

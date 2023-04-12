@@ -15,7 +15,7 @@ struct FriendListItemView<RootView: View>: View {
 
   var body: some View {
     HStack(alignment: .center) {
-      RouteLink(screen: .profile(profile), asTapGesture: true) {
+      RouterLink(screen: .profile(profile), asTapGesture: true) {
         HStack {
           AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
           Text(profile.preferredName)

@@ -27,7 +27,7 @@ struct CategoryManagementScreen: View {
                   }
                 }
               ).tint(subcategory.isVerified ? .yellow : .green)
-              RouteLink(sheet: .editSubcategory(subcategory: subcategory, onSubmit: { newName in
+              RouterLink(sheet: .editSubcategory(subcategory: subcategory, onSubmit: { newName in
                 Task { await viewModel.saveEditSubcategoryChanges(subCategory: subcategory, newName: newName) }
               }), label: {
                 Label("Edit", systemImage: "pencil")
@@ -42,10 +42,10 @@ struct CategoryManagementScreen: View {
             Text(category.name)
             Spacer()
             Menu {
-              RouteLink(sheet: .categoryServingStyle(category: category), label: {
+              RouterLink(sheet: .categoryServingStyle(category: category), label: {
                 Label("Edit Serving Styles", systemImage: "pencil")
               })
-              RouteLink(sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
+              RouterLink(sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
                 Task { await viewModel.addSubcategory(category: category, name: newSubcategoryName) }
               }), label: {
                 Label("Add Subcategory", systemImage: "plus")
@@ -60,7 +60,7 @@ struct CategoryManagementScreen: View {
       }
     }
     .navigationBarTitle("Categories")
-    .navigationBarItems(trailing: RouteLink(sheet: .addCategory(onSubmit: { newCategoryName in
+    .navigationBarItems(trailing: RouterLink(sheet: .addCategory(onSubmit: { newCategoryName in
       Task { await viewModel.addCategory(name: newCategoryName) }
     }), label: {
       Label("Add Category", systemImage: "plus")

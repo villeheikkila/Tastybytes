@@ -33,7 +33,7 @@ struct CheckInScreen: View {
         }
 
         if viewModel.checkIn.profile.id == profileManager.getId() {
-          RouteLink(sheet: .checkIn(viewModel.checkIn, onUpdate: { updatedCheckIn in
+          RouterLink(sheet: .checkIn(viewModel.checkIn, onUpdate: { updatedCheckIn in
             viewModel.updateCheckIn(updatedCheckIn)
           }), label: {
             Label("Edit", systemImage: "pencil")

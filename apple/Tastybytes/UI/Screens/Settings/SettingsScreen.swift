@@ -6,28 +6,28 @@ struct SettingsScreen: View {
   var body: some View {
     List {
       Section {
-        RouteLink(screen: .profileSettings) {
+        RouterLink(screen: .profileSettings) {
           Label("Profile", systemImage: "person.crop.circle")
         }
-        RouteLink(screen: .accountSettings) {
+        RouterLink(screen: .accountSettings) {
           Label("Account", systemImage: "gear")
         }
-        RouteLink(screen: .applicationSettings) {
+        RouterLink(screen: .applicationSettings) {
           Label("Application", systemImage: "app.badge.checkmark.fill")
         }
-        RouteLink(screen: .appIcon) {
+        RouterLink(screen: .appIcon) {
           Label("App Icon", systemImage: "app.fill")
         }
-        RouteLink(screen: .blockedUsers) {
+        RouterLink(screen: .blockedUsers) {
           Label("Blocked Users", systemImage: "person.fill.xmark")
         }
-        RouteLink(screen: .contributions) {
+        RouterLink(screen: .contributions) {
           Label("Contributions", systemImage: "plus.rectangle.fill.on.rectangle.fill")
         }
       }
 
       Section {
-        RouteLink(screen: .about) {
+        RouterLink(screen: .about) {
           Label("About", systemImage: "info.circle")
         }
       }

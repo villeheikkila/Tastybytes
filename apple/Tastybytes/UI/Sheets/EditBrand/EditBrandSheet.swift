@@ -63,7 +63,7 @@ struct EditBrandSheet: View {
       }
 
       Section {
-        RouteLink(sheet: .companySearch(onSelect: { company, _ in
+        RouterLink(sheet: .companySearch(onSelect: { company, _ in
           viewModel.brandOwner = company
         }), label: {
           Text(viewModel.brandOwner.name)

@@ -20,7 +20,7 @@ struct ProfileTab: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
           ToolbarItemGroup(placement: .navigationBarLeading) {
-            RouteLink(sheet: .nameTag(onSuccess: { profileId in
+            RouterLink(sheet: .nameTag(onSuccess: { profileId in
               router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId))
             }), label: {
               Label("Show name tag", systemImage: "qrcode")
@@ -28,7 +28,7 @@ struct ProfileTab: View {
             })
           }
           ToolbarItemGroup(placement: .navigationBarTrailing) {
-            RouteLink(screen: .settings) {
+            RouterLink(screen: .settings) {
               Label("Settings page", systemImage: "gear")
                 .labelStyle(.iconOnly)
             }

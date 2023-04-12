@@ -58,7 +58,7 @@ struct VerificationScreen: View {
 
   private var unverifiedCompanies: some View {
     ForEach(viewModel.companies) { company in
-      RouteLink(screen: .company(company)) {
+      RouterLink(screen: .company(company)) {
         Text(company.name)
       }
       .swipeActions {
@@ -89,7 +89,7 @@ struct VerificationScreen: View {
 
   private var unverifiedBrands: some View {
     ForEach(viewModel.brands) { brand in
-      RouteLink(screen: .brand(brand)) {
+      RouterLink(screen: .brand(brand)) {
         HStack {
           Text("\(brand.brandOwner.name): \(brand.name)")
           Spacer()
@@ -127,7 +127,7 @@ struct VerificationScreen: View {
             ProgressButton(action: { await viewModel.verifyProduct(product) }, label: {
               Label("Verify", systemImage: "checkmark")
             }).tint(.green)
-            RouteLink(sheet: .editProduct(product: product, onEdit: {
+            RouterLink(sheet: .editProduct(product: product, onEdit: {
               Task {
                 await viewModel.loadData(refresh: true)
               }
