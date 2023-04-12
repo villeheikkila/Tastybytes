@@ -104,11 +104,12 @@ struct CheckInListView<Header>: View where Header: View {
           }
           Divider()
           if checkIn.profile.id == profileManager.getId() {
-            Button(action: { router.navigate(sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+            RouteLink(sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
               viewModel.onCheckInUpdate(updatedCheckIn)
-            })) }, label: {
+            }), label: {
               Label("Edit", systemImage: "pencil")
             })
+
             Button(role: .destructive, action: { viewModel.showDeleteConfirmationFor = checkIn }, label: {
               Label("Delete", systemImage: "trash.fill")
             })

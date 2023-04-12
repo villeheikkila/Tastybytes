@@ -32,21 +32,16 @@ struct BrandScreen: View {
               ProductItemView(product: productJoined)
                 .padding(2)
                 .contextMenu {
-                  Button(
-                    action: {
-                      router.navigate(sheet: .duplicateProduct(
-                        mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
-                        product: productJoined
-                      ))
-                    },
-                    label: {
-                      if profileManager.hasPermission(.canMergeProducts) {
-                        Label("Merge to...", systemImage: "doc.on.doc")
-                      } else {
-                        Label("Mark as duplicate", systemImage: "doc.on.doc")
-                      }
+                  RouteLink(sheet: .duplicateProduct(
+                    mode: profileManager.hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
+                    product: productJoined
+                  ), label: {
+                    if profileManager.hasPermission(.canMergeProducts) {
+                      Label("Merge to...", systemImage: "doc.on.doc")
+                    } else {
+                      Label("Mark as duplicate", systemImage: "doc.on.doc")
                     }
-                  )
+                  })
 
                   if profileManager.hasPermission(.canDeleteProducts) {
                     Button(role: .destructive, action: { viewModel.productToDelete = product }, label: {
@@ -187,9 +182,9 @@ struct BrandScreen: View {
       ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
 
       if profileManager.hasPermission(.canCreateProducts) {
-        Button(action: { router.navigate(sheet: .addProductToBrand(brand: viewModel.brand, onCreate: { product in
+        RouteLink(sheet: .addProductToBrand(brand: viewModel.brand, onCreate: { product in
           router.navigate(screen: .product(product))
-        })) }, label: {
+        }), label: {
           Label("Add Product", systemImage: "plus")
         })
       }
@@ -197,9 +192,9 @@ struct BrandScreen: View {
       Divider()
 
       if profileManager.hasPermission(.canEditBrands) {
-        Button(action: { router.navigate(sheet: .editBrand(brand: viewModel.brand, onUpdate: {
+        RouteLink(sheet: .editBrand(brand: viewModel.brand, onUpdate: {
           Task { await viewModel.refresh() }
-        })) }, label: {
+        }), label: {
           Label("Edit", systemImage: "pencil")
         })
       }

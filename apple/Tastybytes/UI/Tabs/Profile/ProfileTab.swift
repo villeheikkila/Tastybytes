@@ -20,9 +20,9 @@ struct ProfileTab: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
           ToolbarItemGroup(placement: .navigationBarLeading) {
-            Button(action: { router.navigate(sheet: .nameTag(onSuccess: { profileId in
+            RouteLink(sheet: .nameTag(onSuccess: { profileId in
               router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId))
-            })) }, label: {
+            }), label: {
               Label("Show name tag", systemImage: "qrcode")
                 .labelStyle(.iconOnly)
             })

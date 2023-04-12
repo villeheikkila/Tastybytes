@@ -101,28 +101,28 @@ struct CompanyScreen: View {
       ShareLink("Share", item: NavigatablePath.company(id: viewModel.company.id).url)
 
       if profileManager.hasPermission(.canCreateBrands) {
-        Button(action: { router.navigate(sheet: .addBrand(brandOwner: viewModel.company, mode: .new, onSelect: { brand, _ in
+        RouteLink(sheet: .addBrand(brandOwner: viewModel.company, mode: .new, onSelect: { brand, _ in
           router.fetchAndNavigateTo(viewModel.client, .brand(id: brand.id))
-        })) }, label: {
+        }), label: {
           Label("Add Brand", systemImage: "plus")
         })
       }
 
       if profileManager.hasPermission(.canEditCompanies) {
-        Button(action: { router.navigate(sheet: .editCompany(company: viewModel.company, onSuccess: {
+        RouteLink(sheet: .editCompany(company: viewModel.company, onSuccess: {
           Task {
             await hapticManager.wrapWithHaptics {
               await viewModel.getBrandsAndSummary()
             }
           }
           toastManager.toggle(.success("Company updated"))
-        })) }, label: {
+        }), label: {
           Label("Edit", systemImage: "pencil")
         })
       } else {
-        Button(action: { router.navigate(sheet: .companyEditSuggestion(company: viewModel.company, onSubmit: {
+        RouteLink(sheet: .companyEditSuggestion(company: viewModel.company, onSubmit: {
           toastManager.toggle(.success("Edit suggestion sent!"))
-        })) }, label: {
+        }), label: {
           Label("Edit Suggestion", systemImage: "pencil")
         })
       }

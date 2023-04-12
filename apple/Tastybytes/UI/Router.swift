@@ -44,17 +44,28 @@ struct InitializeRouter<Content: View>: View {
 }
 
 struct RouteLink<Label: View>: View {
-  let screen: Screen
+  @EnvironmentObject private var router: Router
+  let screen: Screen?
+  let sheet: Sheet?
   let label: Label
 
   init(screen: Screen, @ViewBuilder label: () -> Label) {
     self.screen = screen
+    sheet = nil
+    self.label = label()
+  }
+
+  init(sheet: Sheet, @ViewBuilder label: () -> Label) {
+    self.sheet = sheet
+    screen = nil
     self.label = label()
   }
 
   var body: some View {
-    NavigationLink(value: screen) {
-      label
+    if let screen {
+      NavigationLink(value: screen, label: { label })
+    } else if let sheet {
+      Button(action: { router.navigate(sheet: sheet) }, label: { label })
     }
   }
 }

@@ -64,9 +64,9 @@ struct EditBrandSheet: View {
       }
 
       Section {
-        Button(action: { router.navigate(sheet: .companySearch(onSelect: { company, _ in
+        RouteLink(sheet: .companySearch(onSelect: { company, _ in
           viewModel.brandOwner = company
-        })) }, label: {
+        }), label: {
           Text(viewModel.brandOwner.name)
         })
         ProgressButton("Change brand owner") {

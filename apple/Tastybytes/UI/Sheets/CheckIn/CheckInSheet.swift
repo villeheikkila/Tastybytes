@@ -82,7 +82,7 @@ struct CheckInSheet: View {
           ).fontWeight(.medium)
 
         })
-        Button(action: { router.navigate(sheet: .flavors(pickedFlavors: $pickedFlavors)) }, label: {
+        RouteLink(sheet: .flavors(pickedFlavors: $pickedFlavors), label: {
           if !viewModel.pickedFlavors.isEmpty {
             WrappingHStack(viewModel.pickedFlavors, spacing: .constant(4)) { flavor in
               ChipView(title: flavor.label)
@@ -110,16 +110,16 @@ struct CheckInSheet: View {
           }
         }
 
-        Button(action: { router.navigate(sheet: .companySearch(onSelect: { company, _ in
+        RouteLink(sheet: .companySearch(onSelect: { company, _ in
           viewModel.manufacturer = company
-        })) }, label: {
+        }), label: {
           Text(viewModel.manufacturer?.name ?? "Manufactured By")
             .fontWeight(.medium)
         })
       }
 
       Section {
-        Button(action: { router.navigate(sheet: .friends(taggedFriends: $viewModel.taggedFriends)) }, label: {
+        RouteLink(sheet: .friends(taggedFriends: $viewModel.taggedFriends), label: {
           if viewModel.taggedFriends.isEmpty {
             Text("Tag friends")
               .fontWeight(.medium)
@@ -132,9 +132,9 @@ struct CheckInSheet: View {
       }
 
       Section {
-        Button(action: { router.navigate(sheet: .locationSearch(onSelect: { location in
+        RouteLink(sheet: .locationSearch(onSelect: { location in
           viewModel.location = location
-        })) }, label: {
+        }), label: {
           HStack {
             if let location = viewModel.location {
               Text(location.name)
@@ -154,9 +154,9 @@ struct CheckInSheet: View {
       }
 
       Section {
-        Button(action: { router.navigate(sheet: .locationSearch(onSelect: { location in
+        RouteLink(sheet: .locationSearch(onSelect: { location in
           viewModel.purchaseLocation = location
-        })) }, label: {
+        }), label: {
           HStack {
             if let location = viewModel.purchaseLocation {
               Text(location.name)
@@ -185,9 +185,9 @@ struct CheckInSheet: View {
       Button(action: { viewModel.showCamera.toggle() }, label: {
         Text("Camera")
       })
-      Button(action: { router.navigate(sheet: .legacyPhotoPicker(onSelection: { image in
+      RouteLink(sheet: .legacyPhotoPicker(onSelection: { image in
         viewModel.setImageFromPicker(pickedImage: image)
-      })) }, label: {
+      }), label: {
         Text("Photo Gallery")
       })
     } message: {

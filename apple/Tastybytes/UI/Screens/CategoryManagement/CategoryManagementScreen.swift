@@ -28,9 +28,9 @@ struct CategoryManagementScreen: View {
                   }
                 }
               ).tint(subcategory.isVerified ? .yellow : .green)
-              Button(action: { router.navigate(sheet: .editSubcategory(subcategory: subcategory, onSubmit: { newName in
+              RouteLink(sheet: .editSubcategory(subcategory: subcategory, onSubmit: { newName in
                 Task { await viewModel.saveEditSubcategoryChanges(subCategory: subcategory, newName: newName) }
-              })) }, label: {
+              }), label: {
                 Label("Edit", systemImage: "pencil")
               }).tint(.yellow)
               Button(role: .destructive, action: { viewModel.deleteSubcategory = subcategory }, label: {
@@ -43,12 +43,12 @@ struct CategoryManagementScreen: View {
             Text(category.name)
             Spacer()
             Menu {
-              Button(action: { router.navigate(sheet: .categoryServingStyle(category: category)) }, label: {
+              RouteLink(sheet: .categoryServingStyle(category: category), label: {
                 Label("Edit Serving Styles", systemImage: "pencil")
               })
-              Button(action: { router.navigate(sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
+              RouteLink(sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
                 Task { await viewModel.addSubcategory(category: category, name: newSubcategoryName) }
-              })) }, label: {
+              }), label: {
                 Label("Add Subcategory", systemImage: "plus")
               })
             } label: {
@@ -61,9 +61,9 @@ struct CategoryManagementScreen: View {
       }
     }
     .navigationBarTitle("Categories")
-    .navigationBarItems(trailing: Button(action: { router.navigate(sheet: .addCategory(onSubmit: { newCategoryName in
+    .navigationBarItems(trailing: RouteLink(sheet: .addCategory(onSubmit: { newCategoryName in
       Task { await viewModel.addCategory(name: newCategoryName) }
-    })) }, label: {
+    }), label: {
       Label("Add Category", systemImage: "plus")
         .labelStyle(.iconOnly)
         .bold()

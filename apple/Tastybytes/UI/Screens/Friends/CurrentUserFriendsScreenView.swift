@@ -109,22 +109,22 @@ struct CurrentUserFriendsScreen: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: { router.navigate(sheet: .nameTag(onSuccess: { profileId in
+      RouteLink(sheet: .nameTag(onSuccess: { profileId in
         Task {
           await friendManager.sendFriendRequest(receiver: profileId, onSuccess: {
             hapticManager.trigger(.notification(.success))
             toastManager.toggle(.success("Friend Request Sent!"))
           })
         }
-      })) }, label: {
+      }), label: {
         Label("Show name tag or send friend request by QR code", systemImage: "qrcode")
           .labelStyle(.iconOnly)
           .imageScale(.large)
       })
 
-      Button(action: { router.navigate(sheet: .userSheet(mode: .add, onSubmit: {
+      RouteLink(sheet: .userSheet(mode: .add, onSubmit: {
         toastManager.toggle(.success("Friend Request Sent!"))
-      })) }, label: {
+      }), label: {
         Label("Add friend", systemImage: "plus")
           .labelStyle(.iconOnly)
           .imageScale(.large)

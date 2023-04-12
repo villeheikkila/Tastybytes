@@ -34,11 +34,11 @@ struct DuplicateProductScreen: View {
               ProgressButton(action: { await viewModel.verifyProduct(product) }, label: {
                 Label("Verify", systemImage: "checkmark")
               }).tint(.green)
-              Button(action: { router.navigate(sheet: .editProduct(product: product, onEdit: {
+              RouteLink(sheet: .editProduct(product: product, onEdit: {
                 Task {
                   await viewModel.loadProducts()
                 }
-              })) }, label: {
+              }), label: {
                 Label("Edit", systemImage: "pencil")
               }).tint(.yellow)
               Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {

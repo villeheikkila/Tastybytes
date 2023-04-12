@@ -160,23 +160,22 @@ struct AddProductView: View {
 
   private var brandSection: some View {
     Section {
-      Button(action: { router.navigate(sheet: .companySearch(onSelect: { company, createdNew in
+      RouteLink(sheet: .companySearch(onSelect: { company, createdNew in
         viewModel.setBrandOwner(company)
         if createdNew {
           toastManager.toggle(.success(viewModel.getToastText(.createdCompany)))
         }
-      })) }, label: {
+      }), label: {
         Text(viewModel.brandOwner?.name ?? "Company")
           .fontWeight(.medium)
       })
       if let brandOwner = viewModel.brandOwner {
-        Button(action: { router.navigate(sheet: .brand(brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
+        RouteLink(sheet: .brand(brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
           if createdNew {
             toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
           }
           viewModel.setBrand(brand: brand)
-        }))
-        }, label: {
+        }), label: {
           Text(viewModel.brand?.name ?? "Brand")
             .fontWeight(.medium)
         })
@@ -188,12 +187,12 @@ struct AddProductView: View {
       }
 
       if viewModel.hasSubBrand, let brand = viewModel.brand {
-        Button(action: { router.navigate(sheet: .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
+        RouteLink(sheet: .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
           if createdNew {
             toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
           }
           viewModel.subBrand = subBrand
-        })) }, label: {
+        }), label: {
           Text(viewModel.subBrand?.name ?? "Sub-brand")
             .fontWeight(.medium)
         })
@@ -222,9 +221,9 @@ struct AddProductView: View {
         .focused($focusedField, equals: .description)
 
       if viewModel.mode == .new {
-        Button(action: { router.navigate(sheet: .barcodeScanner(onComplete: { barcode in
+        RouteLink(sheet: .barcodeScanner(onComplete: { barcode in
           viewModel.barcode = barcode
-        })) }, label: {
+        }), label: {
           Text(viewModel.barcode == nil ? "Add Barcode" : "Barcode Added!")
             .fontWeight(.medium)
         })
