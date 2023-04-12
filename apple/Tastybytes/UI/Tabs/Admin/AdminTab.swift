@@ -11,7 +11,7 @@ struct AdminTab: View {
   }
 
   var body: some View {
-    InitializeRouter(client) { router in
+    RouterWrapper(client) { router in
       List {
         RouteLink(screen: .categoryManagement) {
           Label("Categories", systemImage: "plus.rectangle.fill.on.rectangle.fill")

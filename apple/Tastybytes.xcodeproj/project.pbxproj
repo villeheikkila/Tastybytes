@@ -65,6 +65,8 @@
 		5C323E8F298C500400B005A9 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E8E298C500400B005A9 /* URLExtensions.swift */; };
 		5C323E91298C501F00B005A9 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E90298C501F00B005A9 /* ArrayExtensions.swift */; };
 		5C323E93298C50D400B005A9 /* DoubleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C323E92298C50D400B005A9 /* DoubleExtensions.swift */; };
+		5C32C40A29E714AD008CE8A9 /* RouterWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40929E714AD008CE8A9 /* RouterWrapper.swift */; };
+		5C32C40C29E7150D008CE8A9 /* RouterLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40B29E7150D008CE8A9 /* RouterLink.swift */; };
 		5C353CBC29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBB29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift */; };
 		5C353CBE29A248300067C4EE /* BottomOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBD29A248300067C4EE /* BottomOverlay.swift */; };
 		5C353CC029A249660067C4EE /* ProductFilterOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */; };
@@ -293,6 +295,8 @@
 		5C323E8E298C500400B005A9 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		5C323E90298C501F00B005A9 /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
 		5C323E92298C50D400B005A9 /* DoubleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtensions.swift; sourceTree = "<group>"; };
+		5C32C40929E714AD008CE8A9 /* RouterWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterWrapper.swift; sourceTree = "<group>"; };
+		5C32C40B29E7150D008CE8A9 /* RouterLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterLink.swift; sourceTree = "<group>"; };
 		5C353CBB29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterSheetViewModel.swift; sourceTree = "<group>"; };
 		5C353CBD29A248300067C4EE /* BottomOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomOverlay.swift; sourceTree = "<group>"; };
 		5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterOverlayView.swift; sourceTree = "<group>"; };
@@ -778,6 +782,16 @@
 			path = Shapes;
 			sourceTree = "<group>";
 		};
+		5C32C40829E71463008CE8A9 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				5CBC244F297C54B900A0002B /* Router.swift */,
+				5C32C40929E714AD008CE8A9 /* RouterWrapper.swift */,
+				5C32C40B29E7150D008CE8A9 /* RouterLink.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
 		5C353CBA29A23C790067C4EE /* ProductFilter */ = {
 			isa = PBXGroup;
 			children = (
@@ -1256,7 +1270,7 @@
 		5CD10A5D28F99CDF0001CFC2 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				5CBC244F297C54B900A0002B /* Router.swift */,
+				5C32C40829E71463008CE8A9 /* Router */,
 				5C25C68229956B7A00C07953 /* Shapes */,
 				5C09BECC29A54B1600331AEB /* Fonts */,
 				5CFB562D28F5969300F13A1E /* Components */,
@@ -1675,6 +1689,7 @@
 				5C20A52229AB55BA00ABBA74 /* ContributionsScreenViewModel.swift in Sources */,
 				5CED432E28FD6EA7003F8194 /* BrandSheet.swift in Sources */,
 				5CD10A5928F98D8A0001CFC2 /* CheckInReaction.swift in Sources */,
+				5C32C40A29E714AD008CE8A9 /* RouterWrapper.swift in Sources */,
 				5C7C35A3299AC5DB009A3C09 /* UserSheetViewModel.swift in Sources */,
 				5CB4E02D29E087A900135ADA /* Report.swift in Sources */,
 				5C0E364C292308080072EFBD /* AuthenticationScreen.swift in Sources */,
@@ -1708,6 +1723,7 @@
 				5C08B6E228ED7B05009218D7 /* Company.swift in Sources */,
 				5CE9009329211AC9003DE697 /* NotificationManager.swift in Sources */,
 				5C7C35E0299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift in Sources */,
+				5C32C40C29E7150D008CE8A9 /* RouterLink.swift in Sources */,
 				5C2146ED29A97CB40005422D /* ProductFeedScreenViewModel.swift in Sources */,
 				5CBC2452297C60AE00A0002B /* ProfileScreen.swift in Sources */,
 				5CC2FE912919774A002BDF83 /* Location.swift in Sources */,

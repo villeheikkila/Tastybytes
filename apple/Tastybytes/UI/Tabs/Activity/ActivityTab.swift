@@ -15,7 +15,7 @@ struct ActivityTab: View {
   }
 
   var body: some View {
-    InitializeRouter(client) { router in
+    RouterWrapper(client) { router in
       CheckInListView(
         client,
         fetcher: .activityFeed,

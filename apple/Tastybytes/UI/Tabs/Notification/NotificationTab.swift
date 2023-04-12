@@ -12,7 +12,7 @@ struct NotificationTab: View {
   }
 
   var body: some View {
-    InitializeRouter(client) { router in
+    RouterWrapper(client) { router in
       List {
         ForEach(notificationManager.filteredNotifications) { notification in
           HStack {

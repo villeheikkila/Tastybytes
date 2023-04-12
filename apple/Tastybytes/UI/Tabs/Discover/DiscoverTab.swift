@@ -12,7 +12,7 @@ struct DiscoverTab: View {
   }
 
   var body: some View {
-    InitializeRouter(client) { router in
+    RouterWrapper(client) { router in
       SearchListView(client, scrollToTop: $scrollToTop)
         .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
           if tab == .search {

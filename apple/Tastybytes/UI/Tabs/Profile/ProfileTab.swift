@@ -14,7 +14,7 @@ struct ProfileTab: View {
   }
 
   var body: some View {
-    InitializeRouter(client) { router in
+    RouterWrapper(client) { router in
       ProfileView(client, profile: profileManager.getProfile(), scrollToTop: $scrollToTop, isCurrentUser: true)
         .navigationTitle(profileManager.getProfile().preferredName)
         .navigationBarTitleDisplayMode(.inline)
