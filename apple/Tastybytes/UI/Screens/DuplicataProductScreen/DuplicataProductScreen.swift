@@ -31,9 +31,7 @@ struct DuplicateProductScreen: View {
               router.navigate(screen: .product(product))
             }
             .swipeActions {
-              ProgressButton(action: { await viewModel.verifyProduct(product) }, label: {
-                Label("Verify", systemImage: "checkmark")
-              }).tint(.green)
+              ProgressButton("Verify", systemImage: "checkmark", action: { await viewModel.verifyProduct(product) }).tint(.green)
               RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: product, onEdit: {
                 Task {
                   await viewModel.loadProducts()

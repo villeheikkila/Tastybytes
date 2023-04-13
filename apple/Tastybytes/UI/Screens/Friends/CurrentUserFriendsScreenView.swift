@@ -54,24 +54,33 @@ struct CurrentUserFriendsScreen: View {
         }
         .swipeActions {
           if friend.isPending(userId: profileManager.getProfile().id) {
-            ProgressButton(action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted) }, label: {
-              Label("Accept friend request", systemImage: "person.badge.plus").imageScale(.large)
-            }).tint(.green)
+            ProgressButton(
+              "Accept friend request",
+              systemImage: "person.badge.plus",
+              action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted) }
+            )
+            .imageScale(.large)
+            .tint(.green)
           }
           Button(role: .destructive, action: { friendToBeRemoved = friend }, label: {
             Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
           })
-          ProgressButton(action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }, label: {
-            Label("Block", systemImage: "person.2.slash").imageScale(.large)
-          })
+          ProgressButton(
+            "Block",
+            systemImage: "person.2.slash",
+            action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }
+          )
+          .imageScale(.large)
         }
         .contextMenu {
           Button(role: .destructive, action: { friendToBeRemoved = friend }, label: {
             Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
           })
-          ProgressButton(action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }, label: {
-            Label("Block", systemImage: "person.2.slash").imageScale(.large)
-          })
+          ProgressButton(
+            "Block",
+            systemImage: "person.2.slash",
+            action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }
+          ).imageScale(.large)
         }
       }
     }

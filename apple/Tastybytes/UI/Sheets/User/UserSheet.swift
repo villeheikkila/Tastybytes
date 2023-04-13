@@ -36,29 +36,29 @@ struct UserSheet: View {
             if mode == .add {
               HStack {
                 if !friendManager.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
-                  ProgressButton(action: {
+                  ProgressButton("Add as a friend", systemImage: "person.badge.plus", action: {
                     await friendManager.sendFriendRequest(receiver: profile.id, onSuccess: {
                       dismiss()
                       onSubmit()
                     })
                     hapticManager.trigger(.impact(intensity: .low))
-                  }, label: {
-                    Label("Add as a friend", systemImage: "person.badge.plus")
-                      .labelStyle(.iconOnly)
-                      .imageScale(.large)
                   })
+                  .labelStyle(.iconOnly)
+                  .imageScale(.large)
                 }
               }
             }
             if mode == .block {
               if !friendManager.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
-                ProgressButton(action: { await friendManager.blockUser(user: profile, onSuccess: {
-                  onSubmit()
-                  dismiss()
-                }) }, label: {
-                  Label("Block", systemImage: "person.fill.xmark")
-                    .imageScale(.large)
-                })
+                ProgressButton(
+                  "Block",
+                  systemImage: "person.fill.xmark",
+                  action: { await friendManager.blockUser(user: profile, onSuccess: {
+                    onSubmit()
+                    dismiss()
+                  }) }
+                )
+                .imageScale(.large)
               }
             }
           }

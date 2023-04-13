@@ -37,13 +37,16 @@ struct FriendsScreen: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if !friendManager.isFriend(viewModel.profile) {
-        ProgressButton(action: { await friendManager.sendFriendRequest(receiver: viewModel.profile.id) {
-          toastManager.toggle(.success("Friend Request Sent!"))
-        } }, label: {
-          Label("Add friend", systemImage: "person.badge.plus")
-            .labelStyle(.iconOnly)
-            .imageScale(.large)
-        })
+        ProgressButton(
+          "Add friend",
+          systemImage: "person.badge.plus",
+          action: { await friendManager.sendFriendRequest(receiver: viewModel.profile.id) {
+            toastManager.toggle(.success("Friend Request Sent!"))
+          }
+          }
+        )
+        .labelStyle(.iconOnly)
+        .imageScale(.large)
       }
     }
   }

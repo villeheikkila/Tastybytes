@@ -14,9 +14,7 @@ struct VerificationButton: View {
 
   var body: some View {
     if profileManager.hasPermission(.canVerify) {
-      ProgressButton(action: { await action() }, label: {
-        Label(label, systemImage: systemImage)
-      })
+      ProgressButton(label, systemImage: systemImage, action: { await action() })
     } else {
       Label(label, systemImage: systemImage)
     }

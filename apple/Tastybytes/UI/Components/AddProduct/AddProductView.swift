@@ -46,7 +46,7 @@ struct AddProductView: View {
   }
 
   private var action: some View {
-    ProgressButton(action: {
+    ProgressButton(viewModel.mode.doneLabel, action: {
       switch viewModel.mode {
       case .editSuggestion:
         await viewModel.createProductEditSuggestion(onSuccess: {
@@ -72,9 +72,9 @@ struct AddProductView: View {
           }
         })
       }
-    }, label: {
-      Text(viewModel.mode.doneLabel).fontWeight(.medium)
-    }).disabled(viewModel.isLoading || !viewModel.isValid())
+    })
+    .fontWeight(.medium)
+    .disabled(viewModel.isLoading || !viewModel.isValid())
   }
 
   private var logoSection: some View {

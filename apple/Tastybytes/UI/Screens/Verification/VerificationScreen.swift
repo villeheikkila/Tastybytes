@@ -60,9 +60,7 @@ struct VerificationScreen: View {
     ForEach(viewModel.companies) { company in
       RouterLink(company.name, screen: .company(company))
         .swipeActions {
-          ProgressButton(action: { await viewModel.verifyCompany(company) }, label: {
-            Label("Verify", systemImage: "checkmark")
-          }).tint(.green)
+          ProgressButton("Verify", systemImage: "checkmark", action: { await viewModel.verifyCompany(company) }).tint(.green)
         }
     }
   }
@@ -78,9 +76,7 @@ struct VerificationScreen: View {
       }
       .accessibilityAddTraits(.isButton)
       .swipeActions {
-        ProgressButton(action: { await viewModel.verifySubBrand(subBrand) }, label: {
-          Label("Verify", systemImage: "checkmark")
-        }).tint(.green)
+        ProgressButton("Verify", systemImage: "checkmark", action: { await viewModel.verifySubBrand(subBrand) }).tint(.green)
       }
     }
   }
@@ -95,9 +91,7 @@ struct VerificationScreen: View {
         }
       }
       .swipeActions {
-        ProgressButton(action: { await viewModel.verifyBrand(brand) }, label: {
-          Label("Verify", systemImage: "checkmark")
-        }).tint(.green)
+        ProgressButton("Verify", systemImage: "checkmark", action: { await viewModel.verifyBrand(brand) }).tint(.green)
       }
     }
   }
@@ -122,9 +116,7 @@ struct VerificationScreen: View {
             router.navigate(screen: .product(product))
           }
           .swipeActions {
-            ProgressButton(action: { await viewModel.verifyProduct(product) }, label: {
-              Label("Verify", systemImage: "checkmark")
-            }).tint(.green)
+            ProgressButton("Verify", systemImage: "checkmark", action: { await viewModel.verifyProduct(product) }).tint(.green)
             RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: product, onEdit: {
               Task {
                 await viewModel.loadData(refresh: true)

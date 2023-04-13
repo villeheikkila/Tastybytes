@@ -19,12 +19,10 @@ struct SettingsScreen: View {
       }
 
       Section {
-        ProgressButton(action: {
+        ProgressButton("Log Out", systemImage: "arrow.uturn.left", action: {
           await profileManager.logOut()
-        }, label: {
-          Label("Log Out", systemImage: "arrow.uturn.left")
-            .fontWeight(.medium)
         })
+        .fontWeight(.medium)
       }
     }
     .navigationBarTitle("Preferences")

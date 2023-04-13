@@ -199,28 +199,24 @@ struct CheckInSheet: View {
       leading: Button(role: .cancel, action: { dismiss() }, label: {
         Text("Cancel").bold()
       }),
-      trailing: ProgressButton(action: {
-                                 switch action {
-                                 case .create:
-                                   if let onCreation {
-                                     await viewModel.createCheckIn { newCheckIn in
-                                       onCreation(newCheckIn)
-                                     }
-                                   }
-                                 case .update:
-                                   if let onUpdate {
-                                     await viewModel.updateCheckIn { updatedCheckIn in
-                                       onUpdate(updatedCheckIn)
-                                     }
-                                   }
-                                 }
-                                 hapticManager.trigger(.notification(.success))
-                                 dismiss()
-                               },
-                               label: {
-                                 Text(action == .create ? "Check-in!" : "Update Check-in!")
-                                   .bold()
-                               })
+      trailing: ProgressButton(action == .create ? "Check-in!" : "Update Check-in!", action: {
+        switch action {
+        case .create:
+          if let onCreation {
+            await viewModel.createCheckIn { newCheckIn in
+              onCreation(newCheckIn)
+            }
+          }
+        case .update:
+          if let onUpdate {
+            await viewModel.updateCheckIn { updatedCheckIn in
+              onUpdate(updatedCheckIn)
+            }
+          }
+        }
+        hapticManager.trigger(.notification(.success))
+        dismiss()
+      }).bold()
     )
     .onChange(of: pickedFlavors, perform: { newValue in
       viewModel.pickedFlavors = newValue

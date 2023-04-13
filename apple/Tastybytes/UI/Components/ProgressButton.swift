@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ProgressButton<Label: View>: View {
+struct ProgressButton<LabelView: View>: View {
   enum ActionOption: CaseIterable {
     case disableButton
     case showProgressView
@@ -9,13 +9,13 @@ struct ProgressButton<Label: View>: View {
   let role: ButtonRole?
   var action: () async -> Void
   var actionOptions = Set(ActionOption.allCases)
-  @ViewBuilder var label: () -> Label
+  @ViewBuilder var label: () -> LabelView
 
   init(
     role: ButtonRole? = nil,
     action: @escaping () async -> Void,
     actionOptions: Set<ActionOption> = Set(),
-    @ViewBuilder label: @escaping () -> Label
+    @ViewBuilder label: @escaping () -> LabelView
   ) {
     self.role = role
     self.action = action
@@ -62,7 +62,7 @@ struct ProgressButton<Label: View>: View {
   }
 }
 
-extension ProgressButton where Label == Text {
+extension ProgressButton where LabelView == Text {
   init(_ label: String,
        role: ButtonRole? = nil,
        actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
@@ -74,7 +74,7 @@ extension ProgressButton where Label == Text {
   }
 }
 
-extension ProgressButton where Label == Image {
+extension ProgressButton where LabelView == Image {
   init(systemImageName: String,
        role: ButtonRole? = nil,
        actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
@@ -82,6 +82,18 @@ extension ProgressButton where Label == Image {
   {
     self.init(role: role, action: action) {
       Image(systemName: systemImageName)
+    }
+  }
+}
+
+extension ProgressButton where LabelView == Label<Text, Image> {
+  init(_ title: String, systemImage: String,
+       role: ButtonRole? = nil,
+       actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
+       action: @escaping () async -> Void)
+  {
+    self.init(role: role, action: action) {
+      Label(title, systemImage: systemImage)
     }
   }
 }

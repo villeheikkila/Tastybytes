@@ -105,11 +105,9 @@ struct CheckInScreen: View {
   private var leaveCommentSection: some View {
     HStack {
       TextField("Leave a comment!", text: $viewModel.commentText)
-      ProgressButton(action: { await viewModel.sendComment() }, label: {
-        Label("Send the comment", systemImage: "paperplane.fill")
-          .labelStyle(.iconOnly)
-      })
-      .disabled(viewModel.isInvalidComment())
+      ProgressButton("Send the comment", systemImage: "paperplane.fill", action: { await viewModel.sendComment() })
+        .labelStyle(.iconOnly)
+        .disabled(viewModel.isInvalidComment())
     }
     .padding(2)
   }

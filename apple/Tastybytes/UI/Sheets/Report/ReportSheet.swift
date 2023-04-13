@@ -19,13 +19,11 @@ struct ReportSheet: View {
       Section {
         TextField("Reason", text: $viewModel.message, axis: .vertical)
           .lineLimit(8, reservesSpace: true)
-        ProgressButton(action: {
+        ProgressButton("Submit", action: {
           await viewModel.submitReport(onSubmit: {
             dismiss()
           })
-        }, label: {
-          Text("Submit").bold()
-        })
+        }).bold()
       } header: {
         Text("Report")
       }

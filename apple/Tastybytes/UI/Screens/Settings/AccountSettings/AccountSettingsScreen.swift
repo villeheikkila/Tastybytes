@@ -103,12 +103,9 @@ struct AccountSettingsScreen: View {
 
   private var deleteAccount: some View {
     Section {
-      ProgressButton(action: { await viewModel.exportData(onError: { message in
+      ProgressButton("Export CSV", systemImage: "square.and.arrow.up", action: { await viewModel.exportData(onError: { message in
         toastManager.toggle(.error(message))
-      }) }, label: {
-        Label("Export CSV", systemImage: "square.and.arrow.up")
-          .fontWeight(.medium)
-      })
+      }) }).fontWeight(.medium)
       Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }, label: {
         if UIColor.responds(to: Selector(("_systemDestructiveTintColor"))) {
           if let destructive = UIColor.perform(Selector(("_systemDestructiveTintColor")))?
