@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OnboardTabsView: View {
   @StateObject private var onboardingViewModel: OnboardingViewModel
+  @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @Environment(\.colorScheme) private var colorScheme
   @FocusState private var focusedField: OnboardField?
   @State private var selection = Tab.welcome
@@ -24,6 +25,9 @@ struct OnboardTabsView: View {
     }
     .environmentObject(onboardingViewModel)
     .tabViewStyle(.page)
+    .task {
+      await splashScreenManager.dismiss()
+    }
     .onAppear {
       if colorScheme == .light {
         useDarkTabViewIndicators()

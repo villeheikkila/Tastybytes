@@ -8,11 +8,9 @@ class SplashScreenManager: ObservableObject {
 
   @Published private(set) var state: SplashScreenState = .showing
 
-  func dismiss() {
-    Task {
-      state = .dismissing
-      try? await Task.sleep(for: Duration.seconds(1))
-      self.state = .finished
-    }
+  func dismiss() async {
+    state = .dismissing
+    try? await Task.sleep(for: Duration.seconds(1))
+    state = .finished
   }
 }

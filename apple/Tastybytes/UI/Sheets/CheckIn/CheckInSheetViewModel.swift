@@ -60,7 +60,7 @@ extension CheckInSheet {
       }
     }
 
-    func setImageFromCamera(_ image: UIImage) {
+    func setImageFromCamera(_ image: UIImage) async {
       Task {
         self.image = image
         self.showCamera = false
@@ -69,13 +69,11 @@ extension CheckInSheet {
 
     func setImageFromPicker(pickedImage: UIImage) {
       Task {
-        await MainActor.run {
-          self.image = pickedImage
-        }
+        self.image = pickedImage
       }
     }
 
-    func updateCheckIn(_ onUpdate: @escaping (_ checkIn: CheckIn) -> Void) async {
+    func updateCheckIn(_ onUpdate: @escaping (_ checkIn: CheckIn) async -> Void) async {
       guard let editCheckIn else { return }
       let updateCheckInParams = CheckIn.UpdateRequest(
         checkIn: editCheckIn,
@@ -94,14 +92,14 @@ extension CheckInSheet {
 
       switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
       case let .success(updatedCheckIn):
-        uploadImage(checkIn: updatedCheckIn)
-        onUpdate(updatedCheckIn)
+        await uploadImage(checkIn: updatedCheckIn)
+        await onUpdate(updatedCheckIn)
       case let .failure(error):
         logger.error("failed to update check-in '\(editCheckIn.id)': \(error.localizedDescription)")
       }
     }
 
-    func createCheckIn(_ onCreation: @escaping (_ checkIn: CheckIn) -> Void) async {
+    func createCheckIn(_ onCreation: @escaping (_ checkIn: CheckIn) async -> Void) async {
       let newCheckParams = CheckIn.NewRequest(
         product: product,
         review: review,
@@ -118,22 +116,20 @@ extension CheckInSheet {
 
       switch await client.checkIn.create(newCheckInParams: newCheckParams) {
       case let .success(newCheckIn):
-        uploadImage(checkIn: newCheckIn)
-        onCreation(newCheckIn)
+        await uploadImage(checkIn: newCheckIn)
+        await onCreation(newCheckIn)
       case let .failure(error):
         logger.error("failed to create check-in: \(error.localizedDescription)")
       }
     }
 
-    func uploadImage(checkIn: CheckIn) {
-      Task {
-        guard let data = image?.jpegData(compressionQuality: 0.1) else { return }
-        switch await client.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
-        case let .failure(error):
-          logger.error("failed to uplaod image to check-in '\(checkIn.id)': \(error.localizedDescription)")
-        default:
-          break
-        }
+    func uploadImage(checkIn: CheckIn) async {
+      guard let data = image?.jpegData(compressionQuality: 0.1) else { return }
+      switch await client.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
+      case let .failure(error):
+        logger.error("failed to uplaod image to check-in '\(checkIn.id)': \(error.localizedDescription)")
+      default:
+        break
       }
     }
 

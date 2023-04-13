@@ -3,15 +3,15 @@ import SwiftUI
 struct AddSubcategorySheet: View {
   @State private var newSubcategoryName = ""
   let category: CategoryProtocol
-  let onSubmit: (_ newSubcategoryName: String) -> Void
+  let onSubmit: (_ newSubcategoryName: String) async -> Void
 
   var body: some View {
     DismissableSheet(title: "Add subcategory to \(category.name)") { dismiss in
       Form {
         Section {
           TextField("Name", text: $newSubcategoryName)
-          Button(action: {
-            onSubmit(newSubcategoryName)
+          ProgressButton(action: {
+            await onSubmit(newSubcategoryName)
             dismiss()
           }, label: {
             Text("Add")

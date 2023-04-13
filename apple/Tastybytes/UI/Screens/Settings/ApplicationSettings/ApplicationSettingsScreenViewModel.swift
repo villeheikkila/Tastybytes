@@ -42,7 +42,7 @@ extension ApplicationSettingsScreen {
       }
     }
 
-    func updateColorScheme(_ onChange: @escaping () -> Void) {
+    func updateColorScheme(_ onChange: @escaping () async -> Void) async {
       if isSystemColor {
         isDarkMode = initialColorScheme == ColorScheme.dark
       }
@@ -50,30 +50,26 @@ extension ApplicationSettingsScreen {
         isDarkMode: isDarkMode, isSystemColor: isSystemColor
       )
 
-      Task {
-        switch await client.profile.updateSettings(
-          update: update
-        ) {
-        case .success:
-          onChange()
-        case let .failure(error):
-          logger.error("updating color scheme failed: \(error.localizedDescription)")
-        }
+      switch await client.profile.updateSettings(
+        update: update
+      ) {
+      case .success:
+        await onChange()
+      case let .failure(error):
+        logger.error("updating color scheme failed: \(error.localizedDescription)")
       }
     }
 
-    func updateNotificationSettings() {
+    func updateNotificationSettings() async {
       let update = ProfileSettings.UpdateRequest(
         sendReactionNotifications: reactionNotifications,
         sendTaggedCheckInNotifications: checkInTagNotifications,
         sendFriendRequestNotifications: friendRequestNotifications
       )
 
-      Task {
-        _ = await client.profile.updateSettings(
-          update: update
-        )
-      }
+      _ = await client.profile.updateSettings(
+        update: update
+      )
     }
   }
 }

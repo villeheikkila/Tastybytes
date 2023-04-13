@@ -5,12 +5,12 @@ struct ServingStyleManagementSheet: View {
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
   @Binding var pickedServingStyles: [ServingStyle]
-  let onSelect: (_ servingStyle: ServingStyle) -> Void
+  let onSelect: (_ servingStyle: ServingStyle) async -> Void
 
   init(
     _ client: Client,
     pickedServingStyles: Binding<[ServingStyle]>,
-    onSelect: @escaping (_ servingStyle: ServingStyle) -> Void
+    onSelect: @escaping (_ servingStyle: ServingStyle) async -> Void
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client))
     _pickedServingStyles = pickedServingStyles
@@ -20,7 +20,7 @@ struct ServingStyleManagementSheet: View {
   var body: some View {
     List {
       ForEach(viewModel.servingStyles) { servingStyle in
-        Button(action: { onSelect(servingStyle) }, label: {
+        ProgressButton(action: { await onSelect(servingStyle) }, label: {
           HStack {
             Text(servingStyle.label)
             Spacer()
@@ -56,8 +56,8 @@ struct ServingStyleManagementSheet: View {
     .alert("Edit Serving Style", isPresented: $viewModel.showEditServingStyle, actions: {
       TextField("TextField", text: $viewModel.servingStyleName)
       Button("Cancel", role: .cancel, action: {})
-      Button("Edit", action: {
-        viewModel.saveEditServingStyle()
+      ProgressButton("Edit", action: {
+        await viewModel.saveEditServingStyle()
       })
     })
     .confirmationDialog(

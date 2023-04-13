@@ -8,9 +8,7 @@ extension ProductFeedScreen {
     @Published var products = [Product.Joined]()
     @Published var categoryFilter: Category.JoinedSubcategories? {
       didSet {
-        Task {
-          await refresh()
-        }
+        Task { await refresh() }
       }
     }
 

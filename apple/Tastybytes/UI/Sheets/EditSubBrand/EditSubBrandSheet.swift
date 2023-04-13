@@ -8,13 +8,13 @@ struct EditSubBrandSheet: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
 
-  let onUpdate: () -> Void
+  let onUpdate: () async -> Void
 
   init(
     _ client: Client,
     brand: Brand.JoinedSubBrandsProductsCompany,
     subBrand: SubBrand.JoinedProduct,
-    onUpdate: @escaping () -> Void
+    onUpdate: @escaping () async -> Void
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, subBrand: subBrand, brand: brand))
     self.onUpdate = onUpdate
@@ -26,7 +26,7 @@ struct EditSubBrandSheet: View {
         TextField("Name", text: $viewModel.newSubBrandName)
         ProgressButton("Edit") {
           await viewModel.editSubBrand(onSuccess: {
-            onUpdate()
+            await onUpdate()
           })
         }
         .disabled(viewModel.invalidNewName)
@@ -66,7 +66,7 @@ struct EditSubBrandSheet: View {
         action: {
           await viewModel.mergeToSubBrand(subBrand: viewModel.subBrand, onSuccess: {
             hapticManager.trigger(.notification(.success))
-            onUpdate()
+            await onUpdate()
           })
         }
       )

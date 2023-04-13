@@ -21,7 +21,7 @@ struct NotificationTab: View {
               MessageNotificationView(message: message)
                 .accessibilityAddTraits(.isButton)
                 .onTapGesture {
-                  notificationManager.markAsRead(notification)
+                  Task { await notificationManager.markAsRead(notification) }
                 }
             case let .friendRequest(friendRequest):
               FriendRequestNotificationView(friend: friendRequest)
@@ -31,13 +31,14 @@ struct NotificationTab: View {
               CheckInReactionNotificationView(checkInReaction: checkInReaction)
             }
             Spacer()
-          }.if(notification.seenAt != nil, transform: { view in
+          }
+          .if(notification.seenAt != nil, transform: { view in
             view.listRowBackground(Color.clear)
           })
         }
-        .onDelete(perform: { index in
-          notificationManager.deleteFromIndex(at: index)
-        })
+        .onDelete(perform: { index in Task {
+          await notificationManager.deleteFromIndex(at: index)
+        } })
       }
       .refreshable {
         await hapticManager.wrapWithHaptics {
@@ -65,15 +66,15 @@ struct NotificationTab: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup {
       Menu {
-        Button(action: {
+        ProgressButton(action: {
           hapticManager.trigger(.impact(intensity: .low))
-          notificationManager.markAllAsRead()
+          await notificationManager.markAllAsRead()
         }, label: {
           Label("Mark all read", systemImage: "envelope.open")
         })
-        Button(action: {
+        ProgressButton(action: {
           hapticManager.trigger(.impact(intensity: .low))
-          notificationManager.deleteAll()
+          await notificationManager.deleteAll()
         }, label: {
           Label("Delete all", systemImage: "trash")
         })

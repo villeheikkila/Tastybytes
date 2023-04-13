@@ -64,22 +64,17 @@ extension ServingStyleManagementSheet {
       }
     }
 
-    func saveEditServingStyle() {
+    func saveEditServingStyle() async {
       guard let editServingStyle else { return }
-      Task {
-        switch await client.servingStyle
-          .update(update: ServingStyle.UpdateRequest(id: editServingStyle.id, name: servingStyleName))
-        {
-        case let .success(servingStyle):
-          withAnimation {
-            servingStyles.replace(editServingStyle, with: servingStyle)
-          }
-        case let .failure(error):
-          logger
-            .error(
-              "failed to edit '\(editServingStyle.id) with name \(self.servingStyleName)': \(error.localizedDescription)"
-            )
+      switch await client.servingStyle
+        .update(update: ServingStyle.UpdateRequest(id: editServingStyle.id, name: servingStyleName))
+      {
+      case let .success(servingStyle):
+        withAnimation {
+          servingStyles.replace(editServingStyle, with: servingStyle)
         }
+      case let .failure(error):
+        logger.error("failed to edit '\(editServingStyle.id)': \(error.localizedDescription)")
       }
     }
   }

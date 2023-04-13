@@ -45,15 +45,13 @@ struct SearchListView: View {
       .onSubmit(of: .search) {
         Task { await viewModel.search() }
       }
-      .onChange(of: viewModel.searchScope, perform: { _ in
-        Task { await viewModel.search() }
+      .asyncOnChange(of: viewModel.searchScope, perform: { _ in
+        await viewModel.search()
         viewModel.barcode = nil
       })
-      .onChange(of: viewModel.searchTerm, perform: { term in
+      .asyncOnChange(of: viewModel.searchTerm, perform: { term in
         if term.isEmpty {
-          Task {
-            await viewModel.resetSearch()
-          }
+          await viewModel.resetSearch()
         }
       })
       .onReceive(

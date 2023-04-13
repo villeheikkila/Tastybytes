@@ -8,12 +8,12 @@ struct EditBrandSheet: View {
   @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
 
-  let onUpdate: () -> Void
+  let onUpdate: () async -> Void
 
   init(
     _ client: Client,
     brand: Brand.JoinedSubBrandsProductsCompany,
-    onUpdate: @escaping () -> Void
+    onUpdate: @escaping () async -> Void
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, brand: brand, onUpdate: onUpdate))
     self.onUpdate = onUpdate
@@ -55,7 +55,7 @@ struct EditBrandSheet: View {
         TextField("Name", text: $viewModel.name)
         ProgressButton("Edit") {
           await viewModel.editBrand {
-            onUpdate()
+            await onUpdate()
           }
         }.disabled(!viewModel.name.isValidLength(.normal) || viewModel.brand.name == viewModel.name)
       } header: {
@@ -68,7 +68,7 @@ struct EditBrandSheet: View {
         }))
         ProgressButton("Change brand owner") {
           await viewModel.editBrand {
-            onUpdate()
+            await onUpdate()
           }
         }.disabled(viewModel.brandOwner.id == viewModel.initialBrandOwner.id)
       } header: {

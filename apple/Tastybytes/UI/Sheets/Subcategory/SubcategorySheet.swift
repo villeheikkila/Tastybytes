@@ -12,7 +12,7 @@ struct SubcategorySheet: View {
   let category: Category.JoinedSubcategories
 
   private let maxSubcategories = 4
-  let onCreate: (_ newSubcategoryName: String) -> Void
+  let onCreate: (_ newSubcategoryName: String) async -> Void
 
   var shownSubcategories: [Subcategory] {
     category.subcategories.sorted().filter { searchTerm.isEmpty || $0.name.contains(searchTerm) }
@@ -48,8 +48,8 @@ struct SubcategorySheet: View {
     .alert("Add new subcategory", isPresented: $showAddSubcategory, actions: {
       TextField("TextField", text: $newSubcategoryName)
       Button("Cancel", role: .cancel, action: {})
-      Button("Create", action: {
-        onCreate(newSubcategoryName)
+      ProgressButton("Create", action: {
+        await onCreate(newSubcategoryName)
       })
     })
   }

@@ -32,7 +32,7 @@ struct ProfileSettingsScreen: View {
 
       if viewModel.showProfileUpdateButton {
         ProgressButton("Update", action: { await viewModel.updateProfile(onSuccess: {
-          Task { await profileManager.refresh() }
+          await profileManager.refresh()
           toastManager.toggle(.success("Profile updated!"))
         }, onFailure: { error in
           toastManager.toggle(.error(error.localizedDescription))
@@ -49,9 +49,9 @@ struct ProfileSettingsScreen: View {
   private var profileDisplaySettings: some View {
     Section {
       Toggle("Use Name Instead of Username", isOn: $viewModel.showFullName)
-        .onChange(of: [viewModel.showFullName].publisher.first()) { _ in
-          viewModel.updateDisplaySettings(onUpdate: {
-            Task { await profileManager.refresh() }
+        .asyncOnChange(of: [viewModel.showFullName].publisher.first()) { _ in
+          await viewModel.updateDisplaySettings(onUpdate: {
+            await profileManager.refresh()
           })
         }
     } footer: {
@@ -62,9 +62,9 @@ struct ProfileSettingsScreen: View {
   private var privacySection: some View {
     Section {
       Toggle("Private Profile", isOn: $viewModel.isPrivateProfile)
-        .onChange(of: [viewModel.isPrivateProfile].publisher.first()) { _ in
-          viewModel.updatePrivacySettings(onUpdate: {
-            Task { await profileManager.refresh() }
+        .asyncOnChange(of: [viewModel.isPrivateProfile].publisher.first()) { _ in
+          await viewModel.updatePrivacySettings(onUpdate: {
+            await profileManager.refresh()
           })
         }
     } header: {

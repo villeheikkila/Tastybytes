@@ -20,21 +20,19 @@ extension ProfileView {
       isShownInFull = isCurrentUser || !profile.isPrivate
     }
 
-    func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) {
-      Task {
-        guard let data = await newAvatar?.getJPEG() else { return }
-        switch await client.profile.uploadAvatar(userId: userId, data: data) {
-        case let .success(avatarFile):
-          profile = Profile(
-            id: profile.id,
-            preferredName: profile.preferredName,
-            isPrivate: profile.isPrivate,
-            avatarFile: avatarFile,
-            joinedAt: profile.joinedAt
-          )
-        case let .failure(error):
-          logger.error("uplodaing avatar for \(userId) failed: \(error.localizedDescription)")
-        }
+    func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) async {
+      guard let data = await newAvatar?.getJPEG() else { return }
+      switch await client.profile.uploadAvatar(userId: userId, data: data) {
+      case let .success(avatarFile):
+        profile = Profile(
+          id: profile.id,
+          preferredName: profile.preferredName,
+          isPrivate: profile.isPrivate,
+          avatarFile: avatarFile,
+          joinedAt: profile.joinedAt
+        )
+      case let .failure(error):
+        logger.error("uplodaing avatar for \(userId) failed: \(error.localizedDescription)")
       }
     }
 

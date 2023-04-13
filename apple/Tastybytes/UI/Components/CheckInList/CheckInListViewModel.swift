@@ -65,7 +65,7 @@ extension CheckInListView {
       checkIns[index] = checkIn
     }
 
-    func fetchActivityFeedItems(onComplete: (() -> Void)? = nil) async {
+    func fetchActivityFeedItems(onComplete: (() async -> Void)? = nil) async {
       let (from, to) = getPagination(page: page, size: pageSize)
       isLoading = true
 
@@ -78,7 +78,7 @@ extension CheckInListView {
         isLoading = false
 
         if let onComplete {
-          onComplete()
+          await onComplete()
         }
       case let .failure(error):
         logger.error("fetching check-ins failed: \(error.localizedDescription)")

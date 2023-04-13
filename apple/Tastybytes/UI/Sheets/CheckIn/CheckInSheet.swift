@@ -12,11 +12,11 @@ struct CheckInSheet: View {
   @State private var pickedFlavors = [Flavor]()
   @FocusState private var focusedField: Focusable?
 
-  let onCreation: ((_ checkIn: CheckIn) -> Void)?
-  let onUpdate: ((_ checkIn: CheckIn) -> Void)?
+  let onCreation: ((_ checkIn: CheckIn) async -> Void)?
+  let onUpdate: ((_ checkIn: CheckIn) async -> Void)?
   let action: Action
 
-  init(_ client: Client, product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) -> Void) {
+  init(_ client: Client, product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) async -> Void) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, product: product, editCheckIn: nil))
     self.onCreation = onCreation
     onUpdate = nil
@@ -24,7 +24,7 @@ struct CheckInSheet: View {
   }
 
   init(_ client: Client, checkIn: CheckIn,
-       onUpdate: @escaping (_ checkIn: CheckIn) -> Void)
+       onUpdate: @escaping (_ checkIn: CheckIn) async -> Void)
   {
     _viewModel = StateObject(wrappedValue: ViewModel(client, product: checkIn.product, editCheckIn: checkIn))
     onCreation = nil
@@ -191,8 +191,9 @@ struct CheckInSheet: View {
     .fullScreenCover(isPresented: $viewModel.showCamera, content: {
       CameraView(onClose: {
         viewModel.showCamera = false
-      }, onCapture: { image in
-        viewModel.setImageFromCamera(image)
+      }, onCapture: { image in Task {
+        await viewModel.setImageFromCamera(image)
+      }
       })
     })
     .navigationBarItems(
@@ -204,13 +205,13 @@ struct CheckInSheet: View {
         case .create:
           if let onCreation {
             await viewModel.createCheckIn { newCheckIn in
-              onCreation(newCheckIn)
+              await onCreation(newCheckIn)
             }
           }
         case .update:
           if let onUpdate {
             await viewModel.updateCheckIn { updatedCheckIn in
-              onUpdate(updatedCheckIn)
+              await onUpdate(updatedCheckIn)
             }
           }
         }
@@ -218,8 +219,8 @@ struct CheckInSheet: View {
         dismiss()
       }).bold()
     )
-    .onChange(of: pickedFlavors, perform: { newValue in
-      viewModel.pickedFlavors = newValue
+    .onChange(of: pickedFlavors, perform: { newPickedFlavors in
+      viewModel.pickedFlavors = newPickedFlavors
     })
     .task {
       await viewModel.loadInitialData()

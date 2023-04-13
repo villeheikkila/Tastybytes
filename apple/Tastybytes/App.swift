@@ -41,9 +41,6 @@ struct RootView: View {
             TabsView(client, profile: profileManager.getProfile())
           } else {
             OnboardTabsView(client)
-              .onAppear {
-                splashScreenManager.dismiss()
-              }
           }
         }
       case .passwordRecovery:

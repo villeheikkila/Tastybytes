@@ -28,7 +28,7 @@ struct CategoryManagementScreen: View {
                 }
               ).tint(subcategory.isVerified ? .yellow : .green)
               RouterLink("Edit", systemImage: "pencil", sheet: .editSubcategory(subcategory: subcategory, onSubmit: { newName in
-                Task { await viewModel.saveEditSubcategoryChanges(subCategory: subcategory, newName: newName) }
+                await viewModel.saveEditSubcategoryChanges(subCategory: subcategory, newName: newName)
               })).tint(.yellow)
               Button(role: .destructive, action: { viewModel.deleteSubcategory = subcategory }, label: {
                 Label("Delete", systemImage: "trash")
@@ -45,7 +45,7 @@ struct CategoryManagementScreen: View {
                 "Add Subcategory",
                 systemImage: "plus",
                 sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
-                  Task { await viewModel.addSubcategory(category: category, name: newSubcategoryName) }
+                  await viewModel.addSubcategory(category: category, name: newSubcategoryName)
                 })
               )
             } label: {
@@ -60,7 +60,7 @@ struct CategoryManagementScreen: View {
     .navigationBarTitle("Categories")
     .navigationBarItems(trailing: RouterLink("Add Category", systemImage: "plus",
                                              sheet: .addCategory(onSubmit: { newCategoryName in
-                                               Task { await viewModel.addCategory(name: newCategoryName) }
+                                               await viewModel.addCategory(name: newCategoryName)
                                              }))
                                              .labelStyle(.iconOnly)
                                              .bold())

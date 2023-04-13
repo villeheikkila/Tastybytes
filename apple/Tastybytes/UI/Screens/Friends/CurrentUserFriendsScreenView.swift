@@ -103,13 +103,11 @@ struct CurrentUserFriendsScreen: View {
       titleVisibility: .visible,
       presenting: friendToBeRemoved
     ) { presenting in
-      Button(
+      ProgressButton(
         "Remove \(presenting.getFriend(userId: profileManager.getId()).preferredName) from friends",
         role: .destructive,
         action: {
-          withAnimation {
-            friendManager.removeFriendRequest(presenting)
-          }
+          await friendManager.removeFriendRequest(presenting)
         }
       )
     }

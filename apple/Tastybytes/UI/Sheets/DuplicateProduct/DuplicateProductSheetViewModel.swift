@@ -61,21 +61,16 @@ extension DuplicateProductSheet {
         onSuccess()
       case let .failure(error):
         logger
-          .error(
-            "merging product \(self.mergeToProduct?.id ?? 0) to \(mergeToProduct.id) failed: \(error.localizedDescription)"
-          )
+          .error("merging product \(self.mergeToProduct?.id ?? 0) to \(mergeToProduct.id) failed: \(error.localizedDescription)")
       }
     }
 
-    func searchProducts() {
-      Task {
-        switch await client.product.search(searchTerm: searchTerm, filter: nil) {
-        case let .success(searchResults):
-          self.products = searchResults
-        case let .failure(error):
-          logger
-            .error("searching products with \(self.searchTerm) failed: \(error.localizedDescription)")
-        }
+    func searchProducts() async {
+      switch await client.product.search(searchTerm: searchTerm, filter: nil) {
+      case let .success(searchResults):
+        products = searchResults
+      case let .failure(error):
+        logger.error("searching products failed: \(error.localizedDescription)")
       }
     }
   }

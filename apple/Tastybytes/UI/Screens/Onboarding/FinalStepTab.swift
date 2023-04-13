@@ -21,10 +21,10 @@ struct FinalStepTab: View {
 
       HStack {
         Spacer()
-        Button(action: { viewModel.updateProfile { Task { await profileManager.refresh() } } }, label: {
-          Text("Continue to the app")
-            .fontWeight(.medium)
-        })
+        ProgressButton(
+          "Continue to the app",
+          action: { await viewModel.updateProfile { await profileManager.refresh() } }
+        )
         .buttonStyle(.borderedProminent)
         .controlSize(.large)
         Spacer()

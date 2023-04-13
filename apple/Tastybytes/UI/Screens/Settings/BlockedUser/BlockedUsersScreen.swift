@@ -18,7 +18,7 @@ struct BlockedUsersScreen: View {
       }
       ForEach(friendManager.blockedUsers) { friend in
         BlockedUserListItemView(profile: friend.getFriend(userId: friendManager.profile.id), onUnblockUser: {
-          friendManager.unblockUser(friend)
+          await friendManager.unblockUser(friend)
         })
       }
     }

@@ -33,7 +33,7 @@ class OnboardingViewModel: ObservableObject {
     }
   }
 
-  func updateProfile(onSuccess: @escaping () -> Void) {
+  func updateProfile(onSuccess: @escaping () async -> Void) async {
     let update = Profile.UpdateRequest(
       username: username,
       firstName: firstName,
@@ -43,33 +43,29 @@ class OnboardingViewModel: ObservableObject {
       isOnboarded: true
     )
 
-    Task {
-      switch await client.profile.update(
-        update: update
-      ) {
-      case .success:
-        onSuccess()
-      case let .failure(error):
-        logger.warning("failed to update profile: \(error.localizedDescription)")
-      }
+    switch await client.profile.update(
+      update: update
+    ) {
+    case .success:
+      await onSuccess()
+    case let .failure(error):
+      logger.warning("failed to update profile: \(error.localizedDescription)")
     }
   }
 
-  func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) {
-    Task {
-      guard let data = await newAvatar?.getJPEG() else { return }
-      switch await client.profile.uploadAvatar(userId: userId, data: data) {
-      case let .success(fileName):
-        self.avatarUrl = URL(
-          bucketId: Profile.getQuery(.avatarBucket),
-          fileName: "\(userId.uuidString.lowercased())/\(fileName)"
+  func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) async {
+    guard let data = await newAvatar?.getJPEG() else { return }
+    switch await client.profile.uploadAvatar(userId: userId, data: data) {
+    case let .success(fileName):
+      avatarUrl = URL(
+        bucketId: Profile.getQuery(.avatarBucket),
+        fileName: "\(userId.uuidString.lowercased())/\(fileName)"
+      )
+    case let .failure(error):
+      logger
+        .error(
+          "uplodaing avatar for \(userId) failed: \(error.localizedDescription)"
         )
-      case let .failure(error):
-        logger
-          .error(
-            "uplodaing avatar for \(userId) failed: \(error.localizedDescription)"
-          )
-      }
     }
   }
 }

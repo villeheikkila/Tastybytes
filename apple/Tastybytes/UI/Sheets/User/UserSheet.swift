@@ -56,7 +56,8 @@ struct UserSheet: View {
                   action: { await friendManager.blockUser(user: profile, onSuccess: {
                     onSubmit()
                     dismiss()
-                  }) }
+                  })
+                  }
                 )
                 .imageScale(.large)
               }

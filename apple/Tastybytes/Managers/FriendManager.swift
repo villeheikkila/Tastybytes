@@ -57,16 +57,14 @@ class FriendManager: ObservableObject {
     }
   }
 
-  func removeFriendRequest(_ friend: Friend) {
-    Task {
-      switch await client.friend.delete(id: friend.id) {
-      case .success:
-        withAnimation {
-          self.friends.remove(object: friend)
-        }
-      case let .failure(error):
-        logger.warning("failed to remove friend request '\(friend.id)': \(error.localizedDescription)")
+  func removeFriendRequest(_ friend: Friend) async {
+    switch await client.friend.delete(id: friend.id) {
+    case .success:
+      withAnimation {
+        self.friends.remove(object: friend)
       }
+    case let .failure(error):
+      logger.warning("failed to remove friend request '\(friend.id)': \(error.localizedDescription)")
     }
   }
 
@@ -86,16 +84,14 @@ class FriendManager: ObservableObject {
     }
   }
 
-  func unblockUser(_ friend: Friend) {
-    Task {
-      switch await client.friend.delete(id: friend.id) {
-      case .success:
-        withAnimation {
-          self.friends.remove(object: friend)
-        }
-      case let .failure(error):
-        logger.error("failed to unblock user \(friend.id): \(error.localizedDescription)")
+  func unblockUser(_ friend: Friend) async {
+    switch await client.friend.delete(id: friend.id) {
+    case .success:
+      withAnimation {
+        self.friends.remove(object: friend)
       }
+    case let .failure(error):
+      logger.error("failed to unblock user \(friend.id): \(error.localizedDescription)")
     }
   }
 

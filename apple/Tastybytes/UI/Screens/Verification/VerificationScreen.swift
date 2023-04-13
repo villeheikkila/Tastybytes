@@ -41,10 +41,8 @@ struct VerificationScreen: View {
     .toolbar {
       toolbarContent
     }
-    .onChange(of: viewModel.verificationType, perform: { _ in
-      Task {
-        await viewModel.loadData()
-      }
+    .asyncOnChange(of: viewModel.verificationType, perform: { _ in
+      await viewModel.loadData()
     })
     .refreshable {
       await hapticManager.wrapWithHaptics {
@@ -118,9 +116,7 @@ struct VerificationScreen: View {
           .swipeActions {
             ProgressButton("Verify", systemImage: "checkmark", action: { await viewModel.verifyProduct(product) }).tint(.green)
             RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: product, onEdit: {
-              Task {
-                await viewModel.loadData(refresh: true)
-              }
+              await viewModel.loadData(refresh: true)
             })).tint(.yellow)
             Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
               Label("Delete", systemImage: "trash")

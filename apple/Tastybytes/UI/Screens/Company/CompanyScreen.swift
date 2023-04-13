@@ -112,10 +112,8 @@ struct CompanyScreen: View {
 
       if profileManager.hasPermission(.canEditCompanies) {
         RouterLink("Edit", systemImage: "pencil", sheet: .editCompany(company: viewModel.company, onSuccess: {
-          Task {
-            await hapticManager.wrapWithHaptics {
-              await viewModel.getBrandsAndSummary()
-            }
+          await hapticManager.wrapWithHaptics {
+            await viewModel.getBrandsAndSummary()
           }
           toastManager.toggle(.success("Company updated"))
         }))

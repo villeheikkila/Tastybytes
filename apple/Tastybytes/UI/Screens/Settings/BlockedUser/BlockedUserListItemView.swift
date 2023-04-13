@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BlockedUserListItemView: View {
   let profile: Profile
-  let onUnblockUser: () -> Void
+  let onUnblockUser: () async -> Void
 
   var body: some View {
     HStack(alignment: .center) {
@@ -11,7 +11,7 @@ struct BlockedUserListItemView: View {
         HStack {
           Text(profile.preferredName)
           Spacer()
-          Button(action: { onUnblockUser() }, label: {
+          ProgressButton(action: { await onUnblockUser() }, label: {
             Label("Unblock", systemImage: "hand.raised.slash.fill")
           })
         }

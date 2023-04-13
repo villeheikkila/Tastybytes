@@ -76,7 +76,7 @@ struct CheckInListView<Header>: View where Header: View {
       .task {
         await viewModel.fetchActivityFeedItems(onComplete: {
           if splashScreenManager.state != .finished {
-            splashScreenManager.dismiss()
+            await splashScreenManager.dismiss()
           }
         })
       }

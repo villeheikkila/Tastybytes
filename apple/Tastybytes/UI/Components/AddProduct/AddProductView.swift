@@ -12,14 +12,14 @@ struct AddProductView: View {
   @FocusState private var focusedField: Focusable?
   @State private var subcategories: [Subcategory] = []
 
-  let onEdit: (() -> Void)?
-  let onCreate: ((_ product: Product.Joined) -> Void)?
+  let onEdit: (() async -> Void)?
+  let onCreate: ((_ product: Product.Joined) async -> Void)?
 
   init(
     _ client: Client,
     mode: Mode,
     initialBarcode: Barcode? = nil,
-    onEdit: (() -> Void)? = nil,
+    onEdit: (() async -> Void)? = nil,
     onCreate: ((_ product: Product.Joined) -> Void)? = nil
   ) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, mode: mode, barcode: initialBarcode))
@@ -56,7 +56,7 @@ struct AddProductView: View {
         await viewModel.editProduct(onSuccess: {
           hapticManager.trigger(.notification(.success))
           if let onEdit {
-            onEdit()
+            await onEdit()
           }
         })
       case .new:
@@ -68,7 +68,7 @@ struct AddProductView: View {
         await viewModel.createProduct(onSuccess: { product in
           hapticManager.trigger(.notification(.success))
           if let onCreate {
-            onCreate(product)
+            await onCreate(product)
           }
         })
       }
@@ -126,8 +126,8 @@ struct AddProductView: View {
             subcategories: $subcategories,
             category: category,
             onCreate: { newSubcategoryName in
-              viewModel.createSubcategory(newSubcategoryName: newSubcategoryName, onCreate: {
-                Task { await appDataManager.initialize() }
+              await viewModel.createSubcategory(newSubcategoryName: newSubcategoryName, onCreate: {
+                await appDataManager.initialize()
               })
             }
           ))

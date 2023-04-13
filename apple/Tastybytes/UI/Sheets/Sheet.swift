@@ -3,7 +3,7 @@ import SwiftUI
 enum Sheet: Identifiable, Equatable {
   case report(Report.Entity)
   case checkIn(CheckIn, onUpdate: (_ checkIn: CheckIn) -> Void)
-  case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) -> Void)
+  case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) async -> Void)
   case barcodeScanner(onComplete: (_ barcode: Barcode) -> Void)
   case productFilter(initialFilter: Product.Filter?, sections: [Sections], onApply: (_ filter: Product.Filter?) -> Void)
   case nameTag(onSuccess: (_ profileId: UUID) -> Void)
@@ -17,29 +17,29 @@ enum Sheet: Identifiable, Equatable {
   case subcategory(
     subcategories: Binding<[Subcategory]>,
     category: Category.JoinedSubcategories,
-    onCreate: (_ newSubcategoryName: String) -> Void
+    onCreate: (_ newSubcategoryName: String) async -> Void
   )
   case subBrand(brandWithSubBrands: Brand.JoinedSubBrands,
                 onSelect: (_ subBrand: SubBrand, _ createdNew: Bool) -> Void)
   case addProductToBrand(brand: Brand.JoinedSubBrandsProductsCompany, onCreate: ((_ product: Product.Joined) -> Void)?)
-  case editProduct(product: Product.Joined, onEdit: (() -> Void)? = nil)
+  case editProduct(product: Product.Joined, onEdit: (() async -> Void)? = nil)
   case productEditSuggestion(product: Product.Joined)
   case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
   case barcodeManagement(product: Product.Joined)
-  case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: () -> Void)
-  case editSubBrand(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct, onUpdate: () -> Void)
+  case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: () async -> Void)
+  case editSubBrand(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct, onUpdate: () async -> Void)
   case friends(taggedFriends: Binding<[Profile]>)
   case flavors(pickedFlavors: Binding<[Flavor]>)
   case locationSearch(onSelect: (_ location: Location) -> Void)
   case legacyPhotoPicker(onSelection: (_ image: UIImage) -> Void)
-  case newFlavor(onSubmit: (_ newFlavor: String) -> Void)
+  case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
   case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
-                              onSelect: (_ servingStyle: ServingStyle) -> Void)
+                              onSelect: (_ servingStyle: ServingStyle) async -> Void)
   case categoryServingStyle(category: Category.JoinedSubcategoriesServingStyles)
-  case editSubcategory(subcategory: Subcategory, onSubmit: (_ subcategoryName: String) -> Void)
-  case addSubcategory(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) -> Void)
-  case addCategory(onSubmit: (_ newCategoryName: String) -> Void)
-  case editCompany(company: Company, onSuccess: () -> Void)
+  case editSubcategory(subcategory: Subcategory, onSubmit: (_ subcategoryName: String) async -> Void)
+  case addSubcategory(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
+  case addCategory(onSubmit: (_ newCategoryName: String) async -> Void)
+  case editCompany(company: Company, onSuccess: () async -> Void)
   case companyEditSuggestion(company: Company, onSubmit: () -> Void)
   case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
 
@@ -78,7 +78,7 @@ enum Sheet: Identifiable, Equatable {
       DismissableSheet(title: "Edit Product") { dismiss in
         AddProductView(client, mode: .edit(product), onEdit: {
           if let onEdit {
-            onEdit()
+            await onEdit()
           }
           dismiss()
         })

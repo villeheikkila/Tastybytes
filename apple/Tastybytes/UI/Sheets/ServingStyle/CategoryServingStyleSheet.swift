@@ -28,7 +28,7 @@ struct CategoryServingStyleSheet: View {
       Text("Done").bold()
     }), trailing: RouterLink(
       sheet: .servingStyleManagement(pickedServingStyles: $viewModel.servingStyles, onSelect: { servingStyle in
-        Task { await viewModel.addServingStyleToCategory(servingStyle) }
+        await viewModel.addServingStyleToCategory(servingStyle)
       }),
       label: {
         Label("Add Barcode", systemImage: "plus").bold()

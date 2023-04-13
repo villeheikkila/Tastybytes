@@ -7,9 +7,9 @@ struct EditCompanySheet: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
 
-  let onSuccess: () -> Void
+  let onSuccess: () async -> Void
 
-  init(_ client: Client, company: Company, onSuccess: @escaping () -> Void) {
+  init(_ client: Client, company: Company, onSuccess: @escaping () async -> Void) {
     _viewModel = StateObject(wrappedValue: ViewModel(client, company: company))
     self.onSuccess = onSuccess
   }
@@ -49,7 +49,7 @@ struct EditCompanySheet: View {
         TextField("Name", text: $viewModel.newCompanyName)
         ProgressButton("Edit", action: {
           await viewModel.editCompany(onSuccess: {
-            onSuccess()
+            await onSuccess()
           })
         })
         .disabled(!viewModel.newCompanyName.isValidLength(.normal))
@@ -86,12 +86,12 @@ extension EditCompanySheet {
       self.company = company
     }
 
-    func editCompany(onSuccess: () -> Void) async {
+    func editCompany(onSuccess: () async -> Void) async {
       switch await client.company
         .update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName))
       {
       case .success:
-        onSuccess()
+        await onSuccess()
       case let .failure(error):
         logger.error("failed to edit company: \(error.localizedDescription)")
       }

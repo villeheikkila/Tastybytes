@@ -65,7 +65,7 @@ struct BrandScreen: View {
                   "Edit",
                   systemImage: "pencil",
                   sheet: .editSubBrand(brand: viewModel.brand, subBrand: subBrand, onUpdate: {
-                    Task { await viewModel.refresh() }
+                    await viewModel.refresh()
                   })
                 )
               }
@@ -191,7 +191,7 @@ struct BrandScreen: View {
 
       if profileManager.hasPermission(.canEditBrands) {
         RouterLink("Edit", systemImage: "pencil", sheet: .editBrand(brand: viewModel.brand, onUpdate: {
-          Task { await viewModel.refresh() }
+          await viewModel.refresh()
         }))
       }
 

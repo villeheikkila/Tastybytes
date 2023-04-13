@@ -25,7 +25,7 @@ struct ProductScreen: View {
         Section {
           ProductItemView(product: viewModel.product, extras: [.companyLink, .logo])
           RouterLink(sheet: .newCheckIn(viewModel.product, onCreation: { _ in
-            Task { await viewModel.refreshCheckIns() }
+            await viewModel.refreshCheckIns()
           }), label: {
             HStack {
               Group {
@@ -84,7 +84,7 @@ struct ProductScreen: View {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
         RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(viewModel.product, onCreation: { _ in
-          Task { await viewModel.refreshCheckIns() }
+          await viewModel.refreshCheckIns()
         }))
         .bold()
         .disabled(!profileManager.hasPermission(.canCreateCheckIns))

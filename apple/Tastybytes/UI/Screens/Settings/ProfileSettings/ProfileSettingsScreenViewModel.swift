@@ -47,7 +47,7 @@ extension ProfileSettingsScreen {
     }
 
     func getInitialValues(profile: Profile.Extended) async {
-      await updateFormValues(profile: profile)
+      updateFormValues(profile: profile)
     }
 
     func updateFormValues(profile: Profile.Extended) {
@@ -59,7 +59,7 @@ extension ProfileSettingsScreen {
       isPrivateProfile = profile.isPrivate
     }
 
-    func updateProfile(onSuccess: @escaping () -> Void, onFailure: @escaping (_ error: Error) -> Void) async {
+    func updateProfile(onSuccess: @escaping () async -> Void, onFailure: @escaping (_ error: Error) -> Void) async {
       let update = Profile.UpdateRequest(
         username: username,
         firstName: firstName,
@@ -71,43 +71,36 @@ extension ProfileSettingsScreen {
       ) {
       case let .success(profile):
         updateFormValues(profile: profile)
-        onSuccess()
+        await onSuccess()
       case let .failure(error):
         logger.warning("failed to update profile: \(error.localizedDescription)")
         onFailure(error)
       }
     }
 
-    func updatePrivacySettings(onUpdate: @escaping () -> Void) {
-      let update = Profile.UpdateRequest(
-        isPrivate: isPrivateProfile
-      )
-
-      Task {
-        switch await client.profile.update(
-          update: update
-        ) {
-        case .success:
-          onUpdate()
-        case let .failure(error):
-          logger.warning("failed to update settings: \(error.localizedDescription)")
-        }
+    func updatePrivacySettings(onUpdate: @escaping () async -> Void) async {
+      let update = Profile.UpdateRequest(isPrivate: isPrivateProfile)
+      switch await client.profile.update(
+        update: update
+      ) {
+      case .success:
+        await onUpdate()
+      case let .failure(error):
+        logger.warning("failed to update settings: \(error.localizedDescription)")
       }
     }
 
-    func updateDisplaySettings(onUpdate: @escaping () -> Void) {
+    func updateDisplaySettings(onUpdate: @escaping () async -> Void) async {
       let update = Profile.UpdateRequest(
         showFullName: showFullName
       )
-      Task {
-        switch await client.profile.update(
-          update: update
-        ) {
-        case .success:
-          onUpdate()
-        case let .failure(error):
-          logger.warning("failed to update profile: \(error.localizedDescription)")
-        }
+      switch await client.profile.update(
+        update: update
+      ) {
+      case .success:
+        await onUpdate()
+      case let .failure(error):
+        logger.warning("failed to update profile: \(error.localizedDescription)")
       }
     }
   }

@@ -82,7 +82,7 @@ extension AddProductView {
 
     @Published var selectedLogo: PhotosPickerItem? {
       didSet {
-        uploadLogo()
+        Task { await uploadLogo() }
       }
     }
 
@@ -99,21 +99,19 @@ extension AddProductView {
       category?.subcategories
     }
 
-    func createSubcategory(newSubcategoryName: String, onCreate: @escaping () -> Void) {
+    func createSubcategory(newSubcategoryName: String, onCreate: @escaping () async -> Void) async {
       guard let categoryWithSubcategories = category else { return }
       isLoading = true
-      Task {
-        switch await client.subcategory
-          .insert(newSubcategory: Subcategory
-            .NewRequest(name: newSubcategoryName, category: categoryWithSubcategories))
-        {
-        case .success:
-          onCreate()
-        case let .failure(error):
-          logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
-        }
-        isLoading = false
+      switch await client.subcategory
+        .insert(newSubcategory: Subcategory
+          .NewRequest(name: newSubcategoryName, category: categoryWithSubcategories))
+      {
+      case .success:
+        await onCreate()
+      case let .failure(error):
+        logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
       }
+      isLoading = false
     }
 
     func setBrand(brand: Brand.JoinedSubBrands) {
@@ -187,7 +185,7 @@ extension AddProductView {
       }
     }
 
-    func createProduct(onSuccess: @escaping (_ product: Product.Joined) -> Void) async {
+    func createProduct(onSuccess: @escaping (_ product: Product.Joined) async -> Void) async {
       guard let category, let brandId = brand?.id else { return }
       let newProductParams = Product.NewRequest(
         name: name,
@@ -200,7 +198,7 @@ extension AddProductView {
       )
       switch await client.product.create(newProductParams: newProductParams) {
       case let .success(newProduct):
-        onSuccess(newProduct)
+        await onSuccess(newProduct)
       case let .failure(error):
         logger.error("failed to create new product: \(error.localizedDescription)")
       }
@@ -230,20 +228,18 @@ extension AddProductView {
       }
     }
 
-    func uploadLogo() {
+    func uploadLogo() async {
       guard let productId else { return }
-      Task {
-        guard let data = await selectedLogo?.getJPEG() else { return }
-        switch await client.product.uploadLogo(productId: productId, data: data) {
-        case let .success(filename):
-          self.logoFile = filename
-        case let .failure(error):
-          logger.error("uplodaing company logo failed: \(error.localizedDescription)")
-        }
+      guard let data = await selectedLogo?.getJPEG() else { return }
+      switch await client.product.uploadLogo(productId: productId, data: data) {
+      case let .success(filename):
+        logoFile = filename
+      case let .failure(error):
+        logger.error("uplodaing company logo failed: \(error.localizedDescription)")
       }
     }
 
-    func editProduct(onSuccess: @escaping () -> Void) async {
+    func editProduct(onSuccess: @escaping () async -> Void) async {
       guard let category, let brand, let productId else { return }
       let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
       guard let subBrandWithNil else { return }
@@ -258,7 +254,7 @@ extension AddProductView {
 
       switch await client.product.editProduct(productEditParams: productEditParams) {
       case .success:
-        onSuccess()
+        await onSuccess()
       case let .failure(error):
         logger.error("failed to edit product '\(productId)': \(error.localizedDescription)")
       }

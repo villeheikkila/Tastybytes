@@ -33,9 +33,7 @@ struct DuplicateProductScreen: View {
             .swipeActions {
               ProgressButton("Verify", systemImage: "checkmark", action: { await viewModel.verifyProduct(product) }).tint(.green)
               RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: product, onEdit: {
-                Task {
-                  await viewModel.loadProducts()
-                }
+                await viewModel.loadProducts()
               })).tint(.yellow)
               Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
                 Label("Delete", systemImage: "trash")

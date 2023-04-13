@@ -77,37 +77,33 @@ class NotificationManager: ObservableObject {
     }
   }
 
-  func deleteAll() {
-    Task {
-      switch await client.notification.deleteAll() {
-      case .success:
-        withAnimation {
-          self.notifications = [Notification]()
-        }
-      case let .failure(error):
-        logger.error("failed: \(error.localizedDescription)")
+  func deleteAll() async {
+    switch await client.notification.deleteAll() {
+    case .success:
+      withAnimation {
+        self.notifications = [Notification]()
       }
+    case let .failure(error):
+      logger.error("failed: \(error.localizedDescription)")
     }
   }
 
-  func markAllAsRead() {
-    Task {
-      switch await client.notification.markAllRead() {
-      case .success:
-        self.notifications = self.notifications.map { notification in
-          if notification.seenAt != nil {
-            return notification
-          }
-          return Notification(
-            id: notification.id,
-            createdAt: notification.createdAt,
-            seenAt: Date(),
-            content: notification.content
-          )
+  func markAllAsRead() async {
+    switch await client.notification.markAllRead() {
+    case .success:
+      notifications = notifications.map { notification in
+        if notification.seenAt != nil {
+          return notification
         }
-      case let .failure(error):
-        logger.error("failed: \(error.localizedDescription)")
+        return Notification(
+          id: notification.id,
+          createdAt: notification.createdAt,
+          seenAt: Date(),
+          content: notification.content
+        )
       }
+    case let .failure(error):
+      logger.error("failed: \(error.localizedDescription)")
     }
   }
 
@@ -137,7 +133,7 @@ class NotificationManager: ObservableObject {
     }
   }
 
-  func markCheckInAsRead(checkIn: CheckIn) {
+  func markCheckInAsRead(checkIn: CheckIn) async {
     let containsCheckIn = notifications.contains(where: { notification in
       switch notification.content {
       case let .checkInReaction(cir):
@@ -150,61 +146,51 @@ class NotificationManager: ObservableObject {
     })
 
     if containsCheckIn {
-      Task {
-        switch await client.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id) {
-        case let .success(updatedNotifications):
-          self.notifications = self.notifications.map { notification in
-            if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
-              return updatedNotification
-            } else {
-              return notification
-            }
+      switch await client.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id) {
+      case let .success(updatedNotifications):
+        notifications = notifications.map { notification in
+          if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
+            return updatedNotification
+          } else {
+            return notification
           }
-        case let .failure(error):
-          logger.error("failed to mark check-in as read \(checkIn.id): \(error.localizedDescription)")
         }
-      }
-    }
-  }
-
-  func markAsRead(_ notification: Notification) {
-    Task {
-      switch await client.notification.markRead(id: notification.id) {
-      case let .success(updatedNotification):
-        notifications.replace(notification, with: updatedNotification)
       case let .failure(error):
-        logger.error("failed to mark '\(notification.id)' as read: \(error.localizedDescription)")
+        logger.error("failed to mark check-in as read \(checkIn.id): \(error.localizedDescription)")
       }
     }
   }
 
-  func deleteFromIndex(at: IndexSet) {
+  func markAsRead(_ notification: Notification) async {
+    switch await client.notification.markRead(id: notification.id) {
+    case let .success(updatedNotification):
+      notifications.replace(notification, with: updatedNotification)
+    case let .failure(error):
+      logger.error("failed to mark '\(notification.id)' as read: \(error.localizedDescription)")
+    }
+  }
+
+  func deleteFromIndex(at: IndexSet) async {
     guard let index = at.first else { return }
     let notificationId = notifications[index].id
-
-    Task {
-      switch await client.notification.delete(id: notificationId) {
-      case .success:
-        withAnimation {
-          _ = self.notifications.remove(at: index)
-        }
-      case let .failure(error):
-        logger
-          .error("failed to delete notification '\(self.notifications[index].id)': \(error.localizedDescription)")
+    switch await client.notification.delete(id: notificationId) {
+    case .success:
+      withAnimation {
+        _ = self.notifications.remove(at: index)
       }
+    case let .failure(error):
+      logger.error("failed to delete notification: \(error.localizedDescription)")
     }
   }
 
-  func deleteNotifications(notification: Notification) {
-    Task {
-      switch await client.notification.delete(id: notification.id) {
-      case .success:
-        withAnimation {
-          self.notifications.remove(object: notification)
-        }
-      case let .failure(error):
-        logger.error("failed to delete notification '\(notification.id)': \(error.localizedDescription)")
+  func deleteNotifications(notification: Notification) async {
+    switch await client.notification.delete(id: notification.id) {
+    case .success:
+      withAnimation {
+        self.notifications.remove(object: notification)
       }
+    case let .failure(error):
+      logger.error("failed to delete notification '\(notification.id)': \(error.localizedDescription)")
     }
   }
 

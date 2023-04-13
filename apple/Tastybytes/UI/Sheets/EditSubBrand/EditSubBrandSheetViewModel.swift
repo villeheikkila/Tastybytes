@@ -33,32 +33,28 @@ extension EditSubBrandSheet {
         .name == newSubBrandName
     }
 
-    func mergeToSubBrand(subBrand: SubBrand.JoinedProduct, onSuccess: @escaping () -> Void) async {
+    func mergeToSubBrand(subBrand: SubBrand.JoinedProduct, onSuccess: @escaping () async -> Void) async {
       guard let mergeTo else { return }
       switch await client.subBrand
         .update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id)))
       {
       case .success:
         self.mergeTo = nil
-        onSuccess()
+        await onSuccess()
       case let .failure(error):
-        logger
-          .error(
-            "failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)': \(error.localizedDescription)"
-          )
+        logger.error("failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)': \(error.localizedDescription)")
       }
     }
 
-    func editSubBrand(onSuccess: @escaping () -> Void) async {
+    func editSubBrand(onSuccess: @escaping () async -> Void) async {
       switch await client.subBrand
         .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: newSubBrandName)))
       {
       case .success:
         showToast.toggle()
-        onSuccess()
+        await onSuccess()
       case let .failure(error):
-        logger
-          .error("failed to edit sub-brand': \(error.localizedDescription)")
+        logger.error("failed to edit sub-brand': \(error.localizedDescription)")
       }
     }
   }

@@ -41,7 +41,7 @@ struct AuthenticationScreen: View {
     }
     .padding(40)
     .task {
-      splashScreenManager.dismiss()
+      await splashScreenManager.dismiss()
     }
   }
 

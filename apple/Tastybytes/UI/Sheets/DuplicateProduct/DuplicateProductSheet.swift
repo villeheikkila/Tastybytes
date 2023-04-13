@@ -28,7 +28,7 @@ struct DuplicateProductSheet: View {
                 prompt: "Search for a duplicate product")
     .disableAutocorrection(true)
     .onSubmit(of: .search) {
-      viewModel.searchProducts()
+      Task { await viewModel.searchProducts() }
     }
     .navigationTitle(viewModel.mode == .mergeDuplicate ? "Merge duplicates" : "Mark a duplicate")
     .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
@@ -37,7 +37,7 @@ struct DuplicateProductSheet: View {
     .onReceive(
       viewModel.$searchTerm.throttle(for: 0.5, scheduler: RunLoop.main, latest: true)
     ) { _ in
-      viewModel.searchProducts()
+      Task { await viewModel.searchProducts() }
     }
     .confirmationDialog("Product Merge Confirmation",
                         isPresented: $viewModel.showMergeToProductConfirmation,
