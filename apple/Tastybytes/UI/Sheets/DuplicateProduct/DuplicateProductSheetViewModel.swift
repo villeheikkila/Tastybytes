@@ -47,7 +47,10 @@ extension DuplicateProductSheet {
       case .success:
         onSuccess()
       case let .failure(error):
-        logger.error("reporting duplicate product \(self.mergeToProduct?.id ?? 0) of \(mergeToProduct.id) failed: \(error.localizedDescription)")
+        logger
+          .error(
+            "reporting duplicate product \(self.mergeToProduct?.id ?? 0) of \(mergeToProduct.id) failed: \(error.localizedDescription)"
+          )
       }
     }
 
@@ -57,7 +60,8 @@ extension DuplicateProductSheet {
       case .success:
         onSuccess()
       case let .failure(error):
-        logger.error("merging product \(self.mergeToProduct?.id ?? 0) to \(mergeToProduct.id) failed: \(error.localizedDescription)")
+        logger
+          .error("merging product \(self.mergeToProduct?.id ?? 0) to \(mergeToProduct.id) failed: \(error.localizedDescription)")
       }
     }
 

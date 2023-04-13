@@ -41,8 +41,9 @@ struct VerificationScreen: View {
     .toolbar {
       toolbarContent
     }
-    .asyncOnChange(of: viewModel.verificationType, perform: { _ in
+    .onChange(of: viewModel.verificationType, perform: { _ in Task {
       await viewModel.loadData()
+    }
     })
     .refreshable {
       await hapticManager.wrapWithHaptics {

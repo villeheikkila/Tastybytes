@@ -17,15 +17,6 @@ struct LocalizedAlertError: LocalizedError {
 }
 
 extension View {
-  func asyncOnChange<V>(of value: V, perform action: @escaping (_ newValue: V) async -> Void) -> some View {
-    Task {
-      await action(value)
-    }
-    return self
-  }
-}
-
-extension View {
   func errorAlert(error: Binding<Error?>, buttonTitle: String = "OK") -> some View {
     let localizedAlertError = LocalizedAlertError(error: error.wrappedValue)
     return alert(isPresented: .constant(localizedAlertError != nil), error: localizedAlertError) { _ in

@@ -134,7 +134,6 @@ extension SearchListView {
 
     func search() async {
       if searchTerm.count < 2 { return }
-
       switch searchScope {
       case .products:
         await searchProducts()

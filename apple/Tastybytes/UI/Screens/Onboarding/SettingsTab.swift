@@ -24,8 +24,9 @@ struct ProfileSettingsTab: View {
           ) {
             AvatarView(avatarUrl: viewModel.avatarUrl, size: 120, id: profile.id)
           }
-          .asyncOnChange(of: viewModel.selectedItem) { newValue in
+          .onChange(of: viewModel.selectedItem) { newValue in Task {
             await viewModel.uploadAvatar(userId: profile.id, newAvatar: newValue)
+          }
           }
           Spacer()
         }.listRowBackground(Color.clear)

@@ -5,6 +5,7 @@ extension ApplicationSettingsScreen {
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "ApplicationSettingsScreen")
     let client: Client
+    @Published var initialValuesLoaded = true
     @Published var isSystemColor = false
     @Published var isDarkMode = false
     @Published var reactionNotifications = true
@@ -37,6 +38,7 @@ extension ApplicationSettingsScreen {
         checkInTagNotifications = profile.settings.sendTaggedCheckInNotifications
 
         initialColorScheme = systemColorScheme
+        initialValuesLoaded = false
       case let .failure(error):
         logger.error("fetching current user failed: \(error.localizedDescription)")
       }

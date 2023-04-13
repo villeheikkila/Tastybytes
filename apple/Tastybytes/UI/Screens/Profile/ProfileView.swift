@@ -119,8 +119,8 @@ struct ProfileView: View {
           avatar
         }
       }
-      .asyncOnChange(of: viewModel.selectedItem) { newValue in
-        await viewModel.uploadAvatar(userId: profileManager.getId(), newAvatar: newValue)
+      .onChange(of: viewModel.selectedItem) { newValue in
+        Task { await viewModel.uploadAvatar(userId: profileManager.getId(), newAvatar: newValue) }
       }
 
       Spacer()
