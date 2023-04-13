@@ -60,10 +60,7 @@ extension ProductScreen {
       case .success:
         onComplete()
       case let .failure(error):
-        logger
-          .error(
-            "adding barcode \(barcode.barcode) failed: \(error.localizedDescription)"
-          )
+        logger.error("adding barcode \(barcode.barcode) failed: \(error.localizedDescription)")
       }
     }
 

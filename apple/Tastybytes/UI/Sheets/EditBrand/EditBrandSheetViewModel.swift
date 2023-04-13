@@ -48,10 +48,7 @@ extension EditBrandSheet {
       case .success:
         await onUpdate()
       case let .failure(error):
-        logger
-          .error(
-            "uplodaing company logo failed: \(error.localizedDescription)"
-          )
+        logger.error("uplodaing company logo failed: \(error.localizedDescription)")
       }
     }
   }

@@ -208,8 +208,7 @@ class NotificationManager: ObservableObject {
           case .success:
             break
           case let .failure(error):
-            logger
-              .error("failed to save FCM token (\(String(describing: token))): \(error.localizedDescription)")
+            logger.error("failed to save FCM token (\(String(describing: token))): \(error.localizedDescription)")
           }
         }
       }

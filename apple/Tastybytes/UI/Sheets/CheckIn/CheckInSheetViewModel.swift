@@ -138,10 +138,7 @@ extension CheckInSheet {
       case let .success(categoryServingStyles):
         servingStyles = categoryServingStyles.servingStyles
       case let .failure(error):
-        logger
-          .error(
-            "failed to load serving styles by category: \(error.localizedDescription)"
-          )
+        logger.error("failed to load serving styles by category: \(error.localizedDescription)")
       }
     }
   }

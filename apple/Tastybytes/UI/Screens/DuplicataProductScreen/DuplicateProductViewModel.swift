@@ -46,10 +46,7 @@ extension DuplicateProductScreen {
           self.products = products
         }
       case let .failure(error):
-        logger
-          .error(
-            "fetching flavors failed: \(error.localizedDescription)"
-          )
+        logger.error("fetching flavors failed: \(error.localizedDescription)")
       }
     }
   }

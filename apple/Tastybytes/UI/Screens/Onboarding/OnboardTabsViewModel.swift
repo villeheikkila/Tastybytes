@@ -49,7 +49,7 @@ class OnboardingViewModel: ObservableObject {
     case .success:
       await onSuccess()
     case let .failure(error):
-      logger.warning("failed to update profile: \(error.localizedDescription)")
+      logger.error("failed to update profile: \(error.localizedDescription)")
     }
   }
 
@@ -62,10 +62,7 @@ class OnboardingViewModel: ObservableObject {
         fileName: "\(userId.uuidString.lowercased())/\(fileName)"
       )
     case let .failure(error):
-      logger
-        .error(
-          "uplodaing avatar for \(userId) failed: \(error.localizedDescription)"
-        )
+      logger.error("uplodaing avatar for \(userId) failed: \(error.localizedDescription)")
     }
   }
 }

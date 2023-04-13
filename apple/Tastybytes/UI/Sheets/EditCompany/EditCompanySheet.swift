@@ -106,10 +106,7 @@ extension EditCompanySheet {
           isVerified: company.isVerified
         )
       case let .failure(error):
-        logger
-          .error(
-            "uplodaing company logo failed: \(error.localizedDescription)"
-          )
+        logger.error("uplodaing company logo failed: \(error.localizedDescription)")
       }
     }
   }

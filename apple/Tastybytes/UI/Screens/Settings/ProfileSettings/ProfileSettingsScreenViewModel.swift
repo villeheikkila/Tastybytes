@@ -73,7 +73,7 @@ extension ProfileSettingsScreen {
         updateFormValues(profile: profile)
         await onSuccess()
       case let .failure(error):
-        logger.warning("failed to update profile: \(error.localizedDescription)")
+        logger.error("failed to update profile: \(error.localizedDescription)")
         onFailure(error)
       }
     }
@@ -86,7 +86,7 @@ extension ProfileSettingsScreen {
       case .success:
         await onUpdate()
       case let .failure(error):
-        logger.warning("failed to update settings: \(error.localizedDescription)")
+        logger.error("failed to update settings: \(error.localizedDescription)")
       }
     }
 
@@ -100,7 +100,7 @@ extension ProfileSettingsScreen {
       case .success:
         await onUpdate()
       case let .failure(error):
-        logger.warning("failed to update profile: \(error.localizedDescription)")
+        logger.error("failed to update profile: \(error.localizedDescription)")
       }
     }
   }

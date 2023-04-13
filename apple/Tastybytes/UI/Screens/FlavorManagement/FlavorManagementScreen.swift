@@ -24,8 +24,7 @@ struct FlavorManagementScreen: View {
     .navigationBarItems(
       trailing: RouterLink("Add flavors", systemImage: "plus", sheet: .newFlavor(onSubmit: { newFlavor in
         await viewModel.addFlavor(name: newFlavor)
-      }))
-      .labelStyle(.iconOnly)
+      })).labelStyle(.iconOnly)
     )
     .refreshable {
       await hapticManager.wrapWithHaptics {

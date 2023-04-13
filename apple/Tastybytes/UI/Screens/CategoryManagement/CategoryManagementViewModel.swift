@@ -25,8 +25,7 @@ extension CategoryManagementScreen {
       case .success:
         await loadCategories()
       case let .failure(error):
-        logger
-          .error("failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id): \(error.localizedDescription)")
+        logger.error("failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id): \(error.localizedDescription)")
       }
     }
 

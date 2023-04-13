@@ -19,7 +19,7 @@ extension ContributionsScreen {
           self.contributions = contributions
         }
       case let .failure(error):
-        logger.warning("failed to load contributions: \(error.localizedDescription)")
+        logger.error("failed to load contributions: \(error.localizedDescription)")
       }
     }
   }

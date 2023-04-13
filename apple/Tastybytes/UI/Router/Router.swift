@@ -70,10 +70,7 @@ class Router: ObservableObject {
         case let .success(profile):
           self.navigate(screen: .profile(profile), resetStack: resetStack)
         case let .failure(error):
-          logger
-            .error(
-              "request for profile with \(id.uuidString.lowercased()) failed: \(error.localizedDescription)"
-            )
+          logger.error("request for profile with \(id.uuidString.lowercased()) failed: \(error.localizedDescription)")
         }
       case let .location(id):
         switch await client.location.getById(id: id) {

@@ -33,7 +33,7 @@ class FriendManager: ObservableObject {
       }
       onSuccess()
     case let .failure(error):
-      logger.warning("failed add new friend '\(receiver)': \(error.localizedDescription)")
+      logger.error("failed add new friend '\(receiver)': \(error.localizedDescription)")
     }
   }
 
@@ -64,7 +64,7 @@ class FriendManager: ObservableObject {
         self.friends.remove(object: friend)
       }
     case let .failure(error):
-      logger.warning("failed to remove friend request '\(friend.id)': \(error.localizedDescription)")
+      logger.error("failed to remove friend request '\(friend.id)': \(error.localizedDescription)")
     }
   }
 

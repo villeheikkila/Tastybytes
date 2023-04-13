@@ -21,10 +21,7 @@ extension LocationScreen {
           self.summary = summary
         }
       case let .failure(error):
-        logger
-          .error(
-            "failed to get summary: \(error.localizedDescription)"
-          )
+        logger.error("failed to get summary: \(error.localizedDescription)")
       }
     }
 
