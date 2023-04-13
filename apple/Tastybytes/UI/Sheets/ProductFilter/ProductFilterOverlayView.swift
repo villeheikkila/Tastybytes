@@ -38,11 +38,9 @@ struct ProductFilterOverlayView: View {
           }
         }
         Spacer()
-        Button(action: { onReset() }, label: {
-          Label("Reset filter", systemImage: "x.circle")
-            .labelStyle(.iconOnly)
-            .imageScale(.large)
-        })
+        Button("Reset filter", systemImage: "x.circle", action: { onReset() })
+          .labelStyle(.iconOnly)
+          .imageScale(.large)
       }
       .padding()
       .background(.ultraThinMaterial)

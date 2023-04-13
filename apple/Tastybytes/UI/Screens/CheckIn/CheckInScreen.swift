@@ -36,9 +36,7 @@ struct CheckInScreen: View {
           RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(viewModel.checkIn, onUpdate: { updatedCheckIn in
             viewModel.updateCheckIn(updatedCheckIn)
           }))
-          Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }, label: {
-            Label("Delete", systemImage: "trash.fill")
-          })
+          Button("Delete", systemImage: "trash.fill", role: .destructive, action: { viewModel.showDeleteConfirmation = true })
         }
       } label: {
         Label("Options menu", systemImage: "ellipsis")

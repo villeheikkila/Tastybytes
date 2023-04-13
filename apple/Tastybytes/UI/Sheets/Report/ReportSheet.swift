@@ -29,9 +29,7 @@ struct ReportSheet: View {
       }
     }
     .navigationTitle("Report \(viewModel.entity.label)")
-    .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
-      Text("Close").bold()
-    }))
+    .navigationBarItems(leading: Button("Close", role: .cancel, action: { dismiss() }).bold())
     .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
       AlertToast(type: .complete(.green), title: "Report submitted!")
     }

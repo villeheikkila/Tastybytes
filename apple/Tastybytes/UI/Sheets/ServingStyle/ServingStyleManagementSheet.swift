@@ -31,12 +31,8 @@ struct ServingStyleManagementSheet: View {
           }
         })
         .swipeActions {
-          Button(action: { viewModel.editServingStyle = servingStyle }, label: {
-            Label("Edit", systemImage: "pencil")
-          }).tint(.yellow)
-          Button(role: .destructive, action: { viewModel.toDeleteServingStyle = servingStyle }, label: {
-            Label("Delete", systemImage: "trash")
-          })
+          Button("Edit", systemImage: "pencil", action: { viewModel.editServingStyle = servingStyle }).tint(.yellow)
+          Button("Delete", systemImage: "trash", role: .destructive, action: { viewModel.toDeleteServingStyle = servingStyle })
         }
       }
       Section {
@@ -50,9 +46,7 @@ struct ServingStyleManagementSheet: View {
       }
     }
     .navigationBarTitle("Pick Serving Style")
-    .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }, label: {
-      Text("Done").bold()
-    }))
+    .navigationBarItems(trailing: Button("Done", role: .cancel, action: { dismiss() }).bold())
     .alert("Edit Serving Style", isPresented: $viewModel.showEditServingStyle, actions: {
       TextField("TextField", text: $viewModel.servingStyleName)
       Button("Cancel", role: .cancel, action: {})

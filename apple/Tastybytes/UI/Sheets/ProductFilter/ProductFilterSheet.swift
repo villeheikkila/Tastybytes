@@ -67,9 +67,7 @@ struct ProductFilterSheet: View {
           Text("Sort By")
         }
       }
-      Button(action: { viewModel.resetFilter() }, label: {
-        Text("Reset").bold()
-      })
+      Button("Reset", action: { viewModel.resetFilter() }).bold()
     }
     .scrollDisabled(true)
     .navigationTitle("Filter")
@@ -81,18 +79,13 @@ struct ProductFilterSheet: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      Button(role: .cancel, action: { dismiss() }, label: {
-        Text("Cancel")
-          .bold()
-      })
+      Button("Cancel", role: .cancel, action: { dismiss() }).bold()
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      Button(action: {
+      Button("Apply", action: {
         onApply(viewModel.getFilter())
         dismiss()
-      }, label: {
-        Text("Apply").bold()
-      })
+      }).bold()
     }
   }
 }

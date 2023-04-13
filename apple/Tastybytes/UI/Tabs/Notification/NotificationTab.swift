@@ -66,17 +66,13 @@ struct NotificationTab: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup {
       Menu {
-        ProgressButton(action: {
+        ProgressButton("Mark all read", systemImage: "envelope.open", action: {
           hapticManager.trigger(.impact(intensity: .low))
           await notificationManager.markAllAsRead()
-        }, label: {
-          Label("Mark all read", systemImage: "envelope.open")
         })
-        ProgressButton(action: {
+        ProgressButton("Delete all", systemImage: "trash", action: {
           hapticManager.trigger(.impact(intensity: .low))
           await notificationManager.deleteAll()
-        }, label: {
-          Label("Delete all", systemImage: "trash")
         })
       } label: {
         Label("Options menu", systemImage: "ellipsis")

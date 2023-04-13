@@ -76,9 +76,7 @@ struct EditBrandSheet: View {
       }
     }
     .navigationTitle("Edit Brand")
-    .navigationBarItems(trailing: Button(action: { dismiss() }, label: {
-      Text("Done").bold()
-    }))
+    .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
     .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
       AlertToast(type: .complete(.green), title: "Brand updated!")
     }

@@ -118,9 +118,7 @@ struct VerificationScreen: View {
             RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: product, onEdit: {
               await viewModel.loadData(refresh: true)
             })).tint(.yellow)
-            Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
-              Label("Delete", systemImage: "trash")
-            })
+            Button("Delete", systemImage: "trash", role: .destructive, action: { viewModel.deleteProduct = product })
           }
       }
     }

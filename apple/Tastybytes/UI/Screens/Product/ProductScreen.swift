@@ -128,9 +128,8 @@ struct ProductScreen: View {
         ReportButton(entity: .product(viewModel.product))
 
         if profileManager.hasPermission(.canDeleteProducts) {
-          Button(role: .destructive, action: { viewModel.showDeleteConfirmation() }, label: {
-            Label("Delete", systemImage: "trash.fill")
-          }).disabled(viewModel.product.isVerified)
+          Button("Delete", systemImage: "trash.fill", role: .destructive, action: { viewModel.showDeleteConfirmation() })
+            .disabled(viewModel.product.isVerified)
         }
 
       } label: {

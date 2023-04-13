@@ -9,11 +9,9 @@ struct AddCategorySheet: View {
     DismissableSheet(title: "Add Category") { dismiss in
       Form {
         TextField("Name", text: $newCategoryName)
-        ProgressButton(action: {
+        ProgressButton("Add", action: {
           await onSubmit(newCategoryName)
           dismiss()
-        }, label: {
-          Text("Add")
         }).disabled(newCategoryName.isEmpty)
       }
     }

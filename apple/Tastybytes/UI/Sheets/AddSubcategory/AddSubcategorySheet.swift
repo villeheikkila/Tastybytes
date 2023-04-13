@@ -10,11 +10,9 @@ struct AddSubcategorySheet: View {
       Form {
         Section {
           TextField("Name", text: $newSubcategoryName)
-          ProgressButton(action: {
+          ProgressButton("Add", action: {
             await onSubmit(newSubcategoryName)
             dismiss()
-          }, label: {
-            Text("Add")
           }).disabled(newSubcategoryName.isEmpty)
         } header: {
           Text("Add Subcategory")

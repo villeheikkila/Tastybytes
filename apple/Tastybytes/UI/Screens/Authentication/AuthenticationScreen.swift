@@ -102,9 +102,7 @@ struct AuthenticationScreen: View {
 
       if viewModel.scene == .forgotPassword {
         HStack {
-          Button("Go back to sign in") {
-            viewModel.setScene(.signIn)
-          }
+          Button("Go back to sign in", action: { viewModel.setScene(.signIn) })
           Spacer()
         }
       }

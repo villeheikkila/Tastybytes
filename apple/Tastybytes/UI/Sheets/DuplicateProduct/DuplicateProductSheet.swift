@@ -31,9 +31,7 @@ struct DuplicateProductSheet: View {
       Task { await viewModel.searchProducts() }
     }
     .navigationTitle(viewModel.mode == .mergeDuplicate ? "Merge duplicates" : "Mark a duplicate")
-    .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
-      Text("Close").bold()
-    }))
+    .navigationBarItems(leading: Button("Close", role: .cancel, action: { dismiss() }).bold())
     .onReceive(
       viewModel.$searchTerm.throttle(for: 0.5, scheduler: RunLoop.main, latest: true)
     ) { _ in

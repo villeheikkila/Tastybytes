@@ -14,10 +14,8 @@ struct FlavorManagementScreen: View {
       ForEach(viewModel.flavors) { flavor in
         Text(flavor.label)
           .swipeActions {
-            ProgressButton(role: .destructive, action: {
+            ProgressButton("Delete", systemImage: "trash", role: .destructive, action: {
               await viewModel.deleteFlavor(flavor)
-            }, label: {
-              Label("Delete", systemImage: "trash")
             })
           }
       }

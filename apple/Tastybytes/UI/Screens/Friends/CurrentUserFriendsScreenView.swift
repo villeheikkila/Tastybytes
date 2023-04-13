@@ -53,34 +53,30 @@ struct CurrentUserFriendsScreen: View {
           }
         }
         .swipeActions {
-          if friend.isPending(userId: profileManager.getProfile().id) {
+          Group {
+            if friend.isPending(userId: profileManager.getProfile().id) {
+              ProgressButton(
+                "Accept friend request",
+                systemImage: "person.badge.plus",
+                action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted) }
+              )
+              .tint(.green)
+            }
+            Button("Delete", systemImage: "person.fill.xmark", role: .destructive, action: { friendToBeRemoved = friend })
             ProgressButton(
-              "Accept friend request",
-              systemImage: "person.badge.plus",
-              action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted) }
+              "Block",
+              systemImage: "person.2.slash",
+              action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }
             )
-            .imageScale(.large)
-            .tint(.green)
-          }
-          Button(role: .destructive, action: { friendToBeRemoved = friend }, label: {
-            Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
-          })
+          }.imageScale(.large)
+        }
+        .contextMenu {
+          Button("Delete", systemImage: "person.fill.xmark", role: .destructive, action: { friendToBeRemoved = friend })
           ProgressButton(
             "Block",
             systemImage: "person.2.slash",
             action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }
           )
-          .imageScale(.large)
-        }
-        .contextMenu {
-          Button(role: .destructive, action: { friendToBeRemoved = friend }, label: {
-            Label("Delete", systemImage: "person.fill.xmark").imageScale(.large)
-          })
-          ProgressButton(
-            "Block",
-            systemImage: "person.2.slash",
-            action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }
-          ).imageScale(.large)
         }
       }
     }

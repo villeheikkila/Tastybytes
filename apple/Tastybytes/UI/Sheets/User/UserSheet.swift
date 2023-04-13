@@ -67,9 +67,7 @@ struct UserSheet: View {
       }
     }
     .navigationTitle("Search users")
-    .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
-      Text("Cancel").bold()
-    }))
+    .navigationBarItems(leading: Button("Cancel", role: .cancel, action: { dismiss() }))
     .searchable(text: $viewModel.searchText)
     .disableAutocorrection(true)
     .onSubmit(of: .search) { Task { await viewModel.searchUsers(currentUserId: profileManager.getId()) }

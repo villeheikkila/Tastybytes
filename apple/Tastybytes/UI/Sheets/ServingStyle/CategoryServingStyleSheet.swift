@@ -16,24 +16,20 @@ struct CategoryServingStyleSheet: View {
           Text(servingStyle.label)
         }
         .swipeActions {
-          Button(role: .destructive, action: { viewModel.toDeleteServingStyle = servingStyle }, label: {
-            Label("Delete", systemImage: "trash")
-          })
+          Button("Delete", systemImage: "trash", role: .destructive, action: { viewModel.toDeleteServingStyle = servingStyle })
         }
       }
     }
     .navigationTitle("\(viewModel.category.name) Serving Styles")
     .navigationBarTitleDisplayMode(.inline)
-    .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
-      Text("Done").bold()
-    }), trailing: RouterLink(
-      sheet: .servingStyleManagement(pickedServingStyles: $viewModel.servingStyles, onSelect: { servingStyle in
-        await viewModel.addServingStyleToCategory(servingStyle)
-      }),
-      label: {
-        Label("Add Barcode", systemImage: "plus").bold()
-      }
-    ))
+    .navigationBarItems(leading: Button("Done", role: .cancel, action: { dismiss() }).bold(),
+                        trailing: RouterLink("Add Barcode", systemImage: "plus",
+                                             sheet: .servingStyleManagement(
+                                               pickedServingStyles: $viewModel.servingStyles,
+                                               onSelect: { servingStyle in
+                                                 await viewModel.addServingStyleToCategory(servingStyle)
+                                               }
+                                             )).bold())
     .confirmationDialog(
       "Are you sure you want to delete the serving style? The serving style information for affected check-ins will be permanently lost",
       isPresented: $viewModel.showDeleteServingStyleConfirmation,

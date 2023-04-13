@@ -114,18 +114,10 @@ struct SearchListView: View {
   private var searchScopeList: some View {
     Section {
       Group {
-        Button(action: { viewModel.searchScope = .products }, label: {
-          Label("Products", systemImage: "grid")
-        })
-        Button(action: { viewModel.searchScope = .companies }, label: {
-          Label("Companies", systemImage: "network")
-        })
-        Button(action: { viewModel.searchScope = .users }, label: {
-          Label("Users", systemImage: "person")
-        })
-        Button(action: { viewModel.searchScope = .locations }, label: {
-          Label("Locations", systemImage: "location")
-        })
+        Button("Products", systemImage: "grid", action: { viewModel.searchScope = .products })
+        Button("Companies", systemImage: "network", action: { viewModel.searchScope = .companies })
+        Button("Users", systemImage: "person", action: { viewModel.searchScope = .users })
+        Button("Locations", systemImage: "location", action: { viewModel.searchScope = .locations })
       }
       .bold()
       .listRowSeparator(.visible)
@@ -175,9 +167,7 @@ struct SearchListView: View {
           with the name or by creating a new product.
           """
         )
-        Button(action: { viewModel.resetBarcode() }, label: {
-          Text("Dismiss barcode")
-        })
+        Button("Dismiss barcode", action: { viewModel.resetBarcode() })
       }
     }
 

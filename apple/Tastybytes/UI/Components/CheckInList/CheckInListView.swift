@@ -102,9 +102,12 @@ struct CheckInListView<Header>: View where Header: View {
             RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
               viewModel.onCheckInUpdate(updatedCheckIn)
             }))
-            Button(role: .destructive, action: { viewModel.showDeleteConfirmationFor = checkIn }, label: {
-              Label("Delete", systemImage: "trash.fill")
-            })
+            Button(
+              "Delete",
+              systemImage: "trash.fill",
+              role: .destructive,
+              action: { viewModel.showDeleteConfirmationFor = checkIn }
+            )
           }
           ReportButton(entity: .checkIn(checkIn))
         }

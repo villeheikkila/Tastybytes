@@ -18,18 +18,14 @@ struct CompanySearchSheet: View {
         Section {
           Text("No companies found with the searched name.")
           if profileManager.hasPermission(.canCreateCompanies) {
-            Button(action: { viewModel.createNew() }, label: {
-              Text("Create new company")
-            })
+            Button("Create new company", action: { viewModel.createNew() })
           }
         }
       }
       ForEach(viewModel.searchResults) { company in
-        Button(action: {
+        Button(company.name, action: {
           onSelect(company, false)
           dismiss()
-        }, label: {
-          Text(company.name)
         })
       }
 
@@ -37,9 +33,7 @@ struct CompanySearchSheet: View {
         switch viewModel.status {
         case .searched:
           Section {
-            Button(action: { viewModel.createNew() }, label: {
-              Text("Add")
-            })
+            Button("Add", action: { viewModel.createNew() })
           } header: {
             Text("Didn't find the company you were looking for?")
           }.textCase(nil)
@@ -62,9 +56,7 @@ struct CompanySearchSheet: View {
       }
     }
     .navigationTitle("Search companies")
-    .navigationBarItems(trailing: Button(role: .cancel, action: { dismiss() }, label: {
-      Text("Cancel").bold()
-    }))
+    .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: { dismiss() }).bold())
     .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .always))
     .onSubmit(of: .search) { Task { await viewModel.searchCompanies() } }
     .onReceive(

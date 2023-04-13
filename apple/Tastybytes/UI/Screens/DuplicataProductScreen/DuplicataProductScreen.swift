@@ -35,9 +35,7 @@ struct DuplicateProductScreen: View {
               RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: product, onEdit: {
                 await viewModel.loadProducts()
               })).tint(.yellow)
-              Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
-                Label("Delete", systemImage: "trash")
-              })
+              Button("Delete", systemImage: "trash", role: .destructive, action: { viewModel.deleteProduct = product })
             }
         }
       }

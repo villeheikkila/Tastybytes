@@ -29,10 +29,8 @@ struct LocationSearchSheet: View {
         }
       })
     }
-    .navigationBarItems(trailing: Button(role: .cancel, action: {
+    .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: {
       dismiss()
-    }, label: {
-      Text("Cancel").bold()
     }))
     .navigationTitle("Location")
     .searchable(text: $viewModel.searchText)

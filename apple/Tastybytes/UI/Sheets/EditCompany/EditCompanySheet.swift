@@ -58,9 +58,7 @@ struct EditCompanySheet: View {
       }
     }
     .navigationTitle("Edit Company")
-    .navigationBarItems(trailing: Button(action: { dismiss() }, label: {
-      Text("Done").bold()
-    }))
+    .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
   }
 }
 

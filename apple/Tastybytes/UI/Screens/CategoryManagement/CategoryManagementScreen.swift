@@ -30,9 +30,7 @@ struct CategoryManagementScreen: View {
               RouterLink("Edit", systemImage: "pencil", sheet: .editSubcategory(subcategory: subcategory, onSubmit: { newName in
                 await viewModel.saveEditSubcategoryChanges(subCategory: subcategory, newName: newName)
               })).tint(.yellow)
-              Button(role: .destructive, action: { viewModel.deleteSubcategory = subcategory }, label: {
-                Label("Delete", systemImage: "trash")
-              })
+              Button("Delete", systemImage: "trash", role: .destructive, action: { viewModel.deleteSubcategory = subcategory })
             }
           }
         } header: {

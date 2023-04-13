@@ -44,11 +44,13 @@ struct BrandScreen: View {
                   })
 
                   if profileManager.hasPermission(.canDeleteProducts) {
-                    Button(role: .destructive, action: { viewModel.productToDelete = product }, label: {
-                      Label("Delete", systemImage: "trash.fill")
-                        .foregroundColor(.red)
-                    })
-                    .disabled(product.isVerified)
+                    Button(
+                      "Delete",
+                      systemImage: "trash.fill",
+                      role: .destructive,
+                      action: { viewModel.productToDelete = product }
+                    ).foregroundColor(.red)
+                      .disabled(product.isVerified)
                   }
                 }
             }
@@ -79,10 +81,8 @@ struct BrandScreen: View {
               ReportButton(entity: .subBrand(viewModel.brand, subBrand))
 
               if profileManager.hasPermission(.canDeleteBrands) {
-                Button(role: .destructive, action: { viewModel.toDeleteSubBrand = subBrand }, label: {
-                  Label("Delete", systemImage: "trash.fill")
-                })
-                .disabled(subBrand.isVerified)
+                Button("Delete", systemImage: "trash.fill", role: .destructive, action: { viewModel.toDeleteSubBrand = subBrand })
+                  .disabled(subBrand.isVerified)
               }
             } label: {
               Label("Options menu", systemImage: "ellipsis")
@@ -204,9 +204,12 @@ struct BrandScreen: View {
       ReportButton(entity: .brand(viewModel.brand))
 
       if profileManager.hasPermission(.canDeleteBrands) {
-        Button(role: .destructive, action: { viewModel.showDeleteBrandConfirmationDialog = true }, label: {
-          Label("Delete", systemImage: "trash.fill")
-        })
+        Button(
+          "Delete",
+          systemImage: "trash.fill",
+          role: .destructive,
+          action: { viewModel.showDeleteBrandConfirmationDialog = true }
+        )
         .disabled(viewModel.brand.isVerified)
       }
     } label: {

@@ -103,22 +103,22 @@ struct AccountSettingsScreen: View {
 
   private var deleteAccount: some View {
     Section {
-      ProgressButton("Export CSV", systemImage: "square.and.arrow.up", action: { await viewModel.exportData(onError: { message in
-        toastManager.toggle(.error(message))
-      }) }).fontWeight(.medium)
-      Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }, label: {
-        if UIColor.responds(to: Selector(("_systemDestructiveTintColor"))) {
-          if let destructive = UIColor.perform(Selector(("_systemDestructiveTintColor")))?
-            .takeUnretainedValue() as? UIColor
+      Group {
+        ProgressButton("Export CSV", systemImage: "square.and.arrow.up") { await viewModel.exportData(onError: { message in
+          toastManager.toggle(.error(message))
+        }) }
+        Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }, label: {
+          if UIColor.responds(to: Selector(("_systemDestructiveTintColor"))),
+             let destructive = UIColor.perform(Selector(("_systemDestructiveTintColor")))?
+             .takeUnretainedValue() as? UIColor
           {
             Label("Delete Account", systemImage: "person.crop.circle.badge.minus")
-              .fontWeight(.medium)
               .foregroundColor(Color(destructive))
           } else {
             Text("Delete Account")
           }
-        }
-      })
+        })
+      }.fontWeight(.medium)
     }
   }
 }

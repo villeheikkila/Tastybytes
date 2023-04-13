@@ -25,19 +25,15 @@ struct BarcodeManagementSheet: View {
           Spacer()
         }
         .swipeActions {
-          ProgressButton(role: .destructive, action: {
+          ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
             await viewModel.deleteBarcode(barcode)
             hapticManager.trigger(.notification(.success))
-          }, label: {
-            Label("Delete", systemImage: "trash.fill")
           })
         }
         .contextMenu {
-          ProgressButton(role: .destructive, action: {
+          ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
             await viewModel.deleteBarcode(barcode)
             hapticManager.trigger(.notification(.success))
-          }, label: {
-            Label("Delete", systemImage: "trash.fill")
           })
         }
       }
@@ -46,8 +42,6 @@ struct BarcodeManagementSheet: View {
       await viewModel.getBarcodes()
     }
     .navigationTitle("Barcodes")
-    .navigationBarItems(leading: Button(role: .cancel, action: { dismiss() }, label: {
-      Text("Cancel").bold()
-    }))
+    .navigationBarItems(leading: Button("Cancel", role: .cancel, action: { dismiss() }).bold())
   }
 }

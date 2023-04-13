@@ -37,11 +37,9 @@ struct EditSubBrandSheet: View {
       if !viewModel.brand.subBrands.contains(where: { $0.name != nil && $0.id != viewModel.subBrand.id }) {
         Section {
           ForEach(viewModel.brand.subBrands.filter { $0.name != nil && $0.id != viewModel.subBrand.id }) { subBrand in
-            Button(action: { viewModel.mergeTo = subBrand }, label: {
-              if let name = subBrand.name {
-                Text(name)
-              }
-            })
+            if let name = subBrand.name {
+              Button(name, action: { viewModel.mergeTo = subBrand })
+            }
           }
         } header: {
           Text("Merge to another sub-brand")
@@ -49,9 +47,7 @@ struct EditSubBrandSheet: View {
       }
     }
     .navigationTitle("Edit \(viewModel.subBrand.name.orEmpty)")
-    .navigationBarItems(trailing: Button(action: { dismiss() }, label: {
-      Text("Done").bold()
-    }))
+    .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
     .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
       AlertToast(type: .complete(.green), title: "Sub-brand updated!")
     }

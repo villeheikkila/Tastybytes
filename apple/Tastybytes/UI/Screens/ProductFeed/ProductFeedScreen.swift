@@ -51,13 +51,9 @@ struct ProductFeedScreen: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarTitleMenu {
-      Button(action: { viewModel.categoryFilter = nil }, label: {
-        Text(viewModel.feed.label)
-      })
+      Button(viewModel.feed.label, action: { viewModel.categoryFilter = nil })
       ForEach(appDataManager.categories) { category in
-        Button(action: { viewModel.categoryFilter = category }, label: {
-          Text(category.name)
-        })
+        Button(category.name, action: { viewModel.categoryFilter = category })
       }
     }
   }

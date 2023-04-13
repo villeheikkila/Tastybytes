@@ -39,9 +39,7 @@ struct SubcategorySheet: View {
     .searchable(text: $searchTerm)
     .navigationTitle("Subcategories")
     .navigationBarItems(leading: addSubcategoryView,
-                        trailing: Button(action: { dismiss() }, label: {
-                          Text("Done").bold()
-                        }))
+                        trailing: Button("Done", action: { dismiss() }).bold())
     .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
       AlertToast(type: .error(.red), title: "You can only add \(maxSubcategories) subcategories")
     }
@@ -70,11 +68,9 @@ struct SubcategorySheet: View {
 
   @ViewBuilder private var addSubcategoryView: some View {
     if profileManager.hasPermission(.canDeleteBrands) {
-      Button(action: { showAddSubcategory.toggle() }, label: {
-        Label("Add subcategory", systemImage: "plus")
-          .labelStyle(.iconOnly)
-          .bold()
-      })
+      Button("Add subcategory", systemImage: "plus", action: { showAddSubcategory.toggle() })
+        .labelStyle(.iconOnly)
+        .bold()
     }
   }
 }

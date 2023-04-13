@@ -74,13 +74,8 @@ struct CheckInSheet: View {
         TextField("How was it?", text: $viewModel.review, axis: .vertical)
           .focused($focusedField, equals: .review)
         RatingPickerView(rating: $viewModel.rating)
-        Button(action: { showPhotoMenu.toggle() }, label: {
-          Label(
-            "\(viewModel.editCheckIn?.imageUrl == nil && viewModel.image == nil ? "Add" : "Change") Photo",
-            systemImage: "photo"
-          ).fontWeight(.medium)
-
-        })
+        Button("\(viewModel.editCheckIn?.imageUrl == nil && viewModel.image == nil ? "Add" : "Change") Photo",
+               systemImage: "photo", action: { showPhotoMenu.toggle() }).fontWeight(.medium)
         RouterLink(sheet: .flavors(pickedFlavors: $pickedFlavors), label: {
           if !viewModel.pickedFlavors.isEmpty {
             WrappingHStack(viewModel.pickedFlavors, spacing: .constant(4)) { flavor in
@@ -179,9 +174,7 @@ struct CheckInSheet: View {
       }
     }
     .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
-      Button(action: { viewModel.showCamera.toggle() }, label: {
-        Text("Camera")
-      })
+      Button("Camera", action: { viewModel.showCamera.toggle() })
       RouterLink("Photo Gallery", sheet: .legacyPhotoPicker(onSelection: { image in
         viewModel.setImageFromPicker(pickedImage: image)
       }))
@@ -197,9 +190,7 @@ struct CheckInSheet: View {
       })
     })
     .navigationBarItems(
-      leading: Button(role: .cancel, action: { dismiss() }, label: {
-        Text("Cancel").bold()
-      }),
+      leading: Button("Cancel", role: .cancel, action: { dismiss() }),
       trailing: ProgressButton(action == .create ? "Check-in!" : "Update Check-in!", action: {
         switch action {
         case .create:

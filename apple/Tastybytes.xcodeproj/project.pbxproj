@@ -68,6 +68,7 @@
 		5C32C40A29E714AD008CE8A9 /* RouterWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40929E714AD008CE8A9 /* RouterWrapper.swift */; };
 		5C32C40C29E7150D008CE8A9 /* RouterLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40B29E7150D008CE8A9 /* RouterLink.swift */; };
 		5C32C40E29E715B2008CE8A9 /* NavigatablePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40D29E715B2008CE8A9 /* NavigatablePath.swift */; };
+		5C32C41029E87DEB008CE8A9 /* ButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40F29E87DEB008CE8A9 /* ButtonExtensions.swift */; };
 		5C353CBC29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBB29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift */; };
 		5C353CBE29A248300067C4EE /* BottomOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBD29A248300067C4EE /* BottomOverlay.swift */; };
 		5C353CC029A249660067C4EE /* ProductFilterOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */; };
@@ -299,6 +300,7 @@
 		5C32C40929E714AD008CE8A9 /* RouterWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterWrapper.swift; sourceTree = "<group>"; };
 		5C32C40B29E7150D008CE8A9 /* RouterLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterLink.swift; sourceTree = "<group>"; };
 		5C32C40D29E715B2008CE8A9 /* NavigatablePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatablePath.swift; sourceTree = "<group>"; };
+		5C32C40F29E87DEB008CE8A9 /* ButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonExtensions.swift; sourceTree = "<group>"; };
 		5C353CBB29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterSheetViewModel.swift; sourceTree = "<group>"; };
 		5C353CBD29A248300067C4EE /* BottomOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomOverlay.swift; sourceTree = "<group>"; };
 		5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterOverlayView.swift; sourceTree = "<group>"; };
@@ -1242,6 +1244,7 @@
 				5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */,
 				5CC6B9AD29B2360D00A62158 /* UIImageExtensions.swift */,
 				5C66745029C64A4C005380B7 /* PhotosUIExtension.swift */,
+				5C32C40F29E87DEB008CE8A9 /* ButtonExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1675,6 +1678,7 @@
 				5CED433428FDA357003F8194 /* SubBrandRepository.swift in Sources */,
 				5CB1C24928F9BBAA000B0EB4 /* CheckInReactionRepository.swift in Sources */,
 				5C11ECB628EEEFB300CCDE6A /* SettingsScreen.swift in Sources */,
+				5C32C41029E87DEB008CE8A9 /* ButtonExtensions.swift in Sources */,
 				5CD10A4728F9522D0001CFC2 /* RatingPickerView.swift in Sources */,
 				5C61E83F29BF909D00D10AA3 /* ServingStyleRepository.swift in Sources */,
 				5CC6B9AE29B2360D00A62158 /* UIImageExtensions.swift in Sources */,

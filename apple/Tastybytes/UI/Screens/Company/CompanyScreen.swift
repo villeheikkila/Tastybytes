@@ -134,9 +134,12 @@ struct CompanyScreen: View {
       ReportButton(entity: .company(viewModel.company))
 
       if profileManager.hasPermission(.canDeleteCompanies) {
-        Button(role: .destructive, action: { viewModel.showDeleteCompanyConfirmationDialog.toggle() }, label: {
-          Label("Delete", systemImage: "trash.fill")
-        })
+        Button(
+          "Delete",
+          systemImage: "trash.fill",
+          role: .destructive,
+          action: { viewModel.showDeleteCompanyConfirmationDialog.toggle() }
+        )
         .disabled(viewModel.company.isVerified)
       }
     } label: {

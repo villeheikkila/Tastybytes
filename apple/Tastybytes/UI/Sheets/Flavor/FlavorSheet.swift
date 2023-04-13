@@ -56,9 +56,7 @@ struct FlavorSheet: View {
       AlertToast(type: .error(.red), title: "You can only add \(maxFlavors) flavors")
     }
     .navigationTitle("Flavors")
-    .navigationBarItems(trailing: Button(action: { dismiss() }, label: {
-      Text("Done").bold()
-    }))
+    .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
     .searchable(text: $searchTerm)
   }
 

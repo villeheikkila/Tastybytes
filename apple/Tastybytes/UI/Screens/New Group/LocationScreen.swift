@@ -61,9 +61,12 @@ struct LocationScreen: View {
       Menu {
         ShareLink("Share", item: NavigatablePath.location(id: viewModel.location.id).url)
         if profileManager.hasPermission(.canDeleteProducts) {
-          Button(role: .destructive, action: { viewModel.showDeleteLocationConfirmation.toggle() }, label: {
-            Label("Delete", systemImage: "trash.fill")
-          })
+          Button(
+            "Delete",
+            systemImage: "trash.fill",
+            role: .destructive,
+            action: { viewModel.showDeleteLocationConfirmation.toggle() }
+          )
         }
       } label: {
         Label("Options menu", systemImage: "ellipsis")

@@ -11,9 +11,7 @@ struct BlockedUserListItemView: View {
         HStack {
           Text(profile.preferredName)
           Spacer()
-          ProgressButton(action: { await onUnblockUser() }, label: {
-            Label("Unblock", systemImage: "hand.raised.slash.fill")
-          })
+          ProgressButton("Unblock", systemImage: "hand.raised.slash.fill", action: { await onUnblockUser() })
         }
       }
     }
