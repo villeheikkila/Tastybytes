@@ -61,11 +61,13 @@ struct BrandScreen: View {
             Spacer()
             Menu {
               if profileManager.hasPermission(.canEditBrands) {
-                RouterLink(sheet: .editSubBrand(brand: viewModel.brand, subBrand: subBrand, onUpdate: {
-                  Task { await viewModel.refresh() }
-                }), label: {
-                  Label("Edit", systemImage: "pencil")
-                })
+                RouterLink(
+                  "Edit",
+                  systemImage: "pencil",
+                  sheet: .editSubBrand(brand: viewModel.brand, subBrand: subBrand, onUpdate: {
+                    Task { await viewModel.refresh() }
+                  })
+                )
               }
 
               VerificationButton(isVerified: subBrand.isVerified, verify: {
@@ -180,21 +182,17 @@ struct BrandScreen: View {
       ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
 
       if profileManager.hasPermission(.canCreateProducts) {
-        RouterLink(sheet: .addProductToBrand(brand: viewModel.brand, onCreate: { product in
+        RouterLink("Add Product", systemImage: "plus", sheet: .addProductToBrand(brand: viewModel.brand, onCreate: { product in
           router.navigate(screen: .product(product))
-        }), label: {
-          Label("Add Product", systemImage: "plus")
-        })
+        }))
       }
 
       Divider()
 
       if profileManager.hasPermission(.canEditBrands) {
-        RouterLink(sheet: .editBrand(brand: viewModel.brand, onUpdate: {
+        RouterLink("Edit", systemImage: "pencil", sheet: .editBrand(brand: viewModel.brand, onUpdate: {
           Task { await viewModel.refresh() }
-        }), label: {
-          Label("Edit", systemImage: "pencil")
-        })
+        }))
       }
 
       VerificationButton(isVerified: viewModel.brand.isVerified, verify: {

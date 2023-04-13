@@ -63,11 +63,9 @@ struct EditBrandSheet: View {
       }
 
       Section {
-        RouterLink(sheet: .companySearch(onSelect: { company, _ in
+        RouterLink(viewModel.brandOwner.name, sheet: .companySearch(onSelect: { company, _ in
           viewModel.brandOwner = company
-        }), label: {
-          Text(viewModel.brandOwner.name)
-        })
+        }))
         ProgressButton("Change brand owner") {
           await viewModel.editBrand {
             onUpdate()

@@ -109,12 +109,10 @@ struct CheckInSheet: View {
           }
         }
 
-        RouterLink(sheet: .companySearch(onSelect: { company, _ in
+        RouterLink(viewModel.manufacturer?.name ?? "Manufactured By", sheet: .companySearch(onSelect: { company, _ in
           viewModel.manufacturer = company
-        }), label: {
-          Text(viewModel.manufacturer?.name ?? "Manufactured By")
-            .fontWeight(.medium)
-        })
+        }))
+        .fontWeight(.medium)
       }
 
       Section {
@@ -184,11 +182,9 @@ struct CheckInSheet: View {
       Button(action: { viewModel.showCamera.toggle() }, label: {
         Text("Camera")
       })
-      RouterLink(sheet: .legacyPhotoPicker(onSelection: { image in
+      RouterLink("Photo Gallery", sheet: .legacyPhotoPicker(onSelection: { image in
         viewModel.setImageFromPicker(pickedImage: image)
-      }), label: {
-        Text("Photo Gallery")
-      })
+      }))
     } message: {
       Text("Pick a photo")
     }

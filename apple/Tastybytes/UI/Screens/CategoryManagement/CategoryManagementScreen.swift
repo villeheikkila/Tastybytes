@@ -27,11 +27,9 @@ struct CategoryManagementScreen: View {
                   }
                 }
               ).tint(subcategory.isVerified ? .yellow : .green)
-              RouterLink(sheet: .editSubcategory(subcategory: subcategory, onSubmit: { newName in
+              RouterLink("Edit", systemImage: "pencil", sheet: .editSubcategory(subcategory: subcategory, onSubmit: { newName in
                 Task { await viewModel.saveEditSubcategoryChanges(subCategory: subcategory, newName: newName) }
-              }), label: {
-                Label("Edit", systemImage: "pencil")
-              }).tint(.yellow)
+              })).tint(.yellow)
               Button(role: .destructive, action: { viewModel.deleteSubcategory = subcategory }, label: {
                 Label("Delete", systemImage: "trash")
               })
@@ -42,14 +40,14 @@ struct CategoryManagementScreen: View {
             Text(category.name)
             Spacer()
             Menu {
-              RouterLink(sheet: .categoryServingStyle(category: category), label: {
-                Label("Edit Serving Styles", systemImage: "pencil")
-              })
-              RouterLink(sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
-                Task { await viewModel.addSubcategory(category: category, name: newSubcategoryName) }
-              }), label: {
-                Label("Add Subcategory", systemImage: "plus")
-              })
+              RouterLink("Edit Serving Styles", systemImage: "pencil", sheet: .categoryServingStyle(category: category))
+              RouterLink(
+                "Add Subcategory",
+                systemImage: "plus",
+                sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
+                  Task { await viewModel.addSubcategory(category: category, name: newSubcategoryName) }
+                })
+              )
             } label: {
               Label("Options menu", systemImage: "ellipsis")
                 .labelStyle(.iconOnly)
@@ -60,13 +58,12 @@ struct CategoryManagementScreen: View {
       }
     }
     .navigationBarTitle("Categories")
-    .navigationBarItems(trailing: RouterLink(sheet: .addCategory(onSubmit: { newCategoryName in
-      Task { await viewModel.addCategory(name: newCategoryName) }
-    }), label: {
-      Label("Add Category", systemImage: "plus")
-        .labelStyle(.iconOnly)
-        .bold()
-    }))
+    .navigationBarItems(trailing: RouterLink("Add Category", systemImage: "plus",
+                                             sheet: .addCategory(onSubmit: { newCategoryName in
+                                               Task { await viewModel.addCategory(name: newCategoryName) }
+                                             }))
+                                             .labelStyle(.iconOnly)
+                                             .bold())
     .refreshable {
       await hapticManager.wrapWithHaptics {
         await viewModel.loadCategories()

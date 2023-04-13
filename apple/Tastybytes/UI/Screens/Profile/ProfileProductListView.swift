@@ -37,14 +37,15 @@ struct ProfileProductListView: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouterLink(sheet: .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .sortBy],
-                                       onApply: { filter in
-                                         viewModel.productFilter = filter
-                                       }),
-                 label: {
-                   Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
-                     .labelStyle(.iconOnly)
-                 })
+      RouterLink(
+        "Show filters",
+        systemImage: "line.3.horizontal.decrease.circle",
+        sheet: .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .sortBy],
+                              onApply: { filter in
+                                viewModel.productFilter = filter
+                              })
+      )
+      .labelStyle(.iconOnly)
     }
   }
 }

@@ -115,22 +115,22 @@ struct SearchListView: View {
 
   private var searchScopeList: some View {
     Section {
-      Button(action: { viewModel.searchScope = .products }, label: {
-        Label("Products", systemImage: "grid").bold()
-          .listRowSeparator(.visible)
-      })
-      Button(action: { viewModel.searchScope = .companies }, label: {
-        Label("Companies", systemImage: "network").bold()
-          .listRowSeparator(.visible)
-      })
-      Button(action: { viewModel.searchScope = .users }, label: {
-        Label("Users", systemImage: "person").bold()
-          .listRowSeparator(.visible)
-      })
-      Button(action: { viewModel.searchScope = .locations }, label: {
-        Label("Locations", systemImage: "location").bold()
-          .listRowSeparator(.visible)
-      })
+      Group {
+        Button(action: { viewModel.searchScope = .products }, label: {
+          Label("Products", systemImage: "grid")
+        })
+        Button(action: { viewModel.searchScope = .companies }, label: {
+          Label("Companies", systemImage: "network")
+        })
+        Button(action: { viewModel.searchScope = .users }, label: {
+          Label("Users", systemImage: "person")
+        })
+        Button(action: { viewModel.searchScope = .locations }, label: {
+          Label("Locations", systemImage: "location")
+        })
+      }
+      .bold()
+      .listRowSeparator(.visible)
     } header: {
       Text("Search")
     }.headerProminence(.increased)
@@ -155,19 +155,15 @@ struct SearchListView: View {
 
   private var companyResults: some View {
     ForEach(viewModel.companies) { company in
-      RouterLink(screen: .company(company)) {
-        Text(company.name)
-      }
-      .id(company.id)
+      RouterLink(company.name, screen: .company(company))
+        .id(company.id)
     }
   }
 
   private var locationResults: some View {
     ForEach(viewModel.locations) { location in
-      RouterLink(screen: .location(location)) {
-        Text(location.name)
-      }
-      .id(location.id)
+      RouterLink(location.name, screen: .location(location))
+        .id(location.id)
     }
   }
 
@@ -189,20 +185,21 @@ struct SearchListView: View {
 
     if viewModel.currentScopeIsEmpty {
       Section {
-        RouterLink(screen: .productFeed(.trending)) {
-          Label(Product.FeedType.trending.label, systemImage: "chart.line.uptrend.xyaxis").bold()
-            .listRowSeparator(.visible)
+        Group {
+          RouterLink(
+            Product.FeedType.trending.label,
+            systemImage: "chart.line.uptrend.xyaxis",
+            screen: .productFeed(.trending)
+          )
+          RouterLink(
+            Product.FeedType.topRated.label,
+            systemImage: "line.horizontal.star.fill.line.horizontal",
+            screen: .productFeed(.topRated)
+          )
+          RouterLink(Product.FeedType.latest.label, systemImage: "bolt.horizontal.circle", screen: .productFeed(.latest))
         }
-
-        RouterLink(screen: .productFeed(.topRated)) {
-          Label(Product.FeedType.topRated.label, systemImage: "line.horizontal.star.fill.line.horizontal").bold()
-            .listRowSeparator(.visible)
-        }
-
-        RouterLink(screen: .productFeed(.latest)) {
-          Label(Product.FeedType.latest.label, systemImage: "bolt.horizontal.circle").bold()
-            .listRowSeparator(.visible)
-        }
+        .bold()
+        .listRowSeparator(.visible)
       } header: {
         Text("Feeds")
       }.headerProminence(.increased)
@@ -210,11 +207,9 @@ struct SearchListView: View {
       ForEach(viewModel.products) { product in
         ProductItemView(product: product, extras: [.checkInCheck, .rating])
           .swipeActions {
-            RouterLink(sheet: .newCheckIn(product, onCreation: { checkIn in
+            RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { checkIn in
               router.navigate(screen: .checkIn(checkIn))
-            }), label: {
-              Label("Check-in", systemImage: "plus")
-            }).tint(.green)
+            })).tint(.green)
           }
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
@@ -252,24 +247,22 @@ struct SearchListView: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
       if viewModel.searchScope == .products {
-        RouterLink(sheet: .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .checkIns],
-                                         onApply: { filter in
-                                           viewModel.productFilter = filter
-                                         }),
-                   label: {
-                     Label("Show filters", systemImage: "line.3.horizontal.decrease.circle")
-                       .labelStyle(.iconOnly)
-                   })
+        RouterLink(
+          "Show filters",
+          systemImage: "line.3.horizontal.decrease.circle",
+          sheet: .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .checkIns],
+                                onApply: { filter in
+                                  viewModel.productFilter = filter
+                                })
+        )
+        .labelStyle(.iconOnly)
       }
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if profileManager.hasPermission(.canAddBarcodes) {
-        RouterLink(sheet: .barcodeScanner(onComplete: { barcode in
+        RouterLink("Scan a barcode", systemImage: "barcode.viewfinder", sheet: .barcodeScanner(onComplete: { barcode in
           Task { await viewModel.searchProductsByBardcode(barcode) }
-        }), label: {
-          Label("Scan a barcode", systemImage: "barcode.viewfinder")
-            .labelStyle(.iconOnly)
-        })
+        }))
       }
     }
   }

@@ -6,30 +6,16 @@ struct SettingsScreen: View {
   var body: some View {
     List {
       Section {
-        RouterLink(screen: .profileSettings) {
-          Label("Profile", systemImage: "person.crop.circle")
-        }
-        RouterLink(screen: .accountSettings) {
-          Label("Account", systemImage: "gear")
-        }
-        RouterLink(screen: .applicationSettings) {
-          Label("Application", systemImage: "app.badge.checkmark.fill")
-        }
-        RouterLink(screen: .appIcon) {
-          Label("App Icon", systemImage: "app.fill")
-        }
-        RouterLink(screen: .blockedUsers) {
-          Label("Blocked Users", systemImage: "person.fill.xmark")
-        }
-        RouterLink(screen: .contributions) {
-          Label("Contributions", systemImage: "plus.rectangle.fill.on.rectangle.fill")
-        }
+        RouterLink("Profile", systemImage: "person.crop.circle", screen: .profileSettings)
+        RouterLink("Account", systemImage: "gear", screen: .accountSettings)
+        RouterLink("Application", systemImage: "app.badge.checkmark.fill", screen: .applicationSettings)
+        RouterLink("App Icon", systemImage: "app.fill", screen: .appIcon)
+        RouterLink("Blocked Users", systemImage: "person.fill.xmark", screen: .blockedUsers)
+        RouterLink("Contributions", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .contributions)
       }
 
       Section {
-        RouterLink(screen: .about) {
-          Label("About", systemImage: "info.circle")
-        }
+        RouterLink("About", systemImage: "info.circle", screen: .about)
       }
 
       Section {

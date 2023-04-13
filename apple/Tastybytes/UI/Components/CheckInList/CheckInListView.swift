@@ -99,12 +99,9 @@ struct CheckInListView<Header>: View where Header: View {
           RouterLink("Open Check-in", screen: .checkIn(checkIn))
           Divider()
           if checkIn.profile.id == profileManager.getId() {
-            RouterLink(sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+            RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
               viewModel.onCheckInUpdate(updatedCheckIn)
-            }), label: {
-              Label("Edit", systemImage: "pencil")
-            })
-
+            }))
             Button(role: .destructive, action: { viewModel.showDeleteConfirmationFor = checkIn }, label: {
               Label("Delete", systemImage: "trash.fill")
             })
@@ -123,18 +120,14 @@ struct CheckInListView<Header>: View where Header: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      RouterLink(screen: .currentUserFriends) {
-        Label("Friends Page", systemImage: "person.2")
-          .labelStyle(.iconOnly)
-          .imageScale(.large)
-      }
+      RouterLink("Friends Page", systemImage: "person.2", screen: .currentUserFriends)
+        .labelStyle(.iconOnly)
+        .imageScale(.large)
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouterLink(screen: .settings) {
-        Label("Settings Page", systemImage: "gear")
-          .labelStyle(.iconOnly)
-          .imageScale(.large)
-      }
+      RouterLink("Settings Page", systemImage: "gear", screen: .settings)
+        .labelStyle(.iconOnly)
+        .imageScale(.large)
     }
   }
 

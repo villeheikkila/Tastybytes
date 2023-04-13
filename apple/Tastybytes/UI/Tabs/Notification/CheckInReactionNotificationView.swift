@@ -14,7 +14,6 @@ struct CheckInReactionNotificationView: View {
            \(checkInReaction.checkIn.product.getDisplayName(.full))
           """
         )
-
         Spacer()
       }
     }

@@ -13,18 +13,10 @@ struct AdminTab: View {
   var body: some View {
     RouterWrapper(client) { router in
       List {
-        RouterLink(screen: .categoryManagement) {
-          Label("Categories", systemImage: "plus.rectangle.fill.on.rectangle.fill")
-        }
-        RouterLink(screen: .flavorManagement) {
-          Label("Flavors", systemImage: "plus.rectangle.fill.on.rectangle.fill")
-        }
-        RouterLink(screen: .verification) {
-          Label("Verification", systemImage: "plus.rectangle.fill.on.rectangle.fill")
-        }
-        RouterLink(screen: .duplicateProducts) {
-          Label("Duplicates", systemImage: "plus.rectangle.fill.on.rectangle.fill")
-        }
+        RouterLink("Categories", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .categoryManagement)
+        RouterLink("Flavors", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .flavorManagement)
+        RouterLink("Verification", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .verification)
+        RouterLink("Duplicates", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .duplicateProducts)
       }
       .navigationBarTitle("Admin")
       .navigationBarTitleDisplayMode(.inline)

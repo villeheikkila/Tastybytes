@@ -108,26 +108,26 @@ struct CurrentUserFriendsScreen: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouterLink(sheet: .nameTag(onSuccess: { profileId in
-        Task {
-          await friendManager.sendFriendRequest(receiver: profileId, onSuccess: {
-            hapticManager.trigger(.notification(.success))
-            toastManager.toggle(.success("Friend Request Sent!"))
-          })
-        }
-      }), label: {
-        Label("Show name tag or send friend request by QR code", systemImage: "qrcode")
-          .labelStyle(.iconOnly)
-          .imageScale(.large)
-      })
+      RouterLink(
+        "Show name tag or send friend request by QR code",
+        systemImage: "qrcode",
+        sheet: .nameTag(onSuccess: { profileId in
+          Task {
+            await friendManager.sendFriendRequest(receiver: profileId, onSuccess: {
+              hapticManager.trigger(.notification(.success))
+              toastManager.toggle(.success("Friend Request Sent!"))
+            })
+          }
+        })
+      )
+      .labelStyle(.iconOnly)
+      .imageScale(.large)
 
-      RouterLink(sheet: .userSheet(mode: .add, onSubmit: {
+      RouterLink("Add friend", systemImage: "plus", sheet: .userSheet(mode: .add, onSubmit: {
         toastManager.toggle(.success("Friend Request Sent!"))
-      }), label: {
-        Label("Add friend", systemImage: "plus")
-          .labelStyle(.iconOnly)
-          .imageScale(.large)
-      })
+      }))
+      .labelStyle(.iconOnly)
+      .imageScale(.large)
     }
   }
 }

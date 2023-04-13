@@ -58,14 +58,12 @@ struct VerificationScreen: View {
 
   private var unverifiedCompanies: some View {
     ForEach(viewModel.companies) { company in
-      RouterLink(screen: .company(company)) {
-        Text(company.name)
-      }
-      .swipeActions {
-        ProgressButton(action: { await viewModel.verifyCompany(company) }, label: {
-          Label("Verify", systemImage: "checkmark")
-        }).tint(.green)
-      }
+      RouterLink(company.name, screen: .company(company))
+        .swipeActions {
+          ProgressButton(action: { await viewModel.verifyCompany(company) }, label: {
+            Label("Verify", systemImage: "checkmark")
+          }).tint(.green)
+        }
     }
   }
 
@@ -127,13 +125,11 @@ struct VerificationScreen: View {
             ProgressButton(action: { await viewModel.verifyProduct(product) }, label: {
               Label("Verify", systemImage: "checkmark")
             }).tint(.green)
-            RouterLink(sheet: .editProduct(product: product, onEdit: {
+            RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: product, onEdit: {
               Task {
                 await viewModel.loadData(refresh: true)
               }
-            }), label: {
-              Label("Edit", systemImage: "pencil")
-            }).tint(.yellow)
+            })).tint(.yellow)
             Button(role: .destructive, action: { viewModel.deleteProduct = product }, label: {
               Label("Delete", systemImage: "trash")
             })

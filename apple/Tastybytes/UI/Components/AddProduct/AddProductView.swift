@@ -160,25 +160,25 @@ struct AddProductView: View {
 
   private var brandSection: some View {
     Section {
-      RouterLink(sheet: .companySearch(onSelect: { company, createdNew in
+      RouterLink(viewModel.brandOwner?.name ?? "Company", sheet: .companySearch(onSelect: { company, createdNew in
         viewModel.setBrandOwner(company)
         if createdNew {
           toastManager.toggle(.success(viewModel.getToastText(.createdCompany)))
         }
-      }), label: {
-        Text(viewModel.brandOwner?.name ?? "Company")
-          .fontWeight(.medium)
-      })
+      }))
+      .fontWeight(.medium)
+
       if let brandOwner = viewModel.brandOwner {
-        RouterLink(sheet: .brand(brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
-          if createdNew {
-            toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
-          }
-          viewModel.setBrand(brand: brand)
-        }), label: {
-          Text(viewModel.brand?.name ?? "Brand")
-            .fontWeight(.medium)
-        })
+        RouterLink(
+          viewModel.brand?.name ?? "Brand",
+          sheet: .brand(brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
+            if createdNew {
+              toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
+            }
+            viewModel.setBrand(brand: brand)
+          })
+        )
+        .fontWeight(.medium)
         .disabled(viewModel.brandOwner == nil)
       }
 
@@ -187,15 +187,16 @@ struct AddProductView: View {
       }
 
       if viewModel.hasSubBrand, let brand = viewModel.brand {
-        RouterLink(sheet: .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
-          if createdNew {
-            toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
-          }
-          viewModel.subBrand = subBrand
-        }), label: {
-          Text(viewModel.subBrand?.name ?? "Sub-brand")
-            .fontWeight(.medium)
-        })
+        RouterLink(
+          viewModel.subBrand?.name ?? "Sub-brand",
+          sheet: .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
+            if createdNew {
+              toastManager.toggle(.success(viewModel.getToastText(.createdSubBrand)))
+            }
+            viewModel.subBrand = subBrand
+          })
+        )
+        .fontWeight(.medium)
         .disabled(viewModel.brand == nil)
       }
 
@@ -221,12 +222,10 @@ struct AddProductView: View {
         .focused($focusedField, equals: .description)
 
       if viewModel.mode == .new {
-        RouterLink(sheet: .barcodeScanner(onComplete: { barcode in
+        RouterLink(viewModel.barcode == nil ? "Add Barcode" : "Barcode Added!", sheet: .barcodeScanner(onComplete: { barcode in
           viewModel.barcode = barcode
-        }), label: {
-          Text(viewModel.barcode == nil ? "Add Barcode" : "Barcode Added!")
-            .fontWeight(.medium)
-        })
+        }))
+        .fontWeight(.medium)
       }
     } header: {
       Text("Product")

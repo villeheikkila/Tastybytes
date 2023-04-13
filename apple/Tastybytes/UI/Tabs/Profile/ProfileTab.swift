@@ -20,18 +20,12 @@ struct ProfileTab: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
           ToolbarItemGroup(placement: .navigationBarLeading) {
-            RouterLink(sheet: .nameTag(onSuccess: { profileId in
+            RouterLink("Show name tag", systemImage: "qrcode", sheet: .nameTag(onSuccess: { profileId in
               router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId))
-            }), label: {
-              Label("Show name tag", systemImage: "qrcode")
-                .labelStyle(.iconOnly)
-            })
+            }))
           }
           ToolbarItemGroup(placement: .navigationBarTrailing) {
-            RouterLink(screen: .settings) {
-              Label("Settings page", systemImage: "gear")
-                .labelStyle(.iconOnly)
-            }
+            RouterLink("Settings page", systemImage: "gear", screen: .settings)
           }
         }
         .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in

@@ -83,31 +83,25 @@ struct ProductScreen: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
-        RouterLink(sheet: .newCheckIn(viewModel.product, onCreation: { _ in
+        RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(viewModel.product, onCreation: { _ in
           Task { await viewModel.refreshCheckIns() }
-        }), label: {
-          Label("Check-in", systemImage: "plus").bold()
-        }).disabled(!profileManager.hasPermission(.canCreateCheckIns))
+        }))
+        .bold()
+        .disabled(!profileManager.hasPermission(.canCreateCheckIns))
 
         ShareLink("Share", item: NavigatablePath.product(id: viewModel.product.id).url)
 
         if profileManager.hasPermission(.canAddBarcodes) {
-          RouterLink(sheet: .barcodeScanner(onComplete: { _ in
+          RouterLink("Add Barcode", systemImage: "barcode.viewfinder", sheet: .barcodeScanner(onComplete: { _ in
             toastManager.toggle(.success("Barcode added"))
-          }), label: {
-            Label("Add Barcode", systemImage: "barcode.viewfinder")
-          })
+          }))
         }
         Divider()
 
         if profileManager.hasPermission(.canEditCompanies) {
-          RouterLink(sheet: .editProduct(product: viewModel.product), label: {
-            Label("Edit", systemImage: "pencil")
-          })
+          RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: viewModel.product))
         } else {
-          RouterLink(sheet: .productEditSuggestion(product: viewModel.product), label: {
-            Label("Edit Suggestion", systemImage: "pencil")
-          })
+          RouterLink("Edit Suggestion", systemImage: "pencil", sheet: .productEditSuggestion(product: viewModel.product))
         }
 
         RouterLink(sheet: .duplicateProduct(
@@ -128,9 +122,7 @@ struct ProductScreen: View {
         })
 
         if profileManager.hasPermission(.canDeleteBarcodes) {
-          RouterLink(sheet: .barcodeManagement(product: viewModel.product), label: {
-            Label("Barcodes", systemImage: "barcode")
-          })
+          RouterLink("Barcodes", systemImage: "barcode", sheet: .barcodeManagement(product: viewModel.product))
         }
 
         ReportButton(entity: .product(viewModel.product))

@@ -42,19 +42,15 @@ struct ActivityTab: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      RouterLink(screen: .currentUserFriends) {
-        Label("Friends page", systemImage: "person.2")
-          .labelStyle(.iconOnly)
-          .imageScale(.large)
-          .customBadge(notificationManager.getUnreadFriendRequestCount())
-      }
+      RouterLink("Friends page", systemImage: "person.2", screen: .currentUserFriends)
+        .labelStyle(.iconOnly)
+        .imageScale(.large)
+        .customBadge(notificationManager.getUnreadFriendRequestCount())
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouterLink(screen: .settings) {
-        Label("Settings page", systemImage: "gear")
-          .labelStyle(.iconOnly)
-          .imageScale(.large)
-      }
+      RouterLink("Settings page", systemImage: "gear", screen: .settings)
+        .labelStyle(.iconOnly)
+        .imageScale(.large)
     }
   }
 }
