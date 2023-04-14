@@ -29,15 +29,19 @@ struct ApplicationSettingsScreen: View {
 
   private var colorSchemeSection: some View {
     Section {
-      Toggle("Use System Color Scheme", isOn: $viewModel.isSystemColor)
-        .onChange(of: [viewModel.isSystemColor].publisher.first()) { _ in
-          Task { await viewModel.updateColorScheme { await profileManager.refresh() } }
-        }
-      Toggle("Use Dark Mode", isOn: $viewModel.isDarkMode)
-        .onChange(of: [viewModel.isDarkMode].publisher.first()) { _ in
-          Task { await viewModel.updateColorScheme { await profileManager.refresh() } }
-        }
-        .disabled(viewModel.isSystemColor)
+      Toggle("Use System Color Scheme", isOn: .init(get: {
+        viewModel.isSystemColor
+      }, set: { newValue in
+        viewModel.isSystemColor = newValue
+        Task { await viewModel.updateColorScheme { await profileManager.refresh() } }
+      }))
+      Toggle("Use Dark Mode", isOn: .init(get: {
+        viewModel.isDarkMode
+      }, set: { newValue in
+        viewModel.isDarkMode = newValue
+        Task { await viewModel.updateColorScheme { await profileManager.refresh() } }
+      }))
+      .disabled(viewModel.isSystemColor)
     } header: {
       Text("Color Scheme")
     }
@@ -45,18 +49,24 @@ struct ApplicationSettingsScreen: View {
 
   private var notificationSection: some View {
     Section {
-      Toggle("Reactions", isOn: $viewModel.reactionNotifications)
-        .onChange(of: [viewModel.reactionNotifications].publisher.first()) { _ in
-          Task { await viewModel.updateNotificationSettings() }
-        }
-      Toggle("Friend Requests", isOn: $viewModel.friendRequestNotifications)
-        .onChange(of: [viewModel.friendRequestNotifications].publisher.first()) { _ in
-          Task { await viewModel.updateNotificationSettings() }
-        }
-      Toggle("Check-in Tags", isOn: $viewModel.checkInTagNotifications)
-        .onChange(of: [viewModel.checkInTagNotifications].publisher.first()) { _ in
-          Task { await viewModel.updateNotificationSettings() }
-        }
+      Toggle("Reactions", isOn: .init(get: {
+        viewModel.reactionNotifications
+      }, set: { newValue in
+        viewModel.reactionNotifications = newValue
+        Task { await viewModel.updateNotificationSettings() }
+      }))
+      Toggle("Friend Requests", isOn: .init(get: {
+        viewModel.friendRequestNotifications
+      }, set: { newValue in
+        viewModel.friendRequestNotifications = newValue
+        Task { await viewModel.updateNotificationSettings() }
+      }))
+      Toggle("Check-in Tags", isOn: .init(get: {
+        viewModel.checkInTagNotifications
+      }, set: { newValue in
+        viewModel.checkInTagNotifications = newValue
+        Task { await viewModel.updateNotificationSettings() }
+      }))
     } header: {
       Text("Notifications")
     }

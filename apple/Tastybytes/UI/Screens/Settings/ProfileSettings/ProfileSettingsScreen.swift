@@ -48,13 +48,12 @@ struct ProfileSettingsScreen: View {
 
   private var profileDisplaySettings: some View {
     Section {
-      Toggle("Use Name Instead of Username", isOn: $viewModel.showFullName)
-        .onChange(of: [viewModel.showFullName].publisher.first()) { _ in
-          Task { await viewModel.updateDisplaySettings(onUpdate: {
-            await profileManager.refresh()
-          })
-          }
-        }
+      Toggle("Use Name Instead of Username", isOn: .init(get: {
+        viewModel.showFullName
+      }, set: { newValue in
+        viewModel.showFullName = newValue
+        Task { await viewModel.updateDisplaySettings(onUpdate: { await profileManager.refresh() }) }
+      }))
     } footer: {
       Text("This only takes effect if both first name and last name are provided.")
     }
@@ -62,13 +61,12 @@ struct ProfileSettingsScreen: View {
 
   private var privacySection: some View {
     Section {
-      Toggle("Private Profile", isOn: $viewModel.isPrivateProfile)
-        .onChange(of: [viewModel.isPrivateProfile].publisher.first()) { _ in
-          Task { await viewModel.updatePrivacySettings(onUpdate: {
-            await profileManager.refresh()
-          })
-          }
-        }
+      Toggle("Private Profile", isOn: .init(get: {
+        viewModel.isPrivateProfile
+      }, set: { newValue in
+        viewModel.isPrivateProfile = newValue
+        Task { await viewModel.updatePrivacySettings(onUpdate: { await profileManager.refresh() }) }
+      }))
     } header: {
       Text("Privacy")
     } footer: {
