@@ -91,9 +91,10 @@ struct CheckInListView<Header>: View where Header: View {
         .id(checkIn.id)
         .contextMenu {
           ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
-          RouterLink("Open Company", screen: .company(checkIn.product.subBrand.brand.brandOwner))
-          RouterLink("Open Brand", screen: .fetchBrand(checkIn.product.subBrand.brand))
-          RouterLink("Open Check-in", screen: .checkIn(checkIn))
+          RouterLink("Open Company", systemImage: "network", screen: .company(checkIn.product.subBrand.brand.brandOwner))
+          RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
+          RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
+          RouterLink("Open Check-in", systemImage: "checkmark.circle", screen: .checkIn(checkIn))
           Divider()
           if checkIn.profile.id == profileManager.getId() {
             RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
