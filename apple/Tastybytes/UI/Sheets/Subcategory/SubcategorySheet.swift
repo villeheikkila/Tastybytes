@@ -9,7 +9,7 @@ struct SubcategorySheet: View {
   @State private var showAddSubcategory = false
   @State private var newSubcategoryName = ""
   @State private var searchTerm = ""
-  let category: Category.JoinedSubcategories
+  let category: Category.JoinedSubcategoriesServingStyles
 
   private let maxSubcategories = 4
   let onCreate: (_ newSubcategoryName: String) async -> Void

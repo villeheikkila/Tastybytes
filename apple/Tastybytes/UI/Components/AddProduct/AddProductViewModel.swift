@@ -44,7 +44,7 @@ extension AddProductView {
     private let logger = getLogger(category: "ProductSheet")
     let client: Client
     @Published var mode: Mode
-    @Published var category: Category.JoinedSubcategories? {
+    @Published var category: Category.JoinedSubcategoriesServingStyles? {
       didSet {
         withAnimation {
           subcategories.removeAll()
@@ -131,7 +131,7 @@ extension AddProductView {
       toast.text
     }
 
-    func loadMissingData(categories: [Category.JoinedSubcategories]) async {
+    func loadMissingData(categories: [Category.JoinedSubcategoriesServingStyles]) async {
       switch mode {
       case let .edit(initialProduct), let .editSuggestion(initialProduct):
         await loadValuesFromExistingProduct(initialProduct, categories: categories)
@@ -142,7 +142,7 @@ extension AddProductView {
       }
     }
 
-    func loadFromBrand(_ brand: Brand.JoinedSubBrandsProductsCompany, categories: [Category.JoinedSubcategories]) {
+    func loadFromBrand(_ brand: Brand.JoinedSubBrandsProductsCompany, categories: [Category.JoinedSubcategoriesServingStyles]) {
       category = categories.first(where: { $0.name == "beverage" })
       subcategories = []
       brandOwner = brand.brandOwner
@@ -157,7 +157,10 @@ extension AddProductView {
       subBrand = nil
     }
 
-    func loadValuesFromExistingProduct(_ initialProduct: Product.Joined, categories: [Category.JoinedSubcategories]) async {
+    func loadValuesFromExistingProduct(
+      _ initialProduct: Product.Joined,
+      categories: [Category.JoinedSubcategoriesServingStyles]
+    ) async {
       switch await client.brand
         .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
       {

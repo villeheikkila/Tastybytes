@@ -8,6 +8,7 @@ struct CheckInSheet: View {
   @Environment(\.dismiss) private var dismiss
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var appDataManager: AppDataManager
   @State private var showPhotoMenu = false
   @State private var pickedFlavors = [Flavor]()
   @FocusState private var focusedField: Focusable?
@@ -213,8 +214,9 @@ struct CheckInSheet: View {
     .onChange(of: pickedFlavors, perform: { newPickedFlavors in
       viewModel.pickedFlavors = newPickedFlavors
     })
-    .task {
-      await viewModel.loadInitialData()
+    .onAppear {
+      viewModel.servingStyles = appDataManager.categories.first(where: { $0.id == viewModel.product.category.id })?
+        .servingStyles ?? []
     }
   }
 }

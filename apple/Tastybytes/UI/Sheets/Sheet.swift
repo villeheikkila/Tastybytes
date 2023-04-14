@@ -16,7 +16,7 @@ enum Sheet: Identifiable, Equatable {
                 onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void)
   case subcategory(
     subcategories: Binding<[Subcategory]>,
-    category: Category.JoinedSubcategories,
+    category: Category.JoinedSubcategoriesServingStyles,
     onCreate: (_ newSubcategoryName: String) async -> Void
   )
   case subBrand(brandWithSubBrands: Brand.JoinedSubBrands,

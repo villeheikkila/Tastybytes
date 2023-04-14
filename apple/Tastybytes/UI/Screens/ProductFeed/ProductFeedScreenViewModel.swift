@@ -6,7 +6,7 @@ extension ProductFeedScreen {
     private let logger = getLogger(category: "ProductFeedView")
     let client: Client
     @Published var products = [Product.Joined]()
-    @Published var categoryFilter: Category.JoinedSubcategories? {
+    @Published var categoryFilter: Category.JoinedSubcategoriesServingStyles? {
       didSet {
         Task { await refresh() }
       }

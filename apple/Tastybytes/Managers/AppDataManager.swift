@@ -4,7 +4,7 @@ import SwiftUI
 class AppDataManager: ObservableObject {
   private let logger = getLogger(category: "AppDataManager")
   let client: Client
-  @Published var categories = [Category.JoinedSubcategories]()
+  @Published var categories = [Category.JoinedSubcategoriesServingStyles]()
   @Published var flavors = [Flavor]()
 
   init(_ client: Client) {
@@ -13,7 +13,7 @@ class AppDataManager: ObservableObject {
 
   func initialize() async {
     async let flavorPromise = client.flavor.getAll()
-    async let categoryPromise = client.category.getAllWithSubcategories()
+    async let categoryPromise = client.category.getAllWithSubcategoriesServingStyles()
 
     switch await flavorPromise {
     case let .success(flavors):
