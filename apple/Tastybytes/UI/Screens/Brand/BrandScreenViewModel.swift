@@ -5,6 +5,7 @@ extension BrandScreen {
   class ViewModel: ObservableObject {
     private let logger = getLogger(category: "BrandScreen")
     let client: Client
+    let refreshOnLoad: Bool
     @Published var brand: Brand.JoinedSubBrandsProductsCompany
     @Published var summary: Summary?
     @Published var editBrand: Brand.JoinedSubBrandsProductsCompany?
@@ -43,9 +44,10 @@ extension BrandScreen {
       }
     }
 
-    init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany) {
+    init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany, refreshOnLoad: Bool?) {
       self.client = client
       self.brand = brand
+      self.refreshOnLoad = refreshOnLoad ?? false
     }
 
     var sortedSubBrands: [SubBrand.JoinedProduct] {

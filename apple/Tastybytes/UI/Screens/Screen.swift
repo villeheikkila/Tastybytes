@@ -7,6 +7,7 @@ enum Screen: Hashable {
   case location(Location)
   case company(Company)
   case brand(Brand.JoinedSubBrandsProductsCompany)
+  case fetchBrand(Brand.JoinedCompany)
   case profileProducts(Profile)
   case profileStatistics(Profile)
   case settings
@@ -33,6 +34,13 @@ enum Screen: Hashable {
       CompanyScreen(client, company: company)
     case let .brand(brand):
       BrandScreen(client, brand: brand)
+    case let .fetchBrand(brand):
+      BrandScreen(
+        client,
+        brand: Brand
+          .JoinedSubBrandsProductsCompany(id: brand.id, name: brand.name, isVerified: brand.isVerified,
+                                          brandOwner: brand.brandOwner, subBrands: []), refreshOnLoad: true
+      )
     case .currentUserFriends:
       CurrentUserFriendsScreen(client)
     case .settings:

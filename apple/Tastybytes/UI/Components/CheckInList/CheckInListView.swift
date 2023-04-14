@@ -85,17 +85,14 @@ struct CheckInListView<Header>: View where Header: View {
 
   @ViewBuilder private var checkInsList: some View {
     ForEach(viewModel.uniqueCheckIns) { checkIn in
-      CheckInCardView(client: viewModel.client, checkIn: checkIn,
-                      loadedFrom: getLoadedFrom)
-        .listRowInsets(.init(top: 4,
-                             leading: 8,
-                             bottom: 4,
-                             trailing: 8))
+      CheckInCardView(client: viewModel.client, checkIn: checkIn, loadedFrom: getLoadedFrom)
+        .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
         .listRowSeparator(.hidden)
         .id(checkIn.id)
         .contextMenu {
           ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
           RouterLink("Open Company", screen: .company(checkIn.product.subBrand.brand.brandOwner))
+          RouterLink("Open Brand", screen: .fetchBrand(checkIn.product.subBrand.brand))
           RouterLink("Open Check-in", screen: .checkIn(checkIn))
           Divider()
           if checkIn.profile.id == profileManager.getId() {

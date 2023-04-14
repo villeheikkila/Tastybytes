@@ -7,8 +7,8 @@ struct BrandScreen: View {
   @EnvironmentObject private var router: Router
   @StateObject private var viewModel: ViewModel
 
-  init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, brand: brand))
+  init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany, refreshOnLoad: Bool = false) {
+    _viewModel = StateObject(wrappedValue: ViewModel(client, brand: brand, refreshOnLoad: refreshOnLoad))
   }
 
   var body: some View {
@@ -103,6 +103,9 @@ struct BrandScreen: View {
     .task {
       if viewModel.summary == nil {
         await viewModel.getSummary()
+      }
+      if viewModel.refreshOnLoad {
+        await viewModel.refresh()
       }
     }
     .toolbar {

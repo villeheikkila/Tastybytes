@@ -1,10 +1,13 @@
 import Foundation
 
-protocol BrandLogo {
+protocol BrandProtocol {
+  var id: Int { get }
+  var name: String { get }
   var logoFile: String? { get }
+  var isVerified: Bool { get }
 }
 
-extension BrandLogo {
+extension BrandProtocol {
   var logoUrl: URL? {
     guard let logoFile else { return nil }
     return URL(bucketId: Brand.getQuery(.logosBucket), fileName: logoFile)
@@ -48,7 +51,7 @@ enum Brand {
 }
 
 extension Brand {
-  struct JoinedSubBrands: Identifiable, Hashable, Decodable, Sendable, BrandLogo {
+  struct JoinedSubBrands: Identifiable, Hashable, Decodable, Sendable, BrandProtocol {
     let id: Int
     let name: String
     let logoFile: String?
@@ -64,7 +67,7 @@ extension Brand {
     }
   }
 
-  struct JoinedCompany: Identifiable, Hashable, Decodable, Sendable, BrandLogo {
+  struct JoinedCompany: Identifiable, Hashable, Decodable, Sendable, BrandProtocol {
     let id: Int
     let name: String
     let logoFile: String?
@@ -80,7 +83,7 @@ extension Brand {
     }
   }
 
-  struct JoinedSubBrandsProducts: Identifiable, Hashable, Decodable, Sendable, BrandLogo {
+  struct JoinedSubBrandsProducts: Identifiable, Hashable, Decodable, Sendable, BrandProtocol {
     let id: Int
     let name: String
     let logoFile: String?
@@ -100,7 +103,7 @@ extension Brand {
     }
   }
 
-  struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Decodable, Sendable, BrandLogo {
+  struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Decodable, Sendable, BrandProtocol {
     let id: Int
     let name: String
     let logoFile: String?
