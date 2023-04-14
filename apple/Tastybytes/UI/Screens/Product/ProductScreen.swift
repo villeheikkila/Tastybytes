@@ -83,6 +83,13 @@ struct ProductScreen: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
+        VerificationButton(isVerified: viewModel.product.isVerified, verify: {
+          await viewModel.verifyProduct(isVerified: true)
+        }, unverify: {
+          viewModel.showUnverifyProductConfirmation = true
+        })
+        Divider()
+
         RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(viewModel.product, onCreation: { _ in
           await viewModel.refreshCheckIns()
         }))
@@ -96,7 +103,6 @@ struct ProductScreen: View {
             toastManager.toggle(.success("Barcode added"))
           }))
         }
-        Divider()
 
         if profileManager.hasPermission(.canEditCompanies) {
           RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: viewModel.product))
@@ -113,12 +119,6 @@ struct ProductScreen: View {
           } else {
             Label("Mark as duplicate", systemImage: "doc.on.doc")
           }
-        })
-
-        VerificationButton(isVerified: viewModel.product.isVerified, verify: {
-          await viewModel.verifyProduct(isVerified: true)
-        }, unverify: {
-          viewModel.showUnverifyProductConfirmation = true
         })
 
         if profileManager.hasPermission(.canDeleteBarcodes) {

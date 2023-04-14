@@ -98,8 +98,13 @@ struct CompanyScreen: View {
 
   private var navigationBarMenu: some View {
     Menu {
+      VerificationButton(isVerified: viewModel.company.isVerified, verify: {
+        await viewModel.verifyCompany(isVerified: true)
+      }, unverify: {
+        viewModel.showUnverifyCompanyConfirmation = true
+      })
+      Divider()
       ShareLink("Share", item: NavigatablePath.company(id: viewModel.company.id).url)
-
       if profileManager.hasPermission(.canCreateBrands) {
         RouterLink(
           "Add Brand",
@@ -109,7 +114,6 @@ struct CompanyScreen: View {
           })
         )
       }
-
       if profileManager.hasPermission(.canEditCompanies) {
         RouterLink("Edit", systemImage: "pencil", sheet: .editCompany(company: viewModel.company, onSuccess: {
           await hapticManager.wrapWithHaptics {
@@ -122,17 +126,8 @@ struct CompanyScreen: View {
           toastManager.toggle(.success("Edit suggestion sent!"))
         }))
       }
-
       Divider()
-
-      VerificationButton(isVerified: viewModel.company.isVerified, verify: {
-        await viewModel.verifyCompany(isVerified: true)
-      }, unverify: {
-        viewModel.showUnverifyCompanyConfirmation = true
-      })
-
       ReportButton(entity: .company(viewModel.company))
-
       if profileManager.hasPermission(.canDeleteCompanies) {
         Button(
           "Delete",

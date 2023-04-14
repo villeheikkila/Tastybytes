@@ -62,6 +62,12 @@ struct BrandScreen: View {
             }
             Spacer()
             Menu {
+              VerificationButton(isVerified: subBrand.isVerified, verify: {
+                await viewModel.verifySubBrand(subBrand, isVerified: true)
+              }, unverify: {
+                viewModel.toUnverifySubBrand = subBrand
+              })
+              Divider()
               if profileManager.hasPermission(.canEditBrands) {
                 RouterLink(
                   "Edit",
@@ -71,15 +77,7 @@ struct BrandScreen: View {
                   })
                 )
               }
-
-              VerificationButton(isVerified: subBrand.isVerified, verify: {
-                await viewModel.verifySubBrand(subBrand, isVerified: true)
-              }, unverify: {
-                viewModel.toUnverifySubBrand = subBrand
-              })
-
               ReportButton(entity: .subBrand(viewModel.brand, subBrand))
-
               if profileManager.hasPermission(.canDeleteBrands) {
                 Button("Delete", systemImage: "trash.fill", role: .destructive, action: { viewModel.toDeleteSubBrand = subBrand })
                   .disabled(subBrand.isVerified)
@@ -182,30 +180,25 @@ struct BrandScreen: View {
 
   private var navigationBarMenu: some View {
     Menu {
-      ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
-
-      if profileManager.hasPermission(.canCreateProducts) {
-        RouterLink("Add Product", systemImage: "plus", sheet: .addProductToBrand(brand: viewModel.brand, onCreate: { product in
-          router.navigate(screen: .product(product))
-        }))
-      }
-
-      Divider()
-
-      if profileManager.hasPermission(.canEditBrands) {
-        RouterLink("Edit", systemImage: "pencil", sheet: .editBrand(brand: viewModel.brand, onUpdate: {
-          await viewModel.refresh()
-        }))
-      }
-
       VerificationButton(isVerified: viewModel.brand.isVerified, verify: {
         await viewModel.verifyBrand(isVerified: true)
       }, unverify: {
         viewModel.showBrandUnverificationConfirmation = true
       })
-
+      Divider()
+      ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
+      if profileManager.hasPermission(.canCreateProducts) {
+        RouterLink("Add Product", systemImage: "plus", sheet: .addProductToBrand(brand: viewModel.brand, onCreate: { product in
+          router.navigate(screen: .product(product))
+        }))
+      }
+      Divider()
+      if profileManager.hasPermission(.canEditBrands) {
+        RouterLink("Edit", systemImage: "pencil", sheet: .editBrand(brand: viewModel.brand, onUpdate: {
+          await viewModel.refresh()
+        }))
+      }
       ReportButton(entity: .brand(viewModel.brand))
-
       if profileManager.hasPermission(.canDeleteBrands) {
         Button(
           "Delete",
