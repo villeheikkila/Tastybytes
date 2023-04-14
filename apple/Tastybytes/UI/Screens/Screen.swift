@@ -73,15 +73,15 @@ enum Screen: Hashable {
     case .categoryManagement:
       CategoryManagementScreen(client)
     case .profileSettings:
-      ProfileSettingsScreen(client)
+      ProfileSettingsScreen()
     case .accountSettings:
-      AccountSettingsScreen(client)
+      AccountSettingsScreen()
     case .applicationSettings:
-      ApplicationSettingsScreen(client)
+      ApplicationSettingsScreen()
     case .appIcon:
       AppIconScreen()
     case .blockedUsers:
-      BlockedUsersScreen(client)
+      BlockedUsersScreen()
     case .contributions:
       ContributionsScreen(client)
     case .about:

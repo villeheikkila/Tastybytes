@@ -135,9 +135,6 @@
 		5C7C35C6299ACB54009A3C09 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35C5299ACB54009A3C09 /* ScannerViewController.swift */; };
 		5C7C35C9299ACC2A009A3C09 /* LegacyPhotoPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35C8299ACC2A009A3C09 /* LegacyPhotoPickerCoordinator.swift */; };
 		5C7C35CC299ACC8E009A3C09 /* CameraViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35CB299ACC8E009A3C09 /* CameraViewCoordinator.swift */; };
-		5C7C35CE299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35CD299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift */; };
-		5C7C35D0299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35CF299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift */; };
-		5C7C35D4299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35D3299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift */; };
 		5C7C35D6299ACEAF009A3C09 /* AboutScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35D5299ACEAF009A3C09 /* AboutScreenViewModel.swift */; };
 		5C7C35D8299ACEFF009A3C09 /* OnboardTabsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35D7299ACEFF009A3C09 /* OnboardTabsViewModel.swift */; };
 		5C7C35DD299AE042009A3C09 /* ProductItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35DC299AE042009A3C09 /* ProductItemView.swift */; };
@@ -368,9 +365,6 @@
 		5C7C35C5299ACB54009A3C09 /* ScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
 		5C7C35C8299ACC2A009A3C09 /* LegacyPhotoPickerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyPhotoPickerCoordinator.swift; sourceTree = "<group>"; };
 		5C7C35CB299ACC8E009A3C09 /* CameraViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewCoordinator.swift; sourceTree = "<group>"; };
-		5C7C35CD299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsScreenViewModel.swift; sourceTree = "<group>"; };
-		5C7C35CF299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsScreenViewModel.swift; sourceTree = "<group>"; };
-		5C7C35D3299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationSettingsScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C35D5299ACEAF009A3C09 /* AboutScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutScreenViewModel.swift; sourceTree = "<group>"; };
 		5C7C35D7299ACEFF009A3C09 /* OnboardTabsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardTabsViewModel.swift; sourceTree = "<group>"; };
 		5C7C35DC299AE042009A3C09 /* ProductItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductItemView.swift; sourceTree = "<group>"; };
@@ -535,7 +529,6 @@
 			isa = PBXGroup;
 			children = (
 				5C3D8274298D5F3300E861DC /* AccountSettingsScreen.swift */,
-				5C7C35CD299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift */,
 			);
 			path = AccountSettings;
 			sourceTree = "<group>";
@@ -544,7 +537,6 @@
 			isa = PBXGroup;
 			children = (
 				5C12B42E2902A190001EE549 /* ProfileSettingsScreen.swift */,
-				5C7C35CF299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift */,
 			);
 			path = ProfileSettings;
 			sourceTree = "<group>";
@@ -588,7 +580,6 @@
 		5C20A52329AB55E800ABBA74 /* ApplicationSettings */ = {
 			isa = PBXGroup;
 			children = (
-				5C7C35D3299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift */,
 				5C12B42C2902A12A001EE549 /* ApplicationSettingsScreen.swift */,
 			);
 			path = ApplicationSettings;
@@ -1589,7 +1580,6 @@
 				5C663F3329322016006F9A97 /* ServingStyleLabelView.swift in Sources */,
 				5CDC9F9929E3E1EE00B6082F /* EditCompanySheet.swift in Sources */,
 				5C0E365429279B240072EFBD /* Barcode.swift in Sources */,
-				5C7C35D4299ACE72009A3C09 /* ApplicationSettingsScreenViewModel.swift in Sources */,
 				5C7C35B3299AC6EC009A3C09 /* DuplicateProductSheetViewModel.swift in Sources */,
 				5C7C35C6299ACB54009A3C09 /* ScannerViewController.swift in Sources */,
 				5CED432228FAC01C003F8194 /* UserSheet.swift in Sources */,
@@ -1757,7 +1747,6 @@
 				5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */,
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
 				5C0E365C292ADA290072EFBD /* SummaryView.swift in Sources */,
-				5C7C35D0299ACE31009A3C09 /* ProfileSettingsScreenViewModel.swift in Sources */,
 				5C25C6702995616D00C07953 /* WelcomeTab.swift in Sources */,
 				5CD10A5528F98D220001CFC2 /* SubBrand.swift in Sources */,
 				5C12B4332902A4C9001EE549 /* BlockedUsersScreen.swift in Sources */,
@@ -1770,7 +1759,6 @@
 				5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */,
 				5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */,
 				5CB1C24D28F9C087000B0EB4 /* AuthRepository.swift in Sources */,
-				5C7C35CE299ACE13009A3C09 /* AccountSettingsScreenViewModel.swift in Sources */,
 				5C7C357E299AC070009A3C09 /* AuthenticationScreenViewModel.swift in Sources */,
 				5CED433628FDA8B9003F8194 /* SubcategorySheet.swift in Sources */,
 				5C7C3588299AC1D9009A3C09 /* LocationScreenViewModel.swift in Sources */,

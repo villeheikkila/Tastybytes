@@ -2,13 +2,8 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileSettingsScreen: View {
-  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var toastManager: ToastManager
-
-  init(_ client: Client) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
-  }
 
   var body: some View {
     Form {
@@ -17,26 +12,23 @@ struct ProfileSettingsScreen: View {
       privacySection
     }
     .navigationTitle("Profile")
-    .task {
-      await viewModel.getInitialValues(profile: profileManager.get())
-    }
   }
 
   private var profileSection: some View {
     Section {
-      TextField("Username", text: $viewModel.username)
+      TextField("Username", text: $profileManager.username)
         .autocapitalization(.none)
         .disableAutocorrection(true)
-      TextField("First Name", text: $viewModel.firstName)
-      TextField("Last Name", text: $viewModel.lastName)
+      TextField("First Name", text: $profileManager.firstName)
+      TextField("Last Name", text: $profileManager.lastName)
 
-      if viewModel.showProfileUpdateButton {
-        ProgressButton("Update", action: { await viewModel.updateProfile(onSuccess: {
+      if profileManager.profileHasChanged {
+        ProgressButton("Update", action: { await profileManager.updateProfile(onSuccess: {
           await profileManager.refresh()
           toastManager.toggle(.success("Profile updated!"))
         }, onFailure: { error in
           toastManager.toggle(.error(error.localizedDescription))
-        }) })
+        }) }).transition(.slide)
       }
     } header: {
       Text("Profile")
@@ -49,10 +41,10 @@ struct ProfileSettingsScreen: View {
   private var profileDisplaySettings: some View {
     Section {
       Toggle("Use Name Instead of Username", isOn: .init(get: {
-        viewModel.showFullName
+        profileManager.showFullName
       }, set: { newValue in
-        viewModel.showFullName = newValue
-        Task { await viewModel.updateDisplaySettings(onUpdate: { await profileManager.refresh() }) }
+        profileManager.showFullName = newValue
+        Task { await profileManager.updateDisplaySettings() }
       }))
     } footer: {
       Text("This only takes effect if both first name and last name are provided.")
@@ -62,10 +54,10 @@ struct ProfileSettingsScreen: View {
   private var privacySection: some View {
     Section {
       Toggle("Private Profile", isOn: .init(get: {
-        viewModel.isPrivateProfile
+        profileManager.isPrivateProfile
       }, set: { newValue in
-        viewModel.isPrivateProfile = newValue
-        Task { await viewModel.updatePrivacySettings(onUpdate: { await profileManager.refresh() }) }
+        profileManager.isPrivateProfile = newValue
+        Task { await profileManager.updatePrivacySettings() }
       }))
     } header: {
       Text("Privacy")

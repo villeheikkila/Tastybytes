@@ -5,12 +5,6 @@ struct BlockedUsersScreen: View {
   @EnvironmentObject private var toastManager: ToastManager
   @State private var showUserSearchSheet = false
 
-  let client: Client
-
-  init(_ client: Client) {
-    self.client = client
-  }
-
   var body: some View {
     List {
       if friendManager.blockedUsers.isEmpty {

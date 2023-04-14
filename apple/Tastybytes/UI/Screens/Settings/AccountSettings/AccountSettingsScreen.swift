@@ -2,13 +2,29 @@ import PhotosUI
 import SwiftUI
 
 struct AccountSettingsScreen: View {
-  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var toastManager: ToastManager
+  @State private var showDeleteConfirmation = false
+  @State private var showEmailConfirmation = false
+  @State private var showPasswordConfirmation = false
+  @State private var email = ""
+  @State private var newPassword = "" {
+    didSet {
+      passwordCheck()
+    }
+  }
 
-  init(_ client: Client) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
+  @State private var newPasswordConfirmation = "" {
+    didSet {
+      passwordCheck()
+    }
+  }
+
+  private func passwordCheck() {
+    withAnimation {
+      showPasswordConfirmation = newPassword == newPasswordConfirmation && newPassword.count >= 8
+    }
   }
 
   var body: some View {
@@ -18,10 +34,19 @@ struct AccountSettingsScreen: View {
       deleteAccount
     }
     .navigationTitle("Account")
-    .fileExporter(isPresented: $viewModel.showingExporter,
-                  document: viewModel.csvExport,
+    .onChange(of: profileManager.email, perform: { _ in
+      withAnimation {
+        showEmailConfirmation = email != profileManager.email
+      }
+
+    })
+    .onAppear {
+      email = profileManager.email
+    }
+    .fileExporter(isPresented: $profileManager.showingExporter,
+                  document: profileManager.csvExport,
                   contentType: UTType.commaSeparatedText,
-                  defaultFilename: viewModel.getCSVExportName())
+                  defaultFilename: profileManager.getCSVExportName())
     { result in
       switch result {
       case .success:
@@ -32,22 +57,19 @@ struct AccountSettingsScreen: View {
     }
     .confirmationDialog(
       "Are you sure you want to permanently delete your account? All data will be lost.",
-      isPresented: $viewModel.showDeleteConfirmation,
+      isPresented: $showDeleteConfirmation,
       titleVisibility: .visible
     ) {
       ProgressButton(
         "Delete Account",
         role: .destructive,
         action: {
-          await viewModel.deleteCurrentAccount(onError: { message in
+          await profileManager.deleteCurrentAccount(onError: { message in
             toastManager.toggle(.error(message))
           })
           hapticManager.trigger(.notification(.success))
         }
       )
-    }
-    .task {
-      await viewModel.getInitialValues(profile: profileManager.get())
     }
   }
 
@@ -56,7 +78,7 @@ struct AccountSettingsScreen: View {
       HStack {
         Image(systemName: "key")
           .accessibility(hidden: true)
-        SecureField("New Password", text: $viewModel.newPassword)
+        SecureField("New Password", text: $newPassword)
           .textContentType(.newPassword)
           .autocapitalization(.none)
           .disableAutocorrection(true)
@@ -64,14 +86,13 @@ struct AccountSettingsScreen: View {
       HStack {
         Image(systemName: "key")
           .accessibility(hidden: true)
-        SecureField("Confirm New Password", text: $viewModel.newPasswordConfirmation)
+        SecureField("Confirm New Password", text: $newPasswordConfirmation)
           .textContentType(.newPassword)
           .autocapitalization(.none)
           .disableAutocorrection(true)
       }
-
-      if viewModel.showPasswordConfirmation {
-        ProgressButton("Update password", action: { await viewModel.updatePassword() })
+      if showPasswordConfirmation {
+        ProgressButton("Update password", action: { await profileManager.updatePassword(newPassword: newPassword) })
       }
     } header: {
       Text("Change password")
@@ -83,14 +104,15 @@ struct AccountSettingsScreen: View {
 
   private var emailSection: some View {
     Section {
-      TextField("Email", text: $viewModel.email)
+      TextField("Email", text: $email)
         .keyboardType(.emailAddress)
         .textContentType(.emailAddress)
         .autocapitalization(.none)
         .disableAutocorrection(true)
 
-      if viewModel.showEmailConfirmationButton {
-        ProgressButton("Send Verification Link", action: { await viewModel.sendEmailVerificationLink() })
+      if showEmailConfirmation {
+        ProgressButton("Send Verification Link", action: { await profileManager.sendEmailVerificationLink() })
+          .transition(.slide)
       }
 
     } header: {
@@ -104,10 +126,14 @@ struct AccountSettingsScreen: View {
   private var deleteAccount: some View {
     Section {
       Group {
-        ProgressButton("Export CSV", systemImage: "square.and.arrow.up") { await viewModel.exportData(onError: { message in
-          toastManager.toggle(.error(message))
-        }) }
-        Button(role: .destructive, action: { viewModel.showDeleteConfirmation = true }, label: {
+        ProgressButton(
+          "Export CSV",
+          systemImage: "square.and.arrow.up",
+          action: { await profileManager.exportData(onError: { message in
+            toastManager.toggle(.error(message))
+          }) }
+        )
+        Button(role: .destructive, action: { showDeleteConfirmation = true }, label: {
           if UIColor.responds(to: Selector(("_systemDestructiveTintColor"))),
              let destructive = UIColor.perform(Selector(("_systemDestructiveTintColor")))?
              .takeUnretainedValue() as? UIColor
