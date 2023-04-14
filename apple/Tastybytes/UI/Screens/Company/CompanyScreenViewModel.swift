@@ -39,8 +39,7 @@ extension CompanyScreen {
       case let .success(summary):
         self.summary = summary
       case let .failure(error):
-        logger
-          .error("failed to load summary for company: \(error.localizedDescription)")
+        logger.error("failed to load summary for company: \(error.localizedDescription)")
       }
     }
 
@@ -58,8 +57,7 @@ extension CompanyScreen {
       case .success:
         company = Company(id: company.id, name: company.name, logoFile: company.logoFile, isVerified: isVerified)
       case let .failure(error):
-        logger
-          .error("failed to verify company: \(error.localizedDescription)")
+        logger.error("failed to verify company: \(error.localizedDescription)")
       }
     }
   }

@@ -23,8 +23,7 @@ extension FriendsScreen {
       case let .success(friends):
         self.friends = friends
       case let .failure(error):
-        logger
-          .error("failed to load friends' : \(error.localizedDescription)")
+        logger.error("failed to load friends' : \(error.localizedDescription)")
       }
     }
   }

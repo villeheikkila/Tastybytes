@@ -31,10 +31,7 @@ extension CategoryServingStyleSheet {
           servingStyles.append(servingStyle)
         }
       case let .failure(error):
-        logger
-          .error(
-            "failed to add serving style to category': \(error.localizedDescription)"
-          )
+        logger.error("failed to add serving style to category': \(error.localizedDescription)")
       }
     }
 
@@ -50,10 +47,7 @@ extension CategoryServingStyleSheet {
         }
         onDelete()
       case let .failure(error):
-        logger
-          .error(
-            "failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)"
-          )
+        logger.error("failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)")
       }
     }
   }

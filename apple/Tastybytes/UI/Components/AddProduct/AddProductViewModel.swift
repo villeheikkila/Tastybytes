@@ -183,8 +183,7 @@ extension AddProductView {
         hasSubBrand = initialProduct.subBrand.name != nil
         logoFile = initialProduct.logoFile
       case let .failure(error):
-        logger
-          .error("failed to load brand owner for product '\(initialProduct.id)': \(error.localizedDescription)")
+        logger.error("failed to load brand owner for product '\(initialProduct.id)': \(error.localizedDescription)")
       }
     }
 
@@ -224,10 +223,7 @@ extension AddProductView {
       case .success:
         onSuccess()
       case let .failure(error):
-        logger
-          .error(
-            "failed to create product edit suggestion for '\(productId)': \(error.localizedDescription)"
-          )
+        logger.error("failed to create product edit suggestion for '\(productId)': \(error.localizedDescription)")
       }
     }
 

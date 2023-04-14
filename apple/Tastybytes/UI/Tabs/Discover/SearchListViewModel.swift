@@ -105,8 +105,7 @@ extension SearchListView {
         }
         isSearched = true
       case let .failure(error):
-        logger
-          .error("searching products with barcode \(barcode.barcode) failed: \(error.localizedDescription)")
+        logger.error("searching products with barcode \(barcode.barcode) failed: \(error.localizedDescription)")
       }
     }
 

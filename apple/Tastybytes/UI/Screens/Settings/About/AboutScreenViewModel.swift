@@ -16,10 +16,7 @@ extension AboutScreen {
       case let .success(aboutPage):
         self.aboutPage = aboutPage
       case let .failure(error):
-        logger
-          .error(
-            "fetching about page failed: \(error.localizedDescription)"
-          )
+        logger.error("fetching about page failed: \(error.localizedDescription)")
       }
     }
   }

@@ -28,8 +28,7 @@ class AppDataManager: ObservableObject {
     case let .success(categories):
       self.categories = categories
     case let .failure(error):
-      logger
-        .error("failed to load categories: \(error.localizedDescription)")
+      logger.error("failed to load categories: \(error.localizedDescription)")
     }
   }
 }

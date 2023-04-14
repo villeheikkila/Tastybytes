@@ -57,8 +57,7 @@ extension CategoryManagementScreen {
       case .success:
         await loadCategories()
       case let .failure(error):
-        logger
-          .error("failed to add new category with name \(name): \(error.localizedDescription)")
+        logger.error("failed to add new category with name \(name): \(error.localizedDescription)")
       }
     }
 
