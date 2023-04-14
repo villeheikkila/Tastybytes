@@ -25,7 +25,13 @@ struct CheckInScreen: View {
     .navigationBarItems(
       trailing: Menu {
         ShareLink("Share", item: NavigatablePath.checkIn(id: viewModel.checkIn.id).url)
-
+        RouterLink(
+          "Open Company",
+          systemImage: "network",
+          screen: .company(viewModel.checkIn.product.subBrand.brand.brandOwner)
+        )
+        RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(viewModel.checkIn.product.subBrand.brand))
+        RouterLink("Open Product", systemImage: "grid", screen: .product(viewModel.checkIn.product))
         Divider()
 
         if profileManager.getId() != viewModel.checkIn.profile.id {
