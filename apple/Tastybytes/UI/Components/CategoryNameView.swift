@@ -7,6 +7,11 @@ struct CategoryNameView: View {
     Text(category.label)
       .font(.caption).bold()
       .grayscale(1)
+      .padding(4)
+      .overlay(
+        RoundedRectangle(cornerRadius: 6)
+          .stroke(lineWidth: 1)
+      )
   }
 }
 

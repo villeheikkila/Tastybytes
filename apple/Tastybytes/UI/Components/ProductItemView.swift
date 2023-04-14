@@ -27,7 +27,7 @@ struct ProductItemView: View {
           ProgressView()
         }
       }
-      VStack(alignment: .leading, spacing: 3) {
+      VStack(alignment: .leading, spacing: 4) {
         HStack {
           Text(product.getDisplayName(.fullName))
             .font(.headline)

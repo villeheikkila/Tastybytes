@@ -8,8 +8,17 @@ struct CategoryView: View {
     HStack(spacing: 4) {
       CategoryNameView(category: category)
       ForEach(subcategories, id: \.name) { subcategory in
-        ChipView(title: subcategory.name)
+        SubcategoryLabelView(subcategory: subcategory)
       }
     }
+  }
+}
+
+struct CategoryView_Previews: PreviewProvider {
+  static var previews: some View {
+    CategoryView(
+      category: Category(id: 0, name: "beverage", icon: "🥤"),
+      subcategories: [Subcategory(id: 0, name: "BCAA", isVerified: true)]
+    )
   }
 }

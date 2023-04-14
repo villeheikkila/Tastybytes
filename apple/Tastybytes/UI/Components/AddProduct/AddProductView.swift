@@ -138,9 +138,9 @@ struct AddProductView: View {
             Text("Subcategories")
               .fontWeight(.medium)
           } else {
-            HStack {
+            HStack(spacing: 4) {
               ForEach(viewModel.subcategories) { subcategory in
-                ChipView(title: subcategory.name)
+                SubcategoryLabelView(subcategory: subcategory)
               }
             }
           }

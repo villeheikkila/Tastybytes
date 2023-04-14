@@ -69,6 +69,7 @@
 		5C32C40C29E7150D008CE8A9 /* RouterLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40B29E7150D008CE8A9 /* RouterLink.swift */; };
 		5C32C40E29E715B2008CE8A9 /* NavigatablePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40D29E715B2008CE8A9 /* NavigatablePath.swift */; };
 		5C32C41029E87DEB008CE8A9 /* ButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40F29E87DEB008CE8A9 /* ButtonExtensions.swift */; };
+		5C32C41229E9F82F008CE8A9 /* SubcategoryLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C41129E9F82F008CE8A9 /* SubcategoryLabelView.swift */; };
 		5C353CBC29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBB29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift */; };
 		5C353CBE29A248300067C4EE /* BottomOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBD29A248300067C4EE /* BottomOverlay.swift */; };
 		5C353CC029A249660067C4EE /* ProductFilterOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */; };
@@ -298,6 +299,7 @@
 		5C32C40B29E7150D008CE8A9 /* RouterLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterLink.swift; sourceTree = "<group>"; };
 		5C32C40D29E715B2008CE8A9 /* NavigatablePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatablePath.swift; sourceTree = "<group>"; };
 		5C32C40F29E87DEB008CE8A9 /* ButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonExtensions.swift; sourceTree = "<group>"; };
+		5C32C41129E9F82F008CE8A9 /* SubcategoryLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubcategoryLabelView.swift; sourceTree = "<group>"; };
 		5C353CBB29A23C8C0067C4EE /* ProductFilterSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterSheetViewModel.swift; sourceTree = "<group>"; };
 		5C353CBD29A248300067C4EE /* BottomOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomOverlay.swift; sourceTree = "<group>"; };
 		5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterOverlayView.swift; sourceTree = "<group>"; };
@@ -1361,6 +1363,7 @@
 				5C7C3579299ABFF4009A3C09 /* AddProduct */,
 				5C663F342932AEB9006F9A97 /* CategoryNameView.swift */,
 				5C0E365B292ADA290072EFBD /* SummaryView.swift */,
+				5C32C41129E9F82F008CE8A9 /* SubcategoryLabelView.swift */,
 				5CFB562E28F596A200F13A1E /* ChipView.swift */,
 				5CA7A532299D3F010066F604 /* ProgressButton.swift */,
 				5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */,
@@ -1610,6 +1613,7 @@
 				5CC2FE8F29196A5D002BDF83 /* LocationSearchSheet.swift in Sources */,
 				5C0E365A29296FCB0072EFBD /* SubcategoryRepository.swift in Sources */,
 				5CA7A535299E8ECB0066F604 /* DismissableSheetView.swift in Sources */,
+				5C32C41229E9F82F008CE8A9 /* SubcategoryLabelView.swift in Sources */,
 				5CDC9F9F29E4577B00B6082F /* Tab.swift in Sources */,
 				5C20A51029AA5A0500ABBA74 /* AdminTab.swift in Sources */,
 				5CED432028FAB5F5003F8194 /* ViewExtensions.swift in Sources */,
