@@ -8,6 +8,7 @@ protocol CompanyRepository {
   func getUnverified() async -> Result<[Company], Error>
   func insert(newCompany: Company.NewRequest) async -> Result<Company, Error>
   func update(updateRequest: Company.UpdateRequest) async -> Result<Company.Joined, Error>
+  func editSuggestion(updateRequest: Company.EditSuggestionRequest) async -> Result<Void, Error>
   func delete(id: Int) async -> Result<Void, Error>
   func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
   func search(searchTerm: String) async -> Result<[Company], Error>
@@ -117,6 +118,20 @@ struct SupabaseCompanyRepository: CompanyRepository {
         .value
 
       return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func editSuggestion(updateRequest: Company.EditSuggestionRequest) async -> Result<Void, Error> {
+    do {
+      try await client
+        .database
+        .from(Company.getQuery(.editSuggestionTable))
+        .insert(values: updateRequest)
+        .execute()
+
+      return .success(())
     } catch {
       return .failure(error)
     }

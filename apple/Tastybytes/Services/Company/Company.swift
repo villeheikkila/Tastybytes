@@ -28,6 +28,7 @@ struct Company: Identifiable, Codable, Hashable, CompanyLogo {
 extension Company {
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "companies"
+    let editSuggestionTable = "company_edit_suggestions"
     let saved = "id, name, logo_file, is_verified"
     let logoBucketId = "logos"
     let owner = queryWithTableName(tableName, saved, true)
@@ -35,6 +36,8 @@ extension Company {
     switch queryType {
     case .tableName:
       return tableName
+    case .editSuggestionTable:
+      return editSuggestionTable
     case .logoBucket:
       return logoBucketId
     case let .saved(withTableName):
@@ -46,6 +49,7 @@ extension Company {
 
   enum QueryType {
     case tableName
+    case editSuggestionTable
     case logoBucket
     case saved(_ withTableName: Bool)
     case joinedBrandSubcategoriesOwner(_ withTableName: Bool)
@@ -60,6 +64,16 @@ extension Company {
   struct UpdateRequest: Encodable {
     let id: Int
     let name: String
+  }
+
+  struct EditSuggestionRequest: Encodable {
+    let id: Int
+    let name: String
+
+    enum CodingKeys: String, CodingKey {
+      case id = "company_id"
+      case name
+    }
   }
 
   struct VerifyRequest: Encodable {

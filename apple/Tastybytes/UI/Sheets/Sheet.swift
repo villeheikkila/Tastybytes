@@ -40,7 +40,7 @@ enum Sheet: Identifiable, Equatable {
   case addSubcategory(category: CategoryProtocol, onSubmit: (_ newSubcategoryName: String) async -> Void)
   case addCategory(onSubmit: (_ newCategoryName: String) async -> Void)
   case editCompany(company: Company, onSuccess: () async -> Void)
-  case companyEditSuggestion(company: Company, onSubmit: () -> Void)
+  case companyEditSuggestion(company: Company, onSuccess: () -> Void)
   case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
 
   @ViewBuilder
@@ -119,9 +119,9 @@ enum Sheet: Identifiable, Equatable {
     case let .addCategory(onSubmit: onSubmit):
       AddCategorySheet(onSubmit: onSubmit)
     case let .editCompany(company: company, onSuccess: onSuccess):
-      EditCompanySheet(client, company: company, onSuccess: onSuccess)
-    case let .companyEditSuggestion(company: company, onSubmit: onSubmit):
-      CompanyEditSuggestionSheet(client, company: company, onSubmit: onSubmit)
+      EditCompanySheet(client, company: company, onSuccess: onSuccess, mode: .edit)
+    case let .companyEditSuggestion(company: company, onSuccess: onSuccess):
+      EditCompanySheet(client, company: company, onSuccess: onSuccess, mode: .editSuggestion)
     case let .userSheet(mode: mode, onSubmit: onSubmit):
       UserSheet(client, mode: mode, onSubmit: onSubmit)
     }

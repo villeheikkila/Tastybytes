@@ -23,7 +23,7 @@ struct CompanyScreen: View {
         .listRowSeparator(.hidden)
         .listRowBackground(Color.clear)
       }
-      Section {
+      Section("Brands") {
         ForEach(viewModel.sortedBrands) { brand in
           RouterLink(screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: viewModel.company, brand: brand))) {
             HStack {
@@ -33,8 +33,6 @@ struct CompanyScreen: View {
             }
           }
         }
-      } header: {
-        Text("Brands")
       }
       .headerProminence(.increased)
     }
@@ -122,9 +120,13 @@ struct CompanyScreen: View {
           toastManager.toggle(.success("Company updated"))
         }))
       } else {
-        RouterLink("Edit Suggestion", systemImage: "pencil", sheet: .companyEditSuggestion(company: viewModel.company, onSubmit: {
-          toastManager.toggle(.success("Edit suggestion sent!"))
-        }))
+        RouterLink(
+          "Edit Suggestion",
+          systemImage: "pencil",
+          sheet: .companyEditSuggestion(company: viewModel.company, onSuccess: {
+            toastManager.toggle(.success("Edit suggestion sent!"))
+          })
+        )
       }
       Divider()
       ReportButton(entity: .company(viewModel.company))
