@@ -2,31 +2,85 @@ import CachedAsyncImage
 import SwiftUI
 
 struct BrandScreen: View {
+  private let logger = getLogger(category: "BrandScreen")
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
-  @StateObject private var viewModel: ViewModel
+  @State private var brand: Brand.JoinedSubBrandsProductsCompany
+  @State private var summary: Summary?
+  @State private var editBrand: Brand.JoinedSubBrandsProductsCompany?
+  @State private var toUnverifySubBrand: SubBrand.JoinedProduct? {
+    didSet {
+      showSubBrandUnverificationConfirmation = true
+    }
+  }
 
-  init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany, refreshOnLoad: Bool = false) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, brand: brand, refreshOnLoad: refreshOnLoad))
+  @State private var showSubBrandUnverificationConfirmation = false
+  @State private var showBrandUnverificationConfirmation = false
+  @State private var showDeleteProductConfirmationDialog = false
+  @State private var productToDelete: Product.JoinedCategory? {
+    didSet {
+      if productToDelete != nil {
+        showDeleteProductConfirmationDialog = true
+      }
+    }
+  }
+
+  @State private var showDeleteBrandConfirmationDialog = false
+  @State private var brandToDelete: Brand.JoinedSubBrandsProducts? {
+    didSet {
+      showDeleteBrandConfirmationDialog = true
+    }
+  }
+
+  @State private var showDeleteSubBrandConfirmation = false
+  @State private var toDeleteSubBrand: SubBrand.JoinedProduct? {
+    didSet {
+      if oldValue == nil {
+        showDeleteSubBrandConfirmation = true
+      } else {
+        showDeleteSubBrandConfirmation = false
+      }
+    }
+  }
+
+  let client: Client
+  let refreshOnLoad: Bool
+
+  init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany, refreshOnLoad: Bool? = false) {
+    self.client = client
+    _brand = State(wrappedValue: brand)
+    self.refreshOnLoad = refreshOnLoad ?? false
+  }
+
+  var sortedSubBrands: [SubBrand.JoinedProduct] {
+    brand.subBrands
+      .filter { !($0.name == nil && $0.products.isEmpty) }
+      .sorted { lhs, rhs -> Bool in
+        switch (lhs.name, rhs.name) {
+        case let (lhs?, rhs?): return lhs < rhs
+        case (nil, _): return true
+        case (_?, nil): return false
+        }
+      }
   }
 
   var body: some View {
     List {
-      if let summary = viewModel.summary, summary.averageRating != nil {
+      if let summary, summary.averageRating != nil {
         Section {
           SummaryView(summary: summary)
         }
         .listRowSeparator(.hidden)
         .listRowBackground(Color.clear)
       }
-      ForEach(viewModel.sortedSubBrands) { subBrand in
+      ForEach(sortedSubBrands) { subBrand in
         Section {
           ForEach(subBrand.products) { product in
             let productJoined = Product.Joined(
               product: product,
               subBrand: subBrand,
-              brand: viewModel.brand
+              brand: brand
             )
             RouterLink(screen: .product(productJoined)) {
               ProductItemView(product: productJoined)
@@ -48,7 +102,7 @@ struct BrandScreen: View {
                       "Delete",
                       systemImage: "trash.fill",
                       role: .destructive,
-                      action: { viewModel.productToDelete = product }
+                      action: { productToDelete = product }
                     ).foregroundColor(.red)
                       .disabled(product.isVerified)
                   }
@@ -63,23 +117,23 @@ struct BrandScreen: View {
             Spacer()
             Menu {
               VerificationButton(isVerified: subBrand.isVerified, verify: {
-                await viewModel.verifySubBrand(subBrand, isVerified: true)
+                await verifySubBrand(subBrand, isVerified: true)
               }, unverify: {
-                viewModel.toUnverifySubBrand = subBrand
+                toUnverifySubBrand = subBrand
               })
               Divider()
               if profileManager.hasPermission(.canEditBrands) {
                 RouterLink(
                   "Edit",
                   systemImage: "pencil",
-                  sheet: .editSubBrand(brand: viewModel.brand, subBrand: subBrand, onUpdate: {
-                    await viewModel.refresh()
+                  sheet: .editSubBrand(brand: brand, subBrand: subBrand, onUpdate: {
+                    await refresh()
                   })
                 )
               }
-              ReportButton(entity: .subBrand(viewModel.brand, subBrand))
+              ReportButton(entity: .subBrand(brand, subBrand))
               if profileManager.hasPermission(.canDeleteBrands) {
-                Button("Delete", systemImage: "trash.fill", role: .destructive, action: { viewModel.toDeleteSubBrand = subBrand })
+                Button("Delete", systemImage: "trash.fill", role: .destructive, action: { toDeleteSubBrand = subBrand })
                   .disabled(subBrand.isVerified)
               }
             } label: {
@@ -95,59 +149,59 @@ struct BrandScreen: View {
     .listStyle(.plain)
     .refreshable {
       await hapticManager.wrapWithHaptics {
-        await viewModel.refresh()
+        await refresh()
       }
     }
     .task {
-      if viewModel.summary == nil {
-        await viewModel.getSummary()
+      if summary == nil {
+        await getSummary()
       }
-      if viewModel.refreshOnLoad {
-        await viewModel.refresh()
+      if refreshOnLoad {
+        await refresh()
       }
     }
     .toolbar {
       toolbarContent
     }
     .confirmationDialog("Unverify Sub-brand",
-                        isPresented: $viewModel.showSubBrandUnverificationConfirmation,
-                        presenting: viewModel.toUnverifySubBrand)
+                        isPresented: $showSubBrandUnverificationConfirmation,
+                        presenting: toUnverifySubBrand)
     { presenting in
       ProgressButton("Unverify \(presenting.name ?? "default") sub-brand", action: {
-        await viewModel.verifySubBrand(presenting, isVerified: false)
+        await verifySubBrand(presenting, isVerified: false)
         hapticManager.trigger(.notification(.success))
       })
     }
     .confirmationDialog("Unverify Brand",
-                        isPresented: $viewModel.showBrandUnverificationConfirmation,
-                        presenting: viewModel.brand)
+                        isPresented: $showBrandUnverificationConfirmation,
+                        presenting: brand)
     { presenting in
       ProgressButton("Unverify \(presenting.name) brand", action: {
-        await viewModel.verifyBrand(isVerified: false)
+        await verifyBrand(isVerified: false)
         hapticManager.trigger(.notification(.success))
       })
     }
     .confirmationDialog("Are you sure you want to delete sub-brand and all related products?",
-                        isPresented: $viewModel.showDeleteSubBrandConfirmation,
+                        isPresented: $showDeleteSubBrandConfirmation,
                         titleVisibility: .visible,
-                        presenting: viewModel.toDeleteSubBrand)
+                        presenting: toDeleteSubBrand)
     { presenting in
       ProgressButton(
         "Delete \(presenting.name ?? "default sub-brand")",
         role: .destructive,
         action: {
-          await viewModel.deleteSubBrand()
+          await deleteSubBrand()
           hapticManager.trigger(.notification(.success))
         }
       )
     }
     .confirmationDialog("Are you sure you want to delete brand and all related sub-brands and products?",
-                        isPresented: $viewModel.showDeleteBrandConfirmationDialog,
+                        isPresented: $showDeleteBrandConfirmationDialog,
                         titleVisibility: .visible,
-                        presenting: viewModel.brand)
+                        presenting: brand)
     { presenting in
       ProgressButton("Delete \(presenting.name)", role: .destructive, action: {
-        await viewModel.deleteBrand(onDelete: {
+        await deleteBrand(onDelete: {
           router.reset()
           hapticManager.trigger(.notification(.success))
         })
@@ -158,7 +212,7 @@ struct BrandScreen: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItem(placement: .principal) {
       HStack(alignment: .center, spacing: 18) {
-        if let logoUrl = viewModel.brand.logoUrl {
+        if let logoUrl = brand.logoUrl {
           CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
             image
               .resizable()
@@ -169,7 +223,7 @@ struct BrandScreen: View {
             ProgressView()
           }
         }
-        Text(viewModel.brand.name)
+        Text(brand.name)
           .font(.headline)
       }
     }
@@ -180,37 +234,112 @@ struct BrandScreen: View {
 
   private var navigationBarMenu: some View {
     Menu {
-      VerificationButton(isVerified: viewModel.brand.isVerified, verify: {
-        await viewModel.verifyBrand(isVerified: true)
+      VerificationButton(isVerified: brand.isVerified, verify: {
+        await verifyBrand(isVerified: true)
       }, unverify: {
-        viewModel.showBrandUnverificationConfirmation = true
+        showBrandUnverificationConfirmation = true
       })
       Divider()
-      ShareLink("Share", item: NavigatablePath.brand(id: viewModel.brand.id).url)
+      ShareLink("Share", item: NavigatablePath.brand(id: brand.id).url)
       if profileManager.hasPermission(.canCreateProducts) {
-        RouterLink("Add Product", systemImage: "plus", sheet: .addProductToBrand(brand: viewModel.brand, onCreate: { product in
+        RouterLink("Add Product", systemImage: "plus", sheet: .addProductToBrand(brand: brand, onCreate: { product in
           router.navigate(screen: .product(product))
         }))
       }
       Divider()
       if profileManager.hasPermission(.canEditBrands) {
-        RouterLink("Edit", systemImage: "pencil", sheet: .editBrand(brand: viewModel.brand, onUpdate: {
-          await viewModel.refresh()
+        RouterLink("Edit", systemImage: "pencil", sheet: .editBrand(brand: brand, onUpdate: {
+          await refresh()
         }))
       }
-      ReportButton(entity: .brand(viewModel.brand))
+      ReportButton(entity: .brand(brand))
       if profileManager.hasPermission(.canDeleteBrands) {
         Button(
           "Delete",
           systemImage: "trash.fill",
           role: .destructive,
-          action: { viewModel.showDeleteBrandConfirmationDialog = true }
+          action: { showDeleteBrandConfirmationDialog = true }
         )
-        .disabled(viewModel.brand.isVerified)
+        .disabled(brand.isVerified)
       }
     } label: {
       Label("Options menu", systemImage: "ellipsis")
         .labelStyle(.iconOnly)
+    }
+  }
+
+  func refresh() async {
+    let brandId = brand.id
+    async let summaryPromise = client.brand.getSummaryById(id: brandId)
+    async let brandPromise = client.brand.getJoinedById(id: brandId)
+
+    switch await summaryPromise {
+    case let .success(summary):
+      self.summary = summary
+    case let .failure(error):
+      logger.error("failed to load summary for brand: \(error.localizedDescription)")
+    }
+
+    switch await brandPromise {
+    case let .success(brand):
+      self.brand = brand
+    case let .failure(error):
+      logger.error("request for brand with \(brandId) failed: \(error.localizedDescription)")
+    }
+  }
+
+  func getSummary() async {
+    async let summaryPromise = client.brand.getSummaryById(id: brand.id)
+    switch await summaryPromise {
+    case let .success(summary):
+      self.summary = summary
+    case let .failure(error):
+      logger.error("failed to load summary for brand: \(error.localizedDescription)")
+    }
+  }
+
+  func verifyBrand(isVerified: Bool) async {
+    switch await client.brand.verification(id: brand.id, isVerified: isVerified) {
+    case .success:
+      brand = Brand.JoinedSubBrandsProductsCompany(
+        id: brand.id,
+        name: brand.name,
+        isVerified: isVerified,
+        brandOwner: brand.brandOwner,
+        subBrands: brand.subBrands
+      )
+    case let .failure(error):
+      logger.error("failed to verify brand': \(error.localizedDescription)")
+    }
+  }
+
+  func verifySubBrand(_ subBrand: SubBrand.JoinedProduct, isVerified: Bool) async {
+    switch await client.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
+    case .success:
+      await refresh()
+      logger.info("sub-brand succesfully verified")
+    case let .failure(error):
+      logger.error("failed to verify brand': \(error.localizedDescription)")
+    }
+  }
+
+  func deleteBrand(onDelete: @escaping () -> Void) async {
+    switch await client.brand.delete(id: brand.id) {
+    case .success:
+      onDelete()
+    case let .failure(error):
+      logger.error("failed to delete brand: \(error.localizedDescription)")
+    }
+  }
+
+  func deleteSubBrand() async {
+    guard let toDeleteSubBrand else { return }
+    switch await client.subBrand.delete(id: toDeleteSubBrand.id) {
+    case .success:
+      await refresh()
+      logger.info("succesfully deleted sub-brand")
+    case let .failure(error):
+      logger.error("failed to delete brand '\(toDeleteSubBrand.id)': \(error.localizedDescription)")
     }
   }
 }

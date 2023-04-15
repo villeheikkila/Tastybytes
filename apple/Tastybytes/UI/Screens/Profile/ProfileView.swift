@@ -3,33 +3,43 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileView: View {
-  @StateObject private var viewModel: ViewModel
+  private let logger = getLogger(category: "ProfileView")
   @Binding private var scrollToTop: Int
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
+  @State private var profile: Profile
+  @State private var profileSummary: ProfileSummary?
+  @State private var selectedItem: PhotosPickerItem?
   private let topAnchor = "top"
 
+  let client: Client
+  let isCurrentUser: Bool
+  let isShownInFull: Bool
+
   init(_ client: Client, profile: Profile, scrollToTop: Binding<Int>, isCurrentUser: Bool) {
+    self.client = client
     _scrollToTop = scrollToTop
-    _viewModel = StateObject(wrappedValue: ViewModel(client, profile: profile, isCurrentUser: isCurrentUser))
+    _profile = State(wrappedValue: profile)
+    self.isCurrentUser = isCurrentUser
+    isShownInFull = isCurrentUser || !profile.isPrivate
   }
 
   var showInFull: Bool {
-    viewModel.isShownInFull || friendManager.isFriend(viewModel.profile)
+    isShownInFull || friendManager.isFriend(profile)
   }
 
   var body: some View {
     CheckInListView(
-      viewModel.client,
-      fetcher: .profile(viewModel.profile),
+      client,
+      fetcher: .profile(profile),
       scrollToTop: $scrollToTop,
       onRefresh: {
-        await viewModel.getSummary()
+        await getSummary()
       },
       topAnchor: topAnchor,
       header: {
-        profileSummary
+        profileSummarySection
           .listRowSeparator(.hidden)
           .id(topAnchor)
         VStack(spacing: 20) {
@@ -40,8 +50,8 @@ struct ProfileView: View {
           } else {
             privateProfileSign
           }
-          if !viewModel.isCurrentUser,
-             !friendManager.isFriend(viewModel.profile)
+          if !isCurrentUser,
+             !friendManager.isFriend(profile)
           {
             sendFriendRequestButton
           }
@@ -57,7 +67,7 @@ struct ProfileView: View {
   private var sendFriendRequestButton: some View {
     HStack {
       Spacer()
-      ProgressButton("Send Friend Request", action: { await friendManager.sendFriendRequest(receiver: viewModel.profile.id) {
+      ProgressButton("Send Friend Request", action: { await friendManager.sendFriendRequest(receiver: profile.id) {
         toastManager.toggle(.success("Friend Request Sent!"))
       }})
       .font(.headline)
@@ -67,7 +77,7 @@ struct ProfileView: View {
   }
 
   private var avatar: some View {
-    AvatarView(avatarUrl: viewModel.profile.avatarUrl, size: 90, id: viewModel.profile.id)
+    AvatarView(avatarUrl: profile.avatarUrl, size: 90, id: profile.id)
   }
 
   private var privateProfileSign: some View {
@@ -89,14 +99,14 @@ struct ProfileView: View {
     }
   }
 
-  private var profileSummary: some View {
+  private var profileSummarySection: some View {
     HStack(alignment: .center, spacing: 20) {
       if showInFull {
         HStack {
           VStack {
             Text("Check-ins")
               .font(.caption).bold().textCase(.uppercase)
-            Text(String(viewModel.profileSummary?.totalCheckIns ?? 0))
+            Text(String(profileSummary?.totalCheckIns ?? 0))
               .font(.headline)
           }
           .padding(.leading, 30)
@@ -109,7 +119,7 @@ struct ProfileView: View {
       VStack(alignment: .center) {
         if showInFull {
           PhotosPicker(
-            selection: $viewModel.selectedItem,
+            selection: $selectedItem,
             matching: .images,
             photoLibrary: .shared()
           ) {
@@ -119,8 +129,8 @@ struct ProfileView: View {
           avatar
         }
       }
-      .onChange(of: viewModel.selectedItem) { newValue in
-        Task { await viewModel.uploadAvatar(userId: profileManager.getId(), newAvatar: newValue) }
+      .onChange(of: selectedItem) { newValue in
+        Task { await uploadAvatar(userId: profileManager.getId(), newAvatar: newValue) }
       }
 
       Spacer()
@@ -130,7 +140,7 @@ struct ProfileView: View {
           VStack {
             Text("Unique")
               .font(.caption).bold().textCase(.uppercase)
-            Text(String(viewModel.profileSummary?.uniqueCheckIns ?? 0))
+            Text(String(profileSummary?.uniqueCheckIns ?? 0))
               .font(.headline)
           }
           .padding(.trailing, 30)
@@ -140,12 +150,12 @@ struct ProfileView: View {
     }
     .padding(.top, 10)
     .task {
-      if viewModel.profileSummary == nil {
-        await viewModel.getSummary()
+      if profileSummary == nil {
+        await getSummary()
       }
     }
     .contextMenu {
-      ShareLink("Share", item: NavigatablePath.profile(id: viewModel.profile.id).url)
+      ShareLink("Share", item: NavigatablePath.profile(id: profile.id).url)
     }
   }
 
@@ -153,43 +163,43 @@ struct ProfileView: View {
     Chart {
       BarMark(
         x: .value("Rating", "0.5"),
-        y: .value("Value", viewModel.profileSummary?.rating1 ?? 0)
+        y: .value("Value", profileSummary?.rating1 ?? 0)
       )
       BarMark(
         x: .value("Rating", "1"),
-        y: .value("Value", viewModel.profileSummary?.rating2 ?? 0)
+        y: .value("Value", profileSummary?.rating2 ?? 0)
       )
       BarMark(
         x: .value("Rating", "1.5"),
-        y: .value("Value", viewModel.profileSummary?.rating3 ?? 0)
+        y: .value("Value", profileSummary?.rating3 ?? 0)
       )
       BarMark(
         x: .value("Rating", "2"),
-        y: .value("Value", viewModel.profileSummary?.rating4 ?? 0)
+        y: .value("Value", profileSummary?.rating4 ?? 0)
       )
       BarMark(
         x: .value("Rating", "2.5"),
-        y: .value("Value", viewModel.profileSummary?.rating5 ?? 0)
+        y: .value("Value", profileSummary?.rating5 ?? 0)
       )
       BarMark(
         x: .value("Rating", "3"),
-        y: .value("Value", viewModel.profileSummary?.rating6 ?? 0)
+        y: .value("Value", profileSummary?.rating6 ?? 0)
       )
       BarMark(
         x: .value("Rating", "3.5"),
-        y: .value("Value", viewModel.profileSummary?.rating7 ?? 0)
+        y: .value("Value", profileSummary?.rating7 ?? 0)
       )
       BarMark(
         x: .value("Rating", "4"),
-        y: .value("Value", viewModel.profileSummary?.rating8 ?? 0)
+        y: .value("Value", profileSummary?.rating8 ?? 0)
       )
       BarMark(
         x: .value("Rating", "4.5"),
-        y: .value("Value", viewModel.profileSummary?.rating9 ?? 0)
+        y: .value("Value", profileSummary?.rating9 ?? 0)
       )
       BarMark(
         x: .value("Rating", "5"),
-        y: .value("Value", viewModel.profileSummary?.rating10 ?? 0)
+        y: .value("Value", profileSummary?.rating10 ?? 0)
       )
     }
     .chartLegend(.hidden)
@@ -209,14 +219,14 @@ struct ProfileView: View {
         Text("Unrated")
           .font(.caption).bold().textCase(.uppercase)
           .textCase(.uppercase)
-        Text(String(viewModel.profileSummary?.unrated ?? 0))
+        Text(String(profileSummary?.unrated ?? 0))
           .font(.headline)
       }
       VStack {
         Text("Average")
           .font(.caption).bold().textCase(.uppercase)
           .textCase(.uppercase)
-        Text(String(viewModel.profileSummary?.averageRating.toRatingString ?? "-"))
+        Text(String(profileSummary?.averageRating.toRatingString ?? "-"))
           .font(.headline)
       }
     }
@@ -224,7 +234,7 @@ struct ProfileView: View {
 
   private var joinedAtSection: some View {
     HStack {
-      Text("Joined \(viewModel.profile.joinedAt.customFormat(.date))").bold()
+      Text("Joined \(profile.joinedAt.customFormat(.date))").bold()
     }
   }
 
@@ -233,12 +243,39 @@ struct ProfileView: View {
       RouterLink(
         "Friends",
         systemImage: "person.crop.rectangle.stack",
-        screen: profileManager.getProfile() == viewModel.profile ? .currentUserFriends : .friends(viewModel.profile)
+        screen: profileManager.getProfile() == profile ? .currentUserFriends : .friends(profile)
       )
-      RouterLink("Products", systemImage: "checkmark.rectangle", screen: .profileProducts(viewModel.profile))
-      RouterLink("Statistics", systemImage: "chart.bar.xaxis", screen: .profileStatistics(viewModel.profile))
+      RouterLink("Products", systemImage: "checkmark.rectangle", screen: .profileProducts(profile))
+      RouterLink("Statistics", systemImage: "chart.bar.xaxis", screen: .profileStatistics(profile))
     }
     .font(.subheadline)
     .bold()
+  }
+
+  func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) async {
+    guard let data = await newAvatar?.getJPEG() else { return }
+    switch await client.profile.uploadAvatar(userId: userId, data: data) {
+    case let .success(avatarFile):
+      profile = Profile(
+        id: profile.id,
+        preferredName: profile.preferredName,
+        isPrivate: profile.isPrivate,
+        avatarFile: avatarFile,
+        joinedAt: profile.joinedAt
+      )
+    case let .failure(error):
+      logger.error("uplodaing avatar for \(userId) failed: \(error.localizedDescription)")
+    }
+  }
+
+  func getSummary() async {
+    switch await client.checkIn.getSummaryByProfileId(id: profile.id) {
+    case let .success(summary):
+      withAnimation {
+        profileSummary = summary
+      }
+    case let .failure(error):
+      logger.error("fetching profile data failed: \(error.localizedDescription)")
+    }
   }
 }

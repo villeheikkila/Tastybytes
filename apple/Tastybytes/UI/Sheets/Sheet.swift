@@ -69,7 +69,7 @@ enum Sheet: Identifiable, Equatable {
     case let .companySearch(onSelect):
       CompanySearchSheet(client, onSelect: onSelect)
     case let .barcodeManagement(product):
-      BarcodeManagementSheet(client, product: product)
+      BarcodeManagementSheet(client: client, product: product)
     case let .productEditSuggestion(product: product):
       DismissableSheet(title: "Edit Suggestion") { _ in
         AddProductView(client, mode: .editSuggestion(product))

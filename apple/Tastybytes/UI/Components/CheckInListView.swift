@@ -1,12 +1,30 @@
 import SwiftUI
 
 struct CheckInListView<Header>: View where Header: View {
+  enum Fetcher {
+    case activityFeed
+    case product(Product.Joined)
+    case profile(Profile)
+    case location(Location)
+  }
+
+  private let logger = getLogger(category: "CheckInListView")
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
-  @StateObject private var viewModel: ViewModel
   @State private var scrollProxy: ScrollViewProxy?
+  @State private var showDeleteCheckInConfirmationDialog = false
+  @State private var showDeleteConfirmationFor: CheckIn? {
+    didSet {
+      showDeleteCheckInConfirmationDialog = true
+    }
+  }
+
+  @State private var editCheckIn: CheckIn?
+  @State private var checkIns = [CheckIn]()
+  @State private var isLoading = false
+  @State private var page = 0
   @Binding private var scrollToTop: Int
   let header: Header
   let onRefresh: () async -> Void
@@ -20,19 +38,24 @@ struct CheckInListView<Header>: View where Header: View {
     topAnchor: String? = nil,
     @ViewBuilder header: @escaping () -> Header
   ) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, fetcher: fetcher))
+    self.client = client
+    self.fetcher = fetcher
     _scrollToTop = scrollToTop
     self.topAnchor = topAnchor
     self.header = header()
     self.onRefresh = onRefresh
   }
 
+  let client: Client
+  let fetcher: Fetcher
+  private let pageSize = 10
+
   var body: some View {
     ScrollViewReader { proxy in
       List {
         header
         checkInsList
-        if viewModel.isLoading {
+        if isLoading {
           ProgressView()
             .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
             .listRowSeparator(.hidden)
@@ -45,15 +68,15 @@ struct CheckInListView<Header>: View where Header: View {
         scrollProxy = proxy
       }
       .confirmationDialog("Are you sure you want to delete check-in? The data will be permanently lost.",
-                          isPresented: $viewModel.showDeleteCheckInConfirmationDialog,
+                          isPresented: $showDeleteCheckInConfirmationDialog,
                           titleVisibility: .visible,
-                          presenting: viewModel.showDeleteConfirmationFor)
+                          presenting: showDeleteConfirmationFor)
       { presenting in
         ProgressButton(
           "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
           role: .destructive,
           action: {
-            await viewModel.deleteCheckIn(checkIn: presenting)
+            await deleteCheckIn(checkIn: presenting)
             hapticManager.trigger(.notification(.success))
           }
         )
@@ -62,19 +85,19 @@ struct CheckInListView<Header>: View where Header: View {
         withAnimation {
           if let topAnchor {
             scrollProxy?.scrollTo(topAnchor, anchor: .top)
-          } else if let first = viewModel.checkIns.first {
+          } else if let first = checkIns.first {
             scrollProxy?.scrollTo(first.id, anchor: .top)
           }
         }
       })
       .refreshable {
         await hapticManager.wrapWithHaptics {
-          await viewModel.refresh()
+          await refresh()
           await onRefresh()
         }
       }
       .task {
-        await viewModel.fetchActivityFeedItems(onComplete: {
+        await fetchActivityFeedItems(onComplete: {
           if splashScreenManager.state != .finished {
             await splashScreenManager.dismiss()
           }
@@ -84,8 +107,8 @@ struct CheckInListView<Header>: View where Header: View {
   }
 
   @ViewBuilder private var checkInsList: some View {
-    ForEach(viewModel.uniqueCheckIns) { checkIn in
-      CheckInCardView(client: viewModel.client, checkIn: checkIn, loadedFrom: getLoadedFrom)
+    ForEach(uniqueCheckIns) { checkIn in
+      CheckInCardView(client: client, checkIn: checkIn, loadedFrom: getLoadedFrom)
         .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
         .listRowSeparator(.hidden)
         .id(checkIn.id)
@@ -98,21 +121,21 @@ struct CheckInListView<Header>: View where Header: View {
           Divider()
           if checkIn.profile.id == profileManager.getId() {
             RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
-              viewModel.onCheckInUpdate(updatedCheckIn)
+              onCheckInUpdate(updatedCheckIn)
             }))
             Button(
               "Delete",
               systemImage: "trash.fill",
               role: .destructive,
-              action: { viewModel.showDeleteConfirmationFor = checkIn }
+              action: { showDeleteConfirmationFor = checkIn }
             )
           }
           ReportButton(entity: .checkIn(checkIn))
         }
         .onAppear {
-          if checkIn == viewModel.checkIns.last, viewModel.isLoading != true {
+          if checkIn == checkIns.last, isLoading != true {
             Task {
-              await viewModel.fetchActivityFeedItems()
+              await fetchActivityFeedItems()
             }
           }
         }
@@ -133,7 +156,7 @@ struct CheckInListView<Header>: View where Header: View {
   }
 
   private var getLoadedFrom: CheckInCardView.LoadedFrom {
-    switch viewModel.fetcher {
+    switch fetcher {
     case let .profile(profile):
       return .profile(profile)
     case let .location(location):
@@ -142,6 +165,72 @@ struct CheckInListView<Header>: View where Header: View {
       return .product
     case .activityFeed:
       return .activity(profileManager.getProfile())
+    }
+  }
+
+  var uniqueCheckIns: [CheckIn] {
+    checkIns.unique(selector: { $0.id == $1.id })
+  }
+
+  func refresh() async {
+    page = 0
+    checkIns = [CheckIn]()
+    await fetchActivityFeedItems()
+  }
+
+  func getPagination(page: Int, size: Int) -> (Int, Int) {
+    let limit = size + 1
+    let from = page * limit
+    let to = from + size
+    return (from, to)
+  }
+
+  func deleteCheckIn(checkIn: CheckIn) async {
+    switch await client.checkIn.delete(id: checkIn.id) {
+    case .success:
+      withAnimation {
+        checkIns.remove(object: checkIn)
+      }
+    case let .failure(error):
+      logger.error("deleting check-in failed: \(error.localizedDescription)")
+    }
+  }
+
+  func onCheckInUpdate(_ checkIn: CheckIn) {
+    guard let index = checkIns.firstIndex(where: { $0.id == checkIn.id }) else { return }
+    checkIns[index] = checkIn
+  }
+
+  func fetchActivityFeedItems(onComplete: (() async -> Void)? = nil) async {
+    let (from, to) = getPagination(page: page, size: pageSize)
+    isLoading = true
+
+    switch await checkInFetcher(from: from, to: to) {
+    case let .success(checkIns):
+      withAnimation {
+        self.checkIns.append(contentsOf: checkIns)
+      }
+      page += 1
+      isLoading = false
+
+      if let onComplete {
+        await onComplete()
+      }
+    case let .failure(error):
+      logger.error("fetching check-ins failed: \(error.localizedDescription)")
+    }
+  }
+
+  func checkInFetcher(from: Int, to: Int) async -> Result<[CheckIn], Error> {
+    switch fetcher {
+    case .activityFeed:
+      return await client.checkIn.getActivityFeed(from: from, to: to)
+    case let .profile(product):
+      return await client.checkIn.getByProfileId(id: product.id, queryType: .paginated(from, to))
+    case let .product(product):
+      return await client.checkIn.getByProductId(id: product.id, from: from, to: to)
+    case let .location(location):
+      return await client.checkIn.getByLocation(locationId: location.id, from: from, to: to)
     }
   }
 }

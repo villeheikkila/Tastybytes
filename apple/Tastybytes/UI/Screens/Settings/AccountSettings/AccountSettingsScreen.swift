@@ -38,7 +38,6 @@ struct AccountSettingsScreen: View {
       withAnimation {
         showEmailConfirmation = email != profileManager.email
       }
-
     })
     .onAppear {
       email = profileManager.email

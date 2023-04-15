@@ -1,21 +1,17 @@
 import SwiftUI
 
 struct FlavorManagementScreen: View {
-  @StateObject private var viewModel: ViewModel
+  @EnvironmentObject private var appDataManager: AppDataManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
 
-  init(_ client: Client) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
-  }
-
   var body: some View {
     List {
-      ForEach(viewModel.flavors) { flavor in
+      ForEach(appDataManager.flavors) { flavor in
         Text(flavor.label)
           .swipeActions {
             ProgressButton("Delete", systemImage: "trash", role: .destructive, action: {
-              await viewModel.deleteFlavor(flavor)
+              await appDataManager.deleteFlavor(flavor)
             })
           }
       }
@@ -23,16 +19,16 @@ struct FlavorManagementScreen: View {
     .navigationBarTitle("Flavors")
     .navigationBarItems(
       trailing: RouterLink("Add flavors", systemImage: "plus", sheet: .newFlavor(onSubmit: { newFlavor in
-        await viewModel.addFlavor(name: newFlavor)
+        await appDataManager.addFlavor(name: newFlavor)
       })).labelStyle(.iconOnly)
     )
     .refreshable {
       await hapticManager.wrapWithHaptics {
-        await viewModel.loadFlavors()
+        await appDataManager.loadFlavors()
       }
     }
     .task {
-      await viewModel.loadFlavors()
+      await appDataManager.loadFlavors()
     }
   }
 }

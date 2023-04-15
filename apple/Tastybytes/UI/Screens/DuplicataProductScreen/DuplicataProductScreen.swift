@@ -1,18 +1,27 @@
 import SwiftUI
 
 struct DuplicateProductScreen: View {
-  @StateObject private var viewModel: ViewModel
+  private let logger = getLogger(category: "ProductVerificationScreen")
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var hapticManager: HapticManager
+  @State private var products = [Product.Joined]()
+  @State private var deleteProduct: Product.Joined? {
+    didSet {
+      showDeleteProductConfirmationDialog = true
+    }
+  }
+
+  @State private var showDeleteProductConfirmationDialog = false
+
+  let client: Client
 
   init(_ client: Client) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.client = client
   }
 
   var body: some View {
     List {
-      ForEach(viewModel.products) { product in
-
+      ForEach(products) { product in
         VStack {
           if let createdBy = product.createdBy {
             HStack {
@@ -31,25 +40,25 @@ struct DuplicateProductScreen: View {
               router.navigate(screen: .product(product))
             }
             .swipeActions {
-              ProgressButton("Verify", systemImage: "checkmark", action: { await viewModel.verifyProduct(product) }).tint(.green)
+              ProgressButton("Verify", systemImage: "checkmark", action: { await verifyProduct(product) }).tint(.green)
               RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: product, onEdit: {
-                await viewModel.loadProducts()
+                await loadProducts()
               })).tint(.yellow)
-              Button("Delete", systemImage: "trash", role: .destructive, action: { viewModel.deleteProduct = product })
+              Button("Delete", systemImage: "trash", role: .destructive, action: { deleteProduct = product })
             }
         }
       }
     }
     .listStyle(.plain)
     .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
-                        isPresented: $viewModel.showDeleteProductConfirmationDialog,
+                        isPresented: $showDeleteProductConfirmationDialog,
                         titleVisibility: .visible,
-                        presenting: viewModel.deleteProduct)
+                        presenting: deleteProduct)
     { presenting in
       ProgressButton(
         "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
-        action: { await viewModel.deleteProduct(onDelete: {
+        action: { await deleteProduct(onDelete: {
           hapticManager.trigger(.notification(.success))
           router.removeLast()
         })
@@ -59,11 +68,43 @@ struct DuplicateProductScreen: View {
     .navigationBarTitle("Unverified Products")
     .refreshable {
       await hapticManager.wrapWithHaptics {
-        await viewModel.loadProducts()
+        await loadProducts()
       }
     }
     .task {
-      await viewModel.loadProducts()
+      await loadProducts()
+    }
+  }
+
+  func verifyProduct(_ product: Product.Joined) async {
+    switch await client.product.verification(id: product.id, isVerified: true) {
+    case .success:
+      withAnimation {
+        products.remove(object: product)
+      }
+    case let .failure(error):
+      logger.error("failed to verify product \(product.id): \(error.localizedDescription)")
+    }
+  }
+
+  func deleteProduct(onDelete: @escaping () -> Void) async {
+    guard let deleteProduct else { return }
+    switch await client.product.delete(id: deleteProduct.id) {
+    case .success:
+      onDelete()
+    case let .failure(error):
+      logger.error("failed to delete product \(deleteProduct.id): \(error.localizedDescription)")
+    }
+  }
+
+  func loadProducts() async {
+    switch await client.product.getUnverified() {
+    case let .success(products):
+      withAnimation {
+        self.products = products
+      }
+    case let .failure(error):
+      logger.error("fetching flavors failed: \(error.localizedDescription)")
     }
   }
 }

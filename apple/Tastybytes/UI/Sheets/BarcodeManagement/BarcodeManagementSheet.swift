@@ -1,17 +1,17 @@
 import SwiftUI
 
 struct BarcodeManagementSheet: View {
-  @StateObject private var viewModel: ViewModel
+  private let logger = getLogger(category: "BarcodeManagementSheet")
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
+  @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []
 
-  init(_ client: Client, product: Product.Joined) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, product: product))
-  }
+  let client: Client
+  let product: Product.Joined
 
   var body: some View {
     Form {
-      ForEach(viewModel.barcodes) { barcode in
+      ForEach(barcodes) { barcode in
         HStack {
           AvatarView(avatarUrl: barcode.profile.avatarUrl, size: 32, id: barcode.profile.id)
           VStack(alignment: .leading, spacing: 2) {
@@ -26,22 +26,44 @@ struct BarcodeManagementSheet: View {
         }
         .swipeActions {
           ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
-            await viewModel.deleteBarcode(barcode)
+            await deleteBarcode(barcode)
             hapticManager.trigger(.notification(.success))
           })
         }
         .contextMenu {
           ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
-            await viewModel.deleteBarcode(barcode)
+            await deleteBarcode(barcode)
             hapticManager.trigger(.notification(.success))
           })
         }
       }
     }
     .task {
-      await viewModel.getBarcodes()
+      await getBarcodes()
     }
     .navigationTitle("Barcodes")
     .navigationBarItems(leading: Button("Cancel", role: .cancel, action: { dismiss() }).bold())
+  }
+
+  func deleteBarcode(_ barcode: ProductBarcode.JoinedWithCreator) async {
+    switch await client.productBarcode.delete(id: barcode.id) {
+    case .success:
+      withAnimation {
+        barcodes.remove(object: barcode)
+      }
+    case let .failure(error):
+      logger.error("failed to fetch barcodes for product: \(error.localizedDescription)")
+    }
+  }
+
+  func getBarcodes() async {
+    switch await client.productBarcode.getByProductId(id: product.id) {
+    case let .success(barcodes):
+      withAnimation {
+        self.barcodes = barcodes
+      }
+    case let .failure(error):
+      logger.error("failed to fetch barcodes for product: \(error.localizedDescription)")
+    }
   }
 }

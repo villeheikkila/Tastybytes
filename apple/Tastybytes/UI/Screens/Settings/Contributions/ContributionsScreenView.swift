@@ -1,16 +1,15 @@
 import SwiftUI
 
 struct ContributionsScreen: View {
-  @StateObject private var viewModel: ViewModel
+  private let logger = getLogger(category: "ContributionsScreen")
   @EnvironmentObject private var profileManager: ProfileManager
+  @State private var contributions: Contributions?
 
-  init(_ client: Client) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
-  }
+  let client: Client
 
   var body: some View {
     List {
-      if let contributions = viewModel.contributions {
+      if let contributions {
         HStack {
           Text("Products")
           Spacer()
@@ -41,7 +40,18 @@ struct ContributionsScreen: View {
     .navigationTitle("Your Contributions")
     .navigationBarTitleDisplayMode(.inline)
     .task {
-      await viewModel.loadContributions(userId: profileManager.getId())
+      await loadContributions(userId: profileManager.getId())
+    }
+  }
+
+  func loadContributions(userId: UUID) async {
+    switch await client.profile.getContributions(userId: userId) {
+    case let .success(contributions):
+      withAnimation {
+        self.contributions = contributions
+      }
+    case let .failure(error):
+      logger.error("failed to load contributions: \(error.localizedDescription)")
     }
   }
 }

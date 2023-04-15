@@ -1,11 +1,9 @@
 import SwiftUI
 
 struct AboutScreen: View {
-  @StateObject private var viewModel: ViewModel
-
-  init(_ client: Client) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
-  }
+  private let logger = getLogger(category: "AboutScreen")
+  let client: Client
+  @State private var aboutPage: AboutPage?
 
   var body: some View {
     VStack {
@@ -17,7 +15,7 @@ struct AboutScreen: View {
     }
     .navigationTitle("About")
     .task {
-      await viewModel.getAboutPage()
+      await getAboutPage()
     }
   }
 
@@ -35,7 +33,7 @@ struct AboutScreen: View {
   }
 
   @ViewBuilder var aboutSection: some View {
-    if let aboutPage = viewModel.aboutPage {
+    if let aboutPage {
       Section {
         Text(aboutPage.summary)
       }
@@ -98,6 +96,15 @@ struct AboutScreen: View {
         Text("Ville Heikkilä")
           .font(.caption).bold()
       }
+    }
+  }
+
+  func getAboutPage() async {
+    switch await client.document.getAboutPage() {
+    case let .success(aboutPage):
+      self.aboutPage = aboutPage
+    case let .failure(error):
+      logger.error("fetching about page failed: \(error.localizedDescription)")
     }
   }
 }

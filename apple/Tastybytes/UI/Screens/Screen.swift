@@ -46,7 +46,7 @@ enum Screen: Hashable {
     case .settings:
       SettingsScreen()
     case let .location(location):
-      LocationScreen(client, location: location)
+      LocationScreen(client: client, location: location)
     case let .profileProducts(profile):
       ProfileProductListView(client, profile: profile)
     case let .profileStatistics(profile):
@@ -65,13 +65,13 @@ enum Screen: Hashable {
     case let .productFeed(feed):
       ProductFeedScreen(client, feed: feed)
     case .flavorManagement:
-      FlavorManagementScreen(client)
+      FlavorManagementScreen()
     case .verification:
-      VerificationScreen(client)
+      VerificationScreen(client: client)
     case .duplicateProducts:
       DuplicateProductScreen(client)
     case .categoryManagement:
-      CategoryManagementScreen(client)
+      CategoryManagementScreen(client: client)
     case .profileSettings:
       ProfileSettingsScreen()
     case .accountSettings:
@@ -83,9 +83,9 @@ enum Screen: Hashable {
     case .blockedUsers:
       BlockedUsersScreen()
     case .contributions:
-      ContributionsScreen(client)
+      ContributionsScreen(client: client)
     case .about:
-      AboutScreen(client)
+      AboutScreen(client: client)
     }
   }
 }

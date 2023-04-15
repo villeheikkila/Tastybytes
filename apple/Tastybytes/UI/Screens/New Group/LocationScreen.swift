@@ -3,24 +3,25 @@ import PhotosUI
 import SwiftUI
 
 struct LocationScreen: View {
+  private let logger = getLogger(category: "LocationScreen")
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @StateObject private var viewModel: ViewModel
   @State private var scrollToTop: Int = 0
+  @State private var summary: Summary?
+  @State private var showDeleteLocationConfirmation = false
 
-  init(_ client: Client, location: Location) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, location: location))
-  }
+  let client: Client
+  let location: Location
 
   var body: some View {
     CheckInListView(
-      viewModel.client,
-      fetcher: .location(viewModel.location),
+      client,
+      fetcher: .location(location),
       scrollToTop: $scrollToTop,
-      onRefresh: { await viewModel.getSummary() },
+      onRefresh: { await getSummary() },
       header: {
-        if let summary = viewModel.summary, summary.averageRating != nil {
+        if let summary, summary.averageRating != nil {
           Section {
             SummaryView(summary: summary)
           }
@@ -29,22 +30,22 @@ struct LocationScreen: View {
         }
       }
     )
-    .navigationTitle(viewModel.location.name)
+    .navigationTitle(location.name)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       toolbarContent
     }
     .confirmationDialog(
       "Are you sure you want to delete the location, the location information for check-ins with this location will be permanently lost",
-      isPresented: $viewModel.showDeleteLocationConfirmation,
+      isPresented: $showDeleteLocationConfirmation,
       titleVisibility: .visible,
-      presenting: viewModel.location
+      presenting: location
     ) { presenting in
       ProgressButton(
         "Delete \(presenting.name)",
         role: .destructive,
         action: {
-          await viewModel.deleteLocation(presenting, onDelete: {
+          await deleteLocation(presenting, onDelete: {
             router.reset()
           })
           hapticManager.trigger(.notification(.success))
@@ -52,26 +53,46 @@ struct LocationScreen: View {
       )
     }
     .task {
-      await viewModel.getSummary()
+      await getSummary()
     }
   }
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
-        ShareLink("Share", item: NavigatablePath.location(id: viewModel.location.id).url)
+        ShareLink("Share", item: NavigatablePath.location(id: location.id).url)
         if profileManager.hasPermission(.canDeleteProducts) {
           Button(
             "Delete",
             systemImage: "trash.fill",
             role: .destructive,
-            action: { viewModel.showDeleteLocationConfirmation.toggle() }
+            action: { showDeleteLocationConfirmation.toggle() }
           )
         }
       } label: {
         Label("Options menu", systemImage: "ellipsis")
           .labelStyle(.iconOnly)
       }
+    }
+  }
+
+  func getSummary() async {
+    switch await client.location.getSummaryById(id: location.id) {
+    case let .success(summary):
+      withAnimation {
+        self.summary = summary
+      }
+    case let .failure(error):
+      logger.error("failed to get summary: \(error.localizedDescription)")
+    }
+  }
+
+  func deleteLocation(_ location: Location, onDelete: @escaping () -> Void) async {
+    switch await client.location.delete(id: location.id) {
+    case .success:
+      onDelete()
+    case let .failure(error):
+      logger.error("failed to delete location: \(error.localizedDescription)")
     }
   }
 }

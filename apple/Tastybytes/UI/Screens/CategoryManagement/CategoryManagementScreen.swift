@@ -1,36 +1,27 @@
 import SwiftUI
 
 struct CategoryManagementScreen: View {
-  @StateObject private var viewModel: ViewModel
+  private let logger = getLogger(category: "CategoryManagementScreen")
   @EnvironmentObject private var hapticManager: HapticManager
-
-  init(_ client: Client) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
+  @EnvironmentObject private var appDataManager: AppDataManager
+  @EnvironmentObject private var toastManager: ToastManager
+  @State private var showDeleteSubcategoryConfirmation = false
+  @State private var verifySubcategory: Subcategory?
+  @State private var deleteSubcategory: Subcategory? {
+    didSet {
+      showDeleteSubcategoryConfirmation = true
+    }
   }
+
+  let client: Client
 
   var body: some View {
     List {
-      ForEach(viewModel.categories) { category in
+      ForEach(appDataManager.categories) { category in
         Section {
           ForEach(category.subcategories) { subcategory in
             HStack {
               Text(subcategory.name)
-            }
-            .swipeActions {
-              ProgressButton(
-                action: { await viewModel.verifySubcategory(subcategory, isVerified: !subcategory.isVerified) },
-                label: {
-                  if subcategory.isVerified {
-                    Label("Unverify", systemImage: "x.square")
-                  } else {
-                    Label("Verify", systemImage: "checkmark")
-                  }
-                }
-              ).tint(subcategory.isVerified ? .yellow : .green)
-              RouterLink("Edit", systemImage: "pencil", sheet: .editSubcategory(subcategory: subcategory, onSubmit: { newName in
-                await viewModel.saveEditSubcategoryChanges(subCategory: subcategory, newName: newName)
-              })).tint(.yellow)
-              Button("Delete", systemImage: "trash", role: .destructive, action: { viewModel.deleteSubcategory = subcategory })
             }
           }
         } header: {
@@ -43,7 +34,7 @@ struct CategoryManagementScreen: View {
                 "Add Subcategory",
                 systemImage: "plus",
                 sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
-                  await viewModel.addSubcategory(category: category, name: newSubcategoryName)
+                  await appDataManager.addSubcategory(category: category, name: newSubcategoryName)
                 })
               )
             } label: {
@@ -57,29 +48,26 @@ struct CategoryManagementScreen: View {
     }
     .navigationBarTitle("Categories")
     .navigationBarItems(trailing: RouterLink("Add Category", systemImage: "plus",
-                                             sheet: .addCategory(onSubmit: { newCategoryName in
-                                               await viewModel.addCategory(name: newCategoryName)
+                                             sheet: .addCategory(onSubmit: { _ in
+                                               toastManager.toggle(.success("Category created!"))
                                              }))
                                              .labelStyle(.iconOnly)
                                              .bold())
     .refreshable {
       await hapticManager.wrapWithHaptics {
-        await viewModel.loadCategories()
+        await appDataManager.initialize()
       }
     }
     .confirmationDialog("Are you sure you want to delete subcategory?",
-                        isPresented: $viewModel.showDeleteSubcategoryConfirmation,
+                        isPresented: $showDeleteSubcategoryConfirmation,
                         titleVisibility: .visible,
-                        presenting: viewModel.deleteSubcategory)
+                        presenting: deleteSubcategory)
     { presenting in
       ProgressButton(
         "Delete \(presenting.name)",
         role: .destructive,
-        action: { await viewModel.deleteSubcategory() }
+        action: { await appDataManager.deleteSubcategory(presenting) }
       )
-    }
-    .task {
-      await viewModel.loadCategories()
     }
   }
 }
