@@ -4,7 +4,7 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInSheet: View {
-  @StateObject private var viewModel: ViewModel
+  private let logger = getLogger(category: "CheckInSheet")
   @Environment(\.dismiss) private var dismiss
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -12,14 +12,41 @@ struct CheckInSheet: View {
   @State private var showPhotoMenu = false
   @State private var pickedFlavors = [Flavor]()
   @FocusState private var focusedField: Focusable?
+  @State private var showCamera = false
+  @State private var review: String = ""
+  @State private var rating: Double = 0
+  @State private var manufacturer: Company?
+  @State private var servingStyles = [ServingStyle]()
+  @State private var servingStyle: ServingStyle?
+  @State private var taggedFriends = [Profile]()
+  @State private var location: Location?
+  @State private var purchaseLocation: Location?
+  @State private var checkInAt: Date = .now
+  @State private var blurHash: String?
+  @State private var image: UIImage? {
+    didSet {
+      Task {
+        if let image, let hash = image.resize(to: 100)?
+          .blurHash(numberOfComponents: (5, 5))
+        {
+          blurHash = "\(image.size.width):\(image.size.height):::\(hash)"
+        }
+      }
+    }
+  }
 
   let onCreation: ((_ checkIn: CheckIn) async -> Void)?
   let onUpdate: ((_ checkIn: CheckIn) async -> Void)?
   let action: Action
+  let client: Client
+  let product: Product.Joined
+  let editCheckIn: CheckIn?
 
   init(_ client: Client, product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) async -> Void) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, product: product, editCheckIn: nil))
+    self.client = client
     self.onCreation = onCreation
+    self.product = product
+    editCheckIn = nil
     onUpdate = nil
     action = .create
   }
@@ -27,32 +54,44 @@ struct CheckInSheet: View {
   init(_ client: Client, checkIn: CheckIn,
        onUpdate: @escaping (_ checkIn: CheckIn) async -> Void)
   {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, product: checkIn.product, editCheckIn: checkIn))
+    product = checkIn.product
     onCreation = nil
     self.onUpdate = onUpdate
     action = .update
+    self.client = client
+
+    editCheckIn = checkIn
+    _review = State(wrappedValue: checkIn.review.orEmpty)
+    _rating = State(wrappedValue: checkIn.rating ?? 0)
+    _manufacturer = State(wrappedValue: checkIn.variant?.manufacturer)
+    _servingStyle = State(wrappedValue: checkIn.servingStyle)
+    _taggedFriends = State(wrappedValue: checkIn.taggedProfiles)
+    _pickedFlavors = State(wrappedValue: checkIn.flavors)
+    _location = State(wrappedValue: checkIn.location)
+    _purchaseLocation = State(wrappedValue: checkIn.purchaseLocation)
+    _checkInAt = State(wrappedValue: checkIn.checkInAt ?? Date.now)
   }
 
   var body: some View {
     Form {
       Section {
-        ProductItemView(product: viewModel.product)
+        ProductItemView(product: product)
           .accessibilityAddTraits(.isButton)
           .onTapGesture {
             focusedField = nil
           }
 
-        if viewModel.image != nil || viewModel.editCheckIn?.imageFile != nil {
+        if image != nil || editCheckIn?.imageFile != nil {
           HStack {
             Spacer()
-            if let image = viewModel.image {
+            if let image {
               Image(uiImage: image)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 150, alignment: .top)
                 .shadow(radius: 4)
                 .accessibilityLabel("Image of the check-in")
-            } else if let imageUrl = viewModel.editCheckIn?.imageUrl {
+            } else if let imageUrl = editCheckIn?.imageUrl {
               CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
                 image
                   .resizable()
@@ -72,14 +111,14 @@ struct CheckInSheet: View {
       .listRowBackground(Color.clear)
 
       Section {
-        TextField("How was it?", text: $viewModel.review, axis: .vertical)
+        TextField("How was it?", text: $review, axis: .vertical)
           .focused($focusedField, equals: .review)
-        RatingPickerView(rating: $viewModel.rating)
-        Button("\(viewModel.editCheckIn?.imageUrl == nil && viewModel.image == nil ? "Add" : "Change") Photo",
+        RatingPickerView(rating: $rating)
+        Button("\(editCheckIn?.imageUrl == nil && image == nil ? "Add" : "Change") Photo",
                systemImage: "photo", action: { showPhotoMenu.toggle() }).fontWeight(.medium)
         RouterLink(sheet: .flavors(pickedFlavors: $pickedFlavors), label: {
-          if !viewModel.pickedFlavors.isEmpty {
-            WrappingHStack(viewModel.pickedFlavors, spacing: .constant(4)) { flavor in
+          if !pickedFlavors.isEmpty {
+            WrappingHStack(pickedFlavors, spacing: .constant(4)) { flavor in
               ChipView(title: flavor.label)
             }
           } else {
@@ -93,10 +132,10 @@ struct CheckInSheet: View {
       .headerProminence(.increased)
 
       Section {
-        if !viewModel.servingStyles.isEmpty {
-          Picker(selection: $viewModel.servingStyle) {
+        if !servingStyles.isEmpty {
+          Picker(selection: $servingStyle) {
             Text("Not Selected").tag(ServingStyle?(nil))
-            ForEach(viewModel.servingStyles) { servingStyle in
+            ForEach(servingStyles) { servingStyle in
               Text(servingStyle.label).tag(Optional(servingStyle))
             }
           } label: {
@@ -105,19 +144,19 @@ struct CheckInSheet: View {
           }
         }
 
-        RouterLink(viewModel.manufacturer?.name ?? "Manufactured By", sheet: .companySearch(onSelect: { company, _ in
-          viewModel.manufacturer = company
+        RouterLink(manufacturer?.name ?? "Manufactured By", sheet: .companySearch(onSelect: { company, _ in
+          manufacturer = company
         }))
         .fontWeight(.medium)
       }
 
       Section {
-        RouterLink(sheet: .friends(taggedFriends: $viewModel.taggedFriends), label: {
-          if viewModel.taggedFriends.isEmpty {
+        RouterLink(sheet: .friends(taggedFriends: $taggedFriends), label: {
+          if taggedFriends.isEmpty {
             Text("Tag friends")
               .fontWeight(.medium)
           } else {
-            WrappingHStack(viewModel.taggedFriends) { friend in
+            WrappingHStack(taggedFriends) { friend in
               AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
             }
           }
@@ -126,10 +165,10 @@ struct CheckInSheet: View {
 
       Section {
         RouterLink(sheet: .locationSearch(onSelect: { location in
-          viewModel.location = location
+          self.location = location
         }), label: {
           HStack {
-            if let location = viewModel.location {
+            if let location {
               Text(location.name)
               if let title = location.title {
                 Text(title)
@@ -148,10 +187,10 @@ struct CheckInSheet: View {
 
       Section {
         RouterLink(sheet: .locationSearch(onSelect: { location in
-          viewModel.purchaseLocation = location
+          purchaseLocation = location
         }), label: {
           HStack {
-            if let location = viewModel.purchaseLocation {
+            if let location = purchaseLocation {
               Text(location.name)
               if let title = location.title {
                 Text(title)
@@ -169,24 +208,24 @@ struct CheckInSheet: View {
       }
 
       if profileManager.hasPermission(.canSetCheckInDate) {
-        DatePicker(selection: $viewModel.checkInAt, in: ...Date.now) {
+        DatePicker(selection: $checkInAt, in: ...Date.now) {
           Text("Check-in Date")
         }
       }
     }
     .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
-      Button("Camera", action: { viewModel.showCamera.toggle() })
+      Button("Camera", action: { showCamera.toggle() })
       RouterLink("Photo Gallery", sheet: .legacyPhotoPicker(onSelection: { image in
-        viewModel.setImageFromPicker(pickedImage: image)
+        setImageFromPicker(pickedImage: image)
       }))
     } message: {
       Text("Pick a photo")
     }
-    .fullScreenCover(isPresented: $viewModel.showCamera, content: {
+    .fullScreenCover(isPresented: $showCamera, content: {
       CameraView(onClose: {
-        viewModel.showCamera = false
+        showCamera = false
       }, onCapture: { image in Task {
-        await viewModel.setImageFromCamera(image)
+        await setImageFromCamera(image)
       }
       })
     })
@@ -196,13 +235,13 @@ struct CheckInSheet: View {
         switch action {
         case .create:
           if let onCreation {
-            await viewModel.createCheckIn { newCheckIn in
+            await createCheckIn { newCheckIn in
               await onCreation(newCheckIn)
             }
           }
         case .update:
           if let onUpdate {
-            await viewModel.updateCheckIn { updatedCheckIn in
+            await updateCheckIn { updatedCheckIn in
               await onUpdate(updatedCheckIn)
             }
           }
@@ -211,12 +250,93 @@ struct CheckInSheet: View {
         dismiss()
       }).bold()
     )
-    .onChange(of: pickedFlavors, perform: { newPickedFlavors in
-      viewModel.pickedFlavors = newPickedFlavors
-    })
     .onAppear {
-      viewModel.servingStyles = appDataManager.categories.first(where: { $0.id == viewModel.product.category.id })?
+      servingStyles = appDataManager.categories.first(where: { $0.id == product.category.id })?
         .servingStyles ?? []
     }
+  }
+
+  func setImageFromCamera(_ image: UIImage) async {
+    Task {
+      self.image = image
+      showCamera = false
+    }
+  }
+
+  func setImageFromPicker(pickedImage: UIImage) {
+    Task {
+      image = pickedImage
+    }
+  }
+
+  func updateCheckIn(_ onUpdate: @escaping (_ checkIn: CheckIn) async -> Void) async {
+    guard let editCheckIn else { return }
+    let updateCheckInParams = CheckIn.UpdateRequest(
+      checkIn: editCheckIn,
+      product: product,
+      review: review,
+      taggedFriends: taggedFriends,
+      servingStyle: servingStyle,
+      manufacturer: manufacturer,
+      flavors: pickedFlavors,
+      rating: rating,
+      location: location,
+      purchaseLocation: purchaseLocation,
+      blurHash: blurHash,
+      checkInAt: checkInAt
+    )
+
+    switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
+    case let .success(updatedCheckIn):
+      await uploadImage(checkIn: updatedCheckIn)
+      await onUpdate(updatedCheckIn)
+    case let .failure(error):
+      logger.error("failed to update check-in '\(editCheckIn.id)': \(error.localizedDescription)")
+    }
+  }
+
+  func createCheckIn(_ onCreation: @escaping (_ checkIn: CheckIn) async -> Void) async {
+    let newCheckParams = CheckIn.NewRequest(
+      product: product,
+      review: review,
+      taggedFriends: taggedFriends,
+      servingStyle: servingStyle,
+      manufacturer: manufacturer,
+      flavors: pickedFlavors,
+      rating: rating,
+      location: location,
+      purchaseLocation: purchaseLocation,
+      blurHash: blurHash,
+      checkInAt: checkInAt
+    )
+
+    switch await client.checkIn.create(newCheckInParams: newCheckParams) {
+    case let .success(newCheckIn):
+      await uploadImage(checkIn: newCheckIn)
+      await onCreation(newCheckIn)
+    case let .failure(error):
+      logger.error("failed to create check-in: \(error.localizedDescription)")
+    }
+  }
+
+  func uploadImage(checkIn: CheckIn) async {
+    guard let data = image?.jpegData(compressionQuality: 0.1) else { return }
+    switch await client.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
+    case let .failure(error):
+      logger.error("failed to uplaod image to check-in '\(checkIn.id)': \(error.localizedDescription)")
+    default:
+      break
+    }
+  }
+}
+
+extension CheckInSheet {
+  enum Focusable {
+    case review
+  }
+
+  enum Action {
+    case create
+    case update
   }
 }
