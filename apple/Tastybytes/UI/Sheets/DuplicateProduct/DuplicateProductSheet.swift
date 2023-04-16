@@ -6,6 +6,7 @@ struct DuplicateProductSheet: View {
   }
 
   private let logger = getLogger(category: "MarkAsDuplicate")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
   @State private var products = [Product.Joined]()
@@ -19,15 +20,8 @@ struct DuplicateProductSheet: View {
   @State private var showMergeToProductConfirmation = false
   @State private var searchTerm = ""
 
-  let client: Client
-  let product: Product.Joined
   let mode: Mode
-
-  init(_ client: Client, mode: Mode, product: Product.Joined) {
-    self.client = client
-    self.mode = mode
-    self.product = product
-  }
+  let product: Product.Joined
 
   var body: some View {
     List {

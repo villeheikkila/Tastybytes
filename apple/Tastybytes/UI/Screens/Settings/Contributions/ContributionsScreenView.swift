@@ -2,10 +2,9 @@ import SwiftUI
 
 struct ContributionsScreen: View {
   private let logger = getLogger(category: "ContributionsScreen")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var contributions: Contributions?
-
-  let client: Client
 
   var body: some View {
     List {

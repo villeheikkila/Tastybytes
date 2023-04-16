@@ -12,8 +12,8 @@ struct TabsView: View {
 
   init(_ client: Client, profile: Profile) {
     self.client = client
-    _friendManager = StateObject(wrappedValue: FriendManager(client, profile: profile))
-    _appDataManager = StateObject(wrappedValue: AppDataManager(client))
+    _friendManager = StateObject(wrappedValue: FriendManager(client: client, profile: profile))
+    _appDataManager = StateObject(wrappedValue: AppDataManager(client: client))
   }
 
   private var tabs: [Tab] {
@@ -42,7 +42,7 @@ struct TabsView: View {
       }
     })) {
       ForEach(shownTabs(profile: profileManager.get())) { tab in
-        tab.view(client, $resetNavigationOnTab)
+        tab.view($resetNavigationOnTab)
           .tabItem {
             tab.label
           }

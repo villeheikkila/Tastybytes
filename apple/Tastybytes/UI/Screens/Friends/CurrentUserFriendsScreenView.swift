@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CurrentUserFriendsScreen: View {
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
   @EnvironmentObject private var hapticManager: HapticManager
@@ -14,11 +15,6 @@ struct CurrentUserFriendsScreen: View {
 
   @State private var showRemoveFriendConfirmation = false
   @State private var showUserSearchSheet = false
-
-  let client: Client
-  init(_ client: Client) {
-    self.client = client
-  }
 
   var body: some View {
     List {

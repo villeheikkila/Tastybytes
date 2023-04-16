@@ -4,20 +4,14 @@ import SwiftUI
 import WrappingHStack
 
 struct ActivityTab: View {
-  let client: Client
   @State private var scrollToTop: Int = 0
-  @Binding private var resetNavigationOnTab: Tab?
   @EnvironmentObject private var notificationManager: NotificationManager
-
-  init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {
-    self.client = client
-    _resetNavigationOnTab = resetNavigationOnTab
-  }
+  @EnvironmentObject private var client: AppClient
+  @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
-    RouterWrapper(client) { router in
+    RouterWrapper { router in
       CheckInListView(
-        client,
         fetcher: .activityFeed,
         scrollToTop: $scrollToTop,
         onRefresh: {},

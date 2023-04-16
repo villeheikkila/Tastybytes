@@ -4,12 +4,12 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInCardView: View {
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var router: Router
   @State private var showFullPicture = false
   @State private var blurHashPlaceHolder: UIImage?
   @Environment(\.colorScheme) private var colorScheme
 
-  let client: Client
   let checkIn: CheckIn
   let loadedFrom: LoadedFrom
 
@@ -237,7 +237,7 @@ struct CheckInCardView: View {
             router.navigate(screen: .checkIn(checkIn))
           }
       }
-      ReactionsView(client, checkIn: checkIn)
+      ReactionsView(checkIn: checkIn)
     }
   }
 }

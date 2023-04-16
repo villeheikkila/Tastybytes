@@ -4,6 +4,7 @@ import SwiftUI
 
 struct LocationScreen: View {
   private let logger = getLogger(category: "LocationScreen")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -11,12 +12,10 @@ struct LocationScreen: View {
   @State private var summary: Summary?
   @State private var showDeleteLocationConfirmation = false
 
-  let client: Client
   let location: Location
 
   var body: some View {
     CheckInListView(
-      client,
       fetcher: .location(location),
       scrollToTop: $scrollToTop,
       onRefresh: { await getSummary() },

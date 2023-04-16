@@ -3,11 +3,12 @@ import SwiftUI
 @MainActor
 class AppDataManager: ObservableObject {
   private let logger = getLogger(category: "AppDataManager")
-  let client: Client
   @Published var categories = [Category.JoinedSubcategoriesServingStyles]()
   @Published var flavors = [Flavor]()
 
-  init(_ client: Client) {
+  let client: Client
+
+  init(client: Client) {
     self.client = client
   }
 

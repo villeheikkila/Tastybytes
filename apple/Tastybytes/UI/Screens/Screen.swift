@@ -28,50 +28,49 @@ enum Screen: Hashable {
   case about
 
   @ViewBuilder
-  func view(_ client: Client) -> some View {
+  var view: some View {
     switch self {
     case let .company(company):
-      CompanyScreen(client, company: company)
+      CompanyScreen(company: company)
     case let .brand(brand):
-      BrandScreen(client, brand: brand)
+      BrandScreen(brand: brand)
     case let .fetchBrand(brand):
       BrandScreen(
-        client,
         brand: Brand
           .JoinedSubBrandsProductsCompany(id: brand.id, name: brand.name, isVerified: brand.isVerified,
                                           brandOwner: brand.brandOwner, subBrands: []), refreshOnLoad: true
       )
     case .currentUserFriends:
-      CurrentUserFriendsScreen(client)
+      CurrentUserFriendsScreen()
     case .settings:
       SettingsScreen()
     case let .location(location):
-      LocationScreen(client: client, location: location)
+      LocationScreen(location: location)
     case let .profileProducts(profile):
-      ProfileProductListView(client, profile: profile)
+      ProfileProductListView(profile: profile)
     case let .profileStatistics(profile):
-      ProfileStatisticsView(client, profile: profile)
+      ProfileStatisticsView(profile: profile)
     case let .addProduct(initialBarcode):
-      AddProductView(client, mode: .new, initialBarcode: initialBarcode)
+      AddProductView(mode: .new, initialBarcode: initialBarcode)
         .navigationTitle("Add Product")
     case let .checkIn(checkIn):
-      CheckInScreen(client, checkIn: checkIn)
+      CheckInScreen(checkIn: checkIn)
     case let .profile(profile):
-      ProfileScreen(client, profile: profile)
+      ProfileScreen(profile: profile)
     case let .product(product):
-      ProductScreen(client, product: product)
+      ProductScreen(product: product)
     case let .friends(profile):
-      FriendsScreen(client, profile: profile)
+      FriendsScreen(profile: profile)
     case let .productFeed(feed):
-      ProductFeedScreen(client, feed: feed)
+      ProductFeedScreen(feed: feed)
     case .flavorManagement:
       FlavorManagementScreen()
     case .verification:
-      VerificationScreen(client: client)
+      VerificationScreen()
     case .duplicateProducts:
-      DuplicateProductScreen(client)
+      DuplicateProductScreen()
     case .categoryManagement:
-      CategoryManagementScreen(client: client)
+      CategoryManagementScreen()
     case .profileSettings:
       ProfileSettingsScreen()
     case .accountSettings:
@@ -83,9 +82,9 @@ enum Screen: Hashable {
     case .blockedUsers:
       BlockedUsersScreen()
     case .contributions:
-      ContributionsScreen(client: client)
+      ContributionsScreen()
     case .about:
-      AboutScreen(client: client)
+      AboutScreen()
     }
   }
 }

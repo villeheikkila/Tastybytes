@@ -2,30 +2,25 @@ import SwiftUI
 
 struct RouterWrapper<Content: View>: View {
   @StateObject private var router = Router()
-  let client: Client
+  @EnvironmentObject private var client: AppClient
   var content: (_ router: Router) -> Content
-
-  init(_ client: Client, @ViewBuilder content: @escaping (_ router: Router) -> Content) {
-    self.client = client
-    self.content = content
-  }
 
   var body: some View {
     NavigationStack(path: $router.path) {
       content(router)
         .navigationDestination(for: Screen.self) { screen in
-          screen.view(client)
+          screen.view
         }
         .sheet(item: $router.sheet) { sheet in
           NavigationStack {
-            sheet.view(client)
+            sheet.view
           }
           .presentationDetents(sheet.detents)
           .presentationCornerRadius(sheet.cornerRadius)
           .presentationBackground(sheet.background)
           .sheet(item: $router.nestedSheet, content: { nestedSheet in
             NavigationStack {
-              nestedSheet.view(client)
+              nestedSheet.view
                 .presentationDetents(nestedSheet.detents)
                 .presentationCornerRadius(nestedSheet.cornerRadius)
                 .presentationBackground(nestedSheet.background)

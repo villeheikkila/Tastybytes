@@ -1,19 +1,14 @@
 import SwiftUI
 
 struct ProfileScreen: View {
-  let client: Client
-  let profile: Profile
-  @State private var scrollToTop = 0
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
+  @State private var scrollToTop = 0
 
-  init(_ client: Client, profile: Profile) {
-    self.client = client
-    self.profile = profile
-  }
+  let profile: Profile
 
   var body: some View {
     ProfileView(
-      client,
       profile: profile,
       scrollToTop: $scrollToTop,
       isCurrentUser: profileManager.getId() == profile.id

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CategoryManagementScreen: View {
   private let logger = getLogger(category: "CategoryManagementScreen")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var appDataManager: AppDataManager
   @EnvironmentObject private var toastManager: ToastManager
@@ -12,8 +13,6 @@ struct CategoryManagementScreen: View {
       showDeleteSubcategoryConfirmation = true
     }
   }
-
-  let client: Client
 
   var body: some View {
     List {

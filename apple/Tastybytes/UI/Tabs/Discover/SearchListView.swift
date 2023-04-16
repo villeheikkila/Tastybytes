@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SearchListView: View {
   private let logger = getLogger(category: "SearchListView")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -29,10 +30,7 @@ struct SearchListView: View {
 
   @Binding private var scrollToTop: Int
 
-  let client: Client
-
-  init(_ client: Client, scrollToTop: Binding<Int>) {
-    self.client = client
+  init(scrollToTop: Binding<Int>) {
     _scrollToTop = scrollToTop
   }
 

@@ -2,21 +2,17 @@ import SwiftUI
 
 struct ProfileStatisticsView: View {
   let logger = getLogger(category: "ProfileStatisticsView")
+  @EnvironmentObject private var client: AppClient
   @State private var categoryStatistics = [CategoryStatistics]()
-  let client: Client
-  let profile: Profile
 
-  init(_ client: Client, profile: Profile) {
-    self.client = client
-    self.profile = profile
-  }
+  let profile: Profile
 
   var body: some View {
     List {
       Section {
         ForEach(categoryStatistics) { category in
           DisclosureGroup(content: {
-            SubcategoryStatisticsView(client, profile: profile, category: category)
+            SubcategoryStatisticsView(profile: profile, category: category)
           }, label: {
             HStack {
               CategoryNameView(category: category)
@@ -55,18 +51,12 @@ struct ProfileStatisticsView: View {
 
 struct SubcategoryStatisticsView: View {
   let logger = getLogger(category: "SubcategoryStatistics")
+  @EnvironmentObject private var client: AppClient
   @State private var subcategoryStatistics = [SubcategoryStatistics]()
   @State private var isLoading = false
 
-  let client: Client
   let profile: Profile
   let category: CategoryStatistics
-
-  init(_ client: Client, profile: Profile, category: CategoryStatistics) {
-    self.client = client
-    self.profile = profile
-    self.category = category
-  }
 
   var body: some View {
     Section {

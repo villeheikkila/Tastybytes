@@ -5,12 +5,6 @@ import SwiftUI
 @MainActor
 class NotificationManager: ObservableObject {
   private let logger = getLogger(category: "NotificationManager")
-  let client: Client
-
-  init(_ client: Client) {
-    self.client = client
-  }
-
   @Published private(set) var notifications = [Notification]() {
     didSet {
       withAnimation {
@@ -18,6 +12,12 @@ class NotificationManager: ObservableObject {
         self.filteredNotifications = self.notifications
       }
     }
+  }
+
+  let client: Client
+
+  init(client: Client) {
+    self.client = client
   }
 
   @Published var filter: NotificationType? {

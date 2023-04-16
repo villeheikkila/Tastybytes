@@ -4,6 +4,7 @@ import SwiftUI
 
 struct CompanyScreen: View {
   private let logger = getLogger(category: "CompanyScreen")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var toastManager: ToastManager
@@ -15,10 +16,7 @@ struct CompanyScreen: View {
   @State private var showUnverifyCompanyConfirmation = false
   @State private var showDeleteCompanyConfirmationDialog = false
 
-  let client: Client
-
-  init(_ client: Client, company: Company) {
-    self.client = client
+  init(company: Company) {
     _company = State(wrappedValue: company)
   }
 

@@ -102,7 +102,6 @@
 		5C7C3580299AC0A6009A3C09 /* AuthenticationInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C357F299AC0A6009A3C09 /* AuthenticationInput.swift */; };
 		5C7C3585299AC166009A3C09 /* CheckInCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3584299AC166009A3C09 /* CheckInCommentView.swift */; };
 		5C7C3593299AC426009A3C09 /* ScalingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3592299AC426009A3C09 /* ScalingButton.swift */; };
-		5C7C35B0299AC696009A3C09 /* LocationSearchSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35AF299AC696009A3C09 /* LocationSearchSheetViewModel.swift */; };
 		5C7C35DD299AE042009A3C09 /* ProductItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35DC299AE042009A3C09 /* ProductItemView.swift */; };
 		5C7C35E0299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35DF299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift */; };
 		5C7C35E2299AE0B5009A3C09 /* FriendRequestNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */; };
@@ -297,7 +296,6 @@
 		5C7C357F299AC0A6009A3C09 /* AuthenticationInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationInput.swift; sourceTree = "<group>"; };
 		5C7C3584299AC166009A3C09 /* CheckInCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCommentView.swift; sourceTree = "<group>"; };
 		5C7C3592299AC426009A3C09 /* ScalingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalingButton.swift; sourceTree = "<group>"; };
-		5C7C35AF299AC696009A3C09 /* LocationSearchSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchSheetViewModel.swift; sourceTree = "<group>"; };
 		5C7C35DC299AE042009A3C09 /* ProductItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductItemView.swift; sourceTree = "<group>"; };
 		5C7C35DF299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggedInCheckInNotificationView.swift; sourceTree = "<group>"; };
 		5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestNotificationView.swift; sourceTree = "<group>"; };
@@ -952,7 +950,6 @@
 			isa = PBXGroup;
 			children = (
 				5CC2FE8E29196A5D002BDF83 /* LocationSearchSheet.swift */,
-				5C7C35AF299AC696009A3C09 /* LocationSearchSheetViewModel.swift */,
 			);
 			path = LocationSearch;
 			sourceTree = "<group>";
@@ -1517,7 +1514,6 @@
 				5C7C35E4299AE0CD009A3C09 /* MessageNotificationView.swift in Sources */,
 				5C66745129C64A4C005380B7 /* PhotosUIExtension.swift in Sources */,
 				5C7C3593299AC426009A3C09 /* ScalingButton.swift in Sources */,
-				5C7C35B0299AC696009A3C09 /* LocationSearchSheetViewModel.swift in Sources */,
 				5CB1C24F28F9C52E000B0EB4 /* CompanyRepository.swift in Sources */,
 				5C25C69029991D0000C07953 /* ProductBarcodeRepository.swift in Sources */,
 				5C73CD0E29E5ED2100A31F45 /* VerificationButton.swift in Sources */,

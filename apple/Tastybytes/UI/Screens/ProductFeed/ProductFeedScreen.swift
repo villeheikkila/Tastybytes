@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProductFeedScreen: View {
   private let logger = getLogger(category: "ProductFeedView")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var appDataManager: AppDataManager
@@ -15,7 +16,6 @@ struct ProductFeedScreen: View {
   @State private var page = 0
   @State private var isLoading = false
 
-  let client: Client
   let feed: Product.FeedType
 
   private let pageSize = 10
@@ -30,11 +30,6 @@ struct ProductFeedScreen: View {
     } else {
       return feed.label
     }
-  }
-
-  init(_ client: Client, feed: Product.FeedType) {
-    self.client = client
-    self.feed = feed
   }
 
   var body: some View {

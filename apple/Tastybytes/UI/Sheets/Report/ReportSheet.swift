@@ -3,17 +3,12 @@ import SwiftUI
 
 struct ReportSheet: View {
   private let logger = getLogger(category: "ReportSheet")
+  @EnvironmentObject private var client: AppClient
   @Environment(\.dismiss) private var dismiss
   @State private var reasonText = ""
   @State private var showToast = false
 
-  let client: Client
   let entity: Report.Entity
-
-  init(_ client: Client, entity: Report.Entity) {
-    self.client = client
-    self.entity = entity
-  }
 
   var body: some View {
     Form {

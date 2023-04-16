@@ -5,6 +5,7 @@ import WrappingHStack
 
 struct CheckInSheet: View {
   private let logger = getLogger(category: "CheckInSheet")
+  @EnvironmentObject private var client: AppClient
   @Environment(\.dismiss) private var dismiss
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -38,12 +39,10 @@ struct CheckInSheet: View {
   let onCreation: ((_ checkIn: CheckIn) async -> Void)?
   let onUpdate: ((_ checkIn: CheckIn) async -> Void)?
   let action: Action
-  let client: Client
   let product: Product.Joined
   let editCheckIn: CheckIn?
 
-  init(_ client: Client, product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) async -> Void) {
-    self.client = client
+  init(product: Product.Joined, onCreation: @escaping (_ checkIn: CheckIn) async -> Void) {
     self.onCreation = onCreation
     self.product = product
     editCheckIn = nil
@@ -51,15 +50,13 @@ struct CheckInSheet: View {
     action = .create
   }
 
-  init(_ client: Client, checkIn: CheckIn,
+  init(checkIn: CheckIn,
        onUpdate: @escaping (_ checkIn: CheckIn) async -> Void)
   {
     product = checkIn.product
     onCreation = nil
     self.onUpdate = onUpdate
     action = .update
-    self.client = client
-
     editCheckIn = checkIn
     _review = State(wrappedValue: checkIn.review.orEmpty)
     _rating = State(wrappedValue: checkIn.rating ?? 0)

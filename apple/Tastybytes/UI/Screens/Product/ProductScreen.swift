@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProductScreen: View {
   private let logger = getLogger(category: "ProductScreen")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var hapticManager: HapticManager
@@ -14,10 +15,7 @@ struct ProductScreen: View {
   @State private var resetView: Int = 0
   @Environment(\.dismiss) private var dismiss
 
-  let client: Client
-
-  init(_ client: Client, product: Product.Joined) {
-    self.client = client
+  init(product: Product.Joined) {
     _product = State(wrappedValue: product)
   }
 
@@ -94,7 +92,6 @@ struct ProductScreen: View {
 
   var body: some View {
     CheckInListView(
-      client,
       fetcher: .product(product),
       scrollToTop: $scrollToTop,
       onRefresh: {

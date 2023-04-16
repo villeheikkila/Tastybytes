@@ -41,6 +41,7 @@ struct AddProductView: View {
   }
 
   private let logger = getLogger(category: "ProductSheet")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
@@ -49,19 +50,16 @@ struct AddProductView: View {
   @FocusState private var focusedField: Focusable?
   @State private var subcategories: [Subcategory] = []
 
-  let client: Client
   let mode: Mode
   let onEdit: (() async -> Void)?
   let onCreate: ((_ product: Product.Joined) async -> Void)?
 
   init(
-    _ client: Client,
     mode: Mode,
     initialBarcode: Barcode? = nil,
     onEdit: (() async -> Void)? = nil,
     onCreate: ((_ product: Product.Joined) -> Void)? = nil
   ) {
-    self.client = client
     self.mode = mode
     _barcode = State(wrappedValue: initialBarcode)
     self.onEdit = onEdit

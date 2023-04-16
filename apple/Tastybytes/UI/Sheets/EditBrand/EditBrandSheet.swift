@@ -6,6 +6,7 @@ import SwiftUI
 struct EditBrandSheet: View {
   private let logger = getLogger(category: "EditBrandSheet")
   @Environment(\.dismiss) private var dismiss
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var name: String
   @State private var brandOwner: Company
@@ -23,19 +24,15 @@ struct EditBrandSheet: View {
   let initialBrandOwner: Company
 
   init(
-    _ client: Client,
     brand: Brand.JoinedSubBrandsProductsCompany,
     onUpdate: @escaping () async -> Void
   ) {
-    self.client = client
     self.onUpdate = onUpdate
     initialBrandOwner = brand.brandOwner
     _brand = State(wrappedValue: brand)
     _brandOwner = State(wrappedValue: brand.brandOwner)
     _name = State(wrappedValue: brand.name)
   }
-
-  let client: Client
 
   var body: some View {
     Form {

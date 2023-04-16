@@ -3,6 +3,7 @@ import SwiftUI
 
 struct BrandScreen: View {
   private let logger = getLogger(category: "BrandScreen")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
@@ -44,11 +45,9 @@ struct BrandScreen: View {
     }
   }
 
-  let client: Client
   let refreshOnLoad: Bool
 
-  init(_ client: Client, brand: Brand.JoinedSubBrandsProductsCompany, refreshOnLoad: Bool? = false) {
-    self.client = client
+  init(brand: Brand.JoinedSubBrandsProductsCompany, refreshOnLoad: Bool? = false) {
     _brand = State(wrappedValue: brand)
     self.refreshOnLoad = refreshOnLoad ?? false
   }

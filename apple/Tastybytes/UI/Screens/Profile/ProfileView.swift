@@ -4,6 +4,7 @@ import SwiftUI
 
 struct ProfileView: View {
   private let logger = getLogger(category: "ProfileView")
+  @EnvironmentObject private var client: AppClient
   @Binding private var scrollToTop: Int
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -13,12 +14,10 @@ struct ProfileView: View {
   @State private var selectedItem: PhotosPickerItem?
   private let topAnchor = "top"
 
-  let client: Client
   let isCurrentUser: Bool
   let isShownInFull: Bool
 
-  init(_ client: Client, profile: Profile, scrollToTop: Binding<Int>, isCurrentUser: Bool) {
-    self.client = client
+  init(profile: Profile, scrollToTop: Binding<Int>, isCurrentUser: Bool) {
     _scrollToTop = scrollToTop
     _profile = State(wrappedValue: profile)
     self.isCurrentUser = isCurrentUser
@@ -31,7 +30,6 @@ struct ProfileView: View {
 
   var body: some View {
     CheckInListView(
-      client,
       fetcher: .profile(profile),
       scrollToTop: $scrollToTop,
       onRefresh: {

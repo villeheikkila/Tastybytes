@@ -9,18 +9,18 @@ enum Tab: Int, Identifiable, Hashable {
 
   @ViewBuilder
   @MainActor
-  func view(_ client: Client, _ resetNavigationOnTab: Binding<Tab?>) -> some View {
+  func view(_ resetNavigationOnTab: Binding<Tab?>) -> some View {
     switch self {
     case .activity:
-      ActivityTab(client, resetNavigationOnTab: resetNavigationOnTab)
+      ActivityTab(resetNavigationOnTab: resetNavigationOnTab)
     case .search:
-      DiscoverTab(client, resetNavigationOnTab: resetNavigationOnTab)
+      DiscoverTab(resetNavigationOnTab: resetNavigationOnTab)
     case .notifications:
-      NotificationTab(client, resetNavigationOnTab: resetNavigationOnTab)
+      NotificationTab(resetNavigationOnTab: resetNavigationOnTab)
     case .admin:
-      AdminTab(client, resetNavigationOnTab: resetNavigationOnTab)
+      AdminTab(resetNavigationOnTab: resetNavigationOnTab)
     case .profile:
-      ProfileTab(client, resetNavigationOnTab: resetNavigationOnTab)
+      ProfileTab(resetNavigationOnTab: resetNavigationOnTab)
     }
   }
 

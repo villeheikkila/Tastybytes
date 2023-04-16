@@ -1,17 +1,11 @@
 import SwiftUI
 
 struct AdminTab: View {
-  @Binding private var resetNavigationOnTab: Tab?
-
-  let client: Client
-
-  init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {
-    self.client = client
-    _resetNavigationOnTab = resetNavigationOnTab
-  }
+  @EnvironmentObject private var client: AppClient
+  @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
-    RouterWrapper(client) { router in
+    RouterWrapper { router in
       List {
         RouterLink("Categories", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .categoryManagement)
         RouterLink("Flavors", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .flavorManagement)

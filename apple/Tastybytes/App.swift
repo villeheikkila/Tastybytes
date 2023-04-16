@@ -28,8 +28,8 @@ struct RootView: View {
 
   init(_ client: AppClient) {
     self.client = client
-    _notificationManager = StateObject(wrappedValue: NotificationManager(client))
-    _profileManager = StateObject(wrappedValue: ProfileManager(client))
+    _notificationManager = StateObject(wrappedValue: NotificationManager(client: client))
+    _profileManager = StateObject(wrappedValue: ProfileManager(client: client))
   }
 
   var body: some View {
@@ -44,13 +44,13 @@ struct RootView: View {
           }
         }
       case .passwordRecovery:
-        AuthenticationScreen(client, scene: .resetPassword)
+        AuthenticationScreen(scene: .resetPassword)
       case .userDeleted:
-        AuthenticationScreen(client, scene: .accountDeleted)
+        AuthenticationScreen(scene: .accountDeleted)
       case nil:
         SplashScreen()
       default:
-        AuthenticationScreen(client, scene: .signIn)
+        AuthenticationScreen(scene: .signIn)
       }
       if splashScreenManager.state != .finished {
         SplashScreen()
@@ -59,6 +59,7 @@ struct RootView: View {
     .toast(isPresenting: $toastManager.show) {
       toastManager.toast
     }
+    .environmentObject(client)
     .environmentObject(splashScreenManager)
     .environmentObject(toastManager)
     .environmentObject(notificationManager)

@@ -3,7 +3,6 @@ import SwiftUI
 @MainActor
 class FriendManager: ObservableObject {
   private let logger = getLogger(category: "FriendsScreen")
-  let client: Client
   @Published var friends = [Friend]()
 
   var acceptedFriends: [Profile] {
@@ -19,8 +18,9 @@ class FriendManager: ObservableObject {
   }
 
   let profile: Profile
+  let client: Client
 
-  init(_ client: Client, profile: Profile) {
+  init(client: Client, profile: Profile) {
     self.client = client
     self.profile = profile
   }

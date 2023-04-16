@@ -25,6 +25,7 @@ struct AuthenticationScreen: View {
   }
 
   private let logger = getLogger(category: "AuthenticationScreen")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var toastManager: ToastManager
   @FocusState private var focusedField: Field?
@@ -45,10 +46,7 @@ struct AuthenticationScreen: View {
     }
   }
 
-  let client: Client
-
-  init(_ client: Client, scene: Scene) {
-    self.client = client
+  init(scene: Scene) {
     _scene = State(wrappedValue: scene)
   }
 

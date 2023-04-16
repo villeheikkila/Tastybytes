@@ -7,23 +7,21 @@ struct ProductFilterSheet: View {
 
   private let logger = getLogger(category: "SeachFilterSheet")
   @Environment(\.dismiss) private var dismiss
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var appDataManager: AppDataManager
   @State private var categoryFilter: Category.JoinedSubcategoriesServingStyles?
   @State private var subcategoryFilter: Subcategory?
   @State private var sortBy: Product.Filter.SortBy?
   @State private var onlyNonCheckedIn = false
 
-  let client: Client
   let sections: [Sections]
   let onApply: (_ filter: Product.Filter?) -> Void
 
   init(
-    _ client: Client,
     initialFilter: Product.Filter?,
     sections: [Sections],
     onApply: @escaping (_ filter: Product.Filter?) -> Void
   ) {
-    self.client = client
     self.sections = sections
     self.onApply = onApply
 

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CategoryServingStyleSheet: View {
   private let logger = getLogger(category: "CategoryServingStyleSheet")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
   @State private var servingStyles: [ServingStyle]
@@ -12,11 +13,9 @@ struct CategoryServingStyleSheet: View {
     }
   }
 
-  let client: Client
   let category: Category.JoinedSubcategoriesServingStyles
 
-  init(_ client: Client, category: Category.JoinedSubcategoriesServingStyles) {
-    self.client = client
+  init(category: Category.JoinedSubcategoriesServingStyles) {
     self.category = category
     _servingStyles = State(wrappedValue: category.servingStyles)
   }

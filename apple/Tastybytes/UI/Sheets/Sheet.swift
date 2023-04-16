@@ -48,39 +48,39 @@ enum Sheet: Identifiable, Equatable {
   case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
 
   @ViewBuilder
-  func view(_ client: Client) -> some View {
+  var view: some View {
     switch self {
     case let .report(entity):
-      ReportSheet(client, entity: entity)
+      ReportSheet(entity: entity)
     case let .checkIn(checkIn, onUpdate):
-      CheckInSheet(client, checkIn: checkIn, onUpdate: onUpdate)
+      CheckInSheet(checkIn: checkIn, onUpdate: onUpdate)
     case let .newCheckIn(product, onCreation):
-      CheckInSheet(client, product: product, onCreation: onCreation)
+      CheckInSheet(product: product, onCreation: onCreation)
     case let .barcodeScanner(onComplete: onComplete):
       BarcodeScannerSheet(onComplete: onComplete)
     case let .productFilter(initialFilter, sections, onApply):
-      ProductFilterSheet(client, initialFilter: initialFilter, sections: sections, onApply: onApply)
+      ProductFilterSheet(initialFilter: initialFilter, sections: sections, onApply: onApply)
     case let .nameTag(onSuccess):
       NameTagSheet(onSuccess: onSuccess)
     case let .addBrand(brandOwner: brandOwner, mode: mode, onSelect: onSelect):
-      BrandSheet(client, brandOwner: brandOwner, mode: mode, onSelect: onSelect)
+      BrandSheet(brandOwner: brandOwner, mode: mode, onSelect: onSelect)
     case let .brand(brandOwner, mode, onSelect):
-      BrandSheet(client, brandOwner: brandOwner, mode: mode, onSelect: onSelect)
+      BrandSheet(brandOwner: brandOwner, mode: mode, onSelect: onSelect)
     case let .subBrand(brandWithSubBrands, onSelect):
-      SubBrandSheet(client, brandWithSubBrands: brandWithSubBrands, onSelect: onSelect)
+      SubBrandSheet(brandWithSubBrands: brandWithSubBrands, onSelect: onSelect)
     case let .subcategory(subcategories, category, onCreate):
       SubcategorySheet(subcategories: subcategories, category: category, onCreate: onCreate)
     case let .companySearch(onSelect):
-      CompanySearchSheet(client, onSelect: onSelect)
+      CompanySearchSheet(onSelect: onSelect)
     case let .barcodeManagement(product):
-      BarcodeManagementSheet(client: client, product: product)
+      BarcodeManagementSheet(product: product)
     case let .productEditSuggestion(product: product):
       DismissableSheet(title: "Edit Suggestion") { _ in
-        AddProductView(client, mode: .editSuggestion(product))
+        AddProductView(mode: .editSuggestion(product))
       }
     case let .editProduct(product: product, onEdit: onEdit):
       DismissableSheet(title: "Edit Product") { dismiss in
-        AddProductView(client, mode: .edit(product), onEdit: {
+        AddProductView(mode: .edit(product), onEdit: {
           if let onEdit {
             await onEdit()
           }
@@ -89,7 +89,7 @@ enum Sheet: Identifiable, Equatable {
       }
     case let .addProductToBrand(brand: brand, onCreate: onCreate):
       DismissableSheet(title: "Add Product") { dismiss in
-        AddProductView(client, mode: .addToBrand(brand), onCreate: { product in
+        AddProductView(mode: .addToBrand(brand), onCreate: { product in
           if let onCreate {
             onCreate(product)
           }
@@ -97,25 +97,25 @@ enum Sheet: Identifiable, Equatable {
         })
       }
     case let .duplicateProduct(mode: mode, product: product):
-      DuplicateProductSheet(client, mode: mode, product: product)
+      DuplicateProductSheet(mode: mode, product: product)
     case let .editBrand(brand: brand, onUpdate):
-      EditBrandSheet(client, brand: brand, onUpdate: onUpdate)
+      EditBrandSheet(brand: brand, onUpdate: onUpdate)
     case let .editSubBrand(brand: brand, subBrand: subBrand, onUpdate):
-      EditSubBrandSheet(client, brand: brand, subBrand: subBrand, onUpdate: onUpdate)
+      EditSubBrandSheet(brand: brand, subBrand: subBrand, onUpdate: onUpdate)
     case let .friends(taggedFriends: taggedFriends):
       FriendSheet(taggedFriends: taggedFriends)
     case let .flavors(pickedFlavors: pickedFlavors):
       FlavorSheet(pickedFlavors: pickedFlavors)
     case let .locationSearch(onSelect: onSelect):
-      LocationSearchSheet(client, onSelect: onSelect)
+      LocationSearchSheet(onSelect: onSelect)
     case let .legacyPhotoPicker(onSelection: onSelection):
       LegacyPhotoPicker(onSelection: onSelection)
     case let .newFlavor(onSubmit: onSubmit):
       NewFlavorSheet(onSubmit: onSubmit)
     case let .servingStyleManagement(pickedServingStyles: pickedServingStyles, onSelect: onSelect):
-      ServingStyleManagementSheet(client, pickedServingStyles: pickedServingStyles, onSelect: onSelect)
+      ServingStyleManagementSheet(pickedServingStyles: pickedServingStyles, onSelect: onSelect)
     case let .categoryServingStyle(category: category):
-      CategoryServingStyleSheet(client, category: category)
+      CategoryServingStyleSheet(category: category)
     case let .editSubcategory(subcategory: subcategory, onSubmit: onSubmit):
       EditSubcategorySheet(subcategory: subcategory, onSubmit: onSubmit)
     case let .addSubcategory(category: category, onSubmit: onSubmit):
@@ -123,11 +123,11 @@ enum Sheet: Identifiable, Equatable {
     case let .addCategory(onSubmit: onSubmit):
       AddCategorySheet(onSubmit: onSubmit)
     case let .editCompany(company: company, onSuccess: onSuccess):
-      EditCompanySheet(client, company: company, onSuccess: onSuccess, mode: .edit)
+      EditCompanySheet(company: company, onSuccess: onSuccess, mode: .edit)
     case let .companyEditSuggestion(company: company, onSuccess: onSuccess):
-      EditCompanySheet(client, company: company, onSuccess: onSuccess, mode: .editSuggestion)
+      EditCompanySheet(company: company, onSuccess: onSuccess, mode: .editSuggestion)
     case let .userSheet(mode: mode, onSubmit: onSubmit):
-      UserSheet(client, mode: mode, onSubmit: onSubmit)
+      UserSheet(mode: mode, onSubmit: onSubmit)
     }
   }
 

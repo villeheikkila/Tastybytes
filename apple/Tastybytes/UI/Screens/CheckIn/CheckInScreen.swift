@@ -3,6 +3,7 @@ import SwiftUI
 
 struct CheckInScreen: View {
   private let logger = getLogger(category: "CheckInScreen")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -20,16 +21,13 @@ struct CheckInScreen: View {
     }
   }
 
-  let client: Client
-
-  init(_ client: Client, checkIn: CheckIn) {
-    self.client = client
+  init(checkIn: CheckIn) {
     _checkIn = State(wrappedValue: checkIn)
   }
 
   var body: some View {
     ScrollView {
-      CheckInCardView(client: client, checkIn: checkIn, loadedFrom: .checkIn)
+      CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn)
       commentSection
     }
     .overlay(

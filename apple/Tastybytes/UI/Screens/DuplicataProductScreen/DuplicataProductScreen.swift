@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DuplicateProductScreen: View {
   private let logger = getLogger(category: "ProductVerificationScreen")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var hapticManager: HapticManager
   @State private var products = [Product.Joined]()
@@ -12,12 +13,6 @@ struct DuplicateProductScreen: View {
   }
 
   @State private var showDeleteProductConfirmationDialog = false
-
-  let client: Client
-
-  init(_ client: Client) {
-    self.client = client
-  }
 
   var body: some View {
     List {

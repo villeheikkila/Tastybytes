@@ -4,6 +4,7 @@ import SwiftUI
 
 struct EditCompanySheet: View {
   private let logger = getLogger(category: "EditCompanySheet")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @State private var company: Company
@@ -18,12 +19,10 @@ struct EditCompanySheet: View {
     }
   }
 
-  let client: Client
   let mode: Mode
   let onSuccess: () async -> Void
 
-  init(_ client: Client, company: Company, onSuccess: @escaping () async -> Void, mode: Mode) {
-    self.client = client
+  init(company: Company, onSuccess: @escaping () async -> Void, mode: Mode) {
     _company = State(wrappedValue: company)
     self.mode = mode
     self.onSuccess = onSuccess

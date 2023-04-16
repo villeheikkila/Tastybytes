@@ -5,6 +5,7 @@ import SwiftUI
 struct EditSubBrandSheet: View {
   private let logger = getLogger(category: "EditSubBrandSheet")
   @Environment(\.dismiss) private var dismiss
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var showToast = false
@@ -21,17 +22,14 @@ struct EditSubBrandSheet: View {
     }
   }
 
-  let client: Client
   let onUpdate: () async -> Void
   let brand: Brand.JoinedSubBrandsProductsCompany
 
   init(
-    _ client: Client,
     brand: Brand.JoinedSubBrandsProductsCompany,
     subBrand: SubBrand.JoinedProduct,
     onUpdate: @escaping () async -> Void
   ) {
-    self.client = client
     self.brand = brand
     _subBrand = State(wrappedValue: subBrand)
     _newSubBrandName = State(wrappedValue: subBrand.name ?? "")

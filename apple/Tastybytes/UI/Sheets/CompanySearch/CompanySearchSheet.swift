@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CompanySearchSheet: View {
   private let logger = getLogger(category: "CompanySearchSheet")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @State private var searchResults = [Company]()
@@ -17,10 +18,8 @@ struct CompanySearchSheet: View {
   }
 
   let onSelect: (_ company: Company, _ createdNew: Bool) -> Void
-  let client: Client
 
-  init(_ client: Client, onSelect: @escaping (_ company: Company, _ createdNew: Bool) -> Void) {
-    self.client = client
+  init(onSelect: @escaping (_ company: Company, _ createdNew: Bool) -> Void) {
     self.onSelect = onSelect
   }
 

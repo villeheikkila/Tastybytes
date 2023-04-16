@@ -7,6 +7,7 @@ struct UserSheet: View {
   }
 
   private let logger = getLogger(category: "UserSheet")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
   @EnvironmentObject private var hapticManager: HapticManager
@@ -14,16 +15,13 @@ struct UserSheet: View {
   @State private var searchText: String = ""
   @State private var searchResults = [Profile]()
 
-  let client: Client
   let onSubmit: () -> Void
   let mode: Mode
 
   init(
-    _ client: Client,
     mode: Mode,
     onSubmit: @escaping () -> Void
   ) {
-    self.client = client
     self.mode = mode
     self.onSubmit = onSubmit
   }

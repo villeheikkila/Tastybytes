@@ -2,16 +2,9 @@ import SwiftUI
 
 struct DismissableSheet<RootView: View>: View {
   @Environment(\.dismiss) private var dismiss
-  let view: (_ dismiss: DismissAction) -> RootView
-  let title: String
 
-  init(
-    title: String,
-    @ViewBuilder view: @escaping (_ dismiss: DismissAction) -> RootView
-  ) {
-    self.view = view
-    self.title = title
-  }
+  let title: String
+  let view: (_ dismiss: DismissAction) -> RootView
 
   var body: some View {
     view(dismiss)

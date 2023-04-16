@@ -23,7 +23,7 @@ protocol Client {
   var report: ReportRepository { get }
 }
 
-class AppClient: Client {
+class AppClient: Client, ObservableObject {
   let supabase: SupabaseClient
 
   let profile: ProfileRepository

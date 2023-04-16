@@ -4,7 +4,6 @@ import SwiftUI
 @MainActor
 class ProfileManager: ObservableObject {
   private let logger = getLogger(category: "ProfileManager")
-  let client: Client
   @Published private(set) var isLoggedIn = false
   @Published private(set) var colorScheme: ColorScheme?
 
@@ -28,6 +27,12 @@ class ProfileManager: ObservableObject {
   @Published var reactionNotifications = true
   @Published var friendRequestNotifications = true
   @Published var checkInTagNotifications = true
+
+  let client: Client
+
+  init(client: Client) {
+    self.client = client
+  }
 
   var initialColorScheme: ColorScheme?
 
@@ -59,10 +64,6 @@ class ProfileManager: ObservableObject {
     _ = await client.profile.updateSettings(
       update: update
     )
-  }
-
-  init(_ client: Client) {
-    self.client = client
   }
 
   private var profile: Profile.Extended?

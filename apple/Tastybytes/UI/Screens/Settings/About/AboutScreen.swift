@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AboutScreen: View {
   private let logger = getLogger(category: "AboutScreen")
-  let client: Client
+  @EnvironmentObject private var client: AppClient
   @State private var aboutPage: AboutPage?
 
   var body: some View {

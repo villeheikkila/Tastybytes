@@ -2,16 +2,15 @@ import SwiftUI
 
 struct ReactionsView: View {
   private let logger = getLogger(category: "ReactionsView")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var hapticManager = HapticManager()
   @State private var checkInReactions = [CheckInReaction]()
   @State private var isLoading = false
 
-  let client: Client
   let checkIn: CheckIn
 
-  init(_ client: Client, checkIn: CheckIn) {
-    self.client = client
+  init(checkIn: CheckIn) {
     self.checkIn = checkIn
     checkInReactions = checkIn.checkInReactions
   }

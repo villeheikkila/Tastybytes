@@ -21,6 +21,7 @@ struct VerificationScreen: View {
   }
 
   private let logger = getLogger(category: "ProductVerificationScreen")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var hapticManager: HapticManager
   @State private var products = [Product.Joined]()
@@ -35,8 +36,6 @@ struct VerificationScreen: View {
   }
 
   @State private var showDeleteProductConfirmationDialog = false
-
-  let client: Client
 
   var body: some View {
     List {

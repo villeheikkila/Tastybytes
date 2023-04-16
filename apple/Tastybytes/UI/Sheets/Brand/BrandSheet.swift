@@ -6,27 +6,15 @@ struct BrandSheet: View {
   }
 
   private let logger = getLogger(category: "BrandSheet")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
   @State private var brandName = ""
 
-  let client: Client
-  let mode: Mode
   let brandOwner: Company
+  let mode: Mode
   let onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
-
-  init(
-    _ client: Client,
-    brandOwner: Company,
-    mode: Mode,
-    onSelect: @escaping (_ brand: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
-  ) {
-    self.client = client
-    self.mode = mode
-    self.brandOwner = brandOwner
-    self.onSelect = onSelect
-  }
 
   var body: some View {
     List {

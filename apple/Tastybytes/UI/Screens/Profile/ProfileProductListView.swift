@@ -2,17 +2,12 @@ import SwiftUI
 
 struct ProfileProductListView: View {
   let logger = getLogger(category: "ProfileProductListView")
+  @EnvironmentObject private var client: AppClient
   @State private var products: [Product.Joined] = []
   @State private var searchTerm = ""
   @State private var productFilter: Product.Filter?
 
-  let client: Client
   let profile: Profile
-
-  init(_ client: Client, profile: Profile) {
-    self.client = client
-    self.profile = profile
-  }
 
   var filteredProducts: [Product.Joined] {
     let filtered = products

@@ -2,17 +2,16 @@ import SwiftUI
 
 struct FriendsScreen: View {
   private let logger = getLogger(category: "FriendsScreen")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var toastManager: ToastManager
   @State private var friends: [Friend]
 
-  let client: Client
   let profile: Profile
 
-  init(_ client: Client, profile: Profile, initialFriends: [Friend]? = []) {
-    self.client = client
+  init(profile: Profile, initialFriends: [Friend]? = []) {
     self.profile = profile
     _friends = State(wrappedValue: initialFriends ?? [])
   }

@@ -9,6 +9,7 @@ struct CheckInListView<Header>: View where Header: View {
   }
 
   private let logger = getLogger(category: "CheckInListView")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var hapticManager: HapticManager
@@ -31,14 +32,12 @@ struct CheckInListView<Header>: View where Header: View {
   let topAnchor: String?
 
   init(
-    _ client: Client,
     fetcher: Fetcher,
     scrollToTop: Binding<Int>,
     onRefresh: @escaping () async -> Void,
     topAnchor: String? = nil,
     @ViewBuilder header: @escaping () -> Header
   ) {
-    self.client = client
     self.fetcher = fetcher
     _scrollToTop = scrollToTop
     self.topAnchor = topAnchor
@@ -46,7 +45,6 @@ struct CheckInListView<Header>: View where Header: View {
     self.onRefresh = onRefresh
   }
 
-  let client: Client
   let fetcher: Fetcher
   private let pageSize = 10
 
@@ -108,7 +106,7 @@ struct CheckInListView<Header>: View where Header: View {
 
   @ViewBuilder private var checkInsList: some View {
     ForEach(uniqueCheckIns) { checkIn in
-      CheckInCardView(client: client, checkIn: checkIn, loadedFrom: getLoadedFrom)
+      CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
         .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
         .listRowSeparator(.hidden)
         .id(checkIn.id)

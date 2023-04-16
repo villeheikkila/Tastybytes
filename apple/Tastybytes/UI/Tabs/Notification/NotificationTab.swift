@@ -1,18 +1,13 @@
 import SwiftUI
 
 struct NotificationTab: View {
-  let client: Client
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var hapticManager: HapticManager
-  @Binding private var resetNavigationOnTab: Tab?
-
-  init(_ client: Client, resetNavigationOnTab: Binding<Tab?>) {
-    self.client = client
-    _resetNavigationOnTab = resetNavigationOnTab
-  }
+  @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
-    RouterWrapper(client) { router in
+    RouterWrapper { router in
       List {
         ForEach(notificationManager.filteredNotifications) { notification in
           HStack {

@@ -2,20 +2,18 @@ import SwiftUI
 
 struct SubBrandSheet: View {
   private let logger = getLogger(category: "SubBrandSheet")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @State private var subBrandName = ""
 
-  let client: Client
   let brandWithSubBrands: Brand.JoinedSubBrands
   let onSelect: (_ company: SubBrand, _ createdNew: Bool) -> Void
 
   init(
-    _ client: Client,
     brandWithSubBrands: Brand.JoinedSubBrands,
     onSelect: @escaping (_ company: SubBrand, _ createdNew: Bool) -> Void
   ) {
-    self.client = client
     self.brandWithSubBrands = brandWithSubBrands
     self.onSelect = onSelect
   }

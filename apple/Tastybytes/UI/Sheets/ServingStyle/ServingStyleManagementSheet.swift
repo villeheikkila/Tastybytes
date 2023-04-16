@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ServingStyleManagementSheet: View {
   private let logger = getLogger(category: "ServingStyleManagementSheet")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
   @State private var servingStyles = [ServingStyle]()
@@ -25,17 +26,6 @@ struct ServingStyleManagementSheet: View {
   @Binding var pickedServingStyles: [ServingStyle]
 
   let onSelect: (_ servingStyle: ServingStyle) async -> Void
-  let client: Client
-
-  init(
-    _ client: Client,
-    pickedServingStyles: Binding<[ServingStyle]>,
-    onSelect: @escaping (_ servingStyle: ServingStyle) async -> Void
-  ) {
-    self.client = client
-    _pickedServingStyles = pickedServingStyles
-    self.onSelect = onSelect
-  }
 
   var body: some View {
     List {

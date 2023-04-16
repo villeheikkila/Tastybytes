@@ -2,11 +2,11 @@ import SwiftUI
 
 struct BarcodeManagementSheet: View {
   private let logger = getLogger(category: "BarcodeManagementSheet")
+  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
   @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []
 
-  let client: Client
   let product: Product.Joined
 
   var body: some View {
