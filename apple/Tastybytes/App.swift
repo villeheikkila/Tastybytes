@@ -40,7 +40,7 @@ struct RootView: View {
           if profileManager.get().isOnboarded {
             TabsView(client, profile: profileManager.getProfile())
           } else {
-            OnboardTabsView(client)
+            OnboardTabsView()
           }
         }
       case .passwordRecovery:

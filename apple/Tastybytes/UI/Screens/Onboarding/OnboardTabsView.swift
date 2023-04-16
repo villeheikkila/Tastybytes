@@ -1,15 +1,10 @@
 import SwiftUI
 
 struct OnboardTabsView: View {
-  @StateObject private var onboardingViewModel: OnboardingViewModel
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @Environment(\.colorScheme) private var colorScheme
   @FocusState private var focusedField: OnboardField?
   @State private var selection = Tab.welcome
-
-  init(_ client: Client) {
-    _onboardingViewModel = StateObject(wrappedValue: OnboardingViewModel(client: client))
-  }
 
   var body: some View {
     TabView(selection: .init(get: { selection }, set: { newTab in
@@ -23,7 +18,6 @@ struct OnboardTabsView: View {
       FinalStepTab()
         .tag(Tab.final)
     }
-    .environmentObject(onboardingViewModel)
     .tabViewStyle(.page)
     .task {
       await splashScreenManager.dismiss()

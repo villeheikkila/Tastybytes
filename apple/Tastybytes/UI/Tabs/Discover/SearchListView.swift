@@ -1,25 +1,48 @@
 import SwiftUI
 
 struct SearchListView: View {
-  @StateObject private var viewModel: ViewModel
-  @State private var scrollProxy: ScrollViewProxy?
+  private let logger = getLogger(category: "SearchListView")
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
+  @State private var scrollProxy: ScrollViewProxy?
+  @State private var searchTerm: String = ""
+  @State private var products = [Product.Joined]()
+  @State private var profiles = [Profile]()
+  @State private var companies = [Company]()
+  @State private var locations = [Location]()
+  @State private var isSearched = false
+  @State private var searchScope: SearchScope = .products
+  @State private var barcode: Barcode?
+  @State private var addBarcodeTo: Product.Joined? {
+    didSet {
+      showAddBarcodeConfirmation = true
+    }
+  }
+
+  @State private var showAddBarcodeConfirmation = false
+  @State private var productFilter: Product.Filter? {
+    didSet {
+      Task { await search() }
+    }
+  }
+
   @Binding private var scrollToTop: Int
 
+  let client: Client
+
   init(_ client: Client, scrollToTop: Binding<Int>) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.client = client
     _scrollToTop = scrollToTop
   }
 
   var body: some View {
     ScrollViewReader { proxy in
       List {
-        if viewModel.currentScopeIsEmpty {
+        if currentScopeIsEmpty {
           searchScopeList
         }
-        switch viewModel.searchScope {
+        switch searchScope {
         case .products:
           productResults
         case .companies:
@@ -34,31 +57,29 @@ struct SearchListView: View {
         scrollProxy = proxy
       }
       .listStyle(.plain)
-      .searchable(text: $viewModel.searchTerm, placement: .navigationBarDrawer(displayMode: .always),
-                  prompt: viewModel.searchScope.prompt)
+      .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
+                  prompt: searchScope.prompt)
       .disableAutocorrection(true)
-      .searchScopes($viewModel.searchScope) {
+      .searchScopes($searchScope) {
         ForEach(SearchScope.allCases) { scope in
           Text(scope.label).tag(scope)
         }
       }
       .onSubmit(of: .search) {
-        Task { await viewModel.search() }
+        Task { await search() }
       }
-      .onChange(of: viewModel.searchScope, perform: { _ in
-        Task { await viewModel.search() }
-        viewModel.barcode = nil
+      .onChange(of: searchScope, perform: { _ in
+        Task { await search() }
+        barcode = nil
       })
-      .onChange(of: viewModel.searchTerm, perform: { term in
+      .onChange(of: searchTerm, debounceTime: 0.2) { _ in
+        Task { await search() }
+      }
+      .onChange(of: searchTerm, perform: { term in
         if term.isEmpty {
-          Task { await viewModel.resetSearch() }
+          Task { await resetSearch() }
         }
       })
-      .onReceive(
-        viewModel.$searchTerm.debounce(for: 0.2, scheduler: RunLoop.main)
-      ) { _ in
-        Task { await viewModel.search() }
-      }
     }
     .navigationTitle("Discover")
     .toolbar {
@@ -66,44 +87,40 @@ struct SearchListView: View {
     }
     .confirmationDialog(
       "Add barcode confirmation",
-      isPresented: $viewModel.showAddBarcodeConfirmation,
-      presenting: viewModel.addBarcodeTo
+      isPresented: $showAddBarcodeConfirmation,
+      presenting: addBarcodeTo
     ) { presenting in
       ProgressButton(
         "Add barcode to \(presenting.getDisplayName(.fullName))",
         action: {
-          await viewModel.addBarcodeToProduct(onComplete: {
+          await addBarcodeToProduct(onComplete: {
             toastManager.toggle(.success("Barcode added!"))
           })
         }
       )
     }
     .overlay {
-      if viewModel.searchScope == .products, viewModel.productFilter != nil {
-        if let productFilter = viewModel.productFilter {
-          ProductFilterOverlayView(filters: productFilter, onReset: {
-            viewModel.productFilter = nil
-          })
-        }
+      if searchScope == .products, let productFilter {
+        ProductFilterOverlayView(filters: productFilter, onReset: { self.productFilter = nil })
       }
     }
     .onChange(of: scrollToTop) { _ in
       withAnimation {
-        switch viewModel.searchScope {
+        switch searchScope {
         case .products:
-          if let id = viewModel.products.first?.id {
+          if let id = products.first?.id {
             scrollProxy?.scrollTo(id, anchor: .top)
           }
         case .companies:
-          if let id = viewModel.companies.first?.id {
+          if let id = companies.first?.id {
             scrollProxy?.scrollTo(id, anchor: .top)
           }
         case .users:
-          if let id = viewModel.profiles.first?.id {
+          if let id = profiles.first?.id {
             scrollProxy?.scrollTo(id, anchor: .top)
           }
         case .locations:
-          if let id = viewModel.locations.first?.id {
+          if let id = locations.first?.id {
             scrollProxy?.scrollTo(id, anchor: .top)
           }
         }
@@ -114,10 +131,10 @@ struct SearchListView: View {
   private var searchScopeList: some View {
     Section {
       Group {
-        Button("Products", systemImage: "grid", action: { viewModel.searchScope = .products })
-        Button("Companies", systemImage: "network", action: { viewModel.searchScope = .companies })
-        Button("Users", systemImage: "person", action: { viewModel.searchScope = .users })
-        Button("Locations", systemImage: "location", action: { viewModel.searchScope = .locations })
+        Button("Products", systemImage: "grid", action: { searchScope = .products })
+        Button("Companies", systemImage: "network", action: { searchScope = .companies })
+        Button("Users", systemImage: "person", action: { searchScope = .users })
+        Button("Locations", systemImage: "location", action: { searchScope = .locations })
       }
       .bold()
       .listRowSeparator(.visible)
@@ -127,7 +144,7 @@ struct SearchListView: View {
   }
 
   private var profileResults: some View {
-    ForEach(viewModel.profiles) { profile in
+    ForEach(profiles) { profile in
       RouterLink(screen: .profile(profile)) {
         HStack(alignment: .center) {
           AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
@@ -144,34 +161,34 @@ struct SearchListView: View {
   }
 
   private var companyResults: some View {
-    ForEach(viewModel.companies) { company in
+    ForEach(companies) { company in
       RouterLink(company.name, screen: .company(company))
         .id(company.id)
     }
   }
 
   private var locationResults: some View {
-    ForEach(viewModel.locations) { location in
+    ForEach(locations) { location in
       RouterLink(location.name, screen: .location(location))
         .id(location.id)
     }
   }
 
   @ViewBuilder private var productResults: some View {
-    if viewModel.barcode != nil {
+    if barcode != nil {
       Section {
         Text(
           """
-          \(viewModel.products.isEmpty ? "No results were found" : "If none of the results match"),\
+          \(products.isEmpty ? "No results were found" : "If none of the results match"),\
           you can assign the barcode to a product by searching again \
           with the name or by creating a new product.
           """
         )
-        Button("Dismiss barcode", action: { viewModel.resetBarcode() })
+        Button("Dismiss barcode", action: { resetBarcode() })
       }
     }
 
-    if viewModel.currentScopeIsEmpty {
+    if currentScopeIsEmpty {
       Section {
         Group {
           RouterLink(
@@ -184,7 +201,11 @@ struct SearchListView: View {
             systemImage: "line.horizontal.star.fill.line.horizontal",
             screen: .productFeed(.topRated)
           )
-          RouterLink(Product.FeedType.latest.label, systemImage: "bolt.horizontal.circle", screen: .productFeed(.latest))
+          RouterLink(
+            Product.FeedType.latest.label,
+            systemImage: "bolt.horizontal.circle",
+            screen: .productFeed(.latest)
+          )
         }
         .bold()
         .listRowSeparator(.visible)
@@ -192,7 +213,7 @@ struct SearchListView: View {
         Text("Feeds")
       }.headerProminence(.increased)
     } else {
-      ForEach(viewModel.products) { product in
+      ForEach(products) { product in
         ProductItemView(product: product, extras: [.checkInCheck, .rating])
           .swipeActions {
             RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { checkIn in
@@ -202,16 +223,16 @@ struct SearchListView: View {
           .contentShape(Rectangle())
           .accessibilityAddTraits(.isLink)
           .onTapGesture {
-            if viewModel.barcode == nil || product.barcodes.contains(where: { $0.isBarcode(viewModel.barcode) }) {
+            if barcode == nil || product.barcodes.contains(where: { $0.isBarcode(barcode) }) {
               router.navigate(screen: .product(product))
             } else {
-              viewModel.addBarcodeTo = product
+              addBarcodeTo = product
             }
           }
           .id(product.id)
       }
     }
-    if viewModel.isSearched, profileManager.hasPermission(.canCreateProducts) {
+    if isSearched, profileManager.hasPermission(.canCreateProducts) {
       Section {
         HStack {
           Text("Add new")
@@ -221,9 +242,9 @@ struct SearchListView: View {
         .contentShape(Rectangle())
         .accessibilityAddTraits(.isLink)
         .onTapGesture {
-          let barcode = viewModel.barcode
-          viewModel.barcode = nil
-          router.navigate(screen: .addProduct(barcode))
+          let barcodeCopy = barcode
+          barcode = nil
+          router.navigate(screen: .addProduct(barcodeCopy))
         }
       } header: {
         Text("Didn't find a product you were looking for?")
@@ -234,13 +255,13 @@ struct SearchListView: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      if viewModel.searchScope == .products {
+      if searchScope == .products {
         RouterLink(
           "Show filters",
           systemImage: "line.3.horizontal.decrease.circle",
-          sheet: .productFilter(initialFilter: viewModel.productFilter, sections: [.category, .checkIns],
+          sheet: .productFilter(initialFilter: productFilter, sections: [.category, .checkIns],
                                 onApply: { filter in
-                                  viewModel.productFilter = filter
+                                  productFilter = filter
                                 })
         )
         .labelStyle(.iconOnly)
@@ -249,8 +270,154 @@ struct SearchListView: View {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if profileManager.hasPermission(.canAddBarcodes) {
         RouterLink("Scan a barcode", systemImage: "barcode.viewfinder", sheet: .barcodeScanner(onComplete: { barcode in
-          Task { await viewModel.searchProductsByBardcode(barcode) }
+          Task { await searchProductsByBardcode(barcode) }
         }))
+      }
+    }
+  }
+
+  func resetSearch() async {
+    do {
+      try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
+      withAnimation {
+        profiles = []
+        products = []
+        companies = []
+        locations = []
+        isSearched = false
+      }
+    } catch { logger.error("timer failed") }
+  }
+
+  var currentScopeIsEmpty: Bool {
+    switch searchScope {
+    case .companies:
+      return companies.isEmpty
+    case .locations:
+      return locations.isEmpty
+    case .products:
+      return products.isEmpty && addBarcodeTo == nil && !isSearched
+    case .users:
+      return profiles.isEmpty
+    }
+  }
+
+  func resetBarcode() {
+    barcode = nil
+  }
+
+  func addBarcodeToProduct(onComplete: @escaping () -> Void) async {
+    guard let addBarcodeTo, let barcode else { return }
+    switch await client.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
+    case .success:
+      self.barcode = nil
+      self.addBarcodeTo = nil
+      showAddBarcodeConfirmation = false
+      onComplete()
+    case let .failure(error):
+      logger.error("adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed: \(error.localizedDescription)")
+    }
+  }
+
+  func searchProducts() async {
+    switch await client.product.search(searchTerm: searchTerm, filter: productFilter) {
+    case let .success(searchResults):
+      withAnimation {
+        products = searchResults
+      }
+      isSearched = true
+    case let .failure(error):
+      logger.error("searching products failed: \(error.localizedDescription)")
+    }
+  }
+
+  func searchProfiles() async {
+    switch await client.profile.search(searchTerm: searchTerm, currentUserId: nil) {
+    case let .success(searchResults):
+      withAnimation {
+        profiles = searchResults
+      }
+    case let .failure(error):
+      logger.error("searching profiles failed: \(error.localizedDescription)")
+    }
+  }
+
+  func searchProductsByBardcode(_ barcode: Barcode) async {
+    switch await client.product.search(barcode: barcode) {
+    case let .success(searchResults):
+      self.barcode = barcode
+      withAnimation {
+        products = searchResults
+      }
+      isSearched = true
+    case let .failure(error):
+      logger.error("searching products with barcode \(barcode.barcode) failed: \(error.localizedDescription)")
+    }
+  }
+
+  func searchCompanies() async {
+    switch await client.company.search(searchTerm: searchTerm) {
+    case let .success(searchResults):
+      withAnimation {
+        companies = searchResults
+      }
+    case let .failure(error):
+      logger.error("searching companies failed: \(error.localizedDescription)")
+    }
+  }
+
+  func searchLocations() async {
+    switch await client.location.search(searchTerm: searchTerm) {
+    case let .success(searchResults):
+      withAnimation {
+        locations = searchResults
+      }
+    case let .failure(error):
+      logger.error("searching locations failed: \(error.localizedDescription)")
+    }
+  }
+
+  func search() async {
+    if searchTerm.count < 2 { return }
+    switch searchScope {
+    case .products:
+      await searchProducts()
+    case .companies:
+      await searchCompanies()
+    case .users:
+      await searchProfiles()
+    case .locations:
+      await searchLocations()
+    }
+  }
+
+  enum SearchScope: String, CaseIterable, Identifiable {
+    var id: Self { self }
+    case products, companies, users, locations
+
+    var label: String {
+      switch self {
+      case .products:
+        return "Products"
+      case .companies:
+        return "Companies"
+      case .users:
+        return "Users"
+      case .locations:
+        return "Locations"
+      }
+    }
+
+    var prompt: String {
+      switch self {
+      case .products:
+        return "Search products, brands..."
+      case .users:
+        return "Search users"
+      case .companies:
+        return "Search companies"
+      case .locations:
+        return "Search locations"
       }
     }
   }

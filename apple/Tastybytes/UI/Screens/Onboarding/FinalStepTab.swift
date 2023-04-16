@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct FinalStepTab: View {
-  @EnvironmentObject private var viewModel: OnboardingViewModel
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var toastManager: ToastManager
 
   var body: some View {
     VStack {
@@ -21,12 +21,9 @@ struct FinalStepTab: View {
 
       HStack {
         Spacer()
-        ProgressButton(
-          "Continue to the app",
-          action: { await viewModel.updateProfile { await profileManager.refresh() } }
-        )
-        .buttonStyle(.borderedProminent)
-        .controlSize(.large)
+        ProgressButton("Continue to the app", action: { await profileManager.onboardingUpdate() })
+          .buttonStyle(.borderedProminent)
+          .controlSize(.large)
         Spacer()
       }.padding(.bottom, 80)
     }

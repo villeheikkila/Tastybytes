@@ -1,3 +1,4 @@
+import PhotosUI
 import SwiftUI
 
 @MainActor
@@ -170,6 +171,18 @@ class ProfileManager: ObservableObject {
       lastName == profile?.lastName ?? "")
   }
 
+  func uploadAvatar(newAvatar: PhotosPickerItem?) async {
+    guard let data = await newAvatar?.getJPEG() else { return }
+    guard let profile else { return }
+    switch await client.profile.uploadAvatar(userId: profile.id, data: data) {
+    case .success:
+      // TODO: update only avatar url
+      await refresh()
+    case let .failure(error):
+      logger.error("uplodaing avatar failed: \(error.localizedDescription)")
+    }
+  }
+
   func updateProfile(onSuccess: @escaping () async -> Void, onFailure: @escaping (_ error: Error) -> Void) async {
     let update = Profile.UpdateRequest(
       username: username,
@@ -185,6 +198,26 @@ class ProfileManager: ObservableObject {
     case let .failure(error):
       logger.error("failed to update profile: \(error.localizedDescription)")
       onFailure(error)
+    }
+  }
+
+  func onboardingUpdate() async {
+    let update = Profile.UpdateRequest(
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
+      isPrivate: isPrivateProfile,
+      showFullName: showFullName,
+      isOnboarded: true
+    )
+
+    switch await client.profile.update(
+      update: update
+    ) {
+    case .success:
+      logger.info("onboarded")
+    case let .failure(error):
+      logger.error("failed to update profile: \(error.localizedDescription)")
     }
   }
 

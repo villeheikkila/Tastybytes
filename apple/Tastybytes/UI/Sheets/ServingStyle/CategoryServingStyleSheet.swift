@@ -1,50 +1,92 @@
 import SwiftUI
 
 struct CategoryServingStyleSheet: View {
-  @StateObject private var viewModel: ViewModel
+  private let logger = getLogger(category: "CategoryServingStyleSheet")
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
+  @State private var servingStyles: [ServingStyle]
+  @State private var showDeleteServingStyleConfirmation = false
+  @State private var toDeleteServingStyle: ServingStyle? {
+    didSet {
+      showDeleteServingStyleConfirmation = true
+    }
+  }
+
+  let client: Client
+  let category: Category.JoinedSubcategoriesServingStyles
 
   init(_ client: Client, category: Category.JoinedSubcategoriesServingStyles) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, category: category))
+    self.client = client
+    self.category = category
+    _servingStyles = State(wrappedValue: category.servingStyles)
   }
 
   var body: some View {
     List {
-      ForEach(viewModel.servingStyles) { servingStyle in
+      ForEach(servingStyles) { servingStyle in
         HStack {
           Text(servingStyle.label)
         }
         .swipeActions {
-          Button("Delete", systemImage: "trash", role: .destructive, action: { viewModel.toDeleteServingStyle = servingStyle })
+          Button("Delete", systemImage: "trash", role: .destructive, action: { toDeleteServingStyle = servingStyle })
         }
       }
     }
-    .navigationTitle("\(viewModel.category.name) Serving Styles")
+    .navigationTitle("\(category.name) Serving Styles")
     .navigationBarTitleDisplayMode(.inline)
     .navigationBarItems(leading: Button("Done", role: .cancel, action: { dismiss() }).bold(),
                         trailing: RouterLink("Add Barcode", systemImage: "plus",
                                              sheet: .servingStyleManagement(
-                                               pickedServingStyles: $viewModel.servingStyles,
+                                               pickedServingStyles: $servingStyles,
                                                onSelect: { servingStyle in
-                                                 await viewModel.addServingStyleToCategory(servingStyle)
+                                                 await addServingStyleToCategory(servingStyle)
                                                }
                                              )).bold())
     .confirmationDialog(
       "Are you sure you want to delete the serving style? The serving style information for affected check-ins will be permanently lost",
-      isPresented: $viewModel.showDeleteServingStyleConfirmation,
+      isPresented: $showDeleteServingStyleConfirmation,
       titleVisibility: .visible,
-      presenting: viewModel.toDeleteServingStyle
+      presenting: toDeleteServingStyle
     ) { presenting in
       ProgressButton(
-        "Remove \(presenting.name) from \(viewModel.category.name)",
+        "Remove \(presenting.name) from \(category.name)",
         role: .destructive,
         action: {
-          await viewModel.deleteServingStyle(onDelete: {
+          await deleteServingStyle(onDelete: {
             hapticManager.trigger(.notification(.success))
           })
         }
       )
+    }
+  }
+
+  func addServingStyleToCategory(_ servingStyle: ServingStyle) async {
+    switch await client.category.addServingStyle(
+      categoryId: category.id,
+      servingStyleId: servingStyle.id
+    ) {
+    case .success:
+      withAnimation {
+        servingStyles.append(servingStyle)
+      }
+    case let .failure(error):
+      logger.error("failed to add serving style to category': \(error.localizedDescription)")
+    }
+  }
+
+  func deleteServingStyle(onDelete: @escaping () -> Void) async {
+    guard let toDeleteServingStyle else { return }
+    switch await client.category.deleteServingStyle(
+      categoryId: category.id,
+      servingStyleId: toDeleteServingStyle.id
+    ) {
+    case .success:
+      withAnimation {
+        servingStyles.remove(object: toDeleteServingStyle)
+      }
+      onDelete()
+    case let .failure(error):
+      logger.error("failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)")
     }
   }
 }
