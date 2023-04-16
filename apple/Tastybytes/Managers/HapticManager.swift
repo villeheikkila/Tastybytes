@@ -3,7 +3,7 @@ import SwiftUI
 import UIKit
 
 @MainActor
-class HapticManager: ObservableObject {
+final class HapticManager: ObservableObject {
   enum HapticType {
     enum Intensity {
       case low, high

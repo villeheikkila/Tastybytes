@@ -2,7 +2,7 @@ import AlertToast
 import SwiftUI
 
 @MainActor
-class ToastManager: ObservableObject {
+final class ToastManager: ObservableObject {
   enum ToastType {
     case success(_ title: String)
     case error(_ title: String)

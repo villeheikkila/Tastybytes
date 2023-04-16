@@ -3,7 +3,7 @@ import FirebaseMessaging
 import SwiftUI
 
 @MainActor
-class NotificationManager: ObservableObject {
+final class NotificationManager: ObservableObject {
   private let logger = getLogger(category: "NotificationManager")
   @Published private(set) var notifications = [Notification]() {
     didSet {

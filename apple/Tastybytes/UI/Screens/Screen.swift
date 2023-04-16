@@ -27,8 +27,7 @@ enum Screen: Hashable {
   case contributions
   case about
 
-  @ViewBuilder
-  var view: some View {
+  @ViewBuilder var view: some View {
     switch self {
     case let .company(company):
       CompanyScreen(company: company)

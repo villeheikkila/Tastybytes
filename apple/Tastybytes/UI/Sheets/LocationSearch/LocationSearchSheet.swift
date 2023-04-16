@@ -67,7 +67,7 @@ struct LocationSearchSheet: View {
 
 extension LocationSearchSheet {
   @MainActor
-  class ViewModel: ObservableObject {
+  final class ViewModel: ObservableObject {
     var service: LocationSearchManager
     private var cancellable: AnyCancellable?
     @Published var locations = [Location]()

@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct RouterWrapper<Content: View>: View {
-  @StateObject private var router = Router()
   @EnvironmentObject private var repository: Repository
+  @StateObject private var router = Router()
+
   var content: (_ router: Router) -> Content
 
   var body: some View {

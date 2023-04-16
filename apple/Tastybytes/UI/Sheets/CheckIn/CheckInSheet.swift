@@ -10,9 +10,9 @@ struct CheckInSheet: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var appDataManager: AppDataManager
   @Environment(\.dismiss) private var dismiss
+  @FocusState private var focusedField: Focusable?
   @State private var showPhotoMenu = false
   @State private var pickedFlavors = [Flavor]()
-  @FocusState private var focusedField: Focusable?
   @State private var showCamera = false
   @State private var review: String = ""
   @State private var rating: Double = 0

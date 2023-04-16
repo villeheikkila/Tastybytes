@@ -20,7 +20,7 @@ struct LegacyPhotoPicker: UIViewControllerRepresentable {
 }
 
 extension LegacyPhotoPicker {
-  class Coordinator: NSObject, PHPickerViewControllerDelegate {
+  final class Coordinator: NSObject, PHPickerViewControllerDelegate {
     let parent: LegacyPhotoPicker
     let onSelection: (_ image: UIImage) -> Void
 

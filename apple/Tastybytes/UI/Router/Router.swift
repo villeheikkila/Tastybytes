@@ -1,7 +1,7 @@
 import SwiftUI
 
 @MainActor
-class Router: ObservableObject {
+final class Router: ObservableObject {
   private let logger = getLogger(category: "Router")
   @Published var path: [Screen] = []
   @Published var sheet: Sheet?

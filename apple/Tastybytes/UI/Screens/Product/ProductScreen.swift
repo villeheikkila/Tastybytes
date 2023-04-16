@@ -7,13 +7,13 @@ struct ProductScreen: View {
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
+  @Environment(\.dismiss) private var dismiss
   @State private var scrollToTop: Int = 0
   @State private var product: Product.Joined
   @State private var summary: Summary?
   @State private var showDeleteProductConfirmationDialog = false
   @State private var showUnverifyProductConfirmation = false
   @State private var resetView: Int = 0
-  @Environment(\.dismiss) private var dismiss
 
   init(product: Product.Joined) {
     _product = State(wrappedValue: product)

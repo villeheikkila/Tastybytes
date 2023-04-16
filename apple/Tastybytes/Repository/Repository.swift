@@ -23,7 +23,7 @@ protocol RepositoryProtocol {
   var report: ReportRepository { get }
 }
 
-class Repository: RepositoryProtocol, ObservableObject {
+final class Repository: RepositoryProtocol, ObservableObject {
   let profile: ProfileRepository
   let checkIn: CheckInRepository
   let checkInComment: CheckInCommentRepository

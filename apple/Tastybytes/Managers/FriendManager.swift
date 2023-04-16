@@ -1,7 +1,7 @@
 import SwiftUI
 
 @MainActor
-class FriendManager: ObservableObject {
+final class FriendManager: ObservableObject {
   private let logger = getLogger(category: "FriendsScreen")
   @Published var friends = [Friend]()
 

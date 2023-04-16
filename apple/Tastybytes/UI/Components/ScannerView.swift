@@ -36,7 +36,7 @@ extension ScannerView {
     case permissionDenied
   }
 
-  class Controller: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+  final class Controller: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
     AVCaptureMetadataOutputObjectsDelegate
   {
     var parentView: ScannerView?

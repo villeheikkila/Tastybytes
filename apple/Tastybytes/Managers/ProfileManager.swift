@@ -2,7 +2,7 @@ import PhotosUI
 import SwiftUI
 
 @MainActor
-class ProfileManager: ObservableObject {
+final class ProfileManager: ObservableObject {
   private let logger = getLogger(category: "ProfileManager")
   @Published private(set) var isLoggedIn = false
   @Published private(set) var colorScheme: ColorScheme?

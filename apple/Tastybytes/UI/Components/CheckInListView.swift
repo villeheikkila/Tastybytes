@@ -27,6 +27,7 @@ struct CheckInListView<Header>: View where Header: View {
   @State private var isLoading = false
   @State private var page = 0
   @Binding private var scrollToTop: Int
+
   let header: Header
   let onRefresh: () async -> Void
   let topAnchor: String?

@@ -21,7 +21,7 @@ struct CameraView: UIViewControllerRepresentable {
 }
 
 extension CameraView {
-  class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var parent: CameraView
     let onClose: () -> Void
     let onCapture: (_ image: UIImage) -> Void

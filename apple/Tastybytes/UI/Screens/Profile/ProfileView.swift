@@ -5,10 +5,10 @@ import SwiftUI
 struct ProfileView: View {
   private let logger = getLogger(category: "ProfileView")
   @EnvironmentObject private var repository: Repository
-  @Binding private var scrollToTop: Int
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
+  @Binding private var scrollToTop: Int
   @State private var profile: Profile
   @State private var profileSummary: ProfileSummary?
   @State private var selectedItem: PhotosPickerItem?

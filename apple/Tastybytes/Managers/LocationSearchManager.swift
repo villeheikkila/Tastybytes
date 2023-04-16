@@ -31,7 +31,7 @@ final class LocationSearchManager {
   }
 }
 
-class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
   private let locationManager = CLLocationManager()
   @Published var locationStatus: CLAuthorizationStatus?
   @Published var lastLocation: CLLocation?
