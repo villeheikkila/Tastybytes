@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProfileProductListView: View {
   let logger = getLogger(category: "ProfileProductListView")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @State private var products: [Product.Joined] = []
   @State private var searchTerm = ""
   @State private var productFilter: Product.Filter?
@@ -82,7 +82,7 @@ struct ProfileProductListView: View {
   }
 
   func loadProducts() async {
-    switch await client.product.getByProfile(id: profile.id) {
+    switch await repository.product.getByProfile(id: profile.id) {
     case let .success(products):
       withAnimation {
         self.products = products

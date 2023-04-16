@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct AdminTab: View {
-  @EnvironmentObject private var client: AppClient
   @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
@@ -18,11 +17,6 @@ struct AdminTab: View {
         if tab == .admin {
           router.reset()
           resetNavigationOnTab = nil
-        }
-      }
-      .onOpenURL { url in
-        if let detailPage = url.detailPage {
-          router.fetchAndNavigateTo(client, detailPage, resetStack: true)
         }
       }
     }

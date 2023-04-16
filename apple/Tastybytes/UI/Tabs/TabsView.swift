@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TabsView: View {
-  let client: Client
+  let repository: Repository
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -10,10 +10,10 @@ struct TabsView: View {
   @State private var selection = Tab.activity
   @State private var resetNavigationOnTab: Tab?
 
-  init(_ client: Client, profile: Profile) {
-    self.client = client
-    _friendManager = StateObject(wrappedValue: FriendManager(client: client, profile: profile))
-    _appDataManager = StateObject(wrappedValue: AppDataManager(client: client))
+  init(_ repository: Repository, profile: Profile) {
+    self.repository = repository
+    _friendManager = StateObject(wrappedValue: FriendManager(repository: repository, profile: profile))
+    _appDataManager = StateObject(wrappedValue: AppDataManager(repository: repository))
   }
 
   private var tabs: [Tab] {

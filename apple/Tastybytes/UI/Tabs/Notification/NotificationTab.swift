@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct NotificationTab: View {
-  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var hapticManager: HapticManager
   @Binding var resetNavigationOnTab: Tab?

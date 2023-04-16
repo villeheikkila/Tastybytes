@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CompanySearchSheet: View {
   private let logger = getLogger(category: "CompanySearchSheet")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @State private var searchResults = [Company]()
@@ -82,7 +82,7 @@ struct CompanySearchSheet: View {
 
   func searchCompanies(name: String) async {
     guard name.count > 1 else { return }
-    switch await client.company.search(searchTerm: searchText) {
+    switch await repository.company.search(searchTerm: searchText) {
     case let .success(searchResults):
       self.searchResults = searchResults
       status = Status.searched
@@ -93,7 +93,7 @@ struct CompanySearchSheet: View {
 
   func createNewCompany(onSuccess: @escaping (_ company: Company) -> Void) async {
     let newCompany = Company.NewRequest(name: companyName)
-    switch await client.company.insert(newCompany: newCompany) {
+    switch await repository.company.insert(newCompany: newCompany) {
     case let .success(newCompany):
       onSuccess(newCompany)
     case let .failure(error):

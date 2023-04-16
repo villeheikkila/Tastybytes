@@ -5,11 +5,11 @@ import WrappingHStack
 
 struct CheckInSheet: View {
   private let logger = getLogger(category: "CheckInSheet")
-  @EnvironmentObject private var client: AppClient
-  @Environment(\.dismiss) private var dismiss
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var appDataManager: AppDataManager
+  @Environment(\.dismiss) private var dismiss
   @State private var showPhotoMenu = false
   @State private var pickedFlavors = [Flavor]()
   @FocusState private var focusedField: Focusable?
@@ -276,7 +276,7 @@ struct CheckInSheet: View {
       checkInAt: checkInAt
     )
 
-    switch await client.checkIn.update(updateCheckInParams: updateCheckInParams) {
+    switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
     case let .success(updatedCheckIn):
       await uploadImage(checkIn: updatedCheckIn)
       await onUpdate(updatedCheckIn)
@@ -300,7 +300,7 @@ struct CheckInSheet: View {
       checkInAt: checkInAt
     )
 
-    switch await client.checkIn.create(newCheckInParams: newCheckParams) {
+    switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
     case let .success(newCheckIn):
       await uploadImage(checkIn: newCheckIn)
       await onCreation(newCheckIn)
@@ -311,7 +311,7 @@ struct CheckInSheet: View {
 
   func uploadImage(checkIn: CheckIn) async {
     guard let data = image?.jpegData(compressionQuality: 0.1) else { return }
-    switch await client.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
+    switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
     case let .failure(error):
       logger.error("failed to uplaod image to check-in '\(checkIn.id)': \(error.localizedDescription)")
     default:

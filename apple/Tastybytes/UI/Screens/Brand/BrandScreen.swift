@@ -3,7 +3,7 @@ import SwiftUI
 
 struct BrandScreen: View {
   private let logger = getLogger(category: "BrandScreen")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
@@ -269,8 +269,8 @@ struct BrandScreen: View {
 
   func refresh() async {
     let brandId = brand.id
-    async let summaryPromise = client.brand.getSummaryById(id: brandId)
-    async let brandPromise = client.brand.getJoinedById(id: brandId)
+    async let summaryPromise = repository.brand.getSummaryById(id: brandId)
+    async let brandPromise = repository.brand.getJoinedById(id: brandId)
 
     switch await summaryPromise {
     case let .success(summary):
@@ -288,7 +288,7 @@ struct BrandScreen: View {
   }
 
   func getSummary() async {
-    async let summaryPromise = client.brand.getSummaryById(id: brand.id)
+    async let summaryPromise = repository.brand.getSummaryById(id: brand.id)
     switch await summaryPromise {
     case let .success(summary):
       self.summary = summary
@@ -298,7 +298,7 @@ struct BrandScreen: View {
   }
 
   func verifyBrand(isVerified: Bool) async {
-    switch await client.brand.verification(id: brand.id, isVerified: isVerified) {
+    switch await repository.brand.verification(id: brand.id, isVerified: isVerified) {
     case .success:
       brand = Brand.JoinedSubBrandsProductsCompany(
         id: brand.id,
@@ -313,7 +313,7 @@ struct BrandScreen: View {
   }
 
   func verifySubBrand(_ subBrand: SubBrand.JoinedProduct, isVerified: Bool) async {
-    switch await client.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
+    switch await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
     case .success:
       await refresh()
       logger.info("sub-brand succesfully verified")
@@ -323,7 +323,7 @@ struct BrandScreen: View {
   }
 
   func deleteBrand(onDelete: @escaping () -> Void) async {
-    switch await client.brand.delete(id: brand.id) {
+    switch await repository.brand.delete(id: brand.id) {
     case .success:
       onDelete()
     case let .failure(error):
@@ -333,7 +333,7 @@ struct BrandScreen: View {
 
   func deleteSubBrand() async {
     guard let toDeleteSubBrand else { return }
-    switch await client.subBrand.delete(id: toDeleteSubBrand.id) {
+    switch await repository.subBrand.delete(id: toDeleteSubBrand.id) {
     case .success:
       await refresh()
       logger.info("succesfully deleted sub-brand")

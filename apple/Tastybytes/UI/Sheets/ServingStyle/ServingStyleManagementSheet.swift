@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ServingStyleManagementSheet: View {
   private let logger = getLogger(category: "ServingStyleManagementSheet")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
   @State private var servingStyles = [ServingStyle]()
@@ -84,7 +84,7 @@ struct ServingStyleManagementSheet: View {
   }
 
   func getAllServingStyles() async {
-    switch await client.servingStyle.getAll() {
+    switch await repository.servingStyle.getAll() {
     case let .success(servingStyles):
       withAnimation {
         self.servingStyles = servingStyles
@@ -95,7 +95,7 @@ struct ServingStyleManagementSheet: View {
   }
 
   func createServingStyle() async {
-    switch await client.servingStyle.insert(servingStyle: ServingStyle.NewRequest(name: newServingStyleName)) {
+    switch await repository.servingStyle.insert(servingStyle: ServingStyle.NewRequest(name: newServingStyleName)) {
     case let .success(servingStyle):
       withAnimation {
         servingStyles.append(servingStyle)
@@ -108,7 +108,7 @@ struct ServingStyleManagementSheet: View {
 
   func deleteServingStyle(onDelete: @escaping () -> Void) async {
     guard let toDeleteServingStyle else { return }
-    switch await client.servingStyle.delete(id: toDeleteServingStyle.id) {
+    switch await repository.servingStyle.delete(id: toDeleteServingStyle.id) {
     case .success:
       withAnimation {
         servingStyles.remove(object: toDeleteServingStyle)
@@ -121,7 +121,7 @@ struct ServingStyleManagementSheet: View {
 
   func saveEditServingStyle() async {
     guard let editServingStyle else { return }
-    switch await client.servingStyle
+    switch await repository.servingStyle
       .update(update: ServingStyle.UpdateRequest(id: editServingStyle.id, name: servingStyleName))
     {
     case let .success(servingStyle):

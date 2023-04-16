@@ -4,7 +4,6 @@ import SwiftUI
 import WrappingHStack
 
 struct CheckInCardView: View {
-  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var router: Router
   @State private var showFullPicture = false
   @State private var blurHashPlaceHolder: UIImage?

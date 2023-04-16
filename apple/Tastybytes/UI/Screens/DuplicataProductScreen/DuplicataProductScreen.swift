@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DuplicateProductScreen: View {
   private let logger = getLogger(category: "ProductVerificationScreen")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var hapticManager: HapticManager
   @State private var products = [Product.Joined]()
@@ -72,7 +72,7 @@ struct DuplicateProductScreen: View {
   }
 
   func verifyProduct(_ product: Product.Joined) async {
-    switch await client.product.verification(id: product.id, isVerified: true) {
+    switch await repository.product.verification(id: product.id, isVerified: true) {
     case .success:
       withAnimation {
         products.remove(object: product)
@@ -84,7 +84,7 @@ struct DuplicateProductScreen: View {
 
   func deleteProduct(onDelete: @escaping () -> Void) async {
     guard let deleteProduct else { return }
-    switch await client.product.delete(id: deleteProduct.id) {
+    switch await repository.product.delete(id: deleteProduct.id) {
     case .success:
       onDelete()
     case let .failure(error):
@@ -93,7 +93,7 @@ struct DuplicateProductScreen: View {
   }
 
   func loadProducts() async {
-    switch await client.product.getUnverified() {
+    switch await repository.product.getUnverified() {
     case let .success(products):
       withAnimation {
         self.products = products

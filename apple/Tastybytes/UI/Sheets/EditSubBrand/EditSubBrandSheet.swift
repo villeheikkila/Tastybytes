@@ -4,10 +4,10 @@ import SwiftUI
 
 struct EditSubBrandSheet: View {
   private let logger = getLogger(category: "EditSubBrandSheet")
-  @Environment(\.dismiss) private var dismiss
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(\.dismiss) private var dismiss
   @State private var showToast = false
   @State private var showMergeSubBrandsConfirmation = false
   @State private var newSubBrandName: String
@@ -88,7 +88,7 @@ struct EditSubBrandSheet: View {
 
   func mergeToSubBrand(subBrand: SubBrand.JoinedProduct, onSuccess: @escaping () async -> Void) async {
     guard let mergeTo else { return }
-    switch await client.subBrand
+    switch await repository.subBrand
       .update(updateRequest: .brand(SubBrand.UpdateBrandRequest(id: subBrand.id, brandId: mergeTo.id)))
     {
     case .success:
@@ -100,7 +100,7 @@ struct EditSubBrandSheet: View {
   }
 
   func editSubBrand(onSuccess: @escaping () async -> Void) async {
-    switch await client.subBrand
+    switch await repository.subBrand
       .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: newSubBrandName)))
     {
     case .success:

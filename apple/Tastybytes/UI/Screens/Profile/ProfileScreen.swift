@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct ProfileScreen: View {
-  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var scrollToTop = 0
 

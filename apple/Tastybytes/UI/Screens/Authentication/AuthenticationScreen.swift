@@ -2,30 +2,8 @@ import os
 import SwiftUI
 
 struct AuthenticationScreen: View {
-  enum Field {
-    case username
-    case email
-    case password
-    case resetPassword
-  }
-
-  enum Scene: String {
-    case signIn, signUp, magicLink, resetPassword, forgotPassword, accountDeleted
-
-    var primaryLabel: String {
-      switch self {
-      case .signIn: return "Sign in"
-      case .signUp: return "Sign up!"
-      case .magicLink: return "Send magic link"
-      case .resetPassword: return "Reset password"
-      case .forgotPassword: return "Send reset password instructions"
-      case .accountDeleted: return "Go back to sign in page"
-      }
-    }
-  }
-
   private let logger = getLogger(category: "AuthenticationScreen")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var toastManager: ToastManager
   @FocusState private var focusedField: Field?
@@ -204,14 +182,14 @@ struct AuthenticationScreen: View {
 
       switch scene {
       case .signIn:
-        switch await client.auth.signIn(email: email, password: password) {
+        switch await repository.auth.signIn(email: email, password: password) {
         case .success:
           break
         case let .failure(error):
           primaryActionError = error
         }
       case .signUp:
-        switch await client.auth.signUp(username: username, email: email, password: password) {
+        switch await repository.auth.signUp(username: username, email: email, password: password) {
         case .success:
           primaryActionSuccessMessage = "Confirmation email has been sent!"
           onSignUp()
@@ -219,7 +197,7 @@ struct AuthenticationScreen: View {
           primaryActionError = error
         }
       case .resetPassword:
-        switch await client.auth.updatePassword(newPassword: password) {
+        switch await repository.auth.updatePassword(newPassword: password) {
         case .success:
           primaryActionSuccessMessage = "Confirmation email has been sent!"
           onSignUp()
@@ -227,14 +205,14 @@ struct AuthenticationScreen: View {
           primaryActionError = error
         }
       case .forgotPassword:
-        switch await client.auth.sendPasswordResetEmail(email: email) {
+        switch await repository.auth.sendPasswordResetEmail(email: email) {
         case .success:
           primaryActionSuccessMessage = "Password reset email sent!"
         case let .failure(error):
           primaryActionError = error
         }
       case .magicLink:
-        switch await client.auth.sendMagicLink(email: email) {
+        switch await repository.auth.sendMagicLink(email: email) {
         case .success:
           primaryActionSuccessMessage = "Magic link sent!"
         case let .failure(error):
@@ -253,6 +231,30 @@ struct AuthenticationScreen: View {
       }
 
       isLoading = false
+    }
+  }
+}
+
+extension AuthenticationScreen {
+  enum Field {
+    case username
+    case email
+    case password
+    case resetPassword
+  }
+
+  enum Scene: String {
+    case signIn, signUp, magicLink, resetPassword, forgotPassword, accountDeleted
+
+    var primaryLabel: String {
+      switch self {
+      case .signIn: return "Sign in"
+      case .signUp: return "Sign up!"
+      case .magicLink: return "Send magic link"
+      case .resetPassword: return "Reset password"
+      case .forgotPassword: return "Send reset password instructions"
+      case .accountDeleted: return "Go back to sign in page"
+      }
     }
   }
 }

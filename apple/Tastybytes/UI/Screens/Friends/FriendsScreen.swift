@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FriendsScreen: View {
   private let logger = getLogger(category: "FriendsScreen")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
   @EnvironmentObject private var hapticManager: HapticManager
@@ -57,7 +57,7 @@ struct FriendsScreen: View {
   }
 
   func loadFriends() async {
-    switch await client.friend.getByUserId(
+    switch await repository.friend.getByUserId(
       userId: profile.id,
       status: Friend.Status.accepted
     ) {

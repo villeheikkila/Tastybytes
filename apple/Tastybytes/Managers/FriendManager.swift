@@ -18,15 +18,15 @@ class FriendManager: ObservableObject {
   }
 
   let profile: Profile
-  let client: Client
+  let repository: Repository
 
-  init(client: Client, profile: Profile) {
-    self.client = client
+  init(repository: Repository, profile: Profile) {
+    self.repository = repository
     self.profile = profile
   }
 
   func sendFriendRequest(receiver: UUID, onSuccess: @escaping () -> Void) async {
-    switch await client.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
+    switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
     case let .success(newFriend):
       withAnimation {
         self.friends.append(newFriend)
@@ -44,7 +44,7 @@ class FriendManager: ObservableObject {
       status: newStatus
     )
 
-    switch await client.friend.update(id: friend.id, friendUpdate: friendUpdate) {
+    switch await repository.friend.update(id: friend.id, friendUpdate: friendUpdate) {
     case let .success(updatedFriend):
       withAnimation {
         self.friends.replace(friend, with: updatedFriend)
@@ -58,7 +58,7 @@ class FriendManager: ObservableObject {
   }
 
   func removeFriendRequest(_ friend: Friend) async {
-    switch await client.friend.delete(id: friend.id) {
+    switch await repository.friend.delete(id: friend.id) {
     case .success:
       withAnimation {
         self.friends.remove(object: friend)
@@ -73,7 +73,7 @@ class FriendManager: ObservableObject {
   }
 
   func loadFriends() async {
-    switch await client.friend.getByUserId(
+    switch await repository.friend.getByUserId(
       userId: profile.id,
       status: .none
     ) {
@@ -85,7 +85,7 @@ class FriendManager: ObservableObject {
   }
 
   func unblockUser(_ friend: Friend) async {
-    switch await client.friend.delete(id: friend.id) {
+    switch await repository.friend.delete(id: friend.id) {
     case .success:
       withAnimation {
         self.friends.remove(object: friend)
@@ -99,7 +99,7 @@ class FriendManager: ObservableObject {
     if let friend = friends.first(where: { $0.getFriend(userId: profile.id) == user }) {
       await updateFriendRequest(friend: friend, newStatus: Friend.Status.blocked)
     } else {
-      switch await client.friend.insert(newFriend: Friend.NewRequest(receiver: user.id, status: .blocked)) {
+      switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: user.id, status: .blocked)) {
       case let .success(blockedUser):
         withAnimation {
           self.friends.append(blockedUser)

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AboutScreen: View {
   private let logger = getLogger(category: "AboutScreen")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @State private var aboutPage: AboutPage?
 
   var body: some View {
@@ -100,7 +100,7 @@ struct AboutScreen: View {
   }
 
   func getAboutPage() async {
-    switch await client.document.getAboutPage() {
+    switch await repository.document.getAboutPage() {
     case let .success(aboutPage):
       self.aboutPage = aboutPage
     case let .failure(error):

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SearchListView: View {
   private let logger = getLogger(category: "SearchListView")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -300,7 +300,7 @@ struct SearchListView: View {
 
   func addBarcodeToProduct(onComplete: @escaping () -> Void) async {
     guard let addBarcodeTo, let barcode else { return }
-    switch await client.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
+    switch await repository.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
     case .success:
       self.barcode = nil
       self.addBarcodeTo = nil
@@ -312,7 +312,7 @@ struct SearchListView: View {
   }
 
   func searchProducts() async {
-    switch await client.product.search(searchTerm: searchTerm, filter: productFilter) {
+    switch await repository.product.search(searchTerm: searchTerm, filter: productFilter) {
     case let .success(searchResults):
       withAnimation {
         products = searchResults
@@ -324,7 +324,7 @@ struct SearchListView: View {
   }
 
   func searchProfiles() async {
-    switch await client.profile.search(searchTerm: searchTerm, currentUserId: nil) {
+    switch await repository.profile.search(searchTerm: searchTerm, currentUserId: nil) {
     case let .success(searchResults):
       withAnimation {
         profiles = searchResults
@@ -335,7 +335,7 @@ struct SearchListView: View {
   }
 
   func searchProductsByBardcode(_ barcode: Barcode) async {
-    switch await client.product.search(barcode: barcode) {
+    switch await repository.product.search(barcode: barcode) {
     case let .success(searchResults):
       self.barcode = barcode
       withAnimation {
@@ -348,7 +348,7 @@ struct SearchListView: View {
   }
 
   func searchCompanies() async {
-    switch await client.company.search(searchTerm: searchTerm) {
+    switch await repository.company.search(searchTerm: searchTerm) {
     case let .success(searchResults):
       withAnimation {
         companies = searchResults
@@ -359,7 +359,7 @@ struct SearchListView: View {
   }
 
   func searchLocations() async {
-    switch await client.location.search(searchTerm: searchTerm) {
+    switch await repository.location.search(searchTerm: searchTerm) {
     case let .success(searchResults):
       withAnimation {
         locations = searchResults

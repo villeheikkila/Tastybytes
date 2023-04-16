@@ -21,7 +21,7 @@ struct VerificationScreen: View {
   }
 
   private let logger = getLogger(category: "ProductVerificationScreen")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var hapticManager: HapticManager
   @State private var products = [Product.Joined]()
@@ -99,7 +99,7 @@ struct VerificationScreen: View {
         Spacer()
       }
       .onTapGesture {
-        router.fetchAndNavigateTo(client, .brand(id: subBrand.brand.id))
+        router.fetchAndNavigateTo(repository, .brand(id: subBrand.brand.id))
       }
       .accessibilityAddTraits(.isButton)
       .swipeActions {
@@ -166,7 +166,7 @@ struct VerificationScreen: View {
   }
 
   func verifyBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
-    switch await client.brand.verification(id: brand.id, isVerified: true) {
+    switch await repository.brand.verification(id: brand.id, isVerified: true) {
     case .success:
       withAnimation {
         brands.remove(object: brand)
@@ -177,7 +177,7 @@ struct VerificationScreen: View {
   }
 
   func verifySubBrand(_ subBrand: SubBrand.JoinedBrand) async {
-    switch await client.subBrand.verification(id: subBrand.id, isVerified: true) {
+    switch await repository.subBrand.verification(id: subBrand.id, isVerified: true) {
     case .success:
       withAnimation {
         subBrands.remove(object: subBrand)
@@ -188,7 +188,7 @@ struct VerificationScreen: View {
   }
 
   func verifyCompany(_ company: Company) async {
-    switch await client.company.verification(id: company.id, isVerified: true) {
+    switch await repository.company.verification(id: company.id, isVerified: true) {
     case .success:
       withAnimation {
         companies.remove(object: company)
@@ -199,7 +199,7 @@ struct VerificationScreen: View {
   }
 
   func verifyProduct(_ product: Product.Joined) async {
-    switch await client.product.verification(id: product.id, isVerified: true) {
+    switch await repository.product.verification(id: product.id, isVerified: true) {
     case .success:
       withAnimation {
         products.remove(object: product)
@@ -211,7 +211,7 @@ struct VerificationScreen: View {
 
   func deleteProduct(onDelete: @escaping () -> Void) async {
     guard let deleteProduct else { return }
-    switch await client.product.delete(id: deleteProduct.id) {
+    switch await repository.product.delete(id: deleteProduct.id) {
     case .success:
       await loadData(refresh: true)
       onDelete()
@@ -224,7 +224,7 @@ struct VerificationScreen: View {
     switch verificationType {
     case .products:
       if refresh || products.isEmpty {
-        switch await client.product.getUnverified() {
+        switch await repository.product.getUnverified() {
         case let .success(products):
           withAnimation {
             self.products = products
@@ -235,7 +235,7 @@ struct VerificationScreen: View {
       }
     case .companies:
       if refresh || companies.isEmpty {
-        switch await client.company.getUnverified() {
+        switch await repository.company.getUnverified() {
         case let .success(companies):
           withAnimation {
             self.companies = companies
@@ -246,7 +246,7 @@ struct VerificationScreen: View {
       }
     case .brands:
       if refresh || brands.isEmpty {
-        switch await client.brand.getUnverified() {
+        switch await repository.brand.getUnverified() {
         case let .success(brands):
           withAnimation {
             self.brands = brands
@@ -257,7 +257,7 @@ struct VerificationScreen: View {
       }
     case .subBrands:
       if refresh || subBrands.isEmpty {
-        switch await client.subBrand.getUnverified() {
+        switch await repository.subBrand.getUnverified() {
         case let .success(subBrands):
           withAnimation {
             self.subBrands = subBrands

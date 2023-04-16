@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProductFeedScreen: View {
   private let logger = getLogger(category: "ProductFeedView")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var appDataManager: AppDataManager
@@ -98,7 +98,7 @@ struct ProductFeedScreen: View {
 
     isLoading = true
 
-    switch await client.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id) {
+    switch await repository.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id) {
     case let .success(additionalProducts):
       withAnimation {
         products.append(contentsOf: additionalProducts)

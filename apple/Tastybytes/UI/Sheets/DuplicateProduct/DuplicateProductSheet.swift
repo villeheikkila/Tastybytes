@@ -6,7 +6,7 @@ struct DuplicateProductSheet: View {
   }
 
   private let logger = getLogger(category: "MarkAsDuplicate")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
   @State private var products = [Product.Joined]()
@@ -79,7 +79,7 @@ struct DuplicateProductSheet: View {
 
   func reportDuplicate(onSuccess: @escaping () -> Void) async {
     guard let mergeToProduct else { return }
-    switch await client.product.markAsDuplicate(
+    switch await repository.product.markAsDuplicate(
       productId: product.id,
       duplicateOfProductId: mergeToProduct.id
     ) {
@@ -95,7 +95,7 @@ struct DuplicateProductSheet: View {
 
   func mergeProducts(onSuccess: @escaping () -> Void) async {
     guard let mergeToProduct else { return }
-    switch await client.product.mergeProducts(productId: product.id, toProductId: mergeToProduct.id) {
+    switch await repository.product.mergeProducts(productId: product.id, toProductId: mergeToProduct.id) {
     case .success:
       onSuccess()
     case let .failure(error):
@@ -106,7 +106,7 @@ struct DuplicateProductSheet: View {
 
   func searchProducts(name: String) async {
     guard name.count > 1 else { return }
-    switch await client.product.search(searchTerm: name, filter: nil) {
+    switch await repository.product.search(searchTerm: name, filter: nil) {
     case let .success(searchResults):
       products = searchResults
     case let .failure(error):

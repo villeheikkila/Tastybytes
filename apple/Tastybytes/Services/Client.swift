@@ -1,7 +1,7 @@
 import Supabase
 import SwiftUI
 
-protocol Client {
+protocol RepositoryProtocol {
   var profile: ProfileRepository { get }
   var checkIn: CheckInRepository { get }
   var checkInComment: CheckInCommentRepository { get }
@@ -23,9 +23,7 @@ protocol Client {
   var report: ReportRepository { get }
 }
 
-class AppClient: Client, ObservableObject {
-  let supabase: SupabaseClient
-
+class Repository: RepositoryProtocol, ObservableObject {
   let profile: ProfileRepository
   let checkIn: CheckInRepository
   let checkInComment: CheckInCommentRepository
@@ -46,30 +44,25 @@ class AppClient: Client, ObservableObject {
   let document: DocumentRepository
   let report: ReportRepository
 
-  init(url: URL, apiKey: String) {
-    let client = SupabaseClient(
-      supabaseURL: url,
-      supabaseKey: apiKey
-    )
-    supabase = client
-    profile = SupabaseProfileRepository(client: client)
-    checkIn = SupabaseCheckInRepository(client: client)
-    checkInComment = SupabaseCheckInCommentRepository(client: client)
-    checkInReactions = SupabaseCheckInReactionsRepository(client: client)
-    product = SupabaseProductRepository(client: client)
-    productBarcode = SupabaseProductBarcodeRepository(client: client)
-    auth = SupabaseAuthRepository(client: client)
-    company = SupabaseCompanyRepository(client: client)
-    friend = SupabaseFriendsRepository(client: client)
-    category = SupabaseCategoryRepository(client: client)
-    subcategory = SupabaseSubcategoryRepository(client: client)
-    servingStyle = SupabaseServingStyleRepository(client: client)
-    brand = SupabaseBrandRepository(client: client)
-    subBrand = SupabaseSubBrandRepository(client: client)
-    flavor = SupabaseFlavorRepository(client: client)
-    notification = SupabaseNotificationRepository(client: client)
-    location = SupabaseLocationRepository(client: client)
-    document = SupabaseDocumentRepository(client: client)
-    report = SupabaseReportRepository(client: client)
+  init(supabaseClient: SupabaseClient) {
+    profile = SupabaseProfileRepository(client: supabaseClient)
+    checkIn = SupabaseCheckInRepository(client: supabaseClient)
+    checkInComment = SupabaseCheckInCommentRepository(client: supabaseClient)
+    checkInReactions = SupabaseCheckInReactionsRepository(client: supabaseClient)
+    product = SupabaseProductRepository(client: supabaseClient)
+    productBarcode = SupabaseProductBarcodeRepository(client: supabaseClient)
+    auth = SupabaseAuthRepository(client: supabaseClient)
+    company = SupabaseCompanyRepository(client: supabaseClient)
+    friend = SupabaseFriendsRepository(client: supabaseClient)
+    category = SupabaseCategoryRepository(client: supabaseClient)
+    subcategory = SupabaseSubcategoryRepository(client: supabaseClient)
+    servingStyle = SupabaseServingStyleRepository(client: supabaseClient)
+    brand = SupabaseBrandRepository(client: supabaseClient)
+    subBrand = SupabaseSubBrandRepository(client: supabaseClient)
+    flavor = SupabaseFlavorRepository(client: supabaseClient)
+    notification = SupabaseNotificationRepository(client: supabaseClient)
+    location = SupabaseLocationRepository(client: supabaseClient)
+    document = SupabaseDocumentRepository(client: supabaseClient)
+    report = SupabaseReportRepository(client: supabaseClient)
   }
 }

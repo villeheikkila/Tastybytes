@@ -4,7 +4,7 @@ import SwiftUI
 
 struct EditCompanySheet: View {
   private let logger = getLogger(category: "EditCompanySheet")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @State private var company: Company
@@ -86,7 +86,7 @@ struct EditCompanySheet: View {
   }
 
   func editCompany(onSuccess: () async -> Void) async {
-    switch await client.company
+    switch await repository.company
       .update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName))
     {
     case .success:
@@ -97,7 +97,7 @@ struct EditCompanySheet: View {
   }
 
   func sendCompanyEditSuggestion(onSuccess: () async -> Void) async {
-    switch await client.company
+    switch await repository.company
       .editSuggestion(updateRequest: Company.EditSuggestionRequest(id: company.id, name: newCompanyName))
     {
     case .success:
@@ -109,7 +109,7 @@ struct EditCompanySheet: View {
 
   func uploadCompanyImage() async {
     guard let data = await selectedItem?.getJPEG() else { return }
-    switch await client.company.uploadLogo(companyId: company.id, data: data) {
+    switch await repository.company.uploadLogo(companyId: company.id, data: data) {
     case let .success(fileName):
       company = Company(
         id: company.id,

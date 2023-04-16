@@ -8,17 +8,22 @@ import SwiftUI
 struct Main: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self)
   var appDelegate
-  private let client = AppClient(url: Config.supabaseUrl, apiKey: Config.supabaseAnonKey)
+
+  private let supabaseClient = SupabaseClient(
+    supabaseURL: Config.supabaseUrl,
+    supabaseKey: Config.supabaseAnonKey
+  )
 
   var body: some Scene {
     WindowGroup {
-      RootView(client)
+      RootView(supabaseClient: supabaseClient)
     }
   }
 }
 
 struct RootView: View {
-  let client: AppClient
+  let supabaseClient: SupabaseClient
+  @StateObject private var repository: Repository
   @StateObject private var splashScreenManager = SplashScreenManager()
   @StateObject private var profileManager: ProfileManager
   @StateObject private var toastManager = ToastManager()
@@ -26,10 +31,12 @@ struct RootView: View {
   @StateObject private var hapticManager = HapticManager()
   @State private var authEvent: AuthChangeEvent?
 
-  init(_ client: AppClient) {
-    self.client = client
-    _notificationManager = StateObject(wrappedValue: NotificationManager(client: client))
-    _profileManager = StateObject(wrappedValue: ProfileManager(client: client))
+  init(supabaseClient: SupabaseClient) {
+    let repository = Repository(supabaseClient: supabaseClient)
+    self.supabaseClient = supabaseClient
+    _repository = StateObject(wrappedValue: repository)
+    _notificationManager = StateObject(wrappedValue: NotificationManager(repository: repository))
+    _profileManager = StateObject(wrappedValue: ProfileManager(repository: repository))
   }
 
   var body: some View {
@@ -38,7 +45,7 @@ struct RootView: View {
       case .signedIn:
         if profileManager.isLoggedIn {
           if profileManager.get().isOnboarded {
-            TabsView(client, profile: profileManager.getProfile())
+            TabsView(repository, profile: profileManager.getProfile())
           } else {
             OnboardTabsView()
           }
@@ -59,7 +66,7 @@ struct RootView: View {
     .toast(isPresenting: $toastManager.show) {
       toastManager.toast
     }
-    .environmentObject(client)
+    .environmentObject(repository)
     .environmentObject(splashScreenManager)
     .environmentObject(toastManager)
     .environmentObject(notificationManager)
@@ -67,10 +74,10 @@ struct RootView: View {
     .environmentObject(hapticManager)
     .preferredColorScheme(profileManager.colorScheme)
     .onOpenURL { url in
-      Task { _ = try await client.supabase.auth.session(from: url) }
+      Task { _ = try await supabaseClient.auth.session(from: url) }
     }
     .task {
-      for await authEventChange in client.supabase.auth.authEventChange {
+      for await authEventChange in supabaseClient.auth.authEventChange {
         withAnimation {
           authEvent = authEventChange
         }

@@ -28,10 +28,10 @@ class ProfileManager: ObservableObject {
   @Published var friendRequestNotifications = true
   @Published var checkInTagNotifications = true
 
-  let client: Client
+  let repository: Repository
 
-  init(client: Client) {
-    self.client = client
+  init(repository: Repository) {
+    self.repository = repository
   }
 
   var initialColorScheme: ColorScheme?
@@ -44,7 +44,7 @@ class ProfileManager: ObservableObject {
       isDarkMode: isDarkMode, isSystemColor: isSystemColor
     )
 
-    switch await client.profile.updateSettings(
+    switch await repository.profile.updateSettings(
       update: update
     ) {
     case .success:
@@ -61,7 +61,7 @@ class ProfileManager: ObservableObject {
       sendFriendRequestNotifications: friendRequestNotifications
     )
 
-    _ = await client.profile.updateSettings(
+    _ = await repository.profile.updateSettings(
       update: update
     )
   }
@@ -86,7 +86,7 @@ class ProfileManager: ObservableObject {
   }
 
   func refresh() async {
-    switch await client.profile.getCurrentUser() {
+    switch await repository.profile.getCurrentUser() {
     case let .success(currentUserProfile):
       profile = currentUserProfile
       setPreferredColorScheme(profileColorScheme: currentUserProfile.settings.colorScheme)
@@ -116,10 +116,10 @@ class ProfileManager: ObservableObject {
     case let .failure(error):
       logger.error("error while loading current user profile: \(error.localizedDescription)")
       isLoggedIn = false
-      _ = await client.auth.logOut()
+      _ = await repository.auth.logOut()
     }
 
-    switch await client.auth.getUser() {
+    switch await repository.auth.getUser() {
     case let .success(user):
       email = user.email.orEmpty
     case let .failure(error):
@@ -145,21 +145,21 @@ class ProfileManager: ObservableObject {
   }
 
   func logOut() async {
-    _ = await client.auth.logOut()
+    _ = await repository.auth.logOut()
   }
 
   func updatePassword(newPassword: String) async {
-    _ = await client.auth.updatePassword(newPassword: newPassword)
+    _ = await repository.auth.updatePassword(newPassword: newPassword)
   }
 
   func sendEmailVerificationLink() async {
-    _ = await client.auth.sendEmailVerification(email: email)
+    _ = await repository.auth.sendEmailVerification(email: email)
   }
 
   func deleteCurrentAccount(onError: @escaping (_ error: String) -> Void) async {
-    switch await client.profile.deleteCurrentAccount() {
+    switch await repository.profile.deleteCurrentAccount() {
     case .success:
-      _ = await client.auth.logOut()
+      _ = await repository.auth.logOut()
     case let .failure(error):
       logger.error("failed to delete current account: \(error.localizedDescription)")
       onError(error.localizedDescription)
@@ -175,7 +175,7 @@ class ProfileManager: ObservableObject {
   func uploadAvatar(newAvatar: PhotosPickerItem?) async {
     guard let data = await newAvatar?.getJPEG() else { return }
     guard let profile else { return }
-    switch await client.profile.uploadAvatar(userId: profile.id, data: data) {
+    switch await repository.profile.uploadAvatar(userId: profile.id, data: data) {
     case .success:
       // TODO: update only avatar url
       await refresh()
@@ -191,7 +191,7 @@ class ProfileManager: ObservableObject {
       lastName: lastName
     )
 
-    switch await client.profile.update(
+    switch await repository.profile.update(
       update: update
     ) {
     case .success:
@@ -212,7 +212,7 @@ class ProfileManager: ObservableObject {
       isOnboarded: true
     )
 
-    switch await client.profile.update(
+    switch await repository.profile.update(
       update: update
     ) {
     case .success:
@@ -224,7 +224,7 @@ class ProfileManager: ObservableObject {
 
   func updatePrivacySettings() async {
     let update = Profile.UpdateRequest(isPrivate: isPrivateProfile)
-    switch await client.profile.update(
+    switch await repository.profile.update(
       update: update
     ) {
     case .success:
@@ -238,7 +238,7 @@ class ProfileManager: ObservableObject {
     let update = Profile.UpdateRequest(
       showFullName: showFullName
     )
-    switch await client.profile.update(
+    switch await repository.profile.update(
       update: update
     ) {
     case .success:
@@ -253,7 +253,7 @@ class ProfileManager: ObservableObject {
   }
 
   func exportData(onError: @escaping (_ error: String) -> Void) async {
-    switch await client.profile.currentUserExport() {
+    switch await repository.profile.currentUserExport() {
     case let .success(csvText):
       csvExport = CSVFile(initialText: csvText)
       showingExporter = true

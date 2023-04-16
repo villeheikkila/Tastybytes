@@ -14,10 +14,10 @@ class NotificationManager: ObservableObject {
     }
   }
 
-  let client: Client
+  let repository: Repository
 
-  init(client: Client) {
-    self.client = client
+  init(repository: Repository) {
+    self.repository = repository
   }
 
   @Published var filter: NotificationType? {
@@ -65,7 +65,7 @@ class NotificationManager: ObservableObject {
   }
 
   func refresh(reset: Bool = false) async {
-    switch await client.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
+    switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
     case let .success(newNotifications):
       if reset {
         notifications = newNotifications
@@ -78,7 +78,7 @@ class NotificationManager: ObservableObject {
   }
 
   func deleteAll() async {
-    switch await client.notification.deleteAll() {
+    switch await repository.notification.deleteAll() {
     case .success:
       withAnimation {
         self.notifications = [Notification]()
@@ -89,7 +89,7 @@ class NotificationManager: ObservableObject {
   }
 
   func markAllAsRead() async {
-    switch await client.notification.markAllRead() {
+    switch await repository.notification.markAllRead() {
     case .success:
       notifications = notifications.map { notification in
         if notification.seenAt != nil {
@@ -118,7 +118,7 @@ class NotificationManager: ObservableObject {
     })
 
     if containsFriendRequests {
-      switch await client.notification.markAllFriendRequestsAsRead() {
+      switch await repository.notification.markAllFriendRequestsAsRead() {
       case let .success(updatedNotifications):
         notifications = notifications.map { notification in
           if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
@@ -146,7 +146,7 @@ class NotificationManager: ObservableObject {
     })
 
     if containsCheckIn {
-      switch await client.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id) {
+      switch await repository.notification.markAllCheckInNotificationsAsRead(checkInId: checkIn.id) {
       case let .success(updatedNotifications):
         notifications = notifications.map { notification in
           if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
@@ -162,7 +162,7 @@ class NotificationManager: ObservableObject {
   }
 
   func markAsRead(_ notification: Notification) async {
-    switch await client.notification.markRead(id: notification.id) {
+    switch await repository.notification.markRead(id: notification.id) {
     case let .success(updatedNotification):
       notifications.replace(notification, with: updatedNotification)
     case let .failure(error):
@@ -173,7 +173,7 @@ class NotificationManager: ObservableObject {
   func deleteFromIndex(at: IndexSet) async {
     guard let index = at.first else { return }
     let notificationId = notifications[index].id
-    switch await client.notification.delete(id: notificationId) {
+    switch await repository.notification.delete(id: notificationId) {
     case .success:
       withAnimation {
         _ = self.notifications.remove(at: index)
@@ -184,7 +184,7 @@ class NotificationManager: ObservableObject {
   }
 
   func deleteNotifications(notification: Notification) async {
-    switch await client.notification.delete(id: notification.id) {
+    switch await repository.notification.delete(id: notification.id) {
     case .success:
       withAnimation {
         self.notifications.remove(object: notification)
@@ -202,7 +202,7 @@ class NotificationManager: ObservableObject {
       } else if let token {
         Task {
           let logger = getLogger(category: "PushNotificationToken")
-          switch await self.client.profile
+          switch await self.repository.profile
             .uploadPushNotificationToken(token: Profile.PushNotificationToken(firebaseRegistrationToken: token))
           {
           case .success:

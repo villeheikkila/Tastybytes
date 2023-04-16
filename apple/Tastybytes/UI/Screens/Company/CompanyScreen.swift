@@ -4,7 +4,7 @@ import SwiftUI
 
 struct CompanyScreen: View {
   private let logger = getLogger(category: "CompanyScreen")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var hapticManager: HapticManager
   @EnvironmentObject private var toastManager: ToastManager
@@ -121,7 +121,7 @@ struct CompanyScreen: View {
           "Add Brand",
           systemImage: "plus",
           sheet: .addBrand(brandOwner: company, mode: .new, onSelect: { brand, _ in
-            router.fetchAndNavigateTo(client, .brand(id: brand.id))
+            router.fetchAndNavigateTo(repository, .brand(id: brand.id))
           })
         )
       }
@@ -177,8 +177,8 @@ struct CompanyScreen: View {
   }
 
   func getBrandsAndSummary() async {
-    async let companyPromise = client.company.getJoinedById(id: company.id)
-    async let summaryPromise = client.company.getSummaryById(id: company.id)
+    async let companyPromise = repository.company.getJoinedById(id: company.id)
+    async let summaryPromise = repository.company.getSummaryById(id: company.id)
 
     switch await companyPromise {
     case let .success(company):
@@ -196,7 +196,7 @@ struct CompanyScreen: View {
   }
 
   func deleteCompany(_ company: Company, onDelete: @escaping () -> Void) async {
-    switch await client.company.delete(id: company.id) {
+    switch await repository.company.delete(id: company.id) {
     case .success:
       onDelete()
     case let .failure(error):
@@ -205,7 +205,7 @@ struct CompanyScreen: View {
   }
 
   func verifyCompany(isVerified: Bool) async {
-    switch await client.company.verification(id: company.id, isVerified: isVerified) {
+    switch await repository.company.verification(id: company.id, isVerified: isVerified) {
     case .success:
       company = Company(id: company.id, name: company.name, logoFile: company.logoFile, isVerified: isVerified)
     case let .failure(error):

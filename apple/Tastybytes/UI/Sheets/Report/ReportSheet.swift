@@ -3,7 +3,7 @@ import SwiftUI
 
 struct ReportSheet: View {
   private let logger = getLogger(category: "ReportSheet")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @Environment(\.dismiss) private var dismiss
   @State private var reasonText = ""
   @State private var showToast = false
@@ -58,7 +58,7 @@ struct ReportSheet: View {
   }
 
   func submitReport(onSubmit _: @escaping () -> Void) async {
-    switch await client.report.insert(report: Report.NewRequest(message: reasonText, entity: entity)) {
+    switch await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: entity)) {
     case .success:
       showToast = true
     case let .failure(error):

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CategoryServingStyleSheet: View {
   private let logger = getLogger(category: "CategoryServingStyleSheet")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
   @State private var servingStyles: [ServingStyle]
@@ -60,7 +60,7 @@ struct CategoryServingStyleSheet: View {
   }
 
   func addServingStyleToCategory(_ servingStyle: ServingStyle) async {
-    switch await client.category.addServingStyle(
+    switch await repository.category.addServingStyle(
       categoryId: category.id,
       servingStyleId: servingStyle.id
     ) {
@@ -75,7 +75,7 @@ struct CategoryServingStyleSheet: View {
 
   func deleteServingStyle(onDelete: @escaping () -> Void) async {
     guard let toDeleteServingStyle else { return }
-    switch await client.category.deleteServingStyle(
+    switch await repository.category.deleteServingStyle(
       categoryId: category.id,
       servingStyleId: toDeleteServingStyle.id
     ) {

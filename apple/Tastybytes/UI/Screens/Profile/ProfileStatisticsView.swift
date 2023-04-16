@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProfileStatisticsView: View {
   let logger = getLogger(category: "ProfileStatisticsView")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @State private var categoryStatistics = [CategoryStatistics]()
 
   let profile: Profile
@@ -38,7 +38,7 @@ struct ProfileStatisticsView: View {
   }
 
   func loadStatistics() async {
-    switch await client.profile.getCategoryStatistics(userId: profile.id) {
+    switch await repository.profile.getCategoryStatistics(userId: profile.id) {
     case let .success(categoryStatistics):
       withAnimation {
         self.categoryStatistics = categoryStatistics
@@ -51,7 +51,7 @@ struct ProfileStatisticsView: View {
 
 struct SubcategoryStatisticsView: View {
   let logger = getLogger(category: "SubcategoryStatistics")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @State private var subcategoryStatistics = [SubcategoryStatistics]()
   @State private var isLoading = false
 
@@ -82,7 +82,7 @@ struct SubcategoryStatisticsView: View {
 
   func loadSubcategoryStatistics() async {
     isLoading = true
-    switch await client.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id) {
+    switch await repository.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id) {
     case let .success(subcategoryStatistics):
       withAnimation {
         self.subcategoryStatistics = subcategoryStatistics

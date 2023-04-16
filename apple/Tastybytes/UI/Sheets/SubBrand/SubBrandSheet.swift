@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SubBrandSheet: View {
   private let logger = getLogger(category: "SubBrandSheet")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @State private var subBrandName = ""
@@ -53,7 +53,7 @@ struct SubBrandSheet: View {
   func createNewSubBrand(
     onSelect: @escaping (_ subBrand: SubBrand, _ createdNew: Bool) -> Void
   ) async {
-    switch await client.subBrand
+    switch await repository.subBrand
       .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brandWithSubBrands.id))
     {
     case let .success(newSubBrand):

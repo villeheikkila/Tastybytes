@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct DiscoverTab: View {
-  @EnvironmentObject private var client: AppClient
   @State private var scrollToTop: Int = 0
   @Binding var resetNavigationOnTab: Tab?
 

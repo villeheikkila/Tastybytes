@@ -4,9 +4,8 @@ import SwiftUI
 import WrappingHStack
 
 struct ActivityTab: View {
-  @State private var scrollToTop: Int = 0
   @EnvironmentObject private var notificationManager: NotificationManager
-  @EnvironmentObject private var client: AppClient
+  @State private var scrollToTop: Int = 0
   @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {

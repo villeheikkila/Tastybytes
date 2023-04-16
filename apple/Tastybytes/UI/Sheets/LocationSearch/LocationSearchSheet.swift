@@ -4,7 +4,7 @@ import SwiftUI
 
 struct LocationSearchSheet: View {
   private let logger = getLogger(category: "LocationSearchView")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @StateObject private var viewModel: ViewModel
   @StateObject private var locationManager = LocationManager()
   @Environment(\.dismiss) private var dismiss
@@ -47,7 +47,7 @@ struct LocationSearchSheet: View {
 
   func getSuggestions(_ location: CLLocation?) async {
     guard let location else { return }
-    switch await client.location.getSuggestions(location: Location.SuggestionParams(location: location)) {
+    switch await repository.location.getSuggestions(location: Location.SuggestionParams(location: location)) {
     case let .success(suggestedLocations):
       viewModel.locations = suggestedLocations
     case let .failure(error):
@@ -56,7 +56,7 @@ struct LocationSearchSheet: View {
   }
 
   func storeLocation(_ location: Location, onSuccess: @escaping (_ savedLocation: Location) -> Void) async {
-    switch await client.location.insert(location: location) {
+    switch await repository.location.insert(location: location) {
     case let .success(savedLocation):
       onSuccess(savedLocation)
     case let .failure(error):

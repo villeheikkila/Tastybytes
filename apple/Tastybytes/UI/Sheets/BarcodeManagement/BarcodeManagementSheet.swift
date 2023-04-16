@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BarcodeManagementSheet: View {
   private let logger = getLogger(category: "BarcodeManagementSheet")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
   @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []
@@ -46,7 +46,7 @@ struct BarcodeManagementSheet: View {
   }
 
   func deleteBarcode(_ barcode: ProductBarcode.JoinedWithCreator) async {
-    switch await client.productBarcode.delete(id: barcode.id) {
+    switch await repository.productBarcode.delete(id: barcode.id) {
     case .success:
       withAnimation {
         barcodes.remove(object: barcode)
@@ -57,7 +57,7 @@ struct BarcodeManagementSheet: View {
   }
 
   func getBarcodes() async {
-    switch await client.productBarcode.getByProductId(id: product.id) {
+    switch await repository.productBarcode.getByProductId(id: product.id) {
     case let .success(barcodes):
       withAnimation {
         self.barcodes = barcodes

@@ -41,7 +41,7 @@ struct AddProductView: View {
   }
 
   private let logger = getLogger(category: "ProductSheet")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
@@ -325,7 +325,7 @@ struct AddProductView: View {
   func createSubcategory(newSubcategoryName: String, onCreate: @escaping () async -> Void) async {
     guard let categoryWithSubcategories = category else { return }
     isLoading = true
-    switch await client.subcategory
+    switch await repository.subcategory
       .insert(newSubcategory: Subcategory
         .NewRequest(name: newSubcategoryName, category: categoryWithSubcategories))
     {
@@ -380,7 +380,7 @@ struct AddProductView: View {
     _ initialProduct: Product.Joined,
     categories: [Category.JoinedSubcategoriesServingStyles]
   ) async {
-    switch await client.brand
+    switch await repository.brand
       .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
     {
     case let .success(brandsWithSubBrands):
@@ -417,7 +417,7 @@ struct AddProductView: View {
       subCategoryIds: subcategories.map(\.id),
       barcode: barcode
     )
-    switch await client.product.create(newProductParams: newProductParams) {
+    switch await repository.product.create(newProductParams: newProductParams) {
     case let .success(newProduct):
       await onSuccess(newProduct)
     case let .failure(error):
@@ -436,7 +436,7 @@ struct AddProductView: View {
       subcategories: subcategories
     )
 
-    switch await client.product
+    switch await repository.product
       .createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams)
     {
     case .success:
@@ -449,7 +449,7 @@ struct AddProductView: View {
   func uploadLogo() async {
     guard let productId else { return }
     guard let data = await selectedLogo?.getJPEG() else { return }
-    switch await client.product.uploadLogo(productId: productId, data: data) {
+    switch await repository.product.uploadLogo(productId: productId, data: data) {
     case let .success(filename):
       logoFile = filename
     case let .failure(error):
@@ -470,7 +470,7 @@ struct AddProductView: View {
       subcategories: subcategories
     )
 
-    switch await client.product.editProduct(productEditParams: productEditParams) {
+    switch await repository.product.editProduct(productEditParams: productEditParams) {
     case .success:
       await onSuccess()
     case let .failure(error):

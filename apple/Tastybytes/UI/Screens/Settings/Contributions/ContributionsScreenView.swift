@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContributionsScreen: View {
   private let logger = getLogger(category: "ContributionsScreen")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var contributions: Contributions?
 
@@ -44,7 +44,7 @@ struct ContributionsScreen: View {
   }
 
   func loadContributions(userId: UUID) async {
-    switch await client.profile.getContributions(userId: userId) {
+    switch await repository.profile.getContributions(userId: userId) {
     case let .success(contributions):
       withAnimation {
         self.contributions = contributions

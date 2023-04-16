@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProductScreen: View {
   private let logger = getLogger(category: "ProductScreen")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var hapticManager: HapticManager
@@ -29,7 +29,7 @@ struct ProductScreen: View {
   }
 
   func loadSummary() async {
-    switch await client.product.getSummaryById(id: product.id) {
+    switch await repository.product.getSummaryById(id: product.id) {
     case let .success(summary):
       self.summary = summary
     case let .failure(error):
@@ -38,8 +38,8 @@ struct ProductScreen: View {
   }
 
   func refresh() async {
-    async let productPromise = client.product.getById(id: product.id)
-    async let summaryPromise = client.product.getSummaryById(id: product.id)
+    async let productPromise = repository.product.getById(id: product.id)
+    async let summaryPromise = repository.product.getSummaryById(id: product.id)
 
     switch await productPromise {
     case let .success(refreshedProduct):
@@ -59,7 +59,7 @@ struct ProductScreen: View {
   }
 
   func addBarcodeToProduct(barcode: Barcode, onComplete: @escaping () -> Void) async {
-    switch await client.productBarcode.addToProduct(product: product, barcode: barcode) {
+    switch await repository.productBarcode.addToProduct(product: product, barcode: barcode) {
     case .success:
       onComplete()
     case let .failure(error):
@@ -73,7 +73,7 @@ struct ProductScreen: View {
   }
 
   func verifyProduct(isVerified: Bool) async {
-    switch await client.product.verification(id: product.id, isVerified: isVerified) {
+    switch await repository.product.verification(id: product.id, isVerified: isVerified) {
     case .success:
       await refresh()
     case let .failure(error):
@@ -82,7 +82,7 @@ struct ProductScreen: View {
   }
 
   func deleteProduct(onDelete: @escaping () -> Void) async {
-    switch await client.product.delete(id: product.id) {
+    switch await repository.product.delete(id: product.id) {
     case .success:
       onDelete()
     case let .failure(error):

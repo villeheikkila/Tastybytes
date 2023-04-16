@@ -1,13 +1,8 @@
 import SwiftUI
 
 struct UserSheet: View {
-  enum Mode {
-    case add
-    case block
-  }
-
   private let logger = getLogger(category: "UserSheet")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
   @EnvironmentObject private var hapticManager: HapticManager
@@ -76,7 +71,7 @@ struct UserSheet: View {
   }
 
   func searchUsers(currentUserId: UUID) async {
-    switch await client.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
+    switch await repository.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
     case let .success(searchResults):
       withAnimation {
         self.searchResults = searchResults
@@ -84,5 +79,12 @@ struct UserSheet: View {
     case let .failure(error):
       logger.error("failed searching users: \(error.localizedDescription)")
     }
+  }
+}
+
+extension UserSheet {
+  enum Mode {
+    case add
+    case block
   }
 }

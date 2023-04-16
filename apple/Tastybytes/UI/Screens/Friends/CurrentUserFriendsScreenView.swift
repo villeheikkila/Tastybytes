@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct CurrentUserFriendsScreen: View {
-  @EnvironmentObject private var client: AppClient
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
   @EnvironmentObject private var hapticManager: HapticManager

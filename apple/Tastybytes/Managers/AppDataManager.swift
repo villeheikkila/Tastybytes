@@ -6,15 +6,15 @@ class AppDataManager: ObservableObject {
   @Published var categories = [Category.JoinedSubcategoriesServingStyles]()
   @Published var flavors = [Flavor]()
 
-  let client: Client
+  let repository: Repository
 
-  init(client: Client) {
-    self.client = client
+  init(repository: Repository) {
+    self.repository = repository
   }
 
   func initialize() async {
-    async let flavorPromise = client.flavor.getAll()
-    async let categoryPromise = client.category.getAllWithSubcategoriesServingStyles()
+    async let flavorPromise = repository.flavor.getAll()
+    async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
 
     switch await flavorPromise {
     case let .success(flavors):
@@ -35,7 +35,7 @@ class AppDataManager: ObservableObject {
 
   // Flavors
   func addFlavor(name: String) async {
-    switch await client.flavor.insert(newFlavor: Flavor.NewRequest(name: name)) {
+    switch await repository.flavor.insert(newFlavor: Flavor.NewRequest(name: name)) {
     case let .success(newFlavor):
       withAnimation {
         flavors.append(newFlavor)
@@ -46,7 +46,7 @@ class AppDataManager: ObservableObject {
   }
 
   func deleteFlavor(_ flavor: Flavor) async {
-    switch await client.flavor.delete(id: flavor.id) {
+    switch await repository.flavor.delete(id: flavor.id) {
     case .success:
       withAnimation {
         flavors.remove(object: flavor)
@@ -57,7 +57,7 @@ class AppDataManager: ObservableObject {
   }
 
   func loadFlavors() async {
-    switch await client.flavor.getAll() {
+    switch await repository.flavor.getAll() {
     case let .success(flavors):
       withAnimation {
         self.flavors = flavors
@@ -69,7 +69,7 @@ class AppDataManager: ObservableObject {
 
   // Categories
   func verifySubcategory(_ subcategory: Subcategory, isVerified: Bool) async {
-    switch await client.subcategory.verification(id: subcategory.id, isVerified: isVerified) {
+    switch await repository.subcategory.verification(id: subcategory.id, isVerified: isVerified) {
     case .success:
       await loadCategories()
     case let .failure(error):
@@ -79,7 +79,7 @@ class AppDataManager: ObservableObject {
   }
 
   func saveEditSubcategoryChanges(subCategory: SubcategoryProtocol, newName: String) async {
-    switch await client.subcategory
+    switch await repository.subcategory
       .update(updateRequest: Subcategory
         .UpdateRequest(id: subCategory.id, name: newName))
     {
@@ -91,7 +91,7 @@ class AppDataManager: ObservableObject {
   }
 
   func deleteSubcategory(_ deleteSubcategory: SubcategoryProtocol) async {
-    switch await client.subcategory.delete(id: deleteSubcategory.id) {
+    switch await repository.subcategory.delete(id: deleteSubcategory.id) {
     case .success:
       await loadCategories()
     case let .failure(error):
@@ -100,7 +100,7 @@ class AppDataManager: ObservableObject {
   }
 
   func addCategory(name: String) async {
-    switch await client.category.insert(newCategory: Category.NewRequest(name: name)) {
+    switch await repository.category.insert(newCategory: Category.NewRequest(name: name)) {
     case .success:
       await loadCategories()
     case let .failure(error):
@@ -109,7 +109,7 @@ class AppDataManager: ObservableObject {
   }
 
   func addSubcategory(category: Category.JoinedSubcategoriesServingStyles, name: String) async {
-    switch await client.subcategory
+    switch await repository.subcategory
       .insert(newSubcategory: Subcategory
         .NewRequest(name: name, category: category))
     {
@@ -121,7 +121,7 @@ class AppDataManager: ObservableObject {
   }
 
   func loadCategories() async {
-    switch await client.category.getAllWithSubcategoriesServingStyles() {
+    switch await repository.category.getAllWithSubcategoriesServingStyles() {
     case let .success(categories):
       self.categories = categories
     case let .failure(error):

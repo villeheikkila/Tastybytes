@@ -2,7 +2,7 @@ import SwiftUI
 
 struct RouterWrapper<Content: View>: View {
   @StateObject private var router = Router()
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   var content: (_ router: Router) -> Content
 
   var body: some View {
@@ -29,7 +29,7 @@ struct RouterWrapper<Content: View>: View {
         }
         .onOpenURL { url in
           if let detailPage = url.detailPage {
-            router.fetchAndNavigateTo(client, detailPage, resetStack: true)
+            router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
           }
         }
     }

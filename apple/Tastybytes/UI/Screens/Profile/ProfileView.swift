@@ -4,7 +4,7 @@ import SwiftUI
 
 struct ProfileView: View {
   private let logger = getLogger(category: "ProfileView")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @Binding private var scrollToTop: Int
   @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -252,7 +252,7 @@ struct ProfileView: View {
 
   func uploadAvatar(userId: UUID, newAvatar: PhotosPickerItem?) async {
     guard let data = await newAvatar?.getJPEG() else { return }
-    switch await client.profile.uploadAvatar(userId: userId, data: data) {
+    switch await repository.profile.uploadAvatar(userId: userId, data: data) {
     case let .success(avatarFile):
       profile = Profile(
         id: profile.id,
@@ -267,7 +267,7 @@ struct ProfileView: View {
   }
 
   func getSummary() async {
-    switch await client.checkIn.getSummaryByProfileId(id: profile.id) {
+    switch await repository.checkIn.getSummaryByProfileId(id: profile.id) {
     case let .success(summary):
       withAnimation {
         profileSummary = summary

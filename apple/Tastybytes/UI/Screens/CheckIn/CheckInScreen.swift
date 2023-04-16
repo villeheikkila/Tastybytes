@@ -3,7 +3,7 @@ import SwiftUI
 
 struct CheckInScreen: View {
   private let logger = getLogger(category: "CheckInScreen")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var profileManager: ProfileManager
@@ -138,7 +138,7 @@ struct CheckInScreen: View {
   }
 
   func deleteCheckIn(onDelete: @escaping () -> Void) async {
-    switch await client.checkIn.delete(id: checkIn.id) {
+    switch await repository.checkIn.delete(id: checkIn.id) {
     case .success:
       onDelete()
     case let .failure(error):
@@ -147,7 +147,7 @@ struct CheckInScreen: View {
   }
 
   func loadCheckInComments() async {
-    switch await client.checkInComment.getByCheckInId(id: checkIn.id) {
+    switch await repository.checkInComment.getByCheckInId(id: checkIn.id) {
     case let .success(checkIns):
       withAnimation {
         checkInComments = checkIns
@@ -160,7 +160,7 @@ struct CheckInScreen: View {
   func updateComment() async {
     guard let editComment else { return }
     let updatedComment = CheckInComment.UpdateRequest(id: editComment.id, content: editCommentText)
-    switch await client.checkInComment.update(updateCheckInComment: updatedComment) {
+    switch await repository.checkInComment.update(updateCheckInComment: updatedComment) {
     case let .success(updatedComment):
       guard let index = checkInComments.firstIndex(where: { $0.id == updatedComment.id }) else { return }
       withAnimation {
@@ -173,7 +173,7 @@ struct CheckInScreen: View {
   }
 
   func deleteComment(_ comment: CheckInComment) async {
-    switch await client.checkInComment.deleteById(id: comment.id) {
+    switch await repository.checkInComment.deleteById(id: comment.id) {
     case .success:
       withAnimation {
         checkInComments.remove(object: comment)
@@ -186,7 +186,7 @@ struct CheckInScreen: View {
   func sendComment() async {
     let newCheckInComment = CheckInComment.NewRequest(content: commentText, checkInId: checkIn.id)
 
-    let result = await client.checkInComment.insert(newCheckInComment: newCheckInComment)
+    let result = await repository.checkInComment.insert(newCheckInComment: newCheckInComment)
     switch result {
     case let .success(newCheckInComment):
       withAnimation {

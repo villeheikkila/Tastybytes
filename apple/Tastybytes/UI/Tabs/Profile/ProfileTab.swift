@@ -3,7 +3,7 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileTab: View {
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @State private var scrollToTop = 0
   @EnvironmentObject private var profileManager: ProfileManager
   @Binding var resetNavigationOnTab: Tab?
@@ -16,7 +16,7 @@ struct ProfileTab: View {
         .toolbar {
           ToolbarItemGroup(placement: .navigationBarLeading) {
             RouterLink("Show name tag", systemImage: "qrcode", sheet: .nameTag(onSuccess: { profileId in
-              router.fetchAndNavigateTo(client, NavigatablePath.profile(id: profileId))
+              router.fetchAndNavigateTo(repository, NavigatablePath.profile(id: profileId))
             }))
           }
           ToolbarItemGroup(placement: .navigationBarTrailing) {

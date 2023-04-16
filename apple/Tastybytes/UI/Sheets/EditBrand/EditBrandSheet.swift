@@ -5,9 +5,9 @@ import SwiftUI
 
 struct EditBrandSheet: View {
   private let logger = getLogger(category: "EditBrandSheet")
-  @Environment(\.dismiss) private var dismiss
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(\.dismiss) private var dismiss
   @State private var name: String
   @State private var brandOwner: Company
   @State private var showToast = false
@@ -92,7 +92,7 @@ struct EditBrandSheet: View {
   }
 
   func editBrand(onSuccess: @escaping () async -> Void) async {
-    switch await client.brand
+    switch await repository.brand
       .update(updateRequest: Brand.UpdateRequest(id: brand.id, name: name, brandOwnerId: brandOwner.id))
     {
     case .success:
@@ -105,7 +105,7 @@ struct EditBrandSheet: View {
 
   func uploadLogo() async {
     guard let data = await selectedLogo?.getJPEG() else { return }
-    switch await client.brand.uploadLogo(brandId: brand.id, data: data) {
+    switch await repository.brand.uploadLogo(brandId: brand.id, data: data) {
     case .success:
       await onUpdate()
     case let .failure(error):

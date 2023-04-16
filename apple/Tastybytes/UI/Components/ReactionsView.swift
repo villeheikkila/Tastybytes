@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ReactionsView: View {
   private let logger = getLogger(category: "ReactionsView")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var hapticManager = HapticManager()
   @State private var checkInReactions = [CheckInReaction]()
@@ -51,7 +51,7 @@ struct ReactionsView: View {
     isLoading = true
     Task {
       if let reaction = checkInReactions.first(where: { $0.profile.id == userId }) {
-        switch await client.checkInReactions.delete(id: reaction.id) {
+        switch await repository.checkInReactions.delete(id: reaction.id) {
         case .success:
           withAnimation {
             checkInReactions.remove(object: reaction)
@@ -60,7 +60,7 @@ struct ReactionsView: View {
           logger.error("removing check-in reaction \(reaction.id) failed: \(error.localizedDescription)")
         }
       } else {
-        switch await client.checkInReactions
+        switch await repository.checkInReactions
           .insert(newCheckInReaction: CheckInReaction.NewRequest(checkInId: checkIn.id))
         {
         case let .success(checkInReaction):

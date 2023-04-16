@@ -9,7 +9,7 @@ struct CheckInListView<Header>: View where Header: View {
   }
 
   private let logger = getLogger(category: "CheckInListView")
-  @EnvironmentObject private var client: AppClient
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var hapticManager: HapticManager
@@ -184,7 +184,7 @@ struct CheckInListView<Header>: View where Header: View {
   }
 
   func deleteCheckIn(checkIn: CheckIn) async {
-    switch await client.checkIn.delete(id: checkIn.id) {
+    switch await repository.checkIn.delete(id: checkIn.id) {
     case .success:
       withAnimation {
         checkIns.remove(object: checkIn)
@@ -222,13 +222,13 @@ struct CheckInListView<Header>: View where Header: View {
   func checkInFetcher(from: Int, to: Int) async -> Result<[CheckIn], Error> {
     switch fetcher {
     case .activityFeed:
-      return await client.checkIn.getActivityFeed(from: from, to: to)
+      return await repository.checkIn.getActivityFeed(from: from, to: to)
     case let .profile(product):
-      return await client.checkIn.getByProfileId(id: product.id, queryType: .paginated(from, to))
+      return await repository.checkIn.getByProfileId(id: product.id, queryType: .paginated(from, to))
     case let .product(product):
-      return await client.checkIn.getByProductId(id: product.id, from: from, to: to)
+      return await repository.checkIn.getByProductId(id: product.id, from: from, to: to)
     case let .location(location):
-      return await client.checkIn.getByLocation(locationId: location.id, from: from, to: to)
+      return await repository.checkIn.getByLocation(locationId: location.id, from: from, to: to)
     }
   }
 }
