@@ -6,12 +6,15 @@ struct UserSheet: View {
     case block
   }
 
-  @StateObject private var viewModel: ViewModel
+  private let logger = getLogger(category: "UserSheet")
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
+  @State private var searchText: String = ""
+  @State private var searchResults = [Profile]()
 
+  let client: Client
   let onSubmit: () -> Void
   let mode: Mode
 
@@ -20,14 +23,14 @@ struct UserSheet: View {
     mode: Mode,
     onSubmit: @escaping () -> Void
   ) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client))
+    self.client = client
     self.mode = mode
     self.onSubmit = onSubmit
   }
 
   var body: some View {
     List {
-      ForEach(viewModel.searchResults) { profile in
+      ForEach(searchResults) { profile in
         HStack {
           AvatarView(avatarUrl: profile.avatarUrl, size: 32, id: profile.id)
           Text(profile.preferredName)
@@ -68,9 +71,20 @@ struct UserSheet: View {
     }
     .navigationTitle("Search users")
     .navigationBarItems(leading: Button("Cancel", role: .cancel, action: { dismiss() }))
-    .searchable(text: $viewModel.searchText)
+    .searchable(text: $searchText)
     .disableAutocorrection(true)
-    .onSubmit(of: .search) { Task { await viewModel.searchUsers(currentUserId: profileManager.getId()) }
+    .onSubmit(of: .search) { Task { await searchUsers(currentUserId: profileManager.getId()) }
+    }
+  }
+
+  func searchUsers(currentUserId: UUID) async {
+    switch await client.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
+    case let .success(searchResults):
+      withAnimation {
+        self.searchResults = searchResults
+      }
+    case let .failure(error):
+      logger.error("failed searching users: \(error.localizedDescription)")
     }
   }
 }

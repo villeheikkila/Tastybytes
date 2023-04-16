@@ -5,7 +5,11 @@ enum Sheet: Identifiable, Equatable {
   case checkIn(CheckIn, onUpdate: (_ checkIn: CheckIn) -> Void)
   case newCheckIn(Product.Joined, onCreation: (_ checkIn: CheckIn) async -> Void)
   case barcodeScanner(onComplete: (_ barcode: Barcode) -> Void)
-  case productFilter(initialFilter: Product.Filter?, sections: [Sections], onApply: (_ filter: Product.Filter?) -> Void)
+  case productFilter(
+    initialFilter: Product.Filter?,
+    sections: [ProductFilterSheet.Sections],
+    onApply: (_ filter: Product.Filter?) -> Void
+  )
   case nameTag(onSuccess: (_ profileId: UUID) -> Void)
   case companySearch(onSelect: (_ company: Company, _ createdNew: Bool) -> Void)
   case brand(brandOwner: Company,

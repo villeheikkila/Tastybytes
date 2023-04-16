@@ -1,58 +1,122 @@
 import SwiftUI
 
 struct DuplicateProductSheet: View {
-  @StateObject private var viewModel: ViewModel
+  enum Mode {
+    case mergeDuplicate, reportDuplicate
+  }
+
+  private let logger = getLogger(category: "MarkAsDuplicate")
   @EnvironmentObject private var hapticManager: HapticManager
   @Environment(\.dismiss) private var dismiss
+  @State private var products = [Product.Joined]()
+  @State private var currentUserProductDuplicateSuggestions = [ProductDuplicateSuggestion]()
+  @State private var mergeToProduct: Product.Joined? {
+    didSet {
+      showMergeToProductConfirmation = true
+    }
+  }
+
+  @State private var showMergeToProductConfirmation = false
+  @State private var searchTerm = ""
+
+  let client: Client
+  let product: Product.Joined
+  let mode: Mode
 
   init(_ client: Client, mode: Mode, product: Product.Joined) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, mode: mode, product: product))
+    self.client = client
+    self.mode = mode
+    self.product = product
   }
 
   var body: some View {
     List {
-      if viewModel.products.isEmpty, viewModel.mode == .reportDuplicate {
+      if products.isEmpty, mode == .reportDuplicate {
         Text("""
-        Search for duplicate of \(viewModel.product
+        Search for duplicate of \(product
           .getDisplayName(.fullName)). Your request will be reviewed and products will be combined if appropriate.
         """).listRowSeparator(.hidden)
       }
-      ForEach(viewModel.products.filter { $0.id != viewModel.product.id }) { product in
-        Button(action: { viewModel.mergeToProduct = product }, label: {
+      ForEach(products.filter { $0.id != product.id }) { product in
+        Button(action: { mergeToProduct = product }, label: {
           ProductItemView(product: product)
         })
       }
     }
     .listStyle(.plain)
-    .searchable(text: $viewModel.searchTerm, placement: .navigationBarDrawer(displayMode: .always),
+    .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                 prompt: "Search for a duplicate product")
     .disableAutocorrection(true)
     .onSubmit(of: .search) {
-      Task { await viewModel.searchProducts() }
+      Task { await searchProducts(name: searchTerm) }
     }
-    .navigationTitle(viewModel.mode == .mergeDuplicate ? "Merge duplicates" : "Mark a duplicate")
+    .navigationTitle(mode == .mergeDuplicate ? "Merge duplicates" : "Mark a duplicate")
     .navigationBarItems(leading: Button("Close", role: .cancel, action: { dismiss() }).bold())
-    .onReceive(
-      viewModel.$searchTerm.throttle(for: 0.5, scheduler: RunLoop.main, latest: true)
-    ) { _ in
-      Task { await viewModel.searchProducts() }
+    .onChange(of: searchTerm, debounceTime: 0.2) { newValue in
+      Task { await searchProducts(name: newValue) }
     }
     .confirmationDialog("Product Merge Confirmation",
-                        isPresented: $viewModel.showMergeToProductConfirmation,
-                        presenting: viewModel.mergeToProduct)
+                        isPresented: $showMergeToProductConfirmation,
+                        presenting: mergeToProduct)
     { presenting in
       ProgressButton(
         """
-        \(viewModel.mode == .mergeDuplicate ? "Merge" : "Mark") \(presenting.name) \(viewModel
-          .mode == .mergeDuplicate ? "to" : "as duplicate of") \(presenting.getDisplayName(.fullName))
+        \(mode == .mergeDuplicate ? "Merge" : "Mark") \(presenting.name) \(
+          mode == .mergeDuplicate ? "to" : "as duplicate of") \(presenting.getDisplayName(.fullName))
         """,
         role: .destructive
       ) {
-        await viewModel.primaryAction(onSuccess: {
+        await primaryAction(onSuccess: {
           hapticManager.trigger(.notification(.success))
           dismiss()
         })
       }
+    }
+  }
+
+  func primaryAction(onSuccess: @escaping () -> Void) async {
+    switch mode {
+    case .reportDuplicate:
+      await reportDuplicate(onSuccess: onSuccess)
+    case .mergeDuplicate:
+      await mergeProducts(onSuccess: onSuccess)
+    }
+  }
+
+  func reportDuplicate(onSuccess: @escaping () -> Void) async {
+    guard let mergeToProduct else { return }
+    switch await client.product.markAsDuplicate(
+      productId: product.id,
+      duplicateOfProductId: mergeToProduct.id
+    ) {
+    case .success:
+      onSuccess()
+    case let .failure(error):
+      logger
+        .error(
+          "reporting duplicate product \(self.mergeToProduct?.id ?? 0) of \(mergeToProduct.id) failed: \(error.localizedDescription)"
+        )
+    }
+  }
+
+  func mergeProducts(onSuccess: @escaping () -> Void) async {
+    guard let mergeToProduct else { return }
+    switch await client.product.mergeProducts(productId: product.id, toProductId: mergeToProduct.id) {
+    case .success:
+      onSuccess()
+    case let .failure(error):
+      logger
+        .error("merging product \(self.mergeToProduct?.id ?? 0) to \(mergeToProduct.id) failed: \(error.localizedDescription)")
+    }
+  }
+
+  func searchProducts(name: String) async {
+    guard name.count > 1 else { return }
+    switch await client.product.search(searchTerm: name, filter: nil) {
+    case let .success(searchResults):
+      products = searchResults
+    case let .failure(error):
+      logger.error("searching products failed: \(error.localizedDescription)")
     }
   }
 }

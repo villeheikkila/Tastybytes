@@ -4,31 +4,49 @@ import PhotosUI
 import SwiftUI
 
 struct EditBrandSheet: View {
+  private let logger = getLogger(category: "EditBrandSheet")
   @Environment(\.dismiss) private var dismiss
-  @StateObject private var viewModel: ViewModel
   @EnvironmentObject private var profileManager: ProfileManager
+  @State private var name: String
+  @State private var brandOwner: Company
+  @State private var showToast = false
+  @State private var brand: Brand.JoinedSubBrandsProductsCompany
+  @State private var selectedLogo: PhotosPickerItem? {
+    didSet {
+      if selectedLogo != nil {
+        Task { await uploadLogo() }
+      }
+    }
+  }
 
   let onUpdate: () async -> Void
+  let initialBrandOwner: Company
 
   init(
     _ client: Client,
     brand: Brand.JoinedSubBrandsProductsCompany,
     onUpdate: @escaping () async -> Void
   ) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, brand: brand, onUpdate: onUpdate))
+    self.client = client
     self.onUpdate = onUpdate
+    initialBrandOwner = brand.brandOwner
+    _brand = State(wrappedValue: brand)
+    _brandOwner = State(wrappedValue: brand.brandOwner)
+    _name = State(wrappedValue: brand.name)
   }
+
+  let client: Client
 
   var body: some View {
     Form {
       if profileManager.hasPermission(.canAddBrandLogo) {
         Section {
           PhotosPicker(
-            selection: $viewModel.selectedLogo,
+            selection: $selectedLogo,
             matching: .images,
             photoLibrary: .shared()
           ) {
-            if let logoUrl = viewModel.brand.logoUrl {
+            if let logoUrl = brand.logoUrl {
               CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
                 image
                   .resizable()
@@ -51,34 +69,52 @@ struct EditBrandSheet: View {
         .listRowBackground(Color.clear)
       }
 
-      Section {
-        TextField("Name", text: $viewModel.name)
+      Section("Brand name") {
+        TextField("Name", text: $name)
         ProgressButton("Edit") {
-          await viewModel.editBrand {
+          await editBrand {
             await onUpdate()
           }
-        }.disabled(!viewModel.name.isValidLength(.normal) || viewModel.brand.name == viewModel.name)
-      } header: {
-        Text("Brand name")
+        }.disabled(!name.isValidLength(.normal) || brand.name == name)
       }
 
-      Section {
-        RouterLink(viewModel.brandOwner.name, sheet: .companySearch(onSelect: { company, _ in
-          viewModel.brandOwner = company
+      Section("Brand Owner") {
+        RouterLink(brandOwner.name, sheet: .companySearch(onSelect: { company, _ in
+          brandOwner = company
         }))
         ProgressButton("Change brand owner") {
-          await viewModel.editBrand {
+          await editBrand {
             await onUpdate()
           }
-        }.disabled(viewModel.brandOwner.id == viewModel.initialBrandOwner.id)
-      } header: {
-        Text("Brand Owner")
+        }.disabled(brandOwner.id == initialBrandOwner.id)
       }
     }
     .navigationTitle("Edit Brand")
     .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
-    .toast(isPresenting: $viewModel.showToast, duration: 2, tapToDismiss: true) {
+    .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
       AlertToast(type: .complete(.green), title: "Brand updated!")
+    }
+  }
+
+  func editBrand(onSuccess: @escaping () async -> Void) async {
+    switch await client.brand
+      .update(updateRequest: Brand.UpdateRequest(id: brand.id, name: name, brandOwnerId: brandOwner.id))
+    {
+    case .success:
+      showToast.toggle()
+      await onSuccess()
+    case let .failure(error):
+      logger.error("failed to edit brand': \(error.localizedDescription)")
+    }
+  }
+
+  func uploadLogo() async {
+    guard let data = await selectedLogo?.getJPEG() else { return }
+    switch await client.brand.uploadLogo(brandId: brand.id, data: data) {
+    case .success:
+      await onUpdate()
+    case let .failure(error):
+      logger.error("uplodaing company logo failed: \(error.localizedDescription)")
     }
   }
 }

@@ -59,3 +59,45 @@ extension View {
     clipShape(RoundedCorner(radius: radius, corners: corners))
   }
 }
+
+public extension View {
+  func onChange<Value>(
+    of value: Value,
+    debounceTime: TimeInterval,
+    perform action: @escaping (_ newValue: Value) -> Void
+  ) -> some View where Value: Equatable {
+    modifier(DebouncedChangeViewModifier(trigger: value, debounceTime: debounceTime, action: action))
+  }
+}
+
+private struct DebouncedChangeViewModifier<Value>: ViewModifier where Value: Equatable {
+  let trigger: Value
+  let debounceTime: TimeInterval
+  let action: (Value) -> Void
+
+  @State private var debouncedTask: Task<Void, Never>?
+
+  func body(content: Content) -> some View {
+    content.onChange(of: trigger) { value in
+      debouncedTask?.cancel()
+      debouncedTask = Task.delayed(seconds: debounceTime) { @MainActor in
+        action(value)
+      }
+    }
+  }
+}
+
+public extension Task {
+  @discardableResult
+  static func delayed(
+    seconds: TimeInterval,
+    operation: @escaping @Sendable () async -> Void
+  ) -> Self where Success == Void, Failure == Never {
+    Self {
+      do {
+        try await Task<Never, Never>.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+        await operation()
+      } catch {}
+    }
+  }
+}
