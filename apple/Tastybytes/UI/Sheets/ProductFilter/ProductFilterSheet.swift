@@ -8,7 +8,7 @@ struct ProductFilterSheet: View {
   private let logger = getLogger(category: "SeachFilterSheet")
   @Environment(\.dismiss) private var dismiss
   @EnvironmentObject private var appDataManager: AppDataManager
-  @State private var categoryFilter: Category.JoinedSubcategories?
+  @State private var categoryFilter: Category.JoinedSubcategoriesServingStyles?
   @State private var subcategoryFilter: Subcategory?
   @State private var sortBy: Product.Filter.SortBy?
   @State private var onlyNonCheckedIn = false
@@ -38,7 +38,7 @@ struct ProductFilterSheet: View {
       if sections.contains(.category) {
         Section {
           Picker(selection: $categoryFilter) {
-            Text("Select All").tag(Category.JoinedSubcategories?(nil))
+            Text("Select All").tag(Category.JoinedSubcategoriesServingStyles?(nil))
             ForEach(appDataManager.categories) { category in
               Text(category.name).tag(Optional(category))
             }

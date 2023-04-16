@@ -159,7 +159,7 @@ extension Product {
       }
     }
 
-    let category: Category.JoinedSubcategories?
+    let category: Category.JoinedSubcategoriesServingStyles?
     let subcategory: Subcategory?
     let onlyNonCheckedIn: Bool
     let sortBy: SortBy?

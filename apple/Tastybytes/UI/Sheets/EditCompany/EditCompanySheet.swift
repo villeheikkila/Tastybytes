@@ -3,32 +3,47 @@ import PhotosUI
 import SwiftUI
 
 struct EditCompanySheet: View {
-  @StateObject private var viewModel: ViewModel
+  private let logger = getLogger(category: "EditCompanySheet")
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
+  @State private var company: Company
+  @State private var newCompanyName = ""
+  @State private var selectedItem: PhotosPickerItem? {
+    didSet {
+      if selectedItem != nil {
+        Task {
+          await uploadCompanyImage()
+        }
+      }
+    }
+  }
 
+  let client: Client
+  let mode: Mode
   let onSuccess: () async -> Void
 
   init(_ client: Client, company: Company, onSuccess: @escaping () async -> Void, mode: Mode) {
-    _viewModel = StateObject(wrappedValue: ViewModel(client, company: company, mode: mode))
+    self.client = client
+    _company = State(wrappedValue: company)
+    self.mode = mode
     self.onSuccess = onSuccess
   }
 
   var body: some View {
     Form {
       companyPhotoSection
-      Section(viewModel.mode.nameSectionHeader) {
-        TextField("Name", text: $viewModel.newCompanyName)
-        ProgressButton(viewModel.mode.primaryAction, action: {
-          await viewModel.submit(onSuccess: {
+      Section(mode.nameSectionHeader) {
+        TextField("Name", text: $newCompanyName)
+        ProgressButton(mode.primaryAction, action: {
+          await submit(onSuccess: {
             dismiss()
             await onSuccess()
           })
         })
-        .disabled(!viewModel.newCompanyName.isValidLength(.normal))
+        .disabled(!newCompanyName.isValidLength(.normal))
       }
     }
-    .navigationTitle(viewModel.mode.navigationTitle)
+    .navigationTitle(mode.navigationTitle)
     .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: { dismiss() }).bold())
   }
 
@@ -36,11 +51,11 @@ struct EditCompanySheet: View {
     if profileManager.hasPermission(.canAddCompanyLogo) {
       Section("Logo") {
         PhotosPicker(
-          selection: $viewModel.selectedItem,
+          selection: $selectedItem,
           matching: .images,
           photoLibrary: .shared()
         ) {
-          if let logoUrl = viewModel.company.logoUrl {
+          if let logoUrl = company.logoUrl {
             CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
               image
                 .resizable()
@@ -59,6 +74,52 @@ struct EditCompanySheet: View {
       }
       .listRowSeparator(.hidden)
       .listRowBackground(Color.clear)
+    }
+  }
+
+  func submit(onSuccess: () async -> Void) async {
+    switch mode {
+    case .edit:
+      await editCompany(onSuccess: onSuccess)
+    case .editSuggestion:
+      await sendCompanyEditSuggestion(onSuccess: onSuccess)
+    }
+  }
+
+  func editCompany(onSuccess: () async -> Void) async {
+    switch await client.company
+      .update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName))
+    {
+    case .success:
+      await onSuccess()
+    case let .failure(error):
+      logger.error("failed to edit company: \(error.localizedDescription)")
+    }
+  }
+
+  func sendCompanyEditSuggestion(onSuccess: () async -> Void) async {
+    switch await client.company
+      .editSuggestion(updateRequest: Company.EditSuggestionRequest(id: company.id, name: newCompanyName))
+    {
+    case .success:
+      await onSuccess()
+    case let .failure(error):
+      logger.error("failed to send company edit suggestion: \(error.localizedDescription)")
+    }
+  }
+
+  func uploadCompanyImage() async {
+    guard let data = await selectedItem?.getJPEG() else { return }
+    switch await client.company.uploadLogo(companyId: company.id, data: data) {
+    case let .success(fileName):
+      company = Company(
+        id: company.id,
+        name: company.name,
+        logoFile: fileName,
+        isVerified: company.isVerified
+      )
+    case let .failure(error):
+      logger.error("uplodaing company logo failed: \(error.localizedDescription)")
     }
   }
 }
@@ -92,76 +153,6 @@ extension EditCompanySheet {
         return "Company name"
       case .editSuggestion:
         return "What should the company be called?"
-      }
-    }
-  }
-
-  @MainActor
-  class ViewModel: ObservableObject {
-    private let logger = getLogger(category: "EditCompanySheet")
-    let client: Client
-    let mode: Mode
-    @Published var company: Company
-    @Published var newCompanyName = ""
-    @Published var selectedItem: PhotosPickerItem? {
-      didSet {
-        if selectedItem != nil {
-          Task {
-            await uploadCompanyImage()
-          }
-        }
-      }
-    }
-
-    init(_ client: Client, company: Company, mode: Mode) {
-      self.client = client
-      self.company = company
-      self.mode = mode
-    }
-
-    func submit(onSuccess: () async -> Void) async {
-      switch mode {
-      case .edit:
-        await editCompany(onSuccess: onSuccess)
-      case .editSuggestion:
-        await sendCompanyEditSuggestion(onSuccess: onSuccess)
-      }
-    }
-
-    func editCompany(onSuccess: () async -> Void) async {
-      switch await client.company
-        .update(updateRequest: Company.UpdateRequest(id: company.id, name: newCompanyName))
-      {
-      case .success:
-        await onSuccess()
-      case let .failure(error):
-        logger.error("failed to edit company: \(error.localizedDescription)")
-      }
-    }
-
-    func sendCompanyEditSuggestion(onSuccess: () async -> Void) async {
-      switch await client.company
-        .editSuggestion(updateRequest: Company.EditSuggestionRequest(id: company.id, name: newCompanyName))
-      {
-      case .success:
-        await onSuccess()
-      case let .failure(error):
-        logger.error("failed to send company edit suggestion: \(error.localizedDescription)")
-      }
-    }
-
-    func uploadCompanyImage() async {
-      guard let data = await selectedItem?.getJPEG() else { return }
-      switch await client.company.uploadLogo(companyId: company.id, data: data) {
-      case let .success(fileName):
-        company = Company(
-          id: company.id,
-          name: company.name,
-          logoFile: fileName,
-          isVerified: company.isVerified
-        )
-      case let .failure(error):
-        logger.error("uplodaing company logo failed: \(error.localizedDescription)")
       }
     }
   }
