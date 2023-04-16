@@ -34,7 +34,7 @@ struct SubBrandSheet: View {
       }
 
       if profileManager.hasPermission(.canCreateBrands) {
-        Section {
+        Section("Add new sub-brand for \(brandWithSubBrands.name)") {
           TextField("Name", text: $subBrandName)
           ProgressButton("Create") {
             await createNewSubBrand { subBrand, createdNew in
@@ -43,8 +43,6 @@ struct SubBrandSheet: View {
             }
           }
           .disabled(!subBrandName.isValidLength(.normal))
-        } header: {
-          Text("Add new sub-brand for \(brandWithSubBrands.name)")
         }
       }
     }

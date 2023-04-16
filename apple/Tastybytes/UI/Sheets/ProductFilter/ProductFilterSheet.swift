@@ -34,7 +34,7 @@ struct ProductFilterSheet: View {
   var body: some View {
     Form {
       if sections.contains(.category) {
-        Section {
+        Section("Category") {
           Picker(selection: $categoryFilter) {
             Text("Select All").tag(Category.JoinedSubcategoriesServingStyles?(nil))
             ForEach(appDataManager.categories) { category in
@@ -53,20 +53,16 @@ struct ProductFilterSheet: View {
           } label: {
             Text("Subcategory")
           }.disabled(categoryFilter == nil)
-        } header: {
-          Text("Category")
         }
       }
 
       if sections.contains(.checkIns) {
-        Section {
+        Section("Check-ins") {
           Toggle("Only things I have not had", isOn: $onlyNonCheckedIn)
-        } header: {
-          Text("Check-ins")
         }
       }
       if sections.contains(.sortBy) {
-        Section {
+        Section("Sort By") {
           Picker(selection: $sortBy) {
             Text("None").tag(Product.Filter.SortBy?(nil))
             ForEach(Product.Filter.SortBy.allCases) { sortBy in
@@ -75,8 +71,6 @@ struct ProductFilterSheet: View {
           } label: {
             Text("Rating")
           }
-        } header: {
-          Text("Sort By")
         }
       }
       Button("Reset", action: { resetFilter() }).bold()

@@ -14,7 +14,7 @@ struct ApplicationSettingsScreen: View {
   }
 
   private var colorSchemeSection: some View {
-    Section {
+    Section("Color Scheme") {
       Toggle("Use System Color Scheme", isOn: .init(get: {
         profileManager.isSystemColor
       }, set: { newValue in
@@ -28,13 +28,11 @@ struct ApplicationSettingsScreen: View {
         Task { await profileManager.updateColorScheme() }
       }))
       .disabled(profileManager.isSystemColor)
-    } header: {
-      Text("Color Scheme")
     }
   }
 
   private var notificationSection: some View {
-    Section {
+    Section("Notifications") {
       Toggle("Reactions", isOn: .init(get: {
         profileManager.reactionNotifications
       }, set: { newValue in
@@ -53,8 +51,6 @@ struct ApplicationSettingsScreen: View {
         profileManager.checkInTagNotifications = newValue
         Task { await profileManager.updateNotificationSettings() }
       }))
-    } header: {
-      Text("Notifications")
     }
   }
 }

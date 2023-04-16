@@ -13,7 +13,7 @@ struct FlavorSheet: View {
   var body: some View {
     List {
       if !pickedFlavors.isEmpty {
-        Section {
+        Section("Picked flavors") {
           ForEach(pickedFlavors) { pickedFlavor in
             Button(action: { toggleFlavor(pickedFlavor) }, label: {
               HStack {
@@ -22,8 +22,6 @@ struct FlavorSheet: View {
               }
             })
           }
-        } header: {
-          Text("Picked flavors")
         }
       }
 

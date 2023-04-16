@@ -8,14 +8,12 @@ struct AddSubcategorySheet: View {
   var body: some View {
     DismissableSheet(title: "Add subcategory to \(category.name)") { dismiss in
       Form {
-        Section {
+        Section("Add Subcategory") {
           TextField("Name", text: $newSubcategoryName)
           ProgressButton("Add", action: {
             await onSubmit(newSubcategoryName)
             dismiss()
           }).disabled(newSubcategoryName.isEmpty)
-        } header: {
-          Text("Add Subcategory")
         }
       }
     }.navigationBarTitleDisplayMode(.inline)

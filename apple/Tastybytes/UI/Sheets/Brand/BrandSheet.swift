@@ -28,7 +28,7 @@ struct BrandSheet: View {
       }
 
       if profileManager.hasPermission(.canCreateBrands) {
-        Section {
+        Section("Add new brand for \(brandOwner.name)") {
           TextField("Name", text: $brandName)
           ProgressButton("Create") {
             await createNewBrand(brandOwner) { brand in
@@ -37,8 +37,6 @@ struct BrandSheet: View {
             }
           }
           .disabled(!brandName.isValidLength(.normal))
-        } header: {
-          Text("Add new brand for \(brandOwner.name)")
         }
       }
     }

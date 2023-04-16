@@ -43,7 +43,7 @@ struct EditSubBrandSheet: View {
 
   var body: some View {
     Form {
-      Section {
+      Section("Name") {
         TextField("Name", text: $newSubBrandName)
         ProgressButton("Edit") {
           await editSubBrand(onSuccess: {
@@ -51,19 +51,15 @@ struct EditSubBrandSheet: View {
           })
         }
         .disabled(invalidNewName)
-      } header: {
-        Text("Name")
       }
 
       if !brand.subBrands.contains(where: { $0.name != nil && $0.id != subBrand.id }) {
-        Section {
+        Section("Merge to another sub-brand") {
           ForEach(brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id }) { subBrand in
             if let name = subBrand.name {
               Button(name, action: { mergeTo = subBrand })
             }
           }
-        } header: {
-          Text("Merge to another sub-brand")
         }
       }
     }

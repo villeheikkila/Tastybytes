@@ -107,7 +107,7 @@ struct CheckInSheet: View {
       .listRowSeparator(.hidden)
       .listRowBackground(Color.clear)
 
-      Section {
+      Section("Review") {
         TextField("How was it?", text: $review, axis: .vertical)
           .focused($focusedField, equals: .review)
         RatingPickerView(rating: $rating)
@@ -123,10 +123,7 @@ struct CheckInSheet: View {
               .fontWeight(.medium)
           }
         })
-      } header: {
-        Text("Review")
-      }
-      .headerProminence(.increased)
+      }.headerProminence(.increased)
 
       Section {
         if !servingStyles.isEmpty {
@@ -160,7 +157,7 @@ struct CheckInSheet: View {
         })
       }
 
-      Section {
+      Section("Location") {
         RouterLink(sheet: .locationSearch(onSelect: { location in
           self.location = location
         }), label: {
@@ -178,11 +175,9 @@ struct CheckInSheet: View {
             Spacer()
           }
         })
-      } header: {
-        Text("Location")
       }
 
-      Section {
+      Section("Purchased from") {
         RouterLink(sheet: .locationSearch(onSelect: { location in
           purchaseLocation = location
         }), label: {
@@ -200,8 +195,6 @@ struct CheckInSheet: View {
             Spacer()
           }
         })
-      } header: {
-        Text("Purchased from")
       }
 
       if profileManager.hasPermission(.canSetCheckInDate) {

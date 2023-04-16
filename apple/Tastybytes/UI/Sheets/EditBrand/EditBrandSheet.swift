@@ -37,7 +37,7 @@ struct EditBrandSheet: View {
   var body: some View {
     Form {
       if profileManager.hasPermission(.canAddBrandLogo) {
-        Section {
+        Section("Logo") {
           PhotosPicker(
             selection: $selectedLogo,
             matching: .images,
@@ -59,8 +59,6 @@ struct EditBrandSheet: View {
                 .accessibility(hidden: true)
             }
           }
-        } header: {
-          Text("Logo")
         }
         .listRowSeparator(.hidden)
         .listRowBackground(Color.clear)

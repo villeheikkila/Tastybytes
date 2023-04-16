@@ -20,7 +20,7 @@ struct SubcategorySheet: View {
 
   var body: some View {
     List {
-      Section {
+      Section("Subcategories of \(category.name)") {
         ForEach(shownSubcategories) { subcategory in
           Button(action: { toggleSubcategory(subcategory: subcategory) }, label: {
             HStack {
@@ -32,8 +32,6 @@ struct SubcategorySheet: View {
             }
           })
         }
-      } header: {
-        Text("Subcategories of \(category.name)")
       }
     }
     .searchable(text: $searchTerm)

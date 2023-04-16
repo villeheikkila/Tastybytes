@@ -17,7 +17,7 @@ struct ReportSheet: View {
       } header: {
         Text("Content in question")
       }
-      Section {
+      Section("Report") {
         TextField("Reason", text: $reasonText, axis: .vertical)
           .lineLimit(8, reservesSpace: true)
         ProgressButton("Submit", action: {
@@ -25,8 +25,6 @@ struct ReportSheet: View {
             dismiss()
           })
         }).bold()
-      } header: {
-        Text("Report")
       }
     }
     .navigationTitle("Report \(entity.label)")

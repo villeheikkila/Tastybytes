@@ -47,13 +47,11 @@ struct CompanySearchSheet: View {
       if profileManager.hasPermission(.canCreateCompanies), !showEmptyResults {
         switch status {
         case .searched:
-          Section {
+          Section("Didn't find the company you were looking for?") {
             Button("Add", action: { createNew() })
-          } header: {
-            Text("Didn't find the company you were looking for?")
           }.textCase(nil)
         case .add:
-          Section {
+          Section("Add new company") {
             TextField("Name", text: $companyName)
             ProgressButton("Create") {
               await createNewCompany(onSuccess: { company in
@@ -62,8 +60,6 @@ struct CompanySearchSheet: View {
               })
             }
             .disabled(!companyName.isValidLength(.normal))
-          } header: {
-            Text("Add new company")
           }
         case .none:
           EmptyView()

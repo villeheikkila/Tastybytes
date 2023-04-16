@@ -45,14 +45,12 @@ struct ServingStyleManagementSheet: View {
           Button("Delete", systemImage: "trash", role: .destructive, action: { toDeleteServingStyle = servingStyle })
         }
       }
-      Section {
+      Section("Add new serving style") {
         TextField("Name", text: $newServingStyleName)
         ProgressButton("Create") {
           await createServingStyle()
         }
         .disabled(!newServingStyleName.isValidLength(.normal))
-      } header: {
-        Text("Add new serving style")
       }
     }
     .navigationBarTitle("Pick Serving Style")

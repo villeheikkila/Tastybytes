@@ -127,7 +127,7 @@ struct SearchListView: View {
   }
 
   private var searchScopeList: some View {
-    Section {
+    Section("Search") {
       Group {
         Button("Products", systemImage: "grid", action: { searchScope = .products })
         Button("Companies", systemImage: "network", action: { searchScope = .companies })
@@ -136,8 +136,6 @@ struct SearchListView: View {
       }
       .bold()
       .listRowSeparator(.visible)
-    } header: {
-      Text("Search")
     }.headerProminence(.increased)
   }
 
@@ -187,7 +185,7 @@ struct SearchListView: View {
     }
 
     if currentScopeIsEmpty {
-      Section {
+      Section("Feeds") {
         Group {
           RouterLink(
             Product.FeedType.trending.label,
@@ -207,8 +205,6 @@ struct SearchListView: View {
         }
         .bold()
         .listRowSeparator(.visible)
-      } header: {
-        Text("Feeds")
       }.headerProminence(.increased)
     } else {
       ForEach(products) { product in
@@ -231,7 +227,7 @@ struct SearchListView: View {
       }
     }
     if isSearched, profileManager.hasPermission(.canCreateProducts) {
-      Section {
+      Section("Didn't find a product you were looking for?") {
         HStack {
           Text("Add new")
             .fontWeight(.medium)
@@ -244,8 +240,6 @@ struct SearchListView: View {
           barcode = nil
           router.navigate(screen: .addProduct(barcodeCopy))
         }
-      } header: {
-        Text("Didn't find a product you were looking for?")
       }
       .textCase(nil)
     }
