@@ -29,6 +29,7 @@ struct RootView: View {
   @StateObject private var toastManager = ToastManager()
   @StateObject private var notificationManager: NotificationManager
   @StateObject private var hapticManager = HapticManager()
+  @StateObject private var appDataManager: AppDataManager
   @State private var authEvent: AuthChangeEvent?
 
   init(supabaseClient: SupabaseClient) {
@@ -37,6 +38,7 @@ struct RootView: View {
     _repository = StateObject(wrappedValue: repository)
     _notificationManager = StateObject(wrappedValue: NotificationManager(repository: repository))
     _profileManager = StateObject(wrappedValue: ProfileManager(repository: repository))
+    _appDataManager = StateObject(wrappedValue: AppDataManager(repository: repository))
   }
 
   var body: some View {
@@ -72,9 +74,15 @@ struct RootView: View {
     .environmentObject(notificationManager)
     .environmentObject(profileManager)
     .environmentObject(hapticManager)
+    .environmentObject(appDataManager)
     .preferredColorScheme(profileManager.colorScheme)
     .onOpenURL { url in
       Task { _ = try await supabaseClient.auth.session(from: url) }
+    }
+    .task {
+      if !appDataManager.isInitialized {
+        await appDataManager.initialize()
+      }
     }
     .task {
       for await authEventChange in supabaseClient.auth.authEventChange {

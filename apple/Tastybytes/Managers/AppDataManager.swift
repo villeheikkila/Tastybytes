@@ -12,6 +12,10 @@ class AppDataManager: ObservableObject {
     self.repository = repository
   }
 
+  var isInitialized: Bool {
+    !flavors.isEmpty || !categories.isEmpty
+  }
+
   func initialize() async {
     async let flavorPromise = repository.flavor.getAll()
     async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
