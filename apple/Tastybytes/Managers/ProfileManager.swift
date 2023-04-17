@@ -172,19 +172,20 @@ final class ProfileManager: ObservableObject {
       lastName == profile?.lastName ?? "")
   }
 
-  func uploadAvatar(newAvatar: PhotosPickerItem?) async {
-    guard let data = await newAvatar?.getJPEG() else { return }
+  func uploadAvatar(newAvatar: PhotosPickerItem, onError: @escaping (_ error: Error) -> Void) async {
+    guard let data = await newAvatar.getJPEG() else { return }
     guard let profile else { return }
     switch await repository.profile.uploadAvatar(userId: profile.id, data: data) {
     case .success:
       // TODO: update only avatar url
       await refresh()
     case let .failure(error):
+      onError(error)
       logger.error("uplodaing avatar failed: \(error.localizedDescription)")
     }
   }
 
-  func updateProfile(onSuccess: @escaping () async -> Void, onFailure: @escaping (_ error: Error) -> Void) async {
+  func updateProfile(onSuccess: @escaping () async -> Void, onError: @escaping (_ error: Error) -> Void) async {
     let update = Profile.UpdateRequest(
       username: username,
       firstName: firstName,
@@ -197,12 +198,12 @@ final class ProfileManager: ObservableObject {
     case .success:
       await onSuccess()
     case let .failure(error):
+      onError(error)
       logger.error("failed to update profile: \(error.localizedDescription)")
-      onFailure(error)
     }
   }
 
-  func onboardingUpdate() async {
+  func onboardingUpdate(onError: @escaping (_ error: Error) -> Void) async {
     let update = Profile.UpdateRequest(
       username: username,
       firstName: firstName,
@@ -218,11 +219,12 @@ final class ProfileManager: ObservableObject {
     case .success:
       logger.info("onboarded")
     case let .failure(error):
+      onError(error)
       logger.error("failed to update profile: \(error.localizedDescription)")
     }
   }
 
-  func updatePrivacySettings() async {
+  func updatePrivacySettings(onError: @escaping (_ error: Error) -> Void) async {
     let update = Profile.UpdateRequest(isPrivate: isPrivateProfile)
     switch await repository.profile.update(
       update: update
@@ -230,11 +232,12 @@ final class ProfileManager: ObservableObject {
     case .success:
       logger.log("updated privacy settings")
     case let .failure(error):
+      onError(error)
       logger.error("failed to update settings: \(error.localizedDescription)")
     }
   }
 
-  func updateDisplaySettings() async {
+  func updateDisplaySettings(onError: @escaping (_ error: String) -> Void) async {
     let update = Profile.UpdateRequest(
       showFullName: showFullName
     )
@@ -244,6 +247,7 @@ final class ProfileManager: ObservableObject {
     case .success:
       logger.log("updated display settings")
     case let .failure(error):
+      onError(error.localizedDescription)
       logger.error("failed to update profile: \(error.localizedDescription)")
     }
   }
@@ -258,8 +262,8 @@ final class ProfileManager: ObservableObject {
       csvExport = CSVFile(initialText: csvText)
       showingExporter = true
     case let .failure(error):
-      logger.error("failed to export check-in csv: \(error.localizedDescription)")
       onError(error.localizedDescription)
+      logger.error("failed to export check-in csv: \(error.localizedDescription)")
     }
   }
 }

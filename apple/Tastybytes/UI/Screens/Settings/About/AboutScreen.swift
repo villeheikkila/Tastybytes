@@ -3,8 +3,7 @@ import SwiftUI
 struct AboutScreen: View {
   private let logger = getLogger(category: "AboutScreen")
   @EnvironmentObject private var repository: Repository
-  @EnvironmentObject private var feedbackManager: FeedbackManager
-  @State private var aboutPage: AboutPage?
+  @EnvironmentObject private var appDataManager: AppDataManager
 
   var body: some View {
     VStack {
@@ -15,9 +14,6 @@ struct AboutScreen: View {
       }
     }
     .navigationTitle("About")
-    .task {
-      await getAboutPage()
-    }
   }
 
   var header: some View {
@@ -34,7 +30,7 @@ struct AboutScreen: View {
   }
 
   @ViewBuilder var aboutSection: some View {
-    if let aboutPage {
+    if let aboutPage = appDataManager.aboutPage {
       Section {
         Text(aboutPage.summary)
       }
@@ -97,16 +93,6 @@ struct AboutScreen: View {
         Text("Ville Heikkilä")
           .font(.caption).bold()
       }
-    }
-  }
-
-  func getAboutPage() async {
-    switch await repository.document.getAboutPage() {
-    case let .success(aboutPage):
-      self.aboutPage = aboutPage
-    case let .failure(error):
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("fetching about page failed: \(error.localizedDescription)")
     }
   }
 }

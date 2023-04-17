@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FinalStepTab: View {
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
 
   var body: some View {
     VStack {
@@ -20,9 +21,12 @@ struct FinalStepTab: View {
 
       HStack {
         Spacer()
-        ProgressButton("Continue to the app", action: { await profileManager.onboardingUpdate() })
-          .buttonStyle(.borderedProminent)
-          .controlSize(.large)
+        ProgressButton(
+          "Continue to the app",
+          action: { await profileManager.onboardingUpdate(onError: { _ in feedbackManager.toggle(.error(.unexpected)) }) }
+        )
+        .buttonStyle(.borderedProminent)
+        .controlSize(.large)
         Spacer()
       }.padding(.bottom, 80)
     }

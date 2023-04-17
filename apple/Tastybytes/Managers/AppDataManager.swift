@@ -5,6 +5,7 @@ final class AppDataManager: ObservableObject {
   private let logger = getLogger(category: "AppDataManager")
   @Published var categories = [Category.JoinedSubcategoriesServingStyles]()
   @Published var flavors = [Flavor]()
+  @Published var aboutPage: AboutPage?
 
   let repository: Repository
 
@@ -17,6 +18,7 @@ final class AppDataManager: ObservableObject {
   }
 
   func initialize() async {
+    async let aboutPagePromise = repository.document.getAboutPage()
     async let flavorPromise = repository.flavor.getAll()
     async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
 
@@ -34,6 +36,13 @@ final class AppDataManager: ObservableObject {
       self.categories = categories
     case let .failure(error):
       logger.error("failed to load categories: \(error.localizedDescription)")
+    }
+
+    switch await aboutPagePromise {
+    case let .success(aboutPage):
+      self.aboutPage = aboutPage
+    case let .failure(error):
+      logger.error("fetching about page failed: \(error.localizedDescription)")
     }
   }
 

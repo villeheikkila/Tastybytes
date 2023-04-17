@@ -18,7 +18,7 @@ struct FriendSheet: View {
     }
     .buttonStyle(.plain)
     .navigationTitle("Friends")
-    .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
+    .navigationBarItems(trailing: Button("Done", role: .cancel, action: { dismiss() }).bold())
   }
 
   private func toggleFriend(friend: Profile) {

@@ -26,7 +26,7 @@ struct ProfileSettingsScreen: View {
         ProgressButton("Update", action: { await profileManager.updateProfile(onSuccess: {
           await profileManager.refresh()
           feedbackManager.toggle(.success("Profile updated!"))
-        }, onFailure: { error in
+        }, onError: { error in
           feedbackManager.toggle(.error(.custom(error.localizedDescription)))
         }) }).transition(.slide)
       }
@@ -44,7 +44,7 @@ struct ProfileSettingsScreen: View {
         profileManager.showFullName
       }, set: { newValue in
         profileManager.showFullName = newValue
-        Task { await profileManager.updateDisplaySettings() }
+        Task { await profileManager.updateDisplaySettings(onError: { _ in feedbackManager.toggle(.error(.unexpected)) }) }
       }))
     } footer: {
       Text("This only takes effect if both first name and last name are provided.")
@@ -57,7 +57,7 @@ struct ProfileSettingsScreen: View {
         profileManager.isPrivateProfile
       }, set: { newValue in
         profileManager.isPrivateProfile = newValue
-        Task { await profileManager.updatePrivacySettings() }
+        Task { await profileManager.updatePrivacySettings(onError: { _ in feedbackManager.toggle(.error(.unexpected)) }) }
       }))
     } header: {
       Text("Privacy")
