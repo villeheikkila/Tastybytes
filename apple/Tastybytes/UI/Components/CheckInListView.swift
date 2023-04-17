@@ -217,6 +217,8 @@ struct CheckInListView<Header>: View where Header: View {
         await onComplete()
       }
     case let .failure(error):
+      // task being cancelled is not an error
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching check-ins failed: \(error.localizedDescription)")
     }
