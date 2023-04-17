@@ -677,6 +677,7 @@
 		5C25C681299569FB00C07953 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				5C11ECB528EEEFB300CCDE6A /* SettingsScreen.swift */,
 				5C20A52329AB55E800ABBA74 /* ApplicationSettings */,
 				5C20A52029AB559F00ABBA74 /* Contributions */,
 				5C20A51F29AB559300ABBA74 /* About */,
@@ -684,7 +685,6 @@
 				5C20A51D29AB551D00ABBA74 /* BlockedUser */,
 				5C20A51C29AB550B00ABBA74 /* ProfileSettings */,
 				5C20A51B29AB54FD00ABBA74 /* AccountSettings */,
-				5C11ECB528EEEFB300CCDE6A /* SettingsScreen.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
