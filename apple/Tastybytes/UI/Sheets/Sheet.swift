@@ -47,8 +47,7 @@ enum Sheet: Identifiable, Equatable {
   case companyEditSuggestion(company: Company, onSuccess: () -> Void)
   case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
 
-  @ViewBuilder
-  var view: some View {
+  @ViewBuilder var view: some View {
     switch self {
     case let .report(entity):
       ReportSheet(entity: entity)

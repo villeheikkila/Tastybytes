@@ -8,7 +8,7 @@ struct SubBrandSheet: View {
   @State private var subBrandName = ""
 
   let brandWithSubBrands: Brand.JoinedSubBrands
-  let onSelect: (_ company: SubBrand, _ createdNew: Bool) -> Void
+  let onSelect: (_ subBrand: SubBrand, _ createdNew: Bool) -> Void
 
   init(
     brandWithSubBrands: Brand.JoinedSubBrands,
@@ -19,7 +19,7 @@ struct SubBrandSheet: View {
   }
 
   var filteredSubBrands: [SubBrand] {
-    brandWithSubBrands.subBrands.filter { $0.name != nil }
+    brandWithSubBrands.subBrands.sorted().filter { $0.name != nil }
   }
 
   var body: some View {

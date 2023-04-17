@@ -4,7 +4,7 @@ protocol SubBrandProtocol {
   var isVerified: Bool { get }
 }
 
-struct SubBrand: Identifiable, Hashable, Decodable, Sendable, SubBrandProtocol {
+struct SubBrand: Identifiable, Hashable, Decodable, Sendable, Comparable, SubBrandProtocol {
   let id: Int
   let name: String?
   let isVerified: Bool
@@ -19,6 +19,14 @@ struct SubBrand: Identifiable, Hashable, Decodable, Sendable, SubBrandProtocol {
     case id
     case name
     case isVerified = "is_verified"
+  }
+
+  static func < (lhs: SubBrand, rhs: SubBrand) -> Bool {
+    switch (lhs.name, rhs.name) {
+    case let (lhs?, rhs?): return lhs < rhs
+    case (nil, _): return true
+    case (_?, nil): return false
+    }
   }
 }
 
@@ -52,7 +60,7 @@ extension SubBrand {
 }
 
 extension SubBrand {
-  struct JoinedBrand: Identifiable, Hashable, Decodable, Sendable, SubBrandProtocol {
+  struct JoinedBrand: Identifiable, Hashable, Decodable, Sendable, Comparable, SubBrandProtocol {
     let id: Int
     let name: String?
     let isVerified: Bool
@@ -71,9 +79,17 @@ extension SubBrand {
       case brand = "brands"
       case isVerified = "is_verified"
     }
+
+    static func < (lhs: JoinedBrand, rhs: JoinedBrand) -> Bool {
+      switch (lhs.name, rhs.name) {
+      case let (lhs?, rhs?): return lhs < rhs
+      case (nil, _): return true
+      case (_?, nil): return false
+      }
+    }
   }
 
-  struct JoinedProduct: Identifiable, Hashable, Decodable, Sendable {
+  struct JoinedProduct: Identifiable, Hashable, Decodable, Sendable, Comparable, SubBrandProtocol {
     let id: Int
     let name: String?
     let isVerified: Bool
@@ -84,6 +100,14 @@ extension SubBrand {
       case name
       case isVerified = "is_verified"
       case products
+    }
+
+    static func < (lhs: JoinedProduct, rhs: JoinedProduct) -> Bool {
+      switch (lhs.name, rhs.name) {
+      case let (lhs?, rhs?): return lhs < rhs
+      case (nil, _): return true
+      case (_?, nil): return false
+      }
     }
   }
 }

@@ -55,13 +55,7 @@ struct BrandScreen: View {
   var sortedSubBrands: [SubBrand.JoinedProduct] {
     brand.subBrands
       .filter { !($0.name == nil && $0.products.isEmpty) }
-      .sorted { lhs, rhs -> Bool in
-        switch (lhs.name, rhs.name) {
-        case let (lhs?, rhs?): return lhs < rhs
-        case (nil, _): return true
-        case (_?, nil): return false
-        }
-      }
+      .sorted()
   }
 
   var body: some View {
