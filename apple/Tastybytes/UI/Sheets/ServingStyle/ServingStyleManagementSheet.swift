@@ -90,6 +90,7 @@ struct ServingStyleManagementSheet: View {
         self.servingStyles = servingStyles
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load all serving styles: \(error.localizedDescription)")
     }
   }
@@ -102,6 +103,7 @@ struct ServingStyleManagementSheet: View {
         newServingStyleName = ""
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create new serving style: \(error.localizedDescription)")
     }
   }
@@ -115,6 +117,7 @@ struct ServingStyleManagementSheet: View {
       }
       onDelete()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)")
     }
   }
@@ -129,6 +132,7 @@ struct ServingStyleManagementSheet: View {
         servingStyles.replace(editServingStyle, with: servingStyle)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to edit '\(editServingStyle.id)': \(error.localizedDescription)")
     }
   }

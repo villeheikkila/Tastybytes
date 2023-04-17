@@ -7,6 +7,7 @@ struct EditBrandSheet: View {
   private let logger = getLogger(category: "EditBrandSheet")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var name: String
   @State private var brandOwner: Company
@@ -99,6 +100,7 @@ struct EditBrandSheet: View {
       showToast.toggle()
       await onSuccess()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to edit brand': \(error.localizedDescription)")
     }
   }
@@ -109,6 +111,7 @@ struct EditBrandSheet: View {
     case .success:
       await onUpdate()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("uplodaing company logo failed: \(error.localizedDescription)")
     }
   }

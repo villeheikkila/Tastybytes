@@ -3,6 +3,7 @@ import SwiftUI
 struct AboutScreen: View {
   private let logger = getLogger(category: "AboutScreen")
   @EnvironmentObject private var repository: Repository
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var aboutPage: AboutPage?
 
   var body: some View {
@@ -104,6 +105,7 @@ struct AboutScreen: View {
     case let .success(aboutPage):
       self.aboutPage = aboutPage
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching about page failed: \(error.localizedDescription)")
     }
   }

@@ -131,16 +131,9 @@ struct AddProductView: View {
     ProgressButton(mode.doneLabel, action: {
       switch mode {
       case .editSuggestion:
-        await createProductEditSuggestion(onSuccess: {
-          feedbackManager.toggle(.success("Edit suggestion sent!"))
-        })
+        await createProductEditSuggestion()
       case .edit:
-        await editProduct(onSuccess: {
-          feedbackManager.trigger(.notification(.success))
-          if let onEdit {
-            await onEdit()
-          }
-        })
+        await editProduct()
       case .new:
         await createProduct(onSuccess: { product in
           feedbackManager.trigger(.notification(.success))
@@ -331,6 +324,7 @@ struct AddProductView: View {
     case .success:
       await onCreate()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
     }
     isLoading = false
@@ -401,6 +395,7 @@ struct AddProductView: View {
       hasSubBrand = initialProduct.subBrand.name != nil
       logoFile = initialProduct.logoFile
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load brand owner for product '\(initialProduct.id)': \(error.localizedDescription)")
     }
   }
@@ -420,11 +415,12 @@ struct AddProductView: View {
     case let .success(newProduct):
       await onSuccess(newProduct)
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create new product: \(error.localizedDescription)")
     }
   }
 
-  func createProductEditSuggestion(onSuccess: @escaping () -> Void) async {
+  func createProductEditSuggestion() async {
     guard let subBrand, let category, let productId else { return }
     let productEditSuggestionParams = Product.EditRequest(
       productId: productId,
@@ -439,8 +435,9 @@ struct AddProductView: View {
       .createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams)
     {
     case .success:
-      onSuccess()
+      feedbackManager.toggle(.success("Edit suggestion sent!"))
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create product edit suggestion for '\(productId)': \(error.localizedDescription)")
     }
   }
@@ -452,11 +449,12 @@ struct AddProductView: View {
     case let .success(filename):
       logoFile = filename
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("uplodaing company logo failed: \(error.localizedDescription)")
     }
   }
 
-  func editProduct(onSuccess: @escaping () async -> Void) async {
+  func editProduct() async {
     guard let category, let brand, let productId else { return }
     let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
     guard let subBrandWithNil else { return }
@@ -471,8 +469,12 @@ struct AddProductView: View {
 
     switch await repository.product.editProduct(productEditParams: productEditParams) {
     case .success:
-      await onSuccess()
+      feedbackManager.trigger(.notification(.success))
+      if let onEdit {
+        await onEdit()
+      }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to edit product '\(productId)': \(error.localizedDescription)")
     }
   }

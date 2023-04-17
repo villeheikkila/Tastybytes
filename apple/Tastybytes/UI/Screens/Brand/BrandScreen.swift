@@ -162,7 +162,6 @@ struct BrandScreen: View {
     { presenting in
       ProgressButton("Unverify \(presenting.name ?? "default") sub-brand", action: {
         await verifySubBrand(presenting, isVerified: false)
-        feedbackManager.trigger(.notification(.success))
       })
     }
     .confirmationDialog("Unverify Brand",
@@ -171,7 +170,6 @@ struct BrandScreen: View {
     { presenting in
       ProgressButton("Unverify \(presenting.name) brand", action: {
         await verifyBrand(isVerified: false)
-        feedbackManager.trigger(.notification(.success))
       })
     }
     .confirmationDialog("Are you sure you want to delete sub-brand and all related products?",
@@ -184,7 +182,6 @@ struct BrandScreen: View {
         role: .destructive,
         action: {
           await deleteSubBrand()
-          feedbackManager.trigger(.notification(.success))
         }
       )
     }
@@ -194,10 +191,7 @@ struct BrandScreen: View {
                         presenting: brand)
     { presenting in
       ProgressButton("Delete \(presenting.name)", role: .destructive, action: {
-        await deleteBrand(onDelete: {
-          router.reset()
-          feedbackManager.trigger(.notification(.success))
-        })
+        await deleteBrand()
       })
     }
   }
@@ -270,6 +264,7 @@ struct BrandScreen: View {
     case let .success(summary):
       self.summary = summary
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load summary for brand: \(error.localizedDescription)")
     }
 
@@ -277,6 +272,7 @@ struct BrandScreen: View {
     case let .success(brand):
       self.brand = brand
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("request for brand with \(brandId) failed: \(error.localizedDescription)")
     }
   }
@@ -287,6 +283,7 @@ struct BrandScreen: View {
     case let .success(summary):
       self.summary = summary
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load summary for brand: \(error.localizedDescription)")
     }
   }
@@ -301,7 +298,9 @@ struct BrandScreen: View {
         brandOwner: brand.brandOwner,
         subBrands: brand.subBrands
       )
+      feedbackManager.trigger(.notification(.success))
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to verify brand': \(error.localizedDescription)")
     }
   }
@@ -310,17 +309,21 @@ struct BrandScreen: View {
     switch await repository.subBrand.verification(id: subBrand.id, isVerified: isVerified) {
     case .success:
       await refresh()
+      feedbackManager.trigger(.notification(.success))
       logger.info("sub-brand succesfully verified")
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to verify brand': \(error.localizedDescription)")
     }
   }
 
-  func deleteBrand(onDelete: @escaping () -> Void) async {
+  func deleteBrand() async {
     switch await repository.brand.delete(id: brand.id) {
     case .success:
-      onDelete()
+      router.reset()
+      feedbackManager.trigger(.notification(.success))
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete brand: \(error.localizedDescription)")
     }
   }
@@ -330,8 +333,10 @@ struct BrandScreen: View {
     switch await repository.subBrand.delete(id: toDeleteSubBrand.id) {
     case .success:
       await refresh()
+      feedbackManager.trigger(.notification(.success))
       logger.info("succesfully deleted sub-brand")
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete brand '\(toDeleteSubBrand.id)': \(error.localizedDescription)")
     }
   }

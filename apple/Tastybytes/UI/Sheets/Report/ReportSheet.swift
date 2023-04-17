@@ -4,6 +4,7 @@ import SwiftUI
 struct ReportSheet: View {
   private let logger = getLogger(category: "ReportSheet")
   @EnvironmentObject private var repository: Repository
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var reasonText = ""
   @State private var showToast = false
@@ -62,6 +63,7 @@ struct ReportSheet: View {
     case .success:
       showToast = true
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("submitting report failed: \(error.localizedDescription)")
     }
   }

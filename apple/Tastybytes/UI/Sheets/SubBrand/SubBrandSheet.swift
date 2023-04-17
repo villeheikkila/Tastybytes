@@ -4,6 +4,7 @@ struct SubBrandSheet: View {
   private let logger = getLogger(category: "SubBrandSheet")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var subBrandName = ""
 
@@ -36,13 +37,8 @@ struct SubBrandSheet: View {
       if profileManager.hasPermission(.canCreateBrands) {
         Section("Add new sub-brand for \(brandWithSubBrands.name)") {
           TextField("Name", text: $subBrandName)
-          ProgressButton("Create") {
-            await createNewSubBrand { subBrand, createdNew in
-              onSelect(subBrand, createdNew)
-              dismiss()
-            }
-          }
-          .disabled(!subBrandName.isValidLength(.normal))
+          ProgressButton("Create") { await createNewSubBrand() }
+            .disabled(!subBrandName.isValidLength(.normal))
         }
       }
     }
@@ -50,15 +46,15 @@ struct SubBrandSheet: View {
     .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: { dismiss() }).bold())
   }
 
-  func createNewSubBrand(
-    onSelect: @escaping (_ subBrand: SubBrand, _ createdNew: Bool) -> Void
-  ) async {
+  func createNewSubBrand() async {
     switch await repository.subBrand
       .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brandWithSubBrands.id))
     {
     case let .success(newSubBrand):
       onSelect(newSubBrand, true)
+      dismiss()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("saving sub-brand failed: \(error.localizedDescription)")
     }
   }

@@ -5,6 +5,7 @@ import SwiftUI
 struct LocationSearchSheet: View {
   private let logger = getLogger(category: "LocationSearchView")
   @EnvironmentObject private var repository: Repository
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @StateObject private var viewModel: ViewModel
   @StateObject private var locationManager = LocationManager()
   @Environment(\.dismiss) private var dismiss
@@ -19,10 +20,7 @@ struct LocationSearchSheet: View {
   var body: some View {
     List(viewModel.locations) { location in
       ProgressButton(action: {
-        await storeLocation(location, onSuccess: { savedLocation in
-          onSelect(savedLocation)
-          dismiss()
-        })
+        await storeLocation(location)
       }, label: {
         VStack(alignment: .leading) {
           Text(location.name)
@@ -51,15 +49,18 @@ struct LocationSearchSheet: View {
     case let .success(suggestedLocations):
       viewModel.locations = suggestedLocations
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load location suggestions: \(error.localizedDescription)")
     }
   }
 
-  func storeLocation(_ location: Location, onSuccess: @escaping (_ savedLocation: Location) -> Void) async {
+  func storeLocation(_ location: Location) async {
     switch await repository.location.insert(location: location) {
     case let .success(savedLocation):
-      onSuccess(savedLocation)
+      onSelect(savedLocation)
+      dismiss()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("saving location \(location.name) failed: \(error.localizedDescription)")
     }
   }

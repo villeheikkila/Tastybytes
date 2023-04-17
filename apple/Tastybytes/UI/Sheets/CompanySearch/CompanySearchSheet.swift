@@ -4,6 +4,7 @@ struct CompanySearchSheet: View {
   private let logger = getLogger(category: "CompanySearchSheet")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var searchResults = [Company]()
   @State private var status: Status?
@@ -87,6 +88,7 @@ struct CompanySearchSheet: View {
       self.searchResults = searchResults
       status = Status.searched
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to search companies: \(error.localizedDescription)")
     }
   }
@@ -97,6 +99,7 @@ struct CompanySearchSheet: View {
     case let .success(newCompany):
       onSuccess(newCompany)
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create new company': \(error.localizedDescription)")
     }
   }

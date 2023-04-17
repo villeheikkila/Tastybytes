@@ -57,6 +57,7 @@ struct ReactionsView: View {
             checkInReactions.remove(object: reaction)
           }
         case let .failure(error):
+          feedbackManager.toggle(.error(.unexpected))
           logger.error("removing check-in reaction \(reaction.id) failed: \(error.localizedDescription)")
         }
       } else {
@@ -68,6 +69,7 @@ struct ReactionsView: View {
             checkInReactions.append(checkInReaction)
           }
         case let .failure(error):
+          feedbackManager.toggle(.error(.unexpected))
           logger.error("adding check-in reaction for check-in \(checkIn.id) by \(userId) failed:\(error.localizedDescription)")
         }
       }

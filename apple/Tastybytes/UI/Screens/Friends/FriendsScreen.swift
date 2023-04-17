@@ -63,6 +63,7 @@ struct FriendsScreen: View {
     case let .success(friends):
       self.friends = friends
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load friends' : \(error.localizedDescription)")
     }
   }

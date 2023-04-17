@@ -191,6 +191,7 @@ struct CheckInListView<Header>: View where Header: View {
         checkIns.remove(object: checkIn)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("deleting check-in failed: \(error.localizedDescription)")
     }
   }
@@ -216,6 +217,7 @@ struct CheckInListView<Header>: View where Header: View {
         await onComplete()
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching check-ins failed: \(error.localizedDescription)")
     }
   }

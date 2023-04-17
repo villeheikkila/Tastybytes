@@ -53,11 +53,7 @@ struct DuplicateProductScreen: View {
       ProgressButton(
         "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
-        action: { await deleteProduct(onDelete: {
-          feedbackManager.trigger(.notification(.success))
-          router.removeLast()
-        })
-        }
+        action: { await deleteProduct() }
       )
     }
     .navigationBarTitle("Unverified Products")
@@ -78,16 +74,19 @@ struct DuplicateProductScreen: View {
         products.remove(object: product)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to verify product \(product.id): \(error.localizedDescription)")
     }
   }
 
-  func deleteProduct(onDelete: @escaping () -> Void) async {
+  func deleteProduct() async {
     guard let deleteProduct else { return }
     switch await repository.product.delete(id: deleteProduct.id) {
     case .success:
-      onDelete()
+      feedbackManager.trigger(.notification(.success))
+      router.removeLast()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete product \(deleteProduct.id): \(error.localizedDescription)")
     }
   }
@@ -99,6 +98,7 @@ struct DuplicateProductScreen: View {
         self.products = products
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching flavors failed: \(error.localizedDescription)")
     }
   }

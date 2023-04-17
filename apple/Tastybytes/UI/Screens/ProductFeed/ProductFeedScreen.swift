@@ -109,6 +109,7 @@ struct ProductFeedScreen: View {
         onComplete()
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching check-ins failed: \(error.localizedDescription)")
     }
   }

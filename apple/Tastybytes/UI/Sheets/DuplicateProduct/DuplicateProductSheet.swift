@@ -86,6 +86,7 @@ struct DuplicateProductSheet: View {
     case .success:
       onSuccess()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger
         .error(
           "reporting duplicate product \(self.mergeToProduct?.id ?? 0) of \(mergeToProduct.id) failed: \(error.localizedDescription)"
@@ -99,6 +100,7 @@ struct DuplicateProductSheet: View {
     case .success:
       onSuccess()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger
         .error("merging product \(self.mergeToProduct?.id ?? 0) to \(mergeToProduct.id) failed: \(error.localizedDescription)")
     }
@@ -110,6 +112,7 @@ struct DuplicateProductSheet: View {
     case let .success(searchResults):
       products = searchResults
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("searching products failed: \(error.localizedDescription)")
     }
   }

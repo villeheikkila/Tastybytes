@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfileStatisticsView: View {
   let logger = getLogger(category: "ProfileStatisticsView")
   @EnvironmentObject private var repository: Repository
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var categoryStatistics = [CategoryStatistics]()
 
   let profile: Profile
@@ -44,6 +45,7 @@ struct ProfileStatisticsView: View {
         self.categoryStatistics = categoryStatistics
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed loading category statistics: \(error.localizedDescription)")
     }
   }
@@ -52,6 +54,7 @@ struct ProfileStatisticsView: View {
 struct SubcategoryStatisticsView: View {
   let logger = getLogger(category: "SubcategoryStatistics")
   @EnvironmentObject private var repository: Repository
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var subcategoryStatistics = [SubcategoryStatistics]()
   @State private var isLoading = false
 
@@ -88,6 +91,7 @@ struct SubcategoryStatisticsView: View {
         self.subcategoryStatistics = subcategoryStatistics
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed loading subcategory statistics: \(error.localizedDescription)")
     }
     isLoading = false

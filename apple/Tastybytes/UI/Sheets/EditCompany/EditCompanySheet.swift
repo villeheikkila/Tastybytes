@@ -5,6 +5,7 @@ import SwiftUI
 struct EditCompanySheet: View {
   private let logger = getLogger(category: "EditCompanySheet")
   @EnvironmentObject private var repository: Repository
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @State private var company: Company
@@ -92,6 +93,7 @@ struct EditCompanySheet: View {
     case .success:
       await onSuccess()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to edit company: \(error.localizedDescription)")
     }
   }
@@ -103,6 +105,7 @@ struct EditCompanySheet: View {
     case .success:
       await onSuccess()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to send company edit suggestion: \(error.localizedDescription)")
     }
   }
@@ -118,6 +121,7 @@ struct EditCompanySheet: View {
         isVerified: company.isVerified
       )
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("uplodaing company logo failed: \(error.localizedDescription)")
     }
   }

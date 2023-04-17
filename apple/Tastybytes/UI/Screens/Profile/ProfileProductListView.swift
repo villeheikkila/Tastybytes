@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfileProductListView: View {
   let logger = getLogger(category: "ProfileProductListView")
   @EnvironmentObject private var repository: Repository
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var products: [Product.Joined] = []
   @State private var searchTerm = ""
   @State private var productFilter: Product.Filter?
@@ -88,6 +89,7 @@ struct ProfileProductListView: View {
         self.products = products
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("error occured while loading products: \(error)")
     }
   }

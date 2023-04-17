@@ -4,6 +4,7 @@ struct BrandSheet: View {
   private let logger = getLogger(category: "BrandSheet")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
   @State private var brandName = ""
@@ -48,6 +49,7 @@ struct BrandSheet: View {
     case let .success(brandsWithSubBrands):
       self.brandsWithSubBrands = brandsWithSubBrands
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load brands for \(brandOwner.id): \(error.localizedDescription)")
     }
   }
@@ -57,6 +59,7 @@ struct BrandSheet: View {
     case let .success(brandWithSubBrands):
       onCreation(brandWithSubBrands)
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create new brand for \(brandOwner.id): \(error.localizedDescription)")
     }
   }

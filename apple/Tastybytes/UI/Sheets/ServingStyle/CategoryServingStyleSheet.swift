@@ -51,9 +51,7 @@ struct CategoryServingStyleSheet: View {
         "Remove \(presenting.name) from \(category.name)",
         role: .destructive,
         action: {
-          await deleteServingStyle(onDelete: {
-            feedbackManager.trigger(.notification(.success))
-          })
+          await deleteServingStyle()
         }
       )
     }
@@ -69,11 +67,12 @@ struct CategoryServingStyleSheet: View {
         servingStyles.append(servingStyle)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to add serving style to category': \(error.localizedDescription)")
     }
   }
 
-  func deleteServingStyle(onDelete: @escaping () -> Void) async {
+  func deleteServingStyle() async {
     guard let toDeleteServingStyle else { return }
     switch await repository.category.deleteServingStyle(
       categoryId: category.id,
@@ -83,8 +82,9 @@ struct CategoryServingStyleSheet: View {
       withAnimation {
         servingStyles.remove(object: toDeleteServingStyle)
       }
-      onDelete()
+      feedbackManager.trigger(.notification(.success))
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)")
     }
   }

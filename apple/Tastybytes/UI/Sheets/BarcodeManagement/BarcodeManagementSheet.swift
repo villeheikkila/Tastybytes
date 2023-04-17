@@ -52,6 +52,7 @@ struct BarcodeManagementSheet: View {
         barcodes.remove(object: barcode)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to fetch barcodes for product: \(error.localizedDescription)")
     }
   }
@@ -63,6 +64,7 @@ struct BarcodeManagementSheet: View {
         self.barcodes = barcodes
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to fetch barcodes for product: \(error.localizedDescription)")
     }
   }

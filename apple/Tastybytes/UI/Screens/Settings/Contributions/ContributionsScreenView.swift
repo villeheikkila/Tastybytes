@@ -4,6 +4,7 @@ struct ContributionsScreen: View {
   private let logger = getLogger(category: "ContributionsScreen")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var contributions: Contributions?
 
   var body: some View {
@@ -50,6 +51,7 @@ struct ContributionsScreen: View {
         self.contributions = contributions
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load contributions: \(error.localizedDescription)")
     }
   }

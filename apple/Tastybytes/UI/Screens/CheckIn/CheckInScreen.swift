@@ -71,10 +71,7 @@ struct CheckInScreen: View {
         "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
         role: .destructive,
         action: {
-          await deleteCheckIn(onDelete: {
-            feedbackManager.trigger(.notification(.success))
-            router.removeLast()
-          })
+          await deleteCheckIn()
         }
       )
     }
@@ -90,18 +87,13 @@ struct CheckInScreen: View {
         CheckInCommentView(comment: comment)
           .contextMenu {
             if comment.profile == profileManager.getProfile() {
-              Button {
+              Button("Edit Comment", systemImage: "pencil") {
                 withAnimation {
                   editComment = comment
                 }
-              } label: {
-                Label("Edit Comment", systemImage: "pencil")
               }
-
-              ProgressButton {
+              ProgressButton("Delete Comment", systemImage: "trash.fill") {
                 await deleteComment(comment)
-              } label: {
-                Label("Delete Comment", systemImage: "trash.fill")
               }
             } else {
               ReportButton(entity: .comment(comment))
@@ -137,11 +129,13 @@ struct CheckInScreen: View {
     commentText.isEmpty
   }
 
-  func deleteCheckIn(onDelete: @escaping () -> Void) async {
+  func deleteCheckIn() async {
     switch await repository.checkIn.delete(id: checkIn.id) {
     case .success:
-      onDelete()
+      feedbackManager.trigger(.notification(.success))
+      router.removeLast()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete check-in: \(error.localizedDescription)")
     }
   }
@@ -153,6 +147,7 @@ struct CheckInScreen: View {
         checkInComments = checkIns
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load check-in comments': \(error.localizedDescription)")
     }
   }
@@ -167,6 +162,7 @@ struct CheckInScreen: View {
         checkInComments[index] = updatedComment
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to update comment \(editComment.id)': \(error.localizedDescription)")
     }
     editCommentText = ""
@@ -179,6 +175,7 @@ struct CheckInScreen: View {
         checkInComments.remove(object: comment)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete comment '\(comment.id)': \(error.localizedDescription)")
     }
   }
@@ -194,6 +191,7 @@ struct CheckInScreen: View {
       }
       commentText = ""
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to send comment: \(error.localizedDescription)")
     }
   }

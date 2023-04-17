@@ -91,9 +91,7 @@ struct SearchListView: View {
       ProgressButton(
         "Add barcode to \(presenting.getDisplayName(.fullName))",
         action: {
-          await addBarcodeToProduct(onComplete: {
-            feedbackManager.toggle(.success("Barcode added!"))
-          })
+          await addBarcodeToProduct()
         }
       )
     }
@@ -298,15 +296,16 @@ struct SearchListView: View {
     barcode = nil
   }
 
-  func addBarcodeToProduct(onComplete: @escaping () -> Void) async {
+  func addBarcodeToProduct() async {
     guard let addBarcodeTo, let barcode else { return }
     switch await repository.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
     case .success:
       self.barcode = nil
       self.addBarcodeTo = nil
       showAddBarcodeConfirmation = false
-      onComplete()
+      feedbackManager.toggle(.success("Barcode added!"))
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed: \(error.localizedDescription)")
     }
   }
@@ -319,6 +318,7 @@ struct SearchListView: View {
       }
       isSearched = true
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("searching products failed: \(error.localizedDescription)")
     }
   }
@@ -330,6 +330,7 @@ struct SearchListView: View {
         profiles = searchResults
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("searching profiles failed: \(error.localizedDescription)")
     }
   }
@@ -343,6 +344,7 @@ struct SearchListView: View {
       }
       isSearched = true
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("searching products with barcode \(barcode.barcode) failed: \(error.localizedDescription)")
     }
   }
@@ -354,6 +356,7 @@ struct SearchListView: View {
         companies = searchResults
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("searching companies failed: \(error.localizedDescription)")
     }
   }
@@ -365,6 +368,7 @@ struct SearchListView: View {
         locations = searchResults
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("searching locations failed: \(error.localizedDescription)")
     }
   }

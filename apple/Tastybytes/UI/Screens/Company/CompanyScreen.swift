@@ -70,10 +70,7 @@ struct CompanyScreen: View {
                         presenting: company)
     { presenting in
       ProgressButton("Delete \(presenting.name) Company", role: .destructive, action: {
-        await deleteCompany(company, onDelete: {
-          feedbackManager.trigger(.notification(.success))
-          router.reset()
-        })
+        await deleteCompany(company)
       })
     }
     .task {
@@ -183,6 +180,7 @@ struct CompanyScreen: View {
     case let .success(company):
       companyJoined = company
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to refresh data for company: \(error.localizedDescription)")
     }
 
@@ -190,15 +188,18 @@ struct CompanyScreen: View {
     case let .success(summary):
       self.summary = summary
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load summary for company: \(error.localizedDescription)")
     }
   }
 
-  func deleteCompany(_ company: Company, onDelete: @escaping () -> Void) async {
+  func deleteCompany(_ company: Company) async {
     switch await repository.company.delete(id: company.id) {
     case .success:
-      onDelete()
+      feedbackManager.trigger(.notification(.success))
+      router.reset()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete company '\(company.id)': \(error.localizedDescription)")
     }
   }
@@ -208,6 +209,7 @@ struct CompanyScreen: View {
     case .success:
       company = Company(id: company.id, name: company.name, logoFile: company.logoFile, isVerified: isVerified)
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to verify company: \(error.localizedDescription)")
     }
   }

@@ -40,16 +40,7 @@ struct LocationScreen: View {
       titleVisibility: .visible,
       presenting: location
     ) { presenting in
-      ProgressButton(
-        "Delete \(presenting.name)",
-        role: .destructive,
-        action: {
-          await deleteLocation(presenting, onDelete: {
-            router.reset()
-          })
-          feedbackManager.trigger(.notification(.success))
-        }
-      )
+      ProgressButton("Delete \(presenting.name)", role: .destructive, action: { await deleteLocation(presenting) })
     }
     .task {
       await getSummary()
@@ -82,15 +73,18 @@ struct LocationScreen: View {
         self.summary = summary
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to get summary: \(error.localizedDescription)")
     }
   }
 
-  func deleteLocation(_ location: Location, onDelete: @escaping () -> Void) async {
+  func deleteLocation(_ location: Location) async {
     switch await repository.location.delete(id: location.id) {
     case .success:
-      onDelete()
+      router.reset()
+      feedbackManager.trigger(.notification(.success))
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete location: \(error.localizedDescription)")
     }
   }

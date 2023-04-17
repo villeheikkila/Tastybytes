@@ -36,8 +36,8 @@ struct UserSheet: View {
                     await friendManager.sendFriendRequest(receiver: profile.id, onSuccess: {
                       dismiss()
                       onSubmit()
+                      feedbackManager.trigger(.impact(intensity: .low))
                     })
-                    feedbackManager.trigger(.impact(intensity: .low))
                   })
                   .labelStyle(.iconOnly)
                   .imageScale(.large)
@@ -77,6 +77,7 @@ struct UserSheet: View {
         self.searchResults = searchResults
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed searching users: \(error.localizedDescription)")
     }
   }
