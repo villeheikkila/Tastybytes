@@ -22,17 +22,12 @@ struct ReportSheet: View {
         TextField("Reason", text: $reasonText, axis: .vertical)
           .lineLimit(8, reservesSpace: true)
         ProgressButton("Submit", action: {
-          await submitReport(onSubmit: {
-            dismiss()
-          })
+          await submitReport()
         }).bold()
       }
     }
     .navigationTitle("Report \(entity.label)")
     .navigationBarItems(leading: Button("Close", role: .cancel, action: { dismiss() }).bold())
-    .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
-      AlertToast(type: .complete(.green), title: "Report submitted!")
-    }
   }
 
   @ViewBuilder private var reportedEntityView: some View {
@@ -58,10 +53,11 @@ struct ReportSheet: View {
     }
   }
 
-  func submitReport(onSubmit _: @escaping () -> Void) async {
+  func submitReport() async {
     switch await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: entity)) {
     case .success:
-      showToast = true
+      dismiss()
+      feedbackManager.toggle(.success("Report submitted!"))
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
       logger.error("submitting report failed: \(error.localizedDescription)")
