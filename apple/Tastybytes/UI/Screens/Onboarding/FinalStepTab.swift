@@ -2,7 +2,6 @@ import SwiftUI
 
 struct FinalStepTab: View {
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var toastManager: ToastManager
 
   var body: some View {
     VStack {

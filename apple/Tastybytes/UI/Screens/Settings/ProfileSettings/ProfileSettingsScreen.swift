@@ -3,7 +3,7 @@ import SwiftUI
 
 struct ProfileSettingsScreen: View {
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
 
   var body: some View {
     Form {
@@ -25,9 +25,9 @@ struct ProfileSettingsScreen: View {
       if profileManager.profileHasChanged {
         ProgressButton("Update", action: { await profileManager.updateProfile(onSuccess: {
           await profileManager.refresh()
-          toastManager.toggle(.success("Profile updated!"))
+          feedbackManager.toggle(.success("Profile updated!"))
         }, onFailure: { error in
-          toastManager.toggle(.error(error.localizedDescription))
+          feedbackManager.toggle(.error(.custom(error.localizedDescription)))
         }) }).transition(.slide)
       }
     } header: {

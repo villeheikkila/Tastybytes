@@ -26,6 +26,7 @@ enum Screen: Hashable {
   case blockedUsers
   case contributions
   case about
+  case error(reason: String)
 
   @ViewBuilder var view: some View {
     switch self {
@@ -84,6 +85,8 @@ enum Screen: Hashable {
       ContributionsScreen()
     case .about:
       AboutScreen()
+    case let .error(reason):
+      ErrorScreen(reason: reason)
     }
   }
 }

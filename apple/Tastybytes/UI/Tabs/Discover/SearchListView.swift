@@ -4,7 +4,7 @@ struct SearchListView: View {
   private let logger = getLogger(category: "SearchListView")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var router: Router
-  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var scrollProxy: ScrollViewProxy?
   @State private var searchTerm: String = ""
@@ -92,7 +92,7 @@ struct SearchListView: View {
         "Add barcode to \(presenting.getDisplayName(.fullName))",
         action: {
           await addBarcodeToProduct(onComplete: {
-            toastManager.toggle(.success("Barcode added!"))
+            feedbackManager.toggle(.success("Barcode added!"))
           })
         }
       )

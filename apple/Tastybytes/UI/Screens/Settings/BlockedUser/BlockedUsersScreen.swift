@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BlockedUsersScreen: View {
   @EnvironmentObject private var friendManager: FriendManager
-  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var showUserSearchSheet = false
 
   var body: some View {
@@ -29,7 +29,7 @@ struct BlockedUsersScreen: View {
   private var blockUser: some View {
     HStack {
       RouterLink("Show block user sheet", systemImage: "plus", sheet: .userSheet(mode: .block, onSubmit: {
-        toastManager.toggle(.success("User blocked"))
+        feedbackManager.toggle(.success("User blocked"))
       }))
       .labelStyle(.iconOnly)
       .imageScale(.large)

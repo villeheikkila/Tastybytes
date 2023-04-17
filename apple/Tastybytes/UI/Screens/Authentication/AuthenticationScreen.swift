@@ -5,7 +5,7 @@ struct AuthenticationScreen: View {
   private let logger = getLogger(category: "AuthenticationScreen")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
-  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @FocusState private var focusedField: Field?
   @State private var scene: Scene
   @State private var isLoading = false
@@ -115,9 +115,9 @@ struct AuthenticationScreen: View {
   private var actions: some View {
     VStack(spacing: 12) {
       Button(action: { primaryActionTapped(onSuccess: { message in
-        toastManager.toggle(.success(message))
+        feedbackManager.toggle(.success(message))
       }, onFailure: { message in
-        toastManager.toggle(.error(message))
+        feedbackManager.toggle(.error(.custom(message)))
       }) }, label: {
         HStack(spacing: 8) {
           if isLoading {

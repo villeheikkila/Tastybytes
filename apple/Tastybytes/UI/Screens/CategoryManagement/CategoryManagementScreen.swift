@@ -2,9 +2,8 @@ import SwiftUI
 
 struct CategoryManagementScreen: View {
   private let logger = getLogger(category: "CategoryManagementScreen")
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var appDataManager: AppDataManager
-  @EnvironmentObject private var toastManager: ToastManager
   @State private var showDeleteSubcategoryConfirmation = false
   @State private var verifySubcategory: Subcategory?
   @State private var deleteSubcategory: Subcategory? {
@@ -47,12 +46,12 @@ struct CategoryManagementScreen: View {
     .navigationBarTitle("Categories")
     .navigationBarItems(trailing: RouterLink("Add Category", systemImage: "plus",
                                              sheet: .addCategory(onSubmit: { _ in
-                                               toastManager.toggle(.success("Category created!"))
+                                               feedbackManager.toggle(.success("Category created!"))
                                              }))
                                              .labelStyle(.iconOnly)
                                              .bold())
     .refreshable {
-      await hapticManager.wrapWithHaptics {
+      await feedbackManager.wrapWithHaptics {
         await appDataManager.initialize()
       }
     }

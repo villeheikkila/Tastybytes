@@ -3,7 +3,7 @@ import SwiftUI
 struct TabsView: View {
   let repository: Repository
   @EnvironmentObject private var notificationManager: NotificationManager
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @StateObject private var friendManager: FriendManager
   @State private var selection = Tab.activity
@@ -30,7 +30,7 @@ struct TabsView: View {
     TabView(selection: .init(get: {
       selection
     }, set: { newTab in
-      hapticManager.trigger(.selection)
+      feedbackManager.trigger(.selection)
       if newTab == selection {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
           resetNavigationOnTab = selection

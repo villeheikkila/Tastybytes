@@ -11,7 +11,6 @@
 		5C08B6E228ED7B05009218D7 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C08B6E128ED7B05009218D7 /* Company.swift */; };
 		5C09BEC929A53E0100331AEB /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C09BEC829A53E0100331AEB /* CategoryView.swift */; };
 		5C09BECB29A54AF800331AEB /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C09BECA29A54AF800331AEB /* Comfortaa-Bold.ttf */; };
-		5C0E36482922F21B0072EFBD /* ToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E36472922F21B0072EFBD /* ToastManager.swift */; };
 		5C0E364C292308080072EFBD /* AuthenticationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E364B292308080072EFBD /* AuthenticationScreen.swift */; };
 		5C0E364E2923C8CD0072EFBD /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E364D2923C8CD0072EFBD /* ProfileManager.swift */; };
 		5C0E36502925A9640072EFBD /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E364F2925A9640072EFBD /* ScannerView.swift */; };
@@ -66,11 +65,12 @@
 		5C32C40E29E715B2008CE8A9 /* NavigatablePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40D29E715B2008CE8A9 /* NavigatablePath.swift */; };
 		5C32C41029E87DEB008CE8A9 /* ButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C40F29E87DEB008CE8A9 /* ButtonExtensions.swift */; };
 		5C32C41229E9F82F008CE8A9 /* SubcategoryLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C41129E9F82F008CE8A9 /* SubcategoryLabelView.swift */; };
+		5C32C41429ED9F9C008CE8A9 /* ErrorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C32C41329ED9F9C008CE8A9 /* ErrorScreen.swift */; };
 		5C353CBE29A248300067C4EE /* BottomOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBD29A248300067C4EE /* BottomOverlay.swift */; };
 		5C353CC029A249660067C4EE /* ProductFilterOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */; };
 		5C353CC229A24C5F0067C4EE /* ContributionsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CC129A24C5F0067C4EE /* ContributionsScreenView.swift */; };
 		5C353CC429A2A5A50067C4EE /* ProfileStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C353CC329A2A5A50067C4EE /* ProfileStatisticsView.swift */; };
-		5C367EB429A3F386000A7149 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C367EB329A3F386000A7149 /* HapticManager.swift */; };
+		5C367EB429A3F386000A7149 /* FeedbackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C367EB329A3F386000A7149 /* FeedbackManager.swift */; };
 		5C367EB629A3F87C000A7149 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C367EB529A3F87C000A7149 /* AppDelegate.swift */; };
 		5C3D8273298C5DA300E861DC /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */; };
 		5C3D8275298D5F3300E861DC /* AccountSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3D8274298D5F3300E861DC /* AccountSettingsScreen.swift */; };
@@ -204,7 +204,6 @@
 		5C08B6E128ED7B05009218D7 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		5C09BEC829A53E0100331AEB /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		5C09BECA29A54AF800331AEB /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
-		5C0E36472922F21B0072EFBD /* ToastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastManager.swift; sourceTree = "<group>"; };
 		5C0E364B292308080072EFBD /* AuthenticationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationScreen.swift; sourceTree = "<group>"; };
 		5C0E364D2923C8CD0072EFBD /* ProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
 		5C0E364F2925A9640072EFBD /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
@@ -259,11 +258,12 @@
 		5C32C40D29E715B2008CE8A9 /* NavigatablePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatablePath.swift; sourceTree = "<group>"; };
 		5C32C40F29E87DEB008CE8A9 /* ButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonExtensions.swift; sourceTree = "<group>"; };
 		5C32C41129E9F82F008CE8A9 /* SubcategoryLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubcategoryLabelView.swift; sourceTree = "<group>"; };
+		5C32C41329ED9F9C008CE8A9 /* ErrorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorScreen.swift; sourceTree = "<group>"; };
 		5C353CBD29A248300067C4EE /* BottomOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomOverlay.swift; sourceTree = "<group>"; };
 		5C353CBF29A249660067C4EE /* ProductFilterOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterOverlayView.swift; sourceTree = "<group>"; };
 		5C353CC129A24C5F0067C4EE /* ContributionsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributionsScreenView.swift; sourceTree = "<group>"; };
 		5C353CC329A2A5A50067C4EE /* ProfileStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatisticsView.swift; sourceTree = "<group>"; };
-		5C367EB329A3F386000A7149 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		5C367EB329A3F386000A7149 /* FeedbackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackManager.swift; sourceTree = "<group>"; };
 		5C367EB529A3F87C000A7149 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C3D8272298C5DA300E861DC /* OptionalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtensions.swift; sourceTree = "<group>"; };
 		5C3D8274298D5F3300E861DC /* AccountSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsScreen.swift; sourceTree = "<group>"; };
@@ -1047,12 +1047,11 @@
 			children = (
 				5CD8D35429CDF58F001C5930 /* AppDataManager.swift */,
 				5CD8D35229CA5B2D001C5930 /* FriendManager.swift */,
-				5C367EB329A3F386000A7149 /* HapticManager.swift */,
+				5C367EB329A3F386000A7149 /* FeedbackManager.swift */,
 				5CC2FE9329197D9F002BDF83 /* LocationSearchManager.swift */,
 				5CE9009229211AC9003DE697 /* NotificationManager.swift */,
 				5C0E364D2923C8CD0072EFBD /* ProfileManager.swift */,
 				5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */,
-				5C0E36472922F21B0072EFBD /* ToastManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1131,6 +1130,7 @@
 				5C2146E429A931490005422D /* ProductFeed */,
 				5C7C356D299ABDE9009A3C09 /* Profile */,
 				5C25C681299569FB00C07953 /* Settings */,
+				5C32C41329ED9F9C008CE8A9 /* ErrorScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -1540,6 +1540,7 @@
 				5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */,
 				5C61E83229B7B41400D10AA3 /* SearchListView.swift in Sources */,
 				5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */,
+				5C32C41429ED9F9C008CE8A9 /* ErrorScreen.swift in Sources */,
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
 				5C0E365C292ADA290072EFBD /* SummaryView.swift in Sources */,
 				5C25C6702995616D00C07953 /* WelcomeTab.swift in Sources */,
@@ -1549,14 +1550,13 @@
 				5C663F25292E0100006F9A97 /* AppNameView.swift in Sources */,
 				5CD10A4F28F98C0B0001CFC2 /* Category.swift in Sources */,
 				5CD10A5128F98C8C0001CFC2 /* Subcategory.swift in Sources */,
-				5C0E36482922F21B0072EFBD /* ToastManager.swift in Sources */,
 				5C12B42D2902A12A001EE549 /* ApplicationSettingsScreen.swift in Sources */,
 				5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */,
 				5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */,
 				5CB1C24D28F9C087000B0EB4 /* AuthRepository.swift in Sources */,
 				5CED433628FDA8B9003F8194 /* SubcategorySheet.swift in Sources */,
 				5CD8D35529CDF58F001C5930 /* AppDataManager.swift in Sources */,
-				5C367EB429A3F386000A7149 /* HapticManager.swift in Sources */,
+				5C367EB429A3F386000A7149 /* FeedbackManager.swift in Sources */,
 				5C323E91298C501F00B005A9 /* ArrayExtensions.swift in Sources */,
 				5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */,
 				5CDC9F9B29E3EB5500B6082F /* Sheet.swift in Sources */,

@@ -7,7 +7,7 @@ struct CheckInScreen: View {
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var checkIn: CheckIn
   @State private var checkInComments = [CheckInComment]()
   @State private var showDeleteConfirmation = false
@@ -72,7 +72,7 @@ struct CheckInScreen: View {
         role: .destructive,
         action: {
           await deleteCheckIn(onDelete: {
-            hapticManager.trigger(.notification(.success))
+            feedbackManager.trigger(.notification(.success))
             router.removeLast()
           })
         }

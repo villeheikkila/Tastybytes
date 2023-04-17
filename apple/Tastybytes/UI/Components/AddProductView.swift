@@ -42,10 +42,9 @@ struct AddProductView: View {
 
   private let logger = getLogger(category: "ProductSheet")
   @EnvironmentObject private var repository: Repository
-  @EnvironmentObject private var toastManager: ToastManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var appDataManager: AppDataManager
   @FocusState private var focusedField: Focusable?
   @State private var subcategories: [Subcategory] = []
@@ -133,23 +132,23 @@ struct AddProductView: View {
       switch mode {
       case .editSuggestion:
         await createProductEditSuggestion(onSuccess: {
-          toastManager.toggle(.success("Edit suggestion sent!"))
+          feedbackManager.toggle(.success("Edit suggestion sent!"))
         })
       case .edit:
         await editProduct(onSuccess: {
-          hapticManager.trigger(.notification(.success))
+          feedbackManager.trigger(.notification(.success))
           if let onEdit {
             await onEdit()
           }
         })
       case .new:
         await createProduct(onSuccess: { product in
-          hapticManager.trigger(.notification(.success))
+          feedbackManager.trigger(.notification(.success))
           router.navigate(screen: .product(product), resetStack: true)
         })
       case .addToBrand:
         await createProduct(onSuccess: { product in
-          hapticManager.trigger(.notification(.success))
+          feedbackManager.trigger(.notification(.success))
           if let onCreate {
             await onCreate(product)
           }
@@ -246,7 +245,7 @@ struct AddProductView: View {
       RouterLink(brandOwner?.name ?? "Company", sheet: .companySearch(onSelect: { company, createdNew in
         setBrandOwner(company)
         if createdNew {
-          toastManager.toggle(.success(Toast.createdCompany.text))
+          feedbackManager.toggle(.success(Toast.createdCompany.text))
         }
       }))
       .fontWeight(.medium)
@@ -256,7 +255,7 @@ struct AddProductView: View {
           brand?.name ?? "Brand",
           sheet: .brand(brandOwner: brandOwner, mode: .select, onSelect: { brand, createdNew in
             if createdNew {
-              toastManager.toggle(.success(Toast.createdBrand.text))
+              feedbackManager.toggle(.success(Toast.createdBrand.text))
             }
             setBrand(brand: brand)
           })
@@ -273,7 +272,7 @@ struct AddProductView: View {
           subBrand?.name ?? "Sub-brand",
           sheet: .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
             if createdNew {
-              toastManager.toggle(.success(Toast.createdSubBrand.text))
+              feedbackManager.toggle(.success(Toast.createdSubBrand.text))
             }
             self.subBrand = subBrand
           })

@@ -5,7 +5,7 @@ import SwiftUI
 struct ProfileView: View {
   private let logger = getLogger(category: "ProfileView")
   @EnvironmentObject private var repository: Repository
-  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
   @Binding private var scrollToTop: Int
@@ -66,7 +66,7 @@ struct ProfileView: View {
     HStack {
       Spacer()
       ProgressButton("Send Friend Request", action: { await friendManager.sendFriendRequest(receiver: profile.id) {
-        toastManager.toggle(.success("Friend Request Sent!"))
+        feedbackManager.toggle(.success("Friend Request Sent!"))
       }})
       .font(.headline)
       .buttonStyle(ScalingButton())

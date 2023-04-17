@@ -6,8 +6,7 @@ struct CompanyScreen: View {
   private let logger = getLogger(category: "CompanyScreen")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var hapticManager: HapticManager
-  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var router: Router
   @Environment(\.dismiss) private var dismiss
   @State private var company: Company
@@ -51,7 +50,7 @@ struct CompanyScreen: View {
     }
     .listStyle(.plain)
     .refreshable {
-      await hapticManager.wrapWithHaptics {
+      await feedbackManager.wrapWithHaptics {
         await getBrandsAndSummary()
       }
     }
@@ -72,7 +71,7 @@ struct CompanyScreen: View {
     { presenting in
       ProgressButton("Delete \(presenting.name) Company", role: .destructive, action: {
         await deleteCompany(company, onDelete: {
-          hapticManager.trigger(.notification(.success))
+          feedbackManager.trigger(.notification(.success))
           router.reset()
         })
       })
@@ -127,17 +126,17 @@ struct CompanyScreen: View {
       }
       if profileManager.hasPermission(.canEditCompanies) {
         RouterLink("Edit", systemImage: "pencil", sheet: .editCompany(company: company, onSuccess: {
-          await hapticManager.wrapWithHaptics {
+          await feedbackManager.wrapWithHaptics {
             await getBrandsAndSummary()
           }
-          toastManager.toggle(.success("Company updated"))
+          feedbackManager.toggle(.success("Company updated"))
         }))
       } else {
         RouterLink(
           "Edit Suggestion",
           systemImage: "pencil",
           sheet: .companyEditSuggestion(company: company, onSuccess: {
-            toastManager.toggle(.success("Edit suggestion sent!"))
+            feedbackManager.toggle(.success("Edit suggestion sent!"))
           })
         )
       }

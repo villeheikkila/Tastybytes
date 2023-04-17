@@ -3,7 +3,7 @@ import SwiftUI
 struct BarcodeManagementSheet: View {
   private let logger = getLogger(category: "BarcodeManagementSheet")
   @EnvironmentObject private var repository: Repository
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []
 
@@ -27,13 +27,13 @@ struct BarcodeManagementSheet: View {
         .swipeActions {
           ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
             await deleteBarcode(barcode)
-            hapticManager.trigger(.notification(.success))
+            feedbackManager.trigger(.notification(.success))
           })
         }
         .contextMenu {
           ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
             await deleteBarcode(barcode)
-            hapticManager.trigger(.notification(.success))
+            feedbackManager.trigger(.notification(.success))
           })
         }
       }

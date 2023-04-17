@@ -3,8 +3,7 @@ import SwiftUI
 
 struct AccountSettingsScreen: View {
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var hapticManager: HapticManager
-  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var showDeleteConfirmation = false
   @State private var showEmailConfirmation = false
   @State private var showPasswordConfirmation = false
@@ -49,9 +48,9 @@ struct AccountSettingsScreen: View {
     { result in
       switch result {
       case .success:
-        toastManager.toggle(.success("Data was exported as CSV"))
+        feedbackManager.toggle(.success("Data was exported as CSV"))
       case .failure:
-        toastManager.toggle(.error("Error occurred while trying to export data"))
+        feedbackManager.toggle(.error(.custom("Error occurred while trying to export data")))
       }
     }
     .confirmationDialog(
@@ -64,9 +63,9 @@ struct AccountSettingsScreen: View {
         role: .destructive,
         action: {
           await profileManager.deleteCurrentAccount(onError: { message in
-            toastManager.toggle(.error(message))
+            feedbackManager.toggle(.error(.custom(message)))
           })
-          hapticManager.trigger(.notification(.success))
+          feedbackManager.trigger(.notification(.success))
         }
       )
     }
@@ -128,8 +127,8 @@ struct AccountSettingsScreen: View {
         ProgressButton(
           "Export CSV",
           systemImage: "square.and.arrow.up",
-          action: { await profileManager.exportData(onError: { message in
-            toastManager.toggle(.error(message))
+          action: { await profileManager.exportData(onError: { _ in
+            feedbackManager.toggle(.error(.unexpected))
           }) }
         )
         Button(role: .destructive, action: { showDeleteConfirmation = true }, label: {

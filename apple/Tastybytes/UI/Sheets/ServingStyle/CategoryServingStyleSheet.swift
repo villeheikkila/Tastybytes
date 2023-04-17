@@ -3,7 +3,7 @@ import SwiftUI
 struct CategoryServingStyleSheet: View {
   private let logger = getLogger(category: "CategoryServingStyleSheet")
   @EnvironmentObject private var repository: Repository
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var servingStyles: [ServingStyle]
   @State private var showDeleteServingStyleConfirmation = false
@@ -52,7 +52,7 @@ struct CategoryServingStyleSheet: View {
         role: .destructive,
         action: {
           await deleteServingStyle(onDelete: {
-            hapticManager.trigger(.notification(.success))
+            feedbackManager.trigger(.notification(.success))
           })
         }
       )

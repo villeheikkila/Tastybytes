@@ -26,9 +26,8 @@ struct RootView: View {
   @StateObject private var repository: Repository
   @StateObject private var splashScreenManager = SplashScreenManager()
   @StateObject private var profileManager: ProfileManager
-  @StateObject private var toastManager = ToastManager()
   @StateObject private var notificationManager: NotificationManager
-  @StateObject private var hapticManager = HapticManager()
+  @StateObject private var feedbackManager = FeedbackManager()
   @StateObject private var appDataManager: AppDataManager
   @State private var authEvent: AuthChangeEvent?
 
@@ -65,15 +64,14 @@ struct RootView: View {
         SplashScreen()
       }
     }
-    .toast(isPresenting: $toastManager.show) {
-      toastManager.toast
+    .toast(isPresenting: $feedbackManager.show) {
+      feedbackManager.toast
     }
     .environmentObject(repository)
     .environmentObject(splashScreenManager)
-    .environmentObject(toastManager)
     .environmentObject(notificationManager)
     .environmentObject(profileManager)
-    .environmentObject(hapticManager)
+    .environmentObject(feedbackManager)
     .environmentObject(appDataManager)
     .preferredColorScheme(profileManager.colorScheme)
     .onOpenURL { url in

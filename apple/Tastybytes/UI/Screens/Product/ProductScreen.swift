@@ -4,8 +4,7 @@ struct ProductScreen: View {
   private let logger = getLogger(category: "ProductScreen")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var toastManager: ToastManager
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var router: Router
   @Environment(\.dismiss) private var dismiss
   @State private var scrollToTop: Int = 0
@@ -65,7 +64,7 @@ struct ProductScreen: View {
     { presenting in
       ProgressButton("Unverify \(presenting.name) product", role: .destructive, action: {
         await verifyProduct(isVerified: false)
-        hapticManager.trigger(.notification(.success))
+        feedbackManager.trigger(.notification(.success))
       })
     }
     .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
@@ -101,7 +100,7 @@ struct ProductScreen: View {
 
         if profileManager.hasPermission(.canAddBarcodes) {
           RouterLink("Add Barcode", systemImage: "barcode.viewfinder", sheet: .barcodeScanner(onComplete: { _ in
-            toastManager.toggle(.success("Barcode added"))
+            feedbackManager.toggle(.success("Barcode added"))
           }))
         }
 
@@ -150,8 +149,7 @@ struct ProductScreen: View {
     case let .success(summary):
       self.summary = summary
     case let .failure(error):
-      toastManager.toggle(.error("Unexpected error occured"))
-      hapticManager.trigger(.notification(.error))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load product summary: \(error.localizedDescription)")
     }
   }
@@ -166,8 +164,7 @@ struct ProductScreen: View {
         product = refreshedProduct
       }
     case let .failure(error):
-      toastManager.toggle(.error("Unexpected error occured"))
-      hapticManager.trigger(.notification(.error))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to refresh product by id: \(error.localizedDescription)")
     }
 
@@ -175,8 +172,7 @@ struct ProductScreen: View {
     case let .success(summary):
       self.summary = summary
     case let .failure(error):
-      toastManager.toggle(.error("Unexpected error occured"))
-      hapticManager.trigger(.notification(.error))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load product summary: \(error.localizedDescription)")
     }
   }
@@ -190,8 +186,7 @@ struct ProductScreen: View {
     case .success:
       await refresh()
     case let .failure(error):
-      toastManager.toggle(.error("Unexpected error occured"))
-      hapticManager.trigger(.notification(.error))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to verify product: \(error.localizedDescription)")
     }
   }
@@ -199,11 +194,10 @@ struct ProductScreen: View {
   func deleteProduct() async {
     switch await repository.product.delete(id: product.id) {
     case .success:
-      hapticManager.trigger(.notification(.success))
+      feedbackManager.trigger(.notification(.success))
       router.removeLast()
     case let .failure(error):
-      toastManager.toggle(.error("Unexpected error occured"))
-      hapticManager.trigger(.notification(.error))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete product: \(error.localizedDescription)")
     }
   }

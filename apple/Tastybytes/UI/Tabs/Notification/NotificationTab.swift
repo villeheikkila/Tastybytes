@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NotificationTab: View {
   @EnvironmentObject private var notificationManager: NotificationManager
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
@@ -35,7 +35,7 @@ struct NotificationTab: View {
         } })
       }
       .refreshable {
-        await hapticManager.wrapWithHaptics {
+        await feedbackManager.wrapWithHaptics {
           await notificationManager.refresh(reset: true)
         }
       }
@@ -61,11 +61,11 @@ struct NotificationTab: View {
     ToolbarItemGroup {
       Menu {
         ProgressButton("Mark all read", systemImage: "envelope.open", action: {
-          hapticManager.trigger(.impact(intensity: .low))
+          feedbackManager.trigger(.impact(intensity: .low))
           await notificationManager.markAllAsRead()
         })
         ProgressButton("Delete all", systemImage: "trash", action: {
-          hapticManager.trigger(.impact(intensity: .low))
+          feedbackManager.trigger(.impact(intensity: .low))
           await notificationManager.deleteAll()
         })
       } label: {

@@ -7,7 +7,7 @@ struct DuplicateProductSheet: View {
 
   private let logger = getLogger(category: "MarkAsDuplicate")
   @EnvironmentObject private var repository: Repository
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var products = [Product.Joined]()
   @State private var currentUserProductDuplicateSuggestions = [ProductDuplicateSuggestion]()
@@ -61,7 +61,7 @@ struct DuplicateProductSheet: View {
         role: .destructive
       ) {
         await primaryAction(onSuccess: {
-          hapticManager.trigger(.notification(.success))
+          feedbackManager.trigger(.notification(.success))
           dismiss()
         })
       }

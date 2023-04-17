@@ -3,7 +3,7 @@ import SwiftUI
 struct ProductFeedScreen: View {
   private let logger = getLogger(category: "ProductFeedView")
   @EnvironmentObject private var repository: Repository
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var appDataManager: AppDataManager
   @State private var products = [Product.Joined]()
@@ -56,7 +56,7 @@ struct ProductFeedScreen: View {
     .scrollContentBackground(.hidden)
     .listStyle(.plain)
     .refreshable {
-      await hapticManager.wrapWithHaptics {
+      await feedbackManager.wrapWithHaptics {
         await refresh()
       }
     }

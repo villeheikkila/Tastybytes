@@ -5,7 +5,7 @@ import SwiftUI
 struct EditSubBrandSheet: View {
   private let logger = getLogger(category: "EditSubBrandSheet")
   @EnvironmentObject private var repository: Repository
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @State private var showToast = false
@@ -78,7 +78,7 @@ struct EditSubBrandSheet: View {
         role: .destructive,
         action: {
           await mergeToSubBrand(subBrand: subBrand, onSuccess: {
-            hapticManager.trigger(.notification(.success))
+            feedbackManager.trigger(.notification(.success))
             await onUpdate()
           })
         }

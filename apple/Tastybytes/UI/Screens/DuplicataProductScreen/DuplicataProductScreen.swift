@@ -4,7 +4,7 @@ struct DuplicateProductScreen: View {
   private let logger = getLogger(category: "ProductVerificationScreen")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var router: Router
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var products = [Product.Joined]()
   @State private var deleteProduct: Product.Joined? {
     didSet {
@@ -54,7 +54,7 @@ struct DuplicateProductScreen: View {
         "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
         action: { await deleteProduct(onDelete: {
-          hapticManager.trigger(.notification(.success))
+          feedbackManager.trigger(.notification(.success))
           router.removeLast()
         })
         }
@@ -62,7 +62,7 @@ struct DuplicateProductScreen: View {
     }
     .navigationBarTitle("Unverified Products")
     .refreshable {
-      await hapticManager.wrapWithHaptics {
+      await feedbackManager.wrapWithHaptics {
         await loadProducts()
       }
     }

@@ -5,7 +5,7 @@ struct UserSheet: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var searchText: String = ""
   @State private var searchResults = [Profile]()
@@ -37,7 +37,7 @@ struct UserSheet: View {
                       dismiss()
                       onSubmit()
                     })
-                    hapticManager.trigger(.impact(intensity: .low))
+                    feedbackManager.trigger(.impact(intensity: .low))
                   })
                   .labelStyle(.iconOnly)
                   .imageScale(.large)

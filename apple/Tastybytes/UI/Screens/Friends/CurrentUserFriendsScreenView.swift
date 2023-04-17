@@ -3,8 +3,7 @@ import SwiftUI
 struct CurrentUserFriendsScreen: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
-  @EnvironmentObject private var hapticManager: HapticManager
-  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var noficationManager: NotificationManager
   @State private var friendToBeRemoved: Friend? {
     didSet {
@@ -78,7 +77,7 @@ struct CurrentUserFriendsScreen: View {
     .navigationTitle("Friends (\(friendManager.friends.count))")
     .navigationBarTitleDisplayMode(.inline)
     .refreshable {
-      await hapticManager.wrapWithHaptics {
+      await feedbackManager.wrapWithHaptics {
         await friendManager.loadFriends()
       }
     }
@@ -112,8 +111,8 @@ struct CurrentUserFriendsScreen: View {
         sheet: .nameTag(onSuccess: { profileId in
           Task {
             await friendManager.sendFriendRequest(receiver: profileId, onSuccess: {
-              hapticManager.trigger(.notification(.success))
-              toastManager.toggle(.success("Friend Request Sent!"))
+              feedbackManager.trigger(.notification(.success))
+              feedbackManager.toggle(.success("Friend Request Sent!"))
             })
           }
         })
@@ -122,7 +121,7 @@ struct CurrentUserFriendsScreen: View {
       .imageScale(.large)
 
       RouterLink("Add friend", systemImage: "plus", sheet: .userSheet(mode: .add, onSubmit: {
-        toastManager.toggle(.success("Friend Request Sent!"))
+        feedbackManager.toggle(.success("Friend Request Sent!"))
       }))
       .labelStyle(.iconOnly)
       .imageScale(.large)

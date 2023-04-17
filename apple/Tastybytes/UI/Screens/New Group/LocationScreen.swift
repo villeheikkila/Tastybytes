@@ -6,7 +6,7 @@ struct LocationScreen: View {
   private let logger = getLogger(category: "LocationScreen")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var router: Router
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var scrollToTop: Int = 0
   @State private var summary: Summary?
@@ -47,7 +47,7 @@ struct LocationScreen: View {
           await deleteLocation(presenting, onDelete: {
             router.reset()
           })
-          hapticManager.trigger(.notification(.success))
+          feedbackManager.trigger(.notification(.success))
         }
       )
     }

@@ -42,6 +42,7 @@ final class Router: ObservableObject {
         case let .success(product):
           self.navigate(screen: .product(product), resetStack: resetStack)
         case let .failure(error):
+          self.navigate(screen: .error(reason: "Failed to load requested product page"), resetStack: resetStack)
           logger.error("request for product with \(id) failed: \(error.localizedDescription)")
         }
       case let .checkIn(id):
@@ -49,6 +50,7 @@ final class Router: ObservableObject {
         case let .success(checkIn):
           self.navigate(screen: .checkIn(checkIn), resetStack: resetStack)
         case let .failure(error):
+          self.navigate(screen: .error(reason: "Failed to load requested check-in page"), resetStack: resetStack)
           logger.error("request for check-in with \(id) failed: \(error.localizedDescription)")
         }
       case let .company(id):
@@ -56,6 +58,7 @@ final class Router: ObservableObject {
         case let .success(company):
           self.navigate(screen: .company(company), resetStack: resetStack)
         case let .failure(error):
+          self.navigate(screen: .error(reason: "Failed to load requested company page"), resetStack: resetStack)
           logger.error("request for company with \(id) failed: \(error.localizedDescription)")
         }
       case let .brand(id):
@@ -63,6 +66,7 @@ final class Router: ObservableObject {
         case let .success(brand):
           self.navigate(screen: .brand(brand), resetStack: resetStack)
         case let .failure(error):
+          self.navigate(screen: .error(reason: "Failed to load requested company page"), resetStack: resetStack)
           logger.error("request for brand with \(id) failed: \(error.localizedDescription)")
         }
       case let .profile(id):
@@ -70,6 +74,7 @@ final class Router: ObservableObject {
         case let .success(profile):
           self.navigate(screen: .profile(profile), resetStack: resetStack)
         case let .failure(error):
+          self.navigate(screen: .error(reason: "Failed to load requested profile page"), resetStack: resetStack)
           logger.error("request for profile with \(id.uuidString.lowercased()) failed: \(error.localizedDescription)")
         }
       case let .location(id):
@@ -77,6 +82,7 @@ final class Router: ObservableObject {
         case let .success(location):
           self.navigate(screen: .location(location), resetStack: resetStack)
         case let .failure(error):
+          self.navigate(screen: .error(reason: "Failed to load requested location page"), resetStack: resetStack)
           logger.error("request for location with \(id) failed: \(error.localizedDescription)")
         }
       }

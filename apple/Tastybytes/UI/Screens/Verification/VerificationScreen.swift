@@ -23,7 +23,7 @@ struct VerificationScreen: View {
   private let logger = getLogger(category: "ProductVerificationScreen")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var router: Router
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var products = [Product.Joined]()
   @State private var companies = [Company]()
   @State private var brands = [Brand.JoinedSubBrandsProductsCompany]()
@@ -60,7 +60,7 @@ struct VerificationScreen: View {
         "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
         action: { await deleteProduct(onDelete: {
-          hapticManager.trigger(.notification(.success))
+          feedbackManager.trigger(.notification(.success))
         })
         }
       )
@@ -74,7 +74,7 @@ struct VerificationScreen: View {
     }
     })
     .refreshable {
-      await hapticManager.wrapWithHaptics {
+      await feedbackManager.wrapWithHaptics {
         await loadData(refresh: true)
       }
     }

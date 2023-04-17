@@ -5,7 +5,7 @@ struct BrandScreen: View {
   private let logger = getLogger(category: "BrandScreen")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var router: Router
   @State private var brand: Brand.JoinedSubBrandsProductsCompany
   @State private var summary: Summary?
@@ -141,7 +141,7 @@ struct BrandScreen: View {
     }
     .listStyle(.plain)
     .refreshable {
-      await hapticManager.wrapWithHaptics {
+      await feedbackManager.wrapWithHaptics {
         await refresh()
       }
     }
@@ -162,7 +162,7 @@ struct BrandScreen: View {
     { presenting in
       ProgressButton("Unverify \(presenting.name ?? "default") sub-brand", action: {
         await verifySubBrand(presenting, isVerified: false)
-        hapticManager.trigger(.notification(.success))
+        feedbackManager.trigger(.notification(.success))
       })
     }
     .confirmationDialog("Unverify Brand",
@@ -171,7 +171,7 @@ struct BrandScreen: View {
     { presenting in
       ProgressButton("Unverify \(presenting.name) brand", action: {
         await verifyBrand(isVerified: false)
-        hapticManager.trigger(.notification(.success))
+        feedbackManager.trigger(.notification(.success))
       })
     }
     .confirmationDialog("Are you sure you want to delete sub-brand and all related products?",
@@ -184,7 +184,7 @@ struct BrandScreen: View {
         role: .destructive,
         action: {
           await deleteSubBrand()
-          hapticManager.trigger(.notification(.success))
+          feedbackManager.trigger(.notification(.success))
         }
       )
     }
@@ -196,7 +196,7 @@ struct BrandScreen: View {
       ProgressButton("Delete \(presenting.name)", role: .destructive, action: {
         await deleteBrand(onDelete: {
           router.reset()
-          hapticManager.trigger(.notification(.success))
+          feedbackManager.trigger(.notification(.success))
         })
       })
     }

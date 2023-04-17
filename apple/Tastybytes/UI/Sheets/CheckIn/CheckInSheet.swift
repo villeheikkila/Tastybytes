@@ -6,7 +6,7 @@ import WrappingHStack
 struct CheckInSheet: View {
   private let logger = getLogger(category: "CheckInSheet")
   @EnvironmentObject private var repository: Repository
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var appDataManager: AppDataManager
   @Environment(\.dismiss) private var dismiss
@@ -236,7 +236,7 @@ struct CheckInSheet: View {
             }
           }
         }
-        hapticManager.trigger(.notification(.success))
+        feedbackManager.trigger(.notification(.success))
         dismiss()
       }).bold()
     )

@@ -5,8 +5,7 @@ struct FriendsScreen: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
-  @EnvironmentObject private var hapticManager: HapticManager
-  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var friends: [Friend]
 
   let profile: Profile
@@ -25,7 +24,7 @@ struct FriendsScreen: View {
       .navigationBarTitleDisplayMode(.inline)
     }
     .refreshable {
-      await hapticManager.wrapWithHaptics {
+      await feedbackManager.wrapWithHaptics {
         await loadFriends()
       }
     }
@@ -46,7 +45,7 @@ struct FriendsScreen: View {
           "Add friend",
           systemImage: "person.badge.plus",
           action: { await friendManager.sendFriendRequest(receiver: profile.id) {
-            toastManager.toggle(.success("Friend Request Sent!"))
+            feedbackManager.toggle(.success("Friend Request Sent!"))
           }
           }
         )

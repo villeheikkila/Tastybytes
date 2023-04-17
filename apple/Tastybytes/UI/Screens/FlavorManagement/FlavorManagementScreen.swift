@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FlavorManagementScreen: View {
   @EnvironmentObject private var appDataManager: AppDataManager
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var router: Router
 
   var body: some View {
@@ -23,7 +23,7 @@ struct FlavorManagementScreen: View {
       })).labelStyle(.iconOnly)
     )
     .refreshable {
-      await hapticManager.wrapWithHaptics {
+      await feedbackManager.wrapWithHaptics {
         await appDataManager.loadFlavors()
       }
     }

@@ -12,7 +12,7 @@ struct CheckInListView<Header>: View where Header: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
-  @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var router: Router
   @State private var scrollProxy: ScrollViewProxy?
   @State private var showDeleteCheckInConfirmationDialog = false
@@ -76,7 +76,7 @@ struct CheckInListView<Header>: View where Header: View {
           role: .destructive,
           action: {
             await deleteCheckIn(checkIn: presenting)
-            hapticManager.trigger(.notification(.success))
+            feedbackManager.trigger(.notification(.success))
           }
         )
       }
@@ -90,7 +90,7 @@ struct CheckInListView<Header>: View where Header: View {
         }
       })
       .refreshable {
-        await hapticManager.wrapWithHaptics {
+        await feedbackManager.wrapWithHaptics {
           await refresh()
           await onRefresh()
         }
