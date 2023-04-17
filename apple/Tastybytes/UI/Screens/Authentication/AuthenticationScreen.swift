@@ -59,7 +59,7 @@ struct AuthenticationScreen: View {
       if [.signIn, .signUp, .resetPassword].contains(scene) {
         PasswordTextFieldView(
           password: $password,
-          mode: scene == .resetPassword ? .newPassword : .password
+          mode: scene == .signIn ? .password : .newPassword
         )
         .focused($focusedField, equals: .password)
       }

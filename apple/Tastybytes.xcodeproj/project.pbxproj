@@ -1045,14 +1045,14 @@
 		5CC2FE9229197D8A002BDF83 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				5CC2FE9329197D9F002BDF83 /* LocationSearchManager.swift */,
+				5CD8D35429CDF58F001C5930 /* AppDataManager.swift */,
 				5CD8D35229CA5B2D001C5930 /* FriendManager.swift */,
-				5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */,
-				5C0E36472922F21B0072EFBD /* ToastManager.swift */,
+				5C367EB329A3F386000A7149 /* HapticManager.swift */,
+				5CC2FE9329197D9F002BDF83 /* LocationSearchManager.swift */,
 				5CE9009229211AC9003DE697 /* NotificationManager.swift */,
 				5C0E364D2923C8CD0072EFBD /* ProfileManager.swift */,
-				5C367EB329A3F386000A7149 /* HapticManager.swift */,
-				5CD8D35429CDF58F001C5930 /* AppDataManager.swift */,
+				5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */,
+				5C0E36472922F21B0072EFBD /* ToastManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1078,22 +1078,22 @@
 			isa = PBXGroup;
 			children = (
 				5C989DAA2901AAD500BBC5A7 /* Repository.swift */,
-				5CB4E02B29E0878C00135ADA /* Report */,
+				5C25C67D299568FD00C07953 /* Auth */,
+				5C25C6742995672700C07953 /* Brand */,
+				5C25C67C299568D600C07953 /* Category */,
+				5C25C6762995674A00C07953 /* CheckIn */,
 				5C7C35C2299ACA7B009A3C09 /* Common */,
+				5C25C6732995670F00C07953 /* Company */,
+				5C25C67B2995689F00C07953 /* Document */,
+				5C25C67E2995690C00C07953 /* Flavor */,
+				5C25C6752995674500C07953 /* Friend */,
 				5C25C6802995693F00C07953 /* Location */,
 				5C25C67F2995692C00C07953 /* Notification */,
-				5C25C67E2995690C00C07953 /* Flavor */,
-				5C25C67D299568FD00C07953 /* Auth */,
-				5C25C67C299568D600C07953 /* Category */,
-				5C25C67B2995689F00C07953 /* Document */,
-				5C25C67A2995684F00C07953 /* SubBrand */,
-				5C25C679299567EC00C07953 /* Profile */,
 				5C25C6782995675C00C07953 /* Product */,
+				5C25C679299567EC00C07953 /* Profile */,
+				5CB4E02B29E0878C00135ADA /* Report */,
+				5C25C67A2995684F00C07953 /* SubBrand */,
 				5C25C6772995675200C07953 /* Subcategory */,
-				5C25C6762995674A00C07953 /* CheckIn */,
-				5C25C6752995674500C07953 /* Friend */,
-				5C25C6742995672700C07953 /* Brand */,
-				5C25C6732995670F00C07953 /* Company */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
