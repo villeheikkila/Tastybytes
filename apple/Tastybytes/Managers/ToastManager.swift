@@ -20,7 +20,7 @@ final class ToastManager: ObservableObject {
     case let .success(title):
       toast = AlertToast(type: .complete(.green), title: title)
     case let .error(title):
-      toast = AlertToast(type: .error(.red), title: title)
+      toast = AlertToast(displayMode: .hud, type: .error(.red), title: title)
     }
   }
 }

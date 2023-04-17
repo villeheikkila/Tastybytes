@@ -12,7 +12,6 @@ struct AddCategorySheet: View {
         TextField("Name", text: $newCategoryName)
         ProgressButton("Add", action: {
           await appDataManager.addCategory(name: newCategoryName)
-
           dismiss()
         }).disabled(newCategoryName.isEmpty)
       }

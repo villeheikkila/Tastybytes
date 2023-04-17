@@ -19,77 +19,6 @@ struct ProductScreen: View {
     _product = State(wrappedValue: product)
   }
 
-  func showDeleteConfirmation() {
-    showDeleteProductConfirmationDialog.toggle()
-  }
-
-  func onEditProduct() async {
-    await refresh()
-    await refreshCheckIns()
-  }
-
-  func loadSummary() async {
-    switch await repository.product.getSummaryById(id: product.id) {
-    case let .success(summary):
-      self.summary = summary
-    case let .failure(error):
-      logger.error("failed to load product summary: \(error.localizedDescription)")
-    }
-  }
-
-  func refresh() async {
-    async let productPromise = repository.product.getById(id: product.id)
-    async let summaryPromise = repository.product.getSummaryById(id: product.id)
-
-    switch await productPromise {
-    case let .success(refreshedProduct):
-      withAnimation {
-        product = refreshedProduct
-      }
-    case let .failure(error):
-      logger.error("failed to refresh product by id: \(error.localizedDescription)")
-    }
-
-    switch await summaryPromise {
-    case let .success(summary):
-      self.summary = summary
-    case let .failure(error):
-      logger.error("failed to load product summary: \(error.localizedDescription)")
-    }
-  }
-
-  func addBarcodeToProduct(barcode: Barcode, onComplete: @escaping () -> Void) async {
-    switch await repository.productBarcode.addToProduct(product: product, barcode: barcode) {
-    case .success:
-      onComplete()
-    case let .failure(error):
-      logger.error("adding barcode \(barcode.barcode) failed: \(error.localizedDescription)")
-    }
-  }
-
-  func refreshCheckIns() async {
-    await refresh()
-    resetView += 1
-  }
-
-  func verifyProduct(isVerified: Bool) async {
-    switch await repository.product.verification(id: product.id, isVerified: isVerified) {
-    case .success:
-      await refresh()
-    case let .failure(error):
-      logger.error("failed to verify product: \(error.localizedDescription)")
-    }
-  }
-
-  func deleteProduct(onDelete: @escaping () -> Void) async {
-    switch await repository.product.delete(id: product.id) {
-    case .success:
-      onDelete()
-    case let .failure(error):
-      logger.error("failed to delete product: \(error.localizedDescription)")
-    }
-  }
-
   var body: some View {
     CheckInListView(
       fetcher: .product(product),
@@ -101,7 +30,7 @@ struct ProductScreen: View {
         Section {
           ProductItemView(product: product, extras: [.companyLink, .logo])
           RouterLink(sheet: .newCheckIn(product, onCreation: { _ in
-            await refreshCheckIns()
+            refreshCheckIns()
           }), label: {
             HStack {
               Group {
@@ -147,11 +76,7 @@ struct ProductScreen: View {
       ProgressButton(
         "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
-        action: { await deleteProduct(onDelete: {
-          hapticManager.trigger(.notification(.success))
-          router.removeLast()
-        })
-        }
+        action: { await deleteProduct() }
       )
     }
   }
@@ -167,7 +92,7 @@ struct ProductScreen: View {
         Divider()
 
         RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { _ in
-          await refreshCheckIns()
+          refreshCheckIns()
         }))
         .bold()
         .disabled(!profileManager.hasPermission(.canCreateCheckIns))
@@ -204,7 +129,7 @@ struct ProductScreen: View {
         ReportButton(entity: .product(product))
 
         if profileManager.hasPermission(.canDeleteProducts) {
-          Button("Delete", systemImage: "trash.fill", role: .destructive, action: { showDeleteConfirmation() })
+          Button("Delete", systemImage: "trash.fill", role: .destructive, action: { showDeleteProductConfirmationDialog = true })
             .disabled(product.isVerified)
         }
 
@@ -212,6 +137,74 @@ struct ProductScreen: View {
         Label("Options menu", systemImage: "ellipsis")
           .labelStyle(.iconOnly)
       }
+    }
+  }
+
+  func onEditProduct() async {
+    await refresh()
+    refreshCheckIns()
+  }
+
+  func loadSummary() async {
+    switch await repository.product.getSummaryById(id: product.id) {
+    case let .success(summary):
+      self.summary = summary
+    case let .failure(error):
+      toastManager.toggle(.error("Unexpected error occured"))
+      hapticManager.trigger(.notification(.error))
+      logger.error("failed to load product summary: \(error.localizedDescription)")
+    }
+  }
+
+  func refresh() async {
+    async let productPromise = repository.product.getById(id: product.id)
+    async let summaryPromise = repository.product.getSummaryById(id: product.id)
+
+    switch await productPromise {
+    case let .success(refreshedProduct):
+      withAnimation {
+        product = refreshedProduct
+      }
+    case let .failure(error):
+      toastManager.toggle(.error("Unexpected error occured"))
+      hapticManager.trigger(.notification(.error))
+      logger.error("failed to refresh product by id: \(error.localizedDescription)")
+    }
+
+    switch await summaryPromise {
+    case let .success(summary):
+      self.summary = summary
+    case let .failure(error):
+      toastManager.toggle(.error("Unexpected error occured"))
+      hapticManager.trigger(.notification(.error))
+      logger.error("failed to load product summary: \(error.localizedDescription)")
+    }
+  }
+
+  func refreshCheckIns() {
+    resetView += 1
+  }
+
+  func verifyProduct(isVerified: Bool) async {
+    switch await repository.product.verification(id: product.id, isVerified: isVerified) {
+    case .success:
+      await refresh()
+    case let .failure(error):
+      toastManager.toggle(.error("Unexpected error occured"))
+      hapticManager.trigger(.notification(.error))
+      logger.error("failed to verify product: \(error.localizedDescription)")
+    }
+  }
+
+  func deleteProduct() async {
+    switch await repository.product.delete(id: product.id) {
+    case .success:
+      hapticManager.trigger(.notification(.success))
+      router.removeLast()
+    case let .failure(error):
+      toastManager.toggle(.error("Unexpected error occured"))
+      hapticManager.trigger(.notification(.error))
+      logger.error("failed to delete product: \(error.localizedDescription)")
     }
   }
 }

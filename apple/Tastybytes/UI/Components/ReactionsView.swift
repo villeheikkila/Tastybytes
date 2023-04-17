@@ -4,7 +4,7 @@ struct ReactionsView: View {
   private let logger = getLogger(category: "ReactionsView")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
-    @EnvironmentObject private var hapticManager: HapticManager
+  @EnvironmentObject private var hapticManager: HapticManager
   @State private var checkInReactions = [CheckInReaction]()
   @State private var isLoading = false
 
