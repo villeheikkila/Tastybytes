@@ -7,7 +7,6 @@ struct ReportSheet: View {
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var reasonText = ""
-  @State private var showToast = false
 
   let entity: Report.Entity
 

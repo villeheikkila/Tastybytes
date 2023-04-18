@@ -74,10 +74,7 @@ struct CheckInListView<Header>: View where Header: View {
         ProgressButton(
           "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
           role: .destructive,
-          action: {
-            await deleteCheckIn(checkIn: presenting)
-            feedbackManager.trigger(.notification(.success))
-          }
+          action: { await deleteCheckIn(checkIn: presenting) }
         )
       }
       .onChange(of: scrollToTop, perform: { _ in
@@ -190,6 +187,7 @@ struct CheckInListView<Header>: View where Header: View {
       withAnimation {
         checkIns.remove(object: checkIn)
       }
+      feedbackManager.trigger(.notification(.success))
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
       logger.error("deleting check-in failed: \(error.localizedDescription)")

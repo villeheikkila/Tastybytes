@@ -60,31 +60,29 @@ struct DuplicateProductSheet: View {
         """,
         role: .destructive
       ) {
-        await primaryAction(onSuccess: {
-          feedbackManager.trigger(.notification(.success))
-          dismiss()
-        })
+        await primaryAction()
       }
     }
   }
 
-  func primaryAction(onSuccess: @escaping () -> Void) async {
+  func primaryAction() async {
     switch mode {
     case .reportDuplicate:
-      await reportDuplicate(onSuccess: onSuccess)
+      await reportDuplicate()
     case .mergeDuplicate:
-      await mergeProducts(onSuccess: onSuccess)
+      await mergeProducts()
     }
   }
 
-  func reportDuplicate(onSuccess: @escaping () -> Void) async {
+  func reportDuplicate() async {
     guard let mergeToProduct else { return }
     switch await repository.product.markAsDuplicate(
       productId: product.id,
       duplicateOfProductId: mergeToProduct.id
     ) {
     case .success:
-      onSuccess()
+      feedbackManager.trigger(.notification(.success))
+      dismiss()
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
       logger
@@ -94,11 +92,12 @@ struct DuplicateProductSheet: View {
     }
   }
 
-  func mergeProducts(onSuccess: @escaping () -> Void) async {
+  func mergeProducts() async {
     guard let mergeToProduct else { return }
     switch await repository.product.mergeProducts(productId: product.id, toProductId: mergeToProduct.id) {
     case .success:
-      onSuccess()
+      feedbackManager.trigger(.notification(.success))
+      dismiss()
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
       logger

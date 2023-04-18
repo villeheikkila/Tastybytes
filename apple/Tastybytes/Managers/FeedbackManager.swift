@@ -28,6 +28,8 @@ final class FeedbackManager: ObservableObject {
       if !disableHaptics {
         trigger(.notification(.success))
       }
+    case let .warning(title):
+      toast = AlertToast(type: .error(.red), title: title)
     case let .error(errorType):
       var title = "Unexpected error occured"
       if case let .custom(message) = errorType {
@@ -73,6 +75,7 @@ extension FeedbackManager {
   enum ToastType {
     case success(_ title: String)
     case error(_ errorType: ErrorType)
+    case warning(_ title: String)
   }
 
   enum HapticType {

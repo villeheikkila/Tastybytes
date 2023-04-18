@@ -63,8 +63,7 @@ struct ProductScreen: View {
                         presenting: product)
     { presenting in
       ProgressButton("Unverify \(presenting.name) product", role: .destructive, action: {
-        await verifyProduct(isVerified: false)
-        feedbackManager.trigger(.notification(.success))
+        await verifyProduct(product: presenting, isVerified: false)
       })
     }
     .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
@@ -75,7 +74,7 @@ struct ProductScreen: View {
       ProgressButton(
         "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
-        action: { await deleteProduct() }
+        action: { await deleteProduct(presenting) }
       )
     }
   }
@@ -84,7 +83,7 @@ struct ProductScreen: View {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
         VerificationButton(isVerified: product.isVerified, verify: {
-          await verifyProduct(isVerified: true)
+          await verifyProduct(product: product, isVerified: true)
         }, unverify: {
           showUnverifyProductConfirmation = true
         })
@@ -181,9 +180,10 @@ struct ProductScreen: View {
     resetView += 1
   }
 
-  func verifyProduct(isVerified: Bool) async {
+  func verifyProduct(product: Product.Joined, isVerified: Bool) async {
     switch await repository.product.verification(id: product.id, isVerified: isVerified) {
     case .success:
+      feedbackManager.trigger(.notification(.success))
       await refresh()
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
@@ -191,7 +191,7 @@ struct ProductScreen: View {
     }
   }
 
-  func deleteProduct() async {
+  func deleteProduct(_ product: Product.Joined) async {
     switch await repository.product.delete(id: product.id) {
     case .success:
       feedbackManager.trigger(.notification(.success))

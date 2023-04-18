@@ -1,11 +1,10 @@
-import AlertToast
 import SwiftUI
 
 struct SubcategorySheet: View {
   @EnvironmentObject private var profileManager: ProfileManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @Binding var subcategories: [Subcategory]
-  @State private var showToast = false
   @State private var showAddSubcategory = false
   @State private var newSubcategoryName = ""
   @State private var searchTerm = ""
@@ -38,9 +37,6 @@ struct SubcategorySheet: View {
     .navigationTitle("Subcategories")
     .navigationBarItems(leading: addSubcategoryView,
                         trailing: Button("Done", action: { dismiss() }).bold())
-    .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
-      AlertToast(type: .error(.red), title: "You can only add \(maxSubcategories) subcategories")
-    }
     .alert("Add new subcategory", isPresented: $showAddSubcategory, actions: {
       TextField("TextField", text: $newSubcategoryName)
       Button("Cancel", role: .cancel, action: {})
@@ -60,7 +56,7 @@ struct SubcategorySheet: View {
         subcategories.append(subcategory)
       }
     } else {
-      showToast = true
+      feedbackManager.toggle(.warning("You can only add \(maxSubcategories) subcategories"))
     }
   }
 

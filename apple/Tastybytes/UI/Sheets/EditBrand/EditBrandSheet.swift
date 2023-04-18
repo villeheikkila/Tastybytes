@@ -1,4 +1,3 @@
-import AlertToast
 import CachedAsyncImage
 import PhotosUI
 import SwiftUI
@@ -11,7 +10,6 @@ struct EditBrandSheet: View {
   @Environment(\.dismiss) private var dismiss
   @State private var name: String
   @State private var brandOwner: Company
-  @State private var showToast = false
   @State private var brand: Brand.JoinedSubBrandsProductsCompany
   @State private var selectedLogo: PhotosPickerItem? {
     didSet {
@@ -87,9 +85,6 @@ struct EditBrandSheet: View {
     }
     .navigationTitle("Edit Brand")
     .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
-    .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
-      AlertToast(type: .complete(.green), title: "Brand updated!")
-    }
   }
 
   func editBrand(onSuccess: @escaping () async -> Void) async {
@@ -97,7 +92,7 @@ struct EditBrandSheet: View {
       .update(updateRequest: Brand.UpdateRequest(id: brand.id, name: name, brandOwnerId: brandOwner.id))
     {
     case .success:
-      showToast.toggle()
+      feedbackManager.toggle(.success("Brand updated!"))
       await onSuccess()
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))

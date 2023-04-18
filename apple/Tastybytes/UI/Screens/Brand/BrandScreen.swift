@@ -169,7 +169,7 @@ struct BrandScreen: View {
                         presenting: brand)
     { presenting in
       ProgressButton("Unverify \(presenting.name) brand", action: {
-        await verifyBrand(isVerified: false)
+        await verifyBrand(brand: presenting, isVerified: false)
       })
     }
     .confirmationDialog("Are you sure you want to delete sub-brand and all related products?",
@@ -181,7 +181,7 @@ struct BrandScreen: View {
         "Delete \(presenting.name ?? "default sub-brand")",
         role: .destructive,
         action: {
-          await deleteSubBrand()
+          await deleteSubBrand(presenting)
         }
       )
     }
@@ -191,7 +191,7 @@ struct BrandScreen: View {
                         presenting: brand)
     { presenting in
       ProgressButton("Delete \(presenting.name)", role: .destructive, action: {
-        await deleteBrand()
+        await deleteBrand(presenting)
       })
     }
   }
@@ -222,7 +222,7 @@ struct BrandScreen: View {
   private var navigationBarMenu: some View {
     Menu {
       VerificationButton(isVerified: brand.isVerified, verify: {
-        await verifyBrand(isVerified: true)
+        await verifyBrand(brand: brand, isVerified: true)
       }, unverify: {
         showBrandUnverificationConfirmation = true
       })
@@ -288,10 +288,10 @@ struct BrandScreen: View {
     }
   }
 
-  func verifyBrand(isVerified: Bool) async {
+  func verifyBrand(brand: Brand.JoinedSubBrandsProductsCompany, isVerified: Bool) async {
     switch await repository.brand.verification(id: brand.id, isVerified: isVerified) {
     case .success:
-      brand = Brand.JoinedSubBrandsProductsCompany(
+      self.brand = Brand.JoinedSubBrandsProductsCompany(
         id: brand.id,
         name: brand.name,
         isVerified: isVerified,
@@ -317,7 +317,7 @@ struct BrandScreen: View {
     }
   }
 
-  func deleteBrand() async {
+  func deleteBrand(_ brand: Brand.JoinedSubBrandsProductsCompany) async {
     switch await repository.brand.delete(id: brand.id) {
     case .success:
       router.reset()
@@ -328,7 +328,7 @@ struct BrandScreen: View {
     }
   }
 
-  func deleteSubBrand() async {
+  func deleteSubBrand(_: SubBrand.JoinedProduct) async {
     guard let toDeleteSubBrand else { return }
     switch await repository.subBrand.delete(id: toDeleteSubBrand.id) {
     case .success:

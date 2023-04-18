@@ -71,11 +71,7 @@ struct ServingStyleManagementSheet: View {
       ProgressButton(
         "Delete \(presenting.name)",
         role: .destructive,
-        action: {
-          await deleteServingStyle(onDelete: {
-            feedbackManager.trigger(.notification(.success))
-          })
-        }
+        action: { await deleteServingStyle(presenting) }
       )
     }
     .task {
@@ -108,17 +104,16 @@ struct ServingStyleManagementSheet: View {
     }
   }
 
-  func deleteServingStyle(onDelete: @escaping () -> Void) async {
-    guard let toDeleteServingStyle else { return }
-    switch await repository.servingStyle.delete(id: toDeleteServingStyle.id) {
+  func deleteServingStyle(_ servingStyle: ServingStyle) async {
+    switch await repository.servingStyle.delete(id: servingStyle.id) {
     case .success:
       withAnimation {
-        servingStyles.remove(object: toDeleteServingStyle)
+        servingStyles.remove(object: servingStyle)
       }
-      onDelete()
+      feedbackManager.trigger(.notification(.success))
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)")
+      logger.error("failed to delete serving style '\(servingStyle.id)': \(error.localizedDescription)")
     }
   }
 

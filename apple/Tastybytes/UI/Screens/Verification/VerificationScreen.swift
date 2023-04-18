@@ -59,10 +59,7 @@ struct VerificationScreen: View {
       ProgressButton(
         "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
-        action: { await deleteProduct(onDelete: {
-          feedbackManager.trigger(.notification(.success))
-        })
-        }
+        action: { await deleteProduct(presenting) }
       )
     }
     .navigationBarTitle("Unverified \(verificationType.label)")
@@ -213,12 +210,11 @@ struct VerificationScreen: View {
     }
   }
 
-  func deleteProduct(onDelete: @escaping () -> Void) async {
-    guard let deleteProduct else { return }
-    switch await repository.product.delete(id: deleteProduct.id) {
+  func deleteProduct(_ product: Product.Joined) async {
+    switch await repository.product.delete(id: product.id) {
     case .success:
+      feedbackManager.trigger(.notification(.success))
       await loadData(refresh: true)
-      onDelete()
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete product: \(error.localizedDescription)")

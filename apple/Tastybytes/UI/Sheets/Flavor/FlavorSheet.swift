@@ -1,11 +1,10 @@
-import AlertToast
 import SwiftUI
 
 struct FlavorSheet: View {
   @Environment(\.dismiss) private var dismiss
   @EnvironmentObject private var appDataManager: AppDataManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
   @Binding var pickedFlavors: [Flavor]
-  @State private var showToast = false
   @State private var searchTerm = ""
 
   private let maxFlavors = 4
@@ -50,9 +49,6 @@ struct FlavorSheet: View {
         }
       }
     }
-    .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
-      AlertToast(type: .error(.red), title: "You can only add \(maxFlavors) flavors")
-    }
     .navigationTitle("Flavors")
     .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
     .searchable(text: $searchTerm)
@@ -72,7 +68,7 @@ struct FlavorSheet: View {
     } else if pickedFlavors.count < maxFlavors {
       pickedFlavors.append(flavor)
     } else {
-      showToast = true
+      feedbackManager.toggle(.warning("You can only add \(maxFlavors) flavors"))
     }
   }
 }

@@ -91,7 +91,7 @@ struct SearchListView: View {
       ProgressButton(
         "Add barcode to \(presenting.getDisplayName(.fullName))",
         action: {
-          await addBarcodeToProduct()
+          await addBarcodeToProduct(presenting)
         }
       )
     }
@@ -296,8 +296,8 @@ struct SearchListView: View {
     barcode = nil
   }
 
-  func addBarcodeToProduct() async {
-    guard let addBarcodeTo, let barcode else { return }
+  func addBarcodeToProduct(_ addBarcodeTo: Product.Joined) async {
+    guard let barcode else { return }
     switch await repository.productBarcode.addToProduct(product: addBarcodeTo, barcode: barcode) {
     case .success:
       self.barcode = nil

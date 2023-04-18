@@ -51,7 +51,7 @@ struct CategoryServingStyleSheet: View {
         "Remove \(presenting.name) from \(category.name)",
         role: .destructive,
         action: {
-          await deleteServingStyle()
+          await deleteServingStyle(presenting)
         }
       )
     }
@@ -72,20 +72,19 @@ struct CategoryServingStyleSheet: View {
     }
   }
 
-  func deleteServingStyle() async {
-    guard let toDeleteServingStyle else { return }
+  func deleteServingStyle(_ servingStyle: ServingStyle) async {
     switch await repository.category.deleteServingStyle(
       categoryId: category.id,
-      servingStyleId: toDeleteServingStyle.id
+      servingStyleId: servingStyle.id
     ) {
     case .success:
       withAnimation {
-        servingStyles.remove(object: toDeleteServingStyle)
+        servingStyles.remove(object: servingStyle)
       }
       feedbackManager.trigger(.notification(.success))
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete serving style '\(toDeleteServingStyle.id)': \(error.localizedDescription)")
+      logger.error("failed to delete serving style '\(servingStyle.id)': \(error.localizedDescription)")
     }
   }
 }

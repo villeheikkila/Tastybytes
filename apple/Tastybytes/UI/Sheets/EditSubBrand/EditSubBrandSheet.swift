@@ -1,4 +1,3 @@
-import AlertToast
 import PhotosUI
 import SwiftUI
 
@@ -8,7 +7,6 @@ struct EditSubBrandSheet: View {
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
-  @State private var showToast = false
   @State private var showMergeSubBrandsConfirmation = false
   @State private var newSubBrandName: String
   @State private var subBrand: SubBrand.JoinedProduct
@@ -65,9 +63,6 @@ struct EditSubBrandSheet: View {
     }
     .navigationTitle("Edit \(subBrand.name.orEmpty)")
     .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
-    .toast(isPresenting: $showToast, duration: 2, tapToDismiss: true) {
-      AlertToast(type: .complete(.green), title: "Sub-brand updated!")
-    }
     .confirmationDialog("Are you sure you want to merge sub-brands? The merged sub-brand will be permanently deleted",
                         isPresented: $showMergeSubBrandsConfirmation,
                         titleVisibility: .visible,
@@ -105,7 +100,7 @@ struct EditSubBrandSheet: View {
       .update(updateRequest: .name(SubBrand.UpdateNameRequest(id: subBrand.id, name: newSubBrandName)))
     {
     case .success:
-      showToast.toggle()
+      feedbackManager.toggle(.success("Sub-brand updated!"))
       await onSuccess()
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))

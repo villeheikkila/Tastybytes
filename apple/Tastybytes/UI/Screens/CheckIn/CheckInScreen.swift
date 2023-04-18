@@ -70,9 +70,7 @@ struct CheckInScreen: View {
       ProgressButton(
         "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
         role: .destructive,
-        action: {
-          await deleteCheckIn()
-        }
+        action: { await deleteCheckIn(presenting) }
       )
     }
     .task {
@@ -129,7 +127,7 @@ struct CheckInScreen: View {
     commentText.isEmpty
   }
 
-  func deleteCheckIn() async {
+  func deleteCheckIn(_ checkIn: CheckIn) async {
     switch await repository.checkIn.delete(id: checkIn.id) {
     case .success:
       feedbackManager.trigger(.notification(.success))

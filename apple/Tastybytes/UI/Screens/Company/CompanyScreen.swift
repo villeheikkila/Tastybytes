@@ -70,7 +70,7 @@ struct CompanyScreen: View {
                         presenting: company)
     { presenting in
       ProgressButton("Delete \(presenting.name) Company", role: .destructive, action: {
-        await deleteCompany(company)
+        await deleteCompany(presenting)
       })
     }
     .task {
@@ -144,7 +144,7 @@ struct CompanyScreen: View {
           "Delete",
           systemImage: "trash.fill",
           role: .destructive,
-          action: { showDeleteCompanyConfirmationDialog.toggle() }
+          action: { showDeleteCompanyConfirmationDialog = true }
         )
         .disabled(company.isVerified)
       }

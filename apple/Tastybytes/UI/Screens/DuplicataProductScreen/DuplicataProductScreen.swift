@@ -53,7 +53,7 @@ struct DuplicateProductScreen: View {
       ProgressButton(
         "Delete \(presenting.getDisplayName(.fullName))",
         role: .destructive,
-        action: { await deleteProduct() }
+        action: { await deleteProduct(presenting) }
       )
     }
     .navigationBarTitle("Unverified Products")
@@ -79,15 +79,14 @@ struct DuplicateProductScreen: View {
     }
   }
 
-  func deleteProduct() async {
-    guard let deleteProduct else { return }
-    switch await repository.product.delete(id: deleteProduct.id) {
+  func deleteProduct(_ product: Product.Joined) async {
+    switch await repository.product.delete(id: product.id) {
     case .success:
       feedbackManager.trigger(.notification(.success))
       router.removeLast()
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete product \(deleteProduct.id): \(error.localizedDescription)")
+      logger.error("failed to delete product \(product.id): \(error.localizedDescription)")
     }
   }
 
