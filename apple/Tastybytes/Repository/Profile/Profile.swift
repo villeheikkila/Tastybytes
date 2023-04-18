@@ -191,16 +191,10 @@ extension Profile {
     }
 
     init(
-      username: String?,
-      firstName: String?,
-      lastName: String?,
       isPrivate: Bool,
       showFullName: Bool,
       isOnboarded: Bool
     ) {
-      self.username = username
-      self.firstName = firstName
-      self.lastName = lastName
       self.isPrivate = isPrivate
       nameDisplay = showFullName ? Profile.NameDisplay.fullName.rawValue : Profile.NameDisplay.username.rawValue
       self.isOnboarded = isOnboarded
@@ -380,6 +374,14 @@ struct SubcategoryStatistics: Identifiable, Decodable, Sendable {
 }
 
 extension Profile {
+  struct UsernameCheckRequest: Encodable, Sendable {
+    let username: String
+
+    enum CodingKeys: String, CodingKey {
+      case username = "p_username"
+    }
+  }
+
   struct PushNotificationToken: Identifiable, Codable, Hashable, Sendable {
     var id: String { firebaseRegistrationToken }
     let firebaseRegistrationToken: String

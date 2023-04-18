@@ -6,6 +6,10 @@ struct ProfileSettingsTab: View {
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @FocusState var focusedField: OnboardField?
   @State private var selectedItem: PhotosPickerItem?
+  @State private var username = ""
+  @State private var firstName = ""
+  @State private var lastName = ""
+  @State private var usernameIsAvailable = false
 
   var body: some View {
     // swiftlint:disable accessibility_trait_for_button
@@ -35,13 +39,26 @@ struct ProfileSettingsTab: View {
       }.listRowBackground(Color.clear)
 
       Section {
-        TextField("Username", text: $profileManager.username)
+        TextField("Username", text: $username)
           .autocapitalization(.none)
           .disableAutocorrection(true)
           .focused($focusedField, equals: .username)
-        TextField("First Name", text: $profileManager.firstName)
+          .onChange(of: username) { _ in
+            usernameIsAvailable = true
+          }
+          .onChange(of: username, debounceTime: 0.3) { newValue in
+            guard newValue.count > 1 else { return }
+            if username == profileManager.get().username {
+              usernameIsAvailable = true
+            } else {
+              Task {
+                usernameIsAvailable = await profileManager.checkIfUsernameIsAvailable(username: newValue)
+              }
+            }
+          }
+        TextField("First Name", text: $firstName)
           .focused($focusedField, equals: .firstName)
-        TextField("Last Name", text: $profileManager.lastName)
+        TextField("Last Name", text: $lastName)
           .focused($focusedField, equals: .lastName)
       } header: {
         Text("Profile")
@@ -76,6 +93,16 @@ struct ProfileSettingsTab: View {
       // swiftlint:enable accessibility_trait_for_button
     }.onTapGesture {
       focusedField = nil
+    }
+    .onDisappear {
+      Task {
+        await profileManager
+          .updateProfile(update: Profile.UpdateRequest(username: username, firstName: firstName, lastName: lastName)) {
+            print("")
+          } onError: { _ in
+            feedbackManager.toggle(.error(.unexpected))
+          }
+      }
     }
   }
 }

@@ -16,6 +16,7 @@ protocol ProfileRepository {
   func getContributions(userId: UUID) async -> Result<Contributions, Error>
   func getCategoryStatistics(userId: UUID) async -> Result<[CategoryStatistics], Error>
   func getSubcategoryStatistics(userId: UUID, categoryId: Int) async -> Result<[SubcategoryStatistics], Error>
+  func checkIfUsernameIsAvailable(username: String) async -> Result<Bool, Error>
 }
 
 struct SupabaseProfileRepository: ProfileRepository {
@@ -231,6 +232,20 @@ struct SupabaseProfileRepository: ProfileRepository {
         .execute()
 
       return .success(())
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func checkIfUsernameIsAvailable(username: String) async -> Result<Bool, Error> {
+    do {
+      let result: Bool = try await client
+        .database
+        .rpc(fn: "fnc__check_if_username_is_available", params: Profile.UsernameCheckRequest(username: username))
+        .execute()
+        .value
+
+      return .success(result)
     } catch {
       return .failure(error)
     }

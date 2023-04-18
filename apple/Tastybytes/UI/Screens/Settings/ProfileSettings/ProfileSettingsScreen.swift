@@ -5,6 +5,11 @@ struct ProfileSettingsScreen: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
 
+  @State private var username = ""
+  @State private var firstName = ""
+  @State private var lastName = ""
+  @State private var usernameIsAvailable = true
+
   var body: some View {
     Form {
       profileSection
@@ -12,23 +17,46 @@ struct ProfileSettingsScreen: View {
       privacySection
     }
     .navigationTitle("Profile")
+    .onAppear {
+      let currentProfile = profileManager.get()
+      username = currentProfile.username
+      firstName = currentProfile.firstName ?? ""
+      lastName = currentProfile.lastName ?? ""
+    }
   }
 
   private var profileSection: some View {
     Section {
-      TextField("Username", text: $profileManager.username)
+      TextField("Username", text: $username)
         .autocapitalization(.none)
         .disableAutocorrection(true)
-      TextField("First Name", text: $profileManager.firstName)
-      TextField("Last Name", text: $profileManager.lastName)
+        .onChange(of: username) { _ in
+          usernameIsAvailable = true
+        }
+        .onChange(of: username, debounceTime: 0.3) { newValue in
+          guard newValue.count > 1 else { return }
+          if username == profileManager.get().username {
+            usernameIsAvailable = true
+          } else {
+            Task {
+              usernameIsAvailable = await profileManager.checkIfUsernameIsAvailable(username: newValue)
+            }
+          }
+        }
+      TextField("First Name", text: $firstName)
+      TextField("Last Name", text: $lastName)
 
-      if profileManager.profileHasChanged {
-        ProgressButton("Update", action: { await profileManager.updateProfile(onSuccess: {
+      if profileHasChanged {
+        ProgressButton("Update", action: { await profileManager.updateProfile(update: Profile.UpdateRequest(
+          username: username,
+          firstName: firstName,
+          lastName: lastName
+        ), onSuccess: {
           await profileManager.refresh()
           feedbackManager.toggle(.success("Profile updated!"))
         }, onError: { error in
           feedbackManager.toggle(.error(.custom(error.localizedDescription)))
-        }) }).transition(.slide)
+        }) }).disabled(!usernameIsAvailable)
       }
     } header: {
       Text("Profile")
@@ -65,5 +93,12 @@ struct ProfileSettingsScreen: View {
       Text("Private profile hides check-ins and profile page from everyone else but your friends")
     }
     .headerProminence(.increased)
+  }
+
+  var profileHasChanged: Bool {
+    let currentProfile = profileManager.get()
+    return !(username == currentProfile.username &&
+      firstName == currentProfile.firstName ?? "" &&
+      lastName == currentProfile.lastName ?? "")
   }
 }

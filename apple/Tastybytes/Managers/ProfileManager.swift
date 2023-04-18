@@ -8,9 +8,6 @@ final class ProfileManager: ObservableObject {
   @Published private(set) var colorScheme: ColorScheme?
 
   // Profile Settings
-  @Published var username = ""
-  @Published var firstName = ""
-  @Published var lastName = ""
   @Published var showFullName = false
   @Published var showProfileUpdateButton = false
   @Published var isPrivateProfile = true
@@ -90,9 +87,6 @@ final class ProfileManager: ObservableObject {
     case let .success(currentUserProfile):
       profile = currentUserProfile
       setPreferredColorScheme(profileColorScheme: currentUserProfile.settings.colorScheme)
-      username = currentUserProfile.username
-      lastName = currentUserProfile.lastName.orEmpty
-      firstName = currentUserProfile.firstName.orEmpty
       showFullName = currentUserProfile.nameDisplay == Profile.NameDisplay.fullName
       isPrivateProfile = currentUserProfile.isPrivate
 
@@ -124,6 +118,16 @@ final class ProfileManager: ObservableObject {
       email = user.email.orEmpty
     case let .failure(error):
       logger.error("failed to get current user data: \(error.localizedDescription)")
+    }
+  }
+
+  func checkIfUsernameIsAvailable(username: String) async -> Bool {
+    switch await repository.profile.checkIfUsernameIsAvailable(username: username) {
+    case let .success(usernameExists):
+      return !usernameExists
+    case let .failure(error):
+      logger.error("failed to check if username is available: \(error.localizedDescription)")
+      return true
     }
   }
 
@@ -166,12 +170,6 @@ final class ProfileManager: ObservableObject {
     }
   }
 
-  var profileHasChanged: Bool {
-    !(username == profile?.username ?? "" &&
-      firstName == profile?.firstName ?? "" &&
-      lastName == profile?.lastName ?? "")
-  }
-
   func uploadAvatar(newAvatar: PhotosPickerItem, onError: @escaping (_ error: Error) -> Void) async {
     guard let data = await newAvatar.getJPEG() else { return }
     guard let profile else { return }
@@ -185,13 +183,11 @@ final class ProfileManager: ObservableObject {
     }
   }
 
-  func updateProfile(onSuccess: @escaping () async -> Void, onError: @escaping (_ error: Error) -> Void) async {
-    let update = Profile.UpdateRequest(
-      username: username,
-      firstName: firstName,
-      lastName: lastName
-    )
-
+  func updateProfile(
+    update: Profile.UpdateRequest,
+    onSuccess: @escaping () async -> Void,
+    onError: @escaping (_ error: Error) -> Void
+  ) async {
     switch await repository.profile.update(
       update: update
     ) {
@@ -205,9 +201,6 @@ final class ProfileManager: ObservableObject {
 
   func onboardingUpdate(onError: @escaping (_ error: Error) -> Void) async {
     let update = Profile.UpdateRequest(
-      username: username,
-      firstName: firstName,
-      lastName: lastName,
       isPrivate: isPrivateProfile,
       showFullName: showFullName,
       isOnboarded: true
