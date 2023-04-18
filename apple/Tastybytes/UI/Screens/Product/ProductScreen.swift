@@ -98,8 +98,8 @@ struct ProductScreen: View {
         ShareLink("Share", item: NavigatablePath.product(id: product.id).url)
 
         if profileManager.hasPermission(.canAddBarcodes) {
-          RouterLink("Add Barcode", systemImage: "barcode.viewfinder", sheet: .barcodeScanner(onComplete: { _ in
-            feedbackManager.toggle(.success("Barcode added"))
+          RouterLink("Add Barcode", systemImage: "barcode.viewfinder", sheet: .barcodeScanner(onComplete: { barcode in
+            Task { await addBarcodeToProduct(barcode) }
           }))
         }
 
@@ -199,6 +199,16 @@ struct ProductScreen: View {
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete product: \(error.localizedDescription)")
+    }
+  }
+
+  func addBarcodeToProduct(_ barcode: Barcode) async {
+    switch await repository.productBarcode.addToProduct(product: product, barcode: barcode) {
+    case .success:
+      feedbackManager.toggle(.success("Barcode added!"))
+    case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
+      logger.error("adding barcode \(barcode.barcode) to product failed: \(error.localizedDescription)")
     }
   }
 }
