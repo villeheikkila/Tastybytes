@@ -163,6 +163,22 @@ extension Product {
     let subcategory: Subcategory?
     let onlyNonCheckedIn: Bool
     let sortBy: SortBy?
+
+    func copyWith(category: Category.JoinedSubcategoriesServingStyles?) -> Filter {
+      Filter(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
+    }
+
+    func copyWith(subcategory: Subcategory?) -> Filter {
+      Filter(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
+    }
+
+    func copyWith(onlyNonCheckedIn: Bool) -> Filter {
+      Filter(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
+    }
+
+    func copyWith(sortBy: SortBy?) -> Filter {
+      Filter(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)
+    }
   }
 
   struct MergeProductsParams: Encodable, Sendable {

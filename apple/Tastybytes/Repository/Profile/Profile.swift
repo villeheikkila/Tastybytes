@@ -100,6 +100,63 @@ extension Profile {
     let roles: [Role]
     let settings: ProfileSettings
 
+    init(
+      id: UUID,
+      username: String,
+      joinedAt: Date,
+      isPrivate: Bool,
+      isOnboarded: Bool,
+      preferredName: String,
+      nameDisplay: Profile.NameDisplay,
+      roles: [Role],
+      settings: ProfileSettings,
+      firstName: String? = nil,
+      lastName: String? = nil,
+      avatarFile: String? = nil
+    ) {
+      self.id = id
+      self.username = username
+      self.firstName = firstName
+      self.lastName = lastName
+      self.joinedAt = joinedAt
+      self.isPrivate = isPrivate
+      self.isOnboarded = isOnboarded
+      self.avatarFile = avatarFile
+      self.preferredName = preferredName
+      self.nameDisplay = nameDisplay
+      self.roles = roles
+      self.settings = settings
+    }
+
+    func copyWith(
+      username: String? = nil,
+      firstName: String?? = nil,
+      lastName: String?? = nil,
+      joinedAt: Date? = nil,
+      isPrivate: Bool? = nil,
+      isOnboarded: Bool? = nil,
+      avatarFile: String?? = nil,
+      preferredName: String? = nil,
+      nameDisplay: Profile.NameDisplay? = nil,
+      roles: [Role]? = nil,
+      settings: ProfileSettings? = nil
+    ) -> Profile.Extended {
+      Profile.Extended(
+        id: id,
+        username: username ?? self.username,
+        joinedAt: joinedAt ?? self.joinedAt,
+        isPrivate: isPrivate ?? self.isPrivate,
+        isOnboarded: isOnboarded ?? self.isOnboarded,
+        preferredName: preferredName ?? self.preferredName,
+        nameDisplay: nameDisplay ?? self.nameDisplay,
+        roles: roles ?? self.roles,
+        settings: settings ?? self.settings,
+        firstName: firstName ?? self.firstName,
+        lastName: lastName ?? self.lastName,
+        avatarFile: avatarFile ?? self.avatarFile
+      )
+    }
+
     func getProfile() -> Profile {
       Profile(id: id, preferredName: preferredName, isPrivate: isPrivate, avatarFile: avatarFile, joinedAt: joinedAt)
     }

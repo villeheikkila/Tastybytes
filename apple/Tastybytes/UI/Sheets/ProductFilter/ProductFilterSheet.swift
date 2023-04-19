@@ -114,3 +114,127 @@ struct ProductFilterSheet: View {
     }
   }
 }
+
+struct ProductFilterSheet2: View {
+  enum Sections {
+    case category, checkIns, sortBy
+  }
+
+  private let logger = getLogger(category: "SeachFilterSheet")
+  @EnvironmentObject private var appDataManager: AppDataManager
+  @Environment(\.dismiss) private var dismiss
+  @State private var categoryFilter: Category.JoinedSubcategoriesServingStyles?
+  @State private var subcategoryFilter: Subcategory? {
+    didSet {
+      filter = filter.copyWith(subcategory: subcategoryFilter)
+    }
+  }
+
+  @State private var sortBy: Product.Filter.SortBy? {
+    didSet {
+      filter = filter.copyWith(sortBy: sortBy)
+    }
+  }
+
+  @State private var onlyNonCheckedIn = false {
+    didSet {
+      filter = filter.copyWith(onlyNonCheckedIn: onlyNonCheckedIn)
+    }
+  }
+
+  @Binding private var filter: Product.Filter
+
+  let sections: [Sections]
+
+  init(
+    filter: Binding<Product.Filter>,
+    sections: [Sections]
+  ) {
+    self.sections = sections
+    _filter = filter
+    subcategoryFilter = filter.wrappedValue.subcategory
+    categoryFilter = filter.wrappedValue.category
+    onlyNonCheckedIn = filter.wrappedValue.onlyNonCheckedIn
+    sortBy = filter.wrappedValue.sortBy
+  }
+
+  var body: some View {
+    Form {
+      if sections.contains(.category) {
+        Section("Category") {
+          Picker(selection: $categoryFilter) {
+            Text("Select All").tag(Category.JoinedSubcategoriesServingStyles?(nil))
+            ForEach(appDataManager.categories) { category in
+              Text(category.name).tag(Optional(category))
+            }
+          } label: {
+            Text("Category")
+          }
+          Picker(selection: $subcategoryFilter) {
+            Text("Select All").tag(Subcategory?(nil))
+            if let categoryFilter {
+              ForEach(categoryFilter.subcategories) { subcategory in
+                Text(subcategory.name).tag(Optional(subcategory))
+              }
+            }
+          } label: {
+            Text("Subcategory")
+          }.disabled(categoryFilter == nil)
+        }
+      }
+
+      if sections.contains(.checkIns) {
+        Section("Check-ins") {
+          Toggle("Only things I have not had", isOn: $onlyNonCheckedIn)
+        }
+      }
+      if sections.contains(.sortBy) {
+        Section("Sort By") {
+          Picker(selection: $sortBy) {
+            Text("None").tag(Product.Filter.SortBy?(nil))
+            ForEach(Product.Filter.SortBy.allCases) { sortBy in
+              Text(sortBy.label).tag(Optional(sortBy))
+            }
+          } label: {
+            Text("Rating")
+          }
+        }
+      }
+    }
+    .scrollDisabled(true)
+    .navigationTitle("Filter")
+    .navigationBarTitleDisplayMode(.inline)
+    .toolbar {
+      toolbarContent
+    }
+  }
+
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup(placement: .navigationBarLeading) {
+      Button("Done", role: .cancel, action: { dismiss() }).bold()
+    }
+    ToolbarItemGroup(placement: .navigationBarTrailing) {
+      Button("Reset", action: { resetFilter() }).bold()
+    }
+  }
+
+  func getFilter() -> Product.Filter? {
+    guard !(categoryFilter == nil && subcategoryFilter == nil && onlyNonCheckedIn == false && sortBy == nil) else { return nil }
+    return Product.Filter(
+      category: categoryFilter,
+      subcategory: subcategoryFilter,
+      onlyNonCheckedIn: onlyNonCheckedIn,
+      sortBy: sortBy
+    )
+  }
+
+  func resetFilter() {
+    withAnimation {
+      categoryFilter = nil
+      subcategoryFilter = nil
+      onlyNonCheckedIn = false
+      categoryFilter = nil
+      sortBy = nil
+    }
+  }
+}

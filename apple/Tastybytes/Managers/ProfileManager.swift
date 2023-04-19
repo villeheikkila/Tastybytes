@@ -88,7 +88,7 @@ final class ProfileManager: ObservableObject {
     return id
   }
 
-  func refresh() async {
+  func initialize() async {
     switch await repository.profile.getCurrentUser() {
     case let .success(currentUserProfile):
       profile = currentUserProfile
@@ -182,9 +182,8 @@ final class ProfileManager: ObservableObject {
     guard let data = await newAvatar.getJPEG() else { return }
     guard let profile else { return }
     switch await repository.profile.uploadAvatar(userId: profile.id, data: data) {
-    case .success:
-      // TODO: update only avatar url
-      await refresh()
+    case let .success(avatarFile):
+      self.profile = profile.copyWith(avatarFile: avatarFile)
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
       logger.error("uplodaing avatar failed: \(error.localizedDescription)")
@@ -198,8 +197,7 @@ final class ProfileManager: ObservableObject {
       update: update
     ) {
     case .success:
-      // FIXME: only update updated values
-      await refresh()
+      profile = profile?.copyWith(username: update.username, firstName: update.firstName, lastName: update.lastName)
       feedbackManager.toggle(.success("Profile updated!"))
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))

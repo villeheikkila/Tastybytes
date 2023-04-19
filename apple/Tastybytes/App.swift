@@ -92,7 +92,7 @@ struct RootView: View {
         }
         switch authEvent {
         case .signedIn:
-          await profileManager.refresh()
+          await profileManager.initialize()
           await notificationManager.refresh()
           notificationManager.refreshAPNS()
         default:
