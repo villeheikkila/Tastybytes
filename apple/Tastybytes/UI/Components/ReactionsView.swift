@@ -48,33 +48,31 @@ struct ReactionsView: View {
 
   func toggleReaction(userId: UUID) async {
     isLoading = true
-    Task {
-      if let reaction = checkInReactions.first(where: { $0.profile.id == userId }) {
-        switch await repository.checkInReactions.delete(id: reaction.id) {
-        case .success:
-          withAnimation {
-            checkInReactions.remove(object: reaction)
-          }
-          feedbackManager.trigger(.impact(intensity: .low))
-        case let .failure(error):
-          feedbackManager.toggle(.error(.unexpected))
-          logger.error("removing check-in reaction \(reaction.id) failed: \(error.localizedDescription)")
+    if let reaction = checkInReactions.first(where: { $0.profile.id == userId }) {
+      switch await repository.checkInReactions.delete(id: reaction.id) {
+      case .success:
+        withAnimation {
+          checkInReactions.remove(object: reaction)
         }
-      } else {
-        switch await repository.checkInReactions
-          .insert(newCheckInReaction: CheckInReaction.NewRequest(checkInId: checkIn.id))
-        {
-        case let .success(checkInReaction):
-          withAnimation {
-            checkInReactions.append(checkInReaction)
-          }
-          feedbackManager.trigger(.notification(.success))
-        case let .failure(error):
-          feedbackManager.toggle(.error(.unexpected))
-          logger.error("adding check-in reaction for check-in \(checkIn.id) by \(userId) failed:\(error.localizedDescription)")
-        }
+        feedbackManager.trigger(.impact(intensity: .low))
+      case let .failure(error):
+        feedbackManager.toggle(.error(.unexpected))
+        logger.error("removing check-in reaction \(reaction.id) failed: \(error.localizedDescription)")
       }
-      isLoading = false
+    } else {
+      switch await repository.checkInReactions
+        .insert(newCheckInReaction: CheckInReaction.NewRequest(checkInId: checkIn.id))
+      {
+      case let .success(checkInReaction):
+        withAnimation {
+          checkInReactions.append(checkInReaction)
+        }
+        feedbackManager.trigger(.notification(.success))
+      case let .failure(error):
+        feedbackManager.toggle(.error(.unexpected))
+        logger.error("adding check-in reaction for check-in \(checkIn.id) by \(userId) failed:\(error.localizedDescription)")
+      }
     }
+    isLoading = false
   }
 }
