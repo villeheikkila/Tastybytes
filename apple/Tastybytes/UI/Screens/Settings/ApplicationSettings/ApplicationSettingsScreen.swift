@@ -8,6 +8,9 @@ struct ApplicationSettingsScreen: View {
     Form {
       colorSchemeSection
       notificationSection
+      if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+        Link("Open Notification Settings", destination: settingsUrl)
+      }
     }
     .navigationTitle("Application")
     .navigationBarTitleDisplayMode(.inline)
