@@ -12,7 +12,7 @@ struct ReactionsView: View {
 
   init(checkIn: CheckIn) {
     self.checkIn = checkIn
-    checkInReactions = checkIn.checkInReactions
+    _checkInReactions = State(initialValue: checkIn.checkInReactions)
   }
 
   var body: some View {
@@ -36,7 +36,6 @@ struct ReactionsView: View {
         .onTapGesture {
           Task {
             await toggleReaction(userId: profileManager.getId())
-            feedbackManager.trigger(.impact(intensity: .low))
           }
         }
     })
@@ -56,6 +55,7 @@ struct ReactionsView: View {
           withAnimation {
             checkInReactions.remove(object: reaction)
           }
+          feedbackManager.trigger(.impact(intensity: .low))
         case let .failure(error):
           feedbackManager.toggle(.error(.unexpected))
           logger.error("removing check-in reaction \(reaction.id) failed: \(error.localizedDescription)")
@@ -68,6 +68,7 @@ struct ReactionsView: View {
           withAnimation {
             checkInReactions.append(checkInReaction)
           }
+          feedbackManager.trigger(.notification(.success))
         case let .failure(error):
           feedbackManager.toggle(.error(.unexpected))
           logger.error("adding check-in reaction for check-in \(checkIn.id) by \(userId) failed:\(error.localizedDescription)")
