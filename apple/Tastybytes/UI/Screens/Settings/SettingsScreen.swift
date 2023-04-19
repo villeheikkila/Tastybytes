@@ -6,23 +6,45 @@ struct SettingsScreen: View {
   var body: some View {
     List {
       Section {
-        RouterLink("Profile", systemImage: "person.crop.circle", screen: .profileSettings)
-        RouterLink("Account", systemImage: "gear", screen: .accountSettings)
-        RouterLink("Application", systemImage: "app.badge.checkmark.fill", screen: .applicationSettings)
-        RouterLink("App Icon", systemImage: "app.fill", screen: .appIcon)
-        RouterLink("Blocked Users", systemImage: "person.fill.xmark", screen: .blockedUsers)
-        RouterLink("Contributions", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .contributions)
+        RouterLink("Profile", systemImage: "person.crop.circle", color: .indigo, screen: .profileSettings)
+        RouterLink("Account", systemImage: "gear", color: .gray, screen: .accountSettings)
+        RouterLink("Appearance", systemImage: "paintbrush.fill", color: .blue, screen: .appearanaceSettings)
+        RouterLink("Notifications", systemImage: "bell.badge.fill", color: .red, screen: .notificationSettingsScreen)
+        RouterLink(screen: .appIcon) {
+          HStack {
+            Image(profileManager.appIcon.icon)
+              .resizable()
+              .cornerRadius(8)
+              .frame(width: 30, height: 30)
+              .padding(.trailing, 8)
+              .aspectRatio(contentMode: .fill)
+              .accessibilityHidden(true)
+            Text("App Icon")
+          }
+        }
+        RouterLink("Blocked Users", systemImage: "person.fill.xmark", color: .green, screen: .blockedUsers)
       }
 
       Section {
-        RouterLink("About", systemImage: "info.circle", screen: .about)
+        RouterLink(
+          "Your Contributions",
+          systemImage: "plus.rectangle.fill.on.rectangle.fill",
+          color: .teal,
+          screen: .contributions
+        )
+        RouterLink("About", systemImage: "at", color: .blue, screen: .about)
       }
 
       Section {
-        ProgressButton("Log Out", systemImage: "arrow.uturn.left", action: {
+        ProgressButton(action: {
           await profileManager.logOut()
-        })
-        .fontWeight(.medium)
+        }) {
+          Spacer()
+          Text("Sign Out")
+            .fontWeight(.medium)
+            .foregroundColor(.red)
+          Spacer()
+        }
       }
     }
     .navigationBarTitle("Preferences")

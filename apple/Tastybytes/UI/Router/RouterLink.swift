@@ -89,3 +89,41 @@ extension RouterLink where LabelView == Label<Text, Image> {
     })
   }
 }
+
+extension RouterLink where LabelView == LinkIconLabel {
+  init(_ titleKey: String, systemImage: String, color: Color, screen: Screen, asTapGesture: Bool = false) {
+    self.init(screen: screen, asTapGesture: asTapGesture, label: {
+      LinkIconLabel(titleKey: titleKey, systemImage: systemImage, color: color)
+    })
+  }
+}
+
+extension RouterLink where LabelView == LinkIconLabel {
+  init(_ titleKey: String, systemImage: String, color: Color, sheet: Sheet, asTapGesture: Bool = false) {
+    self.init(sheet: sheet, asTapGesture: asTapGesture, label: {
+      LinkIconLabel(titleKey: titleKey, systemImage: systemImage, color: color)
+    })
+  }
+}
+
+struct LinkIconLabel: View {
+  let titleKey: String
+  let systemImage: String
+  let color: Color
+
+  var body: some View {
+    HStack {
+      ZStack {
+        Rectangle()
+          .fill(color.gradient)
+          .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+        Image(systemName: systemImage)
+          .foregroundColor(.white)
+      }
+      .frame(width: 30, height: 30, alignment: .center)
+      .padding(.trailing, 8)
+      .accessibilityHidden(true)
+      Text(titleKey)
+    }
+  }
+}

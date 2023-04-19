@@ -49,6 +49,7 @@ struct TabsView: View {
       }
     }
     .task {
+      profileManager.appIcon = getCurrentAppIcon()
       await friendManager.loadFriends()
     }
     .environmentObject(friendManager)

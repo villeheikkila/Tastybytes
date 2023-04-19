@@ -25,6 +25,9 @@ final class ProfileManager: ObservableObject {
   @Published var friendRequestNotifications = true
   @Published var checkInTagNotifications = true
 
+  // AppIcon
+  @Published var appIcon: AppIcon = .ramune
+
   let repository: Repository
 
   init(repository: Repository) {

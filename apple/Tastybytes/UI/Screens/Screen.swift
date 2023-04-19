@@ -21,7 +21,8 @@ enum Screen: Hashable {
   case categoryManagement
   case profileSettings
   case accountSettings
-  case applicationSettings
+  case appearanaceSettings
+  case notificationSettingsScreen
   case appIcon
   case blockedUsers
   case contributions
@@ -75,8 +76,10 @@ enum Screen: Hashable {
       ProfileSettingsScreen()
     case .accountSettings:
       AccountSettingsScreen()
-    case .applicationSettings:
-      ApplicationSettingsScreen()
+    case .appearanaceSettings:
+      AppearanceSettingsScreen()
+    case .notificationSettingsScreen:
+      NotificationSettingsScreen()
     case .appIcon:
       AppIconScreen()
     case .blockedUsers:
