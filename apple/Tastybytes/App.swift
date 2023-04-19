@@ -6,6 +6,7 @@ import SwiftUI
 
 @main
 struct Main: App {
+  @StateObject private var feedbackManager = FeedbackManager()
   @UIApplicationDelegateAdaptor(AppDelegate.self)
   var appDelegate
 
@@ -16,7 +17,7 @@ struct Main: App {
 
   var body: some Scene {
     WindowGroup {
-      RootView(supabaseClient: supabaseClient)
+      RootView(supabaseClient: supabaseClient, feedbackManager: feedbackManager)
     }
   }
 }
@@ -27,17 +28,19 @@ struct RootView: View {
   @StateObject private var splashScreenManager = SplashScreenManager()
   @StateObject private var profileManager: ProfileManager
   @StateObject private var notificationManager: NotificationManager
-  @StateObject private var feedbackManager = FeedbackManager()
   @StateObject private var appDataManager: AppDataManager
   @State private var authEvent: AuthChangeEvent?
+  @ObservedObject private var feedbackManager: FeedbackManager
 
-  init(supabaseClient: SupabaseClient) {
+  init(supabaseClient: SupabaseClient, feedbackManager: FeedbackManager) {
     let repository = Repository(supabaseClient: supabaseClient)
     self.supabaseClient = supabaseClient
     _repository = StateObject(wrappedValue: repository)
-    _notificationManager = StateObject(wrappedValue: NotificationManager(repository: repository))
-    _profileManager = StateObject(wrappedValue: ProfileManager(repository: repository))
-    _appDataManager = StateObject(wrappedValue: AppDataManager(repository: repository))
+    _notificationManager =
+      StateObject(wrappedValue: NotificationManager(repository: repository, feedbackManager: feedbackManager))
+    _profileManager = StateObject(wrappedValue: ProfileManager(repository: repository, feedbackManager: feedbackManager))
+    _appDataManager = StateObject(wrappedValue: AppDataManager(repository: repository, feedbackManager: feedbackManager))
+    self.feedbackManager = feedbackManager
   }
 
   var body: some View {
@@ -46,7 +49,7 @@ struct RootView: View {
       case .signedIn:
         if profileManager.isLoggedIn {
           if profileManager.get().isOnboarded {
-            TabsView(repository, profile: profileManager.getProfile())
+            TabsView(repository, profile: profileManager.getProfile(), feedbackManager: feedbackManager)
           } else {
             OnboardTabsView()
           }

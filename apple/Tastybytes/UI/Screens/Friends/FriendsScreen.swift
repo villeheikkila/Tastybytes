@@ -44,10 +44,7 @@ struct FriendsScreen: View {
         ProgressButton(
           "Add friend",
           systemImage: "person.badge.plus",
-          action: { await friendManager.sendFriendRequest(receiver: profile.id) {
-            feedbackManager.toggle(.success("Friend Request Sent!"))
-          }
-          }
+          action: { await friendManager.sendFriendRequest(receiver: profile.id) }
         )
         .labelStyle(.iconOnly)
         .imageScale(.large)

@@ -51,12 +51,7 @@ struct ProfileSettingsScreen: View {
           username: username,
           firstName: firstName,
           lastName: lastName
-        ), onSuccess: {
-          await profileManager.refresh()
-          feedbackManager.toggle(.success("Profile updated!"))
-        }, onError: { error in
-          feedbackManager.toggle(.error(.custom(error.localizedDescription)))
-        }) }).disabled(!usernameIsAvailable)
+        )) }).disabled(!usernameIsAvailable)
       }
     } header: {
       Text("Profile")
@@ -72,7 +67,7 @@ struct ProfileSettingsScreen: View {
         profileManager.showFullName
       }, set: { newValue in
         profileManager.showFullName = newValue
-        Task { await profileManager.updateDisplaySettings(onError: { _ in feedbackManager.toggle(.error(.unexpected)) }) }
+        Task { await profileManager.updateDisplaySettings() }
       }))
     } footer: {
       Text("This only takes effect if both first name and last name are provided.")
@@ -85,7 +80,7 @@ struct ProfileSettingsScreen: View {
         profileManager.isPrivateProfile
       }, set: { newValue in
         profileManager.isPrivateProfile = newValue
-        Task { await profileManager.updatePrivacySettings(onError: { _ in feedbackManager.toggle(.error(.unexpected)) }) }
+        Task { await profileManager.updatePrivacySettings() }
       }))
     } header: {
       Text("Privacy")

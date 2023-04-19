@@ -110,10 +110,7 @@ struct CurrentUserFriendsScreen: View {
         systemImage: "qrcode",
         sheet: .nameTag(onSuccess: { profileId in
           Task {
-            await friendManager.sendFriendRequest(receiver: profileId, onSuccess: {
-              feedbackManager.trigger(.notification(.success))
-              feedbackManager.toggle(.success("Friend Request Sent!"))
-            })
+            await friendManager.sendFriendRequest(receiver: profileId)
           }
         })
       )

@@ -65,11 +65,9 @@ struct ProfileView: View {
   private var sendFriendRequestButton: some View {
     HStack {
       Spacer()
-      ProgressButton("Send Friend Request", action: { await friendManager.sendFriendRequest(receiver: profile.id) {
-        feedbackManager.toggle(.success("Friend Request Sent!"))
-      }})
-      .font(.headline)
-      .buttonStyle(ScalingButton())
+      ProgressButton("Send Friend Request", action: { await friendManager.sendFriendRequest(receiver: profile.id) })
+        .font(.headline)
+        .buttonStyle(ScalingButton())
       Spacer()
     }
   }

@@ -31,9 +31,7 @@ struct ProfileSettingsTab: View {
         }
         .onChange(of: selectedItem) { newValue in
           guard let newValue else { return }
-          Task { await profileManager.uploadAvatar(newAvatar: newValue, onError: { _ in
-            feedbackManager.toggle(.error(.unexpected))
-          }) }
+          Task { await profileManager.uploadAvatar(newAvatar: newValue) }
         }
         Spacer()
       }.listRowBackground(Color.clear)
@@ -72,7 +70,7 @@ struct ProfileSettingsTab: View {
           profileManager.showFullName
         }, set: { newValue in
           profileManager.showFullName = newValue
-          Task { await profileManager.updateDisplaySettings(onError: { _ in feedbackManager.toggle(.error(.unexpected)) }) }
+          Task { await profileManager.updateDisplaySettings() }
         }))
       } footer: {
         Text("This only takes effect if both first name and last name are provided.")
@@ -83,7 +81,7 @@ struct ProfileSettingsTab: View {
           profileManager.isPrivateProfile
         }, set: { newValue in
           profileManager.isPrivateProfile = newValue
-          Task { await profileManager.updatePrivacySettings(onError: { _ in feedbackManager.toggle(.error(.unexpected)) }) }
+          Task { await profileManager.updatePrivacySettings() }
         }))
       } header: {
         Text("Privacy")
@@ -97,11 +95,7 @@ struct ProfileSettingsTab: View {
     .onDisappear {
       Task {
         await profileManager
-          .updateProfile(update: Profile.UpdateRequest(username: username, firstName: firstName, lastName: lastName)) {
-            print("")
-          } onError: { _ in
-            feedbackManager.toggle(.error(.unexpected))
-          }
+          .updateProfile(update: Profile.UpdateRequest(username: username, firstName: firstName, lastName: lastName))
       }
     }
   }

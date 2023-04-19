@@ -36,7 +36,6 @@ struct UserSheet: View {
                     await friendManager.sendFriendRequest(receiver: profile.id, onSuccess: {
                       dismiss()
                       onSubmit()
-                      feedbackManager.trigger(.impact(intensity: .low))
                     })
                   })
                   .labelStyle(.iconOnly)

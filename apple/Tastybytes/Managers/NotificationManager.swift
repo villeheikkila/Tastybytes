@@ -15,9 +15,11 @@ final class NotificationManager: ObservableObject {
   }
 
   let repository: Repository
+  let feedbackManager: FeedbackManager
 
-  init(repository: Repository) {
+  init(repository: Repository, feedbackManager: FeedbackManager) {
     self.repository = repository
+    self.feedbackManager = feedbackManager
   }
 
   @Published var filter: NotificationType? {
@@ -73,6 +75,7 @@ final class NotificationManager: ObservableObject {
         notifications.append(contentsOf: newNotifications)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed: \(error.localizedDescription)")
     }
   }
@@ -84,6 +87,7 @@ final class NotificationManager: ObservableObject {
         self.notifications = [Notification]()
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed: \(error.localizedDescription)")
     }
   }
@@ -103,6 +107,7 @@ final class NotificationManager: ObservableObject {
         )
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed: \(error.localizedDescription)")
     }
   }
@@ -128,6 +133,7 @@ final class NotificationManager: ObservableObject {
           }
         }
       case let .failure(error):
+        feedbackManager.toggle(.error(.unexpected))
         logger.error("failed: \(error.localizedDescription)")
       }
     }
@@ -156,6 +162,7 @@ final class NotificationManager: ObservableObject {
           }
         }
       case let .failure(error):
+        feedbackManager.toggle(.error(.unexpected))
         logger.error("failed to mark check-in as read \(checkIn.id): \(error.localizedDescription)")
       }
     }
@@ -166,6 +173,7 @@ final class NotificationManager: ObservableObject {
     case let .success(updatedNotification):
       notifications.replace(notification, with: updatedNotification)
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to mark '\(notification.id)' as read: \(error.localizedDescription)")
     }
   }
@@ -179,6 +187,7 @@ final class NotificationManager: ObservableObject {
         _ = self.notifications.remove(at: index)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete notification: \(error.localizedDescription)")
     }
   }
@@ -190,6 +199,7 @@ final class NotificationManager: ObservableObject {
         self.notifications.remove(object: notification)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete notification '\(notification.id)': \(error.localizedDescription)")
     }
   }

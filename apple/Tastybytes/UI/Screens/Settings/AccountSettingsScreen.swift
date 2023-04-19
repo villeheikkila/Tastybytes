@@ -62,10 +62,7 @@ struct AccountSettingsScreen: View {
         "Delete Account",
         role: .destructive,
         action: {
-          await profileManager.deleteCurrentAccount(onError: { message in
-            feedbackManager.toggle(.error(.custom(message)))
-          })
-          feedbackManager.trigger(.notification(.success))
+          await profileManager.deleteCurrentAccount()
         }
       )
     }
@@ -127,9 +124,7 @@ struct AccountSettingsScreen: View {
         ProgressButton(
           "Export CSV",
           systemImage: "square.and.arrow.up",
-          action: { await profileManager.exportData(onError: { _ in
-            feedbackManager.toggle(.error(.unexpected))
-          }) }
+          action: { await profileManager.exportData() }
         )
         Button(role: .destructive, action: { showDeleteConfirmation = true }, label: {
           if UIColor.responds(to: Selector(("_systemDestructiveTintColor"))),

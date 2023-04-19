@@ -23,7 +23,7 @@ struct FinalStepTab: View {
         Spacer()
         ProgressButton(
           "Continue to the app",
-          action: { await profileManager.onboardingUpdate(onError: { _ in feedbackManager.toggle(.error(.unexpected)) }) }
+          action: { await profileManager.onboardingUpdate() }
         )
         .buttonStyle(.borderedProminent)
         .controlSize(.large)

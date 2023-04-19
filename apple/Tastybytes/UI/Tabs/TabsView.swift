@@ -9,9 +9,10 @@ struct TabsView: View {
   @State private var selection = Tab.activity
   @State private var resetNavigationOnTab: Tab?
 
-  init(_ repository: Repository, profile: Profile) {
+  init(_ repository: Repository, profile: Profile, feedbackManager: FeedbackManager) {
     self.repository = repository
-    _friendManager = StateObject(wrappedValue: FriendManager(repository: repository, profile: profile))
+    _friendManager =
+      StateObject(wrappedValue: FriendManager(repository: repository, profile: profile, feedbackManager: feedbackManager))
   }
 
   private var tabs: [Tab] {

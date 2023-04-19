@@ -19,20 +19,26 @@ final class FriendManager: ObservableObject {
 
   let profile: Profile
   let repository: Repository
+  let feedbackManager: FeedbackManager
 
-  init(repository: Repository, profile: Profile) {
+  init(repository: Repository, profile: Profile, feedbackManager: FeedbackManager) {
     self.repository = repository
     self.profile = profile
+    self.feedbackManager = feedbackManager
   }
 
-  func sendFriendRequest(receiver: UUID, onSuccess: @escaping () -> Void) async {
+  func sendFriendRequest(receiver: UUID, onSuccess: (() -> Void)? = nil) async {
     switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
     case let .success(newFriend):
       withAnimation {
         self.friends.append(newFriend)
       }
-      onSuccess()
+      feedbackManager.toggle(.success("Friend Request Sent!"))
+      if let onSuccess {
+        onSuccess()
+      }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed add new friend '\(receiver)': \(error.localizedDescription)")
     }
   }
@@ -50,6 +56,7 @@ final class FriendManager: ObservableObject {
         self.friends.replace(friend, with: updatedFriend)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger
         .warning(
           "failed to update friend request: \(error.localizedDescription)"
@@ -64,6 +71,7 @@ final class FriendManager: ObservableObject {
         self.friends.remove(object: friend)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to remove friend request '\(friend.id)': \(error.localizedDescription)")
     }
   }
@@ -80,6 +88,7 @@ final class FriendManager: ObservableObject {
     case let .success(friends):
       self.friends = friends
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load friends for current user: \(error.localizedDescription)")
     }
   }
@@ -91,6 +100,7 @@ final class FriendManager: ObservableObject {
         self.friends.remove(object: friend)
       }
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to unblock user \(friend.id): \(error.localizedDescription)")
     }
   }
@@ -106,6 +116,7 @@ final class FriendManager: ObservableObject {
         }
         onSuccess()
       case let .failure(error):
+        feedbackManager.toggle(.error(.unexpected))
         logger.error("failed to block user \(user.id): \(error.localizedDescription)")
       }
     }

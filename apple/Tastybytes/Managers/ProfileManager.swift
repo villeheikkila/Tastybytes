@@ -29,9 +29,11 @@ final class ProfileManager: ObservableObject {
   @Published var appIcon: AppIcon = .ramune
 
   let repository: Repository
+  let feedbackManager: FeedbackManager
 
-  init(repository: Repository) {
+  init(repository: Repository, feedbackManager: FeedbackManager) {
     self.repository = repository
+    self.feedbackManager = feedbackManager
   }
 
   var initialColorScheme: ColorScheme?
@@ -50,6 +52,7 @@ final class ProfileManager: ObservableObject {
     case .success:
       setPreferredColorScheme(profileColorScheme: isSystemColor ? .system : isDarkMode ? .dark : .light)
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("updating color scheme failed: \(error.localizedDescription)")
     }
   }
@@ -120,6 +123,7 @@ final class ProfileManager: ObservableObject {
     case let .success(user):
       email = user.email.orEmpty
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to get current user data: \(error.localizedDescription)")
     }
   }
@@ -163,17 +167,18 @@ final class ProfileManager: ObservableObject {
     _ = await repository.auth.sendEmailVerification(email: email)
   }
 
-  func deleteCurrentAccount(onError: @escaping (_ error: String) -> Void) async {
+  func deleteCurrentAccount() async {
     switch await repository.profile.deleteCurrentAccount() {
     case .success:
+      feedbackManager.trigger(.notification(.success))
       _ = await repository.auth.logOut()
     case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete current account: \(error.localizedDescription)")
-      onError(error.localizedDescription)
     }
   }
 
-  func uploadAvatar(newAvatar: PhotosPickerItem, onError: @escaping (_ error: Error) -> Void) async {
+  func uploadAvatar(newAvatar: PhotosPickerItem) async {
     guard let data = await newAvatar.getJPEG() else { return }
     guard let profile else { return }
     switch await repository.profile.uploadAvatar(userId: profile.id, data: data) {
@@ -181,28 +186,28 @@ final class ProfileManager: ObservableObject {
       // TODO: update only avatar url
       await refresh()
     case let .failure(error):
-      onError(error)
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("uplodaing avatar failed: \(error.localizedDescription)")
     }
   }
 
   func updateProfile(
-    update: Profile.UpdateRequest,
-    onSuccess: @escaping () async -> Void,
-    onError: @escaping (_ error: Error) -> Void
+    update: Profile.UpdateRequest
   ) async {
     switch await repository.profile.update(
       update: update
     ) {
     case .success:
-      await onSuccess()
+      // FIXME: only update updated values
+      await refresh()
+      feedbackManager.toggle(.success("Profile updated!"))
     case let .failure(error):
-      onError(error)
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to update profile: \(error.localizedDescription)")
     }
   }
 
-  func onboardingUpdate(onError: @escaping (_ error: Error) -> Void) async {
+  func onboardingUpdate() async {
     let update = Profile.UpdateRequest(
       isPrivate: isPrivateProfile,
       showFullName: showFullName,
@@ -215,12 +220,12 @@ final class ProfileManager: ObservableObject {
     case .success:
       logger.info("onboarded")
     case let .failure(error):
-      onError(error)
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to update profile: \(error.localizedDescription)")
     }
   }
 
-  func updatePrivacySettings(onError: @escaping (_ error: Error) -> Void) async {
+  func updatePrivacySettings() async {
     let update = Profile.UpdateRequest(isPrivate: isPrivateProfile)
     switch await repository.profile.update(
       update: update
@@ -228,12 +233,12 @@ final class ProfileManager: ObservableObject {
     case .success:
       logger.log("updated privacy settings")
     case let .failure(error):
-      onError(error)
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to update settings: \(error.localizedDescription)")
     }
   }
 
-  func updateDisplaySettings(onError: @escaping (_ error: String) -> Void) async {
+  func updateDisplaySettings() async {
     let update = Profile.UpdateRequest(
       showFullName: showFullName
     )
@@ -243,7 +248,7 @@ final class ProfileManager: ObservableObject {
     case .success:
       logger.log("updated display settings")
     case let .failure(error):
-      onError(error.localizedDescription)
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to update profile: \(error.localizedDescription)")
     }
   }
@@ -252,13 +257,13 @@ final class ProfileManager: ObservableObject {
     "\(Config.appName.lowercased())_export_\(Date().customFormat(.fileNameSuffix)).csv"
   }
 
-  func exportData(onError: @escaping (_ error: String) -> Void) async {
+  func exportData() async {
     switch await repository.profile.currentUserExport() {
     case let .success(csvText):
       csvExport = CSVFile(initialText: csvText)
       showingExporter = true
     case let .failure(error):
-      onError(error.localizedDescription)
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to export check-in csv: \(error.localizedDescription)")
     }
   }
