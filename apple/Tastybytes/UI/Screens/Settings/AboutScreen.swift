@@ -81,18 +81,22 @@ struct AboutScreen: View {
 
   var footer: some View {
     Section {
-      HStack(alignment: .center) {
-        Label("Copyright", systemImage: "c.circle")
-          .labelStyle(.iconOnly)
-          .font(.caption).bold()
+      HStack {
+        Spacer()
+        HStack(alignment: .center) {
+          Label("Copyright", systemImage: "c.circle")
+            .labelStyle(.iconOnly)
+            .font(.caption).bold()
 
-        if let currentYear = Calendar(identifier: .gregorian).dateComponents([.year], from: .now).year {
-          Text(String(currentYear))
+          if let currentYear = Calendar(identifier: .gregorian).dateComponents([.year], from: .now).year {
+            Text("2019-\(String(currentYear))")
+              .font(.caption).bold()
+          }
+          Text("Ville Heikkilä")
             .font(.caption).bold()
         }
-        Text("Ville Heikkilä")
-          .font(.caption).bold()
+        Spacer()
       }
-    }
+    }.listRowBackground(Color.clear)
   }
 }
