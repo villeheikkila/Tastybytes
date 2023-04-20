@@ -28,15 +28,135 @@ final class ProfileManager: ObservableObject {
   // AppIcon
   @Published var appIcon: AppIcon = .ramune
 
-  let repository: Repository
-  let feedbackManager: FeedbackManager
+  private let repository: Repository
+  private let feedbackManager: FeedbackManager
 
   init(repository: Repository, feedbackManager: FeedbackManager) {
     self.repository = repository
     self.feedbackManager = feedbackManager
   }
 
-  var initialColorScheme: ColorScheme?
+  private var initialColorScheme: ColorScheme?
+  private var extendedProfile: Profile.Extended?
+
+  // Getters
+  var profile: Profile {
+    if let extendedProfile {
+      return extendedProfile.profile
+    } else {
+      fatalError("profile can only be used on authenticated routes.")
+    }
+  }
+
+  var id: UUID {
+    if let extendedProfile {
+      return extendedProfile.id
+    } else {
+      fatalError("id can only be used on authenticated routes.")
+    }
+  }
+
+  var username: String {
+    if let extendedProfile {
+      return extendedProfile.username
+    } else {
+      fatalError("username can only be used on authenticated routes.")
+    }
+  }
+
+  var firstName: String? {
+    if let extendedProfile {
+      return extendedProfile.firstName
+    } else {
+      fatalError("username can only be used on authenticated routes.")
+    }
+  }
+
+  var lastName: String? {
+    if let extendedProfile {
+      return extendedProfile.lastName
+    } else {
+      fatalError("username can only be used on authenticated routes.")
+    }
+  }
+
+  var isOnboarded: Bool {
+    if let extendedProfile {
+      return extendedProfile.isOnboarded
+    } else {
+      fatalError("isOnboarded can only be used on authenticated routes.")
+    }
+  }
+
+  // Access Control
+  func hasPermission(_ permission: PermissionName) -> Bool {
+    guard let roles = extendedProfile?.roles else { return false }
+    let permissions = roles.flatMap(\.permissions)
+    return permissions.contains(where: { $0.name == permission.rawValue })
+  }
+
+  func hasRole(_ role: RoleName) -> Bool {
+    guard let roles = extendedProfile?.roles else { return false }
+    return roles.contains(where: { $0.name == role.rawValue })
+  }
+
+  func hasChanged(username: String, firstName: String, lastName: String) -> Bool {
+    guard let extendedProfile else { return false }
+    return !(username == extendedProfile.username &&
+      firstName == extendedProfile.firstName ?? "" &&
+      lastName == extendedProfile.lastName ?? "")
+  }
+
+  func initialize() async {
+    switch await repository.profile.getCurrentUser() {
+    case let .success(currentUserProfile):
+      extendedProfile = currentUserProfile
+      setPreferredColorScheme(profileColorScheme: currentUserProfile.settings.colorScheme)
+      showFullName = currentUserProfile.nameDisplay == Profile.NameDisplay.fullName
+      isPrivateProfile = currentUserProfile.isPrivate
+
+      switch currentUserProfile.settings.colorScheme {
+      case .light:
+        isDarkMode = false
+        isSystemColor = false
+      case .dark:
+        isDarkMode = true
+        isSystemColor = false
+      case .system:
+        isDarkMode = initialColorScheme == ColorScheme.dark
+        isSystemColor = true
+      }
+
+      reactionNotifications = currentUserProfile.settings.sendReactionNotifications
+      friendRequestNotifications = currentUserProfile.settings.sendFriendRequestNotifications
+      checkInTagNotifications = currentUserProfile.settings.sendTaggedCheckInNotifications
+      appIcon = getCurrentAppIcon()
+      initialValuesLoaded = false
+      isLoggedIn = true
+    case let .failure(error):
+      logger.error("error while loading current user profile: \(error.localizedDescription)")
+      isLoggedIn = false
+      await logOut()
+    }
+
+    switch await repository.auth.getUser() {
+    case let .success(user):
+      email = user.email.orEmpty
+    case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
+      logger.error("failed to get current user data: \(error.localizedDescription)")
+    }
+  }
+
+  func checkIfUsernameIsAvailable(username: String) async -> Bool {
+    switch await repository.profile.checkIfUsernameIsAvailable(username: username) {
+    case let .success(usernameExists):
+      return !usernameExists
+    case let .failure(error):
+      logger.error("failed to check if username is available: \(error.localizedDescription)")
+      return true
+    }
+  }
 
   func updateColorScheme() async {
     if isSystemColor {
@@ -64,84 +184,12 @@ final class ProfileManager: ObservableObject {
       sendFriendRequestNotifications: friendRequestNotifications
     )
 
-    _ = await repository.profile.updateSettings(
+    if case let .failure(error) = await repository.profile.updateSettings(
       update: update
-    )
-  }
-
-  private var profile: Profile.Extended?
-
-  func get() -> Profile.Extended {
-    guard let profile else { fatalError("ProfileManager.get() can only be used on authenticated routes.") }
-    return profile
-  }
-
-  func getProfile() -> Profile {
-    guard let profile = profile?.getProfile()
-    else { fatalError("ProfileManager.getProfile() can only be used on authenticated routes.") }
-    return profile
-  }
-
-  func getId() -> UUID {
-    guard let id = profile?.id
-    else { fatalError("ProfileManager.getProfile() can only be used on authenticated routes.") }
-    return id
-  }
-
-  func initialize() async {
-    switch await repository.profile.getCurrentUser() {
-    case let .success(currentUserProfile):
-      profile = currentUserProfile
-      setPreferredColorScheme(profileColorScheme: currentUserProfile.settings.colorScheme)
-      showFullName = currentUserProfile.nameDisplay == Profile.NameDisplay.fullName
-      isPrivateProfile = currentUserProfile.isPrivate
-
-      switch currentUserProfile.settings.colorScheme {
-      case .light:
-        isDarkMode = false
-        isSystemColor = false
-      case .dark:
-        isDarkMode = true
-        isSystemColor = false
-      case .system:
-        isDarkMode = initialColorScheme == ColorScheme.dark
-        isSystemColor = true
-      }
-
-      reactionNotifications = currentUserProfile.settings.sendReactionNotifications
-      friendRequestNotifications = currentUserProfile.settings.sendFriendRequestNotifications
-      checkInTagNotifications = currentUserProfile.settings.sendTaggedCheckInNotifications
-      initialValuesLoaded = false
-      isLoggedIn = true
-    case let .failure(error):
-      logger.error("error while loading current user profile: \(error.localizedDescription)")
-      isLoggedIn = false
-      _ = await repository.auth.logOut()
-    }
-
-    switch await repository.auth.getUser() {
-    case let .success(user):
-      email = user.email.orEmpty
-    case let .failure(error):
+    ) {
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to get current user data: \(error.localizedDescription)")
+      logger.error("failed to update notification settings: \(error.localizedDescription)")
     }
-  }
-
-  func checkIfUsernameIsAvailable(username: String) async -> Bool {
-    switch await repository.profile.checkIfUsernameIsAvailable(username: username) {
-    case let .success(usernameExists):
-      return !usernameExists
-    case let .failure(error):
-      logger.error("failed to check if username is available: \(error.localizedDescription)")
-      return true
-    }
-  }
-
-  func hasPermission(_ permission: PermissionName) -> Bool {
-    guard let roles = profile?.roles else { return false }
-    let permissions = roles.flatMap(\.permissions)
-    return permissions.contains(where: { $0.name == permission.rawValue })
   }
 
   func setPreferredColorScheme(profileColorScheme: ProfileSettings.ColorScheme) {
@@ -156,22 +204,31 @@ final class ProfileManager: ObservableObject {
   }
 
   func logOut() async {
-    _ = await repository.auth.logOut()
+    if case let .failure(error) = await repository.auth.logOut() {
+      feedbackManager.toggle(.error(.unexpected))
+      logger.error("failed to log out: \(error.localizedDescription)")
+    }
   }
 
   func updatePassword(newPassword: String) async {
-    _ = await repository.auth.updatePassword(newPassword: newPassword)
+    if case let .failure(error) = await repository.auth.updatePassword(newPassword: newPassword) {
+      feedbackManager.toggle(.error(.unexpected))
+      logger.error("failed to update password: \(error.localizedDescription)")
+    }
   }
 
   func sendEmailVerificationLink() async {
-    _ = await repository.auth.sendEmailVerification(email: email)
+    if case let .failure(error) = await repository.auth.sendEmailVerification(email: email) {
+      feedbackManager.toggle(.error(.unexpected))
+      logger.error("failed to send email verification link: \(error.localizedDescription)")
+    }
   }
 
   func deleteCurrentAccount() async {
     switch await repository.profile.deleteCurrentAccount() {
     case .success:
       feedbackManager.trigger(.notification(.success))
-      _ = await repository.auth.logOut()
+      await logOut()
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete current account: \(error.localizedDescription)")
@@ -180,10 +237,10 @@ final class ProfileManager: ObservableObject {
 
   func uploadAvatar(newAvatar: PhotosPickerItem) async {
     guard let data = await newAvatar.getJPEG() else { return }
-    guard let profile else { return }
-    switch await repository.profile.uploadAvatar(userId: profile.id, data: data) {
+    guard let extendedProfile else { return }
+    switch await repository.profile.uploadAvatar(userId: extendedProfile.id, data: data) {
     case let .success(avatarFile):
-      self.profile = profile.copyWith(avatarFile: avatarFile)
+      self.extendedProfile = extendedProfile.copyWith(avatarFile: avatarFile)
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))
       logger.error("uplodaing avatar failed: \(error.localizedDescription)")
@@ -197,7 +254,11 @@ final class ProfileManager: ObservableObject {
       update: update
     ) {
     case .success:
-      profile = profile?.copyWith(username: update.username, firstName: update.firstName, lastName: update.lastName)
+      extendedProfile = extendedProfile?.copyWith(
+        username: update.username,
+        firstName: update.firstName,
+        lastName: update.lastName
+      )
       feedbackManager.toggle(.success("Profile updated!"))
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))

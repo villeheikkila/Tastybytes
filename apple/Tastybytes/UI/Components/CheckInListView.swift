@@ -115,7 +115,7 @@ struct CheckInListView<Header>: View where Header: View {
           RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
           RouterLink("Open Check-in", systemImage: "checkmark.circle", screen: .checkIn(checkIn))
           Divider()
-          if checkIn.profile.id == profileManager.getId() {
+          if checkIn.profile.id == profileManager.id {
             RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
               onCheckInUpdate(updatedCheckIn)
             }))
@@ -160,7 +160,7 @@ struct CheckInListView<Header>: View where Header: View {
     case .product:
       return .product
     case .activityFeed:
-      return .activity(profileManager.getProfile())
+      return .activity(profileManager.profile)
     }
   }
 

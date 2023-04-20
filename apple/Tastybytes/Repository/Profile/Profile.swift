@@ -157,7 +157,7 @@ extension Profile {
       )
     }
 
-    func getProfile() -> Profile {
+    var profile: Profile {
       Profile(id: id, preferredName: preferredName, isPrivate: isPrivate, avatarFile: avatarFile, joinedAt: joinedAt)
     }
 

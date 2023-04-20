@@ -40,7 +40,7 @@ struct ContributionsScreen: View {
     .navigationTitle("Your Contributions")
     .navigationBarTitleDisplayMode(.inline)
     .task {
-      await loadContributions(userId: profileManager.getId())
+      await loadContributions(userId: profileManager.id)
     }
   }
 

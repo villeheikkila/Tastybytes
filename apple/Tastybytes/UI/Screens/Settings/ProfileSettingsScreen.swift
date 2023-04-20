@@ -18,10 +18,9 @@ struct ProfileSettingsScreen: View {
     }
     .navigationTitle("Profile")
     .onAppear {
-      let currentProfile = profileManager.get()
-      username = currentProfile.username
-      firstName = currentProfile.firstName ?? ""
-      lastName = currentProfile.lastName ?? ""
+      username = profileManager.username
+      firstName = profileManager.firstName ?? ""
+      lastName = profileManager.lastName ?? ""
     }
   }
 
@@ -35,7 +34,7 @@ struct ProfileSettingsScreen: View {
         }
         .onChange(of: username, debounceTime: 0.3) { newValue in
           guard newValue.count > 1 else { return }
-          if username == profileManager.get().username {
+          if username == profileManager.username {
             usernameIsAvailable = true
           } else {
             Task {
@@ -46,7 +45,7 @@ struct ProfileSettingsScreen: View {
       TextField("First Name", text: $firstName)
       TextField("Last Name", text: $lastName)
 
-      if profileHasChanged {
+      if profileManager.hasChanged(username: username, firstName: firstName, lastName: lastName) {
         ProgressButton("Update", action: { await profileManager.updateProfile(update: Profile.UpdateRequest(
           username: username,
           firstName: firstName,
@@ -88,12 +87,5 @@ struct ProfileSettingsScreen: View {
       Text("Private profile hides check-ins and profile page from everyone else but your friends")
     }
     .headerProminence(.increased)
-  }
-
-  var profileHasChanged: Bool {
-    let currentProfile = profileManager.get()
-    return !(username == currentProfile.username &&
-      firstName == currentProfile.firstName ?? "" &&
-      lastName == currentProfile.lastName ?? "")
   }
 }

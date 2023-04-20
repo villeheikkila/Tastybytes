@@ -47,11 +47,11 @@ struct CheckInScreen: View {
         RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
         Divider()
 
-        if profileManager.getId() != checkIn.profile.id {
+        if profileManager.id != checkIn.profile.id {
           ReportButton(entity: .checkIn(checkIn))
         }
 
-        if checkIn.profile.id == profileManager.getId() {
+        if checkIn.profile.id == profileManager.id {
           RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
             updateCheckIn(updatedCheckIn)
           }))
@@ -84,7 +84,7 @@ struct CheckInScreen: View {
       ForEach(checkInComments.reversed()) { comment in
         CheckInCommentView(comment: comment)
           .contextMenu {
-            if comment.profile == profileManager.getProfile() {
+            if comment.profile == profileManager.profile {
               Button("Edit Comment", systemImage: "pencil") {
                 withAnimation {
                   editComment = comment

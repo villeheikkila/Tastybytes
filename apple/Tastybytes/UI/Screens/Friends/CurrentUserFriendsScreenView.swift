@@ -25,7 +25,7 @@ struct CurrentUserFriendsScreen: View {
                 .foregroundColor(.primary)
             }
             Spacer()
-            if friend.isPending(userId: profileManager.getProfile().id) {
+            if friend.isPending(userId: profileManager.profile.id) {
               HStack(alignment: .center) {
                 Label("Remove friend request", systemImage: "person.fill.xmark")
                   .imageScale(.large)
@@ -48,7 +48,7 @@ struct CurrentUserFriendsScreen: View {
         }
         .swipeActions {
           Group {
-            if friend.isPending(userId: profileManager.getProfile().id) {
+            if friend.isPending(userId: profileManager.profile.id) {
               ProgressButton(
                 "Accept friend request",
                 systemImage: "person.badge.plus",
@@ -94,7 +94,7 @@ struct CurrentUserFriendsScreen: View {
       presenting: friendToBeRemoved
     ) { presenting in
       ProgressButton(
-        "Remove \(presenting.getFriend(userId: profileManager.getId()).preferredName) from friends",
+        "Remove \(presenting.getFriend(userId: profileManager.id).preferredName) from friends",
         role: .destructive,
         action: {
           await friendManager.removeFriendRequest(presenting)

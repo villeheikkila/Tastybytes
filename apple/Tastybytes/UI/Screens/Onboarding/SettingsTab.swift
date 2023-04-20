@@ -27,7 +27,7 @@ struct ProfileSettingsTab: View {
           matching: .images,
           photoLibrary: .shared()
         ) {
-          AvatarView(avatarUrl: profileManager.getProfile().avatarUrl, size: 120, id: profileManager.getId())
+          AvatarView(avatarUrl: profileManager.profile.avatarUrl, size: 120, id: profileManager.id)
         }
         .onChange(of: selectedItem) { newValue in
           guard let newValue else { return }
@@ -46,7 +46,7 @@ struct ProfileSettingsTab: View {
           }
           .onChange(of: username, debounceTime: 0.3) { newValue in
             guard newValue.count > 1 else { return }
-            if username == profileManager.get().username {
+            if username == profileManager.username {
               usernameIsAvailable = true
             } else {
               Task {

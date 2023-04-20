@@ -48,8 +48,8 @@ struct RootView: View {
       switch authEvent {
       case .signedIn:
         if profileManager.isLoggedIn {
-          if profileManager.get().isOnboarded {
-            TabsView(repository, profile: profileManager.getProfile(), feedbackManager: feedbackManager)
+          if profileManager.isOnboarded {
+            TabsView(repository, profile: profileManager.profile, feedbackManager: feedbackManager)
           } else {
             OnboardTabsView()
           }

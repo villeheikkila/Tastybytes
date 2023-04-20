@@ -15,12 +15,8 @@ struct TabsView: View {
       StateObject(wrappedValue: FriendManager(repository: repository, profile: profile, feedbackManager: feedbackManager))
   }
 
-  private var tabs: [Tab] {
-    [.activity, .search, .notifications, .profile]
-  }
-
-  private func shownTabs(profile: Profile.Extended) -> [Tab] {
-    if profile.roles.contains(where: { $0.name == "admin" }) {
+  private var shownTabs: [Tab] {
+    if profileManager.hasRole(.admin) {
       return [.activity, .search, .notifications, .admin, .profile]
     } else {
       return [.activity, .search, .notifications, .profile]
@@ -40,7 +36,7 @@ struct TabsView: View {
         selection = newTab
       }
     })) {
-      ForEach(shownTabs(profile: profileManager.get())) { tab in
+      ForEach(shownTabs) { tab in
         tab.view($resetNavigationOnTab)
           .tabItem {
             tab.label
@@ -50,7 +46,6 @@ struct TabsView: View {
       }
     }
     .task {
-      profileManager.appIcon = getCurrentAppIcon()
       await friendManager.loadFriends()
     }
     .environmentObject(friendManager)

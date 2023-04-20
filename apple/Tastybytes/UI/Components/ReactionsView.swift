@@ -23,7 +23,7 @@ struct ReactionsView: View {
       }
       Label(
         "React to check-in",
-        systemImage: hasReacted(profileManager.getProfile()) ? "hand.thumbsup.fill" : "hand.thumbsup"
+        systemImage: hasReacted(profileManager.profile) ? "hand.thumbsup.fill" : "hand.thumbsup"
       )
       .labelStyle(.iconOnly)
       .imageScale(.medium)
@@ -35,7 +35,7 @@ struct ReactionsView: View {
       view.accessibilityAddTraits(.isButton)
         .onTapGesture {
           Task {
-            await toggleReaction(userId: profileManager.getId())
+            await toggleReaction(userId: profileManager.id)
           }
         }
     })

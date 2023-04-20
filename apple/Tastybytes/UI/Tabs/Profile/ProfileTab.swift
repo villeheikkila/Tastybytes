@@ -10,8 +10,8 @@ struct ProfileTab: View {
 
   var body: some View {
     RouterWrapper { router in
-      ProfileView(profile: profileManager.getProfile(), scrollToTop: $scrollToTop, isCurrentUser: true)
-        .navigationTitle(profileManager.getProfile().preferredName)
+      ProfileView(profile: profileManager.profile, scrollToTop: $scrollToTop, isCurrentUser: true)
+        .navigationTitle(profileManager.profile.preferredName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
           ToolbarItemGroup(placement: .navigationBarLeading) {

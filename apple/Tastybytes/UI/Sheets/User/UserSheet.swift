@@ -65,7 +65,7 @@ struct UserSheet: View {
     .navigationBarItems(leading: Button("Cancel", role: .cancel, action: { dismiss() }))
     .searchable(text: $searchText)
     .disableAutocorrection(true)
-    .onSubmit(of: .search) { Task { await searchUsers(currentUserId: profileManager.getId()) }
+    .onSubmit(of: .search) { Task { await searchUsers(currentUserId: profileManager.id) }
     }
   }
 

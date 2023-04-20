@@ -28,3 +28,9 @@ extension Role {
     case joined(_ withTableName: Bool)
   }
 }
+
+enum RoleName: String {
+  case admin
+  case user
+  case supporter
+}

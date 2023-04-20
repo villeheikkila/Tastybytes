@@ -126,7 +126,7 @@ struct ProfileView: View {
         }
       }
       .onChange(of: selectedItem) { newValue in
-        Task { await uploadAvatar(userId: profileManager.getId(), newAvatar: newValue) }
+        Task { await uploadAvatar(userId: profileManager.id, newAvatar: newValue) }
       }
 
       Spacer()
@@ -239,7 +239,7 @@ struct ProfileView: View {
       RouterLink(
         "Friends",
         systemImage: "person.crop.rectangle.stack",
-        screen: profileManager.getProfile() == profile ? .currentUserFriends : .friends(profile)
+        screen: profileManager.profile == profile ? .currentUserFriends : .friends(profile)
       )
       RouterLink("Products", systemImage: "checkmark.rectangle", screen: .profileProducts(profile))
       RouterLink("Statistics", systemImage: "chart.bar.xaxis", screen: .profileStatistics(profile))

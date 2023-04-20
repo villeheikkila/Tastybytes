@@ -10,7 +10,7 @@ struct ProfileScreen: View {
     ProfileView(
       profile: profile,
       scrollToTop: $scrollToTop,
-      isCurrentUser: profileManager.getId() == profile.id
+      isCurrentUser: profileManager.id == profile.id
     )
     .navigationTitle(profile.preferredName)
     .navigationBarItems(

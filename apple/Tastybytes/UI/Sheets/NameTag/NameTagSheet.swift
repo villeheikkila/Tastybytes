@@ -10,7 +10,7 @@ struct NameTagSheet: View {
   var body: some View {
     VStack(spacing: 20) {
       if !showNameTagScanner {
-        CreateQRCodeView(qrCodeText: NavigatablePath.profile(id: profileManager.getId()).url.absoluteString)
+        CreateQRCodeView(qrCodeText: NavigatablePath.profile(id: profileManager.id).url.absoluteString)
         Button(action: { showNameTagScanner.toggle() }, label: {
           HStack {
             Spacer()
@@ -41,7 +41,7 @@ struct NameTagSheet: View {
     .navigationTitle("Name Tag")
     .navigationBarTitleDisplayMode(.inline)
     .navigationBarItems(
-      trailing: ShareLink("Share", item: NavigatablePath.profile(id: profileManager.getId()).url)
+      trailing: ShareLink("Share", item: NavigatablePath.profile(id: profileManager.id).url)
     )
   }
 }
