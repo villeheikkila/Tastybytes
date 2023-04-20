@@ -114,11 +114,7 @@ struct AuthenticationScreen: View {
 
   private var actions: some View {
     VStack(spacing: 12) {
-      Button(action: { primaryActionTapped(onSuccess: { message in
-        feedbackManager.toggle(.success(message))
-      }, onFailure: { message in
-        feedbackManager.toggle(.error(.custom(message)))
-      }) }, label: {
+      Button(action: { primaryActionTapped() }, label: {
         HStack(spacing: 8) {
           if isLoading {
             ProgressView()
@@ -171,14 +167,9 @@ struct AuthenticationScreen: View {
     }
   }
 
-  func primaryActionTapped(
-    onSuccess: @escaping (_ message: String) -> Void,
-    onFailure: @escaping (_ message: String) -> Void
-  ) {
+  func primaryActionTapped() {
     Task {
       isLoading = true
-      var primaryActionSuccessMessage: String?
-      var primaryActionError: Error?
 
       switch scene {
       case .signIn:
@@ -186,48 +177,45 @@ struct AuthenticationScreen: View {
         case .success:
           break
         case let .failure(error):
-          primaryActionError = error
+          feedbackManager.toggle(.error(.custom(error.localizedDescription)))
+          logger.error("Error occured when trying to \(scene.rawValue): \(error.localizedDescription)")
         }
       case .signUp:
         switch await repository.auth.signUp(username: username, email: email, password: password) {
         case .success:
-          primaryActionSuccessMessage = "Confirmation email has been sent!"
+          feedbackManager.toggle(.success("Confirmation email has been sent!"))
           onSignUp()
         case let .failure(error):
-          primaryActionError = error
+          feedbackManager.toggle(.error(.custom(error.localizedDescription)))
+          logger.error("Error occured when trying to \(scene.rawValue): \(error.localizedDescription)")
         }
       case .resetPassword:
         switch await repository.auth.updatePassword(newPassword: password) {
         case .success:
-          primaryActionSuccessMessage = "Confirmation email has been sent!"
+          feedbackManager.toggle(.success("Confirmation email has been sent!"))
           onSignUp()
         case let .failure(error):
-          primaryActionError = error
+          feedbackManager.toggle(.error(.custom(error.localizedDescription)))
+          logger.error("Error occured when trying to \(scene.rawValue): \(error.localizedDescription)")
         }
       case .forgotPassword:
         switch await repository.auth.sendPasswordResetEmail(email: email) {
         case .success:
-          primaryActionSuccessMessage = "Password reset email sent!"
+          feedbackManager.toggle(.success("Password reset email sent!"))
         case let .failure(error):
-          primaryActionError = error
+          feedbackManager.toggle(.error(.custom(error.localizedDescription)))
+          logger.error("Error occured when trying to \(scene.rawValue): \(error.localizedDescription)")
         }
       case .magicLink:
         switch await repository.auth.sendMagicLink(email: email) {
         case .success:
-          primaryActionSuccessMessage = "Magic link sent!"
+          feedbackManager.toggle(.success("Magic link sent!"))
         case let .failure(error):
-          primaryActionError = error
+          feedbackManager.toggle(.error(.custom(error.localizedDescription)))
+          logger.error("Error occured when trying to \(scene.rawValue): \(error.localizedDescription)")
         }
       case .accountDeleted:
         setScene(.signIn)
-      }
-
-      if let primaryActionSuccessMessage {
-        onSuccess(primaryActionSuccessMessage)
-      } else if let primaryActionError {
-        logger
-          .warning("Error occured when trying to \(scene.rawValue): \(primaryActionError.localizedDescription)")
-        onFailure(primaryActionError.localizedDescription)
       }
 
       isLoading = false
