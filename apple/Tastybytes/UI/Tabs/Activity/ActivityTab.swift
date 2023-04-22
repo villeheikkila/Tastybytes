@@ -27,6 +27,9 @@ struct ActivityTab: View {
         }
       }
       .navigationTitle("Activity")
+      .if(isPadOrMac(), transform: { view in
+        view.navigationBarTitleDisplayMode(.inline)
+      })
       .toolbar {
         toolbarContent
       }

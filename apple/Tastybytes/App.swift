@@ -104,7 +104,7 @@ struct RootView: View {
       OnboardTabsView()
     } else {
       Group {
-        if [.pad, .mac].contains(UIDevice.current.userInterfaceIdiom) {
+        if isPadOrMac() {
           TabsView()
         } else {
           TabsView()

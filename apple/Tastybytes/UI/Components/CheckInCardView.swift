@@ -20,6 +20,7 @@ struct CheckInCardView: View {
       }
       .padding([.leading, .trailing], 10)
       checkInImage
+
       VStack(spacing: 4) {
         checkInSection
         taggedProfilesSection

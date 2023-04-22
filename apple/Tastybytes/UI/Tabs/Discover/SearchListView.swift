@@ -133,7 +133,6 @@ struct SearchListView: View {
         Button("Locations", systemImage: "location", action: { searchScope = .locations })
       }
       .bold()
-      .listRowSeparator(.visible)
     }.headerProminence(.increased)
   }
 
@@ -202,7 +201,6 @@ struct SearchListView: View {
           )
         }
         .bold()
-        .listRowSeparator(.visible)
       }.headerProminence(.increased)
     } else {
       ForEach(products) { product in
