@@ -4,6 +4,7 @@ struct RouterWrapper<Content: View>: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @StateObject private var router = Router()
+  @StateObject private var sheetManager = SheetManager()
 
   var content: (_ router: Router) -> Content
 
@@ -16,7 +17,7 @@ struct RouterWrapper<Content: View>: View {
         .toast(isPresenting: $feedbackManager.show) {
           feedbackManager.toast
         }
-        .sheet(item: $router.sheet) { sheet in
+        .sheet(item: $sheetManager.sheet) { sheet in
           NavigationStack {
             sheet.view
           }
@@ -26,7 +27,7 @@ struct RouterWrapper<Content: View>: View {
           .toast(isPresenting: $feedbackManager.show) {
             feedbackManager.toast
           }
-          .sheet(item: $router.nestedSheet, content: { nestedSheet in
+          .sheet(item: $sheetManager.nestedSheet, content: { nestedSheet in
             NavigationStack {
               nestedSheet.view
             }
@@ -45,5 +46,6 @@ struct RouterWrapper<Content: View>: View {
         }
     }
     .environmentObject(router)
+    .environmentObject(sheetManager)
   }
 }

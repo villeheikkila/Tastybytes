@@ -37,7 +37,10 @@ struct CompanyScreen: View {
       }
       Section("Brands") {
         ForEach(sortedBrands) { brand in
-          RouterLink(screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company, brand: brand))) {
+          RouterLink(
+            screen: .brand(Brand.JoinedSubBrandsProductsCompany(brandOwner: company, brand: brand)),
+            asTapGesture: true
+          ) {
             HStack {
               Text("\(brand.name)")
               Spacer()

@@ -6,7 +6,7 @@ struct DiscoverTab: View {
 
   var body: some View {
     RouterWrapper { router in
-      SearchListView(scrollToTop: $scrollToTop)
+      DiscoverScreen(scrollToTop: $scrollToTop)
         .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
           if tab == .search {
             if router.path.isEmpty {

@@ -67,10 +67,14 @@ final class NotificationManager: ObservableObject {
   }
 
   func refresh(reset: Bool = false) async {
+    if reset {
+      feedbackManager.trigger(.impact(intensity: .low))
+    }
     switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
     case let .success(newNotifications):
       if reset {
         notifications = newNotifications
+        feedbackManager.trigger(.notification(.success))
       } else {
         notifications.append(contentsOf: newNotifications)
       }

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RouterLink<LabelView: View>: View {
   @EnvironmentObject private var router: Router
+  @EnvironmentObject private var sheetManager: SheetManager
 
   let screen: Screen?
   let sheet: Sheet?
@@ -31,13 +32,18 @@ struct RouterLink<LabelView: View>: View {
           if let screen {
             router.navigate(screen: screen)
           } else if let sheet {
-            router.navigate(sheet: sheet)
+            sheetManager.navigate(sheet: sheet)
           }
         }
     } else if let screen {
-      NavigationLink(value: screen, label: { label })
+      if isPadOrMac() {
+        Button(action: { router.navigate(screen: screen) }, label: { label })
+          .buttonStyle(PlainButtonStyle())
+      } else {
+        NavigationLink(value: screen, label: { label })
+      }
     } else if let sheet {
-      Button(action: { router.navigate(sheet: sheet) }, label: { label })
+      Button(action: { sheetManager.navigate(sheet: sheet) }, label: { label })
     }
   }
 }

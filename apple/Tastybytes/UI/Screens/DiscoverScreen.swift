@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SearchListView: View {
+struct DiscoverScreen: View {
   private let logger = getLogger(category: "SearchListView")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var router: Router

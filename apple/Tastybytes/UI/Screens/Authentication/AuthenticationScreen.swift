@@ -74,7 +74,7 @@ struct AuthenticationScreen: View {
       actions
     }
     .padding(40)
-    .frame(maxWidth: 500)
+    .clamped()
     .task {
       await splashScreenManager.dismiss()
     }

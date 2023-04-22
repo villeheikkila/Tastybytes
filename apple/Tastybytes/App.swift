@@ -107,10 +107,16 @@ struct RootView: View {
     } else if !profileManager.isOnboarded {
       OnboardTabsView()
     } else {
-      TabsView()
-        .task {
-          await friendManager.initialize(profile: profileManager.profile)
+      Group {
+        if isPadOrMac() {
+          SideBarView()
+        } else {
+          TabsView()
         }
+      }
+      .task {
+        await friendManager.initialize(profile: profileManager.profile)
+      }
     }
   }
 }

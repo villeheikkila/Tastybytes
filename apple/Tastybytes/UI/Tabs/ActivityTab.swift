@@ -1,7 +1,4 @@
-import CachedAsyncImage
-import PhotosUI
 import SwiftUI
-import WrappingHStack
 
 struct ActivityTab: View {
   @EnvironmentObject private var notificationManager: NotificationManager
@@ -10,29 +7,24 @@ struct ActivityTab: View {
 
   var body: some View {
     RouterWrapper { router in
-      CheckInListView(
-        fetcher: .activityFeed,
-        scrollToTop: $scrollToTop,
-        onRefresh: {},
-        header: {}
-      )
-      .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
-        if tab == .activity {
-          if router.path.isEmpty {
-            scrollToTop += 1
-          } else {
-            router.reset()
+      ActivityScreen(scrollToTop: $scrollToTop)
+        .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+          if tab == .activity {
+            if router.path.isEmpty {
+              scrollToTop += 1
+            } else {
+              router.reset()
+            }
+            resetNavigationOnTab = nil
           }
-          resetNavigationOnTab = nil
         }
-      }
-      .navigationTitle("Activity")
-      .if(isPadOrMac(), transform: { view in
-        view.navigationBarTitleDisplayMode(.inline)
-      })
-      .toolbar {
-        toolbarContent
-      }
+        .navigationTitle("Activity")
+        .if(isPadOrMac(), transform: { view in
+          view.navigationBarTitleDisplayMode(.inline)
+        })
+        .toolbar {
+          toolbarContent
+        }
     }
   }
 

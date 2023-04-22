@@ -1,18 +1,10 @@
 import SwiftUI
 
 @MainActor
-final class Router: ObservableObject {
-  private let logger = getLogger(category: "Router")
-  @Published var path: [Screen] = []
+final class SheetManager: ObservableObject {
+  private let logger = getLogger(category: "SheetManager")
   @Published var sheet: Sheet?
   @Published var nestedSheet: Sheet?
-
-  func navigate(screen: Screen, resetStack: Bool = false) {
-    if resetStack {
-      path = []
-    }
-    path.append(screen)
-  }
 
   func navigate(sheet: Sheet) {
     if self.sheet != nil, nestedSheet != nil {
@@ -24,6 +16,19 @@ final class Router: ObservableObject {
     } else {
       self.sheet = sheet
     }
+  }
+}
+
+@MainActor
+final class Router: ObservableObject {
+  private let logger = getLogger(category: "Router")
+  @Published var path: [Screen] = []
+
+  func navigate(screen: Screen, resetStack: Bool = false) {
+    if resetStack {
+      path = []
+    }
+    path.append(screen)
   }
 
   func reset() {

@@ -119,3 +119,18 @@ struct DetectOrientation: ViewModifier {
       }
   }
 }
+
+struct MaxWidthModifier: ViewModifier {
+  var maxWidth: CGFloat
+
+  func body(content: Content) -> some View {
+    content
+      .frame(maxWidth: maxWidth)
+  }
+}
+
+extension View {
+  func clamped(_ maxWidth: CGFloat = 500) -> some View {
+    modifier(MaxWidthModifier(maxWidth: maxWidth))
+  }
+}

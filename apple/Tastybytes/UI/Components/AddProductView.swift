@@ -44,6 +44,7 @@ struct AddProductView: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
+  @EnvironmentObject private var sheetManager: SheetManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var appDataManager: AppDataManager
   @FocusState private var focusedField: Focusable?
@@ -197,7 +198,7 @@ struct AddProductView: View {
 
       Button(action: {
         if let category {
-          router.navigate(sheet: .subcategory(
+          sheetManager.navigate(sheet: .subcategory(
             subcategories: $subcategories,
             category: category
           ))

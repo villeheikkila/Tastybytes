@@ -80,7 +80,7 @@
 		5C43238129898A4C0085522E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C43238029898A4C0085522E /* GoogleService-Info.plist */; };
 		5C46E8642911D9FD0008F142 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C46E8632911D9FD0008F142 /* Config.swift */; };
 		5C61E82D29B5C52600D10AA3 /* DuplicataProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E82C29B5C52600D10AA3 /* DuplicataProductScreen.swift */; };
-		5C61E83229B7B41400D10AA3 /* SearchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83129B7B41400D10AA3 /* SearchListView.swift */; };
+		5C61E83229B7B41400D10AA3 /* DiscoverScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83129B7B41400D10AA3 /* DiscoverScreen.swift */; };
 		5C61E83929B8FE7300D10AA3 /* CategoryManagementScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83829B8FE7300D10AA3 /* CategoryManagementScreen.swift */; };
 		5C61E83D29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83C29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift */; };
 		5C61E83F29BF909D00D10AA3 /* ServingStyleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83E29BF909D00D10AA3 /* ServingStyleRepository.swift */; };
@@ -163,6 +163,11 @@
 		5CD10A5728F98D490001CFC2 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5628F98D490001CFC2 /* Product.swift */; };
 		5CD10A5928F98D8A0001CFC2 /* CheckInReaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */; };
 		5CD10A5C28F998BF0001CFC2 /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */; };
+		5CD7234629F45F83003DA030 /* NotificationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD7234529F45F83003DA030 /* NotificationScreen.swift */; };
+		5CD7234829F460FF003DA030 /* AdminScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD7234729F460FF003DA030 /* AdminScreen.swift */; };
+		5CD7234A29F46176003DA030 /* ActivityScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD7234929F46176003DA030 /* ActivityScreen.swift */; };
+		5CD7234C29F4628B003DA030 /* SideBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD7234B29F4628B003DA030 /* SideBarView.swift */; };
+		5CD7234E29F46442003DA030 /* CurrentProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD7234D29F46442003DA030 /* CurrentProfileScreen.swift */; };
 		5CD8D35129C8CFB7001C5930 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 5CD8D35029C8CFB7001C5930 /* SFSafeSymbols */; };
 		5CD8D35329CA5B2D001C5930 /* FriendManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD8D35229CA5B2D001C5930 /* FriendManager.swift */; };
 		5CD8D35529CDF58F001C5930 /* AppDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD8D35429CDF58F001C5930 /* AppDataManager.swift */; };
@@ -273,7 +278,7 @@
 		5C46E8632911D9FD0008F142 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		5C46E8662911E5860008F142 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5C61E82C29B5C52600D10AA3 /* DuplicataProductScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicataProductScreen.swift; sourceTree = "<group>"; };
-		5C61E83129B7B41400D10AA3 /* SearchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListView.swift; sourceTree = "<group>"; };
+		5C61E83129B7B41400D10AA3 /* DiscoverScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverScreen.swift; sourceTree = "<group>"; };
 		5C61E83829B8FE7300D10AA3 /* CategoryManagementScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManagementScreen.swift; sourceTree = "<group>"; };
 		5C61E83C29BF8B2F00D10AA3 /* CategoryServingStyleSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryServingStyleSheet.swift; sourceTree = "<group>"; };
 		5C61E83E29BF909D00D10AA3 /* ServingStyleRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyleRepository.swift; sourceTree = "<group>"; };
@@ -358,6 +363,11 @@
 		5CD10A5628F98D490001CFC2 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		5CD10A5828F98D8A0001CFC2 /* CheckInReaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInReaction.swift; sourceTree = "<group>"; };
 		5CD10A5B28F998BF0001CFC2 /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
+		5CD7234529F45F83003DA030 /* NotificationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScreen.swift; sourceTree = "<group>"; };
+		5CD7234729F460FF003DA030 /* AdminScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminScreen.swift; sourceTree = "<group>"; };
+		5CD7234929F46176003DA030 /* ActivityScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityScreen.swift; sourceTree = "<group>"; };
+		5CD7234B29F4628B003DA030 /* SideBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarView.swift; sourceTree = "<group>"; };
+		5CD7234D29F46442003DA030 /* CurrentProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentProfileScreen.swift; sourceTree = "<group>"; };
 		5CD8D35229CA5B2D001C5930 /* FriendManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendManager.swift; sourceTree = "<group>"; };
 		5CD8D35429CDF58F001C5930 /* AppDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataManager.swift; sourceTree = "<group>"; };
 		5CDC9F8429E136A500B6082F /* CheckInEntityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInEntityView.swift; sourceTree = "<group>"; };
@@ -423,14 +433,6 @@
 				5C09BECA29A54AF800331AEB /* Comfortaa-Bold.ttf */,
 			);
 			path = Fonts;
-			sourceTree = "<group>";
-		};
-		5C20A50E29AA59E700ABBA74 /* Admin */ = {
-			isa = PBXGroup;
-			children = (
-				5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */,
-			);
-			path = Admin;
 			sourceTree = "<group>";
 		};
 		5C20A51529AB527B00ABBA74 /* FlavorManagement */ = {
@@ -695,12 +697,11 @@
 			isa = PBXGroup;
 			children = (
 				5CDC9F9E29E4577B00B6082F /* Tab.swift */,
-				5C12B4342902C9D0001EE549 /* TabsView.swift */,
-				5C7C35E9299AE127009A3C09 /* Activity */,
-				5C20A50E29AA59E700ABBA74 /* Admin */,
-				5C7C35D9299ADFF2009A3C09 /* Discover */,
-				5C7C35DE299AE07C009A3C09 /* Notification */,
-				5C7C35EA299AE130009A3C09 /* Profile */,
+				5C11ECBA28EEF24700CCDE6A /* ActivityTab.swift */,
+				5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */,
+				5C11ECBC28EEF30600CCDE6A /* DiscoverTab.swift */,
+				5C12B4362902CA04001EE549 /* NotificationTab.swift */,
+				5C11ECB828EEF16000CCDE6A /* ProfileTab.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -928,43 +929,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		5C7C35D9299ADFF2009A3C09 /* Discover */ = {
-			isa = PBXGroup;
-			children = (
-				5C11ECBC28EEF30600CCDE6A /* DiscoverTab.swift */,
-				5C61E83129B7B41400D10AA3 /* SearchListView.swift */,
-			);
-			path = Discover;
-			sourceTree = "<group>";
-		};
-		5C7C35DE299AE07C009A3C09 /* Notification */ = {
-			isa = PBXGroup;
-			children = (
-				5C12B4362902CA04001EE549 /* NotificationTab.swift */,
-				5C7C35DF299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift */,
-				5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */,
-				5C7C35E3299AE0CD009A3C09 /* MessageNotificationView.swift */,
-				5C7C35E5299AE0E1009A3C09 /* CheckInReactionNotificationView.swift */,
-			);
-			path = Notification;
-			sourceTree = "<group>";
-		};
-		5C7C35E9299AE127009A3C09 /* Activity */ = {
-			isa = PBXGroup;
-			children = (
-				5C11ECBA28EEF24700CCDE6A /* ActivityTab.swift */,
-			);
-			path = Activity;
-			sourceTree = "<group>";
-		};
-		5C7C35EA299AE130009A3C09 /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-				5C11ECB828EEF16000CCDE6A /* ProfileTab.swift */,
-			);
-			path = Profile;
-			sourceTree = "<group>";
-		};
 		5CB4E02829DF3A0300135ADA /* Report */ = {
 			isa = PBXGroup;
 			children = (
@@ -1041,6 +1005,8 @@
 		5CD10A5D28F99CDF0001CFC2 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				5C12B4342902C9D0001EE549 /* TabsView.swift */,
+				5CD7234B29F4628B003DA030 /* SideBarView.swift */,
 				5C32C40829E71463008CE8A9 /* Router */,
 				5C25C68229956B7A00C07953 /* Shapes */,
 				5C09BECC29A54B1600331AEB /* Fonts */,
@@ -1072,8 +1038,25 @@
 				5C7C356D299ABDE9009A3C09 /* Profile */,
 				5C25C681299569FB00C07953 /* Settings */,
 				5C32C41329ED9F9C008CE8A9 /* ErrorScreen.swift */,
+				5C61E83129B7B41400D10AA3 /* DiscoverScreen.swift */,
+				5CD7234D29F46442003DA030 /* CurrentProfileScreen.swift */,
+				5CD7234929F46176003DA030 /* ActivityScreen.swift */,
+				5CD7234729F460FF003DA030 /* AdminScreen.swift */,
+				5CD7234329F45F6A003DA030 /* Notification */,
 			);
 			path = Screens;
+			sourceTree = "<group>";
+		};
+		5CD7234329F45F6A003DA030 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				5CD7234529F45F83003DA030 /* NotificationScreen.swift */,
+				5C7C35DF299AE0A2009A3C09 /* TaggedInCheckInNotificationView.swift */,
+				5C7C35E1299AE0B5009A3C09 /* FriendRequestNotificationView.swift */,
+				5C7C35E3299AE0CD009A3C09 /* MessageNotificationView.swift */,
+				5C7C35E5299AE0E1009A3C09 /* CheckInReactionNotificationView.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		5CDC9F8629E350E700B6082F /* AddCategory */ = {
@@ -1330,6 +1313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C11ECBB28EEF24700CCDE6A /* ActivityTab.swift in Sources */,
+				5CD7234C29F4628B003DA030 /* SideBarView.swift in Sources */,
 				5C7C35F2299AE67B009A3C09 /* UsernameTextFieldView.swift in Sources */,
 				5CC2FE9429197D9F002BDF83 /* LocationSearchManager.swift in Sources */,
 				5C20A52529AC8AB800ABBA74 /* BarcodeUtils.swift in Sources */,
@@ -1345,6 +1329,7 @@
 				5CA7A53729A0E7750066F604 /* ProductFilterSheet.swift in Sources */,
 				5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */,
 				5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */,
+				5CD7234629F45F83003DA030 /* NotificationScreen.swift in Sources */,
 				5C663F3329322016006F9A97 /* ServingStyleLabelView.swift in Sources */,
 				5CDC9F9929E3E1EE00B6082F /* EditCompanySheet.swift in Sources */,
 				5C0E365429279B240072EFBD /* Barcode.swift in Sources */,
@@ -1381,6 +1366,7 @@
 				5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* App.swift in Sources */,
 				5CB1C24B28F9BE4F000B0EB4 /* ProductRepository.swift in Sources */,
+				5CD7234E29F46442003DA030 /* CurrentProfileScreen.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
 				5C61E82D29B5C52600D10AA3 /* DuplicataProductScreen.swift in Sources */,
 				5C25C68A299572B700C07953 /* FinalStepTab.swift in Sources */,
@@ -1397,6 +1383,7 @@
 				5C323E8D298C4D7300B005A9 /* StringExtensions.swift in Sources */,
 				5C12B4372902CA04001EE549 /* NotificationTab.swift in Sources */,
 				5C25C66D29941B9F00C07953 /* OnboardTabsView.swift in Sources */,
+				5CD7234829F460FF003DA030 /* AdminScreen.swift in Sources */,
 				5C663F2B292FBE10006F9A97 /* AppIconScreen.swift in Sources */,
 				5C7C35DD299AE042009A3C09 /* ProductItemView.swift in Sources */,
 				5C25C68E29991BEF00C07953 /* BarcodeManagementSheet.swift in Sources */,
@@ -1440,6 +1427,7 @@
 				5C7C35F4299AE69D009A3C09 /* PasswordTextFieldView.swift in Sources */,
 				5C09BEC929A53E0100331AEB /* CategoryView.swift in Sources */,
 				5C353CC029A249660067C4EE /* ProductFilterOverlayView.swift in Sources */,
+				5CD7234A29F46176003DA030 /* ActivityScreen.swift in Sources */,
 				5C20A50D29AA316900ABBA74 /* CustomBadge.swift in Sources */,
 				5CBC2450297C54B900A0002B /* Router.swift in Sources */,
 				5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */,
@@ -1478,7 +1466,7 @@
 				5CC2FE982919CB19002BDF83 /* Country.swift in Sources */,
 				5CDC9F9D29E4572000B6082F /* Screen.swift in Sources */,
 				5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */,
-				5C61E83229B7B41400D10AA3 /* SearchListView.swift in Sources */,
+				5C61E83229B7B41400D10AA3 /* DiscoverScreen.swift in Sources */,
 				5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */,
 				5C32C41429ED9F9C008CE8A9 /* ErrorScreen.swift in Sources */,
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,

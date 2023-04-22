@@ -38,13 +38,13 @@ struct SettingsScreen: View {
       Section {
         ProgressButton(action: {
           await profileManager.logOut()
-        }) {
+        }, label: {
           Spacer()
           Text("Sign Out")
             .fontWeight(.medium)
             .foregroundColor(.red)
           Spacer()
-        }
+        })
       }
     }
     .navigationBarTitle("Preferences")

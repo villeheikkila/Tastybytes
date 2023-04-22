@@ -1,5 +1,3 @@
-import Charts
-import PhotosUI
 import SwiftUI
 
 struct ProfileTab: View {
@@ -10,9 +8,7 @@ struct ProfileTab: View {
 
   var body: some View {
     RouterWrapper { router in
-      ProfileView(profile: profileManager.profile, scrollToTop: $scrollToTop, isCurrentUser: true)
-        .navigationTitle(profileManager.profile.preferredName)
-        .navigationBarTitleDisplayMode(.inline)
+      CurrentProfileScreen(scrollToTop: $scrollToTop)
         .toolbar {
           ToolbarItemGroup(placement: .navigationBarLeading) {
             RouterLink("Show name tag", systemImage: "qrcode", sheet: .nameTag(onSuccess: { profileId in

@@ -28,6 +28,7 @@ struct CheckInScreen: View {
   var body: some View {
     ScrollView {
       CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn)
+        .padding([.leading, .trailing], 8)
       commentSection
     }
     .overlay(
