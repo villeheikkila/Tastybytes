@@ -173,7 +173,6 @@ struct SupabaseCompanyRepository: CompanyRepository {
         .map { "\($0.trimmingCharacters(in: .whitespaces)):*" }
         .joined(separator: " & ")
 
-      print(searchString)
       let response: [Company] = try await client
         .database
         .from(Company.getQuery(.tableName))

@@ -186,7 +186,7 @@ struct AddProductView: View {
   private var categorySection: some View {
     Section {
       Picker("Category", selection: $category) {
-        Text("None").tag(Category.JoinedSubcategories?(nil))
+        Text("None").tag(Category.JoinedSubcategoriesServingStyles?(nil))
           .fontWeight(.medium)
         ForEach(appDataManager.categories) { category in
           Text(category.name)

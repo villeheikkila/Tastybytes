@@ -84,7 +84,7 @@ struct CompanySearchSheet: View {
       self.searchResults = searchResults
       status = Status.searched
     case let .failure(error):
-      // feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to search companies: \(error.localizedDescription)")
     }
   }
