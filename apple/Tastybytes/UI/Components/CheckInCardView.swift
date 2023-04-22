@@ -75,10 +75,13 @@ struct CheckInCardView: View {
           .frame(height: 200)
           .clipped()
           .contentShape(Rectangle())
-          .accessibility(addTraits: .isButton)
-          .onTapGesture {
-            showFullPicture = true
-          }
+          .if(!isPadOrMac(), transform: { view in
+            view
+              .onTapGesture {
+                showFullPicture = true
+              }
+              .accessibility(addTraits: .isButton)
+          })
           .popover(isPresented: $showFullPicture) {
             CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
               image

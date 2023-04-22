@@ -4,6 +4,7 @@ struct TabsView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(\.orientation) private var orientation
   @State private var selection = Tab.activity
   @State private var resetNavigationOnTab: Tab?
 
@@ -16,6 +17,16 @@ struct TabsView: View {
   }
 
   var body: some View {
+    Group {
+      if isPadOrMac(), [.unknown, .landscapeLeft, .landscapeRight].contains(orientation) {
+        sideBarView
+      } else {
+        tabView
+      }
+    }
+  }
+
+  @ViewBuilder private var tabView: some View {
     TabView(selection: .init(get: {
       selection
     }, set: { newTab in
@@ -36,6 +47,20 @@ struct TabsView: View {
           .tag(tab)
           .badge(getBadgeByTab(tab))
       }
+    }
+  }
+
+  var sideBarView: some View {
+    NavigationSplitView {
+      List {
+        ForEach(shownTabs) { tab in
+          Button(action: { selection = tab }, label: {
+            tab.label
+          })
+        }
+      }
+    } detail: {
+      selection.view($resetNavigationOnTab)
     }
   }
 

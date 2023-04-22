@@ -31,6 +31,7 @@ struct RootView: View {
   @StateObject private var appDataManager: AppDataManager
   @StateObject private var friendManager: FriendManager
   @State private var authEvent: AuthChangeEvent?
+  @State private var orientation: UIDeviceOrientation
   @ObservedObject private var feedbackManager: FeedbackManager
 
   init(supabaseClient: SupabaseClient, feedbackManager: FeedbackManager) {
@@ -43,6 +44,7 @@ struct RootView: View {
     _appDataManager = StateObject(wrappedValue: AppDataManager(repository: repository, feedbackManager: feedbackManager))
     _friendManager =
       StateObject(wrappedValue: FriendManager(repository: repository, feedbackManager: feedbackManager))
+    _orientation = State(wrappedValue: UIDevice.current.orientation)
     self.feedbackManager = feedbackManager
   }
 
@@ -72,6 +74,8 @@ struct RootView: View {
     .environmentObject(appDataManager)
     .environmentObject(friendManager)
     .preferredColorScheme(profileManager.colorScheme)
+    .detectOrientation($orientation)
+    .environment(\.orientation, orientation)
     .onOpenURL { url in
       Task { _ = try await supabaseClient.auth.session(from: url) }
     }
@@ -103,16 +107,21 @@ struct RootView: View {
     } else if !profileManager.isOnboarded {
       OnboardTabsView()
     } else {
-      Group {
-        if isPadOrMac() {
-          TabsView()
-        } else {
-          TabsView()
+      TabsView()
+        .task {
+          await friendManager.initialize(profile: profileManager.profile)
         }
-      }
-      .task {
-        await friendManager.initialize(profile: profileManager.profile)
-      }
     }
+  }
+}
+
+struct Orientation: EnvironmentKey {
+  static let defaultValue: UIDeviceOrientation = UIDevice.current.orientation
+}
+
+extension EnvironmentValues {
+  var orientation: UIDeviceOrientation {
+    get { self[Orientation.self] }
+    set { self[Orientation.self] = newValue }
   }
 }
