@@ -20,7 +20,7 @@ struct AboutScreen: View {
     Section {
       HStack {
         Spacer()
-        VStack(spacing: 10) {
+        VStack(spacing: 12) {
           AppLogoView()
           AppNameView()
         }

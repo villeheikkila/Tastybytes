@@ -74,6 +74,7 @@ struct AuthenticationScreen: View {
       actions
     }
     .padding(40)
+    .frame(maxWidth: 500)
     .task {
       await splashScreenManager.dismiss()
     }
@@ -102,7 +103,7 @@ struct AuthenticationScreen: View {
   }
 
   private var projectLogo: some View {
-    VStack(alignment: .center, spacing: 12) {
+    VStack(alignment: .center, spacing: 24) {
       Spacer()
       AppLogoView()
       AppNameView()

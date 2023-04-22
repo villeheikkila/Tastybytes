@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct AppLogoView: View {
+  let size = UIScreen.main.bounds.width / 4
+
   var body: some View {
     Image(getCurrentProjectLogo())
       .resizable()
       .aspectRatio(contentMode: .fill)
-      .frame(width: 120, height: 120)
+      .frame(width: size, height: size)
       .accessibility(hidden: true)
   }
 

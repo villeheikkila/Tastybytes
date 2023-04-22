@@ -11,7 +11,7 @@ struct SplashScreen: View {
     ZStack {
       Color(.systemBackground)
         .ignoresSafeArea()
-      VStack {
+      VStack(spacing: 24) {
         AppLogoView()
           .scaleEffect(size)
           .opacity(opacity)

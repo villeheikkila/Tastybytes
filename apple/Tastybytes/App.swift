@@ -50,16 +50,7 @@ struct RootView: View {
     ZStack {
       switch authEvent {
       case .signedIn:
-        if profileManager.isLoggedIn {
-          if profileManager.isOnboarded {
-            TabsView()
-              .task {
-                await friendManager.initialize(profile: profileManager.profile)
-              }
-          } else {
-            OnboardTabsView()
-          }
-        }
+        signedInContent
       case .passwordRecovery:
         AuthenticationScreen(scene: .resetPassword)
       case .userDeleted:
@@ -102,6 +93,25 @@ struct RootView: View {
         default:
           break
         }
+      }
+    }
+  }
+
+  @ViewBuilder private var signedInContent: some View {
+    if !profileManager.isLoggedIn {
+      EmptyView()
+    } else if !profileManager.isOnboarded {
+      OnboardTabsView()
+    } else {
+      Group {
+        if [.pad, .mac].contains(UIDevice.current.userInterfaceIdiom) {
+          TabsView()
+        } else {
+          TabsView()
+        }
+      }
+      .task {
+        await friendManager.initialize(profile: profileManager.profile)
       }
     }
   }
