@@ -77,6 +77,9 @@ struct AuthenticationScreen: View {
     .task {
       await splashScreenManager.dismiss()
     }
+    .toast(isPresenting: $feedbackManager.show) {
+      feedbackManager.toast
+    }
   }
 
   private var accountDeletion: some View {

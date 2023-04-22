@@ -29,6 +29,7 @@ struct RootView: View {
   @StateObject private var profileManager: ProfileManager
   @StateObject private var notificationManager: NotificationManager
   @StateObject private var appDataManager: AppDataManager
+  @StateObject private var friendManager: FriendManager
   @State private var authEvent: AuthChangeEvent?
   @ObservedObject private var feedbackManager: FeedbackManager
 
@@ -40,6 +41,8 @@ struct RootView: View {
       StateObject(wrappedValue: NotificationManager(repository: repository, feedbackManager: feedbackManager))
     _profileManager = StateObject(wrappedValue: ProfileManager(repository: repository, feedbackManager: feedbackManager))
     _appDataManager = StateObject(wrappedValue: AppDataManager(repository: repository, feedbackManager: feedbackManager))
+    _friendManager =
+      StateObject(wrappedValue: FriendManager(repository: repository, feedbackManager: feedbackManager))
     self.feedbackManager = feedbackManager
   }
 
@@ -49,7 +52,10 @@ struct RootView: View {
       case .signedIn:
         if profileManager.isLoggedIn {
           if profileManager.isOnboarded {
-            TabsView(repository, profile: profileManager.profile, feedbackManager: feedbackManager)
+            TabsView()
+              .task {
+                await friendManager.initialize(profile: profileManager.profile)
+              }
           } else {
             OnboardTabsView()
           }
@@ -67,15 +73,13 @@ struct RootView: View {
         SplashScreen()
       }
     }
-    .toast(isPresenting: $feedbackManager.show) {
-      feedbackManager.toast
-    }
     .environmentObject(repository)
     .environmentObject(splashScreenManager)
     .environmentObject(notificationManager)
     .environmentObject(profileManager)
     .environmentObject(feedbackManager)
     .environmentObject(appDataManager)
+    .environmentObject(friendManager)
     .preferredColorScheme(profileManager.colorScheme)
     .onOpenURL { url in
       Task { _ = try await supabaseClient.auth.session(from: url) }

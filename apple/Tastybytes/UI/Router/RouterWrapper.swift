@@ -13,6 +13,9 @@ struct RouterWrapper<Content: View>: View {
         .navigationDestination(for: Screen.self) { screen in
           screen.view
         }
+        .toast(isPresenting: $feedbackManager.show) {
+          feedbackManager.toast
+        }
         .sheet(item: $router.sheet) { sheet in
           NavigationStack {
             sheet.view

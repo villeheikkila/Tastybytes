@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BlockedUsersScreen: View {
   @EnvironmentObject private var friendManager: FriendManager
+  @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var showUserSearchSheet = false
 
@@ -11,7 +12,7 @@ struct BlockedUsersScreen: View {
         Text("You haven't blocked any users")
       }
       ForEach(friendManager.blockedUsers) { friend in
-        BlockedUserListItemView(profile: friend.getFriend(userId: friendManager.profile.id), onUnblockUser: {
+        BlockedUserListItemView(profile: friend.getFriend(userId: profileManager.profile.id), onUnblockUser: {
           await friendManager.unblockUser(friend)
         })
       }
@@ -22,7 +23,7 @@ struct BlockedUsersScreen: View {
     )
     .navigationBarTitleDisplayMode(.inline)
     .refreshable {
-      await friendManager.loadFriends()
+      await friendManager.refresh()
     }
   }
 

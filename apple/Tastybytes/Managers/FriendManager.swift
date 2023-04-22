@@ -5,8 +5,11 @@ final class FriendManager: ObservableObject {
   private let logger = getLogger(category: "FriendsScreen")
   @Published var friends = [Friend]()
 
+  var profile: Profile?
+
   var acceptedFriends: [Profile] {
-    friends.filter { $0.status == .accepted }.compactMap { $0.getFriend(userId: profile.id) }
+    guard let profile else { return [] }
+    return friends.filter { $0.status == .accepted }.compactMap { $0.getFriend(userId: profile.id) }
   }
 
   var blockedUsers: [Friend] {
@@ -17,13 +20,11 @@ final class FriendManager: ObservableObject {
     friends.filter { $0.status != .blocked }
   }
 
-  let profile: Profile
   let repository: Repository
   let feedbackManager: FeedbackManager
 
-  init(repository: Repository, profile: Profile, feedbackManager: FeedbackManager) {
+  init(repository: Repository, feedbackManager: FeedbackManager) {
     self.repository = repository
-    self.profile = profile
     self.feedbackManager = feedbackManager
   }
 
@@ -77,10 +78,12 @@ final class FriendManager: ObservableObject {
   }
 
   func isFriend(_ friend: Profile) -> Bool {
-    friends.contains(where: { $0.getFriend(userId: profile.id).id == friend.id })
+    guard let profile else { return false }
+    return friends.contains(where: { $0.getFriend(userId: profile.id).id == friend.id })
   }
 
-  func loadFriends() async {
+  func refresh() async {
+    guard let profile else { return }
     switch await repository.friend.getByUserId(
       userId: profile.id,
       status: .none
@@ -91,6 +94,11 @@ final class FriendManager: ObservableObject {
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load friends for current user: \(error.localizedDescription)")
     }
+  }
+
+  func initialize(profile: Profile) async {
+    self.profile = profile
+    await refresh()
   }
 
   func unblockUser(_ friend: Friend) async {
@@ -106,6 +114,7 @@ final class FriendManager: ObservableObject {
   }
 
   func blockUser(user: Profile, onSuccess: @escaping () -> Void) async {
+    guard let profile else { return }
     if let friend = friends.first(where: { $0.getFriend(userId: profile.id) == user }) {
       await updateFriendRequest(friend: friend, newStatus: Friend.Status.blocked)
     } else {

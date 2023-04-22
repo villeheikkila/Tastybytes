@@ -17,7 +17,7 @@ struct CurrentUserFriendsScreen: View {
   var body: some View {
     List {
       ForEach(friendManager.acceptedOrPendingFriends) { friend in
-        FriendListItemView(profile: friend.getFriend(userId: friendManager.profile.id)) {
+        FriendListItemView(profile: friend.getFriend(userId: profileManager.profile.id)) {
           HStack {
             if friend.status == Friend.Status.pending {
               Text("(\(friend.status.rawValue.capitalized))")
@@ -78,7 +78,7 @@ struct CurrentUserFriendsScreen: View {
     .navigationBarTitleDisplayMode(.inline)
     .refreshable {
       await feedbackManager.wrapWithHaptics {
-        await friendManager.loadFriends()
+        await friendManager.refresh()
       }
     }
     .task {
