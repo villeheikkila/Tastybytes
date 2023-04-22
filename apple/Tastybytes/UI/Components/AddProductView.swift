@@ -199,12 +199,7 @@ struct AddProductView: View {
         if let category {
           router.navigate(sheet: .subcategory(
             subcategories: $subcategories,
-            category: category,
-            onCreate: { newSubcategoryName in
-              await createSubcategory(newSubcategoryName: newSubcategoryName, onCreate: {
-                await appDataManager.initialize()
-              })
-            }
+            category: category
           ))
         }
       }, label: {
@@ -309,22 +304,6 @@ struct AddProductView: View {
 
   func getSubcategoriesForCategory() -> [Subcategory]? {
     category?.subcategories
-  }
-
-  func createSubcategory(newSubcategoryName: String, onCreate: @escaping () async -> Void) async {
-    guard let categoryWithSubcategories = category else { return }
-    isLoading = true
-    switch await repository.subcategory
-      .insert(newSubcategory: Subcategory
-        .NewRequest(name: newSubcategoryName, category: categoryWithSubcategories))
-    {
-    case .success:
-      await onCreate()
-    case let .failure(error):
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
-    }
-    isLoading = false
   }
 
   func setBrand(brand: Brand.JoinedSubBrands) {

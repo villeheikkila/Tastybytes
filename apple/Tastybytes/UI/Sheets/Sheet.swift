@@ -20,8 +20,7 @@ enum Sheet: Identifiable, Equatable {
                 onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void)
   case subcategory(
     subcategories: Binding<[Subcategory]>,
-    category: Category.JoinedSubcategoriesServingStyles,
-    onCreate: (_ newSubcategoryName: String) async -> Void
+    category: Category.JoinedSubcategoriesServingStyles
   )
   case subBrand(brandWithSubBrands: Brand.JoinedSubBrands,
                 onSelect: (_ subBrand: SubBrand, _ createdNew: Bool) -> Void)
@@ -67,8 +66,8 @@ enum Sheet: Identifiable, Equatable {
       BrandSheet(brandOwner: brandOwner, mode: mode, onSelect: onSelect)
     case let .subBrand(brandWithSubBrands, onSelect):
       SubBrandSheet(brandWithSubBrands: brandWithSubBrands, onSelect: onSelect)
-    case let .subcategory(subcategories, category, onCreate):
-      SubcategorySheet(subcategories: subcategories, category: category, onCreate: onCreate)
+    case let .subcategory(subcategories, category):
+      SubcategorySheet(subcategories: subcategories, category: category)
     case let .companySearch(onSelect):
       CompanySearchSheet(onSelect: onSelect)
     case let .barcodeManagement(product):

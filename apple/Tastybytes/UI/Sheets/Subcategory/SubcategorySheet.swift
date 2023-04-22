@@ -1,8 +1,11 @@
 import SwiftUI
 
 struct SubcategorySheet: View {
+  private let logger = getLogger(category: "SubcategorySheet")
+  @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
+  @EnvironmentObject private var appDataManager: AppDataManager
   @Environment(\.dismiss) private var dismiss
   @Binding var subcategories: [Subcategory]
   @State private var showAddSubcategory = false
@@ -11,7 +14,6 @@ struct SubcategorySheet: View {
   let category: Category.JoinedSubcategoriesServingStyles
 
   private let maxSubcategories = 4
-  let onCreate: (_ newSubcategoryName: String) async -> Void
 
   var shownSubcategories: [Subcategory] {
     category.subcategories.sorted().filter { searchTerm.isEmpty || $0.name.contains(searchTerm) }
@@ -41,7 +43,7 @@ struct SubcategorySheet: View {
       TextField("TextField", text: $newSubcategoryName)
       Button("Cancel", role: .cancel, action: {})
       ProgressButton("Create", action: {
-        await onCreate(newSubcategoryName)
+        await createSubcategory(name: newSubcategoryName)
       })
     })
   }
@@ -65,6 +67,19 @@ struct SubcategorySheet: View {
       Button("Add subcategory", systemImage: "plus", action: { showAddSubcategory.toggle() })
         .labelStyle(.iconOnly)
         .bold()
+    }
+  }
+
+  func createSubcategory(name: String) async {
+    switch await repository.subcategory
+      .insert(newSubcategory: Subcategory
+        .NewRequest(name: name, category: category))
+    {
+    case .success:
+      await appDataManager.initialize()
+    case let .failure(error):
+      feedbackManager.toggle(.error(.unexpected))
+      logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
     }
   }
 }
