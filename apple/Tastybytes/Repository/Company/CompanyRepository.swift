@@ -168,11 +168,17 @@ struct SupabaseCompanyRepository: CompanyRepository {
 
   func search(searchTerm: String) async -> Result<[Company], Error> {
     do {
+      let searchString = searchTerm
+        .split(separator: " ")
+        .map { "\($0.trimmingCharacters(in: .whitespaces)):*" }
+        .joined(separator: " & ")
+
+      print(searchString)
       let response: [Company] = try await client
         .database
         .from(Company.getQuery(.tableName))
         .select(columns: Company.getQuery(.saved(false)))
-        .textSearch(column: "name", query: searchTerm + ":*")
+        .textSearch(column: "name", query: searchString)
         .execute()
         .value
 

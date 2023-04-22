@@ -29,13 +29,12 @@ struct RouterWrapper<Content: View>: View {
           .sheet(item: $router.nestedSheet, content: { nestedSheet in
             NavigationStack {
               nestedSheet.view
-                .presentationDetents(nestedSheet.detents)
-                .presentationCornerRadius(nestedSheet.cornerRadius)
-                .presentationBackground(nestedSheet.background)
-                .environmentObject(feedbackManager)
-                .toast(isPresenting: $feedbackManager.show) {
-                  feedbackManager.toast
-                }
+            }
+            .presentationDetents(nestedSheet.detents)
+            .presentationCornerRadius(nestedSheet.cornerRadius)
+            .presentationBackground(nestedSheet.background)
+            .toast(isPresenting: $feedbackManager.show) {
+              feedbackManager.toast
             }
           })
         }
