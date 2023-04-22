@@ -111,8 +111,6 @@ struct CheckInSheet: View {
         TextField("How was it?", text: $review, axis: .vertical)
           .focused($focusedField, equals: .review)
         RatingPickerView(rating: $rating)
-        Button("\(editCheckIn?.imageUrl == nil && image == nil ? "Add" : "Change") Photo",
-               systemImage: "photo", action: { showPhotoMenu.toggle() }).fontWeight(.medium)
         RouterLink(sheet: .flavors(pickedFlavors: $pickedFlavors), label: {
           if !pickedFlavors.isEmpty {
             WrappingHStack(pickedFlavors, spacing: .constant(4)) { flavor in
@@ -123,6 +121,8 @@ struct CheckInSheet: View {
               .fontWeight(.medium)
           }
         })
+        Button("\(editCheckIn?.imageUrl == nil && image == nil ? "Add" : "Change") Photo",
+               systemImage: "photo", action: { showPhotoMenu.toggle() }).fontWeight(.medium)
       }.headerProminence(.increased)
 
       Section("Additional Information") {
