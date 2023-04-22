@@ -125,7 +125,7 @@ struct CheckInSheet: View {
         })
       }.headerProminence(.increased)
 
-      Section {
+      Section("Additional Information") {
         if !servingStyles.isEmpty {
           Picker(selection: $servingStyle) {
             Text("Not Selected").tag(ServingStyle?(nil))
@@ -138,7 +138,7 @@ struct CheckInSheet: View {
           }
         }
 
-        RouterLink(manufacturer?.name ?? "Manufactured By", sheet: .companySearch(onSelect: { company, _ in
+        RouterLink(manufacturer?.name ?? "Manufactured By", sheet: .companySearch(onSelect: { company in
           manufacturer = company
         }))
         .fontWeight(.medium)

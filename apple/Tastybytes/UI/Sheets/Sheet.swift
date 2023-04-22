@@ -11,7 +11,7 @@ enum Sheet: Identifiable, Equatable {
     onApply: (_ filter: Product.Filter?) -> Void
   )
   case nameTag(onSuccess: (_ profileId: UUID) -> Void)
-  case companySearch(onSelect: (_ company: Company, _ createdNew: Bool) -> Void)
+  case companySearch(onSelect: (_ company: Company) -> Void)
   case brand(brandOwner: Company,
              mode: BrandSheet.Mode,
              onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void)

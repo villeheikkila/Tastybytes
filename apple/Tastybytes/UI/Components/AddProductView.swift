@@ -235,11 +235,8 @@ struct AddProductView: View {
 
   private var brandSection: some View {
     Section {
-      RouterLink(brandOwner?.name ?? "Company", sheet: .companySearch(onSelect: { company, createdNew in
+      RouterLink(brandOwner?.name ?? "Company", sheet: .companySearch(onSelect: { company in
         setBrandOwner(company)
-        if createdNew {
-          feedbackManager.toggle(.success(Toast.createdCompany.text))
-        }
       }))
       .fontWeight(.medium)
 

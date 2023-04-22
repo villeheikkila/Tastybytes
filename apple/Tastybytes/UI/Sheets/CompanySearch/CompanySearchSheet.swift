@@ -18,11 +18,7 @@ struct CompanySearchSheet: View {
     }
   }
 
-  let onSelect: (_ company: Company, _ createdNew: Bool) -> Void
-
-  init(onSelect: @escaping (_ company: Company, _ createdNew: Bool) -> Void) {
-    self.onSelect = onSelect
-  }
+  let onSelect: (_ company: Company) -> Void
 
   var showEmptyResults: Bool {
     !isLoading && searchResults.isEmpty && status == .searched && !searchText.isEmpty
@@ -40,7 +36,7 @@ struct CompanySearchSheet: View {
       }
       ForEach(searchResults) { company in
         Button(company.name, action: {
-          onSelect(company, false)
+          onSelect(company)
           dismiss()
         })
       }
@@ -56,7 +52,7 @@ struct CompanySearchSheet: View {
             TextField("Name", text: $companyName)
             ProgressButton("Create") {
               await createNewCompany(onSuccess: { company in
-                onSelect(company, true)
+                onSelect(company)
                 dismiss()
               })
             }
@@ -71,7 +67,7 @@ struct CompanySearchSheet: View {
     .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: { dismiss() }).bold())
     .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
     .onSubmit(of: .search) { Task { await searchCompanies(name: searchText) } }
-    .onChange(of: searchText, debounceTime: 0.2, perform: { newValue in
+    .onChange(of: searchText, debounceTime: 0.5, perform: { newValue in
       Task { await searchCompanies(name: newValue) }
     })
   }
@@ -88,7 +84,7 @@ struct CompanySearchSheet: View {
       self.searchResults = searchResults
       status = Status.searched
     case let .failure(error):
-      feedbackManager.toggle(.error(.unexpected))
+      // feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to search companies: \(error.localizedDescription)")
     }
   }
@@ -97,6 +93,7 @@ struct CompanySearchSheet: View {
     let newCompany = Company.NewRequest(name: companyName)
     switch await repository.company.insert(newCompany: newCompany) {
     case let .success(newCompany):
+      feedbackManager.toggle(.success("New Company Created!"))
       onSuccess(newCompany)
     case let .failure(error):
       feedbackManager.toggle(.error(.unexpected))

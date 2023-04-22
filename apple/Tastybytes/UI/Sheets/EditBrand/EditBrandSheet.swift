@@ -73,7 +73,7 @@ struct EditBrandSheet: View {
       }
 
       Section("Brand Owner") {
-        RouterLink(brandOwner.name, sheet: .companySearch(onSelect: { company, _ in
+        RouterLink(brandOwner.name, sheet: .companySearch(onSelect: { company in
           brandOwner = company
         }))
         ProgressButton("Change brand owner") {
