@@ -41,6 +41,7 @@ struct NameTagSheet: View {
     .navigationTitle("Name Tag")
     .navigationBarTitleDisplayMode(.inline)
     .navigationBarItems(
+      leading: Button("Close", action: { dismiss() }).bold(),
       trailing: ShareLink("Share", item: NavigatablePath.profile(id: profileManager.id).url)
     )
   }
