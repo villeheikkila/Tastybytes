@@ -114,8 +114,9 @@ struct DetectOrientation: ViewModifier {
   func body(content: Content) -> some View {
     content
       .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-        print(UIDevice.current.orientation.rawValue)
-        orientation = UIDevice.current.orientation
+        let fallback = UIScreen.main.bounds.height > UIScreen.main.bounds.width ? UIDeviceOrientation
+          .portrait : UIDeviceOrientation.landscapeRight
+        orientation = UIDevice.current.orientation == .unknown ? fallback : UIDevice.current.orientation
       }
   }
 }

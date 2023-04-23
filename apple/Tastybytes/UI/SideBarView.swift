@@ -47,6 +47,7 @@ struct SideBarView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(\.orientation) private var orientation
   @StateObject private var sheetManager = SheetManager()
   @State private var selection: SiderBarTab? = SiderBarTab.activity
   @State private var scrollToTop: Int = 0
@@ -61,7 +62,7 @@ struct SideBarView: View {
   }
 
   private var isPortrait: Bool {
-    UIScreen.main.bounds.height > UIScreen.main.bounds.width
+    [.portrait, .portraitUpsideDown].contains(orientation)
   }
 
   private var columnVisibility: NavigationSplitViewVisibility {
