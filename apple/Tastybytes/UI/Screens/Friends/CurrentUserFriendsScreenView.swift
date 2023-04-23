@@ -77,31 +77,33 @@ struct CurrentUserFriendsScreen: View {
     .listStyle(.insetGrouped)
     .navigationTitle("Friends (\(friendManager.friends.count))")
     .navigationBarTitleDisplayMode(.inline)
-    .refreshable {
-      await feedbackManager.wrapWithHaptics {
-        await friendManager.refresh()
-      }
-    }
-    .task {
-      await noficationManager.markAllFriendRequestsAsRead()
-    }
-    .toolbar {
-      toolbarContent
-    }
-    .confirmationDialog(
-      "Remove user from your friends, you will no longer be able to see each other's check-ins on your activity feed nor be able to tag each other on check-ins",
-      isPresented: $showRemoveFriendConfirmation,
-      titleVisibility: .visible,
-      presenting: friendToBeRemoved
-    ) { presenting in
-      ProgressButton(
-        "Remove \(presenting.getFriend(userId: profileManager.id).preferredName) from friends",
-        role: .destructive,
-        action: {
-          await friendManager.removeFriendRequest(presenting)
+    #if !targetEnvironment(macCatalyst)
+      .refreshable {
+        await feedbackManager.wrapWithHaptics {
+          await friendManager.refresh()
         }
-      )
-    }
+      }
+    #endif
+      .task {
+        await noficationManager.markAllFriendRequestsAsRead()
+      }
+      .toolbar {
+        toolbarContent
+      }
+      .confirmationDialog(
+        "Remove user from your friends, you will no longer be able to see each other's check-ins on your activity feed nor be able to tag each other on check-ins",
+        isPresented: $showRemoveFriendConfirmation,
+        titleVisibility: .visible,
+        presenting: friendToBeRemoved
+      ) { presenting in
+        ProgressButton(
+          "Remove \(presenting.getFriend(userId: profileManager.id).preferredName) from friends",
+          role: .destructive,
+          action: {
+            await friendManager.removeFriendRequest(presenting)
+          }
+        )
+      }
   }
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

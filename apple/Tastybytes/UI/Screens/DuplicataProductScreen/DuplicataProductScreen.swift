@@ -57,14 +57,16 @@ struct DuplicateProductScreen: View {
       )
     }
     .navigationBarTitle("Unverified Products")
-    .refreshable {
-      await feedbackManager.wrapWithHaptics {
+    #if !targetEnvironment(macCatalyst)
+      .refreshable {
+        await feedbackManager.wrapWithHaptics {
+          await loadProducts()
+        }
+      }
+    #endif
+      .task {
         await loadProducts()
       }
-    }
-    .task {
-      await loadProducts()
-    }
   }
 
   func verifyProduct(_ product: Product.Joined) async {

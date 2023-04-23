@@ -55,20 +55,22 @@ struct ProductFeedScreen: View {
     }
     .scrollContentBackground(.hidden)
     .listStyle(.plain)
-    .refreshable {
-      await feedbackManager.wrapWithHaptics {
-        await refresh()
+    #if !targetEnvironment(macCatalyst)
+      .refreshable {
+        await feedbackManager.wrapWithHaptics {
+          await refresh()
+        }
       }
-    }
-    .navigationTitle(title)
-    .toolbar {
-      toolbarContent
-    }
-    .task {
-      if products.isEmpty {
-        await refresh()
+    #endif
+      .navigationTitle(title)
+      .toolbar {
+        toolbarContent
       }
-    }
+      .task {
+        if products.isEmpty {
+          await refresh()
+        }
+      }
   }
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

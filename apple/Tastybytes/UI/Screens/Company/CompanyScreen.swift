@@ -52,17 +52,19 @@ struct CompanyScreen: View {
       .headerProminence(.increased)
     }
     .listStyle(.plain)
-    .refreshable {
-      await feedbackManager.wrapWithHaptics {
-        await getBrandsAndSummary()
+    #if !targetEnvironment(macCatalyst)
+      .refreshable {
+        await feedbackManager.wrapWithHaptics {
+          await getBrandsAndSummary()
+        }
       }
-    }
-    .toolbar {
-      toolbarContent
-    }
-    .confirmationDialog("Unverify Company",
-                        isPresented: $showUnverifyCompanyConfirmation,
-                        presenting: company)
+    #endif
+      .toolbar {
+        toolbarContent
+      }
+      .confirmationDialog("Unverify Company",
+                          isPresented: $showUnverifyCompanyConfirmation,
+                          presenting: company)
     { presenting in
       ProgressButton("Unverify \(presenting.name) company", action: {
         await verifyCompany(isVerified: false)

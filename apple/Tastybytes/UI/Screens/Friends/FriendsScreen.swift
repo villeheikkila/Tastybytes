@@ -24,11 +24,13 @@ struct FriendsScreen: View {
       .navigationTitle("Friends (\(friends.count))")
       .navigationBarTitleDisplayMode(.inline)
     }
+    #if !targetEnvironment(macCatalyst)
     .refreshable {
       await feedbackManager.wrapWithHaptics {
         await loadFriends()
       }
     }
+    #endif
     .task {
       if friends.isEmpty {
         await loadFriends()

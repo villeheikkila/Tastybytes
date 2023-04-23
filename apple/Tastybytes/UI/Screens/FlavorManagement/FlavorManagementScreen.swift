@@ -23,11 +23,13 @@ struct FlavorManagementScreen: View {
         await appDataManager.addFlavor(name: newFlavor)
       })).labelStyle(.iconOnly)
     )
+    #if !targetEnvironment(macCatalyst)
     .refreshable {
       await feedbackManager.wrapWithHaptics {
         await appDataManager.loadFlavors()
       }
     }
+    #endif
     .task {
       await appDataManager.loadFlavors()
     }

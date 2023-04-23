@@ -32,12 +32,14 @@ struct ProfileStatisticsView: View {
     }
     .listStyle(.insetGrouped)
     .navigationTitle("Statistics")
-    .refreshable {
-      await loadStatistics()
-    }
-    .task {
-      await loadStatistics()
-    }
+    #if !targetEnvironment(macCatalyst)
+      .refreshable {
+        await loadStatistics()
+      }
+    #endif
+      .task {
+        await loadStatistics()
+      }
   }
 
   func loadStatistics() async {

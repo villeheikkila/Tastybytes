@@ -32,9 +32,11 @@ struct NotificationScreen: View {
         await notificationManager.deleteFromIndex(at: index)
       } })
     }
+    #if !targetEnvironment(macCatalyst)
     .refreshable {
       await notificationManager.refresh(reset: true)
     }
+    #endif
     .navigationTitle(notificationManager.filter?.label ?? "Notifications")
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {

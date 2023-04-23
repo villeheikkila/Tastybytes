@@ -23,9 +23,11 @@ struct BlockedUsersScreen: View {
       trailing: blockUser
     )
     .navigationBarTitleDisplayMode(.inline)
-    .refreshable {
-      await friendManager.refresh()
-    }
+    #if !targetEnvironment(macCatalyst)
+      .refreshable {
+        await friendManager.refresh()
+      }
+    #endif
   }
 
   private var blockUser: some View {

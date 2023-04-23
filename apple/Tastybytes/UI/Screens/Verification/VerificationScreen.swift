@@ -70,11 +70,13 @@ struct VerificationScreen: View {
       await loadData()
     }
     })
+    #if !targetEnvironment(macCatalyst)
     .refreshable {
       await feedbackManager.wrapWithHaptics {
         await loadData(refresh: true)
       }
     }
+    #endif
     .task {
       await loadData()
     }

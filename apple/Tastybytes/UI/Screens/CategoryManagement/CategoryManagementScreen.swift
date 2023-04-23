@@ -51,15 +51,17 @@ struct CategoryManagementScreen: View {
                                              }))
                                              .labelStyle(.iconOnly)
                                              .bold())
-    .refreshable {
-      await feedbackManager.wrapWithHaptics {
-        await appDataManager.initialize()
+    #if !targetEnvironment(macCatalyst)
+      .refreshable {
+        await feedbackManager.wrapWithHaptics {
+          await appDataManager.initialize()
+        }
       }
-    }
-    .confirmationDialog("Are you sure you want to delete subcategory?",
-                        isPresented: $showDeleteSubcategoryConfirmation,
-                        titleVisibility: .visible,
-                        presenting: deleteSubcategory)
+    #endif
+      .confirmationDialog("Are you sure you want to delete subcategory?",
+                          isPresented: $showDeleteSubcategoryConfirmation,
+                          titleVisibility: .visible,
+                          presenting: deleteSubcategory)
     { presenting in
       ProgressButton(
         "Delete \(presenting.name)",

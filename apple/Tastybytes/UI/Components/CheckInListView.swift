@@ -125,12 +125,14 @@ struct CheckInListView<Header>: View where Header: View {
             }
           }
         })
+        #if !targetEnvironment(macCatalyst)
         .refreshable {
           await feedbackManager.wrapWithHaptics {
             await refresh()
             await onRefresh()
           }
         }
+        #endif
         .task {
           await fetchActivityFeedItems(onComplete: {
             if splashScreenManager.state != .finished {
