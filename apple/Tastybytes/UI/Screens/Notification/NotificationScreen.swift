@@ -2,6 +2,7 @@ import SwiftUI
 
 struct NotificationScreen: View {
   @EnvironmentObject private var notificationManager: NotificationManager
+  @EnvironmentObject private var feedbackManager: FeedbackManager
 
   var body: some View {
     List {
@@ -36,5 +37,41 @@ struct NotificationScreen: View {
     }
     .navigationTitle(notificationManager.filter?.label ?? "Notifications")
     .navigationBarTitleDisplayMode(.inline)
+    .toolbar {
+      toolbarContent
+    }
+  }
+
+  @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+    ToolbarItemGroup {
+      Menu {
+        ProgressButton("Mark all read", systemImage: "envelope.open", action: {
+          feedbackManager.trigger(.impact(intensity: .low))
+          await notificationManager.markAllAsRead()
+        })
+        ProgressButton("Delete all", systemImage: "trash", action: {
+          feedbackManager.trigger(.impact(intensity: .low))
+          await notificationManager.deleteAll()
+        })
+      } label: {
+        Label("Options menu", systemImage: "ellipsis")
+          .labelStyle(.iconOnly)
+      }
+    }
+    ToolbarTitleMenu {
+      Button {
+        notificationManager.filter = nil
+      } label: {
+        Label("Show All", systemImage: "bell.fill")
+      }
+      Divider()
+      ForEach(NotificationType.allCases) { type in
+        Button {
+          notificationManager.filter = type
+        } label: {
+          Label(type.label, systemImage: type.systemImage)
+        }
+      }
+    }
   }
 }

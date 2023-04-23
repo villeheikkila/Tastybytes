@@ -37,6 +37,7 @@ struct ContributionsScreen: View {
         }
       }
     }
+    .listStyle(.insetGrouped)
     .navigationTitle("Your Contributions")
     .navigationBarTitleDisplayMode(.inline)
     .task {

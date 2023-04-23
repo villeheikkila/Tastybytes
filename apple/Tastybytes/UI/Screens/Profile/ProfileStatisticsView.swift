@@ -16,7 +16,7 @@ struct ProfileStatisticsView: View {
             SubcategoryStatisticsView(profile: profile, category: category)
           }, label: {
             HStack {
-              CategoryNameView(category: category)
+              CategoryNameView(category: category, withBorder: false)
               Spacer()
               Text(String(category.count)).font(.caption).bold()
             }
@@ -27,15 +27,17 @@ struct ProfileStatisticsView: View {
         if !categoryStatistics.isEmpty {
           Text("Category")
         }
-      }.headerProminence(.increased)
+      }
+      .headerProminence(.increased)
     }
+    .listStyle(.insetGrouped)
+    .navigationTitle("Statistics")
     .refreshable {
       await loadStatistics()
     }
     .task {
       await loadStatistics()
     }
-    .navigationTitle("Statistics")
   }
 
   func loadStatistics() async {
@@ -84,6 +86,7 @@ struct SubcategoryStatisticsView: View {
   }
 
   func loadSubcategoryStatistics() async {
+    guard isLoading == false, subcategoryStatistics.isEmpty else { return }
     isLoading = true
     switch await repository.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id) {
     case let .success(subcategoryStatistics):

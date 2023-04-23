@@ -8,7 +8,8 @@ struct AdminScreen: View {
       RouterLink("Verification", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .verification)
       RouterLink("Duplicates", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .duplicateProducts)
     }
+    .listStyle(.insetGrouped)
     .navigationBarTitle("Admin")
-    .navigationBarTitleDisplayMode(.inline)
+    // .navigationBarTitleDisplayMode(.inline)
   }
 }

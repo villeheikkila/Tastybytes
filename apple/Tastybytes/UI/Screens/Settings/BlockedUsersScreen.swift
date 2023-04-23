@@ -17,6 +17,7 @@ struct BlockedUsersScreen: View {
         })
       }
     }
+    .listStyle(.insetGrouped)
     .navigationTitle("Blocked Users")
     .navigationBarItems(
       trailing: blockUser

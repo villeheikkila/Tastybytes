@@ -191,6 +191,7 @@ struct CompanyScreen: View {
     case let .success(summary):
       self.summary = summary
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load summary for company: \(error.localizedDescription)")
     }

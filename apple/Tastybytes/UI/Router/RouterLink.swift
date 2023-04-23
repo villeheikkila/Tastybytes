@@ -38,7 +38,7 @@ struct RouterLink<LabelView: View>: View {
     } else if let screen {
       if isPadOrMac() {
         Button(action: { router.navigate(screen: screen) }, label: { label })
-          .buttonStyle(PlainButtonStyle())
+          .buttonStyle(.plain)
       } else {
         NavigationLink(value: screen, label: { label })
       }

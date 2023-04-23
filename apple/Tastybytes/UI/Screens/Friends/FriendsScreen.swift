@@ -20,6 +20,7 @@ struct FriendsScreen: View {
       ForEach(friends) { friend in
         FriendListItemView(profile: friend.getFriend(userId: profile.id)) {}
       }
+      .listStyle(.insetGrouped)
       .navigationTitle("Friends (\(friends.count))")
       .navigationBarTitleDisplayMode(.inline)
     }

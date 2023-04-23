@@ -10,5 +10,6 @@ struct ActivityScreen: View {
       onRefresh: {},
       header: {}
     )
+    .navigationTitle("Activity")
   }
 }

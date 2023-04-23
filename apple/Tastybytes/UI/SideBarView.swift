@@ -27,17 +27,29 @@ enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
   }
 }
 
+struct Spacing: View {
+  var height: CGFloat?
+  var width: CGFloat?
+
+  var body: some View {
+    if let height {
+      Color.clear.frame(height: height)
+    } else if let width {
+      Color.clear.frame(width: width)
+    } else {
+      Spacer()
+    }
+  }
+}
+
 struct SideBarView: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @Environment(\.orientation) private var orientation
   @StateObject private var sheetManager = SheetManager()
   @State private var selection: SiderBarTab? = SiderBarTab.activity
-  @State private var resetNavigationOnTab: SiderBarTab?
   @State private var scrollToTop: Int = 0
-  @State private var columnVisibility: NavigationSplitViewVisibility = .all
   @StateObject private var router = Router()
 
   private var shownTabs: [SiderBarTab] {
@@ -48,15 +60,30 @@ struct SideBarView: View {
     }
   }
 
+  private var isPortrait: Bool {
+    UIScreen.main.bounds.height > UIScreen.main.bounds.width
+  }
+
+  private var columnVisibility: NavigationSplitViewVisibility {
+    isPortrait ? .automatic : .all
+  }
+
   var body: some View {
-    NavigationSplitView(columnVisibility: $columnVisibility) {
+    NavigationSplitView(columnVisibility: .constant(columnVisibility)) {
+      if isPortrait {
+        HStack(alignment: .firstTextBaseline) {
+          Color.clear.frame(width: 18, height: 0)
+          AppNameView()
+          Spacer()
+        }
+      }
       List(selection: $selection) {
         ForEach(shownTabs) { newTab in
           Button(action: {
             feedbackManager.trigger(.selection)
             if newTab == selection {
               DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                resetNavigationOnTab = selection
+                scrollToTop += 1
                 router.path = []
               }
             } else {
@@ -92,11 +119,9 @@ struct SideBarView: View {
         screen.view
       }
     }
+    .listStyle(.sidebar)
     .environmentObject(router)
     .environmentObject(sheetManager)
-    .onChange(of: orientation, perform: { newValue in
-      columnVisibility = [.landscapeLeft, .landscapeRight, .unknown].contains(newValue) ? .all : .automatic
-    })
     .toast(isPresenting: $feedbackManager.show) {
       feedbackManager.toast
     }

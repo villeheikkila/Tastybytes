@@ -18,10 +18,6 @@ struct ActivityTab: View {
             resetNavigationOnTab = nil
           }
         }
-        .navigationTitle("Activity")
-        .if(isPadOrMac(), transform: { view in
-          view.navigationBarTitleDisplayMode(.inline)
-        })
         .toolbar {
           toolbarContent
         }

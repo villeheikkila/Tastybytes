@@ -74,6 +74,7 @@ struct CurrentUserFriendsScreen: View {
         }
       }
     }
+    .listStyle(.insetGrouped)
     .navigationTitle("Friends (\(friendManager.friends.count))")
     .navigationBarTitleDisplayMode(.inline)
     .refreshable {

@@ -13,6 +13,7 @@ struct AboutScreen: View {
         footer
       }
     }
+    .listStyle(.insetGrouped)
     .navigationTitle("About")
   }
 
