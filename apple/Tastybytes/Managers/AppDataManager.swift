@@ -30,6 +30,7 @@ final class AppDataManager: ObservableObject {
         self.flavors = flavors
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching flavors failed: \(error.localizedDescription)")
     }
@@ -38,6 +39,7 @@ final class AppDataManager: ObservableObject {
     case let .success(categories):
       self.categories = categories
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load categories: \(error.localizedDescription)")
     }
@@ -46,6 +48,7 @@ final class AppDataManager: ObservableObject {
     case let .success(aboutPage):
       self.aboutPage = aboutPage
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching about page failed: \(error.localizedDescription)")
     }
@@ -59,6 +62,7 @@ final class AppDataManager: ObservableObject {
         flavors.append(newFlavor)
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete flavor: \(error.localizedDescription)")
     }
@@ -71,6 +75,7 @@ final class AppDataManager: ObservableObject {
         flavors.remove(object: flavor)
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete flavor: \(error.localizedDescription)")
     }
@@ -83,6 +88,7 @@ final class AppDataManager: ObservableObject {
         self.flavors = flavors
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching flavors failed: \(error.localizedDescription)")
     }
@@ -94,6 +100,7 @@ final class AppDataManager: ObservableObject {
     case .success:
       await loadCategories()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger
         .error("failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id): \(error.localizedDescription)")
@@ -117,6 +124,7 @@ final class AppDataManager: ObservableObject {
     case .success:
       await loadCategories()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete subcategory \(deleteSubcategory.name): \(error.localizedDescription)")
     }
@@ -127,6 +135,7 @@ final class AppDataManager: ObservableObject {
     case .success:
       await loadCategories()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to add new category with name \(name): \(error.localizedDescription)")
     }
@@ -140,6 +149,7 @@ final class AppDataManager: ObservableObject {
     case .success:
       await loadCategories()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create subcategory '\(name)' to category \(category.name): \(error.localizedDescription)")
     }
@@ -150,6 +160,7 @@ final class AppDataManager: ObservableObject {
     case let .success(categories):
       self.categories = categories
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load categories: \(error.localizedDescription)")
     }

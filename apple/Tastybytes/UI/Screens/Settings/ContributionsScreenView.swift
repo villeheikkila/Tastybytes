@@ -52,6 +52,7 @@ struct ContributionsScreen: View {
         self.contributions = contributions
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load contributions: \(error.localizedDescription)")
     }

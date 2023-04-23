@@ -148,6 +148,7 @@ struct ProductScreen: View {
     case let .success(summary):
       self.summary = summary
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load product summary: \(error.localizedDescription)")
     }
@@ -163,6 +164,7 @@ struct ProductScreen: View {
         product = refreshedProduct
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to refresh product by id: \(error.localizedDescription)")
     }
@@ -171,6 +173,7 @@ struct ProductScreen: View {
     case let .success(summary):
       self.summary = summary
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load product summary: \(error.localizedDescription)")
     }
@@ -186,6 +189,7 @@ struct ProductScreen: View {
       feedbackManager.trigger(.notification(.success))
       await refresh()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to verify product: \(error.localizedDescription)")
     }
@@ -197,6 +201,7 @@ struct ProductScreen: View {
       feedbackManager.trigger(.notification(.success))
       router.removeLast()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete product: \(error.localizedDescription)")
     }
@@ -207,6 +212,7 @@ struct ProductScreen: View {
     case .success:
       feedbackManager.toggle(.success("Barcode added!"))
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("adding barcode \(barcode.barcode) to product failed: \(error.localizedDescription)")
     }

@@ -58,6 +58,7 @@ struct ReportSheet: View {
       dismiss()
       feedbackManager.toggle(.success("Report submitted!"))
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("submitting report failed: \(error.localizedDescription)")
     }

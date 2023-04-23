@@ -134,6 +134,7 @@ struct CheckInScreen: View {
       feedbackManager.trigger(.notification(.success))
       router.removeLast()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete check-in: \(error.localizedDescription)")
     }
@@ -146,6 +147,7 @@ struct CheckInScreen: View {
         checkInComments = checkIns
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load check-in comments': \(error.localizedDescription)")
     }
@@ -161,6 +163,7 @@ struct CheckInScreen: View {
         checkInComments[index] = updatedComment
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to update comment \(editComment.id)': \(error.localizedDescription)")
     }
@@ -174,6 +177,7 @@ struct CheckInScreen: View {
         checkInComments.remove(object: comment)
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete comment '\(comment.id)': \(error.localizedDescription)")
     }
@@ -190,6 +194,7 @@ struct CheckInScreen: View {
       }
       commentText = ""
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to send comment: \(error.localizedDescription)")
     }

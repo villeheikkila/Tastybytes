@@ -10,6 +10,5 @@ struct AdminScreen: View {
     }
     .listStyle(.insetGrouped)
     .navigationBarTitle("Admin")
-    // .navigationBarTitleDisplayMode(.inline)
   }
 }

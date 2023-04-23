@@ -56,6 +56,7 @@ struct ReactionsView: View {
         }
         feedbackManager.trigger(.impact(intensity: .low))
       case let .failure(error):
+        guard !error.localizedDescription.contains("cancelled") else { return }
         feedbackManager.toggle(.error(.unexpected))
         logger.error("removing check-in reaction \(reaction.id) failed: \(error.localizedDescription)")
       }
@@ -69,6 +70,7 @@ struct ReactionsView: View {
         }
         feedbackManager.trigger(.notification(.success))
       case let .failure(error):
+        guard !error.localizedDescription.contains("cancelled") else { return }
         feedbackManager.toggle(.error(.unexpected))
         logger.error("adding check-in reaction for check-in \(checkIn.id) by \(userId) failed:\(error.localizedDescription)")
       }

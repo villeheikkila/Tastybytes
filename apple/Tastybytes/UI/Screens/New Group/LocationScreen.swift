@@ -73,6 +73,7 @@ struct LocationScreen: View {
         self.summary = summary
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to get summary: \(error.localizedDescription)")
     }
@@ -84,6 +85,7 @@ struct LocationScreen: View {
       router.reset()
       feedbackManager.trigger(.notification(.success))
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete location: \(error.localizedDescription)")
     }

@@ -39,6 +39,7 @@ final class FriendManager: ObservableObject {
         onSuccess()
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed add new friend '\(receiver)': \(error.localizedDescription)")
     }
@@ -57,6 +58,7 @@ final class FriendManager: ObservableObject {
         self.friends.replace(friend, with: updatedFriend)
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger
         .warning(
@@ -72,6 +74,7 @@ final class FriendManager: ObservableObject {
         self.friends.remove(object: friend)
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to remove friend request '\(friend.id)': \(error.localizedDescription)")
     }
@@ -91,6 +94,7 @@ final class FriendManager: ObservableObject {
     case let .success(friends):
       self.friends = friends
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load friends for current user: \(error.localizedDescription)")
     }
@@ -108,6 +112,7 @@ final class FriendManager: ObservableObject {
         self.friends.remove(object: friend)
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to unblock user \(friend.id): \(error.localizedDescription)")
     }
@@ -125,6 +130,7 @@ final class FriendManager: ObservableObject {
         }
         onSuccess()
       case let .failure(error):
+        guard !error.localizedDescription.contains("cancelled") else { return }
         feedbackManager.toggle(.error(.unexpected))
         logger.error("failed to block user \(user.id): \(error.localizedDescription)")
       }

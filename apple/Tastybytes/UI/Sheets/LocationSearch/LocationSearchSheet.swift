@@ -49,6 +49,7 @@ struct LocationSearchSheet: View {
     case let .success(suggestedLocations):
       viewModel.locations = suggestedLocations
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load location suggestions: \(error.localizedDescription)")
     }
@@ -60,6 +61,7 @@ struct LocationSearchSheet: View {
       onSelect(savedLocation)
       dismiss()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("saving location \(location.name) failed: \(error.localizedDescription)")
     }

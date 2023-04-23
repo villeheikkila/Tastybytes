@@ -169,6 +169,7 @@ struct VerificationScreen: View {
         brands.remove(object: brand)
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to verify brand \(brand.id): \(error.localizedDescription)")
     }
@@ -181,6 +182,7 @@ struct VerificationScreen: View {
         subBrands.remove(object: subBrand)
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to verify brand \(subBrand.id): \(error.localizedDescription)")
     }
@@ -193,6 +195,7 @@ struct VerificationScreen: View {
         companies.remove(object: company)
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to verify company: \(error.localizedDescription)")
     }
@@ -205,6 +208,7 @@ struct VerificationScreen: View {
         products.remove(object: product)
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to verify product: \(error.localizedDescription)")
     }
@@ -216,6 +220,7 @@ struct VerificationScreen: View {
       feedbackManager.trigger(.notification(.success))
       await loadData(refresh: true)
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete product: \(error.localizedDescription)")
     }
@@ -231,6 +236,7 @@ struct VerificationScreen: View {
             self.products = products
           }
         case let .failure(error):
+          guard !error.localizedDescription.contains("cancelled") else { return }
           feedbackManager.toggle(.error(.unexpected))
           logger.error("loading unverfied products failed: \(error.localizedDescription)")
         }
@@ -243,6 +249,7 @@ struct VerificationScreen: View {
             self.companies = companies
           }
         case let .failure(error):
+          guard !error.localizedDescription.contains("cancelled") else { return }
           feedbackManager.toggle(.error(.unexpected))
           logger.error("loading unverfied companies failed: \(error.localizedDescription)")
         }
@@ -255,6 +262,7 @@ struct VerificationScreen: View {
             self.brands = brands
           }
         case let .failure(error):
+          guard !error.localizedDescription.contains("cancelled") else { return }
           feedbackManager.toggle(.error(.unexpected))
           logger.error("loading unverfied brands failed: \(error.localizedDescription)")
         }
@@ -267,6 +275,7 @@ struct VerificationScreen: View {
             self.subBrands = subBrands
           }
         case let .failure(error):
+          guard !error.localizedDescription.contains("cancelled") else { return }
           feedbackManager.toggle(.error(.unexpected))
           logger.error("loading unverfied sub-brands failed: \(error.localizedDescription)")
         }

@@ -183,6 +183,7 @@ struct CompanyScreen: View {
     case let .success(company):
       companyJoined = company
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to refresh data for company: \(error.localizedDescription)")
     }
@@ -203,6 +204,7 @@ struct CompanyScreen: View {
       feedbackManager.trigger(.notification(.success))
       router.reset()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete company '\(company.id)': \(error.localizedDescription)")
     }
@@ -213,6 +215,7 @@ struct CompanyScreen: View {
     case .success:
       company = Company(id: company.id, name: company.name, logoFile: company.logoFile, isVerified: isVerified)
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to verify company: \(error.localizedDescription)")
     }

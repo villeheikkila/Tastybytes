@@ -43,6 +43,7 @@ struct CategoryManagementScreen: View {
         }.headerProminence(.increased)
       }
     }
+    .listStyle(.insetGrouped)
     .navigationBarTitle("Categories")
     .navigationBarItems(trailing: RouterLink("Add Category", systemImage: "plus",
                                              sheet: .addCategory(onSubmit: { _ in

@@ -281,6 +281,7 @@ struct CheckInSheet: View {
       await uploadImage(checkIn: updatedCheckIn)
       await onUpdate(updatedCheckIn)
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to update check-in '\(editCheckIn.id)': \(error.localizedDescription)")
     }
@@ -306,6 +307,7 @@ struct CheckInSheet: View {
       await uploadImage(checkIn: newCheckIn)
       await onCreation(newCheckIn)
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create check-in: \(error.localizedDescription)")
     }
@@ -315,6 +317,7 @@ struct CheckInSheet: View {
     guard let data = image?.jpegData(compressionQuality: 0.1) else { return }
     switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to uplaod image to check-in '\(checkIn.id)': \(error.localizedDescription)")
     default:

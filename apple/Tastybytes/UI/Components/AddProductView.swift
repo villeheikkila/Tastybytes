@@ -372,6 +372,7 @@ struct AddProductView: View {
       hasSubBrand = initialProduct.subBrand.name != nil
       logoFile = initialProduct.logoFile
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load brand owner for product '\(initialProduct.id)': \(error.localizedDescription)")
     }
@@ -392,6 +393,7 @@ struct AddProductView: View {
     case let .success(newProduct):
       await onSuccess(newProduct)
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create new product: \(error.localizedDescription)")
     }
@@ -414,6 +416,7 @@ struct AddProductView: View {
     case .success:
       feedbackManager.toggle(.success("Edit suggestion sent!"))
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create product edit suggestion for '\(productId)': \(error.localizedDescription)")
     }
@@ -426,6 +429,7 @@ struct AddProductView: View {
     case let .success(filename):
       logoFile = filename
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("uplodaing company logo failed: \(error.localizedDescription)")
     }
@@ -451,6 +455,7 @@ struct AddProductView: View {
         await onEdit()
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to edit product '\(productId)': \(error.localizedDescription)")
     }

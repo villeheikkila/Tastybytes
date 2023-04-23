@@ -76,6 +76,7 @@ struct UserSheet: View {
         self.searchResults = searchResults
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed searching users: \(error.localizedDescription)")
     }

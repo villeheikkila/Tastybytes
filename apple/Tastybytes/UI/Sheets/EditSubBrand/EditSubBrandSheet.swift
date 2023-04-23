@@ -90,6 +90,7 @@ struct EditSubBrandSheet: View {
       self.mergeTo = nil
       await onSuccess()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)': \(error.localizedDescription)")
     }
@@ -103,6 +104,7 @@ struct EditSubBrandSheet: View {
       feedbackManager.toggle(.success("Sub-brand updated!"))
       await onSuccess()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to edit sub-brand': \(error.localizedDescription)")
     }

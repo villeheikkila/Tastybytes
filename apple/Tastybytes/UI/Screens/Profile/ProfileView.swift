@@ -260,6 +260,7 @@ struct ProfileView: View {
         joinedAt: profile.joinedAt
       )
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("uplodaing avatar for \(userId) failed: \(error.localizedDescription)")
     }
@@ -272,6 +273,7 @@ struct ProfileView: View {
         profileSummary = summary
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching profile data failed: \(error.localizedDescription)")
     }

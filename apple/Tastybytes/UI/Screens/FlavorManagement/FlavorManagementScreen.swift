@@ -16,6 +16,7 @@ struct FlavorManagementScreen: View {
           }
       }
     }
+    .listStyle(.insetGrouped)
     .navigationBarTitle("Flavors")
     .navigationBarItems(
       trailing: RouterLink("Add flavors", systemImage: "plus", sheet: .newFlavor(onSubmit: { newFlavor in

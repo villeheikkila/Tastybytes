@@ -303,6 +303,7 @@ struct DiscoverScreen: View {
       showAddBarcodeConfirmation = false
       feedbackManager.toggle(.success("Barcode added!"))
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed: \(error.localizedDescription)")
     }
@@ -316,6 +317,7 @@ struct DiscoverScreen: View {
       }
       isSearched = true
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("searching products failed: \(error.localizedDescription)")
     }
@@ -328,6 +330,7 @@ struct DiscoverScreen: View {
         profiles = searchResults
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("searching profiles failed: \(error.localizedDescription)")
     }
@@ -342,6 +345,7 @@ struct DiscoverScreen: View {
       }
       isSearched = true
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("searching products with barcode \(barcode.barcode) failed: \(error.localizedDescription)")
     }
@@ -354,6 +358,7 @@ struct DiscoverScreen: View {
         companies = searchResults
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("searching companies failed: \(error.localizedDescription)")
     }
@@ -366,6 +371,7 @@ struct DiscoverScreen: View {
         locations = searchResults
       }
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("searching locations failed: \(error.localizedDescription)")
     }

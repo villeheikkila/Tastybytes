@@ -49,6 +49,7 @@ struct BrandSheet: View {
     case let .success(brandsWithSubBrands):
       self.brandsWithSubBrands = brandsWithSubBrands
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load brands for \(brandOwner.id): \(error.localizedDescription)")
     }
@@ -59,6 +60,7 @@ struct BrandSheet: View {
     case let .success(brandWithSubBrands):
       onCreation(brandWithSubBrands)
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create new brand for \(brandOwner.id): \(error.localizedDescription)")
     }

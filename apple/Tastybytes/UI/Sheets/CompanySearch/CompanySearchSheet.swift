@@ -84,6 +84,7 @@ struct CompanySearchSheet: View {
       self.searchResults = searchResults
       status = Status.searched
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to search companies: \(error.localizedDescription)")
     }
@@ -96,6 +97,7 @@ struct CompanySearchSheet: View {
       feedbackManager.toggle(.success("New Company Created!"))
       onSuccess(newCompany)
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create new company': \(error.localizedDescription)")
     }

@@ -78,6 +78,7 @@ struct SubcategorySheet: View {
     case .success:
       await appDataManager.initialize()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
     }

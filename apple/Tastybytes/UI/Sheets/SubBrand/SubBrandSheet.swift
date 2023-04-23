@@ -54,6 +54,7 @@ struct SubBrandSheet: View {
       onSelect(newSubBrand, true)
       dismiss()
     case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("saving sub-brand failed: \(error.localizedDescription)")
     }
