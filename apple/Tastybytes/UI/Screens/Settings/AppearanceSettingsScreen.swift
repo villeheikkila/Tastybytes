@@ -13,7 +13,7 @@ struct AppearanceSettingsScreen: View {
         Task { await profileManager.updateColorScheme() }
       }))
       Toggle("Use Dark Mode", isOn: .init(get: {
-        systemColorScheme == .dark
+        profileManager.isSystemColor ? systemColorScheme == .dark : profileManager.isDarkMode
       }, set: { newValue in
         profileManager.isDarkMode = newValue
         Task { await profileManager.updateColorScheme() }
