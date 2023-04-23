@@ -1,7 +1,6 @@
 import AlertToast
 import CoreHaptics
 import SwiftUI
-import UIKit
 
 @MainActor
 final class FeedbackManager: ObservableObject {

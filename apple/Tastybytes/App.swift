@@ -4,6 +4,17 @@ import GoTrue
 import Supabase
 import SwiftUI
 
+extension UIDevice {
+  // Checks if we run in Mac Catalyst Optimized For Mac Idiom
+  var isCatalystMacIdiom: Bool {
+    if #available(iOS 14, *) {
+      return UIDevice.current.userInterfaceIdiom == .mac
+    } else {
+      return false
+    }
+  }
+}
+
 @main
 struct Main: App {
   @StateObject private var feedbackManager = FeedbackManager()
