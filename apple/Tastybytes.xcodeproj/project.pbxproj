@@ -79,6 +79,7 @@
 		5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237E2986FAA40085522E /* CheckInListView.swift */; };
 		5C43238129898A4C0085522E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C43238029898A4C0085522E /* GoogleService-Info.plist */; };
 		5C46E8642911D9FD0008F142 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C46E8632911D9FD0008F142 /* Config.swift */; };
+		5C5670D929F56D77003F7C95 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 5C5670D829F56D77003F7C95 /* RevenueCat */; };
 		5C61E82D29B5C52600D10AA3 /* DuplicataProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E82C29B5C52600D10AA3 /* DuplicataProductScreen.swift */; };
 		5C61E83229B7B41400D10AA3 /* DiscoverScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83129B7B41400D10AA3 /* DiscoverScreen.swift */; };
 		5C61E83929B8FE7300D10AA3 /* CategoryManagementScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83829B8FE7300D10AA3 /* CategoryManagementScreen.swift */; };
@@ -410,6 +411,7 @@
 			files = (
 				5CD8D35129C8CFB7001C5930 /* SFSafeSymbols in Frameworks */,
 				5C25AEB229031B9D00793607 /* WrappingHStack in Frameworks */,
+				5C5670D929F56D77003F7C95 /* RevenueCat in Frameworks */,
 				5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */,
 				5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */,
 				5C08B6E028ED7956009218D7 /* Supabase in Frameworks */,
@@ -1208,6 +1210,7 @@
 				5C25AEB129031B9D00793607 /* WrappingHStack */,
 				5C13F21A291A7C3A00599892 /* FirebaseMessaging */,
 				5CD8D35029C8CFB7001C5930 /* SFSafeSymbols */,
+				5C5670D829F56D77003F7C95 /* RevenueCat */,
 			);
 			productName = tasted;
 			productReference = 5CFEE57328ED69B100A8DD66 /* Tastybytes.app */;
@@ -1244,6 +1247,7 @@
 				5C25AEB029031B9D00793607 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 				5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				5CD8D34F29C8CFB7001C5930 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
+				5C5670D729F56D77003F7C95 /* XCRemoteSwiftPackageReference "purchases-ios" */,
 			);
 			productRefGroup = 5CFEE57428ED69B100A8DD66 /* Products */;
 			projectDirPath = "";
@@ -1767,6 +1771,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		5C5670D729F56D77003F7C95 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		5CD8D34F29C8CFB7001C5930 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols";
@@ -1816,6 +1828,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5C25AEB029031B9D00793607 /* XCRemoteSwiftPackageReference "WrappingHStack" */;
 			productName = WrappingHStack;
+		};
+		5C5670D829F56D77003F7C95 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5C5670D729F56D77003F7C95 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
 		};
 		5CD8D35029C8CFB7001C5930 /* SFSafeSymbols */ = {
 			isa = XCSwiftPackageProductDependency;

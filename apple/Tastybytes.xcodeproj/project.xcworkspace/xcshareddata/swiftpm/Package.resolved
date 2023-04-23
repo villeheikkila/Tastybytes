@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleDataTransport.git",
       "state" : {
-        "revision" : "f6b558e3f801f2cac336b04f615ce111fa9ddaa0",
-        "version" : "9.2.1"
+        "revision" : "cc7265b8e3906304e6e81f32c1662a94bbae2357",
+        "version" : "9.2.2"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleUtilities.git",
       "state" : {
-        "revision" : "0543562f85620b5b7c510c6bcbef75b562a5127b",
-        "version" : "7.11.0"
+        "revision" : "871d43135925cde39ef7421d8723ce47edfdcc39",
+        "version" : "7.11.1"
       }
     },
     {
@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/gotrue-swift",
       "state" : {
-        "revision" : "9626a5833224b92126bd3f2350e3a8e2f4cb7cc5",
-        "version" : "1.0.0"
+        "revision" : "e36a47af2dd45acd7f891be3f5574e8ee66eee95",
+        "version" : "1.1.0"
       }
     },
     {
@@ -163,6 +163,15 @@
       }
     },
     {
+      "identity" : "purchases-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RevenueCat/purchases-ios.git",
+      "state" : {
+        "revision" : "a0358d44d84a9d27a632518ee5aa4131b294955f",
+        "version" : "4.17.11"
+      }
+    },
+    {
       "identity" : "realtime-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/realtime-swift.git",
@@ -185,8 +194,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/storage-swift.git",
       "state" : {
-        "revision" : "6081d81a59f5b5abb6ec7ae1eacf4bff41e6ec8b",
-        "version" : "0.1.1"
+        "revision" : "c3d812b9680cd9872afa40863bb993ffc5c7fdd6",
+        "version" : "0.1.2"
       }
     },
     {
@@ -194,8 +203,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/supabase-swift",
       "state" : {
-        "revision" : "652d2dbb7bfb1f1901936493fd8a4d01db1cc4ed",
-        "version" : "0.2.0"
+        "revision" : "c5d5e3eb7b8db485494949ecdfa9eef126cfa947",
+        "version" : "0.2.1"
       }
     },
     {
