@@ -51,90 +51,94 @@ struct CheckInListView<Header>: View where Header: View {
 
   var body: some View {
     ScrollViewReader { proxy in
-      List {
-        header
-        checkInsList
-        if isLoading {
-          ProgressView()
-            .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
-            .listRowSeparator(.hidden)
-        }
-      }
-      .scrollContentBackground(.hidden)
-      .scrollIndicators(.hidden)
-      .listStyle(.plain)
-      .onAppear {
-        scrollProxy = proxy
-      }
-      .confirmationDialog("Are you sure you want to delete check-in? The data will be permanently lost.",
-                          isPresented: $showDeleteCheckInConfirmationDialog,
-                          titleVisibility: .visible,
-                          presenting: showDeleteConfirmationFor)
-      { presenting in
-        ProgressButton(
-          "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
-          role: .destructive,
-          action: { await deleteCheckIn(checkIn: presenting) }
-        )
-      }
-      .onChange(of: scrollToTop, perform: { _ in
-        withAnimation {
-          if let topAnchor {
-            scrollProxy?.scrollTo(topAnchor, anchor: .top)
-          } else if let first = checkIns.first {
-            scrollProxy?.scrollTo(first.id, anchor: .top)
+      GeometryReader { geometry in
+        List {
+          header
+          ForEach(uniqueCheckIns) { checkIn in
+            let edgeInset = geometry.size.width < 450 ? 8 : (geometry.size.width - 450) / 2
+            CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
+              .listRowInsets(.init(top: 4, leading: edgeInset, bottom: 4, trailing: edgeInset))
+              .listRowSeparator(.hidden)
+              .id(checkIn.id)
+              .contextMenu {
+                ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
+                RouterLink(
+                  "Open Company",
+                  systemImage: "network",
+                  screen: .company(checkIn.product.subBrand.brand.brandOwner)
+                )
+                RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
+                RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
+                RouterLink("Open Check-in", systemImage: "checkmark.circle", screen: .checkIn(checkIn))
+                Divider()
+                if checkIn.profile.id == profileManager.id {
+                  RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                    onCheckInUpdate(updatedCheckIn)
+                  }))
+                  Button(
+                    "Delete",
+                    systemImage: "trash.fill",
+                    role: .destructive,
+                    action: { showDeleteConfirmationFor = checkIn }
+                  )
+                }
+                ReportButton(entity: .checkIn(checkIn))
+              }
+              .onAppear {
+                if checkIn == checkIns.last, isLoading != true {
+                  Task {
+                    await fetchActivityFeedItems()
+                  }
+                }
+              }
+          }
+          if isLoading {
+            ProgressView()
+              .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
+              .listRowSeparator(.hidden)
           }
         }
-      })
-      .refreshable {
-        await feedbackManager.wrapWithHaptics {
-          await refresh()
-          await onRefresh()
-        }
-      }
-      .task {
-        await fetchActivityFeedItems(onComplete: {
-          if splashScreenManager.state != .finished {
-            await splashScreenManager.dismiss()
-          }
-        })
-      }
-    }
-  }
-
-  @ViewBuilder private var checkInsList: some View {
-    ForEach(uniqueCheckIns) { checkIn in
-      CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
-        .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
-        .listRowSeparator(.hidden)
-        .id(checkIn.id)
-        .contextMenu {
-          ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
-          RouterLink("Open Company", systemImage: "network", screen: .company(checkIn.product.subBrand.brand.brandOwner))
-          RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
-          RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
-          RouterLink("Open Check-in", systemImage: "checkmark.circle", screen: .checkIn(checkIn))
-          Divider()
-          if checkIn.profile.id == profileManager.id {
-            RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
-              onCheckInUpdate(updatedCheckIn)
-            }))
-            Button(
-              "Delete",
-              systemImage: "trash.fill",
-              role: .destructive,
-              action: { showDeleteConfirmationFor = checkIn }
-            )
-          }
-          ReportButton(entity: .checkIn(checkIn))
-        }
+        .scrollContentBackground(.hidden)
+        .scrollIndicators(.hidden)
+        .listStyle(.plain)
+        .navigationBarTitleDisplayMode(geometry.size.width > 450 ? .inline : .automatic)
         .onAppear {
-          if checkIn == checkIns.last, isLoading != true {
-            Task {
-              await fetchActivityFeedItems()
+          scrollProxy = proxy
+        }
+        .confirmationDialog("Are you sure you want to delete check-in? The data will be permanently lost.",
+                            isPresented: $showDeleteCheckInConfirmationDialog,
+                            titleVisibility: .visible,
+                            presenting: showDeleteConfirmationFor)
+        { presenting in
+          ProgressButton(
+            "Delete \(presenting.product.getDisplayName(.fullName)) check-in",
+            role: .destructive,
+            action: { await deleteCheckIn(checkIn: presenting) }
+          )
+        }
+        .onChange(of: scrollToTop, perform: { _ in
+          withAnimation {
+            if let topAnchor {
+              scrollProxy?.scrollTo(topAnchor, anchor: .top)
+            } else if let first = checkIns.first {
+              scrollProxy?.scrollTo(first.id, anchor: .top)
             }
           }
+        })
+        .refreshable {
+          await feedbackManager.wrapWithHaptics {
+            await refresh()
+            await onRefresh()
+          }
         }
+        .task {
+          await fetchActivityFeedItems(onComplete: {
+            if splashScreenManager.state != .finished {
+              await splashScreenManager.dismiss()
+            }
+          })
+        }
+      }
     }
   }
 
