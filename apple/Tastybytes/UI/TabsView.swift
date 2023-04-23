@@ -39,31 +39,6 @@ struct TabsView: View {
     }
   }
 
-  var sideBarView: some View {
-    NavigationSplitView {
-      List {
-        ForEach(shownTabs) { newTab in
-          Button(action: {
-            feedbackManager.trigger(.selection)
-            if newTab == selection {
-              DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                resetNavigationOnTab = selection
-              }
-            } else {
-              selection = newTab
-            }
-          }, label: {
-            newTab.label
-          })
-        }
-      }
-    } content: {
-      Text("HEi")
-    } detail: {
-      selection.view($resetNavigationOnTab)
-    }.navigationSplitViewStyle(.balanced)
-  }
-
   private func getBadgeByTab(_ tab: Tab) -> Int {
     switch tab {
     case .notifications:

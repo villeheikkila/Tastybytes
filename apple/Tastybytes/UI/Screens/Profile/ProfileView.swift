@@ -113,7 +113,7 @@ struct ProfileView: View {
       Spacer()
 
       VStack(alignment: .center) {
-        if showInFull {
+        if isCurrentUser {
           PhotosPicker(
             selection: $selectedItem,
             matching: .images,

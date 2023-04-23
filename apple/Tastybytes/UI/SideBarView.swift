@@ -72,14 +72,13 @@ struct SideBarView: View {
 
   var body: some View {
     NavigationSplitView(columnVisibility: .constant(columnVisibility)) {
-      if isPortrait {
+      List(selection: $selection) {
         HStack(alignment: .firstTextBaseline) {
-          Color.clear.frame(width: 18, height: 0)
-          AppNameView()
+          Text(Config.appName)
+            .font(Font.custom("Comfortaa-Bold", size: 24)).bold()
           Spacer()
         }
-      }
-      List(selection: $selection) {
+        Color.clear.frame(width: 0, height: 12)
         ForEach(shownTabs) { newTab in
           Button(action: {
             feedbackManager.trigger(.selection)
@@ -95,7 +94,7 @@ struct SideBarView: View {
             newTab.label
           }).tag(newTab.id)
         }
-      }
+      }.navigationSplitViewColumnWidth(220)
     } detail: {
       NavigationStack(path: $router.path) {
         switch selection {
@@ -121,7 +120,7 @@ struct SideBarView: View {
         screen.view
       }
     }
-    .listStyle(.sidebar)
+    .navigationSplitViewStyle(.balanced)
     .environmentObject(router)
     .environmentObject(sheetManager)
     .toast(isPresenting: $feedbackManager.show) {
