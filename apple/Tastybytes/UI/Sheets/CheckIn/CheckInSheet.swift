@@ -175,9 +175,7 @@ struct CheckInSheet: View {
             Spacer()
           }
         })
-      }
 
-      Section("Purchased from") {
         RouterLink(sheet: .locationSearch(onSelect: { location in
           purchaseLocation = location
         }), label: {

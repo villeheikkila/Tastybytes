@@ -3,43 +3,6 @@ import PhotosUI
 import SwiftUI
 
 struct AddProductView: View {
-  enum Mode: Equatable {
-    case new, edit(Product.Joined), editSuggestion(Product.Joined), addToBrand(Brand.JoinedSubBrandsProductsCompany)
-
-    var doneLabel: String {
-      switch self {
-      case .edit:
-        return "Edit"
-      case .editSuggestion:
-        return "Send Edit suggestion"
-      case .new, .addToBrand:
-        return "Create"
-      }
-    }
-  }
-
-  enum Focusable {
-    case name, description
-  }
-
-  enum Toast: Identifiable {
-    var id: Self { self }
-    case createdCompany
-    case createdBrand
-    case createdSubBrand
-
-    var text: String {
-      switch self {
-      case .createdCompany:
-        return "New Company Created!"
-      case .createdBrand:
-        return "New Brand Created!"
-      case .createdSubBrand:
-        return "New Sub-brand Created!"
-      }
-    }
-  }
-
   private let logger = getLogger(category: "ProductSheet")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
@@ -50,33 +13,11 @@ struct AddProductView: View {
   @FocusState private var focusedField: Focusable?
   @State private var subcategories: [Subcategory] = []
 
-  let mode: Mode
-  let onEdit: (() async -> Void)?
-  let onCreate: ((_ product: Product.Joined) async -> Void)?
-
-  init(
-    mode: Mode,
-    initialBarcode: Barcode? = nil,
-    onEdit: (() async -> Void)? = nil,
-    onCreate: ((_ product: Product.Joined) -> Void)? = nil
-  ) {
-    self.mode = mode
-    _barcode = State(wrappedValue: initialBarcode)
-    self.onEdit = onEdit
-    self.onCreate = onCreate
-  }
-
-  @State private var category: Category.JoinedSubcategoriesServingStyles? {
-    didSet {
-      withAnimation {
-        subcategories.removeAll()
-      }
-    }
-  }
-
+  @State private var category: Category.JoinedSubcategoriesServingStyles?
   @State private var brandOwner: Company? {
     didSet {
       brand = nil
+      subBrand = nil
     }
   }
 
@@ -100,7 +41,6 @@ struct AddProductView: View {
 
   @State private var barcode: Barcode?
   @State private var isLoading = false
-
   @State private var selectedLogo: PhotosPickerItem? {
     didSet {
       Task { await uploadLogo() }
@@ -109,6 +49,22 @@ struct AddProductView: View {
 
   @State private var logoFile: String?
   @State private var productId: Int?
+
+  let mode: Mode
+  let onEdit: (() async -> Void)?
+  let onCreate: ((_ product: Product.Joined) async -> Void)?
+
+  init(
+    mode: Mode,
+    initialBarcode: Barcode? = nil,
+    onEdit: (() async -> Void)? = nil,
+    onCreate: ((_ product: Product.Joined) -> Void)? = nil
+  ) {
+    self.mode = mode
+    _barcode = State(wrappedValue: initialBarcode)
+    self.onEdit = onEdit
+    self.onCreate = onCreate
+  }
 
   var body: some View {
     Form {
@@ -182,6 +138,9 @@ struct AddProductView: View {
     }
     .listRowSeparator(.hidden)
     .listRowBackground(Color.clear)
+    .onChange(of: category) { _ in
+      subcategories = []
+    }
   }
 
   private var categorySection: some View {
@@ -458,6 +417,45 @@ struct AddProductView: View {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to edit product '\(productId)': \(error.localizedDescription)")
+    }
+  }
+}
+
+extension AddProductView {
+  enum Mode: Equatable {
+    case new, edit(Product.Joined), editSuggestion(Product.Joined), addToBrand(Brand.JoinedSubBrandsProductsCompany)
+
+    var doneLabel: String {
+      switch self {
+      case .edit:
+        return "Edit"
+      case .editSuggestion:
+        return "Send Edit suggestion"
+      case .new, .addToBrand:
+        return "Create"
+      }
+    }
+  }
+
+  enum Focusable {
+    case name, description
+  }
+
+  enum Toast: Identifiable {
+    var id: Self { self }
+    case createdCompany
+    case createdBrand
+    case createdSubBrand
+
+    var text: String {
+      switch self {
+      case .createdCompany:
+        return "New Company Created!"
+      case .createdBrand:
+        return "New Brand Created!"
+      case .createdSubBrand:
+        return "New Sub-brand Created!"
+      }
     }
   }
 }
