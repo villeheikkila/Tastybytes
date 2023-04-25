@@ -12,7 +12,6 @@ struct AddProductView: View {
   @EnvironmentObject private var appDataManager: AppDataManager
   @FocusState private var focusedField: Focusable?
   @State private var subcategories: [Subcategory] = []
-
   @State private var category: Category.JoinedSubcategoriesServingStyles?
   @State private var brandOwner: Company? {
     didSet {

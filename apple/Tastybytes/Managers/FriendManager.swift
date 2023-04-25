@@ -7,6 +7,14 @@ final class FriendManager: ObservableObject {
 
   var profile: Profile?
 
+  let repository: Repository
+  let feedbackManager: FeedbackManager
+
+  init(repository: Repository, feedbackManager: FeedbackManager) {
+    self.repository = repository
+    self.feedbackManager = feedbackManager
+  }
+
   var acceptedFriends: [Profile] {
     guard let profile else { return [] }
     return friends.filter { $0.status == .accepted }.compactMap { $0.getFriend(userId: profile.id) }
@@ -18,14 +26,6 @@ final class FriendManager: ObservableObject {
 
   var acceptedOrPendingFriends: [Friend] {
     friends.filter { $0.status != .blocked }
-  }
-
-  let repository: Repository
-  let feedbackManager: FeedbackManager
-
-  init(repository: Repository, feedbackManager: FeedbackManager) {
-    self.repository = repository
-    self.feedbackManager = feedbackManager
   }
 
   func sendFriendRequest(receiver: UUID, onSuccess: (() -> Void)? = nil) async {

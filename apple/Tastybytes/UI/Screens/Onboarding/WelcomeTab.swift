@@ -46,7 +46,7 @@ struct WelcomeTab: View {
         .frame(width: 80, height: 80, alignment: .center)
         .accessibility(hidden: true)
 
-      VStack(alignment: .leading, spacing: 8) {
+      VStack(alignment: .leading, spacing: 12) {
         Text(Config.appName)
           .font(.title)
           .fontWeight(.bold)
@@ -58,31 +58,29 @@ struct WelcomeTab: View {
   }
 }
 
-extension WelcomeTab {
-  struct FeatureItem: Hashable {
-    let title: String
-    let description: String
-    let systemName: String
-    let color: Color
+struct FeatureItem: Hashable {
+  let title: String
+  let description: String
+  let systemName: String
+  let color: Color
 
-    @ViewBuilder var view: some View {
-      HStack(alignment: .center, spacing: 8) {
-        Image(systemName: systemName)
-          .font(.largeTitle)
-          .frame(width: 60)
-          .accessibility(hidden: true)
-          .foregroundColor(color)
+  @ViewBuilder var view: some View {
+    HStack(alignment: .center, spacing: 30) {
+      Image(systemName: systemName)
+        .font(.largeTitle)
+        .frame(width: 60)
+        .accessibility(hidden: true)
+        .foregroundColor(color)
 
-        VStack(alignment: .leading) {
-          Text(title)
-            .font(.title3)
-            .foregroundColor(.primary)
+      VStack(alignment: .leading) {
+        Text(title)
+          .font(.title3)
+          .foregroundColor(.primary)
 
-          Text(description)
-            .font(.body)
-            .foregroundColor(.secondary)
-            .fixedSize(horizontal: false, vertical: true)
-        }
+        Text(description)
+          .font(.body)
+          .foregroundColor(.secondary)
+          .fixedSize(horizontal: false, vertical: true)
       }
     }
   }

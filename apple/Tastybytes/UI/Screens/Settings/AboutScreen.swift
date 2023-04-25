@@ -10,6 +10,7 @@ struct AboutScreen: View {
       List {
         header.listRowBackground(Color.clear)
         aboutSection
+        support
         footer
       }
     }
@@ -80,7 +81,11 @@ struct AboutScreen: View {
     }
   }
 
-  var footer: some View {
+  var support: some View {
+    RouterLink("Become a Supporter", systemImage: "gift", color: .green, sheet: .support)
+  }
+
+  @ViewBuilder var footer: some View {
     Section {
       HStack {
         Spacer()

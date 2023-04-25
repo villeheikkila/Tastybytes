@@ -45,6 +45,7 @@ enum Sheet: Identifiable, Equatable {
   case editCompany(company: Company, onSuccess: () async -> Void)
   case companyEditSuggestion(company: Company, onSuccess: () -> Void)
   case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
+  case support
 
   @ViewBuilder var view: some View {
     switch self {
@@ -126,6 +127,8 @@ enum Sheet: Identifiable, Equatable {
       EditCompanySheet(company: company, onSuccess: onSuccess, mode: .editSuggestion)
     case let .userSheet(mode: mode, onSubmit: onSubmit):
       UserSheet(mode: mode, onSubmit: onSubmit)
+    case .support:
+      SupportSheet()
     }
   }
 
@@ -142,6 +145,8 @@ enum Sheet: Identifiable, Equatable {
 
   var background: Material {
     switch self {
+    case .support:
+      return .ultraThin
     case .productFilter, .nameTag, .barcodeScanner:
       return .thickMaterial
     default:
@@ -222,6 +227,8 @@ enum Sheet: Identifiable, Equatable {
       return "company_edit_suggestion"
     case .userSheet:
       return "user"
+    case .support:
+      return "support"
     }
   }
 

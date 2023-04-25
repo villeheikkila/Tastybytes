@@ -40,5 +40,6 @@ enum Config {
     return baseUrl
   }()
 
+  static let revenuecatApiKey = "appl_GViVCzUBTyLOpwWgGkTFWuhAzaJ"
   static let appName = "Tastybytes"
 }

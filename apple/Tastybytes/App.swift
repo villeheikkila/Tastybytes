@@ -41,6 +41,7 @@ struct RootView: View {
   @StateObject private var notificationManager: NotificationManager
   @StateObject private var appDataManager: AppDataManager
   @StateObject private var friendManager: FriendManager
+  @StateObject private var purchaseManager: PurchaseManager
   @State private var authEvent: AuthChangeEvent?
   @State private var orientation: UIDeviceOrientation
   @ObservedObject private var feedbackManager: FeedbackManager
@@ -53,6 +54,7 @@ struct RootView: View {
       StateObject(wrappedValue: NotificationManager(repository: repository, feedbackManager: feedbackManager))
     _profileManager = StateObject(wrappedValue: ProfileManager(repository: repository, feedbackManager: feedbackManager))
     _appDataManager = StateObject(wrappedValue: AppDataManager(repository: repository, feedbackManager: feedbackManager))
+    _purchaseManager = StateObject(wrappedValue: PurchaseManager(feedbackManager: feedbackManager))
     _friendManager =
       StateObject(wrappedValue: FriendManager(repository: repository, feedbackManager: feedbackManager))
     _orientation = State(wrappedValue: UIDevice.current.orientation)
@@ -83,6 +85,7 @@ struct RootView: View {
     .environmentObject(profileManager)
     .environmentObject(feedbackManager)
     .environmentObject(appDataManager)
+    .environmentObject(purchaseManager)
     .environmentObject(friendManager)
     .preferredColorScheme(profileManager.colorScheme)
     .detectOrientation($orientation)
@@ -127,6 +130,7 @@ struct RootView: View {
       }
       .task {
         await friendManager.initialize(profile: profileManager.profile)
+        purchaseManager.initialize()
       }
     }
   }
