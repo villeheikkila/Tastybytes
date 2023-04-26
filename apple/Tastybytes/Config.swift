@@ -6,6 +6,7 @@ enum Config {
       static let supabaseUrl = "SUPABASE_URL"
       static let supabaseAnonKey = "SUPABASE_ANON_KEY"
       static let baseUrl = "BASE_URL"
+      static let revenuecatApiKey = "REVENUECAT_API_KEY"
     }
   }
 
@@ -40,6 +41,12 @@ enum Config {
     return baseUrl
   }()
 
-  static let revenuecatApiKey = "appl_GViVCzUBTyLOpwWgGkTFWuhAzaJ"
+  static let revenuecatApiKey: String = {
+    guard let revenuecatApiKey = Config.infoDictionary[Keys.Plist.baseUrl] as? String else {
+      fatalError("RevenueCat API Key is not set in plist for this environment")
+    }
+    return revenuecatApiKey
+  }()
+
   static let appName = "Tastybytes"
 }

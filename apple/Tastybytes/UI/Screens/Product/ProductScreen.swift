@@ -87,6 +87,7 @@ struct ProductScreen: View {
         }, unverify: {
           showUnverifyProductConfirmation = true
         })
+
         Divider()
 
         RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { _ in
@@ -102,6 +103,8 @@ struct ProductScreen: View {
             Task { await addBarcodeToProduct(barcode) }
           }))
         }
+
+        Divider()
 
         if profileManager.hasPermission(.canEditCompanies) {
           RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: product))
@@ -120,16 +123,26 @@ struct ProductScreen: View {
           }
         })
 
-        if profileManager.hasPermission(.canDeleteBarcodes) {
-          RouterLink("Barcodes", systemImage: "barcode", sheet: .barcodeManagement(product: product))
+        Menu {
+          if profileManager.hasPermission(.canDeleteBarcodes) {
+            RouterLink("Barcodes", systemImage: "barcode", sheet: .barcodeManagement(product: product))
+          }
+
+          if profileManager.hasPermission(.canDeleteProducts) {
+            Button(
+              "Delete",
+              systemImage: "trash.fill",
+              role: .destructive,
+              action: { showDeleteProductConfirmationDialog = true }
+            )
+            .disabled(product.isVerified)
+          }
+        } label: {
+          Label("Admin", systemImage: "gear")
+            .labelStyle(.iconOnly)
         }
 
         ReportButton(entity: .product(product))
-
-        if profileManager.hasPermission(.canDeleteProducts) {
-          Button("Delete", systemImage: "trash.fill", role: .destructive, action: { showDeleteProductConfirmationDialog = true })
-            .disabled(product.isVerified)
-        }
 
       } label: {
         Label("Options menu", systemImage: "ellipsis")
