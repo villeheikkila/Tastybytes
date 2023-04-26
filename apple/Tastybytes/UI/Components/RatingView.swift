@@ -6,39 +6,39 @@ struct RatingView: View {
 
   private let width: Double
   private let height: Double
+  private let spacing: Double
 
   init(rating: Double, type: StarType = .large) {
     self.rating = rating
     self.type = type
     width = type == .small ? 12 : 24
     height = type == .small ? 12 : 24
+    spacing = type == .small ? 5 : 10
   }
 
   var body: some View {
-    HStack(spacing: 3) {
-      ForEach(0 ..< Int(rating), id: \.self) { _ in
-        Image(systemName: "star.fill")
-          .resizable()
-          .frame(width: width, height: height)
-          .foregroundColor(.yellow)
-          .accessibility(hidden: true)
-      }
-
-      if rating != floor(rating) {
-        Image(systemName: "star.leadinghalf.fill")
-          .resizable()
-          .frame(width: width, height: height)
-          .foregroundColor(.yellow)
-          .accessibility(hidden: true)
-      }
-
-      ForEach(0 ..< Int(Double(5) - rating), id: \.self) { _ in
+    HStack(spacing: 10) {
+      ForEach(0 ... 4, id: \.self) { i in
         Image(systemName: "star")
-          .resizable()
+          .overlay(
+            GeometryReader { geo in
+              let fraction = rating - Double(i)
+              let paintedPortion = min(5, max(0, fraction))
+              let width = geo.size.width * paintedPortion + (paintedPortion > 0.75 ? 5 : 0)
+              Image(systemName: "star.fill")
+                .foregroundColor(.yellow)
+                .mask(
+                  Rectangle()
+                    .frame(width: width, height: geo.size.height)
+                    .offset(x: -geo.size.width / 4)
+                )
+            }
+          )
+          .font(.title)
           .frame(width: width, height: height)
-          .accessibility(hidden: true)
       }
-    }.accessibilityLabel("\(rating) stars")
+    }
+    .accessibilityLabel("\(rating) stars")
   }
 }
 
