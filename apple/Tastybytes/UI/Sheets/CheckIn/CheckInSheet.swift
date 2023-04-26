@@ -110,7 +110,7 @@ struct CheckInSheet: View {
       Section("Review") {
         TextField("How was it?", text: $review, axis: .vertical)
           .focused($focusedField, equals: .review)
-        RatingPickerView(rating: $rating, incrementType: .large)
+        RatingPickerView(rating: $rating, incrementType: .small)
         RouterLink(sheet: .flavors(pickedFlavors: $pickedFlavors), label: {
           if !pickedFlavors.isEmpty {
             WrappingHStack(pickedFlavors, spacing: .constant(4)) { flavor in

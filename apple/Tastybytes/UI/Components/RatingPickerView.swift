@@ -24,14 +24,30 @@ struct RatingPickerView: View {
   var body: some View {
     ZStack {
       HStack {
-        ForEach(0 ..< Int(rating), id: \.self) { _ in
-          fullStar
-        }
-        if rating != floor(rating) {
-          halfStar
-        }
-        ForEach(0 ..< Int(Double(5) - rating), id: \.self) { _ in
-          emptyStar
+        ForEach(0 ... 4, id: \.self) { i in
+          Image(systemName: "star")
+            .overlay(
+              GeometryReader { geo in
+                let fraction = rating - Double(i)
+                let paintedPortion = min(5, max(0, fraction))
+                let width = geo.size.width * paintedPortion + (paintedPortion > 0.75 ? 5 : 0)
+                Image(systemName: "star.fill")
+                  .foregroundColor(.yellow)
+                  .mask(
+                    Rectangle()
+                      .frame(width: width, height: geo.size.height)
+                      .offset(x: -geo.size.width / 4)
+                  )
+              }
+            )
+            .font(.title)
+            .background(
+              GeometryReader { proxy in
+                Color.clear.preference(key: StarSizeKey.self, value: proxy.size)
+              }
+            )
+            .frame(width: starSize.width, height: starSize.height)
+            .foregroundColor(.yellow)
         }
       }
       .background(
@@ -57,23 +73,6 @@ struct RatingPickerView: View {
     }
   }
 
-  private var fullStar: some View {
-    Image(systemName: "star.fill")
-      .star(size: starSize)
-      .foregroundColor(.yellow)
-  }
-
-  private var halfStar: some View {
-    Image(systemName: "star.leadinghalf.fill")
-      .star(size: starSize)
-      .foregroundColor(.yellow)
-  }
-
-  private var emptyStar: some View {
-    Image(systemName: "star")
-      .star(size: starSize)
-  }
-
   private func rating(at position: CGPoint) -> Double {
     let singleStarWidth = starSize.width
     let totalPaddingWidth = controlSize.width - Double(5) * singleStarWidth
@@ -84,18 +83,6 @@ struct RatingPickerView: View {
     let starPercent = xAxis.truncatingRemainder(dividingBy: starWithSpaceWidth) / Double(singleStarWidth)
     let rating = Double(starIdx) + round(starPercent * incrementType.divider) / incrementType.divider
     return min(5, max(0, rating))
-  }
-}
-
-private extension Image {
-  func star(size: CGSize) -> some View {
-    font(.title)
-      .background(
-        GeometryReader { proxy in
-          Color.clear.preference(key: StarSizeKey.self, value: proxy.size)
-        }
-      )
-      .frame(width: size.width, height: size.height)
   }
 }
 
