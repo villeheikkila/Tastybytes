@@ -1,10 +1,25 @@
 import SwiftUI
 
 struct RatingPickerView: View {
+  enum IncrementType {
+    case small, large
+
+    var divider: Double {
+      switch self {
+      case .large:
+        return 2
+      case .small:
+        return 4
+      }
+    }
+  }
+
   @Binding var rating: Double
   @State private var starSize: CGSize = .zero
   @State private var controlSize: CGSize = .zero
   @GestureState private var dragging = false
+
+  let incrementType: IncrementType
 
   var body: some View {
     ZStack {
@@ -65,20 +80,10 @@ struct RatingPickerView: View {
     let singlePaddingWidth = totalPaddingWidth / (Double(5) - 1)
     let starWithSpaceWidth = Double(singleStarWidth + singlePaddingWidth)
     let xAxis = Double(position.x)
-
     let starIdx = Int(xAxis / starWithSpaceWidth)
-    let starPercent = xAxis.truncatingRemainder(dividingBy: starWithSpaceWidth) / Double(singleStarWidth) * 100
-
-    let rating: Double
-    if starPercent < 25 {
-      rating = Double(starIdx)
-    } else if starPercent <= 75 {
-      rating = Double(starIdx) + 0.5
-    } else {
-      rating = Double(starIdx) + 1
-    }
-
-    return min(Double(5), max(0, rating))
+    let starPercent = xAxis.truncatingRemainder(dividingBy: starWithSpaceWidth) / Double(singleStarWidth)
+    let rating = Double(starIdx) + round(starPercent * incrementType.divider) / incrementType.divider
+    return min(5, max(0, rating))
   }
 }
 
