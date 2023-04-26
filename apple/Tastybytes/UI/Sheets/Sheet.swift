@@ -33,7 +33,7 @@ enum Sheet: Identifiable, Equatable {
   case editSubBrand(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct, onUpdate: () async -> Void)
   case friends(taggedFriends: Binding<[Profile]>)
   case flavors(pickedFlavors: Binding<[Flavor]>)
-  case locationSearch(onSelect: (_ location: Location) -> Void)
+  case locationSearch(title: String, onSelect: (_ location: Location) -> Void)
   case legacyPhotoPicker(onSelection: (_ image: UIImage) -> Void)
   case newFlavor(onSubmit: (_ newFlavor: String) async -> Void)
   case servingStyleManagement(pickedServingStyles: Binding<[ServingStyle]>,
@@ -105,8 +105,8 @@ enum Sheet: Identifiable, Equatable {
       FriendSheet(taggedFriends: taggedFriends)
     case let .flavors(pickedFlavors: pickedFlavors):
       FlavorSheet(pickedFlavors: pickedFlavors)
-    case let .locationSearch(onSelect: onSelect):
-      LocationSearchSheet(onSelect: onSelect)
+    case let .locationSearch(title: title, onSelect: onSelect):
+      LocationSearchSheet(title: title, onSelect: onSelect)
     case let .legacyPhotoPicker(onSelection: onSelection):
       LegacyPhotoPicker(onSelection: onSelection)
     case let .newFlavor(onSubmit: onSubmit):
@@ -145,7 +145,7 @@ enum Sheet: Identifiable, Equatable {
 
   var background: Material {
     switch self {
-    case .support:
+    case .support, .checkIn:
       return .ultraThin
     case .productFilter, .nameTag, .barcodeScanner:
       return .thickMaterial

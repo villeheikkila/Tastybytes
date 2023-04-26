@@ -144,21 +144,8 @@ struct CheckInSheet: View {
         .fontWeight(.medium)
       }
 
-      Section {
-        RouterLink(sheet: .friends(taggedFriends: $taggedFriends), label: {
-          if taggedFriends.isEmpty {
-            Text("Tag friends")
-              .fontWeight(.medium)
-          } else {
-            WrappingHStack(taggedFriends) { friend in
-              AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
-            }
-          }
-        })
-      }
-
-      Section("Location") {
-        RouterLink(sheet: .locationSearch(onSelect: { location in
+      Section("Location & Friends") {
+        RouterLink(sheet: .locationSearch(title: "Location", onSelect: { location in
           self.location = location
         }), label: {
           HStack {
@@ -176,7 +163,7 @@ struct CheckInSheet: View {
           }
         })
 
-        RouterLink(sheet: .locationSearch(onSelect: { location in
+        RouterLink(sheet: .locationSearch(title: "Purchase Location", onSelect: { location in
           purchaseLocation = location
         }), label: {
           HStack {
@@ -191,6 +178,17 @@ struct CheckInSheet: View {
                 .fontWeight(.medium)
             }
             Spacer()
+          }
+        })
+
+        RouterLink(sheet: .friends(taggedFriends: $taggedFriends), label: {
+          if taggedFriends.isEmpty {
+            Text("Tag friends")
+              .fontWeight(.medium)
+          } else {
+            WrappingHStack(taggedFriends) { friend in
+              AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
+            }
           }
         })
       }

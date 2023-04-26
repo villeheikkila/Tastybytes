@@ -10,10 +10,12 @@ struct LocationSearchSheet: View {
   @StateObject private var locationManager = LocationManager()
   @Environment(\.dismiss) private var dismiss
 
-  var onSelect: (_ location: Location) -> Void
+  let title: String
+  let onSelect: (_ location: Location) -> Void
 
-  init(onSelect: @escaping (_ location: Location) -> Void) {
+  init(title: String, onSelect: @escaping (_ location: Location) -> Void) {
     _viewModel = StateObject(wrappedValue: ViewModel())
+    self.title = title
     self.onSelect = onSelect
   }
 
@@ -34,7 +36,7 @@ struct LocationSearchSheet: View {
     .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: {
       dismiss()
     }))
-    .navigationTitle("Location")
+    .navigationTitle(title)
     .searchable(text: $viewModel.searchText)
     .task {
       guard let lastLocation = locationManager.lastLocation else { return }
