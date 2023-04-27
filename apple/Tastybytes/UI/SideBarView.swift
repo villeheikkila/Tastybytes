@@ -94,7 +94,9 @@ struct SideBarView: View {
             newTab.label
           }).tag(newTab.id)
         }
-      }.navigationSplitViewColumnWidth(220)
+      }
+      .listStyle(.sidebar)
+      .navigationSplitViewColumnWidth(220)
     } detail: {
       NavigationStack(path: $router.path) {
         switch selection {
