@@ -4,28 +4,23 @@ struct RatingView: View {
   let rating: Double
   let type: StarType
 
-  private let width: Double
-  private let height: Double
-  private let spacing: Double
-
   init(rating: Double, type: StarType = .large) {
     self.rating = rating
     self.type = type
-    width = type == .small ? 12 : 24
-    height = type == .small ? 12 : 24
-    spacing = type == .small ? 5 : 10
   }
 
   var body: some View {
-    HStack(spacing: 10) {
+    HStack(spacing: 2) {
       ForEach(0 ... 4, id: \.self) { i in
         Image(systemName: "star")
+          .resizable()
+          .foregroundColor(.yellow)
           .overlay(
             GeometryReader { geo in
-              let fraction = rating - Double(i)
-              let paintedPortion = min(5, max(0, fraction))
-              let width = geo.size.width * paintedPortion + (paintedPortion > 0.75 ? 5 : 0)
+              let paintedPortion = min(5, max(0, rating - Double(i)))
+              let width = geo.size.width * paintedPortion + (paintedPortion > 0.75 ? 8 : 0)
               Image(systemName: "star.fill")
+                .resizable()
                 .foregroundColor(.yellow)
                 .mask(
                   Rectangle()
@@ -35,7 +30,7 @@ struct RatingView: View {
             }
           )
           .font(.title)
-          .frame(width: width, height: height)
+          .frame(width: type.size, height: type.size)
       }
     }
     .accessibilityLabel("\(rating) stars")
@@ -44,6 +39,15 @@ struct RatingView: View {
 
 enum StarType {
   case large, small
+
+  var size: Double {
+    switch self {
+    case .small:
+      return 10
+    case .large:
+      return 24
+    }
+  }
 }
 
 struct RatingView_Previews: PreviewProvider {
