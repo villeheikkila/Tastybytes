@@ -1639,6 +1639,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					x86_64,
+					arm64,
+				);
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIconCola AppIconEnergyDrink AppIconJuice AppIconKombucha";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1691,6 +1697,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					x86_64,
+					arm64,
+				);
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIconCola AppIconEnergyDrink AppIconJuice AppIconKombucha";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
