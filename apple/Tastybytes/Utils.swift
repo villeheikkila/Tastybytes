@@ -53,3 +53,7 @@ func getLogger(category: String) -> Logger {
 func isPadOrMac() -> Bool {
   [.pad, .mac].contains(UIDevice.current.userInterfaceIdiom)
 }
+
+func isMac() -> Bool {
+  UIDevice.current.userInterfaceIdiom == .mac
+}

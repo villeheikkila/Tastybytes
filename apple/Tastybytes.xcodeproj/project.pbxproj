@@ -43,6 +43,7 @@
 		5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EA29A96C090005422D /* NameTagSheet.swift */; };
 		5C234F0A29F5BBB9003F2283 /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F0929F5BBB9003F2283 /* SupportScreen.swift */; };
 		5C234F0C29F64F5B003F2283 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F0B29F64F5B003F2283 /* PurchaseManager.swift */; };
+		5C234F1129FEFA98003F2283 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F1029FEFA98003F2283 /* SceneDelegate.swift */; };
 		5C25AEB229031B9D00793607 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 5C25AEB129031B9D00793607 /* WrappingHStack */; };
 		5C25AEB429031F9C00793607 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB329031F9C00793607 /* DateExtensions.swift */; };
 		5C25AEB62903FBDE00793607 /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB52903FBDE00793607 /* Role.swift */; };
@@ -244,6 +245,7 @@
 		5C2146EA29A96C090005422D /* NameTagSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTagSheet.swift; sourceTree = "<group>"; };
 		5C234F0929F5BBB9003F2283 /* SupportScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportScreen.swift; sourceTree = "<group>"; };
 		5C234F0B29F64F5B003F2283 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
+		5C234F1029FEFA98003F2283 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5C25AEB329031F9C00793607 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		5C25AEB52903FBDE00793607 /* Role.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
 		5C25AEB72904038000793607 /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
@@ -1171,6 +1173,7 @@
 				5C43238029898A4C0085522E /* GoogleService-Info.plist */,
 				5CFEE57628ED69B100A8DD66 /* App.swift */,
 				5C367EB529A3F87C000A7149 /* AppDelegate.swift */,
+				5C234F1029FEFA98003F2283 /* SceneDelegate.swift */,
 				5CCE914D28F45DE7005A6043 /* Utils.swift */,
 				5C46E8632911D9FD0008F142 /* Config.swift */,
 				5CC2FE9229197D8A002BDF83 /* Managers */,
@@ -1361,6 +1364,7 @@
 				5CB4E03229E093AA00135ADA /* ReportButtonView.swift in Sources */,
 				5CB1C24728F9B551000B0EB4 /* CheckInCommentRepository.swift in Sources */,
 				5C663F27292E0F1D006F9A97 /* DocumentRepository.swift in Sources */,
+				5C234F1129FEFA98003F2283 /* SceneDelegate.swift in Sources */,
 				5C0E3652292679630072EFBD /* BarcodeScannerSheet.swift in Sources */,
 				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,
 				5C25C672299561BD00C07953 /* SettingsTab.swift in Sources */,

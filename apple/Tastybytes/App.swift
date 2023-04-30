@@ -5,7 +5,6 @@ import Supabase
 import SwiftUI
 
 extension UIDevice {
-  // Checks if we run in Mac Catalyst Optimized For Mac Idiom
   var isCatalystMacIdiom: Bool {
     if #available(iOS 14, *) {
       return UIDevice.current.userInterfaceIdiom == .mac
@@ -71,11 +70,15 @@ struct RootView: View {
       case .userDeleted:
         AuthenticationScreen(scene: .accountDeleted)
       case nil:
-        SplashScreen()
+        if !isMac() {
+          SplashScreen()
+        } else {
+          EmptyView()
+        }
       default:
         AuthenticationScreen(scene: .signIn)
       }
-      if splashScreenManager.state != .finished {
+      if !isMac(), splashScreenManager.state != .finished {
         SplashScreen()
       }
     }
