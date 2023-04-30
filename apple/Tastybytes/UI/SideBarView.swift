@@ -85,7 +85,7 @@ struct SideBarView: View {
             if newTab == selection {
               DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                 scrollToTop += 1
-                router.path = []
+                router.reset()
               }
             } else {
               selection = newTab

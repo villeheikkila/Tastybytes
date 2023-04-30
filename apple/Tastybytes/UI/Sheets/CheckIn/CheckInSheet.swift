@@ -23,6 +23,7 @@ struct CheckInSheet: View {
   @State private var location: Location?
   @State private var purchaseLocation: Location?
   @State private var checkInAt: Date = .now
+  @State private var isLegacyCheckIn: Bool
   @State private var blurHash: String?
   @State private var image: UIImage? {
     didSet {
@@ -48,6 +49,7 @@ struct CheckInSheet: View {
     editCheckIn = nil
     onUpdate = nil
     action = .create
+    _isLegacyCheckIn = State(initialValue: false)
   }
 
   init(checkIn: CheckIn,
@@ -67,6 +69,7 @@ struct CheckInSheet: View {
     _location = State(wrappedValue: checkIn.location)
     _purchaseLocation = State(wrappedValue: checkIn.purchaseLocation)
     _checkInAt = State(wrappedValue: checkIn.checkInAt ?? Date.now)
+    _isLegacyCheckIn = State(initialValue: checkIn.checkInAt == nil)
   }
 
   var body: some View {
@@ -103,6 +106,7 @@ struct CheckInSheet: View {
             Spacer()
           }
         }
+        RatingPickerView(rating: $rating, incrementType: .small)
       }
       .listRowSeparator(.hidden)
       .listRowBackground(Color.clear)
@@ -110,7 +114,6 @@ struct CheckInSheet: View {
       Section("Review") {
         TextField("How was it?", text: $review, axis: .vertical)
           .focused($focusedField, equals: .review)
-        RatingPickerView(rating: $rating, incrementType: .small)
         RouterLink(sheet: .flavors(pickedFlavors: $pickedFlavors), label: {
           if !pickedFlavors.isEmpty {
             WrappingHStack(pickedFlavors, spacing: .constant(4)) { flavor in
@@ -118,11 +121,10 @@ struct CheckInSheet: View {
             }
           } else {
             Text("Flavors")
-              .fontWeight(.medium)
           }
         })
         Button("\(editCheckIn?.imageUrl == nil && image == nil ? "Add" : "Change") Photo",
-               systemImage: "photo", action: { showPhotoMenu.toggle() }).fontWeight(.medium)
+               systemImage: "photo", action: { showPhotoMenu.toggle() })
       }.headerProminence(.increased)
 
       Section("Additional Information") {
@@ -134,14 +136,12 @@ struct CheckInSheet: View {
             }
           } label: {
             Text("Serving Style")
-              .fontWeight(.medium)
           }
         }
 
         RouterLink(manufacturer?.name ?? "Manufactured By", sheet: .companySearch(onSelect: { company in
           manufacturer = company
         }))
-        .fontWeight(.medium)
       }
 
       Section("Location & Friends") {
@@ -157,7 +157,6 @@ struct CheckInSheet: View {
               }
             } else {
               Text("Location")
-                .fontWeight(.medium)
             }
             Spacer()
           }
@@ -175,28 +174,26 @@ struct CheckInSheet: View {
               }
             } else {
               Text("Purchase Location")
-                .fontWeight(.medium)
             }
             Spacer()
           }
         })
 
+        if profileManager.hasPermission(.canSetCheckInDate) {
+          RouterLink(sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn)) {
+            Text(isLegacyCheckIn ? "Legacy Check-in" : "Checked-in \(checkInAt.customFormat(.relativeTime).lowercased())")
+          }
+        }
+
         RouterLink(sheet: .friends(taggedFriends: $taggedFriends), label: {
           if taggedFriends.isEmpty {
             Text("Tag friends")
-              .fontWeight(.medium)
           } else {
             WrappingHStack(taggedFriends) { friend in
               AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
             }
           }
         })
-      }
-
-      if profileManager.hasPermission(.canSetCheckInDate) {
-        DatePicker(selection: $checkInAt, in: ...Date.now) {
-          Text("Check-in Date")
-        }
       }
     }
     .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
@@ -269,7 +266,7 @@ struct CheckInSheet: View {
       location: location,
       purchaseLocation: purchaseLocation,
       blurHash: blurHash,
-      checkInAt: checkInAt
+      checkInAt: isLegacyCheckIn ? nil : checkInAt
     )
 
     switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
@@ -295,7 +292,7 @@ struct CheckInSheet: View {
       location: location,
       purchaseLocation: purchaseLocation,
       blurHash: blurHash,
-      checkInAt: checkInAt
+      checkInAt: isLegacyCheckIn ? nil : checkInAt
     )
 
     switch await repository.checkIn.create(newCheckInParams: newCheckParams) {

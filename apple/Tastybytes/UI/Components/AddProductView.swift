@@ -146,10 +146,8 @@ struct AddProductView: View {
     Section {
       Picker("Category", selection: $category) {
         Text("None").tag(Category.JoinedSubcategoriesServingStyles?(nil))
-          .fontWeight(.medium)
         ForEach(appDataManager.categories) { category in
           Text(category.name)
-            .fontWeight(.medium)
             .tag(Optional(category))
         }
       }
@@ -165,7 +163,6 @@ struct AddProductView: View {
         HStack {
           if subcategories.isEmpty {
             Text("Subcategories")
-              .fontWeight(.medium)
           } else {
             HStack(spacing: 4) {
               ForEach(subcategories) { subcategory in
@@ -178,7 +175,6 @@ struct AddProductView: View {
     }
     header: {
       Text("Category")
-        .fontWeight(.medium)
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
           focusedField = nil
@@ -192,7 +188,6 @@ struct AddProductView: View {
       RouterLink(brandOwner?.name ?? "Company", sheet: .companySearch(onSelect: { company in
         setBrandOwner(company)
       }))
-      .fontWeight(.medium)
 
       if let brandOwner {
         RouterLink(
@@ -204,7 +199,6 @@ struct AddProductView: View {
             setBrand(brand: brand)
           })
         )
-        .fontWeight(.medium)
       }
 
       if brand != nil {
@@ -221,12 +215,10 @@ struct AddProductView: View {
             self.subBrand = subBrand
           })
         )
-        .fontWeight(.medium)
       }
 
     } header: {
       Text("Brand")
-        .fontWeight(.medium)
         .accessibilityAddTraits(.isButton)
         .onTapGesture {
           focusedField = nil
@@ -238,18 +230,15 @@ struct AddProductView: View {
   private var productSection: some View {
     Section {
       TextField("Name", text: $name)
-        .fontWeight(.medium)
         .focused($focusedField, equals: .name)
 
       TextField("Description (optional)", text: $description)
-        .fontWeight(.medium)
         .focused($focusedField, equals: .description)
 
       if mode == .new {
         RouterLink(barcode == nil ? "Add Barcode" : "Barcode Added!", sheet: .barcodeScanner(onComplete: { barcode in
           self.barcode = barcode
         }))
-        .fontWeight(.medium)
       }
     } header: {
       Text("Product")

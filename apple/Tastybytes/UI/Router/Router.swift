@@ -26,7 +26,7 @@ final class Router: ObservableObject {
 
   func navigate(screen: Screen, resetStack: Bool = false) {
     if resetStack {
-      path = []
+      reset()
     }
     path.append(screen)
   }

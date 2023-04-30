@@ -22,19 +22,20 @@ extension Date {
       } else {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
+        formatter.locale = Locale(identifier: "en_US")
         return formatter.localizedString(for: self, relativeTo: Date.now)
       }
     case .timestampTz:
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
-      dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-      return dateFormatter.string(from: self)
+      let formatter = DateFormatter()
+      formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
+      formatter.timeZone = TimeZone(abbreviation: "UTC")
+      return formatter.string(from: self)
     case .date:
-      let dateFormatter = DateFormatter()
-      dateFormatter.locale = Locale(identifier: "en_US")
-      dateFormatter.dateFormat = "d MMM yyyy"
-      dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-      return dateFormatter.string(from: self)
+      let formatter = DateFormatter()
+      formatter.locale = Locale(identifier: "en_US")
+      formatter.dateFormat = "d MMM yyyy"
+      formatter.timeZone = TimeZone(abbreviation: "UTC")
+      return formatter.string(from: self)
     }
   }
 }

@@ -45,6 +45,7 @@ enum Sheet: Identifiable, Equatable {
   case editCompany(company: Company, onSuccess: () async -> Void)
   case companyEditSuggestion(company: Company, onSuccess: () -> Void)
   case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
+  case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>)
   case support
 
   @ViewBuilder var view: some View {
@@ -127,6 +128,8 @@ enum Sheet: Identifiable, Equatable {
       EditCompanySheet(company: company, onSuccess: onSuccess, mode: .editSuggestion)
     case let .userSheet(mode: mode, onSubmit: onSubmit):
       UserSheet(mode: mode, onSubmit: onSubmit)
+    case let .checkInDatePicker(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn):
+      CheckInDatePickerSheet(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn)
     case .support:
       SupportSheet()
     }
@@ -138,6 +141,8 @@ enum Sheet: Identifiable, Equatable {
       return [.medium]
     case .nameTag:
       return [.height(320)]
+    case .checkInDatePicker:
+      return [.height(500)]
     default:
       return [.large]
     }
@@ -147,7 +152,7 @@ enum Sheet: Identifiable, Equatable {
     switch self {
     case .support, .checkIn:
       return .ultraThin
-    case .productFilter, .nameTag, .barcodeScanner:
+    case .productFilter, .nameTag, .barcodeScanner, .checkInDatePicker:
       return .thickMaterial
     default:
       return .ultraThick
@@ -227,6 +232,8 @@ enum Sheet: Identifiable, Equatable {
       return "company_edit_suggestion"
     case .userSheet:
       return "user"
+    case .checkInDatePicker:
+      return "check_in_date_picker"
     case .support:
       return "support"
     }

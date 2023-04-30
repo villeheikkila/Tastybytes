@@ -44,6 +44,7 @@
 		5C234F0A29F5BBB9003F2283 /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F0929F5BBB9003F2283 /* SupportScreen.swift */; };
 		5C234F0C29F64F5B003F2283 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F0B29F64F5B003F2283 /* PurchaseManager.swift */; };
 		5C234F1129FEFA98003F2283 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F1029FEFA98003F2283 /* SceneDelegate.swift */; };
+		5C234F132A0163AA003F2283 /* CheckInDatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */; };
 		5C25AEB229031B9D00793607 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 5C25AEB129031B9D00793607 /* WrappingHStack */; };
 		5C25AEB429031F9C00793607 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB329031F9C00793607 /* DateExtensions.swift */; };
 		5C25AEB62903FBDE00793607 /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB52903FBDE00793607 /* Role.swift */; };
@@ -246,6 +247,7 @@
 		5C234F0929F5BBB9003F2283 /* SupportScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportScreen.swift; sourceTree = "<group>"; };
 		5C234F0B29F64F5B003F2283 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		5C234F1029FEFA98003F2283 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInDatePickerSheet.swift; sourceTree = "<group>"; };
 		5C25AEB329031F9C00793607 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		5C25AEB52903FBDE00793607 /* Role.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
 		5C25AEB72904038000793607 /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
@@ -698,6 +700,7 @@
 				5C7C3598299AC4EB009A3C09 /* SubBrand */,
 				5C7C3594299AC455009A3C09 /* Subcategory */,
 				5C7C35A1299AC5CA009A3C09 /* User */,
+				5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */,
 			);
 			path = Sheets;
 			sourceTree = "<group>";
@@ -1480,6 +1483,7 @@
 				5C663F372933B8FA006F9A97 /* LocationScreen.swift in Sources */,
 				5CE9008C291FCB71003DE697 /* SplashScreenView.swift in Sources */,
 				5CC2FE982919CB19002BDF83 /* Country.swift in Sources */,
+				5C234F132A0163AA003F2283 /* CheckInDatePickerSheet.swift in Sources */,
 				5CDC9F9D29E4572000B6082F /* Screen.swift in Sources */,
 				5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */,
 				5C61E83229B7B41400D10AA3 /* DiscoverScreen.swift in Sources */,
