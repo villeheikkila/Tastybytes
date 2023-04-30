@@ -92,7 +92,8 @@ struct SideBarView: View {
             }
           }, label: {
             newTab.label
-          }).tag(newTab.id)
+          })
+          .tag(newTab.id)
         }
       }
       .listStyle(.sidebar)
