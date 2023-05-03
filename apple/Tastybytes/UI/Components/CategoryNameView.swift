@@ -10,18 +10,23 @@ struct CategoryNameView: View {
   }
 
   var body: some View {
-    Text(category.label)
+    HStack {
+      Group {
+        Text(category.icon)
+          .grayscale(1)
+        Text(category.name)
+      }
       .font(.caption)
       .bold()
-      .grayscale(1)
-      .if(withBorder, transform: { view in
-        view
-          .padding(4)
-          .overlay(
-            RoundedRectangle(cornerRadius: 6)
-              .stroke(lineWidth: 1)
-          )
-      })
+    }
+    .if(withBorder, transform: { view in
+      view
+        .padding(4)
+        .overlay(
+          RoundedRectangle(cornerRadius: 6)
+            .stroke(lineWidth: 1)
+        )
+    })
   }
 }
 

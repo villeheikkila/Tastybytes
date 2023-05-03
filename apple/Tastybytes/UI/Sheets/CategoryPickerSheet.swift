@@ -1,34 +1,40 @@
 import SwiftUI
 
-struct CategorySheet: View {
-  private let logger = getLogger(category: "CategorySheet")
+struct CategoryPickerSheet: View {
+  private let logger = getLogger(category: "CategoryPickerSheet")
   @EnvironmentObject private var appDataManager: AppDataManager
   @Environment(\.dismiss) private var dismiss
-  @Binding var category: Category.JoinedSubcategoriesServingStyles
+  @Binding var category: Category.JoinedSubcategoriesServingStyles?
   @State private var searchTerm = ""
 
   var shownCategories: [Category.JoinedSubcategoriesServingStyles] {
-    appDataManager.categories.filter { searchTerm.isEmpty || $0.name.contains(searchTerm) }
+    appDataManager.categories
+      .filter { category in
+        searchTerm.isEmpty || category.name.contains(searchTerm) || category.subcategories.contains(where: { subcategory in
+          subcategory.name.contains(searchTerm)
+        })
+      }
   }
 
   var body: some View {
     List {
-      Section("Pick a Category") {
-        ForEach(shownCategories) { category in
-          Button(action: {
-            self.category = category
-            dismiss()
-          }, label: {
-            HStack {
-              Text(category.label)
-              Spacer()
+      ForEach(shownCategories) { category in
+        Button(action: {
+          self.category = category
+          dismiss()
+        }, label: {
+          HStack(spacing: 12) {
+            Group {
+              Text(category.icon)
+                .grayscale(1)
+              Text(category.name)
             }
-          })
-        }
-        .searchable(text: $searchTerm)
-        .navigationTitle("Categories")
-        .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
+          }
+        })
       }
     }
+    .searchable(text: $searchTerm)
+    .navigationTitle("Categories")
+    .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
   }
 }

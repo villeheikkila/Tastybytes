@@ -144,13 +144,10 @@ struct AddProductView: View {
 
   private var categorySection: some View {
     Section {
-      Picker("Category", selection: $category) {
-        Text("None").tag(Category.JoinedSubcategoriesServingStyles?(nil))
-        ForEach(appDataManager.categories) { category in
-          Text(category.name)
-            .tag(Optional(category))
-        }
-      }
+      RouterLink(
+        category?.name ?? "Pick a category",
+        sheet: .categoryPickerSheet(category: $category)
+      )
 
       Button(action: {
         if let category {

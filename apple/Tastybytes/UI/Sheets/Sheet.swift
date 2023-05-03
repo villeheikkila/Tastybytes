@@ -46,6 +46,7 @@ enum Sheet: Identifiable, Equatable {
   case companyEditSuggestion(company: Company, onSuccess: () -> Void)
   case userSheet(mode: UserSheet.Mode, onSubmit: () -> Void)
   case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>)
+  case categoryPickerSheet(category: Binding<Category.JoinedSubcategoriesServingStyles?>)
   case support
 
   @ViewBuilder var view: some View {
@@ -130,6 +131,8 @@ enum Sheet: Identifiable, Equatable {
       UserSheet(mode: mode, onSubmit: onSubmit)
     case let .checkInDatePicker(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn):
       CheckInDatePickerSheet(checkInAt: checkInAt, isLegacyCheckIn: isLegacyCheckIn)
+    case let .categoryPickerSheet(category: category):
+      CategoryPickerSheet(category: category)
     case .support:
       SupportSheet()
     }
@@ -234,6 +237,8 @@ enum Sheet: Identifiable, Equatable {
       return "user"
     case .checkInDatePicker:
       return "check_in_date_picker"
+    case .categoryPickerSheet:
+      return "category_picker"
     case .support:
       return "support"
     }
