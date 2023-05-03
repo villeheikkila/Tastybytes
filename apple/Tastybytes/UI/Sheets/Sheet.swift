@@ -12,10 +12,10 @@ enum Sheet: Identifiable, Equatable {
   )
   case nameTag(onSuccess: (_ profileId: UUID) -> Void)
   case companySearch(onSelect: (_ company: Company) -> Void)
-  case brand(brandOwner: Company,
+  case brand(brandOwner: Binding<Company?>,
              mode: BrandSheet.Mode,
              onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void)
-  case addBrand(brandOwner: Company,
+  case addBrand(brandOwner: Binding<Company?>,
                 mode: BrandSheet.Mode,
                 onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void)
   case subcategory(

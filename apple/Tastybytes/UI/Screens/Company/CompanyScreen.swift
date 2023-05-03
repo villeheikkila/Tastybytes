@@ -121,7 +121,7 @@ struct CompanyScreen: View {
         RouterLink(
           "Add Brand",
           systemImage: "plus",
-          sheet: .addBrand(brandOwner: company, mode: .new, onSelect: { brand, _ in
+          sheet: .addBrand(brandOwner: .constant(company), mode: .new, onSelect: { brand, _ in
             router.fetchAndNavigateTo(repository, .brand(id: brand.id))
           })
         )

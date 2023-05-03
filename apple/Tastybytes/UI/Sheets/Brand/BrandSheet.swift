@@ -9,7 +9,8 @@ struct BrandSheet: View {
   @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
   @State private var brandName = ""
 
-  let brandOwner: Company
+  @Binding var brandOwner: Company?
+
   let mode: Mode
   let onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
 
@@ -25,10 +26,10 @@ struct BrandSheet: View {
       }
 
       if profileManager.hasPermission(.canCreateBrands) {
-        Section("Add new brand for \(brandOwner.name)") {
+        Section("Add new brand for \(brandOwner?.name ?? "")") {
           TextField("Name", text: $brandName)
           ProgressButton("Create") {
-            await createNewBrand(brandOwner) { brand in
+            await createNewBrand { brand in
               onSelect(brand, true)
               dismiss()
             }
@@ -40,6 +41,7 @@ struct BrandSheet: View {
     .navigationTitle("\(mode == .select ? "Select" : "Add") brand")
     .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: { dismiss() }).bold())
     .task {
+      guard let brandOwner else { return }
       await loadBrands(brandOwner)
     }
   }
@@ -55,7 +57,8 @@ struct BrandSheet: View {
     }
   }
 
-  func createNewBrand(_ brandOwner: Company, _ onCreation: @escaping (_ brand: Brand.JoinedSubBrands) -> Void) async {
+  func createNewBrand(onCreation: @escaping (_ brand: Brand.JoinedSubBrands) -> Void) async {
+    guard let brandOwner else { return }
     switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
     case let .success(brandWithSubBrands):
       onCreation(brandWithSubBrands)
