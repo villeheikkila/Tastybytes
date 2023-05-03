@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct CategoryNameView: View {
-  let category: CategoryName
+  let category: CategoryProtocol
   let withBorder: Bool
 
-  init(category: CategoryName, withBorder: Bool = true) {
+  init(category: CategoryProtocol, withBorder: Bool = true) {
     self.category = category
     self.withBorder = withBorder
   }

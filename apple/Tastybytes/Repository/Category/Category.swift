@@ -1,20 +1,16 @@
-protocol CategoryName {
+protocol CategoryProtocol {
+  var id: Int { get }
   var name: String { get }
   var icon: String { get }
 }
 
-extension CategoryName {
+extension CategoryProtocol {
   var label: String {
     "\(icon) \(name)"
   }
 }
 
-protocol CategoryProtocol {
-  var id: Int { get }
-  var name: String { get }
-}
-
-struct Category: Identifiable, Decodable, Hashable, CategoryName, CategoryProtocol {
+struct Category: Identifiable, Decodable, Hashable, CategoryProtocol {
   let id: Int
   let name: String
   let icon: String
@@ -67,12 +63,14 @@ extension Category {
   struct JoinedSubcategoriesServingStyles: Identifiable, Decodable, Hashable, Sendable, CategoryProtocol {
     let id: Int
     let name: String
+    let icon: String
     let subcategories: [Subcategory]
     let servingStyles: [ServingStyle]
 
     enum CodingKeys: String, CodingKey {
       case id
       case name
+      case icon
       case subcategories
       case servingStyles = "serving_styles"
     }
@@ -81,11 +79,13 @@ extension Category {
   struct JoinedServingStyles: Identifiable, Decodable, Hashable, Sendable, CategoryProtocol {
     let id: Int
     let name: String
+    let icon: String
     let servingStyles: [ServingStyle]
 
     enum CodingKeys: String, CodingKey {
       case id
       case name
+      case icon
       case servingStyles = "serving_styles"
     }
   }

@@ -33,6 +33,7 @@
 		5C12B4372902CA04001EE549 /* NotificationTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4362902CA04001EE549 /* NotificationTab.swift */; };
 		5C12B4392902CAF3001EE549 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B4382902CAF3001EE549 /* Notification.swift */; };
 		5C12B43B2902E4D1001EE549 /* NotificationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */; };
+		5C131CEB2A022C14007ADA1B /* CategoryPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C131CEA2A022C13007ADA1B /* CategoryPickerSheet.swift */; };
 		5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 5C13F21A291A7C3A00599892 /* FirebaseMessaging */; };
 		5C20A50D29AA316900ABBA74 /* CustomBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A50C29AA316900ABBA74 /* CustomBadge.swift */; };
 		5C20A51029AA5A0500ABBA74 /* AdminTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */; };
@@ -236,6 +237,7 @@
 		5C12B4362902CA04001EE549 /* NotificationTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTab.swift; sourceTree = "<group>"; };
 		5C12B4382902CAF3001EE549 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		5C12B43A2902E4D1001EE549 /* NotificationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRepository.swift; sourceTree = "<group>"; };
+		5C131CEA2A022C13007ADA1B /* CategoryPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPickerSheet.swift; sourceTree = "<group>"; };
 		5C13F21E291A8D8E00599892 /* TastybytesDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TastybytesDebug.entitlements; sourceTree = "<group>"; };
 		5C20A50C29AA316900ABBA74 /* CustomBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBadge.swift; sourceTree = "<group>"; };
 		5C20A50F29AA5A0500ABBA74 /* AdminTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminTab.swift; sourceTree = "<group>"; };
@@ -701,6 +703,7 @@
 				5C7C3594299AC455009A3C09 /* Subcategory */,
 				5C7C35A1299AC5CA009A3C09 /* User */,
 				5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */,
+				5C131CEA2A022C13007ADA1B /* CategoryPickerSheet.swift */,
 			);
 			path = Sheets;
 			sourceTree = "<group>";
@@ -1425,6 +1428,7 @@
 				5CB1C24928F9BBAA000B0EB4 /* CheckInReactionRepository.swift in Sources */,
 				5C11ECB628EEEFB300CCDE6A /* SettingsScreen.swift in Sources */,
 				5C32C41029E87DEB008CE8A9 /* ButtonExtensions.swift in Sources */,
+				5C131CEB2A022C14007ADA1B /* CategoryPickerSheet.swift in Sources */,
 				5CD10A4728F9522D0001CFC2 /* RatingPickerView.swift in Sources */,
 				5C61E83F29BF909D00D10AA3 /* ServingStyleRepository.swift in Sources */,
 				5CC6B9AE29B2360D00A62158 /* UIImageExtensions.swift in Sources */,

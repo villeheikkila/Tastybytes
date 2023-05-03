@@ -373,7 +373,7 @@ struct Contributions: Decodable, Sendable {
   }
 }
 
-struct CategoryStatistics: Identifiable, Decodable, Sendable, CategoryName {
+struct CategoryStatistics: Identifiable, Decodable, Sendable, CategoryProtocol {
   let id: Int
   let name: String
   let icon: String
