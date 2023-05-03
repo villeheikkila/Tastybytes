@@ -15,7 +15,6 @@ struct AddProductView: View {
   @State private var category: Category.JoinedSubcategoriesServingStyles?
   @State private var brandOwner: Company? {
     didSet {
-      print("ow \(brandOwner)")
       brand = nil
       subBrand = nil
       hasSubBrand = false
@@ -25,7 +24,9 @@ struct AddProductView: View {
   @State private var brand: Brand.JoinedSubBrands? {
     didSet {
       hasSubBrand = false
-      subBrand = nil
+      if let brand {
+        subBrand = brand.subBrands.first(where: { $0.name == nil })
+      }
     }
   }
 
@@ -188,14 +189,11 @@ struct AddProductView: View {
         brandOwner = company
       }))
 
-      if let brandOwner {
+      if brandOwner != nil {
         RouterLink(
           brand?.name ?? "Brand",
-          sheet: .brand(brandOwner: $brandOwner, mode: .select, onSelect: { brand, createdNew in
-            if createdNew {
-              feedbackManager.toggle(.success(Toast.createdBrand.text))
-            }
-            setBrand(brand: brand)
+          sheet: .brand(brandOwner: $brandOwner, mode: .select, onSelect: { brand, _ in
+            self.brand = brand
           })
         )
       }
@@ -207,10 +205,7 @@ struct AddProductView: View {
       if hasSubBrand, let brand {
         RouterLink(
           subBrand?.name ?? "Sub-brand",
-          sheet: .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, createdNew in
-            if createdNew {
-              feedbackManager.toggle(.success(Toast.createdSubBrand.text))
-            }
+          sheet: .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, _ in
             self.subBrand = subBrand
           })
         )
@@ -251,11 +246,6 @@ struct AddProductView: View {
 
   func getSubcategoriesForCategory() -> [Subcategory]? {
     category?.subcategories
-  }
-
-  func setBrand(brand: Brand.JoinedSubBrands) {
-    self.brand = brand
-    subBrand = brand.subBrands.first(where: { $0.name == nil })
   }
 
   func isValid() -> Bool {

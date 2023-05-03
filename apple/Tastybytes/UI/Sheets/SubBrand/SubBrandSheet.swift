@@ -51,6 +51,7 @@ struct SubBrandSheet: View {
       .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brandWithSubBrands.id))
     {
     case let .success(newSubBrand):
+      feedbackManager.toggle(.success("New Sub-brand Created!"))
       onSelect(newSubBrand, true)
       dismiss()
     case let .failure(error):

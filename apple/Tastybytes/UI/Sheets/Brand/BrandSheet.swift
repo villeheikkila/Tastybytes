@@ -61,6 +61,7 @@ struct BrandSheet: View {
     guard let brandOwner else { return }
     switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
     case let .success(brandWithSubBrands):
+      feedbackManager.toggle(.success("New Brand Created!"))
       onCreation(brandWithSubBrands)
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
