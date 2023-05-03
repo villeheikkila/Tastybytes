@@ -13,17 +13,14 @@ enum Sheet: Identifiable, Equatable {
   case nameTag(onSuccess: (_ profileId: UUID) -> Void)
   case companySearch(onSelect: (_ company: Company) -> Void)
   case brand(brandOwner: Binding<Company?>,
-             mode: BrandSheet.Mode,
-             onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void)
-  case addBrand(brandOwner: Binding<Company?>,
-                mode: BrandSheet.Mode,
-                onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void)
+             brand: Binding<Brand.JoinedSubBrands?>,
+             mode: BrandSheet.Mode)
+  case addBrand(brandOwner: Company, mode: BrandSheet.Mode)
   case subcategory(
     subcategories: Binding<[Subcategory]>,
     category: Category.JoinedSubcategoriesServingStyles
   )
-  case subBrand(brandWithSubBrands: Brand.JoinedSubBrands,
-                onSelect: (_ subBrand: SubBrand, _ createdNew: Bool) -> Void)
+  case subBrand(brandWithSubBrands: Binding<Brand.JoinedSubBrands?>, subBrand: Binding<SubBrandProtocol?>)
   case addProductToBrand(brand: Brand.JoinedSubBrandsProductsCompany, onCreate: ((_ product: Product.Joined) -> Void)?)
   case editProduct(product: Product.Joined, onEdit: (() async -> Void)? = nil)
   case productEditSuggestion(product: Product.Joined)
@@ -63,12 +60,12 @@ enum Sheet: Identifiable, Equatable {
       ProductFilterSheet(initialFilter: initialFilter, sections: sections, onApply: onApply)
     case let .nameTag(onSuccess):
       NameTagSheet(onSuccess: onSuccess)
-    case let .addBrand(brandOwner: brandOwner, mode: mode, onSelect: onSelect):
-      BrandSheet(brandOwner: brandOwner, mode: mode, onSelect: onSelect)
-    case let .brand(brandOwner, mode, onSelect):
-      BrandSheet(brandOwner: brandOwner, mode: mode, onSelect: onSelect)
-    case let .subBrand(brandWithSubBrands, onSelect):
-      SubBrandSheet(brandWithSubBrands: brandWithSubBrands, onSelect: onSelect)
+    case let .addBrand(brandOwner: brandOwner, mode: mode):
+      BrandSheet(brandOwner: .constant(brandOwner), brand: .constant(nil), mode: mode)
+    case let .brand(brandOwner, brand: brand, mode: mode):
+      BrandSheet(brandOwner: brandOwner, brand: brand, mode: mode)
+    case let .subBrand(brandWithSubBrands, subBrand: subBrand):
+      SubBrandSheet(subBrand: subBrand, brandWithSubBrands: brandWithSubBrands)
     case let .subcategory(subcategories, category):
       SubcategorySheet(subcategories: subcategories, category: category)
     case let .companySearch(onSelect):

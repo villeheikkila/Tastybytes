@@ -21,14 +21,7 @@ struct AddProductView: View {
     }
   }
 
-  @State private var brand: Brand.JoinedSubBrands? {
-    didSet {
-      hasSubBrand = false
-      if let brand {
-        subBrand = brand.subBrands.first(where: { $0.name == nil })
-      }
-    }
-  }
+  @State private var brand: Brand.JoinedSubBrands?
 
   @State private var subBrand: SubBrandProtocol?
   @State private var name: String = ""
@@ -95,12 +88,10 @@ struct AddProductView: View {
         await editProduct()
       case .new:
         await createProduct(onSuccess: { product in
-          feedbackManager.trigger(.notification(.success))
           router.navigate(screen: .product(product), resetStack: true)
         })
       case .addToBrand:
         await createProduct(onSuccess: { product in
-          feedbackManager.trigger(.notification(.success))
           if let onCreate {
             await onCreate(product)
           }
@@ -142,6 +133,12 @@ struct AddProductView: View {
     .listRowBackground(Color.clear)
     .onChange(of: category) { _ in
       subcategories = []
+    }
+    .onChange(of: brand) { _ in
+      hasSubBrand = false
+      if let brand {
+        subBrand = brand.subBrands.first(where: { $0.name == nil })
+      }
     }
   }
 
@@ -192,22 +189,25 @@ struct AddProductView: View {
       if brandOwner != nil {
         RouterLink(
           brand?.name ?? "Brand",
-          sheet: .brand(brandOwner: $brandOwner, mode: .select, onSelect: { brand, _ in
-            self.brand = brand
-          })
+          sheet: .brand(brandOwner: $brandOwner, brand: $brand, mode: .select)
         )
       }
 
       if brand != nil {
-        Toggle("Has sub-brand?", isOn: $hasSubBrand)
+        Toggle("Has sub-brand?", isOn: .init(get: {
+          hasSubBrand
+        }, set: { newValue in
+          hasSubBrand = newValue
+          if newValue == false {
+            subBrand = nil
+          }
+        }))
       }
 
-      if hasSubBrand, let brand {
+      if hasSubBrand {
         RouterLink(
           subBrand?.name ?? "Sub-brand",
-          sheet: .subBrand(brandWithSubBrands: brand, onSelect: { subBrand, _ in
-            self.subBrand = subBrand
-          })
+          sheet: .subBrand(brandWithSubBrands: $brand, subBrand: $subBrand)
         )
       }
 
@@ -323,6 +323,7 @@ struct AddProductView: View {
     )
     switch await repository.product.create(newProductParams: newProductParams) {
     case let .success(newProduct):
+      feedbackManager.trigger(.notification(.success))
       await onSuccess(newProduct)
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }

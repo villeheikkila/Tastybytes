@@ -7,20 +7,11 @@ struct SubBrandSheet: View {
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var subBrandName = ""
-
-  let brandWithSubBrands: Brand.JoinedSubBrands
-  let onSelect: (_ subBrand: SubBrand, _ createdNew: Bool) -> Void
-
-  init(
-    brandWithSubBrands: Brand.JoinedSubBrands,
-    onSelect: @escaping (_ company: SubBrand, _ createdNew: Bool) -> Void
-  ) {
-    self.brandWithSubBrands = brandWithSubBrands
-    self.onSelect = onSelect
-  }
+  @Binding var subBrand: SubBrandProtocol?
+  @Binding var brandWithSubBrands: Brand.JoinedSubBrands?
 
   var filteredSubBrands: [SubBrand] {
-    brandWithSubBrands.subBrands.sorted().filter { $0.name != nil }
+    brandWithSubBrands?.subBrands.sorted().filter { $0.name != nil } ?? []
   }
 
   var body: some View {
@@ -28,14 +19,14 @@ struct SubBrandSheet: View {
       ForEach(filteredSubBrands) { subBrand in
         if let name = subBrand.name {
           Button(name, action: {
-            onSelect(subBrand, false)
+            self.subBrand = subBrand
             dismiss()
           })
         }
       }
 
       if profileManager.hasPermission(.canCreateBrands) {
-        Section("Add new sub-brand for \(brandWithSubBrands.name)") {
+        Section("Add new sub-brand for \(brandWithSubBrands?.name ?? "unknown")") {
           TextField("Name", text: $subBrandName)
           ProgressButton("Create") { await createNewSubBrand() }
             .disabled(!subBrandName.isValidLength(.normal))
@@ -47,12 +38,13 @@ struct SubBrandSheet: View {
   }
 
   func createNewSubBrand() async {
+    guard let brandWithSubBrands else { return }
     switch await repository.subBrand
       .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brandWithSubBrands.id))
     {
     case let .success(newSubBrand):
       feedbackManager.toggle(.success("New Sub-brand Created!"))
-      onSelect(newSubBrand, true)
+      subBrand = newSubBrand
       dismiss()
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }

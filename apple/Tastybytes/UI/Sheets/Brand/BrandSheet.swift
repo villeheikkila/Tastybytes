@@ -5,21 +5,22 @@ struct BrandSheet: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
+  @EnvironmentObject private var router: Router
   @Environment(\.dismiss) private var dismiss
   @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
   @State private var brandName = ""
 
   @Binding var brandOwner: Company?
+  @Binding var brand: Brand.JoinedSubBrands?
 
   let mode: Mode
-  let onSelect: (_ company: Brand.JoinedSubBrands, _ createdNew: Bool) -> Void
 
   var body: some View {
     List {
       if mode == .select {
         ForEach(brandsWithSubBrands) { brand in
           Button(brand.name, action: {
-            onSelect(brand, false)
+            self.brand = brand
             dismiss()
           })
         }
@@ -29,10 +30,7 @@ struct BrandSheet: View {
         Section("Add new brand for \(brandOwner?.name ?? "")") {
           TextField("Name", text: $brandName)
           ProgressButton("Create") {
-            await createNewBrand { brand in
-              onSelect(brand, true)
-              dismiss()
-            }
+            await createNewBrand()
           }
           .disabled(!brandName.isValidLength(.normal))
         }
@@ -57,12 +55,16 @@ struct BrandSheet: View {
     }
   }
 
-  func createNewBrand(onCreation: @escaping (_ brand: Brand.JoinedSubBrands) -> Void) async {
+  func createNewBrand() async {
     guard let brandOwner else { return }
     switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
     case let .success(brandWithSubBrands):
       feedbackManager.toggle(.success("New Brand Created!"))
-      onCreation(brandWithSubBrands)
+      if mode == .new {
+        router.fetchAndNavigateTo(repository, .brand(id: brandWithSubBrands.id))
+      }
+      brand = brand
+      dismiss()
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
