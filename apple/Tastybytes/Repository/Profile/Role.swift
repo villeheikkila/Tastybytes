@@ -32,5 +32,5 @@ extension Role {
 enum RoleName: String {
   case admin
   case user
-  case supporter
+  case premium
 }

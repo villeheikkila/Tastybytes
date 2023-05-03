@@ -229,8 +229,11 @@ struct ProfileView: View {
   }
 
   private var joinedAtSection: some View {
-    HStack {
-      Text("Joined \(profile.joinedAt.customFormat(.date))").bold()
+    VStack {
+      Text("Joined \(profile.joinedAt.customFormat(.date))").fontWeight(.medium)
+      if profileManager.hasRole(.premium) {
+        Text("Premium Member")
+      }
     }
   }
 
