@@ -52,8 +52,7 @@ enum Screen: Hashable {
     case let .profileStatistics(profile):
       ProfileStatisticsView(profile: profile)
     case let .addProduct(initialBarcode):
-      AddProductView(mode: .new, initialBarcode: initialBarcode)
-        .navigationTitle("Add Product")
+      ProductMutationView(mode: .new, isSheet: false, initialBarcode: initialBarcode)
     case let .checkIn(checkIn):
       CheckInScreen(checkIn: checkIn)
     case let .profile(profile):

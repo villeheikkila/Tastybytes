@@ -21,8 +21,9 @@ enum Sheet: Identifiable, Equatable {
     category: Category.JoinedSubcategoriesServingStyles
   )
   case subBrand(brandWithSubBrands: Binding<Brand.JoinedSubBrands?>, subBrand: Binding<SubBrandProtocol?>)
-  case addProductToBrand(brand: Brand.JoinedSubBrandsProductsCompany, onCreate: ((_ product: Product.Joined) -> Void)?)
-  case editProduct(product: Product.Joined, onEdit: (() async -> Void)? = nil)
+  case addProductToBrand(brand: Brand.JoinedSubBrandsProductsCompany)
+  case addProductToSubBrand(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct)
+  case productEdit(product: Product.Joined, onEdit: (() async -> Void)? = nil)
   case productEditSuggestion(product: Product.Joined)
   case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
   case barcodeManagement(product: Product.Joined)
@@ -73,27 +74,13 @@ enum Sheet: Identifiable, Equatable {
     case let .barcodeManagement(product):
       BarcodeManagementSheet(product: product)
     case let .productEditSuggestion(product: product):
-      DismissableSheet(title: "Edit Suggestion") { _ in
-        AddProductView(mode: .editSuggestion(product))
-      }
-    case let .editProduct(product: product, onEdit: onEdit):
-      DismissableSheet(title: "Edit Product") { dismiss in
-        AddProductView(mode: .edit(product), onEdit: {
-          if let onEdit {
-            await onEdit()
-          }
-          dismiss()
-        })
-      }
-    case let .addProductToBrand(brand: brand, onCreate: onCreate):
-      DismissableSheet(title: "Add Product") { dismiss in
-        AddProductView(mode: .addToBrand(brand), onCreate: { product in
-          if let onCreate {
-            onCreate(product)
-          }
-          dismiss()
-        })
-      }
+      ProductMutationView(mode: .editSuggestion(product))
+    case let .productEdit(product: product, onEdit: onEdit):
+      ProductMutationView(mode: .edit(product), onEdit: onEdit)
+    case let .addProductToBrand(brand: brand):
+      ProductMutationView(mode: .addToBrand(brand))
+    case let .addProductToSubBrand(brand: brand, subBrand: subBrand):
+      ProductMutationView(mode: .addToSubBrand(brand, subBrand))
     case let .duplicateProduct(mode: mode, product: product):
       DuplicateProductSheet(mode: mode, product: product)
     case let .editBrand(brand: brand, onUpdate):
@@ -192,8 +179,8 @@ enum Sheet: Identifiable, Equatable {
       return "sub_brand"
     case .subcategory:
       return "subcategory"
-    case .editProduct:
-      return "product"
+    case let .productEdit(product, _):
+      return "edit_product_\(product.hashValue)"
     case .productEditSuggestion:
       return "product_edit_suggestion"
     case .duplicateProduct:
@@ -206,6 +193,8 @@ enum Sheet: Identifiable, Equatable {
       return "edit_sub_brand"
     case .addProductToBrand:
       return "add_product_to_brand"
+    case .addProductToSubBrand:
+      return "add_product_to_sub_brand"
     case .friends:
       return "friends"
     case .flavors:

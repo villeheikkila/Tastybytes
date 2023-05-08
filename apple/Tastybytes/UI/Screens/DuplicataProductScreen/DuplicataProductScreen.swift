@@ -36,7 +36,7 @@ struct DuplicateProductScreen: View {
             }
             .swipeActions {
               ProgressButton("Verify", systemImage: "checkmark", action: { await verifyProduct(product) }).tint(.green)
-              RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: product, onEdit: {
+              RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
                 await loadProducts()
               })).tint(.yellow)
               Button("Delete", systemImage: "trash", role: .destructive, action: { deleteProduct = product })

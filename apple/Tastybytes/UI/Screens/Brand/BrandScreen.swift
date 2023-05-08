@@ -115,6 +115,9 @@ struct BrandScreen: View {
                 toUnverifySubBrand = subBrand
               })
               Divider()
+              if profileManager.hasPermission(.canCreateProducts) {
+                RouterLink("Add Product", systemImage: "plus", sheet: .addProductToSubBrand(brand: brand, subBrand: subBrand))
+              }
               if profileManager.hasPermission(.canEditBrands) {
                 RouterLink(
                   "Edit",
@@ -231,9 +234,7 @@ struct BrandScreen: View {
       Divider()
       ShareLink("Share", item: NavigatablePath.brand(id: brand.id).url)
       if profileManager.hasPermission(.canCreateProducts) {
-        RouterLink("Add Product", systemImage: "plus", sheet: .addProductToBrand(brand: brand, onCreate: { product in
-          router.navigate(screen: .product(product))
-        }))
+        RouterLink("Add Product", systemImage: "plus", sheet: .addProductToBrand(brand: brand))
       }
       Divider()
       if profileManager.hasPermission(.canEditBrands) {

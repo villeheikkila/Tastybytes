@@ -143,7 +143,7 @@ struct VerificationScreen: View {
           }
           .swipeActions {
             ProgressButton("Verify", systemImage: "checkmark", action: { await verifyProduct(product) }).tint(.green)
-            RouterLink("Edit", systemImage: "pencil", sheet: .editProduct(product: product, onEdit: {
+            RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
               await loadData(refresh: true)
             })).tint(.yellow)
             Button("Delete", systemImage: "trash", role: .destructive, action: { deleteProduct = product })
