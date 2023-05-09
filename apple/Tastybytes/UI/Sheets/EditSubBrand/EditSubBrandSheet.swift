@@ -39,6 +39,10 @@ struct EditSubBrandSheet: View {
       .name == newSubBrandName
   }
 
+  var subBrandsToMergeTo: [SubBrand.JoinedProduct] {
+    brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id }
+  }
+
   var body: some View {
     Form {
       Section("Name") {
@@ -51,9 +55,9 @@ struct EditSubBrandSheet: View {
         .disabled(invalidNewName)
       }
 
-      if !brand.subBrands.contains(where: { $0.name != nil && $0.id != subBrand.id }) {
+      if !subBrandsToMergeTo.isEmpty {
         Section("Merge to another sub-brand") {
-          ForEach(brand.subBrands.filter { $0.name != nil && $0.id != subBrand.id }) { subBrand in
+          ForEach(subBrandsToMergeTo) { subBrand in
             if let name = subBrand.name {
               Button(name, action: { mergeTo = subBrand })
             }
