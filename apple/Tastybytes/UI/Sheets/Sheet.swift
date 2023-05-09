@@ -187,10 +187,10 @@ enum Sheet: Identifiable, Equatable {
       return "duplicate_product"
     case .barcodeManagement:
       return "barcode_management"
-    case .editBrand:
-      return "edit_brand"
-    case .editSubBrand:
-      return "edit_sub_brand"
+    case let .editBrand(brand, _):
+      return "edit_brand_\(brand.hashValue)"
+    case let .editSubBrand(brand, subBrand, _):
+      return "edit_sub_brand_\(brand.hashValue)_\(subBrand.hashValue)"
     case .addProductToBrand:
       return "add_product_to_brand"
     case .addProductToSubBrand:
@@ -213,10 +213,10 @@ enum Sheet: Identifiable, Equatable {
       return "add_category"
     case .addSubcategory:
       return "add_subcategory"
-    case .editSubcategory:
-      return "edit_subcategory"
-    case .editCompany:
-      return "edit_company"
+    case let .editSubcategory(subcategory, _):
+      return "edit_subcategory_\(subcategory.hashValue)"
+    case let .editCompany(company, _):
+      return "edit_company_\(company.hashValue)"
     case .companyEditSuggestion:
       return "company_edit_suggestion"
     case .userSheet:
