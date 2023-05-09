@@ -8,6 +8,7 @@ protocol LocationRepository {
   func search(searchTerm: String) async -> Result<[Location], Error>
   func getSummaryById(id: UUID) async -> Result<Summary, Error>
   func getSuggestions(location: Location.SuggestionParams) async -> Result<[Location], Error>
+  func mergeLocations(locationId: UUID, toLocationId: UUID) async -> Result<Void, Error>
 }
 
 struct SupabaseLocationRepository: LocationRepository {
@@ -106,6 +107,23 @@ struct SupabaseLocationRepository: LocationRepository {
         .value
 
       return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func mergeLocations(locationId: UUID, toLocationId: UUID) async -> Result<Void, Error> {
+    do {
+      print(Location.MergeLocationParams(locationId: locationId, toLocationId: toLocationId))
+      try await client
+        .database
+        .rpc(
+          fn: "fnc__merge_locations",
+          params: Location.MergeLocationParams(locationId: locationId, toLocationId: toLocationId)
+        )
+        .execute()
+
+      return .success(())
     } catch {
       return .failure(error)
     }

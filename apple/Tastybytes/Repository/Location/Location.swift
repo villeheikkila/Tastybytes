@@ -84,6 +84,15 @@ extension Location {
 }
 
 extension Location {
+  struct MergeLocationParams: Encodable, Sendable {
+    let locationId: UUID
+    let toLocationId: UUID
+
+    enum CodingKeys: String, CodingKey {
+      case locationId = "p_location_id", toLocationId = "p_to_location_id"
+    }
+  }
+
   struct SuggestionParams: Encodable, Sendable {
     let longitude: Double
     let latitude: Double

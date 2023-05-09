@@ -59,4 +59,5 @@ enum PermissionName: String, Decodable, Equatable, Sendable {
   case canAddCompanyLogo = "can_add_company_logo"
   case canAddBrandLogo = "can_add_brand_logo"
   case canAddProductLogo = "can_add_product_logo"
+  case canMergeLocations = "can_merge_locations"
 }

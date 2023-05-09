@@ -183,7 +183,7 @@ extension Product {
 
   struct MergeProductsParams: Encodable, Sendable {
     let productId: Int
-    let toProductId: Int?
+    let toProductId: Int
 
     enum CodingKeys: String, CodingKey {
       case productId = "p_product_id", toProductId = "p_to_product_id"

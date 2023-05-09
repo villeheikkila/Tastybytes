@@ -51,13 +51,27 @@ struct LocationScreen: View {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
         ShareLink("Share", item: NavigatablePath.location(id: location.id).url)
-        if profileManager.hasPermission(.canDeleteProducts) {
-          Button(
-            "Delete",
-            systemImage: "trash.fill",
-            role: .destructive,
-            action: { showDeleteLocationConfirmation.toggle() }
-          )
+        Divider()
+
+        if profileManager.hasRole(.admin) {
+          Menu {
+            if profileManager.hasPermission(.canMergeLocations) {
+              RouterLink(sheet: .mergeLocationSheet(location: location), label: {
+                Label("Merge to...", systemImage: "doc.on.doc")
+              })
+            }
+            if profileManager.hasPermission(.canDeleteProducts) {
+              Button(
+                "Delete",
+                systemImage: "trash.fill",
+                role: .destructive,
+                action: { showDeleteLocationConfirmation.toggle() }
+              )
+            }
+          } label: {
+            Label("Admin", systemImage: "gear")
+              .labelStyle(.iconOnly)
+          }
         }
       } label: {
         Label("Options menu", systemImage: "ellipsis")
