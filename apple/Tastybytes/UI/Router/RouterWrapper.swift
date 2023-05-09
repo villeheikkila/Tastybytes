@@ -13,6 +13,9 @@ struct RouterWrapper<Content: View>: View {
       content(router)
         .navigationDestination(for: Screen.self) { screen in
           screen.view
+            .toast(isPresenting: $feedbackManager.show) {
+              feedbackManager.toast
+            }
         }
         .sheet(item: $sheetManager.sheet) { sheet in
           NavigationStack {
@@ -35,9 +38,6 @@ struct RouterWrapper<Content: View>: View {
               feedbackManager.toast
             }
           })
-        }
-        .toast(isPresenting: $feedbackManager.show) {
-          feedbackManager.toast
         }
         .onOpenURL { url in
           if let detailPage = url.detailPage {

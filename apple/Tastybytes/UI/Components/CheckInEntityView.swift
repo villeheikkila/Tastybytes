@@ -67,11 +67,12 @@ struct CheckInEntityView: View {
       }
       VStack(alignment: .leading, spacing: 4) {
         HStack {
-          CategoryView(category: checkIn.product.category, subcategories: checkIn.product.subcategories)
+          CategoryView(
+            category: checkIn.product.category,
+            subcategories: checkIn.product.subcategories,
+            servingStyle: checkIn.servingStyle
+          )
           Spacer()
-          if let servingStyle = checkIn.servingStyle {
-            ServingStyleLabelView(servingStyle: servingStyle)
-          }
         }
 
         Text(checkIn.product.getDisplayName(.fullName))

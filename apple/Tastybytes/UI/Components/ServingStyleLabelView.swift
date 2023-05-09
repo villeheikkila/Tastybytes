@@ -6,7 +6,12 @@ struct ServingStyleLabelView: View {
   var body: some View {
     HStack {
       Text(servingStyle.label)
-        .font(.caption).bold()
+        .font(.caption)
+        .fontWeight(.bold)
+        .padding(4)
+        .foregroundColor(.white)
+        .background(Color(.systemGray))
+        .cornerRadius(6)
     }
   }
 }

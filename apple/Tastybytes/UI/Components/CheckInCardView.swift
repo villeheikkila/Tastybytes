@@ -111,14 +111,12 @@ struct CheckInCardView: View {
         }
         .padding(.leading, 10)
       }
-      VStack(alignment: .leading, spacing: 4) {
-        HStack {
-          CategoryView(category: checkIn.product.category, subcategories: checkIn.product.subcategories)
-          Spacer()
-          if let servingStyle = checkIn.servingStyle {
-            ServingStyleLabelView(servingStyle: servingStyle)
-          }
-        }
+      VStack(alignment: .leading, spacing: 6) {
+        CategoryView(
+          category: checkIn.product.category,
+          subcategories: checkIn.product.subcategories,
+          servingStyle: checkIn.servingStyle
+        )
 
         Text(checkIn.product.getDisplayName(.fullName))
           .font(.headline)
