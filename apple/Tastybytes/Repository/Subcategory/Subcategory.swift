@@ -71,11 +71,6 @@ extension Subcategory {
       case name, categoryId = "category_id"
     }
 
-    init(name: String, category: Category.JoinedSubcategories) {
-      self.name = name
-      categoryId = category.id
-    }
-
     init(name: String, category: Category.JoinedSubcategoriesServingStyles) {
       self.name = name
       categoryId = category.id

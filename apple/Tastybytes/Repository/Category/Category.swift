@@ -29,10 +29,6 @@ extension Category {
       return servingStyleTableName
     case let .saved(withTableName):
       return queryWithTableName(tableName, saved, withTableName)
-    case let .joinedSubcategories(withTableName):
-      return queryWithTableName(tableName, [saved, Subcategory.getQuery(.saved(true))].joinComma(), withTableName)
-    case let .joinedServingStyles(withTableName):
-      return queryWithTableName(tableName, [saved, ServingStyle.getQuery(.saved(true))].joinComma(), withTableName)
     case let .joinedSubcaategoriesServingStyles(withTableName):
       return queryWithTableName(
         tableName,
@@ -46,20 +42,11 @@ extension Category {
     case tableName
     case servingStyleTableName
     case saved(_ withTableName: Bool)
-    case joinedSubcategories(_ withTableName: Bool)
-    case joinedServingStyles(_ withTableName: Bool)
     case joinedSubcaategoriesServingStyles(_ withTableName: Bool)
   }
 }
 
 extension Category {
-  struct JoinedSubcategories: Identifiable, Decodable, Hashable, Sendable, CategoryProtocol {
-    let id: Int
-    let name: String
-    let icon: String
-    let subcategories: [Subcategory]
-  }
-
   struct JoinedSubcategoriesServingStyles: Identifiable, Decodable, Hashable, Sendable, CategoryProtocol {
     let id: Int
     let name: String
@@ -94,20 +81,6 @@ extension Category {
     func appending(subcategory: Subcategory) -> JoinedSubcategoriesServingStyles {
       let newSubcategories = subcategories + [subcategory]
       return copyWith(subcategories: newSubcategories)
-    }
-  }
-
-  struct JoinedServingStyles: Identifiable, Decodable, Hashable, Sendable, CategoryProtocol {
-    let id: Int
-    let name: String
-    let icon: String
-    let servingStyles: [ServingStyle]
-
-    enum CodingKeys: String, CodingKey {
-      case id
-      case name
-      case icon
-      case servingStyles = "serving_styles"
     }
   }
 
