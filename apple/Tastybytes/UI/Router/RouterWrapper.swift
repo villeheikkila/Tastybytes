@@ -20,23 +20,25 @@ struct RouterWrapper<Content: View>: View {
         .sheet(item: $sheetManager.sheet) { sheet in
           NavigationStack {
             sheet.view
+              .toast(isPresenting: $feedbackManager.show) {
+                feedbackManager.toast
+              }
           }
           .presentationDetents(sheet.detents)
           .presentationCornerRadius(sheet.cornerRadius)
           .presentationBackground(sheet.background)
-          .toast(isPresenting: $feedbackManager.show) {
-            feedbackManager.toast
-          }
+          .environmentObject(sheetManager)
           .sheet(item: $sheetManager.nestedSheet, content: { nestedSheet in
             NavigationStack {
               nestedSheet.view
+                .toast(isPresenting: $feedbackManager.show) {
+                  feedbackManager.toast
+                }
             }
             .presentationDetents(nestedSheet.detents)
             .presentationCornerRadius(nestedSheet.cornerRadius)
             .presentationBackground(nestedSheet.background)
-            .toast(isPresenting: $feedbackManager.show) {
-              feedbackManager.toast
-            }
+            .environmentObject(sheetManager)
           })
         }
         .onOpenURL { url in

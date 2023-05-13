@@ -47,8 +47,6 @@ opt_in_rules:
   - prefer_zero_over_explicit_init
   - static_operator
   - unneeded_parentheses_in_closure_argument
-  - anyobject_protocol
-  - attributes
   - last_where
   - closure_end_indentation
   - closure_spacing

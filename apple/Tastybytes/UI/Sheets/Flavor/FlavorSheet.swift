@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct FlavorSheet: View {
-  @Environment(\.dismiss) private var dismiss
   @EnvironmentObject private var appDataManager: AppDataManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(\.dismiss) private var dismiss
   @Binding var pickedFlavors: [Flavor]
   @State private var searchTerm = ""
 

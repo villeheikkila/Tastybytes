@@ -91,7 +91,10 @@ struct CurrentUserFriendsScreen: View {
         toolbarContent
       }
       .confirmationDialog(
-        "Remove user from your friends, you will no longer be able to see each other's check-ins on your activity feed nor be able to tag each other on check-ins",
+        """
+        Remove user from your friends, you will no longer be able to see each other's check-ins on your
+        activity feed nor be able to tag each other check-ins
+        """,
         isPresented: $showRemoveFriendConfirmation,
         titleVisibility: .visible,
         presenting: friendToBeRemoved
