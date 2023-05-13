@@ -26,8 +26,8 @@ struct RouterLink<LabelView: View>: View {
   var body: some View {
     if asTapGesture {
       label
-        .contentShape(Rectangle())
         .accessibilityAddTraits(.isLink)
+        .contentShape(Rectangle())
         .onTapGesture {
           if let screen {
             router.navigate(screen: screen)

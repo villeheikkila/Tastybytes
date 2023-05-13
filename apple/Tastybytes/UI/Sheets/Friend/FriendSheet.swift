@@ -7,14 +7,19 @@ struct FriendSheet: View {
 
   var body: some View {
     List(friendManager.acceptedFriends) { friend in
-      Button(action: { toggleFriend(friend: friend) }, label: {
+      HStack {
         AvatarView(avatarUrl: friend.avatarUrl, size: 32, id: friend.id)
         Text(friend.preferredName)
         Spacer()
         Label("Tag friend", systemImage: "checkmark")
           .labelStyle(.iconOnly)
           .opacity(taggedFriends.contains(friend) ? 1 : 0)
-      })
+      }
+      .accessibilityAddTraits(.isButton)
+      .contentShape(Rectangle())
+      .onTapGesture {
+        toggleFriend(friend: friend)
+      }
     }
     .buttonStyle(.plain)
     .navigationTitle("Friends")

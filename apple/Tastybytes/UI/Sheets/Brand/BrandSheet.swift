@@ -10,10 +10,9 @@ struct BrandSheet: View {
   @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
   @State private var brandName = ""
   @State private var searchText: String = ""
-
-  let brandOwner: Company
   @Binding var brand: Brand.JoinedSubBrands?
 
+  let brandOwner: Company
   let mode: Mode
 
   var filteredBrands: [Brand.JoinedSubBrands] {

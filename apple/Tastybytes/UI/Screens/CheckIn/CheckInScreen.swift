@@ -97,6 +97,8 @@ struct CheckInScreen: View {
             } else {
               ReportButton(entity: .comment(comment))
             }
+            Divider()
+            
           }
       }
     }

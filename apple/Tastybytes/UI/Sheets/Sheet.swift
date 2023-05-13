@@ -63,9 +63,9 @@ enum Sheet: Identifiable, Equatable {
     case let .nameTag(onSuccess):
       NameTagSheet(onSuccess: onSuccess)
     case let .addBrand(brandOwner: brandOwner, mode: mode):
-      BrandSheet(brandOwner: brandOwner, brand: .constant(nil), mode: mode)
+      BrandSheet(brand: .constant(nil), brandOwner: brandOwner, mode: mode)
     case let .brand(brandOwner, brand: brand, mode: mode):
-      BrandSheet(brandOwner: brandOwner, brand: brand, mode: mode)
+      BrandSheet(brand: brand, brandOwner: brandOwner, mode: mode)
     case let .subBrand(brandWithSubBrands, subBrand: subBrand):
       SubBrandSheet(subBrand: subBrand, brandWithSubBrands: brandWithSubBrands)
     case let .subcategory(subcategories, category):
