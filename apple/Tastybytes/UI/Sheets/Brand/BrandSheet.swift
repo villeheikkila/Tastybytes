@@ -9,16 +9,21 @@ struct BrandSheet: View {
   @Environment(\.dismiss) private var dismiss
   @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
   @State private var brandName = ""
+  @State private var searchText: String = ""
 
   let brandOwner: Company
   @Binding var brand: Brand.JoinedSubBrands?
 
   let mode: Mode
 
+  var filteredBrands: [Brand.JoinedSubBrands] {
+    brandsWithSubBrands.filter { searchText.isEmpty || $0.name.contains(searchText) == true }
+  }
+
   var body: some View {
     List {
       if mode == .select {
-        ForEach(brandsWithSubBrands) { brand in
+        ForEach(filteredBrands) { brand in
           Button(brand.name, action: {
             self.brand = brand
             dismiss()
@@ -37,6 +42,7 @@ struct BrandSheet: View {
       }
     }
     .navigationTitle("\(mode == .select ? "Select" : "Add") brand")
+    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
     .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: { dismiss() }).bold())
     .task {
       await loadBrands(brandOwner)
