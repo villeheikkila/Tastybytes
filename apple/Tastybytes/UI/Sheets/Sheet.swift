@@ -12,7 +12,7 @@ enum Sheet: Identifiable, Equatable {
   )
   case nameTag(onSuccess: (_ profileId: UUID) -> Void)
   case companySearch(onSelect: (_ company: Company) -> Void)
-  case brand(brandOwner: Binding<Company?>,
+  case brand(brandOwner: Company,
              brand: Binding<Brand.JoinedSubBrands?>,
              mode: BrandSheet.Mode)
   case addBrand(brandOwner: Company, mode: BrandSheet.Mode)
@@ -20,7 +20,7 @@ enum Sheet: Identifiable, Equatable {
     subcategories: Binding<[Subcategory]>,
     category: Category.JoinedSubcategoriesServingStyles
   )
-  case subBrand(brandWithSubBrands: Binding<Brand.JoinedSubBrands?>, subBrand: Binding<SubBrandProtocol?>)
+  case subBrand(brandWithSubBrands: Brand.JoinedSubBrands, subBrand: Binding<SubBrandProtocol?>)
   case addProductToBrand(brand: Brand.JoinedSubBrandsProductsCompany)
   case addProductToSubBrand(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct)
   case productEdit(product: Product.Joined, onEdit: (() async -> Void)? = nil)
@@ -63,7 +63,7 @@ enum Sheet: Identifiable, Equatable {
     case let .nameTag(onSuccess):
       NameTagSheet(onSuccess: onSuccess)
     case let .addBrand(brandOwner: brandOwner, mode: mode):
-      BrandSheet(brandOwner: .constant(brandOwner), brand: .constant(nil), mode: mode)
+      BrandSheet(brandOwner: brandOwner, brand: .constant(nil), mode: mode)
     case let .brand(brandOwner, brand: brand, mode: mode):
       BrandSheet(brandOwner: brandOwner, brand: brand, mode: mode)
     case let .subBrand(brandWithSubBrands, subBrand: subBrand):
@@ -174,12 +174,12 @@ enum Sheet: Identifiable, Equatable {
       return "name_tag"
     case .companySearch:
       return "company_search"
-    case .brand:
-      return "brand"
-    case .addBrand:
-      return "add_brand"
-    case .subBrand:
-      return "sub_brand"
+    case let .brand(brandOwner, _, _):
+      return "brand_\(brandOwner.hashValue)"
+    case let .addBrand(brandOwner, brand):
+      return "add_brand_\(brandOwner.hashValue)_\(brand.hashValue)"
+    case let .subBrand(subBrand, _):
+      return "sub_brand_\(subBrand.hashValue)"
     case .subcategory:
       return "subcategory"
     case let .productEdit(product, _):

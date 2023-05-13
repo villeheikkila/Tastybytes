@@ -10,7 +10,7 @@ struct BrandSheet: View {
   @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
   @State private var brandName = ""
 
-  @Binding var brandOwner: Company?
+  let brandOwner: Company
   @Binding var brand: Brand.JoinedSubBrands?
 
   let mode: Mode
@@ -27,7 +27,7 @@ struct BrandSheet: View {
       }
 
       if profileManager.hasPermission(.canCreateBrands) {
-        Section("Add new brand for \(brandOwner?.name ?? "")") {
+        Section("Add new brand for \(brandOwner.name)") {
           TextField("Name", text: $brandName)
           ProgressButton("Create") {
             await createNewBrand()
@@ -39,7 +39,6 @@ struct BrandSheet: View {
     .navigationTitle("\(mode == .select ? "Select" : "Add") brand")
     .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: { dismiss() }).bold())
     .task {
-      guard let brandOwner else { return }
       await loadBrands(brandOwner)
     }
   }
@@ -56,14 +55,13 @@ struct BrandSheet: View {
   }
 
   func createNewBrand() async {
-    guard let brandOwner else { return }
     switch await repository.brand.insert(newBrand: Brand.NewRequest(name: brandName, brandOwnerId: brandOwner.id)) {
     case let .success(brandWithSubBrands):
       feedbackManager.toggle(.success("New Brand Created!"))
       if mode == .new {
         router.fetchAndNavigateTo(repository, .brand(id: brandWithSubBrands.id))
       }
-      brand = brand
+      brand = brandWithSubBrands
       dismiss()
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }

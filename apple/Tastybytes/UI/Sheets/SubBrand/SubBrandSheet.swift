@@ -7,11 +7,17 @@ struct SubBrandSheet: View {
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var subBrandName = ""
+  @State private var searchText: String = ""
   @Binding var subBrand: SubBrandProtocol?
-  @Binding var brandWithSubBrands: Brand.JoinedSubBrands?
+
+  let brandWithSubBrands: Brand.JoinedSubBrands
 
   var filteredSubBrands: [SubBrand] {
-    brandWithSubBrands?.subBrands.sorted().filter { $0.name != nil } ?? []
+    brandWithSubBrands.subBrands.sorted()
+      .filter { sub in
+        guard let name = sub.name else { return false }
+        return searchText.isEmpty || name.contains(searchText) == true
+      }
   }
 
   var body: some View {
@@ -26,19 +32,19 @@ struct SubBrandSheet: View {
       }
 
       if profileManager.hasPermission(.canCreateBrands) {
-        Section("Add new sub-brand for \(brandWithSubBrands?.name ?? "unknown")") {
+        Section("Add new sub-brand for \(brandWithSubBrands.name)") {
           TextField("Name", text: $subBrandName)
           ProgressButton("Create") { await createNewSubBrand() }
             .disabled(!subBrandName.isValidLength(.normal))
         }
       }
     }
+    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
     .navigationTitle("Sub-brands")
     .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: { dismiss() }).bold())
   }
 
   func createNewSubBrand() async {
-    guard let brandWithSubBrands else { return }
     switch await repository.subBrand
       .insert(newSubBrand: SubBrand.NewRequest(name: subBrandName, brandId: brandWithSubBrands.id))
     {

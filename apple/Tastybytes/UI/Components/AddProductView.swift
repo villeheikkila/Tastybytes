@@ -349,10 +349,10 @@ struct AddProductView: View {
         brandOwner = company
       }))
 
-      if brandOwner != nil {
+      if let brandOwner {
         RouterLink(
           brand?.name ?? "Brand",
-          sheet: .brand(brandOwner: $brandOwner, brand: $brand, mode: .select)
+          sheet: .brand(brandOwner: brandOwner, brand: $brand, mode: .select)
         )
       }
 
@@ -367,10 +367,10 @@ struct AddProductView: View {
         }))
       }
 
-      if hasSubBrand {
+      if hasSubBrand, let brand {
         RouterLink(
           subBrand?.name ?? "Sub-brand",
-          sheet: .subBrand(brandWithSubBrands: $brand, subBrand: $subBrand)
+          sheet: .subBrand(brandWithSubBrands: brand, subBrand: $subBrand)
         )
       }
 
