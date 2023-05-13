@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ProgressButton<LabelView: View>: View {
+  private let logger = getLogger(category: "ProgressButton")
   enum ActionOption: CaseIterable {
     case disableButton
     case showProgressView
@@ -40,8 +41,12 @@ struct ProgressButton<LabelView: View>: View {
       var progressViewTask: Task<Void, Error>?
       if actionOptions.contains(.showProgressView) {
         progressViewTask = Task {
-          try await Task.sleep(nanoseconds: 150_000_000)
-          isLoading = true
+          do {
+            try await Task.sleep(nanoseconds: 150_000_000)
+            isLoading = true
+          } catch {
+            logger.info("Timer cancelled")
+          }
         }
       }
       await action()

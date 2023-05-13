@@ -33,6 +33,7 @@ struct Main: App {
 }
 
 struct RootView: View {
+  private let logger = getLogger(category: "RootView")
   let supabaseClient: SupabaseClient
   @StateObject private var repository: Repository
   @StateObject private var splashScreenManager = SplashScreenManager()
@@ -94,7 +95,9 @@ struct RootView: View {
     .detectOrientation($orientation)
     .environment(\.orientation, orientation)
     .onOpenURL { url in
-      Task { _ = try await supabaseClient.auth.session(from: url) }
+      Task {
+        await loadSessionFromURL(url: url)
+      }
     }
     .task {
       if !appDataManager.isInitialized {
@@ -135,6 +138,14 @@ struct RootView: View {
         await friendManager.initialize(profile: profileManager.profile)
         purchaseManager.initialize()
       }
+    }
+  }
+
+  func loadSessionFromURL(url: URL) async {
+    do {
+      _ = try await supabaseClient.auth.session(from: url)
+    } catch {
+      logger.error("failed to load session from url: \(url): \(error.localizedDescription)")
     }
   }
 }
