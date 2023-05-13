@@ -74,6 +74,27 @@ extension Category {
       case subcategories
       case servingStyles = "serving_styles"
     }
+
+    func copyWith(
+      id: Int? = nil,
+      name: String? = nil,
+      icon: String? = nil,
+      subcategories: [Subcategory]? = nil,
+      servingStyles: [ServingStyle]? = nil
+    ) -> JoinedSubcategoriesServingStyles {
+      JoinedSubcategoriesServingStyles(
+        id: id ?? self.id,
+        name: name ?? self.name,
+        icon: icon ?? self.icon,
+        subcategories: subcategories ?? self.subcategories,
+        servingStyles: servingStyles ?? self.servingStyles
+      )
+    }
+
+    func appending(subcategory: Subcategory) -> JoinedSubcategoriesServingStyles {
+      let newSubcategories = subcategories + [subcategory]
+      return copyWith(subcategories: newSubcategories)
+    }
   }
 
   struct JoinedServingStyles: Identifiable, Decodable, Hashable, Sendable, CategoryProtocol {

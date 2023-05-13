@@ -146,8 +146,9 @@ final class AppDataManager: ObservableObject {
       .insert(newSubcategory: Subcategory
         .NewRequest(name: name, category: category))
     {
-    case .success:
-      await loadCategories()
+    case let .success(newSubcategory):
+      let updatedCategory = category.appending(subcategory: newSubcategory)
+      categories.replace(category, with: updatedCategory)
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

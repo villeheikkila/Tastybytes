@@ -43,7 +43,7 @@ struct SubcategorySheet: View {
       TextField("TextField", text: $newSubcategoryName)
       Button("Cancel", role: .cancel, action: {})
       ProgressButton("Create", action: {
-        await createSubcategory(name: newSubcategoryName)
+        await appDataManager.addSubcategory(category: category, name: newSubcategoryName)
       })
     })
   }
@@ -67,20 +67,6 @@ struct SubcategorySheet: View {
       Button("Add subcategory", systemImage: "plus", action: { showAddSubcategory.toggle() })
         .labelStyle(.iconOnly)
         .bold()
-    }
-  }
-
-  func createSubcategory(name: String) async {
-    switch await repository.subcategory
-      .insert(newSubcategory: Subcategory
-        .NewRequest(name: name, category: category))
-    {
-    case .success:
-      await appDataManager.initialize()
-    case let .failure(error):
-      guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to create subcategory '\(newSubcategoryName)': \(error.localizedDescription)")
     }
   }
 }
