@@ -50,6 +50,11 @@ struct CompanySearchSheet: View {
         case .add:
           Section("Add new company") {
             TextField("Name", text: $companyName)
+              .overlay(
+                ScanTextButton(text: $companyName)
+                  .padding(.trailing, 6),
+                alignment: .trailing
+              )
             ProgressButton("Create") {
               await createNewCompany(onSuccess: { company in
                 onSelect(company)

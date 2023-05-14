@@ -355,11 +355,22 @@ struct ProductMutationInnerView: View {
 
   private var productSection: some View {
     Section {
-      TextField("Name", text: $name)
-        .focused($focusedField, equals: .name)
-
+      HStack {
+        TextField("Name", text: $name)
+          .focused($focusedField, equals: .name)
+          .overlay(
+            ScanTextButton(text: $name)
+              .padding(.trailing, 6),
+            alignment: .trailing
+          )
+      }
       TextField("Description (optional)", text: $description)
         .focused($focusedField, equals: .description)
+        .overlay(
+          ScanTextButton(text: $description)
+            .padding(.trailing, 6),
+          alignment: .trailing
+        )
 
       if mode == .new {
         RouterLink(barcode == nil ? "Add Barcode" : "Barcode Added!", sheet: .barcodeScanner(onComplete: { barcode in

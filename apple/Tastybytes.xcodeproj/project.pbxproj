@@ -130,6 +130,7 @@
 		5CA006C8298DE33F003CC307 /* BrandScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA006C7298DE33F003CC307 /* BrandScreen.swift */; };
 		5CA006CD2992D0CF003CC307 /* CreateQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA006CC2992D0CF003CC307 /* CreateQRCodeView.swift */; };
 		5CA375642A11387B000DF444 /* ProductLogoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA375632A11387B000DF444 /* ProductLogoSheet.swift */; };
+		5CA375662A116AD4000DF444 /* ScanTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA375652A116AD4000DF444 /* ScanTextButton.swift */; };
 		5CA7A533299D3F010066F604 /* ProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A532299D3F010066F604 /* ProgressButton.swift */; };
 		5CA7A535299E8ECB0066F604 /* DismissableSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A534299E8ECB0066F604 /* DismissableSheetView.swift */; };
 		5CA7A53729A0E7750066F604 /* ProductFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A53629A0E7750066F604 /* ProductFilterSheet.swift */; };
@@ -335,6 +336,7 @@
 		5CA006C7298DE33F003CC307 /* BrandScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreen.swift; sourceTree = "<group>"; };
 		5CA006CC2992D0CF003CC307 /* CreateQRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQRCodeView.swift; sourceTree = "<group>"; };
 		5CA375632A11387B000DF444 /* ProductLogoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductLogoSheet.swift; sourceTree = "<group>"; };
+		5CA375652A116AD4000DF444 /* ScanTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextButton.swift; sourceTree = "<group>"; };
 		5CA7A532299D3F010066F604 /* ProgressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressButton.swift; sourceTree = "<group>"; };
 		5CA7A534299E8ECB0066F604 /* DismissableSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableSheetView.swift; sourceTree = "<group>"; };
 		5CA7A53629A0E7750066F604 /* ProductFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterSheet.swift; sourceTree = "<group>"; };
@@ -1152,6 +1154,7 @@
 				5C7C35DC299AE042009A3C09 /* ProductItemView.swift */,
 				5C20A50C29AA316900ABBA74 /* CustomBadge.swift */,
 				5C73CD0D29E5ED2100A31F45 /* VerificationButton.swift */,
+				5CA375652A116AD4000DF444 /* ScanTextButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1376,6 +1379,7 @@
 				5CB4E03229E093AA00135ADA /* ReportButtonView.swift in Sources */,
 				5CB1C24728F9B551000B0EB4 /* CheckInCommentRepository.swift in Sources */,
 				5C663F27292E0F1D006F9A97 /* DocumentRepository.swift in Sources */,
+				5CA375662A116AD4000DF444 /* ScanTextButton.swift in Sources */,
 				5C234F1129FEFA98003F2283 /* SceneDelegate.swift in Sources */,
 				5C0E3652292679630072EFBD /* BarcodeScannerSheet.swift in Sources */,
 				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,

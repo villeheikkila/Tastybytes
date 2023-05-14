@@ -33,6 +33,11 @@ struct BrandSheet: View {
       if profileManager.hasPermission(.canCreateBrands) {
         Section("Add new brand for \(brandOwner.name)") {
           TextField("Name", text: $brandName)
+            .overlay(
+              ScanTextButton(text: $brandName)
+                .padding(.trailing, 6),
+              alignment: .trailing
+            )
           ProgressButton("Create") {
             await createNewBrand()
           }

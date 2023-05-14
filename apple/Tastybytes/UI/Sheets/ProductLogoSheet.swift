@@ -27,7 +27,7 @@ struct ProductLogoSheet: View {
 
   var body: some View {
     Form {
-      Section {
+      Section("Select Logo") {
         PhotosPicker(
           selection: $selectedLogo,
           matching: .images,
@@ -56,7 +56,10 @@ struct ProductLogoSheet: View {
       .listRowSeparator(.hidden)
       .listRowBackground(Color.clear)
     }
-    .navigationTitle("Select Product Logo")
+    .navigationTitle("Product Logo")
+    .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: {
+      dismiss()
+    }))
   }
 
   func uploadLogo() async {
