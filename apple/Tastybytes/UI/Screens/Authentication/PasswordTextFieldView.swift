@@ -2,7 +2,7 @@ import SwiftUI
 
 struct PasswordTextFieldView: View {
   enum Mode {
-    case password, newPassword
+    case password, newPassword, confirmPassword
   }
 
   @Binding var password: String
@@ -13,7 +13,7 @@ struct PasswordTextFieldView: View {
       HStack {
         Image(systemName: "key")
           .accessibility(hidden: true)
-        SecureField("Password", text: $password)
+        SecureField(mode == .confirmPassword ? "Confirm Password" : "Password", text: $password)
           .textContentType(mode == .password ? .password : .newPassword)
           .autocapitalization(.none)
           .disableAutocorrection(true)

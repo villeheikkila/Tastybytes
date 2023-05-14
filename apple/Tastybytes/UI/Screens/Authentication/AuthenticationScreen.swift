@@ -52,7 +52,7 @@ struct AuthenticationScreen: View {
         UsernameTextFieldView(username: $username)
           .focused($focusedField, equals: .username)
       }
-      if [.signIn, .signUp, .resetPassword, .accountDeleted, .magicLink, .forgotPassword].contains(scene) {
+      if [.signIn, .signUp, .accountDeleted, .magicLink, .forgotPassword].contains(scene) {
         EmailTextFieldView(email: $email)
           .focused($focusedField, equals: .email)
       }
@@ -64,7 +64,7 @@ struct AuthenticationScreen: View {
         .focused($focusedField, equals: .password)
       }
       if scene == .resetPassword {
-        PasswordTextFieldView(password: $passwordConfirmation, mode: .newPassword)
+        PasswordTextFieldView(password: $passwordConfirmation, mode: .confirmPassword)
           .focused($focusedField, equals: .resetPassword)
       }
 
