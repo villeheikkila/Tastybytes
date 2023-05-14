@@ -16,6 +16,7 @@ protocol CheckInRepository {
   func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error>
   func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error>
   func delete(id: Int) async -> Result<Void, Error>
+  func deleteAsModerator(checkIn: CheckIn) async -> Result<Void, Error>
   func getSummaryByProfileId(id: UUID) async -> Result<ProfileSummary, Error>
   func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<Void, Error>
 }
@@ -161,6 +162,19 @@ struct SupabaseCheckInRepository: CheckInRepository {
         .from(CheckIn.getQuery(.tableName))
         .delete()
         .eq(column: "id", value: id)
+        .execute()
+
+      return .success(())
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func deleteAsModerator(checkIn: CheckIn) async -> Result<Void, Error> {
+    do {
+      try await client
+        .database
+        .rpc(fn: "fnc__delete_check_in_as_moderator", params: CheckIn.DeleteAsAdminRequest(checkIn: checkIn))
         .execute()
 
       return .success(())

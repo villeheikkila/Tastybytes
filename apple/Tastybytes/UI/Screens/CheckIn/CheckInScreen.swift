@@ -12,14 +12,23 @@ struct CheckInScreen: View {
   @State private var checkInComments = [CheckInComment]()
   @State private var showDeleteConfirmation = false
   @State private var showEditCommentPrompt = false
-  @State private var deleteAsModerator: CheckInComment? {
+  @State private var deleteAsCheckInCommentAsModerator: CheckInComment? {
     didSet {
-      if deleteAsModerator != nil {
+      if deleteAsCheckInCommentAsModerator != nil {
         showDeleteCommentAsModeratorConfirmation = true
       }
     }
   }
 
+  @State private var toDeleteCheckInAsModerator: CheckIn? {
+    didSet {
+      if toDeleteCheckInAsModerator != nil {
+        showDeleteCheckInAsModeratorConfirmation = true
+      }
+    }
+  }
+
+  @State private var showDeleteCheckInAsModeratorConfirmation = false
   @State private var showDeleteCommentAsModeratorConfirmation = false
   @State private var commentText = ""
   @State private var editCommentText = ""
@@ -69,6 +78,20 @@ struct CheckInScreen: View {
           }))
           Button("Delete", systemImage: "trash.fill", role: .destructive, action: { showDeleteConfirmation = true })
         }
+
+        Divider()
+        if profileManager.hasRole(.moderator) {
+          Menu {
+            if profileManager.hasPermission(.canDeleteCheckInsAsModerator) {
+              Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
+                toDeleteCheckInAsModerator = checkIn
+              }
+            }
+          } label: {
+            Label("Moderation", systemImage: "gear")
+              .labelStyle(.iconOnly)
+          }
+        }
       } label: {
         Label("Options menu", systemImage: "ellipsis")
           .labelStyle(.iconOnly)
@@ -88,12 +111,23 @@ struct CheckInScreen: View {
     .confirmationDialog("Are you sure you want to delete comment as a moderator?",
                         isPresented: $showDeleteCommentAsModeratorConfirmation,
                         titleVisibility: .visible,
-                        presenting: deleteAsModerator)
+                        presenting: deleteAsCheckInCommentAsModerator)
     { presenting in
       ProgressButton(
         "Delete comment from \(presenting.profile.preferredName)",
         role: .destructive,
         action: { await deleteCommentAsModerator(presenting) }
+      )
+    }
+    .confirmationDialog("Are you sure you want to delete check-in as a moderator?",
+                        isPresented: $showDeleteCheckInAsModeratorConfirmation,
+                        titleVisibility: .visible,
+                        presenting: toDeleteCheckInAsModerator)
+    { presenting in
+      ProgressButton(
+        "Delete check-in from \(presenting.profile.preferredName)",
+        role: .destructive,
+        action: { await deleteCheckInAsModerator(presenting) }
       )
     }
     .task {
@@ -124,7 +158,7 @@ struct CheckInScreen: View {
               Menu {
                 if profileManager.hasPermission(.canDeleteComments) {
                   Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
-                    deleteAsModerator = comment
+                    deleteAsCheckInCommentAsModerator = comment
                   }
                 }
               } label: {
@@ -228,6 +262,17 @@ struct CheckInScreen: View {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete comment as moderator'\(comment.id)': \(error.localizedDescription)")
+    }
+  }
+
+  func deleteCheckInAsModerator(_ checkIn: CheckIn) async {
+    switch await repository.checkIn.deleteAsModerator(checkIn: checkIn) {
+    case .success:
+      router.removeLast()
+    case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
+      feedbackManager.toggle(.error(.unexpected))
+      logger.error("failed to delete check-in as moderator'\(checkIn.id)': \(error.localizedDescription)")
     }
   }
 

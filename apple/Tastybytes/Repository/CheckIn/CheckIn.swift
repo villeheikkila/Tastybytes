@@ -148,6 +148,18 @@ extension CheckIn {
     let width: Double
   }
 
+  struct DeleteAsAdminRequest: Encodable, Sendable {
+    let id: Int
+
+    init(checkIn: CheckIn) {
+      id = checkIn.id
+    }
+
+    enum CodingKeys: String, CodingKey {
+      case id = "p_check_in_id"
+    }
+  }
+
   struct NewRequest: Encodable, Sendable {
     let productId: Int
     let rating: Double?
