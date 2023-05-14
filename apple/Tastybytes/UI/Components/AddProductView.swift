@@ -528,7 +528,7 @@ extension AddProductView {
       case .edit:
         return "Edit"
       case .editSuggestion:
-        return "Send Edit suggestion"
+        return "Submit"
       case .new, .addToBrand, .addToSubBrand:
         return "Create"
       }

@@ -119,7 +119,7 @@ struct ProductScreen: View {
           if profileManager.hasPermission(.canMergeProducts) {
             Label("Merge to...", systemImage: "doc.on.doc")
           } else {
-            Label("Mark as duplicate", systemImage: "doc.on.doc")
+            Label("Mark as Duplicate", systemImage: "doc.on.doc")
           }
         })
 

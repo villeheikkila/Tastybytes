@@ -7,7 +7,6 @@ struct MergeLocationSheet: View {
   @EnvironmentObject private var router: Router
   @Environment(\.dismiss) private var dismiss
   @State private var locations = [Location]()
-  @State private var currentUserProductDuplicateSuggestions = [ProductDuplicateSuggestion]()
   @State private var mergeToLocation: Location? {
     didSet {
       showMergeToProductConfirmation = true

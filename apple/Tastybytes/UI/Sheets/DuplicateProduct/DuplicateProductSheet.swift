@@ -34,17 +34,16 @@ struct DuplicateProductSheet: View {
       ForEach(products.filter { $0.id != product.id }) { product in
         Button(action: { mergeToProduct = product }, label: {
           ProductItemView(product: product)
-        })
+        }).buttonStyle(.plain)
       }
     }
-    .listStyle(.plain)
     .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                 prompt: "Search for a duplicate product")
     .disableAutocorrection(true)
     .onSubmit(of: .search) {
       Task { await searchProducts(name: searchTerm) }
     }
-    .navigationTitle(mode == .mergeDuplicate ? "Merge duplicates" : "Mark a duplicate")
+    .navigationTitle(mode == .mergeDuplicate ? "Merge duplicates" : "Mark as duplicate")
     .navigationBarItems(leading: Button("Close", role: .cancel, action: { dismiss() }).bold())
     .onChange(of: searchTerm, debounceTime: 0.2) { newValue in
       Task { await searchProducts(name: newValue) }
@@ -55,30 +54,29 @@ struct DuplicateProductSheet: View {
     { presenting in
       ProgressButton(
         """
-        \(mode == .mergeDuplicate ? "Merge" : "Mark") \(presenting.name) \(
+        \(mode == .mergeDuplicate ? "Merge" : "Mark") \(product.name) \(
           mode == .mergeDuplicate ? "to" : "as duplicate of") \(presenting.getDisplayName(.fullName))
         """,
         role: .destructive
       ) {
-        await primaryAction()
+        await primaryAction(presenting)
       }
     }
   }
 
-  func primaryAction() async {
+  func primaryAction(_ to: Product.Joined) async {
     switch mode {
     case .reportDuplicate:
-      await reportDuplicate()
+      await reportDuplicate(to)
     case .mergeDuplicate:
-      await mergeProducts()
+      await mergeProducts(to)
     }
   }
 
-  func reportDuplicate() async {
-    guard let mergeToProduct else { return }
+  func reportDuplicate(_ to: Product.Joined) async {
     switch await repository.product.markAsDuplicate(
       productId: product.id,
-      duplicateOfProductId: mergeToProduct.id
+      duplicateOfProductId: to.id
     ) {
     case .success:
       feedbackManager.trigger(.notification(.success))
@@ -88,14 +86,13 @@ struct DuplicateProductSheet: View {
       feedbackManager.toggle(.error(.unexpected))
       logger
         .error(
-          "reporting duplicate product \(self.mergeToProduct?.id ?? 0) of \(mergeToProduct.id) failed: \(error.localizedDescription)"
+          "reporting duplicate product \(product.id) of \(to.id) failed: \(error.localizedDescription)"
         )
     }
   }
 
-  func mergeProducts() async {
-    guard let mergeToProduct else { return }
-    switch await repository.product.mergeProducts(productId: product.id, toProductId: mergeToProduct.id) {
+  func mergeProducts(_ to: Product.Joined) async {
+    switch await repository.product.mergeProducts(productId: product.id, toProductId: to.id) {
     case .success:
       feedbackManager.trigger(.notification(.success))
       dismiss()
@@ -103,7 +100,7 @@ struct DuplicateProductSheet: View {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger
-        .error("merging product \(self.mergeToProduct?.id ?? 0) to \(mergeToProduct.id) failed: \(error.localizedDescription)")
+        .error("merging product \(product.id) to \(to.id) failed: \(error.localizedDescription)")
     }
   }
 
