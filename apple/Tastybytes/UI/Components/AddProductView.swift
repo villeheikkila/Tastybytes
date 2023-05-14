@@ -1,5 +1,4 @@
 import CachedAsyncImage
-import PhotosUI
 import SwiftUI
 
 struct ProductMutationView: View {
@@ -8,26 +7,16 @@ struct ProductMutationView: View {
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var appDataManager: AppDataManager
   @Environment(\.dismiss) private var dismiss
-  @State private var subcategories: [Subcategory] = []
-  @State private var category: Category.JoinedSubcategoriesServingStyles?
-  @State private var brandOwner: Company?
-  @State private var brand: Brand.JoinedSubBrands?
-  @State private var subBrand: SubBrandProtocol?
-  @State private var name: String = ""
-  @State private var description: String = ""
-  @State private var hasSubBrand = false
-  @State private var logoFile: String?
-  @State private var productId: Int?
-  @State private var initialDataLoaded = false
+  @State private var initialValues: ProductMutationInitialValues?
 
-  let mode: AddProductView.Mode
+  let mode: ProductMutationInnerView.Mode
   let onEdit: (() async -> Void)?
   let onCreate: ((_ product: Product.Joined) -> Void)?
   let initialBarcode: Barcode?
   let isSheet: Bool
 
   init(
-    mode: AddProductView.Mode,
+    mode: ProductMutationInnerView.Mode,
     isSheet: Bool = true,
     initialBarcode: Barcode? = nil,
     onEdit: (() async -> Void)? = nil,
@@ -53,16 +42,9 @@ struct ProductMutationView: View {
 
   var body: some View {
     VStack {
-      if initialDataLoaded {
-        AddProductView(mode: mode, productId: productId, category: category,
-                       brandOwner: brandOwner,
-                       brand: brand,
-                       hasSubBrand: hasSubBrand,
-                       subBrand: subBrand,
-                       name: name,
-                       description: description,
-                       subcategories: subcategories,
-                       initialBarcode: initialBarcode, onEdit: onEdit, onCreate: onCreate)
+      if let initialValues {
+        ProductMutationInnerView(mode: mode, initialValues: initialValues,
+                                 initialBarcode: initialBarcode, onEdit: onEdit, onCreate: onCreate)
       }
     }
     .navigationTitle(navigationTitle)
@@ -91,24 +73,28 @@ struct ProductMutationView: View {
     case let .addToSubBrand(brand, subBrand):
       loadFromSubBrand(brand: brand, subBrand: subBrand, categories: categories)
     case .new:
-      category = categories.first(where: { $0.name == "beverage" })
+      initialValues = ProductMutationInitialValues(
+        category: categories.first(where: { $0.name == "beverage" })
+      )
     }
-    initialDataLoaded = true
   }
 
   func loadFromBrand(_ brand: Brand.JoinedSubBrandsProductsCompany, categories: [Category.JoinedSubcategoriesServingStyles]) {
-    category = categories.first(where: { $0.name == "beverage" })
-    subcategories = []
-    brandOwner = brand.brandOwner
-    self.brand = Brand.JoinedSubBrands(
-      id: brand.id,
-      name: brand.name,
-      logoFile: brand.logoFile,
-      isVerified: brand.isVerified,
-      subBrands: brand.subBrands
-        .map { subBrand in SubBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified) }
+    initialValues = ProductMutationInitialValues(
+      category: categories.first(where: { $0.name == "beverage" }),
+      brandOwner: brand.brandOwner,
+      brand: Brand.JoinedSubBrands(
+        id: brand.id,
+        name: brand.name,
+        logoFile: brand.logoFile,
+        isVerified: brand.isVerified,
+        subBrands: brand.subBrands
+          .map { subBrand in
+            SubBrand(id: subBrand.id, name: subBrand.name,
+                     isVerified: subBrand.isVerified)
+          }
+      )
     )
-    subBrand = nil
   }
 
   func loadFromSubBrand(
@@ -116,20 +102,20 @@ struct ProductMutationView: View {
     subBrand: SubBrand.JoinedProduct,
     categories: [Category.JoinedSubcategoriesServingStyles]
   ) {
-    category = categories.first(where: { $0.name == "beverage" })
-    subcategories = []
-    brandOwner = brand.brandOwner
     let subBrandsFromBrand = brand.subBrands
       .map { subBrand in SubBrand(id: subBrand.id, name: subBrand.name, isVerified: subBrand.isVerified) }
-    self.brand = Brand.JoinedSubBrands(
-      id: brand.id,
-      name: brand.name,
-      logoFile: brand.logoFile,
-      isVerified: brand.isVerified,
-      subBrands: subBrandsFromBrand
+    initialValues = ProductMutationInitialValues(
+      category: categories.first(where: { $0.name == "beverage" }),
+      brandOwner: brand.brandOwner,
+      brand: Brand.JoinedSubBrands(
+        id: brand.id,
+        name: brand.name,
+        logoFile: brand.logoFile,
+        isVerified: brand.isVerified,
+        subBrands: subBrandsFromBrand
+      ),
+      subBrand: subBrandsFromBrand.first(where: { $0.id == subBrand.id })
     )
-    hasSubBrand = true
-    self.subBrand = subBrandsFromBrand.first(where: { $0.id == subBrand.id })
   }
 
   func loadValuesFromExistingProduct(
@@ -140,23 +126,22 @@ struct ProductMutationView: View {
       .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
     {
     case let .success(brandsWithSubBrands):
-      productId = initialProduct.id
-      category = categories.first(where: { $0.id == initialProduct.category.id })
-      subcategories = initialProduct.subcategories.map { $0.getSubcategory() }
-      brandOwner = initialProduct.subBrand.brand.brandOwner
-      brand = Brand.JoinedSubBrands(
-        id: initialProduct.subBrand.brand.id,
-        name: initialProduct.subBrand.brand.name,
-        logoFile: initialProduct.subBrand.brand.logoFile,
-        isVerified: initialProduct.subBrand.brand.isVerified,
-        subBrands: brandsWithSubBrands
-          .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? []
+      initialValues = ProductMutationInitialValues(
+        category: categories.first(where: { $0.name == "beverage" }),
+        brandOwner: initialProduct.subBrand.brand.brandOwner,
+        brand: Brand.JoinedSubBrands(
+          id: initialProduct.subBrand.brand.id,
+          name: initialProduct.subBrand.brand.name,
+          logoFile: initialProduct.subBrand.brand.logoFile,
+          isVerified: initialProduct.subBrand.brand.isVerified,
+          subBrands: brandsWithSubBrands
+            .first(where: { $0.id == initialProduct.subBrand.brand.id })?.subBrands ?? []
+        ),
+        subBrand: initialProduct.subBrand,
+        name: initialProduct.name,
+        description: initialProduct.description.orEmpty,
+        logoFile: initialProduct.logoFile
       )
-      subBrand = initialProduct.subBrand
-      name = initialProduct.name
-      description = initialProduct.description.orEmpty
-      hasSubBrand = initialProduct.subBrand.name != nil
-      logoFile = initialProduct.logoFile
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -165,8 +150,41 @@ struct ProductMutationView: View {
   }
 }
 
-struct AddProductView: View {
-  private let logger = getLogger(category: "ProductSheet")
+private struct ProductMutationInitialValues {
+  let subcategories: [Subcategory]
+  let category: Category.JoinedSubcategoriesServingStyles?
+  let brandOwner: Company?
+  let brand: Brand.JoinedSubBrands?
+  let subBrand: SubBrandProtocol?
+  let name: String
+  let description: String
+  let hasSubBrand: Bool
+  let logoFile: String?
+
+  init(
+    subcategories: [Subcategory] = [],
+    category: Category.JoinedSubcategoriesServingStyles? = nil,
+    brandOwner: Company? = nil,
+    brand: Brand.JoinedSubBrands? = nil,
+    subBrand: SubBrandProtocol? = nil,
+    name: String = "",
+    description: String = "",
+    logoFile: String? = nil
+  ) {
+    self.subcategories = subcategories
+    self.category = category
+    self.brandOwner = brandOwner
+    self.brand = brand
+    self.subBrand = subBrand
+    self.name = name
+    self.description = description
+    hasSubBrand = subBrand != nil
+    self.logoFile = logoFile
+  }
+}
+
+struct ProductMutationInnerView: View {
+  private let logger = getLogger(category: "ProductMutationInnerView")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
@@ -186,7 +204,6 @@ struct AddProductView: View {
   }
 
   @State private var brand: Brand.JoinedSubBrands?
-
   @State private var subBrand: SubBrandProtocol?
   @State private var name: String
   @State private var description: String
@@ -199,30 +216,14 @@ struct AddProductView: View {
   }
 
   @State private var barcode: Barcode?
-  @State private var selectedLogo: PhotosPickerItem? {
-    didSet {
-      Task { await uploadLogo() }
-    }
-  }
-
-  @State private var logoFile: String?
-  @State private var productId: Int?
 
   let mode: Mode
   let onEdit: (() async -> Void)?
   let onCreate: ((_ product: Product.Joined) async -> Void)?
 
-  init(
+  fileprivate init(
     mode: Mode,
-    productId: Int?,
-    category: Category.JoinedSubcategoriesServingStyles?,
-    brandOwner: Company?,
-    brand: Brand.JoinedSubBrands?,
-    hasSubBrand: Bool?,
-    subBrand: SubBrandProtocol?,
-    name: String = "",
-    description: String = "",
-    subcategories: [Subcategory] = [],
+    initialValues: ProductMutationInitialValues,
     initialBarcode: Barcode? = nil,
     onEdit: (() async -> Void)? = nil,
     onCreate: ((_ product: Product.Joined) -> Void)? = nil
@@ -231,22 +232,18 @@ struct AddProductView: View {
     _barcode = State(wrappedValue: initialBarcode)
     self.onEdit = onEdit
     self.onCreate = onCreate
-    _productId = State(initialValue: productId)
-    _category = State(initialValue: category)
-    _subcategories = State(initialValue: subcategories)
-    _brandOwner = State(initialValue: brandOwner)
-    _brand = State(initialValue: brand)
-    _hasSubBrand = State(initialValue: hasSubBrand ?? false)
-    _subBrand = State(initialValue: subBrand)
-    _name = State(initialValue: name)
-    _description = State(initialValue: description)
+    _category = State(initialValue: initialValues.category)
+    _subcategories = State(initialValue: initialValues.subcategories)
+    _brandOwner = State(initialValue: initialValues.brandOwner)
+    _brand = State(initialValue: initialValues.brand)
+    _hasSubBrand = State(initialValue: initialValues.hasSubBrand)
+    _subBrand = State(initialValue: initialValues.subBrand)
+    _name = State(initialValue: initialValues.name)
+    _description = State(initialValue: initialValues.description)
   }
 
   var body: some View {
     Form {
-      if profileManager.hasPermission(.canAddProductLogo) {
-        logoSection
-      }
       categorySection
       brandSection
       productSection
@@ -255,45 +252,6 @@ struct AddProductView: View {
     .onChange(of: subcategories, perform: { newValue in
       subcategories = newValue
     })
-  }
-
-  private var action: some View {
-    ProgressButton(mode.doneLabel, action: {
-      await primaryAction()
-    })
-    .fontWeight(.medium)
-    .disabled(!isValid())
-  }
-
-  private var logoSection: some View {
-    Section {
-      PhotosPicker(
-        selection: $selectedLogo,
-        matching: .images,
-        photoLibrary: .shared()
-      ) {
-        if let logoFile, let logoUrl = URL(
-          bucketId: Product.getQuery(.logoBucket),
-          fileName: logoFile
-        ) {
-          CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
-            image
-              .resizable()
-              .aspectRatio(contentMode: .fill)
-              .frame(width: 52, height: 52)
-              .accessibility(hidden: true)
-          } placeholder: {
-            Image(systemName: "photo")
-              .accessibility(hidden: true)
-          }
-        } else {
-          Image(systemName: "photo")
-            .accessibility(hidden: true)
-        }
-      }
-    }
-    .listRowSeparator(.hidden)
-    .listRowBackground(Color.clear)
     .onChange(of: category) { _ in
       subcategories = []
     }
@@ -303,6 +261,14 @@ struct AddProductView: View {
         subBrand = brand.subBrands.first(where: { $0.name == nil })
       }
     }
+  }
+
+  private var action: some View {
+    ProgressButton(mode.doneLabel, action: {
+      await primaryAction()
+    })
+    .fontWeight(.medium)
+    .disabled(!isValid())
   }
 
   private var categorySection: some View {
@@ -413,10 +379,10 @@ struct AddProductView: View {
 
   func primaryAction() async {
     switch mode {
-    case .editSuggestion:
-      await createProductEditSuggestion()
-    case .edit:
-      await editProduct()
+    case let .editSuggestion(product):
+      await createProductEditSuggestion(product: product)
+    case let .edit(product):
+      await editProduct(product: product)
       if let onEdit {
         await onEdit()
       }
@@ -453,10 +419,10 @@ struct AddProductView: View {
     }
   }
 
-  func createProductEditSuggestion() async {
-    guard let subBrand, let category, let productId else { return }
+  func createProductEditSuggestion(product: Product.Joined) async {
+    guard let subBrand, let category else { return }
     let productEditSuggestionParams = Product.EditRequest(
-      productId: productId,
+      productId: product.id,
       name: name,
       description: description,
       categoryId: category.id,
@@ -473,29 +439,16 @@ struct AddProductView: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to create product edit suggestion for '\(productId)': \(error.localizedDescription)")
+      logger.error("failed to create product edit suggestion for '\(product.id)': \(error.localizedDescription)")
     }
   }
 
-  func uploadLogo() async {
-    guard let productId else { return }
-    guard let data = await selectedLogo?.getJPEG() else { return }
-    switch await repository.product.uploadLogo(productId: productId, data: data) {
-    case let .success(filename):
-      logoFile = filename
-    case let .failure(error):
-      guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("uplodaing company logo failed: \(error.localizedDescription)")
-    }
-  }
-
-  func editProduct() async {
-    guard let category, let brand, let productId else { return }
+  func editProduct(product: Product.Joined) async {
+    guard let category, let brand else { return }
     let subBrandWithNil = subBrand == nil ? brand.subBrands.first(where: { $0.name == nil }) : subBrand
     guard let subBrandWithNil else { return }
     let productEditParams = Product.EditRequest(
-      productId: productId,
+      productId: product.id,
       name: name,
       description: description,
       categoryId: category.id,
@@ -513,12 +466,12 @@ struct AddProductView: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to edit product '\(productId)': \(error.localizedDescription)")
+      logger.error("failed to edit product '\(product.id)': \(error.localizedDescription)")
     }
   }
 }
 
-extension AddProductView {
+extension ProductMutationInnerView {
   enum Mode: Equatable {
     case new, edit(Product.Joined), editSuggestion(Product.Joined), addToBrand(Brand.JoinedSubBrandsProductsCompany),
          addToSubBrand(Brand.JoinedSubBrandsProductsCompany, SubBrand.JoinedProduct)

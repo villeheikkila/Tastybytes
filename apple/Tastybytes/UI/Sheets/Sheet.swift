@@ -46,6 +46,7 @@ enum Sheet: Identifiable, Equatable {
   case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>)
   case categoryPickerSheet(category: Binding<Category.JoinedSubcategoriesServingStyles?>)
   case mergeLocationSheet(location: Location)
+  case productLogo(product: Product.Joined, onUpload: () -> Void)
   case support
 
   @ViewBuilder var view: some View {
@@ -122,6 +123,8 @@ enum Sheet: Identifiable, Equatable {
       SupportSheet()
     case let .mergeLocationSheet(location: location):
       MergeLocationSheet(location: location)
+    case let .productLogo(product, onUpload):
+      ProductLogoSheet(product: product, onUpload: onUpload)
     }
   }
 
@@ -232,6 +235,8 @@ enum Sheet: Identifiable, Equatable {
       return "support"
     case let .mergeLocationSheet(location):
       return "location_management_\(location.hashValue)"
+    case let .productLogo(product, _):
+      return "product_logo_\(product.hashValue)"
     }
   }
 

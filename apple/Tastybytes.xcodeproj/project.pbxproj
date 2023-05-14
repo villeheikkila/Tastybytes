@@ -129,6 +129,7 @@
 		5C989DAB2901AAD500BBC5A7 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C989DAA2901AAD500BBC5A7 /* Repository.swift */; };
 		5CA006C8298DE33F003CC307 /* BrandScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA006C7298DE33F003CC307 /* BrandScreen.swift */; };
 		5CA006CD2992D0CF003CC307 /* CreateQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA006CC2992D0CF003CC307 /* CreateQRCodeView.swift */; };
+		5CA375642A11387B000DF444 /* ProductLogoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA375632A11387B000DF444 /* ProductLogoSheet.swift */; };
 		5CA7A533299D3F010066F604 /* ProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A532299D3F010066F604 /* ProgressButton.swift */; };
 		5CA7A535299E8ECB0066F604 /* DismissableSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A534299E8ECB0066F604 /* DismissableSheetView.swift */; };
 		5CA7A53729A0E7750066F604 /* ProductFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A53629A0E7750066F604 /* ProductFilterSheet.swift */; };
@@ -333,6 +334,7 @@
 		5C989DAA2901AAD500BBC5A7 /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		5CA006C7298DE33F003CC307 /* BrandScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreen.swift; sourceTree = "<group>"; };
 		5CA006CC2992D0CF003CC307 /* CreateQRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQRCodeView.swift; sourceTree = "<group>"; };
+		5CA375632A11387B000DF444 /* ProductLogoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductLogoSheet.swift; sourceTree = "<group>"; };
 		5CA7A532299D3F010066F604 /* ProgressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressButton.swift; sourceTree = "<group>"; };
 		5CA7A534299E8ECB0066F604 /* DismissableSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableSheetView.swift; sourceTree = "<group>"; };
 		5CA7A53629A0E7750066F604 /* ProductFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterSheet.swift; sourceTree = "<group>"; };
@@ -707,6 +709,7 @@
 				5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */,
 				5C7881F12A0AAFC400AF29EE /* MergeLocationSheet.swift */,
 				5C131CEA2A022C13007ADA1B /* CategoryPickerSheet.swift */,
+				5CA375632A11387B000DF444 /* ProductLogoSheet.swift */,
 			);
 			path = Sheets;
 			sourceTree = "<group>";
@@ -1426,6 +1429,7 @@
 				5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */,
 				5C11ECB328EEEDEF00CCDE6A /* FriendsScreen.swift in Sources */,
 				5C20A51429AA6AA700ABBA74 /* VerificationScreen.swift in Sources */,
+				5CA375642A11387B000DF444 /* ProductLogoSheet.swift in Sources */,
 				5C663F23292DFF66006F9A97 /* AppLogoView.swift in Sources */,
 				5CED433428FDA357003F8194 /* SubBrandRepository.swift in Sources */,
 				5CB1C24928F9BBAA000B0EB4 /* CheckInReactionRepository.swift in Sources */,
