@@ -51,17 +51,17 @@ struct DiscoverScreen: View {
           locationResults
         }
       }
-      .onAppear {
-        scrollProxy = proxy
-      }
       .listStyle(.plain)
       .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                   prompt: searchScope.prompt)
-      .disableAutocorrection(true)
       .searchScopes($searchScope) {
         ForEach(SearchScope.allCases) { scope in
           Text(scope.label).tag(scope)
         }
+      }
+      .disableAutocorrection(true)
+      .onAppear {
+        scrollProxy = proxy
       }
       .onSubmit(of: .search) {
         Task { await search() }
