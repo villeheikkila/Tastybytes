@@ -62,6 +62,7 @@ struct CheckInListView<Header>: View where Header: View {
               .id(checkIn.id)
               .contextMenu {
                 ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
+                Divider()
                 RouterLink(
                   "Open Company",
                   systemImage: "network",

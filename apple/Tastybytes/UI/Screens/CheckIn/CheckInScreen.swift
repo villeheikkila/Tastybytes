@@ -12,6 +12,15 @@ struct CheckInScreen: View {
   @State private var checkInComments = [CheckInComment]()
   @State private var showDeleteConfirmation = false
   @State private var showEditCommentPrompt = false
+  @State private var deleteAsModerator: CheckInComment? {
+    didSet {
+      if deleteAsModerator != nil {
+        showDeleteCommentAsModeratorConfirmation = true
+      }
+    }
+  }
+
+  @State private var showDeleteCommentAsModeratorConfirmation = false
   @State private var commentText = ""
   @State private var editCommentText = ""
   @State private var editComment: CheckInComment? {
@@ -27,9 +36,10 @@ struct CheckInScreen: View {
 
   var body: some View {
     ScrollView {
-      CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn)
-        .padding([.leading, .trailing], 8)
-      commentSection
+      Group {
+        CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn)
+        commentSection
+      }.padding([.leading, .trailing], 8)
     }
     .overlay(
       MaterialOverlay(alignment: .bottom) {
@@ -39,6 +49,7 @@ struct CheckInScreen: View {
     .navigationBarItems(
       trailing: Menu {
         ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
+        Divider()
         RouterLink(
           "Open Company",
           systemImage: "network",
@@ -74,6 +85,17 @@ struct CheckInScreen: View {
         action: { await deleteCheckIn(presenting) }
       )
     }
+    .confirmationDialog("Are you sure you want to delete comment as a moderator?",
+                        isPresented: $showDeleteCommentAsModeratorConfirmation,
+                        titleVisibility: .visible,
+                        presenting: deleteAsModerator)
+    { presenting in
+      ProgressButton(
+        "Delete comment from \(presenting.profile.preferredName)",
+        role: .destructive,
+        action: { await deleteCommentAsModerator(presenting) }
+      )
+    }
     .task {
       await loadCheckInComments()
       await notificationManager.markCheckInAsRead(checkIn: checkIn)
@@ -86,19 +108,30 @@ struct CheckInScreen: View {
         CheckInCommentView(comment: comment)
           .contextMenu {
             if comment.profile == profileManager.profile {
-              Button("Edit Comment", systemImage: "pencil") {
+              Button("Edit", systemImage: "pencil") {
                 withAnimation {
                   editComment = comment
                 }
               }
-              ProgressButton("Delete Comment", systemImage: "trash.fill") {
+              ProgressButton("Delete", systemImage: "trash.fill", role: .destructive) {
                 await deleteComment(comment)
               }
             } else {
               ReportButton(entity: .comment(comment))
             }
             Divider()
-            
+            if profileManager.hasRole(.moderator) {
+              Menu {
+                if profileManager.hasPermission(.canDeleteComments) {
+                  Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
+                    deleteAsModerator = comment
+                  }
+                }
+              } label: {
+                Label("Moderation", systemImage: "gear")
+                  .labelStyle(.iconOnly)
+              }
+            }
           }
       }
     }
@@ -182,6 +215,19 @@ struct CheckInScreen: View {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete comment '\(comment.id)': \(error.localizedDescription)")
+    }
+  }
+
+  func deleteCommentAsModerator(_ comment: CheckInComment) async {
+    switch await repository.checkInComment.deleteAsModerator(comment: comment) {
+    case .success:
+      withAnimation {
+        checkInComments.remove(object: comment)
+      }
+    case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
+      feedbackManager.toggle(.error(.unexpected))
+      logger.error("failed to delete comment as moderator'\(comment.id)': \(error.localizedDescription)")
     }
   }
 

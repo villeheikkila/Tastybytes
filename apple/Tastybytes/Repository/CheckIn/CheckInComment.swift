@@ -43,6 +43,18 @@ extension CheckInComment {
     }
   }
 
+  struct DeleteAsAdminRequest: Encodable, Sendable {
+    let id: Int
+
+    init(comment: CheckInComment) {
+      id = comment.id
+    }
+
+    enum CodingKeys: String, CodingKey {
+      case id = "p_check_in_comment_id"
+    }
+  }
+
   struct UpdateRequest: Encodable, Sendable {
     let id: Int
     let content: String

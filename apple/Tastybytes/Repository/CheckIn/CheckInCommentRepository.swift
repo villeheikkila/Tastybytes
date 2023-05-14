@@ -5,6 +5,7 @@ protocol CheckInCommentRepository {
   func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error>
   func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error>
   func deleteById(id: Int) async -> Result<Void, Error>
+  func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error>
 }
 
 struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
@@ -70,6 +71,19 @@ struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
         .from(CheckInComment.getQuery(.tableName))
         .delete()
         .eq(column: "id", value: id)
+        .execute()
+
+      return .success(())
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error> {
+    do {
+      try await client
+        .database
+        .rpc(fn: "fnc__delete_check_in_comment_as_moderator", params: CheckInComment.DeleteAsAdminRequest(comment: comment))
         .execute()
 
       return .success(())
