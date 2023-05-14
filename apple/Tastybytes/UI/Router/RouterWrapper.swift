@@ -11,15 +11,16 @@ struct RouterWrapper<Content: View>: View {
   var body: some View {
     NavigationStack(path: $router.path) {
       content(router)
+        .toast(isPresenting: $feedbackManager.show) {
+          feedbackManager.toast
+        }
         .navigationDestination(for: Screen.self) { screen in
           screen.view
-            .toast(isPresenting: $feedbackManager.show) {
-              feedbackManager.toast
-            }
         }
         .sheet(item: $sheetManager.sheet) { sheet in
           NavigationStack {
             sheet.view
+              .environmentObject(sheetManager)
               .toast(isPresenting: $feedbackManager.show) {
                 feedbackManager.toast
               }
@@ -27,10 +28,10 @@ struct RouterWrapper<Content: View>: View {
           .presentationDetents(sheet.detents)
           .presentationCornerRadius(sheet.cornerRadius)
           .presentationBackground(sheet.background)
-          .environmentObject(sheetManager)
           .sheet(item: $sheetManager.nestedSheet, content: { nestedSheet in
             NavigationStack {
               nestedSheet.view
+                .environmentObject(sheetManager)
                 .toast(isPresenting: $feedbackManager.show) {
                   feedbackManager.toast
                 }
@@ -38,7 +39,6 @@ struct RouterWrapper<Content: View>: View {
             .presentationDetents(nestedSheet.detents)
             .presentationCornerRadius(nestedSheet.cornerRadius)
             .presentationBackground(nestedSheet.background)
-            .environmentObject(sheetManager)
           })
         }
         .onOpenURL { url in
