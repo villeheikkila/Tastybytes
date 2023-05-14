@@ -46,7 +46,7 @@ enum Sheet: Identifiable, Equatable {
   case checkInDatePicker(checkInAt: Binding<Date>, isLegacyCheckIn: Binding<Bool>)
   case categoryPickerSheet(category: Binding<Category.JoinedSubcategoriesServingStyles?>)
   case mergeLocationSheet(location: Location)
-  case productLogo(product: Product.Joined, onUpload: () -> Void)
+  case productLogo(product: Product.Joined, onUpload: () async -> Void)
   case support
 
   @ViewBuilder var view: some View {

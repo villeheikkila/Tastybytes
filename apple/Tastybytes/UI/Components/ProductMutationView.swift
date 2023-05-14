@@ -126,8 +126,11 @@ struct ProductMutationView: View {
       .getByBrandOwnerId(brandOwnerId: initialProduct.subBrand.brand.brandOwner.id)
     {
     case let .success(brandsWithSubBrands):
+      let category = categories.first(where: { $0.id == initialProduct.category.id })
       initialValues = ProductMutationInitialValues(
-        category: categories.first(where: { $0.name == "beverage" }),
+        subcategories: initialProduct.subcategories
+          .map { sub in Subcategory(id: sub.id, name: sub.name, isVerified: sub.isVerified) },
+        category: category,
         brandOwner: initialProduct.subBrand.brand.brandOwner,
         brand: Brand.JoinedSubBrands(
           id: initialProduct.subBrand.brand.id,

@@ -128,11 +128,11 @@ struct ProductScreen: View {
             RouterLink("Barcodes", systemImage: "barcode", sheet: .barcodeManagement(product: product))
           }
 
-            if profileManager.hasPermission(.canAddProductLogo) {
-                RouterLink("Edit Logo", systemImage: "photo", sheet: .productLogo(product: product)) {
-
-                }
-            }
+          if profileManager.hasPermission(.canAddProductLogo) {
+            RouterLink("Edit Logo", systemImage: "photo", sheet: .productLogo(product: product, onUpload: {
+              await refresh()
+            }))
+          }
 
           if profileManager.hasPermission(.canDeleteProducts) {
             Button(
