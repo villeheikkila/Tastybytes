@@ -8,6 +8,7 @@ struct ProfileView: View {
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var friendManager: FriendManager
+  @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @Binding private var scrollToTop: Int
   @State private var profile: Profile
   @State private var profileSummary: ProfileSummary?
@@ -148,6 +149,7 @@ struct ProfileView: View {
     .task {
       if profileSummary == nil {
         await getSummary()
+        await splashScreenManager.dismiss()
       }
     }
     .contextMenu {

@@ -2,11 +2,15 @@ import SwiftUI
 
 struct DiscoverTab: View {
   @State private var scrollToTop: Int = 0
+  @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
     RouterWrapper { router in
       DiscoverScreen(scrollToTop: $scrollToTop)
+        .task {
+          await splashScreenManager.dismiss()
+        }
         .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
           if tab == .search {
             if router.path.isEmpty {
