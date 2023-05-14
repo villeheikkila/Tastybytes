@@ -118,7 +118,7 @@ struct BrandScreen: View {
               if profileManager.hasPermission(.canCreateProducts) {
                 RouterLink("Add Product", systemImage: "plus", sheet: .addProductToSubBrand(brand: brand, subBrand: subBrand))
               }
-              if profileManager.hasPermission(.canEditBrands) {
+              if profileManager.hasPermission(.canEditBrands), subBrand.name != nil {
                 RouterLink(
                   "Edit",
                   systemImage: "pencil",
