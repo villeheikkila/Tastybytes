@@ -24,7 +24,8 @@ struct EditCompanySheet: View {
   let onSuccess: () async -> Void
 
   init(company: Company, onSuccess: @escaping () async -> Void, mode: Mode) {
-    _company = State(wrappedValue: company)
+    _company = State(initialValue: company)
+    _newCompanyName = State(initialValue: company.name)
     self.mode = mode
     self.onSuccess = onSuccess
   }
