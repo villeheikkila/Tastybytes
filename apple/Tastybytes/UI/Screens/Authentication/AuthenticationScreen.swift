@@ -240,12 +240,12 @@ extension AuthenticationScreen {
 
     var primaryLabel: String {
       switch self {
-      case .signIn: return "Sign in"
-      case .signUp: return "Sign up!"
-      case .magicLink: return "Send magic link"
-      case .resetPassword: return "Reset password"
-      case .forgotPassword: return "Send reset password instructions"
-      case .accountDeleted: return "Go back to sign in page"
+      case .signIn: return "Sign In"
+      case .signUp: return "Sign Up"
+      case .magicLink: return "Send Magic Link"
+      case .resetPassword: return "Reset Password"
+      case .forgotPassword: return "Send Reset Password Instructions"
+      case .accountDeleted: return "Go Back to Sign in Page"
       }
     }
   }

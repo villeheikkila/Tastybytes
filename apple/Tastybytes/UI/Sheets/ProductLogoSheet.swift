@@ -22,6 +22,7 @@ struct ProductLogoSheet: View {
   init(product: Product.Joined, onUpload: @escaping () async -> Void) {
     self.product = product
     self.onUpload = onUpload
+    _logoFile = State(initialValue: product.logoFile)
   }
 
   var body: some View {
