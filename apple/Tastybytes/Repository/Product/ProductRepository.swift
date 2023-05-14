@@ -19,7 +19,7 @@ protocol ProductRepository {
   func mergeProducts(productId: Int, toProductId: Int) async -> Result<Void, Error>
   func markAsDuplicate(productId: Int, duplicateOfProductId: Int) async -> Result<Void, Error>
   func editProduct(productEditParams: Product.EditRequest) async -> Result<Void, Error>
-  func createUpdateSuggestion(productEditSuggestionParams: Product.EditRequest) async -> Result<IntId, Error>
+  func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async -> Result<Void, Error>
   func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
 }
 
@@ -288,18 +288,19 @@ struct SupabaseProductRepository: ProductRepository {
     }
   }
 
-  func createUpdateSuggestion(productEditSuggestionParams: Product.EditRequest) async -> Result<IntId, Error> {
+  func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async -> Result<Void, Error> {
     do {
-      let productEditSuggestion: IntId = try await client
+      try await client
         .database
-        .rpc(fn: "fnc__create_product_edit_suggestion", params: productEditSuggestionParams)
-        .select(columns: "id")
-        .limit(count: 1)
-        .single()
+        .from("product_edit_suggestions")
+        .insert(
+          values: productEditSuggestionParams,
+          returning: .none
+        )
         .execute()
         .value
 
-      return .success(productEditSuggestion)
+      return .success(())
     } catch {
       return .failure(error)
     }

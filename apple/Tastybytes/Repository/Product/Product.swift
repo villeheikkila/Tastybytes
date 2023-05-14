@@ -143,6 +143,40 @@ extension Product {
     }
   }
 
+  struct EditRequest: Encodable, Sendable {
+    let productId: Int
+    let name: String
+    let description: String?
+    let categoryId: Int
+    let subcategoryIds: [Int]
+    let subBrandId: Int
+
+    enum CodingKeys: String, CodingKey {
+      case productId = "p_product_id"
+      case name = "p_name"
+      case description = "p_description"
+      case categoryId = "p_category_id"
+      case subcategoryIds = "p_sub_category_ids"
+      case subBrandId = "p_sub_brand_id"
+    }
+
+    init(
+      productId: Int,
+      name: String,
+      description: String?,
+      categoryId: Int,
+      subBrandId: Int,
+      subcategories: [Subcategory]
+    ) {
+      self.productId = productId
+      self.name = name
+      self.description = description
+      self.categoryId = categoryId
+      self.subBrandId = subBrandId
+      subcategoryIds = subcategories.map(\.id)
+    }
+  }
+
   struct Filter {
     enum SortBy: String, CaseIterable, Identifiable, Sendable {
       var id: Self { self }
@@ -244,58 +278,6 @@ extension Product {
     enum CodingKeys: String, CodingKey {
       case productId = "product_id"
       case duplicateOfProductId = "duplicate_of_product_id"
-    }
-  }
-
-  struct EditRequest: Encodable, Sendable {
-    let productId: Int
-    let name: String
-    let description: String?
-    let categoryId: Int
-    let subcategoryIds: [Int]
-    let subBrandId: Int
-
-    enum CodingKeys: String, CodingKey {
-      case productId = "p_product_id"
-      case name = "p_name"
-      case description = "p_description"
-      case categoryId = "p_category_id"
-      case subcategoryIds = "p_sub_category_ids"
-      case subBrandId = "p_sub_brand_id"
-    }
-
-    init(
-      productId: Int,
-      name: String,
-      description: String?,
-      categoryId: Int,
-      subBrandId: Int,
-      subcategories: [Subcategory]
-    ) {
-      self.productId = productId
-      self.name = name
-      self.description = description
-      self.categoryId = categoryId
-      self.subBrandId = subBrandId
-      subcategoryIds = subcategories.map(\.id)
-    }
-  }
-
-  struct EditSuggestionRequest: Encodable, Sendable {
-    let productId: Int
-    let name: String
-    let description: String?
-    let categoryId: Int
-    let subcategoryIds: [Int]
-    let subBrandId: Int
-
-    enum CodingKeys: String, CodingKey {
-      case productId = "p_product_id"
-      case name = "p_name"
-      case description = "p_description"
-      case categoryId = "p_category_id"
-      case subcategoryIds = "p_sub_category_ids"
-      case subBrandId = "p_sub_brand_id"
     }
   }
 
@@ -477,6 +459,56 @@ extension Product {
       averageRating = nil
       createdBy = nil
       createdAt = nil
+    }
+  }
+
+  struct EditSuggestionRequest: Encodable, Sendable {
+    let id: Int?
+    let name: String?
+    let description: String?
+    let subBrandId: Int?
+    let categoryId: Int?
+
+    init(id: Int?, name: String?, description: String?, subBrand: SubBrandProtocol?, category: CategoryProtocol?) {
+      self.id = id
+      self.name = name
+      self.description = description?.isEmpty ?? true ? nil : description
+      subBrandId = subBrand?.id
+      categoryId = category?.id
+    }
+
+    internal init(
+      id: Int? = nil,
+      name: String? = nil,
+      description: String? = nil,
+      subBrandId: Int? = nil,
+      categoryId: Int? = nil
+    ) {
+      self.id = id
+      self.name = name
+      self.description = description
+      self.subBrandId = subBrandId
+      self.categoryId = categoryId
+    }
+
+    enum CodingKeys: String, CodingKey {
+      case id = "product_id"
+      case name
+      case description
+      case categoryId = "category_id"
+      case subBrandId = "sub_brand_id"
+    }
+
+    func diff(from joined: Joined) -> EditSuggestionRequest? {
+      let diff = EditSuggestionRequest(
+        id: id,
+        name: joined.name == name ? nil : name,
+        description: joined.description == description ? nil : description,
+        subBrandId: joined.subBrand.id == subBrandId ? nil : subBrandId,
+        categoryId: joined.category.id == categoryId ? nil : categoryId
+      )
+
+      return diff.name != nil || diff.description != nil || diff.subBrandId != nil || diff.categoryId != nil ? diff : nil
     }
   }
 

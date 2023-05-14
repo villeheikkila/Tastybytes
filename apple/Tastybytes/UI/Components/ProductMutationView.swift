@@ -424,17 +424,22 @@ struct ProductMutationInnerView: View {
 
   func createProductEditSuggestion(product: Product.Joined) async {
     guard let subBrand, let category else { return }
-    let productEditSuggestionParams = Product.EditRequest(
-      productId: product.id,
+    let editSuggestion = Product.EditSuggestionRequest(
+      id: product.id,
       name: name,
       description: description,
-      categoryId: category.id,
-      subBrandId: subBrand.id,
-      subcategories: subcategories
+      subBrand: subBrand,
+      category: category
     )
 
+    let diffFromCurrent = editSuggestion.diff(from: product)
+    guard let diffFromCurrent else {
+      feedbackManager.toggle(.warning("There is nothing to edit"))
+      return
+    }
+
     switch await repository.product
-      .createUpdateSuggestion(productEditSuggestionParams: productEditSuggestionParams)
+      .createUpdateSuggestion(productEditSuggestionParams: diffFromCurrent)
     {
     case .success:
       dismiss()
