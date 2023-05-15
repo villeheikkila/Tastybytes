@@ -8,6 +8,7 @@ protocol LocationRepository {
   func search(searchTerm: String) async -> Result<[Location], Error>
   func getSummaryById(id: UUID) async -> Result<Summary, Error>
   func getSuggestions(location: Location.SuggestionParams) async -> Result<[Location], Error>
+  func getRecentLocations() async -> Result<[Location], Error>
   func mergeLocations(locationId: UUID, toLocationId: UUID) async -> Result<Void, Error>
 }
 
@@ -39,6 +40,22 @@ struct SupabaseLocationRepository: LocationRepository {
         .eq(column: "id", value: id)
         .limit(count: 1)
         .single()
+        .execute()
+        .value
+
+      return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getRecentLocations() async -> Result<[Location], Error> {
+    do {
+      let response: [Location] = try await client
+        .database
+        .from("view__recent_locations_from_current_user")
+        .select(columns: Location.getQuery(.joined(false)))
+        .limit(count: 5)
         .execute()
         .value
 
