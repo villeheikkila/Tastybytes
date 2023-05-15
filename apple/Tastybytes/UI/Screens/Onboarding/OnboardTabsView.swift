@@ -19,19 +19,10 @@ struct OnboardTabsView: View {
         .tag(Tab.final)
     }
     .tabViewStyle(.page)
+    .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
     .task {
       await splashScreenManager.dismiss()
     }
-    .onAppear {
-      if colorScheme == .light {
-        useDarkTabViewIndicators()
-      }
-    }
-  }
-
-  func useDarkTabViewIndicators() {
-    UIPageControl.appearance().currentPageIndicatorTintColor = .black
-    UIPageControl.appearance().pageIndicatorTintColor = UIColor.black.withAlphaComponent(0.2)
   }
 }
 
