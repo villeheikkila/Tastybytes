@@ -51,8 +51,7 @@ struct CompanySearchSheet: View {
           Section("Add new company") {
             TextField("Name", text: $companyName)
               .overlay(
-                ScanTextButton(text: $companyName)
-                  .padding(.trailing, 6),
+                ScanTextButton(text: $companyName),
                 alignment: .trailing
               )
             ProgressButton("Create") {

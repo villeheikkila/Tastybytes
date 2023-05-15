@@ -34,8 +34,7 @@ struct BrandSheet: View {
         Section("Add new brand for \(brandOwner.name)") {
           TextField("Name", text: $brandName)
             .overlay(
-              ScanTextButton(text: $brandName)
-                .padding(.trailing, 6),
+              ScanTextButton(text: $brandName),
               alignment: .trailing
             )
           ProgressButton("Create") {

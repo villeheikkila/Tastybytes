@@ -35,8 +35,7 @@ struct SubBrandSheet: View {
         Section("Add new sub-brand for \(brandWithSubBrands.name)") {
           TextField("Name", text: $subBrandName)
             .overlay(
-              ScanTextButton(text: $subBrandName)
-                .padding(.trailing, 6),
+              ScanTextButton(text: $subBrandName),
               alignment: .trailing
             )
           ProgressButton("Create") { await createNewSubBrand() }

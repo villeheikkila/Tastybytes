@@ -359,16 +359,14 @@ struct ProductMutationInnerView: View {
         TextField("Name", text: $name)
           .focused($focusedField, equals: .name)
           .overlay(
-            ScanTextButton(text: $name)
-              .padding(.trailing, 6),
+            ScanTextButton(text: $name),
             alignment: .trailing
           )
       }
       TextField("Description (optional)", text: $description)
         .focused($focusedField, equals: .description)
         .overlay(
-          ScanTextButton(text: $description)
-            .padding(.trailing, 6),
+          ScanTextButton(text: $description),
           alignment: .trailing
         )
 
