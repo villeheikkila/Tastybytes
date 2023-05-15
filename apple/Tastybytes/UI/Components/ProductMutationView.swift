@@ -181,7 +181,7 @@ private struct ProductMutationInitialValues {
     self.subBrand = subBrand
     self.name = name
     self.description = description
-    hasSubBrand = subBrand != nil
+    hasSubBrand = subBrand?.name != nil
     self.logoFile = logoFile
   }
 }
