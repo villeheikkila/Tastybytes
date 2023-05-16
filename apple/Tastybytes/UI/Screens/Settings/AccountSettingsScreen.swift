@@ -7,6 +7,7 @@ struct AccountSettingsScreen: View {
   @State private var showDeleteConfirmation = false
   @State private var showEmailConfirmation = false
   @State private var showPasswordConfirmation = false
+  @State private var showAccountDeleteScreen = false
   @State private var email = ""
   @State private var newPassword = "" {
     didSet {
@@ -33,6 +34,14 @@ struct AccountSettingsScreen: View {
       deleteAccount
     }
     .navigationTitle("Account")
+    .fullScreenCover(isPresented: $showAccountDeleteScreen, content: {
+      AccountDeletedScreen()
+    })
+    .transaction { transaction in
+      if showAccountDeleteScreen {
+        transaction.disablesAnimations = true
+      }
+    }
     .onChange(of: profileManager.email, perform: { _ in
       withAnimation {
         showEmailConfirmation = email != profileManager.email
@@ -62,7 +71,9 @@ struct AccountSettingsScreen: View {
         "Delete Account",
         role: .destructive,
         action: {
-          await profileManager.deleteCurrentAccount()
+          await profileManager.deleteCurrentAccount(onAccountDeletion: {
+            showAccountDeleteScreen = true
+          })
         }
       )
     }
@@ -126,17 +137,12 @@ struct AccountSettingsScreen: View {
           systemImage: "square.and.arrow.up",
           action: { await profileManager.exportData() }
         )
-        Button(role: .destructive, action: { showDeleteConfirmation = true }, label: {
-          if UIColor.responds(to: Selector(("_systemDestructiveTintColor"))),
-             let destructive = UIColor.perform(Selector(("_systemDestructiveTintColor")))?
-             .takeUnretainedValue() as? UIColor
-          {
-            Label("Delete Account", systemImage: "person.crop.circle.badge.minus")
-              .foregroundColor(Color(destructive))
-          } else {
-            Text("Delete Account")
-          }
-        })
+        Button(
+          "Delete Account",
+          systemImage: "person.crop.circle.badge.minus",
+          role: .destructive,
+          action: { showDeleteConfirmation = true }
+        ).foregroundColor(.red)
       }.fontWeight(.medium)
     }
   }

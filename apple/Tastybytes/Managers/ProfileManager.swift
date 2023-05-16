@@ -230,11 +230,11 @@ final class ProfileManager: ObservableObject {
     }
   }
 
-  func deleteCurrentAccount() async {
+  func deleteCurrentAccount(onAccountDeletion: @escaping () -> Void) async {
     switch await repository.profile.deleteCurrentAccount() {
     case .success:
       feedbackManager.trigger(.notification(.success))
-      await logOut()
+      onAccountDeletion()
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -287,6 +287,7 @@ final class ProfileManager: ObservableObject {
     ) {
     case .success:
       logger.info("onboarded")
+      await initialize()
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

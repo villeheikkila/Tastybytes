@@ -131,6 +131,7 @@
 		5CA006CD2992D0CF003CC307 /* CreateQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA006CC2992D0CF003CC307 /* CreateQRCodeView.swift */; };
 		5CA375642A11387B000DF444 /* ProductLogoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA375632A11387B000DF444 /* ProductLogoSheet.swift */; };
 		5CA375662A116AD4000DF444 /* ScanTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA375652A116AD4000DF444 /* ScanTextButton.swift */; };
+		5CA375682A13D4C3000DF444 /* AccountDeletedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA375672A13D4C3000DF444 /* AccountDeletedScreen.swift */; };
 		5CA7A533299D3F010066F604 /* ProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A532299D3F010066F604 /* ProgressButton.swift */; };
 		5CA7A535299E8ECB0066F604 /* DismissableSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A534299E8ECB0066F604 /* DismissableSheetView.swift */; };
 		5CA7A53729A0E7750066F604 /* ProductFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A53629A0E7750066F604 /* ProductFilterSheet.swift */; };
@@ -337,6 +338,7 @@
 		5CA006CC2992D0CF003CC307 /* CreateQRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQRCodeView.swift; sourceTree = "<group>"; };
 		5CA375632A11387B000DF444 /* ProductLogoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductLogoSheet.swift; sourceTree = "<group>"; };
 		5CA375652A116AD4000DF444 /* ScanTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextButton.swift; sourceTree = "<group>"; };
+		5CA375672A13D4C3000DF444 /* AccountDeletedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletedScreen.swift; sourceTree = "<group>"; };
 		5CA7A532299D3F010066F604 /* ProgressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressButton.swift; sourceTree = "<group>"; };
 		5CA7A534299E8ECB0066F604 /* DismissableSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableSheetView.swift; sourceTree = "<group>"; };
 		5CA7A53629A0E7750066F604 /* ProductFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterSheet.swift; sourceTree = "<group>"; };
@@ -1066,6 +1068,7 @@
 				5CD7234D29F46442003DA030 /* CurrentProfileScreen.swift */,
 				5CD7234929F46176003DA030 /* ActivityScreen.swift */,
 				5CD7234729F460FF003DA030 /* AdminScreen.swift */,
+				5CA375672A13D4C3000DF444 /* AccountDeletedScreen.swift */,
 				5CD7234329F45F6A003DA030 /* Notification */,
 			);
 			path = Screens;
@@ -1473,6 +1476,7 @@
 				5C3D8275298D5F3300E861DC /* AccountSettingsScreen.swift in Sources */,
 				5CED432A28FD4E17003F8194 /* CategoryRepository.swift in Sources */,
 				5C3D8273298C5DA300E861DC /* OptionalExtensions.swift in Sources */,
+				5CA375682A13D4C3000DF444 /* AccountDeletedScreen.swift in Sources */,
 				5C7C35E4299AE0CD009A3C09 /* MessageNotificationView.swift in Sources */,
 				5C66745129C64A4C005380B7 /* PhotosUIExtension.swift in Sources */,
 				5C7C3593299AC426009A3C09 /* ScalingButton.swift in Sources */,
