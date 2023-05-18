@@ -102,7 +102,9 @@ struct SideBarView: View {
       NavigationStack(path: $router.path) {
         switch selection {
         case .activity:
-          ActivityScreen(scrollToTop: $scrollToTop)
+          ActivityScreen(scrollToTop: $scrollToTop, navigateToDiscoverTab: {
+            selection = .search
+          })
         case .search:
           DiscoverScreen(scrollToTop: $scrollToTop)
         case .notifications:

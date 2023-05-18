@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CheckInListView<Header>: View where Header: View {
+struct CheckInListView<Header, Content>: View where Header: View, Content: View {
   enum Fetcher {
     case activityFeed
     case product(Product.Joined)
@@ -25,10 +25,12 @@ struct CheckInListView<Header>: View where Header: View {
   @State private var editCheckIn: CheckIn?
   @State private var checkIns = [CheckIn]()
   @State private var isLoading = false
+  @State private var initialLoadCompleted = false
   @State private var page = 0
   @Binding private var scrollToTop: Int
 
   let header: Header
+  let emptyView: Content
   let onRefresh: () async -> Void
   let topAnchor: String?
 
@@ -37,12 +39,14 @@ struct CheckInListView<Header>: View where Header: View {
     scrollToTop: Binding<Int>,
     onRefresh: @escaping () async -> Void,
     topAnchor: String? = nil,
+    @ViewBuilder emptyView: @escaping () -> Content,
     @ViewBuilder header: @escaping () -> Header
   ) {
     self.fetcher = fetcher
     _scrollToTop = scrollToTop
     self.topAnchor = topAnchor
     self.header = header()
+    self.emptyView = emptyView()
     self.onRefresh = onRefresh
   }
 
@@ -54,6 +58,9 @@ struct CheckInListView<Header>: View where Header: View {
       GeometryReader { geometry in
         List {
           header
+          if checkIns.isEmpty, !isLoading {
+            emptyView
+          }
           ForEach(uniqueCheckIns) { checkIn in
             let edgeInset = geometry.size.width < 450 ? 8 : (geometry.size.width - 450) / 2
             CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
@@ -135,11 +142,13 @@ struct CheckInListView<Header>: View where Header: View {
         }
         #endif
         .task {
-          await fetchActivityFeedItems(onComplete: {
-            if splashScreenManager.state != .finished {
-              await splashScreenManager.dismiss()
-            }
-          })
+          if !initialLoadCompleted {
+            await fetchActivityFeedItems(onComplete: {
+              if splashScreenManager.state != .finished {
+                await splashScreenManager.dismiss()
+              }
+            })
+          }
         }
       }
     }
@@ -227,6 +236,7 @@ struct CheckInListView<Header>: View where Header: View {
       feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching check-ins failed: \(error.localizedDescription)")
     }
+    initialLoadCompleted = true
   }
 
   func checkInFetcher(from: Int, to: Int) async -> Result<[CheckIn], Error> {

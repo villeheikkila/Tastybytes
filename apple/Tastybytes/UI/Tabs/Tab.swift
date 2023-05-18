@@ -8,10 +8,10 @@ enum Tab: Int, Identifiable, Hashable {
   }
 
   @ViewBuilder
-  func view(_ resetNavigationOnTab: Binding<Tab?>) -> some View {
+  func view(selectedTab: Binding<Tab>, _ resetNavigationOnTab: Binding<Tab?>) -> some View {
     switch self {
     case .activity:
-      ActivityTab(resetNavigationOnTab: resetNavigationOnTab)
+      ActivityTab(resetNavigationOnTab: resetNavigationOnTab, selectedTab: selectedTab)
     case .search:
       DiscoverTab(resetNavigationOnTab: resetNavigationOnTab)
     case .notifications:

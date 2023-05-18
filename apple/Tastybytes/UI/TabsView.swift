@@ -29,7 +29,7 @@ struct TabsView: View {
       }
     })) {
       ForEach(shownTabs) { tab in
-        tab.view($resetNavigationOnTab)
+        tab.view(selectedTab: $selection, $resetNavigationOnTab)
           .tabItem {
             tab.label
           }

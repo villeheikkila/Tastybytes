@@ -25,6 +25,7 @@ struct ProductScreen: View {
       onRefresh: {
         await refresh()
       },
+      emptyView: {},
       header: {
         Section {
           ProductItemView(product: product, extras: [.companyLink, .logo])

@@ -37,6 +37,7 @@ struct ProfileView: View {
         await getSummary()
       },
       topAnchor: topAnchor,
+      emptyView: {},
       header: {
         profileSummarySection
           .listRowSeparator(.hidden)

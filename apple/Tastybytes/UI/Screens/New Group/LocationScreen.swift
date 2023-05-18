@@ -19,6 +19,7 @@ struct LocationScreen: View {
       fetcher: .location(location),
       scrollToTop: $scrollToTop,
       onRefresh: { await getSummary() },
+      emptyView: {},
       header: {
         if let summary, summary.averageRating != nil {
           Section {
