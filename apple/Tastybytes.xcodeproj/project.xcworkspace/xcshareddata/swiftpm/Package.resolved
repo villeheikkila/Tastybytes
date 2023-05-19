@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleDataTransport.git",
       "state" : {
-        "revision" : "cc7265b8e3906304e6e81f32c1662a94bbae2357",
-        "version" : "9.2.2"
+        "revision" : "7874c1b48cbffd086ce8a052c4be873a78613775",
+        "version" : "9.2.3"
       }
     },
     {
@@ -167,8 +167,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/RevenueCat/purchases-ios.git",
       "state" : {
-        "revision" : "3ad7fab62d44dd7053d6531d5b0bc90e0e4724a7",
-        "version" : "4.18.0"
+        "revision" : "f5d45ee9a2bc98bea2930ace47936a782fc06848",
+        "version" : "4.19.0"
       }
     },
     {

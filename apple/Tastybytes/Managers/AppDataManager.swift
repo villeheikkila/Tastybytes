@@ -86,7 +86,7 @@ final class AppDataManager: ObservableObject {
     case let .success(flavors):
       withAnimation {
         self.flavors = flavors
-          feedbackManager.trigger(.notification(.success))
+        feedbackManager.trigger(.notification(.success))
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }

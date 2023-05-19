@@ -25,7 +25,7 @@ struct FlavorManagementScreen: View {
     )
     #if !targetEnvironment(macCatalyst)
     .refreshable {
-        await appDataManager.refreshFlavors()
+      await appDataManager.refreshFlavors()
     }
     #endif
   }
