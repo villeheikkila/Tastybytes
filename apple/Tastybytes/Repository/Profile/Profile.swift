@@ -40,9 +40,7 @@ struct Profile: Identifiable, Decodable, Hashable, Sendable, AvatarURL {
     id = try values.decode(UUID.self, forKey: .id)
     let joinedAtRaw = try values.decode(String.self, forKey: .joinedAt)
 
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    if let date = dateFormatter.date(from: joinedAtRaw) {
+    if let date = CustomDateFormatter.shared.parse(string: joinedAtRaw, .date) {
       joinedAt = date
     } else {
       joinedAt = Date()
@@ -183,9 +181,7 @@ extension Profile {
       username = try values.decode(String.self, forKey: .username)
       let joinedAtRaw = try values.decode(String.self, forKey: .joinedAt)
 
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "yyyy-MM-dd"
-      if let date = dateFormatter.date(from: joinedAtRaw) {
+      if let date = CustomDateFormatter.shared.parse(string: joinedAtRaw, .date) {
         joinedAt = date
       } else {
         joinedAt = Date()

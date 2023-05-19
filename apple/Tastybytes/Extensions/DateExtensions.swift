@@ -1,42 +1,81 @@
 import Foundation
 
-extension Date {
-  enum CustomFormat {
+class CustomDateFormatter {
+  enum Format {
     case fileNameSuffix, relativeTime, timestampTz, date
   }
 
-  func customFormat(_ type: CustomFormat) -> String {
+  enum ParseFormat {
+    case timestampTz, date
+  }
+
+  static let shared = CustomDateFormatter()
+  private let formatter = DateFormatter()
+
+  func format(date: Date, _ type: Format) -> String {
     switch type {
     case .fileNameSuffix:
-      let formatter = DateFormatter()
       formatter.dateFormat = "yyyy_MM_dd_HH_mm"
-      return formatter.string(from: self)
+      return formatter.string(from: date)
     case .relativeTime:
       let now = Date.now
       let monthAgo = Calendar.current.date(byAdding: .month, value: -1, to: now)
       let minuteAgo = Calendar.current.date(byAdding: .minute, value: -1, to: now)
-      if let minuteAgo, self > minuteAgo {
+      if let minuteAgo, date > minuteAgo {
         return "Just now"
-      } else if let monthAgo, self < monthAgo {
-        return formatted()
+      } else if let monthAgo, date < monthAgo {
+        return date.formatted()
       } else {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
         formatter.locale = Locale(identifier: "en_US")
-        return formatter.localizedString(for: self, relativeTo: Date.now)
+        return formatter.localizedString(for: date, relativeTo: Date.now)
       }
     case .timestampTz:
-      let formatter = DateFormatter()
       formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSSSSZ"
       formatter.timeZone = TimeZone(abbreviation: "UTC")
-      return formatter.string(from: self)
+      return formatter.string(from: date)
     case .date:
-      let formatter = DateFormatter()
       formatter.locale = Locale(identifier: "en_US")
       formatter.dateFormat = "d MMM yyyy"
       formatter.timeZone = TimeZone(abbreviation: "UTC")
-      return formatter.string(from: self)
+      return formatter.string(from: date)
     }
+  }
+
+  func parse(string: String, _ format: ParseFormat) -> Date? {
+    switch format {
+    case .timestampTz:
+      formatter.timeZone = TimeZone(abbreviation: "UTC")
+
+      let formatStrings = [
+        "yyyy-MM-dd HH:mm:ss.SSSSSSZZZZZ",
+        "yyyy-MM-dd HH:mm:ss.SSSZZZZZ",
+        "yyyy-MM-dd'T'HH:mm:ssZZZZZ",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
+      ]
+
+      var date: Date?
+      for formatString in formatStrings {
+        formatter.dateFormat = formatString
+        if let parsedDate = formatter.date(from: string) {
+          date = parsedDate
+          break
+        }
+      }
+
+      return date
+    case .date:
+      let dateFormatter = DateFormatter()
+      dateFormatter.dateFormat = "yyyy-MM-dd"
+      return dateFormatter.date(from: string)
+    }
+  }
+}
+
+extension Date {
+  func customFormat(_ type: CustomDateFormatter.Format) -> String {
+    CustomDateFormatter.shared.format(date: self, type)
   }
 }
 
@@ -46,25 +85,7 @@ enum DateParsingError: Error {
 
 extension Date {
   init?(timestamptzString: String) {
-    let dateFormatter = DateFormatter()
-    dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-
-    let formatStrings = [
-      "yyyy-MM-dd HH:mm:ss.SSSSSSZZZZZ",
-      "yyyy-MM-dd HH:mm:ss.SSSZZZZZ",
-      "yyyy-MM-dd'T'HH:mm:ssZZZZZ",
-      "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
-    ]
-
-    var date: Date?
-    for formatString in formatStrings {
-      dateFormatter.dateFormat = formatString
-      if let parsedDate = dateFormatter.date(from: timestamptzString) {
-        date = parsedDate
-        break
-      }
-    }
-
+    let date = CustomDateFormatter.shared.parse(string: timestamptzString, .timestampTz)
     if let date {
       self = date
     } else {
