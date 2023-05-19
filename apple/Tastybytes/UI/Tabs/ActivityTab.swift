@@ -9,7 +9,7 @@ struct ActivityTab: View {
   var body: some View {
     RouterWrapper { router in
       ActivityScreen(scrollToTop: $scrollToTop, navigateToDiscoverTab: {
-        selectedTab = .search
+        selectedTab = .discover
       })
       .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
         if tab == .activity {

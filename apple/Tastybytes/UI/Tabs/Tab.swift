@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum Tab: Int, Identifiable, Hashable {
-  case activity, search, notifications, admin, profile
+  case activity, discover, notifications, admin, profile
 
   var id: Int {
     rawValue
@@ -12,7 +12,7 @@ enum Tab: Int, Identifiable, Hashable {
     switch self {
     case .activity:
       ActivityTab(resetNavigationOnTab: resetNavigationOnTab, selectedTab: selectedTab)
-    case .search:
+    case .discover:
       DiscoverTab(resetNavigationOnTab: resetNavigationOnTab)
     case .notifications:
       NotificationTab(resetNavigationOnTab: resetNavigationOnTab)
@@ -27,7 +27,7 @@ enum Tab: Int, Identifiable, Hashable {
     switch self {
     case .activity:
       Label("Activity", systemImage: "list.star")
-    case .search:
+    case .discover:
       Label("Discover", systemImage: "magnifyingglass")
     case .notifications:
       Label("Notifications", systemImage: "bell")

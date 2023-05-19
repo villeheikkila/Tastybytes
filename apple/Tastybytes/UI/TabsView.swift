@@ -9,9 +9,9 @@ struct TabsView: View {
 
   private var shownTabs: [Tab] {
     if profileManager.hasRole(.admin) {
-      return [.activity, .search, .notifications, .admin, .profile]
+      return [.activity, .discover, .notifications, .admin, .profile]
     } else {
-      return [.activity, .search, .notifications, .profile]
+      return [.activity, .discover, .notifications, .profile]
     }
   }
 

@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
-  case activity, search, notifications, admin, profile, friends, settings
+  case activity, discover, notifications, admin, profile, friends, settings
 
   var id: Int {
     rawValue
@@ -11,7 +11,7 @@ enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
     switch self {
     case .activity:
       Label("Activity", systemImage: "list.star")
-    case .search:
+    case .discover:
       Label("Discover", systemImage: "magnifyingglass")
     case .notifications:
       Label("Notifications", systemImage: "bell")
@@ -103,9 +103,9 @@ struct SideBarView: View {
         switch selection {
         case .activity:
           ActivityScreen(scrollToTop: $scrollToTop, navigateToDiscoverTab: {
-            selection = .search
+            selection = .discover
           })
-        case .search:
+        case .discover:
           DiscoverScreen(scrollToTop: $scrollToTop)
         case .notifications:
           NotificationScreen()

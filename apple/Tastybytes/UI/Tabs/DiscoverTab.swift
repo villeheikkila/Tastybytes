@@ -12,7 +12,7 @@ struct DiscoverTab: View {
           await splashScreenManager.dismiss()
         }
         .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
-          if tab == .search {
+          if tab == .discover {
             if router.path.isEmpty {
               scrollToTop += 1
             }
