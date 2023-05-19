@@ -29,25 +29,20 @@ struct ProductScreen: View {
       header: {
         Section {
           ProductItemView(product: product, extras: [.companyLink, .logo])
-          RouterLink(sheet: .newCheckIn(product, onCreation: { _ in
-            refreshCheckIns()
-          }), label: {
-            HStack {
-              Group {
-                Image(systemName: "plus.app")
-                Text("Check-in!")
-              }
-              .foregroundStyle(Color.accentColor)
-              .fontWeight(.medium)
-            }
-          })
-        }.listRowSeparator(.hidden)
-
-        if let summary, summary.averageRating != nil {
-          Section {
+          if let summary, summary.averageRating != nil {
             SummaryView(summary: summary)
-          }.listRowSeparator(.hidden)
+          }
+          RouterLink("Check-in!", sheet: .newCheckIn(product, onCreation: { _ in
+            refreshCheckIns()
+          }))
+          .fontWeight(.semibold)
+          .padding(.all, 8)
+          .frame(maxWidth: .infinity)
+          .background(Color.accentColor)
+          .foregroundColor(.white)
+          .cornerRadius(8)
         }
+        .listRowSeparator(.hidden)
       }
     )
     .id(resetView)
