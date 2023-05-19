@@ -72,9 +72,7 @@ struct VerificationScreen: View {
     })
     #if !targetEnvironment(macCatalyst)
     .refreshable {
-      await feedbackManager.wrapWithHaptics {
-        await loadData(refresh: true)
-      }
+      await loadData(refresh: true)
     }
     #endif
     .task {
@@ -236,6 +234,9 @@ struct VerificationScreen: View {
         case let .success(products):
           withAnimation {
             self.products = products
+          }
+          if refresh {
+            feedbackManager.trigger(.notification(.success))
           }
         case let .failure(error):
           guard !error.localizedDescription.contains("cancelled") else { return }

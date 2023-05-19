@@ -93,6 +93,7 @@ final class FriendManager: ObservableObject {
     ) {
     case let .success(friends):
       self.friends = friends
+      feedbackManager.trigger(.notification(.success))
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

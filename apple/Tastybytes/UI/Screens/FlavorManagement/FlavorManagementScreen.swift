@@ -25,13 +25,8 @@ struct FlavorManagementScreen: View {
     )
     #if !targetEnvironment(macCatalyst)
     .refreshable {
-      await feedbackManager.wrapWithHaptics {
-        await appDataManager.loadFlavors()
-      }
+        await appDataManager.refreshFlavors()
     }
     #endif
-    .task {
-      await appDataManager.loadFlavors()
-    }
   }
 }

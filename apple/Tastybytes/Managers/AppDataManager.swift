@@ -81,11 +81,12 @@ final class AppDataManager: ObservableObject {
     }
   }
 
-  func loadFlavors() async {
+  func refreshFlavors() async {
     switch await repository.flavor.getAll() {
     case let .success(flavors):
       withAnimation {
         self.flavors = flavors
+          feedbackManager.trigger(.notification(.success))
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }

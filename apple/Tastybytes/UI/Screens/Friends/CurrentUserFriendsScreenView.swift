@@ -79,9 +79,7 @@ struct CurrentUserFriendsScreen: View {
     .navigationBarTitleDisplayMode(.inline)
     #if !targetEnvironment(macCatalyst)
       .refreshable {
-        await feedbackManager.wrapWithHaptics {
-          await friendManager.refresh()
-        }
+        await friendManager.refresh()
       }
     #endif
       .task {
