@@ -7,6 +7,7 @@ struct ProfileProductListView: View {
   @State private var products: [Product.Joined] = []
   @State private var searchTerm = ""
   @State private var productFilter: Product.Filter?
+  @State private var initialDataLoaded = false
 
   let profile: Profile
 
@@ -46,12 +47,14 @@ struct ProfileProductListView: View {
         })
       }
     }
-    .navigationTitle("Products (\(filteredProducts.count))")
+    .navigationTitle(initialDataLoaded ? "Products (\(filteredProducts.count))" : "Products")
     .toolbar {
       toolbarContent
     }
     .task {
-      await loadProducts()
+      if !initialDataLoaded {
+        await loadProducts()
+      }
     }
   }
 
@@ -87,6 +90,7 @@ struct ProfileProductListView: View {
     case let .success(products):
       withAnimation {
         self.products = products
+        initialDataLoaded = true
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }

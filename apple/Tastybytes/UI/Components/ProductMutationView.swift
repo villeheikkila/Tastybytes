@@ -54,7 +54,7 @@ struct ProductMutationView: View {
       }
     })
     .task {
-      await loadMissingData(categories: appDataManager.categories)
+      await loadMissingData()
     }
   }
 
@@ -64,17 +64,17 @@ struct ProductMutationView: View {
     }
   }
 
-  func loadMissingData(categories: [Category.JoinedSubcategoriesServingStyles]) async {
+  func loadMissingData() async {
     switch mode {
     case let .edit(initialProduct), let .editSuggestion(initialProduct):
-      await loadValuesFromExistingProduct(initialProduct, categories: categories)
+      await loadValuesFromExistingProduct(initialProduct, categories: appDataManager.categories)
     case let .addToBrand(brand):
-      loadFromBrand(brand, categories: categories)
+      loadFromBrand(brand, categories: appDataManager.categories)
     case let .addToSubBrand(brand, subBrand):
-      loadFromSubBrand(brand: brand, subBrand: subBrand, categories: categories)
+      loadFromSubBrand(brand: brand, subBrand: subBrand, categories: appDataManager.categories)
     case .new:
       initialValues = ProductMutationInitialValues(
-        category: categories.first(where: { $0.name == "beverage" })
+        category: appDataManager.categories.first(where: { $0.name == "beverage" })
       )
     }
   }
@@ -245,6 +245,15 @@ struct ProductMutationInnerView: View {
     _description = State(initialValue: initialValues.description)
   }
 
+  var showBarcodeSection: Bool {
+    switch mode {
+    case .addToBrand, .addToSubBrand, .new:
+      return true
+    default:
+      return false
+    }
+  }
+
   var body: some View {
     Form {
       categorySection
@@ -370,7 +379,7 @@ struct ProductMutationInnerView: View {
           alignment: .trailing
         )
 
-      if mode == .new {
+      if showBarcodeSection {
         RouterLink(barcode == nil ? "Add Barcode" : "Barcode Added!", sheet: .barcodeScanner(onComplete: { barcode in
           self.barcode = barcode
         }))
