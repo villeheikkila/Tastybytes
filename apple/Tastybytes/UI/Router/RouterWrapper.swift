@@ -28,6 +28,7 @@ struct RouterWrapper<Content: View>: View {
           .presentationDetents(sheet.detents)
           .presentationCornerRadius(sheet.cornerRadius)
           .presentationBackground(sheet.background)
+          .presentationDragIndicator(.visible)
           .sheet(item: $sheetManager.nestedSheet, content: { nestedSheet in
             NavigationStack {
               nestedSheet.view
@@ -39,6 +40,7 @@ struct RouterWrapper<Content: View>: View {
             .presentationDetents(nestedSheet.detents)
             .presentationCornerRadius(nestedSheet.cornerRadius)
             .presentationBackground(nestedSheet.background)
+            .presentationDragIndicator(.visible)
           })
         }
         .onOpenURL { url in
