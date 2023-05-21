@@ -56,6 +56,7 @@ struct SupabaseLocationRepository: LocationRepository {
         .from("view__recent_locations_from_current_user")
         .select(columns: Location.getQuery(.joined(false)))
         .limit(count: 5)
+        .order(column: "created_at", ascending: false)
         .execute()
         .value
 
