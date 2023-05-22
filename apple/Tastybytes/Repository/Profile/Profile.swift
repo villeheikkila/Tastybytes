@@ -314,7 +314,11 @@ extension ProfileSettings {
       case sendFriendRequestNotifications = "send_friend_request_notifications"
     }
 
-    init(sendReactionNotifications: Bool, sendTaggedCheckInNotifications: Bool, sendFriendRequestNotifications: Bool) {
+    init(
+      sendReactionNotifications: Bool? = nil,
+      sendTaggedCheckInNotifications: Bool? = nil,
+      sendFriendRequestNotifications: Bool? = nil
+    ) {
       self.sendReactionNotifications = sendReactionNotifications
       self.sendTaggedCheckInNotifications = sendTaggedCheckInNotifications
       self.sendFriendRequestNotifications = sendFriendRequestNotifications

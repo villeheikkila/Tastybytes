@@ -261,9 +261,6 @@ struct ProductMutationInnerView: View {
       productSection
       action
     }
-    .onChange(of: subcategories, perform: { newValue in
-      subcategories = newValue
-    })
     .onChange(of: category) { _ in
       subcategories = []
     }

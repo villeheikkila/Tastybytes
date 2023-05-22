@@ -6,7 +6,7 @@ struct LocationSearchSheet: View {
   private let logger = getLogger(category: "LocationSearchView")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
-  @StateObject private var viewModel: ViewModel
+  @StateObject private var viewModel = ViewModel()
   @StateObject private var locationManager = LocationManager()
   @State private var recentLocations = [Location]()
   @State private var nearbyLocations = [Location]()
@@ -15,12 +15,6 @@ struct LocationSearchSheet: View {
 
   let title: String
   let onSelect: (_ location: Location) -> Void
-
-  init(title: String, onSelect: @escaping (_ location: Location) -> Void) {
-    _viewModel = StateObject(wrappedValue: ViewModel())
-    self.title = title
-    self.onSelect = onSelect
-  }
 
   var hasSearched: Bool {
     !viewModel.searchText.isEmpty

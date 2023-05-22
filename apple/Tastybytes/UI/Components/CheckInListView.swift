@@ -29,10 +29,12 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
   @State private var page = 0
   @Binding private var scrollToTop: Int
 
-  let header: Header
-  let emptyView: Content
-  let onRefresh: () async -> Void
-  let topAnchor: String?
+  private let header: Header
+  private let emptyView: Content
+  private let onRefresh: () async -> Void
+  private let topAnchor: String?
+  private let fetcher: Fetcher
+  private let pageSize = 5
 
   init(
     fetcher: Fetcher,
@@ -49,9 +51,6 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
     self.emptyView = emptyView()
     self.onRefresh = onRefresh
   }
-
-  let fetcher: Fetcher
-  private let pageSize = 10
 
   var body: some View {
     ScrollViewReader { proxy in

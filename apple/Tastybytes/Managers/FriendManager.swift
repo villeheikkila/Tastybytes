@@ -85,7 +85,7 @@ final class FriendManager: ObservableObject {
     return friends.contains(where: { $0.getFriend(userId: profile.id).id == friend.id })
   }
 
-  func refresh() async {
+  func refresh(withFeedback: Bool = false) async {
     guard let profile else { return }
     switch await repository.friend.getByUserId(
       userId: profile.id,
@@ -93,7 +93,9 @@ final class FriendManager: ObservableObject {
     ) {
     case let .success(friends):
       self.friends = friends
-      feedbackManager.trigger(.notification(.success))
+      if withFeedback {
+        feedbackManager.trigger(.notification(.success))
+      }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

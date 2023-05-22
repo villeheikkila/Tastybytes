@@ -163,3 +163,48 @@ enum NotificationType: String, CaseIterable, Identifiable, Sendable {
     }
   }
 }
+
+struct ProfilePushNotification: Codable, Identifiable {
+  let id: String
+  let sendReactionNotifications: Bool
+  let sendTaggedCheckInNotifications: Bool
+  let sendFriendRequestNotifications: Bool
+
+  enum CodingKeys: String, CodingKey {
+    case id = "firebase_registration_token"
+    case sendReactionNotifications = "send_reaction_notifications"
+    case sendTaggedCheckInNotifications = "send_tagged_check_in_notifications"
+    case sendFriendRequestNotifications = "send_friend_request_notifications"
+  }
+
+  func copyWith(
+    sendReactionNotifications: Bool? = nil,
+    sendTaggedCheckInNotifications: Bool? = nil,
+    sendFriendRequestNotifications: Bool? = nil
+  ) -> ProfilePushNotification {
+    ProfilePushNotification(id: id,
+                            sendReactionNotifications: sendReactionNotifications ?? self.sendReactionNotifications,
+                            sendTaggedCheckInNotifications: sendTaggedCheckInNotifications ?? self
+                              .sendTaggedCheckInNotifications,
+                            sendFriendRequestNotifications: sendFriendRequestNotifications ?? self
+                              .sendFriendRequestNotifications)
+  }
+
+  static func getQuery(_ queryType: QueryType) -> String {
+    let tableName = "profile_push_notifications"
+    let saved =
+      "firebase_registration_token, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications"
+
+    switch queryType {
+    case .tableName:
+      return tableName
+    case let .saved(withTableName):
+      return queryWithTableName(tableName, saved, withTableName)
+    }
+  }
+
+  enum QueryType {
+    case tableName
+    case saved(_ withTableName: Bool)
+  }
+}

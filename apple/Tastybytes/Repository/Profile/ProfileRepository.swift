@@ -10,7 +10,6 @@ protocol ProfileRepository {
   func currentUserExport() async -> Result<String, Error>
   func search(searchTerm: String, currentUserId: UUID?) async -> Result<[Profile], Error>
   func uploadAvatar(userId: UUID, data: Data) async -> Result<String, Error>
-  func uploadPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<Void, Error>
   func deleteCurrentAccount() async -> Result<Void, Error>
   func updateSettings(update: ProfileSettings.UpdateRequest) async -> Result<ProfileSettings, Error>
   func getContributions(userId: UUID) async -> Result<Contributions, Error>
@@ -104,19 +103,6 @@ struct SupabaseProfileRepository: ProfileRepository {
         .value
 
       return .success(response)
-    } catch {
-      return .failure(error)
-    }
-  }
-
-  func uploadPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<Void, Error> {
-    do {
-      try await client
-        .database
-        .rpc(fn: "fnc__upsert_push_notification_token", params: token)
-        .execute()
-
-      return .success(())
     } catch {
       return .failure(error)
     }

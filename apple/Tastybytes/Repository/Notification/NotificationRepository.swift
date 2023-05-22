@@ -2,6 +2,9 @@ import Supabase
 
 protocol NotificationRepository {
   func getAll(afterId: Int?) async -> Result<[Notification], Error>
+  func refreshPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<ProfilePushNotification, Error>
+  func updatePushNotificationSettingsForDevice(updateRequest: ProfilePushNotification) async
+    -> Result<ProfilePushNotification, Error>
   func markRead(id: Int) async -> Result<Notification, Error>
   func markAllRead() async -> Result<Void, Error>
   func markAllFriendRequestsAsRead() async -> Result<[Notification], Error>
@@ -21,6 +24,43 @@ struct SupabaseNotificationRepository: NotificationRepository {
         .select(columns: Notification.getQuery(.joined))
         .gt(column: "id", value: afterId ?? 0)
         .order(column: "id", ascending: false)
+        .execute()
+        .value
+
+      return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func refreshPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<ProfilePushNotification, Error> {
+    do {
+      let response: ProfilePushNotification = try await client
+        .database
+        .rpc(fn: "fnc__upsert_push_notification_token", params: token)
+        .select(columns: ProfilePushNotification.getQuery(.saved(false)))
+        .limit(count: 1)
+        .single()
+        .execute()
+        .value
+
+      return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func updatePushNotificationSettingsForDevice(updateRequest: ProfilePushNotification) async
+    -> Result<ProfilePushNotification, Error>
+  {
+    do {
+      let response: ProfilePushNotification = try await client
+        .database
+        .from(ProfilePushNotification.getQuery(.tableName))
+        .update(values: updateRequest, returning: .representation)
+        .eq(column: "firebase_registration_token", value: updateRequest.id)
+        .select(columns: ProfilePushNotification.getQuery(.saved(false)))
+        .single()
         .execute()
         .value
 

@@ -48,7 +48,7 @@ struct SettingsScreen: View {
       }
     }
     .listStyle(.insetGrouped)
-    .navigationBarTitle("Preferences")
+    .navigationBarTitle("Settings")
     .navigationBarTitleDisplayMode(.inline)
   }
 }

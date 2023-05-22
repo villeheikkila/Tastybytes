@@ -179,11 +179,14 @@ final class ProfileManager: ObservableObject {
     }
   }
 
-  func updateNotificationSettings() async {
+  func updateNotificationSettings(sendReactionNotifications: Bool? = nil,
+                                  sendTaggedCheckInNotifications: Bool? = nil,
+                                  sendFriendRequestNotifications: Bool? = nil) async
+  {
     let update = ProfileSettings.UpdateRequest(
-      sendReactionNotifications: reactionNotifications,
-      sendTaggedCheckInNotifications: checkInTagNotifications,
-      sendFriendRequestNotifications: friendRequestNotifications
+      sendReactionNotifications: sendReactionNotifications,
+      sendTaggedCheckInNotifications: sendTaggedCheckInNotifications,
+      sendFriendRequestNotifications: sendFriendRequestNotifications
     )
 
     if case let .failure(error) = await repository.profile.updateSettings(

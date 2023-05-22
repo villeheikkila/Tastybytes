@@ -5,6 +5,7 @@ import SwiftUI
 @MainActor
 final class NotificationManager: ObservableObject {
   private let logger = getLogger(category: "NotificationManager")
+  @Published var pushNotificationSettings: ProfilePushNotification?
   @Published private(set) var notifications = [Notification]() {
     didSet {
       withAnimation {
@@ -216,6 +217,26 @@ final class NotificationManager: ObservableObject {
     }
   }
 
+  func updatePushNotificationSettingsForDevice(sendReactionNotifications: Bool? = nil,
+                                               sendTaggedCheckInNotifications: Bool? = nil,
+                                               sendFriendRequestNotifications: Bool? = nil) async
+  {
+    guard let updateRequest = pushNotificationSettings?.copyWith(
+      sendReactionNotifications: sendReactionNotifications,
+      sendTaggedCheckInNotifications: sendTaggedCheckInNotifications,
+      sendFriendRequestNotifications: sendFriendRequestNotifications
+    ) else { return }
+    switch await repository.notification.updatePushNotificationSettingsForDevice(updateRequest: updateRequest) {
+    case let .success(pushNotificationSettings):
+      print("Push \(pushNotificationSettings)")
+      self.pushNotificationSettings = pushNotificationSettings
+    case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
+      feedbackManager.toggle(.error(.unexpected))
+      logger.error("failed to update push notification settings for device: \(error.localizedDescription)")
+    }
+  }
+
   func refreshAPNS() {
     Messaging.messaging().token { token, error in
       if let error {
@@ -224,11 +245,11 @@ final class NotificationManager: ObservableObject {
       } else if let token {
         Task {
           let logger = getLogger(category: "PushNotificationToken")
-          switch await self.repository.profile
-            .uploadPushNotificationToken(token: Profile.PushNotificationToken(firebaseRegistrationToken: token))
+          switch await self.repository.notification
+            .refreshPushNotificationToken(token: Profile.PushNotificationToken(firebaseRegistrationToken: token))
           {
-          case .success:
-            break
+          case let .success(pushNotificationSettings):
+            self.pushNotificationSettings = pushNotificationSettings
           case let .failure(error):
             logger.error("failed to save FCM token (\(String(describing: token))): \(error.localizedDescription)")
           }
