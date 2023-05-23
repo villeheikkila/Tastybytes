@@ -213,6 +213,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
     await fetchActivityFeedItems(onComplete: { checkIns in
       if splashScreenManager.state != .finished {
         await splashScreenManager.dismiss()
+        initialLoadCompleted = true
         if checkIns.isEmpty {
           showEmptyView = true
         }
@@ -240,7 +241,6 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
       feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching check-ins failed: \(error.localizedDescription)")
     }
-    initialLoadCompleted = true
   }
 
   func checkInFetcher(from: Int, to: Int) async -> Result<[CheckIn], Error> {

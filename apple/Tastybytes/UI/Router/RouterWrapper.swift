@@ -11,9 +11,6 @@ struct RouterWrapper<Content: View>: View {
   var body: some View {
     NavigationStack(path: $router.path) {
       content(router)
-        .toast(isPresenting: $feedbackManager.show) {
-          feedbackManager.toast
-        }
         .navigationDestination(for: Screen.self) { screen in
           screen.view
         }
@@ -48,6 +45,9 @@ struct RouterWrapper<Content: View>: View {
             router.fetchAndNavigateTo(repository, detailPage, resetStack: true)
           }
         }
+    }
+    .toast(isPresenting: $feedbackManager.show) {
+      feedbackManager.toast
     }
     .environmentObject(router)
     .environmentObject(sheetManager)

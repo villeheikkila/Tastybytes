@@ -37,8 +37,8 @@ struct NotificationSettingsScreen: View {
           subtitle: "Show notification when someone sends you a friend requests"
         )
       }
-      Section {
-        if let settingsUrl = URL(string: UIApplication.openNotificationSettingsURLString) {
+      if let settingsUrl = URL(string: UIApplication.openNotificationSettingsURLString) {
+        Section {
           Link("Open System Notification Settings", destination: settingsUrl)
         }
       }

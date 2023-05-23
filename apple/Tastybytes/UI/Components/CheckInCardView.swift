@@ -12,27 +12,34 @@ struct CheckInCardView: View {
   let checkIn: CheckIn
   let loadedFrom: LoadedFrom
 
+  private let spacing: Double = 4
+  private let padding: Double = 10
+
   var body: some View {
-    VStack {
-      VStack {
+    VStack(spacing: spacing) {
+      Group {
         header
         productSection
       }
-      .padding([.leading, .trailing], 10)
+      .padding([.leading, .trailing], padding)
       checkInImage
 
-      VStack(spacing: 4) {
+      Group {
         checkInSection
         taggedProfilesSection
         footer
       }
-      .padding([.leading, .trailing], 10)
+      .padding([.leading, .trailing], padding)
     }
-    .padding([.top, .bottom], 10)
+    .padding([.top, .bottom], padding)
     .background(colorScheme == .dark ? .thinMaterial : .ultraThin)
     .clipped()
     .cornerRadius(8)
     .shadow(color: Color.black.opacity(0.1), radius: 4, x: 2, y: 2)
+    .onTapGesture {
+      router.navigate(screen: .checkIn(checkIn))
+    }
+    .accessibilityAddTraits(.isLink)
   }
 
   private var header: some View {
@@ -93,12 +100,14 @@ struct CheckInCardView: View {
           }
       } placeholder: {
         BlurHashPlaceholder(blurHash: checkIn.blurHash)
-      }.frame(height: 200)
+      }
+      .frame(height: 200)
+      .padding([.top, .bottom], spacing)
     }
   }
 
   private var productSection: some View {
-    HStack(spacing: 12) {
+    HStack(spacing: spacing) {
       if let logoUrl = checkIn.product.logoUrl {
         CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
           image
@@ -109,9 +118,9 @@ struct CheckInCardView: View {
         } placeholder: {
           ProgressView()
         }
-        .padding(.leading, 10)
+        .padding(.leading, padding)
       }
-      VStack(alignment: .leading, spacing: 6) {
+      VStack(alignment: .leading, spacing: spacing) {
         CategoryView(
           category: checkIn.product.category,
           subcategories: checkIn.product.subcategories,
@@ -161,7 +170,7 @@ struct CheckInCardView: View {
 
   @ViewBuilder private var checkInSection: some View {
     if !checkIn.isEmpty {
-      VStack(alignment: .leading, spacing: 8) {
+      VStack(alignment: .leading, spacing: spacing) {
         if let rating = checkIn.rating {
           RatingView(rating: rating)
         }
@@ -172,7 +181,7 @@ struct CheckInCardView: View {
             .foregroundColor(.primary)
         }
 
-        WrappingHStack(checkIn.flavors, spacing: .constant(4)) { flavor in
+        WrappingHStack(checkIn.flavors, spacing: .constant(spacing)) { flavor in
           ChipView(title: flavor.label)
         }
 
@@ -193,14 +202,14 @@ struct CheckInCardView: View {
 
   @ViewBuilder private var taggedProfilesSection: some View {
     if !checkIn.taggedProfiles.isEmpty {
-      VStack(spacing: 4) {
+      VStack(spacing: spacing) {
         HStack {
           Text(verbatim: "Tagged friends")
             .font(.subheadline)
             .fontWeight(.medium)
           Spacer()
         }
-        HStack(spacing: 4) {
+        HStack(spacing: spacing) {
           ForEach(checkIn.taggedProfiles) { taggedProfile in
             AvatarView(avatarUrl: taggedProfile.avatarUrl, size: 24, id: taggedProfile.id)
               .if(!loadedFrom.isLoadedFromProfile(taggedProfile)) { view in
@@ -223,10 +232,12 @@ struct CheckInCardView: View {
       HStack {
         if let checkInAt = checkIn.checkInAt {
           Text(checkInAt.customFormat(.relativeTime))
-            .font(.caption).bold()
+            .font(.caption)
+            .bold()
         } else {
           Text("legacy check-in")
-            .font(.caption).bold()
+            .font(.caption)
+            .bold()
         }
         Spacer()
       }

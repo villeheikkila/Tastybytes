@@ -10,32 +10,35 @@ struct ReactionsView: View {
 
   let checkIn: CheckIn
 
+  private let size: Double = 24
+
   init(checkIn: CheckIn) {
     self.checkIn = checkIn
     _checkInReactions = State(initialValue: checkIn.checkInReactions)
   }
 
   var body: some View {
-    HStack {
+    HStack(alignment: .center) {
       Spacer()
       ForEach(checkInReactions) { reaction in
-        AvatarView(avatarUrl: reaction.profile.avatarUrl, size: 16, id: reaction.profile.id)
+        AvatarView(avatarUrl: reaction.profile.avatarUrl, size: size, id: reaction.profile.id)
       }
       Label(
         "React to check-in",
-        systemImage: hasReacted(profileManager.profile) ? "hand.thumbsup.fill" : "hand.thumbsup"
+        systemImage: "hand.thumbsup"
       )
       .labelStyle(.iconOnly)
-      .imageScale(.medium)
+      .symbolVariant(hasReacted(profileManager.profile) ? .fill : .none)
+      .imageScale(.large)
       .foregroundColor(Color(.systemYellow))
     }
-    .frame(maxWidth: 80)
+    .frame(maxWidth: 80, minHeight: size + 4)
     .contentShape(Rectangle())
     .if(!isLoading, transform: { view in
       view.accessibilityAddTraits(.isButton)
         .onTapGesture {
           Task {
-            await toggleReaction(userId: profileManager.id)
+            await toggleReaction()
           }
         }
     })
@@ -46,9 +49,9 @@ struct ReactionsView: View {
     checkInReactions.contains(where: { $0.profile.id == profile.id })
   }
 
-  func toggleReaction(userId: UUID) async {
+  func toggleReaction() async {
     isLoading = true
-    if let reaction = checkInReactions.first(where: { $0.profile.id == userId }) {
+    if let reaction = checkInReactions.first(where: { $0.profile.id == profileManager.id }) {
       switch await repository.checkInReactions.delete(id: reaction.id) {
       case .success:
         withAnimation {
@@ -72,7 +75,10 @@ struct ReactionsView: View {
       case let .failure(error):
         guard !error.localizedDescription.contains("cancelled") else { return }
         feedbackManager.toggle(.error(.unexpected))
-        logger.error("adding check-in reaction for check-in \(checkIn.id) by \(userId) failed:\(error.localizedDescription)")
+        logger
+          .error(
+            "adding check-in reaction for check-in \(checkIn.id) by \(profileManager.id) failed:\(error.localizedDescription)"
+          )
       }
     }
     isLoading = false
