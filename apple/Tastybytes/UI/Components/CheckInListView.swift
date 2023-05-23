@@ -27,6 +27,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
   @State private var isLoading = false
   @State private var initialLoadCompleted = false
   @State private var page = 0
+  @State private var showEmptyView = false
   @Binding private var scrollToTop: Int
 
   private let header: Header
@@ -57,7 +58,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
       GeometryReader { geometry in
         List {
           header
-          if checkIns.isEmpty, !isLoading {
+          if showEmptyView {
             emptyView
           }
           ForEach(uniqueCheckIns) { checkIn in
@@ -141,13 +142,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         }
         #endif
         .task {
-          if !initialLoadCompleted {
-            await fetchActivityFeedItems(onComplete: {
-              if splashScreenManager.state != .finished {
-                await splashScreenManager.dismiss()
-              }
-            })
-          }
+          await getInitialData()
         }
       }
     }
@@ -215,7 +210,19 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
     checkIns[index] = checkIn
   }
 
-  func fetchActivityFeedItems(onComplete: (() async -> Void)? = nil) async {
+  func getInitialData() async {
+    guard !initialLoadCompleted else { return }
+    await fetchActivityFeedItems(onComplete: { checkIns in
+      if splashScreenManager.state != .finished {
+        await splashScreenManager.dismiss()
+        if checkIns.isEmpty {
+          showEmptyView = true
+        }
+      }
+    })
+  }
+
+  func fetchActivityFeedItems(onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil) async {
     let (from, to) = getPagination(page: page, size: pageSize)
     isLoading = true
 
@@ -228,7 +235,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
       isLoading = false
 
       if let onComplete {
-        await onComplete()
+        await onComplete(checkIns)
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
