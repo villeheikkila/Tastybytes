@@ -284,7 +284,7 @@ struct ProfileView: View {
   func getSummary() async {
     switch await repository.checkIn.getSummaryByProfileId(id: profile.id) {
     case let .success(summary):
-      withAnimation {
+      withAnimation(.easeIn) {
         profileSummary = summary
       }
     case let .failure(error):

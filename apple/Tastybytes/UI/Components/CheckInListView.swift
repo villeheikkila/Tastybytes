@@ -109,7 +109,6 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
         .listStyle(.plain)
-        .navigationBarTitleDisplayMode(geometry.size.width > 450 ? .inline : .automatic)
         .onAppear {
           scrollProxy = proxy
         }
@@ -135,10 +134,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         })
         #if !targetEnvironment(macCatalyst)
         .refreshable {
-          await feedbackManager.wrapWithHaptics {
-            await refresh()
-            await onRefresh()
-          }
+          await refresh()
         }
         #endif
         .task {
@@ -181,7 +177,9 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
   func refresh() async {
     page = 0
     checkIns = [CheckIn]()
-    await fetchActivityFeedItems()
+    feedbackManager.trigger(.impact(intensity: .low))
+    await fetchActivityFeedItems(onComplete: { _ in feedbackManager.trigger(.impact(intensity: .high)) })
+    await onRefresh()
   }
 
   func getPagination(page: Int, size: Int) -> (Int, Int) {
