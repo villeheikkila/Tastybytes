@@ -51,9 +51,9 @@ struct ProfileView: View {
             privateProfileSign
           }
           if !isCurrentUser,
-             !friendManager.isFriend(profile)
+             !friendManager.isFriend(profile) || friendManager.isPendingUserApproval(profile) != nil
           {
-            sendFriendRequestButton
+            friendActionSection
           }
         }
         .listRowSeparator(.hidden)
@@ -64,12 +64,21 @@ struct ProfileView: View {
     )
   }
 
-  private var sendFriendRequestButton: some View {
+  private var friendActionSection: some View {
     HStack {
       Spacer()
-      ProgressButton("Send Friend Request", action: { await friendManager.sendFriendRequest(receiver: profile.id) })
-        .font(.headline)
-        .buttonStyle(ScalingButton())
+      Group {
+        if friendManager.hasNoFriendStatus(friend: profile) {
+          ProgressButton("Send Friend Request", action: { await friendManager.sendFriendRequest(receiver: profile.id) })
+        } else if let friend = friendManager.isPendingUserApproval(profile) {
+          ProgressButton(
+            "Accept Friend Request",
+            action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted) }
+          )
+        }
+      }
+      .font(.headline)
+      .buttonStyle(ScalingButton())
       Spacer()
     }
   }

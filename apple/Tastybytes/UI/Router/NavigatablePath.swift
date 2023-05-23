@@ -42,8 +42,12 @@ extension URL {
     scheme == "https"
   }
 
+  var isDeepLink: Bool {
+    scheme == "tastybytes"
+  }
+
   var pathIdentifier: PathIdentifier? {
-    guard isUniversalLink, pathComponents.count == 3 else { return nil }
+    guard isUniversalLink || isDeepLink, pathComponents.count == 3 else { return nil }
 
     switch pathComponents[1] {
     case "checkins": return .checkins

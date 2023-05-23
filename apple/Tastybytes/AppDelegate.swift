@@ -37,20 +37,24 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-  func userNotificationCenter(
-    _: UNUserNotificationCenter,
-    willPresent _: UNNotification,
-    withCompletionHandler completionHandler:
-    @escaping (UNNotificationPresentationOptions) -> Void
-  ) {
-    completionHandler([[.banner, .sound]])
+  func userNotificationCenter(_: UNUserNotificationCenter,
+                              willPresent notification: UNNotification) async -> UNNotificationPresentationOptions
+  {
+    let userInfo = notification.request.content.userInfo
+    Messaging.messaging().appDidReceiveMessage(userInfo)
+    return [.sound, .badge, .banner, .list]
   }
 
   func userNotificationCenter(
     _: UNUserNotificationCenter,
-    didReceive _: UNNotificationResponse,
+    didReceive response: UNNotificationResponse,
     withCompletionHandler completionHandler: @escaping () -> Void
   ) {
+    let userInfo = response.notification.request.content.userInfo
+    if let deepLink = userInfo["link"] as? String, let url = URL(string: deepLink) {
+      UIApplication.shared.open(url)
+    }
+    Messaging.messaging().appDidReceiveMessage(userInfo)
     completionHandler()
   }
 

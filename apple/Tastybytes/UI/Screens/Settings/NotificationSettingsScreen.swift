@@ -3,7 +3,7 @@ import SwiftUI
 enum NotificationDeliveryType: String, CaseIterable {
   case disabled = "Disabled"
   case inApp = "In-App"
-  case pushNotification = "Push Notification"
+  case pushNotification = "Push "
 
   var label: String {
     rawValue

@@ -43,7 +43,7 @@ struct FriendsScreen: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      if !friendManager.isFriend(profile) {
+      if friendManager.hasNoFriendStatus(friend: profile) {
         ProgressButton(
           "Add friend",
           systemImage: "person.badge.plus",

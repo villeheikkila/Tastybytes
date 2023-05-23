@@ -28,6 +28,10 @@ final class FriendManager: ObservableObject {
     friends.filter { $0.status != .blocked }
   }
 
+  var pendingFriends: [Friend] {
+    friends.filter { $0.status == .pending }
+  }
+
   func sendFriendRequest(receiver: UUID, onSuccess: (() -> Void)? = nil) async {
     switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
     case let .success(newFriend):
@@ -80,9 +84,19 @@ final class FriendManager: ObservableObject {
     }
   }
 
+  func hasNoFriendStatus(friend: Profile) -> Bool {
+    guard let profile else { return false }
+    return !friends.contains(where: { $0.getFriend(userId: profile.id).id == friend.id })
+  }
+
   func isFriend(_ friend: Profile) -> Bool {
     guard let profile else { return false }
-    return friends.contains(where: { $0.getFriend(userId: profile.id).id == friend.id })
+    return friends.contains(where: { $0.status == .accepted && $0.getFriend(userId: profile.id).id == friend.id })
+  }
+
+  func isPendingUserApproval(_ friend: Profile) -> Friend? {
+    guard let profile else { return nil }
+    return friends.first(where: { $0.status == .pending && $0.getFriend(userId: profile.id).id == friend.id })
   }
 
   func refresh(withFeedback: Bool = false) async {
