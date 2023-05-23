@@ -11,6 +11,10 @@ final class SheetManager: ObservableObject {
       logger.error("opening more than one nested sheet is not supported")
       return
     }
+    if let currentSheetId = self.sheet?.id, sheet.id == currentSheetId {
+      logger.warning("same sheet opened multiple times")
+      return
+    }
     if self.sheet != nil {
       nestedSheet = sheet
     } else {

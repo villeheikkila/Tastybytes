@@ -15,7 +15,7 @@ struct ProgressButton<LabelView: View>: View {
   init(
     role: ButtonRole? = nil,
     action: @escaping () async -> Void,
-    actionOptions: Set<ActionOption> = Set(),
+    actionOptions: Set<ActionOption> = Set([.disableButton]),
     @ViewBuilder label: @escaping () -> LabelView
   ) {
     self.role = role
