@@ -6,6 +6,7 @@ import SwiftUI
 final class NotificationManager: ObservableObject {
   private let logger = getLogger(category: "NotificationManager")
   @Published var pushNotificationSettings: ProfilePushNotification?
+  @Published var unreadCount: Int = 0
   @Published private(set) var notifications = [Notification]() {
     didSet {
       withAnimation {
@@ -21,6 +22,12 @@ final class NotificationManager: ObservableObject {
   init(repository: Repository, feedbackManager: FeedbackManager) {
     self.repository = repository
     self.feedbackManager = feedbackManager
+  }
+
+  var isUpToDate: Bool {
+    unreadCount == notifications
+      .filter { $0.seenAt == nil }
+      .count
   }
 
   @Published var filter: NotificationType? {
@@ -48,12 +55,6 @@ final class NotificationManager: ObservableObject {
 
   @Published var filteredNotifications: [Notification] = []
 
-  func getUnreadCount() -> Int {
-    notifications
-      .filter { $0.seenAt == nil }
-      .count
-  }
-
   func getUnreadFriendRequestCount() -> Int {
     notifications
       .filter { notification in
@@ -67,15 +68,33 @@ final class NotificationManager: ObservableObject {
       .count
   }
 
-  func refresh(reset: Bool = false) async {
-    if reset {
+  func getUnreadCount() async {
+    switch await repository.notification.getUnreadCount() {
+    case let .success(count):
+      withAnimation {
+        self.unreadCount = count
+      }
+    case let .failure(error):
+      guard !error.localizedDescription.contains("cancelled") else { return }
+      feedbackManager.toggle(.error(.unexpected))
+      logger.error("failed: \(error.localizedDescription)")
+    }
+  }
+
+  func refresh(reset: Bool = false, withFeedback: Bool = false) async {
+    if reset, withFeedback {
       feedbackManager.trigger(.impact(intensity: .low))
     }
     switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
     case let .success(newNotifications):
       if reset {
         notifications = newNotifications
-        feedbackManager.trigger(.notification(.success))
+        if withFeedback {
+          feedbackManager.trigger(.notification(.success))
+        }
+        unreadCount = newNotifications
+          .filter { $0.seenAt == nil }
+          .count
       } else {
         notifications.append(contentsOf: newNotifications)
       }

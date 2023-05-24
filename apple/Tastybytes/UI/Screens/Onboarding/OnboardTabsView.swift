@@ -4,17 +4,19 @@ struct OnboardTabsView: View {
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @Environment(\.colorScheme) private var colorScheme
   @FocusState private var focusedField: OnboardField?
-  @State private var selection = Tab.welcome
+  @State private var currentTab = Tab.welcome
 
   var body: some View {
-    TabView(selection: .init(get: { selection }, set: { newTab in
-      selection = newTab
+    TabView(selection: .init(get: { currentTab }, set: { newTab in
+      currentTab = newTab
       focusedField = nil
     })) {
-      WelcomeTab()
+      WelcomeTab(currentTab: $currentTab)
         .tag(Tab.welcome)
-      ProfileSettingsTab(focusedField: _focusedField)
-        .tag(Tab.profileSettings)
+      FillProfileTab(focusedField: _focusedField, currentTab: $currentTab)
+        .tag(Tab.profile)
+      AvatarTab(currentTab: $currentTab)
+        .tag(Tab.avatar)
       FinalStepTab()
         .tag(Tab.final)
     }
@@ -32,7 +34,7 @@ enum OnboardField {
 
 extension OnboardTabsView {
   enum Tab: Int, Identifiable, Hashable {
-    case welcome, profileSettings, final
+    case welcome, profile, avatar, final
 
     var id: Int {
       rawValue

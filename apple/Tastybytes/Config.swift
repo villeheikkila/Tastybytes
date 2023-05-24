@@ -41,6 +41,8 @@ enum Config {
     return baseUrl
   }()
 
+  static let deeplinkBaseUrl: String = "tastybytes://deeplink/"
+
   static let revenuecatApiKey: String = {
     guard let revenuecatApiKey = Config.infoDictionary[Keys.Plist.baseUrl] as? String else {
       fatalError("RevenueCat API Key is not set in plist for this environment")

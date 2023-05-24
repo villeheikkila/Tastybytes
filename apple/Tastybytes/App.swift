@@ -4,18 +4,16 @@ import GoTrue
 import Supabase
 import SwiftUI
 
-extension UIDevice {
-  var isCatalystMacIdiom: Bool {
-    if #available(iOS 14, *) {
-      return UIDevice.current.userInterfaceIdiom == .mac
-    } else {
-      return false
-    }
-  }
-}
+/*
+ This global variable is here to share state between AppDelegate, SceneDelegate and Main app
+ TODO: Figure out a better way to pass this state.
+ */
+var selectedQuickAction: UIApplicationShortcutItem?
 
 @main
 struct Main: App {
+  private let logger = getLogger(category: "Main")
+  @Environment(\.scenePhase) private var phase
   @StateObject private var feedbackManager = FeedbackManager()
   @UIApplicationDelegateAdaptor(AppDelegate.self)
   var appDelegate
@@ -28,6 +26,23 @@ struct Main: App {
   var body: some Scene {
     WindowGroup {
       RootView(supabaseClient: supabaseClient, feedbackManager: feedbackManager)
+    }
+    .onChange(of: phase) { newPhase in
+      switch newPhase {
+      case .active:
+        logger.info("scene phase is active")
+        if let name = selectedQuickAction?.userInfo?["name"] as? String, let quickAction = QuickAction(rawValue: name) {
+          UIApplication.shared.open(quickAction.url)
+          selectedQuickAction = nil
+        }
+      case .inactive:
+        logger.info("scene phase is inactive")
+      case .background:
+        logger.info("scene phase is background")
+        UIApplication.shared.shortcutItems = QuickAction.allCases.map(\.shortcutItem)
+      @unknown default:
+        logger.info("scene phase is unknown")
+      }
     }
   }
 }
@@ -42,6 +57,7 @@ struct RootView: View {
   @StateObject private var appDataManager: AppDataManager
   @StateObject private var friendManager: FriendManager
   @StateObject private var purchaseManager: PurchaseManager
+  @Environment(\.scenePhase) private var phase
   @State private var authEvent: AuthChangeEvent?
   @State private var orientation: UIDeviceOrientation
   @ObservedObject private var feedbackManager: FeedbackManager
@@ -112,7 +128,6 @@ struct RootView: View {
         switch authEvent {
         case .signedIn:
           await profileManager.initialize()
-          await notificationManager.refresh()
           notificationManager.refreshAPNS()
         default:
           break
@@ -134,8 +149,22 @@ struct RootView: View {
           TabsView()
         }
       }
+      .onChange(of: phase) { newPhase in
+        if newPhase == .active {
+          Task { await notificationManager.getUnreadCount()
+          }
+        }
+      }
+      .onReceive(NotificationCenter.default
+        .publisher(for: NSNotification.Name(rawValue: "PushNotificationReceived")))
+      { notification in
+        guard let userInfo = notification.userInfo, let aps = userInfo["aps"] as? [String: Any],
+              let unreadCount = aps["badge"] as? Int else { return }
+        notificationManager.unreadCount = unreadCount
+      }
       .task {
         await friendManager.initialize(profile: profileManager.profile)
+        await notificationManager.getUnreadCount()
         purchaseManager.initialize()
       }
     }

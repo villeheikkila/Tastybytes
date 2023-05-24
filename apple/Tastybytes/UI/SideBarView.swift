@@ -27,21 +27,6 @@ enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
   }
 }
 
-struct Spacing: View {
-  var height: CGFloat?
-  var width: CGFloat?
-
-  var body: some View {
-    if let height {
-      Color.clear.frame(height: height)
-    } else if let width {
-      Color.clear.frame(width: width)
-    } else {
-      Spacer()
-    }
-  }
-}
-
 struct SideBarView: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var notificationManager: NotificationManager
@@ -126,6 +111,11 @@ struct SideBarView: View {
       }
     }
     .navigationSplitViewStyle(.balanced)
+    .onOpenURL { url in
+      if let tab = url.sidebarTab {
+        selection = tab
+      }
+    }
     .environmentObject(router)
     .environmentObject(sheetManager)
     .toast(isPresenting: $feedbackManager.show) {
@@ -168,7 +158,7 @@ struct SideBarView: View {
   private func getBadgeByTab(_ tab: Tab) -> Int {
     switch tab {
     case .notifications:
-      return notificationManager.getUnreadCount()
+      return notificationManager.unreadCount
     default:
       return 0
     }

@@ -83,6 +83,7 @@ struct CurrentUserFriendsScreen: View {
       }
     #endif
       .task {
+        await friendManager.refresh(withFeedback: false)
         await noficationManager.markAllFriendRequestsAsRead()
       }
       .toolbar {

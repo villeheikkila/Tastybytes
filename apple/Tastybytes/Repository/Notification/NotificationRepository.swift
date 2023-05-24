@@ -2,6 +2,7 @@ import Supabase
 
 protocol NotificationRepository {
   func getAll(afterId: Int?) async -> Result<[Notification], Error>
+  func getUnreadCount() async -> Result<Int, Error>
   func refreshPushNotificationToken(token: Profile.PushNotificationToken) async -> Result<ProfilePushNotification, Error>
   func updatePushNotificationSettingsForDevice(updateRequest: ProfilePushNotification) async
     -> Result<ProfilePushNotification, Error>
@@ -28,6 +29,22 @@ struct SupabaseNotificationRepository: NotificationRepository {
         .value
 
       return .success(response)
+    } catch {
+      return .failure(error)
+    }
+  }
+
+  func getUnreadCount() async -> Result<Int, Error> {
+    do {
+      let response = try await client
+        .database
+        .from(Notification.getQuery(.tableName))
+        .select(columns: "id", head: true, count: .exact)
+        .is(column: "seen_at", value: "null")
+        .execute()
+        .count
+
+      return .success(response ?? 0)
     } catch {
       return .failure(error)
     }

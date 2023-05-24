@@ -21,14 +21,14 @@ struct TabsView: View {
     DragGesture(minimumDistance: switchTabGestureRangeDistance)
       .onEnded { value in
         if value.translation.width < -switchTabGestureRangeDistance,
-           value.translation.width > -(2 * switchTabGestureRangeDistance), selection.rawValue < shownTabs.count - 1
+           value.translation.width > -(3 * switchTabGestureRangeDistance), selection.rawValue < shownTabs.count - 1
         {
           if let tab = Tab(rawValue: selection.rawValue + 1) {
             feedbackManager.trigger(.selection)
             selection = tab
           }
         } else if value.translation.width > switchTabGestureRangeDistance,
-                  value.translation.width < 2 * switchTabGestureRangeDistance, selection.rawValue > 0
+                  value.translation.width < 3 * switchTabGestureRangeDistance, selection.rawValue > 0
         {
           if let tab = Tab(rawValue: selection.rawValue - 1) {
             feedbackManager.trigger(.selection)
@@ -61,12 +61,17 @@ struct TabsView: View {
       }
     }
     .simultaneousGesture(switchTabGesture)
+    .onOpenURL { url in
+      if let tab = url.tab {
+        selection = tab
+      }
+    }
   }
 
   private func getBadgeByTab(_ tab: Tab) -> Int {
     switch tab {
     case .notifications:
-      return notificationManager.getUnreadCount()
+      return notificationManager.unreadCount
     default:
       return 0
     }

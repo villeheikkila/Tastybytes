@@ -32,9 +32,12 @@ struct NotificationScreen: View {
         await notificationManager.deleteFromIndex(at: index)
       } })
     }
+    .task {
+      await notificationManager.refresh(reset: true)
+    }
     #if !targetEnvironment(macCatalyst)
     .refreshable {
-      await notificationManager.refresh(reset: true)
+      await notificationManager.refresh(reset: true, withFeedback: true)
     }
     #endif
     .navigationTitle(notificationManager.filter?.label ?? "Notifications")

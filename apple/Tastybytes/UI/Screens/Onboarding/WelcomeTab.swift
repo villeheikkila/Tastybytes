@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct WelcomeTab: View {
+  @Binding var currentTab: OnboardTabsView.Tab
+
   var body: some View {
     VStack(alignment: .leading, spacing: 60) {
       HStack {
@@ -17,6 +19,13 @@ struct WelcomeTab: View {
       Spacer()
     }
     .padding(.top, 40)
+    .modifier(OnboardingContinueButtonModifier(title: "Continue", onClick: {
+      if let nextTab = OnboardTabsView.Tab(rawValue: currentTab.rawValue + 1) {
+        withAnimation {
+          currentTab = nextTab
+        }
+      }
+    }))
   }
 
   let features: [FeatureItem] = [FeatureItem(
