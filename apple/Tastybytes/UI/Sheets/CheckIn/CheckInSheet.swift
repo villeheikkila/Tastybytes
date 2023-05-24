@@ -125,7 +125,8 @@ struct CheckInSheet: View {
         })
         Button("\(editCheckIn?.imageUrl == nil && image == nil ? "Add" : "Change") Photo",
                systemImage: "photo", action: { showPhotoMenu.toggle() })
-      }.headerProminence(.increased)
+      }
+      .headerProminence(.increased)
 
       Section("Additional Information") {
         if !servingStyles.isEmpty {
@@ -139,7 +140,7 @@ struct CheckInSheet: View {
           }
         }
 
-        RouterLink(manufacturer?.name ?? "Manufactured By", sheet: .companySearch(onSelect: { company in
+        RouterLink("Manufactured by \(manufacturer?.name ?? "")", sheet: .companySearch(onSelect: { company in
           manufacturer = company
         }))
       }
@@ -148,34 +149,36 @@ struct CheckInSheet: View {
         RouterLink(sheet: .locationSearch(title: "Location", onSelect: { location in
           self.location = location
         }), label: {
-          HStack {
+          VStack(alignment: .leading, spacing: 2) {
+            Text("Check-in Location")
+              .foregroundColor(.secondary)
+
             if let location {
               Text(location.name)
               if let title = location.title {
                 Text(title)
                   .foregroundColor(.secondary)
+                  .font(.caption)
               }
-            } else {
-              Text("Location")
             }
-            Spacer()
           }
         })
 
         RouterLink(sheet: .locationSearch(title: "Purchase Location", onSelect: { location in
           purchaseLocation = location
         }), label: {
-          HStack {
-            if let location = purchaseLocation {
+          VStack(alignment: .leading, spacing: 2) {
+            Text("Purchase Location")
+              .foregroundColor(.secondary)
+
+            if let location {
               Text(location.name)
               if let title = location.title {
                 Text(title)
                   .foregroundColor(.secondary)
+                  .font(.caption)
               }
-            } else {
-              Text("Purchase Location")
             }
-            Spacer()
           }
         })
 

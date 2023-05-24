@@ -59,17 +59,13 @@ struct DuplicateProductSheet: View {
         """,
         role: .destructive
       ) {
-        await primaryAction(presenting)
+        switch mode {
+        case .reportDuplicate:
+          await reportDuplicate(presenting)
+        case .mergeDuplicate:
+          await mergeProducts(presenting)
+        }
       }
-    }
-  }
-
-  func primaryAction(_ to: Product.Joined) async {
-    switch mode {
-    case .reportDuplicate:
-      await reportDuplicate(to)
-    case .mergeDuplicate:
-      await mergeProducts(to)
     }
   }
 
