@@ -96,7 +96,7 @@ struct ProductDuplicateSuggestion {
   let duplicateOf: Product.Joined
 
   static func getQuery(_ queryType: QueryType) -> String {
-    let tableName = "product_duplicate_suggestion"
+    let tableName = "product_duplicate_suggestions"
     let saved = "product_id, duplicate_of_product_id"
 
     switch queryType {
