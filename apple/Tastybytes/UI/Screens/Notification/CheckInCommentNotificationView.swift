@@ -10,7 +10,7 @@ struct CheckInCommentNotificationView: View {
         Text(
           """
           \(checkInComment.profile.preferredName)\
-           commented on your check-in of\
+           commented on your check-in of \
           \(checkInComment.checkIn.product.getDisplayName(.full))
           """
         )
