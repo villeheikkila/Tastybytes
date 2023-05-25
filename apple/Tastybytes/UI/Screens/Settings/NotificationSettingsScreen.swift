@@ -16,6 +16,7 @@ struct NotificationSettingsScreen: View {
   @State private var initialValuesLoaded = false
   @State private var reactioNotificationDeliveryType: NotificationDeliveryType = .disabled
   @State private var checkInNotificationDeliveryType: NotificationDeliveryType = .disabled
+  @State private var checkInCommentNotificationsDeliveryType: NotificationDeliveryType = .disabled
   @State private var friendRequestNotificationDeliveryType: NotificationDeliveryType = .disabled
 
   var body: some View {
@@ -27,7 +28,12 @@ struct NotificationSettingsScreen: View {
           subtitle: "Show notification when someone reacts to your check-in"
         )
         NotificationDeliveryTypePicker(
-          notificationDeliveryType: $checkInNotificationDeliveryType,
+          notificationDeliveryType: $checkInCommentNotificationsDeliveryType,
+          title: "Comments",
+          subtitle: "Show notification when someone comments on your check-in"
+        )
+        NotificationDeliveryTypePicker(
+          notificationDeliveryType: $reactioNotificationDeliveryType,
           title: "Check-ins",
           subtitle: "Show notification when someone tags you in their check-in"
         )
@@ -72,6 +78,15 @@ struct NotificationSettingsScreen: View {
           .updateNotificationSettings(sendFriendRequestNotifications: newValue != .disabled)
       }
     })
+    .onChange(of: checkInCommentNotificationsDeliveryType, perform: { newValue in
+      Task {
+        await notificationManager
+          .updatePushNotificationSettingsForDevice(sendCheckInCommentNotifications: newValue ==
+            .pushNotification)
+        await profileManager
+          .updateNotificationSettings(sendCheckInCommentNotifications: newValue != .disabled)
+      }
+    })
     .task {
       if !initialValuesLoaded {
         reactioNotificationDeliveryType = profileManager.reactionNotifications ? notificationManager
@@ -80,6 +95,8 @@ struct NotificationSettingsScreen: View {
           .pushNotificationSettings?.sendTaggedCheckInNotifications ?? false ? .pushNotification : .inApp : .disabled
         friendRequestNotificationDeliveryType = profileManager.friendRequestNotifications ? notificationManager
           .pushNotificationSettings?.sendFriendRequestNotifications ?? false ? .pushNotification : .inApp : .disabled
+        checkInCommentNotificationsDeliveryType = profileManager.sendCommentNotifications ? notificationManager
+          .pushNotificationSettings?.sendCheckInCommentNotifications ?? false ? .pushNotification : .inApp : .disabled
       }
       initialValuesLoaded = true
     }

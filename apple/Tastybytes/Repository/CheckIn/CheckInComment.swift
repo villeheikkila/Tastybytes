@@ -24,16 +24,39 @@ extension CheckInComment {
       return tableName
     case let .joinedProfile(withTableName):
       return queryWithTableName(tableName, [saved, Profile.getQuery(.minimal(true))].joinComma(), withTableName)
+    case let .joinedCheckIn(withTableName):
+      return queryWithTableName(
+        tableName,
+        [saved, Profile.getQuery(.minimal(true)), CheckIn.getQuery(.joined(true))].joinComma(),
+        withTableName
+      )
     }
   }
 
   enum QueryType {
     case tableName
     case joinedProfile(_ withTableName: Bool)
+    case joinedCheckIn(_ withTableName: Bool)
   }
 }
 
 extension CheckInComment {
+  struct Joined: Identifiable, Hashable, Decodable, Sendable {
+    let id: Int
+    var content: String
+    let createdAt: Date
+    let profile: Profile
+    let checkIn: CheckIn
+
+    enum CodingKeys: String, CodingKey {
+      case id
+      case content
+      case createdAt = "created_at"
+      case profile = "profiles"
+      case checkIn = "check_ins"
+    }
+  }
+
   struct NewRequest: Encodable, Sendable {
     let content: String
     let checkInId: Int

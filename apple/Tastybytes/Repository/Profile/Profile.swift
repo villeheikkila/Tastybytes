@@ -261,6 +261,7 @@ struct ProfileSettings: Identifiable, Decodable, Hashable, Sendable {
   let sendReactionNotifications: Bool
   let sendTaggedCheckInNotifications: Bool
   let sendFriendRequestNotifications: Bool
+  let sendCommentNotifications: Bool
 
   enum CodingKeys: String, CodingKey {
     case id
@@ -268,6 +269,7 @@ struct ProfileSettings: Identifiable, Decodable, Hashable, Sendable {
     case sendReactionNotifications = "send_reaction_notifications"
     case sendTaggedCheckInNotifications = "send_tagged_check_in_notifications"
     case sendFriendRequestNotifications = "send_friend_request_notifications"
+    case sendCommentNotifications = "send_comment_notifications"
   }
 }
 
@@ -277,7 +279,7 @@ extension ProfileSettings {
     let saved =
       """
       id, color_scheme, send_reaction_notifications, send_tagged_check_in_notifications,\
-      send_friend_request_notifications
+      send_friend_request_notifications, send_comment_notifications
       """
 
     switch queryType {
@@ -306,22 +308,26 @@ extension ProfileSettings {
     var sendReactionNotifications: Bool?
     var sendTaggedCheckInNotifications: Bool?
     var sendFriendRequestNotifications: Bool?
+    var sendCommentNotifications: Bool?
 
     enum CodingKeys: String, CodingKey {
       case colorScheme = "color_scheme"
       case sendReactionNotifications = "send_reaction_notifications"
       case sendTaggedCheckInNotifications = "send_tagged_check_in_notifications"
       case sendFriendRequestNotifications = "send_friend_request_notifications"
+      case sendCommentNotifications = "send_comment_notifications"
     }
 
     init(
       sendReactionNotifications: Bool? = nil,
       sendTaggedCheckInNotifications: Bool? = nil,
-      sendFriendRequestNotifications: Bool? = nil
+      sendFriendRequestNotifications: Bool? = nil,
+      sendCommentNotifications: Bool? = nil
     ) {
       self.sendReactionNotifications = sendReactionNotifications
       self.sendTaggedCheckInNotifications = sendTaggedCheckInNotifications
       self.sendFriendRequestNotifications = sendFriendRequestNotifications
+      self.sendCommentNotifications = sendCommentNotifications
     }
 
     init(isDarkMode: Bool, isSystemColor: Bool) {

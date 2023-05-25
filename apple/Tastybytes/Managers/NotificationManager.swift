@@ -44,6 +44,8 @@ final class NotificationManager: ObservableObject {
               return self.filter == .friendRequest
             case .message:
               return self.filter == .message
+            case .checkInComment:
+              return self.filter == .message
             case .taggedCheckIn:
               return self.filter == .taggedCheckIn
             }
@@ -238,12 +240,14 @@ final class NotificationManager: ObservableObject {
 
   func updatePushNotificationSettingsForDevice(sendReactionNotifications: Bool? = nil,
                                                sendTaggedCheckInNotifications: Bool? = nil,
-                                               sendFriendRequestNotifications: Bool? = nil) async
+                                               sendFriendRequestNotifications: Bool? = nil,
+                                               sendCheckInCommentNotifications: Bool? = nil) async
   {
     guard let updateRequest = pushNotificationSettings?.copyWith(
       sendReactionNotifications: sendReactionNotifications,
       sendTaggedCheckInNotifications: sendTaggedCheckInNotifications,
-      sendFriendRequestNotifications: sendFriendRequestNotifications
+      sendFriendRequestNotifications: sendFriendRequestNotifications,
+      sendCheckInCommentNotifications: sendCheckInCommentNotifications
     ) else { return }
     switch await repository.notification.updatePushNotificationSettingsForDevice(updateRequest: updateRequest) {
     case let .success(pushNotificationSettings):

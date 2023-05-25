@@ -19,6 +19,8 @@ struct NotificationScreen: View {
             FriendRequestNotificationView(friend: friendRequest)
           case let .taggedCheckIn(taggedCheckIn):
             TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
+          case let .checkInComment(checkInComment):
+            CheckInCommentNotificationView(checkInComment: checkInComment)
           case let .checkInReaction(checkInReaction):
             CheckInReactionNotificationView(checkInReaction: checkInReaction)
           }

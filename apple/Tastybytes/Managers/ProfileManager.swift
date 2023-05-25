@@ -24,6 +24,7 @@ final class ProfileManager: ObservableObject {
   @Published var reactionNotifications = true
   @Published var friendRequestNotifications = true
   @Published var checkInTagNotifications = true
+  @Published var sendCommentNotifications = true
 
   // AppIcon
   @Published var appIcon: AppIcon = .ramune
@@ -130,6 +131,7 @@ final class ProfileManager: ObservableObject {
       reactionNotifications = currentUserProfile.settings.sendReactionNotifications
       friendRequestNotifications = currentUserProfile.settings.sendFriendRequestNotifications
       checkInTagNotifications = currentUserProfile.settings.sendTaggedCheckInNotifications
+      sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
       appIcon = getCurrentAppIcon()
       initialValuesLoaded = false
       isLoggedIn = true
@@ -181,12 +183,14 @@ final class ProfileManager: ObservableObject {
 
   func updateNotificationSettings(sendReactionNotifications: Bool? = nil,
                                   sendTaggedCheckInNotifications: Bool? = nil,
-                                  sendFriendRequestNotifications: Bool? = nil) async
+                                  sendFriendRequestNotifications: Bool? = nil,
+                                  sendCheckInCommentNotifications: Bool? = nil) async
   {
     let update = ProfileSettings.UpdateRequest(
       sendReactionNotifications: sendReactionNotifications,
       sendTaggedCheckInNotifications: sendTaggedCheckInNotifications,
-      sendFriendRequestNotifications: sendFriendRequestNotifications
+      sendFriendRequestNotifications: sendFriendRequestNotifications,
+      sendCommentNotifications: sendCheckInCommentNotifications
     )
 
     if case let .failure(error) = await repository.profile.updateSettings(

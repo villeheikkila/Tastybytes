@@ -6,6 +6,7 @@ struct Notification: Identifiable, Hashable {
     case friendRequest(Friend)
     case taggedCheckIn(CheckIn)
     case checkInReaction(CheckInReaction.JoinedCheckIn)
+    case checkInComment(CheckInComment.Joined)
   }
 
   let id: Int
@@ -27,7 +28,8 @@ extension Notification {
         saved,
         CheckInReaction.getQuery(.joinedProfileCheckIn(true)),
         CheckInTaggedProfiles.getQuery(.joined(true)),
-        Friend.getQuery(.joined(true))
+        Friend.getQuery(.joined(true)),
+        CheckInComment.getQuery(.joinedCheckIn(true))
       ].joinComma()
     }
   }
@@ -47,6 +49,7 @@ extension Notification: Decodable {
     case friendRequest = "friends"
     case taggedCheckIn = "check_in_tagged_profiles"
     case checkInReaction = "check_in_reactions"
+    case checkInComments = "check_in_comments"
   }
 
   init(from decoder: Decoder) throws {
@@ -70,6 +73,7 @@ extension Notification: Decodable {
     let friendRequest = try values.decodeIfPresent(Friend.self, forKey: .friendRequest)
     let taggedCheckIn = try values.decodeIfPresent(CheckInTaggedProfiles.self, forKey: .taggedCheckIn)
     let checkInReaction = try values.decodeIfPresent(CheckInReaction.JoinedCheckIn.self, forKey: .checkInReaction)
+    let checkInComment = try values.decodeIfPresent(CheckInComment.Joined.self, forKey: .checkInComments)
 
     if let message {
       content = Notification.Content.message(message)
@@ -79,6 +83,8 @@ extension Notification: Decodable {
       content = Notification.Content.taggedCheckIn(checkIn)
     } else if let checkInReaction {
       content = Notification.Content.checkInReaction(checkInReaction)
+    } else if let checkInComment {
+      content = Notification.Content.checkInComment(checkInComment)
     } else {
       content = Notification.Content.message("No content")
     }
@@ -135,7 +141,7 @@ enum NotificationType: String, CaseIterable, Identifiable, Sendable {
     self
   }
 
-  case message, friendRequest, taggedCheckIn, checkInReaction
+  case message, friendRequest, taggedCheckIn, checkInReaction, checkInComment
 
   var label: String {
     switch self {
@@ -147,6 +153,8 @@ enum NotificationType: String, CaseIterable, Identifiable, Sendable {
       return "Tagged check-ins"
     case .checkInReaction:
       return "Reactions"
+    case .checkInComment:
+      return "Comments"
     }
   }
 
@@ -160,6 +168,8 @@ enum NotificationType: String, CaseIterable, Identifiable, Sendable {
       return "tag"
     case .checkInReaction:
       return "hand.thumbsup"
+    case .checkInComment:
+      return "bubble.left"
     }
   }
 }
@@ -169,31 +179,36 @@ struct ProfilePushNotification: Codable, Identifiable {
   let sendReactionNotifications: Bool
   let sendTaggedCheckInNotifications: Bool
   let sendFriendRequestNotifications: Bool
+  let sendCheckInCommentNotifications: Bool
 
   enum CodingKeys: String, CodingKey {
     case id = "firebase_registration_token"
     case sendReactionNotifications = "send_reaction_notifications"
     case sendTaggedCheckInNotifications = "send_tagged_check_in_notifications"
     case sendFriendRequestNotifications = "send_friend_request_notifications"
+    case sendCheckInCommentNotifications = "send_comment_notifications"
   }
 
   func copyWith(
     sendReactionNotifications: Bool? = nil,
     sendTaggedCheckInNotifications: Bool? = nil,
-    sendFriendRequestNotifications: Bool? = nil
+    sendFriendRequestNotifications: Bool? = nil,
+    sendCheckInCommentNotifications: Bool? = nil
   ) -> ProfilePushNotification {
     ProfilePushNotification(id: id,
                             sendReactionNotifications: sendReactionNotifications ?? self.sendReactionNotifications,
                             sendTaggedCheckInNotifications: sendTaggedCheckInNotifications ?? self
                               .sendTaggedCheckInNotifications,
                             sendFriendRequestNotifications: sendFriendRequestNotifications ?? self
-                              .sendFriendRequestNotifications)
+                              .sendFriendRequestNotifications,
+                            sendCheckInCommentNotifications: sendCheckInCommentNotifications ?? self
+                              .sendCheckInCommentNotifications)
   }
 
   static func getQuery(_ queryType: QueryType) -> String {
     let tableName = "profile_push_notifications"
     let saved =
-      "firebase_registration_token, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications"
+      "firebase_registration_token, send_reaction_notifications, send_tagged_check_in_notifications, send_friend_request_notifications, send_friend_request_notifications, send_comment_notifications"
 
     switch queryType {
     case .tableName:
