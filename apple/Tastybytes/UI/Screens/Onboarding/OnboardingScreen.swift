@@ -1,6 +1,18 @@
 import SwiftUI
 
-struct OnboardTabsView: View {
+struct OnboardingScreen: View {
+  enum Tab: Int, Identifiable, Hashable {
+    case welcome, profile, avatar, pushNotification, final
+
+    var id: Int {
+      rawValue
+    }
+
+    var next: Tab? {
+      .init(rawValue: id + 1)
+    }
+  }
+
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @Environment(\.colorScheme) private var colorScheme
   @FocusState private var focusedField: OnboardField?
@@ -11,17 +23,19 @@ struct OnboardTabsView: View {
       currentTab = newTab
       focusedField = nil
     })) {
-      WelcomeTab(currentTab: $currentTab)
+      WelcomeOnboarding(currentTab: $currentTab)
         .tag(Tab.welcome)
-      FillProfileTab(focusedField: _focusedField, currentTab: $currentTab)
+      ProfileOnboarding(focusedField: _focusedField, currentTab: $currentTab)
         .tag(Tab.profile)
-      AvatarTab(currentTab: $currentTab)
+      AvatarOnboarding(currentTab: $currentTab)
         .tag(Tab.avatar)
-      FinalStepTab()
+      PushNotificationOnboarding(currentTab: $currentTab)
+        .tag(Tab.pushNotification)
+      FinalOnboarding()
         .tag(Tab.final)
     }
     .tabViewStyle(.page)
-    .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+    .indexViewStyle(.page(backgroundDisplayMode: .never))
     .task {
       await splashScreenManager.dismiss()
     }
@@ -30,14 +44,4 @@ struct OnboardTabsView: View {
 
 enum OnboardField {
   case username, firstName, lastName
-}
-
-extension OnboardTabsView {
-  enum Tab: Int, Identifiable, Hashable {
-    case welcome, profile, avatar, final
-
-    var id: Int {
-      rawValue
-    }
-  }
 }

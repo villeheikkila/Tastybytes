@@ -17,8 +17,12 @@ struct OnboardingContinueButtonModifier: ViewModifier {
 
       VStack {
         Spacer()
-        Button(title, action: {
+        Button(action: {
           onClick()
+        }, label: {
+          Spacer()
+          Text(title)
+          Spacer()
         })
         .fontWeight(.bold)
         .padding()
@@ -28,7 +32,7 @@ struct OnboardingContinueButtonModifier: ViewModifier {
         .disabled(isDisabled)
         .cornerRadius(10)
         .padding()
-        .padding(.bottom, 50)
+        .padding(.bottom, 10)
       }
     }
   }

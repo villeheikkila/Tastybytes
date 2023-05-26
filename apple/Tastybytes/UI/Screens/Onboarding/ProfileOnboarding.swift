@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct FillProfileTab: View {
+struct ProfileOnboarding: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @FocusState var focusedField: OnboardField?
@@ -10,10 +10,14 @@ struct FillProfileTab: View {
   @State private var usernameIsAvailable = false
 
   @State private var isLoading = false
-  @Binding var currentTab: OnboardTabsView.Tab
+  @Binding var currentTab: OnboardingScreen.Tab
+
+  var userNameIsValid: Bool {
+    username.count >= 3
+  }
 
   var canProgressToNextStep: Bool {
-    usernameIsAvailable && !username.isEmpty && !isLoading
+    userNameIsValid && usernameIsAvailable && !username.isEmpty && !isLoading
   }
 
   var body: some View {
@@ -44,7 +48,7 @@ struct FillProfileTab: View {
             isLoading = true
           })
           .onChange(of: username, debounceTime: 0.3) { newValue in
-            guard newValue.count > 1 else { return }
+            guard newValue.count >= 3 else { return }
             if username == profileManager.username {
               usernameIsAvailable = true
             } else {
@@ -76,23 +80,21 @@ struct FillProfileTab: View {
       }
       .opacity(firstName.isEmpty || lastName.isEmpty ? 0 : 1)
     }
-    .modifier(OnboardingContinueButtonModifier(title: "Continue", isDisabled: !canProgressToNextStep,
-                                               onClick: {
-                                                 Task {
-                                                   await profileManager
-                                                     .updateProfile(update: Profile
-                                                       .UpdateRequest(username: username, firstName: firstName,
-                                                                      lastName: lastName))
-                                                 }
-                                                 if let nextTab = OnboardTabsView.Tab(rawValue: currentTab.rawValue + 1) {
-                                                   withAnimation {
-                                                     currentTab = nextTab
-                                                   }
-                                                 }
-                                               }))
+    .modifier(OnboardingContinueButtonModifier(title: "Continue", isDisabled: !canProgressToNextStep, onClick: {
+      Task {
+        await profileManager.updateProfile(update: Profile.UpdateRequest(username: username, firstName: firstName,
+                                                                         lastName: lastName))
+      }
+      if let nextTab = currentTab.next {
+        withAnimation {
+          currentTab = nextTab
+        }
+      }
+    }))
     .listStyle(.plain)
     .scrollContentBackground(.hidden)
     .scrollDisabled(true)
+    .simultaneousGesture(DragGesture())
     .accessibility(hidden: true)
     .task {
       username = profileManager.username

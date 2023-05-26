@@ -11,10 +11,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     FirebaseApp.configure()
     FirebaseConfiguration.shared.setLoggerLevel(.min)
     UNUserNotificationCenter.current().delegate = self
-    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-    UNUserNotificationCenter.current().requestAuthorization(
-      options: authOptions
-    ) { _, _ in }
 
     application.registerForRemoteNotifications()
     Messaging.messaging().delegate = self

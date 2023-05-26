@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct WelcomeTab: View {
-  @Binding var currentTab: OnboardTabsView.Tab
+struct WelcomeOnboarding: View {
+  @Binding var currentTab: OnboardingScreen.Tab
 
   var body: some View {
     VStack(alignment: .leading, spacing: 60) {
@@ -20,7 +20,7 @@ struct WelcomeTab: View {
     }
     .padding(.top, 40)
     .modifier(OnboardingContinueButtonModifier(title: "Continue", onClick: {
-      if let nextTab = OnboardTabsView.Tab(rawValue: currentTab.rawValue + 1) {
+      if let nextTab = currentTab.next {
         withAnimation {
           currentTab = nextTab
         }

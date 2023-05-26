@@ -1,12 +1,12 @@
 import PhotosUI
 import SwiftUI
 
-struct AvatarTab: View {
+struct AvatarOnboarding: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @FocusState var focusedField: OnboardField?
   @State private var selectedItem: PhotosPickerItem?
-  @Binding var currentTab: OnboardTabsView.Tab
+  @Binding var currentTab: OnboardingScreen.Tab
 
   var body: some View {
     Form {
@@ -34,7 +34,7 @@ struct AvatarTab: View {
       .listRowBackground(Color.clear)
     }
     .modifier(OnboardingContinueButtonModifier(title: "Continue", onClick: {
-      if let nextTab = OnboardTabsView.Tab(rawValue: currentTab.rawValue + 1) {
+      if let nextTab = currentTab.next {
         withAnimation {
           currentTab = nextTab
         }

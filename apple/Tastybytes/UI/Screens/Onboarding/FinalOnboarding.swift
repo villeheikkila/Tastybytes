@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct FinalStepTab: View {
+struct FinalOnboarding: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
 
