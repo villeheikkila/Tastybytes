@@ -153,8 +153,8 @@ final class ProfileManager: ObservableObject {
 
   func checkIfUsernameIsAvailable(username: String) async -> Bool {
     switch await repository.profile.checkIfUsernameIsAvailable(username: username) {
-    case let .success(usernameExists):
-      return !usernameExists
+    case let .success(isAvailable):
+      return isAvailable
     case let .failure(error):
       logger.error("failed to check if username is available: \(error.localizedDescription)")
       return true

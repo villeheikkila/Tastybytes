@@ -109,7 +109,8 @@
 		5C6E106B2A1E014100079F8E /* TabIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6E106A2A1E014100079F8E /* TabIdentifier.swift */; };
 		5C6E106D2A1E08BF00079F8E /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6E106C2A1E08BF00079F8E /* Spacing.swift */; };
 		5C6E106F2A1FDF8000079F8E /* CheckInCommentNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6E106E2A1FDF8000079F8E /* CheckInCommentNotificationView.swift */; };
-		5C6E10712A210FFA00079F8E /* PushNotificationOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6E10702A210FFA00079F8E /* PushNotificationOnboarding.swift */; };
+		5C6E10712A210FFA00079F8E /* PermissionOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6E10702A210FFA00079F8E /* PermissionOnboarding.swift */; };
+		5C6E10732A235ED000079F8E /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6E10722A235ED000079F8E /* PermissionManager.swift */; };
 		5C73CD0E29E5ED2100A31F45 /* VerificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C73CD0D29E5ED2100A31F45 /* VerificationButton.swift */; };
 		5C7881F22A0AAFC400AF29EE /* MergeLocationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7881F12A0AAFC400AF29EE /* MergeLocationSheet.swift */; };
 		5C7C3574299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */; };
@@ -323,7 +324,8 @@
 		5C6E106A2A1E014100079F8E /* TabIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabIdentifier.swift; sourceTree = "<group>"; };
 		5C6E106C2A1E08BF00079F8E /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		5C6E106E2A1FDF8000079F8E /* CheckInCommentNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCommentNotificationView.swift; sourceTree = "<group>"; };
-		5C6E10702A210FFA00079F8E /* PushNotificationOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationOnboarding.swift; sourceTree = "<group>"; };
+		5C6E10702A210FFA00079F8E /* PermissionOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionOnboarding.swift; sourceTree = "<group>"; };
+		5C6E10722A235ED000079F8E /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		5C73CD0D29E5ED2100A31F45 /* VerificationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationButton.swift; sourceTree = "<group>"; };
 		5C7881F12A0AAFC400AF29EE /* MergeLocationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeLocationSheet.swift; sourceTree = "<group>"; };
 		5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserFriendsScreenView.swift; sourceTree = "<group>"; };
@@ -509,7 +511,7 @@
 				5C6E10622A1D4E3C00079F8E /* AvatarOnboarding.swift */,
 				5C25C671299561BD00C07953 /* ProfileOnboarding.swift */,
 				5C25C689299572B700C07953 /* FinalOnboarding.swift */,
-				5C6E10702A210FFA00079F8E /* PushNotificationOnboarding.swift */,
+				5C6E10702A210FFA00079F8E /* PermissionOnboarding.swift */,
 				5C6E10642A1D561D00079F8E /* OnboardingContinueButtonModifier.swift */,
 			);
 			path = Onboarding;
@@ -1004,6 +1006,7 @@
 				5C0E364D2923C8CD0072EFBD /* ProfileManager.swift */,
 				5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */,
 				5C234F0B29F64F5B003F2283 /* PurchaseManager.swift */,
+				5C6E10722A235ED000079F8E /* PermissionManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1533,8 +1536,9 @@
 				5CDC9F9D29E4572000B6082F /* Screen.swift in Sources */,
 				5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */,
 				5C61E83229B7B41400D10AA3 /* DiscoverScreen.swift in Sources */,
-				5C6E10712A210FFA00079F8E /* PushNotificationOnboarding.swift in Sources */,
+				5C6E10712A210FFA00079F8E /* PermissionOnboarding.swift in Sources */,
 				5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */,
+				5C6E10732A235ED000079F8E /* PermissionManager.swift in Sources */,
 				5C32C41429ED9F9C008CE8A9 /* ErrorScreen.swift in Sources */,
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
 				5C0E365C292ADA290072EFBD /* SummaryView.swift in Sources */,

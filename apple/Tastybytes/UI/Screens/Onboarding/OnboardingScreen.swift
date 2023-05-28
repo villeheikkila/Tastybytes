@@ -29,7 +29,7 @@ struct OnboardingScreen: View {
         .tag(Tab.profile)
       AvatarOnboarding(currentTab: $currentTab)
         .tag(Tab.avatar)
-      PushNotificationOnboarding(currentTab: $currentTab)
+      PermissionOnboarding(currentTab: $currentTab)
         .tag(Tab.pushNotification)
       FinalOnboarding()
         .tag(Tab.final)

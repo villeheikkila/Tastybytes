@@ -49,13 +49,9 @@ struct ProfileOnboarding: View {
           })
           .onChange(of: username, debounceTime: 0.3) { newValue in
             guard newValue.count >= 3 else { return }
-            if username == profileManager.username {
-              usernameIsAvailable = true
-            } else {
-              Task {
-                usernameIsAvailable = await profileManager.checkIfUsernameIsAvailable(username: newValue)
-                isLoading = false
-              }
+            Task {
+              usernameIsAvailable = await profileManager.checkIfUsernameIsAvailable(username: newValue)
+              isLoading = false
             }
           }
         TextField("First Name (optional)", text: $firstName)
@@ -100,6 +96,7 @@ struct ProfileOnboarding: View {
       username = profileManager.username
       firstName = profileManager.firstName ?? ""
       lastName = profileManager.lastName ?? ""
+      usernameIsAvailable = await profileManager.checkIfUsernameIsAvailable(username: username)
     }
   }
 }

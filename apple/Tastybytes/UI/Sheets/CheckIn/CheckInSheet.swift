@@ -146,41 +146,13 @@ struct CheckInSheet: View {
       }
 
       Section("Location & Friends") {
-        RouterLink(sheet: .locationSearch(title: "Location", onSelect: { location in
+        LocationInputButton(title: "Check-in Location", selection: location) { location in
           self.location = location
-        }), label: {
-          VStack(alignment: .leading, spacing: 2) {
-            Text("Check-in Location")
-              .foregroundColor(.secondary)
+        }
 
-            if let location {
-              Text(location.name)
-              if let title = location.title {
-                Text(title)
-                  .foregroundColor(.secondary)
-                  .font(.caption)
-              }
-            }
-          }
-        })
-
-        RouterLink(sheet: .locationSearch(title: "Purchase Location", onSelect: { location in
+        LocationInputButton(title: "Purchase Location", selection: purchaseLocation) { location in
           purchaseLocation = location
-        }), label: {
-          VStack(alignment: .leading, spacing: 2) {
-            Text("Purchase Location")
-              .foregroundColor(.secondary)
-
-            if let location {
-              Text(location.name)
-              if let title = location.title {
-                Text(title)
-                  .foregroundColor(.secondary)
-                  .font(.caption)
-              }
-            }
-          }
-        })
+        }
 
         if profileManager.hasPermission(.canSetCheckInDate) {
           RouterLink(sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn)) {
@@ -330,5 +302,29 @@ extension CheckInSheet {
   enum Action {
     case create
     case update
+  }
+}
+
+struct LocationInputButton: View {
+  let title: String
+  let selection: Location?
+  let onSelect: (_ location: Location) -> Void
+
+  var body: some View {
+    RouterLink(sheet: .locationSearch(title: title, onSelect: onSelect), label: {
+      VStack(alignment: .leading, spacing: 2) {
+        Text(title)
+          .foregroundColor(.secondary)
+
+        if let selection {
+          Text(selection.name)
+          if let locationTitle = selection.title {
+            Text(locationTitle)
+              .foregroundColor(.secondary)
+              .font(.caption)
+          }
+        }
+      }
+    })
   }
 }
