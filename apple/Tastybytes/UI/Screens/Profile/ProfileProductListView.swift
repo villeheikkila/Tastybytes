@@ -10,10 +10,19 @@ struct ProfileProductListView: View {
   @State private var initialDataLoaded = false
 
   let profile: Profile
+  let locked: Bool
 
-  init(profile: Profile, productFilter: Product.Filter? = nil) {
+  init(profile: Profile, locked: Bool, productFilter: Product.Filter? = nil) {
     self.profile = profile
+    self.locked = locked
     _productFilter = State(initialValue: productFilter)
+  }
+
+  var navigationTitle: String {
+    if locked {
+      return productFilter?.subcategory?.name ?? productFilter?.category?.name ?? "Top entries"
+    }
+    return initialDataLoaded ? "Products (\(filteredProducts.count))" : "Products"
   }
 
   var filteredProducts: [Product.Joined] {
@@ -44,15 +53,15 @@ struct ProfileProductListView: View {
       }
     }
     .listStyle(.plain)
-    .searchable(text: $searchTerm)
+    .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
     .overlay {
-      if let productFilter {
+      if let productFilter, !locked {
         ProductFilterOverlayView(filters: productFilter, onReset: {
           self.productFilter = nil
         })
       }
     }
-    .navigationTitle(initialDataLoaded ? "Products (\(filteredProducts.count))" : "Products")
+    .navigationTitle(navigationTitle)
     .toolbar {
       toolbarContent
     }
@@ -64,14 +73,16 @@ struct ProfileProductListView: View {
   }
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-    ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouterLink(
-        "Show filters",
-        systemImage: "line.3.horizontal.decrease.circle",
-        sheet: .productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
-                              onApply: { filter in productFilter = filter })
-      )
-      .labelStyle(.iconOnly)
+    if !locked {
+      ToolbarItemGroup(placement: .navigationBarTrailing) {
+        RouterLink(
+          "Show filters",
+          systemImage: "line.3.horizontal.decrease.circle",
+          sheet: .productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
+                                onApply: { filter in productFilter = filter })
+        )
+        .labelStyle(.iconOnly)
+      }
     }
   }
 

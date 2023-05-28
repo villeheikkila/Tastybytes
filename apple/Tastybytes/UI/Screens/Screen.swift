@@ -49,7 +49,7 @@ enum Screen: Hashable {
     case let .location(location):
       LocationScreen(location: location)
     case let .profileProducts(profile):
-      ProfileProductListView(profile: profile)
+      ProfileProductListView(profile: profile, locked: false)
     case let .profileStatistics(profile):
       ProfileStatisticsView(profile: profile)
     case let .addProduct(initialBarcode):
@@ -59,7 +59,7 @@ enum Screen: Hashable {
     case let .profile(profile):
       ProfileScreen(profile: profile)
     case let .profileProductsByFilter(profile, filter):
-      ProfileProductListView(profile: profile, productFilter: filter)
+      ProfileProductListView(profile: profile, locked: true, productFilter: filter)
     case let .product(product):
       ProductScreen(product: product)
     case let .friends(profile):
