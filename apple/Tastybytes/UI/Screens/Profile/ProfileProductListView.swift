@@ -20,7 +20,15 @@ struct ProfileProductListView: View {
 
   var navigationTitle: String {
     if locked {
-      return productFilter?.subcategory?.name ?? productFilter?.category?.name ?? "Top entries"
+      let subcategoryName = productFilter?.subcategory?.name
+      let categoryName = productFilter?.category?.name
+      if let subcategoryName, let categoryName {
+        return "\(categoryName): \(subcategoryName)"
+      } else if let categoryName {
+        return categoryName
+      } else {
+        return "Top Entries"
+      }
     }
     return initialDataLoaded ? "Products (\(filteredProducts.count))" : "Products"
   }
