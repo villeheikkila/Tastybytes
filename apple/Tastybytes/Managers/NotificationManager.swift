@@ -176,6 +176,8 @@ final class NotificationManager: ObservableObject {
         return cir.checkIn == checkIn
       case let .taggedCheckIn(tci):
         return tci == checkIn
+      case let .checkInComment(cic):
+        return cic.checkIn == checkIn
       default:
         return false
       }
