@@ -142,7 +142,7 @@ struct RootView: View {
     if !profileManager.isLoggedIn {
       EmptyView()
     } else if !profileManager.isOnboarded {
-      OnboardTabsView()
+      OnboardingScreen()
     } else {
       Group {
         if isPadOrMac() {

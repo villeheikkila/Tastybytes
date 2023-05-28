@@ -314,10 +314,11 @@ struct LocationInputButton: View {
     RouterLink(sheet: .locationSearch(title: title, onSelect: onSelect), label: {
       VStack(alignment: .leading, spacing: 2) {
         Text(title)
-          .foregroundColor(.secondary)
 
         if let selection {
           Text(selection.name)
+            .foregroundColor(.secondary)
+
           if let locationTitle = selection.title {
             Text(locationTitle)
               .foregroundColor(.secondary)
