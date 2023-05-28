@@ -74,14 +74,31 @@ struct SubcategoryStatisticsView: View {
           .padding([.top, .bottom], 8)
       }
       ForEach(subcategoryStatistics) { subcategory in
-        HStack {
-          Text(subcategory.name).font(.caption).bold()
-          Spacer()
-          Text(String(subcategory.count)).font(.caption).bold()
+        RouterLink(screen: .profileProductsByFilter(
+          profile,
+          Product
+            .Filter(category: category.category, subcategory: subcategory.subcategory, onlyNonCheckedIn: false,
+                    sortBy: Product.Filter.SortBy.highestRated)
+        )) {
+          HStack {
+            Text(subcategory.name)
+            Spacer()
+            Text(String(subcategory.count))
+          }
+          .font(.caption)
+          .bold()
         }
       }
     } header: {
-      Label("Subcategories", systemImage: "tag").font(.caption).bold()
+      RouterLink("Subcategories (all)", systemImage: "tag", screen: .profileProductsByFilter(
+        profile,
+        Product
+          .Filter(category: category.category, subcategory: nil, onlyNonCheckedIn: false,
+                  sortBy: Product.Filter.SortBy.highestRated)
+      ))
+      .foregroundColor(Color.primary)
+      .font(.caption)
+      .bold()
     }
     .task {
       await loadSubcategoryStatistics()

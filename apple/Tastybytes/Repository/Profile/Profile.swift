@@ -393,6 +393,10 @@ struct CategoryStatistics: Identifiable, Decodable, Sendable, CategoryProtocol {
     }
   }
 
+  var category: Category {
+    Category(id: id, name: name, icon: icon)
+  }
+
   enum QueryPart {
     case rpcName, value
   }
@@ -420,6 +424,10 @@ struct SubcategoryStatistics: Identifiable, Decodable, Sendable {
       case userId = "p_user_id"
       case categoryId = "p_category_id"
     }
+  }
+
+  var subcategory: Subcategory {
+    Subcategory(id: id, name: name, isVerified: true)
   }
 
   enum QueryPart {

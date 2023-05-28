@@ -177,7 +177,7 @@ extension Product {
     }
   }
 
-  struct Filter {
+  struct Filter: Hashable {
     enum SortBy: String, CaseIterable, Identifiable, Sendable {
       var id: Self { self }
       case highestRated = "highest_rated"
@@ -197,6 +197,35 @@ extension Product {
     let subcategory: Subcategory?
     let onlyNonCheckedIn: Bool
     let sortBy: SortBy?
+
+    init(
+      category: Category.JoinedSubcategoriesServingStyles?,
+      subcategory: Subcategory?,
+      onlyNonCheckedIn: Bool,
+      sortBy: SortBy?
+    ) {
+      self.category = category
+      self.subcategory = subcategory
+      self.onlyNonCheckedIn = onlyNonCheckedIn
+      self.sortBy = sortBy
+    }
+
+    init(category: Category?, subcategory: Subcategory?, onlyNonCheckedIn: Bool, sortBy: SortBy?) {
+      if let category {
+        self.category = Category.JoinedSubcategoriesServingStyles(
+          id: category.id,
+          name: category.name,
+          icon: category.icon,
+          subcategories: [],
+          servingStyles: []
+        )
+      } else {
+        self.category = nil
+      }
+      self.subcategory = subcategory
+      self.onlyNonCheckedIn = onlyNonCheckedIn
+      self.sortBy = sortBy
+    }
 
     func copyWith(category: Category.JoinedSubcategoriesServingStyles?) -> Filter {
       Filter(category: category, subcategory: subcategory, onlyNonCheckedIn: onlyNonCheckedIn, sortBy: sortBy)

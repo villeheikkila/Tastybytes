@@ -11,6 +11,11 @@ struct ProfileProductListView: View {
 
   let profile: Profile
 
+  init(profile: Profile, productFilter: Product.Filter? = nil) {
+    self.profile = profile
+    _productFilter = State(initialValue: productFilter)
+  }
+
   var filteredProducts: [Product.Joined] {
     let filtered = products
       .filter { filterProduct($0) }

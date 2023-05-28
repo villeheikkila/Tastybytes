@@ -9,6 +9,7 @@ enum Screen: Hashable {
   case brand(Brand.JoinedSubBrandsProductsCompany)
   case fetchBrand(Brand.JoinedCompany)
   case profileProducts(Profile)
+  case profileProductsByFilter(Profile, Product.Filter)
   case profileStatistics(Profile)
   case settings
   case currentUserFriends
@@ -57,6 +58,8 @@ enum Screen: Hashable {
       CheckInScreen(checkIn: checkIn)
     case let .profile(profile):
       ProfileScreen(profile: profile)
+    case let .profileProductsByFilter(profile, filter):
+      ProfileProductListView(profile: profile, productFilter: filter)
     case let .product(product):
       ProductScreen(product: product)
     case let .friends(profile):
