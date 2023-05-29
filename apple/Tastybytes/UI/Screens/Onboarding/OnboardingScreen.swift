@@ -2,10 +2,26 @@ import SwiftUI
 
 struct OnboardingScreen: View {
   enum Tab: Int, Identifiable, Hashable {
-    case welcome, profile, avatar, pushNotification, final
+    case welcome, profile, avatar, permission, final
 
     var id: Int {
       rawValue
+    }
+
+    @ViewBuilder
+    func view(currentTab: Binding<OnboardingScreen.Tab>, focusedField: FocusState<OnboardField?>) -> some View {
+      switch self {
+      case .welcome:
+        WelcomeOnboarding(currentTab: currentTab)
+      case .profile:
+        ProfileOnboarding(focusedField: focusedField, currentTab: currentTab)
+      case .avatar:
+        AvatarOnboarding(currentTab: currentTab)
+      case .permission:
+        PermissionOnboarding(currentTab: currentTab)
+      case .final:
+        FinalOnboarding()
+      }
     }
 
     var next: Tab? {
@@ -30,7 +46,7 @@ struct OnboardingScreen: View {
       AvatarOnboarding(currentTab: $currentTab)
         .tag(Tab.avatar)
       PermissionOnboarding(currentTab: $currentTab)
-        .tag(Tab.pushNotification)
+        .tag(Tab.permission)
       FinalOnboarding()
         .tag(Tab.final)
     }

@@ -107,14 +107,6 @@ struct PermissionOnboarding: View {
   }
 }
 
-struct PushNotificationOnboarding_Previews: PreviewProvider {
-  static var previews: some View {
-    TabView {
-      PermissionOnboarding(currentTab: .constant(OnboardingScreen.Tab.pushNotification))
-    }
-  }
-}
-
 private struct PermissionListRow: View {
   let title: String
   let subtitle: String

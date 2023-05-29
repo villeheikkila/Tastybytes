@@ -284,8 +284,6 @@ final class ProfileManager: ObservableObject {
 
   func onboardingUpdate() async {
     let update = Profile.UpdateRequest(
-      isPrivate: isPrivateProfile,
-      showFullName: showFullName,
       isOnboarded: true
     )
 
@@ -294,7 +292,7 @@ final class ProfileManager: ObservableObject {
     ) {
     case .success:
       logger.info("onboarded")
-      await initialize()
+      extendedProfile = extendedProfile?.copyWith(isOnboarded: true)
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

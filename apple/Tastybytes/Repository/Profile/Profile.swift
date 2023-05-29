@@ -237,6 +237,10 @@ extension Profile {
       self.isPrivate = isPrivate
     }
 
+    init(isOnboarded: Bool) {
+      self.isOnboarded = isOnboarded
+    }
+
     init(username: String?, firstName: String?, lastName: String?) {
       self.username = username
       self.firstName = firstName
