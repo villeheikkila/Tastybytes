@@ -8,28 +8,13 @@ struct OnboardingScreen: View {
       rawValue
     }
 
-    @ViewBuilder
-    func view(currentTab: Binding<OnboardingScreen.Tab>, focusedField: FocusState<OnboardField?>) -> some View {
-      switch self {
-      case .welcome:
-        WelcomeOnboarding(currentTab: currentTab)
-      case .profile:
-        ProfileOnboarding(focusedField: focusedField, currentTab: currentTab)
-      case .avatar:
-        AvatarOnboarding(currentTab: currentTab)
-      case .permission:
-        PermissionOnboarding(currentTab: currentTab)
-      case .final:
-        FinalOnboarding()
-      }
-    }
-
     var next: Tab? {
       .init(rawValue: id + 1)
     }
   }
 
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
+  @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.colorScheme) private var colorScheme
   @FocusState private var focusedField: OnboardField?
   @State private var currentTab = Tab.welcome
@@ -39,12 +24,18 @@ struct OnboardingScreen: View {
       currentTab = newTab
       focusedField = nil
     })) {
-      WelcomeOnboarding(currentTab: $currentTab)
-        .tag(Tab.welcome)
-      ProfileOnboarding(focusedField: _focusedField, currentTab: $currentTab)
-        .tag(Tab.profile)
-      AvatarOnboarding(currentTab: $currentTab)
-        .tag(Tab.avatar)
+      WelcomeOnboarding(currentTab: $currentTab) {
+        withAnimation {
+          currentTab = profileManager.isOnboarded ? Tab.permission : .profile
+        }
+      }
+      .tag(Tab.welcome)
+      if !profileManager.isOnboarded {
+        ProfileOnboarding(focusedField: _focusedField, currentTab: $currentTab)
+          .tag(Tab.profile)
+        AvatarOnboarding(currentTab: $currentTab)
+          .tag(Tab.avatar)
+      }
       PermissionOnboarding(currentTab: $currentTab)
         .tag(Tab.permission)
       FinalOnboarding()

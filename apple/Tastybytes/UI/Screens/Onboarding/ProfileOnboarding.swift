@@ -81,9 +81,9 @@ struct ProfileOnboarding: View {
         await profileManager.updateProfile(update: Profile.UpdateRequest(username: username, firstName: firstName,
                                                                          lastName: lastName))
       }
-      if let nextTab = currentTab.next {
-        withAnimation {
-          currentTab = nextTab
+      withAnimation {
+        if let next = currentTab.next {
+          currentTab = next
         }
       }
     }))
