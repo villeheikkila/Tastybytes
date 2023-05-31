@@ -15,9 +15,18 @@ final class Router: ObservableObject {
     cachesDirectoryPath = tab.cachesDirectoryPath
     guard let data = try? Data(contentsOf: cachesDirectoryPath) else { return }
     do {
-      let cachedPath = try JSONDecoder().decode([Screen].self, from: data)
-      path = cachedPath
-    } catch {}
+      path = try JSONDecoder().decode([Screen].self, from: data)
+    } catch {
+      logger.error("failed to load cached navigation stack")
+    }
+  }
+
+  func cachePath() {
+    do {
+      try JSONEncoder().encode(path).write(to: cachesDirectoryPath)
+    } catch {
+      logger.error("failed to cache navigation stack")
+    }
   }
 
   func navigate(screen: Screen, resetStack: Bool = false) {
@@ -33,15 +42,6 @@ final class Router: ObservableObject {
 
   func removeLast() {
     path.removeLast()
-  }
-
-  func cachePath() {
-    do {
-      let data = try JSONEncoder().encode(path)
-      try data.write(to: cachesDirectoryPath)
-    } catch {
-      logger.error("failed to load cached navigation stack")
-    }
   }
 
   func fetchAndNavigateTo(_ repository: Repository, _ destination: NavigatablePath, resetStack: Bool = false) {
