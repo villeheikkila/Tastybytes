@@ -7,7 +7,7 @@ struct ActivityTab: View {
   @Binding var selectedTab: Tab
 
   var body: some View {
-    RouterWrapper { router in
+    RouterWrapper(tab: .activity) { router in
       ActivityScreen(scrollToTop: $scrollToTop, navigateToDiscoverTab: {
         selectedTab = .discover
       })

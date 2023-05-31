@@ -1,4 +1,4 @@
-struct ServingStyle: Identifiable, Hashable, Decodable, Sendable {
+struct ServingStyle: Identifiable, Hashable, Codable, Sendable {
   let id: Int
   let name: String
 
@@ -32,12 +32,12 @@ extension ServingStyle {
 }
 
 extension ServingStyle {
-  struct UpdateRequest: Encodable {
+  struct UpdateRequest: Codable {
     let id: Int
     let name: String
   }
 
-  struct NewRequest: Encodable {
+  struct NewRequest: Codable {
     let name: String
   }
 }

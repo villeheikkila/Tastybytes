@@ -1,6 +1,6 @@
 import Foundation
 
-struct Product: Identifiable, Decodable, Hashable, Sendable {
+struct Product: Identifiable, Codable, Hashable, Sendable {
   let id: Int
   let name: String
   let description: String?
@@ -114,7 +114,7 @@ struct ProductDuplicateSuggestion {
 }
 
 extension Product {
-  struct SearchParams: Encodable, Sendable {
+  struct SearchParams: Codable, Sendable {
     let searchTerm: String
     let categoryName: String?
     let subCategoryId: Int?
@@ -143,7 +143,7 @@ extension Product {
     }
   }
 
-  struct EditRequest: Encodable, Sendable {
+  struct EditRequest: Codable, Sendable {
     let productId: Int
     let name: String
     let description: String?
@@ -177,8 +177,8 @@ extension Product {
     }
   }
 
-  struct Filter: Hashable {
-    enum SortBy: String, CaseIterable, Identifiable, Sendable {
+  struct Filter: Hashable, Codable {
+    enum SortBy: String, CaseIterable, Identifiable, Sendable, Codable {
       var id: Self { self }
       case highestRated = "highest_rated"
       case lowestRated = "lowest_rated"
@@ -244,7 +244,7 @@ extension Product {
     }
   }
 
-  struct MergeProductsParams: Encodable, Sendable {
+  struct MergeProductsParams: Codable, Sendable {
     let productId: Int
     let toProductId: Int
 
@@ -253,7 +253,7 @@ extension Product {
     }
   }
 
-  struct NewRequest: Encodable, Sendable {
+  struct NewRequest: Codable, Sendable {
     let name: String
     let description: String?
     let categoryId: Int
@@ -300,7 +300,7 @@ extension Product {
     }
   }
 
-  struct DuplicateRequest: Encodable, Sendable {
+  struct DuplicateRequest: Codable, Sendable {
     let productId: Int
     let duplicateOfProductId: Int
 
@@ -310,7 +310,7 @@ extension Product {
     }
   }
 
-  struct SummaryRequest: Encodable, Sendable {
+  struct SummaryRequest: Codable, Sendable {
     let id: Int
 
     enum CodingKeys: String, CodingKey {
@@ -318,7 +318,7 @@ extension Product {
     }
   }
 
-  struct VerifyRequest: Encodable, Sendable {
+  struct VerifyRequest: Codable, Sendable {
     let id: Int
     let isVerified: Bool
 
@@ -336,7 +336,7 @@ extension Product {
     case full
   }
 
-  enum FeedType: Hashable, Identifiable {
+  enum FeedType: Hashable, Identifiable, Codable {
     var id: String { label }
     case topRated, trending, latest
 
@@ -352,7 +352,7 @@ extension Product {
     }
   }
 
-  struct Joined: Identifiable, Hashable, Decodable, Sendable {
+  struct Joined: Identifiable, Hashable, Codable, Sendable {
     let id: Int
     let name: String
     let description: String?
@@ -491,7 +491,7 @@ extension Product {
     }
   }
 
-  struct EditSuggestionRequest: Encodable, Sendable {
+  struct EditSuggestionRequest: Codable, Sendable {
     let id: Int?
     let name: String?
     let description: String?
@@ -541,7 +541,7 @@ extension Product {
     }
   }
 
-  struct JoinedCategory: Identifiable, Decodable, Hashable, Sendable {
+  struct JoinedCategory: Identifiable, Codable, Hashable, Sendable {
     let id: Int
     let name: String
     let description: String?

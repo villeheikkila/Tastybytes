@@ -7,7 +7,7 @@ struct NotificationTab: View {
   @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
-    RouterWrapper { router in
+    RouterWrapper(tab: .notifications) { router in
       NotificationScreen()
         .task {
           await splashScreenManager.dismiss()

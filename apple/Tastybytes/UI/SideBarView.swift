@@ -37,7 +37,7 @@ struct SideBarView: View {
   @StateObject private var sheetManager = SheetManager()
   @State private var selection: SiderBarTab? = SiderBarTab.activity
   @State private var scrollToTop: Int = 0
-  @StateObject private var router = Router()
+  @StateObject private var router = Router(tab: Tab.activity)
 
   private var shownTabs: [SiderBarTab] {
     if profileManager.hasRole(.admin) {

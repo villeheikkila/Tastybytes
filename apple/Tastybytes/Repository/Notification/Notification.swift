@@ -40,7 +40,7 @@ extension Notification {
   }
 }
 
-extension Notification: Decodable {
+extension Notification: Codable {
   enum CodingKeys: String, CodingKey {
     case id
     case message
@@ -89,10 +89,30 @@ extension Notification: Decodable {
       content = Notification.Content.message("No content")
     }
   }
+
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(id, forKey: .id)
+    try container.encode(createdAt, forKey: .createdAt)
+    try container.encodeIfPresent(seenAt, forKey: .seenAt)
+
+    switch content {
+    case let .message(message):
+      try container.encodeIfPresent(message, forKey: .message)
+    case let .friendRequest(friendRequest):
+      try container.encodeIfPresent(friendRequest, forKey: .friendRequest)
+    case let .taggedCheckIn(checkIn):
+      try container.encodeIfPresent(CheckInTaggedProfiles(id: id, checkIn: checkIn), forKey: .taggedCheckIn)
+    case let .checkInReaction(reaction):
+      try container.encodeIfPresent(reaction, forKey: .checkInReaction)
+    case let .checkInComment(comment):
+      try container.encodeIfPresent(comment, forKey: .checkInComments)
+    }
+  }
 }
 
 extension Notification {
-  struct CheckInTaggedProfiles: Identifiable, Decodable {
+  struct CheckInTaggedProfiles: Identifiable, Codable {
     let id: Int
     let checkIn: CheckIn
 
@@ -119,7 +139,7 @@ extension Notification {
     }
   }
 
-  struct MarkReadRequest: Encodable {
+  struct MarkReadRequest: Codable {
     let id: Int
 
     enum CodingKeys: String, CodingKey {
@@ -127,7 +147,7 @@ extension Notification {
     }
   }
 
-  struct MarkCheckInReadRequest: Encodable {
+  struct MarkCheckInReadRequest: Codable {
     let checkInId: Int
 
     enum CodingKeys: String, CodingKey {

@@ -10,7 +10,7 @@ extension CategoryProtocol {
   }
 }
 
-struct Category: Identifiable, Decodable, Hashable, CategoryProtocol {
+struct Category: Identifiable, Codable, Hashable, CategoryProtocol {
   let id: Int
   let name: String
   let icon: String
@@ -47,7 +47,7 @@ extension Category {
 }
 
 extension Category {
-  struct JoinedSubcategoriesServingStyles: Identifiable, Decodable, Hashable, Sendable, CategoryProtocol {
+  struct JoinedSubcategoriesServingStyles: Identifiable, Codable, Hashable, Sendable, CategoryProtocol {
     let id: Int
     let name: String
     let icon: String
@@ -84,11 +84,11 @@ extension Category {
     }
   }
 
-  struct NewRequest: Encodable, Sendable {
+  struct NewRequest: Codable, Sendable {
     let name: String
   }
 
-  struct NewServingStyleRequest: Encodable, Sendable {
+  struct NewServingStyleRequest: Codable, Sendable {
     let categoryId: Int
     let servingStyleId: Int
 

@@ -7,7 +7,7 @@ struct ProfileTab: View {
   @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
-    RouterWrapper { router in
+    RouterWrapper(tab: .profile) { router in
       CurrentProfileScreen(scrollToTop: $scrollToTop)
         .toolbar {
           ToolbarItemGroup(placement: .navigationBarLeading) {

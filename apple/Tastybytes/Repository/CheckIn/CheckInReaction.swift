@@ -1,22 +1,10 @@
-struct CheckInReaction: Identifiable, Decodable, Hashable, Sendable {
+struct CheckInReaction: Identifiable, Codable, Hashable, Sendable {
   let id: Int
   let profile: Profile
 
-  init(id: Int, profile: Profile) {
-    self.id = id
-    self.profile = profile
-  }
-
   enum CodingKeys: String, CodingKey {
     case id
-    case content
     case profile = "profiles"
-  }
-
-  init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    id = try values.decode(Int.self, forKey: .id)
-    profile = try values.decode(Profile.self, forKey: .profile)
   }
 }
 
@@ -47,7 +35,7 @@ extension CheckInReaction {
 }
 
 extension CheckInReaction {
-  struct JoinedCheckIn: Identifiable, Hashable, Decodable, Sendable {
+  struct JoinedCheckIn: Identifiable, Hashable, Codable, Sendable {
     let id: Int
     let profile: Profile
     let checkIn: CheckIn
@@ -61,7 +49,7 @@ extension CheckInReaction {
 }
 
 extension CheckInReaction {
-  struct NewRequest: Encodable, Sendable {
+  struct NewRequest: Codable, Sendable {
     let checkInId: Int
 
     enum CodingKeys: String, CodingKey {
@@ -69,7 +57,7 @@ extension CheckInReaction {
     }
   }
 
-  struct DeleteRequest: Encodable, Sendable {
+  struct DeleteRequest: Codable, Sendable {
     let id: Int
 
     enum CodingKeys: String, CodingKey {

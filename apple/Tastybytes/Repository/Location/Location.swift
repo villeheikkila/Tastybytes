@@ -84,7 +84,7 @@ extension Location {
 }
 
 extension Location {
-  struct MergeLocationParams: Encodable, Sendable {
+  struct MergeLocationParams: Codable, Sendable {
     let locationId: UUID
     let toLocationId: UUID
 
@@ -93,7 +93,7 @@ extension Location {
     }
   }
 
-  struct SuggestionParams: Encodable, Sendable {
+  struct SuggestionParams: Codable, Sendable {
     let longitude: Double
     let latitude: Double
 
@@ -107,7 +107,7 @@ extension Location {
     }
   }
 
-  struct New: Encodable, Sendable {
+  struct New: Codable, Sendable {
     let name: String
     let title: String?
     let longitude: Double
@@ -120,7 +120,7 @@ extension Location {
     }
   }
 
-  struct SummaryRequest: Encodable, Sendable {
+  struct SummaryRequest: Codable, Sendable {
     let id: UUID
 
     enum CodingKeys: String, CodingKey {

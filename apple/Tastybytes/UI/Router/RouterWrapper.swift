@@ -3,10 +3,15 @@ import SwiftUI
 struct RouterWrapper<Content: View>: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
-  @StateObject private var router = Router()
+  @StateObject private var router: Router
   @StateObject private var sheetManager = SheetManager()
 
-  var content: (_ router: Router) -> Content
+  let content: (_ router: Router) -> Content
+
+  init(tab: Tab, content: @escaping (_ router: Router) -> Content) {
+    _router = StateObject(wrappedValue: Router(tab: tab))
+    self.content = content
+  }
 
   var body: some View {
     NavigationStack(path: $router.path) {

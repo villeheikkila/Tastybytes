@@ -3,7 +3,22 @@ import SwiftUI
 @MainActor
 final class Router: ObservableObject {
   private let logger = getLogger(category: "Router")
-  @Published var path: [Screen] = []
+  private let cachesDirectoryPath: URL
+
+  @Published var path: [Screen] = [] {
+    didSet {
+      cachePath()
+    }
+  }
+
+  init(tab: Tab) {
+    cachesDirectoryPath = tab.cachesDirectoryPath
+    guard let data = try? Data(contentsOf: cachesDirectoryPath) else { return }
+    do {
+      let cachedPath = try JSONDecoder().decode([Screen].self, from: data)
+      path = cachedPath
+    } catch {}
+  }
 
   func navigate(screen: Screen, resetStack: Bool = false) {
     if resetStack {
@@ -18,6 +33,15 @@ final class Router: ObservableObject {
 
   func removeLast() {
     path.removeLast()
+  }
+
+  func cachePath() {
+    do {
+      let data = try JSONEncoder().encode(path)
+      try data.write(to: cachesDirectoryPath)
+    } catch {
+      logger.error("failed to load cached navigation stack")
+    }
   }
 
   func fetchAndNavigateTo(_ repository: Repository, _ destination: NavigatablePath, resetStack: Bool = false) {

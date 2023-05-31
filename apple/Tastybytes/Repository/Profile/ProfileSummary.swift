@@ -1,6 +1,6 @@
 import Foundation
 
-struct ProfileSummary: Decodable, Sendable {
+struct ProfileSummary: Codable, Sendable {
   let totalCheckIns: Int
   let uniqueCheckIns: Int
   let averageRating: Double?
@@ -35,7 +35,7 @@ struct ProfileSummary: Decodable, Sendable {
 }
 
 extension ProfileSummary {
-  struct GetRequest: Encodable {
+  struct GetRequest: Codable {
     let profileId: String
 
     enum CodingKeys: String, CodingKey {

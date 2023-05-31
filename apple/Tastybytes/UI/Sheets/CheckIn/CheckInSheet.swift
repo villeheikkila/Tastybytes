@@ -31,7 +31,7 @@ struct CheckInSheet: View {
         if let image, let hash = image.resize(to: 100)?
           .blurHash(numberOfComponents: (5, 5))
         {
-          blurHash = "\(image.size.width):\(image.size.height):::\(hash)"
+          blurHash = CheckIn.BlurHash(hash: hash, height: image.size.height, width: image.size.width).encoded
         }
       }
     }

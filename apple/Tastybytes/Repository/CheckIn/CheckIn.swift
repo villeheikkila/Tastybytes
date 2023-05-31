@@ -1,6 +1,6 @@
 import Foundation
 
-struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
+struct CheckIn: Identifiable, Hashable, Codable, Sendable {
   let id: Int
   let rating: Double?
   let review: String?
@@ -48,27 +48,18 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
   }
 
   init(from decoder: Decoder) throws {
-    struct CheckInTaggedProfile: Decodable {
+    struct CheckInTaggedProfile: Codable {
       let profile: Profile
       enum CodingKeys: String, CodingKey {
         case profile = "profiles"
       }
     }
 
-    struct CheckInFlavors: Decodable {
+    struct CheckInFlavors: Codable {
       let flavor: Flavor
       enum CodingKeys: String, CodingKey {
         case flavor = "flavors"
       }
-    }
-
-    func decodeBlurHash(_ str: String) -> BlurHash? {
-      let components = str.components(separatedBy: ":::")
-      guard let dimensions = components.first?.components(separatedBy: ":") else { return nil }
-      guard let width = Double(dimensions[0]) else { return nil }
-      guard let height = Double(dimensions[1]) else { return nil }
-      let hash = components[1]
-      return BlurHash(hash: hash, height: height, width: width)
     }
 
     let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -78,7 +69,7 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
     imageFile = try values.decodeIfPresent(String.self, forKey: .imageFile)
     let blurHashString = try values.decodeIfPresent(String.self, forKey: .blurHash)
     if let blurHashString {
-      blurHash = decodeBlurHash(blurHashString)
+      blurHash = try BlurHash(str: blurHashString)
     } else {
       blurHash = nil
     }
@@ -97,6 +88,25 @@ struct CheckIn: Identifiable, Hashable, Decodable, Sendable {
     servingStyle = try values.decodeIfPresent(ServingStyle.self, forKey: .servingStyle)
     location = try values.decodeIfPresent(Location.self, forKey: .location)
     purchaseLocation = try values.decodeIfPresent(Location.self, forKey: .purchaseLocation)
+  }
+
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(id, forKey: .id)
+    try container.encodeIfPresent(rating, forKey: .rating)
+    try container.encodeIfPresent(review, forKey: .review)
+    try container.encodeIfPresent(imageFile, forKey: .imageFile)
+    try container.encodeIfPresent(blurHash?.encoded, forKey: .blurHash)
+    try container.encodeIfPresent(checkInAt, forKey: .checkInAt)
+    try container.encode(profile, forKey: .profile)
+    try container.encode(product, forKey: .product)
+    try container.encode(checkInReactions, forKey: .checkInReactions)
+    try container.encode(taggedProfiles, forKey: .taggedProfiles)
+    try container.encode(flavors, forKey: .flavors)
+    try container.encodeIfPresent(variant, forKey: .variant)
+    try container.encodeIfPresent(servingStyle, forKey: .servingStyle)
+    try container.encodeIfPresent(location, forKey: .location)
+    try container.encodeIfPresent(purchaseLocation, forKey: .purchaseLocation)
   }
 }
 
@@ -143,12 +153,38 @@ extension CheckIn {
 
 extension CheckIn {
   struct BlurHash: Hashable, Sendable {
+    enum BlurHashError: Error {
+      case genericError
+    }
+
     let hash: String
     let height: Double
     let width: Double
+
+    init(hash: String, height: Double, width: Double) {
+      self.hash = hash
+      self.height = height
+      self.width = width
+    }
+
+    init(str: String) throws {
+      let components = str.components(separatedBy: ":::")
+      guard let dimensions = components.first?.components(separatedBy: ":") else { throw BlurHashError.genericError }
+      guard let width = Double(dimensions[0]) else { throw BlurHashError.genericError }
+      guard let height = Double(dimensions[1]) else { throw BlurHashError.genericError }
+      let hash = components[1]
+
+      self.hash = hash
+      self.width = width
+      self.height = height
+    }
+
+    var encoded: String {
+      "\(width):\(height):::\(hash)"
+    }
   }
 
-  struct DeleteAsAdminRequest: Encodable, Sendable {
+  struct DeleteAsAdminRequest: Codable, Sendable {
     let id: Int
 
     init(checkIn: CheckIn) {
@@ -160,7 +196,7 @@ extension CheckIn {
     }
   }
 
-  struct NewRequest: Encodable, Sendable {
+  struct NewRequest: Codable, Sendable {
     let productId: Int
     let rating: Double?
     let review: String?
@@ -218,7 +254,7 @@ extension CheckIn {
     }
   }
 
-  struct UpdateRequest: Encodable, Sendable {
+  struct UpdateRequest: Codable, Sendable {
     let checkInId: Int
     let productId: Int
     let rating: Double?

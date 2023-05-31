@@ -12,7 +12,7 @@ extension AvatarURL {
   }
 }
 
-struct Profile: Identifiable, Decodable, Hashable, Sendable, AvatarURL {
+struct Profile: Identifiable, Codable, Hashable, Sendable, AvatarURL {
   let id: UUID
   let preferredName: String
   let isPrivate: Bool
@@ -84,7 +84,7 @@ extension Profile {
 }
 
 extension Profile {
-  struct Extended: Identifiable, Decodable, Sendable, AvatarURL {
+  struct Extended: Identifiable, Codable, Sendable, AvatarURL {
     let id: UUID
     let username: String
     let firstName: String?
@@ -203,16 +203,32 @@ extension Profile {
         fatalError("failed to decode profile settings")
       }
     }
+
+    func encode(to encoder: Encoder) throws {
+      var container = encoder.container(keyedBy: CodingKeys.self)
+      try container.encode(id, forKey: .id)
+      try container.encode(username, forKey: .username)
+      try container.encode(joinedAt, forKey: .joinedAt)
+      try container.encode(preferredName, forKey: .preferredName)
+      try container.encode(isPrivate, forKey: .isPrivate)
+      try container.encode(isOnboarded, forKey: .isOnboarded)
+      try container.encodeIfPresent(firstName, forKey: .firstName)
+      try container.encodeIfPresent(lastName, forKey: .lastName)
+      try container.encodeIfPresent(avatarFile, forKey: .avatarFile)
+      try container.encode(nameDisplay, forKey: .nameDisplay)
+      try container.encode(roles, forKey: .roles)
+      try container.encode([settings], forKey: .settings)
+    }
   }
 }
 
 extension Profile {
-  enum NameDisplay: String, CaseIterable, Decodable, Equatable, Sendable {
+  enum NameDisplay: String, CaseIterable, Codable, Equatable, Sendable {
     case username
     case fullName = "full_name"
   }
 
-  struct UpdateRequest: Encodable, Sendable {
+  struct UpdateRequest: Codable, Sendable {
     var username: String?
     var firstName: String?
     var lastName: String?
@@ -259,7 +275,7 @@ extension Profile {
   }
 }
 
-struct ProfileSettings: Identifiable, Decodable, Hashable, Sendable {
+struct ProfileSettings: Identifiable, Codable, Hashable, Sendable {
   let id: UUID
   let colorScheme: ColorScheme
   let sendReactionNotifications: Bool
@@ -301,13 +317,13 @@ extension ProfileSettings {
 }
 
 extension ProfileSettings {
-  enum ColorScheme: String, CaseIterable, Decodable, Equatable, Sendable {
+  enum ColorScheme: String, CaseIterable, Codable, Equatable, Sendable {
     case system
     case light
     case dark
   }
 
-  struct UpdateRequest: Encodable, Sendable {
+  struct UpdateRequest: Codable, Sendable {
     var colorScheme: String?
     var sendReactionNotifications: Bool?
     var sendTaggedCheckInNotifications: Bool?
@@ -346,7 +362,7 @@ extension ProfileSettings {
   }
 }
 
-struct Contributions: Decodable, Sendable {
+struct Contributions: Codable, Sendable {
   let products: Int
   let companies: Int
   let brands: Int
@@ -361,7 +377,7 @@ struct Contributions: Decodable, Sendable {
     case barcodes
   }
 
-  struct ContributionsParams: Encodable, Sendable {
+  struct ContributionsParams: Codable, Sendable {
     let id: UUID
 
     enum CodingKeys: String, CodingKey {
@@ -383,13 +399,13 @@ struct Contributions: Decodable, Sendable {
   }
 }
 
-struct CategoryStatistics: Identifiable, Decodable, Sendable, CategoryProtocol {
+struct CategoryStatistics: Identifiable, Codable, Sendable, CategoryProtocol {
   let id: Int
   let name: String
   let icon: String
   let count: Int
 
-  struct CategoryStatisticsParams: Encodable, Sendable {
+  struct CategoryStatisticsParams: Codable, Sendable {
     let id: UUID
 
     enum CodingKeys: String, CodingKey {
@@ -415,12 +431,12 @@ struct CategoryStatistics: Identifiable, Decodable, Sendable, CategoryProtocol {
   }
 }
 
-struct SubcategoryStatistics: Identifiable, Decodable, Sendable {
+struct SubcategoryStatistics: Identifiable, Codable, Sendable {
   let id: Int
   let name: String
   let count: Int
 
-  struct SubcategoryStatisticsParams: Encodable, Sendable {
+  struct SubcategoryStatisticsParams: Codable, Sendable {
     let userId: UUID
     let categoryId: Int
 
@@ -449,7 +465,7 @@ struct SubcategoryStatistics: Identifiable, Decodable, Sendable {
 }
 
 extension Profile {
-  struct UsernameCheckRequest: Encodable, Sendable {
+  struct UsernameCheckRequest: Codable, Sendable {
     let username: String
 
     enum CodingKeys: String, CodingKey {

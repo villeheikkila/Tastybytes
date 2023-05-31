@@ -1,12 +1,25 @@
 import AVFoundation
 
-struct Barcode: Encodable, Hashable, Sendable {
+struct Barcode: Codable, Hashable, Sendable {
   enum CodingKeys: String, CodingKey {
     case barcode, type
   }
 
   let barcode: String
   let type: AVMetadataObject.ObjectType
+
+  init(barcode: String, type: AVMetadataObject.ObjectType) {
+    self.barcode = barcode
+    self.type = type
+  }
+
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    barcode = try container.decode(String.self, forKey: .barcode)
+    let typeValue = try container.decode(String.self, forKey: .type)
+    let type = AVMetadataObject.ObjectType(rawValue: typeValue)
+    self.type = type
+  }
 
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
@@ -15,7 +28,7 @@ struct Barcode: Encodable, Hashable, Sendable {
   }
 }
 
-struct ProductBarcode: Identifiable, Hashable, Decodable, Sendable {
+struct ProductBarcode: Identifiable, Hashable, Codable, Sendable {
   enum CodingKeys: String, CodingKey {
     case id, barcode, type
   }
@@ -31,6 +44,13 @@ struct ProductBarcode: Identifiable, Hashable, Decodable, Sendable {
     type = try AVMetadataObject.ObjectType(rawValue: values.decode(String.self, forKey: .type))
   }
 
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(id, forKey: .id)
+    try container.encode(barcode, forKey: .barcode)
+    try container.encode(type.rawValue, forKey: .type)
+  }
+
   func isBarcode(_ code: Barcode?) -> Bool {
     guard let code else { return false }
     return type == code.type && barcode == code.barcode
@@ -38,7 +58,7 @@ struct ProductBarcode: Identifiable, Hashable, Decodable, Sendable {
 }
 
 extension ProductBarcode {
-  struct NewRequest: Encodable, Sendable {
+  struct NewRequest: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
       case barcode, type, productId = "product_id"
     }
@@ -54,7 +74,7 @@ extension ProductBarcode {
     }
   }
 
-  struct JoinedWithCreator: Identifiable, Hashable, Decodable, Sendable {
+  struct JoinedWithCreator: Identifiable, Hashable, Codable, Sendable {
     let id: Int
     let barcode: String
     let type: AVMetadataObject.ObjectType
@@ -78,9 +98,18 @@ extension ProductBarcode {
         throw DateParsingError.unsupportedFormat
       }
     }
+
+    func encode(to encoder: Encoder) throws {
+      var container = encoder.container(keyedBy: CodingKeys.self)
+      try container.encode(id, forKey: .id)
+      try container.encode(barcode, forKey: .barcode)
+      try container.encode(type.rawValue, forKey: .type)
+      try container.encode(profile, forKey: .profiles)
+      try container.encode(createdAt, forKey: .createdAt)
+    }
   }
 
-  struct Joined: Identifiable, Hashable, Decodable, Sendable {
+  struct Joined: Identifiable, Hashable, Codable, Sendable {
     let id: Int
     let barcode: String
     let type: AVMetadataObject.ObjectType
@@ -101,6 +130,14 @@ extension ProductBarcode {
       barcode = try values.decode(String.self, forKey: .barcode)
       type = try AVMetadataObject.ObjectType(rawValue: values.decode(String.self, forKey: .type))
       product = try values.decode(Product.Joined.self, forKey: .product)
+    }
+
+    func encode(to encoder: Encoder) throws {
+      var container = encoder.container(keyedBy: CodingKeys.self)
+      try container.encode(id, forKey: .id)
+      try container.encode(barcode, forKey: .barcode)
+      try container.encode(type.rawValue, forKey: .type)
+      try container.encode(product, forKey: .product)
     }
   }
 }

@@ -4,7 +4,7 @@ protocol SubcategoryProtocol {
   var isVerified: Bool { get }
 }
 
-struct Subcategory: Identifiable, Decodable, Hashable, Sendable, SubcategoryProtocol, Comparable {
+struct Subcategory: Identifiable, Codable, Hashable, Sendable, SubcategoryProtocol, Comparable {
   let id: Int
   let name: String
   let isVerified: Bool
@@ -43,7 +43,7 @@ extension Subcategory {
 }
 
 extension Subcategory {
-  struct JoinedCategory: Identifiable, Hashable, Decodable, Sendable, SubcategoryProtocol {
+  struct JoinedCategory: Identifiable, Hashable, Codable, Sendable, SubcategoryProtocol {
     let id: Int
     let name: String
     let isVerified: Bool
@@ -63,7 +63,7 @@ extension Subcategory {
 }
 
 extension Subcategory {
-  struct NewRequest: Encodable {
+  struct NewRequest: Codable {
     let name: String
     let categoryId: Int
 
@@ -77,7 +77,7 @@ extension Subcategory {
     }
   }
 
-  struct VerifyRequest: Encodable, Sendable {
+  struct VerifyRequest: Codable, Sendable {
     let id: Int
     let isVerified: Bool
 
@@ -87,7 +87,7 @@ extension Subcategory {
     }
   }
 
-  struct UpdateRequest: Encodable, Sendable {
+  struct UpdateRequest: Codable, Sendable {
     let id: Int
     let name: String
 

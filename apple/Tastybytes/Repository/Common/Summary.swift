@@ -1,4 +1,4 @@
-struct Summary: Decodable, Hashable, Sendable {
+struct Summary: Codable, Hashable, Sendable {
   let totalCheckIns: Int
   let averageRating: Double?
   let friendsTotalCheckIns: Int

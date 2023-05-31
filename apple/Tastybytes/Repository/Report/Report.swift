@@ -1,8 +1,8 @@
-struct Report: Decodable, Identifiable {
+struct Report: Codable, Identifiable {
   let id: Int
   let message: String
 
-  struct NewRequest: Encodable, Sendable {
+  struct NewRequest: Codable, Sendable {
     let message: String
     let checkInId: Int?
     let productId: Int?

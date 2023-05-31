@@ -57,16 +57,16 @@ extension Company {
 }
 
 extension Company {
-  struct NewRequest: Encodable {
+  struct NewRequest: Codable {
     let name: String
   }
 
-  struct UpdateRequest: Encodable {
+  struct UpdateRequest: Codable {
     let id: Int
     let name: String
   }
 
-  struct EditSuggestionRequest: Encodable {
+  struct EditSuggestionRequest: Codable {
     let id: Int
     let name: String
 
@@ -76,7 +76,7 @@ extension Company {
     }
   }
 
-  struct VerifyRequest: Encodable {
+  struct VerifyRequest: Codable {
     let id: Int
     let isVerified: Bool
 
@@ -86,7 +86,7 @@ extension Company {
     }
   }
 
-  struct SummaryRequest: Encodable {
+  struct SummaryRequest: Codable {
     let id: Int
 
     enum CodingKeys: String, CodingKey {
@@ -94,7 +94,7 @@ extension Company {
     }
   }
 
-  struct Joined: Identifiable, Hashable, Decodable {
+  struct Joined: Identifiable, Hashable, Codable {
     let id: Int
     let name: String
     let logoUrl: String?

@@ -1,6 +1,6 @@
 import Foundation
 
-struct Friend: Identifiable, Decodable, Hashable, Sendable {
+struct Friend: Identifiable, Codable, Hashable, Sendable {
   let id: Int
   let sender: Profile
   let receiver: Profile
@@ -41,7 +41,7 @@ extension Friend {
     case pending, accepted, blocked
   }
 
-  struct NewRequest: Encodable, Sendable {
+  struct NewRequest: Codable, Sendable {
     let receiverId: UUID
     let status: String
 
@@ -55,7 +55,7 @@ extension Friend {
     }
   }
 
-  struct UpdateRequest: Encodable, Sendable {
+  struct UpdateRequest: Codable, Sendable {
     let senderId: UUID
     let receiverId: UUID
     let status: String

@@ -5,7 +5,7 @@ struct AdminTab: View {
   @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
-    RouterWrapper { router in
+    RouterWrapper(tab: .admin) { router in
       AdminScreen()
         .task {
           await splashScreenManager.dismiss()

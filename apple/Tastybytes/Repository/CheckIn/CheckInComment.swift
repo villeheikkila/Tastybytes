@@ -1,6 +1,6 @@
 import Foundation
 
-struct CheckInComment: Identifiable, Hashable, Decodable, Sendable {
+struct CheckInComment: Identifiable, Hashable, Codable, Sendable {
   let id: Int
   var content: String
   let createdAt: Date
@@ -41,7 +41,7 @@ extension CheckInComment {
 }
 
 extension CheckInComment {
-  struct Joined: Identifiable, Hashable, Decodable, Sendable {
+  struct Joined: Identifiable, Hashable, Codable, Sendable {
     let id: Int
     var content: String
     let createdAt: Date
@@ -57,7 +57,7 @@ extension CheckInComment {
     }
   }
 
-  struct NewRequest: Encodable, Sendable {
+  struct NewRequest: Codable, Sendable {
     let content: String
     let checkInId: Int
 
@@ -66,7 +66,7 @@ extension CheckInComment {
     }
   }
 
-  struct DeleteAsAdminRequest: Encodable, Sendable {
+  struct DeleteAsAdminRequest: Codable, Sendable {
     let id: Int
 
     init(comment: CheckInComment) {
@@ -78,7 +78,7 @@ extension CheckInComment {
     }
   }
 
-  struct UpdateRequest: Encodable, Sendable {
+  struct UpdateRequest: Codable, Sendable {
     let id: Int
     let content: String
   }

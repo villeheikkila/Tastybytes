@@ -1,4 +1,4 @@
-struct Document: Decodable, Sendable {
+struct Document: Codable, Sendable {
   let document: String
 
   static func getQuery(_ queryType: QueryType) -> String {
@@ -18,18 +18,18 @@ struct Document: Decodable, Sendable {
     case saved(_ withTableName: Bool)
   }
 
-  enum Page: String, Encodable {
+  enum Page: String, Codable {
     case about
   }
 }
 
 extension Document {
-  struct About: Decodable, Sendable {
+  struct About: Codable, Sendable {
     let document: AboutPage
   }
 }
 
-struct AboutPage: Decodable {
+struct AboutPage: Codable {
   let summary: String
   let githubUrl: String
   let portfolioUrl: String

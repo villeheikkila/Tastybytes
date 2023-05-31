@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum Screen: Hashable {
+enum Screen: Hashable, Codable {
   case product(Product.Joined)
   case profile(Profile)
   case checkIn(CheckIn)

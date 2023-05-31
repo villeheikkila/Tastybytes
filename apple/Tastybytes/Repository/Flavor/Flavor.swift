@@ -1,4 +1,4 @@
-struct Flavor: Identifiable, Decodable, Hashable, Sendable {
+struct Flavor: Identifiable, Codable, Hashable, Sendable {
   let id: Int
   let name: String
 
@@ -25,7 +25,7 @@ extension Flavor {
     case saved(_ withTableName: Bool)
   }
 
-  struct NewRequest: Encodable {
+  struct NewRequest: Codable {
     let name: String
   }
 }

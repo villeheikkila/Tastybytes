@@ -6,7 +6,7 @@ struct DiscoverTab: View {
   @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
-    RouterWrapper { router in
+    RouterWrapper(tab: .discover) { router in
       DiscoverScreen(scrollToTop: $scrollToTop)
         .task {
           await splashScreenManager.dismiss()

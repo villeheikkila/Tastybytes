@@ -51,7 +51,7 @@ enum Brand {
 }
 
 extension Brand {
-  struct JoinedSubBrands: Identifiable, Hashable, Decodable, Sendable, BrandProtocol {
+  struct JoinedSubBrands: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
     let id: Int
     let name: String
     let logoFile: String?
@@ -67,7 +67,7 @@ extension Brand {
     }
   }
 
-  struct JoinedCompany: Identifiable, Hashable, Decodable, Sendable, BrandProtocol {
+  struct JoinedCompany: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
     let id: Int
     let name: String
     let logoFile: String?
@@ -83,7 +83,7 @@ extension Brand {
     }
   }
 
-  struct JoinedSubBrandsProducts: Identifiable, Hashable, Decodable, Sendable, BrandProtocol {
+  struct JoinedSubBrandsProducts: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
     let id: Int
     let name: String
     let logoFile: String?
@@ -103,7 +103,7 @@ extension Brand {
     }
   }
 
-  struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Decodable, Sendable, BrandProtocol {
+  struct JoinedSubBrandsProductsCompany: Identifiable, Hashable, Codable, Sendable, BrandProtocol {
     let id: Int
     let name: String
     let logoFile: String?
@@ -145,7 +145,7 @@ extension Brand {
 }
 
 extension Brand {
-  struct NewRequest: Encodable, Sendable {
+  struct NewRequest: Codable, Sendable {
     let name: String
     let brandOwnerId: Int
 
@@ -159,7 +159,7 @@ extension Brand {
     }
   }
 
-  struct UpdateRequest: Encodable, Sendable {
+  struct UpdateRequest: Codable, Sendable {
     let id: Int
     let name: String
     let brandOwnerId: Int
@@ -175,7 +175,7 @@ extension Brand {
     }
   }
 
-  struct VerifyRequest: Encodable, Sendable {
+  struct VerifyRequest: Codable, Sendable {
     let id: Int
     let isVerified: Bool
 
