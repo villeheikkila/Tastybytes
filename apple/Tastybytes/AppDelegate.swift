@@ -4,6 +4,8 @@ import RevenueCat
 import SwiftUI
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
+  private let logger = getLogger(category: "AppDelegate")
+
   func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
@@ -34,6 +36,27 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     sceneConfiguration.delegateClass = SceneConfiguration.self
 
     return sceneConfiguration
+  }
+
+  func applicationWillTerminate(_: UIApplication) {
+    // Reset tab restoration
+    UserDefaults.standard.removeObject(for: .selectedTab)
+
+    // Reset NavigationStack restoration
+    let fileManager = FileManager.default
+    let filesToDelete = Tab.allCases.map(\.cachesPath)
+    do {
+      let directoryContents = try fileManager.contentsOfDirectory(
+        at: URL.cachesDirectory,
+        includingPropertiesForKeys: nil,
+        options: []
+      )
+      for file in directoryContents where filesToDelete.contains(file.lastPathComponent) {
+        try fileManager.removeItem(at: file)
+      }
+    } catch {
+      logger.error("Failed to delete navigation stack state restoration files: \(error)")
+    }
   }
 }
 

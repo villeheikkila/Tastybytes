@@ -4,7 +4,7 @@ struct TabsView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @AppStorage("selected_tab") private var selection = Tab.activity
+  @AppStorage(.selectedTab) private var selection = Tab.activity
   @State private var resetNavigationOnTab: Tab?
 
   private let switchTabGestureRangeDistance: Double = 50

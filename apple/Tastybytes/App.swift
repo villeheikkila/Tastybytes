@@ -58,7 +58,7 @@ struct RootView: View {
   @StateObject private var appDataManager: AppDataManager
   @StateObject private var friendManager: FriendManager
   @StateObject private var purchaseManager: PurchaseManager
-  @AppStorage("is_current_device_onboarded") private var isCurrentDeviceOnboarded = false
+  @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
   @Environment(\.scenePhase) private var phase
   @State private var authEvent: AuthChangeEvent?
   @State private var orientation: UIDeviceOrientation
@@ -142,7 +142,7 @@ struct RootView: View {
   @ViewBuilder private var signedInContent: some View {
     if !profileManager.isLoggedIn {
       EmptyView()
-    } else if !isCurrentDeviceOnboarded {
+    } else if !isOnboardedOnDevice {
       OnboardingScreen()
     } else {
       Group {

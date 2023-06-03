@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum Tab: Int, Identifiable, Hashable {
+enum Tab: Int, Identifiable, Hashable, CaseIterable {
   case activity, discover, notifications, admin, profile
 
   var id: Int {
