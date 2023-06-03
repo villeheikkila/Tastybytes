@@ -59,6 +59,7 @@ struct RootView: View {
   @StateObject private var friendManager: FriendManager
   @StateObject private var purchaseManager: PurchaseManager
   @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
+  @AppStorage(.colorScheme) var colorScheme: String = "system"
   @Environment(\.scenePhase) private var phase
   @State private var authEvent: AuthChangeEvent?
   @State private var orientation: UIDeviceOrientation
@@ -110,7 +111,7 @@ struct RootView: View {
     .environmentObject(purchaseManager)
     .environmentObject(friendManager)
     .environmentObject(permissionManager)
-    .preferredColorScheme(profileManager.colorScheme)
+    .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
     .detectOrientation($orientation)
     .environment(\.orientation, orientation)
     .onOpenURL { url in

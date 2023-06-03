@@ -3,6 +3,7 @@ import SwiftUI
 enum UserDefaultsKey: String {
   case selectedTab = "selected_tab"
   case isOnboardedOnDevice = "is_current_device_onboarded"
+  case colorScheme = "color_scheme"
 }
 
 extension AppStorage {
@@ -70,5 +71,22 @@ extension UserDefaults {
 
   func value(for key: UserDefaultsKey) -> Any? {
     value(forKey: key.rawValue)
+  }
+}
+
+enum CustomColorScheme: String, CaseIterable, Codable, Equatable, Sendable {
+  case system
+  case light
+  case dark
+
+  var systemColorScheme: ColorScheme? {
+    switch self {
+    case .light:
+      return .light
+    case .dark:
+      return .dark
+    case .system:
+      return nil
+    }
   }
 }

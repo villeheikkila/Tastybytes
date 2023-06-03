@@ -5,7 +5,6 @@ import SwiftUI
 final class ProfileManager: ObservableObject {
   private let logger = getLogger(category: "ProfileManager")
   @Published private(set) var isLoggedIn = false
-  @Published private(set) var colorScheme: ColorScheme?
 
   // Profile Settings
   @Published var showFullName = false
@@ -18,9 +17,7 @@ final class ProfileManager: ObservableObject {
   @Published var showingExporter = false
 
   // Application Settings
-  @Published var initialValuesLoaded = true
-  @Published var isSystemColor = false
-  @Published var isDarkMode = false
+  @Published var initialValuesLoaded = false
   @Published var reactionNotifications = true
   @Published var friendRequestNotifications = true
   @Published var checkInTagNotifications = true
@@ -112,28 +109,14 @@ final class ProfileManager: ObservableObject {
     switch await repository.profile.getCurrentUser() {
     case let .success(currentUserProfile):
       extendedProfile = currentUserProfile
-      setPreferredColorScheme(profileColorScheme: currentUserProfile.settings.colorScheme)
       showFullName = currentUserProfile.nameDisplay == Profile.NameDisplay.fullName
       isPrivateProfile = currentUserProfile.isPrivate
-
-      switch currentUserProfile.settings.colorScheme {
-      case .light:
-        isDarkMode = false
-        isSystemColor = false
-      case .dark:
-        isDarkMode = true
-        isSystemColor = false
-      case .system:
-        isDarkMode = initialColorScheme == ColorScheme.dark
-        isSystemColor = true
-      }
-
       reactionNotifications = currentUserProfile.settings.sendReactionNotifications
       friendRequestNotifications = currentUserProfile.settings.sendFriendRequestNotifications
       checkInTagNotifications = currentUserProfile.settings.sendTaggedCheckInNotifications
       sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
       appIcon = getCurrentAppIcon()
-      initialValuesLoaded = false
+      initialValuesLoaded = true
       isLoggedIn = true
     case let .failure(error):
       logger.error("error while loading current user profile: \(error.localizedDescription)")
@@ -161,26 +144,6 @@ final class ProfileManager: ObservableObject {
     }
   }
 
-  func updateColorScheme() async {
-    if isSystemColor {
-      isDarkMode = initialColorScheme == ColorScheme.dark
-    }
-    let update = ProfileSettings.UpdateRequest(
-      isDarkMode: isDarkMode, isSystemColor: isSystemColor
-    )
-
-    switch await repository.profile.updateSettings(
-      update: update
-    ) {
-    case .success:
-      setPreferredColorScheme(profileColorScheme: isSystemColor ? .system : isDarkMode ? .dark : .light)
-    case let .failure(error):
-      guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("updating color scheme failed: \(error.localizedDescription)")
-    }
-  }
-
   func updateNotificationSettings(sendReactionNotifications: Bool? = nil,
                                   sendTaggedCheckInNotifications: Bool? = nil,
                                   sendFriendRequestNotifications: Bool? = nil,
@@ -199,17 +162,6 @@ final class ProfileManager: ObservableObject {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to update notification settings: \(error.localizedDescription)")
-    }
-  }
-
-  func setPreferredColorScheme(profileColorScheme: ProfileSettings.ColorScheme) {
-    switch profileColorScheme {
-    case ProfileSettings.ColorScheme.dark:
-      colorScheme = ColorScheme.dark
-    case ProfileSettings.ColorScheme.light:
-      colorScheme = ColorScheme.light
-    case ProfileSettings.ColorScheme.system:
-      colorScheme = nil
     }
   }
 

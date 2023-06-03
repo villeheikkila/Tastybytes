@@ -277,7 +277,6 @@ extension Profile {
 
 struct ProfileSettings: Identifiable, Codable, Hashable, Sendable {
   let id: UUID
-  let colorScheme: ColorScheme
   let sendReactionNotifications: Bool
   let sendTaggedCheckInNotifications: Bool
   let sendFriendRequestNotifications: Bool
@@ -285,7 +284,6 @@ struct ProfileSettings: Identifiable, Codable, Hashable, Sendable {
 
   enum CodingKeys: String, CodingKey {
     case id
-    case colorScheme = "color_scheme"
     case sendReactionNotifications = "send_reaction_notifications"
     case sendTaggedCheckInNotifications = "send_tagged_check_in_notifications"
     case sendFriendRequestNotifications = "send_friend_request_notifications"
@@ -298,7 +296,7 @@ extension ProfileSettings {
     let tableName = "profile_settings"
     let saved =
       """
-      id, color_scheme, send_reaction_notifications, send_tagged_check_in_notifications,\
+      id, send_reaction_notifications, send_tagged_check_in_notifications,\
       send_friend_request_notifications, send_comment_notifications
       """
 
@@ -317,21 +315,13 @@ extension ProfileSettings {
 }
 
 extension ProfileSettings {
-  enum ColorScheme: String, CaseIterable, Codable, Equatable, Sendable {
-    case system
-    case light
-    case dark
-  }
-
   struct UpdateRequest: Codable, Sendable {
-    var colorScheme: String?
     var sendReactionNotifications: Bool?
     var sendTaggedCheckInNotifications: Bool?
     var sendFriendRequestNotifications: Bool?
     var sendCommentNotifications: Bool?
 
     enum CodingKeys: String, CodingKey {
-      case colorScheme = "color_scheme"
       case sendReactionNotifications = "send_reaction_notifications"
       case sendTaggedCheckInNotifications = "send_tagged_check_in_notifications"
       case sendFriendRequestNotifications = "send_friend_request_notifications"
@@ -348,16 +338,6 @@ extension ProfileSettings {
       self.sendTaggedCheckInNotifications = sendTaggedCheckInNotifications
       self.sendFriendRequestNotifications = sendFriendRequestNotifications
       self.sendCommentNotifications = sendCommentNotifications
-    }
-
-    init(isDarkMode: Bool, isSystemColor: Bool) {
-      if isSystemColor {
-        colorScheme = ColorScheme.system.rawValue
-      } else if isDarkMode {
-        colorScheme = ColorScheme.dark.rawValue
-      } else {
-        colorScheme = ColorScheme.light.rawValue
-      }
     }
   }
 }

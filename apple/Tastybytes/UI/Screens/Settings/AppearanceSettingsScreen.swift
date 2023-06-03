@@ -1,24 +1,30 @@
 import SwiftUI
 
 struct AppearanceSettingsScreen: View {
-  @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.colorScheme) private var systemColorScheme
+  @AppStorage(.colorScheme) private var colorScheme = CustomColorScheme.system.rawValue
+
+  var scheme: CustomColorScheme {
+    CustomColorScheme(rawValue: colorScheme) ?? .system
+  }
 
   var body: some View {
     Form {
       Toggle("Use System Color Scheme", isOn: .init(get: {
-        profileManager.isSystemColor
+        scheme == .system
       }, set: { newValue in
-        profileManager.isSystemColor = newValue
-        Task { await profileManager.updateColorScheme() }
+        if newValue {
+          colorScheme = CustomColorScheme.system.rawValue
+        } else {
+          colorScheme = systemColorScheme == .dark ? CustomColorScheme.dark.rawValue : CustomColorScheme.light.rawValue
+        }
       }))
       Toggle("Use Dark Mode", isOn: .init(get: {
-        profileManager.isSystemColor ? systemColorScheme == .dark : profileManager.isDarkMode
+        scheme == .system ? systemColorScheme == .dark : scheme == .dark
       }, set: { newValue in
-        profileManager.isDarkMode = newValue
-        Task { await profileManager.updateColorScheme() }
+        colorScheme = newValue ? CustomColorScheme.dark.rawValue : CustomColorScheme.light.rawValue
       }))
-      .disabled(profileManager.isSystemColor)
+      .disabled(colorScheme == "system")
     }
     .navigationTitle("Appearance")
     .navigationBarTitleDisplayMode(.inline)
