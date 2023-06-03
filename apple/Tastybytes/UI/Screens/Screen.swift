@@ -8,6 +8,7 @@ enum Screen: Hashable, Codable {
   case company(Company)
   case brand(Brand.JoinedSubBrandsProductsCompany)
   case fetchBrand(Brand.JoinedCompany)
+  case fetchSubBrand(SubBrand.JoinedBrand)
   case profileProducts(Profile)
   case profileProductsByFilter(Profile, Product.Filter)
   case profileStatistics(Profile)
@@ -34,6 +35,17 @@ enum Screen: Hashable, Codable {
     switch self {
     case let .company(company):
       CompanyScreen(company: company)
+    case let .fetchSubBrand(subBrand):
+      BrandScreen(
+        brand: Brand
+          .JoinedSubBrandsProductsCompany(
+            id: subBrand.brand.id,
+            name: subBrand.brand.name,
+            isVerified: subBrand.brand.isVerified,
+            brandOwner: subBrand.brand.brandOwner,
+            subBrands: []
+          ), refreshOnLoad: true, initialScrollPosition: subBrand
+      )
     case let .brand(brand):
       BrandScreen(brand: brand)
     case let .fetchBrand(brand):

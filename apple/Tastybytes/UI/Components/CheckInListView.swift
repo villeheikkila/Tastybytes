@@ -76,6 +76,11 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                   screen: .company(checkIn.product.subBrand.brand.brandOwner)
                 )
                 RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
+                RouterLink(
+                  "Open Sub-brand",
+                  systemImage: "cart",
+                  screen: .fetchSubBrand(checkIn.product.subBrand)
+                )
                 RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
                 RouterLink("Open Check-in", systemImage: "checkmark.circle", screen: .checkIn(checkIn))
                 Divider()

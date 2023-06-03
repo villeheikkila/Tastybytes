@@ -64,9 +64,13 @@ struct CheckInScreen: View {
           systemImage: "network",
           screen: .company(checkIn.product.subBrand.brand.brandOwner)
         )
-        RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
         RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
-        Divider()
+        RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
+        RouterLink(
+          "Open Sub-brand",
+          systemImage: "cart",
+          screen: .fetchSubBrand(checkIn.product.subBrand)
+        )
 
         if profileManager.id != checkIn.profile.id {
           ReportButton(entity: .checkIn(checkIn))
