@@ -161,7 +161,7 @@ struct BrandScreen: View {
         }
         .onAppear {
           if let initialScrollPosition {
-            scrollProxy.scrollTo(initialScrollPosition.id, anchor: .bottom)
+            scrollProxy.scrollTo(initialScrollPosition.id, anchor: .top)
           }
         }
       }
