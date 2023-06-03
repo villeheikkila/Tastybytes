@@ -5,6 +5,7 @@ struct ProductScreen: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
+  @EnvironmentObject private var imageUploadManager: ImageUploadManager
   @EnvironmentObject private var router: Router
   @Environment(\.dismiss) private var dismiss
   @State private var scrollToTop: Int = 0
@@ -51,6 +52,13 @@ struct ProductScreen: View {
         await loadSummary()
       }
     }
+    .onChange(of: imageUploadManager.uploadedImageForCheckIn, perform: { newValue in
+      // TODO: Only update the check-in that gained image
+      if newValue != nil {
+        imageUploadManager.uploadedImageForCheckIn = nil
+        refreshCheckIns()
+      }
+    })
     .toolbar {
       toolbarContent
     }

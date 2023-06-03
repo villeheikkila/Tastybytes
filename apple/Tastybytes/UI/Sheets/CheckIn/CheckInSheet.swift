@@ -9,6 +9,7 @@ struct CheckInSheet: View {
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var appDataManager: AppDataManager
+  @EnvironmentObject private var imageUploadManager: ImageUploadManager
   @Environment(\.dismiss) private var dismiss
   @FocusState private var focusedField: Focusable?
   @State private var showPhotoMenu = false
@@ -246,7 +247,9 @@ struct CheckInSheet: View {
 
     switch await repository.checkIn.update(updateCheckInParams: updateCheckInParams) {
     case let .success(updatedCheckIn):
-      await uploadImage(checkIn: updatedCheckIn)
+      if let image {
+        imageUploadManager.uploadCheckInImage(checkIn: updatedCheckIn, image: image)
+      }
       await onUpdate(updatedCheckIn)
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
@@ -272,24 +275,14 @@ struct CheckInSheet: View {
 
     switch await repository.checkIn.create(newCheckInParams: newCheckParams) {
     case let .success(newCheckIn):
-      await uploadImage(checkIn: newCheckIn)
+      if let image {
+        imageUploadManager.uploadCheckInImage(checkIn: newCheckIn, image: image)
+      }
       await onCreation(newCheckIn)
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create check-in: \(error.localizedDescription)")
-    }
-  }
-
-  func uploadImage(checkIn: CheckIn) async {
-    guard let data = image?.jpegData(compressionQuality: 0.1) else { return }
-    switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
-    case let .failure(error):
-      guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to uplaod image to check-in '\(checkIn.id)': \(error.localizedDescription)")
-    default:
-      break
     }
   }
 }

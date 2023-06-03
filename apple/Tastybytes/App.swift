@@ -58,6 +58,7 @@ struct RootView: View {
   @StateObject private var appDataManager: AppDataManager
   @StateObject private var friendManager: FriendManager
   @StateObject private var purchaseManager: PurchaseManager
+  @StateObject private var imageUploadManager: ImageUploadManager
   @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
   @AppStorage(.colorScheme) var colorScheme: String = "system"
   @Environment(\.scenePhase) private var phase
@@ -73,6 +74,8 @@ struct RootView: View {
       StateObject(wrappedValue: NotificationManager(repository: repository, feedbackManager: feedbackManager))
     _profileManager = StateObject(wrappedValue: ProfileManager(repository: repository, feedbackManager: feedbackManager))
     _appDataManager = StateObject(wrappedValue: AppDataManager(repository: repository, feedbackManager: feedbackManager))
+    _imageUploadManager =
+      StateObject(wrappedValue: ImageUploadManager(repository: repository, feedbackManager: feedbackManager))
     _purchaseManager = StateObject(wrappedValue: PurchaseManager(feedbackManager: feedbackManager))
     _friendManager =
       StateObject(wrappedValue: FriendManager(repository: repository, feedbackManager: feedbackManager))
@@ -111,6 +114,7 @@ struct RootView: View {
     .environmentObject(purchaseManager)
     .environmentObject(friendManager)
     .environmentObject(permissionManager)
+    .environmentObject(imageUploadManager)
     .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
     .detectOrientation($orientation)
     .environment(\.orientation, orientation)
