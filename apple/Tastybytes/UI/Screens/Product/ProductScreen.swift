@@ -29,9 +29,7 @@ struct ProductScreen: View {
       header: {
         Section {
           ProductItemView(product: product, extras: [.companyLink, .logo])
-          if let summary, summary.averageRating != nil {
-            SummaryView(summary: summary)
-          }
+          SummaryView(summary: summary)
           RouterLink("Check-in!", sheet: .newCheckIn(product, onCreation: { _ in
             refreshCheckIns()
           }))

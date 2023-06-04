@@ -67,13 +67,11 @@ struct BrandScreen: View {
   var body: some View {
     ScrollViewReader { scrollProxy in
       List {
-        if let summary, summary.averageRating != nil {
-          Section {
-            SummaryView(summary: summary)
-          }
-          .listRowSeparator(.hidden)
-          .listRowBackground(Color.clear)
+        Section {
+          SummaryView(summary: summary)
         }
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
         ForEach(sortedSubBrands) { subBrand in
           Section {
             ForEach(subBrand.products) { product in

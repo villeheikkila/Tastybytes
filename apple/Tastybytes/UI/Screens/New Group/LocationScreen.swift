@@ -21,13 +21,11 @@ struct LocationScreen: View {
       onRefresh: { await getSummary() },
       emptyView: {},
       header: {
-        if let summary, summary.averageRating != nil {
-          Section {
-            SummaryView(summary: summary)
-          }
-          .listRowSeparator(.hidden)
-          .listRowBackground(Color.clear)
+        Section {
+          SummaryView(summary: summary)
         }
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
       }
     )
     .navigationTitle(location.name)

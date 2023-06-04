@@ -1,23 +1,17 @@
 import SwiftUI
 
 struct SummaryView: View {
-  let summary: Summary
+  let summary: Summary?
 
   var body: some View {
     Grid(alignment: .leading) {
       header
       Divider().gridCellUnsizedAxes(.horizontal)
-      if let averageRating = summary.averageRating {
-        SummaryRow(title: "Everyone", count: summary.totalCheckIns, rating: averageRating)
-        Divider().gridCellUnsizedAxes(.horizontal)
-      }
-      if let friendsAverageRating = summary.friendsAverageRating {
-        SummaryRow(title: "Friends", count: summary.friendsTotalCheckIns, rating: friendsAverageRating)
-        Divider().gridCellUnsizedAxes(.horizontal)
-      }
-      if let currentUserAverageRating = summary.currentUserAverageRating {
-        SummaryRow(title: "You", count: summary.currentUserTotalCheckIns, rating: currentUserAverageRating)
-      }
+      SummaryRow(title: "Everyone", count: summary?.totalCheckIns, rating: summary?.averageRating)
+      Divider().gridCellUnsizedAxes(.horizontal)
+      SummaryRow(title: "Friends", count: summary?.friendsTotalCheckIns, rating: summary?.friendsAverageRating)
+      Divider().gridCellUnsizedAxes(.horizontal)
+      SummaryRow(title: "You", count: summary?.currentUserTotalCheckIns, rating: summary?.currentUserAverageRating)
     }
   }
 
@@ -36,17 +30,27 @@ struct SummaryView: View {
 
 struct SummaryRow: View {
   let title: String
-  let count: Int
-  let rating: Double
+  let count: Int?
+  let rating: Double?
 
   var body: some View {
     GridRow {
       Text(title).font(.caption).bold()
       Spacer()
-      Text(String(count)).font(.caption)
+      if let count {
+        Text(String(count)).font(.caption)
+      } else {
+        Text("")
+      }
       Spacer()
-      RatingView(rating: rating, type: .small)
-      Text(String(rating)).font(.caption).bold()
+      RatingView(rating: rating ?? 0, type: .small)
+      Group {
+        if let rating {
+          Text(String(rating))
+        } else {
+          Text("-")
+        }
+      }.font(.caption).bold()
     }
   }
 }
