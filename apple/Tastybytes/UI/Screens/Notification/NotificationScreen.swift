@@ -3,37 +3,48 @@ import SwiftUI
 struct NotificationScreen: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Binding var scrollToTop: Int
 
   var body: some View {
-    List {
-      ForEach(notificationManager.filteredNotifications) { notification in
-        HStack {
-          switch notification.content {
-          case let .message(message):
-            MessageNotificationView(message: message)
-              .accessibilityAddTraits(.isButton)
-              .onTapGesture {
-                Task { await notificationManager.markAsRead(notification) }
-              }
-          case let .friendRequest(friendRequest):
-            FriendRequestNotificationView(friend: friendRequest)
-          case let .taggedCheckIn(taggedCheckIn):
-            TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
-          case let .checkInComment(checkInComment):
-            CheckInCommentNotificationView(checkInComment: checkInComment)
-          case let .checkInReaction(checkInReaction):
-            CheckInReactionNotificationView(checkInReaction: checkInReaction)
+    ScrollViewReader { scrollProxy in
+
+      List {
+        ForEach(notificationManager.filteredNotifications) { notification in
+          HStack {
+            switch notification.content {
+            case let .message(message):
+              MessageNotificationView(message: message)
+                .accessibilityAddTraits(.isButton)
+                .onTapGesture {
+                  Task { await notificationManager.markAsRead(notification) }
+                }
+            case let .friendRequest(friendRequest):
+              FriendRequestNotificationView(friend: friendRequest)
+            case let .taggedCheckIn(taggedCheckIn):
+              TaggedInCheckInNotificationView(checkIn: taggedCheckIn)
+            case let .checkInComment(checkInComment):
+              CheckInCommentNotificationView(checkInComment: checkInComment)
+            case let .checkInReaction(checkInReaction):
+              CheckInReactionNotificationView(checkInReaction: checkInReaction)
+            }
+            Spacer()
           }
-          Spacer()
+          .listRowSeparator(.hidden)
+          .if(notification.seenAt != nil, transform: { view in
+            view.listRowBackground(Color(.systemGray5))
+          })
         }
-        .listRowSeparator(.hidden)
-        .if(notification.seenAt != nil, transform: { view in
-          view.listRowBackground(Color(.systemGray5))
-        })
+        .onDelete(perform: { index in Task {
+          await notificationManager.deleteFromIndex(at: index)
+        } })
       }
-      .onDelete(perform: { index in Task {
-        await notificationManager.deleteFromIndex(at: index)
-      } })
+      .onChange(of: scrollToTop, perform: { _ in
+        withAnimation {
+          if let first = notificationManager.filteredNotifications.first {
+            scrollProxy.scrollTo(first.id, anchor: .top)
+          }
+        }
+      })
     }
     .task {
       await notificationManager.refresh(reset: true)

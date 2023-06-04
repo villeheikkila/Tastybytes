@@ -93,7 +93,7 @@ struct SideBarView: View {
         case .discover:
           DiscoverScreen(scrollToTop: $scrollToTop)
         case .notifications:
-          NotificationScreen()
+          NotificationScreen(scrollToTop: $scrollToTop)
         case .admin:
           AdminScreen()
         case .profile:
