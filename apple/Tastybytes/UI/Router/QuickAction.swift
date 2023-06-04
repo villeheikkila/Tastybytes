@@ -17,7 +17,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
         type: "Activity",
         localizedTitle: "Activity",
         localizedSubtitle: "",
-        icon: UIApplicationShortcutIcon(systemImageName: "list.star"),
+        icon: UIApplicationShortcutIcon(systemSymbol: .listStar),
         userInfo: ["name": "activity" as NSSecureCoding]
       )
     case .discover:
@@ -25,7 +25,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
         type: "Discover",
         localizedTitle: "Discover",
         localizedSubtitle: "",
-        icon: UIApplicationShortcutIcon(systemImageName: "magnifyingglass"),
+        icon: UIApplicationShortcutIcon(systemSymbol: .magnifyingglass),
         userInfo: ["name": "discover" as NSSecureCoding]
       )
     case .notifications:
@@ -33,7 +33,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
         type: "Notifications",
         localizedTitle: "Notifications",
         localizedSubtitle: "",
-        icon: UIApplicationShortcutIcon(systemImageName: "bell"),
+        icon: UIApplicationShortcutIcon(systemSymbol: .bell),
         userInfo: ["name": "notifications" as NSSecureCoding]
       )
     case .profile:
@@ -41,7 +41,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
         type: "Profile",
         localizedTitle: "Profile",
         localizedSubtitle: "",
-        icon: UIApplicationShortcutIcon(systemImageName: "person.fill"),
+        icon: UIApplicationShortcutIcon(systemSymbol: .personFill),
         userInfo: ["name": "profile" as NSSecureCoding]
       )
     }

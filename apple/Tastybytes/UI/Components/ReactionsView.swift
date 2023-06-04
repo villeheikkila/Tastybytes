@@ -25,7 +25,7 @@ struct ReactionsView: View {
       }
       Label(
         "React to check-in",
-        systemImage: "hand.thumbsup"
+        systemSymbol: .handThumbsup
       )
       .labelStyle(.iconOnly)
       .symbolVariant(hasReacted(profileManager.profile) ? .fill : .none)

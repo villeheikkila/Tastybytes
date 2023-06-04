@@ -35,11 +35,11 @@ struct DuplicateProductScreen: View {
               router.navigate(screen: .product(product))
             }
             .swipeActions {
-              ProgressButton("Verify", systemImage: "checkmark", action: { await verifyProduct(product) }).tint(.green)
-              RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product, onEdit: {
+              ProgressButton("Verify", systemSymbol: .checkmark, action: { await verifyProduct(product) }).tint(.green)
+              RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product, onEdit: {
                 await loadProducts()
               })).tint(.yellow)
-              Button("Delete", systemImage: "trash", role: .destructive, action: { deleteProduct = product })
+              Button("Delete", systemSymbol: .trash, role: .destructive, action: { deleteProduct = product })
             }
         }
       }

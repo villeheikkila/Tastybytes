@@ -1,3 +1,4 @@
+import SFSafeSymbols
 import SwiftUI
 
 struct WelcomeOnboarding: View {
@@ -28,19 +29,19 @@ struct WelcomeOnboarding: View {
   let features: [FeatureItem] = [FeatureItem(
     title: "Activity Feed",
     description: "Find out what your friends have been tasting",
-    systemName: "list.star",
+    systemSymbol: .listStar,
     color: .blue
   ),
   FeatureItem(
     title: "Discover",
     description: "See notes and ratings from other users",
-    systemName: "sparkle.magnifyingglass",
+    systemSymbol: .sparkleMagnifyingglass,
     color: .yellow
   ),
   FeatureItem(
     title: "Statistics",
     description: "See overview on your tasting habits",
-    systemName: "chart.xyaxis.line",
+    systemSymbol: .chartXyaxisLine,
     color: .orange
   )]
 
@@ -67,12 +68,12 @@ struct WelcomeOnboarding: View {
 struct FeatureItem: Hashable {
   let title: String
   let description: String
-  let systemName: String
+  let systemSymbol: SFSymbol
   let color: Color
 
   @ViewBuilder var view: some View {
     HStack(alignment: .center, spacing: 30) {
-      Image(systemName: systemName)
+      Image(systemSymbol: systemSymbol)
         .font(.largeTitle)
         .frame(width: 60)
         .accessibility(hidden: true)

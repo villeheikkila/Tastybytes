@@ -56,24 +56,24 @@ struct LocationScreen: View {
           Menu {
             if profileManager.hasPermission(.canMergeLocations) {
               RouterLink(sheet: .mergeLocationSheet(location: location), label: {
-                Label("Merge to...", systemImage: "doc.on.doc")
+                Label("Merge to...", systemSymbol: .docOnDoc)
               })
             }
             if profileManager.hasPermission(.canDeleteProducts) {
               Button(
                 "Delete",
-                systemImage: "trash.fill",
+                systemSymbol: .trashFill,
                 role: .destructive,
                 action: { showDeleteLocationConfirmation.toggle() }
               )
             }
           } label: {
-            Label("Admin", systemImage: "gear")
+            Label("Admin", systemSymbol: .gear)
               .labelStyle(.iconOnly)
           }
         }
       } label: {
-        Label("Options menu", systemImage: "ellipsis")
+        Label("Options menu", systemSymbol: .ellipsis)
           .labelStyle(.iconOnly)
       }
     }

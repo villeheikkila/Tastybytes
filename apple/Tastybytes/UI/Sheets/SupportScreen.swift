@@ -54,19 +54,19 @@ struct SupportSheet: View {
   let features: [FeatureItem] = [FeatureItem(
     title: "Precise Ratings",
     description: "Rate check-ins using increments of 0.25",
-    systemName: "star.leadinghalf.filled",
+    systemSymbol: .starLeadinghalfFilled,
     color: .yellow
   ),
   FeatureItem(
     title: "Change Date",
     description: "Gain ability to change the date of your check-ins",
-    systemName: "calendar.badge.plus",
+    systemSymbol: .calendarBadgePlus,
     color: .blue
   ),
   FeatureItem(
     title: "Nostalgic Tag",
     description: "Mark your check-ins as nostalgic",
-    systemName: "heart.text.square",
+    systemSymbol: .heartTextSquare,
     color: .pink
   )]
 }

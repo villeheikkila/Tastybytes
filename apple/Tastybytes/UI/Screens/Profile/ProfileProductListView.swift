@@ -85,7 +85,7 @@ struct ProfileProductListView: View {
       ToolbarItemGroup(placement: .navigationBarTrailing) {
         RouterLink(
           "Show filters",
-          systemImage: "line.3.horizontal.decrease.circle",
+          systemSymbol: .line3HorizontalDecreaseCircle,
           sheet: .productFilter(initialFilter: productFilter, sections: [.category, .sortBy],
                                 onApply: { filter in productFilter = filter })
         )

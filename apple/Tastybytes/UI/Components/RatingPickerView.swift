@@ -25,13 +25,13 @@ struct RatingPickerView: View {
     ZStack {
       HStack {
         ForEach(0 ... 4, id: \.self) { i in
-          Image(systemName: "star")
+          Image(systemSymbol: .star)
             .overlay(
               GeometryReader { geo in
                 let fraction = rating - Double(i)
                 let paintedPortion = min(5, max(0, fraction))
                 let width = geo.size.width * paintedPortion + (paintedPortion > 0.75 ? 5 : 0)
-                Image(systemName: "star.fill")
+                Image(systemSymbol: .starFill)
                   .foregroundColor(.yellow)
                   .mask(
                     Rectangle()

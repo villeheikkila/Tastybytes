@@ -26,16 +26,16 @@ struct CategoryManagementScreen: View {
             Text(category.name)
             Spacer()
             Menu {
-              RouterLink("Edit Serving Styles", systemImage: "pencil", sheet: .categoryServingStyle(category: category))
+              RouterLink("Edit Serving Styles", systemSymbol: .pencil, sheet: .categoryServingStyle(category: category))
               RouterLink(
                 "Add Subcategory",
-                systemImage: "plus",
+                systemSymbol: .plus,
                 sheet: .addSubcategory(category: category, onSubmit: { newSubcategoryName in
                   await appDataManager.addSubcategory(category: category, name: newSubcategoryName)
                 })
               )
             } label: {
-              Label("Options menu", systemImage: "ellipsis")
+              Label("Options menu", systemSymbol: .ellipsis)
                 .labelStyle(.iconOnly)
                 .frame(width: 24, height: 24)
             }
@@ -45,7 +45,7 @@ struct CategoryManagementScreen: View {
     }
     .listStyle(.insetGrouped)
     .navigationBarTitle("Categories")
-    .navigationBarItems(trailing: RouterLink("Add Category", systemImage: "plus",
+    .navigationBarItems(trailing: RouterLink("Add Category", systemSymbol: .plus,
                                              sheet: .addCategory(onSubmit: { _ in
                                                feedbackManager.toggle(.success("Category created!"))
                                              }))

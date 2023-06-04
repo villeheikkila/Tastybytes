@@ -137,6 +137,7 @@
 		5C919E2228FF0CF60055CFD2 /* ProductVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E2128FF0CF60055CFD2 /* ProductVariant.swift */; };
 		5C964DBC2A2BE44400805199 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C964DBB2A2BE44400805199 /* UserDefaults.swift */; };
 		5C964DC02A2BF05200805199 /* ImageUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C964DBF2A2BF05200805199 /* ImageUploadManager.swift */; };
+		5C964DC32A2D021F00805199 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 5C964DC22A2D021F00805199 /* SFSafeSymbols */; };
 		5C989DAB2901AAD500BBC5A7 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C989DAA2901AAD500BBC5A7 /* Repository.swift */; };
 		5CA006C8298DE33F003CC307 /* BrandScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA006C7298DE33F003CC307 /* BrandScreen.swift */; };
 		5CA006CD2992D0CF003CC307 /* CreateQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA006CC2992D0CF003CC307 /* CreateQRCodeView.swift */; };
@@ -451,6 +452,7 @@
 				5C25AEB229031B9D00793607 /* WrappingHStack in Frameworks */,
 				5C5670D929F56D77003F7C95 /* RevenueCat in Frameworks */,
 				5CED432528FBF6B0003F8194 /* AlertToast in Frameworks */,
+				5C964DC32A2D021F00805199 /* SFSafeSymbols in Frameworks */,
 				5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */,
 				5C08B6E028ED7956009218D7 /* Supabase in Frameworks */,
 				5CFB563628F5A76600F13A1E /* CachedAsyncImage in Frameworks */,
@@ -1268,6 +1270,7 @@
 				5C25AEB129031B9D00793607 /* WrappingHStack */,
 				5C13F21A291A7C3A00599892 /* FirebaseMessaging */,
 				5C5670D829F56D77003F7C95 /* RevenueCat */,
+				5C964DC22A2D021F00805199 /* SFSafeSymbols */,
 			);
 			productName = tasted;
 			productReference = 5CFEE57328ED69B100A8DD66 /* Tastybytes.app */;
@@ -1304,6 +1307,7 @@
 				5C25AEB029031B9D00793607 /* XCRemoteSwiftPackageReference "WrappingHStack" */,
 				5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				5C5670D729F56D77003F7C95 /* XCRemoteSwiftPackageReference "purchases-ios" */,
+				5C964DC12A2D021F00805199 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 			);
 			productRefGroup = 5CFEE57428ED69B100A8DD66 /* Products */;
 			projectDirPath = "";
@@ -1857,6 +1861,14 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		5C964DC12A2D021F00805199 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast.git";
@@ -1903,6 +1915,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5C5670D729F56D77003F7C95 /* XCRemoteSwiftPackageReference "purchases-ios" */;
 			productName = RevenueCat;
+		};
+		5C964DC22A2D021F00805199 /* SFSafeSymbols */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5C964DC12A2D021F00805199 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
+			productName = SFSafeSymbols;
 		};
 		5CED432428FBF6B0003F8194 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;

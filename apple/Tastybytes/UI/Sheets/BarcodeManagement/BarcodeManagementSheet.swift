@@ -25,13 +25,13 @@ struct BarcodeManagementSheet: View {
           Spacer()
         }
         .swipeActions {
-          ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
+          ProgressButton("Delete", systemSymbol: .trashFill, role: .destructive, action: {
             await deleteBarcode(barcode)
             feedbackManager.trigger(.notification(.success))
           })
         }
         .contextMenu {
-          ProgressButton("Delete", systemImage: "trash.fill", role: .destructive, action: {
+          ProgressButton("Delete", systemSymbol: .trashFill, role: .destructive, action: {
             await deleteBarcode(barcode)
             feedbackManager.trigger(.notification(.success))
           })

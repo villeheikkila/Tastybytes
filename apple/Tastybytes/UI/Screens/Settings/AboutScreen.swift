@@ -82,7 +82,7 @@ struct AboutScreen: View {
   }
 
   var support: some View {
-    RouterLink("Become a Supporter", systemImage: "gift", color: .green, sheet: .support)
+    RouterLink("Become a Supporter", systemSymbol: .gift, color: .green, sheet: .support)
   }
 
   @ViewBuilder var footer: some View {
@@ -90,7 +90,7 @@ struct AboutScreen: View {
       HStack {
         Spacer()
         HStack(alignment: .center) {
-          Label("Copyright", systemImage: "c.circle")
+          Label("Copyright", systemSymbol: .cCircle)
             .labelStyle(.iconOnly)
             .font(.caption).bold()
 

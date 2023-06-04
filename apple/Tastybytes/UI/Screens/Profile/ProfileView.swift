@@ -92,7 +92,7 @@ struct ProfileView: View {
       HStack {
         Spacer()
         VStack(spacing: 8) {
-          Image(systemName: "eye.slash.circle")
+          Image(systemSymbol: .eyeSlashCircle)
             .resizable()
             .scaledToFit()
             .frame(width: 32, height: 32)
@@ -253,11 +253,11 @@ struct ProfileView: View {
     Group {
       RouterLink(
         "Friends",
-        systemImage: "person.crop.rectangle.stack",
+        systemSymbol: .personCropRectangleStack,
         screen: profileManager.profile == profile ? .currentUserFriends : .friends(profile)
       )
-      RouterLink("Products", systemImage: "checkmark.rectangle", screen: .profileProducts(profile))
-      RouterLink("Statistics", systemImage: "chart.bar.xaxis", screen: .profileStatistics(profile))
+      RouterLink("Products", systemSymbol: .checkmarkRectangle, screen: .profileProducts(profile))
+      RouterLink("Statistics", systemSymbol: .chartBarXaxis, screen: .profileStatistics(profile))
     }
     .font(.subheadline)
     .bold()

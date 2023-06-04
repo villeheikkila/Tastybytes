@@ -18,7 +18,7 @@ struct AvatarView: View {
       .frame(width: size, height: size)
       .accessibility(hidden: true)
     } else {
-      Image(systemName: "person.fill")
+      Image(systemSymbol: .personFill)
         .resizable()
         .padding(.all, size / 5)
         .clipShape(Circle())

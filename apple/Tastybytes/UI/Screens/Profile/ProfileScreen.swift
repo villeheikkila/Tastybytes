@@ -17,7 +17,7 @@ struct ProfileScreen: View {
       trailing: Menu {
         ShareLink("Share", item: NavigatablePath.profile(id: profile.id).url)
       } label: {
-        Label("Options menu", systemImage: "ellipsis")
+        Label("Options menu", systemSymbol: .ellipsis)
           .labelStyle(.iconOnly)
       }
     )

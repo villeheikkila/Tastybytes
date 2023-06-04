@@ -27,7 +27,7 @@ struct SubcategorySheet: View {
             HStack {
               Text(subcategory.name)
               Spacer()
-              Label("Selected subcategory", systemImage: "checkmark")
+              Label("Selected subcategory", systemSymbol: .checkmark)
                 .labelStyle(.iconOnly)
                 .opacity(subcategories.contains(subcategory) ? 1 : 0)
             }
@@ -64,7 +64,7 @@ struct SubcategorySheet: View {
 
   @ViewBuilder private var addSubcategoryView: some View {
     if profileManager.hasPermission(.canDeleteBrands) {
-      Button("Add subcategory", systemImage: "plus", action: { showAddSubcategory.toggle() })
+      Button("Add subcategory", systemSymbol: .plus, action: { showAddSubcategory.toggle() })
         .labelStyle(.iconOnly)
         .bold()
     }

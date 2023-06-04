@@ -14,7 +14,7 @@ struct NameTagSheet: View {
         Button(action: { showNameTagScanner.toggle() }, label: {
           HStack {
             Spacer()
-            Label("Scan Name Tag", systemImage: "qrcode.viewfinder")
+            Label("Scan Name Tag", systemSymbol: .qrcodeViewfinder)
             Spacer()
           }
         })
@@ -31,7 +31,7 @@ struct NameTagSheet: View {
         Button(action: { showNameTagScanner.toggle() }, label: {
           HStack {
             Spacer()
-            Label("Show Name Tag", systemImage: "qrcode")
+            Label("Show Name Tag", systemSymbol: .qrcode)
             Spacer()
           }
 

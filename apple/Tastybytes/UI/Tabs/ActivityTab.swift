@@ -29,13 +29,13 @@ struct ActivityTab: View {
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      RouterLink("Friends page", systemImage: "person.2", screen: .currentUserFriends)
+      RouterLink("Friends page", systemSymbol: .person2, screen: .currentUserFriends)
         .labelStyle(.iconOnly)
         .imageScale(.large)
         .customBadge(notificationManager.getUnreadFriendRequestCount())
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouterLink("Settings page", systemImage: "gear", screen: .settings)
+      RouterLink("Settings page", systemSymbol: .gear, screen: .settings)
         .labelStyle(.iconOnly)
         .imageScale(.large)
     }

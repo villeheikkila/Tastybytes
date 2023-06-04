@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct Badge: View {
-  let count: Int
+  let badgeCount: Int
 
   var body: some View {
     ZStack(alignment: .topTrailing) {
-      Text(String(count))
+      Text(String(badgeCount))
         .bold()
         .font(.caption)
         .padding(5)
@@ -19,22 +19,20 @@ struct Badge: View {
 }
 
 struct BadgeViewModifier: ViewModifier {
-  let count: Int
+  let badgeCount: Int
 
   func body(content: Content) -> some View {
     content
-      // swiftlint:disable empty_count
-      .if(count != 0, transform: { view in
+      .if(badgeCount != 0, transform: { view in
         view.overlay(alignment: .topTrailing) {
-          Badge(count: count)
+          Badge(badgeCount: badgeCount)
         }
       })
-    // swiftlint:enable empty_count
   }
 }
 
 extension View {
-  func customBadge(_ count: Int) -> some View {
-    modifier(BadgeViewModifier(count: count))
+  func customBadge(_ badgeCount: Int) -> some View {
+    modifier(BadgeViewModifier(badgeCount: badgeCount))
   }
 }

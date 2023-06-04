@@ -120,12 +120,12 @@ struct CompanyScreen: View {
       if profileManager.hasPermission(.canCreateBrands) {
         RouterLink(
           "Add Brand",
-          systemImage: "plus",
+          systemSymbol: .plus,
           sheet: .addBrand(brandOwner: company, mode: .new)
         )
       }
       if profileManager.hasPermission(.canEditCompanies) {
-        RouterLink("Edit", systemImage: "pencil", sheet: .editCompany(company: company, onSuccess: {
+        RouterLink("Edit", systemSymbol: .pencil, sheet: .editCompany(company: company, onSuccess: {
           await feedbackManager.wrapWithHaptics {
             await getBrandsAndSummary()
           }
@@ -134,7 +134,7 @@ struct CompanyScreen: View {
       } else {
         RouterLink(
           "Edit Suggestion",
-          systemImage: "pencil",
+          systemSymbol: .pencil,
           sheet: .companyEditSuggestion(company: company, onSuccess: {
             feedbackManager.toggle(.success("Edit suggestion sent!"))
           })
@@ -145,14 +145,14 @@ struct CompanyScreen: View {
       if profileManager.hasPermission(.canDeleteCompanies) {
         Button(
           "Delete",
-          systemImage: "trash.fill",
+          systemSymbol: .trashFill,
           role: .destructive,
           action: { showDeleteCompanyConfirmationDialog = true }
         )
         .disabled(company.isVerified)
       }
     } label: {
-      Label("Options menu", systemImage: "ellipsis")
+      Label("Options menu", systemSymbol: .ellipsis)
         .labelStyle(.iconOnly)
     }
   }
@@ -167,7 +167,7 @@ struct CompanyScreen: View {
             .frame(width: 52, height: 52)
             .accessibility(hidden: true)
         } placeholder: {
-          Image(systemName: "photo")
+          Image(systemSymbol: .photo)
             .accessibility(hidden: true)
         }
       }

@@ -90,20 +90,21 @@ struct BrandScreen: View {
                       product: productJoined
                     ), label: {
                       if profileManager.hasPermission(.canMergeProducts) {
-                        Label("Merge to...", systemImage: "doc.on.doc")
+                        Label("Merge to...", systemSymbol: .docOnDoc)
                       } else {
-                        Label("Mark as Duplicate", systemImage: "doc.on.doc")
+                        Label("Mark as Duplicate", systemSymbol: .docOnDoc)
                       }
                     })
 
                     if profileManager.hasPermission(.canDeleteProducts) {
                       Button(
                         "Delete",
-                        systemImage: "trash.fill",
+                        systemSymbol: .trashFill,
                         role: .destructive,
                         action: { productToDelete = product }
-                      ).foregroundColor(.red)
-                        .disabled(product.isVerified)
+                      )
+                      .foregroundColor(.red)
+                      .disabled(product.isVerified)
                     }
                   }
               }
@@ -124,14 +125,14 @@ struct BrandScreen: View {
                 if profileManager.hasPermission(.canCreateProducts) {
                   RouterLink(
                     "Add Product",
-                    systemImage: "plus",
+                    systemSymbol: .plus,
                     sheet: .addProductToSubBrand(brand: brand, subBrand: subBrand)
                   )
                 }
                 if profileManager.hasPermission(.canEditBrands), subBrand.name != nil {
                   RouterLink(
                     "Edit",
-                    systemImage: "pencil",
+                    systemSymbol: .pencil,
                     sheet: .editSubBrand(brand: brand, subBrand: subBrand, onUpdate: {
                       await refresh()
                     })
@@ -141,14 +142,14 @@ struct BrandScreen: View {
                 if profileManager.hasPermission(.canDeleteBrands) {
                   Button(
                     "Delete",
-                    systemImage: "trash.fill",
+                    systemSymbol: .trashFill,
                     role: .destructive,
                     action: { toDeleteSubBrand = subBrand }
                   )
                   .disabled(subBrand.isVerified)
                 }
               } label: {
-                Label("Options menu", systemImage: "ellipsis")
+                Label("Options menu", systemSymbol: .ellipsis)
                   .labelStyle(.iconOnly)
                   .frame(width: 24, height: 24)
               }
@@ -256,11 +257,11 @@ struct BrandScreen: View {
       Divider()
       ShareLink("Share", item: NavigatablePath.brand(id: brand.id).url)
       if profileManager.hasPermission(.canCreateProducts) {
-        RouterLink("Add Product", systemImage: "plus", sheet: .addProductToBrand(brand: brand))
+        RouterLink("Add Product", systemSymbol: .plus, sheet: .addProductToBrand(brand: brand))
       }
       Divider()
       if profileManager.hasPermission(.canEditBrands) {
-        RouterLink("Edit", systemImage: "pencil", sheet: .editBrand(brand: brand, onUpdate: {
+        RouterLink("Edit", systemSymbol: .pencil, sheet: .editBrand(brand: brand, onUpdate: {
           await refresh()
         }))
       }
@@ -268,14 +269,14 @@ struct BrandScreen: View {
       if profileManager.hasPermission(.canDeleteBrands) {
         Button(
           "Delete",
-          systemImage: "trash.fill",
+          systemSymbol: .trashFill,
           role: .destructive,
           action: { showDeleteBrandConfirmationDialog = true }
         )
         .disabled(brand.isVerified)
       }
     } label: {
-      Label("Options menu", systemImage: "ellipsis")
+      Label("Options menu", systemSymbol: .ellipsis)
         .labelStyle(.iconOnly)
     }
   }

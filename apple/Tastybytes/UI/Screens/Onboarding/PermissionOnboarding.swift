@@ -1,3 +1,4 @@
+import SFSafeSymbols
 import SwiftUI
 
 struct PermissionOnboarding: View {
@@ -58,7 +59,7 @@ struct PermissionOnboarding: View {
         title: "Notification",
         subtitle: "Notifications for reactions, tags and comments",
         buttonTitle: pushNotificationButtonTitle,
-        systemName: "bell.fill",
+        systemSymbol: .bellFill,
         action: {
           permissionManager.requestPushNotificationAuthorization()
         }
@@ -67,7 +68,7 @@ struct PermissionOnboarding: View {
         title: "Photo Library",
         subtitle: "Add photos to your check-ins",
         buttonTitle: photoLibraryButtonTitle,
-        systemName: "photo",
+        systemSymbol: .photo,
         action: {
           permissionManager.requestPhotoLibraryAuthorization()
         }
@@ -76,7 +77,7 @@ struct PermissionOnboarding: View {
         title: "Camera",
         subtitle: "Take photos for your check-ins",
         buttonTitle: cameraButtonTitle,
-        systemName: "camera",
+        systemSymbol: .camera,
         action: {
           permissionManager.requestCameraAuthorization()
         }
@@ -85,7 +86,7 @@ struct PermissionOnboarding: View {
         title: "Location",
         subtitle: "Find nearby locations for your check-ins",
         buttonTitle: locationButtonTitle,
-        systemName: "location.fill.viewfinder",
+        systemSymbol: .locationFillViewfinder,
         action: {
           permissionManager.requestLocationAuthorization()
         }
@@ -111,12 +112,12 @@ private struct PermissionListRow: View {
   let title: String
   let subtitle: String
   let buttonTitle: String
-  let systemName: String
+  let systemSymbol: SFSymbol
   let action: () -> Void
 
   var body: some View {
     HStack(spacing: 16) {
-      Image(systemName: systemName)
+      Image(systemSymbol: systemSymbol)
         .resizable()
         .aspectRatio(contentMode: .fit)
         .foregroundColor(Color.blue)

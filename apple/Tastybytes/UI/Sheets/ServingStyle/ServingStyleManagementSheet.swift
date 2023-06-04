@@ -35,14 +35,14 @@ struct ServingStyleManagementSheet: View {
             Text(servingStyle.label)
             Spacer()
             if pickedServingStyles.contains(servingStyle) {
-              Label("Picked serving style", systemImage: "checkmark")
+              Label("Picked serving style", systemSymbol: .checkmark)
                 .labelStyle(.iconOnly)
             }
           }
         })
         .swipeActions {
-          Button("Edit", systemImage: "pencil", action: { editServingStyle = servingStyle }).tint(.yellow)
-          Button("Delete", systemImage: "trash", role: .destructive, action: { toDeleteServingStyle = servingStyle })
+          Button("Edit", systemSymbol: .pencil, action: { editServingStyle = servingStyle }).tint(.yellow)
+          Button("Delete", systemSymbol: .trash, role: .destructive, action: { toDeleteServingStyle = servingStyle })
         }
       }
       Section("Add new serving style") {

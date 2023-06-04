@@ -125,7 +125,7 @@ struct CheckInSheet: View {
           }
         })
         Button("\(editCheckIn?.imageUrl == nil && image == nil ? "Add" : "Change") Photo",
-               systemImage: "photo", action: { showPhotoMenu.toggle() })
+               systemSymbol: .photo, action: { showPhotoMenu.toggle() })
       }
       .headerProminence(.increased)
 

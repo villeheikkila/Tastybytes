@@ -1,3 +1,4 @@
+import SFSafeSymbols
 import SwiftUI
 
 struct VerificationButton: View {
@@ -7,16 +8,16 @@ struct VerificationButton: View {
   let unverify: () async -> Void
 
   var label: String { isVerified ? "Verified" : "Not Verified Yet" }
-  var systemImage: String { isVerified ? "checkmark.circle" : "x.circle" }
+  var systemSymbol: SFSymbol { isVerified ? .checkmarkCircle : .xCircle }
   var action: () async -> Void {
     isVerified ? unverify : verify
   }
 
   var body: some View {
     if profileManager.hasPermission(.canVerify) {
-      ProgressButton(label, systemImage: systemImage, action: { await action() })
+      ProgressButton(label, systemSymbol: systemSymbol, action: { await action() })
     } else {
-      Label(label, systemImage: systemImage)
+      Label(label, systemSymbol: systemSymbol)
     }
   }
 }

@@ -3,10 +3,10 @@ import SwiftUI
 struct AdminScreen: View {
   var body: some View {
     List {
-      RouterLink("Categories", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .categoryManagement)
-      RouterLink("Flavors", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .flavorManagement)
-      RouterLink("Verification", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .verification)
-      RouterLink("Duplicates", systemImage: "plus.rectangle.fill.on.rectangle.fill", screen: .duplicateProducts)
+      RouterLink("Categories", systemSymbol: .plusRectangleFillOnRectangleFill, screen: .categoryManagement)
+      RouterLink("Flavors", systemSymbol: .plusRectangleFillOnRectangleFill, screen: .flavorManagement)
+      RouterLink("Verification", systemSymbol: .plusRectangleFillOnRectangleFill, screen: .verification)
+      RouterLink("Duplicates", systemSymbol: .plusRectangleFillOnRectangleFill, screen: .duplicateProducts)
     }
     .listStyle(.insetGrouped)
     .navigationBarTitle("Admin")

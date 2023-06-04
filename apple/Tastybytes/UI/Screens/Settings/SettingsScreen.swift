@@ -6,10 +6,15 @@ struct SettingsScreen: View {
   var body: some View {
     List {
       Section {
-        RouterLink("Profile", systemImage: "person.crop.circle", color: .indigo, screen: .profileSettings)
-        RouterLink("Account", systemImage: "gear", color: .gray, screen: .accountSettings)
-        RouterLink("Appearance", systemImage: "paintbrush.fill", color: .blue, screen: .appearanaceSettings)
-        RouterLink("Notifications", systemImage: "bell.badge.fill", color: .red, screen: .notificationSettingsScreen)
+        RouterLink("Profile", systemSymbol: .personCropCircle, color: .indigo, screen: .profileSettings)
+        RouterLink("Account", systemSymbol: .gear, color: .gray, screen: .accountSettings)
+        RouterLink("Appearance", systemSymbol: .paintbrushFill, color: .blue, screen: .appearanaceSettings)
+        RouterLink(
+          "Notifications",
+          systemSymbol: .bellBadgeFill,
+          color: .red,
+          screen: .notificationSettingsScreen
+        )
         RouterLink(screen: .appIcon) {
           HStack {
             Image(profileManager.appIcon.icon)
@@ -22,17 +27,17 @@ struct SettingsScreen: View {
             Text("App Icon")
           }
         }
-        RouterLink("Blocked Users", systemImage: "person.fill.xmark", color: .green, screen: .blockedUsers)
+        RouterLink("Blocked Users", systemSymbol: .personFillXmark, color: .green, screen: .blockedUsers)
       }
 
       Section {
         RouterLink(
           "Your Contributions",
-          systemImage: "plus.rectangle.fill.on.rectangle.fill",
+          systemSymbol: .plusRectangleFillOnRectangleFill,
           color: .teal,
           screen: .contributions
         )
-        RouterLink("About", systemImage: "at", color: .blue, screen: .about)
+        RouterLink("About", systemSymbol: .at, color: .blue, screen: .about)
       }
 
       Section {

@@ -1,3 +1,4 @@
+import SFSafeSymbols
 import SwiftUI
 
 struct ProgressButton<LabelView: View>: View {
@@ -79,18 +80,6 @@ extension ProgressButton where LabelView == Text {
   }
 }
 
-extension ProgressButton where LabelView == Image {
-  init(systemImageName: String,
-       role: ButtonRole? = nil,
-       actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
-       action: @escaping () async -> Void)
-  {
-    self.init(role: role, action: action) {
-      Image(systemName: systemImageName)
-    }
-  }
-}
-
 extension ProgressButton where LabelView == Label<Text, Image> {
   init(_ title: String, systemImage: String,
        role: ButtonRole? = nil,
@@ -99,6 +88,18 @@ extension ProgressButton where LabelView == Label<Text, Image> {
   {
     self.init(role: role, action: action) {
       Label(title, systemImage: systemImage)
+    }
+  }
+}
+
+extension ProgressButton where LabelView == Label<Text, Image> {
+  init(_ title: String, systemSymbol: SFSymbol,
+       role: ButtonRole? = nil,
+       actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
+       action: @escaping () async -> Void)
+  {
+    self.init(role: role, action: action) {
+      Label(title, systemSymbol: systemSymbol)
     }
   }
 }

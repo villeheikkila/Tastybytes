@@ -50,11 +50,11 @@ struct EditBrandSheet: View {
                   .frame(width: 52, height: 52)
                   .accessibility(hidden: true)
               } placeholder: {
-                Image(systemName: "photo")
+                Image(systemSymbol: .photo)
                   .accessibility(hidden: true)
               }
             } else {
-              Image(systemName: "photo")
+              Image(systemSymbol: .photo)
                 .accessibility(hidden: true)
             }
           }

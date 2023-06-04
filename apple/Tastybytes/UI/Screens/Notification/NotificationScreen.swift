@@ -7,7 +7,6 @@ struct NotificationScreen: View {
 
   var body: some View {
     ScrollViewReader { scrollProxy in
-
       List {
         ForEach(notificationManager.filteredNotifications) { notification in
           HStack {
@@ -30,9 +29,7 @@ struct NotificationScreen: View {
             Spacer()
           }
           .listRowSeparator(.hidden)
-          .if(notification.seenAt != nil, transform: { view in
-            view.listRowBackground(Color(.systemGray5))
-          })
+          .listRowBackground(notification.seenAt == nil ? nil : Color(.systemGray5))
         }
         .onDelete(perform: { index in Task {
           await notificationManager.deleteFromIndex(at: index)
@@ -65,16 +62,16 @@ struct NotificationScreen: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup {
       Menu {
-        ProgressButton("Mark all read", systemImage: "envelope.open", action: {
+        ProgressButton("Mark all read", systemSymbol: .envelopeOpen, action: {
           feedbackManager.trigger(.impact(intensity: .low))
           await notificationManager.markAllAsRead()
         })
-        ProgressButton("Delete all", systemImage: "trash", action: {
+        ProgressButton("Delete all", systemSymbol: .trash, action: {
           feedbackManager.trigger(.impact(intensity: .low))
           await notificationManager.deleteAll()
         })
       } label: {
-        Label("Options menu", systemImage: "ellipsis")
+        Label("Options menu", systemSymbol: .ellipsis)
           .labelStyle(.iconOnly)
       }
     }
@@ -82,14 +79,14 @@ struct NotificationScreen: View {
       Button {
         notificationManager.filter = nil
       } label: {
-        Label("Show All", systemImage: "bell.fill")
+        Label("Show All", systemSymbol: .bellFill)
       }
       Divider()
       ForEach(NotificationType.allCases) { type in
         Button {
           notificationManager.filter = type
         } label: {
-          Label(type.label, systemImage: type.systemImage)
+          Label(type.label, systemSymbol: type.systemSymbol)
         }
       }
     }

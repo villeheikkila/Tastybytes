@@ -84,7 +84,7 @@ struct ProductScreen: View {
 
         Divider()
 
-        RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { _ in
+        RouterLink("Check-in", systemSymbol: .plus, sheet: .newCheckIn(product, onCreation: { _ in
           refreshCheckIns()
         }))
         .bold()
@@ -93,7 +93,7 @@ struct ProductScreen: View {
         ShareLink("Share", item: NavigatablePath.product(id: product.id).url)
 
         if profileManager.hasPermission(.canAddBarcodes) {
-          RouterLink("Add Barcode", systemImage: "barcode.viewfinder", sheet: .barcodeScanner(onComplete: { barcode in
+          RouterLink("Add Barcode", systemSymbol: .barcodeViewfinder, sheet: .barcodeScanner(onComplete: { barcode in
             Task { await addBarcodeToProduct(barcode) }
           }))
         }
@@ -101,9 +101,9 @@ struct ProductScreen: View {
         Divider()
 
         if profileManager.hasPermission(.canEditCompanies) {
-          RouterLink("Edit", systemImage: "pencil", sheet: .productEdit(product: product))
+          RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product))
         } else {
-          RouterLink("Edit Suggestion", systemImage: "pencil", sheet: .productEditSuggestion(product: product))
+          RouterLink("Edit Suggestion", systemSymbol: .pencil, sheet: .productEditSuggestion(product: product))
         }
 
         RouterLink(sheet: .duplicateProduct(
@@ -111,19 +111,19 @@ struct ProductScreen: View {
           product: product
         ), label: {
           if profileManager.hasPermission(.canMergeProducts) {
-            Label("Merge to...", systemImage: "doc.on.doc")
+            Label("Merge to...", systemSymbol: .docOnDoc)
           } else {
-            Label("Mark as Duplicate", systemImage: "doc.on.doc")
+            Label("Mark as Duplicate", systemSymbol: .docOnDoc)
           }
         })
 
         Menu {
           if profileManager.hasPermission(.canDeleteBarcodes) {
-            RouterLink("Barcodes", systemImage: "barcode", sheet: .barcodeManagement(product: product))
+            RouterLink("Barcodes", systemSymbol: .barcode, sheet: .barcodeManagement(product: product))
           }
 
           if profileManager.hasPermission(.canAddProductLogo) {
-            RouterLink("Edit Logo", systemImage: "photo", sheet: .productLogo(product: product, onUpload: {
+            RouterLink("Edit Logo", systemSymbol: .photo, sheet: .productLogo(product: product, onUpload: {
               await refresh()
             }))
           }
@@ -131,21 +131,21 @@ struct ProductScreen: View {
           if profileManager.hasPermission(.canDeleteProducts) {
             Button(
               "Delete",
-              systemImage: "trash.fill",
+              systemSymbol: .trashFill,
               role: .destructive,
               action: { showDeleteProductConfirmationDialog = true }
             )
             .disabled(product.isVerified)
           }
         } label: {
-          Label("Admin", systemImage: "gear")
+          Label("Admin", systemSymbol: .gear)
             .labelStyle(.iconOnly)
         }
 
         ReportButton(entity: .product(product))
 
       } label: {
-        Label("Options menu", systemImage: "ellipsis")
+        Label("Options menu", systemSymbol: .ellipsis)
           .labelStyle(.iconOnly)
       }
     }

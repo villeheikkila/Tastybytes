@@ -27,14 +27,14 @@ struct CategoryServingStyleSheet: View {
           Text(servingStyle.label)
         }
         .swipeActions {
-          Button("Delete", systemImage: "trash", role: .destructive, action: { toDeleteServingStyle = servingStyle })
+          Button("Delete", systemSymbol: .trash, role: .destructive, action: { toDeleteServingStyle = servingStyle })
         }
       }
     }
     .navigationTitle("\(category.name) Serving Styles")
     .navigationBarTitleDisplayMode(.inline)
     .navigationBarItems(leading: Button("Done", role: .cancel, action: { dismiss() }).bold(),
-                        trailing: RouterLink("Add Barcode", systemImage: "plus",
+                        trailing: RouterLink("Add Barcode", systemSymbol: .plus,
                                              sheet: .servingStyleManagement(
                                                pickedServingStyles: $servingStyles,
                                                onSelect: { servingStyle in

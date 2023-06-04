@@ -1,3 +1,4 @@
+import SFSafeSymbols
 import SwiftUI
 
 struct RouterLink<LabelView: View>: View {
@@ -56,14 +57,6 @@ extension RouterLink where LabelView == Text {
   }
 }
 
-extension RouterLink where LabelView == Image {
-  init(systemImageName: String, screen: Screen, asTapGesture: Bool = false) {
-    self.init(screen: screen, asTapGesture: asTapGesture) {
-      Image(systemName: systemImageName)
-    }
-  }
-}
-
 extension RouterLink where LabelView == Text {
   init(_ label: String, sheet: Sheet, asTapGesture: Bool = false) {
     self.init(sheet: sheet, asTapGesture: asTapGesture) {
@@ -72,49 +65,41 @@ extension RouterLink where LabelView == Text {
   }
 }
 
-extension RouterLink where LabelView == Image {
-  init(systemImageName: String, sheet: Sheet, asTapGesture: Bool = false) {
-    self.init(sheet: sheet, asTapGesture: asTapGesture) {
-      Image(systemName: systemImageName)
-    }
-  }
-}
-
 extension RouterLink where LabelView == Label<Text, Image> {
-  init(_ titleKey: String, systemImage: String, screen: Screen, asTapGesture: Bool = false) {
+  init(_ titleKey: String, systemSymbol: SFSymbol, screen: Screen, asTapGesture: Bool = false) {
     self.init(screen: screen, asTapGesture: asTapGesture, label: {
-      Label(titleKey, systemImage: systemImage)
+      Label(titleKey, systemSymbol: systemSymbol)
     })
   }
 }
 
 extension RouterLink where LabelView == Label<Text, Image> {
-  init(_ titleKey: String, systemImage: String, sheet: Sheet, asTapGesture: Bool = false) {
+  init(_ titleKey: String, systemSymbol: SFSymbol, sheet: Sheet, asTapGesture: Bool = false) {
     self.init(sheet: sheet, asTapGesture: asTapGesture, label: {
-      Label(titleKey, systemImage: systemImage)
+      Label(titleKey, systemSymbol: systemSymbol)
     })
   }
 }
 
 extension RouterLink where LabelView == LinkIconLabel {
-  init(_ titleKey: String, systemImage: String, color: Color, screen: Screen, asTapGesture: Bool = false) {
+  init(_ titleKey: String, systemSymbol: SFSymbol, color: Color, screen: Screen, asTapGesture: Bool = false) {
     self.init(screen: screen, asTapGesture: asTapGesture, label: {
-      LinkIconLabel(titleKey: titleKey, systemImage: systemImage, color: color)
+      LinkIconLabel(titleKey: titleKey, systemSymbol: systemSymbol, color: color)
     })
   }
 }
 
 extension RouterLink where LabelView == LinkIconLabel {
-  init(_ titleKey: String, systemImage: String, color: Color, sheet: Sheet, asTapGesture: Bool = false) {
+  init(_ titleKey: String, systemSymbol: SFSymbol, color: Color, sheet: Sheet, asTapGesture: Bool = false) {
     self.init(sheet: sheet, asTapGesture: asTapGesture, label: {
-      LinkIconLabel(titleKey: titleKey, systemImage: systemImage, color: color)
+      LinkIconLabel(titleKey: titleKey, systemSymbol: systemSymbol, color: color)
     })
   }
 }
 
 struct LinkIconLabel: View {
   let titleKey: String
-  let systemImage: String
+  let systemSymbol: SFSymbol
   let color: Color
 
   var body: some View {
@@ -123,7 +108,7 @@ struct LinkIconLabel: View {
         Rectangle()
           .fill(color.gradient)
           .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-        Image(systemName: systemImage)
+        Image(systemSymbol: systemSymbol)
           .foregroundColor(.white)
       }
       .frame(width: 30, height: 30, alignment: .center)

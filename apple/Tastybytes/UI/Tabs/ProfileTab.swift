@@ -11,12 +11,12 @@ struct ProfileTab: View {
       CurrentProfileScreen(scrollToTop: $scrollToTop)
         .toolbar {
           ToolbarItemGroup(placement: .navigationBarLeading) {
-            RouterLink("Show name tag", systemImage: "qrcode", sheet: .nameTag(onSuccess: { profileId in
+            RouterLink("Show name tag", systemSymbol: .qrcode, sheet: .nameTag(onSuccess: { profileId in
               router.fetchAndNavigateTo(repository, NavigatablePath.profile(id: profileId))
             }))
           }
           ToolbarItemGroup(placement: .navigationBarTrailing) {
-            RouterLink("Settings page", systemImage: "gear", screen: .settings)
+            RouterLink("Settings page", systemSymbol: .gear, screen: .settings)
           }
         }
         .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in

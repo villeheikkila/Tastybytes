@@ -32,7 +32,7 @@ struct UserSheet: View {
             if mode == .add {
               HStack {
                 if !friendManager.friends.contains(where: { $0.containsUser(userId: profile.id) }) {
-                  ProgressButton("Add as a friend", systemImage: "person.badge.plus", action: {
+                  ProgressButton("Add as a friend", systemSymbol: .personBadgePlus, action: {
                     await friendManager.sendFriendRequest(receiver: profile.id, onSuccess: {
                       dismiss()
                       onSubmit()
@@ -47,7 +47,7 @@ struct UserSheet: View {
               if !friendManager.blockedUsers.contains(where: { $0.containsUser(userId: profile.id) }) {
                 ProgressButton(
                   "Block",
-                  systemImage: "person.fill.xmark",
+                  systemSymbol: .personFillXmark,
                   action: { await friendManager.blockUser(user: profile, onSuccess: {
                     onSubmit()
                     dismiss()

@@ -127,10 +127,10 @@ struct DiscoverScreen: View {
   private var searchScopeList: some View {
     Section("Search") {
       Group {
-        Button("Products", systemImage: "grid", action: { searchScope = .products })
-        Button("Companies", systemImage: "network", action: { searchScope = .companies })
-        Button("Users", systemImage: "person", action: { searchScope = .users })
-        Button("Locations", systemImage: "location", action: { searchScope = .locations })
+        Button("Products", systemSymbol: .grid, action: { searchScope = .products })
+        Button("Companies", systemSymbol: .network, action: { searchScope = .companies })
+        Button("Users", systemSymbol: .person, action: { searchScope = .users })
+        Button("Locations", systemSymbol: .location, action: { searchScope = .locations })
       }
       .bold()
     }.headerProminence(.increased)
@@ -186,17 +186,17 @@ struct DiscoverScreen: View {
         Group {
           RouterLink(
             Product.FeedType.trending.label,
-            systemImage: "chart.line.uptrend.xyaxis",
+            systemSymbol: .chartLineUptrendXyaxis,
             screen: .productFeed(.trending)
           )
           RouterLink(
             Product.FeedType.topRated.label,
-            systemImage: "line.horizontal.star.fill.line.horizontal",
+            systemSymbol: .lineHorizontalStarFillLineHorizontal,
             screen: .productFeed(.topRated)
           )
           RouterLink(
             Product.FeedType.latest.label,
-            systemImage: "bolt.horizontal.circle",
+            systemSymbol: .boltHorizontalCircle,
             screen: .productFeed(.latest)
           )
         }
@@ -206,7 +206,7 @@ struct DiscoverScreen: View {
       ForEach(products) { product in
         ProductItemView(product: product, extras: [.checkInCheck, .rating])
           .swipeActions {
-            RouterLink("Check-in", systemImage: "plus", sheet: .newCheckIn(product, onCreation: { checkIn in
+            RouterLink("Check-in", systemSymbol: .plus, sheet: .newCheckIn(product, onCreation: { checkIn in
               router.navigate(screen: .checkIn(checkIn))
             })).tint(.green)
           }
@@ -246,7 +246,7 @@ struct DiscoverScreen: View {
       if searchScope == .products {
         RouterLink(
           "Show filters",
-          systemImage: "line.3.horizontal.decrease.circle",
+          systemSymbol: .line3HorizontalDecreaseCircle,
           sheet: .productFilter(initialFilter: productFilter, sections: [.category, .checkIns],
                                 onApply: { filter in
                                   productFilter = filter
@@ -257,7 +257,7 @@ struct DiscoverScreen: View {
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if profileManager.hasPermission(.canAddBarcodes) {
-        RouterLink("Scan a barcode", systemImage: "barcode.viewfinder", sheet: .barcodeScanner(onComplete: { barcode in
+        RouterLink("Scan a barcode", systemSymbol: .barcodeViewfinder, sheet: .barcodeScanner(onComplete: { barcode in
           Task { await searchProductsByBardcode(barcode) }
         }))
       }

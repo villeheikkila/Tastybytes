@@ -88,7 +88,7 @@ struct AuthenticationScreen: View {
       HStack {
         Spacer()
         VStack(spacing: 12) {
-          Image(systemName: "trash.circle")
+          Image(systemSymbol: .trashCircle)
             .resizable()
             .scaledToFit()
             .frame(width: 48, height: 48)

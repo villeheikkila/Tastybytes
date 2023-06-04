@@ -82,7 +82,7 @@ struct AccountSettingsScreen: View {
   private var updatePassword: some View {
     Section {
       HStack {
-        Image(systemName: "key")
+        Image(systemSymbol: .key)
           .accessibility(hidden: true)
         SecureField("New Password", text: $newPassword)
           .textContentType(.newPassword)
@@ -90,7 +90,7 @@ struct AccountSettingsScreen: View {
           .disableAutocorrection(true)
       }
       HStack {
-        Image(systemName: "key")
+        Image(systemSymbol: .key)
           .accessibility(hidden: true)
         SecureField("Confirm New Password", text: $newPasswordConfirmation)
           .textContentType(.newPassword)
@@ -134,12 +134,12 @@ struct AccountSettingsScreen: View {
       Group {
         ProgressButton(
           "Export CSV",
-          systemImage: "square.and.arrow.up",
+          systemSymbol: .squareAndArrowUp,
           action: { await profileManager.exportData() }
         )
         Button(
           "Delete Account",
-          systemImage: "person.crop.circle.badge.minus",
+          systemSymbol: .personCropCircleBadgeMinus,
           role: .destructive,
           action: { showDeleteConfirmation = true }
         ).foregroundColor(.red)

@@ -32,7 +32,7 @@ struct BlockedUsersScreen: View {
 
   private var blockUser: some View {
     HStack {
-      RouterLink("Show block user sheet", systemImage: "plus", sheet: .userSheet(mode: .block, onSubmit: {
+      RouterLink("Show block user sheet", systemSymbol: .plus, sheet: .userSheet(mode: .block, onSubmit: {
         feedbackManager.toggle(.success("User blocked"))
       }))
       .labelStyle(.iconOnly)
@@ -52,7 +52,7 @@ struct BlockedUserListItemView: View {
         HStack {
           Text(profile.preferredName)
           Spacer()
-          ProgressButton("Unblock", systemImage: "hand.raised.slash.fill", action: { await onUnblockUser() })
+          ProgressButton("Unblock", systemSymbol: .handRaisedSlashFill, action: { await onUnblockUser() })
         }
       }
     }

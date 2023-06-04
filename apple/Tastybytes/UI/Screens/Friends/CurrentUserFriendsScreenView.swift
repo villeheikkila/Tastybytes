@@ -27,14 +27,14 @@ struct CurrentUserFriendsScreen: View {
             Spacer()
             if friend.isPending(userId: profileManager.profile.id) {
               HStack(alignment: .center) {
-                Label("Remove friend request", systemImage: "person.fill.xmark")
+                Label("Remove friend request", systemSymbol: .personFillXmark)
                   .imageScale(.large)
                   .labelStyle(.iconOnly)
                   .accessibilityAddTraits(.isButton)
                   .onTapGesture {
                     friendToBeRemoved = friend
                   }
-                Label("Accept friend request", systemImage: "person.badge.plus")
+                Label("Accept friend request", systemSymbol: .personBadgePlus)
                   .imageScale(.large)
                   .labelStyle(.iconOnly)
                   .accessibilityAddTraits(.isButton)
@@ -51,24 +51,24 @@ struct CurrentUserFriendsScreen: View {
             if friend.isPending(userId: profileManager.profile.id) {
               ProgressButton(
                 "Accept friend request",
-                systemImage: "person.badge.plus",
+                systemSymbol: .personBadgePlus,
                 action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted) }
               )
               .tint(.green)
             }
-            Button("Delete", systemImage: "person.fill.xmark", role: .destructive, action: { friendToBeRemoved = friend })
+            Button("Delete", systemSymbol: .personFillXmark, role: .destructive, action: { friendToBeRemoved = friend })
             ProgressButton(
               "Block",
-              systemImage: "person.2.slash",
+              systemSymbol: .person2Slash,
               action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }
             )
           }.imageScale(.large)
         }
         .contextMenu {
-          Button("Delete", systemImage: "person.fill.xmark", role: .destructive, action: { friendToBeRemoved = friend })
+          Button("Delete", systemSymbol: .personFillXmark, role: .destructive, action: { friendToBeRemoved = friend })
           ProgressButton(
             "Block",
-            systemImage: "person.2.slash",
+            systemSymbol: .person2Slash,
             action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .blocked) }
           )
         }
@@ -112,7 +112,7 @@ struct CurrentUserFriendsScreen: View {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       RouterLink(
         "Show name tag or send friend request by QR code",
-        systemImage: "qrcode",
+        systemSymbol: .qrcode,
         sheet: .nameTag(onSuccess: { profileId in
           Task {
             await friendManager.sendFriendRequest(receiver: profileId)
@@ -122,7 +122,7 @@ struct CurrentUserFriendsScreen: View {
       .labelStyle(.iconOnly)
       .imageScale(.large)
 
-      RouterLink("Add friend", systemImage: "plus", sheet: .userSheet(mode: .add, onSubmit: {
+      RouterLink("Add friend", systemSymbol: .plus, sheet: .userSheet(mode: .add, onSubmit: {
         feedbackManager.toggle(.success("Friend Request Sent!"))
       }))
       .labelStyle(.iconOnly)

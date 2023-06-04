@@ -46,7 +46,7 @@ struct FriendsScreen: View {
       if friendManager.hasNoFriendStatus(friend: profile) {
         ProgressButton(
           "Add friend",
-          systemImage: "person.badge.plus",
+          systemSymbol: .personFillBadgePlus,
           action: { await friendManager.sendFriendRequest(receiver: profile.id) }
         )
         .labelStyle(.iconOnly)

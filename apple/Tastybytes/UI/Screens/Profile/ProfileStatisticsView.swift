@@ -90,7 +90,7 @@ struct SubcategoryStatisticsView: View {
         }
       }
     } header: {
-      RouterLink("Subcategories (all)", systemImage: "tag", screen: .profileProductsByFilter(
+      RouterLink("Subcategories (all)", systemSymbol: .tag, screen: .profileProductsByFilter(
         profile,
         Product
           .Filter(category: category.category, subcategory: nil, onlyNonCheckedIn: false,

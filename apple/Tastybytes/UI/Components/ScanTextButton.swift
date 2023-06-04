@@ -15,7 +15,7 @@ struct ScanTextButton: View {
         responder.title = ""
         responder.title = backup
       } label: {
-        Label("Scan Text From Image", systemImage: "text.viewfinder")
+        Label("Scan Text From Image", systemSymbol: .textViewfinder)
           .labelStyle(.iconOnly)
       }
     }

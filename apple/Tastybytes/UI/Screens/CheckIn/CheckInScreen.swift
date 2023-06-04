@@ -77,7 +77,7 @@ struct CheckInScreen: View {
       trailing: Menu {
         menuContent
       } label: {
-        Label("Options menu", systemImage: "ellipsis")
+        Label("Options menu", systemSymbol: .ellipsis)
           .labelStyle(.iconOnly)
       }
     )
@@ -126,14 +126,14 @@ struct CheckInScreen: View {
     Divider()
     RouterLink(
       "Open Company",
-      systemImage: "network",
+      systemSymbol: .network,
       screen: .company(checkIn.product.subBrand.brand.brandOwner)
     )
-    RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
-    RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
+    RouterLink("Open Product", systemSymbol: .grid, screen: .product(checkIn.product))
+    RouterLink("Open Brand", systemSymbol: .cart, screen: .fetchBrand(checkIn.product.subBrand.brand))
     RouterLink(
       "Open Sub-brand",
-      systemImage: "cart",
+      systemSymbol: .cart,
       screen: .fetchSubBrand(checkIn.product.subBrand)
     )
 
@@ -142,22 +142,22 @@ struct CheckInScreen: View {
     }
 
     if checkIn.profile.id == profileManager.id {
-      RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+      RouterLink("Edit", systemSymbol: .pencil, sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
         updateCheckIn(updatedCheckIn)
       }))
-      Button("Delete", systemImage: "trash.fill", role: .destructive, action: { showDeleteConfirmation = true })
+      Button("Delete", systemSymbol: .trashFill, role: .destructive, action: { showDeleteConfirmation = true })
     }
 
     Divider()
     if profileManager.hasRole(.moderator) {
       Menu {
         if profileManager.hasPermission(.canDeleteCheckInsAsModerator) {
-          Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
+          Button("Delete as Moderator", systemSymbol: .trashFill, role: .destructive) {
             toDeleteCheckInAsModerator = checkIn
           }
         }
       } label: {
-        Label("Moderation", systemImage: "gear")
+        Label("Moderation", systemSymbol: .gear)
           .labelStyle(.iconOnly)
       }
     }
@@ -169,12 +169,12 @@ struct CheckInScreen: View {
         .listRowSeparator(.hidden)
         .contextMenu {
           if comment.profile == profileManager.profile {
-            Button("Edit", systemImage: "pencil") {
+            Button("Edit", systemSymbol: .pencil) {
               withAnimation {
                 editComment = comment
               }
             }
-            ProgressButton("Delete", systemImage: "trash.fill", role: .destructive) {
+            ProgressButton("Delete", systemSymbol: .trashFill, role: .destructive) {
               await deleteComment(comment)
             }
           } else {
@@ -184,12 +184,12 @@ struct CheckInScreen: View {
           if profileManager.hasRole(.moderator) {
             Menu {
               if profileManager.hasPermission(.canDeleteComments) {
-                Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
+                Button("Delete as Moderator", systemSymbol: .trashFill, role: .destructive) {
                   deleteAsCheckInCommentAsModerator = comment
                 }
               }
             } label: {
-              Label("Moderation", systemImage: "gear")
+              Label("Moderation", systemSymbol: .gear)
                 .labelStyle(.iconOnly)
             }
           }
@@ -208,7 +208,7 @@ struct CheckInScreen: View {
     HStack {
       TextField("Leave a comment!", text: $commentText)
         .focused($focusedField, equals: .checkInComment)
-      ProgressButton("Send the comment", systemImage: "paperplane.fill", action: { await sendComment() })
+      ProgressButton("Send the comment", systemSymbol: .paperplaneFill, action: { await sendComment() })
         .labelStyle(.iconOnly)
         .disabled(isInvalidComment())
     }

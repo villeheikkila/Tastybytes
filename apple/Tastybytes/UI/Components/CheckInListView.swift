@@ -73,25 +73,25 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                 Divider()
                 RouterLink(
                   "Open Company",
-                  systemImage: "network",
+                  systemSymbol: .network,
                   screen: .company(checkIn.product.subBrand.brand.brandOwner)
                 )
-                RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
+                RouterLink("Open Brand", systemSymbol: .cart, screen: .fetchBrand(checkIn.product.subBrand.brand))
                 RouterLink(
                   "Open Sub-brand",
-                  systemImage: "cart",
+                  systemSymbol: .cart,
                   screen: .fetchSubBrand(checkIn.product.subBrand)
                 )
-                RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
-                RouterLink("Open Check-in", systemImage: "checkmark.circle", screen: .checkIn(checkIn))
+                RouterLink("Open Product", systemSymbol: .grid, screen: .product(checkIn.product))
+                RouterLink("Open Check-in", systemSymbol: .checkmarkCircle, screen: .checkIn(checkIn))
                 Divider()
                 if checkIn.profile.id == profileManager.id {
-                  RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                  RouterLink("Edit", systemSymbol: .pencil, sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
                     onCheckInUpdate(updatedCheckIn)
                   }))
                   Button(
                     "Delete",
-                    systemImage: "trash.fill",
+                    systemSymbol: .trashFill,
                     role: .destructive,
                     action: { showDeleteConfirmationFor = checkIn }
                   )
@@ -160,12 +160,12 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
 
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarLeading) {
-      RouterLink("Friends Page", systemImage: "person.2", screen: .currentUserFriends)
+      RouterLink("Friends Page", systemSymbol: .person2, screen: .currentUserFriends)
         .labelStyle(.iconOnly)
         .imageScale(.large)
     }
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      RouterLink("Settings Page", systemImage: "gear", screen: .settings)
+      RouterLink("Settings Page", systemSymbol: .gear, screen: .settings)
         .labelStyle(.iconOnly)
         .imageScale(.large)
     }

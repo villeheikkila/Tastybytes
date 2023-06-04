@@ -11,7 +11,7 @@ struct PasswordTextFieldView: View {
   var body: some View {
     VStack(alignment: .leading) {
       HStack {
-        Image(systemName: "key")
+        Image(systemSymbol: .key)
           .accessibility(hidden: true)
         SecureField(mode == .confirmPassword ? "Confirm Password" : "Password", text: $password)
           .textContentType(mode == .password ? .password : .newPassword)
