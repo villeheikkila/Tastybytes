@@ -63,6 +63,8 @@ struct VerificationScreen: View {
       )
     }
     .navigationBarTitle("Unverified \(verificationType.label)")
+    .navigationBarTitleDisplayMode(.inline)
+    .toolbarBackground(.visible, for: .navigationBar)
     .toolbar {
       toolbarContent
     }

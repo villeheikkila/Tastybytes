@@ -63,6 +63,8 @@ struct ProductFeedScreen: View {
       }
     #endif
       .navigationTitle(title)
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(.visible, for: .navigationBar)
       .toolbar {
         toolbarContent
       }

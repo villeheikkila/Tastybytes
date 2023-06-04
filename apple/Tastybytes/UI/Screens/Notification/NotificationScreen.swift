@@ -44,6 +44,7 @@ struct NotificationScreen: View {
     #endif
     .navigationTitle(notificationManager.filter?.label ?? "Notifications")
     .navigationBarTitleDisplayMode(.inline)
+    .toolbarBackground(.visible, for: .navigationBar)
     .toolbar {
       toolbarContent
     }
