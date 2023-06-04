@@ -45,7 +45,7 @@ final class NotificationManager: ObservableObject {
             case .message:
               return self.filter == .message
             case .checkInComment:
-              return self.filter == .message
+              return self.filter == .checkInComment
             case .taggedCheckIn:
               return self.filter == .taggedCheckIn
             }
