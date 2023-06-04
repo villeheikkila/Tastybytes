@@ -14,6 +14,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var router: Router
+  @EnvironmentObject private var imageUploadManager: ImageUploadManager
   @State private var scrollProxy: ScrollViewProxy?
   @State private var showDeleteCheckInConfirmationDialog = false
   @State private var showDeleteConfirmationFor: CheckIn? {
@@ -145,6 +146,14 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         .task {
           await getInitialData()
         }
+        .onChange(of: imageUploadManager.uploadedImageForCheckIn, perform: { newValue in
+          if let updatedCheckIn = newValue {
+            imageUploadManager.uploadedImageForCheckIn = nil
+            if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
+              checkIns[index] = updatedCheckIn
+            }
+          }
+        })
       }
     }
   }

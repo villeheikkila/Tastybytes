@@ -17,14 +17,12 @@ class ImageUploadManager: ObservableObject {
     Task {
       guard let data = image.jpegData(compressionQuality: 0.1) else { return }
       switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
-      case .success:
-        uploadedImageForCheckIn = checkIn
+      case let .success(imageFile):
+        uploadedImageForCheckIn = checkIn.copyWith(imageFile: imageFile)
       case let .failure(error):
         guard !error.localizedDescription.contains("cancelled") else { return }
         feedbackManager.toggle(.error(.unexpected))
         logger.error("failed to upload image to check-in '\(checkIn.id)': \(error.localizedDescription)")
-      default:
-        break
       }
     }
   }

@@ -29,6 +29,75 @@ struct CheckIn: Identifiable, Hashable, Codable, Sendable {
     )
   }
 
+  init(
+    id: Int,
+    rating: Double? = nil,
+    review: String? = nil,
+    imageFile: String? = nil,
+    checkInAt: Date? = nil,
+    blurHash: CheckIn.BlurHash? = nil,
+    profile: Profile,
+    product: Product.Joined,
+    checkInReactions: [CheckInReaction],
+    taggedProfiles: [Profile],
+    flavors: [Flavor],
+    variant: ProductVariant? = nil,
+    servingStyle: ServingStyle? = nil,
+    location: Location? = nil,
+    purchaseLocation: Location? = nil
+  ) {
+    self.id = id
+    self.rating = rating
+    self.review = review
+    self.imageFile = imageFile
+    self.checkInAt = checkInAt
+    self.blurHash = blurHash
+    self.profile = profile
+    self.product = product
+    self.checkInReactions = checkInReactions
+    self.taggedProfiles = taggedProfiles
+    self.flavors = flavors
+    self.variant = variant
+    self.servingStyle = servingStyle
+    self.location = location
+    self.purchaseLocation = purchaseLocation
+  }
+
+  func copyWith(
+    rating: Double? = nil,
+    review: String? = nil,
+    imageFile: String? = nil,
+    checkInAt: Date? = nil,
+    blurHash: BlurHash? = nil,
+    profile: Profile? = nil,
+    product: Product.Joined? = nil,
+    checkInReactions: [CheckInReaction]? = nil,
+    taggedProfiles: [Profile]? = nil,
+    flavors: [Flavor]? = nil,
+    variant: ProductVariant? = nil,
+    servingStyle: ServingStyle? = nil,
+    location: Location? = nil,
+    purchaseLocation: Location?? = nil
+  ) -> CheckIn {
+    CheckIn(
+      id: id,
+      rating: rating ?? self.rating,
+      review: review ?? self.review,
+      imageFile: imageFile ?? self.imageFile,
+      checkInAt: checkInAt ?? self.checkInAt,
+      blurHash: blurHash ?? self.blurHash,
+      profile: profile ?? self.profile,
+      product: product ?? self.product,
+      checkInReactions: checkInReactions ?? self.checkInReactions,
+      taggedProfiles: taggedProfiles ?? self.taggedProfiles,
+      flavors: flavors ?? self.flavors,
+      variant: variant ?? self.variant,
+      servingStyle: servingStyle ?? self.servingStyle,
+      location: location ?? self.location,
+      purchaseLocation: purchaseLocation ?? self.purchaseLocation
+    )
+  }
+
   enum CodingKeys: String, CodingKey {
     case id
     case rating

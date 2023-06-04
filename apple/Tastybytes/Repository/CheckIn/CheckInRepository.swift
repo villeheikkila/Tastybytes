@@ -18,7 +18,7 @@ protocol CheckInRepository {
   func delete(id: Int) async -> Result<Void, Error>
   func deleteAsModerator(checkIn: CheckIn) async -> Result<Void, Error>
   func getSummaryByProfileId(id: UUID) async -> Result<ProfileSummary, Error>
-  func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<Void, Error>
+  func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<String, Error>
 }
 
 struct SupabaseCheckInRepository: CheckInRepository {
@@ -200,17 +200,24 @@ struct SupabaseCheckInRepository: CheckInRepository {
     }
   }
 
-  func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<Void, Error> {
+  func uploadImage(id: Int, data: Data, userId: UUID) async -> Result<String, Error> {
     do {
-      let file = File(name: "\(id).jpeg", data: data, fileName: "\(id).jpeg", contentType: "image/jpeg")
+      let fileName = "\(id)_\(Int(Date().timeIntervalSince1970)).jpeg"
+      print(fileName)
+      let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
 
       _ = try await client
         .storage
         .from(id: CheckIn.getQuery(.imageBucket))
-        .upload(path: "\(userId.uuidString.lowercased())/\(id).jpeg", file: file, fileOptions: nil)
+        .upload(
+          path: "\(userId.uuidString.lowercased())/\(fileName)",
+          file: file,
+          fileOptions: FileOptions(cacheControl: "86400")
+        )
 
-      return .success(())
+      return .success(fileName)
     } catch {
+      print(error)
       return .failure(error)
     }
   }
