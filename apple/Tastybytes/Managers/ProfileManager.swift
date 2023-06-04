@@ -34,7 +34,6 @@ final class ProfileManager: ObservableObject {
     self.feedbackManager = feedbackManager
   }
 
-  private var initialColorScheme: ColorScheme?
   private var extendedProfile: Profile.Extended?
 
   // Getters

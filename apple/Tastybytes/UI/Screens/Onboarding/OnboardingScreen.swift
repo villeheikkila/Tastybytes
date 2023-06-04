@@ -15,7 +15,6 @@ struct OnboardingScreen: View {
 
   @EnvironmentObject private var splashScreenManager: SplashScreenManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @Environment(\.colorScheme) private var colorScheme
   @FocusState private var focusedField: OnboardField?
   @State private var currentTab = Tab.welcome
 
