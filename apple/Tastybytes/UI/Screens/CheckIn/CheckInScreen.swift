@@ -2,12 +2,17 @@ import CachedAsyncImage
 import SwiftUI
 
 struct CheckInScreen: View {
+  enum Focusable {
+    case checkInComment
+  }
+
   private let logger = getLogger(category: "CheckInScreen")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
+  @FocusState private var focusedField: Focusable?
   @State private var checkIn: CheckIn
   @State private var checkInComments = [CheckInComment]()
   @State private var showDeleteConfirmation = false
@@ -44,15 +49,24 @@ struct CheckInScreen: View {
   }
 
   var body: some View {
-    ScrollView {
-      Group {
-        CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn)
-          .contextMenu {
-            menuContent
-          }
-        commentSection
-      }.padding([.leading, .trailing], 8)
+    List {
+      CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn)
+        .listRowSeparator(.hidden)
+        .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
+        .contextMenu {
+          menuContent
+        }
+        .onTapGesture {
+          focusedField = nil
+        }
+      commentSection
+      Spacer()
+        .frame(height: 200)
+        .listRowSeparator(.hidden)
     }
+    .listStyle(.plain)
+    .scrollContentBackground(.hidden)
+    .scrollIndicators(.hidden)
     .overlay(
       MaterialOverlay(alignment: .bottom) {
         leaveCommentSection
@@ -149,37 +163,36 @@ struct CheckInScreen: View {
   }
 
   private var commentSection: some View {
-    VStack(spacing: 10) {
-      ForEach(checkInComments.reversed()) { comment in
-        CheckInCommentView(comment: comment)
-          .contextMenu {
-            if comment.profile == profileManager.profile {
-              Button("Edit", systemImage: "pencil") {
-                withAnimation {
-                  editComment = comment
-                }
+    ForEach(checkInComments.reversed()) { comment in
+      CheckInCommentView(comment: comment)
+        .listRowSeparator(.hidden)
+        .contextMenu {
+          if comment.profile == profileManager.profile {
+            Button("Edit", systemImage: "pencil") {
+              withAnimation {
+                editComment = comment
               }
-              ProgressButton("Delete", systemImage: "trash.fill", role: .destructive) {
-                await deleteComment(comment)
-              }
-            } else {
-              ReportButton(entity: .comment(comment))
             }
-            Divider()
-            if profileManager.hasRole(.moderator) {
-              Menu {
-                if profileManager.hasPermission(.canDeleteComments) {
-                  Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
-                    deleteAsCheckInCommentAsModerator = comment
-                  }
+            ProgressButton("Delete", systemImage: "trash.fill", role: .destructive) {
+              await deleteComment(comment)
+            }
+          } else {
+            ReportButton(entity: .comment(comment))
+          }
+          Divider()
+          if profileManager.hasRole(.moderator) {
+            Menu {
+              if profileManager.hasPermission(.canDeleteComments) {
+                Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
+                  deleteAsCheckInCommentAsModerator = comment
                 }
-              } label: {
-                Label("Moderation", systemImage: "gear")
-                  .labelStyle(.iconOnly)
               }
+            } label: {
+              Label("Moderation", systemImage: "gear")
+                .labelStyle(.iconOnly)
             }
           }
-      }
+        }
     }
     .alert("Edit Comment", isPresented: $showEditCommentPrompt, actions: {
       TextField("TextField", text: $editCommentText)
@@ -188,12 +201,12 @@ struct CheckInScreen: View {
         await updateComment()
       })
     })
-    .padding([.leading, .trailing], 5)
   }
 
   private var leaveCommentSection: some View {
     HStack {
       TextField("Leave a comment!", text: $commentText)
+        .focused($focusedField, equals: .checkInComment)
       ProgressButton("Send the comment", systemImage: "paperplane.fill", action: { await sendComment() })
         .labelStyle(.iconOnly)
         .disabled(isInvalidComment())

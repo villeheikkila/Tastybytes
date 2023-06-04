@@ -36,10 +36,13 @@ struct CheckInCardView: View {
     .clipped()
     .cornerRadius(8)
     .shadow(color: Color.black.opacity(0.1), radius: 4, x: 2, y: 2)
-    .onTapGesture {
-      router.navigate(screen: .checkIn(checkIn))
+    .if(loadedFrom != .checkIn) { view in
+      view
+        .onTapGesture {
+          router.navigate(screen: .checkIn(checkIn))
+        }
+        .accessibilityAddTraits(.isLink)
     }
-    .accessibilityAddTraits(.isLink)
   }
 
   private var header: some View {
@@ -169,34 +172,32 @@ struct CheckInCardView: View {
   }
 
   @ViewBuilder private var checkInSection: some View {
-    if !checkIn.isEmpty {
-      VStack(alignment: .leading, spacing: spacing) {
-        if let rating = checkIn.rating {
-          RatingView(rating: rating)
-        }
-
-        if let review = checkIn.review {
-          Text(review)
-            .fontWeight(.medium)
-            .foregroundColor(.primary)
-        }
-
-        WrappingHStack(checkIn.flavors, spacing: .constant(spacing)) { flavor in
-          ChipView(title: flavor.label)
-        }
-
-        if let purchaseLocation = checkIn.purchaseLocation {
-          Text("Purchased from __\(purchaseLocation.name)__")
-        }
+    VStack(alignment: .leading, spacing: spacing) {
+      if let rating = checkIn.rating {
+        RatingView(rating: rating)
       }
-      .if(loadedFrom != .checkIn) { view in
-        view
-          .contentShape(Rectangle())
-          .accessibilityAddTraits(.isLink)
-          .onTapGesture {
-            router.navigate(screen: .checkIn(checkIn))
-          }
+
+      if let review = checkIn.review {
+        Text(review)
+          .fontWeight(.medium)
+          .foregroundColor(.primary)
       }
+
+      WrappingHStack(checkIn.flavors, spacing: .constant(spacing)) { flavor in
+        ChipView(title: flavor.label)
+      }
+
+      if let purchaseLocation = checkIn.purchaseLocation {
+        Text("Purchased from __\(purchaseLocation.name)__")
+      }
+    }
+    .if(loadedFrom != .checkIn) { view in
+      view
+        .contentShape(Rectangle())
+        .accessibilityAddTraits(.isLink)
+        .onTapGesture {
+          router.navigate(screen: .checkIn(checkIn))
+        }
     }
   }
 
