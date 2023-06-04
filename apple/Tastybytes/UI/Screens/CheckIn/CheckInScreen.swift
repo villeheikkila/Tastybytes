@@ -47,6 +47,9 @@ struct CheckInScreen: View {
     ScrollView {
       Group {
         CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn)
+          .contextMenu {
+            menuContent
+          }
         commentSection
       }.padding([.leading, .trailing], 8)
     }
@@ -57,45 +60,7 @@ struct CheckInScreen: View {
     )
     .navigationBarItems(
       trailing: Menu {
-        ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
-        Divider()
-        RouterLink(
-          "Open Company",
-          systemImage: "network",
-          screen: .company(checkIn.product.subBrand.brand.brandOwner)
-        )
-        RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
-        RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
-        RouterLink(
-          "Open Sub-brand",
-          systemImage: "cart",
-          screen: .fetchSubBrand(checkIn.product.subBrand)
-        )
-
-        if profileManager.id != checkIn.profile.id {
-          ReportButton(entity: .checkIn(checkIn))
-        }
-
-        if checkIn.profile.id == profileManager.id {
-          RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
-            updateCheckIn(updatedCheckIn)
-          }))
-          Button("Delete", systemImage: "trash.fill", role: .destructive, action: { showDeleteConfirmation = true })
-        }
-
-        Divider()
-        if profileManager.hasRole(.moderator) {
-          Menu {
-            if profileManager.hasPermission(.canDeleteCheckInsAsModerator) {
-              Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
-                toDeleteCheckInAsModerator = checkIn
-              }
-            }
-          } label: {
-            Label("Moderation", systemImage: "gear")
-              .labelStyle(.iconOnly)
-          }
-        }
+        menuContent
       } label: {
         Label("Options menu", systemImage: "ellipsis")
           .labelStyle(.iconOnly)
@@ -137,6 +102,49 @@ struct CheckInScreen: View {
     .task {
       await loadCheckInComments()
       await notificationManager.markCheckInAsRead(checkIn: checkIn)
+    }
+  }
+
+  @ViewBuilder
+  var menuContent: some View {
+    ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
+    Divider()
+    RouterLink(
+      "Open Company",
+      systemImage: "network",
+      screen: .company(checkIn.product.subBrand.brand.brandOwner)
+    )
+    RouterLink("Open Product", systemImage: "grid", screen: .product(checkIn.product))
+    RouterLink("Open Brand", systemImage: "cart", screen: .fetchBrand(checkIn.product.subBrand.brand))
+    RouterLink(
+      "Open Sub-brand",
+      systemImage: "cart",
+      screen: .fetchSubBrand(checkIn.product.subBrand)
+    )
+
+    if profileManager.id != checkIn.profile.id {
+      ReportButton(entity: .checkIn(checkIn))
+    }
+
+    if checkIn.profile.id == profileManager.id {
+      RouterLink("Edit", systemImage: "pencil", sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+        updateCheckIn(updatedCheckIn)
+      }))
+      Button("Delete", systemImage: "trash.fill", role: .destructive, action: { showDeleteConfirmation = true })
+    }
+
+    Divider()
+    if profileManager.hasRole(.moderator) {
+      Menu {
+        if profileManager.hasPermission(.canDeleteCheckInsAsModerator) {
+          Button("Delete as Moderator", systemImage: "trash.fill", role: .destructive) {
+            toDeleteCheckInAsModerator = checkIn
+          }
+        }
+      } label: {
+        Label("Moderation", systemImage: "gear")
+          .labelStyle(.iconOnly)
+      }
     }
   }
 
