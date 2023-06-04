@@ -8,7 +8,12 @@ struct ProfileSettingsScreen: View {
   @State private var username = ""
   @State private var firstName = ""
   @State private var lastName = ""
-  @State private var usernameIsAvailable = true
+  @State private var usernameIsAvailable = false
+  @State private var isLoading = false
+
+  var canUpdateUsername: Bool {
+    username.count >= 3 && usernameIsAvailable && !username.isEmpty && !isLoading
+  }
 
   var body: some View {
     Form {
@@ -32,14 +37,14 @@ struct ProfileSettingsScreen: View {
         .onChange(of: username) { _ in
           usernameIsAvailable = true
         }
+        .onChange(of: username, perform: { _ in
+          isLoading = true
+        })
         .onChange(of: username, debounceTime: 0.3) { newValue in
-          guard newValue.count > 1 else { return }
-          if username == profileManager.username {
-            usernameIsAvailable = true
-          } else {
-            Task {
-              usernameIsAvailable = await profileManager.checkIfUsernameIsAvailable(username: newValue)
-            }
+          guard newValue.count >= 3 else { return }
+          Task {
+            usernameIsAvailable = await profileManager.checkIfUsernameIsAvailable(username: newValue)
+            isLoading = false
           }
         }
       TextField("First Name", text: $firstName)
@@ -50,7 +55,7 @@ struct ProfileSettingsScreen: View {
           username: username,
           firstName: firstName,
           lastName: lastName
-        )) }).disabled(!usernameIsAvailable)
+        )) }).disabled(!canUpdateUsername)
       }
     } header: {
       Text("Profile")

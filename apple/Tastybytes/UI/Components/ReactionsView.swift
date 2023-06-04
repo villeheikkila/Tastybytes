@@ -35,7 +35,8 @@ struct ReactionsView: View {
     .frame(maxWidth: 80, minHeight: size + 4)
     .contentShape(Rectangle())
     .if(!isLoading, transform: { view in
-      view.accessibilityAddTraits(.isButton)
+      view
+        .accessibilityAddTraits(.isButton)
         .onTapGesture {
           Task {
             await toggleReaction()

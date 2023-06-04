@@ -56,6 +56,7 @@ struct CheckInScreen: View {
         .contextMenu {
           menuContent
         }
+        .accessibilityAddTraits(.isButton)
         .onTapGesture {
           focusedField = nil
         }
