@@ -196,13 +196,17 @@ struct SupabaseProfileRepository: ProfileRepository {
 
   func uploadAvatar(userId: UUID, data: Data) async -> Result<String, Error> {
     do {
-      let fileName = "\(UUID().uuidString.lowercased()).jpeg"
+      let fileName = "\(Int(Date().timeIntervalSince1970)).jpeg"
       let file = File(name: fileName, data: data, fileName: fileName, contentType: "image/jpeg")
 
       _ = try await client
         .storage
         .from(id: Profile.getQuery(.avatarBucket))
-        .upload(path: "\(userId.uuidString.lowercased())/\(fileName)", file: file, fileOptions: nil)
+        .upload(
+          path: "\(userId.uuidString.lowercased())/\(fileName)",
+          file: file,
+          fileOptions: FileOptions(cacheControl: "86400")
+        )
 
       return .success(fileName)
     } catch {
