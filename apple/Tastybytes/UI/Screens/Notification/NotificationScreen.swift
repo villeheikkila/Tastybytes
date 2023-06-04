@@ -26,8 +26,9 @@ struct NotificationScreen: View {
           }
           Spacer()
         }
+        .listRowSeparator(.hidden)
         .if(notification.seenAt != nil, transform: { view in
-          view.listRowBackground(Color.clear)
+          view.listRowBackground(Color(.systemGray5))
         })
       }
       .onDelete(perform: { index in Task {
