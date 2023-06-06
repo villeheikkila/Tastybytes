@@ -61,7 +61,7 @@ struct SupabaseSubcategoryRepository: SubcategoryRepository {
     do {
       try await client
         .database
-        .rpc(fn: "fnc__verify_subcategory", params: Subcategory.VerifyRequest(id: id, isVerified: isVerified))
+        .rpc(function: .verifySubcategory, params: Subcategory.VerifyRequest(id: id, isVerified: isVerified))
         .single()
         .execute()
 

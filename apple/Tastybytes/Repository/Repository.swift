@@ -1,3 +1,4 @@
+import PostgREST
 import Supabase
 import SwiftUI
 
@@ -64,5 +65,48 @@ final class Repository: RepositoryProtocol, ObservableObject {
     location = SupabaseLocationRepository(client: supabaseClient)
     document = SupabaseDocumentRepository(client: supabaseClient)
     report = SupabaseReportRepository(client: supabaseClient)
+  }
+}
+
+extension PostgrestClient {
+  enum SupabaseFunctions {
+    case verifySubcategory
+    case getActivityFeed
+    case createCheckIn
+    case updateCheckIn
+    case deleteCheckInAsModerator
+    case getProfileSummary
+
+    var fn: String {
+      switch self {
+      case .verifySubcategory:
+        return "fnc__verify_subcategory"
+      case .getActivityFeed:
+        return "fnc__get_activity_feed"
+      case .createCheckIn:
+        return "fnc__create_check_in"
+      case .updateCheckIn:
+        return "fnc__update_check_in"
+      case .deleteCheckInAsModerator:
+        return "fnc__delete_check_in_as_moderator"
+      case .getProfileSummary:
+        return "fnc__get_profile_summary"
+      }
+    }
+  }
+
+  func rpc(
+    function: SupabaseFunctions,
+    params: some Encodable,
+    count: CountOption? = nil
+  ) -> PostgrestTransformBuilder {
+    rpc(fn: function.fn, params: params, count: count)
+  }
+
+  func rpc(
+    function: SupabaseFunctions,
+    count: CountOption? = nil
+  ) -> PostgrestTransformBuilder {
+    rpc(fn: function.fn, count: count)
   }
 }

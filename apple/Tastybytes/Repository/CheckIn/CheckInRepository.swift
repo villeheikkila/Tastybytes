@@ -28,7 +28,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
     do {
       let response: [CheckIn] = try await client
         .database
-        .rpc(fn: "fnc__get_activity_feed")
+        .rpc(function: .getActivityFeed)
         .select(columns: CheckIn.getQuery(.joined(false)))
         .range(from: from, to: to)
         .execute()
