@@ -37,9 +37,6 @@ struct DiscoverScreen: View {
   var body: some View {
     ScrollViewReader { proxy in
       List {
-        if currentScopeIsEmpty {
-          searchScopeList
-        }
         switch searchScope {
         case .products:
           productResults
@@ -52,9 +49,9 @@ struct DiscoverScreen: View {
         }
       }
       .listStyle(.plain)
-      .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
+      .searchable(text: $searchTerm,  isPresented: .constant(true), placement: .navigationBarDrawer(displayMode: .always),
                   prompt: searchScope.prompt)
-      .searchScopes($searchScope) {
+      .searchScopes($searchScope, activation: .onSearchPresentation) {
         ForEach(SearchScope.allCases) { scope in
           Text(scope.label).tag(scope)
         }
@@ -122,18 +119,6 @@ struct DiscoverScreen: View {
         }
       }
     }
-  }
-
-  private var searchScopeList: some View {
-    Section("Search") {
-      Group {
-        Button("Products", systemSymbol: .grid, action: { searchScope = .products })
-        Button("Companies", systemSymbol: .network, action: { searchScope = .companies })
-        Button("Users", systemSymbol: .person, action: { searchScope = .users })
-        Button("Locations", systemSymbol: .location, action: { searchScope = .locations })
-      }
-      .bold()
-    }.headerProminence(.increased)
   }
 
   private var profileResults: some View {
