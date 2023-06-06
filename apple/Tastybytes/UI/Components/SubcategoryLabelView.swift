@@ -14,11 +14,9 @@ struct SubcategoryLabelView: View {
   }
 }
 
-struct SubcategoryLabelView_Previews: PreviewProvider {
-  static var previews: some View {
+#Preview {
     VStack {
       CategoryNameView(category: Category(id: 0, name: "beverage", icon: "🥤"))
       SubcategoryLabelView(subcategory: Subcategory(id: 0, name: "BCAA", isVerified: true))
     }
   }
-}

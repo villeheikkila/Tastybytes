@@ -49,9 +49,7 @@ struct SplashScreen: View {
   }
 }
 
-struct LaunchScreen_Previews: PreviewProvider {
-  static var previews: some View {
+#Preview {
     SplashScreen()
       .environmentObject(SplashScreenManager())
   }
-}

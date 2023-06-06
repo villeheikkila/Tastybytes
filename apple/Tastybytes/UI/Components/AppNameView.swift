@@ -7,8 +7,6 @@ struct AppNameView: View {
   }
 }
 
-struct AppNameView_Previews: PreviewProvider {
-  static var previews: some View {
+#Preview {
     AppNameView()
   }
-}

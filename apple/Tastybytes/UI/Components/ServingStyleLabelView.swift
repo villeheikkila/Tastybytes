@@ -16,8 +16,6 @@ struct ServingStyleLabelView: View {
   }
 }
 
-struct ServingStyleLabelView_Previews: PreviewProvider {
-  static var previews: some View {
+#Preview {
     ServingStyleLabelView(servingStyle: ServingStyle(id: 0, name: "bottle"))
   }
-}

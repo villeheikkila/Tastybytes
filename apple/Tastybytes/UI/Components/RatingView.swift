@@ -50,11 +50,9 @@ enum StarType {
   }
 }
 
-struct RatingView_Previews: PreviewProvider {
-  static var previews: some View {
+#Preview {
     VStack {
       RatingView(rating: 3.5, type: .small)
       RatingView(rating: 3.5, type: .large)
     }
   }
-}

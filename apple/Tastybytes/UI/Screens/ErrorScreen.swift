@@ -19,8 +19,6 @@ struct ErrorScreen: View {
   }
 }
 
-struct ErrorScreen_Previews: PreviewProvider {
-  static var previews: some View {
+#Preview {
     ErrorScreen(reason: "Page could not be found")
   }
-}

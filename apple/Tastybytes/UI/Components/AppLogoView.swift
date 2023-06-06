@@ -27,8 +27,6 @@ struct AppLogoView: View {
   }
 }
 
-struct AppLogoView_Previews: PreviewProvider {
-  static var previews: some View {
+#Preview {
     AppLogoView()
-  }
 }

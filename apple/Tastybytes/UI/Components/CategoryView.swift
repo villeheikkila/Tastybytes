@@ -24,11 +24,9 @@ struct CategoryView: View {
   }
 }
 
-struct CategoryView_Previews: PreviewProvider {
-  static var previews: some View {
+#Preview {
     CategoryView(
       category: Category(id: 0, name: "beverage", icon: "🥤"),
       subcategories: [Subcategory(id: 0, name: "BCAA", isVerified: true)]
     )
   }
-}

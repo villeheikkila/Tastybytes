@@ -40,8 +40,6 @@ struct AccountDeletedScreen: View {
   }
 }
 
-struct AccountDeletedScreen_Previews: PreviewProvider {
-  static var previews: some View {
+#Preview {
     AccountDeletedScreen()
   }
-}
