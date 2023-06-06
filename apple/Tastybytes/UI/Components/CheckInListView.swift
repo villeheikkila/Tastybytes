@@ -56,6 +56,10 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
     self.emptyView = emptyView()
     self.onRefresh = onRefresh
   }
+    
+    var isContentUnavailable: Bool {
+        initialLoadCompleted && checkIns.isEmpty && showContentUnavailableView
+    }
 
   var body: some View {
     ScrollViewReader { proxy in
@@ -122,7 +126,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
           scrollProxy = proxy
         }
         .background {
-            if showEmptyView {
+            if isContentUnavailable {
                 ContentUnavailableView("Activity feed is empty, add friends or check-ins!", systemImage: "list.star")
             }
         }
@@ -236,9 +240,6 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
       if splashScreenManager.state != .finished {
         await splashScreenManager.dismiss()
         initialLoadCompleted = true
-          if checkIns.isEmpty, showContentUnavailableView {
-          showEmptyView = true
-        }
       }
     })
   }
