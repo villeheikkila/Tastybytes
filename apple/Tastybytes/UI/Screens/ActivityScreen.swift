@@ -11,9 +11,8 @@ struct ActivityScreen: View {
       fetcher: .activityFeed,
       scrollToTop: $scrollToTop,
       onRefresh: {},
-      emptyView: {
-        onboardingEmptyView
-      },
+      showContentUnavailableView: true,
+      emptyView: {},
       header: {}
     )
   }

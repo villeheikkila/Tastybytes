@@ -261,10 +261,10 @@ struct ProductMutationInnerView: View {
       productSection
       action
     }
-    .onChange(of: category) { _ in
+    .onChange(of: category) {
       subcategories = []
     }
-    .onChange(of: brand) { _ in
+    .onChange(of: brand) {
       hasSubBrand = false
       if let brand {
         subBrand = brand.subBrands.first(where: { $0.name == nil })

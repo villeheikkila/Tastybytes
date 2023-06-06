@@ -35,13 +35,13 @@ struct NotificationScreen: View {
           await notificationManager.deleteFromIndex(at: index)
         } })
       }
-      .onChange(of: scrollToTop, perform: { _ in
+      .onChange(of: scrollToTop) {
         withAnimation {
           if let first = notificationManager.filteredNotifications.first {
             scrollProxy.scrollTo(first.id, anchor: .top)
           }
         }
-      })
+      }
     }
     .task {
       await notificationManager.refresh(reset: true)

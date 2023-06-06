@@ -10,7 +10,7 @@ struct AdminTab: View {
         .task {
           await splashScreenManager.dismiss()
         }
-        .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+        .onChange(of: $resetNavigationOnTab.wrappedValue) { _, tab in
           if tab == .admin {
             router.reset()
             resetNavigationOnTab = nil

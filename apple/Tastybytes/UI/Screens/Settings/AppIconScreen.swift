@@ -27,7 +27,7 @@ struct AppIconScreen: View {
       .padding(4)
     }
     .navigationBarTitle("App Icon")
-    .onChange(of: selection) { icon in
+    .onChange(of: selection) { _, icon in
       if let icon, selection != getCurrentAppIcon() {
         UIApplication.shared.setAlternateIconName(icon == AppIcon.ramune ? nil : icon.rawValue)
         profileManager.appIcon = icon

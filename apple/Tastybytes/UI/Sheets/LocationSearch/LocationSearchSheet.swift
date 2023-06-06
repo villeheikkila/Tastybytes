@@ -53,12 +53,12 @@ struct LocationSearchSheet: View {
     .task {
       await getRecentLocations()
     }
-    .onChange(of: locationManager.lastLocation, perform: { _ in
+    .onChange(of: locationManager.lastLocation) {
       guard nearbyLocations.isEmpty else { return }
       guard let lastLocation = locationManager.lastLocation else { return }
       viewModel.setInitialLocation(lastLocation)
       Task { await getSuggestions(lastLocation) }
-    })
+    }
   }
 
   func getRecentLocations() async {

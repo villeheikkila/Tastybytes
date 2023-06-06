@@ -68,10 +68,11 @@ struct VerificationScreen: View {
     .toolbar {
       toolbarContent
     }
-    .onChange(of: verificationType, perform: { _ in Task {
+    .onChange(of: verificationType) {
+        Task {
       await loadData()
     }
-    })
+    }
     #if !targetEnvironment(macCatalyst)
     .refreshable {
       await loadData(refresh: true)

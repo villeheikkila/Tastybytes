@@ -1,4 +1,4 @@
-@preconcurrency import MapKit
+import MapKit
 
 struct Location: Identifiable, Codable, Hashable, Sendable {
   let id: UUID

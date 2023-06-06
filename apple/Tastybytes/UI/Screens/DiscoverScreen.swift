@@ -66,18 +66,18 @@ struct DiscoverScreen: View {
       .onSubmit(of: .search) {
         Task { await search() }
       }
-      .onChange(of: searchScope, perform: { _ in
+      .onChange(of: searchScope) {
         Task { await search() }
         barcode = nil
-      })
+      }
       .onChange(of: searchTerm, debounceTime: 0.2) { _ in
         Task { await search() }
       }
-      .onChange(of: searchTerm, perform: { term in
+      .onChange(of: searchTerm) { _, term in
         if term.isEmpty {
           Task { await resetSearch() }
         }
-      })
+      }
     }
     .navigationTitle("Discover")
     .toolbar {
@@ -100,7 +100,7 @@ struct DiscoverScreen: View {
         ProductFilterOverlayView(filters: productFilter, onReset: { self.productFilter = nil })
       }
     }
-    .onChange(of: scrollToTop) { _ in
+    .onChange(of: scrollToTop) {
       withAnimation {
         switch searchScope {
         case .products:

@@ -41,12 +41,10 @@ struct ProfileOnboarding: View {
           .autocapitalization(.none)
           .disableAutocorrection(true)
           .focused($focusedField, equals: .username)
-          .onChange(of: username) { _ in
-            usernameIsAvailable = true
-          }
-          .onChange(of: username, perform: { _ in
+          .onChange(of: username) {
+              usernameIsAvailable = false
             isLoading = true
-          })
+          }
           .onChange(of: username, debounceTime: 0.3) { newValue in
             guard newValue.count >= 3 else { return }
             Task {
@@ -79,7 +77,7 @@ struct ProfileOnboarding: View {
     .modifier(OnboardingContinueButtonModifier(title: "Continue", isDisabled: !canProgressToNextStep, onClick: {
       Task {
         await profileManager.updateProfile(update: Profile.UpdateRequest(username: username, firstName: firstName,
-                                                                         lastName: lastName))
+                                                                         lastName: lastName), withFeedback: false)
       }
       withAnimation {
         if let next = currentTab.next {

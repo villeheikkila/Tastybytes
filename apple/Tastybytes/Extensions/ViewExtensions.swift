@@ -78,7 +78,7 @@ private struct DebouncedChangeViewModifier<Value>: ViewModifier where Value: Equ
   @State private var debouncedTask: Task<Void, Never>?
 
   func body(content: Content) -> some View {
-    content.onChange(of: trigger) { value in
+    content.onChange(of: trigger) { _, value in
       debouncedTask?.cancel()
       debouncedTask = Task.delayed(seconds: debounceTime) { @MainActor in
         action(value)

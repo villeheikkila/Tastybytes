@@ -19,7 +19,7 @@ struct ProfileTab: View {
             RouterLink("Settings page", systemSymbol: .gear, screen: .settings)
           }
         }
-        .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+        .onChange(of: $resetNavigationOnTab.wrappedValue) { _, tab in
           if tab == .profile {
             if router.path.isEmpty {
               scrollToTop += 1

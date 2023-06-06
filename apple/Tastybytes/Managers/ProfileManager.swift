@@ -214,7 +214,8 @@ final class ProfileManager: ObservableObject {
   }
 
   func updateProfile(
-    update: Profile.UpdateRequest
+    update: Profile.UpdateRequest,
+    withFeedback: Bool
   ) async {
     switch await repository.profile.update(
       update: update
@@ -225,7 +226,9 @@ final class ProfileManager: ObservableObject {
         firstName: update.firstName,
         lastName: update.lastName
       )
-      feedbackManager.toggle(.success("Profile updated!"))
+        if withFeedback {
+            feedbackManager.toggle(.success("Profile updated!"))
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

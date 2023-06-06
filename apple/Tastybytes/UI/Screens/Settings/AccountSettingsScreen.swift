@@ -42,11 +42,11 @@ struct AccountSettingsScreen: View {
         transaction.disablesAnimations = true
       }
     }
-    .onChange(of: profileManager.email, perform: { _ in
+    .onChange(of: profileManager.email) {
       withAnimation {
         showEmailConfirmation = email != profileManager.email
       }
-    })
+    }
     .onAppear {
       email = profileManager.email
     }

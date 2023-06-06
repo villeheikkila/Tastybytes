@@ -11,7 +11,7 @@ struct ActivityTab: View {
       ActivityScreen(scrollToTop: $scrollToTop, navigateToDiscoverTab: {
         selectedTab = .discover
       })
-      .onChange(of: $resetNavigationOnTab.wrappedValue) { tab in
+      .onChange(of: $resetNavigationOnTab.wrappedValue) { _, tab in
         if tab == .activity {
           if router.path.isEmpty {
             scrollToTop += 1

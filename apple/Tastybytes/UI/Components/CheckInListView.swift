@@ -33,6 +33,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
 
   private let header: Header
   private let emptyView: Content
+    private let showContentUnavailableView: Bool
   private let onRefresh: () async -> Void
   private let topAnchor: String?
   private let fetcher: Fetcher
@@ -43,12 +44,14 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
     scrollToTop: Binding<Int>,
     onRefresh: @escaping () async -> Void,
     topAnchor: String? = nil,
+    showContentUnavailableView: Bool = false,
     @ViewBuilder emptyView: @escaping () -> Content,
     @ViewBuilder header: @escaping () -> Header
   ) {
     self.fetcher = fetcher
     _scrollToTop = scrollToTop
     self.topAnchor = topAnchor
+      self.showContentUnavailableView = showContentUnavailableView
     self.header = header()
     self.emptyView = emptyView()
     self.onRefresh = onRefresh
@@ -118,6 +121,11 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         .onAppear {
           scrollProxy = proxy
         }
+        .background {
+            if showEmptyView {
+                ContentUnavailableView("Activity feed is empty, add friends or check-ins!", systemImage: "list.star")
+            }
+        }
         .confirmationDialog("Are you sure you want to delete check-in? The data will be permanently lost.",
                             isPresented: $showDeleteCheckInConfirmationDialog,
                             titleVisibility: .visible,
@@ -129,7 +137,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
             action: { await deleteCheckIn(checkIn: presenting) }
           )
         }
-        .onChange(of: scrollToTop, perform: { _ in
+        .onChange(of: scrollToTop) {
           withAnimation {
             if let topAnchor {
               scrollProxy?.scrollTo(topAnchor, anchor: .top)
@@ -137,7 +145,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
               scrollProxy?.scrollTo(first.id, anchor: .top)
             }
           }
-        })
+        }
         #if !targetEnvironment(macCatalyst)
         .refreshable {
           await refresh()
@@ -146,14 +154,14 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         .task {
           await getInitialData()
         }
-        .onChange(of: imageUploadManager.uploadedImageForCheckIn, perform: { newValue in
+        .onChange(of: imageUploadManager.uploadedImageForCheckIn) { _, newValue in
           if let updatedCheckIn = newValue {
             imageUploadManager.uploadedImageForCheckIn = nil
             if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
               checkIns[index] = updatedCheckIn
             }
           }
-        })
+        }
       }
     }
   }
@@ -228,7 +236,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
       if splashScreenManager.state != .finished {
         await splashScreenManager.dismiss()
         initialLoadCompleted = true
-        if checkIns.isEmpty {
+          if checkIns.isEmpty, showContentUnavailableView {
           showEmptyView = true
         }
       }

@@ -136,7 +136,7 @@ struct ProfileView: View {
           avatar
         }
       }
-      .onChange(of: selectedItem) { newValue in
+      .onChange(of: selectedItem) { _, newValue in
         Task { await uploadAvatar(userId: profileManager.id, newAvatar: newValue) }
       }
 

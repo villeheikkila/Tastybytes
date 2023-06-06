@@ -51,42 +51,42 @@ struct NotificationSettingsScreen: View {
     }
     .navigationTitle("Notifications")
     .navigationBarTitleDisplayMode(.inline)
-    .onChange(of: reactioNotificationDeliveryType, perform: { newValue in
+    .onChange(of: reactioNotificationDeliveryType) { _, newState  in
       Task {
         await notificationManager
-          .updatePushNotificationSettingsForDevice(sendReactionNotifications: newValue ==
+          .updatePushNotificationSettingsForDevice(sendReactionNotifications: newState ==
             .pushNotification)
         await profileManager
-          .updateNotificationSettings(sendReactionNotifications: newValue != .disabled)
+          .updateNotificationSettings(sendReactionNotifications: newState != .disabled)
       }
-    })
-    .onChange(of: checkInNotificationDeliveryType, perform: { newValue in
+    }
+    .onChange(of: checkInNotificationDeliveryType)  { _, newState  in
       Task {
         await notificationManager
-          .updatePushNotificationSettingsForDevice(sendTaggedCheckInNotifications: newValue ==
+          .updatePushNotificationSettingsForDevice(sendTaggedCheckInNotifications: newState ==
             .pushNotification)
         await profileManager
-          .updateNotificationSettings(sendTaggedCheckInNotifications: newValue != .disabled)
+          .updateNotificationSettings(sendTaggedCheckInNotifications: newState != .disabled)
       }
-    })
-    .onChange(of: friendRequestNotificationDeliveryType, perform: { newValue in
+    }
+    .onChange(of: friendRequestNotificationDeliveryType) { _, newState  in
       Task {
         await notificationManager
-          .updatePushNotificationSettingsForDevice(sendFriendRequestNotifications: newValue ==
+          .updatePushNotificationSettingsForDevice(sendFriendRequestNotifications: newState ==
             .pushNotification)
         await profileManager
-          .updateNotificationSettings(sendFriendRequestNotifications: newValue != .disabled)
+          .updateNotificationSettings(sendFriendRequestNotifications: newState != .disabled)
       }
-    })
-    .onChange(of: checkInCommentNotificationsDeliveryType, perform: { newValue in
+    }
+    .onChange(of: checkInCommentNotificationsDeliveryType)  { _, newState in
       Task {
         await notificationManager
-          .updatePushNotificationSettingsForDevice(sendCheckInCommentNotifications: newValue ==
+          .updatePushNotificationSettingsForDevice(sendCheckInCommentNotifications: newState ==
             .pushNotification)
         await profileManager
-          .updateNotificationSettings(sendCheckInCommentNotifications: newValue != .disabled)
+          .updateNotificationSettings(sendCheckInCommentNotifications: newState != .disabled)
       }
-    })
+    }
     .task {
       if !initialValuesLoaded {
         reactioNotificationDeliveryType = profileManager.reactionNotifications ? notificationManager

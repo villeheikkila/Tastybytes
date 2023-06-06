@@ -27,7 +27,7 @@ struct Main: App {
     WindowGroup {
       RootView(supabaseClient: supabaseClient, feedbackManager: feedbackManager)
     }
-    .onChange(of: phase) { newPhase in
+    .onChange(of: phase) { _, newPhase in
       switch newPhase {
       case .active:
         logger.info("scene phase is active")
@@ -157,7 +157,7 @@ struct RootView: View {
           TabsView()
         }
       }
-      .onChange(of: phase) { newPhase in
+      .onChange(of: phase) { _, newPhase in
         if newPhase == .active {
           Task { await notificationManager.getUnreadCount()
           }

@@ -34,12 +34,12 @@ struct ProfileSettingsScreen: View {
       TextField("Username", text: $username)
         .autocapitalization(.none)
         .disableAutocorrection(true)
-        .onChange(of: username) { _ in
+        .onChange(of: username) {
           usernameIsAvailable = true
         }
-        .onChange(of: username, perform: { _ in
+        .onChange(of: username) {
           isLoading = true
-        })
+        }
         .onChange(of: username, debounceTime: 0.3) { newValue in
           guard newValue.count >= 3 else { return }
           Task {
@@ -55,7 +55,7 @@ struct ProfileSettingsScreen: View {
           username: username,
           firstName: firstName,
           lastName: lastName
-        )) }).disabled(!canUpdateUsername)
+        ), withFeedback: true) }).disabled(!canUpdateUsername)
       }
     } header: {
       Text("Profile")

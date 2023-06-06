@@ -24,7 +24,7 @@ struct AvatarOnboarding: View {
           ) {
             AvatarView(avatarUrl: profileManager.profile.avatarUrl, size: 140, id: profileManager.id)
           }
-          .onChange(of: selectedItem) { newValue in
+          .onChange(of: selectedItem) { _, newValue in
             guard let newValue else { return }
             Task { await profileManager.uploadAvatar(newAvatar: newValue) }
           }
