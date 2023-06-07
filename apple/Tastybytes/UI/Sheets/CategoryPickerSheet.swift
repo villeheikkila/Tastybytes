@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CategoryPickerSheet: View {
   private let logger = getLogger(category: "CategoryPickerSheet")
-  @EnvironmentObject private var appDataManager: AppDataManager
+  @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss
   @Binding var category: Category.JoinedSubcategoriesServingStyles?
   @State private var searchTerm = ""

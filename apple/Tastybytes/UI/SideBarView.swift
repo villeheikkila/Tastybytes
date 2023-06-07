@@ -32,7 +32,7 @@ struct SideBarView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var appDataManager: AppDataManager
+  @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.orientation) private var orientation
   @StateObject private var sheetManager = SheetManager()
   @State private var selection: SiderBarTab? = SiderBarTab.activity
@@ -131,7 +131,7 @@ struct SideBarView: View {
       .presentationDragIndicator(.visible)
       .environmentObject(sheetManager)
       .environmentObject(profileManager)
-      .environmentObject(appDataManager)
+      .environment(appDataManager)
       .environmentObject(feedbackManager)
       .toast(isPresenting: $feedbackManager.show) {
         feedbackManager.toast
@@ -146,7 +146,7 @@ struct SideBarView: View {
         .presentationDragIndicator(.visible)
         .environmentObject(sheetManager)
         .environmentObject(profileManager)
-        .environmentObject(appDataManager)
+        .environment(appDataManager)
         .environmentObject(feedbackManager)
         .toast(isPresenting: $feedbackManager.show) {
           feedbackManager.toast

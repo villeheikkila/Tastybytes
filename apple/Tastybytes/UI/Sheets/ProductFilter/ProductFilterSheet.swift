@@ -6,7 +6,7 @@ struct ProductFilterSheet: View {
   }
 
   private let logger = getLogger(category: "SeachFilterSheet")
-  @EnvironmentObject private var appDataManager: AppDataManager
+  @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss
   @State private var categoryFilter: Category.JoinedSubcategoriesServingStyles?
   @State private var subcategoryFilter: Subcategory?

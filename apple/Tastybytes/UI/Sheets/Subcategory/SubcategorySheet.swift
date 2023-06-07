@@ -5,7 +5,7 @@ struct SubcategorySheet: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
-  @EnvironmentObject private var appDataManager: AppDataManager
+  @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss
   @Binding var subcategories: [Subcategory]
   @State private var showAddSubcategory = false

@@ -5,7 +5,7 @@ struct ProductFeedScreen: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var router: Router
-  @EnvironmentObject private var appDataManager: AppDataManager
+  @Environment(AppDataManager.self) private var appDataManager
   @State private var products = [Product.Joined]()
   @State private var categoryFilter: Category.JoinedSubcategoriesServingStyles? {
     didSet {

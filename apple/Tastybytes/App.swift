@@ -55,7 +55,7 @@ struct RootView: View {
   @State private var permissionManager = PermissionManager()
   @StateObject private var profileManager: ProfileManager
   @StateObject private var notificationManager: NotificationManager
-  @StateObject private var appDataManager: AppDataManager
+  @State private var appDataManager: AppDataManager
   @State private var friendManager: FriendManager
   @State private var imageUploadManager: ImageUploadManager
   @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
@@ -72,7 +72,7 @@ struct RootView: View {
     _notificationManager =
       StateObject(wrappedValue: NotificationManager(repository: repository, feedbackManager: feedbackManager))
     _profileManager = StateObject(wrappedValue: ProfileManager(repository: repository, feedbackManager: feedbackManager))
-    _appDataManager = StateObject(wrappedValue: AppDataManager(repository: repository, feedbackManager: feedbackManager))
+    _appDataManager = State(wrappedValue: AppDataManager(repository: repository, feedbackManager: feedbackManager))
     _imageUploadManager =
       State(wrappedValue: ImageUploadManager(repository: repository, feedbackManager: feedbackManager))
     _friendManager =
@@ -108,7 +108,7 @@ struct RootView: View {
     .environmentObject(notificationManager)
     .environmentObject(profileManager)
     .environmentObject(feedbackManager)
-    .environmentObject(appDataManager)
+    .environment(appDataManager)
     .environment(friendManager)
     .environment(permissionManager)
     .environment(imageUploadManager)

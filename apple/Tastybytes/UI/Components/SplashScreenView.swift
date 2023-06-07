@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SplashScreen: View {
-    @Environment(SplashScreenManager.self) private var splashScreenManager
+  @Environment(SplashScreenManager.self) private var splashScreenManager
   @State private var dismissAnimation = false
   @State private var startFadeoutAnimation = false
   @State private var size = 0.8
@@ -29,6 +29,7 @@ struct SplashScreen: View {
     .opacity(startFadeoutAnimation ? 0 : 1)
   }
 
+  @MainActor
   private func updateAnimation() {
     switch splashScreenManager.state {
     case .showing:

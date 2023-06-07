@@ -5,7 +5,7 @@ struct ProductMutationView: View {
   private let logger = getLogger(category: "ProductMutationView")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
-  @EnvironmentObject private var appDataManager: AppDataManager
+  @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss
   @State private var initialValues: ProductMutationInitialValues?
 
@@ -193,7 +193,7 @@ struct ProductMutationInnerView: View {
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var sheetManager: SheetManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
-  @EnvironmentObject private var appDataManager: AppDataManager
+  @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss
   @FocusState private var focusedField: Focusable?
   @State private var subcategories: [Subcategory]

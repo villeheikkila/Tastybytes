@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FlavorSheet: View {
-  @EnvironmentObject private var appDataManager: AppDataManager
+  @Environment(AppDataManager.self) private var appDataManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @Binding var pickedFlavors: [Flavor]

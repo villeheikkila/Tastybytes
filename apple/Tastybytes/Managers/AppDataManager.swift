@@ -1,14 +1,15 @@
 import SwiftUI
+import Observation
 
-@MainActor
-final class AppDataManager: ObservableObject {
+@Observable
+final class AppDataManager {
   private let logger = getLogger(category: "AppDataManager")
-  @Published var categories = [Category.JoinedSubcategoriesServingStyles]()
-  @Published var flavors = [Flavor]()
-  @Published var aboutPage: AboutPage?
+  var categories = [Category.JoinedSubcategoriesServingStyles]()
+  var flavors = [Flavor]()
+  var aboutPage: AboutPage? = nil
 
-  let repository: Repository
-  let feedbackManager: FeedbackManager
+  private let repository: Repository
+  private let feedbackManager: FeedbackManager
 
   init(repository: Repository, feedbackManager: FeedbackManager) {
     self.repository = repository
@@ -31,7 +32,7 @@ final class AppDataManager: ObservableObject {
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
+      await feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching flavors failed: \(error.localizedDescription)")
     }
 
@@ -40,7 +41,7 @@ final class AppDataManager: ObservableObject {
       self.categories = categories
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
+      await feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load categories: \(error.localizedDescription)")
     }
 
@@ -49,7 +50,7 @@ final class AppDataManager: ObservableObject {
       self.aboutPage = aboutPage
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
+      await feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching about page failed: \(error.localizedDescription)")
     }
   }
@@ -63,7 +64,7 @@ final class AppDataManager: ObservableObject {
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
+      await feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete flavor: \(error.localizedDescription)")
     }
   }
@@ -76,7 +77,7 @@ final class AppDataManager: ObservableObject {
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
+        await feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete flavor: \(error.localizedDescription)")
     }
   }
@@ -86,11 +87,11 @@ final class AppDataManager: ObservableObject {
     case let .success(flavors):
       withAnimation {
         self.flavors = flavors
-        feedbackManager.trigger(.notification(.success))
       }
+        await feedbackManager.trigger(.notification(.success))
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
+      await feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching flavors failed: \(error.localizedDescription)")
     }
   }
@@ -102,7 +103,7 @@ final class AppDataManager: ObservableObject {
       await loadCategories()
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
+      await feedbackManager.toggle(.error(.unexpected))
       logger
         .error("failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id): \(error.localizedDescription)")
     }
@@ -126,7 +127,7 @@ final class AppDataManager: ObservableObject {
       await loadCategories()
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
+      await feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete subcategory \(deleteSubcategory.name): \(error.localizedDescription)")
     }
   }
@@ -137,7 +138,7 @@ final class AppDataManager: ObservableObject {
       await loadCategories()
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
+      await feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to add new category with name \(name): \(error.localizedDescription)")
     }
   }
@@ -152,7 +153,7 @@ final class AppDataManager: ObservableObject {
       categories.replace(category, with: updatedCategory)
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
+      await feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create subcategory '\(name)' to category \(category.name): \(error.localizedDescription)")
     }
   }
@@ -163,7 +164,7 @@ final class AppDataManager: ObservableObject {
       self.categories = categories
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
+      await feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load categories: \(error.localizedDescription)")
     }
   }
