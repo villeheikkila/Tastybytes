@@ -32,7 +32,7 @@ final class AppDataManager {
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      await feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching flavors failed: \(error.localizedDescription)")
     }
 
@@ -41,7 +41,7 @@ final class AppDataManager {
       self.categories = categories
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      await feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load categories: \(error.localizedDescription)")
     }
 
@@ -50,7 +50,7 @@ final class AppDataManager {
       self.aboutPage = aboutPage
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      await feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching about page failed: \(error.localizedDescription)")
     }
   }
@@ -64,7 +64,7 @@ final class AppDataManager {
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      await feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete flavor: \(error.localizedDescription)")
     }
   }
@@ -77,7 +77,7 @@ final class AppDataManager {
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-        await feedbackManager.toggle(.error(.unexpected))
+        feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete flavor: \(error.localizedDescription)")
     }
   }
@@ -88,10 +88,10 @@ final class AppDataManager {
       withAnimation {
         self.flavors = flavors
       }
-        await feedbackManager.trigger(.notification(.success))
+        feedbackManager.trigger(.notification(.success))
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      await feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("fetching flavors failed: \(error.localizedDescription)")
     }
   }
@@ -103,7 +103,7 @@ final class AppDataManager {
       await loadCategories()
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      await feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger
         .error("failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id): \(error.localizedDescription)")
     }
@@ -127,7 +127,7 @@ final class AppDataManager {
       await loadCategories()
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      await feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to delete subcategory \(deleteSubcategory.name): \(error.localizedDescription)")
     }
   }
@@ -138,7 +138,7 @@ final class AppDataManager {
       await loadCategories()
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      await feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to add new category with name \(name): \(error.localizedDescription)")
     }
   }
@@ -153,7 +153,7 @@ final class AppDataManager {
       categories.replace(category, with: updatedCategory)
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      await feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to create subcategory '\(name)' to category \(category.name): \(error.localizedDescription)")
     }
   }
@@ -164,7 +164,7 @@ final class AppDataManager {
       self.categories = categories
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      await feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger.error("failed to load categories: \(error.localizedDescription)")
     }
   }

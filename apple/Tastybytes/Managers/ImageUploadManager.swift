@@ -22,7 +22,7 @@ class ImageUploadManager {
         uploadedImageForCheckIn = checkIn.copyWith(imageFile: imageFile)
       case let .failure(error):
         guard !error.localizedDescription.contains("cancelled") else { return }
-        await feedbackManager.toggle(.error(.unexpected))
+        feedbackManager.toggle(.error(.unexpected))
         logger.error("failed to upload image to check-in '\(checkIn.id)': \(error.localizedDescription)")
       }
     }
