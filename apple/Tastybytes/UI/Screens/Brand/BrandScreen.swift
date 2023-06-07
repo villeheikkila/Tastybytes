@@ -4,7 +4,7 @@ import SwiftUI
 struct BrandScreen: View {
   private let logger = getLogger(category: "BrandScreen")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var router: Router
   @State private var brand: Brand.JoinedSubBrandsProductsCompany

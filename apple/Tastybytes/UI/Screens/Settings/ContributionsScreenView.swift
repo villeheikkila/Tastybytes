@@ -3,7 +3,7 @@ import SwiftUI
 struct ContributionsScreen: View {
   private let logger = getLogger(category: "ContributionsScreen")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @State private var contributions: Contributions?
 

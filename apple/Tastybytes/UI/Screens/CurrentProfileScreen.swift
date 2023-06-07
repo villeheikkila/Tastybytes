@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CurrentProfileScreen: View {
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Binding var scrollToTop: Int
 
   var body: some View {

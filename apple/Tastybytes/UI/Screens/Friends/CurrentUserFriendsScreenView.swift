@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CurrentUserFriendsScreen: View {
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FriendManager.self) private var friendManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var noficationManager: NotificationManager

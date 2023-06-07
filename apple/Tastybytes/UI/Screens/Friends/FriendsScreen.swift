@@ -3,7 +3,6 @@ import SwiftUI
 struct FriendsScreen: View {
   private let logger = getLogger(category: "FriendsScreen")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var profileManager: ProfileManager
   @Environment(FriendManager.self) private var friendManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @State private var friends: [Friend]

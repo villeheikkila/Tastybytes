@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FinalOnboarding: View {
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
 

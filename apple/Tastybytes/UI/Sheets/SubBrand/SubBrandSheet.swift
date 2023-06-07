@@ -3,7 +3,7 @@ import SwiftUI
 struct SubBrandSheet: View {
   private let logger = getLogger(category: "SubBrandSheet")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var subBrandName = ""

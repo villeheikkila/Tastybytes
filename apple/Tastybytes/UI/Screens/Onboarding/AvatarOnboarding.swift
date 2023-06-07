@@ -2,7 +2,7 @@ import PhotosUI
 import SwiftUI
 
 struct AvatarOnboarding: View {
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @FocusState var focusedField: OnboardField?
   @State private var selectedItem: PhotosPickerItem?

@@ -5,7 +5,7 @@ import SwiftUI
 struct ProductLogoSheet: View {
   private let logger = getLogger(category: "ProductLogoSheet")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var selectedLogo: PhotosPickerItem? {

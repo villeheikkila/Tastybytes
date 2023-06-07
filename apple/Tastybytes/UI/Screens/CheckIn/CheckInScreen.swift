@@ -10,7 +10,7 @@ struct CheckInScreen: View {
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var notificationManager: NotificationManager
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @FocusState private var focusedField: Focusable?
   @State private var checkIn: CheckIn

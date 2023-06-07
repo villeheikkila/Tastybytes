@@ -2,7 +2,7 @@ import PhotosUI
 import SwiftUI
 
 struct ProfileSettingsScreen: View {
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
 
   @State private var username = ""

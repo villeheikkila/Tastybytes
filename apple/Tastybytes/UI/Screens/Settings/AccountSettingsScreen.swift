@@ -2,7 +2,7 @@ import PhotosUI
 import SwiftUI
 
 struct AccountSettingsScreen: View {
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @State private var showDeleteConfirmation = false
   @State private var showEmailConfirmation = false
@@ -28,6 +28,7 @@ struct AccountSettingsScreen: View {
   }
 
   var body: some View {
+    @Bindable var profileManager = profileManager
     Form {
       emailSection
       updatePassword

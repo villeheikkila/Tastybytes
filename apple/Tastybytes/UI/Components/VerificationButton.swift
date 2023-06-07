@@ -2,7 +2,7 @@ import SFSafeSymbols
 import SwiftUI
 
 struct VerificationButton: View {
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   let isVerified: Bool
   let verify: () async -> Void
   let unverify: () async -> Void

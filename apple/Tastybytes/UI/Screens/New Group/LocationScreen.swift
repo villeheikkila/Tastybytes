@@ -7,7 +7,7 @@ struct LocationScreen: View {
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var router: Router
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @State private var scrollToTop: Int = 0
   @State private var summary: Summary?
   @State private var showDeleteLocationConfirmation = false

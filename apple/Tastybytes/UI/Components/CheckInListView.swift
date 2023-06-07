@@ -10,7 +10,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
 
   private let logger = getLogger(category: "CheckInListView")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(SplashScreenManager.self) private var splashScreenManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var router: Router

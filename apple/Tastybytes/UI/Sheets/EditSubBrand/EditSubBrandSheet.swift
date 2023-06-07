@@ -5,7 +5,7 @@ struct EditSubBrandSheet: View {
   private let logger = getLogger(category: "EditSubBrandSheet")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(\.dismiss) private var dismiss
   @State private var showMergeSubBrandsConfirmation = false
   @State private var newSubBrandName: String

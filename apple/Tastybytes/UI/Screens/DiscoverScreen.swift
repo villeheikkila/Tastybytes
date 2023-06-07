@@ -5,7 +5,7 @@ struct DiscoverScreen: View {
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var router: Router
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @State private var scrollProxy: ScrollViewProxy?
   @State private var searchTerm: String = ""
   @State private var products = [Product.Joined]()

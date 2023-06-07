@@ -1,40 +1,40 @@
 import PhotosUI
 import SwiftUI
+import Observation
 
-@MainActor
+@Observable
 final class ProfileManager: ObservableObject {
   private let logger = getLogger(category: "ProfileManager")
-  @Published private(set) var isLoggedIn = false
+  private(set) var isLoggedIn = false
 
   // Profile Settings
-  @Published var showFullName = false
-  @Published var showProfileUpdateButton = false
-  @Published var isPrivateProfile = true
+  var showFullName = false
+  var showProfileUpdateButton = false
+  var isPrivateProfile = true
 
   // Account Settings
-  @Published var email = ""
-  @Published var csvExport: CSVFile?
-  @Published var showingExporter = false
+  var email = ""
+  var csvExport: CSVFile? = nil
+  var showingExporter = false
 
   // Application Settings
-  @Published var initialValuesLoaded = false
-  @Published var reactionNotifications = true
-  @Published var friendRequestNotifications = true
-  @Published var checkInTagNotifications = true
-  @Published var sendCommentNotifications = true
+  var initialValuesLoaded = false
+  var reactionNotifications = true
+  var friendRequestNotifications = true
+  var checkInTagNotifications = true
+  var sendCommentNotifications = true
 
   // AppIcon
-  @Published var appIcon: AppIcon = .ramune
+  var appIcon: AppIcon = .ramune
 
   private let repository: Repository
   private let feedbackManager: FeedbackManager
+    private var extendedProfile: Profile.Extended? = nil
 
   init(repository: Repository, feedbackManager: FeedbackManager) {
     self.repository = repository
     self.feedbackManager = feedbackManager
   }
-
-  private var extendedProfile: Profile.Extended?
 
   // Getters
   var profile: Profile {
@@ -114,7 +114,7 @@ final class ProfileManager: ObservableObject {
       friendRequestNotifications = currentUserProfile.settings.sendFriendRequestNotifications
       checkInTagNotifications = currentUserProfile.settings.sendTaggedCheckInNotifications
       sendCommentNotifications = currentUserProfile.settings.sendCommentNotifications
-      appIcon = getCurrentAppIcon()
+      appIcon = await getCurrentAppIcon()
       initialValuesLoaded = true
       isLoggedIn = true
     case let .failure(error):

@@ -1,7 +1,6 @@
 import SwiftUI
 import Observation
 
-@MainActor
 @Observable
 final class FriendManager {
   private let logger = getLogger(category: "FriendsScreen")
@@ -34,6 +33,7 @@ final class FriendManager {
     friends.filter { $0.status == .pending }
   }
 
+    @MainActor
   func sendFriendRequest(receiver: UUID, onSuccess: (() -> Void)? = nil) async {
     switch await repository.friend.insert(newFriend: Friend.NewRequest(receiver: receiver, status: .pending)) {
     case let .success(newFriend):
@@ -51,6 +51,7 @@ final class FriendManager {
     }
   }
 
+    @MainActor
   func updateFriendRequest(friend: Friend, newStatus: Friend.Status) async {
     let friendUpdate = Friend.UpdateRequest(
       sender: friend.sender,
@@ -65,7 +66,7 @@ final class FriendManager {
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
-      await feedbackManager.toggle(.error(.unexpected))
+      feedbackManager.toggle(.error(.unexpected))
       logger
         .warning(
           "failed to update friend request: \(error.localizedDescription)"
@@ -73,6 +74,7 @@ final class FriendManager {
     }
   }
 
+  @MainActor
   func removeFriendRequest(_ friend: Friend) async {
     switch await repository.friend.delete(id: friend.id) {
     case .success:
@@ -101,6 +103,7 @@ final class FriendManager {
     return friends.first(where: { $0.status == .pending && $0.getFriend(userId: profile.id).id == friend.id })
   }
 
+  @MainActor
   func refresh(withFeedback: Bool = false) async {
     guard let profile else { return }
     switch await repository.friend.getByUserId(

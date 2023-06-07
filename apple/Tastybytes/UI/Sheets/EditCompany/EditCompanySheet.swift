@@ -6,7 +6,7 @@ struct EditCompanySheet: View {
   private let logger = getLogger(category: "EditCompanySheet")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(\.dismiss) private var dismiss
   @State private var company: Company
   @State private var newCompanyName = ""

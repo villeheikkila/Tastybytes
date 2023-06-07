@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AccountDeletedScreen: View {
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   var body: some View {
     VStack {
       Spacer()

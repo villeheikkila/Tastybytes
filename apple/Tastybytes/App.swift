@@ -53,7 +53,7 @@ struct RootView: View {
   @State private var repository: Repository
   @State private var splashScreenManager = SplashScreenManager()
   @State private var permissionManager = PermissionManager()
-  @StateObject private var profileManager: ProfileManager
+  @State private var profileManager: ProfileManager
   @StateObject private var notificationManager: NotificationManager
   @State private var appDataManager: AppDataManager
   @State private var friendManager: FriendManager
@@ -71,7 +71,7 @@ struct RootView: View {
     _repository = State(wrappedValue: repository)
     _notificationManager =
       StateObject(wrappedValue: NotificationManager(repository: repository, feedbackManager: feedbackManager))
-    _profileManager = StateObject(wrappedValue: ProfileManager(repository: repository, feedbackManager: feedbackManager))
+    _profileManager = State(wrappedValue: ProfileManager(repository: repository, feedbackManager: feedbackManager))
     _appDataManager = State(wrappedValue: AppDataManager(repository: repository, feedbackManager: feedbackManager))
     _imageUploadManager =
       State(wrappedValue: ImageUploadManager(repository: repository, feedbackManager: feedbackManager))
@@ -106,7 +106,7 @@ struct RootView: View {
     .environment(repository)
     .environment(splashScreenManager)
     .environmentObject(notificationManager)
-    .environmentObject(profileManager)
+    .environment(profileManager)
     .environment(feedbackManager)
     .environment(appDataManager)
     .environment(friendManager)

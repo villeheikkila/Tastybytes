@@ -31,7 +31,7 @@ struct SideBarView: View {
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var notificationManager: NotificationManager
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.orientation) private var orientation
   @State private var sheetManager = SheetManager()

@@ -7,7 +7,7 @@ struct CheckInSheet: View {
   private let logger = getLogger(category: "CheckInSheet")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(AppDataManager.self) private var appDataManager
   @Environment(ImageUploadManager.self) private var imageUploadManager
   @Environment(\.dismiss) private var dismiss

@@ -5,7 +5,7 @@ import SwiftUI
 struct CompanyScreen: View {
   private let logger = getLogger(category: "CompanyScreen")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var router: Router
   @Environment(\.dismiss) private var dismiss

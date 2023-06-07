@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AppIconScreen: View {
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @State private var appIcons = [AppIcon.ramune, AppIcon.cola, AppIcon.energyDrink, AppIcon.juice, AppIcon.kombucha]
   @State private var selection: AppIcon?
 
@@ -39,6 +39,7 @@ struct AppIconScreen: View {
   }
 }
 
+@MainActor
 func getCurrentAppIcon() -> AppIcon {
   if let alternateAppIcon = UIApplication.shared.alternateIconName {
     return AppIcon(rawValue: alternateAppIcon) ?? AppIcon.ramune

@@ -6,7 +6,7 @@ struct ProfileView: View {
   private let logger = getLogger(category: "ProfileView")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(FriendManager.self) private var friendManager
   @Environment(SplashScreenManager.self) private var splashScreenManager
   @Binding private var scrollToTop: Int

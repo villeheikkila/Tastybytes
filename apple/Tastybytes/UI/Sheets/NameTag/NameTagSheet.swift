@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct NameTagSheet: View {
-  @EnvironmentObject private var profileManager: ProfileManager
+  @Environment(ProfileManager.self) private var profileManager
   @Environment(\.dismiss) private var dismiss
   @State private var showNameTagScanner = false
 
