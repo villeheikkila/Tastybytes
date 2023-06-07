@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct NotificationTab: View {
-  @EnvironmentObject private var notificationManager: NotificationManager
+  @Environment(NotificationManager.self) private var notificationManager
     @Environment(SplashScreenManager.self) private var splashScreenManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @State private var scrollToTop: Int = 0
@@ -16,7 +16,6 @@ struct NotificationTab: View {
         .onChange(of: $resetNavigationOnTab.wrappedValue) { _, tab in
           if tab == .notifications {
             if router.path.isEmpty {
-              notificationManager.filter = nil
               scrollToTop += 1
             } else {
               router.reset()

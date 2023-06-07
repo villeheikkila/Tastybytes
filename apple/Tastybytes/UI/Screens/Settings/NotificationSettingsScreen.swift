@@ -12,7 +12,7 @@ enum NotificationDeliveryType: String, CaseIterable {
 
 struct NotificationSettingsScreen: View {
   @Environment(ProfileManager.self) private var profileManager
-  @EnvironmentObject private var notificationManager: NotificationManager
+  @Environment(NotificationManager.self) private var notificationManager
   @State private var initialValuesLoaded = false
   @State private var reactioNotificationDeliveryType: NotificationDeliveryType = .disabled
   @State private var checkInNotificationDeliveryType: NotificationDeliveryType = .disabled

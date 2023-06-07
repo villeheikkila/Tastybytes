@@ -29,7 +29,7 @@ enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
 
 struct SideBarView: View {
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var notificationManager: NotificationManager
+  @Environment(NotificationManager.self) private var notificationManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(ProfileManager.self) private var profileManager
   @Environment(AppDataManager.self) private var appDataManager

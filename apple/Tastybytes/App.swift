@@ -54,7 +54,7 @@ struct RootView: View {
   @State private var splashScreenManager = SplashScreenManager()
   @State private var permissionManager = PermissionManager()
   @State private var profileManager: ProfileManager
-  @StateObject private var notificationManager: NotificationManager
+  @State private var notificationManager: NotificationManager
   @State private var appDataManager: AppDataManager
   @State private var friendManager: FriendManager
   @State private var imageUploadManager: ImageUploadManager
@@ -70,7 +70,7 @@ struct RootView: View {
     self.supabaseClient = supabaseClient
     _repository = State(wrappedValue: repository)
     _notificationManager =
-      StateObject(wrappedValue: NotificationManager(repository: repository, feedbackManager: feedbackManager))
+      State(wrappedValue: NotificationManager(repository: repository, feedbackManager: feedbackManager))
     _profileManager = State(wrappedValue: ProfileManager(repository: repository, feedbackManager: feedbackManager))
     _appDataManager = State(wrappedValue: AppDataManager(repository: repository, feedbackManager: feedbackManager))
     _imageUploadManager =
@@ -105,7 +105,7 @@ struct RootView: View {
     }
     .environment(repository)
     .environment(splashScreenManager)
-    .environmentObject(notificationManager)
+    .environment(notificationManager)
     .environment(profileManager)
     .environment(feedbackManager)
     .environment(appDataManager)

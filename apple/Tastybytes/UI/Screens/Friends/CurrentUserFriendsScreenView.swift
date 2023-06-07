@@ -4,7 +4,7 @@ struct CurrentUserFriendsScreen: View {
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FriendManager.self) private var friendManager
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var noficationManager: NotificationManager
+    @Environment(NotificationManager.self) private var notificationManager
   @State private var friendToBeRemoved: Friend? {
     didSet {
       showRemoveFriendConfirmation = true
@@ -84,7 +84,7 @@ struct CurrentUserFriendsScreen: View {
     #endif
       .task {
         await friendManager.refresh(withFeedback: false)
-        await noficationManager.markAllFriendRequestsAsRead()
+        await notificationManager.markAllFriendRequestsAsRead()
       }
       .toolbar {
         toolbarContent

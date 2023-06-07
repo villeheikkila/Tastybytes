@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ActivityTab: View {
-  @EnvironmentObject private var notificationManager: NotificationManager
+  @Environment(NotificationManager.self) private var notificationManager
   @State private var scrollToTop: Int = 0
   @Binding var resetNavigationOnTab: Tab?
   @Binding var selectedTab: Tab

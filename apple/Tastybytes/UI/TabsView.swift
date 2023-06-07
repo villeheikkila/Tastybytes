@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TabsView: View {
-  @EnvironmentObject private var notificationManager: NotificationManager
+  @Environment(NotificationManager.self) private var notificationManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(ProfileManager.self) private var profileManager
   @AppStorage(.selectedTab) private var selection = Tab.activity
