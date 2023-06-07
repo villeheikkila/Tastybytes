@@ -58,9 +58,8 @@ struct RouterWrapper<Content: View>: View {
     }
     .environment(router)
     .environment(sheetManager)
-    .onChange(of: router.path, debounceTime: 0.5, perform: { _ in
-        print(router.path)
-        router.cachePath()
-    })
+    .onChange(of: router.path) {
+        router.storeState()
+    }
   }
 }
