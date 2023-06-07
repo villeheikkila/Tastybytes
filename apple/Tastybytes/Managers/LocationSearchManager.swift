@@ -1,6 +1,7 @@
 import Combine
 import CoreLocation
 import MapKit
+import Observation
 
 final class LocationSearchManager {
   let localSearchPublisher = PassthroughSubject<[MKMapItem], Never>()
@@ -31,10 +32,11 @@ final class LocationSearchManager {
   }
 }
 
-final class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+@Observable
+final class LocationManager: NSObject, CLLocationManagerDelegate {
   private let locationManager = CLLocationManager()
-  @Published var locationStatus: CLAuthorizationStatus?
-  @Published var lastLocation: CLLocation?
+  var locationStatus: CLAuthorizationStatus? = nil
+  var lastLocation: CLLocation? = nil
 
   override init() {
     super.init()

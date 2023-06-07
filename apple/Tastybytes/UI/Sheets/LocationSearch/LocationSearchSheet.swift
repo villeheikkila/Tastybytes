@@ -7,7 +7,7 @@ struct LocationSearchSheet: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @StateObject private var viewModel = ViewModel()
-  @StateObject private var locationManager = LocationManager()
+  @State private var locationManager = LocationManager()
   @State private var recentLocations = [Location]()
   @State private var nearbyLocations = [Location]()
   @State private var searchText = ""
