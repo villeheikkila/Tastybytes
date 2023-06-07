@@ -3,7 +3,7 @@ import SwiftUI
 
 struct PermissionOnboarding: View {
   @Binding var currentTab: OnboardingScreen.Tab
-  @EnvironmentObject private var permissionManager: PermissionManager
+    @Environment(PermissionManager.self) private var permissionManager 
 
   var pushNotificationButtonTitle: String {
     switch permissionManager.pushNotificationStatus {

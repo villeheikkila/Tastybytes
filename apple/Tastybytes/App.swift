@@ -52,7 +52,7 @@ struct RootView: View {
   let supabaseClient: SupabaseClient
   @StateObject private var repository: Repository
   @State private var splashScreenManager = SplashScreenManager()
-  @StateObject private var permissionManager = PermissionManager()
+  @State private var permissionManager = PermissionManager()
   @StateObject private var profileManager: ProfileManager
   @StateObject private var notificationManager: NotificationManager
   @StateObject private var appDataManager: AppDataManager
@@ -110,7 +110,7 @@ struct RootView: View {
     .environmentObject(feedbackManager)
     .environmentObject(appDataManager)
     .environmentObject(friendManager)
-    .environmentObject(permissionManager)
+    .environment(permissionManager)
     .environment(imageUploadManager)
     .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)
     .detectOrientation($orientation)

@@ -1,17 +1,18 @@
 import AVFoundation
 import PhotosUI
 import SwiftUI
+import Observation
 
-@MainActor
-final class PermissionManager: ObservableObject {
+@Observable
+final class PermissionManager {
   private let logger = getLogger(category: "PermissionManager")
   private let locationManager = CLLocationManager()
   private let notificationManager = UNUserNotificationCenter.current()
 
-  @Published var pushNotificationStatus: UNAuthorizationStatus = .notDetermined
-  @Published var cameraStatus: AVAuthorizationStatus = .notDetermined
-  @Published var photoLibraryStatus: PHAuthorizationStatus = .notDetermined
-  @Published var locationsStatus: CLAuthorizationStatus = .notDetermined
+  var pushNotificationStatus: UNAuthorizationStatus = .notDetermined
+  var cameraStatus: AVAuthorizationStatus = .notDetermined
+  var photoLibraryStatus: PHAuthorizationStatus = .notDetermined
+  var locationsStatus: CLAuthorizationStatus = .notDetermined
 
   // push notifications
   func requestPushNotificationAuthorization() {
