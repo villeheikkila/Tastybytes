@@ -3,7 +3,7 @@ import SwiftUI
 
 struct AvatarOnboarding: View {
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @FocusState var focusedField: OnboardField?
   @State private var selectedItem: PhotosPickerItem?
   @Binding var currentTab: OnboardingScreen.Tab

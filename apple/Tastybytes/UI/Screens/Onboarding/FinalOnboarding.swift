@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FinalOnboarding: View {
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
 
   var body: some View {

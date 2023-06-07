@@ -5,7 +5,7 @@ import SwiftUI
 struct LocationSearchSheet: View {
   private let logger = getLogger(category: "LocationSearchView")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @StateObject private var viewModel = ViewModel()
   @State private var locationManager = LocationManager()
   @State private var recentLocations = [Location]()
@@ -123,7 +123,7 @@ extension LocationSearchSheet {
   struct LocationRow: View {
     private let logger = getLogger(category: "LocationSearchView")
     @Environment(Repository.self) private var repository
-    @EnvironmentObject private var feedbackManager: FeedbackManager
+    @Environment(FeedbackManager.self) private var feedbackManager
     @Environment(\.dismiss) private var dismiss
 
     let location: Location

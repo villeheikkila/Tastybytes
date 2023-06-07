@@ -5,7 +5,7 @@ struct AuthenticationScreen: View {
   private let logger = getLogger(category: "AuthenticationScreen")
   @Environment(Repository.self) private var repository
     @Environment(SplashScreenManager.self) private var splashScreenManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @FocusState private var focusedField: Field?
   @State private var scene: Scene
   @State private var isLoading = false
@@ -46,6 +46,7 @@ struct AuthenticationScreen: View {
   }
 
   var body: some View {
+      @Bindable var feedbackManager = feedbackManager
     VStack(spacing: scene == .signUp ? 4 : 20) {
       projectLogo
       if scene == .signUp {

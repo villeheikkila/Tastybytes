@@ -4,7 +4,7 @@ import SwiftUI
 struct ProductMutationView: View {
   private let logger = getLogger(category: "ProductMutationView")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss
   @State private var initialValues: ProductMutationInitialValues?
@@ -192,7 +192,7 @@ struct ProductMutationInnerView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
   @Environment(SheetManager.self) private var sheetManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss
   @FocusState private var focusedField: Focusable?

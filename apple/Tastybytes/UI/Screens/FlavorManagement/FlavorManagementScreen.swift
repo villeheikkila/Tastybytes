@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FlavorManagementScreen: View {
   @Environment(AppDataManager.self) private var appDataManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var router: Router
 
   var body: some View {

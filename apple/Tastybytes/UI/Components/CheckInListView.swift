@@ -12,7 +12,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(SplashScreenManager.self) private var splashScreenManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var router: Router
   @Environment(ImageUploadManager.self) private var imageUploadManager
   @State private var scrollProxy: ScrollViewProxy?

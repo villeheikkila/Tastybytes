@@ -3,7 +3,7 @@ import SwiftUI
 struct ProfileStatisticsView: View {
   let logger = getLogger(category: "ProfileStatisticsView")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @State private var categoryStatistics = [CategoryStatistics]()
 
   let profile: Profile
@@ -59,7 +59,7 @@ struct ProfileStatisticsView: View {
 struct SubcategoryStatisticsView: View {
   let logger = getLogger(category: "SubcategoryStatistics")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @State private var subcategoryStatistics = [SubcategoryStatistics]()
   @State private var isLoading = false
 

@@ -11,7 +11,7 @@ struct CheckInScreen: View {
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var notificationManager: NotificationManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @FocusState private var focusedField: Focusable?
   @State private var checkIn: CheckIn
   @State private var checkInComments = [CheckInComment]()

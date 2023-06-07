@@ -3,7 +3,7 @@ import SwiftUI
 struct ServingStyleManagementSheet: View {
   private let logger = getLogger(category: "ServingStyleManagementSheet")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var servingStyles = [ServingStyle]()
   @State private var servingStyleName = ""

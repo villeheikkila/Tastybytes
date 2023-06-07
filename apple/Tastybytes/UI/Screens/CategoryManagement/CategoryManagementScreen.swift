@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CategoryManagementScreen: View {
   private let logger = getLogger(category: "CategoryManagementScreen")
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(AppDataManager.self) private var appDataManager
   @State private var showDeleteSubcategoryConfirmation = false
   @State private var verifySubcategory: Subcategory?

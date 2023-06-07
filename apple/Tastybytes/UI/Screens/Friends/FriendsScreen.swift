@@ -5,7 +5,7 @@ struct FriendsScreen: View {
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(FriendManager.self) private var friendManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @State private var friends: [Friend]
 
   let profile: Profile

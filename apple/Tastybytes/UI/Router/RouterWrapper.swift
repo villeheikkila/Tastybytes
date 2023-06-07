@@ -2,7 +2,7 @@ import SwiftUI
 
 struct RouterWrapper<Content: View>: View {
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @StateObject private var router: Router
   @State private var sheetManager = SheetManager()
 
@@ -14,6 +14,7 @@ struct RouterWrapper<Content: View>: View {
   }
 
   var body: some View {
+      @Bindable var feedbackManager = feedbackManager
     NavigationStack(path: $router.path) {
       content(router)
         .navigationDestination(for: Screen.self) { screen in

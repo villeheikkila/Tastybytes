@@ -14,7 +14,7 @@ var selectedQuickAction: UIApplicationShortcutItem?
 struct Main: App {
   private let logger = getLogger(category: "Main")
   @Environment(\.scenePhase) private var phase
-  @StateObject private var feedbackManager = FeedbackManager()
+  @Bindable private var feedbackManager = FeedbackManager()
   @UIApplicationDelegateAdaptor(AppDelegate.self)
   var appDelegate
 
@@ -63,7 +63,7 @@ struct RootView: View {
   @Environment(\.scenePhase) private var phase
   @State private var authEvent: AuthChangeEvent?
   @State private var orientation: UIDeviceOrientation
-  @ObservedObject private var feedbackManager: FeedbackManager
+  let feedbackManager: FeedbackManager
 
   init(supabaseClient: SupabaseClient, feedbackManager: FeedbackManager) {
     let repository = Repository(supabaseClient: supabaseClient)
@@ -107,7 +107,7 @@ struct RootView: View {
     .environment(splashScreenManager)
     .environmentObject(notificationManager)
     .environmentObject(profileManager)
-    .environmentObject(feedbackManager)
+    .environment(feedbackManager)
     .environment(appDataManager)
     .environment(friendManager)
     .environment(permissionManager)

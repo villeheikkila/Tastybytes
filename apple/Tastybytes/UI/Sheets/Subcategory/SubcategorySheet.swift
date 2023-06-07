@@ -4,7 +4,7 @@ struct SubcategorySheet: View {
   private let logger = getLogger(category: "SubcategorySheet")
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss
   @Binding var subcategories: [Subcategory]

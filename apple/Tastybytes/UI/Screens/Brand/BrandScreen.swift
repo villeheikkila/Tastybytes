@@ -5,7 +5,7 @@ struct BrandScreen: View {
   private let logger = getLogger(category: "BrandScreen")
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var router: Router
   @State private var brand: Brand.JoinedSubBrandsProductsCompany
   @State private var summary: Summary?

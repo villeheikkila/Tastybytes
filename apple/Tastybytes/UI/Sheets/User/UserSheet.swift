@@ -5,7 +5,7 @@ struct UserSheet: View {
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(FriendManager.self) private var friendManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var searchText: String = ""
   @State private var searchResults = [Profile]()

@@ -4,7 +4,7 @@ struct ReactionsView: View {
   private let logger = getLogger(category: "ReactionsView")
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @State private var checkInReactions = [CheckInReaction]()
   @State private var isLoading = false
 

@@ -4,7 +4,7 @@ struct ContributionsScreen: View {
   private let logger = getLogger(category: "ContributionsScreen")
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @State private var contributions: Contributions?
 
   var body: some View {

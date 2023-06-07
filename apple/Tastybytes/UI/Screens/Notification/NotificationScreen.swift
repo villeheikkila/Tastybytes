@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NotificationScreen: View {
   @EnvironmentObject private var notificationManager: NotificationManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @Binding var scrollToTop: Int
 
   var body: some View {

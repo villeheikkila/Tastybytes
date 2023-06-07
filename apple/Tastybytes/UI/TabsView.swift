@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TabsView: View {
   @EnvironmentObject private var notificationManager: NotificationManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @AppStorage(.selectedTab) private var selection = Tab.activity
   @State private var resetNavigationOnTab: Tab?

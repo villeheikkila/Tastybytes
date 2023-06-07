@@ -3,7 +3,7 @@ import SwiftUI
 
 struct AccountSettingsScreen: View {
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @State private var showDeleteConfirmation = false
   @State private var showEmailConfirmation = false
   @State private var showPasswordConfirmation = false

@@ -4,7 +4,7 @@ import SwiftUI
 struct EditSubBrandSheet: View {
   private let logger = getLogger(category: "EditSubBrandSheet")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss
   @State private var showMergeSubBrandsConfirmation = false

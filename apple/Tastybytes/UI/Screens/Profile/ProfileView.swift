@@ -5,7 +5,7 @@ import SwiftUI
 struct ProfileView: View {
   private let logger = getLogger(category: "ProfileView")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(FriendManager.self) private var friendManager
   @Environment(SplashScreenManager.self) private var splashScreenManager

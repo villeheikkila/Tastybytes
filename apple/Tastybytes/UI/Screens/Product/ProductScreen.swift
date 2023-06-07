@@ -4,7 +4,7 @@ struct ProductScreen: View {
   private let logger = getLogger(category: "ProductScreen")
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var router: Router
   @Environment(\.dismiss) private var dismiss
   @State private var scrollToTop: Int = 0

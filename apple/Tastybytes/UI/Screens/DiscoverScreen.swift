@@ -4,7 +4,7 @@ struct DiscoverScreen: View {
   private let logger = getLogger(category: "SearchListView")
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var router: Router
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var scrollProxy: ScrollViewProxy?
   @State private var searchTerm: String = ""

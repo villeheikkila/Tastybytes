@@ -4,7 +4,7 @@ struct CompanySearchSheet: View {
   private let logger = getLogger(category: "CompanySearchSheet")
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var searchResults = [Company]()
   @State private var status: Status?

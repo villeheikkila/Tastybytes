@@ -1,15 +1,12 @@
 import AlertToast
 import CoreHaptics
 import SwiftUI
+import Observation
 
-@MainActor
-final class FeedbackManager: ObservableObject {
-  @Published var show = false
-  @Published var toast = AlertToast(type: .regular, title: "") {
-    didSet {
-      show.toggle()
-    }
-  }
+@Observable
+final class FeedbackManager {
+  var show = false
+  var toast = AlertToast(type: .regular, title: "")
 
   private let selectionFeedbackGenerator = UISelectionFeedbackGenerator()
   private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
@@ -24,11 +21,13 @@ final class FeedbackManager: ObservableObject {
     switch type {
     case let .success(title):
       toast = AlertToast(type: .complete(.green), title: title)
+        show = true
       if !disableHaptics {
         trigger(.notification(.success))
       }
     case let .warning(title):
       toast = AlertToast(type: .error(.red), title: title)
+      show = true
     case let .error(errorType):
       var title = "Unexpected error occured"
       if case let .custom(message) = errorType {
@@ -36,6 +35,7 @@ final class FeedbackManager: ObservableObject {
       }
 
       toast = AlertToast(displayMode: .hud, type: .error(.red), title: title)
+        show = true
       if !disableHaptics {
         trigger(.notification(.error))
       }

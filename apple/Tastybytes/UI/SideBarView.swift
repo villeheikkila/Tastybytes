@@ -30,7 +30,7 @@ enum SiderBarTab: Int, Identifiable, Hashable, CaseIterable {
 struct SideBarView: View {
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var notificationManager: NotificationManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.orientation) private var orientation
@@ -56,6 +56,7 @@ struct SideBarView: View {
   }
 
   var body: some View {
+    @Bindable var feedbackManager = feedbackManager
     NavigationSplitView(columnVisibility: .constant(columnVisibility)) {
       List(selection: $selection) {
         HStack(alignment: .firstTextBaseline) {
@@ -132,7 +133,7 @@ struct SideBarView: View {
       .environment(sheetManager)
       .environmentObject(profileManager)
       .environment(appDataManager)
-      .environmentObject(feedbackManager)
+      .environment(feedbackManager)
       .toast(isPresenting: $feedbackManager.show) {
         feedbackManager.toast
       }
@@ -147,7 +148,7 @@ struct SideBarView: View {
         .environment(sheetManager)
         .environmentObject(profileManager)
         .environment(appDataManager)
-        .environmentObject(feedbackManager)
+        .environment(feedbackManager)
         .toast(isPresenting: $feedbackManager.show) {
           feedbackManager.toast
         }

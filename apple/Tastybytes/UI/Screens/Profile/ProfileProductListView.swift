@@ -3,7 +3,7 @@ import SwiftUI
 struct ProfileProductListView: View {
   let logger = getLogger(category: "ProfileProductListView")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @State private var products: [Product.Joined] = []
   @State private var searchTerm = ""
   @State private var productFilter: Product.Filter?

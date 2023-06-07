@@ -4,7 +4,7 @@ struct SubBrandSheet: View {
   private let logger = getLogger(category: "SubBrandSheet")
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var feedbackManager: FeedbackManager
+  @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var subBrandName = ""
   @State private var searchText: String = ""
