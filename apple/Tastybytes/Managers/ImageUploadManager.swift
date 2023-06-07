@@ -1,8 +1,9 @@
 import SwiftUI
+import Observation
 
-@MainActor
-class ImageUploadManager: ObservableObject {
-  @Published var uploadedImageForCheckIn: CheckIn?
+@Observable
+class ImageUploadManager {
+  var uploadedImageForCheckIn: CheckIn? = nil
   private let logger = getLogger(category: "PermissionManager")
 
   private let repository: Repository
@@ -21,7 +22,7 @@ class ImageUploadManager: ObservableObject {
         uploadedImageForCheckIn = checkIn.copyWith(imageFile: imageFile)
       case let .failure(error):
         guard !error.localizedDescription.contains("cancelled") else { return }
-        feedbackManager.toggle(.error(.unexpected))
+        await feedbackManager.toggle(.error(.unexpected))
         logger.error("failed to upload image to check-in '\(checkIn.id)': \(error.localizedDescription)")
       }
     }

@@ -11,10 +11,10 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
   private let logger = getLogger(category: "CheckInListView")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
-    @Environment(SplashScreenManager.self) private var splashScreenManager
+  @Environment(SplashScreenManager.self) private var splashScreenManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var router: Router
-  @EnvironmentObject private var imageUploadManager: ImageUploadManager
+  @Environment(ImageUploadManager.self) private var imageUploadManager
   @State private var scrollProxy: ScrollViewProxy?
   @State private var showDeleteCheckInConfirmationDialog = false
   @State private var showDeleteConfirmationFor: CheckIn? {

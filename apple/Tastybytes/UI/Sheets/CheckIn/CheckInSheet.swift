@@ -9,7 +9,7 @@ struct CheckInSheet: View {
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var appDataManager: AppDataManager
-  @EnvironmentObject private var imageUploadManager: ImageUploadManager
+  @Environment(ImageUploadManager.self) private var imageUploadManager
   @Environment(\.dismiss) private var dismiss
   @FocusState private var focusedField: Focusable?
   @State private var showPhotoMenu = false
