@@ -191,7 +191,7 @@ struct ProductMutationInnerView: View {
   @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
-  @EnvironmentObject private var sheetManager: SheetManager
+  @Environment(SheetManager.self) private var sheetManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss

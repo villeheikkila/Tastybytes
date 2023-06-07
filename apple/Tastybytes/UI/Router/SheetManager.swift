@@ -1,10 +1,11 @@
 import SwiftUI
+import Observation
 
-@MainActor
-final class SheetManager: ObservableObject {
+@Observable
+final class SheetManager {
   private let logger = getLogger(category: "SheetManager")
-  @Published var sheet: Sheet?
-  @Published var nestedSheet: Sheet?
+  var sheet: Sheet? = nil
+  var nestedSheet: Sheet? = nil
 
   func navigate(sheet: Sheet) {
     if self.sheet != nil, nestedSheet != nil {

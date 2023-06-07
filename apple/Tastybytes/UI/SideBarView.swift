@@ -34,7 +34,7 @@ struct SideBarView: View {
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.orientation) private var orientation
-  @StateObject private var sheetManager = SheetManager()
+  @State private var sheetManager = SheetManager()
   @State private var selection: SiderBarTab? = SiderBarTab.activity
   @State private var scrollToTop: Int = 0
   @StateObject private var router = Router(tab: Tab.activity)
@@ -117,7 +117,7 @@ struct SideBarView: View {
       }
     }
     .environmentObject(router)
-    .environmentObject(sheetManager)
+    .environment(sheetManager)
     .toast(isPresenting: $feedbackManager.show) {
       feedbackManager.toast
     }
@@ -129,7 +129,7 @@ struct SideBarView: View {
       .presentationCornerRadius(sheet.cornerRadius)
       .presentationBackground(sheet.background)
       .presentationDragIndicator(.visible)
-      .environmentObject(sheetManager)
+      .environment(sheetManager)
       .environmentObject(profileManager)
       .environment(appDataManager)
       .environmentObject(feedbackManager)
@@ -144,7 +144,7 @@ struct SideBarView: View {
         .presentationCornerRadius(nestedSheet.cornerRadius)
         .presentationBackground(nestedSheet.background)
         .presentationDragIndicator(.visible)
-        .environmentObject(sheetManager)
+        .environment(sheetManager)
         .environmentObject(profileManager)
         .environment(appDataManager)
         .environmentObject(feedbackManager)
