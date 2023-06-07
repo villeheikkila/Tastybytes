@@ -1,15 +1,12 @@
 import SwiftUI
+import Observation
 
-@MainActor
-final class Router: ObservableObject {
+@Observable
+final class Router {
   private let logger = getLogger(category: "Router")
   private let cachesDirectoryPath: URL
 
-  @Published var path: [Screen] = [] {
-    didSet {
-      cachePath()
-    }
-  }
+  var path: [Screen] = []
 
   init(tab: Tab) {
     cachesDirectoryPath = tab.cachesDirectoryPath
@@ -34,6 +31,7 @@ final class Router: ObservableObject {
       reset()
     }
     path.append(screen)
+      cachePath()
   }
 
   func reset() {

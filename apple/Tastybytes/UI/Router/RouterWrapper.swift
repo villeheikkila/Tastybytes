@@ -3,18 +3,19 @@ import SwiftUI
 struct RouterWrapper<Content: View>: View {
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
-  @StateObject private var router: Router
+  @State private var router: Router
   @State private var sheetManager = SheetManager()
 
   let content: (_ router: Router) -> Content
 
   init(tab: Tab, content: @escaping (_ router: Router) -> Content) {
-    _router = StateObject(wrappedValue: Router(tab: tab))
+    _router = State(wrappedValue: Router(tab: tab))
     self.content = content
   }
 
   var body: some View {
-      @Bindable var feedbackManager = feedbackManager
+    @Bindable var feedbackManager = feedbackManager
+    @Bindable var router = router
     NavigationStack(path: $router.path) {
       content(router)
         .navigationDestination(for: Screen.self) { screen in
@@ -55,7 +56,11 @@ struct RouterWrapper<Content: View>: View {
     .toast(isPresenting: $feedbackManager.show) {
       feedbackManager.toast
     }
-    .environmentObject(router)
+    .environment(router)
     .environment(sheetManager)
+    .onChange(of: router.path, debounceTime: 0.5, perform: { _ in
+        print(router.path)
+        router.cachePath()
+    })
   }
 }

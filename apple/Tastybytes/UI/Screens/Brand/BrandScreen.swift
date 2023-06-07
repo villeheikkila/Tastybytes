@@ -6,7 +6,7 @@ struct BrandScreen: View {
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   @State private var brand: Brand.JoinedSubBrandsProductsCompany
   @State private var summary: Summary?
   @State private var editBrand: Brand.JoinedSubBrandsProductsCompany?

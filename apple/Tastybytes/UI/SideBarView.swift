@@ -37,7 +37,7 @@ struct SideBarView: View {
   @State private var sheetManager = SheetManager()
   @State private var selection: SiderBarTab? = SiderBarTab.activity
   @State private var scrollToTop: Int = 0
-  @StateObject private var router = Router(tab: Tab.activity)
+  @State private var router = Router(tab: Tab.activity)
 
   private var shownTabs: [SiderBarTab] {
     if profileManager.hasRole(.admin) {
@@ -85,6 +85,7 @@ struct SideBarView: View {
       .listStyle(.sidebar)
       .navigationSplitViewColumnWidth(220)
     } detail: {
+      @Bindable var router = router
       NavigationStack(path: $router.path) {
         switch selection {
         case .activity:
@@ -117,7 +118,7 @@ struct SideBarView: View {
         selection = tab
       }
     }
-    .environmentObject(router)
+    .environment(router)
     .environment(sheetManager)
     .toast(isPresenting: $feedbackManager.show) {
       feedbackManager.toast
@@ -131,7 +132,7 @@ struct SideBarView: View {
       .presentationBackground(sheet.background)
       .presentationDragIndicator(.visible)
       .environment(sheetManager)
-      .environmentObject(profileManager)
+      .environment(profileManager)
       .environment(appDataManager)
       .environment(feedbackManager)
       .toast(isPresenting: $feedbackManager.show) {
@@ -146,7 +147,7 @@ struct SideBarView: View {
         .presentationBackground(nestedSheet.background)
         .presentationDragIndicator(.visible)
         .environment(sheetManager)
-        .environmentObject(profileManager)
+        .environment(profileManager)
         .environment(appDataManager)
         .environment(feedbackManager)
         .toast(isPresenting: $feedbackManager.show) {

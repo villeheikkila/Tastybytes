@@ -3,7 +3,7 @@ import SwiftUI
 struct DuplicateProductScreen: View {
   private let logger = getLogger(category: "ProductVerificationScreen")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   @Environment(FeedbackManager.self) private var feedbackManager
   @State private var products = [Product.Joined]()
   @State private var deleteProduct: Product.Joined? {

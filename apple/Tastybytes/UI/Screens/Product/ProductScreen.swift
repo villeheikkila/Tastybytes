@@ -5,7 +5,7 @@ struct ProductScreen: View {
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   @Environment(\.dismiss) private var dismiss
   @State private var scrollToTop: Int = 0
   @State private var product: Product.Joined

@@ -1,7 +1,7 @@
 import CachedAsyncImage
 import SwiftUI
 struct ProductItemView: View {
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   enum Extra {
     case checkInCheck, rating, companyLink, logo
   }

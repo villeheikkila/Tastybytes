@@ -3,7 +3,7 @@ import SwiftUI
 struct DiscoverScreen: View {
   private let logger = getLogger(category: "SearchListView")
   @Environment(Repository.self) private var repository
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(ProfileManager.self) private var profileManager
   @State private var scrollProxy: ScrollViewProxy?

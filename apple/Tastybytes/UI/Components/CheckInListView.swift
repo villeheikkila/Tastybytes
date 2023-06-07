@@ -13,7 +13,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
   @Environment(ProfileManager.self) private var profileManager
   @Environment(SplashScreenManager.self) private var splashScreenManager
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   @Environment(ImageUploadManager.self) private var imageUploadManager
   @State private var scrollProxy: ScrollViewProxy?
   @State private var showDeleteCheckInConfirmationDialog = false

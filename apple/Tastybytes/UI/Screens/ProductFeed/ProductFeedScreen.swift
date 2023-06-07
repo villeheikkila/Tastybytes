@@ -4,7 +4,7 @@ struct ProductFeedScreen: View {
   private let logger = getLogger(category: "ProductFeedView")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   @Environment(AppDataManager.self) private var appDataManager
   @State private var products = [Product.Joined]()
   @State private var categoryFilter: Category.JoinedSubcategoriesServingStyles? {

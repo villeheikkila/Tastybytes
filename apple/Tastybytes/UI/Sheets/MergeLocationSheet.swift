@@ -4,7 +4,7 @@ struct MergeLocationSheet: View {
   private let logger = getLogger(category: "MergeLocationSheet")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   @Environment(\.dismiss) private var dismiss
   @State private var locations = [Location]()
   @State private var mergeToLocation: Location? {

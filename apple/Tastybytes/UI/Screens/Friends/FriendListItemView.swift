@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FriendListItemView<RootView: View>: View {
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   let profile: Profile
   let view: () -> RootView?
 

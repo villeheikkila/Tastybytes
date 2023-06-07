@@ -190,7 +190,7 @@ struct ProductMutationInnerView: View {
   private let logger = getLogger(category: "ProductMutationInnerView")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   @Environment(SheetManager.self) private var sheetManager
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(AppDataManager.self) private var appDataManager

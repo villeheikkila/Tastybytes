@@ -2,7 +2,7 @@ import SFSafeSymbols
 import SwiftUI
 
 struct RouterLink<LabelView: View>: View {
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   @Environment(SheetManager.self) private var sheetManager
 
   let screen: Screen?

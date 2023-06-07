@@ -5,7 +5,7 @@ struct BrandSheet: View {
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
   @Environment(\.dismiss) private var dismiss
   @State private var brandsWithSubBrands = [Brand.JoinedSubBrands]()
   @State private var brandName = ""

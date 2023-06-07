@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ActivityScreen: View {
   @Binding var scrollToTop: Int
-  @EnvironmentObject private var router: Router
+  @Environment(Router.self) private var router
 
   let navigateToDiscoverTab: () -> Void
 
