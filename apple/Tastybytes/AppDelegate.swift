@@ -1,6 +1,5 @@
 import Firebase
 import FirebaseMessaging
-import RevenueCat
 import SwiftUI
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
@@ -16,9 +15,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
     application.registerForRemoteNotifications()
     Messaging.messaging().delegate = self
-
-    Purchases.logLevel = .error
-    Purchases.configure(withAPIKey: Config.revenuecatApiKey)
 
     return true
   }

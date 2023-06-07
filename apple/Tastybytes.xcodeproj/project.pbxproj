@@ -43,7 +43,6 @@
 		5C2146E629A9315D0005422D /* ProductFeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146E529A9315D0005422D /* ProductFeedScreen.swift */; };
 		5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2146EA29A96C090005422D /* NameTagSheet.swift */; };
 		5C234F0A29F5BBB9003F2283 /* SupportScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F0929F5BBB9003F2283 /* SupportScreen.swift */; };
-		5C234F0C29F64F5B003F2283 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F0B29F64F5B003F2283 /* PurchaseManager.swift */; };
 		5C234F132A0163AA003F2283 /* CheckInDatePickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */; };
 		5C25AEB229031B9D00793607 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 5C25AEB129031B9D00793607 /* WrappingHStack */; };
 		5C25AEB429031F9C00793607 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25AEB329031F9C00793607 /* DateExtensions.swift */; };
@@ -262,7 +261,6 @@
 		5C2146E529A9315D0005422D /* ProductFeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeedScreen.swift; sourceTree = "<group>"; };
 		5C2146EA29A96C090005422D /* NameTagSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameTagSheet.swift; sourceTree = "<group>"; };
 		5C234F0929F5BBB9003F2283 /* SupportScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportScreen.swift; sourceTree = "<group>"; };
-		5C234F0B29F64F5B003F2283 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		5C234F122A0163AA003F2283 /* CheckInDatePickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInDatePickerSheet.swift; sourceTree = "<group>"; };
 		5C25AEB329031F9C00793607 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		5C25AEB52903FBDE00793607 /* Role.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
@@ -1011,7 +1009,6 @@
 				5CE9009229211AC9003DE697 /* NotificationManager.swift */,
 				5C0E364D2923C8CD0072EFBD /* ProfileManager.swift */,
 				5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */,
-				5C234F0B29F64F5B003F2283 /* PurchaseManager.swift */,
 				5C6E10722A235ED000079F8E /* PermissionManager.swift */,
 				5C964DBF2A2BF05200805199 /* ImageUploadManager.swift */,
 			);
@@ -1409,7 +1406,6 @@
 				5C25AEB62903FBDE00793607 /* Role.swift in Sources */,
 				5C25C68C2996D22400C07953 /* EditSubBrandSheet.swift in Sources */,
 				5C919E2028FF024A0055CFD2 /* FlavorSheet.swift in Sources */,
-				5C234F0C29F64F5B003F2283 /* PurchaseManager.swift in Sources */,
 				5C323E8D298C4D7300B005A9 /* StringExtensions.swift in Sources */,
 				5C12B4372902CA04001EE549 /* NotificationTab.swift in Sources */,
 				5C25C66D29941B9F00C07953 /* OnboardingScreen.swift in Sources */,

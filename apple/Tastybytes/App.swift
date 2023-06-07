@@ -57,7 +57,6 @@ struct RootView: View {
   @StateObject private var notificationManager: NotificationManager
   @StateObject private var appDataManager: AppDataManager
   @StateObject private var friendManager: FriendManager
-  @StateObject private var purchaseManager: PurchaseManager
   @StateObject private var imageUploadManager: ImageUploadManager
   @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
   @AppStorage(.colorScheme) var colorScheme: String = "system"
@@ -76,7 +75,6 @@ struct RootView: View {
     _appDataManager = StateObject(wrappedValue: AppDataManager(repository: repository, feedbackManager: feedbackManager))
     _imageUploadManager =
       StateObject(wrappedValue: ImageUploadManager(repository: repository, feedbackManager: feedbackManager))
-    _purchaseManager = StateObject(wrappedValue: PurchaseManager(feedbackManager: feedbackManager))
     _friendManager =
       StateObject(wrappedValue: FriendManager(repository: repository, feedbackManager: feedbackManager))
     _orientation = State(wrappedValue: UIDevice.current.orientation)
@@ -111,7 +109,6 @@ struct RootView: View {
     .environmentObject(profileManager)
     .environmentObject(feedbackManager)
     .environmentObject(appDataManager)
-    .environmentObject(purchaseManager)
     .environmentObject(friendManager)
     .environmentObject(permissionManager)
     .environmentObject(imageUploadManager)
@@ -173,7 +170,6 @@ struct RootView: View {
       .task {
         await friendManager.initialize(profile: profileManager.profile)
         await notificationManager.getUnreadCount()
-        purchaseManager.initialize()
       }
     }
   }

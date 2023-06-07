@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct SupportSheet: View {
-  @EnvironmentObject private var purchaseManager: PurchaseManager
   @Environment(\.dismiss) private var dismiss
   @State private var isProcessing = false
   @State private var purchaseSuccessDisplayed = false
@@ -9,7 +8,7 @@ struct SupportSheet: View {
 
   var body: some View {
     List {
-      Text(PurchaseType.supporter.description)
+      Text("")
         .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
@@ -32,9 +31,6 @@ struct SupportSheet: View {
       HStack {
         Spacer()
         ProgressButton(action: {
-          if let subscription = purchaseManager.subscription {
-            await purchaseManager.purchase(product: subscription)
-          }
         }, label: {
           Text("0,99€ a month")
             .font(.headline)
