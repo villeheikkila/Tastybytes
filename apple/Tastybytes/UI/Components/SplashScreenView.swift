@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SplashScreen: View {
-  @EnvironmentObject private var splashScreenManager: SplashScreenManager
+    @Environment(SplashScreenManager.self) private var splashScreenManager
   @State private var dismissAnimation = false
   @State private var startFadeoutAnimation = false
   @State private var size = 0.8
@@ -49,7 +49,4 @@ struct SplashScreen: View {
   }
 }
 
-#Preview {
-    SplashScreen()
-      .environmentObject(SplashScreenManager())
-  }
+

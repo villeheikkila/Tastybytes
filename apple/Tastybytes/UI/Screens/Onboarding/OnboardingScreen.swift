@@ -13,7 +13,7 @@ struct OnboardingScreen: View {
     }
   }
 
-  @EnvironmentObject private var splashScreenManager: SplashScreenManager
+    @Environment(SplashScreenManager.self) private var splashScreenManager
   @EnvironmentObject private var profileManager: ProfileManager
   @FocusState private var focusedField: OnboardField?
   @State private var currentTab = Tab.welcome

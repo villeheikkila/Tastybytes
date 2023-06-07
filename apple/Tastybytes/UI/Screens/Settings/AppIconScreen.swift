@@ -54,19 +54,19 @@ enum AppIcon: String {
   case energyDrink = "AppIconEnergyDrink"
   case kombucha = "AppIconKombucha"
 
-  var logo: String {
-    switch self {
-    case .ramune:
-      return "ProjectLogo"
-    case .cola:
-      return "ProjectLogoCola"
-    case .energyDrink:
-      return "ProjectLogoEnergyDrink"
-    case .juice:
-      return "ProjectLogoJuice"
-    case .kombucha:
-      return "ProjectLogoKombucha"
-    }
+  var logo: ImageResource {
+      switch self {
+      case .ramune:
+          return .projectLogo
+      case .cola:
+          return .projectLogoCola
+      case .energyDrink:
+          return .projectLogoEnergyDrink
+      case .juice:
+          return .juice
+      case .kombucha:
+          return .projectLogoKombucha
+      }
   }
 
   var label: String {
@@ -84,18 +84,18 @@ enum AppIcon: String {
     }
   }
 
-  var icon: String {
+  var icon: ImageResource {
     switch self {
     case .ramune:
-      return "Ramune"
+        return .ramune
     case .juice:
-      return "Juice"
+        return .juice
     case .energyDrink:
-      return "EnergyDrink"
+        return .energyDrink
     case .kombucha:
-      return "Kombucha"
+        return .kombucha
     case .cola:
-      return "Cola"
+        return .cola
     }
   }
 }

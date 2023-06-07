@@ -1,12 +1,13 @@
 import SwiftUI
+import Observation
 
-@MainActor
-final class SplashScreenManager: ObservableObject {
+@Observable
+final class SplashScreenManager {
   enum SplashScreenState {
     case showing, dismissing, finished
   }
 
-  @Published private(set) var state: SplashScreenState = .showing
+  var state: SplashScreenState = .showing
 
   func dismiss() async {
     if state == .showing {

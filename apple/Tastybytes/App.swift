@@ -51,7 +51,7 @@ struct RootView: View {
   private let logger = getLogger(category: "RootView")
   let supabaseClient: SupabaseClient
   @StateObject private var repository: Repository
-  @StateObject private var splashScreenManager = SplashScreenManager()
+  @State private var splashScreenManager = SplashScreenManager()
   @StateObject private var permissionManager = PermissionManager()
   @StateObject private var profileManager: ProfileManager
   @StateObject private var notificationManager: NotificationManager
@@ -106,7 +106,7 @@ struct RootView: View {
       }
     }
     .environmentObject(repository)
-    .environmentObject(splashScreenManager)
+    .environment(splashScreenManager)
     .environmentObject(notificationManager)
     .environmentObject(profileManager)
     .environmentObject(feedbackManager)

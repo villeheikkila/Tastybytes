@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DiscoverTab: View {
   @State private var scrollToTop: Int = 0
-  @EnvironmentObject private var splashScreenManager: SplashScreenManager
+    @Environment(SplashScreenManager.self) private var splashScreenManager
   @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {

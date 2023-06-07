@@ -49,7 +49,7 @@ struct DiscoverScreen: View {
         }
       }
       .listStyle(.plain)
-      .searchable(text: $searchTerm,  isPresented: .constant(true), placement: .navigationBarDrawer(displayMode: .always),
+      .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always),
                   prompt: searchScope.prompt)
       .searchScopes($searchScope, activation: .onSearchPresentation) {
         ForEach(SearchScope.allCases) { scope in

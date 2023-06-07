@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NotificationTab: View {
   @EnvironmentObject private var notificationManager: NotificationManager
-  @EnvironmentObject private var splashScreenManager: SplashScreenManager
+    @Environment(SplashScreenManager.self) private var splashScreenManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var scrollToTop: Int = 0
   @Binding var resetNavigationOnTab: Tab?

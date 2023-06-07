@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AdminTab: View {
-  @EnvironmentObject private var splashScreenManager: SplashScreenManager
+    @Environment(SplashScreenManager.self) private var splashScreenManager
   @Binding var resetNavigationOnTab: Tab?
 
   var body: some View {
