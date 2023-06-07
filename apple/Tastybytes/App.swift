@@ -56,7 +56,7 @@ struct RootView: View {
   @StateObject private var profileManager: ProfileManager
   @StateObject private var notificationManager: NotificationManager
   @StateObject private var appDataManager: AppDataManager
-  @StateObject private var friendManager: FriendManager
+  @State private var friendManager: FriendManager
   @State private var imageUploadManager: ImageUploadManager
   @AppStorage(.isOnboardedOnDevice) private var isOnboardedOnDevice = false
   @AppStorage(.colorScheme) var colorScheme: String = "system"
@@ -76,7 +76,7 @@ struct RootView: View {
     _imageUploadManager =
       State(wrappedValue: ImageUploadManager(repository: repository, feedbackManager: feedbackManager))
     _friendManager =
-      StateObject(wrappedValue: FriendManager(repository: repository, feedbackManager: feedbackManager))
+      State(wrappedValue: FriendManager(repository: repository, feedbackManager: feedbackManager))
     _orientation = State(wrappedValue: UIDevice.current.orientation)
     self.feedbackManager = feedbackManager
   }
@@ -109,7 +109,7 @@ struct RootView: View {
     .environmentObject(profileManager)
     .environmentObject(feedbackManager)
     .environmentObject(appDataManager)
-    .environmentObject(friendManager)
+    .environment(friendManager)
     .environment(permissionManager)
     .environment(imageUploadManager)
     .preferredColorScheme(CustomColorScheme(rawValue: colorScheme)?.systemColorScheme)

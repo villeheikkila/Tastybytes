@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CurrentUserFriendsScreen: View {
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var friendManager: FriendManager
+  @Environment(FriendManager.self) private var friendManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var noficationManager: NotificationManager
   @State private var friendToBeRemoved: Friend? {

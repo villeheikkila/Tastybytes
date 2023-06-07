@@ -7,8 +7,8 @@ struct ProfileView: View {
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var friendManager: FriendManager
-    @Environment(SplashScreenManager.self) private var splashScreenManager
+  @Environment(FriendManager.self) private var friendManager
+  @Environment(SplashScreenManager.self) private var splashScreenManager
   @Binding private var scrollToTop: Int
   @State private var profile: Profile
   @State private var profileSummary: ProfileSummary?

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct BlockedUsersScreen: View {
-  @EnvironmentObject private var friendManager: FriendManager
+  @Environment(FriendManager.self) private var friendManager
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var showUserSearchSheet = false

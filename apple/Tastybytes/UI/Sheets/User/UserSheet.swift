@@ -4,7 +4,7 @@ struct UserSheet: View {
   private let logger = getLogger(category: "UserSheet")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var friendManager: FriendManager
+  @Environment(FriendManager.self) private var friendManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var searchText: String = ""

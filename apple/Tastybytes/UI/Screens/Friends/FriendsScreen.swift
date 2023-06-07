@@ -4,7 +4,7 @@ struct FriendsScreen: View {
   private let logger = getLogger(category: "FriendsScreen")
   @EnvironmentObject private var repository: Repository
   @EnvironmentObject private var profileManager: ProfileManager
-  @EnvironmentObject private var friendManager: FriendManager
+  @Environment(FriendManager.self) private var friendManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var friends: [Friend]
 

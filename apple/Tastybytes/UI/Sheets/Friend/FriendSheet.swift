@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FriendSheet: View {
   @Binding var taggedFriends: [Profile]
-  @EnvironmentObject private var friendManager: FriendManager
+  @Environment(FriendManager.self) private var friendManager
   @Environment(\.dismiss) private var dismiss
 
   var body: some View {
