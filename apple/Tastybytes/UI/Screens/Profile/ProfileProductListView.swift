@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProfileProductListView: View {
   let logger = getLogger(category: "ProfileProductListView")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var products: [Product.Joined] = []
   @State private var searchTerm = ""

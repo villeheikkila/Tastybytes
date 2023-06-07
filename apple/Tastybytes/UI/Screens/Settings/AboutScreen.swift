@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AboutScreen: View {
   private let logger = getLogger(category: "AboutScreen")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @Environment(AppDataManager.self) private var appDataManager
 
   var body: some View {

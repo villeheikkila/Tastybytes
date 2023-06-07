@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RouterWrapper<Content: View>: View {
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @StateObject private var router: Router
   @StateObject private var sheetManager = SheetManager()

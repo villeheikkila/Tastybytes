@@ -2,7 +2,7 @@ import SwiftUI
 
 struct UserSheet: View {
   private let logger = getLogger(category: "UserSheet")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(FriendManager.self) private var friendManager
   @EnvironmentObject private var feedbackManager: FeedbackManager

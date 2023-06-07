@@ -4,7 +4,7 @@ import SwiftUI
 
 struct EditBrandSheet: View {
   private let logger = getLogger(category: "EditBrandSheet")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss

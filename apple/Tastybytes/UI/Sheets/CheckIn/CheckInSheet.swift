@@ -5,7 +5,7 @@ import WrappingHStack
 
 struct CheckInSheet: View {
   private let logger = getLogger(category: "CheckInSheet")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(AppDataManager.self) private var appDataManager

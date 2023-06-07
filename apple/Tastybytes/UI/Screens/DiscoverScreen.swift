@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DiscoverScreen: View {
   private let logger = getLogger(category: "SearchListView")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager

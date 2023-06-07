@@ -4,7 +4,7 @@ import SwiftUI
 
 struct EditCompanySheet: View {
   private let logger = getLogger(category: "EditCompanySheet")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager
   @Environment(\.dismiss) private var dismiss

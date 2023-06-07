@@ -4,7 +4,7 @@ import SwiftUI
 
 struct LocationScreen: View {
   private let logger = getLogger(category: "LocationScreen")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var profileManager: ProfileManager

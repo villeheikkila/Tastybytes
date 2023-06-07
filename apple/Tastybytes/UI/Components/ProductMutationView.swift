@@ -3,7 +3,7 @@ import SwiftUI
 
 struct ProductMutationView: View {
   private let logger = getLogger(category: "ProductMutationView")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss
@@ -188,7 +188,7 @@ private struct ProductMutationInitialValues {
 
 struct ProductMutationInnerView: View {
   private let logger = getLogger(category: "ProductMutationInnerView")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var sheetManager: SheetManager

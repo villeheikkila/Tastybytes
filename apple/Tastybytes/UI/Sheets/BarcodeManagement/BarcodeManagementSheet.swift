@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BarcodeManagementSheet: View {
   private let logger = getLogger(category: "BarcodeManagementSheet")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var barcodes: [ProductBarcode.JoinedWithCreator] = []

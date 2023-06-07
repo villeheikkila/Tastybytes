@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProfileTab: View {
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @State private var scrollToTop = 0
   @Binding var resetNavigationOnTab: Tab?

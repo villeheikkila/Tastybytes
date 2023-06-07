@@ -4,7 +4,7 @@ import SwiftUI
 
 struct ProductLogoSheet: View {
   private let logger = getLogger(category: "ProductLogoSheet")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss

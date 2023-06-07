@@ -4,7 +4,7 @@ import SwiftUI
 
 struct LocationSearchSheet: View {
   private let logger = getLogger(category: "LocationSearchView")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @StateObject private var viewModel = ViewModel()
   @State private var locationManager = LocationManager()
@@ -122,7 +122,7 @@ extension LocationSearchSheet {
 
   struct LocationRow: View {
     private let logger = getLogger(category: "LocationSearchView")
-    @EnvironmentObject private var repository: Repository
+    @Environment(Repository.self) private var repository
     @EnvironmentObject private var feedbackManager: FeedbackManager
     @Environment(\.dismiss) private var dismiss
 

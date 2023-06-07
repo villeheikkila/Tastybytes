@@ -1,6 +1,7 @@
 import PostgREST
 import Supabase
 import SwiftUI
+import Observation
 
 protocol RepositoryProtocol {
   var profile: ProfileRepository { get }
@@ -24,7 +25,8 @@ protocol RepositoryProtocol {
   var report: ReportRepository { get }
 }
 
-final class Repository: RepositoryProtocol, ObservableObject {
+@Observable
+final class Repository: RepositoryProtocol {
   let profile: ProfileRepository
   let checkIn: CheckInRepository
   let checkInComment: CheckInCommentRepository

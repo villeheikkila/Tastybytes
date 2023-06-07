@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProductFeedScreen: View {
   private let logger = getLogger(category: "ProductFeedView")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var router: Router
   @Environment(AppDataManager.self) private var appDataManager

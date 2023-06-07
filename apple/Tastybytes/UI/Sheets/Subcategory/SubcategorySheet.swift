@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SubcategorySheet: View {
   private let logger = getLogger(category: "SubcategorySheet")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(AppDataManager.self) private var appDataManager

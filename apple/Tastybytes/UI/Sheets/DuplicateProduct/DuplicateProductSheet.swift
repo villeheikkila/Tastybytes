@@ -6,7 +6,7 @@ struct DuplicateProductSheet: View {
   }
 
   private let logger = getLogger(category: "MarkAsDuplicate")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss
   @State private var products = [Product.Joined]()

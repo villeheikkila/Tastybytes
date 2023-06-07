@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MergeLocationSheet: View {
   private let logger = getLogger(category: "MergeLocationSheet")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @EnvironmentObject private var router: Router
   @Environment(\.dismiss) private var dismiss

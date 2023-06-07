@@ -21,7 +21,7 @@ struct VerificationScreen: View {
   }
 
   private let logger = getLogger(category: "ProductVerificationScreen")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var router: Router
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var products = [Product.Joined]()

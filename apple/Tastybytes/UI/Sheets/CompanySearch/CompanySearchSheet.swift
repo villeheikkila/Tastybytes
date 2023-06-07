@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CompanySearchSheet: View {
   private let logger = getLogger(category: "CompanySearchSheet")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @Environment(\.dismiss) private var dismiss

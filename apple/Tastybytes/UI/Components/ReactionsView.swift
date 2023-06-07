@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ReactionsView: View {
   private let logger = getLogger(category: "ReactionsView")
-  @EnvironmentObject private var repository: Repository
+  @Environment(Repository.self) private var repository
   @EnvironmentObject private var profileManager: ProfileManager
   @EnvironmentObject private var feedbackManager: FeedbackManager
   @State private var checkInReactions = [CheckInReaction]()
