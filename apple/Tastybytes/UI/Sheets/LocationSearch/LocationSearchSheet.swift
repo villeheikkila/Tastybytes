@@ -1,126 +1,120 @@
-import Combine
+import CoreLocation
+import Foundation
 import MapKit
+import Observation
 import SwiftUI
 
 struct LocationSearchSheet: View {
-  private let logger = getLogger(category: "LocationSearchView")
-  @Environment(Repository.self) private var repository
-  @Environment(FeedbackManager.self) private var feedbackManager
-  @StateObject private var viewModel = ViewModel()
-  @State private var locationManager = LocationManager()
-  @State private var recentLocations = [Location]()
-  @State private var nearbyLocations = [Location]()
-  @State private var searchText = ""
-  @Environment(\.dismiss) private var dismiss
+    private let logger = getLogger(category: "LocationSearchView")
+    @Environment(Repository.self) private var repository
+    @Environment(FeedbackManager.self) private var feedbackManager
+    @State private var searchResults = [Location]()
+    @State private var locationManager = LocationManager()
+    @State private var recentLocations = [Location]()
+    @State private var nearbyLocations = [Location]()
+    @State private var searchText = ""
 
-  let title: String
-  let onSelect: (_ location: Location) -> Void
+    @Environment(\.dismiss) private var dismiss
 
-  var hasSearched: Bool {
-    !viewModel.searchText.isEmpty
-  }
+    let title: String
+    let onSelect: (_ location: Location) -> Void
 
-  var body: some View {
-    List {
-      if !recentLocations.isEmpty, !hasSearched {
-        Section("Recent locations") {
-          ForEach(recentLocations) { location in
-            LocationRow(location: location, onSelect: onSelect)
-          }
+    init(title: String, onSelect: @escaping (_ location: Location) -> Void) {
+        self.title = title
+        self.onSelect = onSelect
+    }
+
+    var hasSearched: Bool {
+        !searchText.isEmpty
+    }
+
+    private var center = CLLocationCoordinate2D(latitude: 60.1699, longitude: 24.9384)
+    private let radius: CLLocationDistance = 2000
+
+    func search(for query: String) {
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = query
+        request.resultTypes = .pointOfInterest
+        request.region = MKCoordinateRegion(center: center,
+                                            latitudinalMeters: radius,
+                                            longitudinalMeters: radius)
+
+        Task {
+            let search = MKLocalSearch(request: request)
+            let response = try? await search.start()
+            let rawResults = response?.mapItems ?? []
+            searchResults = rawResults.map { Location(mapItem: $0) }
         }
-      }
-      if !recentLocations.isEmpty, !hasSearched {
-        Section("Nearby locations") {
-          ForEach(nearbyLocations) { location in
-            LocationRow(location: location, onSelect: onSelect)
-          }
-        }
-      }
-      if hasSearched {
-        ForEach(viewModel.locations) { location in
-          LocationRow(location: location, onSelect: onSelect)
-        }
-      }
     }
-    .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: {
-      dismiss()
-    }))
-    .navigationTitle(title)
-    .searchable(text: $searchText)
-    .onChange(of: searchText, debounceTime: 0.5, perform: { _ in
-      viewModel.searchText = searchText
-    })
-    .task {
-      await getRecentLocations()
-    }
-    .onChange(of: locationManager.lastLocation) {
-      guard nearbyLocations.isEmpty else { return }
-      guard let lastLocation = locationManager.lastLocation else { return }
-      viewModel.setInitialLocation(lastLocation)
-      Task { await getSuggestions(lastLocation) }
-    }
-  }
 
-  func getRecentLocations() async {
-    switch await repository.location.getRecentLocations() {
-    case let .success(recentLocations):
-      withAnimation {
-        self.recentLocations = recentLocations
-      }
-    case let .failure(error):
-      guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to load recemt locations: \(error.localizedDescription)")
+    var body: some View {
+        List {
+            if !recentLocations.isEmpty, !hasSearched {
+                Section("Recent locations") {
+                    ForEach(recentLocations) { location in
+                        LocationRow(location: location, onSelect: onSelect)
+                    }
+                }
+            }
+            if !recentLocations.isEmpty, !hasSearched {
+                Section("Nearby locations") {
+                    ForEach(nearbyLocations) { location in
+                        LocationRow(location: location, onSelect: onSelect)
+                    }
+                }
+            }
+            if hasSearched {
+                ForEach(searchResults) { location in
+                    LocationRow(location: location, onSelect: onSelect)
+                }
+            }
+        }
+        .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: {
+            dismiss()
+        }))
+        .navigationTitle(title)
+        .searchable(text: $searchText)
+        .onChange(of: searchText, debounceTime: 0.5, perform: { _ in
+            search(for: searchText)
+        })
+        .task {
+            await getRecentLocations()
+        }
+        .onChange(of: locationManager.location) { _, latestLocation in
+            guard nearbyLocations.isEmpty else { return }
+            Task { await getSuggestions(latestLocation) }
+        }
     }
-  }
 
-  func getSuggestions(_ location: CLLocation?) async {
-    guard let location else { return }
-    switch await repository.location.getSuggestions(location: Location.SuggestionParams(location: location)) {
-    case let .success(nearbyLocations):
-      withAnimation {
-        self.nearbyLocations = nearbyLocations
-      }
-    case let .failure(error):
-      guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to load location suggestions: \(error.localizedDescription)")
+    func getRecentLocations() async {
+        switch await repository.location.getRecentLocations() {
+        case let .success(recentLocations):
+            withAnimation {
+                self.recentLocations = recentLocations
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            feedbackManager.toggle(.error(.unexpected))
+            logger.error("failed to load recemt locations: \(error.localizedDescription)")
+        }
     }
-  }
+
+    func getSuggestions(_ location: CLLocation?) async {
+        guard let location else { return }
+        switch await repository.location.getSuggestions(location: Location.SuggestionParams(location: location)) {
+        case let .success(nearbyLocations):
+            withAnimation {
+                self.nearbyLocations = nearbyLocations
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            feedbackManager.toggle(.error(.unexpected))
+            logger.error("failed to load location suggestions: \(error.localizedDescription)")
+        }
+    }
 }
 
-extension LocationSearchSheet {
-  @MainActor
-  final class ViewModel: ObservableObject {
-    var service: LocationSearchManager
-    private var cancellable: AnyCancellable?
-    @Published var locations = [Location]()
-    @Published var searchText = "" {
-      didSet {
-        searchForLocation(text: searchText)
-      }
-    }
-
-    init() {
-      service = LocationSearchManager()
-      cancellable = service.localSearchPublisher.sink { mapItems in
-        self.locations = mapItems.map { Location(mapItem: $0) }
-      }
-    }
-
-    func setInitialLocation(_ location: CLLocation?) {
-      let latitude = location?.coordinate.latitude ?? 60.1699
-      let longitutde = location?.coordinate.longitude ?? 24.9384
-      let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitutde)
-      service.setCenter(in: center)
-    }
-
-    private func searchForLocation(text _: String) {
-      service.searchLocation(searchText: searchText, resultType: .pointOfInterest)
-    }
-  }
-
-  struct LocationRow: View {
+struct LocationRow: View {
     private let logger = getLogger(category: "LocationSearchView")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackManager.self) private var feedbackManager
@@ -130,29 +124,30 @@ extension LocationSearchSheet {
     let onSelect: (_ location: Location) -> Void
 
     var body: some View {
-      ProgressButton(action: {
-        await storeLocation(location)
-      }, label: {
-        VStack(alignment: .leading) {
-          Text(location.name)
-          if let title = location.title {
-            Text(title)
-              .foregroundColor(.secondary)
-          }
-        }
-      })
+        ProgressButton(action: {
+            await storeLocation(location)
+        }, label: {
+            VStack(alignment: .leading) {
+                Text(location.name)
+                if let title = location.title {
+                    Text(title)
+                        .foregroundColor(.secondary)
+                }
+            }
+        })
     }
 
     func storeLocation(_ location: Location) async {
-      switch await repository.location.insert(location: location) {
-      case let .success(savedLocation):
-        onSelect(savedLocation)
-        dismiss()
-      case let .failure(error):
-        guard !error.localizedDescription.contains("cancelled") else { return }
-        feedbackManager.toggle(.error(.unexpected))
-        logger.error("saving location \(location.name) failed: \(error.localizedDescription)")
-      }
+        switch await repository.location.insert(location: location) {
+        case let .success(savedLocation):
+            onSelect(savedLocation)
+            await MainActor.run {
+                dismiss()
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            feedbackManager.toggle(.error(.unexpected))
+            logger.error("saving location \(location.name) failed: \(error.localizedDescription)")
+        }
     }
-  }
 }

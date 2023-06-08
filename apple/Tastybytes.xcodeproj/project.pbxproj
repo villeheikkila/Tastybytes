@@ -163,7 +163,7 @@
 		5CBC2454297D3A5F00A0002B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBC2453297D3A5F00A0002B /* ProfileView.swift */; };
 		5CC2FE8F29196A5D002BDF83 /* LocationSearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE8E29196A5D002BDF83 /* LocationSearchSheet.swift */; };
 		5CC2FE912919774A002BDF83 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE902919774A002BDF83 /* Location.swift */; };
-		5CC2FE9429197D9F002BDF83 /* LocationSearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9329197D9F002BDF83 /* LocationSearchManager.swift */; };
+		5CC2FE9429197D9F002BDF83 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE9329197D9F002BDF83 /* LocationManager.swift */; };
 		5CC2FE962919B1BF002BDF83 /* LocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */; };
 		5CC2FE982919CB19002BDF83 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE972919CB19002BDF83 /* Country.swift */; };
 		5CC6B9A529AE9DB000A62158 /* DuplicateProductSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC6B9A429AE9DB000A62158 /* DuplicateProductSheet.swift */; };
@@ -379,7 +379,7 @@
 		5CBC2453297D3A5F00A0002B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		5CC2FE8E29196A5D002BDF83 /* LocationSearchSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchSheet.swift; sourceTree = "<group>"; };
 		5CC2FE902919774A002BDF83 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		5CC2FE9329197D9F002BDF83 /* LocationSearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchManager.swift; sourceTree = "<group>"; };
+		5CC2FE9329197D9F002BDF83 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		5CC2FE952919B1BF002BDF83 /* LocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRepository.swift; sourceTree = "<group>"; };
 		5CC2FE972919CB19002BDF83 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
@@ -1005,7 +1005,7 @@
 				5CD8D35429CDF58F001C5930 /* AppDataManager.swift */,
 				5CD8D35229CA5B2D001C5930 /* FriendManager.swift */,
 				5C367EB329A3F386000A7149 /* FeedbackManager.swift */,
-				5CC2FE9329197D9F002BDF83 /* LocationSearchManager.swift */,
+				5CC2FE9329197D9F002BDF83 /* LocationManager.swift */,
 				5CE9009229211AC9003DE697 /* NotificationManager.swift */,
 				5C0E364D2923C8CD0072EFBD /* ProfileManager.swift */,
 				5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */,
@@ -1336,7 +1336,7 @@
 				5CD7234C29F4628B003DA030 /* SideBarView.swift in Sources */,
 				5C7C35F2299AE67B009A3C09 /* UsernameTextFieldView.swift in Sources */,
 				5C6E10652A1D561D00079F8E /* OnboardingContinueButtonModifier.swift in Sources */,
-				5CC2FE9429197D9F002BDF83 /* LocationSearchManager.swift in Sources */,
+				5CC2FE9429197D9F002BDF83 /* LocationManager.swift in Sources */,
 				5C6E105E2A1D137500079F8E /* SheetManager.swift in Sources */,
 				5C20A52529AC8AB800ABBA74 /* BarcodeUtils.swift in Sources */,
 				5C0E36582928EA910072EFBD /* LegacyPhotoPicker.swift in Sources */,
