@@ -117,7 +117,7 @@ struct CompanyScreen: View {
         showUnverifyCompanyConfirmation = true
       })
       Divider()
-      ShareLink("Share", item: NavigatablePath.company(id: company.id).url)
+      CompanyShareLinkView(company: company)
       if profileManager.hasPermission(.canCreateBrands) {
         RouterLink(
           "Add Brand",

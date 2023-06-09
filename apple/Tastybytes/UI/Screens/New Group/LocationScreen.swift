@@ -50,7 +50,7 @@ struct LocationScreen: View {
   @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       Menu {
-        ShareLink("Share", item: NavigatablePath.location(id: location.id).url)
+        LocationShareLinkView(location: location)
         Divider()
 
         if profileManager.hasRole(.admin) {

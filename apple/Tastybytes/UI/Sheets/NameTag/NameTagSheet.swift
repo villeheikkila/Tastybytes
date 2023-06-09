@@ -42,7 +42,7 @@ struct NameTagSheet: View {
     .navigationBarTitleDisplayMode(.inline)
     .navigationBarItems(
       leading: Button("Close", action: { dismiss() }).bold(),
-      trailing: ShareLink("Share", item: NavigatablePath.profile(id: profileManager.id).url)
+      trailing: ProfileShareLinkView(profile: profileManager.profile)
     )
   }
 }

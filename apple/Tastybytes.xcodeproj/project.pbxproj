@@ -204,6 +204,10 @@
 		5CDC9F9B29E3EB5500B6082F /* Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F9A29E3EB5500B6082F /* Sheet.swift */; };
 		5CDC9F9D29E4572000B6082F /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F9C29E4572000B6082F /* Screen.swift */; };
 		5CDC9F9F29E4577B00B6082F /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC9F9E29E4577B00B6082F /* Tab.swift */; };
+		5CDCAE202A33BF2E00EA7824 /* ProfileShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDCAE1F2A33BF2E00EA7824 /* ProfileShareLinkView.swift */; };
+		5CDCAE222A33BFF500EA7824 /* CompanyShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDCAE212A33BFF500EA7824 /* CompanyShareLinkView.swift */; };
+		5CDCAE242A33C04800EA7824 /* BrandShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDCAE232A33C04800EA7824 /* BrandShareLinkView.swift */; };
+		5CDCAE262A33C0B600EA7824 /* LocationShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDCAE252A33C0B600EA7824 /* LocationShareLinkView.swift */; };
 		5CE9008C291FCB71003DE697 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008B291FCB71003DE697 /* SplashScreenView.swift */; };
 		5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */; };
 		5CE90091292101C8003DE697 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE90090292101C8003DE697 /* AboutScreen.swift */; };
@@ -426,6 +430,10 @@
 		5CDC9F9A29E3EB5500B6082F /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
 		5CDC9F9C29E4572000B6082F /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		5CDC9F9E29E4577B00B6082F /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		5CDCAE1F2A33BF2E00EA7824 /* ProfileShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileShareLinkView.swift; sourceTree = "<group>"; };
+		5CDCAE212A33BFF500EA7824 /* CompanyShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyShareLinkView.swift; sourceTree = "<group>"; };
+		5CDCAE232A33C04800EA7824 /* BrandShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandShareLinkView.swift; sourceTree = "<group>"; };
+		5CDCAE252A33C0B600EA7824 /* LocationShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationShareLinkView.swift; sourceTree = "<group>"; };
 		5CE9008B291FCB71003DE697 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		5CE9008D291FCDF0003DE697 /* SplashScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenManager.swift; sourceTree = "<group>"; };
 		5CE9008F291FE7C1003DE697 /* TastybytesRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TastybytesRelease.entitlements; sourceTree = "<group>"; };
@@ -1027,6 +1035,10 @@
 			isa = PBXGroup;
 			children = (
 				5CCD4F5F2A32F09000320F2F /* CheckInShareLinkView.swift */,
+				5CDCAE1F2A33BF2E00EA7824 /* ProfileShareLinkView.swift */,
+				5CDCAE212A33BFF500EA7824 /* CompanyShareLinkView.swift */,
+				5CDCAE232A33C04800EA7824 /* BrandShareLinkView.swift */,
+				5CDCAE252A33C0B600EA7824 /* LocationShareLinkView.swift */,
 			);
 			path = ShareLink;
 			sourceTree = "<group>";
@@ -1400,6 +1412,7 @@
 				5C323E8F298C500400B005A9 /* URLExtensions.swift in Sources */,
 				5C367EB629A3F87C000A7149 /* AppDelegate.swift in Sources */,
 				5CDC9F9329E3D91600B6082F /* NewFlavorSheet.swift in Sources */,
+				5CDCAE202A33BF2E00EA7824 /* ProfileShareLinkView.swift in Sources */,
 				5CB4E03229E093AA00135ADA /* ReportButtonView.swift in Sources */,
 				5CB1C24728F9B551000B0EB4 /* CheckInCommentRepository.swift in Sources */,
 				5C663F27292E0F1D006F9A97 /* DocumentRepository.swift in Sources */,
@@ -1418,6 +1431,7 @@
 				5C353CC429A2A5A50067C4EE /* ProfileStatisticsView.swift in Sources */,
 				5C964DBC2A2BE44400805199 /* UserDefaults.swift in Sources */,
 				5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */,
+				5CDCAE262A33C0B600EA7824 /* LocationShareLinkView.swift in Sources */,
 				5CFEE57728ED69B100A8DD66 /* App.swift in Sources */,
 				5CB1C24B28F9BE4F000B0EB4 /* ProductRepository.swift in Sources */,
 				5CD7234E29F46442003DA030 /* CurrentProfileScreen.swift in Sources */,
@@ -1517,6 +1531,7 @@
 				5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */,
 				5C964DC02A2BF05200805199 /* ImageUploadManager.swift in Sources */,
 				5CC6B9A529AE9DB000A62158 /* DuplicateProductSheet.swift in Sources */,
+				5CDCAE222A33BFF500EA7824 /* CompanyShareLinkView.swift in Sources */,
 				5C7C3574299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift in Sources */,
 				5C43237D2986A6910085522E /* Summary.swift in Sources */,
 				5C12B42F2902A191001EE549 /* ProfileSettingsScreen.swift in Sources */,
@@ -1528,6 +1543,7 @@
 				5C663F372933B8FA006F9A97 /* LocationScreen.swift in Sources */,
 				5CE9008C291FCB71003DE697 /* SplashScreenView.swift in Sources */,
 				5C6E10632A1D4E3C00079F8E /* AvatarOnboarding.swift in Sources */,
+				5CDCAE242A33C04800EA7824 /* BrandShareLinkView.swift in Sources */,
 				5CC2FE982919CB19002BDF83 /* Country.swift in Sources */,
 				5C234F132A0163AA003F2283 /* CheckInDatePickerSheet.swift in Sources */,
 				5CDC9F9D29E4572000B6082F /* Screen.swift in Sources */,

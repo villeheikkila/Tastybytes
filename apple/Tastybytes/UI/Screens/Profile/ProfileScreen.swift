@@ -15,7 +15,7 @@ struct ProfileScreen: View {
     .navigationTitle(profile.preferredName)
     .navigationBarItems(
       trailing: Menu {
-        ShareLink("Share", item: NavigatablePath.profile(id: profile.id).url)
+        ProfileShareLinkView(profile: profile)
       } label: {
         Label("Options menu", systemSymbol: .ellipsis)
           .labelStyle(.iconOnly)

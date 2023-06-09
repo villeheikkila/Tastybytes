@@ -164,7 +164,7 @@ struct ProfileView: View {
       }
     }
     .contextMenu {
-      ShareLink("Share", item: NavigatablePath.profile(id: profile.id).url)
+      ProfileShareLinkView(profile: profile)
     }
   }
 

@@ -256,7 +256,7 @@ struct BrandScreen: View {
         showBrandUnverificationConfirmation = true
       })
       Divider()
-      ShareLink("Share", item: NavigatablePath.brand(id: brand.id).url)
+      BrandShareLinkView(brand: brand)
       if profileManager.hasPermission(.canCreateProducts) {
         RouterLink("Add Product", systemSymbol: .plus, sheet: .addProductToBrand(brand: brand))
       }
