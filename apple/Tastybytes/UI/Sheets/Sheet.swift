@@ -165,8 +165,8 @@ enum Sheet: Identifiable, Equatable {
     switch self {
     case .report:
       return "report"
-    case .checkIn:
-      return "check_in"
+    case let .checkIn(checkIn, _):
+      return "check_in_\(checkIn.hashValue)"
     case .newCheckIn:
       return "new_check_in"
     case .productFilter:

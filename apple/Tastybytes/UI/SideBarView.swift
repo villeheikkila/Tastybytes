@@ -128,8 +128,8 @@ struct SideBarView: View {
         sheet.view
       }
       .presentationDetents(sheet.detents)
-      .presentationCornerRadius(sheet.cornerRadius)
       .presentationBackground(sheet.background)
+      .presentationCornerRadius(sheet.cornerRadius)
       .presentationDragIndicator(.visible)
       .environment(sheetManager)
       .environment(profileManager)
@@ -143,8 +143,8 @@ struct SideBarView: View {
           nestedSheet.view
         }
         .presentationDetents(nestedSheet.detents)
-        .presentationCornerRadius(nestedSheet.cornerRadius)
         .presentationBackground(nestedSheet.background)
+        .presentationCornerRadius(nestedSheet.cornerRadius)
         .presentationDragIndicator(.visible)
         .environment(sheetManager)
         .environment(profileManager)

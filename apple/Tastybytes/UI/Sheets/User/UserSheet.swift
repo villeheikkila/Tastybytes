@@ -73,7 +73,7 @@ struct UserSheet: View {
   func searchUsers(currentUserId: UUID) async {
     switch await repository.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
     case let .success(searchResults):
-        await MainActor.run {
+        await MainActor.run {
             withAnimation {
                 self.searchResults = searchResults
             }
