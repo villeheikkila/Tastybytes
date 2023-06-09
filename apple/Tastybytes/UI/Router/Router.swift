@@ -18,6 +18,7 @@ final class Router {
         guard let data = try? Data(contentsOf: tab.cachesDirectoryPath) else { return }
         do {
             path = try JSONDecoder().decode([Screen].self, from: data)
+            logger.info("navigation stack restored")
         } catch {
             logger.error("failed to load stored navigation stack")
         }

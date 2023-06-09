@@ -110,14 +110,7 @@ final class NotificationManager {
     }
 
     func markAllFriendRequestsAsRead() async {
-        let containsFriendRequests = notifications.contains(where: { notification in
-            switch notification.content {
-            case .friendRequest:
-                return true
-            default:
-                return false
-            }
-        })
+        let containsFriendRequests = notifications.contains(where: { $0.isFriendRequest })
 
         if containsFriendRequests {
             switch await repository.notification.markAllFriendRequestsAsRead() {

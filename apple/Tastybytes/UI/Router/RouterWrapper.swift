@@ -39,7 +39,7 @@ struct RouterWrapper<Content: View>: View {
                     }
                     .presentationDetents(sheet.detents)
                     .presentationCornerRadius(sheet.cornerRadius)
-                    .presentationBackground(.ultraThin)
+                    .presentationBackground(sheet.background)
                     .presentationDragIndicator(.visible)
                 }
                 .navigationDestination(for: Screen.self) { screen in

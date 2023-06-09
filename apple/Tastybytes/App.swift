@@ -122,9 +122,7 @@ struct RootView: View {
       }
     }
     .task {
-      if !appDataManager.isInitialized {
         await appDataManager.initialize()
-      }
     }
     .task {
       for await authEventChange in supabaseClient.auth.authEventChange {

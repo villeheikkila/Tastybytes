@@ -55,7 +55,7 @@ struct CategoryManagementScreen: View {
     #if !targetEnvironment(macCatalyst)
       .refreshable {
         await feedbackManager.wrapWithHaptics {
-          await appDataManager.initialize()
+            await appDataManager.initialize(reset: true)
         }
       }
     #endif

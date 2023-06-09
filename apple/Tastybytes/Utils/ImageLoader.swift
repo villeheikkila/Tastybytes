@@ -104,6 +104,7 @@ struct RemoteImage: View {
         Group {
             if let image = image {
                 Image(uiImage: image)
+                    .resizable()
             } else {
                 Rectangle()
                     .background(Color.red)
