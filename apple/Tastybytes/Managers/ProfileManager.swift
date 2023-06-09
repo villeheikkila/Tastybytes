@@ -1,10 +1,11 @@
 import PhotosUI
 import SwiftUI
 import Observation
+import os
 
 @Observable
 final class ProfileManager: ObservableObject {
-  private let logger = getLogger(category: "ProfileManager")
+  private let logger = Logger(category: "ProfileManager")
   private(set) var isLoggedIn = false
 
   // Profile Settings

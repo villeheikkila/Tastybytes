@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct DuplicateProductScreen: View {
-  private let logger = getLogger(category: "ProductVerificationScreen")
+  private let logger = Logger(category: "ProductVerificationScreen")
   @Environment(Repository.self) private var repository
   @Environment(Router.self) private var router
   @Environment(FeedbackManager.self) private var feedbackManager

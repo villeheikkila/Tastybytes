@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct ContributionsScreen: View {
-  private let logger = getLogger(category: "ContributionsScreen")
+  private let logger = Logger(category: "ContributionsScreen")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager

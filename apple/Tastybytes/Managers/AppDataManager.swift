@@ -1,9 +1,10 @@
 import SwiftUI
 import Observation
+import os
 
 @Observable
 final class AppDataManager {
-  private let logger = getLogger(category: "AppDataManager")
+  private let logger = Logger(category: "AppDataManager")
   var categories = [Category.JoinedSubcategoriesServingStyles]()
   var flavors = [Flavor]()
   var aboutPage: AboutPage? = nil

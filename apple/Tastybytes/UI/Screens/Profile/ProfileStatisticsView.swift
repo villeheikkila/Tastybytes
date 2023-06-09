@@ -1,7 +1,7 @@
 import SwiftUI
-
+import os
 struct ProfileStatisticsView: View {
-  let logger = getLogger(category: "ProfileStatisticsView")
+  private let logger = Logger(category: "ProfileStatisticsView")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
   @State private var categoryStatistics = [CategoryStatistics]()
@@ -57,7 +57,7 @@ struct ProfileStatisticsView: View {
 }
 
 struct SubcategoryStatisticsView: View {
-  let logger = getLogger(category: "SubcategoryStatistics")
+  private let logger = Logger(category: "SubcategoryStatistics")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
   @State private var subcategoryStatistics = [SubcategoryStatistics]()

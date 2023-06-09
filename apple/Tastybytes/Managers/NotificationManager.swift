@@ -2,10 +2,11 @@ import Firebase
 import FirebaseMessaging
 import Observation
 import SwiftUI
+import os
 
 @Observable
 final class NotificationManager {
-    private let logger = getLogger(category: "NotificationManager")
+    private let logger = Logger(category: "NotificationManager")
     private(set) var notifications = [Notification]()
 
     var pushNotificationSettings: ProfilePushNotification? = nil
@@ -227,11 +228,11 @@ final class NotificationManager {
     func refreshAPNS() {
         Messaging.messaging().token { token, error in
             if let error {
-                let logger = getLogger(category: "Messaging")
+                let logger = Logger(category: "Messaging")
                 logger.error("failed to fetch FCM registration token: \(error.localizedDescription)")
             } else if let token {
                 Task {
-                    let logger = getLogger(category: "PushNotificationToken")
+                    let logger = Logger(category: "PushNotificationToken")
                     switch await self.repository.notification
                         .refreshPushNotificationToken(token: Profile
                             .PushNotificationToken(firebaseRegistrationToken: token))

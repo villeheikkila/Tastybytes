@@ -3,6 +3,7 @@ import FirebaseMessaging
 import GoTrue
 import Supabase
 import SwiftUI
+import os
 
 /*
  This global variable is here to share state between AppDelegate, SceneDelegate and Main app
@@ -12,7 +13,7 @@ var selectedQuickAction: UIApplicationShortcutItem?
 
 @main
 struct Main: App {
-  private let logger = getLogger(category: "Main")
+  private let logger = Logger(category: "Main")
   @Environment(\.scenePhase) private var phase
   @Bindable private var feedbackManager = FeedbackManager()
   @UIApplicationDelegateAdaptor(AppDelegate.self)
@@ -48,7 +49,7 @@ struct Main: App {
 }
 
 struct RootView: View {
-  private let logger = getLogger(category: "RootView")
+  private let logger = Logger(category: "RootView")
   let supabaseClient: SupabaseClient
   @State private var repository: Repository
   @State private var splashScreenManager = SplashScreenManager()

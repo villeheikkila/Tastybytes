@@ -2,9 +2,10 @@ import CachedAsyncImage
 import PhotosUI
 import SwiftUI
 import WrappingHStack
+import os
 
 struct CheckInSheet: View {
-  private let logger = getLogger(category: "CheckInSheet")
+  private let logger = Logger(category: "CheckInSheet")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(ProfileManager.self) private var profileManager

@@ -1,9 +1,10 @@
 import SwiftUI
 import Observation
+import os
 
 @Observable
 final class FriendManager {
-  private let logger = getLogger(category: "FriendsScreen")
+  private let logger = Logger(category: "FriendsScreen")
   var friends = [Friend]()
 
   var profile: Profile? = nil

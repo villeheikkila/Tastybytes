@@ -1,10 +1,11 @@
 import SwiftUI
 import Observation
+import os
 
 @Observable
 class ImageUploadManager {
   var uploadedImageForCheckIn: CheckIn? = nil
-  private let logger = getLogger(category: "PermissionManager")
+  private let logger = Logger(category: "PermissionManager")
 
   private let repository: Repository
   private let feedbackManager: FeedbackManager

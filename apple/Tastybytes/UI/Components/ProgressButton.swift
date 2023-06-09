@@ -1,8 +1,9 @@
 import SFSafeSymbols
 import SwiftUI
+import os
 
 struct ProgressButton<LabelView: View>: View {
-  private let logger = getLogger(category: "ProgressButton")
+  private let logger = Logger(category: "ProgressButton")
   enum ActionOption: CaseIterable {
     case disableButton
     case showProgressView

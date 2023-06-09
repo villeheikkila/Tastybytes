@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct CompanySearchSheet: View {
-  private let logger = getLogger(category: "CompanySearchSheet")
+  private let logger = Logger(category: "CompanySearchSheet")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager

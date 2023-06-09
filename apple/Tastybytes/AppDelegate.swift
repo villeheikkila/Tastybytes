@@ -1,9 +1,10 @@
 import Firebase
 import FirebaseMessaging
 import SwiftUI
+import os
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
-  private let logger = getLogger(category: "AppDelegate")
+  private let logger = Logger(category: "AppDelegate")
 
   func application(
     _ application: UIApplication,

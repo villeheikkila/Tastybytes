@@ -24,7 +24,7 @@ struct AvatarView: View {
         .clipShape(Circle())
         .aspectRatio(contentMode: .fill)
         .frame(width: size, height: size)
-        .foregroundColor(getConsistentColor(seed: id.uuidString))
+        .foregroundColor(Color(seed: id.uuidString))
         .accessibility(hidden: true)
     }
   }

@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct ReactionsView: View {
-  private let logger = getLogger(category: "ReactionsView")
+  private let logger = Logger(category: "ReactionsView")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager

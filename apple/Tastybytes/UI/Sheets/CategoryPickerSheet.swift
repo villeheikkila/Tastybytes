@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct CategoryPickerSheet: View {
-  private let logger = getLogger(category: "CategoryPickerSheet")
+  private let logger = Logger(category: "CategoryPickerSheet")
   @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss
   @Binding var category: Category.JoinedSubcategoriesServingStyles?

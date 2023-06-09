@@ -1,12 +1,13 @@
 import CachedAsyncImage
 import SwiftUI
+import os
 
 struct CheckInScreen: View {
   enum Focusable {
     case checkInComment
   }
 
-  private let logger = getLogger(category: "CheckInScreen")
+  private let logger = Logger(category: "CheckInScreen")
   @Environment(Repository.self) private var repository
   @Environment(Router.self) private var router
   @Environment(NotificationManager.self) private var notificationManager

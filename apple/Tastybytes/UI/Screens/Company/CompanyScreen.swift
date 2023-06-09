@@ -1,9 +1,10 @@
 import CachedAsyncImage
 import PhotosUI
 import SwiftUI
+import os
 
 struct CompanyScreen: View {
-  private let logger = getLogger(category: "CompanyScreen")
+  private let logger = Logger(category: "CompanyScreen")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager

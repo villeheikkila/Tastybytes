@@ -2,10 +2,11 @@ import AVFoundation
 import PhotosUI
 import SwiftUI
 import Observation
+import os
 
 @Observable
 final class PermissionManager {
-  private let logger = getLogger(category: "PermissionManager")
+  private let logger = Logger(category: "PermissionManager")
   private let locationManager = CLLocationManager()
   private let notificationManager = UNUserNotificationCenter.current()
 

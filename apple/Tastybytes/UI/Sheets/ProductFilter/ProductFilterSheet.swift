@@ -1,11 +1,12 @@
 import SwiftUI
+import os
 
 struct ProductFilterSheet: View {
   enum Sections {
     case category, checkIns, sortBy
   }
 
-  private let logger = getLogger(category: "SeachFilterSheet")
+  private let logger = Logger(category: "SeachFilterSheet")
   @Environment(AppDataManager.self) private var appDataManager
   @Environment(\.dismiss) private var dismiss
   @State private var categoryFilter: Category.JoinedSubcategoriesServingStyles?

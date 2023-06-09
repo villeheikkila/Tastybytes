@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct CategoryServingStyleSheet: View {
-  private let logger = getLogger(category: "CategoryServingStyleSheet")
+  private let logger = Logger(category: "CategoryServingStyleSheet")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(\.dismiss) private var dismiss

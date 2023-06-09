@@ -3,9 +3,11 @@ import Foundation
 import MapKit
 import Observation
 import SwiftUI
+import os
+import os
 
 struct LocationSearchSheet: View {
-    private let logger = getLogger(category: "LocationSearchView")
+    private let logger = Logger(category: "LocationSearchView")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackManager.self) private var feedbackManager
     @State private var searchResults = [Location]()
@@ -115,7 +117,7 @@ struct LocationSearchSheet: View {
 }
 
 struct LocationRow: View {
-    private let logger = getLogger(category: "LocationSearchView")
+    private let logger = Logger(category: "LocationSearchView")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackManager.self) private var feedbackManager
     @Environment(\.dismiss) private var dismiss

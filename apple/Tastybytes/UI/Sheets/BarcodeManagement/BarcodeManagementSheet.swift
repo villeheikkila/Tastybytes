@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct BarcodeManagementSheet: View {
-  private let logger = getLogger(category: "BarcodeManagementSheet")
+  private let logger = Logger(category: "BarcodeManagementSheet")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(\.dismiss) private var dismiss

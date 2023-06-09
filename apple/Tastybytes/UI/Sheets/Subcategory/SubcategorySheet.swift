@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct SubcategorySheet: View {
-  private let logger = getLogger(category: "SubcategorySheet")
+  private let logger = Logger(category: "SubcategorySheet")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager

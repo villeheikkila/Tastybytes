@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct ProfileProductListView: View {
-  let logger = getLogger(category: "ProfileProductListView")
+  private let logger = Logger(category: "ProfileProductListView")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
   @State private var products: [Product.Joined] = []

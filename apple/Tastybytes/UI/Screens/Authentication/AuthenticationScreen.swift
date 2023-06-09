@@ -2,7 +2,7 @@ import os
 import SwiftUI
 
 struct AuthenticationScreen: View {
-  private let logger = getLogger(category: "AuthenticationScreen")
+  private let logger = Logger(category: "AuthenticationScreen")
   @Environment(Repository.self) private var repository
     @Environment(SplashScreenManager.self) private var splashScreenManager
   @Environment(FeedbackManager.self) private var feedbackManager

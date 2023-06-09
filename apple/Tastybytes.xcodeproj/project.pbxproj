@@ -168,6 +168,10 @@
 		5CC2FE982919CB19002BDF83 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC2FE972919CB19002BDF83 /* Country.swift */; };
 		5CC6B9A529AE9DB000A62158 /* DuplicateProductSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC6B9A429AE9DB000A62158 /* DuplicateProductSheet.swift */; };
 		5CC6B9AE29B2360D00A62158 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC6B9AD29B2360D00A62158 /* UIImageExtensions.swift */; };
+		5CCD4F5D2A32EDB700320F2F /* LoggerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCD4F5C2A32EDB700320F2F /* LoggerExtensions.swift */; };
+		5CCD4F602A32F09000320F2F /* CheckInShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCD4F5F2A32F09000320F2F /* CheckInShareLinkView.swift */; };
+		5CCD4F642A32F11100320F2F /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCD4F632A32F11100320F2F /* ImageLoader.swift */; };
+		5CCD4F662A32F18800320F2F /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCD4F652A32F18800320F2F /* ColorExtensions.swift */; };
 		5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CCE914D28F45DE7005A6043 /* Utils.swift */; };
 		5CD10A3928F6A1CA0001CFC2 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */; };
 		5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */; };
@@ -386,6 +390,10 @@
 		5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
 		5CC6B9A429AE9DB000A62158 /* DuplicateProductSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProductSheet.swift; sourceTree = "<group>"; };
 		5CC6B9AD29B2360D00A62158 /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
+		5CCD4F5C2A32EDB700320F2F /* LoggerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerExtensions.swift; sourceTree = "<group>"; };
+		5CCD4F5F2A32F09000320F2F /* CheckInShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInShareLinkView.swift; sourceTree = "<group>"; };
+		5CCD4F632A32F11100320F2F /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		5CCD4F652A32F18800320F2F /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		5CCE914D28F45DE7005A6043 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		5CD10A3828F6A1CA0001CFC2 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCardView.swift; sourceTree = "<group>"; };
@@ -1015,11 +1023,28 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		5CCD4F5E2A32F08400320F2F /* ShareLink */ = {
+			isa = PBXGroup;
+			children = (
+				5CCD4F5F2A32F09000320F2F /* CheckInShareLinkView.swift */,
+			);
+			path = ShareLink;
+			sourceTree = "<group>";
+		};
+		5CCD4F612A32F0EF00320F2F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5CCD4F632A32F11100320F2F /* ImageLoader.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		5CCE914C28F45DD7005A6043 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				5CED431F28FAB5F5003F8194 /* ViewExtensions.swift */,
 				5C25AEB329031F9C00793607 /* DateExtensions.swift */,
+				5CCD4F5C2A32EDB700320F2F /* LoggerExtensions.swift */,
 				5C323E8C298C4D7300B005A9 /* StringExtensions.swift */,
 				5C323E8E298C500400B005A9 /* URLExtensions.swift */,
 				5C323E90298C501F00B005A9 /* ArrayExtensions.swift */,
@@ -1028,6 +1053,7 @@
 				5CC6B9AD29B2360D00A62158 /* UIImageExtensions.swift */,
 				5C66745029C64A4C005380B7 /* PhotosUIExtension.swift */,
 				5C32C40F29E87DEB008CE8A9 /* ButtonExtensions.swift */,
+				5CCD4F652A32F18800320F2F /* ColorExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1158,6 +1184,7 @@
 		5CFB562D28F5969300F13A1E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5CCD4F5E2A32F08400320F2F /* ShareLink */,
 				5C663F342932AEB9006F9A97 /* CategoryNameView.swift */,
 				5C0E365B292ADA290072EFBD /* SummaryView.swift */,
 				5CED432728FD417E003F8194 /* ProductMutationView.swift */,
@@ -1224,6 +1251,7 @@
 				5CCE914D28F45DE7005A6043 /* Utils.swift */,
 				5C46E8632911D9FD0008F142 /* Config.swift */,
 				5C964DBB2A2BE44400805199 /* UserDefaults.swift */,
+				5CCD4F612A32F0EF00320F2F /* Utils */,
 				5CC2FE9229197D8A002BDF83 /* Managers */,
 				5CD10A5D28F99CDF0001CFC2 /* UI */,
 				5CD10A5A28F9988C0001CFC2 /* Repository */,
@@ -1411,6 +1439,7 @@
 				5C25C66D29941B9F00C07953 /* OnboardingScreen.swift in Sources */,
 				5CD7234829F460FF003DA030 /* AdminScreen.swift in Sources */,
 				5C663F2B292FBE10006F9A97 /* AppIconScreen.swift in Sources */,
+				5CCD4F662A32F18800320F2F /* ColorExtensions.swift in Sources */,
 				5C7C35DD299AE042009A3C09 /* ProductItemView.swift in Sources */,
 				5C25C68E29991BEF00C07953 /* BarcodeManagementSheet.swift in Sources */,
 				5CBC2454297D3A5F00A0002B /* ProfileView.swift in Sources */,
@@ -1484,6 +1513,7 @@
 				5CBC2452297C60AE00A0002B /* ProfileScreen.swift in Sources */,
 				5C6E106F2A1FDF8000079F8E /* CheckInCommentNotificationView.swift in Sources */,
 				5CC2FE912919774A002BDF83 /* Location.swift in Sources */,
+				5CCD4F602A32F09000320F2F /* CheckInShareLinkView.swift in Sources */,
 				5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */,
 				5C964DC02A2BF05200805199 /* ImageUploadManager.swift in Sources */,
 				5CC6B9A529AE9DB000A62158 /* DuplicateProductSheet.swift in Sources */,
@@ -1507,6 +1537,7 @@
 				5CD10A3B28F6A1FE0001CFC2 /* CheckInCardView.swift in Sources */,
 				5C6E10732A235ED000079F8E /* PermissionManager.swift in Sources */,
 				5C32C41429ED9F9C008CE8A9 /* ErrorScreen.swift in Sources */,
+				5CCD4F642A32F11100320F2F /* ImageLoader.swift in Sources */,
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
 				5C0E365C292ADA290072EFBD /* SummaryView.swift in Sources */,
 				5C25C6702995616D00C07953 /* WelcomeOnboarding.swift in Sources */,
@@ -1535,6 +1566,7 @@
 				5C12B4352902C9D0001EE549 /* TabsView.swift in Sources */,
 				5C6E106D2A1E08BF00079F8E /* Spacing.swift in Sources */,
 				5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */,
+				5CCD4F5D2A32EDB700320F2F /* LoggerExtensions.swift in Sources */,
 				5CA006C8298DE33F003CC307 /* BrandScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

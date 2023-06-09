@@ -1,9 +1,10 @@
 import CachedAsyncImage
 import PhotosUI
 import SwiftUI
+import os
 
 struct EditBrandSheet: View {
-  private let logger = getLogger(category: "EditBrandSheet")
+  private let logger = Logger(category: "EditBrandSheet")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager

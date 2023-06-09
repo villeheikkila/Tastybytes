@@ -1,4 +1,5 @@
 import SwiftUI
+import os
 
 struct VerificationScreen: View {
   enum VerificationType: String, CaseIterable, Identifiable {
@@ -20,7 +21,7 @@ struct VerificationScreen: View {
     }
   }
 
-  private let logger = getLogger(category: "ProductVerificationScreen")
+  private let logger = Logger(category: "ProductVerificationScreen")
   @Environment(Repository.self) private var repository
   @Environment(Router.self) private var router
   @Environment(FeedbackManager.self) private var feedbackManager

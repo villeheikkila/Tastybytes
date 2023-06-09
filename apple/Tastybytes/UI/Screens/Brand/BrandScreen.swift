@@ -1,8 +1,9 @@
 import CachedAsyncImage
 import SwiftUI
+import os
 
 struct BrandScreen: View {
-  private let logger = getLogger(category: "BrandScreen")
+  private let logger = Logger(category: "BrandScreen")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager

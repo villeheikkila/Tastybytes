@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct ProductScreen: View {
-  private let logger = getLogger(category: "ProductScreen")
+  private let logger = Logger(category: "ProductScreen")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager

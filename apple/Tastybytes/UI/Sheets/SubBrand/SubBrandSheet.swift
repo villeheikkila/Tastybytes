@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct SubBrandSheet: View {
-  private let logger = getLogger(category: "SubBrandSheet")
+  private let logger = Logger(category: "SubBrandSheet")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FeedbackManager.self) private var feedbackManager

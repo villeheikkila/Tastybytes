@@ -1,9 +1,10 @@
 import Charts
 import PhotosUI
 import SwiftUI
+import os
 
 struct ProfileView: View {
-  private let logger = getLogger(category: "ProfileView")
+  private let logger = Logger(category: "ProfileView")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(ProfileManager.self) private var profileManager

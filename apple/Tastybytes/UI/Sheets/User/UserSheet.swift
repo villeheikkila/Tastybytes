@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct UserSheet: View {
-  private let logger = getLogger(category: "UserSheet")
+  private let logger = Logger(category: "UserSheet")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(FriendManager.self) private var friendManager

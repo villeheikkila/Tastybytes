@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct DiscoverScreen: View {
-  private let logger = getLogger(category: "SearchListView")
+  private let logger = Logger(category: "SearchListView")
   @Environment(Repository.self) private var repository
   @Environment(Router.self) private var router
   @Environment(FeedbackManager.self) private var feedbackManager

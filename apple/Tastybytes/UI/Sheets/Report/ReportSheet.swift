@@ -1,8 +1,9 @@
 import AlertToast
 import SwiftUI
+import os
 
 struct ReportSheet: View {
-  private let logger = getLogger(category: "ReportSheet")
+  private let logger = Logger(category: "ReportSheet")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(\.dismiss) private var dismiss

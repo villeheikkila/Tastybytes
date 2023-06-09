@@ -1,8 +1,9 @@
 import PhotosUI
 import SwiftUI
+import os
 
 struct EditSubBrandSheet: View {
-  private let logger = getLogger(category: "EditSubBrandSheet")
+  private let logger = Logger(category: "EditSubBrandSheet")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(ProfileManager.self) private var profileManager

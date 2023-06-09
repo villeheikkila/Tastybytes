@@ -1,11 +1,12 @@
 import SwiftUI
+import os
 
 struct DuplicateProductSheet: View {
   enum Mode {
     case mergeDuplicate, reportDuplicate
   }
 
-  private let logger = getLogger(category: "MarkAsDuplicate")
+  private let logger = Logger(category: "MarkAsDuplicate")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(\.dismiss) private var dismiss

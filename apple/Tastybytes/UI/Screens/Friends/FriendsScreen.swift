@@ -1,7 +1,8 @@
 import SwiftUI
+import os
 
 struct FriendsScreen: View {
-  private let logger = getLogger(category: "FriendsScreen")
+  private let logger = Logger(category: "FriendsScreen")
   @Environment(Repository.self) private var repository
   @Environment(FriendManager.self) private var friendManager
   @Environment(FeedbackManager.self) private var feedbackManager

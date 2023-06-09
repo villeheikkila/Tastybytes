@@ -1,9 +1,10 @@
 import Observation
 import SwiftUI
+import os
 
 @Observable
 final class Router {
-    private let logger = getLogger(category: "Router")
+    private let logger = Logger(category: "Router")
 
     var path: [Screen] = []
     let tab: Tab

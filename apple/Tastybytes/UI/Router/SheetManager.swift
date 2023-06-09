@@ -1,9 +1,10 @@
 import SwiftUI
 import Observation
+import os
 
 @Observable
 final class SheetManager {
-  private let logger = getLogger(category: "SheetManager")
+  private let logger = Logger(category: "SheetManager")
   var sheet: Sheet? = nil
   var nestedSheet: Sheet? = nil
 

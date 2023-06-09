@@ -1,8 +1,9 @@
 import CachedAsyncImage
 import SwiftUI
+import os
 
 struct ProductMutationView: View {
-  private let logger = getLogger(category: "ProductMutationView")
+  private let logger = Logger(category: "ProductMutationView")
   @Environment(Repository.self) private var repository
   @Environment(FeedbackManager.self) private var feedbackManager
   @Environment(AppDataManager.self) private var appDataManager
@@ -187,7 +188,7 @@ private struct ProductMutationInitialValues {
 }
 
 struct ProductMutationInnerView: View {
-  private let logger = getLogger(category: "ProductMutationInnerView")
+  private let logger = Logger(category: "ProductMutationInnerView")
   @Environment(Repository.self) private var repository
   @Environment(ProfileManager.self) private var profileManager
   @Environment(Router.self) private var router

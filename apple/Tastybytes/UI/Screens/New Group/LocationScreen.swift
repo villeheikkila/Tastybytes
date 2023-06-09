@@ -1,9 +1,10 @@
 import Charts
 import PhotosUI
 import SwiftUI
+import os
 
 struct LocationScreen: View {
-  private let logger = getLogger(category: "LocationScreen")
+  private let logger = Logger(category: "LocationScreen")
   @Environment(Repository.self) private var repository
   @Environment(Router.self) private var router
   @Environment(FeedbackManager.self) private var feedbackManager
