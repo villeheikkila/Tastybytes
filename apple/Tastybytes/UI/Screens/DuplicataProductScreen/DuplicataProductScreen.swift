@@ -81,7 +81,7 @@ struct DuplicateProductScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to verify product \(product.id): \(error.localizedDescription)")
+      logger.error("failed to verify product \(product.id). error: \(error)")
     }
   }
 
@@ -95,7 +95,7 @@ struct DuplicateProductScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete product \(product.id): \(error.localizedDescription)")
+      logger.error("failed to delete product \(product.id). error: \(error)")
     }
   }
 
@@ -110,7 +110,7 @@ struct DuplicateProductScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("fetching flavors failed: \(error.localizedDescription)")
+      logger.error("fetching flavors failed. error: \(error)")
     }
   }
 }

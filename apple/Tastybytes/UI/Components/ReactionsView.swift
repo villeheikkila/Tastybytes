@@ -65,7 +65,7 @@ struct ReactionsView: View {
       case let .failure(error):
         guard !error.localizedDescription.contains("cancelled") else { return }
         feedbackManager.toggle(.error(.unexpected))
-        logger.error("removing check-in reaction \(reaction.id) failed: \(error.localizedDescription)")
+        logger.error("removing check-in reaction \(reaction.id) failed. error: \(error)")
       }
     } else {
       switch await repository.checkInReactions

@@ -123,7 +123,7 @@ struct CheckInScreen: View {
 
     @ViewBuilder
     var menuContent: some View {
-        ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url)
+        CheckInShareLinkView(checkIn: checkIn)
         Divider()
         RouterLink(
             "Open Company",
@@ -234,7 +234,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete check-in: \(error.localizedDescription)")
+            logger.error("failed to delete check-in. error: \(error)")
         }
     }
 
@@ -249,7 +249,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to load check-in comments': \(error.localizedDescription)")
+            logger.error("failed to load check-in comments'. error: \(error)")
         }
     }
 
@@ -267,7 +267,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to update comment \(editComment.id)': \(error.localizedDescription)")
+            logger.error("failed to update comment \(editComment.id)'. error: \(error)")
         }
         editCommentText = ""
     }
@@ -283,7 +283,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete comment '\(comment.id)': \(error.localizedDescription)")
+            logger.error("failed to delete comment '\(comment.id)'. error: \(error)")
         }
     }
 
@@ -298,7 +298,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete comment as moderator'\(comment.id)': \(error.localizedDescription)")
+            logger.error("failed to delete comment as moderator'\(comment.id)'. error: \(error)")
         }
     }
 
@@ -311,7 +311,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete check-in as moderator'\(checkIn.id)': \(error.localizedDescription)")
+            logger.error("failed to delete check-in as moderator'\(checkIn.id)'. error: \(error)")
         }
     }
 
@@ -330,7 +330,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to send comment: \(error.localizedDescription)")
+            logger.error("failed to send comment. error: \(error)")
         }
     }
 }

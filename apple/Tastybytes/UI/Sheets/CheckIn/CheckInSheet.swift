@@ -255,7 +255,7 @@ struct CheckInSheet: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update check-in '\(editCheckIn.id)': \(error.localizedDescription)")
+      logger.error("failed to update check-in '\(editCheckIn.id)'. error: \(error)")
     }
   }
 
@@ -283,7 +283,7 @@ struct CheckInSheet: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to create check-in: \(error.localizedDescription)")
+      logger.error("failed to create check-in. error: \(error)")
     }
   }
 }

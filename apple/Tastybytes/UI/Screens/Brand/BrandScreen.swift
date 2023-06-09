@@ -295,7 +295,7 @@ struct BrandScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to load summary for brand: \(error.localizedDescription)")
+      logger.error("failed to load summary for brand. error: \(error)")
     }
 
     switch await brandPromise {
@@ -306,7 +306,7 @@ struct BrandScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("request for brand with \(brandId) failed: \(error.localizedDescription)")
+      logger.error("request for brand with \(brandId) failed. error: \(error)")
     }
   }
 
@@ -320,7 +320,7 @@ struct BrandScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to load summary for brand: \(error.localizedDescription)")
+      logger.error("failed to load summary for brand. error: \(error)")
     }
   }
 
@@ -338,7 +338,7 @@ struct BrandScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to verify brand': \(error.localizedDescription)")
+      logger.error("failed to verify brand'. error: \(error)")
     }
   }
 
@@ -351,7 +351,7 @@ struct BrandScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to verify brand': \(error.localizedDescription)")
+      logger.error("failed to verify brand'. error: \(error)")
     }
   }
 
@@ -363,7 +363,7 @@ struct BrandScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete brand: \(error.localizedDescription)")
+      logger.error("failed to delete brand. error: \(error)")
     }
   }
 
@@ -377,7 +377,7 @@ struct BrandScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete brand '\(toDeleteSubBrand.id)': \(error.localizedDescription)")
+      logger.error("failed to delete brand '\(toDeleteSubBrand.id)'. error: \(error)")
     }
   }
 }

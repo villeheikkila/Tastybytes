@@ -70,7 +70,7 @@ struct CategoryServingStyleSheet: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to add serving style to category': \(error.localizedDescription)")
+      logger.error("failed to add serving style to category'. error: \(error)")
     }
   }
 
@@ -89,7 +89,7 @@ struct CategoryServingStyleSheet: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete serving style '\(servingStyle.id)': \(error.localizedDescription)")
+      logger.error("failed to delete serving style '\(servingStyle.id)'. error: \(error)")
     }
   }
 }

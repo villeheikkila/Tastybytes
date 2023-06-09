@@ -62,7 +62,7 @@ struct BrandSheet: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to load brands for \(brandOwner.id): \(error.localizedDescription)")
+      logger.error("failed to load brands for \(brandOwner.id). error: \(error)")
     }
   }
 
@@ -80,7 +80,7 @@ struct BrandSheet: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to create new brand for \(brandOwner.id): \(error.localizedDescription)")
+      logger.error("failed to create new brand for \(brandOwner.id). error: \(error)")
     }
   }
 }

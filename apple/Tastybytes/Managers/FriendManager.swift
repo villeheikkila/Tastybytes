@@ -49,7 +49,7 @@ final class FriendManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed add new friend '\(receiver)': \(error.localizedDescription)")
+            logger.error("failed add new friend '\(receiver)'. error: \(error)")
         }
     }
 
@@ -73,7 +73,7 @@ final class FriendManager {
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
             logger.warning(
-                "failed to update friend request: \(error.localizedDescription)"
+                "failed to update friend request. error: \(error)"
             )
         }
     }
@@ -89,7 +89,7 @@ final class FriendManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to remove friend request '\(friend.id)': \(error.localizedDescription)")
+            logger.error("failed to remove friend request '\(friend.id)'. error: \(error)")
         }
     }
 
@@ -124,7 +124,7 @@ final class FriendManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to load friends for current user: \(error.localizedDescription)")
+            logger.error("failed to load friends for current user. error: \(error)")
         }
     }
 
@@ -145,7 +145,7 @@ final class FriendManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to unblock user \(friend.id): \(error.localizedDescription)")
+            logger.error("failed to unblock user \(friend.id). error: \(error)")
         }
     }
 
@@ -165,7 +165,7 @@ final class FriendManager {
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
                 feedbackManager.toggle(.error(.unexpected))
-                logger.error("failed to block user \(user.id): \(error.localizedDescription)")
+                logger.error("failed to block user \(user.id). error: \(error)")
             }
         }
     }

@@ -97,7 +97,7 @@ struct EditSubBrandSheet: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)': \(error.localizedDescription)")
+      logger.error("failed to merge to merge sub-brand '\(subBrand.id)' to '\(mergeTo.id)'. error: \(error)")
     }
   }
 
@@ -111,7 +111,7 @@ struct EditSubBrandSheet: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to edit sub-brand': \(error.localizedDescription)")
+      logger.error("failed to edit sub-brand'. error: \(error)")
     }
   }
 }

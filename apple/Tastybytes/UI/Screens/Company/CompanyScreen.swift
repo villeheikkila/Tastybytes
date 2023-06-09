@@ -186,7 +186,7 @@ struct CompanyScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to refresh data for company: \(error.localizedDescription)")
+      logger.error("failed to refresh data for company. error: \(error)")
     }
 
     switch await summaryPromise {
@@ -195,7 +195,7 @@ struct CompanyScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to load summary for company: \(error.localizedDescription)")
+      logger.error("failed to load summary for company. error: \(error)")
     }
   }
 
@@ -207,7 +207,7 @@ struct CompanyScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete company '\(company.id)': \(error.localizedDescription)")
+      logger.error("failed to delete company '\(company.id)'. error: \(error)")
     }
   }
 
@@ -218,7 +218,7 @@ struct CompanyScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to verify company: \(error.localizedDescription)")
+      logger.error("failed to verify company. error: \(error)")
     }
   }
 }

@@ -63,7 +63,7 @@ final class Router {
                             resetStack: resetStack
                         )
                     }
-                    logger.error("request for product with \(id) failed: \(error.localizedDescription)")
+                    logger.error("request for product with \(id) failed. error: \(error)")
                 }
             case let .checkIn(id):
                 switch await repository.checkIn.getById(id: id) {
@@ -74,7 +74,7 @@ final class Router {
                         screen: .error(reason: "Failed to load requested check-in page"),
                         resetStack: resetStack
                     )
-                    logger.error("request for check-in with \(id) failed: \(error.localizedDescription)")
+                    logger.error("request for check-in with \(id) failed. error: \(error)")
                 }
             case let .company(id):
                 switch await repository.company.getById(id: id) {
@@ -85,7 +85,7 @@ final class Router {
                         screen: .error(reason: "Failed to load requested company page"),
                         resetStack: resetStack
                     )
-                    logger.error("request for company with \(id) failed: \(error.localizedDescription)")
+                    logger.error("request for company with \(id) failed. error: \(error)")
                 }
             case let .brand(id):
                 switch await repository.brand.getJoinedById(id: id) {
@@ -96,7 +96,7 @@ final class Router {
                         screen: .error(reason: "Failed to load requested company page"),
                         resetStack: resetStack
                     )
-                    logger.error("request for brand with \(id) failed: \(error.localizedDescription)")
+                    logger.error("request for brand with \(id) failed. error: \(error)")
                 }
             case let .profile(id):
                 switch await repository.profile.getById(id: id) {
@@ -109,7 +109,7 @@ final class Router {
                     )
                     logger
                         .error(
-                            "request for profile with \(id.uuidString.lowercased()) failed: \(error.localizedDescription)"
+                            "request for profile with \(id.uuidString.lowercased()) failed. error: \(error)"
                         )
                 }
             case let .location(id):
@@ -121,7 +121,7 @@ final class Router {
                         screen: .error(reason: "Failed to load requested location page"),
                         resetStack: resetStack
                     )
-                    logger.error("request for location with \(id) failed: \(error.localizedDescription)")
+                    logger.error("request for location with \(id) failed. error: \(error)")
                 }
             }
         }

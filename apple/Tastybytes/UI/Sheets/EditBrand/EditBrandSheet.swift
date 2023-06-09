@@ -98,7 +98,7 @@ struct EditBrandSheet: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to edit brand': \(error.localizedDescription)")
+      logger.error("failed to edit brand'. error: \(error)")
     }
   }
 
@@ -110,7 +110,7 @@ struct EditBrandSheet: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("uplodaing company logo failed: \(error.localizedDescription)")
+      logger.error("uplodaing company logo failed. error: \(error)")
     }
   }
 }

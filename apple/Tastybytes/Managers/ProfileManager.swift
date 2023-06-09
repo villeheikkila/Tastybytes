@@ -120,7 +120,7 @@ final class ProfileManager: ObservableObject {
       initialValuesLoaded = true
       isLoggedIn = true
     case let .failure(error):
-      logger.error("error while loading current user profile: \(error.localizedDescription)")
+      logger.error("error while loading current user profile. error: \(error)")
       isLoggedIn = false
       await logOut()
     }
@@ -131,7 +131,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to get current user data: \(error.localizedDescription)")
+      logger.error("failed to get current user data. error: \(error)")
     }
   }
 
@@ -140,7 +140,7 @@ final class ProfileManager: ObservableObject {
     case let .success(isAvailable):
       return isAvailable
     case let .failure(error):
-      logger.error("failed to check if username is available: \(error.localizedDescription)")
+      logger.error("failed to check if username is available. error: \(error)")
       return true
     }
   }
@@ -162,7 +162,7 @@ final class ProfileManager: ObservableObject {
     ) {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update notification settings: \(error.localizedDescription)")
+      logger.error("failed to update notification settings. error: \(error)")
     }
   }
 
@@ -170,7 +170,7 @@ final class ProfileManager: ObservableObject {
     if case let .failure(error) = await repository.auth.logOut() {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to log out: \(error.localizedDescription)")
+      logger.error("failed to log out. error: \(error)")
     }
   }
 
@@ -178,7 +178,7 @@ final class ProfileManager: ObservableObject {
     if case let .failure(error) = await repository.auth.updatePassword(newPassword: newPassword) {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update password: \(error.localizedDescription)")
+      logger.error("failed to update password. error: \(error)")
     }
   }
 
@@ -186,7 +186,7 @@ final class ProfileManager: ObservableObject {
     if case let .failure(error) = await repository.auth.sendEmailVerification(email: email) {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to send email verification link: \(error.localizedDescription)")
+      logger.error("failed to send email verification link. error: \(error)")
     }
   }
 
@@ -198,7 +198,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete current account: \(error.localizedDescription)")
+      logger.error("failed to delete current account. error: \(error)")
     }
   }
 
@@ -211,7 +211,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("uplodaing avatar failed: \(error.localizedDescription)")
+      logger.error("uplodaing avatar failed. error: \(error)")
     }
   }
 
@@ -234,7 +234,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update profile: \(error.localizedDescription)")
+      logger.error("failed to update profile. error: \(error)")
     }
   }
 
@@ -252,7 +252,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update profile: \(error.localizedDescription)")
+      logger.error("failed to update profile. error: \(error)")
     }
   }
 
@@ -266,7 +266,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update settings: \(error.localizedDescription)")
+      logger.error("failed to update settings. error: \(error)")
     }
   }
 
@@ -282,7 +282,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update profile: \(error.localizedDescription)")
+      logger.error("failed to update profile. error: \(error)")
     }
   }
 
@@ -298,7 +298,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to export check-in csv: \(error.localizedDescription)")
+      logger.error("failed to export check-in csv. error: \(error)")
     }
   }
 }

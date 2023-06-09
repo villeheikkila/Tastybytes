@@ -53,7 +53,7 @@ struct ProfileStatisticsView: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed loading category statistics: \(error.localizedDescription)")
+      logger.error("failed loading category statistics. error: \(error)")
     }
   }
 }
@@ -120,7 +120,7 @@ struct SubcategoryStatisticsView: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed loading subcategory statistics: \(error.localizedDescription)")
+      logger.error("failed loading subcategory statistics. error: \(error)")
     }
     isLoading = false
   }

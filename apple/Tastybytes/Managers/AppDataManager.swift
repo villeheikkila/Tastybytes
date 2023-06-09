@@ -34,7 +34,7 @@ final class AppDataManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("fetching flavors failed: \(error.localizedDescription)")
+            logger.error("fetching flavors failed. error: \(error)")
         }
 
         switch await categoryPromise {
@@ -45,7 +45,7 @@ final class AppDataManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to load categories: \(error.localizedDescription)")
+            logger.error("failed to load categories. error: \(error)")
         }
 
         switch await aboutPagePromise {
@@ -56,7 +56,7 @@ final class AppDataManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("fetching about page failed: \(error.localizedDescription)")
+            logger.error("fetching about page failed. error: \(error)")
         }
     }
 
@@ -72,7 +72,7 @@ final class AppDataManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete flavor: \(error.localizedDescription)")
+            logger.error("failed to delete flavor. error: \(error)")
         }
     }
 
@@ -87,7 +87,7 @@ final class AppDataManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete flavor: \(error.localizedDescription)")
+            logger.error("failed to delete flavor. error: \(error)")
         }
     }
 
@@ -103,7 +103,7 @@ final class AppDataManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("fetching flavors failed: \(error.localizedDescription)")
+            logger.error("fetching flavors failed. error: \(error)")
         }
     }
 
@@ -117,7 +117,7 @@ final class AppDataManager {
             feedbackManager.toggle(.error(.unexpected))
             logger
                 .error(
-                    "failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id): \(error.localizedDescription)"
+                    "failed to \(isVerified ? "unverify" : "verify") subcategory \(subcategory.id). error: \(error)"
                 )
         }
     }
@@ -130,7 +130,7 @@ final class AppDataManager {
         case .success:
             await loadCategories()
         case let .failure(error):
-            logger.error("failed to update subcategory \(subCategory.id): \(error.localizedDescription)")
+            logger.error("failed to update subcategory \(subCategory.id). error: \(error)")
         }
     }
 
@@ -141,7 +141,7 @@ final class AppDataManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete subcategory \(deleteSubcategory.name): \(error.localizedDescription)")
+            logger.error("failed to delete subcategory \(deleteSubcategory.name). error: \(error)")
         }
     }
 
@@ -152,7 +152,7 @@ final class AppDataManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to add new category with name \(name): \(error.localizedDescription)")
+            logger.error("failed to add new category with name \(name). error: \(error)")
         }
     }
 
@@ -171,7 +171,7 @@ final class AppDataManager {
             feedbackManager.toggle(.error(.unexpected))
             logger
                 .error(
-                    "failed to create subcategory '\(name)' to category \(category.name): \(error.localizedDescription)"
+                    "failed to create subcategory '\(name)' to category \(category.name). error: \(error)"
                 )
         }
     }
@@ -185,7 +185,7 @@ final class AppDataManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to load categories: \(error.localizedDescription)")
+            logger.error("failed to load categories. error: \(error)")
         }
     }
 }

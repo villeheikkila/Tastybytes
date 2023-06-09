@@ -152,7 +152,7 @@ struct ProductMutationView: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to load brand owner for product '\(initialProduct.id)': \(error.localizedDescription)")
+            logger.error("failed to load brand owner for product '\(initialProduct.id)'. error: \(error)")
         }
     }
 }
@@ -442,7 +442,7 @@ struct ProductMutationInnerView: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to create new product: \(error.localizedDescription)")
+            logger.error("failed to create new product. error: \(error)")
         }
     }
 
@@ -473,7 +473,7 @@ struct ProductMutationInnerView: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to create product edit suggestion for '\(product.id)': \(error.localizedDescription)")
+            logger.error("failed to create product edit suggestion for '\(product.id)'. error: \(error)")
         }
     }
 
@@ -500,7 +500,7 @@ struct ProductMutationInnerView: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to edit product '\(product.id)': \(error.localizedDescription)")
+            logger.error("failed to edit product '\(product.id)'. error: \(error)")
         }
     }
 }

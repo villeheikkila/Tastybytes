@@ -297,7 +297,7 @@ struct DiscoverScreen: View {
             feedbackManager.toggle(.error(.unexpected))
             logger
                 .error(
-                    "adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed: \(error.localizedDescription)"
+                    "adding barcode \(barcode.barcode) to product \(addBarcodeTo.id) failed. error: \(error)"
                 )
         }
     }
@@ -312,7 +312,7 @@ struct DiscoverScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("searching products failed: \(error.localizedDescription)")
+            logger.error("searching products failed. error: \(error)")
         }
     }
 
@@ -325,7 +325,7 @@ struct DiscoverScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("searching profiles failed: \(error.localizedDescription)")
+            logger.error("searching profiles failed. error: \(error)")
         }
     }
 
@@ -340,7 +340,7 @@ struct DiscoverScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("searching products with barcode \(barcode.barcode) failed: \(error.localizedDescription)")
+            logger.error("searching products with barcode \(barcode.barcode) failed. error: \(error)")
         }
     }
 
@@ -355,7 +355,7 @@ struct DiscoverScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("searching companies failed: \(error.localizedDescription)")
+            logger.error("searching companies failed. error: \(error)")
         }
     }
 
@@ -368,7 +368,7 @@ struct DiscoverScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("searching locations failed: \(error.localizedDescription)")
+            logger.error("searching locations failed. error: \(error)")
         }
     }
 
