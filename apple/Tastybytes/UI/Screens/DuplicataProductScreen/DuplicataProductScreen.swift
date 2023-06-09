@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct DuplicateProductScreen: View {
   private let logger = Logger(category: "ProductVerificationScreen")
@@ -73,9 +73,11 @@ struct DuplicateProductScreen: View {
   func verifyProduct(_ product: Product.Joined) async {
     switch await repository.product.verification(id: product.id, isVerified: true) {
     case .success:
-      withAnimation {
-        products.remove(object: product)
-      }
+        await MainActor.run {
+            withAnimation {
+                products.remove(object: product)
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -87,7 +89,9 @@ struct DuplicateProductScreen: View {
     switch await repository.product.delete(id: product.id) {
     case .success:
       feedbackManager.trigger(.notification(.success))
-      router.removeLast()
+        await MainActor.run {
+            router.removeLast()
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -98,9 +102,11 @@ struct DuplicateProductScreen: View {
   func loadProducts() async {
     switch await repository.product.getUnverified() {
     case let .success(products):
-      withAnimation {
-        self.products = products
-      }
+        await MainActor.run {
+            withAnimation {
+                self.products = products
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

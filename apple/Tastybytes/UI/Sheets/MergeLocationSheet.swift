@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct MergeLocationSheet: View {
   private let logger = Logger(category: "MergeLocationSheet")

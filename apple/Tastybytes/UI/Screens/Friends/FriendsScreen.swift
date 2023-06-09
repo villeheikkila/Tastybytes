@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct FriendsScreen: View {
   private let logger = Logger(category: "FriendsScreen")

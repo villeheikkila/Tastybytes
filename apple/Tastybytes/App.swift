@@ -3,7 +3,7 @@ import FirebaseMessaging
 import GoTrue
 import Supabase
 import SwiftUI
-import os
+import OSLog
 
 /*
  This global variable is here to share state between AppDelegate, SceneDelegate and Main app

@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct AboutScreen: View {
   private let logger = Logger(category: "AboutScreen")

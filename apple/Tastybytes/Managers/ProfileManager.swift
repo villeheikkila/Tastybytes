@@ -1,7 +1,7 @@
 import PhotosUI
 import SwiftUI
 import Observation
-import os
+import OSLog
 
 @Observable
 final class ProfileManager: ObservableObject {
@@ -106,6 +106,7 @@ final class ProfileManager: ObservableObject {
   }
 
   func initialize() async {
+    logger.info("initializing user data")
     switch await repository.profile.getCurrentUser() {
     case let .success(currentUserProfile):
       extendedProfile = currentUserProfile

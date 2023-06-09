@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct ReactionsView: View {
   private let logger = Logger(category: "ReactionsView")
@@ -56,9 +56,11 @@ struct ReactionsView: View {
     if let reaction = checkInReactions.first(where: { $0.profile.id == profileManager.id }) {
       switch await repository.checkInReactions.delete(id: reaction.id) {
       case .success:
-        withAnimation {
-          checkInReactions.remove(object: reaction)
-        }
+          await MainActor.run {
+              withAnimation {
+                  checkInReactions.remove(object: reaction)
+              }
+          }
         feedbackManager.trigger(.impact(intensity: .low))
       case let .failure(error):
         guard !error.localizedDescription.contains("cancelled") else { return }
@@ -70,9 +72,11 @@ struct ReactionsView: View {
         .insert(newCheckInReaction: CheckInReaction.NewRequest(checkInId: checkIn.id))
       {
       case let .success(checkInReaction):
-        withAnimation {
-          checkInReactions.append(checkInReaction)
-        }
+          await MainActor.run {
+              withAnimation {
+                  checkInReactions.append(checkInReaction)
+              }
+          }
         feedbackManager.trigger(.notification(.success))
       case let .failure(error):
         guard !error.localizedDescription.contains("cancelled") else { return }

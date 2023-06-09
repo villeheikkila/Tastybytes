@@ -3,8 +3,8 @@ import Foundation
 import MapKit
 import Observation
 import SwiftUI
-import os
-import os
+import OSLog
+import OSLog
 
 struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchView")
@@ -91,8 +91,10 @@ struct LocationSearchSheet: View {
     func getRecentLocations() async {
         switch await repository.location.getRecentLocations() {
         case let .success(recentLocations):
-            withAnimation {
-                self.recentLocations = recentLocations
+            await MainActor.run {
+                withAnimation {
+                    self.recentLocations = recentLocations
+                }
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -105,8 +107,10 @@ struct LocationSearchSheet: View {
         guard let location else { return }
         switch await repository.location.getSuggestions(location: Location.SuggestionParams(location: location)) {
         case let .success(nearbyLocations):
-            withAnimation {
-                self.nearbyLocations = nearbyLocations
+            await MainActor.run {
+                withAnimation {
+                    self.nearbyLocations = nearbyLocations
+                }
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }

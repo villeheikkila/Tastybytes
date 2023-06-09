@@ -2,7 +2,7 @@ import Firebase
 import FirebaseMessaging
 import Observation
 import SwiftUI
-import os
+import OSLog
 
 @Observable
 final class NotificationManager {
@@ -36,8 +36,10 @@ final class NotificationManager {
     func getUnreadCount() async {
         switch await repository.notification.getUnreadCount() {
         case let .success(count):
-            withAnimation {
-                self.unreadCount = count
+            await MainActor.run {
+                withAnimation {
+                    self.unreadCount = count
+                }
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -52,16 +54,19 @@ final class NotificationManager {
         }
         switch await repository.notification.getAll(afterId: reset ? nil : notifications.first?.id) {
         case let .success(newNotifications):
-            if reset {
-                notifications = newNotifications
-                if withFeedback {
-                    feedbackManager.trigger(.notification(.success))
+            await MainActor.run {
+                if reset {
+                    notifications = newNotifications
+                    unreadCount = newNotifications
+                        .filter { $0.seenAt == nil }
+                        .count
+                    
+                    if withFeedback {
+                        feedbackManager.trigger(.notification(.success))
+                    }
+                } else {
+                    notifications.append(contentsOf: newNotifications)
                 }
-                unreadCount = newNotifications
-                    .filter { $0.seenAt == nil }
-                    .count
-            } else {
-                notifications.append(contentsOf: newNotifications)
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -73,8 +78,10 @@ final class NotificationManager {
     func deleteAll() async {
         switch await repository.notification.deleteAll() {
         case .success:
-            withAnimation {
-                self.notifications = [Notification]()
+            await MainActor.run {
+                withAnimation {
+                    self.notifications = [Notification]()
+                }
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -86,16 +93,14 @@ final class NotificationManager {
     func markAllAsRead() async {
         switch await repository.notification.markAllRead() {
         case .success:
-            notifications = notifications.map { notification in
-                if notification.seenAt != nil {
-                    return notification
+            let markedAsSeenNotifications = notifications.map { notification in
+                return notification.seenAt == nil ? notification.copyWith(seenAt: Date()) : notification
+            }
+            
+            await MainActor.run {
+                withAnimation {
+                    notifications = markedAsSeenNotifications
                 }
-                return Notification(
-                    id: notification.id,
-                    createdAt: notification.createdAt,
-                    seenAt: Date(),
-                    content: notification.content
-                )
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -180,8 +185,10 @@ final class NotificationManager {
         let notificationId = notifications[index].id
         switch await repository.notification.delete(id: notificationId) {
         case .success:
-            withAnimation {
-                _ = self.notifications.remove(at: index)
+            await MainActor.run {
+                withAnimation {
+                    _ = self.notifications.remove(at: index)
+                }
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -193,8 +200,10 @@ final class NotificationManager {
     func deleteNotifications(notification: Notification) async {
         switch await repository.notification.delete(id: notification.id) {
         case .success:
-            withAnimation {
-                self.notifications.remove(object: notification)
+            await MainActor.run {
+                withAnimation {
+                    self.notifications.remove(object: notification)
+                }
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -216,7 +225,6 @@ final class NotificationManager {
         ) else { return }
         switch await repository.notification.updatePushNotificationSettingsForDevice(updateRequest: updateRequest) {
         case let .success(pushNotificationSettings):
-            print("Push \(pushNotificationSettings)")
             self.pushNotificationSettings = pushNotificationSettings
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }

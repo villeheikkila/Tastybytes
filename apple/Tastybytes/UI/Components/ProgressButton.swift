@@ -1,6 +1,6 @@
 import SFSafeSymbols
 import SwiftUI
-import os
+import OSLog
 
 struct ProgressButton<LabelView: View>: View {
   private let logger = Logger(category: "ProgressButton")

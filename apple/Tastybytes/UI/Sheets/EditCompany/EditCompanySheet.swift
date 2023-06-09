@@ -1,7 +1,7 @@
 import CachedAsyncImage
 import PhotosUI
 import SwiftUI
-import os
+import OSLog
 
 struct EditCompanySheet: View {
   private let logger = Logger(category: "EditCompanySheet")

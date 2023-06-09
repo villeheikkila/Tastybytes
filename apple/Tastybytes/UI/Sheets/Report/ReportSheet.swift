@@ -1,6 +1,6 @@
 import AlertToast
 import SwiftUI
-import os
+import OSLog
 
 struct ReportSheet: View {
   private let logger = Logger(category: "ReportSheet")

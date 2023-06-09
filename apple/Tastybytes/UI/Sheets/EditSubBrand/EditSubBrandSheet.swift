@@ -1,6 +1,6 @@
 import PhotosUI
 import SwiftUI
-import os
+import OSLog
 
 struct EditSubBrandSheet: View {
   private let logger = Logger(category: "EditSubBrandSheet")

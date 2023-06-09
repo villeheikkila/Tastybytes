@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct CheckInListView<Header, Content>: View where Header: View, Content: View {
     enum Fetcher {
@@ -261,8 +261,10 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
 
         switch await checkInFetcher(from: from, to: to) {
         case let .success(checkIns):
-            withAnimation {
-                self.checkIns.append(contentsOf: checkIns)
+            await MainActor.run {
+                withAnimation {
+                    self.checkIns.append(contentsOf: checkIns)
+                }
             }
             page += 1
             isLoading = false

@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct ProfileProductListView: View {
   private let logger = Logger(category: "ProfileProductListView")
@@ -113,10 +113,12 @@ struct ProfileProductListView: View {
   func loadProducts() async {
     switch await repository.product.getByProfile(id: profile.id) {
     case let .success(products):
-      withAnimation {
-        self.products = products
-        initialDataLoaded = true
-      }
+        await MainActor.run {
+            withAnimation {
+                self.products = products
+                initialDataLoaded = true
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

@@ -1,6 +1,6 @@
 import CachedAsyncImage
 import SwiftUI
-import os
+import OSLog
 
 struct BrandScreen: View {
   private let logger = Logger(category: "BrandScreen")
@@ -289,7 +289,9 @@ struct BrandScreen: View {
 
     switch await summaryPromise {
     case let .success(summary):
-      self.summary = summary
+        await MainActor.run {
+            self.summary = summary
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -298,7 +300,9 @@ struct BrandScreen: View {
 
     switch await brandPromise {
     case let .success(brand):
-      self.brand = brand
+        await MainActor.run {
+            self.brand = brand
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -310,7 +314,9 @@ struct BrandScreen: View {
     async let summaryPromise = repository.brand.getSummaryById(id: brand.id)
     switch await summaryPromise {
     case let .success(summary):
-      self.summary = summary
+        await MainActor.run {
+            self.summary = summary
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

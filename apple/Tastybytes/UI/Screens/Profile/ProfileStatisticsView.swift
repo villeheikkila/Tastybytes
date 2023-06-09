@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 struct ProfileStatisticsView: View {
   private let logger = Logger(category: "ProfileStatisticsView")
   @Environment(Repository.self) private var repository
@@ -45,9 +45,11 @@ struct ProfileStatisticsView: View {
   func loadStatistics() async {
     switch await repository.profile.getCategoryStatistics(userId: profile.id) {
     case let .success(categoryStatistics):
-      withAnimation {
-        self.categoryStatistics = categoryStatistics
-      }
+        await MainActor.run {
+            withAnimation {
+                self.categoryStatistics = categoryStatistics
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -110,9 +112,11 @@ struct SubcategoryStatisticsView: View {
     isLoading = true
     switch await repository.profile.getSubcategoryStatistics(userId: profile.id, categoryId: category.id) {
     case let .success(subcategoryStatistics):
-      withAnimation {
-        self.subcategoryStatistics = subcategoryStatistics
-      }
+        await MainActor.run {
+            withAnimation {
+                self.subcategoryStatistics = subcategoryStatistics
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

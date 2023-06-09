@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct BrandSheet: View {
   private let logger = Logger(category: "BrandSheet")
@@ -56,7 +56,9 @@ struct BrandSheet: View {
   func loadBrands(_ brandOwner: Company) async {
     switch await repository.brand.getByBrandOwnerId(brandOwnerId: brandOwner.id) {
     case let .success(brandsWithSubBrands):
-      self.brandsWithSubBrands = brandsWithSubBrands
+        await MainActor.run {
+            self.brandsWithSubBrands = brandsWithSubBrands
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -71,8 +73,10 @@ struct BrandSheet: View {
       if mode == .new {
         router.fetchAndNavigateTo(repository, .brand(id: brandWithSubBrands.id))
       }
-      brand = brandWithSubBrands
-      dismiss()
+        await MainActor.run {
+            brand = brandWithSubBrands
+            dismiss()
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

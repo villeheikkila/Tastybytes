@@ -1,7 +1,7 @@
 import Firebase
 import FirebaseMessaging
 import SwiftUI
-import os
+import OSLog
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
   private let logger = Logger(category: "AppDelegate")

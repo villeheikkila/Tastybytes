@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct CategoryServingStyleSheet: View {
   private let logger = Logger(category: "CategoryServingStyleSheet")
@@ -80,9 +80,11 @@ struct CategoryServingStyleSheet: View {
       servingStyleId: servingStyle.id
     ) {
     case .success:
-      withAnimation {
-        servingStyles.remove(object: servingStyle)
-      }
+        await MainActor.run {
+            withAnimation {
+                servingStyles.remove(object: servingStyle)
+            }
+        }
       feedbackManager.trigger(.notification(.success))
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }

@@ -1,7 +1,7 @@
 import CachedAsyncImage
 import PhotosUI
 import SwiftUI
-import os
+import OSLog
 
 struct ProductLogoSheet: View {
   private let logger = Logger(category: "ProductLogoSheet")

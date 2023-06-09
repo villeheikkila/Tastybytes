@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct ContributionsScreen: View {
   private let logger = Logger(category: "ContributionsScreen")
@@ -49,9 +49,11 @@ struct ContributionsScreen: View {
   func loadContributions(userId: UUID) async {
     switch await repository.profile.getContributions(userId: userId) {
     case let .success(contributions):
-      withAnimation {
-        self.contributions = contributions
-      }
+        await MainActor.run {
+            withAnimation {
+                self.contributions = contributions
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

@@ -1,7 +1,7 @@
 import Charts
 import PhotosUI
 import SwiftUI
-import os
+import OSLog
 
 struct LocationScreen: View {
   private let logger = Logger(category: "LocationScreen")
@@ -83,9 +83,11 @@ struct LocationScreen: View {
   func getSummary() async {
     switch await repository.location.getSummaryById(id: location.id) {
     case let .success(summary):
-      withAnimation {
-        self.summary = summary
-      }
+        await MainActor.run {
+            withAnimation {
+                self.summary = summary
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

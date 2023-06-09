@@ -1,4 +1,4 @@
-import os
+import OSLog
 import Foundation
 
 extension Logger {

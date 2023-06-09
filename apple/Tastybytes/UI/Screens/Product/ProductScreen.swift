@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct ProductScreen: View {
   private let logger = Logger(category: "ProductScreen")
@@ -174,9 +174,11 @@ struct ProductScreen: View {
 
     switch await productPromise {
     case let .success(refreshedProduct):
-      withAnimation {
-        product = refreshedProduct
-      }
+        await MainActor.run {
+            withAnimation {
+                product = refreshedProduct
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -185,7 +187,9 @@ struct ProductScreen: View {
 
     switch await summaryPromise {
     case let .success(summary):
-      self.summary = summary
+        await MainActor.run {
+            self.summary = summary
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

@@ -1,6 +1,6 @@
 import Observation
 import SwiftUI
-import os
+import OSLog
 
 @Observable
 final class Router {
@@ -26,7 +26,6 @@ final class Router {
     func storeState() {
         do {
             try JSONEncoder().encode(path).write(to: tab.cachesDirectoryPath)
-            print("stored")
         } catch {
             logger.error("failed to store navigation stack")
         }
@@ -53,12 +52,16 @@ final class Router {
             case let .product(id):
                 switch await repository.product.getById(id: id) {
                 case let .success(product):
-                    self.navigate(screen: .product(product), resetStack: resetStack)
+                    await MainActor.run {
+                        self.navigate(screen: .product(product), resetStack: resetStack)
+                    }
                 case let .failure(error):
-                    self.navigate(
-                        screen: .error(reason: "Failed to load requested product page"),
-                        resetStack: resetStack
-                    )
+                    await MainActor.run {
+                        self.navigate(
+                            screen: .error(reason: "Failed to load requested product page"),
+                            resetStack: resetStack
+                        )
+                    }
                     logger.error("request for product with \(id) failed: \(error.localizedDescription)")
                 }
             case let .checkIn(id):

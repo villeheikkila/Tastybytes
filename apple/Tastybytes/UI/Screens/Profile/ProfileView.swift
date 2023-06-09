@@ -1,7 +1,7 @@
 import Charts
 import PhotosUI
 import SwiftUI
-import os
+import OSLog
 
 struct ProfileView: View {
   private let logger = Logger(category: "ProfileView")
@@ -285,9 +285,11 @@ struct ProfileView: View {
   func getSummary() async {
     switch await repository.checkIn.getSummaryByProfileId(id: profile.id) {
     case let .success(summary):
-      withAnimation(.easeIn) {
-        profileSummary = summary
-      }
+        await MainActor.run {
+            withAnimation(.easeIn) {
+                profileSummary = summary
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

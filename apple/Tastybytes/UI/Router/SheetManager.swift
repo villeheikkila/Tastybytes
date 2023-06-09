@@ -1,6 +1,6 @@
 import SwiftUI
 import Observation
-import os
+import OSLog
 
 @Observable
 final class SheetManager {

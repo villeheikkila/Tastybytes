@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct ProductFilterSheet: View {
   enum Sections {

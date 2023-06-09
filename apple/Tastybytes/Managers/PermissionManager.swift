@@ -2,7 +2,7 @@ import AVFoundation
 import PhotosUI
 import SwiftUI
 import Observation
-import os
+import OSLog
 
 @Observable
 final class PermissionManager {

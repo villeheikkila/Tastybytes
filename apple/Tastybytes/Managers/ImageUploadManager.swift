@@ -1,6 +1,6 @@
 import SwiftUI
 import Observation
-import os
+import OSLog
 
 @Observable
 class ImageUploadManager {
@@ -20,7 +20,9 @@ class ImageUploadManager {
       guard let data = image.jpegData(compressionQuality: 0.1) else { return }
       switch await repository.checkIn.uploadImage(id: checkIn.id, data: data, userId: checkIn.profile.id) {
       case let .success(imageFile):
-        uploadedImageForCheckIn = checkIn.copyWith(imageFile: imageFile)
+          await MainActor.run {
+              uploadedImageForCheckIn = checkIn.copyWith(imageFile: imageFile)
+          }
       case let .failure(error):
         guard !error.localizedDescription.contains("cancelled") else { return }
         feedbackManager.toggle(.error(.unexpected))

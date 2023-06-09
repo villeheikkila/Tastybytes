@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct ProductFeedScreen: View {
   private let logger = Logger(category: "ProductFeedView")
@@ -105,9 +105,11 @@ struct ProductFeedScreen: View {
 
     switch await repository.product.getFeed(feed, from: from, to: to, categoryFilterId: categoryFilter?.id) {
     case let .success(additionalProducts):
-      withAnimation {
-        products.append(contentsOf: additionalProducts)
-      }
+        await MainActor.run {
+            withAnimation {
+                products.append(contentsOf: additionalProducts)
+            }
+        }
       page += 1
       isLoading = false
       if let onComplete {

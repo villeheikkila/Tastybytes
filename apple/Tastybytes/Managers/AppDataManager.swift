@@ -1,6 +1,6 @@
 import SwiftUI
 import Observation
-import os
+import OSLog
 
 @Observable
 final class AppDataManager {
@@ -22,14 +22,17 @@ final class AppDataManager {
   }
 
   func initialize() async {
+    logger.info("initializing app data")
     async let aboutPagePromise = repository.document.getAboutPage()
     async let flavorPromise = repository.flavor.getAll()
     async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
 
     switch await flavorPromise {
     case let .success(flavors):
-      withAnimation {
-        self.flavors = flavors
+        await MainActor.run {
+            withAnimation {
+                self.flavors = flavors
+            }
       }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
@@ -39,7 +42,9 @@ final class AppDataManager {
 
     switch await categoryPromise {
     case let .success(categories):
-      self.categories = categories
+        await MainActor.run {
+            self.categories = categories
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -48,7 +53,9 @@ final class AppDataManager {
 
     switch await aboutPagePromise {
     case let .success(aboutPage):
-      self.aboutPage = aboutPage
+        await MainActor.run {
+            self.aboutPage = aboutPage
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -60,9 +67,11 @@ final class AppDataManager {
   func addFlavor(name: String) async {
     switch await repository.flavor.insert(newFlavor: Flavor.NewRequest(name: name)) {
     case let .success(newFlavor):
-      withAnimation {
-        flavors.append(newFlavor)
-      }
+        await MainActor.run {
+            withAnimation {
+                flavors.append(newFlavor)
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -73,9 +82,11 @@ final class AppDataManager {
   func deleteFlavor(_ flavor: Flavor) async {
     switch await repository.flavor.delete(id: flavor.id) {
     case .success:
-      withAnimation {
-        flavors.remove(object: flavor)
-      }
+        await MainActor.run {
+            withAnimation {
+                flavors.remove(object: flavor)
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
         feedbackManager.toggle(.error(.unexpected))
@@ -86,9 +97,11 @@ final class AppDataManager {
   func refreshFlavors() async {
     switch await repository.flavor.getAll() {
     case let .success(flavors):
-      withAnimation {
-        self.flavors = flavors
-      }
+        await MainActor.run {
+            withAnimation {
+                self.flavors = flavors
+            }
+        }
         feedbackManager.trigger(.notification(.success))
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
@@ -150,8 +163,10 @@ final class AppDataManager {
         .NewRequest(name: name, category: category))
     {
     case let .success(newSubcategory):
-      let updatedCategory = category.appending(subcategory: newSubcategory)
-      categories.replace(category, with: updatedCategory)
+        await MainActor.run {
+            let updatedCategory = category.appending(subcategory: newSubcategory)
+            categories.replace(category, with: updatedCategory)
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -162,7 +177,9 @@ final class AppDataManager {
   func loadCategories() async {
     switch await repository.category.getAllWithSubcategoriesServingStyles() {
     case let .success(categories):
-      self.categories = categories
+        await MainActor.run {
+            self.categories = categories
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

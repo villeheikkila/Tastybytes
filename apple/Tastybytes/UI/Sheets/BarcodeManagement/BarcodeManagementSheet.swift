@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct BarcodeManagementSheet: View {
   private let logger = Logger(category: "BarcodeManagementSheet")
@@ -49,9 +49,11 @@ struct BarcodeManagementSheet: View {
   func deleteBarcode(_ barcode: ProductBarcode.JoinedWithCreator) async {
     switch await repository.productBarcode.delete(id: barcode.id) {
     case .success:
-      withAnimation {
-        barcodes.remove(object: barcode)
-      }
+        await MainActor.run {
+            withAnimation {
+                barcodes.remove(object: barcode)
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
@@ -62,9 +64,11 @@ struct BarcodeManagementSheet: View {
   func getBarcodes() async {
     switch await repository.productBarcode.getByProductId(id: product.id) {
     case let .success(barcodes):
-      withAnimation {
-        self.barcodes = barcodes
-      }
+        await MainActor.run {
+            withAnimation {
+                self.barcodes = barcodes
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))

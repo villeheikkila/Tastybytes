@@ -1,4 +1,4 @@
-import os
+import OSLog
 import PhotosUI
 import SwiftUI
 

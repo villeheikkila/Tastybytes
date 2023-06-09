@@ -2,7 +2,7 @@ import CachedAsyncImage
 import PhotosUI
 import SwiftUI
 import WrappingHStack
-import os
+import OSLog
 
 struct CheckInSheet: View {
   private let logger = Logger(category: "CheckInSheet")

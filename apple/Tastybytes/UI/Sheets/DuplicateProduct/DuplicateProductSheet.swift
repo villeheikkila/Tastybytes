@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct DuplicateProductSheet: View {
   enum Mode {

@@ -1,5 +1,5 @@
 import SwiftUI
-import os
+import OSLog
 
 struct UserSheet: View {
   private let logger = Logger(category: "UserSheet")
@@ -73,9 +73,11 @@ struct UserSheet: View {
   func searchUsers(currentUserId: UUID) async {
     switch await repository.profile.search(searchTerm: searchText, currentUserId: currentUserId) {
     case let .success(searchResults):
-      withAnimation {
-        self.searchResults = searchResults
-      }
+        await MainActor.run {
+            withAnimation {
+                self.searchResults = searchResults
+            }
+        }
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
