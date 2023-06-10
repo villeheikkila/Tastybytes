@@ -1,4 +1,3 @@
-import CachedAsyncImage
 import OSLog
 import PhotosUI
 import SwiftUI
@@ -93,7 +92,7 @@ struct CheckInSheet: View {
                                 .shadow(radius: 4)
                                 .accessibilityLabel("Image of the check-in")
                         } else if let imageUrl = editCheckIn?.imageUrl {
-                            CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+                           AsyncImage(url: imageUrl) { image in
                                 image
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)

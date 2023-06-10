@@ -1,5 +1,5 @@
-import CachedAsyncImage
 import SwiftUI
+
 struct ProductItemView: View {
   @Environment(Router.self) private var router
   enum Extra {
@@ -17,7 +17,7 @@ struct ProductItemView: View {
   var body: some View {
     HStack(spacing: 24) {
       if extras.contains(.logo), let logoUrl = product.logoUrl {
-        CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+        AsyncImage(url: logoUrl) { image in
           image
             .resizable()
             .aspectRatio(contentMode: .fill)

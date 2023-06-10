@@ -1,4 +1,3 @@
-import CachedAsyncImage
 import SwiftUI
 
 struct AvatarView: View {
@@ -8,7 +7,7 @@ struct AvatarView: View {
 
   var body: some View {
     if let avatarUrl {
-      CachedAsyncImage(url: avatarUrl, urlCache: .imageCache) { image in
+      AsyncImage(url: avatarUrl) { image in
         image.resizable()
       } placeholder: {
         ProgressView()

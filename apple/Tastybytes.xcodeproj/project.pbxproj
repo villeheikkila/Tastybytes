@@ -226,7 +226,6 @@
 		5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB562E28F596A200F13A1E /* ChipView.swift */; };
 		5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563028F5974100F13A1E /* ProfileSummary.swift */; };
 		5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563228F597ED00F13A1E /* RatingView.swift */; };
-		5CFB563628F5A76600F13A1E /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFB563528F5A76600F13A1E /* CachedAsyncImage */; };
 		5CFEE57728ED69B100A8DD66 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57628ED69B100A8DD66 /* App.swift */; };
 		5CFEE57B28ED69B200A8DD66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */; };
 		5CFEE57E28ED69B200A8DD66 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEE57D28ED69B200A8DD66 /* Preview Assets.xcassets */; };
@@ -469,7 +468,6 @@
 				5C964DC32A2D021F00805199 /* SFSafeSymbols in Frameworks */,
 				5C13F21B291A7C3A00599892 /* FirebaseMessaging in Frameworks */,
 				5C08B6E028ED7956009218D7 /* Supabase in Frameworks */,
-				5CFB563628F5A76600F13A1E /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1302,7 +1300,6 @@
 			name = Tastybytes;
 			packageProductDependencies = (
 				5C08B6DF28ED7956009218D7 /* Supabase */,
-				5CFB563528F5A76600F13A1E /* CachedAsyncImage */,
 				5CED432428FBF6B0003F8194 /* AlertToast */,
 				5C13F21A291A7C3A00599892 /* FirebaseMessaging */,
 				5C964DC22A2D021F00805199 /* SFSafeSymbols */,
@@ -1337,7 +1334,6 @@
 			mainGroup = 5CFEE56A28ED69B100A8DD66;
 			packageReferences = (
 				5CFEE58628ED6BAD00A8DD66 /* XCRemoteSwiftPackageReference "supabase-swift" */,
-				5CFB563428F5A76600F13A1E /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				5C13F219291A7C3900599892 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				5C964DC12A2D021F00805199 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
@@ -1868,14 +1864,6 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		5CFB563428F5A76600F13A1E /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
 		5CFEE58628ED6BAD00A8DD66 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/supabase-community/supabase-swift";
@@ -1906,11 +1894,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5CED432328FBF6B0003F8194 /* XCRemoteSwiftPackageReference "AlertToast" */;
 			productName = AlertToast;
-		};
-		5CFB563528F5A76600F13A1E /* CachedAsyncImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5CFB563428F5A76600F13A1E /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
-			productName = CachedAsyncImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

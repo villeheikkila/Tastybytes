@@ -1,4 +1,3 @@
-import CachedAsyncImage
 import SwiftUI
 
 struct CheckInCardView: View {
@@ -76,7 +75,7 @@ struct CheckInCardView: View {
 
     @ViewBuilder private var checkInImage: some View {
         if let imageUrl = checkIn.imageUrl {
-            CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+            AsyncImage(url: imageUrl) { image in
                 image
                     .resizable()
                     .scaledToFill()
@@ -91,7 +90,7 @@ struct CheckInCardView: View {
                             .accessibility(addTraits: .isButton)
                     })
                     .popover(isPresented: $showFullPicture) {
-                        CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+                        AsyncImage(url: imageUrl) { image in
                             image
                                 .resizable()
                                 .scaledToFill()
@@ -110,7 +109,7 @@ struct CheckInCardView: View {
     private var productSection: some View {
         HStack(spacing: spacing) {
             if let logoUrl = checkIn.product.logoUrl {
-                CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+                AsyncImage(url: logoUrl) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)

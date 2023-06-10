@@ -1,4 +1,3 @@
-import CachedAsyncImage
 import PhotosUI
 import SwiftUI
 import OSLog
@@ -44,7 +43,7 @@ struct EditBrandSheet: View {
             photoLibrary: .shared()
           ) {
             if let logoUrl = brand.logoUrl {
-              CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+               AsyncImage(url: logoUrl) { image in
                 image
                   .resizable()
                   .aspectRatio(contentMode: .fill)

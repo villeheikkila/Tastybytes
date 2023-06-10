@@ -1,4 +1,3 @@
-import CachedAsyncImage
 import SwiftUI
 
 struct CheckInEntityView: View {
@@ -36,7 +35,7 @@ struct CheckInEntityView: View {
 
     @ViewBuilder private var checkInImage: some View {
         if let imageUrl = checkIn.imageUrl {
-            CachedAsyncImage(url: imageUrl, urlCache: .imageCache) { image in
+            AsyncImage(url: imageUrl) { image in
                 image
                     .resizable()
                     .scaledToFill()
@@ -52,7 +51,7 @@ struct CheckInEntityView: View {
     private var productSection: some View {
         HStack(spacing: 12) {
             if let logoUrl = checkIn.product.logoUrl {
-                CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+                AsyncImage(url: logoUrl) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)

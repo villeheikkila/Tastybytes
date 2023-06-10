@@ -19,6 +19,8 @@ struct Main: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self)
   var appDelegate
 
+    
+
   private let supabaseClient = SupabaseClient(
     supabaseURL: Config.supabaseUrl,
     supabaseKey: Config.supabaseAnonKey

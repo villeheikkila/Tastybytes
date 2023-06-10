@@ -1,4 +1,3 @@
-import CachedAsyncImage
 import PhotosUI
 import SwiftUI
 import OSLog
@@ -90,7 +89,7 @@ struct CompanyScreen: View {
     ToolbarItem(placement: .principal) {
       HStack(alignment: .center, spacing: 18) {
         if let logoUrl = company.logoUrl {
-          CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+           AsyncImage(url: logoUrl) { image in
             image
               .resizable()
               .aspectRatio(contentMode: .fill)
@@ -161,7 +160,7 @@ struct CompanyScreen: View {
   private var companyHeader: some View {
     HStack(spacing: 10) {
       if let logoUrl = company.logoUrl {
-        CachedAsyncImage(url: logoUrl, urlCache: .imageCache) { image in
+        AsyncImage(url: logoUrl) { image in
           image
             .resizable()
             .aspectRatio(contentMode: .fill)
