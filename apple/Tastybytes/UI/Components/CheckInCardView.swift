@@ -171,7 +171,10 @@ struct CheckInCardView: View {
     @ViewBuilder private var checkInSection: some View {
         VStack(alignment: .leading, spacing: spacing) {
             if let rating = checkIn.rating {
-                RatingView(rating: rating)
+                HStack {
+                    RatingView(rating: rating)
+                    Spacer()
+                }
             }
 
             if let review = checkIn.review {
@@ -179,6 +182,7 @@ struct CheckInCardView: View {
                     .fontWeight(.medium)
                     .foregroundColor(.primary)
             }
+            
             FlavorsView(flavors: checkIn.flavors)
 
             if let purchaseLocation = checkIn.purchaseLocation {

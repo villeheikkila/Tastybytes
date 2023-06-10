@@ -10,7 +10,7 @@ struct CheckInEntityView: View {
                 productSection
             }
             checkInImage
-            VStack(spacing: 4) {
+            VStack(alignment: .leading, spacing: 4) {
                 checkInSection
                 taggedProfilesSection
                 footer
@@ -35,16 +35,18 @@ struct CheckInEntityView: View {
 
     @ViewBuilder private var checkInImage: some View {
         if let imageUrl = checkIn.imageUrl {
-            AsyncImage(url: imageUrl) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 200)
-                    .clipped()
-                    .contentShape(Rectangle())
-            } placeholder: {
-                BlurHashPlaceholder(blurHash: checkIn.blurHash)
-            }.frame(height: 200)
+            HStack {
+                AsyncImage(url: imageUrl) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 200)
+                        .clipped()
+                        .contentShape(Rectangle())
+                } placeholder: {
+                    BlurHashPlaceholder(blurHash: checkIn.blurHash)
+                }.frame(height: 200)
+            }
         }
     }
 
@@ -104,9 +106,11 @@ struct CheckInEntityView: View {
 
     @ViewBuilder private var checkInSection: some View {
         if !checkIn.isEmpty {
-            VStack(alignment: .leading, spacing: 8) {
                 if let rating = checkIn.rating {
-                    RatingView(rating: rating)
+                    HStack {
+                        RatingView(rating: rating)
+                        Spacer()
+                    }
                 }
 
                 if let review = checkIn.review {
@@ -119,13 +123,11 @@ struct CheckInEntityView: View {
                 if let purchaseLocation = checkIn.purchaseLocation {
                     Text("Purchased from __\(purchaseLocation.name)__")
                 }
-            }
         }
     }
 
     @ViewBuilder private var taggedProfilesSection: some View {
         if !checkIn.taggedProfiles.isEmpty {
-            VStack(spacing: 4) {
                 HStack {
                     Text(verbatim: "Tagged friends")
                         .font(.subheadline)
@@ -139,11 +141,9 @@ struct CheckInEntityView: View {
                     Spacer()
                 }
             }
-        }
     }
 
     private var footer: some View {
-        HStack {
             HStack {
                 if let checkInAt = checkIn.checkInAt {
                     Text(checkInAt.customFormat(.relativeTime))
@@ -154,6 +154,5 @@ struct CheckInEntityView: View {
                 }
                 Spacer()
             }
-        }
     }
 }
