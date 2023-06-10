@@ -44,6 +44,10 @@ struct CheckInScreen: View {
             editCommentText = editComment?.content ?? ""
         }
     }
+    
+    var orderedCheckInComments: [CheckInComment] {
+        checkInComments.reversed()
+    }
 
     init(checkIn: CheckIn) {
         _checkIn = State(wrappedValue: checkIn)
@@ -165,7 +169,7 @@ struct CheckInScreen: View {
     }
 
     private var commentSection: some View {
-        ForEach(checkInComments.reversed()) { comment in
+        ForEach(orderedCheckInComments) { comment in
             CheckInCommentView(comment: comment)
                 .listRowSeparator(.hidden)
                 .contextMenu {

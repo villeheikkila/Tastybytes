@@ -163,15 +163,6 @@
       }
     },
     {
-      "identity" : "purchases-ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/RevenueCat/purchases-ios.git",
-      "state" : {
-        "revision" : "f2ce239f64d3ecbe95e57a519557e709d13cc125",
-        "version" : "4.21.0"
-      }
-    },
-    {
       "identity" : "realtime-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/realtime-swift.git",
@@ -232,15 +223,6 @@
       "state" : {
         "revision" : "4ce950479707ea109f229d7230ec074a133b15d7",
         "version" : "0.2.1"
-      }
-    },
-    {
-      "identity" : "wrappinghstack",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/dkk/WrappingHStack.git",
-      "state" : {
-        "revision" : "f31b8fdc57759c5aa5fc98c70746db5556e73300",
-        "version" : "2.2.10"
       }
     }
   ],

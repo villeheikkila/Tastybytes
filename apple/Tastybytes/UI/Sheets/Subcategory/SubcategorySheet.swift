@@ -38,8 +38,9 @@ struct SubcategorySheet: View {
     }
     .searchable(text: $searchTerm)
     .navigationTitle("Subcategories")
-    .navigationBarItems(leading: addSubcategoryView,
-                        trailing: Button("Done", action: { dismiss() }).bold())
+    .toolbar {
+        toolbarContent
+    }
     .alert("Add new subcategory", isPresented: $showAddSubcategory, actions: {
       TextField("TextField", text: $newSubcategoryName)
       Button("Cancel", role: .cancel, action: {})
@@ -48,6 +49,20 @@ struct SubcategorySheet: View {
       })
     })
   }
+    
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .primaryAction) {
+            Button("Done", role: .cancel, action: { dismiss() }).bold()
+        }
+        if profileManager.hasPermission(.canDeleteBrands) {
+            ToolbarItemGroup(placement: .secondaryAction) {
+                Button("Add subcategory", systemSymbol: .plus, action: { showAddSubcategory.toggle() })
+                    .labelStyle(.iconOnly)
+                    .bold()
+            }
+        }
+    }
+
 
   private func toggleSubcategory(subcategory: Subcategory) {
     if subcategories.contains(subcategory) {
@@ -60,14 +75,6 @@ struct SubcategorySheet: View {
       }
     } else {
       feedbackManager.toggle(.warning("You can only add \(maxSubcategories) subcategories"))
-    }
-  }
-
-  @ViewBuilder private var addSubcategoryView: some View {
-    if profileManager.hasPermission(.canDeleteBrands) {
-      Button("Add subcategory", systemSymbol: .plus, action: { showAddSubcategory.toggle() })
-        .labelStyle(.iconOnly)
-        .bold()
     }
   }
 }
