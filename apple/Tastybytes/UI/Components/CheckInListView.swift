@@ -75,54 +75,10 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                         CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
                             .listRowInsets(.init(top: 4, leading: edgeInset, bottom: 4, trailing: edgeInset))
                             .listRowSeparator(.hidden)
-                            .contextMenu {
-                                ControlGroup {
-                                    CheckInShareLinkView(checkIn: checkIn)
-                                    if checkIn.profile.id == profileManager.id {
-                                        RouterLink(
-                                            "Edit",
-                                            systemSymbol: .pencil,
-                                            sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
-                                                onCheckInUpdate(updatedCheckIn)
-                                            })
-                                        )
-                                        Button(
-                                            "Delete",
-                                            systemSymbol: .trashFill,
-                                            role: .destructive,
-                                            action: { showDeleteConfirmationFor = checkIn }
-                                        )
-                                    } else {
-                                        RouterLink(
-                                            "Check-in",
-                                            systemSymbol: .pencil,
-                                            sheet: .newCheckIn(checkIn.product, onCreation: { checkIn in
-                                                router.navigate(screen: .checkIn(checkIn))
-                                            })
-                                        )
-                                        ReportButton(entity: .checkIn(checkIn))
-                                    }
-                                }
-                                Divider()
-                                RouterLink(
-                                    "Open Company",
-                                    systemSymbol: .network,
-                                    screen: .company(checkIn.product.subBrand.brand.brandOwner)
-                                )
-                                RouterLink(
-                                    "Open Brand",
-                                    systemSymbol: .cart,
-                                    screen: .fetchBrand(checkIn.product.subBrand.brand)
-                                )
-                                RouterLink(
-                                    "Open Sub-brand",
-                                    systemSymbol: .cart,
-                                    screen: .fetchSubBrand(checkIn.product.subBrand)
-                                )
-                                RouterLink("Open Product", systemSymbol: .grid, screen: .product(checkIn.product))
-                                RouterLink("Open Check-in", systemSymbol: .checkmarkCircle, screen: .checkIn(checkIn))
-                                Divider()
-                            }
+                            .checkInContextMenu(router: router, profileManager: profileManager, checkIn: checkIn, onCheckInUpdate: { updatedCheckIn in
+                                onCheckInUpdate(updatedCheckIn) }, onDelete: { checkIn in
+                                    showDeleteConfirmationFor = checkIn
+                                })
                             .onAppear {
                                 if checkIn == checkIns.last, isLoading != true {
                                     Task {
@@ -302,6 +258,5 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         }
     }
 }
-
 
 

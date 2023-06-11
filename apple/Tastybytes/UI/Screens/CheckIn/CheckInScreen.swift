@@ -43,7 +43,7 @@ struct CheckInScreen: View {
             editCommentText = editComment?.content ?? ""
         }
     }
-    
+
     var orderedCheckInComments: [CheckInComment] {
         checkInComments.reversed()
     }
@@ -57,9 +57,17 @@ struct CheckInScreen: View {
             CheckInCardView(checkIn: checkIn, loadedFrom: .checkIn)
                 .listRowSeparator(.hidden)
                 .listRowInsets(.init(top: 4, leading: 8, bottom: 4, trailing: 8))
-                .contextMenu {
-                    menuContent
-                }
+                .checkInContextMenu(
+                    router: router,
+                    profileManager: profileManager,
+                    checkIn: checkIn,
+                    onCheckInUpdate: { checkIn in
+                        self.checkIn = checkIn
+                    },
+                    onDelete: { _ in
+                        showDeleteConfirmation = true
+                    }
+                )
                 .accessibilityAddTraits(.isButton)
                 .onTapGesture {
                     focusedField = nil
@@ -122,52 +130,52 @@ struct CheckInScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
-                menuContent
-            } label: {
-                Label("Options menu", systemSymbol: .ellipsis)
-                    .labelStyle(.iconOnly)
-            }
-        }
-    }
+                CheckInShareLinkView(checkIn: checkIn)
+                Divider()
+                RouterLink(
+                    "Open Company",
+                    systemSymbol: .network,
+                    screen: .company(checkIn.product.subBrand.brand.brandOwner)
+                )
+                RouterLink("Open Product", systemSymbol: .grid, screen: .product(checkIn.product))
+                RouterLink("Open Brand", systemSymbol: .cart, screen: .fetchBrand(checkIn.product.subBrand.brand))
+                RouterLink(
+                    "Open Sub-brand",
+                    systemSymbol: .cart,
+                    screen: .fetchSubBrand(checkIn.product.subBrand)
+                )
 
-    @ViewBuilder
-    var menuContent: some View {
-        CheckInShareLinkView(checkIn: checkIn)
-        Divider()
-        RouterLink(
-            "Open Company",
-            systemSymbol: .network,
-            screen: .company(checkIn.product.subBrand.brand.brandOwner)
-        )
-        RouterLink("Open Product", systemSymbol: .grid, screen: .product(checkIn.product))
-        RouterLink("Open Brand", systemSymbol: .cart, screen: .fetchBrand(checkIn.product.subBrand.brand))
-        RouterLink(
-            "Open Sub-brand",
-            systemSymbol: .cart,
-            screen: .fetchSubBrand(checkIn.product.subBrand)
-        )
+                if profileManager.id != checkIn.profile.id {
+                    ReportButton(entity: .checkIn(checkIn))
+                }
 
-        if profileManager.id != checkIn.profile.id {
-            ReportButton(entity: .checkIn(checkIn))
-        }
+                if checkIn.profile.id == profileManager.id {
+                    RouterLink("Edit", systemSymbol: .pencil, sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                        checkIn = updatedCheckIn
+                    }))
+                    Button(
+                        "Delete",
+                        systemSymbol: .trashFill,
+                        role: .destructive,
+                        action: { showDeleteConfirmation = true }
+                    )
+                }
 
-        if checkIn.profile.id == profileManager.id {
-            RouterLink("Edit", systemSymbol: .pencil, sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
-                updateCheckIn(updatedCheckIn)
-            }))
-            Button("Delete", systemSymbol: .trashFill, role: .destructive, action: { showDeleteConfirmation = true })
-        }
-
-        Divider()
-        if profileManager.hasRole(.moderator) {
-            Menu {
-                if profileManager.hasPermission(.canDeleteCheckInsAsModerator) {
-                    Button("Delete as Moderator", systemSymbol: .trashFill, role: .destructive) {
-                        toDeleteCheckInAsModerator = checkIn
+                Divider()
+                if profileManager.hasRole(.moderator) {
+                    Menu {
+                        if profileManager.hasPermission(.canDeleteCheckInsAsModerator) {
+                            Button("Delete as Moderator", systemSymbol: .trashFill, role: .destructive) {
+                                toDeleteCheckInAsModerator = checkIn
+                            }
+                        }
+                    } label: {
+                        Label("Moderation", systemSymbol: .gear)
+                            .labelStyle(.iconOnly)
                     }
                 }
             } label: {
-                Label("Moderation", systemSymbol: .gear)
+                Label("Options menu", systemSymbol: .ellipsis)
                     .labelStyle(.iconOnly)
             }
         }
