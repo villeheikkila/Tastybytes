@@ -76,7 +76,33 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                             .listRowInsets(.init(top: 4, leading: edgeInset, bottom: 4, trailing: edgeInset))
                             .listRowSeparator(.hidden)
                             .contextMenu {
-                                CheckInShareLinkView(checkIn: checkIn)
+                                ControlGroup {
+                                    CheckInShareLinkView(checkIn: checkIn)
+                                    if checkIn.profile.id == profileManager.id {
+                                        RouterLink(
+                                            "Edit",
+                                            systemSymbol: .pencil,
+                                            sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                                                onCheckInUpdate(updatedCheckIn)
+                                            })
+                                        )
+                                        Button(
+                                            "Delete",
+                                            systemSymbol: .trashFill,
+                                            role: .destructive,
+                                            action: { showDeleteConfirmationFor = checkIn }
+                                        )
+                                    } else {
+                                        RouterLink(
+                                            "Check-in",
+                                            systemSymbol: .pencil,
+                                            sheet: .newCheckIn(checkIn.product, onCreation: { checkIn in
+                                                router.navigate(screen: .checkIn(checkIn))
+                                            })
+                                        )
+                                        ReportButton(entity: .checkIn(checkIn))
+                                    }
+                                }
                                 Divider()
                                 RouterLink(
                                     "Open Company",
@@ -96,22 +122,6 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                                 RouterLink("Open Product", systemSymbol: .grid, screen: .product(checkIn.product))
                                 RouterLink("Open Check-in", systemSymbol: .checkmarkCircle, screen: .checkIn(checkIn))
                                 Divider()
-                                if checkIn.profile.id == profileManager.id {
-                                    RouterLink(
-                                        "Edit",
-                                        systemSymbol: .pencil,
-                                        sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
-                                            onCheckInUpdate(updatedCheckIn)
-                                        })
-                                    )
-                                    Button(
-                                        "Delete",
-                                        systemSymbol: .trashFill,
-                                        role: .destructive,
-                                        action: { showDeleteConfirmationFor = checkIn }
-                                    )
-                                }
-                                ReportButton(entity: .checkIn(checkIn))
                             }
                             .onAppear {
                                 if checkIn == checkIns.last, isLoading != true {

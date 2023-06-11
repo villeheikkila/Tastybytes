@@ -8,6 +8,6 @@ struct CheckInShareLinkView: View {
     }
 
     var body: some View {
-        ShareLink("Share Check-in", item: NavigatablePath.checkIn(id: checkIn.id).url, preview: SharePreview(title))
+        ShareLink("Share", item: NavigatablePath.checkIn(id: checkIn.id).url, preview: SharePreview(title))
     }
 }
