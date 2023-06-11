@@ -15,8 +15,6 @@ final class ProfileManager: ObservableObject {
 
   // Account Settings
   var email = ""
-  var csvExport: CSVFile? = nil
-  var showingExporter = false
 
   // Application Settings
   var initialValuesLoaded = false
@@ -282,22 +280,6 @@ final class ProfileManager: ObservableObject {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
       logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
-    }
-  }
-
-  func getCSVExportName() -> String {
-    "\(Config.appName.lowercased())_export_\(Date().customFormat(.fileNameSuffix)).csv"
-  }
-
-  func exportData() async {
-    switch await repository.profile.currentUserExport() {
-    case let .success(csvText):
-      csvExport = CSVFile(initialText: csvText)
-      showingExporter = true
-    case let .failure(error):
-      guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("Failed to export check-in csv. Error: \(error) (\(#file):\(#line))")
     }
   }
 }
