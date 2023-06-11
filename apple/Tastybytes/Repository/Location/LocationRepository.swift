@@ -132,7 +132,6 @@ struct SupabaseLocationRepository: LocationRepository {
 
   func mergeLocations(locationId: UUID, toLocationId: UUID) async -> Result<Void, Error> {
     do {
-      print(Location.MergeLocationParams(locationId: locationId, toLocationId: toLocationId))
       try await client
         .database
         .rpc(

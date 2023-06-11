@@ -16,7 +16,6 @@
 		5C0E36502925A9640072EFBD /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E364F2925A9640072EFBD /* ScannerView.swift */; };
 		5C0E3652292679630072EFBD /* BarcodeScannerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E3651292679630072EFBD /* BarcodeScannerSheet.swift */; };
 		5C0E365429279B240072EFBD /* Barcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E365329279B240072EFBD /* Barcode.swift */; };
-		5C0E36562927F09F0072EFBD /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E36552927F09F0072EFBD /* CameraView.swift */; };
 		5C0E36582928EA910072EFBD /* LegacyPhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E36572928EA910072EFBD /* LegacyPhotoPicker.swift */; };
 		5C0E365A29296FCB0072EFBD /* SubcategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E365929296FCB0072EFBD /* SubcategoryRepository.swift */; };
 		5C0E365C292ADA290072EFBD /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0E365B292ADA290072EFBD /* SummaryView.swift */; };
@@ -144,6 +143,10 @@
 		5CA375682A13D4C3000DF444 /* AccountDeletedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA375672A13D4C3000DF444 /* AccountDeletedScreen.swift */; };
 		5CA7A533299D3F010066F604 /* ProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A532299D3F010066F604 /* ProgressButton.swift */; };
 		5CA7A53729A0E7750066F604 /* ProductFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A53629A0E7750066F604 /* ProductFilterSheet.swift */; };
+		5CAC99852A361209003729C6 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAC99842A361209003729C6 /* CameraView.swift */; };
+		5CAC99872A361241003729C6 /* CameraModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAC99862A361241003729C6 /* CameraModel.swift */; };
+		5CAC99892A36125D003729C6 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAC99882A36125D003729C6 /* Camera.swift */; };
+		5CAC998D2A36247E003729C6 /* FullScreenCameraModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAC998C2A36247E003729C6 /* FullScreenCameraModifier.swift */; };
 		5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */; };
 		5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */; };
 		5CB1C24728F9B551000B0EB4 /* CheckInCommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24628F9B551000B0EB4 /* CheckInCommentRepository.swift */; };
@@ -240,7 +243,6 @@
 		5C0E364F2925A9640072EFBD /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		5C0E3651292679630072EFBD /* BarcodeScannerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerSheet.swift; sourceTree = "<group>"; };
 		5C0E365329279B240072EFBD /* Barcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Barcode.swift; sourceTree = "<group>"; };
-		5C0E36552927F09F0072EFBD /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		5C0E36572928EA910072EFBD /* LegacyPhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyPhotoPicker.swift; sourceTree = "<group>"; };
 		5C0E365929296FCB0072EFBD /* SubcategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubcategoryRepository.swift; sourceTree = "<group>"; };
 		5C0E365B292ADA290072EFBD /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
@@ -369,6 +371,10 @@
 		5CA375672A13D4C3000DF444 /* AccountDeletedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletedScreen.swift; sourceTree = "<group>"; };
 		5CA7A532299D3F010066F604 /* ProgressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressButton.swift; sourceTree = "<group>"; };
 		5CA7A53629A0E7750066F604 /* ProductFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterSheet.swift; sourceTree = "<group>"; };
+		5CAC99842A361209003729C6 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		5CAC99862A361241003729C6 /* CameraModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModel.swift; sourceTree = "<group>"; };
+		5CAC99882A36125D003729C6 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		5CAC998C2A36247E003729C6 /* FullScreenCameraModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCameraModifier.swift; sourceTree = "<group>"; };
 		5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsView.swift; sourceTree = "<group>"; };
 		5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInRepository.swift; sourceTree = "<group>"; };
 		5CB1C24628F9B551000B0EB4 /* CheckInCommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInCommentRepository.swift; sourceTree = "<group>"; };
@@ -995,6 +1001,17 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		5CAC99832A3611FA003729C6 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				5CAC99842A361209003729C6 /* CameraView.swift */,
+				5CAC99862A361241003729C6 /* CameraModel.swift */,
+				5CAC99882A36125D003729C6 /* Camera.swift */,
+				5CAC998C2A36247E003729C6 /* FullScreenCameraModifier.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
 		5CB4E02829DF3A0300135ADA /* Report */ = {
 			isa = PBXGroup;
 			children = (
@@ -1194,12 +1211,12 @@
 		5CFB562D28F5969300F13A1E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5CAC99832A3611FA003729C6 /* Camera */,
 				5CCD4F5E2A32F08400320F2F /* ShareLink */,
 				5C663F342932AEB9006F9A97 /* CategoryNameView.swift */,
 				5C0E365B292ADA290072EFBD /* SummaryView.swift */,
 				5CED432728FD417E003F8194 /* ProductMutationView.swift */,
 				5C0E36572928EA910072EFBD /* LegacyPhotoPicker.swift */,
-				5C0E36552927F09F0072EFBD /* CameraView.swift */,
 				5C0E364F2925A9640072EFBD /* ScannerView.swift */,
 				5C32C41129E9F82F008CE8A9 /* SubcategoryLabelView.swift */,
 				5CFB563228F597ED00F13A1E /* RatingView.swift */,
@@ -1397,13 +1414,14 @@
 				5CED432C28FD69DE003F8194 /* CompanySearchSheet.swift in Sources */,
 				5CD10A5728F98D490001CFC2 /* Product.swift in Sources */,
 				5C7C3585299AC166009A3C09 /* CheckInCommentView.swift in Sources */,
+				5CAC998D2A36247E003729C6 /* FullScreenCameraModifier.swift in Sources */,
 				5CDC9F8C29E3D8AB00B6082F /* AddSubcategorySheet.swift in Sources */,
 				5CD10A5328F98CFC0001CFC2 /* Brand.swift in Sources */,
+				5CAC99852A361209003729C6 /* CameraView.swift in Sources */,
 				5CB4E02A29DF3A1700135ADA /* ReportSheet.swift in Sources */,
 				5C323E93298C50D400B005A9 /* DoubleExtensions.swift in Sources */,
 				5C919E1E28FF01480055CFD2 /* Flavor.swift in Sources */,
 				5C919E1A28FEE2DE0055CFD2 /* FriendSheet.swift in Sources */,
-				5C0E36562927F09F0072EFBD /* CameraView.swift in Sources */,
 				5C323E8F298C500400B005A9 /* URLExtensions.swift in Sources */,
 				5C367EB629A3F87C000A7149 /* AppDelegate.swift in Sources */,
 				5CDC9F9329E3D91600B6082F /* NewFlavorSheet.swift in Sources */,
@@ -1419,6 +1437,7 @@
 				5C0E365A29296FCB0072EFBD /* SubcategoryRepository.swift in Sources */,
 				5C32C41229E9F82F008CE8A9 /* SubcategoryLabelView.swift in Sources */,
 				5CDC9F9F29E4577B00B6082F /* Tab.swift in Sources */,
+				5CAC99892A36125D003729C6 /* Camera.swift in Sources */,
 				5C20A51029AA5A0500ABBA74 /* AdminTab.swift in Sources */,
 				5CED432028FAB5F5003F8194 /* ViewExtensions.swift in Sources */,
 				5CE90091292101C8003DE697 /* AboutScreen.swift in Sources */,
@@ -1562,6 +1581,7 @@
 				5C12B42D2902A12A001EE549 /* AppearanceSettingsScreen.swift in Sources */,
 				5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */,
 				5C2146EB29A96C090005422D /* NameTagSheet.swift in Sources */,
+				5CAC99872A361241003729C6 /* CameraModel.swift in Sources */,
 				5CB1C24D28F9C087000B0EB4 /* AuthRepository.swift in Sources */,
 				5CED433628FDA8B9003F8194 /* SubcategorySheet.swift in Sources */,
 				5CD8D35529CDF58F001C5930 /* AppDataManager.swift in Sources */,

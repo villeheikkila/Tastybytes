@@ -180,13 +180,10 @@ struct CheckInSheet: View {
         } message: {
             Text("Pick a photo")
         }
-        .fullScreenCover(isPresented: $showCamera, content: {
-            CameraView(onClose: {
-                showCamera = false
-            }, onCapture: { image in Task {
+        .fullScreenCamera(isPresented: $showCamera, onCapture: { image in
+            Task {
                 await setImageFromCamera(image)
             }
-            })
         })
         .toolbar {
             toolbarContent
@@ -201,7 +198,7 @@ struct CheckInSheet: View {
         ToolbarItemGroup(placement: .navigationBarLeading) {
             Button("Cancel", role: .cancel, action: { dismiss() })
         }
-        ToolbarItemGroup(placement: .topBarLeading) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
             ProgressButton(action == .create ? "Check-in!" : "Update Check-in!", action: {
                 switch action {
                 case .create:
