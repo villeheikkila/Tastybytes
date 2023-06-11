@@ -188,9 +188,21 @@ struct CheckInSheet: View {
             }
             })
         })
-        .navigationBarItems(
-            leading: Button("Cancel", role: .cancel, action: { dismiss() }),
-            trailing: ProgressButton(action == .create ? "Check-in!" : "Update Check-in!", action: {
+        .toolbar {
+            toolbarContent
+        }
+        .onAppear {
+            servingStyles = appDataManager.categories.first(where: { $0.id == product.category.id })?
+                .servingStyles ?? []
+        }
+    }
+    
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .navigationBarLeading) {
+            Button("Cancel", role: .cancel, action: { dismiss() })
+        }
+        ToolbarItemGroup(placement: .topBarLeading) {
+            ProgressButton(action == .create ? "Check-in!" : "Update Check-in!", action: {
                 switch action {
                 case .create:
                     if let onCreation {
@@ -207,11 +219,8 @@ struct CheckInSheet: View {
                 }
                 feedbackManager.trigger(.notification(.success))
                 dismiss()
-            }).bold()
-        )
-        .onAppear {
-            servingStyles = appDataManager.categories.first(where: { $0.id == product.category.id })?
-                .servingStyles ?? []
+            })
+            .bold()
         }
     }
 

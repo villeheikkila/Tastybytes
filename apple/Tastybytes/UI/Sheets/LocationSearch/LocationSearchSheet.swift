@@ -71,11 +71,11 @@ struct LocationSearchSheet: View {
                 }
             }
         }
-        .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: {
-            dismiss()
-        }))
-        .navigationTitle(title)
         .searchable(text: $searchText)
+        .navigationTitle(title)
+        .toolbar {
+            toolbarContent
+        }
         .onChange(of: searchText, debounceTime: 0.5, perform: { _ in
             search(for: searchText)
         })
@@ -85,6 +85,13 @@ struct LocationSearchSheet: View {
         .onChange(of: locationManager.location) { _, latestLocation in
             guard nearbyLocations.isEmpty else { return }
             Task { await getSuggestions(latestLocation) }
+        }
+    }
+    
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            Button("Cancel", role: .cancel, action: { dismiss() })
+                .bold()
         }
     }
 

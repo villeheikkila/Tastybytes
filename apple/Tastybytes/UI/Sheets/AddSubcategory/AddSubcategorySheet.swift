@@ -1,21 +1,32 @@
 import SwiftUI
 
 struct AddSubcategorySheet: View {
-  @State private var newSubcategoryName = ""
-  let category: CategoryProtocol
-  let onSubmit: (_ newSubcategoryName: String) async -> Void
+    @Environment(\.dismiss) private var dismiss
+    @State private var newSubcategoryName = ""
+    let category: CategoryProtocol
+    let onSubmit: (_ newSubcategoryName: String) async -> Void
 
-  var body: some View {
-    DismissableSheet(title: "Add subcategory to \(category.name)") { dismiss in
-      Form {
-        Section("Add Subcategory") {
-          TextField("Name", text: $newSubcategoryName)
-          ProgressButton("Add", action: {
-            await onSubmit(newSubcategoryName)
-            dismiss()
-          }).disabled(newSubcategoryName.isEmpty)
+    var body: some View {
+        Form {
+            Section("Add Subcategory") {
+                TextField("Name", text: $newSubcategoryName)
+                ProgressButton("Add", action: {
+                    await onSubmit(newSubcategoryName)
+                    dismiss()
+                }).disabled(newSubcategoryName.isEmpty)
+            }
+            .navigationTitle("Add subcategory to \(category.name)")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                toolbarContent
+            }
         }
-      }
-    }.navigationBarTitleDisplayMode(.inline)
-  }
+    }
+    
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarLeading) {
+            Button("Cancel", role: .cancel, action: { dismiss() })
+                .bold()
+        }
+    }
 }

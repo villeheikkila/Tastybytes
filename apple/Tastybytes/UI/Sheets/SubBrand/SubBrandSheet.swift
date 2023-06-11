@@ -46,7 +46,16 @@ struct SubBrandSheet: View {
         }
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
         .navigationTitle("Sub-brands")
-        .navigationBarItems(trailing: Button("Cancel", role: .cancel, action: { dismiss() }).bold())
+        .toolbar {
+            toolbarContent
+        }
+    }
+
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            Button("Cancel", role: .cancel, action: { dismiss() })
+                .bold()
+        }
     }
 
     func createNewSubBrand() async {

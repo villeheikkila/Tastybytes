@@ -1,19 +1,29 @@
 import SwiftUI
 
 struct NewFlavorSheet: View {
-  @State private var name = ""
+    @Environment(\.dismiss) private var dismiss
+    @State private var name = ""
 
-  let onSubmit: (_ name: String) async -> Void
+    let onSubmit: (_ name: String) async -> Void
 
-  var body: some View {
-    DismissableSheet(title: "Add Flavor") { dismiss in
-      Form {
-        TextField("Name", text: $name)
-        ProgressButton("Add", action: {
-          await onSubmit(name)
-          dismiss()
-        })
-      }
+    var body: some View {
+        Form {
+            TextField("Name", text: $name)
+            ProgressButton("Add", action: {
+                await onSubmit(name)
+                dismiss()
+            })
+        }
+        .navigationTitle("Add Flavor")
+        .toolbar {
+            toolbarContent
+        }
     }
-  }
+    
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarLeading) {
+            Button("Cancel", role: .cancel, action: { dismiss() })
+                .bold()
+        }
+    }
 }

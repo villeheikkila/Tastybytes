@@ -142,7 +142,6 @@
 		5CA375662A116AD4000DF444 /* ScanTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA375652A116AD4000DF444 /* ScanTextButton.swift */; };
 		5CA375682A13D4C3000DF444 /* AccountDeletedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA375672A13D4C3000DF444 /* AccountDeletedScreen.swift */; };
 		5CA7A533299D3F010066F604 /* ProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A532299D3F010066F604 /* ProgressButton.swift */; };
-		5CA7A535299E8ECB0066F604 /* DismissableSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A534299E8ECB0066F604 /* DismissableSheetView.swift */; };
 		5CA7A53729A0E7750066F604 /* ProductFilterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA7A53629A0E7750066F604 /* ProductFilterSheet.swift */; };
 		5CB1C24328F99E4C000B0EB4 /* ReactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */; };
 		5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */; };
@@ -367,7 +366,6 @@
 		5CA375652A116AD4000DF444 /* ScanTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextButton.swift; sourceTree = "<group>"; };
 		5CA375672A13D4C3000DF444 /* AccountDeletedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeletedScreen.swift; sourceTree = "<group>"; };
 		5CA7A532299D3F010066F604 /* ProgressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressButton.swift; sourceTree = "<group>"; };
-		5CA7A534299E8ECB0066F604 /* DismissableSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissableSheetView.swift; sourceTree = "<group>"; };
 		5CA7A53629A0E7750066F604 /* ProductFilterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFilterSheet.swift; sourceTree = "<group>"; };
 		5CB1C24228F99E4C000B0EB4 /* ReactionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsView.swift; sourceTree = "<group>"; };
 		5CB1C24428F9AF80000B0EB4 /* CheckInRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInRepository.swift; sourceTree = "<group>"; };
@@ -1217,7 +1215,6 @@
 				5CD10A3A28F6A1FE0001CFC2 /* CheckInCardView.swift */,
 				5C663F3229322016006F9A97 /* ServingStyleLabelView.swift */,
 				5C66745829C71210005380B7 /* BlurHashPlaceholder.swift */,
-				5CA7A534299E8ECB0066F604 /* DismissableSheetView.swift */,
 				5C353CBD29A248300067C4EE /* BottomOverlay.swift */,
 				5C09BEC829A53E0100331AEB /* CategoryView.swift */,
 				5C7C35DC299AE042009A3C09 /* ProductItemView.swift */,
@@ -1416,7 +1413,6 @@
 				5C25C672299561BD00C07953 /* ProfileOnboarding.swift in Sources */,
 				5CC2FE8F29196A5D002BDF83 /* LocationSearchSheet.swift in Sources */,
 				5C0E365A29296FCB0072EFBD /* SubcategoryRepository.swift in Sources */,
-				5CA7A535299E8ECB0066F604 /* DismissableSheetView.swift in Sources */,
 				5C32C41229E9F82F008CE8A9 /* SubcategoryLabelView.swift in Sources */,
 				5CDC9F9F29E4577B00B6082F /* Tab.swift in Sources */,
 				5C20A51029AA5A0500ABBA74 /* AdminTab.swift in Sources */,

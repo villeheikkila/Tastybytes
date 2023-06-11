@@ -60,7 +60,9 @@ struct ServingStyleManagementSheet: View {
             }
         }
         .navigationBarTitle("Pick Serving Style")
-        .navigationBarItems(trailing: Button("Done", role: .cancel, action: { dismiss() }).bold())
+        .toolbar {
+            toolbarContent
+        }
         .alert("Edit Serving Style", isPresented: $showEditServingStyle, actions: {
             TextField("TextField", text: $servingStyleName)
             Button("Cancel", role: .cancel, action: {})
@@ -82,6 +84,13 @@ struct ServingStyleManagementSheet: View {
         }
         .task {
             await getAllServingStyles()
+        }
+    }
+
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            Button("Done", action: { dismiss() })
+                .bold()
         }
     }
 

@@ -40,9 +40,18 @@ struct NameTagSheet: View {
     }
     .navigationTitle("Name Tag")
     .navigationBarTitleDisplayMode(.inline)
-    .navigationBarItems(
-      leading: Button("Close", action: { dismiss() }).bold(),
-      trailing: ProfileShareLinkView(profile: profileManager.profile)
-    )
+    .toolbar {
+        toolbarContent
+    }
   }
+    
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarLeading) {
+            Button("Close", role: .cancel, action: { dismiss() })
+                .bold()
+        }
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            ProfileShareLinkView(profile: profileManager.profile)
+        }
+    }
 }

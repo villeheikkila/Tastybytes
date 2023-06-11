@@ -47,7 +47,9 @@ struct DuplicateProductSheet: View {
             Task { await searchProducts(name: searchTerm) }
         }
         .navigationTitle(mode == .mergeDuplicate ? "Merge duplicates" : "Mark as duplicate")
-        .navigationBarItems(leading: Button("Close", role: .cancel, action: { dismiss() }).bold())
+        .toolbar {
+            toolbarContent
+        }
         .onChange(of: searchTerm, debounceTime: 0.2) { newValue in
             Task { await searchProducts(name: newValue) }
         }
@@ -69,6 +71,12 @@ struct DuplicateProductSheet: View {
                     await mergeProducts(presenting)
                 }
             }
+        }
+    }
+    
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .navigationBarLeading) {
+            Button("Close", role: .cancel, action: { dismiss() }).bold()
         }
     }
 

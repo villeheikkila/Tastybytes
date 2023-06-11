@@ -77,14 +77,9 @@ struct CheckInScreen: View {
                 leaveCommentSection
             }
         )
-        .navigationBarItems(
-            trailing: Menu {
-                menuContent
-            } label: {
-                Label("Options menu", systemSymbol: .ellipsis)
-                    .labelStyle(.iconOnly)
-            }
-        )
+        .toolbar {
+            toolbarContent
+        }
         .confirmationDialog("Are you sure you want to delete check-in? The data will be permanently lost.",
                             isPresented: $showDeleteConfirmation,
                             titleVisibility: .visible,
@@ -121,6 +116,17 @@ struct CheckInScreen: View {
         .task {
             await loadCheckInComments()
             await notificationManager.markCheckInAsRead(checkIn: checkIn)
+        }
+    }
+
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            Menu {
+                menuContent
+            } label: {
+                Label("Options menu", systemSymbol: .ellipsis)
+                    .labelStyle(.iconOnly)
+            }
         }
     }
 

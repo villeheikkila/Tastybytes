@@ -36,6 +36,15 @@ struct CategoryPickerSheet: View {
     }
     .searchable(text: $searchTerm)
     .navigationTitle("Categories")
-    .navigationBarItems(trailing: Button("Done", action: { dismiss() }).bold())
+    .toolbar {
+        toolbarContent
+    }
   }
+    
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            Button("Done", action: { dismiss() })
+                .bold()
+        }
+    }
 }
