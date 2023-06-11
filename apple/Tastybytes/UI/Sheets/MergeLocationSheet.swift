@@ -74,7 +74,7 @@ struct MergeLocationSheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("merging location failed. error: \(error)")
+            logger.error("Merging location failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -86,7 +86,7 @@ struct MergeLocationSheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("searching locations failed. error: \(error)")
+            logger.error("Searching locations failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

@@ -54,7 +54,7 @@ struct BarcodeManagementSheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to fetch barcodes for product. error: \(error)")
+            logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -69,7 +69,7 @@ struct BarcodeManagementSheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to fetch barcodes for product. error: \(error)")
+            logger.error("Failed to fetch barcodes for product. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

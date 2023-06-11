@@ -104,7 +104,7 @@ struct EditCompanySheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to edit company. error: \(error)")
+            logger.error("Failed to edit company. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -117,7 +117,7 @@ struct EditCompanySheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to send company edit suggestion. error: \(error)")
+            logger.error("Failed to send company edit suggestion. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -134,7 +134,7 @@ struct EditCompanySheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("uplodaing company logo failed. error: \(error)")
+            logger.error("Uplodaing company logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

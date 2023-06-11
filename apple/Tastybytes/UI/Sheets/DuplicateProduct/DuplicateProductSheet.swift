@@ -107,7 +107,7 @@ struct DuplicateProductSheet: View {
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
             logger
-                .error("merging product \(product.id) to \(to.id) failed. error: \(error)")
+                .error("Merging product \(product.id) to \(to.id) failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -119,7 +119,7 @@ struct DuplicateProductSheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("searching products failed. error: \(error)")
+            logger.error("Searching products failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

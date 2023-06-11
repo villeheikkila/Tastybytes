@@ -49,7 +49,7 @@ final class FriendManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed add new friend '\(receiver)'. error: \(error)")
+            logger.error("Failed add new friend '\(receiver)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -72,8 +72,8 @@ final class FriendManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.warning(
-                "failed to update friend request. error: \(error)"
+            logger.error(
+                "Failed to update friend request. Error: \(error) (\(#file):\(#line))"
             )
         }
     }
@@ -89,7 +89,7 @@ final class FriendManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to remove friend request '\(friend.id)'. error: \(error)")
+            logger.error("Failed to remove friend request '\(friend.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -124,12 +124,12 @@ final class FriendManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to load friends for current user. error: \(error)")
+            logger.error("Failed to load friends for current user. Error: \(error) (\(#file):\(#line))")
         }
     }
 
     func initialize(profile: Profile) async {
-        logger.info("initializing friend manager")
+        logger.info("Initializing friend manager")
         self.profile = profile
         await refresh()
     }
@@ -145,7 +145,7 @@ final class FriendManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to unblock user \(friend.id). error: \(error)")
+            logger.error("Failed to unblock user \(friend.id). Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -165,7 +165,7 @@ final class FriendManager {
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
                 feedbackManager.toggle(.error(.unexpected))
-                logger.error("failed to block user \(user.id). error: \(error)")
+                logger.error("Failed to block user \(user.id). Error: \(error) (\(#file):\(#line))")
             }
         }
     }

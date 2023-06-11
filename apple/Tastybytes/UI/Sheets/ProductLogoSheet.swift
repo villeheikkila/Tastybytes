@@ -77,7 +77,7 @@ struct ProductLogoSheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("uplodaing product logo failed. error: \(error)")
+            logger.error("Uplodaing product logo failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

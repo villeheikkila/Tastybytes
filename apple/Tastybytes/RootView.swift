@@ -93,7 +93,7 @@ struct RootView: View {
         do {
             _ = try await supabaseClient.auth.session(from: url)
         } catch {
-            logger.error("failed to load session from url: \(url). error: \(error)")
+            logger.error("Failed to load session from url: \(url). Error: \(error) (\(#file):\(#line))")
         }
     }
 }

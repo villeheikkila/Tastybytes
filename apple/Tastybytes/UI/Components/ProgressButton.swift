@@ -44,7 +44,7 @@ struct ProgressButton<LabelView: View>: View {
       if actionOptions.contains(.showProgressView) {
         progressViewTask = Task {
           do {
-            try await Task.sleep(nanoseconds: 150_000_000)
+            try! await Task.sleep(nanoseconds: 150_000_000)
             isLoading = true
           } catch {
             logger.info("Timer cancelled")

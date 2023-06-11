@@ -122,7 +122,7 @@ struct ProfileProductListView: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("error occured while loading products. error: \(error)")
+      logger.error("Error occured while loading products. Error: \(error) (\(#file):\(#line))")
     }
   }
 }

@@ -65,7 +65,7 @@ struct FriendsScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to load friends' . error: \(error)")
+      logger.error("Failed to load friends' . Error: \(error) (\(#file):\(#line))")
     }
   }
 }

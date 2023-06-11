@@ -44,7 +44,7 @@ final class NotificationManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed. error: \(error)")
+            logger.error("Failed to get all unread notifications. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -71,7 +71,7 @@ final class NotificationManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed. error: \(error)")
+            logger.error("Failed to refresh notifications. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -86,7 +86,7 @@ final class NotificationManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed. error: \(error)")
+            logger.error("Failed to delete all notifications. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -105,7 +105,7 @@ final class NotificationManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed. error: \(error)")
+            logger.error("Failed to mark all notifications as read. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -125,7 +125,7 @@ final class NotificationManager {
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
                 feedbackManager.toggle(.error(.unexpected))
-                logger.error("failed. error: \(error)")
+                logger.error("Failed to mark all friend requests as read. Error: \(error) (\(#file):\(#line))")
             }
         }
     }
@@ -157,7 +157,7 @@ final class NotificationManager {
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
                 feedbackManager.toggle(.error(.unexpected))
-                logger.error("failed to mark check-in as read \(checkIn.id). error: \(error)")
+                logger.error("Failed to mark check-in as read \(checkIn.id). Error: \(error) (\(#file):\(#line))")
             }
         }
     }
@@ -169,7 +169,7 @@ final class NotificationManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to mark '\(notification.id)' as read. error: \(error)")
+            logger.error("Failed to mark '\(notification.id)' as read. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -186,7 +186,7 @@ final class NotificationManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete notification. error: \(error)")
+            logger.error("Failed to delete notification. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -201,7 +201,7 @@ final class NotificationManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete notification '\(notification.id)'. error: \(error)")
+            logger.error("Failed to delete notification '\(notification.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -222,7 +222,7 @@ final class NotificationManager {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to update push notification settings for device. error: \(error)")
+            logger.error("Failed to update push notification settings for device. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -230,7 +230,7 @@ final class NotificationManager {
         Messaging.messaging().token { token, error in
             if let error {
                 let logger = Logger(category: "Messaging")
-                logger.error("failed to fetch FCM registration token. error: \(error)")
+                logger.error("Failed to fetch FCM registration token. Error: \(error) (\(#file):\(#line))")
             } else if let token {
                 Task {
                     let logger = Logger(category: "PushNotificationToken")
@@ -243,7 +243,7 @@ final class NotificationManager {
                     case let .failure(error):
                         logger
                             .error(
-                                "failed to save FCM token (\(String(describing: token))). error: \(error)"
+                                "Failed to save FCM token (\(String(describing: token))). Error: \(error) (\(#file):\(#line))"
                             )
                     }
                 }

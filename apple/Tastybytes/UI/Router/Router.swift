@@ -18,9 +18,9 @@ final class Router {
         guard let data = try? Data(contentsOf: tab.cachesDirectoryPath) else { return }
         do {
             path = try JSONDecoder().decode([Screen].self, from: data)
-            logger.info("navigation stack restored")
+            logger.info("Navigation stack restored")
         } catch {
-            logger.error("failed to load stored navigation stack")
+            logger.error("Failed to load stored navigation stack. Error \(error) (\(#file):\(#line))")
         }
     }
     
@@ -28,7 +28,7 @@ final class Router {
         do {
             try JSONEncoder().encode(path).write(to: tab.cachesDirectoryPath)
         } catch {
-            logger.error("failed to store navigation stack")
+            logger.error("Failed to store navigation stack. Error \(error) (\(#file):\(#line))")
         }
     }
 
@@ -63,7 +63,7 @@ final class Router {
                             resetStack: resetStack
                         )
                     }
-                    logger.error("request for product with \(id) failed. error: \(error)")
+                    logger.error("Request for product with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .checkIn(id):
                 switch await repository.checkIn.getById(id: id) {
@@ -74,7 +74,7 @@ final class Router {
                         screen: .error(reason: "Failed to load requested check-in page"),
                         resetStack: resetStack
                     )
-                    logger.error("request for check-in with \(id) failed. error: \(error)")
+                    logger.error("Request for check-in with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .company(id):
                 switch await repository.company.getById(id: id) {
@@ -85,7 +85,7 @@ final class Router {
                         screen: .error(reason: "Failed to load requested company page"),
                         resetStack: resetStack
                     )
-                    logger.error("request for company with \(id) failed. error: \(error)")
+                    logger.error("Request for company with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .brand(id):
                 switch await repository.brand.getJoinedById(id: id) {
@@ -96,7 +96,7 @@ final class Router {
                         screen: .error(reason: "Failed to load requested company page"),
                         resetStack: resetStack
                     )
-                    logger.error("request for brand with \(id) failed. error: \(error)")
+                    logger.error("Request for brand with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             case let .profile(id):
                 switch await repository.profile.getById(id: id) {
@@ -121,7 +121,7 @@ final class Router {
                         screen: .error(reason: "Failed to load requested location page"),
                         resetStack: resetStack
                     )
-                    logger.error("request for location with \(id) failed. error: \(error)")
+                    logger.error("Request for location with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
         }

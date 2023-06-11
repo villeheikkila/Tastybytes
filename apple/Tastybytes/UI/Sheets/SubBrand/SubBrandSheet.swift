@@ -71,7 +71,7 @@ struct SubBrandSheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("saving sub-brand failed. error: \(error)")
+            logger.error("Saving sub-brand failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

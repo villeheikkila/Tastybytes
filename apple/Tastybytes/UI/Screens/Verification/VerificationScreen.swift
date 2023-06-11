@@ -180,7 +180,7 @@ struct VerificationScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to verify brand \(brand.id). error: \(error)")
+            logger.error("Failed to verify brand \(brand.id). Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -195,7 +195,7 @@ struct VerificationScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to verify brand \(subBrand.id). error: \(error)")
+            logger.error("Failed to verify brand \(subBrand.id). Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -210,7 +210,7 @@ struct VerificationScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to verify company. error: \(error)")
+            logger.error("Failed to verify company. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -225,7 +225,7 @@ struct VerificationScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to verify product. error: \(error)")
+            logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -237,7 +237,7 @@ struct VerificationScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete product. error: \(error)")
+            logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -258,7 +258,7 @@ struct VerificationScreen: View {
                 case let .failure(error):
                     guard !error.localizedDescription.contains("cancelled") else { return }
                     feedbackManager.toggle(.error(.unexpected))
-                    logger.error("loading unverfied products failed. error: \(error)")
+                    logger.error("Loading unverfied products failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
         case .companies:
@@ -273,7 +273,7 @@ struct VerificationScreen: View {
                 case let .failure(error):
                     guard !error.localizedDescription.contains("cancelled") else { return }
                     feedbackManager.toggle(.error(.unexpected))
-                    logger.error("loading unverfied companies failed. error: \(error)")
+                    logger.error("Loading unverfied companies failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
         case .brands:
@@ -288,7 +288,7 @@ struct VerificationScreen: View {
                 case let .failure(error):
                     guard !error.localizedDescription.contains("cancelled") else { return }
                     feedbackManager.toggle(.error(.unexpected))
-                    logger.error("loading unverfied brands failed. error: \(error)")
+                    logger.error("Loading unverfied brands failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
         case .subBrands:
@@ -303,7 +303,7 @@ struct VerificationScreen: View {
                 case let .failure(error):
                     guard !error.localizedDescription.contains("cancelled") else { return }
                     feedbackManager.toggle(.error(.unexpected))
-                    logger.error("loading unverfied sub-brands failed. error: \(error)")
+                    logger.error("Loading unverfied sub-brands failed. Error: \(error) (\(#file):\(#line))")
                 }
             }
         }

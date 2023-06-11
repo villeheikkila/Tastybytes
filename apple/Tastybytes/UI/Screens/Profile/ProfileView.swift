@@ -278,7 +278,7 @@ struct ProfileView: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("uplodaing avatar for \(userId) failed. error: \(error)")
+      logger.error("uplodaing avatar for \(userId) failed. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -293,7 +293,7 @@ struct ProfileView: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("fetching profile data failed. error: \(error)")
+      logger.error("fetching profile data failed. Error: \(error) (\(#file):\(#line))")
     }
   }
 }

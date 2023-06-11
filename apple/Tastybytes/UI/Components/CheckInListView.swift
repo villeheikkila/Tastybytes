@@ -236,7 +236,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("deleting check-in failed. error: \(error)")
+            logger.error("Deleting check-in failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -275,7 +275,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("fetching check-ins failed. error: \(error)")
+            logger.error("Fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 

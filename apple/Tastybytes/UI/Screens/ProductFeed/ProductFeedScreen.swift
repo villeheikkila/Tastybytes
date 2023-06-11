@@ -118,7 +118,7 @@ struct ProductFeedScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("fetching check-ins failed. error: \(error)")
+      logger.error("fetching check-ins failed. Error: \(error) (\(#file):\(#line))")
     }
   }
 }

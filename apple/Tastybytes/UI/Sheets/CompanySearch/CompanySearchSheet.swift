@@ -100,7 +100,7 @@ struct CompanySearchSheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to search companies. error: \(error)")
+            logger.error("Failed to search companies. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -113,7 +113,7 @@ struct CompanySearchSheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to create new company'. error: \(error)")
+            logger.error("Failed to create new company'. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

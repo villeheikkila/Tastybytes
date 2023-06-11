@@ -164,7 +164,7 @@ struct ProductScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to load product summary. error: \(error)")
+      logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -182,7 +182,7 @@ struct ProductScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to refresh product by id. error: \(error)")
+      logger.error("Failed to refresh product by id. Error: \(error) (\(#file):\(#line))")
     }
 
     switch await summaryPromise {
@@ -193,7 +193,7 @@ struct ProductScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to load product summary. error: \(error)")
+      logger.error("Failed to load product summary. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -209,7 +209,7 @@ struct ProductScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to verify product. error: \(error)")
+      logger.error("Failed to verify product. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -221,7 +221,7 @@ struct ProductScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete product. error: \(error)")
+      logger.error("Failed to delete product. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -232,7 +232,7 @@ struct ProductScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("adding barcode \(barcode.barcode) to product failed. error: \(error)")
+      logger.error("adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
     }
   }
 }

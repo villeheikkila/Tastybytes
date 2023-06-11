@@ -91,7 +91,7 @@ struct LocationScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to get summary. error: \(error)")
+      logger.error("Failed to get summary. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -103,7 +103,7 @@ struct LocationScreen: View {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete location. error: \(error)")
+      logger.error("Failed to delete location. Error: \(error) (\(#file):\(#line))")
     }
   }
 }

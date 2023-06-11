@@ -243,7 +243,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete check-in. error: \(error)")
+            logger.error("Failed to delete check-in. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -258,7 +258,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to load check-in comments'. error: \(error)")
+            logger.error("Failed to load check-in comments'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -276,7 +276,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to update comment \(editComment.id)'. error: \(error)")
+            logger.error("Failed to update comment \(editComment.id)'. Error: \(error) (\(#file):\(#line))")
         }
         editCommentText = ""
     }
@@ -292,7 +292,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete comment '\(comment.id)'. error: \(error)")
+            logger.error("Failed to delete comment '\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -307,7 +307,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete comment as moderator'\(comment.id)'. error: \(error)")
+            logger.error("Failed to delete comment as moderator'\(comment.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -320,7 +320,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to delete check-in as moderator'\(checkIn.id)'. error: \(error)")
+            logger.error("Failed to delete check-in as moderator'\(checkIn.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
 
@@ -339,7 +339,7 @@ struct CheckInScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("failed to send comment. error: \(error)")
+            logger.error("Failed to send comment. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

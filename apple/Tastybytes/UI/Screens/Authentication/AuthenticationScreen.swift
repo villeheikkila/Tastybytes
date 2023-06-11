@@ -183,7 +183,7 @@ struct AuthenticationScreen: View {
           break
         case let .failure(error):
           feedbackManager.toggle(.error(.custom(error.localizedDescription)))
-          logger.error("Error occured when trying to \(scene.rawValue). error: \(error)")
+          logger.error("Error occured when trying to \(scene.rawValue). Error: \(error) (\(#file):\(#line))")
         }
       case .signUp:
         switch await repository.auth.signUp(username: username, email: email, password: password) {
@@ -192,7 +192,7 @@ struct AuthenticationScreen: View {
           onSignUp()
         case let .failure(error):
           feedbackManager.toggle(.error(.custom(error.localizedDescription)))
-          logger.error("Error occured when trying to \(scene.rawValue). error: \(error)")
+          logger.error("Error occured when trying to \(scene.rawValue). Error: \(error) (\(#file):\(#line))")
         }
       case .resetPassword:
         switch await repository.auth.updatePassword(newPassword: password) {
@@ -201,7 +201,7 @@ struct AuthenticationScreen: View {
           onSignUp()
         case let .failure(error):
           feedbackManager.toggle(.error(.custom(error.localizedDescription)))
-          logger.error("Error occured when trying to \(scene.rawValue). error: \(error)")
+          logger.error("Error occured when trying to \(scene.rawValue). Error: \(error) (\(#file):\(#line))")
         }
       case .forgotPassword:
         switch await repository.auth.sendPasswordResetEmail(email: email) {
@@ -209,7 +209,7 @@ struct AuthenticationScreen: View {
           feedbackManager.toggle(.success("Password reset email sent!"))
         case let .failure(error):
           feedbackManager.toggle(.error(.custom(error.localizedDescription)))
-          logger.error("Error occured when trying to \(scene.rawValue). error: \(error)")
+          logger.error("Error occured when trying to \(scene.rawValue). Error: \(error) (\(#file):\(#line))")
         }
       case .magicLink:
         switch await repository.auth.sendMagicLink(email: email) {
@@ -217,7 +217,7 @@ struct AuthenticationScreen: View {
           feedbackManager.toggle(.success("Magic link sent!"))
         case let .failure(error):
           feedbackManager.toggle(.error(.custom(error.localizedDescription)))
-          logger.error("Error occured when trying to \(scene.rawValue). error: \(error)")
+          logger.error("Error occured when trying to \(scene.rawValue). Error: \(error) (\(#file):\(#line))")
         }
       case .accountDeleted:
         setScene(.signIn)

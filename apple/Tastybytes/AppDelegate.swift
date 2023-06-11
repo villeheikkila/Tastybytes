@@ -58,7 +58,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
                 try fileManager.removeItem(at: file)
             }
         } catch {
-            logger.error("Failed to delete navigation stack state restoration files. error: \(error)")
+            logger.error("Failed to delete navigation stack state restoration files. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

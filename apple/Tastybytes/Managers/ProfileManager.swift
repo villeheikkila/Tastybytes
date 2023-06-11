@@ -106,7 +106,7 @@ final class ProfileManager: ObservableObject {
   }
 
   func initialize() async {
-    logger.info("initializing user data")
+    logger.info("Initializing user data")
     switch await repository.profile.getCurrentUser() {
     case let .success(currentUserProfile):
       extendedProfile = currentUserProfile
@@ -120,7 +120,7 @@ final class ProfileManager: ObservableObject {
       initialValuesLoaded = true
       isLoggedIn = true
     case let .failure(error):
-      logger.error("error while loading current user profile. error: \(error)")
+      logger.error("Error while loading current user profile. Error: \(error) (\(#file):\(#line))")
       isLoggedIn = false
       await logOut()
     }
@@ -131,7 +131,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to get current user data. error: \(error)")
+      logger.error("Failed to get current user data. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -140,7 +140,7 @@ final class ProfileManager: ObservableObject {
     case let .success(isAvailable):
       return isAvailable
     case let .failure(error):
-      logger.error("failed to check if username is available. error: \(error)")
+      logger.error("Failed to check if username is available. Error: \(error) (\(#file):\(#line))")
       return true
     }
   }
@@ -162,7 +162,7 @@ final class ProfileManager: ObservableObject {
     ) {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update notification settings. error: \(error)")
+      logger.error("Failed to update notification settings. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -170,7 +170,7 @@ final class ProfileManager: ObservableObject {
     if case let .failure(error) = await repository.auth.logOut() {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to log out. error: \(error)")
+      logger.error("Failed to log out. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -178,7 +178,7 @@ final class ProfileManager: ObservableObject {
     if case let .failure(error) = await repository.auth.updatePassword(newPassword: newPassword) {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update password. error: \(error)")
+      logger.error("Failed to update password. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -186,7 +186,7 @@ final class ProfileManager: ObservableObject {
     if case let .failure(error) = await repository.auth.sendEmailVerification(email: email) {
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to send email verification link. error: \(error)")
+      logger.error("Failed to send email verification link. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -198,7 +198,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to delete current account. error: \(error)")
+      logger.error("Failed to delete current account. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -211,7 +211,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("uplodaing avatar failed. error: \(error)")
+      logger.error("uplodaing avatar failed. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -234,7 +234,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update profile. error: \(error)")
+      logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -247,12 +247,11 @@ final class ProfileManager: ObservableObject {
       update: update
     ) {
     case .success:
-      logger.info("onboarded")
       extendedProfile = extendedProfile?.copyWith(isOnboarded: true)
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update profile. error: \(error)")
+      logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -266,7 +265,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update settings. error: \(error)")
+      logger.error("Failed to update settings. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -282,7 +281,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to update profile. error: \(error)")
+      logger.error("Failed to update profile. Error: \(error) (\(#file):\(#line))")
     }
   }
 
@@ -298,7 +297,7 @@ final class ProfileManager: ObservableObject {
     case let .failure(error):
       guard !error.localizedDescription.contains("cancelled") else { return }
       feedbackManager.toggle(.error(.unexpected))
-      logger.error("failed to export check-in csv. error: \(error)")
+      logger.error("Failed to export check-in csv. Error: \(error) (\(#file):\(#line))")
     }
   }
 }

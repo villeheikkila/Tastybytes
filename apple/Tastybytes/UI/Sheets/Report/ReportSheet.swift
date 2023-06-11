@@ -69,7 +69,7 @@ struct ReportSheet: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("submitting report failed. error: \(error)")
+            logger.error("Submitting report failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 }

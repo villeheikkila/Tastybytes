@@ -31,18 +31,18 @@ struct Main: App {
     .onChange(of: phase) { _, newPhase in
       switch newPhase {
       case .active:
-        logger.info("scene phase is active")
+        logger.info("Scene phase is active.")
         if let name = selectedQuickAction?.userInfo?["name"] as? String, let quickAction = QuickAction(rawValue: name) {
           UIApplication.shared.open(quickAction.url)
           selectedQuickAction = nil
         }
       case .inactive:
-        logger.info("scene phase is inactive")
+        logger.info("Scene phase is inactive.")
       case .background:
-        logger.info("scene phase is background")
+        logger.info("Scene phase is background.")
         UIApplication.shared.shortcutItems = QuickAction.allCases.map(\.shortcutItem)
       @unknown default:
-        logger.info("scene phase is unknown")
+        logger.info("Scene phase is unknown.")
       }
     }
   }

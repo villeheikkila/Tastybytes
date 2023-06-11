@@ -10,11 +10,11 @@ final class SheetManager {
 
   func navigate(sheet: Sheet) {
     if self.sheet != nil, nestedSheet != nil {
-      logger.error("opening more than one nested sheet is not supported")
+      logger.error("Opening more than one nested sheet is not supported")
       return
     }
     if let currentSheetId = self.sheet?.id, sheet.id == currentSheetId {
-      logger.warning("same sheet opened multiple times")
+      logger.error("Same sheet opened multiple times (\(#file):\(#line))")
       return
     }
     if self.sheet != nil {
