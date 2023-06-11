@@ -81,6 +81,7 @@
 		5C43237F2986FAA40085522E /* CheckInListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C43237E2986FAA40085522E /* CheckInListView.swift */; };
 		5C43238129898A4C0085522E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C43238029898A4C0085522E /* GoogleService-Info.plist */; };
 		5C46E8642911D9FD0008F142 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C46E8632911D9FD0008F142 /* Config.swift */; };
+		5C5D3AB42A3607890061B77D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5D3AB32A3607890061B77D /* RootView.swift */; };
 		5C61E82D29B5C52600D10AA3 /* DuplicataProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E82C29B5C52600D10AA3 /* DuplicataProductScreen.swift */; };
 		5C61E83229B7B41400D10AA3 /* DiscoverScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83129B7B41400D10AA3 /* DiscoverScreen.swift */; };
 		5C61E83929B8FE7300D10AA3 /* CategoryManagementScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61E83829B8FE7300D10AA3 /* CategoryManagementScreen.swift */; };
@@ -225,7 +226,7 @@
 		5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB562E28F596A200F13A1E /* ChipView.swift */; };
 		5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563028F5974100F13A1E /* ProfileSummary.swift */; };
 		5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563228F597ED00F13A1E /* RatingView.swift */; };
-		5CFEE57728ED69B100A8DD66 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57628ED69B100A8DD66 /* App.swift */; };
+		5CFEE57728ED69B100A8DD66 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFEE57628ED69B100A8DD66 /* Main.swift */; };
 		5CFEE57B28ED69B200A8DD66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */; };
 		5CFEE57E28ED69B200A8DD66 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEE57D28ED69B200A8DD66 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -306,6 +307,7 @@
 		5C43238029898A4C0085522E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5C46E8632911D9FD0008F142 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		5C46E8662911E5860008F142 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		5C5D3AB32A3607890061B77D /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		5C61E82C29B5C52600D10AA3 /* DuplicataProductScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicataProductScreen.swift; sourceTree = "<group>"; };
 		5C61E83129B7B41400D10AA3 /* DiscoverScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverScreen.swift; sourceTree = "<group>"; };
 		5C61E83829B8FE7300D10AA3 /* CategoryManagementScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManagementScreen.swift; sourceTree = "<group>"; };
@@ -452,7 +454,7 @@
 		5CFB563028F5974100F13A1E /* ProfileSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummary.swift; sourceTree = "<group>"; };
 		5CFB563228F597ED00F13A1E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		5CFEE57328ED69B100A8DD66 /* Tastybytes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tastybytes.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5CFEE57628ED69B100A8DD66 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		5CFEE57628ED69B100A8DD66 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		5CFEE57A28ED69B200A8DD66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5CFEE57D28ED69B200A8DD66 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1255,7 +1257,8 @@
 				5C13F21E291A8D8E00599892 /* TastybytesDebug.entitlements */,
 				5C46E8662911E5860008F142 /* Info.plist */,
 				5C43238029898A4C0085522E /* GoogleService-Info.plist */,
-				5CFEE57628ED69B100A8DD66 /* App.swift */,
+				5CFEE57628ED69B100A8DD66 /* Main.swift */,
+				5C5D3AB32A3607890061B77D /* RootView.swift */,
 				5C367EB529A3F87C000A7149 /* AppDelegate.swift */,
 				5CCE914D28F45DE7005A6043 /* Utils.swift */,
 				5C46E8632911D9FD0008F142 /* Config.swift */,
@@ -1365,6 +1368,7 @@
 			files = (
 				5C11ECBB28EEF24700CCDE6A /* ActivityTab.swift in Sources */,
 				5CD7234C29F4628B003DA030 /* SideBarView.swift in Sources */,
+				5C5D3AB42A3607890061B77D /* RootView.swift in Sources */,
 				5C7C35F2299AE67B009A3C09 /* UsernameTextFieldView.swift in Sources */,
 				5C6E10652A1D561D00079F8E /* OnboardingContinueButtonModifier.swift in Sources */,
 				5CC2FE9429197D9F002BDF83 /* LocationManager.swift in Sources */,
@@ -1422,7 +1426,7 @@
 				5C964DBC2A2BE44400805199 /* UserDefaults.swift in Sources */,
 				5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */,
 				5CDCAE262A33C0B600EA7824 /* LocationShareLinkView.swift in Sources */,
-				5CFEE57728ED69B100A8DD66 /* App.swift in Sources */,
+				5CFEE57728ED69B100A8DD66 /* Main.swift in Sources */,
 				5CB1C24B28F9BE4F000B0EB4 /* ProductRepository.swift in Sources */,
 				5CD7234E29F46442003DA030 /* CurrentProfileScreen.swift in Sources */,
 				5CCE914E28F45DE7005A6043 /* Utils.swift in Sources */,
