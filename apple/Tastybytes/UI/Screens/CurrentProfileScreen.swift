@@ -1,13 +1,28 @@
 import SwiftUI
 
 struct CurrentProfileScreen: View {
-  @Environment(Repository.self) private var repository
-  @Environment(ProfileManager.self) private var profileManager
-  @Binding var scrollToTop: Int
+    @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
+    @Environment(ProfileManager.self) private var profileManager
+    @Binding var scrollToTop: Int
 
-  var body: some View {
-    ProfileView(profile: profileManager.profile, scrollToTop: $scrollToTop, isCurrentUser: true)
-      .navigationTitle(profileManager.profile.preferredName)
-      .navigationBarTitleDisplayMode(.inline)
-  }
+    var body: some View {
+        ProfileView(profile: profileManager.profile, scrollToTop: $scrollToTop, isCurrentUser: true)
+            .navigationTitle(profileManager.profile.preferredName)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                toolbarContent
+            }
+    }
+
+    @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .navigationBarLeading) {
+            RouterLink("Show name tag", systemSymbol: .qrcode, sheet: .nameTag(onSuccess: { profileId in
+                router.fetchAndNavigateTo(repository, .profile(id: profileId))
+            }))
+        }
+        ToolbarItemGroup(placement: .navigationBarTrailing) {
+            RouterLink("Settings page", systemSymbol: .gear, screen: .settings)
+        }
+    }
 }

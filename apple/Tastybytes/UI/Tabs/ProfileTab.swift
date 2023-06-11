@@ -9,16 +9,6 @@ struct ProfileTab: View {
   var body: some View {
     RouterWrapper(tab: .profile) { router in
       CurrentProfileScreen(scrollToTop: $scrollToTop)
-        .toolbar {
-          ToolbarItemGroup(placement: .navigationBarLeading) {
-            RouterLink("Show name tag", systemSymbol: .qrcode, sheet: .nameTag(onSuccess: { profileId in
-              router.fetchAndNavigateTo(repository, NavigatablePath.profile(id: profileId))
-            }))
-          }
-          ToolbarItemGroup(placement: .navigationBarTrailing) {
-            RouterLink("Settings page", systemSymbol: .gear, screen: .settings)
-          }
-        }
         .onChange(of: $resetNavigationOnTab.wrappedValue) { _, tab in
           if tab == .profile {
             if router.path.isEmpty {
