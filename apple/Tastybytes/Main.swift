@@ -19,11 +19,15 @@ struct Main: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self)
   var appDelegate
 
+    init() {
+        print(Config.supabaseUrl)
+        print(Config.supabaseAnonKey)
+    }
   private let supabaseClient = SupabaseClient(
     supabaseURL: Config.supabaseUrl,
     supabaseKey: Config.supabaseAnonKey
   )
-
+    
   var body: some Scene {
     WindowGroup {
       RootView(supabaseClient: supabaseClient, feedbackManager: feedbackManager)

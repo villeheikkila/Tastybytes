@@ -1900,8 +1900,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/supabase-community/supabase-swift";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.9;
+				kind = revision;
+				revision = 3c5af19fc274366152c6fc378eceb5a6f43d14c2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
