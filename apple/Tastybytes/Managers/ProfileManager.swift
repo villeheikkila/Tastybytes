@@ -10,7 +10,6 @@ final class ProfileManager: ObservableObject {
 
   // Profile Settings
   var showFullName = false
-  var showProfileUpdateButton = false
   var isPrivateProfile = true
 
   // Account Settings

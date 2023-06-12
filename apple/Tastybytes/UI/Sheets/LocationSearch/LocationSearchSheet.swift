@@ -4,7 +4,6 @@ import MapKit
 import Observation
 import SwiftUI
 import OSLog
-import OSLog
 
 struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchView")
@@ -14,6 +13,7 @@ struct LocationSearchSheet: View {
     @State private var locationManager = LocationManager()
     @State private var recentLocations = [Location]()
     @State private var nearbyLocations = [Location]()
+    @State private var currentLocation: CLLocation?
     @State private var searchText = ""
 
     @Environment(\.dismiss) private var dismiss
@@ -54,20 +54,20 @@ struct LocationSearchSheet: View {
             if !recentLocations.isEmpty, !hasSearched {
                 Section("Recent locations") {
                     ForEach(recentLocations) { location in
-                        LocationRow(location: location, onSelect: onSelect)
+                        LocationRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
                     }
                 }
             }
             if !recentLocations.isEmpty, !hasSearched {
                 Section("Nearby locations") {
                     ForEach(nearbyLocations) { location in
-                        LocationRow(location: location, onSelect: onSelect)
+                        LocationRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
                     }
                 }
             }
             if hasSearched {
                 ForEach(searchResults) { location in
-                    LocationRow(location: location, onSelect: onSelect)
+                    LocationRow(location: location, currentLocation: currentLocation, onSelect: onSelect)
                 }
             }
         }
@@ -84,6 +84,7 @@ struct LocationSearchSheet: View {
         }
         .onChange(of: locationManager.location) { _, latestLocation in
             guard nearbyLocations.isEmpty else { return }
+            self.currentLocation = latestLocation
             Task { await getSuggestions(latestLocation) }
         }
     }
@@ -134,7 +135,13 @@ struct LocationRow: View {
     @Environment(\.dismiss) private var dismiss
 
     let location: Location
+    let currentLocation: CLLocation?
     let onSelect: (_ location: Location) -> Void
+    
+    var distance: Double? {
+        guard let currentLocation, let clLocation = location.location else { return nil }
+            return currentLocation.distance(from: clLocation)
+    }
 
     var body: some View {
         ProgressButton(action: {
@@ -144,6 +151,11 @@ struct LocationRow: View {
                 Text(location.name)
                 if let title = location.title {
                     Text(title)
+                        .foregroundColor(.secondary)
+                }
+                if let distance {
+                    Text("Distance: \(Int(distance))m.")
+                        .font(.caption)
                         .foregroundColor(.secondary)
                 }
             }
