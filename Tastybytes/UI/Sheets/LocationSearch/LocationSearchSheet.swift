@@ -2,8 +2,8 @@ import CoreLocation
 import Foundation
 import MapKit
 import Observation
-import SwiftUI
 import OSLog
+import SwiftUI
 
 struct LocationSearchSheet: View {
     private let logger = Logger(category: "LocationSearchView")
@@ -88,7 +88,7 @@ struct LocationSearchSheet: View {
             Task { await getSuggestions(latestLocation) }
         }
     }
-    
+
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Button("Cancel", role: .cancel, action: { dismiss() })
@@ -137,10 +137,15 @@ struct LocationRow: View {
     let location: Location
     let currentLocation: CLLocation?
     let onSelect: (_ location: Location) -> Void
-    
-    var distance: Double? {
+
+    var distance: String? {
         guard let currentLocation, let clLocation = location.location else { return nil }
-            return currentLocation.distance(from: clLocation)
+        let distanceInMeters = currentLocation.distance(from: clLocation)
+        let distance = Measurement(value: distanceInMeters, unit: UnitLength.meters)
+        let formatter = MeasurementFormatter()
+        formatter.unitStyle = .short
+        formatter.locale = Locale.current
+        return formatter.string(from: distance)
     }
 
     var body: some View {
@@ -154,7 +159,7 @@ struct LocationRow: View {
                         .foregroundColor(.secondary)
                 }
                 if let distance {
-                    Text("Distance: \(Int(distance))m.")
+                    Text("Distance: \(distance)")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
