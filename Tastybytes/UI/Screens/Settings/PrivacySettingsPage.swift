@@ -21,7 +21,7 @@ struct PrivacySettingsScreen: View {
                 Task { await profileManager.updatePrivacySettings() }
             }))
         } header: {
-            Text("Privacy")
+            Text("Profile")
         } footer: {
             Text("Private profile hides check-ins and profile page from everyone else but your friends")
         }

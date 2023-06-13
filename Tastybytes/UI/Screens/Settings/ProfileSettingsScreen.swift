@@ -19,7 +19,6 @@ struct ProfileSettingsScreen: View {
         Form {
             profileSection
             profileDisplaySettings
-            privacySection
         }
         .navigationTitle("Profile")
         .onAppear {
@@ -82,21 +81,5 @@ struct ProfileSettingsScreen: View {
         } footer: {
             Text("This only takes effect if both first name and last name are provided.")
         }
-    }
-
-    private var privacySection: some View {
-        Section {
-            Toggle("Private Profile", isOn: .init(get: {
-                profileManager.isPrivateProfile
-            }, set: { newValue in
-                profileManager.isPrivateProfile = newValue
-                Task { await profileManager.updatePrivacySettings() }
-            }))
-        } header: {
-            Text("Privacy")
-        } footer: {
-            Text("Private profile hides check-ins and profile page from everyone else but your friends")
-        }
-        .headerProminence(.increased)
     }
 }
