@@ -24,7 +24,9 @@ struct LocationScreen: View {
             emptyView: {},
             header: {
                 if let coordinate = location.location?.coordinate {
-                    Map {
+                    Map(initialPosition: MapCameraPosition
+                        .camera(.init(centerCoordinate: coordinate, distance: 200)))
+                    {
                         Marker(location.name, coordinate: coordinate)
                         UserAnnotation()
                     }
