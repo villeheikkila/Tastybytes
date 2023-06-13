@@ -1,5 +1,5 @@
-import SwiftUI
 import OSLog
+import SwiftUI
 
 struct CheckInListView<Header, Content>: View where Header: View, Content: View {
     enum Fetcher {
@@ -7,6 +7,16 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         case product(Product.Joined)
         case profile(Profile)
         case location(Location)
+
+        @ViewBuilder
+        var emptyContentView: some View {
+            switch self {
+            case .activityFeed:
+                EmptyActivityFeed()
+            default:
+                EmptyView()
+            }
+        }
     }
 
     private let logger = Logger(category: "CheckInListView")
@@ -75,10 +85,17 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                         CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
                             .listRowInsets(.init(top: 4, leading: edgeInset, bottom: 4, trailing: edgeInset))
                             .listRowSeparator(.hidden)
-                            .checkInContextMenu(router: router, profileManager: profileManager, checkIn: checkIn, onCheckInUpdate: { updatedCheckIn in
-                                onCheckInUpdate(updatedCheckIn) }, onDelete: { checkIn in
+                            .checkInContextMenu(
+                                router: router,
+                                profileManager: profileManager,
+                                checkIn: checkIn,
+                                onCheckInUpdate: { updatedCheckIn in
+                                    onCheckInUpdate(updatedCheckIn)
+                                },
+                                onDelete: { checkIn in
                                     showDeleteConfirmationFor = checkIn
-                                })
+                                }
+                            )
                             .onAppear {
                                 if checkIn == checkIns.last, isLoading != true {
                                     Task {
@@ -101,10 +118,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                 }
                 .background {
                     if isContentUnavailable {
-                        ContentUnavailableView(
-                            "Activity feed is empty, add friends or check-ins!",
-                            systemImage: "list.star"
-                        )
+                        fetcher.emptyContentView
                     }
                 }
                 .confirmationDialog("Are you sure you want to delete check-in? The data will be permanently lost.",
@@ -258,5 +272,3 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         }
     }
 }
-
-

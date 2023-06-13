@@ -340,7 +340,8 @@ struct DiscoverScreen: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("searching products with barcode \(barcode.barcode) failed. Error: \(error) (\(#file):\(#line))")
+            logger
+                .error("searching products with barcode \(barcode.barcode) failed. Error: \(error) (\(#file):\(#line))")
         }
     }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C0595EE2A38B9CB0067F46C /* EmptyActivityFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0595ED2A38B9CB0067F46C /* EmptyActivityFeed.swift */; };
 		5C08B6E028ED7956009218D7 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 5C08B6DF28ED7956009218D7 /* Supabase */; };
 		5C08B6E228ED7B05009218D7 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C08B6E128ED7B05009218D7 /* Company.swift */; };
 		5C09BEC929A53E0100331AEB /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C09BEC829A53E0100331AEB /* CategoryView.swift */; };
@@ -236,6 +237,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5C0595ED2A38B9CB0067F46C /* EmptyActivityFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyActivityFeed.swift; sourceTree = "<group>"; };
 		5C08B6E128ED7B05009218D7 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		5C09BEC829A53E0100331AEB /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		5C09BECA29A54AF800331AEB /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
@@ -482,6 +484,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C0595EC2A38B9B40067F46C /* ContentUnavailable */ = {
+			isa = PBXGroup;
+			children = (
+				5C0595ED2A38B9CB0067F46C /* EmptyActivityFeed.swift */,
+			);
+			path = ContentUnavailable;
+			sourceTree = "<group>";
+		};
 		5C08B6DE28ED7956009218D7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1221,6 +1231,7 @@
 		5CFB562D28F5969300F13A1E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5C0595EC2A38B9B40067F46C /* ContentUnavailable */,
 				5C9FD5632A36685700ED2CEF /* ContextMenu */,
 				5CAC99832A3611FA003729C6 /* Camera */,
 				5CCD4F5E2A32F08400320F2F /* ShareLink */,
@@ -1581,6 +1592,7 @@
 				5C32C41429ED9F9C008CE8A9 /* ErrorScreen.swift in Sources */,
 				5CCD4F642A32F11100320F2F /* ImageLoader.swift in Sources */,
 				5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */,
+				5C0595EE2A38B9CB0067F46C /* EmptyActivityFeed.swift in Sources */,
 				5C0E365C292ADA290072EFBD /* SummaryView.swift in Sources */,
 				5C25C6702995616D00C07953 /* WelcomeOnboarding.swift in Sources */,
 				5CD10A5528F98D220001CFC2 /* SubBrand.swift in Sources */,
