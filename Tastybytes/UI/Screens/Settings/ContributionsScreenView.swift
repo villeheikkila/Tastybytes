@@ -11,30 +11,34 @@ struct ContributionsScreen: View {
     var body: some View {
         List {
             if let contributions {
-                HStack {
-                    Text("Products")
-                    Spacer()
-                    Text(String(contributions.products))
-                }
-                HStack {
-                    Text("Companies")
-                    Spacer()
-                    Text(String(contributions.companies))
-                }
-                HStack {
-                    Text("Brands")
-                    Spacer()
-                    Text(String(contributions.brands))
-                }
-                HStack {
-                    Text("Sub-brands")
-                    Spacer()
-                    Text(String(contributions.subBrands))
-                }
-                HStack {
-                    Text("Barcodes")
-                    Spacer()
-                    Text(String(contributions.barcodes))
+                Section {
+                    HStack {
+                        Text("Products")
+                        Spacer()
+                        Text(String(contributions.products))
+                    }
+                    HStack {
+                        Text("Companies")
+                        Spacer()
+                        Text(String(contributions.companies))
+                    }
+                    HStack {
+                        Text("Brands")
+                        Spacer()
+                        Text(String(contributions.brands))
+                    }
+                    HStack {
+                        Text("Sub-brands")
+                        Spacer()
+                        Text(String(contributions.subBrands))
+                    }
+                    HStack {
+                        Text("Barcodes")
+                        Spacer()
+                        Text(String(contributions.barcodes))
+                    }
+                } footer: {
+                    Text("All your verified contributions are counted here. Verification can take some days.")
                 }
             }
         }

@@ -46,6 +46,12 @@ struct NotificationSettingsScreen: View {
             if let settingsUrl = URL(string: UIApplication.openNotificationSettingsURLString) {
                 Section {
                     Link("Open System Notification Settings", destination: settingsUrl)
+                } header: {
+                    Text("System Settings")
+                } footer: {
+                    Text(
+                        "Enable or disable the app's permission to send notifications"
+                    )
                 }
             }
         }
@@ -90,13 +96,20 @@ struct NotificationSettingsScreen: View {
         .task {
             if !initialValuesLoaded {
                 reactioNotificationDeliveryType = profileManager.reactionNotifications ? notificationManager
-                    .pushNotificationSettings?.sendReactionNotifications ?? false ? .pushNotification : .inApp : .disabled
+                    .pushNotificationSettings?
+                    .sendReactionNotifications ?? false ? .pushNotification : .inApp : .disabled
                 checkInNotificationDeliveryType = profileManager.checkInTagNotifications ? notificationManager
-                    .pushNotificationSettings?.sendTaggedCheckInNotifications ?? false ? .pushNotification : .inApp : .disabled
+                    .pushNotificationSettings?
+                    .sendTaggedCheckInNotifications ?? false ? .pushNotification : .inApp :
+                    .disabled
                 friendRequestNotificationDeliveryType = profileManager.friendRequestNotifications ? notificationManager
-                    .pushNotificationSettings?.sendFriendRequestNotifications ?? false ? .pushNotification : .inApp : .disabled
+                    .pushNotificationSettings?
+                    .sendFriendRequestNotifications ?? false ? .pushNotification : .inApp :
+                    .disabled
                 checkInCommentNotificationsDeliveryType = profileManager.sendCommentNotifications ? notificationManager
-                    .pushNotificationSettings?.sendCheckInCommentNotifications ?? false ? .pushNotification : .inApp : .disabled
+                    .pushNotificationSettings?
+                    .sendCheckInCommentNotifications ?? false ? .pushNotification : .inApp :
+                    .disabled
             }
             initialValuesLoaded = true
         }

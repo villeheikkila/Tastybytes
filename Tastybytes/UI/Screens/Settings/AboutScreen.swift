@@ -13,7 +13,7 @@ struct AboutScreen: View {
 
     var body: some View {
         List {
-            header.listRowBackground(Color.clear)
+            header
             support
             aboutSection
             footer
@@ -35,6 +35,7 @@ struct AboutScreen: View {
                 Spacer()
             }
         }
+        .listRowBackground(Color.clear)
     }
 
     @ViewBuilder var support: some View {

@@ -8,9 +8,6 @@ struct BlockedUsersScreen: View {
 
     var body: some View {
         List {
-            if friendManager.blockedUsers.isEmpty {
-                Text("You haven't blocked any users")
-            }
             ForEach(friendManager.blockedUsers) { friend in
                 BlockedUserListItemView(profile: friend.getFriend(userId: profileManager.profile.id), onUnblockUser: {
                     await friendManager.unblockUser(friend)
@@ -18,16 +15,22 @@ struct BlockedUsersScreen: View {
             }
         }
         .listStyle(.insetGrouped)
+        .background {
+            if friendManager.blockedUsers.isEmpty {
+                ContentUnavailableView {
+                    Label("You haven't blocked any users", systemSymbol: .personFillXmark)
+                }
+            }
+        }
         .navigationTitle("Blocked Users")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }
-        .navigationBarTitleDisplayMode(.inline)
         #if !targetEnvironment(macCatalyst)
-            .refreshable {
-                await friendManager.refresh(withFeedback: true)
-            }
+        .refreshable {
+            await friendManager.refresh(withFeedback: true)
+        }
         #endif
     }
 

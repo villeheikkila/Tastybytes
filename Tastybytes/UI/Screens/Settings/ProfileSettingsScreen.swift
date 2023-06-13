@@ -73,7 +73,7 @@ struct ProfileSettingsScreen: View {
 
     private var profileDisplaySettings: some View {
         Section {
-            Toggle("Use Name Instead of Username", isOn: .init(get: {
+            Toggle("Use Full Name Instead of Username", isOn: .init(get: {
                 profileManager.showFullName
             }, set: { newValue in
                 profileManager.showFullName = newValue
