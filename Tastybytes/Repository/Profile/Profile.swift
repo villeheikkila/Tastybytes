@@ -195,13 +195,7 @@ extension Profile {
       nameDisplay = try values.decode(NameDisplay.self, forKey: .nameDisplay)
       roles = try values.decode([Role].self, forKey: .roles)
 
-      if let settings = try values.decode([ProfileSettings].self, forKey: .settings)
-        .first
-      {
-        self.settings = settings
-      } else {
-        fatalError("failed to decode profile settings")
-      }
+      settings = try values.decode(ProfileSettings.self, forKey: .settings)
     }
 
     func encode(to encoder: Encoder) throws {
