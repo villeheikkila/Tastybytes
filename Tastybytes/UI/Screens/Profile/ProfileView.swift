@@ -249,12 +249,7 @@ struct ProfileView: View {
     }
 
     private var joinedAtSection: some View {
-        VStack {
-            Text("Joined \(profile.joinedAt.customFormat(.date))").fontWeight(.medium)
-            if profileManager.hasRole(.premium) {
-                Text("Premium Member")
-            }
-        }
+        Text("Joined \(profile.joinedAt.customFormat(.date))").fontWeight(.medium)
     }
 
     @ViewBuilder private var links: some View {
