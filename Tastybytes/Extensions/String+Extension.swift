@@ -1,5 +1,13 @@
 import SwiftUI
 
+extension String? {
+    var isNilOrEmpty: Bool {
+        // swiftlint:disable empty_string
+        self == nil || self == ""
+        // swiftlint:enable empty_string
+    }
+}
+
 extension String {
     enum StrinLengthType {
         case normal
