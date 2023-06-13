@@ -5,55 +5,66 @@ struct SettingsScreen: View {
 
     var body: some View {
         List {
-            Section {
-                RouterLink("Profile", systemSymbol: .personFill, color: .indigo, screen: .profileSettings)
-                RouterLink("Account", systemSymbol: .gear, color: .gray, screen: .accountSettings)
-                RouterLink("Privacy", systemSymbol: .keyFill, color: .yellow, screen: .privacySettings)
-                RouterLink("Appearance", systemSymbol: .paintbrushFill, color: .blue, screen: .appearanaceSettings)
-                RouterLink(
-                    "Notifications",
-                    systemSymbol: .bellBadgeFill,
-                    color: .red,
-                    screen: .notificationSettingsScreen
-                )
-                RouterLink(screen: .appIcon, label: {
-                    AppIconLabelRow()
-                })
-                RouterLink("Blocked Users", systemSymbol: .personFillXmark, color: .green, screen: .blockedUsers)
-            }
-
-            Section {
-                RouterLink(
-                    "Your Contributions",
-                    systemSymbol: .plus,
-                    color: .teal,
-                    screen: .contributions
-                )
-                RouterLink("About", systemSymbol: .at, color: .blue, screen: .about)
-            } footer: {
-                if profileManager.hasRole(.pro) {
-                    HStack {
-                        Spacer()
-                        Text("You have \(Config.appName) Pro. Thank you!")
-                        Spacer()
-                    }
-                }
-            }
-
-            Section {
-                ProgressButton(action: {
-                    await profileManager.logOut()
-                }, label: {
-                    Spacer()
-                    Text("Sign Out")
-                        .fontWeight(.medium)
-                        .foregroundColor(.red)
-                    Spacer()
-                })
-            }
+            settingsSection
+            aboutSection
+            logOutSection
         }
         .listStyle(.insetGrouped)
         .navigationBarTitle("Settings")
+        .navigationBarTitleDisplayMode(.large)
+    }
+
+    @ViewBuilder private var settingsSection: some View {
+        Section {
+            RouterLink("Profile", systemSymbol: .personFill, color: .indigo, screen: .profileSettings)
+            RouterLink("Account", systemSymbol: .gear, color: .gray, screen: .accountSettings)
+            RouterLink("Privacy", systemSymbol: .keyFill, color: .yellow, screen: .privacySettings)
+            RouterLink("Appearance", systemSymbol: .paintbrushFill, color: .blue, screen: .appearanaceSettings)
+            RouterLink(
+                "Notifications",
+                systemSymbol: .bellBadgeFill,
+                color: .red,
+                screen: .notificationSettingsScreen
+            )
+            RouterLink(screen: .appIcon, label: {
+                AppIconLabelRow()
+            })
+            RouterLink("Blocked Users", systemSymbol: .personFillXmark, color: .green, screen: .blockedUsers)
+        }
+    }
+
+    @ViewBuilder private var aboutSection: some View {
+        Section {
+            RouterLink(
+                "Your Contributions",
+                systemSymbol: .plus,
+                color: .teal,
+                screen: .contributions
+            )
+            RouterLink("About", systemSymbol: .at, color: .blue, screen: .about)
+        } footer: {
+            if profileManager.hasRole(.pro) {
+                HStack {
+                    Spacer()
+                    Text("You have \(Config.appName) Pro. Thank you!")
+                    Spacer()
+                }
+            }
+        }
+    }
+
+    @ViewBuilder private var logOutSection: some View {
+        Section {
+            ProgressButton(action: {
+                await profileManager.logOut()
+            }, label: {
+                Spacer()
+                Text("Sign Out")
+                    .fontWeight(.medium)
+                    .foregroundColor(.red)
+                Spacer()
+            })
+        }
     }
 }
 

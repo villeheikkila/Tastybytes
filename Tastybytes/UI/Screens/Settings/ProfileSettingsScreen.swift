@@ -21,6 +21,7 @@ struct ProfileSettingsScreen: View {
             profileDisplaySettings
         }
         .navigationTitle("Profile")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             username = profileManager.username
             firstName = profileManager.firstName ?? ""

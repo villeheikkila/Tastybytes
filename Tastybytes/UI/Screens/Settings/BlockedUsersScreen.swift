@@ -19,6 +19,7 @@ struct BlockedUsersScreen: View {
         }
         .listStyle(.insetGrouped)
         .navigationTitle("Blocked Users")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarContent
         }

@@ -1,6 +1,6 @@
+import OSLog
 import PhotosUI
 import SwiftUI
-import OSLog
 
 private let logger = Logger(category: "AccountSettingsScreen")
 
@@ -25,11 +25,12 @@ struct AccountSettingsScreen: View {
         }
     }
 
-    @State var csvExport: CSVFile? = nil  {
+    @State var csvExport: CSVFile? = nil {
         didSet {
             showingExporter.toggle()
         }
     }
+
     @State var showingExporter = false
 
     private func passwordCheck() {
@@ -46,6 +47,7 @@ struct AccountSettingsScreen: View {
             deleteAccount
         }
         .navigationTitle("Account")
+        .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $showAccountDeleteScreen, content: {
             AccountDeletedScreen()
         })
