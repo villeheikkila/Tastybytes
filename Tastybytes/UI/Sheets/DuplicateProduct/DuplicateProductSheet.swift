@@ -73,7 +73,7 @@ struct DuplicateProductSheet: View {
             }
         }
     }
-    
+
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarLeading) {
             Button("Close", role: .cancel, action: { dismiss() }).bold()

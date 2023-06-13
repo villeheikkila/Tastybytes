@@ -182,7 +182,7 @@ struct CheckInCardView: View {
                     .fontWeight(.medium)
                     .foregroundColor(.primary)
             }
-            
+
             FlavorsView(flavors: checkIn.flavors)
 
             if let purchaseLocation = checkIn.purchaseLocation {

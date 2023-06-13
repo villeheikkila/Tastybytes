@@ -1,94 +1,94 @@
 import Supabase
 
 protocol CheckInCommentRepository {
-  func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error>
-  func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error>
-  func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error>
-  func deleteById(id: Int) async -> Result<Void, Error>
-  func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error>
+    func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error>
+    func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error>
+    func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error>
+    func deleteById(id: Int) async -> Result<Void, Error>
+    func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error>
 }
 
 struct SupabaseCheckInCommentRepository: CheckInCommentRepository {
-  let client: SupabaseClient
+    let client: SupabaseClient
 
-  func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error> {
-    do {
-      let result: CheckInComment = try await client
-        .database
-        .from(CheckInComment.getQuery(.tableName))
-        .insert(values: newCheckInComment, returning: .representation)
-        .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
-        .limit(count: 1)
-        .single()
-        .execute()
-        .value
+    func insert(newCheckInComment: CheckInComment.NewRequest) async -> Result<CheckInComment, Error> {
+        do {
+            let result: CheckInComment = try await client
+                .database
+                .from(CheckInComment.getQuery(.tableName))
+                .insert(values: newCheckInComment, returning: .representation)
+                .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
+                .limit(count: 1)
+                .single()
+                .execute()
+                .value
 
-      return .success(result)
-    } catch {
-      return .failure(error)
+            return .success(result)
+        } catch {
+            return .failure(error)
+        }
     }
-  }
 
-  func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error> {
-    do {
-      let response: CheckInComment = try await client
-        .database
-        .from(CheckInComment.getQuery(.tableName))
-        .update(values: updateCheckInComment, returning: .representation)
-        .eq(column: "id", value: updateCheckInComment.id)
-        .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
-        .single()
-        .execute()
-        .value
+    func update(updateCheckInComment: CheckInComment.UpdateRequest) async -> Result<CheckInComment, Error> {
+        do {
+            let response: CheckInComment = try await client
+                .database
+                .from(CheckInComment.getQuery(.tableName))
+                .update(values: updateCheckInComment, returning: .representation)
+                .eq(column: "id", value: updateCheckInComment.id)
+                .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
+                .single()
+                .execute()
+                .value
 
-      return .success(response)
-    } catch {
-      return .failure(error)
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
     }
-  }
 
-  func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error> {
-    do {
-      let response: [CheckInComment] = try await client
-        .database
-        .from(CheckInComment.getQuery(.tableName))
-        .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
-        .eq(column: "check_in_id", value: id)
-        .order(column: "created_at")
-        .execute()
-        .value
+    func getByCheckInId(id: Int) async -> Result<[CheckInComment], Error> {
+        do {
+            let response: [CheckInComment] = try await client
+                .database
+                .from(CheckInComment.getQuery(.tableName))
+                .select(columns: CheckInComment.getQuery(.joinedProfile(false)))
+                .eq(column: "check_in_id", value: id)
+                .order(column: "created_at")
+                .execute()
+                .value
 
-      return .success(response)
-    } catch {
-      return .failure(error)
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
     }
-  }
 
-  func deleteById(id: Int) async -> Result<Void, Error> {
-    do {
-      try await client
-        .database
-        .from(CheckInComment.getQuery(.tableName))
-        .delete()
-        .eq(column: "id", value: id)
-        .execute()
+    func deleteById(id: Int) async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .from(CheckInComment.getQuery(.tableName))
+                .delete()
+                .eq(column: "id", value: id)
+                .execute()
 
-      return .success(())
-    } catch {
-      return .failure(error)
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
     }
-  }
 
-  func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error> {
-    do {
-      try await client
-        .database
-        .rpc(fn: "fnc__delete_check_in_comment_as_moderator", params: CheckInComment.DeleteAsAdminRequest(comment: comment))
-        .execute()
+    func deleteAsModerator(comment: CheckInComment) async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .rpc(fn: "fnc__delete_check_in_comment_as_moderator", params: CheckInComment.DeleteAsAdminRequest(comment: comment))
+                .execute()
 
-      return .success(())
-    } catch {
-      return .failure(error)
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
     }
-  }
 }

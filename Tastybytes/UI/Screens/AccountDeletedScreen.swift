@@ -1,45 +1,45 @@
 import SwiftUI
 
 struct AccountDeletedScreen: View {
-  @Environment(ProfileManager.self) private var profileManager
-  var body: some View {
-    VStack {
-      Spacer()
-      HStack {
-        Spacer()
-        VStack(spacing: 18) {
-          Image(systemSymbol: .trashCircle)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 60, height: 60)
-            .foregroundColor(.red)
-            .accessibility(hidden: true)
-          Text("Account Deleted")
-            .font(.title)
+    @Environment(ProfileManager.self) private var profileManager
+    var body: some View {
+        VStack {
+            Spacer()
+            HStack {
+                Spacer()
+                VStack(spacing: 18) {
+                    Image(systemSymbol: .trashCircle)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 60, height: 60)
+                        .foregroundColor(.red)
+                        .accessibility(hidden: true)
+                    Text("Account Deleted")
+                        .font(.title)
 
-          VStack(spacing: 8) {
-            Text("All your personal information has been permanently deleted from the system.")
-            Text("Sorry to see you go but you're always welcome back!")
-          }
-          .multilineTextAlignment(.center)
+                    VStack(spacing: 8) {
+                        Text("All your personal information has been permanently deleted from the system.")
+                        Text("Sorry to see you go but you're always welcome back!")
+                    }
+                    .multilineTextAlignment(.center)
 
-          ProgressButton(action: {
-            exit(0)
-          }) {
-            Text("Quit the App")
-              .font(.headline)
-              .padding(.all, 8)
-          }
-          .buttonStyle(.borderedProminent)
+                    ProgressButton(action: {
+                        exit(0)
+                    }) {
+                        Text("Quit the App")
+                            .font(.headline)
+                            .padding(.all, 8)
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                .padding([.leading, .trailing], 24)
+                Spacer()
+            }
+            Spacer()
         }
-        .padding([.leading, .trailing], 24)
-        Spacer()
-      }
-      Spacer()
     }
-  }
 }
 
 #Preview {
     AccountDeletedScreen()
-  }
+}

@@ -1,116 +1,116 @@
-import SwiftUI
 import OSLog
+import SwiftUI
 
 struct DuplicateProductScreen: View {
-  private let logger = Logger(category: "ProductVerificationScreen")
-  @Environment(Repository.self) private var repository
-  @Environment(Router.self) private var router
-  @Environment(FeedbackManager.self) private var feedbackManager
-  @State private var products = [Product.Joined]()
-  @State private var deleteProduct: Product.Joined? {
-    didSet {
-      showDeleteProductConfirmationDialog = true
+    private let logger = Logger(category: "ProductVerificationScreen")
+    @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
+    @Environment(FeedbackManager.self) private var feedbackManager
+    @State private var products = [Product.Joined]()
+    @State private var deleteProduct: Product.Joined? {
+        didSet {
+            showDeleteProductConfirmationDialog = true
+        }
     }
-  }
 
-  @State private var showDeleteProductConfirmationDialog = false
+    @State private var showDeleteProductConfirmationDialog = false
 
-  var body: some View {
-    List {
-      ForEach(products) { product in
-        VStack {
-          if let createdBy = product.createdBy {
-            HStack {
-              AvatarView(avatarUrl: createdBy.avatarUrl, size: 16, id: createdBy.id)
-              Text(createdBy.preferredName).font(.caption).bold()
-              Spacer()
-              if let createdAt = product.createdAt, let date = Date(timestamptzString: createdAt) {
-                Text(date.customFormat(.relativeTime)).font(.caption).bold()
-              }
+    var body: some View {
+        List {
+            ForEach(products) { product in
+                VStack {
+                    if let createdBy = product.createdBy {
+                        HStack {
+                            AvatarView(avatarUrl: createdBy.avatarUrl, size: 16, id: createdBy.id)
+                            Text(createdBy.preferredName).font(.caption).bold()
+                            Spacer()
+                            if let createdAt = product.createdAt, let date = Date(timestamptzString: createdAt) {
+                                Text(date.customFormat(.relativeTime)).font(.caption).bold()
+                            }
+                        }
+                    }
+                    ProductItemView(product: product)
+                        .contentShape(Rectangle())
+                        .accessibilityAddTraits(.isLink)
+                        .onTapGesture {
+                            router.navigate(screen: .product(product))
+                        }
+                        .swipeActions {
+                            ProgressButton("Verify", systemSymbol: .checkmark, action: { await verifyProduct(product) }).tint(.green)
+                            RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product, onEdit: {
+                                await loadProducts()
+                            })).tint(.yellow)
+                            Button("Delete", systemSymbol: .trash, role: .destructive, action: { deleteProduct = product })
+                        }
+                }
             }
-          }
-          ProductItemView(product: product)
-            .contentShape(Rectangle())
-            .accessibilityAddTraits(.isLink)
-            .onTapGesture {
-              router.navigate(screen: .product(product))
+        }
+        .listStyle(.plain)
+        .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
+                            isPresented: $showDeleteProductConfirmationDialog,
+                            titleVisibility: .visible,
+                            presenting: deleteProduct)
+        { presenting in
+            ProgressButton(
+                "Delete \(presenting.getDisplayName(.fullName))",
+                role: .destructive,
+                action: { await deleteProduct(presenting) }
+            )
+        }
+        .navigationBarTitle("Unverified Products")
+        #if !targetEnvironment(macCatalyst)
+            .refreshable {
+                await feedbackManager.wrapWithHaptics {
+                    await loadProducts()
+                }
             }
-            .swipeActions {
-              ProgressButton("Verify", systemSymbol: .checkmark, action: { await verifyProduct(product) }).tint(.green)
-              RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product, onEdit: {
+        #endif
+            .task {
                 await loadProducts()
-              })).tint(.yellow)
-              Button("Delete", systemSymbol: .trash, role: .destructive, action: { deleteProduct = product })
             }
-        }
-      }
     }
-    .listStyle(.plain)
-    .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
-                        isPresented: $showDeleteProductConfirmationDialog,
-                        titleVisibility: .visible,
-                        presenting: deleteProduct)
-    { presenting in
-      ProgressButton(
-        "Delete \(presenting.getDisplayName(.fullName))",
-        role: .destructive,
-        action: { await deleteProduct(presenting) }
-      )
-    }
-    .navigationBarTitle("Unverified Products")
-    #if !targetEnvironment(macCatalyst)
-      .refreshable {
-        await feedbackManager.wrapWithHaptics {
-          await loadProducts()
-        }
-      }
-    #endif
-      .task {
-        await loadProducts()
-      }
-  }
 
-  func verifyProduct(_ product: Product.Joined) async {
-    switch await repository.product.verification(id: product.id, isVerified: true) {
-    case .success:
-        await MainActor.run {
-            withAnimation {
-                products.remove(object: product)
+    func verifyProduct(_ product: Product.Joined) async {
+        switch await repository.product.verification(id: product.id, isVerified: true) {
+        case .success:
+            await MainActor.run {
+                withAnimation {
+                    products.remove(object: product)
+                }
             }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            feedbackManager.toggle(.error(.unexpected))
+            logger.error("Failed to verify product \(product.id). Error: \(error) (\(#file):\(#line))")
         }
-    case let .failure(error):
-      guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("Failed to verify product \(product.id). Error: \(error) (\(#file):\(#line))")
     }
-  }
 
-  func deleteProduct(_ product: Product.Joined) async {
-    switch await repository.product.delete(id: product.id) {
-    case .success:
-      feedbackManager.trigger(.notification(.success))
-        await MainActor.run {
-            router.removeLast()
-        }
-    case let .failure(error):
-      guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
-    }
-  }
-
-  func loadProducts() async {
-    switch await repository.product.getUnverified() {
-    case let .success(products):
-        await MainActor.run {
-            withAnimation {
-                self.products = products
+    func deleteProduct(_ product: Product.Joined) async {
+        switch await repository.product.delete(id: product.id) {
+        case .success:
+            feedbackManager.trigger(.notification(.success))
+            await MainActor.run {
+                router.removeLast()
             }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            feedbackManager.toggle(.error(.unexpected))
+            logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
         }
-    case let .failure(error):
-      guard !error.localizedDescription.contains("cancelled") else { return }
-      feedbackManager.toggle(.error(.unexpected))
-      logger.error("fetching flavors failed. Error: \(error) (\(#file):\(#line))")
     }
-  }
+
+    func loadProducts() async {
+        switch await repository.product.getUnverified() {
+        case let .success(products):
+            await MainActor.run {
+                withAnimation {
+                    self.products = products
+                }
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            feedbackManager.toggle(.error(.unexpected))
+            logger.error("fetching flavors failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
 }

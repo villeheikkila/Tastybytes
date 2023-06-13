@@ -1,6 +1,6 @@
 import Observation
-import SwiftUI
 import OSLog
+import SwiftUI
 
 @Observable
 final class Router {
@@ -8,7 +8,7 @@ final class Router {
 
     var path: [Screen] = []
     let tab: Tab
-    
+
     init(tab: Tab) {
         self.tab = tab
         restoreState()
@@ -23,7 +23,7 @@ final class Router {
             logger.error("Failed to load stored navigation stack. Error \(error) (\(#file):\(#line))")
         }
     }
-    
+
     func storeState() {
         do {
             try JSONEncoder().encode(path).write(to: tab.cachesDirectoryPath)

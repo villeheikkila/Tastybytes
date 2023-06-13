@@ -1,8 +1,8 @@
 import Firebase
 import FirebaseMessaging
 import Observation
-import SwiftUI
 import OSLog
+import SwiftUI
 
 @Observable
 final class NotificationManager {
@@ -60,7 +60,7 @@ final class NotificationManager {
                     unreadCount = newNotifications
                         .filter { $0.seenAt == nil }
                         .count
-                    
+
                     if withFeedback {
                         feedbackManager.trigger(.notification(.success))
                     }
@@ -94,9 +94,9 @@ final class NotificationManager {
         switch await repository.notification.markAllRead() {
         case .success:
             let markedAsSeenNotifications = notifications.map { notification in
-                return notification.seenAt == nil ? notification.copyWith(seenAt: Date()) : notification
+                notification.seenAt == nil ? notification.copyWith(seenAt: Date()) : notification
             }
-            
+
             await MainActor.run {
                 withAnimation {
                     notifications = markedAsSeenNotifications

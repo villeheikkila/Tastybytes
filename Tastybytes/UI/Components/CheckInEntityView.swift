@@ -106,53 +106,53 @@ struct CheckInEntityView: View {
 
     @ViewBuilder private var checkInSection: some View {
         if !checkIn.isEmpty {
-                if let rating = checkIn.rating {
-                    HStack {
-                        RatingView(rating: rating)
-                        Spacer()
-                    }
+            if let rating = checkIn.rating {
+                HStack {
+                    RatingView(rating: rating)
+                    Spacer()
                 }
+            }
 
-                if let review = checkIn.review {
-                    Text(review)
-                        .fontWeight(.medium)
-                        .foregroundColor(.primary)
-                }
+            if let review = checkIn.review {
+                Text(review)
+                    .fontWeight(.medium)
+                    .foregroundColor(.primary)
+            }
 
-                FlavorsView(flavors: checkIn.flavors)
-                if let purchaseLocation = checkIn.purchaseLocation {
-                    Text("Purchased from __\(purchaseLocation.name)__")
-                }
+            FlavorsView(flavors: checkIn.flavors)
+            if let purchaseLocation = checkIn.purchaseLocation {
+                Text("Purchased from __\(purchaseLocation.name)__")
+            }
         }
     }
 
     @ViewBuilder private var taggedProfilesSection: some View {
         if !checkIn.taggedProfiles.isEmpty {
-                HStack {
-                    Text(verbatim: "Tagged friends")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                    Spacer()
-                }
-                HStack(spacing: 4) {
-                    ForEach(checkIn.taggedProfiles) { taggedProfile in
-                        AvatarView(avatarUrl: taggedProfile.avatarUrl, size: 24, id: taggedProfile.id)
-                    }
-                    Spacer()
-                }
-            }
-    }
-
-    private var footer: some View {
             HStack {
-                if let checkInAt = checkIn.checkInAt {
-                    Text(checkInAt.customFormat(.relativeTime))
-                        .font(.caption).bold()
-                } else {
-                    Text("legacy check-in")
-                        .font(.caption).bold()
+                Text(verbatim: "Tagged friends")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                Spacer()
+            }
+            HStack(spacing: 4) {
+                ForEach(checkIn.taggedProfiles) { taggedProfile in
+                    AvatarView(avatarUrl: taggedProfile.avatarUrl, size: 24, id: taggedProfile.id)
                 }
                 Spacer()
             }
+        }
+    }
+
+    private var footer: some View {
+        HStack {
+            if let checkInAt = checkIn.checkInAt {
+                Text(checkInAt.customFormat(.relativeTime))
+                    .font(.caption).bold()
+            } else {
+                Text("legacy check-in")
+                    .font(.caption).bold()
+            }
+            Spacer()
+        }
     }
 }

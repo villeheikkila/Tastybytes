@@ -1,20 +1,20 @@
 import SwiftUI
 
 struct CheckInCommentView: View {
-  let comment: CheckInComment
+    let comment: CheckInComment
 
-  var body: some View {
-    HStack {
-      AvatarView(avatarUrl: comment.profile.avatarUrl, size: 32, id: comment.profile.id)
-      VStack(alignment: .leading) {
+    var body: some View {
         HStack {
-          Text(comment.profile.preferredName).font(.caption)
-          Spacer()
-          Text(comment.createdAt.customFormat(.relativeTime)).font(.caption2).bold()
+            AvatarView(avatarUrl: comment.profile.avatarUrl, size: 32, id: comment.profile.id)
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(comment.profile.preferredName).font(.caption)
+                    Spacer()
+                    Text(comment.createdAt.customFormat(.relativeTime)).font(.caption2).bold()
+                }
+                Text(comment.content).font(.callout)
+            }
+            Spacer()
         }
-        Text(comment.content).font(.callout)
-      }
-      Spacer()
     }
-  }
 }

@@ -14,9 +14,9 @@ struct Notification: Identifiable, Hashable {
     let createdAt: Date
     let seenAt: Date?
     let content: Content
-    
+
     var isFriendRequest: Bool {
-        if case .friendRequest(_) = self.content {
+        if case .friendRequest = content {
             return true
         }
 

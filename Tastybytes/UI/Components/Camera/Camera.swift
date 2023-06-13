@@ -10,7 +10,7 @@ class Camera: NSObject {
     private var photoOutput: AVCapturePhotoOutput?
     private var videoOutput: AVCaptureVideoDataOutput?
     private var sessionQueue: DispatchQueue!
-    
+
     private var isCaptureSessionConfigured = false
 
     private var allCaptureDevices: [AVCaptureDevice] {
@@ -374,4 +374,3 @@ private extension UIScreen {
         }
     }
 }
-

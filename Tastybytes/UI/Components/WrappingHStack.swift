@@ -135,7 +135,7 @@ extension WrappingHStack {
         for index in rows.indices {
             guard let maxHeightIndex = rows[index].elements
                 .max { $0.size.height < $1.size.height }?
-                .index else { return [] }
+                            .index else { return [] }
 
             let size = sizes[maxHeightIndex]
 

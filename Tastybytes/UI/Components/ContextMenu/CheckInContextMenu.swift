@@ -2,7 +2,7 @@ import SwiftUI
 
 extension View {
     func checkInContextMenu(router: Router, profileManager: ProfileManager, checkIn: CheckIn, onCheckInUpdate: @escaping (CheckIn) -> Void, onDelete: @escaping (CheckIn) -> Void) -> some View {
-        self.contextMenu {
+        contextMenu {
             ControlGroup {
                 CheckInShareLinkView(checkIn: checkIn)
                 if checkIn.profile.id == profileManager.id {

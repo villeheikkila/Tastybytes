@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct MessageNotificationView: View {
-  let message: String
+    let message: String
 
-  var body: some View {
-    Text(message)
-  }
+    var body: some View {
+        Text(message)
+    }
 }

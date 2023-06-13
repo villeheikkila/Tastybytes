@@ -11,14 +11,14 @@ actor ImageLoader {
     public func fetch(_ urlRequest: URLRequest) async throws -> UIImage {
         if let status = images[urlRequest] {
             switch status {
-            case .fetched(let image):
+            case let .fetched(image):
                 return image
-            case .inProgress(let task):
+            case let .inProgress(task):
                 return try await task.value
             }
         }
 
-        if let image = try self.imageFromFileSystem(for: urlRequest) {
+        if let image = try imageFromFileSystem(for: urlRequest) {
             images[urlRequest] = .fetched(image)
             return image
         }
@@ -38,17 +38,18 @@ actor ImageLoader {
 
         return image
     }
-    
+
     private func persistImage(_ image: UIImage, for urlRequest: URLRequest) throws {
         guard let url = fileName(for: urlRequest),
-              let data = image.jpegData(compressionQuality: 0.8) else {
+              let data = image.jpegData(compressionQuality: 0.8)
+        else {
             assertionFailure("Unable to generate a local path for \(urlRequest)")
             return
         }
 
         try data.write(to: url)
     }
-    
+
     private func imageFromFileSystem(for urlRequest: URLRequest) throws -> UIImage? {
         guard let url = fileName(for: urlRequest) else {
             assertionFailure("Unable to generate a local path for \(urlRequest)")
@@ -61,9 +62,10 @@ actor ImageLoader {
 
     private func fileName(for urlRequest: URLRequest) -> URL? {
         guard let fileName = urlRequest.url?.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
-              let applicationSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-                  return nil
-              }
+              let applicationSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+        else {
+            return nil
+        }
 
         return applicationSupport.appendingPathComponent(fileName)
     }
@@ -81,10 +83,9 @@ struct ImageLoaderKey: EnvironmentKey {
 extension EnvironmentValues {
     var imageLoader: ImageLoader {
         get { self[ImageLoaderKey.self] }
-        set { self[ImageLoaderKey.self ] = newValue}
+        set { self[ImageLoaderKey.self] = newValue }
     }
 }
-
 
 struct RemoteImage: View {
     private let source: URLRequest

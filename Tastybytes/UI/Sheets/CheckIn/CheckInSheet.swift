@@ -92,7 +92,7 @@ struct CheckInSheet: View {
                                 .shadow(radius: 4)
                                 .accessibilityLabel("Image of the check-in")
                         } else if let imageUrl = editCheckIn?.imageUrl {
-                           AsyncImage(url: imageUrl) { image in
+                            AsyncImage(url: imageUrl) { image in
                                 image
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
@@ -193,7 +193,7 @@ struct CheckInSheet: View {
                 .servingStyles ?? []
         }
     }
-    
+
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarLeading) {
             Button("Cancel", role: .cancel, action: { dismiss() })
