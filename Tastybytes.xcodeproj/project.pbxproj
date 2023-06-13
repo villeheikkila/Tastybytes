@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5C0595EE2A38B9CB0067F46C /* EmptyActivityFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0595ED2A38B9CB0067F46C /* EmptyActivityFeed.swift */; };
+		5C0595F22A38C9A50067F46C /* ProductShareLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0595F12A38C9A50067F46C /* ProductShareLinkView.swift */; };
 		5C08B6E028ED7956009218D7 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 5C08B6DF28ED7956009218D7 /* Supabase */; };
 		5C08B6E228ED7B05009218D7 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C08B6E128ED7B05009218D7 /* Company.swift */; };
 		5C09BEC929A53E0100331AEB /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C09BEC829A53E0100331AEB /* CategoryView.swift */; };
@@ -238,6 +239,7 @@
 
 /* Begin PBXFileReference section */
 		5C0595ED2A38B9CB0067F46C /* EmptyActivityFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyActivityFeed.swift; sourceTree = "<group>"; };
+		5C0595F12A38C9A50067F46C /* ProductShareLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductShareLinkView.swift; sourceTree = "<group>"; };
 		5C08B6E128ED7B05009218D7 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		5C09BEC829A53E0100331AEB /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		5C09BECA29A54AF800331AEB /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
@@ -1074,6 +1076,7 @@
 				5CDCAE212A33BFF500EA7824 /* CompanyShareLinkView.swift */,
 				5CDCAE232A33C04800EA7824 /* BrandShareLinkView.swift */,
 				5CDCAE252A33C0B600EA7824 /* LocationShareLinkView.swift */,
+				5C0595F12A38C9A50067F46C /* ProductShareLinkView.swift */,
 			);
 			path = ShareLink;
 			sourceTree = "<group>";
@@ -1427,6 +1430,7 @@
 				5CE9008E291FCDF0003DE697 /* SplashScreenManager.swift in Sources */,
 				5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */,
 				5CD7234629F45F83003DA030 /* NotificationScreen.swift in Sources */,
+				5C0595F22A38C9A50067F46C /* ProductShareLinkView.swift in Sources */,
 				5C663F3329322016006F9A97 /* ServingStyleLabelView.swift in Sources */,
 				5CDC9F9929E3E1EE00B6082F /* EditCompanySheet.swift in Sources */,
 				5C0E365429279B240072EFBD /* Barcode.swift in Sources */,
