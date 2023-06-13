@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct AppLogoView: View {
-    let size = min(UIScreen.main.bounds.width / 4, 300)
+    let size: Double
+
+    init(size: Double? = nil) {
+        self.size = size ?? min(UIScreen.main.bounds.width / 4, 300)
+    }
 
     var body: some View {
         Image(getCurrentAppIcon().logo)

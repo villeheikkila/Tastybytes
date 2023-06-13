@@ -1,20 +1,24 @@
+import MessageUI
 import OSLog
+import StoreKit
 import SwiftUI
 
 struct AboutScreen: View {
     private let logger = Logger(category: "AboutScreen")
     @Environment(Repository.self) private var repository
     @Environment(AppDataManager.self) private var appDataManager
+    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(\.requestReview) var requestReview
+    @State private var email = Email.feedback
 
     var body: some View {
-        VStack {
-            List {
-                header.listRowBackground(Color.clear)
-                aboutSection
-                support
-                footer
-            }
+        List {
+            header.listRowBackground(Color.clear)
+            support
+            aboutSection
+            footer
         }
+        .foregroundColor(.primary)
         .listStyle(.insetGrouped)
         .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)
@@ -25,12 +29,33 @@ struct AboutScreen: View {
             HStack {
                 Spacer()
                 VStack(spacing: 12) {
-                    AppLogoView()
+                    AppLogoView(size: 80)
                     AppNameView()
                 }
                 Spacer()
             }
         }
+    }
+
+    @ViewBuilder var support: some View {
+        RouterLink(
+            "Send Feedback",
+            systemSymbol: .envelope,
+            color: .green,
+            sheet: .sendEmail(email: $email, callback: { result in
+                switch result {
+                case let .success(successResult) where successResult == MFMailComposeResult.sent:
+                    feedbackManager.toggle(.success("Thanks for the feedback!"))
+                case .failure:
+                    feedbackManager.toggle(.error(.unexpected))
+                default:
+                    return
+                }
+            })
+        )
+        ProgressButton("Rate \(Config.appName)", systemSymbol: .heart, color: .red, action: {
+            await requestReview()
+        })
     }
 
     @ViewBuilder var aboutSection: some View {
@@ -81,10 +106,6 @@ struct AboutScreen: View {
                 }
             }
         }
-    }
-
-    var support: some View {
-        RouterLink("Become a Supporter", systemSymbol: .gift, color: .green, sheet: .support)
     }
 
     @ViewBuilder var footer: some View {

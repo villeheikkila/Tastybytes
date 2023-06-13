@@ -112,6 +112,7 @@
 		5C6E10712A210FFA00079F8E /* PermissionOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6E10702A210FFA00079F8E /* PermissionOnboarding.swift */; };
 		5C6E10732A235ED000079F8E /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6E10722A235ED000079F8E /* PermissionManager.swift */; };
 		5C73CD0E29E5ED2100A31F45 /* VerificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C73CD0D29E5ED2100A31F45 /* VerificationButton.swift */; };
+		5C7503C12A3902A000069E59 /* SendMailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7503C02A3902A000069E59 /* SendMailView.swift */; };
 		5C7881F22A0AAFC400AF29EE /* MergeLocationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7881F12A0AAFC400AF29EE /* MergeLocationSheet.swift */; };
 		5C7C3574299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */; };
 		5C7C3578299ABFBD009A3C09 /* FriendListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C3577299ABFBD009A3C09 /* FriendListItemView.swift */; };
@@ -345,6 +346,7 @@
 		5C6E10702A210FFA00079F8E /* PermissionOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionOnboarding.swift; sourceTree = "<group>"; };
 		5C6E10722A235ED000079F8E /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		5C73CD0D29E5ED2100A31F45 /* VerificationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationButton.swift; sourceTree = "<group>"; };
+		5C7503C02A3902A000069E59 /* SendMailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMailView.swift; sourceTree = "<group>"; };
 		5C7881F12A0AAFC400AF29EE /* MergeLocationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeLocationSheet.swift; sourceTree = "<group>"; };
 		5C7C3573299ABF78009A3C09 /* CurrentUserFriendsScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserFriendsScreenView.swift; sourceTree = "<group>"; };
 		5C7C3577299ABFBD009A3C09 /* FriendListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListItemView.swift; sourceTree = "<group>"; };
@@ -1271,6 +1273,7 @@
 				5CDCAE272A34596400EA7824 /* WrappingHStack.swift */,
 				5CDCAE292A345B7B00EA7824 /* FlavorsView.swift */,
 				5C0595F32A38D05A0067F46C /* LabeledTextField.swift */,
+				5C7503C02A3902A000069E59 /* SendMailView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1463,6 +1466,7 @@
 				5CD10A4D28F985D00001CFC2 /* CheckIn.swift in Sources */,
 				5C25C672299561BD00C07953 /* ProfileOnboarding.swift in Sources */,
 				5CC2FE8F29196A5D002BDF83 /* LocationSearchSheet.swift in Sources */,
+				5C7503C12A3902A000069E59 /* SendMailView.swift in Sources */,
 				5C0E365A29296FCB0072EFBD /* SubcategoryRepository.swift in Sources */,
 				5C32C41229E9F82F008CE8A9 /* SubcategoryLabelView.swift in Sources */,
 				5CDC9F9F29E4577B00B6082F /* Tab.swift in Sources */,

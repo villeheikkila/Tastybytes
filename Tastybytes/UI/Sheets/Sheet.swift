@@ -28,7 +28,11 @@ enum Sheet: Identifiable, Equatable {
     case duplicateProduct(mode: DuplicateProductSheet.Mode, product: Product.Joined)
     case barcodeManagement(product: Product.Joined)
     case editBrand(brand: Brand.JoinedSubBrandsProductsCompany, onUpdate: () async -> Void)
-    case editSubBrand(brand: Brand.JoinedSubBrandsProductsCompany, subBrand: SubBrand.JoinedProduct, onUpdate: () async -> Void)
+    case editSubBrand(
+        brand: Brand.JoinedSubBrandsProductsCompany,
+        subBrand: SubBrand.JoinedProduct,
+        onUpdate: () async -> Void
+    )
     case friends(taggedFriends: Binding<[Profile]>)
     case flavors(pickedFlavors: Binding<[Flavor]>)
     case locationSearch(title: String, onSelect: (_ location: Location) -> Void)
@@ -48,6 +52,7 @@ enum Sheet: Identifiable, Equatable {
     case mergeLocationSheet(location: Location)
     case productLogo(product: Product.Joined, onUpload: () async -> Void)
     case support
+    case sendEmail(email: Binding<Email>, callback: SendMailCallback)
 
     @ViewBuilder var view: some View {
         switch self {
@@ -125,6 +130,8 @@ enum Sheet: Identifiable, Equatable {
             MergeLocationSheet(location: location)
         case let .productLogo(product, onUpload):
             ProductLogoSheet(product: product, onUpload: onUpload)
+        case let .sendEmail(email, callback):
+            SendEmailView(email: email, callback: callback)
         }
     }
 
@@ -237,6 +244,8 @@ enum Sheet: Identifiable, Equatable {
             return "location_management_\(location.hashValue)"
         case let .productLogo(product, _):
             return "product_logo_\(product.hashValue)"
+        case .sendEmail:
+            return "send_email"
         }
     }
 

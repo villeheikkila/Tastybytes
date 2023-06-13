@@ -96,11 +96,25 @@ extension ProgressButton where LabelView == Label<Text, Image> {
 extension ProgressButton where LabelView == Label<Text, Image> {
     init(_ title: String, systemSymbol: SFSymbol,
          role: ButtonRole? = nil,
-         actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
+         actionOptions: Set<ActionOption> = Set(ActionOption.allCases),
          action: @escaping () async -> Void)
     {
-        self.init(role: role, action: action) {
+        self.init(role: role, action: action, actionOptions: actionOptions) {
             Label(title, systemSymbol: systemSymbol)
+        }
+    }
+}
+
+extension ProgressButton where LabelView == LinkIconLabel {
+    init(
+        _ titleKey: String,
+        systemSymbol: SFSymbol,
+        color: Color,
+        actionOptions _: Set<ActionOption> = Set(ActionOption.allCases),
+        action: @escaping () async -> Void
+    ) {
+        self.init(action: action) {
+            LinkIconLabel(titleKey: titleKey, systemSymbol: systemSymbol, color: color)
         }
     }
 }
