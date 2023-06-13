@@ -231,6 +231,7 @@
 		5CED433228FD76BB003F8194 /* SubBrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED433128FD76BB003F8194 /* SubBrandSheet.swift */; };
 		5CED433428FDA357003F8194 /* SubBrandRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED433328FDA357003F8194 /* SubBrandRepository.swift */; };
 		5CED433628FDA8B9003F8194 /* SubcategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CED433528FDA8B9003F8194 /* SubcategorySheet.swift */; };
+		5CF6882E2A3916C200F50263 /* ProfileLocationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF6882D2A3916C200F50263 /* ProfileLocationsScreen.swift */; };
 		5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB562E28F596A200F13A1E /* ChipView.swift */; };
 		5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563028F5974100F13A1E /* ProfileSummary.swift */; };
 		5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563228F597ED00F13A1E /* RatingView.swift */; };
@@ -466,6 +467,7 @@
 		5CED433128FD76BB003F8194 /* SubBrandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandSheet.swift; sourceTree = "<group>"; };
 		5CED433328FDA357003F8194 /* SubBrandRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBrandRepository.swift; sourceTree = "<group>"; };
 		5CED433528FDA8B9003F8194 /* SubcategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubcategorySheet.swift; sourceTree = "<group>"; };
+		5CF6882D2A3916C200F50263 /* ProfileLocationsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLocationsScreen.swift; sourceTree = "<group>"; };
 		5CFB562E28F596A200F13A1E /* ChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipView.swift; sourceTree = "<group>"; };
 		5CFB563028F5974100F13A1E /* ProfileSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummary.swift; sourceTree = "<group>"; };
 		5CFB563228F597ED00F13A1E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
@@ -828,6 +830,7 @@
 				5CBC2451297C60AE00A0002B /* ProfileScreen.swift */,
 				5CB52D63292BBC14000BF55F /* ProfileProductListView.swift */,
 				5C353CC329A2A5A50067C4EE /* ProfileStatisticsView.swift */,
+				5CF6882D2A3916C200F50263 /* ProfileLocationsScreen.swift */,
 				5CBC2453297D3A5F00A0002B /* ProfileView.swift */,
 				5C7C3592299AC426009A3C09 /* ScalingButton.swift */,
 			);
@@ -1636,6 +1639,7 @@
 				5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */,
 				5CCD4F5D2A32EDB700320F2F /* Logger+Extension.swift in Sources */,
 				5CA006C8298DE33F003CC307 /* BrandScreen.swift in Sources */,
+				5CF6882E2A3916C200F50263 /* ProfileLocationsScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

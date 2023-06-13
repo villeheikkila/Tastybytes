@@ -6,6 +6,7 @@ protocol LocationRepository {
     func getById(id: UUID) async -> Result<Location, Error>
     func delete(id: UUID) async -> Result<Void, Error>
     func search(searchTerm: String) async -> Result<[Location], Error>
+    func getCheckInLocations(userId: UUID) async -> Result<[Location], Error>
     func getSummaryById(id: UUID) async -> Result<Summary, Error>
     func getSuggestions(location: Location.SuggestionParams) async -> Result<[Location], Error>
     func getRecentLocations() async -> Result<[Location], Error>
@@ -40,6 +41,23 @@ struct SupabaseLocationRepository: LocationRepository {
                 .eq(column: "id", value: id)
                 .limit(count: 1)
                 .single()
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func getCheckInLocations(userId _: UUID) async -> Result<[Location], Error> {
+        do {
+            let response: [Location] = try await client
+                .database
+                // TODO: Create a proper view for this
+                .from("view__recent_locations_from_current_user")
+                .select(columns: Location.getQuery(.joined(false)))
+                .order(column: "created_at", ascending: false)
                 .execute()
                 .value
 

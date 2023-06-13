@@ -261,6 +261,9 @@ struct ProfileView: View {
             )
             RouterLink("Products", systemSymbol: .checkmarkRectangle, screen: .profileProducts(profile))
             RouterLink("Statistics", systemSymbol: .chartBarXaxis, screen: .profileStatistics(profile))
+            if isCurrentUser {
+                RouterLink("Locations", systemSymbol: .map, screen: .profileLocations(profile))
+            }
         }
         .font(.subheadline)
         .bold()

@@ -129,7 +129,10 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let response: [CategoryStatistics] = try await client
                 .database
-                .rpc(fn: CategoryStatistics.getQuery(.rpcName), params: CategoryStatistics.CategoryStatisticsParams(id: userId))
+                .rpc(
+                    fn: CategoryStatistics.getQuery(.rpcName),
+                    params: CategoryStatistics.CategoryStatisticsParams(id: userId)
+                )
                 .select(columns: CategoryStatistics.getQuery(.value))
                 .execute()
                 .value
@@ -182,7 +185,8 @@ struct SupabaseProfileRepository: ProfileRepository {
                 .ilike(column: "search", value: "%\(searchTerm)%")
 
             if let currentUserId {
-                let response: [Profile] = try await query.not(column: "id", operator: .eq, value: currentUserId.uuidString)
+                let response: [Profile] = try await query
+                    .not(column: "id", operator: .eq, value: currentUserId.uuidString)
                     .execute().value
                 return .success(response)
             }
@@ -231,7 +235,10 @@ struct SupabaseProfileRepository: ProfileRepository {
         do {
             let result: Bool = try await client
                 .database
-                .rpc(fn: "fnc__check_if_username_is_available", params: Profile.UsernameCheckRequest(username: username))
+                .rpc(
+                    fn: "fnc__check_if_username_is_available",
+                    params: Profile.UsernameCheckRequest(username: username)
+                )
                 .execute()
                 .value
 

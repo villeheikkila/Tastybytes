@@ -12,6 +12,7 @@ enum Screen: Hashable, Codable {
     case profileProducts(Profile)
     case profileProductsByFilter(Profile, Product.Filter)
     case profileStatistics(Profile)
+    case profileLocations(Profile)
     case settings
     case currentUserFriends
     case friends(Profile)
@@ -65,6 +66,8 @@ enum Screen: Hashable, Codable {
             ProfileProductListView(profile: profile, locked: false)
         case let .profileStatistics(profile):
             ProfileStatisticsView(profile: profile)
+        case let .profileLocations(profile):
+            ProfileLocationsScreen(profile: profile)
         case let .addProduct(initialBarcode):
             ProductMutationView(mode: .new, isSheet: false, initialBarcode: initialBarcode)
         case let .checkIn(checkIn):
