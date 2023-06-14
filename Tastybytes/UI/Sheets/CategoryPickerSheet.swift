@@ -1,8 +1,9 @@
 import OSLog
 import SwiftUI
 
+private let logger = Logger(category: "CategoryPickerSheet")
+
 struct CategoryPickerSheet: View {
-    private let logger = Logger(category: "CategoryPickerSheet")
     @Environment(AppDataManager.self) private var appDataManager
     @Environment(\.dismiss) private var dismiss
     @Binding var category: Category.JoinedSubcategoriesServingStyles?
@@ -11,9 +12,10 @@ struct CategoryPickerSheet: View {
     var shownCategories: [Category.JoinedSubcategoriesServingStyles] {
         appDataManager.categories
             .filter { category in
-                searchTerm.isEmpty || category.name.contains(searchTerm) || category.subcategories.contains(where: { subcategory in
-                    subcategory.name.contains(searchTerm)
-                })
+                searchTerm.isEmpty || category.name.contains(searchTerm) || category.subcategories
+                    .contains(where: { subcategory in
+                        subcategory.name.contains(searchTerm)
+                    })
             }
     }
 

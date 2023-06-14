@@ -233,10 +233,6 @@ struct CheckInScreen: View {
         .padding(2)
     }
 
-    func updateCheckIn(_ checkIn: CheckIn) {
-        self.checkIn = checkIn
-    }
-
     func isInvalidComment() -> Bool {
         commentText.isEmpty
     }

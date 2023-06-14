@@ -262,7 +262,6 @@
 		5C11ECBA28EEF24700CCDE6A /* ActivityTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTab.swift; sourceTree = "<group>"; };
 		5C11ECBC28EEF30600CCDE6A /* DiscoverTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverTab.swift; sourceTree = "<group>"; };
 		5C11ECBF28EF434700CCDE6A /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
-		5C11ECC128EF768A00CCDE6A /* .xcconfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = .xcconfig.xcconfig; sourceTree = "<group>"; };
 		5C12B42C2902A12A001EE549 /* AppearanceSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsScreen.swift; sourceTree = "<group>"; };
 		5C12B42E2902A190001EE549 /* ProfileSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsScreen.swift; sourceTree = "<group>"; };
 		5C12B4322902A4C9001EE549 /* BlockedUsersScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersScreen.swift; sourceTree = "<group>"; };
@@ -1286,7 +1285,6 @@
 			children = (
 				5CC2FE9C2919D5BA002BDF83 /* Development.xcconfig */,
 				5CC2FE9A2919D5A7002BDF83 /* Production.xcconfig */,
-				5C11ECC128EF768A00CCDE6A /* .xcconfig.xcconfig */,
 				5CFEE57528ED69B100A8DD66 /* Tastybytes */,
 				5CFEE57428ED69B100A8DD66 /* Products */,
 				5C08B6DE28ED7956009218D7 /* Frameworks */,

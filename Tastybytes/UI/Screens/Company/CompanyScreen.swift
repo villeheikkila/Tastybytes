@@ -8,7 +8,6 @@ struct CompanyScreen: View {
     @Environment(ProfileManager.self) private var profileManager
     @Environment(FeedbackManager.self) private var feedbackManager
     @Environment(Router.self) private var router
-    @Environment(\.dismiss) private var dismiss
     @State private var company: Company
     @State private var companyJoined: Company.Joined?
     @State private var summary: Summary?
@@ -154,24 +153,6 @@ struct CompanyScreen: View {
         } label: {
             Label("Options menu", systemSymbol: .ellipsis)
                 .labelStyle(.iconOnly)
-        }
-    }
-
-    private var companyHeader: some View {
-        HStack(spacing: 10) {
-            if let logoUrl = company.logoUrl {
-                AsyncImage(url: logoUrl) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 52, height: 52)
-                        .accessibility(hidden: true)
-                } placeholder: {
-                    Image(systemSymbol: .photo)
-                        .accessibility(hidden: true)
-                }
-            }
-            Spacer()
         }
     }
 

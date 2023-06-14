@@ -3,8 +3,6 @@ import SwiftUI
 
 struct ProfileSettingsScreen: View {
     @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
-
     @State private var username = ""
     @State private var firstName = ""
     @State private var lastName = ""

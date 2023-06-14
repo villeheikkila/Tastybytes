@@ -192,11 +192,9 @@ private struct ProductMutationInitialValues {
 struct ProductMutationInnerView: View {
     private let logger = Logger(category: "ProductMutationInnerView")
     @Environment(Repository.self) private var repository
-    @Environment(ProfileManager.self) private var profileManager
     @Environment(Router.self) private var router
     @Environment(SheetManager.self) private var sheetManager
     @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(AppDataManager.self) private var appDataManager
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Focusable?
     @State private var subcategories: [Subcategory]

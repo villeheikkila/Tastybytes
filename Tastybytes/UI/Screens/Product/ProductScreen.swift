@@ -1,13 +1,13 @@
 import OSLog
 import SwiftUI
 
+private let logger = Logger(category: "ProductScreen")
+
 struct ProductScreen: View {
-    private let logger = Logger(category: "ProductScreen")
     @Environment(Repository.self) private var repository
     @Environment(ProfileManager.self) private var profileManager
     @Environment(FeedbackManager.self) private var feedbackManager
     @Environment(Router.self) private var router
-    @Environment(\.dismiss) private var dismiss
     @State private var scrollToTop: Int = 0
     @State private var product: Product.Joined
     @State private var summary: Summary?
@@ -158,11 +158,6 @@ struct ProductScreen: View {
                     .labelStyle(.iconOnly)
             }
         }
-    }
-
-    func onEditProduct() async {
-        await refresh()
-        refreshCheckIns()
     }
 
     func loadSummary() async {

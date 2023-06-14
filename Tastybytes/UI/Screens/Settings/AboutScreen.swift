@@ -3,9 +3,9 @@ import OSLog
 import StoreKit
 import SwiftUI
 
+private let logger = Logger(category: "AboutScreen")
+
 struct AboutScreen: View {
-    private let logger = Logger(category: "AboutScreen")
-    @Environment(Repository.self) private var repository
     @Environment(AppDataManager.self) private var appDataManager
     @Environment(FeedbackManager.self) private var feedbackManager
     @Environment(\.requestReview) var requestReview

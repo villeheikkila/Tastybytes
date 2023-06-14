@@ -3,7 +3,6 @@ import SwiftUI
 
 struct PrivacySettingsScreen: View {
     @Environment(ProfileManager.self) private var profileManager
-    @Environment(FeedbackManager.self) private var feedbackManager
 
     var body: some View {
         Form {

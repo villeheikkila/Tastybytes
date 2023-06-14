@@ -107,19 +107,6 @@ extension Location {
         }
     }
 
-    struct New: Codable, Sendable {
-        let name: String
-        let title: String?
-        let longitude: Double
-        let latitude: Double
-        let countryCode: String
-
-        enum CodingKeys: String, CodingKey {
-            case name = "p_name", title = "p_title", longitude = "p_longitude", latitude = "p_latitude",
-                 countryCode = "p_country_code"
-        }
-    }
-
     struct SummaryRequest: Codable, Sendable {
         let id: UUID
 

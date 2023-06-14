@@ -122,18 +122,6 @@ final class AppDataManager {
         }
     }
 
-    func saveEditSubcategoryChanges(subCategory: SubcategoryProtocol, newName: String) async {
-        switch await repository.subcategory
-            .update(updateRequest: Subcategory
-                .UpdateRequest(id: subCategory.id, name: newName))
-        {
-        case .success:
-            await loadCategories()
-        case let .failure(error):
-            logger.error("Failed to update subcategory \(subCategory.id). Error: \(error) (\(#file):\(#line))")
-        }
-    }
-
     func deleteSubcategory(_ deleteSubcategory: SubcategoryProtocol) async {
         switch await repository.subcategory.delete(id: deleteSubcategory.id) {
         case .success:

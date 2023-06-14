@@ -9,7 +9,6 @@ struct BrandScreen: View {
     @Environment(Router.self) private var router
     @State private var brand: Brand.JoinedSubBrandsProductsCompany
     @State private var summary: Summary?
-    @State private var editBrand: Brand.JoinedSubBrandsProductsCompany?
     @State private var toUnverifySubBrand: SubBrand.JoinedProduct? {
         didSet {
             showSubBrandUnverificationConfirmation = true

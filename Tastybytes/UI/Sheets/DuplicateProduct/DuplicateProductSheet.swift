@@ -1,17 +1,17 @@
 import OSLog
 import SwiftUI
 
+private let logger = Logger(category: "MarkAsDuplicate")
+
 struct DuplicateProductSheet: View {
     enum Mode {
         case mergeDuplicate, reportDuplicate
     }
 
-    private let logger = Logger(category: "MarkAsDuplicate")
     @Environment(Repository.self) private var repository
     @Environment(FeedbackManager.self) private var feedbackManager
     @Environment(\.dismiss) private var dismiss
     @State private var products = [Product.Joined]()
-    @State private var currentUserProductDuplicateSuggestions = [ProductDuplicateSuggestion]()
     @State private var mergeToProduct: Product.Joined? {
         didSet {
             showMergeToProductConfirmation = true

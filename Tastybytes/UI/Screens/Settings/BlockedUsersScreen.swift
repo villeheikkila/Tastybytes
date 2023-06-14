@@ -4,7 +4,6 @@ struct BlockedUsersScreen: View {
     @Environment(FriendManager.self) private var friendManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(FeedbackManager.self) private var feedbackManager
-    @State private var showUserSearchSheet = false
 
     var body: some View {
         List {

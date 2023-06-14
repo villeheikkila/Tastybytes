@@ -34,7 +34,6 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         }
     }
 
-    @State private var editCheckIn: CheckIn?
     @State private var checkIns = [CheckIn]()
     @State private var isLoading = false
     @State private var initialLoadCompleted = false

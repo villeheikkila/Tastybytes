@@ -2,7 +2,6 @@ import SwiftUI
 
 struct SupportSheet: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var isProcessing = false
     @State private var purchaseSuccessDisplayed = false
     @State private var purchaseErrorDisplayed = false
 

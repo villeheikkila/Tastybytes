@@ -10,16 +10,16 @@ struct WrappingHStack: Layout {
     var horizontalSpacing: CGFloat?
     var verticalSpacing: CGFloat?
 
-    @inlinable public init(alignment: Alignment = .center,
-                           horizontalSpacing: CGFloat? = nil,
-                           verticalSpacing: CGFloat? = nil)
+    @inlinable init(alignment: Alignment = .center,
+                    horizontalSpacing: CGFloat? = nil,
+                    verticalSpacing: CGFloat? = nil)
     {
         self.alignment = alignment
         self.horizontalSpacing = horizontalSpacing
         self.verticalSpacing = verticalSpacing
     }
 
-    public static var layoutProperties: LayoutProperties {
+    static var layoutProperties: LayoutProperties {
         var properties = LayoutProperties()
         properties.stackOrientation = .horizontal
 
