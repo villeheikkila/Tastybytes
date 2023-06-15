@@ -12,14 +12,13 @@ struct DuplicateProductSheet: View {
     @Environment(FeedbackManager.self) private var feedbackManager
     @Environment(\.dismiss) private var dismiss
     @State private var products = [Product.Joined]()
+    @State private var showMergeToProductConfirmation = false
+    @State private var searchTerm = ""
     @State private var mergeToProduct: Product.Joined? {
         didSet {
             showMergeToProductConfirmation = true
         }
     }
-
-    @State private var showMergeToProductConfirmation = false
-    @State private var searchTerm = ""
 
     let mode: Mode
     let product: Product.Joined

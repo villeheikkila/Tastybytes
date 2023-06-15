@@ -1,6 +1,8 @@
 import OSLog
 import SwiftUI
 
+private let logger = Logger(category: "CheckInListView")
+
 struct CheckInListView<Header, Content>: View where Header: View, Content: View {
     enum Fetcher {
         case activityFeed
@@ -19,7 +21,6 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         }
     }
 
-    private let logger = Logger(category: "CheckInListView")
     @Environment(Repository.self) private var repository
     @Environment(ProfileManager.self) private var profileManager
     @Environment(SplashScreenManager.self) private var splashScreenManager
@@ -146,16 +147,16 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                 }
                 #endif
                 .task {
-                    await getInitialData()
-                }
-                .onChange(of: imageUploadManager.uploadedImageForCheckIn) { _, newValue in
-                    if let updatedCheckIn = newValue {
-                        imageUploadManager.uploadedImageForCheckIn = nil
-                        if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
-                            checkIns[index] = updatedCheckIn
+                        await getInitialData()
+                    }
+                    .onChange(of: imageUploadManager.uploadedImageForCheckIn) { _, newValue in
+                        if let updatedCheckIn = newValue {
+                            imageUploadManager.uploadedImageForCheckIn = nil
+                            if let index = checkIns.firstIndex(where: { $0.id == updatedCheckIn.id }) {
+                                checkIns[index] = updatedCheckIn
+                            }
                         }
                     }
-                }
             }
         }
     }

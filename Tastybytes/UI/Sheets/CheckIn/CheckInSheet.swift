@@ -74,115 +74,29 @@ struct CheckInSheet: View {
 
     var body: some View {
         Form {
-            Section {
-                ProductItemView(product: product)
-                    .accessibilityAddTraits(.isButton)
-                    .onTapGesture {
-                        focusedField = nil
-                    }
-
-                if image != nil || editCheckIn?.imageFile != nil {
-                    HStack {
-                        Spacer()
-                        if let image {
-                            Image(uiImage: image)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 150, alignment: .top)
-                                .shadow(radius: 4)
-                                .accessibilityLabel("Image of the check-in")
-                        } else if let imageUrl = editCheckIn?.imageUrl {
-                            AsyncImage(url: imageUrl) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(height: 150, alignment: .top)
-                                    .shadow(radius: 4)
-                                    .accessibilityLabel("Image of the check-in")
-                            } placeholder: {
-                                EmptyView()
-                            }
-                        }
-                        Spacer()
-                    }
-                }
-                RatingPickerView(rating: $rating, incrementType: .small)
-            }
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
-
-            Section("Review") {
-                TextField("How was it?", text: $review, axis: .vertical)
-                    .focused($focusedField, equals: .review)
-                RouterLink(sheet: .flavors(pickedFlavors: $pickedFlavors), label: {
-                    if !pickedFlavors.isEmpty {
-                        FlavorsView(flavors: pickedFlavors)
-                    } else {
-                        Text("Flavors")
-                    }
-                })
-                Button("\(editCheckIn?.imageUrl == nil && image == nil ? "Add" : "Change") Photo",
-                       systemSymbol: .photo, action: { showPhotoMenu.toggle() })
-            }
-            .headerProminence(.increased)
-
-            Section("Additional Information") {
-                if !servingStyles.isEmpty {
-                    Picker(selection: $servingStyle) {
-                        Text("Not Selected").tag(ServingStyle?(nil))
-                        ForEach(servingStyles) { servingStyle in
-                            Text(servingStyle.label).tag(Optional(servingStyle))
-                        }
-                    } label: {
-                        Text("Serving Style")
-                    }
-                }
-
-                RouterLink("Manufactured by \(manufacturer?.name ?? "")", sheet: .companySearch(onSelect: { company in
-                    manufacturer = company
-                }))
-            }
-
-            Section("Location & Friends") {
-                LocationInputButton(title: "Check-in Location", selection: location) { location in
-                    self.location = location
-                }
-
-                LocationInputButton(title: "Purchase Location", selection: purchaseLocation) { location in
-                    purchaseLocation = location
-                }
-
-                if profileManager.hasPermission(.canSetCheckInDate) {
-                    RouterLink(sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn)) {
-                        Text(isLegacyCheckIn ? "Legacy Check-in" :
-                            "Checked-in \(checkInAt.customFormat(.relativeTime).lowercased())")
-                    }
-                }
-
-                RouterLink(sheet: .friends(taggedFriends: $taggedFriends), label: {
-                    if taggedFriends.isEmpty {
-                        Text("Tag friends")
-                    } else {
-                        WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
-                            ForEach(taggedFriends) { friend in
-                                AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
-                            }
-                        }
-                    }
-                })
-            }
+            topSection
+            reviewSection
+            additionalInformationSection
+            locationAndFriendsSection
         }
         .confirmationDialog("Pick a photo", isPresented: $showPhotoMenu) {
             Button("Camera", action: { showCamera.toggle() })
             RouterLink("Photo Gallery", sheet: .legacyPhotoPicker(onSelection: { image in
-                setImageFromPicker(pickedImage: image)
+                Task {
+                    await MainActor.run {
+                        self.image = image
+                    }
+                }
             }))
         } message: {
             Text("Pick a photo")
         }
         .fullScreenCamera(isPresented: $showCamera, onCapture: { image in
             Task {
-                await setImageFromCamera(image)
+                await MainActor.run {
+                    self.image = image
+                    showCamera = false
+                }
             }
         })
         .toolbar {
@@ -191,6 +105,112 @@ struct CheckInSheet: View {
         .onAppear {
             servingStyles = appDataManager.categories.first(where: { $0.id == product.category.id })?
                 .servingStyles ?? []
+        }
+    }
+
+    @ViewBuilder private var topSection: some View {
+        Section {
+            ProductItemView(product: product)
+                .accessibilityAddTraits(.isButton)
+                .onTapGesture {
+                    focusedField = nil
+                }
+
+            if image != nil || editCheckIn?.imageFile != nil {
+                HStack {
+                    Spacer()
+                    if let image {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 150, alignment: .top)
+                            .shadow(radius: 4)
+                            .accessibilityLabel("Image of the check-in")
+                    } else if let imageUrl = editCheckIn?.imageUrl {
+                        AsyncImage(url: imageUrl) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: 150, alignment: .top)
+                                .shadow(radius: 4)
+                                .accessibilityLabel("Image of the check-in")
+                        } placeholder: {
+                            EmptyView()
+                        }
+                    }
+                    Spacer()
+                }
+            }
+            RatingPickerView(rating: $rating, incrementType: .small)
+        }
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
+    }
+
+    @ViewBuilder private var reviewSection: some View {
+        Section("Review") {
+            TextField("How was it?", text: $review, axis: .vertical)
+                .focused($focusedField, equals: .review)
+            RouterLink(sheet: .flavors(pickedFlavors: $pickedFlavors), label: {
+                if !pickedFlavors.isEmpty {
+                    FlavorsView(flavors: pickedFlavors)
+                } else {
+                    Text("Flavors")
+                }
+            })
+            Button("\(editCheckIn?.imageUrl == nil && image == nil ? "Add" : "Change") Photo",
+                   systemSymbol: .photo, action: { showPhotoMenu.toggle() })
+        }
+        .headerProminence(.increased)
+    }
+
+    @ViewBuilder private var additionalInformationSection: some View {
+        Section("Additional Information") {
+            if !servingStyles.isEmpty {
+                Picker(selection: $servingStyle) {
+                    Text("Not Selected").tag(ServingStyle?(nil))
+                    ForEach(servingStyles) { servingStyle in
+                        Text(servingStyle.label).tag(Optional(servingStyle))
+                    }
+                } label: {
+                    Text("Serving Style")
+                }
+            }
+
+            RouterLink("Manufactured by \(manufacturer?.name ?? "")", sheet: .companySearch(onSelect: { company in
+                manufacturer = company
+            }))
+        }
+    }
+
+    @ViewBuilder private var locationAndFriendsSection: some View {
+        Section("Location & Friends") {
+            LocationInputButton(title: "Check-in Location", selection: location) { location in
+                self.location = location
+            }
+
+            LocationInputButton(title: "Purchase Location", selection: purchaseLocation) { location in
+                purchaseLocation = location
+            }
+
+            if profileManager.hasPermission(.canSetCheckInDate) {
+                RouterLink(sheet: .checkInDatePicker(checkInAt: $checkInAt, isLegacyCheckIn: $isLegacyCheckIn)) {
+                    Text(isLegacyCheckIn ? "Legacy Check-in" :
+                        "Checked-in \(checkInAt.customFormat(.relativeTime).lowercased())")
+                }
+            }
+
+            RouterLink(sheet: .friends(taggedFriends: $taggedFriends), label: {
+                if taggedFriends.isEmpty {
+                    Text("Tag friends")
+                } else {
+                    WrappingHStack(alignment: .leading, horizontalSpacing: 4, verticalSpacing: 4) {
+                        ForEach(taggedFriends) { friend in
+                            AvatarView(avatarUrl: friend.avatarUrl, size: 24, id: friend.id)
+                        }
+                    }
+                }
+            })
         }
     }
 
@@ -218,19 +238,6 @@ struct CheckInSheet: View {
                 dismiss()
             })
             .bold()
-        }
-    }
-
-    func setImageFromCamera(_ image: UIImage) async {
-        Task {
-            self.image = image
-            showCamera = false
-        }
-    }
-
-    func setImageFromPicker(pickedImage: UIImage) {
-        Task {
-            image = pickedImage
         }
     }
 
