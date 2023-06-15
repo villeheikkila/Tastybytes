@@ -59,11 +59,11 @@ struct CompanyScreen: View {
             }
         #endif
             .toolbar {
-                toolbarContent
-            }
-            .confirmationDialog("Unverify Company",
-                                isPresented: $showUnverifyCompanyConfirmation,
-                                presenting: company)
+                    toolbarContent
+                }
+                .confirmationDialog("Unverify Company",
+                                    isPresented: $showUnverifyCompanyConfirmation,
+                                    presenting: company)
         { presenting in
             ProgressButton("Unverify \(presenting.name) company", action: {
                 await verifyCompany(isVerified: false)

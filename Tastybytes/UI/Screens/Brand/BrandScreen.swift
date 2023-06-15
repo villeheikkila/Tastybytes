@@ -172,19 +172,19 @@ struct BrandScreen: View {
                 }
             #endif
                 .task {
-                    if summary == nil {
-                        await getSummary()
+                        if summary == nil {
+                            await getSummary()
+                        }
+                        if refreshOnLoad {
+                            await refresh()
+                        }
                     }
-                    if refreshOnLoad {
-                        await refresh()
+                    .toolbar {
+                        toolbarContent
                     }
-                }
-                .toolbar {
-                    toolbarContent
-                }
-                .confirmationDialog("Unverify Sub-brand",
-                                    isPresented: $showSubBrandUnverificationConfirmation,
-                                    presenting: toUnverifySubBrand)
+                    .confirmationDialog("Unverify Sub-brand",
+                                        isPresented: $showSubBrandUnverificationConfirmation,
+                                        presenting: toUnverifySubBrand)
             { presenting in
                 ProgressButton("Unverify \(presenting.name ?? "default") sub-brand", action: {
                     await verifySubBrand(presenting, isVerified: false)

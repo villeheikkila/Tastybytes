@@ -41,9 +41,7 @@ struct ProfileView: View {
             emptyView: {},
             header: {
                 profileSummarySection
-                    .listRowSeparator(.hidden)
-                    .id(topAnchor)
-                VStack(spacing: 20) {
+                VStack(spacing: 16) {
                     if showInFull {
                         ratingChart
                         ratingSummary
@@ -164,6 +162,8 @@ struct ProfileView: View {
             }
         }
         .padding(.top, 10)
+        .listRowSeparator(.hidden)
+        .id(topAnchor)
         .task {
             if profileSummary == nil {
                 await getSummary()
@@ -238,6 +238,9 @@ struct ProfileView: View {
                 Text(String(profileSummary?.unrated ?? 0))
                     .font(.headline)
             }
+            Spacing(width: 12)
+            Divider()
+            Spacing(width: 12)
             VStack {
                 Text("Average")
                     .font(.caption).bold().textCase(.uppercase)

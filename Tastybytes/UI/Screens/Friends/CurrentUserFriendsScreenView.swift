@@ -52,11 +52,17 @@ struct CurrentUserFriendsScreen: View {
                             ProgressButton(
                                 "Accept friend request",
                                 systemSymbol: .personBadgePlus,
-                                action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted) }
+                                action: { await friendManager.updateFriendRequest(friend: friend, newStatus: .accepted)
+                                }
                             )
                             .tint(.green)
                         }
-                        Button("Delete", systemSymbol: .personFillXmark, role: .destructive, action: { friendToBeRemoved = friend })
+                        Button(
+                            "Delete",
+                            systemSymbol: .personFillXmark,
+                            role: .destructive,
+                            action: { friendToBeRemoved = friend }
+                        )
                         ProgressButton(
                             "Block",
                             systemSymbol: .person2Slash,
@@ -65,7 +71,12 @@ struct CurrentUserFriendsScreen: View {
                     }.imageScale(.large)
                 }
                 .contextMenu {
-                    Button("Delete", systemSymbol: .personFillXmark, role: .destructive, action: { friendToBeRemoved = friend })
+                    Button(
+                        "Delete",
+                        systemSymbol: .personFillXmark,
+                        role: .destructive,
+                        action: { friendToBeRemoved = friend }
+                    )
                     ProgressButton(
                         "Block",
                         systemSymbol: .person2Slash,
@@ -83,29 +94,29 @@ struct CurrentUserFriendsScreen: View {
             }
         #endif
             .task {
-                await friendManager.refresh(withFeedback: false)
-                await notificationManager.markAllFriendRequestsAsRead()
-            }
-            .toolbar {
-                toolbarContent
-            }
-            .confirmationDialog(
-                """
-                Remove user from your friends, you will no longer be able to see each other's check-ins on your
-                activity feed nor be able to tag each other check-ins
-                """,
-                isPresented: $showRemoveFriendConfirmation,
-                titleVisibility: .visible,
-                presenting: friendToBeRemoved
-            ) { presenting in
-                ProgressButton(
-                    "Remove \(presenting.getFriend(userId: profileManager.id).preferredName) from friends",
-                    role: .destructive,
-                    action: {
-                        await friendManager.removeFriendRequest(presenting)
-                    }
-                )
-            }
+                    await friendManager.refresh(withFeedback: false)
+                    await notificationManager.markAllFriendRequestsAsRead()
+                }
+                .toolbar {
+                    toolbarContent
+                }
+                .confirmationDialog(
+                    """
+                    Remove user from your friends, you will no longer be able to see each other's check-ins on your
+                    activity feed nor be able to tag each other check-ins
+                    """,
+                    isPresented: $showRemoveFriendConfirmation,
+                    titleVisibility: .visible,
+                    presenting: friendToBeRemoved
+                ) { presenting in
+                    ProgressButton(
+                        "Remove \(presenting.getFriend(userId: profileManager.id).preferredName) from friends",
+                        role: .destructive,
+                        action: {
+                            await friendManager.removeFriendRequest(presenting)
+                        }
+                    )
+                }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
