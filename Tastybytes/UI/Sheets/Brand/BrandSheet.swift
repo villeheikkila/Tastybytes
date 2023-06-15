@@ -33,15 +33,9 @@ struct BrandSheet: View {
 
             if profileManager.hasPermission(.canCreateBrands) {
                 Section("Add new brand for \(brandOwner.name)") {
-                    TextField("Name", text: $brandName)
-                        .overlay(
-                            ScanTextButton(text: $brandName),
-                            alignment: .trailing
-                        )
-                    ProgressButton("Create") {
-                        await createNewBrand()
-                    }
-                    .disabled(!brandName.isValidLength(.normal))
+                    ScanTextField(title: "Name", text: $brandName)
+                    ProgressButton("Create", action: { await createNewBrand() })
+                        .disabled(!brandName.isValidLength(.normal))
                 }
             }
         }

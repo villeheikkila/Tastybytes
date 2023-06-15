@@ -151,7 +151,10 @@ struct ProductMutationView: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("Failed to load brand owner for product '\(initialProduct.id)'. Error: \(error) (\(#file):\(#line))")
+            logger
+                .error(
+                    "Failed to load brand owner for product '\(initialProduct.id)'. Error: \(error) (\(#file):\(#line))"
+                )
         }
     }
 }
@@ -362,20 +365,10 @@ struct ProductMutationInnerView: View {
 
     private var productSection: some View {
         Section {
-            HStack {
-                TextField("Name", text: $name)
-                    .focused($focusedField, equals: .name)
-                    .overlay(
-                        ScanTextButton(text: $name),
-                        alignment: .trailing
-                    )
-            }
-            TextField("Description (optional)", text: $description)
+            ScanTextField(title: "Name", text: $name)
+                .focused($focusedField, equals: .name)
+            ScanTextField(title: "Description (optional)", text: $description)
                 .focused($focusedField, equals: .description)
-                .overlay(
-                    ScanTextButton(text: $description),
-                    alignment: .trailing
-                )
 
             if showBarcodeSection {
                 RouterLink(
@@ -470,7 +463,10 @@ struct ProductMutationInnerView: View {
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("Failed to create product edit suggestion for '\(product.id)'. Error: \(error) (\(#file):\(#line))")
+            logger
+                .error(
+                    "Failed to create product edit suggestion for '\(product.id)'. Error: \(error) (\(#file):\(#line))"
+                )
         }
     }
 

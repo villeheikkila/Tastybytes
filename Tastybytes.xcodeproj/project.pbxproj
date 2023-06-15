@@ -140,6 +140,7 @@
 		5C964DC02A2BF05200805199 /* ImageUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C964DBF2A2BF05200805199 /* ImageUploadManager.swift */; };
 		5C964DC32A2D021F00805199 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 5C964DC22A2D021F00805199 /* SFSafeSymbols */; };
 		5C989DAB2901AAD500BBC5A7 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C989DAA2901AAD500BBC5A7 /* Repository.swift */; };
+		5C9968562A3B997000EEE993 /* ScanTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9968552A3B997000EEE993 /* ScanTextField.swift */; };
 		5C9FD5652A36686600ED2CEF /* CheckInContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9FD5642A36686600ED2CEF /* CheckInContextMenu.swift */; };
 		5CA006C8298DE33F003CC307 /* BrandScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA006C7298DE33F003CC307 /* BrandScreen.swift */; };
 		5CA006CD2992D0CF003CC307 /* CreateQRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA006CC2992D0CF003CC307 /* CreateQRCodeView.swift */; };
@@ -373,6 +374,7 @@
 		5C964DBB2A2BE44400805199 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		5C964DBF2A2BF05200805199 /* ImageUploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadManager.swift; sourceTree = "<group>"; };
 		5C989DAA2901AAD500BBC5A7 /* Repository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		5C9968552A3B997000EEE993 /* ScanTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextField.swift; sourceTree = "<group>"; };
 		5C9FD5642A36686600ED2CEF /* CheckInContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInContextMenu.swift; sourceTree = "<group>"; };
 		5CA006C7298DE33F003CC307 /* BrandScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandScreen.swift; sourceTree = "<group>"; };
 		5CA006CC2992D0CF003CC307 /* CreateQRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQRCodeView.swift; sourceTree = "<group>"; };
@@ -1022,6 +1024,14 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		5C9968542A3B996200EEE993 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				5C9968552A3B997000EEE993 /* ScanTextField.swift */,
+			);
+			path = Input;
+			sourceTree = "<group>";
+		};
 		5C9FD5632A36685700ED2CEF /* ContextMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -1240,6 +1250,7 @@
 		5CFB562D28F5969300F13A1E /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5C9968542A3B996200EEE993 /* Input */,
 				5C0595EC2A38B9B40067F46C /* ContentUnavailable */,
 				5C9FD5632A36685700ED2CEF /* ContextMenu */,
 				5CAC99832A3611FA003729C6 /* Camera */,
@@ -1475,6 +1486,7 @@
 				5C20A51029AA5A0500ABBA74 /* AdminTab.swift in Sources */,
 				5CED432028FAB5F5003F8194 /* View+Extension.swift in Sources */,
 				5CE90091292101C8003DE697 /* AboutScreen.swift in Sources */,
+				5C9968562A3B997000EEE993 /* ScanTextField.swift in Sources */,
 				5C353CC429A2A5A50067C4EE /* ProfileStatisticsView.swift in Sources */,
 				5C964DBC2A2BE44400805199 /* UserDefaults.swift in Sources */,
 				5CB1C24528F9AF80000B0EB4 /* CheckInRepository.swift in Sources */,
