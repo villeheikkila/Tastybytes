@@ -198,6 +198,22 @@ extension Product {
         let onlyNonCheckedIn: Bool
         let sortBy: SortBy?
         let rating: Double?
+        let onlyUnrated: Bool?
+
+        init(category: Category.JoinedSubcategoriesServingStyles? = nil,
+             subcategory: Subcategory? = nil,
+             onlyNonCheckedIn: Bool = false,
+             sortBy: SortBy? = nil,
+             rating: Double? = nil,
+             onlyUnrated: Bool? = nil)
+        {
+            self.category = category
+            self.subcategory = subcategory
+            self.onlyNonCheckedIn = onlyNonCheckedIn
+            self.sortBy = sortBy
+            self.rating = rating
+            self.onlyUnrated = onlyUnrated
+        }
 
         init(rating: Double) {
             self.rating = rating
@@ -205,6 +221,7 @@ extension Product {
             category = nil
             subcategory = nil
             sortBy = nil
+            onlyUnrated = nil
         }
 
         init(
@@ -218,6 +235,7 @@ extension Product {
             self.onlyNonCheckedIn = onlyNonCheckedIn
             self.sortBy = sortBy
             rating = nil
+            onlyUnrated = nil
         }
 
         init(category: Category?, subcategory: Subcategory?, onlyNonCheckedIn: Bool, sortBy: SortBy?) {
@@ -236,6 +254,7 @@ extension Product {
             self.onlyNonCheckedIn = onlyNonCheckedIn
             self.sortBy = sortBy
             rating = nil
+            onlyUnrated = nil
         }
 
         func copyWith(category: Category.JoinedSubcategoriesServingStyles?) -> Filter {

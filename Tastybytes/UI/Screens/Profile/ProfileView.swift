@@ -9,6 +9,7 @@ struct ProfileView: View {
     @Environment(FeedbackManager.self) private var feedbackManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(FriendManager.self) private var friendManager
+    @Environment(Router.self) private var router
     @Environment(SplashScreenManager.self) private var splashScreenManager
     @Binding private var scrollToTop: Int
     @State private var profile: Profile
@@ -188,7 +189,7 @@ struct ProfileView: View {
     }
 
     private var ratingChart: some View {
-        RatingChart(profile: profile, profileSummary: profileSummary)
+        RatingChartView(profile: profile, profileSummary: profileSummary)
     }
 
     private var ratingSummary: some View {
@@ -200,6 +201,8 @@ struct ProfileView: View {
                     .textCase(.uppercase)
                 Text(String(profileSummary?.unrated ?? 0))
                     .font(.headline)
+            }.onTapGesture {
+                router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(onlyUnrated: true)))
             }
             Spacing(width: 12)
             Divider()
@@ -226,7 +229,7 @@ struct ProfileView: View {
 
     @ViewBuilder private var checkInImages: some View {
         Section {
-            CheckInImages(profile: profile)
+            CheckInImagesView(profile: profile)
         }
     }
 
@@ -278,174 +281,5 @@ struct ProfileView: View {
             feedbackManager.toggle(.error(.unexpected))
             logger.error("fetching profile data failed. Error: \(error) (\(#file):\(#line))")
         }
-    }
-}
-
-struct CheckInImages: View {
-    private let logger = Logger(category: "CheckInImages")
-    @Environment(Repository.self) private var repository
-    @Environment(FeedbackManager.self) private var feedbackManager
-    @Environment(Router.self) private var router
-    @State private var checkInImages = [CheckIn.Image]()
-    @State private var isLoading = false
-    @State private var page = 0
-    private let pageSize = 10
-
-    func getPagination(page: Int, size: Int) -> (Int, Int) {
-        let limit = size + 1
-        let from = page * limit
-        let to = from + size
-        return (from, to)
-    }
-
-    let profile: Profile
-
-    var body: some View {
-        ScrollView(.horizontal) {
-            LazyHStack {
-                ForEach(checkInImages) { checkInImage in
-                    CheckInImageCell(checkInImage: checkInImage)
-                        .onTapGesture {
-                            router.fetchAndNavigateTo(repository, .checkIn(id: checkInImage.id))
-                        }
-                        .onAppear {
-                            if checkInImage == checkInImages.last, isLoading != true {
-                                Task {
-                                    await fetchImages()
-                                }
-                            }
-                        }
-                }
-            }
-        }
-        .task {
-            await fetchImages()
-        }
-    }
-
-    func fetchImages() async {
-        let (from, to) = getPagination(page: page, size: pageSize)
-        isLoading = true
-
-        switch await repository.checkIn.getCheckInImages(id: profile.id, from: from, to: to) {
-        case let .success(checkIns):
-            await MainActor.run {
-                withAnimation {
-                    self.checkInImages.append(contentsOf: checkIns)
-                }
-                page += 1
-                isLoading = false
-            }
-        case let .failure(error):
-            guard !error.localizedDescription.contains("cancelled") else { return }
-            feedbackManager.toggle(.error(.unexpected))
-            logger
-                .error(
-                    "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
-                )
-        }
-    }
-}
-
-extension CheckInImages {
-    struct CheckInImageCell: View {
-        let checkInImage: CheckIn.Image
-
-        var body: some View {
-            HStack {
-                AsyncImage(url: checkInImage.imageUrl) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 100, height: 100)
-                        .clipped()
-                        .cornerRadius(4)
-                        .contentShape(Rectangle())
-                } placeholder: {
-                    BlurHashPlaceholder(blurHash: checkInImage.blurHash, height: 100)
-                }
-                .frame(width: 100, height: 100)
-            }
-        }
-    }
-}
-
-struct RatingChart: View {
-    @Environment(Router.self) private var router
-    let profile: Profile
-    let profileSummary: ProfileSummary?
-
-    var body: some View {
-        Section {
-            Chart {
-                BarMark(
-                    x: .value("Rating", "0.5"),
-                    y: .value("Value", profileSummary?.rating1 ?? 0)
-                )
-
-                BarMark(
-                    x: .value("Rating", "1"),
-                    y: .value("Value", profileSummary?.rating2 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "1.5"),
-                    y: .value("Value", profileSummary?.rating3 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "2"),
-                    y: .value("Value", profileSummary?.rating4 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "2.5"),
-                    y: .value("Value", profileSummary?.rating5 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "3"),
-                    y: .value("Value", profileSummary?.rating6 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "3.5"),
-                    y: .value("Value", profileSummary?.rating7 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "4"),
-                    y: .value("Value", profileSummary?.rating8 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "4.5"),
-                    y: .value("Value", profileSummary?.rating9 ?? 0)
-                )
-                BarMark(
-                    x: .value("Rating", "5"),
-                    y: .value("Value", profileSummary?.rating10 ?? 0)
-                )
-            }
-            .chartLegend(.hidden)
-            .chartYAxis(.hidden)
-            .chartXAxis {
-                AxisMarks(position: .bottom) { _ in
-                    AxisValueLabel()
-                }
-            }
-            .chartOverlay { proxy in
-                GeometryReader { geometry in
-                    Rectangle().fill(.clear).contentShape(Rectangle())
-                        .onTapGesture { location in
-                            updateSelectedRating(at: location,
-                                                 proxy: proxy,
-                                                 geometry: geometry)
-                        }
-                }
-            }
-            .frame(height: 100)
-        }
-    }
-
-    private func updateSelectedRating(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) {
-        let xPosition = location.x - geometry[proxy.plotAreaFrame].origin.x
-        guard let value: String = proxy.value(atX: xPosition), let rating = Double(value) else {
-            return
-        }
-        router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(rating: rating)))
     }
 }

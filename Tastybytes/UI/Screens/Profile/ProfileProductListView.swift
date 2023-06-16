@@ -27,6 +27,8 @@ struct ProfileProductListView: View {
                 return "\(categoryName): \(subcategoryName)"
             } else if let categoryName {
                 return categoryName
+            } else if (productFilter?.onlyUnrated) == true {
+                return "Unrated"
             } else if let rating = productFilter?.rating {
                 return "Rating: \(String(format: "%.1f", rating))"
             } else {
@@ -108,6 +110,12 @@ struct ProfileProductListView: View {
             true
         }
 
+        let onlyUnratedPass = if (productFilter?.onlyUnrated) == true {
+            product.averageRating == 0 ||  product.averageRating == nil
+        } else {
+            false
+        }
+
         let namePass = !searchTerm.isEmpty ?
             [product.getDisplayName(.brandOwner), product.getDisplayName(.fullName)].joinOptionalSpace()
             .contains(searchTerm) : true
@@ -119,7 +127,7 @@ struct ProfileProductListView: View {
             .map(\.id)
             .contains(productFilter?.subcategory?.id ?? -1) : true
 
-        return ratingPass && namePass && categoryPass && subcategoryPass
+        return onlyUnratedPass && ratingPass && namePass && categoryPass && subcategoryPass
     }
 
     func loadProducts() async {
