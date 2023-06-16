@@ -197,6 +197,15 @@ extension Product {
         let subcategory: Subcategory?
         let onlyNonCheckedIn: Bool
         let sortBy: SortBy?
+        let rating: Double?
+
+        init(rating: Double) {
+            self.rating = rating
+            onlyNonCheckedIn = false
+            category = nil
+            subcategory = nil
+            sortBy = nil
+        }
 
         init(
             category: Category.JoinedSubcategoriesServingStyles?,
@@ -208,6 +217,7 @@ extension Product {
             self.subcategory = subcategory
             self.onlyNonCheckedIn = onlyNonCheckedIn
             self.sortBy = sortBy
+            rating = nil
         }
 
         init(category: Category?, subcategory: Subcategory?, onlyNonCheckedIn: Bool, sortBy: SortBy?) {
@@ -225,6 +235,7 @@ extension Product {
             self.subcategory = subcategory
             self.onlyNonCheckedIn = onlyNonCheckedIn
             self.sortBy = sortBy
+            rating = nil
         }
 
         func copyWith(category: Category.JoinedSubcategoriesServingStyles?) -> Filter {
@@ -537,7 +548,8 @@ extension Product {
                 categoryId: joined.category.id == categoryId ? nil : categoryId
             )
 
-            return diff.name != nil || diff.description != nil || diff.subBrandId != nil || diff.categoryId != nil ? diff : nil
+            return diff.name != nil || diff.description != nil || diff.subBrandId != nil || diff
+                .categoryId != nil ? diff : nil
         }
     }
 

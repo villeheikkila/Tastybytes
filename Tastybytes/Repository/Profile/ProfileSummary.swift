@@ -1,4 +1,5 @@
-import Foundation
+import Charts
+import SwiftUI
 
 struct ProfileSummary: Codable, Sendable {
     let totalCheckIns: Int
