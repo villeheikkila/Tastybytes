@@ -183,7 +183,10 @@ struct AuthenticationScreen: View {
                     break
                 case let .failure(error):
                     feedbackManager.toggle(.error(.custom(error.localizedDescription)))
-                    logger.error("Error occured when trying to sign in. Localized: \(error.localizedDescription) Error: \(error) (\(#file):\(#line))")
+                    logger
+                        .error(
+                            "Error occured when trying to sign in. Localized: \(error.localizedDescription) Error: \(error) (\(#file):\(#line))"
+                        )
                 }
             case .signUp:
                 switch await repository.auth.signUp(username: username, email: email, password: password) {
@@ -209,7 +212,10 @@ struct AuthenticationScreen: View {
                     feedbackManager.toggle(.success("Password reset email sent!"))
                 case let .failure(error):
                     feedbackManager.toggle(.error(.custom(error.localizedDescription)))
-                    logger.error("Error occured when trying to send forgot password link. Error: \(error) (\(#file):\(#line))")
+                    logger
+                        .error(
+                            "Error occured when trying to send forgot password link. Error: \(error) (\(#file):\(#line))"
+                        )
                 }
             case .magicLink:
                 switch await repository.auth.sendMagicLink(email: email) {
@@ -217,7 +223,10 @@ struct AuthenticationScreen: View {
                     feedbackManager.toggle(.success("Magic link sent!"))
                 case let .failure(error):
                     feedbackManager.toggle(.error(.custom(error.localizedDescription)))
-                    logger.error("Error occured when trying to log in with magic link. Error: \(error) (\(#file):\(#line))")
+                    logger
+                        .error(
+                            "Error occured when trying to log in with magic link. Error: \(error) (\(#file):\(#line))"
+                        )
                 }
             case .accountDeleted:
                 setScene(.signIn)

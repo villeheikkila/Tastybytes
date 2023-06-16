@@ -44,7 +44,7 @@ struct CheckInEntityView: View {
                         .clipped()
                         .contentShape(Rectangle())
                 } placeholder: {
-                    BlurHashPlaceholder(blurHash: checkIn.blurHash)
+                    BlurHashPlaceholder(blurHash: checkIn.blurHash, height: 200)
                 }.frame(height: 200)
             }
         }

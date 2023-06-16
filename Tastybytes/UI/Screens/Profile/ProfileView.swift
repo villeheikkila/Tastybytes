@@ -41,26 +41,38 @@ struct ProfileView: View {
             emptyView: {},
             header: {
                 profileSummarySection
-                VStack(spacing: 16) {
-                    if showInFull {
-                        ratingChart
-                        ratingSummary
-                        joinedAtSection
-                    } else {
-                        privateProfileSign
-                    }
-                    if !isCurrentUser,
-                       !friendManager.isFriend(profile) || friendManager.isPendingUserApproval(profile) != nil
-                    {
-                        friendActionSection
-                    }
-                }
-                .listRowSeparator(.hidden)
                 if showInFull {
-                    links
+                    completeProfile
+                } else {
+                    privateProfile
                 }
             }
         )
+    }
+
+    @ViewBuilder private var privateProfile: some View {
+        privateProfileSign
+        if !isCurrentUser,
+           !friendManager.isFriend(profile) || friendManager.isPendingUserApproval(profile) != nil
+        {
+            friendActionSection
+        }
+    }
+
+    @ViewBuilder private var completeProfile: some View {
+        Group {
+            ratingChart
+            checkInImages
+                .listRowInsets(.init(top: 8, leading: 0, bottom: 8, trailing: 0))
+            ratingSummary
+            joinedAtSection
+            if !isCurrentUser,
+               !friendManager.isFriend(profile) || friendManager.isPendingUserApproval(profile) != nil
+            {
+                friendActionSection
+            }
+        }.listRowSeparator(.hidden)
+        links
     }
 
     private var friendActionSection: some View {
@@ -176,61 +188,63 @@ struct ProfileView: View {
     }
 
     private var ratingChart: some View {
-        Chart {
-            BarMark(
-                x: .value("Rating", "0.5"),
-                y: .value("Value", profileSummary?.rating1 ?? 0)
-            )
-            BarMark(
-                x: .value("Rating", "1"),
-                y: .value("Value", profileSummary?.rating2 ?? 0)
-            )
-            BarMark(
-                x: .value("Rating", "1.5"),
-                y: .value("Value", profileSummary?.rating3 ?? 0)
-            )
-            BarMark(
-                x: .value("Rating", "2"),
-                y: .value("Value", profileSummary?.rating4 ?? 0)
-            )
-            BarMark(
-                x: .value("Rating", "2.5"),
-                y: .value("Value", profileSummary?.rating5 ?? 0)
-            )
-            BarMark(
-                x: .value("Rating", "3"),
-                y: .value("Value", profileSummary?.rating6 ?? 0)
-            )
-            BarMark(
-                x: .value("Rating", "3.5"),
-                y: .value("Value", profileSummary?.rating7 ?? 0)
-            )
-            BarMark(
-                x: .value("Rating", "4"),
-                y: .value("Value", profileSummary?.rating8 ?? 0)
-            )
-            BarMark(
-                x: .value("Rating", "4.5"),
-                y: .value("Value", profileSummary?.rating9 ?? 0)
-            )
-            BarMark(
-                x: .value("Rating", "5"),
-                y: .value("Value", profileSummary?.rating10 ?? 0)
-            )
-        }
-        .chartLegend(.hidden)
-        .chartYAxis(.hidden)
-        .chartXAxis {
-            AxisMarks(position: .bottom) { _ in
-                AxisValueLabel()
+        Section {
+            Chart {
+                BarMark(
+                    x: .value("Rating", "0.5"),
+                    y: .value("Value", profileSummary?.rating1 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "1"),
+                    y: .value("Value", profileSummary?.rating2 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "1.5"),
+                    y: .value("Value", profileSummary?.rating3 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "2"),
+                    y: .value("Value", profileSummary?.rating4 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "2.5"),
+                    y: .value("Value", profileSummary?.rating5 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "3"),
+                    y: .value("Value", profileSummary?.rating6 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "3.5"),
+                    y: .value("Value", profileSummary?.rating7 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "4"),
+                    y: .value("Value", profileSummary?.rating8 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "4.5"),
+                    y: .value("Value", profileSummary?.rating9 ?? 0)
+                )
+                BarMark(
+                    x: .value("Rating", "5"),
+                    y: .value("Value", profileSummary?.rating10 ?? 0)
+                )
             }
+            .chartLegend(.hidden)
+            .chartYAxis(.hidden)
+            .chartXAxis {
+                AxisMarks(position: .bottom) { _ in
+                    AxisValueLabel()
+                }
+            }
+            .frame(height: 100)
         }
-        .frame(height: 100)
-        .padding([.leading, .trailing], 10)
     }
 
     private var ratingSummary: some View {
         HStack {
+            Spacer()
             VStack {
                 Text("Unrated")
                     .font(.caption).bold().textCase(.uppercase)
@@ -248,11 +262,23 @@ struct ProfileView: View {
                 Text(String(profileSummary?.averageRating.toRatingString ?? "-"))
                     .font(.headline)
             }
+            Spacer()
         }
     }
 
     private var joinedAtSection: some View {
-        Text("Joined \(profile.joinedAt.customFormat(.date))").fontWeight(.medium)
+        HStack {
+            Spacer()
+            Text("Joined \(profile.joinedAt.customFormat(.date))")
+                .fontWeight(.medium)
+            Spacer()
+        }
+    }
+
+    @ViewBuilder private var checkInImages: some View {
+        Section {
+            CheckInImages(profile: profile)
+        }
     }
 
     @ViewBuilder private var links: some View {
@@ -302,6 +328,95 @@ struct ProfileView: View {
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
             logger.error("fetching profile data failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+struct CheckInImages: View {
+    private let logger = Logger(category: "CheckInImages")
+    @Environment(Repository.self) private var repository
+    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(Router.self) private var router
+    @State private var checkInImages = [CheckIn.Image]()
+    @State private var isLoading = false
+    @State private var page = 0
+    private let pageSize = 10
+
+    func getPagination(page: Int, size: Int) -> (Int, Int) {
+        let limit = size + 1
+        let from = page * limit
+        let to = from + size
+        return (from, to)
+    }
+
+    let profile: Profile
+
+    var body: some View {
+        ScrollView(.horizontal) {
+            LazyHStack {
+                ForEach(checkInImages) { checkInImage in
+                    CheckInImageCell(checkInImage: checkInImage)
+                        .onTapGesture {
+                            router.fetchAndNavigateTo(repository, .checkIn(id: checkInImage.id))
+                        }
+                        .onAppear {
+                            if checkInImage == checkInImages.last, isLoading != true {
+                                Task {
+                                    await fetchImages()
+                                }
+                            }
+                        }
+                }
+            }
+        }
+        .task {
+            await fetchImages()
+        }
+    }
+
+    func fetchImages() async {
+        let (from, to) = getPagination(page: page, size: pageSize)
+        isLoading = true
+
+        switch await repository.checkIn.getCheckInImages(id: profile.id, from: from, to: to) {
+        case let .success(checkIns):
+            await MainActor.run {
+                withAnimation {
+                    self.checkInImages.append(contentsOf: checkIns)
+                }
+                page += 1
+                isLoading = false
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            feedbackManager.toggle(.error(.unexpected))
+            logger
+                .error(
+                    "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
+                )
+        }
+    }
+}
+
+extension CheckInImages {
+    struct CheckInImageCell: View {
+        let checkInImage: CheckIn.Image
+
+        var body: some View {
+            HStack {
+                AsyncImage(url: checkInImage.imageUrl) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 100, height: 100)
+                        .clipped()
+                        .cornerRadius(4)
+                        .contentShape(Rectangle())
+                } placeholder: {
+                    BlurHashPlaceholder(blurHash: checkInImage.blurHash, height: 100)
+                }
+                .frame(width: 100, height: 100)
+            }
         }
     }
 }

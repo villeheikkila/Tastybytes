@@ -182,6 +182,7 @@ struct CheckIn: Identifiable, Hashable, Codable, Sendable {
 extension CheckIn {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "check_ins"
+        let image = "id, image_file, blur_hash, created_by"
         let saved = "id, rating, review, image_file, check_in_at, blur_hash"
         let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
         let productVariantJoined = "product_variants (id, \(Company.getQuery(.saved(true))))"
@@ -210,6 +211,12 @@ extension CheckIn {
                 ].joinComma(),
                 withTableName
             )
+        case let .image(withTableName):
+            return queryWithTableName(
+                tableName,
+                image,
+                withTableName
+            )
         }
     }
 
@@ -217,10 +224,68 @@ extension CheckIn {
         case tableName
         case imageBucket
         case joined(_ withTableName: Bool)
+        case image(_ withTableName: Bool)
     }
 }
 
 extension CheckIn {
+    struct Image: Hashable, Sendable, Identifiable, Codable {
+        let id: Int
+        let createdBy: UUID
+        let imageFile: String?
+        let blurHash: BlurHash?
+
+        var imageUrl: URL? {
+            guard let imageFile else { return nil }
+            return URL(
+                bucketId: CheckIn.getQuery(.imageBucket),
+                fileName: "\(createdBy.uuidString.lowercased())/\(imageFile)"
+            )
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case blurHash = "blur_hash"
+            case imageFile = "image_file"
+            case createdBy = "created_by"
+        }
+
+        init(from decoder: Decoder) throws {
+            struct CheckInTaggedProfile: Codable {
+                let profile: Profile
+                enum CodingKeys: String, CodingKey {
+                    case profile = "profiles"
+                }
+            }
+
+            struct CheckInFlavors: Codable {
+                let flavor: Flavor
+                enum CodingKeys: String, CodingKey {
+                    case flavor = "flavors"
+                }
+            }
+
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            id = try values.decode(Int.self, forKey: .id)
+            createdBy = try values.decode(UUID.self, forKey: .createdBy)
+            imageFile = try values.decodeIfPresent(String.self, forKey: .imageFile)
+            let blurHashString = try values.decodeIfPresent(String.self, forKey: .blurHash)
+            if let blurHashString {
+                blurHash = try BlurHash(str: blurHashString)
+            } else {
+                blurHash = nil
+            }
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(id, forKey: .id)
+            try container.encode(createdBy, forKey: .createdBy)
+            try container.encodeIfPresent(imageFile, forKey: .imageFile)
+            try container.encodeIfPresent(blurHash?.encoded, forKey: .blurHash)
+        }
+    }
+
     struct BlurHash: Hashable, Sendable {
         enum BlurHashError: Error {
             case genericError
@@ -238,7 +303,8 @@ extension CheckIn {
 
         init(str: String) throws {
             let components = str.components(separatedBy: ":::")
-            guard let dimensions = components.first?.components(separatedBy: ":") else { throw BlurHashError.genericError }
+            guard let dimensions = components.first?.components(separatedBy: ":")
+            else { throw BlurHashError.genericError }
             guard let width = Double(dimensions[0]) else { throw BlurHashError.genericError }
             guard let height = Double(dimensions[1]) else { throw BlurHashError.genericError }
             let hash = components[1]

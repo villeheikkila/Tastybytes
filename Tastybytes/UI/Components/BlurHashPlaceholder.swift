@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BlurHashPlaceholder: View {
     let blurHash: CheckIn.BlurHash?
+    let height: Double
     @State private var image: UIImage?
     @State private var task: Task<Void, Never>?
 
@@ -11,7 +12,7 @@ struct BlurHashPlaceholder: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
-                    .frame(height: 200)
+                    .frame(height: height)
                     .clipped()
                     .accessibility(hidden: true)
             } else {

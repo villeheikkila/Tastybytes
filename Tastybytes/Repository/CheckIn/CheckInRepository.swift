@@ -13,6 +13,7 @@ protocol CheckInRepository {
     func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error>
     func getByProductId(id: Int, from: Int, to: Int) async -> Result<[CheckIn], Error>
     func getByLocation(locationId: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error>
+    func getCheckInImages(id: UUID, from: Int, to: Int) async -> Result<[CheckIn.Image], Error>
     func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error>
     func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error>
     func delete(id: Int) async -> Result<Void, Error>
@@ -76,6 +77,24 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .eq(column: "product_id", value: id)
                 .order(column: "created_at", ascending: false)
                 .range(from: from, to: to)
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func getCheckInImages(id: UUID, from _: Int, to _: Int) async -> Result<[CheckIn.Image], Error> {
+        do {
+            let response: [CheckIn.Image] = try await client
+                .database
+                .from(CheckIn.getQuery(.tableName))
+                .select(columns: CheckIn.getQuery(.image(false)))
+                .eq(column: "created_by", value: id)
+                .order(column: "created_at", ascending: false)
+                .range(from: 0, to: 10)
                 .execute()
                 .value
 

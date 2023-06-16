@@ -99,7 +99,7 @@ struct CheckInCardView: View {
                         }
                     }
             } placeholder: {
-                BlurHashPlaceholder(blurHash: checkIn.blurHash)
+                BlurHashPlaceholder(blurHash: checkIn.blurHash, height: 200)
             }
             .frame(height: 200)
             .padding([.top, .bottom], spacing)
