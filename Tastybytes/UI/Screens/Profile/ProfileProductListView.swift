@@ -111,9 +111,9 @@ struct ProfileProductListView: View {
         }
 
         let onlyUnratedPass = if (productFilter?.onlyUnrated) == true {
-            product.averageRating == 0 ||  product.averageRating == nil
+            product.averageRating == 0 || product.averageRating == nil
         } else {
-            false
+            true
         }
 
         let namePass = !searchTerm.isEmpty ?

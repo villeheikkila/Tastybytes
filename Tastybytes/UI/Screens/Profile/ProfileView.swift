@@ -122,17 +122,19 @@ struct ProfileView: View {
     }
 
     private var profileSummarySection: some View {
-        HStack(alignment: .center, spacing: 20) {
+        HStack(alignment: .center) {
+            Spacer()
             if showInFull {
-                HStack {
-                    VStack {
-                        Text("Check-ins")
-                            .font(.caption).bold().textCase(.uppercase)
-                        Text(String(profileSummary?.totalCheckIns ?? 0))
-                            .font(.headline)
-                    }
-                    .padding(.leading, 30)
-                    .frame(width: 120)
+                VStack(alignment: .center) {
+                    Text("Check-ins")
+                        .font(.caption)
+                        .bold()
+                        .textCase(.uppercase)
+                    Text(String(profileSummary?.totalCheckIns ?? 0))
+                        .font(.headline)
+                }
+                .onTapGesture {
+                    router.navigate(screen: .profileProducts(profile))
                 }
             }
 
@@ -162,19 +164,18 @@ struct ProfileView: View {
             Spacer()
 
             if showInFull {
-                HStack {
-                    VStack {
-                        Text("Unique")
-                            .font(.caption).bold().textCase(.uppercase)
-                        Text(String(profileSummary?.uniqueCheckIns ?? 0))
-                            .font(.headline)
-                    }
-                    .padding(.trailing, 30)
-                    .frame(width: 100)
+                VStack(alignment: .center) {
+                    Text("Unique")
+                        .font(.caption).bold().textCase(.uppercase)
+                    Text(String(profileSummary?.uniqueCheckIns ?? 0))
+                        .font(.headline)
+                }
+                .onTapGesture {
+                    router.navigate(screen: .profileProducts(profile))
                 }
             }
+            Spacer()
         }
-        .padding(.top, 10)
         .listRowSeparator(.hidden)
         .id(topAnchor)
         .task {
@@ -197,11 +198,12 @@ struct ProfileView: View {
             Spacer()
             VStack {
                 Text("Unrated")
-                    .font(.caption).bold().textCase(.uppercase)
+                    .font(.caption).bold()
                     .textCase(.uppercase)
                 Text(String(profileSummary?.unrated ?? 0))
                     .font(.headline)
-            }.onTapGesture {
+            }
+            .onTapGesture {
                 router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(onlyUnrated: true)))
             }
             Spacing(width: 12)
@@ -209,10 +211,13 @@ struct ProfileView: View {
             Spacing(width: 12)
             VStack {
                 Text("Average")
-                    .font(.caption).bold().textCase(.uppercase)
+                    .font(.caption).bold()
                     .textCase(.uppercase)
                 Text(String(profileSummary?.averageRating.toRatingString ?? "-"))
                     .font(.headline)
+            }
+            .onTapGesture {
+                router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(sortBy: .highestRated)))
             }
             Spacer()
         }
@@ -240,7 +245,7 @@ struct ProfileView: View {
                 systemSymbol: .personCropRectangleStack,
                 screen: profileManager.profile == profile ? .currentUserFriends : .friends(profile)
             )
-            RouterLink("Products", systemSymbol: .checkmarkRectangle, screen: .profileProducts(profile))
+            RouterLink("Check-ins", systemSymbol: .checkmarkRectangle, screen: .profileProducts(profile))
             RouterLink("Statistics", systemSymbol: .chartBarXaxis, screen: .profileStatistics(profile))
             if isCurrentUser {
                 RouterLink("Locations", systemSymbol: .map, screen: .profileLocations(profile))
