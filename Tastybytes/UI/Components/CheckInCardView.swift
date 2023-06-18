@@ -187,6 +187,12 @@ struct CheckInCardView: View {
 
             if let purchaseLocation = checkIn.purchaseLocation {
                 Text("Purchased from __\(purchaseLocation.name)__")
+                    .if(!loadedFrom.isLoadedFromLocation(purchaseLocation)) { view in
+                        view.accessibilityAddTraits(.isLink)
+                            .onTapGesture {
+                                router.navigate(screen: .location(purchaseLocation))
+                            }
+                    }
             }
         }
         .if(loadedFrom != .checkIn) { view in

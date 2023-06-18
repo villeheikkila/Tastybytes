@@ -31,7 +31,9 @@ struct Main: App {
             switch newPhase {
             case .active:
                 logger.info("Scene phase is active.")
-                if let name = selectedQuickAction?.userInfo?["name"] as? String, let quickAction = QuickAction(rawValue: name) {
+                if let name = selectedQuickAction?.userInfo?["name"] as? String,
+                   let quickAction = QuickAction(rawValue: name)
+                {
                     UIApplication.shared.open(quickAction.url)
                     selectedQuickAction = nil
                 }

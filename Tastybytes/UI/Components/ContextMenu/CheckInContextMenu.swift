@@ -1,7 +1,13 @@
 import SwiftUI
 
 extension View {
-    func checkInContextMenu(router: Router, profileManager: ProfileManager, checkIn: CheckIn, onCheckInUpdate: @escaping (CheckIn) -> Void, onDelete: @escaping (CheckIn) -> Void) -> some View {
+    func checkInContextMenu(
+        router: Router,
+        profileManager: ProfileManager,
+        checkIn: CheckIn,
+        onCheckInUpdate: @escaping (CheckIn) -> Void,
+        onDelete: @escaping (CheckIn) -> Void
+    ) -> some View {
         contextMenu {
             ControlGroup {
                 CheckInShareLinkView(checkIn: checkIn)
@@ -31,6 +37,8 @@ extension View {
                 }
             }
             Divider()
+            RouterLink("Open Check-in", systemSymbol: .checkmarkCircle, screen: .checkIn(checkIn))
+            RouterLink("Open Product", systemSymbol: .grid, screen: .product(checkIn.product))
             RouterLink(
                 "Open Company",
                 systemSymbol: .network,
@@ -46,8 +54,20 @@ extension View {
                 systemSymbol: .cart,
                 screen: .fetchSubBrand(checkIn.product.subBrand)
             )
-            RouterLink("Open Product", systemSymbol: .grid, screen: .product(checkIn.product))
-            RouterLink("Open Check-in", systemSymbol: .checkmarkCircle, screen: .checkIn(checkIn))
+            if let location = checkIn.location {
+                RouterLink(
+                    "Open Location",
+                    systemSymbol: .network,
+                    screen: .location(location)
+                )
+            }
+            if let purchaseLocation = checkIn.purchaseLocation {
+                RouterLink(
+                    "Open Purchase Location",
+                    systemSymbol: .network,
+                    screen: .location(purchaseLocation)
+                )
+            }
             Divider()
         }
     }
