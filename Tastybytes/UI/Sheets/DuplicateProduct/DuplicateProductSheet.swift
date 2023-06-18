@@ -86,7 +86,9 @@ struct DuplicateProductSheet: View {
         ) {
         case .success:
             feedbackManager.trigger(.notification(.success))
-            dismiss()
+            await MainActor.run {
+                dismiss()
+            }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
@@ -101,7 +103,9 @@ struct DuplicateProductSheet: View {
         switch await repository.product.mergeProducts(productId: product.id, toProductId: to.id) {
         case .success:
             feedbackManager.trigger(.notification(.success))
-            dismiss()
+            await MainActor.run {
+                dismiss()
+            }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))

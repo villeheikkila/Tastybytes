@@ -486,7 +486,9 @@ struct ProductMutationInnerView: View {
         switch await repository.product.editProduct(productEditParams: productEditParams) {
         case .success:
             feedbackManager.trigger(.notification(.success))
-            dismiss()
+            await MainActor.run {
+                dismiss()
+            }
             if let onEdit {
                 await onEdit()
             }

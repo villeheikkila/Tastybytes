@@ -64,7 +64,9 @@ struct ReportSheet: View {
     func submitReport() async {
         switch await repository.report.insert(report: Report.NewRequest(message: reasonText, entity: entity)) {
         case .success:
-            dismiss()
+            await MainActor.run {
+                dismiss()
+            }
             feedbackManager.toggle(.success("Report submitted!"))
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }

@@ -37,7 +37,9 @@ struct EditCompanySheet: View {
                 TextField("Name", text: $newCompanyName)
                 ProgressButton(mode.primaryAction, action: {
                     await submit(onSuccess: {
-                        dismiss()
+                        await MainActor.run {
+                            dismiss()
+                        }
                         await onSuccess()
                     })
                 })

@@ -11,7 +11,9 @@ struct NewFlavorSheet: View {
             TextField("Name", text: $name)
             ProgressButton("Add", action: {
                 await onSubmit(name)
-                dismiss()
+                await MainActor.run {
+                    dismiss()
+                }
             })
         }
         .navigationTitle("Add Flavor")

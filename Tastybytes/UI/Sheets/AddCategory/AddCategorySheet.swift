@@ -12,7 +12,9 @@ struct AddCategorySheet: View {
             TextField("Name", text: $newCategoryName)
             ProgressButton("Add", action: {
                 await appDataManager.addCategory(name: newCategoryName)
-                dismiss()
+                await MainActor.run {
+                    dismiss()
+                }
             }).disabled(newCategoryName.isEmpty)
         }
         .navigationTitle("Add Category")

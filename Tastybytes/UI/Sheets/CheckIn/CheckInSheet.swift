@@ -235,7 +235,9 @@ struct CheckInSheet: View {
                     }
                 }
                 feedbackManager.trigger(.notification(.success))
-                dismiss()
+                await MainActor.run {
+                    dismiss()
+                }
             })
             .bold()
         }

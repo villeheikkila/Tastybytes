@@ -17,7 +17,9 @@ struct EditSubcategorySheet: View {
             TextField("Name", text: $subcategoryName)
             ProgressButton("Save changes", action: {
                 await onSubmit(subcategoryName)
-                dismiss()
+                await MainActor.run {
+                    dismiss()
+                }
             }).disabled(subcategoryName.isEmpty || subcategory.name == subcategoryName)
         }
         .navigationTitle("Edit \(subcategory.name)")

@@ -69,7 +69,9 @@ struct MergeLocationSheet: View {
         switch await repository.location.mergeLocations(locationId: location.id, toLocationId: to.id) {
         case .success:
             feedbackManager.trigger(.notification(.success))
-            dismiss()
+            await MainActor.run {
+                dismiss()
+            }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
