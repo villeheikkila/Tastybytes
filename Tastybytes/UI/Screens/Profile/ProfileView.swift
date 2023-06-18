@@ -98,10 +98,6 @@ struct ProfileView: View {
         }
     }
 
-    private var avatar: some View {
-        AvatarView(avatarUrl: profile.avatarUrl, size: 90, id: profile.id)
-    }
-
     private var privateProfileSign: some View {
         VStack {
             HStack {
@@ -123,25 +119,15 @@ struct ProfileView: View {
 
     private var profileSummarySection: some View {
         HStack(alignment: .center) {
-            Spacer()
             if showInFull {
-                VStack(alignment: .center) {
-                    Text("Check-ins")
-                        .font(.caption)
-                        .bold()
-                        .textCase(.uppercase)
-                    Text(String(profileSummary?.totalCheckIns ?? 0))
-                        .font(.headline)
-                }
-                .onTapGesture {
+                Spacer()
+                CheckInStatisticView(title: "Check-ins", subtitle: String(profileSummary?.totalCheckIns ?? 0)) {
                     router.navigate(screen: .profileProducts(profile))
                 }
             }
-
             Spacer()
-
             VStack(alignment: .center) {
-                avatar
+                AvatarView(avatarUrl: profile.avatarUrl, size: 90, id: profile.id)
                     .overlay(alignment: .bottomTrailing) {
                         if isCurrentUser {
                             PhotosPicker(selection: $selectedItem,
@@ -160,21 +146,13 @@ struct ProfileView: View {
             .onChange(of: selectedItem) { _, newValue in
                 Task { await uploadAvatar(userId: profileManager.id, newAvatar: newValue) }
             }
-
             Spacer()
-
             if showInFull {
-                VStack(alignment: .center) {
-                    Text("Unique")
-                        .font(.caption).bold().textCase(.uppercase)
-                    Text(String(profileSummary?.uniqueCheckIns ?? 0))
-                        .font(.headline)
-                }
-                .onTapGesture {
+                CheckInStatisticView(title: "Unique", subtitle: String(profileSummary?.uniqueCheckIns ?? 0)) {
                     router.navigate(screen: .profileProducts(profile))
                 }
+                Spacer()
             }
-            Spacer()
         }
         .listRowSeparator(.hidden)
         .id(topAnchor)
@@ -196,27 +174,13 @@ struct ProfileView: View {
     private var ratingSummary: some View {
         HStack {
             Spacer()
-            VStack {
-                Text("Unrated")
-                    .font(.caption).bold()
-                    .textCase(.uppercase)
-                Text(String(profileSummary?.unrated ?? 0))
-                    .font(.headline)
-            }
-            .onTapGesture {
+            CheckInStatisticView(title: "Unrated", subtitle: String(profileSummary?.unrated ?? 0)) {
                 router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(onlyUnrated: true)))
             }
             Spacing(width: 12)
             Divider()
             Spacing(width: 12)
-            VStack {
-                Text("Average")
-                    .font(.caption).bold()
-                    .textCase(.uppercase)
-                Text(String(profileSummary?.averageRating.toRatingString ?? "-"))
-                    .font(.headline)
-            }
-            .onTapGesture {
+            CheckInStatisticView(title: "Average", subtitle: profileSummary?.averageRating.toRatingString ?? "-") {
                 router.navigate(screen: .profileProductsByFilter(profile, Product.Filter(sortBy: .highestRated)))
             }
             Spacer()
@@ -285,6 +249,26 @@ struct ProfileView: View {
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
             logger.error("fetching profile data failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+struct CheckInStatisticView: View {
+    let title: String
+    let subtitle: String
+    let onTap: () -> Void
+
+    var body: some View {
+        VStack {
+            Text(title)
+                .font(.caption)
+                .bold()
+                .textCase(.uppercase)
+            Text(subtitle)
+                .font(.headline)
+        }
+        .onTapGesture {
+            onTap()
         }
     }
 }

@@ -103,7 +103,7 @@ final class ProfileManager: ObservableObject {
     }
 
     func initialize() async {
-        logger.info("Initializing user data")
+        logger.notice("Initializing user data")
         switch await repository.profile.getCurrentUser() {
         case let .success(currentUserProfile):
             extendedProfile = currentUserProfile
@@ -116,6 +116,7 @@ final class ProfileManager: ObservableObject {
             appIcon = await getCurrentAppIcon()
             initialValuesLoaded = true
             isLoggedIn = true
+            logger.notice("User data initialized")
         case let .failure(error):
             logger.error("Error while loading current user profile. Error: \(error) (\(#file):\(#line))")
             isLoggedIn = false

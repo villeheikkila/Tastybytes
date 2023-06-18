@@ -2,9 +2,10 @@ import Observation
 import OSLog
 import SwiftUI
 
+private let logger = Logger(category: "FriendsScreen")
+
 @Observable
 final class FriendManager {
-    private let logger = Logger(category: "FriendsScreen")
     var friends = [Friend]()
 
     var profile: Profile? = nil
@@ -142,6 +143,7 @@ final class FriendManager {
                     self.friends.remove(object: friend)
                 }
             }
+            logger.notice("Friend manager initialized")
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))

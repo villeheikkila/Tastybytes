@@ -19,7 +19,7 @@ final class AppDataManager {
 
     func initialize(reset: Bool = false) async {
         guard reset || flavors.isEmpty || categories.isEmpty else { return }
-        logger.info("Initializing app data")
+        logger.notice("Initializing app data")
         async let aboutPagePromise = repository.document.getAboutPage()
         async let flavorPromise = repository.flavor.getAll()
         async let categoryPromise = repository.category.getAllWithSubcategoriesServingStyles()
@@ -31,6 +31,7 @@ final class AppDataManager {
                     self.flavors = flavors
                 }
             }
+            logger.notice("App data (flavors) initialized")
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
@@ -42,6 +43,7 @@ final class AppDataManager {
             await MainActor.run {
                 self.categories = categories
             }
+            logger.notice("App data (categories) initialized")
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
@@ -53,6 +55,7 @@ final class AppDataManager {
             await MainActor.run {
                 self.aboutPage = aboutPage
             }
+            logger.notice("App data (about page) initialized")
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
