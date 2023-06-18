@@ -9,6 +9,7 @@ struct BrandScreen: View {
     @Environment(Router.self) private var router
     @State private var brand: Brand.JoinedSubBrandsProductsCompany
     @State private var summary: Summary?
+    @State private var isLikedByCurrentUser = false
     @State private var toUnverifySubBrand: SubBrand.JoinedProduct? {
         didSet {
             showSubBrandUnverificationConfirmation = true
@@ -174,6 +175,7 @@ struct BrandScreen: View {
                 .task {
                         if summary == nil {
                             await getSummary()
+                            await getIsLikedBy()
                         }
                         if refreshOnLoad {
                             await refresh()
@@ -255,6 +257,10 @@ struct BrandScreen: View {
             })
             Divider()
             BrandShareLinkView(brand: brand)
+            ProgressButton(isLikedByCurrentUser ? "Unlike" : "Like", systemSymbol: .heart, action: {
+                await toggleLike()
+            })
+            .symbolVariant(isLikedByCurrentUser ? .fill : .none)
             if profileManager.hasPermission(.canCreateProducts) {
                 RouterLink("Add Product", systemSymbol: .plus, sheet: .addProductToBrand(brand: brand))
             }
@@ -284,6 +290,7 @@ struct BrandScreen: View {
         let brandId = brand.id
         async let summaryPromise = repository.brand.getSummaryById(id: brandId)
         async let brandPromise = repository.brand.getJoinedById(id: brandId)
+        async let isLikedPromisePromise = repository.brand.isLikedByCurrentUser(id: brandId)
 
         switch await summaryPromise {
         case let .success(summary):
@@ -306,9 +313,33 @@ struct BrandScreen: View {
             feedbackManager.toggle(.error(.unexpected))
             logger.error("Request for brand with \(brandId) failed. Error: \(error) (\(#file):\(#line))")
         }
+
+        switch await isLikedPromisePromise {
+        case let .success(isLikedByCurrentUser):
+            await MainActor.run {
+                self.isLikedByCurrentUser = isLikedByCurrentUser
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            logger.error("Request to check if brand is liked failed. Error: \(error) (\(#file):\(#line))")
+        }
     }
 
     func getSummary() async {
+        async let summaryPromise = repository.brand.getSummaryById(id: brand.id)
+        switch await summaryPromise {
+        case let .success(summary):
+            await MainActor.run {
+                self.summary = summary
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            feedbackManager.toggle(.error(.unexpected))
+            logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func getIsLikedBy() async {
         async let summaryPromise = repository.brand.getSummaryById(id: brand.id)
         switch await summaryPromise {
         case let .success(summary):
@@ -337,6 +368,28 @@ struct BrandScreen: View {
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
             logger.error("Failed to verify brand'. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func toggleLike() async {
+        if isLikedByCurrentUser {
+            switch await repository.brand.unlikeBrand(brandId: brand.id) {
+            case .success:
+                feedbackManager.trigger(.notification(.success))
+                isLikedByCurrentUser = false
+            case let .failure(error):
+                guard !error.localizedDescription.contains("cancelled") else { return }
+                logger.error("unliking brand failed. Error: \(error) (\(#file):\(#line))")
+            }
+        } else {
+            switch await repository.brand.likeBrand(brandId: brand.id) {
+            case .success:
+                feedbackManager.trigger(.notification(.success))
+                isLikedByCurrentUser = true
+            case let .failure(error):
+                guard !error.localizedDescription.contains("cancelled") else { return }
+                logger.error("liking brand failed. Error: \(error) (\(#file):\(#line))")
+            }
         }
     }
 

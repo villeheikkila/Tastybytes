@@ -130,6 +130,7 @@
 		5C7C35F4299AE69D009A3C09 /* PasswordTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7C35F3299AE69D009A3C09 /* PasswordTextFieldView.swift */; };
 		5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */; };
 		5C7DC2B928FA07CF00AED6F1 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DC2B828FA07CF00AED6F1 /* Friend.swift */; };
+		5C8745C92A3F91F50009FD1A /* BrandLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8745C82A3F91F50009FD1A /* BrandLike.swift */; };
 		5C919E1828FED0E00055CFD2 /* ServingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1728FED0E00055CFD2 /* ServingStyle.swift */; };
 		5C919E1A28FEE2DE0055CFD2 /* FriendSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1928FEE2DE0055CFD2 /* FriendSheet.swift */; };
 		5C919E1C28FEFEA50055CFD2 /* FlavorRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C919E1B28FEFEA50055CFD2 /* FlavorRepository.swift */; };
@@ -367,6 +368,7 @@
 		5C7C35F3299AE69D009A3C09 /* PasswordTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextFieldView.swift; sourceTree = "<group>"; };
 		5C7DC2B628F9F2D600AED6F1 /* FriendsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsRepository.swift; sourceTree = "<group>"; };
 		5C7DC2B828FA07CF00AED6F1 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		5C8745C82A3F91F50009FD1A /* BrandLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandLike.swift; sourceTree = "<group>"; };
 		5C919E1728FED0E00055CFD2 /* ServingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServingStyle.swift; sourceTree = "<group>"; };
 		5C919E1928FEE2DE0055CFD2 /* FriendSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSheet.swift; sourceTree = "<group>"; };
 		5C919E1B28FEFEA50055CFD2 /* FlavorRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlavorRepository.swift; sourceTree = "<group>"; };
@@ -580,6 +582,7 @@
 			children = (
 				5CD10A5228F98CFC0001CFC2 /* Brand.swift */,
 				5CED432F28FD6EBC003F8194 /* BrandRepository.swift */,
+				5C8745C82A3F91F50009FD1A /* BrandLike.swift */,
 			);
 			path = Brand;
 			sourceTree = "<group>";
@@ -1605,6 +1608,7 @@
 				5C43237D2986A6910085522E /* Summary.swift in Sources */,
 				5C12B42F2902A191001EE549 /* ProfileSettingsScreen.swift in Sources */,
 				5CA7A533299D3F010066F604 /* ProgressButton.swift in Sources */,
+				5C8745C92A3F91F50009FD1A /* BrandLike.swift in Sources */,
 				5CB52D64292BBC14000BF55F /* ProfileProductListView.swift in Sources */,
 				5C46E8642911D9FD0008F142 /* Config.swift in Sources */,
 				5C7881F22A0AAFC400AF29EE /* MergeLocationSheet.swift in Sources */,

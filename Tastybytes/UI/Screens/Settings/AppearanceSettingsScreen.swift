@@ -16,7 +16,8 @@ struct AppearanceSettingsScreen: View {
                 if newValue {
                     colorScheme = CustomColorScheme.system.rawValue
                 } else {
-                    colorScheme = systemColorScheme == .dark ? CustomColorScheme.dark.rawValue : CustomColorScheme.light.rawValue
+                    colorScheme = systemColorScheme == .dark ? CustomColorScheme.dark.rawValue : CustomColorScheme.light
+                        .rawValue
                 }
             }))
             Toggle("Use Dark Mode", isOn: .init(get: {

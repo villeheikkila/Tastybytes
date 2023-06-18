@@ -9,6 +9,9 @@ protocol BrandRepository {
     func getUnverified() async -> Result<[Brand.JoinedSubBrandsProductsCompany], Error>
     func getSummaryById(id: Int) async -> Result<Summary, Error>
     func insert(newBrand: Brand.NewRequest) async -> Result<Brand.JoinedSubBrands, Error>
+    func isLikedByCurrentUser(id: Int) async -> Result<Bool, Error>
+    func likeBrand(brandId: Int) async -> Result<Void, Error>
+    func unlikeBrand(brandId: Int) async -> Result<Void, Error>
     func update(updateRequest: Brand.UpdateRequest) async -> Result<Void, Error>
     func verification(id: Int, isVerified: Bool) async -> Result<Void, Error>
     func delete(id: Int) async -> Result<Void, Error>
@@ -100,6 +103,54 @@ struct SupabaseBrandRepository: BrandRepository {
                 .value
 
             return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func isLikedByCurrentUser(id: Int) async -> Result<Bool, Error> {
+        do {
+            let response: Bool = try await client
+                .database
+                .rpc(
+                    fn: "fnc_is_brand_liked_by_current_user",
+                    params: BrandLike.CheckIfLikedRequest(id: id)
+                )
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func likeBrand(brandId: Int) async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .from(BrandLike.getQuery(.tableName))
+                .insert(values: BrandLike.New(brandId: brandId))
+                .single()
+                .execute()
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func unlikeBrand(brandId: Int) async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .from(BrandLike.getQuery(.tableName))
+                .delete()
+                .eq(column: "brand_id", value: brandId)
+                .execute()
+
+            return .success(())
         } catch {
             return .failure(error)
         }
