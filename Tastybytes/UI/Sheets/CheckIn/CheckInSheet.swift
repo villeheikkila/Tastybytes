@@ -215,7 +215,7 @@ struct CheckInSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .navigationBarLeading) {
+        ToolbarItemGroup(placement: .topBarLeading) {
             Button("Cancel", role: .cancel, action: { dismiss() })
         }
         ToolbarItemGroup(placement: .topBarTrailing) {

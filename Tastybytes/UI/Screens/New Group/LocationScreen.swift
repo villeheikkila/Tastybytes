@@ -68,7 +68,7 @@ struct LocationScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 LocationShareLinkView(location: location)
                 Divider()

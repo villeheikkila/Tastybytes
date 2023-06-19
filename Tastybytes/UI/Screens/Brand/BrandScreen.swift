@@ -173,9 +173,11 @@ struct BrandScreen: View {
                 }
             #endif
                 .task {
+                        await getIsLikedBy()
+                    }
+                    .task {
                         if summary == nil {
                             await getSummary()
-                            await getIsLikedBy()
                         }
                         if refreshOnLoad {
                             await refresh()
@@ -243,13 +245,11 @@ struct BrandScreen: View {
                     .font(.headline)
             }
         }
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
             ProgressButton(isLikedByCurrentUser ? "Unlike" : "Like", systemSymbol: .heart, action: {
                 await toggleLike()
             })
             .symbolVariant(isLikedByCurrentUser ? .fill : .none)
-        }
-        ToolbarItem(placement: .navigationBarTrailing) {
             Menu {
                 VerificationButton(isVerified: brand.isVerified, verify: {
                     await verifyBrand(brand: brand, isVerified: true)
@@ -338,16 +338,15 @@ struct BrandScreen: View {
     }
 
     func getIsLikedBy() async {
-        async let summaryPromise = repository.brand.getSummaryById(id: brand.id)
-        switch await summaryPromise {
-        case let .success(summary):
+        switch await repository.brand.isLikedByCurrentUser(id: brand.id) {
+        case let .success(isLikedByCurrentUser):
             await MainActor.run {
-                self.summary = summary
+                self.isLikedByCurrentUser = isLikedByCurrentUser
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
-            logger.error("Failed to load summary for brand. Error: \(error) (\(#file):\(#line))")
+            logger.error("Failed to load like status. Error: \(error) (\(#file):\(#line))")
         }
     }
 

@@ -59,7 +59,7 @@ struct ProductMutationView: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .navigationBarLeading) {
+        ToolbarItemGroup(placement: .topBarLeading) {
             Button("Cancel", role: .cancel, action: { dismiss() }).bold()
         }
     }

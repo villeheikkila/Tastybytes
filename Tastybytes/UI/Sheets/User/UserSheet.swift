@@ -74,7 +74,7 @@ struct UserSheet: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
             Button("Close", role: .cancel, action: { dismiss() })
                 .bold()
         }

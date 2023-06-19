@@ -87,7 +87,7 @@ struct ProfileProductListView: View {
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         if !locked {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
                 RouterLink(
                     "Show filters",
                     systemSymbol: .line3HorizontalDecreaseCircle,

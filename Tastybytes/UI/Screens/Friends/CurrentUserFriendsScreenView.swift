@@ -120,7 +120,7 @@ struct CurrentUserFriendsScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
             RouterLink(
                 "Show name tag or send friend request by QR code",
                 systemSymbol: .qrcode,

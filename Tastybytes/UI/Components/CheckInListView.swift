@@ -162,12 +162,12 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .navigationBarLeading) {
+        ToolbarItemGroup(placement: .topBarLeading) {
             RouterLink("Friends Page", systemSymbol: .person2, screen: .currentUserFriends)
                 .labelStyle(.iconOnly)
                 .imageScale(.large)
         }
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
             RouterLink("Settings Page", systemSymbol: .gear, screen: .settings)
                 .labelStyle(.iconOnly)
                 .imageScale(.large)

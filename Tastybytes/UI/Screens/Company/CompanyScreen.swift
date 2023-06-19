@@ -102,7 +102,7 @@ struct CompanyScreen: View {
                     .font(.headline)
             }
         }
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             navigationBarMenu
         }
     }

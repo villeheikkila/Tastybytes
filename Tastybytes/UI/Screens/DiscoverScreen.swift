@@ -228,7 +228,7 @@ struct DiscoverScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .navigationBarLeading) {
+        ToolbarItemGroup(placement: .topBarLeading) {
             if searchScope == .products {
                 RouterLink(
                     "Show filters",
@@ -241,7 +241,7 @@ struct DiscoverScreen: View {
                 .labelStyle(.iconOnly)
             }
         }
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
             if profileManager.hasPermission(.canAddBarcodes) {
                 RouterLink(
                     "Scan a barcode",

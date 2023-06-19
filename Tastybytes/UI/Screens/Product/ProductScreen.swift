@@ -75,7 +75,7 @@ struct ProductScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 VerificationButton(isVerified: product.isVerified, verify: {
                     await verifyProduct(product: product, isVerified: true)

@@ -288,7 +288,9 @@ struct SupabaseProductRepository: ProductRepository {
         }
     }
 
-    func createUpdateSuggestion(productEditSuggestionParams: Product.EditSuggestionRequest) async -> Result<Void, Error> {
+    func createUpdateSuggestion(productEditSuggestionParams: Product
+        .EditSuggestionRequest) async -> Result<Void, Error>
+    {
         do {
             try await client
                 .database

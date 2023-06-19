@@ -55,7 +55,7 @@ struct SubcategorySheet: View {
             Button("Done", role: .cancel, action: { dismiss() }).bold()
         }
         if profileManager.hasPermission(.canDeleteBrands) {
-            ToolbarItemGroup(placement: .secondaryAction) {
+            ToolbarItemGroup(placement: .topBarLeading) {
                 Button("Add subcategory", systemSymbol: .plus, action: { showAddSubcategory.toggle() })
                     .labelStyle(.iconOnly)
                     .bold()
