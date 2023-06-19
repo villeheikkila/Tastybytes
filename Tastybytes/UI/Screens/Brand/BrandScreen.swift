@@ -244,45 +244,43 @@ struct BrandScreen: View {
             }
         }
         ToolbarItem(placement: .navigationBarTrailing) {
-            navigationBarMenu
-        }
-    }
-
-    private var navigationBarMenu: some View {
-        Menu {
-            VerificationButton(isVerified: brand.isVerified, verify: {
-                await verifyBrand(brand: brand, isVerified: true)
-            }, unverify: {
-                showBrandUnverificationConfirmation = true
-            })
-            Divider()
-            BrandShareLinkView(brand: brand)
             ProgressButton(isLikedByCurrentUser ? "Unlike" : "Like", systemSymbol: .heart, action: {
                 await toggleLike()
             })
             .symbolVariant(isLikedByCurrentUser ? .fill : .none)
-            if profileManager.hasPermission(.canCreateProducts) {
-                RouterLink("Add Product", systemSymbol: .plus, sheet: .addProductToBrand(brand: brand))
+        }
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Menu {
+                VerificationButton(isVerified: brand.isVerified, verify: {
+                    await verifyBrand(brand: brand, isVerified: true)
+                }, unverify: {
+                    showBrandUnverificationConfirmation = true
+                })
+                Divider()
+                BrandShareLinkView(brand: brand)
+                if profileManager.hasPermission(.canCreateProducts) {
+                    RouterLink("Add Product", systemSymbol: .plus, sheet: .addProductToBrand(brand: brand))
+                }
+                Divider()
+                if profileManager.hasPermission(.canEditBrands) {
+                    RouterLink("Edit", systemSymbol: .pencil, sheet: .editBrand(brand: brand, onUpdate: {
+                        await refresh()
+                    }))
+                }
+                ReportButton(entity: .brand(brand))
+                if profileManager.hasPermission(.canDeleteBrands) {
+                    Button(
+                        "Delete",
+                        systemSymbol: .trashFill,
+                        role: .destructive,
+                        action: { showDeleteBrandConfirmationDialog = true }
+                    )
+                    .disabled(brand.isVerified)
+                }
+            } label: {
+                Label("Options menu", systemSymbol: .ellipsis)
+                    .labelStyle(.iconOnly)
             }
-            Divider()
-            if profileManager.hasPermission(.canEditBrands) {
-                RouterLink("Edit", systemSymbol: .pencil, sheet: .editBrand(brand: brand, onUpdate: {
-                    await refresh()
-                }))
-            }
-            ReportButton(entity: .brand(brand))
-            if profileManager.hasPermission(.canDeleteBrands) {
-                Button(
-                    "Delete",
-                    systemSymbol: .trashFill,
-                    role: .destructive,
-                    action: { showDeleteBrandConfirmationDialog = true }
-                )
-                .disabled(brand.isVerified)
-            }
-        } label: {
-            Label("Options menu", systemSymbol: .ellipsis)
-                .labelStyle(.iconOnly)
         }
     }
 
