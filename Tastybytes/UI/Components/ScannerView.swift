@@ -68,7 +68,8 @@ extension ScannerView {
         @objc
         func updateOrientation() {
             guard let orientation = view.window?.windowScene?.interfaceOrientation else { return }
-            guard let connection = captureSession?.connections.last, connection.isVideoOrientationSupported else { return }
+            guard let connection = captureSession?.connections.last,
+                  connection.isVideoOrientationSupported else { return }
             connection.videoOrientation = AVCaptureVideoOrientation(rawValue: orientation.rawValue) ?? .portrait
         }
 
@@ -122,7 +123,6 @@ extension ScannerView {
             case .authorized:
                 setupCaptureDevice()
                 setupSession()
-
             default:
                 break
             }

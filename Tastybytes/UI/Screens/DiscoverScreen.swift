@@ -228,8 +228,8 @@ struct DiscoverScreen: View {
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .topBarLeading) {
-            if searchScope == .products {
+        if searchScope == .products {
+            ToolbarItemGroup(placement: .topBarLeading) {
                 RouterLink(
                     "Show filters",
                     systemSymbol: .line3HorizontalDecreaseCircle,
@@ -240,16 +240,16 @@ struct DiscoverScreen: View {
                 )
                 .labelStyle(.iconOnly)
             }
-        }
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            if profileManager.hasPermission(.canAddBarcodes) {
-                RouterLink(
-                    "Scan a barcode",
-                    systemSymbol: .barcodeViewfinder,
-                    sheet: .barcodeScanner(onComplete: { barcode in
-                        Task { await searchProductsByBardcode(barcode) }
-                    })
-                )
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                if profileManager.hasPermission(.canAddBarcodes) {
+                    RouterLink(
+                        "Scan a barcode",
+                        systemSymbol: .barcodeViewfinder,
+                        sheet: .barcodeScanner(onComplete: { barcode in
+                            Task { await searchProductsByBardcode(barcode) }
+                        })
+                    )
+                }
             }
         }
     }

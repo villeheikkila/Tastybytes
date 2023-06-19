@@ -10,11 +10,11 @@ actor ImageLoader {
 
     public func fetch(_ urlRequest: URLRequest) async throws -> UIImage {
         if let status = images[urlRequest] {
-            switch status {
+            return switch status {
             case let .fetched(image):
-                return image
+                image
             case let .inProgress(task):
-                return try await task.value
+                try await task.value
             }
         }
 

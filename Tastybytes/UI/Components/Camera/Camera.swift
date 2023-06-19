@@ -289,11 +289,11 @@ class Camera: NSObject {
 
     private func videoOrientationFor(_ deviceOrientation: UIDeviceOrientation) -> AVCaptureVideoOrientation? {
         switch deviceOrientation {
-        case .portrait: return AVCaptureVideoOrientation.portrait
-        case .portraitUpsideDown: return AVCaptureVideoOrientation.portraitUpsideDown
-        case .landscapeLeft: return AVCaptureVideoOrientation.landscapeRight
-        case .landscapeRight: return AVCaptureVideoOrientation.landscapeLeft
-        default: return nil
+        case .portrait: .portrait
+        case .portraitUpsideDown: .portraitUpsideDown
+        case .landscapeLeft: .landscapeRight
+        case .landscapeRight: .landscapeLeft
+        default: nil
         }
     }
 
@@ -361,16 +361,16 @@ extension Camera: AVCaptureVideoDataOutputSampleBufferDelegate {
 private extension UIScreen {
     var orientation: UIDeviceOrientation {
         let point = coordinateSpace.convert(CGPoint.zero, to: fixedCoordinateSpace)
-        if point == CGPoint.zero {
-            return .portrait
+        return if point == CGPoint.zero {
+            .portrait
         } else if point.x != 0 && point.y != 0 {
-            return .portraitUpsideDown
+            .portraitUpsideDown
         } else if point.x == 0 && point.y != 0 {
-            return .landscapeRight // .landscapeLeft
+            .landscapeRight // .landscapeLeft
         } else if point.x != 0 && point.y == 0 {
-            return .landscapeLeft // .landscapeRight
+            .landscapeLeft // .landscapeRight
         } else {
-            return .unknown
+            .unknown
         }
     }
 }

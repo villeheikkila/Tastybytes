@@ -40,9 +40,9 @@ struct SideBarView: View {
 
     private var shownTabs: [SiderBarTab] {
         if profileManager.hasRole(.admin) {
-            return SiderBarTab.allCases
+            SiderBarTab.allCases
         } else {
-            return SiderBarTab.allCases.filter { $0 != .admin }
+            SiderBarTab.allCases.filter { $0 != .admin }
         }
     }
 

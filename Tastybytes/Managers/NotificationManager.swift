@@ -24,10 +24,10 @@ final class NotificationManager {
         notifications
             .filter { notification in
                 switch notification.content {
-                case .friendRequest:
-                    return notification.seenAt == nil
+                case .friendRequest where notification.seenAt == nil:
+                    true
                 default:
-                    return false
+                    false
                 }
             }
             .count
@@ -117,9 +117,9 @@ final class NotificationManager {
             case let .success(updatedNotifications):
                 notifications = notifications.map { notification in
                     if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
-                        return updatedNotification
+                        updatedNotification
                     } else {
-                        return notification
+                        notification
                     }
                 }
             case let .failure(error):
@@ -134,13 +134,13 @@ final class NotificationManager {
         let containsCheckIn = notifications.contains(where: { notification in
             switch notification.content {
             case let .checkInReaction(cir):
-                return cir.checkIn == checkIn
+                cir.checkIn == checkIn
             case let .taggedCheckIn(tci):
-                return tci == checkIn
+                tci == checkIn
             case let .checkInComment(cic):
-                return cic.checkIn == checkIn
+                cic.checkIn == checkIn
             default:
-                return false
+                false
             }
         })
 
@@ -149,9 +149,9 @@ final class NotificationManager {
             case let .success(updatedNotifications):
                 notifications = notifications.map { notification in
                     if let updatedNotification = updatedNotifications.first(where: { $0.id == notification.id }) {
-                        return updatedNotification
+                        updatedNotification
                     } else {
-                        return notification
+                        notification
                     }
                 }
             case let .failure(error):

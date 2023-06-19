@@ -16,14 +16,14 @@ extension URL {
     var pathIdentifier: PathIdentifier? {
         guard isUniversalLink || isDeepLink, pathComponents.count == 3 else { return nil }
 
-        switch pathComponents[1] {
-        case "checkins": return .checkins
-        case "products": return .products
-        case "profiles": return .profiles
-        case "companies": return .companies
-        case "brands": return .brands
-        case "locations": return .locations
-        default: return nil
+        return switch pathComponents[1] {
+        case "checkins": .checkins
+        case "products": .products
+        case "profiles": .profiles
+        case "companies": .companies
+        case "brands": .brands
+        case "locations": .locations
+        default: nil
         }
     }
 
