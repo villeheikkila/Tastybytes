@@ -182,6 +182,7 @@ struct CheckIn: Identifiable, Hashable, Codable, Sendable {
 extension CheckIn {
     static func getQuery(_ queryType: QueryType) -> String {
         let tableName = "check_ins"
+        let fromFriendsView = "view_check_ins_from_friends"
         let image = "id, image_file, blur_hash, created_by"
         let saved = "id, rating, review, image_file, check_in_at, blur_hash"
         let checkInTaggedProfilesJoined = "check_in_tagged_profiles (\(Profile.getQuery(.minimal(true))))"
@@ -192,6 +193,8 @@ extension CheckIn {
         switch queryType {
         case .tableName:
             return tableName
+        case .fromFriendsView:
+            return fromFriendsView
         case .imageBucket:
             return bucketId
         case let .joined(withTableName):
@@ -222,6 +225,7 @@ extension CheckIn {
 
     enum QueryType {
         case tableName
+        case fromFriendsView
         case imageBucket
         case joined(_ withTableName: Bool)
         case image(_ withTableName: Bool)

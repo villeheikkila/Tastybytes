@@ -3,7 +3,7 @@ import SwiftUI
 
 private let logger = Logger(category: "CheckInListView")
 
-struct CheckInListView<Header, Content>: View where Header: View, Content: View {
+extension CheckInListView {
     enum Fetcher {
         case activityFeed
         case product(Product.Joined)
@@ -19,8 +19,23 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                 EmptyView()
             }
         }
+
+        var showCheckInSegmentationPicker: Bool {
+            switch self {
+            case .location, .product:
+                true
+            default:
+                false
+            }
+        }
     }
 
+    enum CheckInSegments: String, CaseIterable {
+        case everyone, friends
+    }
+}
+
+struct CheckInListView<Header, Content>: View where Header: View, Content: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileManager.self) private var profileManager
     @Environment(SplashScreenManager.self) private var splashScreenManager
@@ -40,6 +55,8 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
     @State private var initialLoadCompleted = false
     @State private var page = 0
     @State private var showEmptyView = false
+    @State private var isRefreshing = false
+    @State private var showCheckInsFrom: CheckInSegments = .everyone
     @Binding private var scrollToTop: Int
 
     private let header: Header
@@ -80,6 +97,21 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                     if showEmptyView {
                         emptyView
                     }
+                    if fetcher.showCheckInSegmentationPicker {
+                        Picker("Show check-ins from", selection: $showCheckInsFrom) {
+                            ForEach(CheckInSegments.allCases, id: \.self) { segment in
+                                Text(segment.rawValue.capitalized)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .listRowSeparator(.hidden)
+                    }
+                    if !isLoading && uniqueCheckIns.isEmpty && showCheckInsFrom == .friends {
+                        ContentUnavailableView {
+                            Label("No check-ins from friends", systemSymbol: .listStar)
+                        }
+                        .listRowSeparator(.hidden)
+                    }
                     ForEach(uniqueCheckIns) { checkIn in
                         let edgeInset = geometry.size.width < 450 ? 8 : (geometry.size.width - 450) / 2
                         CheckInCardView(checkIn: checkIn, loadedFrom: getLoadedFrom)
@@ -99,12 +131,12 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                             .onAppear {
                                 if checkIn == checkIns.last, isLoading != true {
                                     Task {
-                                        await fetchActivityFeedItems()
+                                        await fetchFeedItems()
                                     }
                                 }
                             }
                     }
-                    if isLoading {
+                    if isLoading && !isRefreshing {
                         ProgressView()
                             .frame(idealWidth: .infinity, maxWidth: .infinity, alignment: .center)
                             .listRowSeparator(.hidden)
@@ -139,6 +171,11 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
                         } else if let first = checkIns.first {
                             scrollProxy?.scrollTo(first.id, anchor: .top)
                         }
+                    }
+                }
+                .onChange(of: showCheckInsFrom) {
+                    Task {
+                        await segmentChanged()
                     }
                 }
                 #if !targetEnvironment(macCatalyst)
@@ -192,10 +229,12 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
     }
 
     func refresh() async {
+        isRefreshing = true
         page = 0
         checkIns = [CheckIn]()
         feedbackManager.trigger(.impact(intensity: .low))
-        await fetchActivityFeedItems(onComplete: { _ in feedbackManager.trigger(.impact(intensity: .high)) })
+        await fetchFeedItems(onComplete: { _ in feedbackManager.trigger(.impact(intensity: .high)) })
+        isRefreshing = false
         await onRefresh()
     }
 
@@ -227,7 +266,7 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
 
     func getInitialData() async {
         guard !initialLoadCompleted else { return }
-        await fetchActivityFeedItems(onComplete: { _ in
+        await fetchFeedItems(onComplete: { _ in
             if splashScreenManager.state != .finished {
                 await splashScreenManager.dismiss()
                 initialLoadCompleted = true
@@ -235,7 +274,13 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         })
     }
 
-    func fetchActivityFeedItems(onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil) async {
+    func segmentChanged() async {
+        page = 0
+        checkIns = [CheckIn]()
+        await fetchFeedItems(onComplete: { _ in logger.notice("fetched") })
+    }
+
+    func fetchFeedItems(onComplete: ((_ checkIns: [CheckIn]) async -> Void)? = nil) async {
         let (from, to) = getPagination(page: page, size: pageSize)
         isLoading = true
 
@@ -266,9 +311,19 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         case let .profile(product):
             await repository.checkIn.getByProfileId(id: product.id, queryType: .paginated(from, to))
         case let .product(product):
-            await repository.checkIn.getByProductId(id: product.id, from: from, to: to)
+            await repository.checkIn.getByProductId(
+                id: product.id,
+                onlyFriends: showCheckInsFrom == .friends,
+                from: from,
+                to: to
+            )
         case let .location(location):
-            await repository.checkIn.getByLocation(locationId: location.id, from: from, to: to)
+            await repository.checkIn.getByLocation(
+                locationId: location.id,
+                onlyFriends: showCheckInsFrom == .friends,
+                from: from,
+                to: to
+            )
         }
     }
 }

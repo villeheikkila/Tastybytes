@@ -11,8 +11,8 @@ protocol CheckInRepository {
     func getActivityFeed(from: Int, to: Int) async -> Result<[CheckIn], Error>
     func getById(id: Int) async -> Result<CheckIn, Error>
     func getByProfileId(id: UUID, queryType: CheckInQueryType) async -> Result<[CheckIn], Error>
-    func getByProductId(id: Int, from: Int, to: Int) async -> Result<[CheckIn], Error>
-    func getByLocation(locationId: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error>
+    func getByProductId(id: Int, onlyFriends: Bool, from: Int, to: Int) async -> Result<[CheckIn], Error>
+    func getByLocation(locationId: UUID, onlyFriends: Bool, from: Int, to: Int) async -> Result<[CheckIn], Error>
     func getCheckInImages(id: UUID, from: Int, to: Int) async -> Result<[CheckIn.Image], Error>
     func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error>
     func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error>
@@ -68,11 +68,11 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func getByProductId(id: Int, from: Int, to: Int) async -> Result<[CheckIn], Error> {
+    func getByProductId(id: Int, onlyFriends: Bool, from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
             let response: [CheckIn] = try await client
                 .database
-                .from(CheckIn.getQuery(.tableName))
+                .from(CheckIn.getQuery(onlyFriends ? .fromFriendsView : .tableName))
                 .select(columns: CheckIn.getQuery(.joined(false)))
                 .eq(column: "product_id", value: id)
                 .order(column: "created_at", ascending: false)
@@ -104,11 +104,11 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func getByLocation(locationId: UUID, from: Int, to: Int) async -> Result<[CheckIn], Error> {
+    func getByLocation(locationId: UUID, onlyFriends: Bool, from: Int, to: Int) async -> Result<[CheckIn], Error> {
         do {
             let response: [CheckIn] = try await client
                 .database
-                .from(CheckIn.getQuery(.tableName))
+                .from(CheckIn.getQuery(onlyFriends ? .fromFriendsView : .tableName))
                 .select(columns: CheckIn.getQuery(.joined(false)))
                 .eq(column: "location_id", value: locationId.uuidString)
                 .order(column: "created_at", ascending: false)
