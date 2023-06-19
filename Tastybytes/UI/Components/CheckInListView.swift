@@ -177,13 +177,13 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
     private var getLoadedFrom: CheckInCardView.LoadedFrom {
         switch fetcher {
         case let .profile(profile):
-            return .profile(profile)
+            .profile(profile)
         case let .location(location):
-            return .location(location)
+            .location(location)
         case .product:
-            return .product
+            .product
         case .activityFeed:
-            return .activity(profileManager.profile)
+            .activity(profileManager.profile)
         }
     }
 
@@ -262,13 +262,13 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
     func checkInFetcher(from: Int, to: Int) async -> Result<[CheckIn], Error> {
         switch fetcher {
         case .activityFeed:
-            return await repository.checkIn.getActivityFeed(from: from, to: to)
+            await repository.checkIn.getActivityFeed(from: from, to: to)
         case let .profile(product):
-            return await repository.checkIn.getByProfileId(id: product.id, queryType: .paginated(from, to))
+            await repository.checkIn.getByProfileId(id: product.id, queryType: .paginated(from, to))
         case let .product(product):
-            return await repository.checkIn.getByProductId(id: product.id, from: from, to: to)
+            await repository.checkIn.getByProductId(id: product.id, from: from, to: to)
         case let .location(location):
-            return await repository.checkIn.getByLocation(locationId: location.id, from: from, to: to)
+            await repository.checkIn.getByLocation(locationId: location.id, from: from, to: to)
         }
     }
 }

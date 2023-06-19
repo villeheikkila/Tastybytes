@@ -159,9 +159,9 @@ struct SideBarView: View {
     private func getBadgeByTab(_ tab: Tab) -> Int {
         switch tab {
         case .notifications:
-            return notificationManager.unreadCount
+            notificationManager.unreadCount
         default:
-            return 0
+            0
         }
     }
 }

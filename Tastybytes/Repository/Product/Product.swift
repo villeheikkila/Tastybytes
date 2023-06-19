@@ -186,9 +186,9 @@ extension Product {
             var label: String {
                 switch self {
                 case .highestRated:
-                    return "Highest Rated First"
+                    "Highest Rated First"
                 case .lowestRated:
-                    return "Lowest Rated First"
+                    "Lowest Rated First"
                 }
             }
         }

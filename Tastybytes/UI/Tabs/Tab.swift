@@ -10,15 +10,15 @@ enum Tab: Int, Identifiable, Hashable, CaseIterable {
     var cachesPath: String {
         switch self {
         case .activity:
-            return "activity"
+            "activity"
         case .discover:
-            return "discover"
+            "discover"
         case .notifications:
-            return "notifications"
+            "notifications"
         case .admin:
-            return "admin"
+            "admin"
         case .profile:
-            return "profile"
+            "profile"
         }
     }
 

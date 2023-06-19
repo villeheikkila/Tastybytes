@@ -138,114 +138,114 @@ enum Sheet: Identifiable, Equatable {
     var detents: Set<PresentationDetent> {
         switch self {
         case .barcodeScanner, .productFilter, .newFlavor, .editSubcategory, .addCategory, .addSubcategory, .userSheet:
-            return [.medium]
+            [.medium]
         case .nameTag:
-            return [.height(320)]
+            [.height(320)]
         case .checkInDatePicker:
-            return [.height(500)]
+            [.height(500)]
         default:
-            return [.large]
+            [.large]
         }
     }
 
     var background: Material {
         switch self {
         case .support, .checkIn:
-            return .ultraThin
+            .ultraThin
         case .productFilter, .nameTag, .barcodeScanner, .checkInDatePicker:
-            return .thickMaterial
+            .thickMaterial
         default:
-            return .ultraThick
+            .ultraThick
         }
     }
 
     var cornerRadius: CGFloat? {
         switch self {
         case .barcodeScanner, .nameTag:
-            return 30
+            30
         default:
-            return nil
+            nil
         }
     }
 
     var id: String {
         switch self {
         case .report:
-            return "report"
+            "report"
         case let .checkIn(checkIn, _):
-            return "check_in_\(checkIn.hashValue)"
+            "check_in_\(checkIn.hashValue)"
         case .newCheckIn:
-            return "new_check_in"
+            "new_check_in"
         case .productFilter:
-            return "product_filter"
+            "product_filter"
         case .barcodeScanner:
-            return "barcode_scanner"
+            "barcode_scanner"
         case .nameTag:
-            return "name_tag"
+            "name_tag"
         case .companySearch:
-            return "company_search"
+            "company_search"
         case let .brand(brandOwner, _, _):
-            return "brand_\(brandOwner.hashValue)"
+            "brand_\(brandOwner.hashValue)"
         case let .addBrand(brandOwner, brand):
-            return "add_brand_\(brandOwner.hashValue)_\(brand.hashValue)"
+            "add_brand_\(brandOwner.hashValue)_\(brand.hashValue)"
         case let .subBrand(subBrand, _):
-            return "sub_brand_\(subBrand.hashValue)"
+            "sub_brand_\(subBrand.hashValue)"
         case .subcategory:
-            return "subcategory"
+            "subcategory"
         case let .productEdit(product, _):
-            return "edit_product_\(product.hashValue)"
+            "edit_product_\(product.hashValue)"
         case .productEditSuggestion:
-            return "product_edit_suggestion"
+            "product_edit_suggestion"
         case .duplicateProduct:
-            return "duplicate_product"
+            "duplicate_product"
         case .barcodeManagement:
-            return "barcode_management"
+            "barcode_management"
         case let .editBrand(brand, _):
-            return "edit_brand_\(brand.hashValue)"
+            "edit_brand_\(brand.hashValue)"
         case let .editSubBrand(brand, subBrand, _):
-            return "edit_sub_brand_\(brand.hashValue)_\(subBrand.hashValue)"
+            "edit_sub_brand_\(brand.hashValue)_\(subBrand.hashValue)"
         case .addProductToBrand:
-            return "add_product_to_brand"
+            "add_product_to_brand"
         case .addProductToSubBrand:
-            return "add_product_to_sub_brand"
+            "add_product_to_sub_brand"
         case .friends:
-            return "friends"
+            "friends"
         case .flavors:
-            return "flavors"
+            "flavors"
         case .locationSearch:
-            return "location_search"
+            "location_search"
         case .legacyPhotoPicker:
-            return "legacy_photo_picker"
+            "legacy_photo_picker"
         case .newFlavor:
-            return "new_flavor"
+            "new_flavor"
         case .servingStyleManagement:
-            return "serving_style_management"
+            "serving_style_management"
         case .categoryServingStyle:
-            return "category_serving_style"
+            "category_serving_style"
         case .addCategory:
-            return "add_category"
+            "add_category"
         case .addSubcategory:
-            return "add_subcategory"
+            "add_subcategory"
         case let .editSubcategory(subcategory, _):
-            return "edit_subcategory_\(subcategory.hashValue)"
+            "edit_subcategory_\(subcategory.hashValue)"
         case let .editCompany(company, _):
-            return "edit_company_\(company.hashValue)"
+            "edit_company_\(company.hashValue)"
         case .companyEditSuggestion:
-            return "company_edit_suggestion"
+            "company_edit_suggestion"
         case .userSheet:
-            return "user"
+            "user"
         case .checkInDatePicker:
-            return "check_in_date_picker"
+            "check_in_date_picker"
         case .categoryPickerSheet:
-            return "category_picker"
+            "category_picker"
         case .support:
-            return "support"
+            "support"
         case let .mergeLocationSheet(location):
-            return "location_management_\(location.hashValue)"
+            "location_management_\(location.hashValue)"
         case let .productLogo(product, _):
-            return "product_logo_\(product.hashValue)"
+            "product_logo_\(product.hashValue)"
         case .sendEmail:
-            return "send_email"
+            "send_email"
         }
     }
 

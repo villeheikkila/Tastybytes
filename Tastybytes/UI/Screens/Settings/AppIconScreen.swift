@@ -59,30 +59,30 @@ enum AppIcon: String {
     var logo: ImageResource {
         switch self {
         case .ramune:
-            return .projectLogo
+            .projectLogo
         case .cola:
-            return .projectLogoCola
+            .projectLogoCola
         case .energyDrink:
-            return .projectLogoEnergyDrink
+            .projectLogoEnergyDrink
         case .juice:
-            return .juice
+            .juice
         case .kombucha:
-            return .projectLogoKombucha
+            .projectLogoKombucha
         }
     }
 
     var label: String {
         switch self {
         case .ramune:
-            return "Ramune"
+            "Ramune"
         case .juice:
-            return "Juice"
+            "Juice"
         case .energyDrink:
-            return "Energy Drink"
+            "Energy Drink"
         case .kombucha:
-            return "Kombucha"
+            "Kombucha"
         case .cola:
-            return "Cola"
+            "Cola"
         }
     }
 

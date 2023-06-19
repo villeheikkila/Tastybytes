@@ -82,17 +82,17 @@ extension PostgrestClient {
         var fn: String {
             switch self {
             case .verifySubcategory:
-                return "fnc__verify_subcategory"
+                "fnc__verify_subcategory"
             case .getActivityFeed:
-                return "fnc__get_activity_feed"
+                "fnc__get_activity_feed"
             case .createCheckIn:
-                return "fnc__create_check_in"
+                "fnc__create_check_in"
             case .updateCheckIn:
-                return "fnc__update_check_in"
+                "fnc__update_check_in"
             case .deleteCheckInAsModerator:
-                return "fnc__delete_check_in_as_moderator"
+                "fnc__delete_check_in_as_moderator"
             case .getProfileSummary:
-                return "fnc__get_profile_summary"
+                "fnc__get_profile_summary"
             }
         }
     }

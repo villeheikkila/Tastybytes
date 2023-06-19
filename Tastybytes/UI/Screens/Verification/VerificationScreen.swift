@@ -10,13 +10,13 @@ struct VerificationScreen: View {
         var label: String {
             switch self {
             case .products:
-                return "Products"
+                "Products"
             case .brands:
-                return "Brands"
+                "Brands"
             case .companies:
-                return "Companies"
+                "Companies"
             case .subBrands:
-                return "Sub-brands"
+                "Sub-brands"
             }
         }
     }
@@ -80,8 +80,8 @@ struct VerificationScreen: View {
         }
         #endif
         .task {
-            await loadData()
-        }
+                await loadData()
+            }
     }
 
     private var unverifiedCompanies: some View {

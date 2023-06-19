@@ -7,9 +7,9 @@ struct RatingPickerView: View {
         var divider: Double {
             switch self {
             case .large:
-                return 2
+                2
             case .small:
-                return 4
+                4
             }
         }
     }

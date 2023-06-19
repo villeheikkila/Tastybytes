@@ -12,17 +12,17 @@ struct NotificationScreen: View {
             if self.filter == nil {
                 return true
             } else {
-                switch notification.content {
+                return switch notification.content {
                 case .checkInReaction:
-                    return self.filter == .checkInReaction
+                    self.filter == .checkInReaction
                 case .friendRequest:
-                    return self.filter == .friendRequest
+                    self.filter == .friendRequest
                 case .message:
-                    return self.filter == .message
+                    self.filter == .message
                 case .checkInComment:
-                    return self.filter == .checkInComment
+                    self.filter == .checkInComment
                 case .taggedCheckIn:
-                    return self.filter == .taggedCheckIn
+                    self.filter == .taggedCheckIn
                 }
             }
         }
@@ -76,11 +76,11 @@ struct NotificationScreen: View {
         }
         #endif
         .navigationTitle(filter?.label ?? "Notifications")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(.visible, for: .navigationBar)
-        .toolbar {
-            toolbarContent
-        }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                toolbarContent
+            }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {

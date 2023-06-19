@@ -13,7 +13,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
     var shortcutItem: UIApplicationShortcutItem {
         switch self {
         case .activity:
-            return UIApplicationShortcutItem(
+            UIApplicationShortcutItem(
                 type: "Activity",
                 localizedTitle: "Activity",
                 localizedSubtitle: "",
@@ -21,7 +21,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
                 userInfo: ["name": "activity" as NSSecureCoding]
             )
         case .discover:
-            return UIApplicationShortcutItem(
+            UIApplicationShortcutItem(
                 type: "Discover",
                 localizedTitle: "Discover",
                 localizedSubtitle: "",
@@ -29,7 +29,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
                 userInfo: ["name": "discover" as NSSecureCoding]
             )
         case .notifications:
-            return UIApplicationShortcutItem(
+            UIApplicationShortcutItem(
                 type: "Notifications",
                 localizedTitle: "Notifications",
                 localizedSubtitle: "",
@@ -37,7 +37,7 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
                 userInfo: ["name": "notifications" as NSSecureCoding]
             )
         case .profile:
-            return UIApplicationShortcutItem(
+            UIApplicationShortcutItem(
                 type: "Profile",
                 localizedTitle: "Profile",
                 localizedSubtitle: "",
@@ -50,13 +50,13 @@ enum QuickAction: String, Hashable, CaseIterable, Identifiable {
     var urlString: String {
         switch self {
         case .activity:
-            return "\(Config.deeplinkBaseUrl)/activity"
+            "\(Config.deeplinkBaseUrl)/activity"
         case .discover:
-            return "\(Config.deeplinkBaseUrl)/discover"
+            "\(Config.deeplinkBaseUrl)/discover"
         case .notifications:
-            return "\(Config.deeplinkBaseUrl)/notifications"
+            "\(Config.deeplinkBaseUrl)/notifications"
         case .profile:
-            return "\(Config.deeplinkBaseUrl)/profile"
+            "\(Config.deeplinkBaseUrl)/profile"
         }
     }
 

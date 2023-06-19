@@ -188,30 +188,30 @@ enum NotificationType: String, CaseIterable, Identifiable, Sendable {
     var label: String {
         switch self {
         case .message:
-            return "Alerts"
+            "Alerts"
         case .friendRequest:
-            return "Friend Requests"
+            "Friend Requests"
         case .taggedCheckIn:
-            return "Tagged check-ins"
+            "Tagged check-ins"
         case .checkInReaction:
-            return "Reactions"
+            "Reactions"
         case .checkInComment:
-            return "Comments"
+            "Comments"
         }
     }
 
     var systemSymbol: SFSymbol {
         switch self {
         case .message:
-            return .bell
+            .bell
         case .friendRequest:
-            return .personBadgePlus
+            .personBadgePlus
         case .taggedCheckIn:
-            return .tag
+            .tag
         case .checkInReaction:
-            return .handThumbsup
+            .handThumbsup
         case .checkInComment:
-            return .bubbleLeft
+            .bubbleLeft
         }
     }
 }

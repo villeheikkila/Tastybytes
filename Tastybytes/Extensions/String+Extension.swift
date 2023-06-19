@@ -17,9 +17,9 @@ extension String {
     func isValidLength(_ type: StrinLengthType) -> Bool {
         switch type {
         case .normal:
-            return isValidLength(minLength: 1, maxLength: 100)
+            isValidLength(minLength: 1, maxLength: 100)
         case .long:
-            return isValidLength(minLength: 1, maxLength: 1024)
+            isValidLength(minLength: 1, maxLength: 1024)
         }
     }
 

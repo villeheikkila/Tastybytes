@@ -149,27 +149,27 @@ extension EditCompanySheet {
         var primaryAction: String {
             switch self {
             case .edit:
-                return "Edit"
+                "Edit"
             case .editSuggestion:
-                return "Send"
+                "Send"
             }
         }
 
         var navigationTitle: String {
             switch self {
             case .edit:
-                return "Edit Company"
+                "Edit Company"
             case .editSuggestion:
-                return "Edit Suggestion"
+                "Edit Suggestion"
             }
         }
 
         var nameSectionHeader: String {
             switch self {
             case .edit:
-                return "Company name"
+                "Company name"
             case .editSuggestion:
-                return "What should the company be called?"
+                "What should the company be called?"
             }
         }
     }

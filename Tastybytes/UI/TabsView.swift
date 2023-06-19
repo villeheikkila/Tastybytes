@@ -21,7 +21,8 @@ struct TabsView: View {
         DragGesture(minimumDistance: switchTabGestureRangeDistance)
             .onEnded { value in
                 if value.translation.width < -switchTabGestureRangeDistance,
-                   value.translation.width > -(3 * switchTabGestureRangeDistance), selection.rawValue < shownTabs.count - 1
+                   value.translation.width > -(3 * switchTabGestureRangeDistance),
+                   selection.rawValue < shownTabs.count - 1
                 {
                     if let tab = Tab(rawValue: selection.rawValue + 1) {
                         feedbackManager.trigger(.selection)
@@ -71,9 +72,9 @@ struct TabsView: View {
     private func getBadgeByTab(_ tab: Tab) -> Int {
         switch tab {
         case .notifications:
-            return notificationManager.unreadCount
+            notificationManager.unreadCount
         default:
-            return 0
+            0
         }
     }
 }

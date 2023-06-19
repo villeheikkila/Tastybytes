@@ -32,11 +32,11 @@ struct ProductMutationView: View {
     var navigationTitle: String {
         switch mode {
         case .addToBrand, .addToSubBrand, .new:
-            return "Add Product"
+            "Add Product"
         case .edit:
-            return "Edit Product"
+            "Edit Product"
         case .editSuggestion:
-            return "Edit Suggestion"
+            "Edit Suggestion"
         }
     }
 
@@ -252,9 +252,9 @@ struct ProductMutationInnerView: View {
     var showBarcodeSection: Bool {
         switch mode {
         case .addToBrand, .addToSubBrand, .new:
-            return true
+            true
         default:
-            return false
+            false
         }
     }
 
@@ -509,11 +509,11 @@ extension ProductMutationInnerView {
         var doneLabel: String {
             switch self {
             case .edit:
-                return "Edit"
+                "Edit"
             case .editSuggestion:
-                return "Submit"
+                "Submit"
             case .new, .addToBrand, .addToSubBrand:
-                return "Create"
+                "Create"
             }
         }
     }

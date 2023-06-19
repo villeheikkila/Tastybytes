@@ -61,8 +61,10 @@ actor ImageLoader {
     }
 
     private func fileName(for urlRequest: URLRequest) -> URL? {
-        guard let fileName = urlRequest.url?.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
-              let applicationSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+        guard let fileName = urlRequest.url?.absoluteString
+            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
+            let applicationSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+                .first
         else {
             return nil
         }

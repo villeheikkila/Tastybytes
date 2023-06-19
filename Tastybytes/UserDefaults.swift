@@ -82,11 +82,11 @@ enum CustomColorScheme: String, CaseIterable, Codable, Equatable, Sendable {
     var systemColorScheme: ColorScheme? {
         switch self {
         case .light:
-            return .light
+            .light
         case .dark:
-            return .dark
+            .dark
         case .system:
-            return nil
+            nil
         }
     }
 }

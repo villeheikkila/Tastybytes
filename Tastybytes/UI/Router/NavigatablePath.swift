@@ -12,17 +12,17 @@ enum NavigatablePath {
     var urlString: String {
         switch self {
         case let .profile(id):
-            return "\(Config.baseUrl)/\(PathIdentifier.profiles)/\(id.uuidString.lowercased())"
+            "\(Config.baseUrl)/\(PathIdentifier.profiles)/\(id.uuidString.lowercased())"
         case let .checkIn(id):
-            return "\(Config.baseUrl)/\(PathIdentifier.checkins)/\(id)"
+            "\(Config.baseUrl)/\(PathIdentifier.checkins)/\(id)"
         case let .product(id):
-            return "\(Config.baseUrl)/\(PathIdentifier.products)/\(id)"
+            "\(Config.baseUrl)/\(PathIdentifier.products)/\(id)"
         case let .company(id):
-            return "\(Config.baseUrl)/\(PathIdentifier.companies)/\(id)"
+            "\(Config.baseUrl)/\(PathIdentifier.companies)/\(id)"
         case let .brand(id):
-            return "\(Config.baseUrl)/\(PathIdentifier.brands)/\(id)"
+            "\(Config.baseUrl)/\(PathIdentifier.brands)/\(id)"
         case let .location(id):
-            return "\(Config.baseUrl)/\(PathIdentifier.locations)/\(id.uuidString.lowercased())"
+            "\(Config.baseUrl)/\(PathIdentifier.locations)/\(id.uuidString.lowercased())"
         }
     }
 

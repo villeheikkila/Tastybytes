@@ -82,17 +82,17 @@ struct Report: Codable, Identifiable {
         var label: String {
             switch self {
             case .product:
-                return "product"
+                "product"
             case .company:
-                return "company"
+                "company"
             case .brand:
-                return "brand"
+                "brand"
             case .subBrand:
-                return "sub-brand"
+                "sub-brand"
             case .checkIn:
-                return "check-in"
+                "check-in"
             case .comment:
-                return "comment"
+                "comment"
             }
         }
     }

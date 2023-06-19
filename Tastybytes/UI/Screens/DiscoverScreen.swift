@@ -270,13 +270,13 @@ struct DiscoverScreen: View {
     var currentScopeIsEmpty: Bool {
         switch searchScope {
         case .companies:
-            return companies.isEmpty
+            companies.isEmpty
         case .locations:
-            return locations.isEmpty
+            locations.isEmpty
         case .products:
-            return products.isEmpty && addBarcodeTo == nil && !isSearched
+            products.isEmpty && addBarcodeTo == nil && !isSearched
         case .users:
-            return profiles.isEmpty
+            profiles.isEmpty
         }
     }
 
@@ -394,26 +394,26 @@ struct DiscoverScreen: View {
         var label: String {
             switch self {
             case .products:
-                return "Products"
+                "Products"
             case .companies:
-                return "Companies"
+                "Companies"
             case .users:
-                return "Users"
+                "Users"
             case .locations:
-                return "Locations"
+                "Locations"
             }
         }
 
         var prompt: String {
             switch self {
             case .products:
-                return "Search products, brands..."
+                "Search products, brands..."
             case .users:
-                return "Search users"
+                "Search users"
             case .companies:
-                return "Search companies"
+                "Search companies"
             case .locations:
-                return "Search locations"
+                "Search locations"
             }
         }
     }

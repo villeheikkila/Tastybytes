@@ -8,12 +8,12 @@ extension URL {
     var tabIndentifier: TabIdentifier? {
         guard isUniversalLink || isDeepLink, pathComponents.count == 2 else { return nil }
 
-        switch pathComponents[1] {
-        case "activity": return .activity
-        case "discover": return .discover
-        case "notifications": return .notifications
-        case "profile": return .currentProfile
-        default: return nil
+        return switch pathComponents[1] {
+        case "activity": .activity
+        case "discover": .discover
+        case "notifications": .notifications
+        case "profile": .currentProfile
+        default: nil
         }
     }
 
@@ -23,15 +23,15 @@ extension URL {
             return nil
         }
 
-        switch tabIndentifier {
+        return switch tabIndentifier {
         case .activity:
-            return Tab.activity
+            Tab.activity
         case .discover:
-            return Tab.discover
+            Tab.discover
         case .notifications:
-            return Tab.notifications
+            Tab.notifications
         case .currentProfile:
-            return Tab.profile
+            Tab.profile
         }
     }
 
@@ -41,15 +41,15 @@ extension URL {
             return nil
         }
 
-        switch tabIndentifier {
+        return switch tabIndentifier {
         case .activity:
-            return SiderBarTab.activity
+            SiderBarTab.activity
         case .discover:
-            return SiderBarTab.discover
+            SiderBarTab.discover
         case .notifications:
-            return SiderBarTab.notifications
+            SiderBarTab.notifications
         case .currentProfile:
-            return SiderBarTab.profile
+            SiderBarTab.profile
         }
     }
 }

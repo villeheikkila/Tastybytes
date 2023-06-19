@@ -270,18 +270,18 @@ extension CheckInCardView {
         func isLoadedFromLocation(_ location: Location) -> Bool {
             switch self {
             case let .location(fromLocation):
-                return fromLocation == location
+                fromLocation == location
             default:
-                return false
+                false
             }
         }
 
         func isLoadedFromProfile(_ profile: Profile) -> Bool {
             switch self {
             case let .profile(fromProfile):
-                return fromProfile == profile
+                fromProfile == profile
             default:
-                return false
+                false
             }
         }
     }
