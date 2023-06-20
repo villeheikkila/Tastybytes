@@ -12,7 +12,6 @@ struct ActivityScreen: View {
             scrollToTop: $scrollToTop,
             onRefresh: {},
             showContentUnavailableView: true,
-            emptyView: {},
             header: {}
         )
     }

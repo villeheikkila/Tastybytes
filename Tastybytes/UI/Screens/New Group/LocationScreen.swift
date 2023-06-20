@@ -21,7 +21,6 @@ struct LocationScreen: View {
             fetcher: .location(location),
             scrollToTop: $scrollToTop,
             onRefresh: { await getSummary() },
-            emptyView: {},
             header: {
                 if let coordinate = location.location?.coordinate {
                     Map(initialPosition: MapCameraPosition

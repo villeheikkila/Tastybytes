@@ -29,13 +29,30 @@ extension CheckInListView {
             }
         }
     }
+}
 
-    enum CheckInSegments: String, CaseIterable {
-        case everyone, friends
+enum CheckInSegment: String, CaseIterable {
+    case everyone, friends, you
+
+    var emptyContentView: some View {
+        switch self {
+        case .everyone:
+            ContentUnavailableView {
+                Label("Be first to check-in!", systemSymbol: .listStar)
+            }
+        case .friends:
+            ContentUnavailableView {
+                Label("No check-ins from friends", systemSymbol: .listStar)
+            }
+        case .you:
+            ContentUnavailableView {
+                Label("You haven't check-in yet", systemSymbol: .listStar)
+            }
+        }
     }
 }
 
-struct CheckInListView<Header, Content>: View where Header: View, Content: View {
+struct CheckInListView<Header>: View where Header: View {
     @Environment(Repository.self) private var repository
     @Environment(ProfileManager.self) private var profileManager
     @Environment(SplashScreenManager.self) private var splashScreenManager
@@ -56,11 +73,10 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
     @State private var page = 0
     @State private var showEmptyView = false
     @State private var isRefreshing = false
-    @State private var showCheckInsFrom: CheckInSegments = .everyone
+    @State private var showCheckInsFrom: CheckInSegment = .everyone
     @Binding private var scrollToTop: Int
 
     private let header: Header
-    private let emptyView: Content
     private let showContentUnavailableView: Bool
     private let onRefresh: () async -> Void
     private let topAnchor: String?
@@ -73,7 +89,6 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         onRefresh: @escaping () async -> Void,
         topAnchor: String? = nil,
         showContentUnavailableView: Bool = false,
-        @ViewBuilder emptyView: @escaping () -> Content,
         @ViewBuilder header: @escaping () -> Header
     ) {
         self.fetcher = fetcher
@@ -81,7 +96,6 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         self.topAnchor = topAnchor
         self.showContentUnavailableView = showContentUnavailableView
         self.header = header()
-        self.emptyView = emptyView()
         self.onRefresh = onRefresh
     }
 
@@ -94,23 +108,19 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
             GeometryReader { geometry in
                 List {
                     header
-                    if showEmptyView {
-                        emptyView
-                    }
                     if fetcher.showCheckInSegmentationPicker {
                         Picker("Show check-ins from", selection: $showCheckInsFrom) {
-                            ForEach(CheckInSegments.allCases, id: \.self) { segment in
+                            ForEach(CheckInSegment.allCases, id: \.self) { segment in
                                 Text(segment.rawValue.capitalized)
                             }
                         }
                         .pickerStyle(.segmented)
                         .listRowSeparator(.hidden)
-                    }
-                    if !isLoading && uniqueCheckIns.isEmpty && showCheckInsFrom == .friends {
-                        ContentUnavailableView {
-                            Label("No check-ins from friends", systemSymbol: .listStar)
+
+                        if !isLoading && uniqueCheckIns.isEmpty {
+                            showCheckInsFrom.emptyContentView
+                                .listRowSeparator(.hidden)
                         }
-                        .listRowSeparator(.hidden)
                     }
                     ForEach(uniqueCheckIns) { checkIn in
                         let edgeInset = geometry.size.width < 450 ? 8 : (geometry.size.width - 450) / 2
@@ -313,14 +323,14 @@ struct CheckInListView<Header, Content>: View where Header: View, Content: View 
         case let .product(product):
             await repository.checkIn.getByProductId(
                 id: product.id,
-                onlyFriends: showCheckInsFrom == .friends,
+                segment: showCheckInsFrom,
                 from: from,
                 to: to
             )
         case let .location(location):
             await repository.checkIn.getByLocation(
                 locationId: location.id,
-                onlyFriends: showCheckInsFrom == .friends,
+                segment: showCheckInsFrom,
                 from: from,
                 to: to
             )

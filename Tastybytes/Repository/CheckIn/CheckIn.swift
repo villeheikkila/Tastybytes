@@ -195,6 +195,15 @@ extension CheckIn {
             return tableName
         case .fromFriendsView:
             return fromFriendsView
+        case let .segmentedView(segment):
+            switch segment {
+            case .everyone:
+                return tableName
+            case .friends:
+                return "view__check_ins_from_friends"
+            case .you:
+                return "view__check_ins_from_current_user"
+            }
         case .imageBucket:
             return bucketId
         case let .joined(withTableName):
@@ -225,6 +234,7 @@ extension CheckIn {
 
     enum QueryType {
         case tableName
+        case segmentedView(CheckInSegment)
         case fromFriendsView
         case imageBucket
         case joined(_ withTableName: Bool)
