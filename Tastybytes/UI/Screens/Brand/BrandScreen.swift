@@ -1,8 +1,9 @@
 import OSLog
 import SwiftUI
 
+private let logger = Logger(category: "BrandScreen")
+
 struct BrandScreen: View {
-    private let logger = Logger(category: "BrandScreen")
     @Environment(Repository.self) private var repository
     @Environment(ProfileManager.self) private var profileManager
     @Environment(FeedbackManager.self) private var feedbackManager
@@ -251,22 +252,23 @@ struct BrandScreen: View {
             })
             .symbolVariant(isLikedByCurrentUser ? .fill : .none)
             Menu {
+                ControlGroup {
+                    BrandShareLinkView(brand: brand)
+                    if profileManager.hasPermission(.canCreateProducts) {
+                        RouterLink("Product", systemSymbol: .plus, sheet: .addProductToBrand(brand: brand))
+                    }
+                    if profileManager.hasPermission(.canEditBrands) {
+                        RouterLink("Edit", systemSymbol: .pencil, sheet: .editBrand(brand: brand, onUpdate: {
+                            await refresh()
+                        }))
+                    }
+                }
                 VerificationButton(isVerified: brand.isVerified, verify: {
                     await verifyBrand(brand: brand, isVerified: true)
                 }, unverify: {
                     showBrandUnverificationConfirmation = true
                 })
                 Divider()
-                BrandShareLinkView(brand: brand)
-                if profileManager.hasPermission(.canCreateProducts) {
-                    RouterLink("Add Product", systemSymbol: .plus, sheet: .addProductToBrand(brand: brand))
-                }
-                Divider()
-                if profileManager.hasPermission(.canEditBrands) {
-                    RouterLink("Edit", systemSymbol: .pencil, sheet: .editBrand(brand: brand, onUpdate: {
-                        await refresh()
-                    }))
-                }
                 ReportButton(entity: .brand(brand))
                 if profileManager.hasPermission(.canDeleteBrands) {
                     Button(

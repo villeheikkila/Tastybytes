@@ -76,34 +76,28 @@ struct ProductScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
+                ControlGroup {
+                    RouterLink("Check-in", systemSymbol: .plus, sheet: .newCheckIn(product, onCreation: { _ in
+                        refreshCheckIns()
+                    }))
+                    .disabled(!profileManager.hasPermission(.canCreateCheckIns))
+                    ProductShareLinkView(product: product)
+                    if profileManager.hasPermission(.canAddBarcodes) {
+                        RouterLink(
+                            "Add",
+                            systemSymbol: .barcodeViewfinder,
+                            sheet: .barcodeScanner(onComplete: { barcode in
+                                Task { await addBarcodeToProduct(barcode) }
+                            })
+                        )
+                    }
+                }
                 VerificationButton(isVerified: product.isVerified, verify: {
                     await verifyProduct(product: product, isVerified: true)
                 }, unverify: {
                     showUnverifyProductConfirmation = true
                 })
-
                 Divider()
-
-                RouterLink("Check-in", systemSymbol: .plus, sheet: .newCheckIn(product, onCreation: { _ in
-                    refreshCheckIns()
-                }))
-                .bold()
-                .disabled(!profileManager.hasPermission(.canCreateCheckIns))
-
-                ProductShareLinkView(product: product)
-
-                if profileManager.hasPermission(.canAddBarcodes) {
-                    RouterLink(
-                        "Add Barcode",
-                        systemSymbol: .barcodeViewfinder,
-                        sheet: .barcodeScanner(onComplete: { barcode in
-                            Task { await addBarcodeToProduct(barcode) }
-                        })
-                    )
-                }
-
-                Divider()
-
                 if profileManager.hasPermission(.canEditCompanies) {
                     RouterLink("Edit", systemSymbol: .pencil, sheet: .productEdit(product: product))
                 } else {

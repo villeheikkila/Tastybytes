@@ -109,36 +109,37 @@ struct CompanyScreen: View {
 
     private var navigationBarMenu: some View {
         Menu {
+            ControlGroup {
+                CompanyShareLinkView(company: company)
+                if profileManager.hasPermission(.canCreateBrands) {
+                    RouterLink(
+                        "Brand",
+                        systemSymbol: .plus,
+                        sheet: .addBrand(brandOwner: company, mode: .new)
+                    )
+                }
+                if profileManager.hasPermission(.canEditCompanies) {
+                    RouterLink("Edit", systemSymbol: .pencil, sheet: .editCompany(company: company, onSuccess: {
+                        await feedbackManager.wrapWithHaptics {
+                            await getBrandsAndSummary()
+                        }
+                        feedbackManager.toggle(.success("Company updated"))
+                    }))
+                } else {
+                    RouterLink(
+                        "Edit Suggestion",
+                        systemSymbol: .pencil,
+                        sheet: .companyEditSuggestion(company: company, onSuccess: {
+                            feedbackManager.toggle(.success("Edit suggestion sent!"))
+                        })
+                    )
+                }
+            }
             VerificationButton(isVerified: company.isVerified, verify: {
                 await verifyCompany(isVerified: true)
             }, unverify: {
                 showUnverifyCompanyConfirmation = true
             })
-            Divider()
-            CompanyShareLinkView(company: company)
-            if profileManager.hasPermission(.canCreateBrands) {
-                RouterLink(
-                    "Add Brand",
-                    systemSymbol: .plus,
-                    sheet: .addBrand(brandOwner: company, mode: .new)
-                )
-            }
-            if profileManager.hasPermission(.canEditCompanies) {
-                RouterLink("Edit", systemSymbol: .pencil, sheet: .editCompany(company: company, onSuccess: {
-                    await feedbackManager.wrapWithHaptics {
-                        await getBrandsAndSummary()
-                    }
-                    feedbackManager.toggle(.success("Company updated"))
-                }))
-            } else {
-                RouterLink(
-                    "Edit Suggestion",
-                    systemSymbol: .pencil,
-                    sheet: .companyEditSuggestion(company: company, onSuccess: {
-                        feedbackManager.toggle(.success("Edit suggestion sent!"))
-                    })
-                )
-            }
             Divider()
             ReportButton(entity: .company(company))
             if profileManager.hasPermission(.canDeleteCompanies) {

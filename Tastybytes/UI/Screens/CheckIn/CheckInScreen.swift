@@ -130,7 +130,20 @@ struct CheckInScreen: View {
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
-                CheckInShareLinkView(checkIn: checkIn)
+                ControlGroup {
+                    CheckInShareLinkView(checkIn: checkIn)
+                    if checkIn.profile.id == profileManager.id {
+                        RouterLink("Edit", systemSymbol: .pencil, sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
+                            checkIn = updatedCheckIn
+                        }))
+                        Button(
+                            "Delete",
+                            systemSymbol: .trashFill,
+                            role: .destructive,
+                            action: { showDeleteConfirmation = true }
+                        )
+                    }
+                }
                 Divider()
                 RouterLink(
                     "Open Company",
@@ -144,24 +157,10 @@ struct CheckInScreen: View {
                     systemSymbol: .cart,
                     screen: .fetchSubBrand(checkIn.product.subBrand)
                 )
-
+                Divider()
                 if profileManager.id != checkIn.profile.id {
                     ReportButton(entity: .checkIn(checkIn))
                 }
-
-                if checkIn.profile.id == profileManager.id {
-                    RouterLink("Edit", systemSymbol: .pencil, sheet: .checkIn(checkIn, onUpdate: { updatedCheckIn in
-                        checkIn = updatedCheckIn
-                    }))
-                    Button(
-                        "Delete",
-                        systemSymbol: .trashFill,
-                        role: .destructive,
-                        action: { showDeleteConfirmation = true }
-                    )
-                }
-
-                Divider()
                 if profileManager.hasRole(.moderator) {
                     Menu {
                         if profileManager.hasPermission(.canDeleteCheckInsAsModerator) {
