@@ -248,13 +248,6 @@ struct CheckInListView<Header>: View where Header: View {
         await onRefresh()
     }
 
-    func getPagination(page: Int, size: Int) -> (Int, Int) {
-        let limit = size + 1
-        let from = page * limit
-        let to = from + size
-        return (from, to)
-    }
-
     func deleteCheckIn(checkIn: CheckIn) async {
         switch await repository.checkIn.delete(id: checkIn.id) {
         case .success:

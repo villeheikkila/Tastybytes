@@ -15,6 +15,11 @@ struct ProductScreen: View {
     @State private var showUnverifyProductConfirmation = false
     @State private var resetView: Int = 0
 
+    // check-in images
+    @State private var checkInImages = [CheckIn.Image]()
+    @State private var isLoadingCheckInImages = false
+    @State private var checkInImagesPage = 0
+
     init(product: Product.Joined) {
         _product = State(wrappedValue: product)
     }
@@ -27,22 +32,7 @@ struct ProductScreen: View {
                 await refresh()
             },
             header: {
-                Group {
-                    ProductItemView(product: product, extras: [.companyLink, .logo])
-                    SummaryView(summary: summary)
-                    RouterLink("Check-in!", sheet: .newCheckIn(product, onCreation: { _ in
-                        refreshCheckIns()
-                    }))
-                    .fontWeight(.semibold)
-                    .padding(.all, 8)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.accentColor)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                    CheckInImagesView(queryType: .product(product))
-                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                }
-                .listRowSeparator(.hidden)
+                headerContent
             }
         )
         .id(resetView)
@@ -50,6 +40,9 @@ struct ProductScreen: View {
             if summary == nil {
                 await loadSummary()
             }
+        }
+        .task {
+            await fetchImages()
         }
         .toolbar {
             toolbarContent
@@ -75,12 +68,46 @@ struct ProductScreen: View {
         }
     }
 
+    @ViewBuilder private var headerContent: some View {
+        Group {
+            ProductItemView(product: product, extras: [.companyLink, .logo])
+            SummaryView(summary: summary)
+            RouterLink("Check-in!", sheet: .newCheckIn(product, onCreation: { _ in
+                await refreshCheckIns()
+            }))
+            .fontWeight(.semibold)
+            .padding(.all, 8)
+            .frame(maxWidth: .infinity)
+            .background(Color.accentColor)
+            .foregroundColor(.white)
+            .cornerRadius(8)
+            if !checkInImages.isEmpty {
+                ScrollView(.horizontal) {
+                    LazyHStack {
+                        ForEach(checkInImages) { checkInImage in
+                            CheckInImageCellView(checkInImage: checkInImage)
+                                .onAppear {
+                                    if checkInImage == checkInImages.last, isLoadingCheckInImages != true {
+                                        Task {
+                                            await fetchImages()
+                                        }
+                                    }
+                                }
+                        }
+                    }
+                }
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+            }
+        }
+        .listRowSeparator(.hidden)
+    }
+
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Menu {
                 ControlGroup {
                     RouterLink("Check-in", systemSymbol: .plus, sheet: .newCheckIn(product, onCreation: { _ in
-                        refreshCheckIns()
+                        await refreshCheckIns()
                     }))
                     .disabled(!profileManager.hasPermission(.canCreateCheckIns))
                     ProductShareLinkView(product: product)
@@ -194,8 +221,9 @@ struct ProductScreen: View {
         }
     }
 
-    func refreshCheckIns() {
+    func refreshCheckIns() async {
         resetView += 1
+        await loadSummary()
     }
 
     func verifyProduct(product: Product.Joined, isVerified: Bool) async {
@@ -230,6 +258,29 @@ struct ProductScreen: View {
             guard !error.localizedDescription.contains("cancelled") else { return }
             feedbackManager.toggle(.error(.unexpected))
             logger.error("adding barcode \(barcode.barcode) to product failed. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
+    func fetchImages() async {
+        let (from, to) = getPagination(page: checkInImagesPage, size: 10)
+        isLoadingCheckInImages = true
+
+        switch await repository.checkIn.getCheckInImages(by: .product(product), from: from, to: to) {
+        case let .success(checkIns):
+            await MainActor.run {
+                withAnimation {
+                    self.checkInImages.append(contentsOf: checkIns)
+                }
+                checkInImagesPage += 1
+                isLoadingCheckInImages = false
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            feedbackManager.toggle(.error(.unexpected))
+            logger
+                .error(
+                    "Fetching check-in images failed. Description: \(error.localizedDescription). Error: \(error) (\(#file):\(#line))"
+                )
         }
     }
 }

@@ -64,16 +64,16 @@ struct ProductFeedScreen: View {
             }
         #endif
             .navigationTitle(title)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbar {
-                toolbarContent
-            }
-            .task {
-                if products.isEmpty {
-                    await refresh()
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbar {
+                    toolbarContent
                 }
-            }
+                .task {
+                    if products.isEmpty {
+                        await refresh()
+                    }
+                }
     }
 
     @ToolbarContentBuilder private var toolbarContent: some ToolbarContent {
@@ -89,13 +89,6 @@ struct ProductFeedScreen: View {
         page = 0
         products = [Product.Joined]()
         await fetchProductFeedItems()
-    }
-
-    func getPagination(page: Int, size: Int) -> (Int, Int) {
-        let limit = size + 1
-        let from = page * limit
-        let to = from + size
-        return (from, to)
     }
 
     func fetchProductFeedItems(onComplete: (() -> Void)? = nil) async {
