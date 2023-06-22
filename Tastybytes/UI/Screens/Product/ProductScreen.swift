@@ -27,7 +27,7 @@ struct ProductScreen: View {
                 await refresh()
             },
             header: {
-                Section {
+                Group {
                     ProductItemView(product: product, extras: [.companyLink, .logo])
                     SummaryView(summary: summary)
                     RouterLink("Check-in!", sheet: .newCheckIn(product, onCreation: { _ in
@@ -39,6 +39,8 @@ struct ProductScreen: View {
                     .background(Color.accentColor)
                     .foregroundColor(.white)
                     .cornerRadius(8)
+                    CheckInImagesView(queryType: .product(product))
+                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                 }
                 .listRowSeparator(.hidden)
             }

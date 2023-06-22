@@ -18,7 +18,7 @@ struct CheckInImagesView: View {
         return (from, to)
     }
 
-    let profile: Profile
+    let queryType: CheckInImageQueryType
 
     var body: some View {
         ScrollView(.horizontal) {
@@ -47,7 +47,7 @@ struct CheckInImagesView: View {
         let (from, to) = getPagination(page: page, size: pageSize)
         isLoading = true
 
-        switch await repository.checkIn.getCheckInImages(id: profile.id, from: from, to: to) {
+        switch await repository.checkIn.getCheckInImages(by: queryType, from: from, to: to) {
         case let .success(checkIns):
             await MainActor.run {
                 withAnimation {

@@ -197,7 +197,7 @@ struct ProfileView: View {
 
     @ViewBuilder private var checkInImages: some View {
         Section {
-            CheckInImagesView(profile: profile)
+            CheckInImagesView(queryType: .profile(profile))
         }
     }
 

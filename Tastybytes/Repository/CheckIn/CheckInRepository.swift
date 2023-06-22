@@ -14,6 +14,7 @@ protocol CheckInRepository {
     func getByProductId(id: Int, segment: CheckInSegment, from: Int, to: Int) async -> Result<[CheckIn], Error>
     func getByLocation(locationId: UUID, segment: CheckInSegment, from: Int, to: Int) async -> Result<[CheckIn], Error>
     func getCheckInImages(id: UUID, from: Int, to: Int) async -> Result<[CheckIn.Image], Error>
+    func getCheckInImages(by: CheckInImageQueryType, from: Int, to: Int) async -> Result<[CheckIn.Image], Error>
     func create(newCheckInParams: CheckIn.NewRequest) async -> Result<CheckIn, Error>
     func update(updateCheckInParams: CheckIn.UpdateRequest) async -> Result<CheckIn, Error>
     func delete(id: Int) async -> Result<Void, Error>
@@ -86,7 +87,7 @@ struct SupabaseCheckInRepository: CheckInRepository {
         }
     }
 
-    func getCheckInImages(id: UUID, from _: Int, to _: Int) async -> Result<[CheckIn.Image], Error> {
+    func getCheckInImages(id: UUID, from: Int, to: Int) async -> Result<[CheckIn.Image], Error> {
         do {
             let response: [CheckIn.Image] = try await client
                 .database
@@ -94,7 +95,26 @@ struct SupabaseCheckInRepository: CheckInRepository {
                 .select(columns: CheckIn.getQuery(.image(false)))
                 .eq(column: "created_by", value: id)
                 .order(column: "created_at", ascending: false)
-                .range(from: 0, to: 10)
+                .range(from: from, to: to)
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func getCheckInImages(by: CheckInImageQueryType, from: Int, to: Int) async -> Result<[CheckIn.Image], Error> {
+        do {
+            let response: [CheckIn.Image] = try await client
+                .database
+                .from(CheckIn.getQuery(.tableName))
+                .select(columns: CheckIn.getQuery(.image(false)))
+                .eq(column: by.column, value: by.id)
+                .notEquals(column: "image_file", value: "null")
+                .order(column: "created_at", ascending: false)
+                .range(from: from, to: to)
                 .execute()
                 .value
 
@@ -238,6 +258,29 @@ struct SupabaseCheckInRepository: CheckInRepository {
             return .success(fileName)
         } catch {
             return .failure(error)
+        }
+    }
+}
+
+enum CheckInImageQueryType {
+    case profile(Profile)
+    case product(Product.Joined)
+
+    var column: String {
+        switch self {
+        case .profile:
+            "created_by"
+        case .product:
+            "product_id"
+        }
+    }
+
+    var id: String {
+        switch self {
+        case let .profile(profile):
+            return profile.id.uuidString
+        case let .product(product):
+            return String(product.id)
         }
     }
 }
