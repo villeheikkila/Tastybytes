@@ -10,6 +10,7 @@ enum Screen: Hashable, Codable {
     case fetchBrand(Brand.JoinedCompany)
     case fetchSubBrand(SubBrand.JoinedBrand)
     case profileProducts(Profile)
+    case profileWishlist(Profile)
     case profileProductsByFilter(Profile, Product.Filter)
     case profileStatistics(Profile)
     case profileLocations(Profile)
@@ -66,6 +67,8 @@ enum Screen: Hashable, Codable {
             ProfileProductListView(profile: profile, locked: false)
         case let .profileStatistics(profile):
             ProfileStatisticsView(profile: profile)
+        case let .profileWishlist(profile):
+            ProfileWishlistScreen(profile: profile)
         case let .profileLocations(profile):
             ProfileLocationsScreen(profile: profile)
         case let .addProduct(initialBarcode):

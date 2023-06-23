@@ -13,6 +13,10 @@ protocol ProductRepository {
     func create(newProductParams: Product.NewRequest) async -> Result<Product.Joined, Error>
     func getUnverified() async -> Result<[Product.Joined], Error>
     // func getDuplicateSuggestions() async -> Result<[ProductDuplicateSuggestion.Joined], Error>
+    func checkIfOnWishlist(id: Int) async -> Result<Bool, Error>
+    func removeFromWishlist(productId: Int) async -> Result<Void, Error>
+    func getWishlistItems(profileId: UUID) async -> Result<[ProfileWishlist.Joined], Error>
+    func addToWishlist(productId: Int) async -> Result<Void, Error>
     func uploadLogo(productId: Int, data: Data) async -> Result<String, Error>
     func getSummaryById(id: Int) async -> Result<Summary, Error>
     func getCreatedByUserId(id: UUID) async -> Result<[Product.Joined], Error>
@@ -144,6 +148,71 @@ struct SupabaseProductRepository: ProductRepository {
 
             return .success(response)
         } catch {
+            return .failure(error)
+        }
+    }
+
+    func checkIfOnWishlist(id: Int) async -> Result<Bool, Error> {
+        do {
+            let response: Bool = try await client
+                .database
+                .rpc(
+                    fn: "fnc__is_on_current_user_wishlist",
+                    params: ProfileWishlist.CheckIfOnWishlist(id: id)
+                )
+                .single()
+                .execute()
+                .value
+
+            return .success(response)
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func addToWishlist(productId: Int) async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .from(ProfileWishlist.getQuery(.tableName))
+                .insert(values: ProfileWishlist.New(productId: productId))
+                .single()
+                .execute()
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func removeFromWishlist(productId: Int) async -> Result<Void, Error> {
+        do {
+            try await client
+                .database
+                .from(ProfileWishlist.getQuery(.tableName))
+                .delete()
+                .eq(column: "product_id", value: productId)
+                .execute()
+
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    func getWishlistItems(profileId: UUID) async -> Result<[ProfileWishlist.Joined], Error> {
+        do {
+            let reponse: [ProfileWishlist.Joined] = try await client
+                .database
+                .from(ProfileWishlist.getQuery(.tableName))
+                .select(columns: ProfileWishlist.getQuery(.joined(false)))
+                .eq(column: "created_by", value: profileId.uuidString)
+                .execute()
+                .value
+
+            return .success(reponse)
+        } catch {
+            print(error)
             return .failure(error)
         }
     }

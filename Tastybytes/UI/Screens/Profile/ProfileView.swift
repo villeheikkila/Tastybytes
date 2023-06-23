@@ -210,6 +210,7 @@ struct ProfileView: View {
             )
             RouterLink("Check-ins", systemSymbol: .checkmarkRectangle, screen: .profileProducts(profile))
             RouterLink("Statistics", systemSymbol: .chartBarXaxis, screen: .profileStatistics(profile))
+            RouterLink("Wishlist", systemSymbol: .heart, screen: .profileWishlist(profile))
             if isCurrentUser {
                 RouterLink("Locations", systemSymbol: .map, screen: .profileLocations(profile))
             }

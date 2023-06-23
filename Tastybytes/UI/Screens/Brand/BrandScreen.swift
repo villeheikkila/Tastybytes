@@ -317,7 +317,9 @@ struct BrandScreen: View {
         switch await isLikedPromisePromise {
         case let .success(isLikedByCurrentUser):
             await MainActor.run {
-                self.isLikedByCurrentUser = isLikedByCurrentUser
+                withAnimation {
+                    self.isLikedByCurrentUser = isLikedByCurrentUser
+                }
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -343,7 +345,9 @@ struct BrandScreen: View {
         switch await repository.brand.isLikedByCurrentUser(id: brand.id) {
         case let .success(isLikedByCurrentUser):
             await MainActor.run {
-                self.isLikedByCurrentUser = isLikedByCurrentUser
+                withAnimation {
+                    self.isLikedByCurrentUser = isLikedByCurrentUser
+                }
             }
         case let .failure(error):
             guard !error.localizedDescription.contains("cancelled") else { return }
@@ -375,7 +379,11 @@ struct BrandScreen: View {
             switch await repository.brand.unlikeBrand(brandId: brand.id) {
             case .success:
                 feedbackManager.trigger(.notification(.success))
-                isLikedByCurrentUser = false
+                await MainActor.run {
+                    withAnimation {
+                        self.isLikedByCurrentUser = false
+                    }
+                }
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
                 logger.error("unliking brand failed. Error: \(error) (\(#file):\(#line))")
@@ -384,7 +392,11 @@ struct BrandScreen: View {
             switch await repository.brand.likeBrand(brandId: brand.id) {
             case .success:
                 feedbackManager.trigger(.notification(.success))
-                isLikedByCurrentUser = true
+                await MainActor.run {
+                    withAnimation {
+                        self.isLikedByCurrentUser = true
+                    }
+                }
             case let .failure(error):
                 guard !error.localizedDescription.contains("cancelled") else { return }
                 logger.error("liking brand failed. Error: \(error) (\(#file):\(#line))")

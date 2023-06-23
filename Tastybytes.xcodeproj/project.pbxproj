@@ -236,6 +236,8 @@
 		5CF0FA682A3D00FB00CC3B62 /* RatingChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF0FA672A3D00FB00CC3B62 /* RatingChartView.swift */; };
 		5CF0FA6A2A3D011400CC3B62 /* CheckInImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF0FA692A3D011400CC3B62 /* CheckInImagesView.swift */; };
 		5CF6882E2A3916C200F50263 /* ProfileLocationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF6882D2A3916C200F50263 /* ProfileLocationsScreen.swift */; };
+		5CF8951F2A458AEE00A40A66 /* ProfileWishlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF8951E2A458AEE00A40A66 /* ProfileWishlist.swift */; };
+		5CF895212A45A12400A40A66 /* ProfileWishlistScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF895202A45A12400A40A66 /* ProfileWishlistScreen.swift */; };
 		5CFB562F28F596A200F13A1E /* ChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB562E28F596A200F13A1E /* ChipView.swift */; };
 		5CFB563128F5974100F13A1E /* ProfileSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563028F5974100F13A1E /* ProfileSummary.swift */; };
 		5CFB563328F597ED00F13A1E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CFB563228F597ED00F13A1E /* RatingView.swift */; };
@@ -475,6 +477,8 @@
 		5CF0FA672A3D00FB00CC3B62 /* RatingChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingChartView.swift; sourceTree = "<group>"; };
 		5CF0FA692A3D011400CC3B62 /* CheckInImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInImagesView.swift; sourceTree = "<group>"; };
 		5CF6882D2A3916C200F50263 /* ProfileLocationsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLocationsScreen.swift; sourceTree = "<group>"; };
+		5CF8951E2A458AEE00A40A66 /* ProfileWishlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWishlist.swift; sourceTree = "<group>"; };
+		5CF895202A45A12400A40A66 /* ProfileWishlistScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWishlistScreen.swift; sourceTree = "<group>"; };
 		5CFB562E28F596A200F13A1E /* ChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipView.swift; sourceTree = "<group>"; };
 		5CFB563028F5974100F13A1E /* ProfileSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummary.swift; sourceTree = "<group>"; };
 		5CFB563228F597ED00F13A1E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
@@ -628,6 +632,7 @@
 				5CB1C24A28F9BE4F000B0EB4 /* ProductRepository.swift */,
 				5C0E365329279B240072EFBD /* Barcode.swift */,
 				5C25C68F29991D0000C07953 /* ProductBarcodeRepository.swift */,
+				5CF8951E2A458AEE00A40A66 /* ProfileWishlist.swift */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -843,6 +848,7 @@
 				5C7C3592299AC426009A3C09 /* ScalingButton.swift */,
 				5CF0FA672A3D00FB00CC3B62 /* RatingChartView.swift */,
 				5CF0FA692A3D011400CC3B62 /* CheckInImagesView.swift */,
+				5CF895202A45A12400A40A66 /* ProfileWishlistScreen.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1557,6 +1563,7 @@
 				5CED432828FD417E003F8194 /* ProductMutationView.swift in Sources */,
 				5C7C35F0299AE656009A3C09 /* EmailTextFieldView.swift in Sources */,
 				5C25AEBA29053B7E00793607 /* CompanyScreen.swift in Sources */,
+				5CF895212A45A12400A40A66 /* ProfileWishlistScreen.swift in Sources */,
 				5C7C3580299AC0A6009A3C09 /* AuthenticationInput.swift in Sources */,
 				5C234F0A29F5BBB9003F2283 /* SupportScreen.swift in Sources */,
 				5C7DC2B728F9F2D600AED6F1 /* FriendsRepository.swift in Sources */,
@@ -1611,6 +1618,7 @@
 				5C8745C92A3F91F50009FD1A /* BrandLike.swift in Sources */,
 				5CB52D64292BBC14000BF55F /* ProfileProductListView.swift in Sources */,
 				5C46E8642911D9FD0008F142 /* Config.swift in Sources */,
+				5CF8951F2A458AEE00A40A66 /* ProfileWishlist.swift in Sources */,
 				5C7881F22A0AAFC400AF29EE /* MergeLocationSheet.swift in Sources */,
 				5C989DAB2901AAD500BBC5A7 /* Repository.swift in Sources */,
 				5C663F372933B8FA006F9A97 /* LocationScreen.swift in Sources */,

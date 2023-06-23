@@ -19,6 +19,8 @@ struct ProductScreen: View {
     @State private var checkInImages = [CheckIn.Image]()
     @State private var isLoadingCheckInImages = false
     @State private var checkInImagesPage = 0
+    // wishlist
+    @State private var isOnWishlist = false
 
     init(product: Product.Joined) {
         _product = State(wrappedValue: product)
@@ -43,6 +45,9 @@ struct ProductScreen: View {
         }
         .task {
             await fetchImages()
+        }
+        .task {
+            await getIfIsOnWishlist()
         }
         .toolbar {
             toolbarContent
@@ -72,15 +77,32 @@ struct ProductScreen: View {
         Group {
             ProductItemView(product: product, extras: [.companyLink, .logo])
             SummaryView(summary: summary)
-            RouterLink("Check-in!", sheet: .newCheckIn(product, onCreation: { _ in
-                await refreshCheckIns()
-            }))
-            .fontWeight(.semibold)
-            .padding(.all, 8)
-            .frame(maxWidth: .infinity)
-            .background(Color.accentColor)
-            .foregroundColor(.white)
-            .cornerRadius(8)
+            HStack(spacing: 0) {
+                RouterLink(
+                    "Check-in!",
+                    systemSymbol: .checkmarkCircle,
+                    sheet: .newCheckIn(product, onCreation: { _ in
+                        await refreshCheckIns()
+                    }),
+                    asTapGesture: true
+                )
+                .frame(maxWidth: .infinity)
+                .padding(.all, 6.5)
+                .background(Color.accentColor)
+                .foregroundColor(.white)
+                .cornerRadius(4, corners: [.topLeft, .bottomLeft])
+                ProgressButton("Wishlist", systemSymbol: .star, actionOptions: []) {
+                    await toggleWishlist()
+                }
+                .symbolVariant(isOnWishlist ? .fill : .none)
+                .frame(maxWidth: .infinity)
+                .padding(.all, 6)
+                .background(Color.orange)
+                .foregroundColor(.white)
+                .cornerRadius(4, corners: [.topRight, .bottomRight])
+            }
+            .listRowInsets(.init(top: 4, leading: 6, bottom: 6, trailing: 4))
+
             if !checkInImages.isEmpty {
                 ScrollView(.horizontal) {
                     LazyHStack {
@@ -192,6 +214,21 @@ struct ProductScreen: View {
         }
     }
 
+    func getIfIsOnWishlist() async {
+        switch await repository.product.checkIfOnWishlist(id: product.id) {
+        case let .success(isOnWishlist):
+            await MainActor.run {
+                withAnimation {
+                    self.isOnWishlist = isOnWishlist
+                }
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            feedbackManager.toggle(.error(.unexpected))
+            logger.error("Failed to load wishlist status. Error: \(error) (\(#file):\(#line))")
+        }
+    }
+
     func refresh() async {
         async let productPromise = repository.product.getById(id: product.id)
         async let summaryPromise = repository.product.getSummaryById(id: product.id)
@@ -224,6 +261,36 @@ struct ProductScreen: View {
     func refreshCheckIns() async {
         resetView += 1
         await loadSummary()
+    }
+
+    func toggleWishlist() async {
+        if isOnWishlist {
+            switch await repository.product.removeFromWishlist(productId: product.id) {
+            case .success:
+                feedbackManager.trigger(.notification(.success))
+                await MainActor.run {
+                    withAnimation {
+                        isOnWishlist = false
+                    }
+                }
+            case let .failure(error):
+                guard !error.localizedDescription.contains("cancelled") else { return }
+                logger.error("removing from wishlist failed. Error: \(error) (\(#file):\(#line))")
+            }
+        } else {
+            switch await repository.product.addToWishlist(productId: product.id) {
+            case .success:
+                feedbackManager.trigger(.notification(.success))
+                await MainActor.run {
+                    withAnimation {
+                        isOnWishlist = true
+                    }
+                }
+            case let .failure(error):
+                guard !error.localizedDescription.contains("cancelled") else { return }
+                logger.error("adding to wishlist failed. Error: \(error) (\(#file):\(#line))")
+            }
+        }
     }
 
     func verifyProduct(product: Product.Joined, isVerified: Bool) async {
