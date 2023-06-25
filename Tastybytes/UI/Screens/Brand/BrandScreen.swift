@@ -11,6 +11,8 @@ struct BrandScreen: View {
     @State private var brand: Brand.JoinedSubBrandsProductsCompany
     @State private var summary: Summary?
     @State private var isLikedByCurrentUser = false
+    @State private var productGrouping: GroupProductsBy = .subBrand
+    @State private var showProductGroupingPicker = false
     @State private var toUnverifySubBrand: SubBrand.JoinedProduct? {
         didSet {
             showSubBrandUnverificationConfirmation = true
@@ -19,14 +21,6 @@ struct BrandScreen: View {
 
     @State private var showSubBrandUnverificationConfirmation = false
     @State private var showBrandUnverificationConfirmation = false
-    @State private var showDeleteProductConfirmationDialog = false
-    @State private var productToDelete: Product.JoinedCategory? {
-        didSet {
-            if productToDelete != nil {
-                showDeleteProductConfirmationDialog = true
-            }
-        }
-    }
 
     @State private var showDeleteBrandConfirmationDialog = false
     @State private var brandToDelete: Brand.JoinedSubBrandsProducts? {
@@ -59,10 +53,29 @@ struct BrandScreen: View {
         self.initialScrollPosition = initialScrollPosition
     }
 
-    var sortedSubBrands: [SubBrand.JoinedProduct] {
+    private var sortedSubBrands: [SubBrand.JoinedProduct] {
         brand.subBrands
             .filter { !($0.name == nil && $0.products.isEmpty) }
             .sorted()
+    }
+
+    private var productsByCategory: [ProductsByCategory] {
+        brand.subBrands.flatMap { subBrand in
+            subBrand.products.map { product in
+                Product.Joined(
+                    product: product,
+                    subBrand: subBrand,
+                    brand: brand
+                )
+            }
+        }
+        .reduce(into: [ProductsByCategory]()) { result, product in
+            if let index = result.firstIndex(where: { $0.category == product.category }) {
+                result[index].products.append(product)
+            } else {
+                result.append(ProductsByCategory(category: product.category, products: [product]))
+            }
+        }
     }
 
     var body: some View {
@@ -73,96 +86,17 @@ struct BrandScreen: View {
                 }
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
-                ForEach(sortedSubBrands) { subBrand in
-                    Section {
-                        ForEach(subBrand.products) { product in
-                            let productJoined = Product.Joined(
-                                product: product,
-                                subBrand: subBrand,
-                                brand: brand
-                            )
-                            RouterLink(screen: .product(productJoined)) {
-                                ProductItemView(product: productJoined)
-                                    .padding(2)
-                                    .contextMenu {
-                                        RouterLink(sheet: .duplicateProduct(
-                                            mode: profileManager
-                                                .hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
-                                            product: productJoined
-                                        ), label: {
-                                            if profileManager.hasPermission(.canMergeProducts) {
-                                                Label("Merge to...", systemSymbol: .docOnDoc)
-                                            } else {
-                                                Label("Mark as Duplicate", systemSymbol: .docOnDoc)
-                                            }
-                                        })
-
-                                        if profileManager.hasPermission(.canDeleteProducts) {
-                                            Button(
-                                                "Delete",
-                                                systemSymbol: .trashFill,
-                                                role: .destructive,
-                                                action: { productToDelete = product }
-                                            )
-                                            .foregroundColor(.red)
-                                            .disabled(product.isVerified)
-                                        }
-                                    }
-                            }
-                        }
-                    } header: {
-                        HStack {
-                            if let name = subBrand.name {
-                                Text(name)
-                            }
-                            Spacer()
-                            Menu {
-                                VerificationButton(isVerified: subBrand.isVerified, verify: {
-                                    await verifySubBrand(subBrand, isVerified: true)
-                                }, unverify: {
-                                    toUnverifySubBrand = subBrand
-                                })
-                                Divider()
-                                if profileManager.hasPermission(.canCreateProducts) {
-                                    RouterLink(
-                                        "Add Product",
-                                        systemSymbol: .plus,
-                                        sheet: .addProductToSubBrand(brand: brand, subBrand: subBrand)
-                                    )
-                                }
-                                if profileManager.hasPermission(.canEditBrands), subBrand.name != nil {
-                                    RouterLink(
-                                        "Edit",
-                                        systemSymbol: .pencil,
-                                        sheet: .editSubBrand(brand: brand, subBrand: subBrand, onUpdate: {
-                                            await refresh()
-                                        })
-                                    )
-                                }
-                                ReportButton(entity: .subBrand(brand, subBrand))
-                                if profileManager.hasPermission(.canDeleteBrands) {
-                                    Button(
-                                        "Delete",
-                                        systemSymbol: .trashFill,
-                                        role: .destructive,
-                                        action: { toDeleteSubBrand = subBrand }
-                                    )
-                                    .disabled(subBrand.isVerified)
-                                }
-                            } label: {
-                                Label("Options menu", systemSymbol: .ellipsis)
-                                    .labelStyle(.iconOnly)
-                                    .frame(width: 24, height: 24)
-                            }
-                        }
-                    }
-                    .headerProminence(.increased)
-                    .id(subBrand.id)
-                }
                 .onAppear {
                     if let initialScrollPosition {
                         scrollProxy.scrollTo(initialScrollPosition.id, anchor: .top)
                     }
+                }
+
+                switch productGrouping {
+                case .subBrand:
+                    subBrandList
+                case .category:
+                    groupedByCategoryList
                 }
             }
             .listStyle(.plain)
@@ -203,6 +137,19 @@ struct BrandScreen: View {
                     await verifyBrand(brand: presenting, isVerified: false)
                 })
             }
+            .confirmationDialog("Group products by",
+                                isPresented: $showProductGroupingPicker,
+                                titleVisibility: .visible)
+            {
+                Button("Sub-brand") {
+                    productGrouping = .subBrand
+                }
+                .disabled(productGrouping == .subBrand)
+                Button("Category") {
+                    productGrouping = .category
+                }
+                .disabled(productGrouping == .category)
+            }
             .confirmationDialog("Are you sure you want to delete sub-brand and all related products?",
                                 isPresented: $showDeleteSubBrandConfirmation,
                                 titleVisibility: .visible,
@@ -225,6 +172,78 @@ struct BrandScreen: View {
                     await deleteBrand(presenting)
                 })
             }
+        }
+    }
+
+    @ViewBuilder private var groupedByCategoryList: some View {
+        ForEach(productsByCategory) { category in
+            Section(category.category.label) {
+                ForEach(category.products) { product in
+                    ProductRow(product: product)
+                }
+            }
+            .headerProminence(.increased)
+        }
+    }
+
+    @ViewBuilder private var subBrandList: some View {
+        ForEach(sortedSubBrands) { subBrand in
+            Section {
+                ForEach(subBrand.products) { product in
+                    ProductRow(product: Product.Joined(
+                        product: product,
+                        subBrand: subBrand,
+                        brand: brand
+                    ))
+                }
+            } header: {
+                HStack {
+                    if let name = subBrand.name {
+                        Text(name)
+                    }
+                    Spacer()
+                    Menu {
+                        VerificationButton(isVerified: subBrand.isVerified, verify: {
+                            await verifySubBrand(subBrand, isVerified: true)
+                        }, unverify: {
+                            toUnverifySubBrand = subBrand
+                        })
+                        Divider()
+                        if profileManager.hasPermission(.canCreateProducts) {
+                            RouterLink(
+                                "Add Product",
+                                systemSymbol: .plus,
+                                sheet: .addProductToSubBrand(brand: brand, subBrand: subBrand)
+                            )
+                        }
+                        if profileManager.hasPermission(.canEditBrands), subBrand.name != nil {
+                            RouterLink(
+                                "Edit",
+                                systemSymbol: .pencil,
+                                sheet: .editSubBrand(brand: brand, subBrand: subBrand, onUpdate: {
+                                    await refresh()
+                                })
+                            )
+                        }
+                        ReportButton(entity: .subBrand(brand, subBrand))
+                        if profileManager.hasPermission(.canDeleteBrands) {
+                            Button(
+                                "Delete",
+                                systemSymbol: .trashFill,
+                                role: .destructive,
+                                action: { toDeleteSubBrand = subBrand }
+                            )
+                            .disabled(subBrand.isVerified)
+                        }
+                    } label: {
+                        Label("Options menu", systemSymbol: .ellipsis)
+                            .labelStyle(.iconOnly)
+                            .frame(width: 24, height: 24)
+                    }
+                }
+            }
+            .headerProminence(.increased)
+            .id(subBrand.id)
         }
     }
 
@@ -269,6 +288,9 @@ struct BrandScreen: View {
                     showBrandUnverificationConfirmation = true
                 })
                 Divider()
+                Button("Group Products By", systemSymbol: .listBulletIndent) {
+                    showProductGroupingPicker = true
+                }
                 ReportButton(entity: .brand(brand))
                 if profileManager.hasPermission(.canDeleteBrands) {
                     Button(
@@ -440,4 +462,90 @@ struct BrandScreen: View {
             logger.error("Failed to delete brand '\(toDeleteSubBrand.id)'. Error: \(error) (\(#file):\(#line))")
         }
     }
+}
+
+private struct ProductRow: View {
+    @Environment(ProfileManager.self) private var profileManager
+    @Environment(FeedbackManager.self) private var feedbackManager
+    @Environment(Repository.self) private var repository
+    @Environment(Router.self) private var router
+    @State private var showDeleteProductConfirmationDialog = false
+    @State private var productToDelete: Product.Joined? {
+        didSet {
+            if productToDelete != nil {
+                showDeleteProductConfirmationDialog = true
+            }
+        }
+    }
+
+    let product: Product.Joined
+
+    var body: some View {
+        RouterLink(screen: .product(product)) {
+            ProductItemView(product: product)
+                .padding(2)
+                .contextMenu {
+                    RouterLink(sheet: .duplicateProduct(
+                        mode: profileManager
+                            .hasPermission(.canMergeProducts) ? .mergeDuplicate : .reportDuplicate,
+                        product: product
+                    ), label: {
+                        if profileManager.hasPermission(.canMergeProducts) {
+                            Label("Merge to...", systemSymbol: .docOnDoc)
+                        } else {
+                            Label("Mark as Duplicate", systemSymbol: .docOnDoc)
+                        }
+                    })
+
+                    if profileManager.hasPermission(.canDeleteProducts) {
+                        Button(
+                            "Delete",
+                            systemSymbol: .trashFill,
+                            role: .destructive,
+                            action: { productToDelete = product }
+                        )
+                        .foregroundColor(.red)
+                        .disabled(product.isVerified)
+                    }
+                }
+        }
+        .confirmationDialog("Are you sure you want to delete the product and all of its check-ins?",
+                            isPresented: $showDeleteProductConfirmationDialog,
+                            titleVisibility: .visible,
+                            presenting: productToDelete)
+        { presenting in
+            ProgressButton(
+                "Delete \(presenting.getDisplayName(.fullName))",
+                role: .destructive,
+                action: { await deleteProduct(presenting) }
+            )
+        }
+    }
+
+    func deleteProduct(_ product: Product.Joined) async {
+        switch await repository.product.delete(id: product.id) {
+        case .success:
+            feedbackManager.trigger(.notification(.success))
+            await MainActor.run {
+                router.removeLast()
+            }
+        case let .failure(error):
+            guard !error.localizedDescription.contains("cancelled") else { return }
+            feedbackManager.toggle(.error(.unexpected))
+            logger.error("Failed to delete product \(product.id). Error: \(error) (\(#file):\(#line))")
+        }
+    }
+}
+
+private struct ProductsByCategory: Identifiable {
+    var id: Int {
+        category.id
+    }
+
+    let category: Category
+    var products: [Product.Joined]
+}
+
+private enum GroupProductsBy: String, CaseIterable {
+    case subBrand, category
 }
