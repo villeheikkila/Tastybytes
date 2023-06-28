@@ -38,10 +38,20 @@ struct RouterLink<LabelView: View>: View {
                 }
         } else if let screen {
             if isPadOrMac() {
-                Button(action: { router.navigate(screen: screen) }, label: { label })
-                    .buttonStyle(.plain)
+                Button(action: { router.navigate(screen: screen) }, label: {
+                    HStack {
+                        label
+                        Spacer()
+                    }
+                    .contentShape(Rectangle())
+                })
+                .buttonStyle(.plain)
             } else {
-                NavigationLink(value: screen, label: { label })
+                NavigationLink(value: screen, label: {
+                    label
+                    Spacer()
+                })
+                .contentShape(Rectangle())
             }
         } else if let sheet {
             Button(action: { sheetManager.navigate(sheet: sheet) }, label: { label })

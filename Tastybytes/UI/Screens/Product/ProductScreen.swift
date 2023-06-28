@@ -19,6 +19,7 @@ struct ProductScreen: View {
     @State private var checkInImages = [CheckIn.Image]()
     @State private var isLoadingCheckInImages = false
     @State private var checkInImagesPage = 0
+
     // wishlist
     @State private var isOnWishlist = false
 
@@ -118,7 +119,8 @@ struct ProductScreen: View {
                         }
                     }
                 }
-                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .scrollPosition(initialAnchor: .init(x: 0.05, y: 0))
+                .listRowInsets(.init(top: 6, leading: 0, bottom: 6, trailing: 0))
             }
         }
         .listRowSeparator(.hidden)
