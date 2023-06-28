@@ -32,9 +32,18 @@ struct SideBarView: View {
     @Environment(FeedbackManager.self) private var feedbackManager
     @Environment(ProfileManager.self) private var profileManager
     @Environment(AppDataManager.self) private var appDataManager
+    @Environment(SplashScreenManager.self) private var splashScreenManager
     @Environment(\.orientation) private var orientation
     @State private var sheetManager = SheetManager()
-    @State private var selection: SiderBarTab? = SiderBarTab.activity
+    @AppStorage(.selectedSidebarTab) private var storedSelection = SiderBarTab.activity
+    @State private var selection: SiderBarTab? = SiderBarTab.activity {
+        didSet {
+            if let selection {
+                storedSelection = selection
+            }
+        }
+    }
+
     @State private var scrollToTop: Int = 0
     @State private var router = Router(tab: Tab.activity)
 
@@ -101,8 +110,14 @@ struct SideBarView: View {
                     CurrentProfileScreen(scrollToTop: $scrollToTop)
                 case .friends:
                     CurrentUserFriendsScreen()
+                        .task {
+                            await splashScreenManager.dismiss()
+                        }
                 case .settings:
                     SettingsScreen()
+                        .task {
+                            await splashScreenManager.dismiss()
+                        }
                 case nil:
                     EmptyView()
                 }
@@ -117,8 +132,12 @@ struct SideBarView: View {
                 selection = tab
             }
         }
+        .onAppear {
+            selection = storedSelection
+        }
         .environment(router)
         .environment(sheetManager)
+        .environment(appDataManager)
         .toast(isPresenting: $feedbackManager.show) {
             feedbackManager.toast
         }

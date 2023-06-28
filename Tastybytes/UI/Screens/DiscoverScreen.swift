@@ -7,6 +7,7 @@ struct DiscoverScreen: View {
     @Environment(Router.self) private var router
     @Environment(FeedbackManager.self) private var feedbackManager
     @Environment(ProfileManager.self) private var profileManager
+    @Environment(SplashScreenManager.self) private var splashScreenManager
     @State private var scrollProxy: ScrollViewProxy?
     @State private var searchTerm: String = ""
     @State private var products = [Product.Joined]()
@@ -78,6 +79,9 @@ struct DiscoverScreen: View {
             }
         }
         .navigationTitle("Discover")
+        .task {
+            await splashScreenManager.dismiss()
+        }
         .toolbar {
             toolbarContent
         }

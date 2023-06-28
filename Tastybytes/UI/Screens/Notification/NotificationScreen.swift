@@ -2,6 +2,7 @@ import SwiftUI
 
 struct NotificationScreen: View {
     @Environment(NotificationManager.self) private var notificationManager
+    @Environment(SplashScreenManager.self) private var splashScreenManager
     @Environment(FeedbackManager.self) private var feedbackManager
     @Binding var scrollToTop: Int
 
@@ -69,6 +70,9 @@ struct NotificationScreen: View {
         }
         .task {
             await notificationManager.refresh(reset: true)
+        }
+        .task {
+            await splashScreenManager.dismiss()
         }
         #if !targetEnvironment(macCatalyst)
         .refreshable {

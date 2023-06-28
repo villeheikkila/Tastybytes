@@ -2,11 +2,16 @@ import SwiftUI
 
 enum UserDefaultsKey: String {
     case selectedTab = "selected_tab"
+    case selectedSidebarTab = "selected_sidebar_tab"
     case isOnboardedOnDevice = "is_current_device_onboarded"
     case colorScheme = "color_scheme"
 }
 
 extension AppStorage {
+    init(wrappedValue: Value, _ key: UserDefaultsKey, store: UserDefaults? = nil) where Value == SiderBarTab {
+        self.init(wrappedValue: wrappedValue, key.rawValue, store: store)
+    }
+
     init(wrappedValue: Value, _ key: UserDefaultsKey, store: UserDefaults? = nil) where Value == Tab {
         self.init(wrappedValue: wrappedValue, key.rawValue, store: store)
     }

@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct AdminScreen: View {
+    @Environment(SplashScreenManager.self) private var splashScreenManager
+
     var body: some View {
         List {
             RouterLink("Categories", systemSymbol: .plusRectangleFillOnRectangleFill, screen: .categoryManagement)
@@ -10,5 +12,8 @@ struct AdminScreen: View {
         }
         .listStyle(.insetGrouped)
         .navigationBarTitle("Admin")
+        .task {
+            await splashScreenManager.dismiss()
+        }
     }
 }
