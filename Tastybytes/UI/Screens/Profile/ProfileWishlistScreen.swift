@@ -15,6 +15,10 @@ struct ProfileWishlistScreen: View {
         self.profile = profile
     }
 
+    var isEmpty: Bool {
+        initialDataLoaded && products.isEmpty
+    }
+
     var body: some View {
         List {
             ForEach(products) { product in
@@ -35,6 +39,13 @@ struct ProfileWishlistScreen: View {
         }
         .listStyle(.plain)
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always))
+        .background {
+            if isEmpty {
+                ContentUnavailableView {
+                    Label("Wishlist is empty", systemSymbol: .listStar)
+                }
+            }
+        }
         .navigationTitle("Wishlist")
         .refreshable {
             await loadProducts()

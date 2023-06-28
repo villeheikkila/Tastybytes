@@ -82,7 +82,7 @@ struct CheckInCardView: View {
                     .frame(height: 200)
                     .clipped()
                     .contentShape(Rectangle())
-                    .if(!isPadOrMac(), transform: { view in
+                    .if(!isMac(), transform: { view in
                         view
                             .onTapGesture {
                                 showFullPicture = true
