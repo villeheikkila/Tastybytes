@@ -2,6 +2,7 @@ import SwiftUI
 
 enum Screen: Hashable, Codable {
     case product(Product.Joined)
+    case productFromBarcode(Product.Joined, Barcode)
     case profile(Profile)
     case checkIn(CheckIn)
     case location(Location)
@@ -81,6 +82,8 @@ enum Screen: Hashable, Codable {
             ProfileProductListView(profile: profile, locked: true, productFilter: filter)
         case let .product(product):
             ProductScreen(product: product)
+        case let .productFromBarcode(product, barcode):
+            ProductScreen(product: product, loadedWithBarcode: barcode)
         case let .friends(profile):
             FriendsScreen(profile: profile)
         case let .productFeed(feed):

@@ -3,6 +3,7 @@ import SwiftUI
 
 enum NavigatablePath {
     case product(id: Int)
+    case productWithBarcode(id: Int, barcode: Barcode)
     case checkIn(id: Int)
     case company(id: Int)
     case profile(id: UUID)
@@ -15,7 +16,7 @@ enum NavigatablePath {
             "\(Config.baseUrl)/\(PathIdentifier.profiles)/\(id.uuidString.lowercased())"
         case let .checkIn(id):
             "\(Config.baseUrl)/\(PathIdentifier.checkins)/\(id)"
-        case let .product(id):
+        case let .product(id), let .productWithBarcode(id, _):
             "\(Config.baseUrl)/\(PathIdentifier.products)/\(id)"
         case let .company(id):
             "\(Config.baseUrl)/\(PathIdentifier.companies)/\(id)"

@@ -65,6 +65,21 @@ final class Router {
                     }
                     logger.error("Request for product with \(id) failed. Error: \(error) (\(#file):\(#line))")
                 }
+            case let .productWithBarcode(id, barcode):
+                switch await repository.product.getById(id: id) {
+                case let .success(product):
+                    await MainActor.run {
+                        self.navigate(screen: .product(product), resetStack: resetStack)
+                    }
+                case let .failure(error):
+                    await MainActor.run {
+                        self.navigate(
+                            screen: .error(reason: "Failed to load requested product page"),
+                            resetStack: resetStack
+                        )
+                    }
+                    logger.error("Request for product with \(id) failed. Error: \(error) (\(#file):\(#line))")
+                }
             case let .checkIn(id):
                 switch await repository.checkIn.getById(id: id) {
                 case let .success(checkIn):

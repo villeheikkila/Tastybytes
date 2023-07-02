@@ -15,6 +15,8 @@ struct ProductScreen: View {
     @State private var showUnverifyProductConfirmation = false
     @State private var resetView: Int = 0
 
+    @State private var loadedWithBarcode: Barcode?
+
     // check-in images
     @State private var checkInImages = [CheckIn.Image]()
     @State private var isLoadingCheckInImages = false
@@ -23,8 +25,9 @@ struct ProductScreen: View {
     // wishlist
     @State private var isOnWishlist = false
 
-    init(product: Product.Joined) {
+    init(product: Product.Joined, loadedWithBarcode: Barcode? = nil) {
         _product = State(wrappedValue: product)
+        _loadedWithBarcode = State(wrappedValue: loadedWithBarcode)
     }
 
     var body: some View {
@@ -39,6 +42,14 @@ struct ProductScreen: View {
             }
         )
         .id(resetView)
+        .overlay(
+            MaterialOverlay(alignment: .top) {
+                Text("Is this not the product you were looking for?")
+                Button("Back to search") {
+                    router.removeLast()
+                }
+            }
+        )
         .task {
             if summary == nil {
                 await loadSummary()
